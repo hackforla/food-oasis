@@ -1,7 +1,7 @@
 # Node-Starter
 
-This is a starter application for a Web API server that uses node/express and a Postgres
-database.
+This is a re-vamped version of the Food Oasis application, with a
+Postgres database, node/express Web API server, and React client.
 
 ## Prerequisites
 
@@ -21,14 +21,14 @@ database.
       ```
    1. Clone the repository
       ```
-      git clone https://github.com/hackforla/node-starter
+      git clone https://github.com/hackforla/food-oasis-cleanup
       ```
 
     </p></details>
 
-1. Change to the node-starter directory:
+1. Change to the food-oasis-cleanup directory:
    ```
-   cd node-starter
+   cd food-oasis-cleanup
    ```
 1. Install the node server npm depedencies:
    ```
@@ -46,4 +46,5 @@ database.
 
 ## To Run the React/Node Application
 
-1.  Run `npm start` from the node-starter directory to start the node server.
+1.  Run `npm start` from the food-oasis-cleanup directory to start the node server.
+1.  Open a separate command shell and set the directory to the /client subdirectory, then `npm start` again to start the client application and open a browser pointing to it.

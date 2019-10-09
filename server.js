@@ -26,7 +26,7 @@ app.use(cookieParser());
 // Unauthenticated routes
 app.use(router);
 
-// The follow three routes are for testing purposes, and may be deleted later.
+// The following three routes are for testing purposes, and may be deleted later.
 app.get("/hello/:name", auth.ensureUser, (req, res) => {
   res.status(200).json({ hello: req.params.name });
 });

@@ -29,7 +29,7 @@ const selectByEmail = email => {
 
 const register = async model => {
   const { firstName, lastName, email } = model;
-  const passwordHash = hashPassword(req);
+  const passwordHash = hashPassword(model.password);
   const sql = `insert into login (firstName, lastName, email) 
     values ('${firstName}', '${lastName}', '${email}', '${passwordHash}', true ) returning id`;
   return pool.query(sql).then(res => {

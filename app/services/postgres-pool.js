@@ -1,13 +1,21 @@
 const { Pool } = require("pg");
 
-const poolConfig = {
-  user: process.env.POSTGRES_USERNAME,
-  host: process.env.POSTGRES_HOST,
-  database: process.env.POSTGRES_DATABASE,
-  password: process.env.POSTGRES_PASSWORD,
-  port: Number(process.env.POSTGRES_PORT),
-  ssl: process.env.POSTGRES_SSL === "true"
-};
+// In a production Heroku environment, Heroku will
+// set the process.env.DATABASE_URL to point to the
+// related database, and change it if/when they move
+// the database.
+// In a DEV environment, we get the database
+// connection parameters from the .env file.
+const poolConfig = process.env.DATABASE_URL
+  ? { connectionString: process.env.DATABASE_URL }
+  : {
+      user: process.env.POSTGRES_USERNAME,
+      host: process.env.POSTGRES_HOST,
+      database: process.env.POSTGRES_DATABASE,
+      password: process.env.POSTGRES_PASSWORD,
+      port: Number(process.env.POSTGRES_PORT),
+      ssl: process.env.POSTGRES_SSL === "true"
+    };
 
 const pool = new Pool(poolConfig);
 

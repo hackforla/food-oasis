@@ -1,8 +1,7 @@
 import React from "react";
 import ReactMapGL, { GeolocateControl, NavigationControl } from "react-map-gl";
 import { MAPBOX_TOKEN } from "../secrets";
-
-const MAPBOX_STYLE = "mapbox://styles/mapbox/light-v9";
+import { MAPBOX_STYLE } from "../constants/map";
 
 const styles = {
   geolocate: {
@@ -43,7 +42,7 @@ function Map() {
       <ReactMapGL
         {...viewport}
         width={`90vw`}
-        height={`85vh`}
+        height={`82vh`}
         onViewportChange={newViewport => setViewport({ ...newViewport })}
         mapboxApiAccessToken={MAPBOX_TOKEN}
         mapStyle={MAPBOX_STYLE}

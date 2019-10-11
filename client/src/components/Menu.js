@@ -8,11 +8,11 @@ import MenuItemLink from "./MenuItemLink";
 
 const useStyles = makeStyles({
   list: {
-    width: 250,
+    width: 250
   },
   menuButton: {
-    padding: "1rem",
-  },
+    padding: "1rem"
+  }
 });
 
 export default function Menu() {
@@ -40,13 +40,14 @@ export default function Menu() {
       <List>
         {[
           "Map",
+          "Stakeholders",
           "Donate",
           "FAQs",
           "News",
           "Resources",
           "Organizations",
           "About",
-          "Team",
+          "Team"
         ].map((text, index) => {
           const route = text.toLowerCase();
 

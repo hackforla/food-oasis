@@ -236,3 +236,6 @@ node_modules
 .env
 
 # End of project-specific exclusions
+
+# Remove package-lock
+package-lock.json

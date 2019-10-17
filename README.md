@@ -1,4 +1,4 @@
-# Node-Starter
+# Food Oasis
 
 This is a re-vamped version of the Food Oasis application, with a
 Postgres database, node/express Web API server, and React client.

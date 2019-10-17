@@ -234,6 +234,8 @@ node_modules
 # Start of project-specific exclusions
 
 .env
-package-lock.json
 
 # End of project-specific exclusions
+
+# Remove package-lock
+package-lock.json

@@ -1,6 +1,7 @@
 "use strict";
 const express = require("express");
 const dotenv = require("dotenv");
+const massive = require('massive');
 
 dotenv.config();
 
@@ -22,6 +23,12 @@ app.use(express.static("public"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+// Connect to DB using massive
+massive(process.env.PG_CONNECTION_STRING).then(database =>{
+  app.set('db', database);
+  console.log('database connected!')
+});
 
 // Unauthenticated routes
 app.use(router);

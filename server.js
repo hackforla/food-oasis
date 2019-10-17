@@ -24,21 +24,25 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-//Connect to DB using massive
-// const db = await massive({
-//   host: "localhost",
-//   port: 5432,
-//   database: "appdb",
-//   user: "appuser",
-//   password: "apppwd",
-//   ssl: false,
-//   poolSize: 10
-// });
-
-massive(process.env.PG_CONNECTION_STRING).then(database => {
-  app.set("db", database);
-  console.log("database connected!");
-});
+// Connect to DB using massive
+massive(
+  process.env.DATABASE_URL || {
+    poolSize: 10,
+    user: process.env.POSTGRES_USERNAME,
+    host: process.env.POSTGRES_HOST,
+    database: process.env.POSTGRES_DATABASE,
+    password: process.env.POSTGRES_PASSWORD,
+    port: Number(process.env.POSTGRES_PORT),
+    ssl: process.env.POSTGRES_SSL === "true"
+  }
+)
+  .then(database => {
+    app.set("db", database);
+    console.log("database connected!");
+  })
+  .catch(err => {
+    console.log(err);
+  });
 
 // Unauthenticated routes
 app.use(router);

@@ -8,18 +8,22 @@ const baseUrl = "/api/stakeholders";
         categoryIds - array of integers corresponding to the desired categories
         latitude
         longitude
+        distance - radius around latitude and longitude
 */
 export const search = async searchParams => {
   searchParams = searchParams || {};
   const response = await axios.get(baseUrl, {
     params: searchParams
   });
-  return response.data;
+  let stakeholders = response.data;
+
+  return stakeholders;
 };
 
 export const getById = async id => {
   const response = await axios.get(`${baseUrl}/${id}`);
-  return response.data;
+  const stakeholder = response.data;
+  return stakeholder;
 };
 
 export const post = async stakeholder => {

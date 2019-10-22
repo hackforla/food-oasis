@@ -48,7 +48,7 @@ const register = (req, res) => {
 
 const login = (req, res) => {
   accountService
-    .login(req.body)
+    .authenticate(req.body)
     .then(resp => {
       res.json(resp);
     })

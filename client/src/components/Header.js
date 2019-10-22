@@ -10,13 +10,13 @@ const styles = {
     width: "100%",
     color: "blanchedalmond",
     top: "0",
-    position: "sticky",
+    position: "sticky"
   },
   logo: {
     width: "4rem",
     height: "2.5rem",
-    margin: ".5rem .75rem",
-  },
+    margin: ".5rem .75rem"
+  }
 };
 
 export default function Header() {

@@ -10,7 +10,6 @@ const cookieParser = require("cookie-parser");
 const path = require("path");
 const middleware = require("./middleware/middleware");
 const router = require("./app/routes/index");
-const auth = require("./middleware/auth");
 
 const app = express();
 app.use(middleware.cors);
@@ -44,11 +43,10 @@ massive(
     console.log(err);
   });
 
-// Unauthenticated routes
 app.use(router);
 
 // The following three routes are for testing purposes, and may be deleted later.
-app.get("/hello/:name", auth.ensureUser, (req, res) => {
+app.get("/hello/:name", (req, res) => {
   res.status(200).json({ hello: req.params.name });
 });
 
@@ -60,8 +58,6 @@ app.get("/throw", (req, res, next) => {
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "OK" });
 });
-
-// Authenticated routes go after here
 
 app.use(middleware.notFound);
 app.use(middleware.handleError);

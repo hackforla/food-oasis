@@ -22,10 +22,10 @@ const styles = {
 
 function App() {
   const [user, setUser] = useState({
-    id: 1,
-    firstName: "John",
-    lastName: "Darrgh",
-    email: "darragh@entrotech.net"
+    id: null,
+    firstName: "",
+    lastName: "",
+    email: ""
   });
 
   return (

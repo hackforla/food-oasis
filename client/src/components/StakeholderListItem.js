@@ -12,9 +12,9 @@ const StakeholderListItem = props => {
   const { stakeholder } = props;
   return (
     <ListItem style={styles.listItem} key={stakeholder.id}>
-      <ListItemText primary={stakeholder.name}></ListItemText>
-      <div>
-        {
+      <ListItemText
+        primary={stakeholder.name}
+        secondary={
           <React.Fragment>
             {stakeholder.website ? (
               <div>
@@ -41,8 +41,7 @@ const StakeholderListItem = props => {
             )}
           </React.Fragment>
         }
-        />
-      </div>
+      ></ListItemText>
     </ListItem>
   );
 };

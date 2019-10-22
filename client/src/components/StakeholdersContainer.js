@@ -18,13 +18,12 @@ class StakeholdersContainer extends React.Component {
 
   async componentDidMount() {
     const categories = await categoryService.getAll();
-    this.state.categories = categories;
+    this.setState({ categories });
 
     navigator.geolocation.getCurrentPosition(position => {
       let latitude = position.coords.latitude;
       let longitude = position.coords.longitude;
-      this.state.latitude = latitude;
-      this.state.longitude = longitude;
+      this.setState({ latitude, longitude });
     });
   }
 
@@ -66,7 +65,6 @@ class StakeholdersContainer extends React.Component {
     } = this.state;
     return (
       <React.Fragment>
-        Doh
         <Typography>Stakeholders </Typography>
         <StakeholderSearch
           key={latitude}

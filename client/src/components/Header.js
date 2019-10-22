@@ -22,7 +22,6 @@ const styles = {
 export default function Header() {
   return (
     <header style={styles.header}>
-      <span>doh</span>
       <Menu />
       <img src={logo} style={styles.logo} alt="logo" />
     </header>

@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   card: {
-    backgroundColor: "green"
+    backgroundColor: theme.palette.common.white
   },
   cardHeader: {},
   paper: {

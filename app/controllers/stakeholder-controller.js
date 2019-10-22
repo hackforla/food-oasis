@@ -3,12 +3,18 @@ const stakeholderService = require("../services/stakeholder-service");
 const getAll = (req, res) => {
   let categoryIds = req.query.categoryIds;
   if (!categoryIds) {
-    categoryIds = ["1", "2", "3", "4", "5"];
+    categoryIds = ["1", "2", "3", "4", "5", "6"];
   } else if (typeof categoryIds == "string") {
     categoryIds = [categoryIds];
   }
   stakeholderService
-    .selectAll(categoryIds)
+    .selectAll(
+      req.query.name || "",
+      categoryIds,
+      req.query.latitude,
+      req.query.longitude,
+      req.query.distance
+    )
     .then(resp => {
       res.send(resp);
     })

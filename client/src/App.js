@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Main from "./components/Main";
 import Map from "./components/Map";
-import Stakeholders from "./components/Stakeholders";
+import StakeholdersContainer from "./components/StakeholdersContainer";
 import Donate from "./components/Donate";
 import News from "./components/News";
 import Resources from "./components/Resources";
 import About from "./components/About";
 import Team from "./components/Team";
+import Register from "./components/Register";
+import Login from "./components/Login";
+import Footer from "./components/Footer";
 
 const styles = {
   app: {
@@ -18,10 +21,17 @@ const styles = {
 };
 
 function App() {
+  const [user, setUser] = useState({
+    id: 1,
+    firstName: "John",
+    lastName: "Darrgh",
+    email: "darragh@entrotech.net"
+  });
+
   return (
     <Router>
       <div style={styles.app}>
-        <Header />
+        <Header user={user} />
         <Switch>
           <Route exact path="/">
             <Main />
@@ -30,7 +40,7 @@ function App() {
             <Map />
           </Route>
           <Route path="/stakeholders">
-            <Stakeholders />
+            <StakeholdersContainer />
           </Route>
           <Route path="/donate">
             <Donate />
@@ -47,8 +57,15 @@ function App() {
           <Route path="/team">
             <Team />
           </Route>
+          <Route path="/register">
+            <Register />
+          </Route>
+          <Route path="/login">
+            <Login setUser={setUser} />
+          </Route>
         </Switch>
       </div>
+      <Footer user={user} />
     </Router>
   );
 }

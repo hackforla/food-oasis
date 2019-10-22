@@ -53,6 +53,8 @@ export default function Menu() {
 
           return <MenuItemLink key={index} to={`/${route}`} text={text} />;
         })}
+        <MenuItemLink key="Register" to="/register" text="Register" />
+        <MenuItemLink key="Login" to="/login" text="Login" />
       </List>
     </div>
   );

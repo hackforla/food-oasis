@@ -1,4 +1,6 @@
 const { pool } = require("./postgres-pool");
+const { promisify } = require("util");
+const bcrypt = require("bcrypt");
 
 const SALT_ROUNDS = 10;
 
@@ -21,20 +23,62 @@ const selectById = id => {
 };
 
 const selectByEmail = email => {
-  const sql = `select * from login where email = ${email}`;
+  const sql = `select id, first_name, last_name, email, password_hash, email_confirmed, date_created
+    from login where email = '${email}'`;
   return pool.query(sql).then(res => {
-    return res.rows[0];
+    const row = res.rows[0];
+    if (row) {
+      return {
+        id: row.id,
+        firstName: row.first_name,
+        lastName: row.last_name,
+        passwordHash: row.password_hash,
+        email: row.email,
+        dateCreated: row.date_created,
+        emailConfirmed: row.email_confirmed
+      };
+    }
+    return null;
   });
 };
 
 const register = async model => {
   const { firstName, lastName, email } = model;
-  const passwordHash = hashPassword(model.password);
-  const sql = `insert into login (firstName, lastName, email) 
-    values ('${firstName}', '${lastName}', '${email}', '${passwordHash}', true ) returning id`;
+
+  await hashPassword(model);
+  const sql = `insert into login (first_name, last_name, email, password_hash, email_confirmed ) 
+      values ('${firstName}', '${lastName}', '${email}', '${model.passwordHash}', true ) returning id`;
   return pool.query(sql).then(res => {
     return res.rows[0];
   });
+};
+
+const authenticate = async (email, password) => {
+  try {
+    const user = await selectByEmail(email);
+    if (!user) {
+      return {
+        isSuccess: false,
+        reason: `No account found for email ${email}`
+      };
+    }
+    const isUser = await bcrypt.compare(password, user.passwordHash);
+    if (isUser) {
+      return {
+        isSuccess: true,
+        user: {
+          id: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          emailConfirmed: user.emailConfirmed
+        }
+      };
+    }
+    return { isSuccess: false, reason: `Incorrect password` };
+  } catch (err) {
+    return { isSuccess: false, reason: `Incorrect password` };
+  }
 };
 
 const update = model => {
@@ -60,14 +104,14 @@ async function hashPassword(user) {
   if (user.password.length < 8)
     throw user.invalidate("password", "password must be at least 8 characters");
 
-  const passwordHash = await promisify(bcrypt.hash)(user.password, SALT_ROUNDS);
-  return passwordHash;
+  user.passwordHash = await promisify(bcrypt.hash)(user.password, SALT_ROUNDS);
 }
 
 module.exports = {
   selectAll,
   selectById,
   register,
+  authenticate,
   update,
   remove
 };

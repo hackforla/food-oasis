@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 
 const News = () => {
@@ -9,13 +9,13 @@ const News = () => {
   };
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <div>
       <div>
         <button onClick={() => changeLanguage("es")}>es</button>
         <button onClick={() => changeLanguage("en")}>en</button>
       </div>
       <div>{t("news")}</div>
-    </Suspense>
+    </div>
   );
 };
 

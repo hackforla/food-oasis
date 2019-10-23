@@ -20,7 +20,7 @@ function cors(req, res, next) {
 }
 
 function handleError(err, req, res, next) {
-  console.log(err);
+  console.log('server error', err);
   if (res.headerSent) return next(err);
   res.status(500).json({ error: "Internal Error" });
 }

@@ -18,6 +18,7 @@
     "express": "^4.17.1",
     "express-pino-logger": "^4.0.0",
     "jsonwebtoken": "^8.5.1",
+    "massive": "^6.1.1",
     "nodemon": "^1.19.3",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",

@@ -1,6 +1,7 @@
 "use strict";
 const express = require("express");
 const dotenv = require("dotenv");
+const massive = require("massive");
 
 dotenv.config();
 
@@ -9,7 +10,6 @@ const cookieParser = require("cookie-parser");
 const path = require("path");
 const middleware = require("./middleware/middleware");
 const router = require("./app/routes/index");
-const auth = require("./middleware/auth");
 
 const app = express();
 app.use(middleware.cors);
@@ -23,11 +23,30 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// Unauthenticated routes
+// Connect to DB using massive
+massive(
+  process.env.DATABASE_URL || {
+    poolSize: 10,
+    user: process.env.POSTGRES_USERNAME,
+    host: process.env.POSTGRES_HOST,
+    database: process.env.POSTGRES_DATABASE,
+    password: process.env.POSTGRES_PASSWORD,
+    port: Number(process.env.POSTGRES_PORT),
+    ssl: process.env.POSTGRES_SSL === "true"
+  }
+)
+  .then(database => {
+    app.set("db", database);
+    console.log("database connected!");
+  })
+  .catch(err => {
+    console.log(err);
+  });
+
 app.use(router);
 
 // The following three routes are for testing purposes, and may be deleted later.
-app.get("/hello/:name", auth.ensureUser, (req, res) => {
+app.get("/hello/:name", (req, res) => {
   res.status(200).json({ hello: req.params.name });
 });
 
@@ -39,8 +58,6 @@ app.get("/throw", (req, res, next) => {
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "OK" });
 });
-
-// Authenticated routes go after here
 
 app.use(middleware.notFound);
 app.use(middleware.handleError);

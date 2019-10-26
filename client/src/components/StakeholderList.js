@@ -1,22 +1,33 @@
 import React from "react";
-import { Card, List } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import StakeholderListItem from "./StakeholderListItem";
 
 const StakeholderList = props => {
   const { stakeholders } = props;
   return (
-    <Card>
-      <List>
-        {stakeholders.map(stakeholder => {
+    <Grid
+      container
+      spacing={2}
+      style={{ padding: "16px" }}
+      alignItems={"stretch"}
+    >
+      {stakeholders && stakeholders.length > 0 ? (
+        stakeholders.map(stakeholder => {
           return (
             <StakeholderListItem
               stakeholder={stakeholder}
               key={stakeholder.id}
             />
           );
-        })}
-      </List>
-    </Card>
+        })
+      ) : (
+        <Grid item>
+          <Typography variant={"h5"} component={"h5"}>
+            No matches found, please try different Criteria
+          </Typography>
+        </Grid>
+      )}
+    </Grid>
   );
 };
 

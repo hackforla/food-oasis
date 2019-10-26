@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Card, CardContent, Grid, Typography } from "@material-ui/core";
-import { List, ListItem, Button } from "@material-ui/core";
+import { List, ListItem } from "@material-ui/core";
 import EditButton from "../components/EditButton";
 
 const useStyles = makeStyles(theme => ({

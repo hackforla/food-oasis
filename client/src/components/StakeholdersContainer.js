@@ -34,14 +34,15 @@ class StakeholdersContainer extends React.Component {
             let latitude = position.coords.latitude;
             let longitude = position.coords.longitude;
             categoryService.getAll().then(categories => {
+              const selectedCategories = categories.filter(cat => cat.id === 1);
               this.setState(
                 {
                   selectedLatitude: latitude,
                   selectedLongitude: longitude,
                   categories,
-                  selectedCategories: categories.filter(cat => cat.id === 1)
+                  selectedCategories
                 },
-                this.search
+                this.searchState
               );
             });
           }
@@ -49,10 +50,11 @@ class StakeholdersContainer extends React.Component {
         err => {
           console.log(err);
           categoryService.getAll().then(categories => {
+            const selectedCategories = categories.filter(cat => cat.id === 1);
             this.setState(
               {
                 categories,
-                selectedCategories: categories.filter(cat => cat.id === 1)
+                selectedCategories
               },
               this.searchState
             );
@@ -61,10 +63,12 @@ class StakeholdersContainer extends React.Component {
       );
     } else {
       const categories = await categoryService.getAll();
+      const selectedCategories = categories.filter(cat => cat.id === 1);
+
       this.setState(
         {
           categories,
-          selectedCategories: categories.filter(cat => cat.id === 1)
+          selectedCategories
         },
         this.searchState
       );
@@ -107,6 +111,7 @@ class StakeholdersContainer extends React.Component {
     selectedCategories,
     selectedDistance
   ) => {
+    if (!selectedCategories) return;
     stakeholderService
       .search({
         name: searchString,

@@ -35,8 +35,8 @@ function StakeholderSearch(props) {
     props.selectedCategories
   );
   const [searchString, setSearchString] = useState(props.searchString);
-  const [latitude, setLatitude] = useState(props.latitude);
-  const [longitude, setLongitude] = useState(props.longitude);
+  const [latitude] = useState(props.latitude);
+  const [longitude] = useState(props.longitude);
   const [selectedDistance, setSelectedDistance] = useState(
     props.selectedDistance
   );

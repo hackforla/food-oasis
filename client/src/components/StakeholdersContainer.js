@@ -85,7 +85,7 @@ class StakeholdersContainer extends React.Component {
       selectedCategories,
       selectedLatitude: latitude,
       selectedLongitude: longitude,
-      selectedDistance
+      selectedDistance: distance
     } = this.state;
     stakeholderService
       .search({
@@ -93,7 +93,7 @@ class StakeholdersContainer extends React.Component {
         categoryIds: selectedCategories.map(category => category.id),
         latitude,
         longitude,
-        selectedDistance
+        distance
       })
       .then(stakeholders => {
         this.setState({
@@ -118,7 +118,7 @@ class StakeholdersContainer extends React.Component {
         categoryIds: selectedCategories.map(category => category.id),
         latitude,
         longitude,
-        selectedDistance
+        distance: selectedDistance
       })
       .then(stakeholders => {
         this.setState({

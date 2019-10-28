@@ -24,7 +24,7 @@ const selectById = id => {
 
 const selectByEmail = email => {
   const sql = `select id, first_name, last_name, email, password_hash, email_confirmed, date_created
-    from login where email = '${email}'`;
+    from login where email ilike '${email}'`;
   return pool.query(sql).then(res => {
     const row = res.rows[0];
     if (row) {

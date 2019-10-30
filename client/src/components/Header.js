@@ -1,6 +1,7 @@
 import React from "react";
 import Menu from "./Menu";
 import logo from "../images/fola.svg";
+import { composeInitialProps } from "react-i18next";
 
 const styles = {
   header: {
@@ -19,11 +20,13 @@ const styles = {
   }
 };
 
-export default function Header() {
+export default function Header(props) {
   return (
     <header style={styles.header}>
-      <Menu />
-      <img src={logo} style={styles.logo} alt="logo" />
+      <Menu user={props.user} setUser={props.setUser} />
+      <a href="/">
+        <img src={logo} style={styles.logo} alt="logo" />{" "}
+      </a>
     </header>
   );
 }

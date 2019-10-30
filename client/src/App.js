@@ -12,6 +12,7 @@ import Team from "./components/Team";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import Footer from "./components/Footer";
+import { OutlinedFlagOutlined } from "@material-ui/icons";
 
 const styles = {
   app: {
@@ -31,9 +32,12 @@ function App() {
   return (
     <Router>
       <div style={styles.app}>
-        <Header user={user} />
+        <Header user={user} setUser={setUser} />
         <Switch>
           <Route exact path="/">
+            <StakeholdersContainer />
+          </Route>
+          <Route path="/home">
             <Main />
           </Route>
           <Route path="/map">
@@ -61,11 +65,11 @@ function App() {
             <Register />
           </Route>
           <Route path="/login">
-            <Login setUser={setUser} />
+            <Login key={user.email} setUser={setUser} />
           </Route>
         </Switch>
+        <Footer user={user} setUser={setUser} />
       </div>
-      <Footer user={user} />
     </Router>
   );
 }

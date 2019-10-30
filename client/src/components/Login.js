@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { withRouter } from "react-router-dom";
 import * as accountService from "../services/account-service";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -39,11 +39,24 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Login(props) {
+function Login(props) {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
   const classes = useStyles();
+
+  const submit = evt => {
+    evt.preventDefault();
+    accountService
+      .login(email, password)
+      .then(result => {
+        props.setUser(result.user);
+      })
+      .then(props.history.push("/"))
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -94,19 +107,7 @@ export default function Login(props) {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={event => {
-              event.preventDefault();
-              accountService
-                .login(email, password)
-                .then(result => {
-                  console.log(result);
-                  props.setUser(result.user);
-                  // Insert code to navigate to home
-                })
-                .catch(err => {
-                  console.log(err);
-                });
-            }}
+            onClick={submit}
           >
             Sign In
           </Button>
@@ -130,3 +131,5 @@ export default function Login(props) {
     </Container>
   );
 }
+
+export default withRouter(Login);

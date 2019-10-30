@@ -6,19 +6,34 @@ const SALT_ROUNDS = 10;
 
 const selectAll = () => {
   let sql = `
-    select w.id, w.dateCreated, w.firstName, w.lastName, w.dateCreated, w.emailConfirmed
+    select w.id, w.first_name, w.last_name, w.date_created, w.email_confirmed
     from login w
-    order by w.lastName, w.firstName, w.dateCreated
+    order by w.last_name, w.first_name, w.date_created
   `;
   return pool.query(sql).then(res => {
-    return res.rows;
+    return res.rows.map(row => ({
+      id: row.id,
+      firstName: row.first_name,
+      lastName: row.last_name,
+      email: row.email,
+      dateCreated: row.date_created,
+      emailConfirmed: row.email_confirmed
+    }));
   });
 };
 
 const selectById = id => {
-  const sql = `select * from login where id = ${id}`;
+  const sql = `select w.id, w.first_name, w.last_name, w.date_created, w.email_confirmed from login w where w.id = ${id}`;
   return pool.query(sql).then(res => {
-    return res.rows[0];
+    const row = res.rows[0];
+    return {
+      id: row.id,
+      firstName: row.first_name,
+      lastName: row.last_name,
+      email: row.email,
+      dateCreated: row.date_created,
+      emailConfirmed: row.email_confirmed
+    };
   });
 };
 

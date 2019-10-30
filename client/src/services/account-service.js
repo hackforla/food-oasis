@@ -13,3 +13,8 @@ export const login = async (email, password) => {
   const response = await axios.post(baseUrl + "/login", body);
   return response.data;
 };
+
+export const logout = async () => {
+  const response = await axios.get(baseUrl + "/logout");
+  return response.data;
+};

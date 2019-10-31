@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(1),
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
@@ -52,7 +52,7 @@ function Login(props) {
       .then(result => {
         props.setUser(result.user);
       })
-      .then(props.history.push("/"))
+      .then(props.history.push("/stakeholders"))
       .catch(err => {
         console.log(err);
       });
@@ -66,7 +66,7 @@ function Login(props) {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Login
         </Typography>
         <form className={classes.form} noValidate>
           <TextField
@@ -112,11 +112,11 @@ function Login(props) {
             Sign In
           </Button>
           <Grid container>
-            {/* <Grid item xs>
-              <Link href="#" variant="body2">
+            <Grid item xs>
+              <Link href="/forgot" variant="body2">
                 Forgot password?
               </Link>
-            </Grid> */}
+            </Grid>
             <Grid item>
               <Link href="/register" variant="body2">
                 {"Don't have an account? Sign Up"}
@@ -125,9 +125,6 @@ function Login(props) {
           </Grid>
         </form>
       </div>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
     </Container>
   );
 }

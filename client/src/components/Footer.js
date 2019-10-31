@@ -1,18 +1,15 @@
 import React from "react";
-import Logout from "../components/Logout";
 import { Box } from "@material-ui/core";
+import Copyright from "./Copyright";
+import { ThemeProvider } from "@material-ui/styles";
 
 const Footer = props => {
   return (
     <React.Fragment>
-      {props.user && props.user.id ? (
-        <Box>
-          <div>{props.user.firstName + " " + props.user.lastName}</div>
-          <Logout user={props.user} setUser={props.setUser} />
-        </Box>
-      ) : (
-        <div>Please log in</div>
-      )}
+      <hr />
+      <Box style={{ padding: "0.75em" }}>
+        <Copyright />
+      </Box>
     </React.Fragment>
   );
 };

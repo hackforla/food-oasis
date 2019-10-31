@@ -14,7 +14,8 @@ const useStyles = makeStyles({
     width: 250
   },
   menuButton: {
-    padding: "1rem"
+    padding: "0.5rem",
+    minWidth: "0"
   }
 });
 
@@ -56,11 +57,8 @@ export default function Menu(props) {
 
           return <MenuItemLink key={index} to={`/${route}`} text={text} />;
         })}
-        <MenuItemLink key="Register" to="/register" text="Register" />
-        {props.user.email ? (
-          <Logout setUser={props.setUser} />
-        ) : (
-          <MenuItemLink key="Login" to="/login" text="Login" />
+        {props.user ? null : (
+          <MenuItemLink key="Register" to="/register" text="Register" />
         )}
       </List>
     </div>

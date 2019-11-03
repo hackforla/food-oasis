@@ -15,7 +15,7 @@ class StakeholdersContainer extends React.Component {
     selectedCategories: [{ id: 1, name: "Food Pantry" }],
     selectedLatitude: 34.041001,
     selectedLongitude: -118.235036,
-    selectedDistance: 20,
+    selectedDistance: 3,
     searchPanelOpen: false,
     isLoading: true
   };
@@ -85,7 +85,7 @@ class StakeholdersContainer extends React.Component {
       selectedCategories,
       selectedLatitude: latitude,
       selectedLongitude: longitude,
-      selectedDistance
+      selectedDistance: distance
     } = this.state;
     stakeholderService
       .search({
@@ -93,7 +93,7 @@ class StakeholdersContainer extends React.Component {
         categoryIds: selectedCategories.map(category => category.id),
         latitude,
         longitude,
-        selectedDistance
+        distance
       })
       .then(stakeholders => {
         this.setState({
@@ -118,7 +118,7 @@ class StakeholdersContainer extends React.Component {
         categoryIds: selectedCategories.map(category => category.id),
         latitude,
         longitude,
-        selectedDistance
+        distance: selectedDistance
       })
       .then(stakeholders => {
         this.setState({
@@ -148,7 +148,12 @@ class StakeholdersContainer extends React.Component {
     } = this.state;
     return (
       <React.Fragment>
-        <Typography variant={"h4"} component={"h1"} align="center">
+        <Typography
+          variant={"h4"}
+          component={"h1"}
+          align="center"
+          style={{ marginBottom: "0.5em" }}
+        >
           Stakeholders{" "}
         </Typography>
         {searchPanelOpen ? (

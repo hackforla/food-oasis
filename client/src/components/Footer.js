@@ -1,13 +1,15 @@
 import React from "react";
+import { Box } from "@material-ui/core";
+import Copyright from "./Copyright";
+import { ThemeProvider } from "@material-ui/styles";
 
 const Footer = props => {
   return (
     <React.Fragment>
-      {props.user && props.user.id ? (
-        <div>{props.user.firstName + " " + props.user.lastName}</div>
-      ) : (
-        <div>Please log in</div>
-      )}
+      <hr />
+      <Box style={{ padding: "0.75em" }}>
+        <Copyright />
+      </Box>
     </React.Fragment>
   );
 };

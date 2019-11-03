@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { withRouter } from "react-router-dom";
 import * as accountService from "../services/account-service";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(1),
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
@@ -39,11 +39,24 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Login(props) {
+function Login(props) {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
   const classes = useStyles();
+
+  const submit = evt => {
+    evt.preventDefault();
+    accountService
+      .login(email, password)
+      .then(result => {
+        props.setUser(result.user);
+      })
+      .then(props.history.push("/stakeholders"))
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -53,7 +66,7 @@ export default function Login(props) {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Login
         </Typography>
         <form className={classes.form} noValidate>
           <TextField
@@ -94,28 +107,16 @@ export default function Login(props) {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={event => {
-              event.preventDefault();
-              accountService
-                .login(email, password)
-                .then(result => {
-                  console.log(result);
-                  props.setUser(result.user);
-                  // Insert code to navigate to home
-                })
-                .catch(err => {
-                  console.log(err);
-                });
-            }}
+            onClick={submit}
           >
             Sign In
           </Button>
           <Grid container>
-            {/* <Grid item xs>
-              <Link href="#" variant="body2">
+            <Grid item xs>
+              <Link href="/forgot" variant="body2">
                 Forgot password?
               </Link>
-            </Grid> */}
+            </Grid>
             <Grid item>
               <Link href="/register" variant="body2">
                 {"Don't have an account? Sign Up"}
@@ -124,9 +125,8 @@ export default function Login(props) {
           </Grid>
         </form>
       </div>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
     </Container>
   );
 }
+
+export default withRouter(Login);

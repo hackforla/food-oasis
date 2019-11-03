@@ -37,5 +37,11 @@
       "about-hack": "About Hack for LA",
       "about-hack-p":
         "Hack for LA is the official Los Angeles chapter of Code for America, a national nonprofit that believes government can work for the people, by the people, in the 21st century. At our weekly Civic Hack Nights, we organize groups of volunteers to build technology addressing the LA region’s biggest civic issues. We welcome technologists, government officials, designers, students, activists, entrepreneurs and community members to join us and collaboratively create a better Los Angeles."
+    },
+    "donate": {
+      "title": "This project is sponsored by:",
+      "support": "Support this project",
+      "support-p": "We’re a volunteer-based project and would love your donation! On the donation page, please choose Los Angeles Brigade and make it in honor of Food Oasis LA with the email address info@foodoasis.la",
+      "donate": "Donate"
     }
   }

@@ -1,20 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 import { withRouter } from "react-router-dom";
+import { withStyles } from "@material-ui/core";
+import { withFormik } from "formik";
+import * as Yup from "yup";
 import * as accountService from "../services/account-service";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
+import {
+  Avatar,
+  Button,
+  Container,
+  CssBaseline,
+  TextField,
+  Link,
+  Grid,
+  Typography
+} from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import Copyright from "./Copyright";
 
-const useStyles = makeStyles(theme => ({
+const styles = theme => ({
   "@global": {
     body: {
       backgroundColor: theme.palette.common.white
@@ -37,26 +39,19 @@ const useStyles = makeStyles(theme => ({
   submit: {
     margin: theme.spacing(3, 0, 2)
   }
-}));
+});
 
-function Login(props) {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-
-  const classes = useStyles();
-
-  const submit = evt => {
-    evt.preventDefault();
-    accountService
-      .login(email, password)
-      .then(result => {
-        props.setUser(result.user);
-      })
-      .then(props.history.push("/stakeholders"))
-      .catch(err => {
-        console.log(err);
-      });
-  };
+const LoginForm = props => {
+  const {
+    classes,
+    values,
+    touched,
+    errors,
+    isSubmitting,
+    handleChange,
+    handleBlur,
+    handleSubmit
+  } = props;
 
   return (
     <Container component="main" maxWidth="xs">
@@ -68,34 +63,37 @@ function Login(props) {
         <Typography component="h1" variant="h5">
           Login
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <TextField
+            type="email"
+            id="email"
+            label="Email"
+            name="email"
             variant="outlined"
             margin="normal"
-            required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
             autoComplete="email"
             autoFocus
-            onChange={evt => {
-              setEmail(evt.target.value);
-            }}
+            value={values.email}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            helperText={touched.email ? errors.email : ""}
+            error={touched.email && Boolean(errors.email)}
           />
           <TextField
             variant="outlined"
             margin="normal"
-            required
             fullWidth
             name="password"
             label="Password"
             type="password"
             id="password"
             autoComplete="current-password"
-            onChange={evt => {
-              setPassword(evt.target.value);
-            }}
+            value={values.password}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            helperText={touched.password ? errors.password : ""}
+            error={touched.password && Boolean(errors.password)}
           />
           {/* <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
@@ -107,7 +105,7 @@ function Login(props) {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={submit}
+            disabled={isSubmitting}
           >
             Sign In
           </Button>
@@ -127,6 +125,48 @@ function Login(props) {
       </div>
     </Container>
   );
-}
+};
 
-export default withRouter(Login);
+const Login = withFormik({
+  mapPropsToValues: ({ email, password }) => {
+    return {
+      email: email || "",
+      password: password || ""
+    };
+  },
+
+  validationSchema: Yup.object().shape({
+    email: Yup.string()
+      .email("Invalid email address format")
+      .required("Email is required"),
+    password: Yup.string()
+      .min(8, "Password must be 8 characters at minimum")
+      .required("Password is required")
+  }),
+
+  handleSubmit: (values, { setSubmitting, props }) => {
+    setTimeout(() => {
+      // submit to the server
+      accountService
+        .login(values.email, values.password)
+        .then(result => {
+          props.setUser(result.user);
+        })
+        .then(() => {
+          setSubmitting(false);
+          props.history.push("/stakeholders");
+        })
+        .catch(err => {
+          // replace with notification
+          props.setToastMessage(
+            "Login failed. Please check your email and password and try again."
+          );
+          props.setToastOpen(true);
+          console.log(err);
+          setSubmitting(false);
+        });
+    }, 1000);
+  }
+})(LoginForm);
+
+export default withStyles(styles)(withRouter(Login));

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Toast from "./components/Toast";
 import Header from "./components/Header";
 import Main from "./components/Main";
 import Map from "./components/Map";
@@ -12,12 +13,23 @@ import Team from "./components/Team";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import Footer from "./components/Footer";
-import { OutlinedFlagOutlined } from "@material-ui/icons";
 
 const styles = {
   app: {
     color: "black",
-    backgroundColor: "#FAEBD7"
+    backgroundColor: "#FAEBD7",
+    margin: "0",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "stretch"
+  },
+  mainContent: {
+    margin: "0",
+    paddingBottom: "50px",
+    backgroundColor: "green",
+    overflowY: "scroll",
+    flexGrow: 1
   }
 };
 
@@ -34,7 +46,10 @@ function App() {
     } else {
       setUser(JSON.parse(storedJson));
     }
-  });
+  }, [user, setUser]);
+
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
 
   const onLogin = user => {
     if (user) {
@@ -49,7 +64,7 @@ function App() {
     <Router>
       <div style={styles.app}>
         <Header user={user} setUser={onLogin} />
-        <Switch>
+        <Switch style={styles.mainContent}>
           <Route exact path="/">
             <StakeholdersContainer />
           </Route>
@@ -81,10 +96,21 @@ function App() {
             <Register />
           </Route>
           <Route path="/login">
-            <Login key={JSON.stringify(user)} user={user} setUser={onLogin} />
+            <Login
+              key={JSON.stringify(user)}
+              user={user}
+              setUser={onLogin}
+              setToastOpen={setToastOpen}
+              setToastMessage={setToastMessage}
+            />
           </Route>
         </Switch>
         <Footer />
+        <Toast
+          snackbarOpen={toastOpen}
+          setSnackbarOpen={setToastOpen}
+          snackbarMessage={toastMessage}
+        />
       </div>
     </Router>
   );

@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 
-import Logout from "./Logout";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
 import MenuIcon from "@material-ui/icons/Menu";
 import MenuItemLink from "./MenuItemLink";
-import { composeInitialProps } from "react-i18next";
 
 const useStyles = makeStyles({
   list: {

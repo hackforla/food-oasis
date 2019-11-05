@@ -1,7 +1,6 @@
 import React from "react";
 import Menu from "./Menu";
 import logo from "../images/fola.svg";
-import { composeInitialProps } from "react-i18next";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import Logout from "./Logout";

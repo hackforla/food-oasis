@@ -1,16 +1,25 @@
 import React from "react";
 import { Box } from "@material-ui/core";
 import Copyright from "./Copyright";
-import { ThemeProvider } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles(theme => ({
+  footer: {
+    height: "50px",
+    backgroundColor: "#FAEBD7",
+    width: "100%",
+    flexGrow: 0,
+    padding: "0.75em"
+  }
+}));
 
 const Footer = props => {
+  const classes = useStyles();
+
   return (
-    <React.Fragment>
-      <hr />
-      <Box style={{ padding: "0.75em" }}>
-        <Copyright />
-      </Box>
-    </React.Fragment>
+    <Box className={classes.footer}>
+      <Copyright />
+    </Box>
   );
 };
 

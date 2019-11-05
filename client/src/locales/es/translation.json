@@ -1,8 +1,6 @@
 {
-    "translation": {
-        "news": { 
-            "title": "Las Noticias",
-            "description": "descripción"
-        }
+    "news": { 
+        "title": "Las Noticias",
+        "description": "descripción"
     }
 }

@@ -30,7 +30,7 @@ i18n
     react: {
       useSuspense: false
     },
-    ns: ["translation"]
+    ns: ["news", "about", "donate"]
   });
 
 export default i18n;

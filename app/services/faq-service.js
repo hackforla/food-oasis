@@ -20,8 +20,8 @@ const selectById = id => {
 
 const insert = model => {
   const { question, answer } = model;
-  const sql = `insert into faq (question, answer) values ('${question}', '${answer}') returning id`;
-  return pool.query(sql).then(res => {
+  const sql = `insert into faq (question, answer) values ($1, $2) returning id`;
+  return pool.query(sql, [question, answer]).then(res => {
     return res.rows[0];
   });
 };
@@ -39,8 +39,8 @@ const update = (id, model) => {
 };
 
 const remove = id => {
-  const sql = `delete from faq where id = ${id}`;
-  return pool.query(sql).then(res => {
+  const sql = `delete from faq where id = $1`;
+  return pool.query(sql, [id]).then(res => {
     return res;
   });
 };

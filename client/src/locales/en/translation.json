@@ -43,5 +43,8 @@
       "support": "Support this project",
       "support-p": "We’re a volunteer-based project and would love your donation! On the donation page, please choose Los Angeles Brigade and make it in honor of Food Oasis LA with the email address info@foodoasis.la",
       "donate": "Donate"
+    },
+    "organizations": {
+      "title": "Food Organizations in Los Angeles"
     }
   }

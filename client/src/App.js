@@ -13,6 +13,7 @@ import Team from "./components/Team";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import Footer from "./components/Footer";
+import Organizations from "./components/Organizations";
 
 const styles = {
   app: {
@@ -94,6 +95,9 @@ function App() {
           </Route>
           <Route path="/register">
             <Register />
+          </Route>
+          <Route path="/organizations">
+            <Organizations />
           </Route>
           <Route path="/login">
             <Login

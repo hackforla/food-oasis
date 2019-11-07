@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { ThemeProvider } from '@material-ui/core/styles';
+import theme from "./theme/materialUI";
 import Header from "./components/Header";
 import Main from "./components/Main";
 import Map from "./components/Map";
@@ -29,44 +31,46 @@ function App() {
   });
 
   return (
-    <Router>
-      <div style={styles.app}>
-        <Header user={user} />
-        <Switch>
-          <Route exact path="/">
-            <Main />
-          </Route>
-          <Route path="/map">
-            <Map />
-          </Route>
-          <Route path="/stakeholders">
-            <StakeholdersContainer />
-          </Route>
-          <Route path="/donate">
-            <Donate />
-          </Route>
-          <Route path="/news">
-            <News />
-          </Route>
-          <Route path="/resources">
-            <Resources />
-          </Route>
-          <Route path="/about">
-            <About />
-          </Route>
-          <Route path="/team">
-            <Team />
-          </Route>
-          <Route path="/register">
-            <Register />
-          </Route>
-          <Route path="/login">
-            <Login setUser={setUser} />
-          </Route>
-        </Switch>
-      </div>
-      <Footer user={user} />
-    </Router>
+    <ThemeProvider theme={theme}>
+      <Router>
+        <div style={styles.app}>
+          <Header user={user} />
+          <Switch>
+            <Route exact path="/">
+              <Main />
+            </Route>
+            <Route path="/map">
+              <Map />
+            </Route>
+            <Route path="/stakeholders">
+              <StakeholdersContainer />
+            </Route>
+            <Route path="/donate">
+              <Donate />
+            </Route>
+            <Route path="/news">
+              <News />
+            </Route>
+            <Route path="/resources">
+              <Resources />
+            </Route>
+            <Route path="/about">
+              <About />
+            </Route>
+            <Route path="/team">
+              <Team />
+            </Route>
+            <Route path="/register">
+              <Register />
+            </Route>
+            <Route path="/login">
+              <Login setUser={setUser} />
+            </Route>
+          </Switch>
+        </div>
+        <Footer user={user} />
+      </Router>
+    </ThemeProvider>
   );
 }
 

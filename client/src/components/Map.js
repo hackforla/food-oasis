@@ -1,5 +1,8 @@
 import React from "react";
 import ReactMapGL, { GeolocateControl, NavigationControl } from "react-map-gl";
+import MarkerPopup from "./MarkerPopup";
+import Marker from "./Marker";
+import { useMap } from "../hooks/useMap";
 import { MAPBOX_TOKEN } from "../secrets";
 import { MAPBOX_STYLE } from "../constants/map";
 
@@ -26,11 +29,8 @@ const styles = {
 };
 
 function Map() {
-  const [viewport, setViewport] = React.useState({
-    latitude: 34.041018,
-    longitude: -118.235528,
-    zoom: 8,
-  });
+  const { state, dispatch, actionTypes } = useMap();
+  if (state.isLoading) return <div>LOADING...</div>;
 
   return (
     <div style={styles.mapContainer}>
@@ -40,10 +40,12 @@ function Map() {
       </div>
 
       <ReactMapGL
-        {...viewport}
+        {...state.viewport}
         width={`90vw`}
         height={`82vh`}
-        onViewportChange={newViewport => setViewport({ ...newViewport })}
+        onViewportChange={newViewport =>
+          dispatch({ type: actionTypes.UPDATE_VIEWPORT, newViewport })
+        }
         mapboxApiAccessToken={MAPBOX_TOKEN}
         mapStyle={MAPBOX_STYLE}
       >
@@ -55,6 +57,28 @@ function Map() {
         <div style={styles.navigationControl}>
           <NavigationControl />
         </div>
+        {state.stakeholders &&
+          state.stakeholders.map((stakeholder, index) => (
+            <Marker
+              onClick={() =>
+                dispatch({
+                  type: actionTypes.STAKEHOLDERS.SELECT_STAKEHOLDER,
+                  stakeholder,
+                })
+              }
+              key={`marker-${index}`}
+              longitude={stakeholder.longitude}
+              latitude={stakeholder.latitude}
+            />
+          ))}
+        {state.isPopupOpen && state.selectedStakeholder && (
+          <MarkerPopup
+            entity={state.selectedStakeholder}
+            handleClose={() =>
+              dispatch({ type: actionTypes.STAKEHOLDERS.DESELECT_STAKEHOLDER })
+            }
+          />
+        )}
       </ReactMapGL>
     </div>
   );

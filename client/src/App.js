@@ -14,6 +14,7 @@ import Register from "./components/Register";
 import Login from "./components/Login";
 import Footer from "./components/Footer";
 import Organizations from "./components/Organizations";
+import Faq from './components/Faq'
 
 const styles = {
   app: {
@@ -80,6 +81,9 @@ function App() {
           </Route>
           <Route path="/donate">
             <Donate />
+          </Route>
+          <Route path="/faqs">
+            <Faq />
           </Route>
           <Route path="/news">
             <News />

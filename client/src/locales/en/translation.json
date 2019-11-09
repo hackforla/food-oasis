@@ -46,5 +46,8 @@
     },
     "organizations": {
       "title": "Food Organizations in Los Angeles"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions"
     }
   }

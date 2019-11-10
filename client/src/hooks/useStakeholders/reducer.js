@@ -19,13 +19,14 @@ export function reducer(state, action) {
       return {
         ...state,
         categories: action.categories,
-        selectedCategories: action.selectedCategories,
         isLoading: false,
       };
     case actionTypes.CATEGORIES.FETCH_FAILURE:
       return { ...state, categoriesError: action.error, isLoading: false };
     case actionTypes.TOGGLE_SEARCH_PANEL:
       return { ...state, isSearchPanelOpen: action.isOpen };
+    case actionTypes.UPDATE_CRITERIA:
+      return { ...state, ...action.payload };
     default:
       return state;
   }

@@ -7,6 +7,15 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import en from "./locales/en/translation.json";
 import es from "./locales/es/translation.json";
 
+/*
+To load in FAQs from the backend, we'll query all the FAQs from the database
+  - en
+  - es
+Then add a property to the 'en' and 'es' files up above
+  ex. en['faq'] = {JSON object that holds the questions and answers}
+      es['faq'] = {JSON object that holds the questions and answers}
+*/
+
 const resources = {
   en,
   es

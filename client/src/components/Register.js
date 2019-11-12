@@ -214,15 +214,34 @@ const Register = withFormik({
     setTimeout(() => {
       accountService
         .register(firstName, lastName, email, password, passwordConfirm)
-        .then(() => {
+        .then(result => {
           setSubmitting(false);
-          props.history.push("/stakeholders");
+          if (result.success) {
+            props.setToast({
+              message: `Registration successful. Please check your email for a confirmation link.`
+            });
+            props.history.push("/stakeholders");
+          } else if (result.code === "REG_DUPLICATE_EMAIL") {
+            props.setToast({
+              message: `The email ${email} is already registered. 
+              Please login or use the Forgot Password feature if you have 
+              forgotten your password.`
+            });
+          } else {
+            props.setToast({
+              message: `An error occurred in sending the 
+              confirmation message to ${email}. 
+              Try to log in, and follow the instructions for re-sending the 
+              confirmation email.`
+            });
+          }
         })
         .catch(err => {
-          props.setToastMessage(`Registration failed. ${err.message || ""}`);
-          props.setToastOpen(true);
-          console.log(err);
           setSubmitting(false);
+          props.setToast({
+            message: `Registration failed. ${err.message || ""}`
+          });
+          console.log(err);
         });
     }, 1000);
   }

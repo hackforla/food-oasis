@@ -49,5 +49,12 @@
     },
     "faq": {
       "title": "Frequently Asked Questions"
+    },
+    "resources": {
+      "title": "Healthy Food Resources",
+      "non-profit": "Non-Profit and Policy Groups",
+      "government": "Government Data Links",
+      "education": "Education",
+      "useful-links": "Other Useful Links"
     }
   }

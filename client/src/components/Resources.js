@@ -1,10 +1,13 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const Resources = () => {
+  const { t } = useTranslation("resources");
+
   return (
     <div>
-      <h1>Healthy Food Resources</h1>
-      <h4>Non-Profit and Policy Groups</h4>
+      <h1>{t("title")}</h1>
+      <h4>{t("non-profit")}</h4>
       <ul>
         <li>
           <a href="http://goodfoodla.org/good-food/day-to-day-steps/">
@@ -29,7 +32,7 @@ const Resources = () => {
           <a href="http://www.hungeractionla.org/">Hunger Action Los Angeles</a>
         </li>
       </ul>
-      <h4>Government Data Links</h4>
+      <h4>{t("government")}</h4>
       <ul>
         <li>
           <a href="http://www.ers.usda.gov/data-products/food-access-research-atlas/go-to-the-atlas.aspx">
@@ -52,7 +55,7 @@ const Resources = () => {
           </a>
         </li>
       </ul>
-      <h4>Education</h4>
+      <h4>{t("education")}</h4>
       <ul>
         <li>
           <a href="http://healthpolicy.ucla.edu/">
@@ -60,7 +63,7 @@ const Resources = () => {
           </a>
         </li>
       </ul>
-      <h4>Other Useful Links</h4>
+      <h4>{t("useful-links")}</h4>
       <ul>
         <li>
           <a href="https://psmag.com/finding-nutrition-in-the-food-deserts-of-california-e90f7932ae16">

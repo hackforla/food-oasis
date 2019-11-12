@@ -1,52 +1,63 @@
 const accountService = require("../services/account-service");
 
-const getAll = (req, res) => {
-  accountService
-    .selectAll()
-    .then(resp => {
-      res.send(resp);
-    })
-    .catch(err => {
-      res.status("404").json({ error: err.toString() });
-    });
+const getAll = async (req, res) => {
+  try {
+    const response = await accountService.selectAll();
+    res.send(response);
+  } catch (err) {
+    res.status("500").json({ error: err.toString() });
+  }
 };
 
-const getById = (req, res) => {
-  const { id } = req.params;
-  accountService
-    .selectById(id)
-    .then(resp => {
-      res.send(resp);
-    })
-    .catch(err => {
-      res.status("500").json({ error: err.toString() });
-    });
+const getById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const response = await accountService.selectById(id);
+    res.send(response);
+  } catch (err) {
+    res.status("500").json({ error: err.toString() });
+  }
 };
 
-const getByEmail = (req, res) => {
-  const { id } = req.params;
-  accountService
-    .selectByEmail(id)
-    .then(resp => {
-      res.send(resp);
-    })
-    .catch(err => {
-      res.status("500").json({ error: err.toString() });
-    });
+const getByEmail = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const response = await accountService.selectByEmail(id);
+    res.send(response);
+  } catch (err) {
+    res.status("500").json({ error: err.toString() });
+  }
 };
 
-const register = (req, res) => {
-  accountService
-    .register(req.body)
-    .then(resp => {
-      res.json(resp);
-    })
-    .catch(err => {
-      res.status("500").json({ error: err.toString() });
-    });
+const register = async (req, res) => {
+  try {
+    const response = await accountService.register(req.body);
+    res.send(response);
+  } catch (err) {
+    res.status("500").json({ error: err.toString() });
+  }
 };
 
-const login = (req, res) => {
+const resendConfirmationEmail = async (req, res) => {
+  try {
+    const response = await accountService.resendConfirmationEmail(req.body);
+    res.send(response);
+  } catch (err) {
+    res.status("500").json({ error: err.toString() });
+  }
+};
+
+const confirmRegister = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const response = await accountService.confirmRegistration(req.body.token);
+    res.send(response);
+  } catch (err) {
+    res.status("500").json({ error: err.toString() });
+  }
+};
+
+const login = async (req, res) => {
   accountService
     .authenticate(req.body)
     .then(resp => {
@@ -57,27 +68,23 @@ const login = (req, res) => {
     });
 };
 
-const put = (req, res) => {
-  accountService
-    .update(req.body)
-    .then(resp => {
-      res.sendStatus(200);
-    })
-    .catch(err => {
-      res.status("500").json({ error: err.toString() });
-    });
+const put = async (req, res) => {
+  try {
+    await accountService.update(req.body);
+    res.sendStatus(200);
+  } catch (err) {
+    res.status("500").json({ error: err.toString() });
+  }
 };
 
-const remove = (req, res) => {
-  const { id } = req.params;
-  accountService
-    .remove(id)
-    .then(resp => {
-      res.sendStatus(200);
-    })
-    .catch(err => {
-      res.status("500").json({ error: err.toString() });
-    });
+const remove = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const response = await accountService.remove(id);
+    res.sendStatus(200);
+  } catch (err) {
+    res.status("500").json({ error: err.toString() });
+  }
 };
 
 module.exports = {
@@ -85,6 +92,8 @@ module.exports = {
   getById,
   getByEmail,
   register,
+  confirmRegister,
+  resendConfirmationEmail,
   login,
   put,
   remove

@@ -11,6 +11,7 @@
   "author": "John Darragh",
   "license": "MIT",
   "dependencies": {
+    "@sendgrid/mail": "^6.4.0",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.4",
@@ -19,10 +20,12 @@
     "express-pino-logger": "^4.0.0",
     "jsonwebtoken": "^8.5.1",
     "massive": "^6.1.1",
+    "nodemailer": "^6.3.1",
     "nodemon": "^1.19.3",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "pg": "^7.12.1",
-    "pino-noir": "^2.2.1"
+    "pino-noir": "^2.2.1",
+    "uuid": "^3.3.3"
   }
 }

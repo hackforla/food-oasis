@@ -9,14 +9,14 @@ const styles = theme => ({
 });
 
 const Toast = props => {
-  const { classes, snackbarOpen, setSnackbarOpen, snackbarMessage } = props;
+  const { classes, toast, setToast } = props;
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
 
-    setSnackbarOpen(false);
+    setToast(false);
   };
 
   return (
@@ -25,13 +25,13 @@ const Toast = props => {
         vertical: "bottom",
         horizontal: "left"
       }}
-      open={snackbarOpen}
-      autoHideDuration={6000}
+      open={!!toast}
+      autoHideDuration={toast.duration || 4000}
       onClose={handleSnackbarClose}
       ContentProps={{
         "aria-describedby": "message-id"
       }}
-      message={<span id="message-id">{snackbarMessage}</span>}
+      message={<span id="message-id">{toast.message}</span>}
       action={[
         // <Button
         //   key="undo"

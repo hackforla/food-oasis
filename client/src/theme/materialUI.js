@@ -3,10 +3,13 @@ import { createMuiTheme } from '@material-ui/core/styles';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: 'rgb(144, 194, 70)', // green
+      // green
+      main:'rgba(144, 194, 70)',
+      contrastText: '#ffffff'
     },
     secondary: {
-      main: 'rgb(249, 192, 88)', // orange
+      // orange
+      main: 'rgb(249, 192, 88)',
       contrastText: '#ffcc00',
     },
     text: {
@@ -14,17 +17,29 @@ const theme = createMuiTheme({
     }
   },
   typography: {
-    fontFamily: '"Reem Kufi", sans-serif'
+    fontFamily: '"Open Sans", sans-serif'
   },
   overrides: {
-    MuiTypography: {
-      "h1, h2, h3, h5": {
-        fontFamily: '"Reem Kufi", sans-serif'
+    MuiButton: {
+      outlined: {
+        backgroundColor: "#FAEBD7",
+        margin: "10px"
+      }
+    },
+    MuiLink: {
+      underlineHover: {
+        textDecoration: "none",
+        '&:hover': {
+          textDecoration: "underline"
+        }
+      }
+    },
+    MuiAppBar: {
+      root: {
+        backgroundColor: "blanchedalmond"
       }
     }
   }
 });
-
-// Typography components
 
 export default theme;

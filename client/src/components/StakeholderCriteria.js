@@ -33,6 +33,7 @@ function StakeholderCriteria(props) {
           <Grid item container xs={6} justify="flex-end">
             <EditButton
               label="Change"
+              variant="outlined"
               onClick={() => {
                 props.openSearchPanel(true);
               }}

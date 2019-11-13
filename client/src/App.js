@@ -20,7 +20,6 @@ import ConfirmEmail from "./components/ConfirmEmail";
 const styles = {
   app: {
     color: "black",
-    backgroundColor: "#FAEBD7",
     margin: "0",
     display: "flex",
     flexDirection: "column",

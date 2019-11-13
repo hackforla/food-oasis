@@ -19,6 +19,7 @@ export function reducer(state, action) {
       return {
         ...state,
         categories: action.categories,
+        selectedCategories: action.selectedCategories,
         isLoading: false,
       };
     case actionTypes.CATEGORIES.FETCH_FAILURE:

@@ -16,6 +16,8 @@ import Register from "./components/Register";
 import Login from "./components/Login";
 import Footer from "./components/Footer";
 import ConfirmEmail from "./components/ConfirmEmail";
+import Faq from './components/Faq'
+import Organizations from './components/Organizations'
 
 const styles = {
   app: {
@@ -93,6 +95,12 @@ function App() {
             </Route>
             <Route path="/team">
               <Team />
+            </Route>
+            <Route path="/faqs">
+              <Faq />
+            </Route>
+            <Route path="/organizations">
+              <Organizations />
             </Route>
             <Route path="/register">
               <Register setToast={setToast} />

@@ -8,6 +8,8 @@ const News = () => {
     i18n.changeLanguage(lng);
   };
 
+  console.log(i18n.language)
+
   return (
     <>
       <div>{t("title")}</div>

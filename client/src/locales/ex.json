@@ -32,6 +32,18 @@
       "support": "",
       "support-p": "",
       "donate": ""
+    },
+    "organizations": {
+      "title": ""
+    },
+    "faq": {
+      "title": ""
+    },
+    "resources": {
+      "title": "",
+      "non-profit": "",
+      "government": "",
+      "education": "",
+      "useful-links": ""
     }
-  };
-  
+  }

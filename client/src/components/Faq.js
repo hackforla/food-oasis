@@ -17,13 +17,10 @@ const Faq = () => {
       const response = await axios.get("/api/faqs");
       console.log(response);
       // if response is an array
-      // Load in the Object.keys(english version of FAQs).sort() [or name the properties "question1", "question2", etc...]
       setFaqs(response);
     }
     fetchFaqs();
   }, []);
-
-  // Should we have the non-changing FAQs directly coded-in? And anything that can and will be updated sent to database?
 
   return (
     <>

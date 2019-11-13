@@ -12,33 +12,32 @@ import {
   TextField,
   Chip,
   FormLabel,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import SearchButton from "./SearchButton";
 
 const useStyles = makeStyles(theme => ({
   card: {
-    margin: "0px"
+    margin: "0px",
   },
   chips: {
     display: "flex",
-    flexWrap: "wrap"
+    flexWrap: "wrap",
   },
   chip: {
-    margin: 2
-  }
+    margin: 2,
+  },
 }));
 
 function StakeholderSearch(props) {
-  //const [categories, setCategories] = useState(props.categories);
   const [selectedCategories, setSelectedCategories] = useState(
-    props.selectedCategories
+    props.selectedCategories,
   );
   const [searchString, setSearchString] = useState(props.searchString);
   const [latitude] = useState(props.latitude);
   const [longitude] = useState(props.longitude);
   const [selectedDistance, setSelectedDistance] = useState(
-    props.selectedDistance
+    props.selectedDistance,
   );
 
   const classes = useStyles();
@@ -60,7 +59,7 @@ function StakeholderSearch(props) {
                   latitude,
                   longitude,
                   selectedCategories,
-                  selectedDistance
+                  selectedDistance,
                 );
               }}
             />

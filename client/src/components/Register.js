@@ -1,4 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
+import { withRouter } from "react-router-dom";
+import { withStyles } from "@material-ui/core";
+import { withFormik } from "formik";
+import * as Yup from "yup";
 import * as accountService from "../services/account-service";
 import {
   Avatar,
@@ -7,22 +11,19 @@ import {
   TextField,
   Link,
   Grid,
-  Box,
   Typography,
   Container
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import { makeStyles } from "@material-ui/core/styles";
-import Copyright from "./Copyright";
 
-const useStyles = makeStyles(theme => ({
+const styles = theme => ({
   "@global": {
     body: {
       backgroundColor: theme.palette.common.white
     }
   },
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(1),
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
@@ -33,32 +34,37 @@ const useStyles = makeStyles(theme => ({
   },
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(3)
+    marginTop: theme.spacing(1)
   },
   submit: {
     margin: theme.spacing(3, 0, 2)
   }
-}));
+});
 
-export default function Register() {
-  const [firstName, setFirstName] = useState();
-  const [lastName, setLastName] = useState();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [passwordConfirm, setPasswordConfirm] = useState();
-  const classes = useStyles();
+// Core component is the Material UI form itself
+const form = props => {
+  const {
+    classes,
+    values,
+    touched,
+    errors,
+    isSubmitting,
+    handleChange,
+    handleBlur,
+    handleSubmit
+  } = props;
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="xs" className="classes.container">
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign up
+          Register
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -70,9 +76,11 @@ export default function Register() {
                 id="firstName"
                 label="First Name"
                 autoFocus
-                onChange={event => {
-                  setFirstName(event.target.value);
-                }}
+                value={values.firstName}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                helperText={touched.firstName ? errors.firstName : ""}
+                error={touched.firstName && Boolean(errors.firstName)}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -84,23 +92,27 @@ export default function Register() {
                 label="Last Name"
                 name="lastName"
                 autoComplete="lname"
-                onChange={event => {
-                  setLastName(event.target.value);
-                }}
+                value={values.lastName}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                helperText={touched.lastName ? errors.lastName : ""}
+                error={touched.lastName && Boolean(errors.lastName)}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-                variant="outlined"
-                required
-                fullWidth
+                type="email"
                 id="email"
-                label="Email Address"
+                label="Email"
                 name="email"
+                variant="outlined"
+                fullWidth
                 autoComplete="email"
-                onChange={event => {
-                  setEmail(event.target.value);
-                }}
+                value={values.email}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                helperText={touched.email ? errors.email : ""}
+                error={touched.email && Boolean(errors.email)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -113,9 +125,11 @@ export default function Register() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
-                onChange={event => {
-                  setPassword(event.target.value);
-                }}
+                value={values.password}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                helperText={touched.password ? errors.password : ""}
+                error={touched.password && Boolean(errors.password)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -127,17 +141,17 @@ export default function Register() {
                 label="Re-type Password"
                 type="password"
                 id="passwordConfirm"
-                onChange={event => {
-                  setPasswordConfirm(event.target.value);
-                }}
+                value={values.passwordConfirm}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                helperText={
+                  touched.passwordConfirm ? errors.passwordConfirm : ""
+                }
+                error={
+                  touched.passwordConfirm && Boolean(errors.passwordConfirm)
+                }
               />
             </Grid>
-            {/* <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
-              />
-            </Grid> */}
           </Grid>
           <Button
             type="submit"
@@ -145,18 +159,11 @@ export default function Register() {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={event => {
-              event.preventDefault();
-              accountService
-                .register(firstName, lastName, email, password, passwordConfirm)
-                .then(result => {
-                  console.log(result);
-                });
-            }}
+            disabled={isSubmitting}
           >
             Sign Up
           </Button>
-          <Grid container justify="flex-end">
+          <Grid container justify="center">
             <Grid item>
               <Link href="/login" variant="body2">
                 Already have an account? Sign in
@@ -165,9 +172,79 @@ export default function Register() {
           </Grid>
         </form>
       </div>
-      <Box mt={5}>
-        <Copyright />
-      </Box>
     </Container>
   );
-}
+};
+
+// Register component is higher-order component that
+// provides validation and server interaction.
+const Register = withFormik({
+  mapPropsToValues: ({
+    firstName,
+    lastName,
+    email,
+    password,
+    passwordConfirm
+  }) => {
+    return {
+      firstName: firstName || "",
+      lastName: lastName || "",
+      email: email || "",
+      password: password || "",
+      passwordConfirm: passwordConfirm || ""
+    };
+  },
+
+  validationSchema: Yup.object().shape({
+    firstName: Yup.string().required("Required"),
+    lastName: Yup.string().required("Required"),
+    email: Yup.string()
+      .email("Enter a valid email")
+      .required("Email is required"),
+    password: Yup.string()
+      .min(8, "Password must contain at least 8 characters")
+      .required("Enter your password"),
+    passwordConfirm: Yup.string()
+      .required("Confirm your password")
+      .oneOf([Yup.ref("password")], "Password does not match")
+  }),
+
+  handleSubmit: (values, { setSubmitting, props }) => {
+    const { firstName, lastName, email, password, passwordConfirm } = values;
+    setTimeout(() => {
+      accountService
+        .register(firstName, lastName, email, password, passwordConfirm)
+        .then(result => {
+          setSubmitting(false);
+          if (result.success) {
+            props.setToast({
+              message: `Registration successful. Please check your email for a confirmation link.`
+            });
+            props.history.push("/stakeholders");
+          } else if (result.code === "REG_DUPLICATE_EMAIL") {
+            props.setToast({
+              message: `The email ${email} is already registered. 
+              Please login or use the Forgot Password feature if you have 
+              forgotten your password.`
+            });
+          } else {
+            props.setToast({
+              message: `An error occurred in sending the 
+              confirmation message to ${email}. 
+              Try to log in, and follow the instructions for re-sending the 
+              confirmation email.`
+            });
+          }
+        })
+        .catch(err => {
+          setSubmitting(false);
+          props.setToast({
+            message: `Registration failed. ${err.message || ""}`
+          });
+          console.log(err);
+        });
+    }, 1000);
+  }
+})(form);
+
+export default withStyles(styles)(withRouter(Register));

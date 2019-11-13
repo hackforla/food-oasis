@@ -10,7 +10,7 @@ const selectAll = async (name, categoryIds, latitude, longitude, distance) => {
     left join stakeholder_category sc on s.id = sc.stakeholder_id
     left join category c on sc.category_id = c.id 
     where c.id in ${categoryClause}
-    and c.name like ${nameClause} 
+    and s.name ilike ${nameClause} 
     order by s.name
   `;
   const stakeholderResult = await pool.query(sql);
@@ -84,7 +84,7 @@ const getAllStakeholderCategories = async (categoryClause, nameClause) => {
   join category c on sc.category_id = c.id
   join stakeholder s on s.id = sc.stakeholder_id
   where c.id in ${categoryClause}
-  and c.name like ${nameClause} `;
+  and s.name ilike ${nameClause} `;
   const stakeholderCategoriesResult = await pool.query(sql);
   return stakeholderCategoriesResult;
 };

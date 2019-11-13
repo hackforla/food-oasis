@@ -1,83 +1,101 @@
 import React from "react";
-import * as stakeholderService from "../services/stakeholder-service";
-import * as categoryService from "../services/category-service";
-import { Typography } from "@material-ui/core";
+import MapIcon from "@material-ui/icons/Map";
+import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
+import { Typography, IconButton } from "@material-ui/core";
 import StakeholderSearch from "./StakeholderSearch";
+import StakeholderCriteria from "./StakeholderCriteria";
 import StakeholderList from "./StakeholderList";
+import Map from "./Map";
+import { useStakeholders } from "../hooks/useStakeholders/useStakeholders";
 
-class StakeholdersContainer extends React.Component {
-  state = {
-    stakeholders: [],
-    categories: [],
-    searchString: "",
-    selectedCategories: [],
-    selectedLatitude: null,
-    selectedLongitude: null,
-    selectedDistance: 100
+const styles = {
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    padding: "1rem",
+  },
+  header: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+};
+function StakeholdersContainer() {
+  const { state, dispatch, actionTypes, search } = useStakeholders();
+  const [isMapView, setIsMapView] = React.useState(true);
+
+  const openSearchPanel = isOpen => {
+    dispatch({ type: actionTypes.TOGGLE_SEARCH_PANEL, isOpen });
   };
 
-  async componentDidMount() {
-    const categories = await categoryService.getAll();
-    this.setState({ categories });
-
-    navigator.geolocation.getCurrentPosition(position => {
-      let latitude = position.coords.latitude;
-      let longitude = position.coords.longitude;
-      this.setState({ latitude, longitude });
-    });
-  }
-
-  search = (
+  const {
+    stakeholders,
+    categories,
     searchString,
-    latitude,
-    longitude,
+    selectedLongitude,
+    selectedLatitude,
+    selectedDistance,
     selectedCategories,
-    selectedDistance
-  ) => {
-    stakeholderService
-      .search({
-        name: searchString,
-        categoryIds: selectedCategories.map(category => category.id),
-        latitude,
-        longitude,
-        distance: selectedDistance
-      })
-      .then(stakeholders => {
-        this.setState({
-          stakeholders,
-          searchString,
-          selectedCategories,
-          latitude,
-          longitude,
-          selectedDistance
-        });
-      });
-  };
+    isSearchPanelOpen,
+    isLoading,
+  } = state;
 
-  render() {
-    const {
-      stakeholders,
-      categories,
-      longitude,
-      latitude,
-      selectedDistance,
-      selectedCategories
-    } = this.state;
-    return (
-      <React.Fragment>
-        <Typography>Stakeholders </Typography>
-        <StakeholderSearch
-          key={latitude}
-          latitude={latitude}
-          longitude={longitude}
-          categories={categories}
-          selectedCategories={selectedCategories}
-          selectedDistance={selectedDistance}
-          search={this.search}
-        />
-        <StakeholderList stakeholders={stakeholders} />
-      </React.Fragment>
-    );
-  }
+  return (
+    <div style={styles.container}>
+      <div style={styles.header}>
+        <Typography
+          variant={"h4"}
+          component={"h1"}
+          align="center"
+          style={{ marginBottom: "0.5em" }}
+        >
+          Stakeholders{" "}
+        </Typography>
+        <IconButton
+          onClick={() => setIsMapView(!isMapView)}
+          title={`Go to ${isMapView ? "List" : "Map"}`}
+        >
+          {isMapView && <FormatListBulletedIcon />}
+          {!isMapView && <MapIcon style={{ color: "#90C146" }} />}
+        </IconButton>
+      </div>
+      <div>
+        {isSearchPanelOpen ? (
+          <StakeholderSearch
+            key={selectedLatitude}
+            latitude={selectedLatitude}
+            longitude={selectedLongitude}
+            categories={categories}
+            searchString={searchString}
+            selectedCategories={selectedCategories}
+            selectedDistance={selectedDistance}
+            search={search}
+          />
+        ) : (
+          <StakeholderCriteria
+            key={selectedLatitude}
+            latitude={selectedLatitude}
+            longitude={selectedLongitude}
+            searchString={searchString}
+            selectedCategories={selectedCategories}
+            selectedDistance={selectedDistance}
+            openSearchPanel={openSearchPanel}
+          />
+        )}
+        {/* TODO: make a loading component! */}
+        {isLoading ? (
+          <h3>Loading...</h3>
+        ) : isMapView ? (
+          <Map
+            stakeholders={stakeholders}
+            selectedLatitude={selectedLatitude}
+            selectedLongitude={selectedLongitude}
+          />
+        ) : (
+          <StakeholderList stakeholders={stakeholders} />
+        )}
+      </div>
+    </div>
+  );
 }
+
 export default StakeholdersContainer;

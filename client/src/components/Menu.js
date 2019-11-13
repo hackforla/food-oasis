@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import Button from "@material-ui/core/Button";
@@ -11,11 +12,12 @@ const useStyles = makeStyles({
     width: 250
   },
   menuButton: {
-    padding: "1rem"
+    padding: "0.5rem",
+    minWidth: "0"
   }
 });
 
-export default function Menu() {
+export default function Menu(props) {
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -53,8 +55,9 @@ export default function Menu() {
 
           return <MenuItemLink key={index} to={`/${route}`} text={text} />;
         })}
-        <MenuItemLink key="Register" to="/register" text="Register" />
-        <MenuItemLink key="Login" to="/login" text="Login" />
+        {props.user ? null : (
+          <MenuItemLink key="Register" to="/register" text="Register" />
+        )}
       </List>
     </div>
   );

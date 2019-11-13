@@ -1,29 +1,29 @@
 import React, { useState } from "react";
-
+import { withRouter } from "react-router-dom";
+import { withStyles } from "@material-ui/core";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import * as accountService from "../services/account-service";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
+import {
+  Avatar,
+  Button,
+  Container,
+  CssBaseline,
+  TextField,
+  Link,
+  Grid,
+  Typography
+} from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import Copyright from "./Copyright";
 
-const useStyles = makeStyles(theme => ({
+const styles = theme => ({
   "@global": {
     body: {
       backgroundColor: theme.palette.common.white
     }
   },
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(1),
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
@@ -39,13 +39,51 @@ const useStyles = makeStyles(theme => ({
   submit: {
     margin: theme.spacing(3, 0, 2)
   }
-}));
+});
 
-export default function Login(props) {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+const LoginForm = props => {
+  const { classes, setToast, setUser, history, match } = props;
+  const [submitting, setSubmitting] = useState(false);
 
-  const classes = useStyles();
+  // Pass the useFormik() hook initial form values and a submit function that will
+  // be called when the form is submitted
+  const formik = useFormik({
+    initialValues: {
+      email: match.params.email || "",
+      password: ""
+    },
+    validationSchema: Yup.object().shape({
+      email: Yup.string()
+        .email("Invalid email address format")
+        .required("Email is required"),
+      password: Yup.string()
+        .min(8, "Password must be 8 characters at minimum")
+        .required("Password is required")
+    }),
+    onSubmit: values => {
+      setSubmitting(true);
+      accountService
+        .login(values.email, values.password)
+        .then(result => {
+          setUser(result.user);
+          setSubmitting(false);
+        })
+        .then(() => {
+          setToast({
+            message: "Login successful."
+          });
+          history.push("/stakeholders");
+        })
+        .catch(err => {
+          setToast({
+            message:
+              "Login failed. Please check your email and password and try again."
+          });
+          console.log(err);
+          setSubmitting(false);
+        });
+    }
+  });
 
   return (
     <Container component="main" maxWidth="xs">
@@ -55,69 +93,60 @@ export default function Login(props) {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Login
         </Typography>
-        <form className={classes.form} noValidate>
+        <form
+          className={classes.form}
+          noValidate
+          onSubmit={formik.handleSubmit}
+        >
           <TextField
+            type="email"
+            id="email"
+            label="Email"
+            name="email"
             variant="outlined"
             margin="normal"
-            required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
             autoComplete="email"
             autoFocus
-            onChange={evt => {
-              setEmail(evt.target.value);
-            }}
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            helperText={formik.touched.email ? formik.errors.email : ""}
+            error={formik.touched.email && Boolean(formik.errors.email)}
           />
           <TextField
             variant="outlined"
             margin="normal"
-            required
             fullWidth
             name="password"
             label="Password"
             type="password"
             id="password"
             autoComplete="current-password"
-            onChange={evt => {
-              setPassword(evt.target.value);
-            }}
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            helperText={formik.touched.password ? formik.errors.password : ""}
+            error={formik.touched.password && Boolean(formik.errors.password)}
           />
-          {/* <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          /> */}
           <Button
             type="submit"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={event => {
-              event.preventDefault();
-              accountService
-                .login(email, password)
-                .then(result => {
-                  console.log(result);
-                  props.setUser(result.user);
-                  // Insert code to navigate to home
-                })
-                .catch(err => {
-                  console.log(err);
-                });
-            }}
+            disabled={submitting}
           >
             Sign In
           </Button>
           <Grid container>
-            {/* <Grid item xs>
-              <Link href="#" variant="body2">
+            <Grid item xs>
+              <Link href="/forgot" variant="body2">
                 Forgot password?
               </Link>
-            </Grid> */}
+            </Grid>
             <Grid item>
               <Link href="/register" variant="body2">
                 {"Don't have an account? Sign Up"}
@@ -126,9 +155,52 @@ export default function Login(props) {
           </Grid>
         </form>
       </div>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
     </Container>
   );
-}
+};
+
+// const Login = withFormik({
+//   mapPropsToValues: ({ email, password, match }) => {
+//     const values = {
+//       email: email || match.params.email || "",
+//       password: password || ""
+//     };
+//     return values;
+//   },
+//   enableReinitialize: true,
+//   validationSchema: Yup.object().shape({
+//     email: Yup.string()
+//       .email("Invalid email address format")
+//       .required("Email is required"),
+//     password: Yup.string()
+//       .min(8, "Password must be 8 characters at minimum")
+//       .required("Password is required")
+//   }),
+
+//   handleSubmit: (values, { setSubmitting, props }) => {
+//     setTimeout(() => {
+//       // submit to the server
+//       accountService
+//         .login(values.email, values.password)
+//         .then(result => {
+//           props.setUser(result.user);
+//         })
+//         .then(() => {
+//           props.setToast({
+//             message: "Login successful."
+//           });
+//           props.history.push("/stakeholders");
+//         })
+//         .catch(err => {
+//           props.setToast({
+//             message:
+//               "Login failed. Please check your email and password and try again."
+//           });
+//           console.log(err);
+//           setSubmitting(false);
+//         });
+//     }, 1000);
+//   }
+// })(LoginForm);
+
+export default withStyles(styles)(withRouter(LoginForm));

@@ -5,7 +5,10 @@ const accountService = require("../app/services/account-service");
 passport.use(localStrategy());
 
 // This module hooks up passport to our authentication service
-const authenticate = passport.authenticate("local", { session: false });
+const authenticate = passport.authenticate("local", {
+  session: false,
+  failureFlash: true
+});
 
 module.exports = { authenticate };
 

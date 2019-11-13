@@ -13,7 +13,7 @@ import Team from "./components/Team";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import Footer from "./components/Footer";
-import Organizations from "./components/Organizations";
+import ConfirmEmail from "./components/ConfirmEmail";
 import Faq from './components/Faq'
 
 const styles = {
@@ -50,8 +50,7 @@ function App() {
     }
   }, [user, setUser]);
 
-  const [toastOpen, setToastOpen] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
+  const [toast, setToast] = useState({ message: "" });
 
   const onLogin = user => {
     if (user) {
@@ -98,27 +97,17 @@ function App() {
             <Team />
           </Route>
           <Route path="/register">
-            <Register />
+            <Register setToast={setToast} />
           </Route>
-          <Route path="/organizations">
-            <Organizations />
+          <Route path="/confirm/:token">
+            <ConfirmEmail setToast={setToast} />
           </Route>
-          <Route path="/login">
-            <Login
-              key={JSON.stringify(user)}
-              user={user}
-              setUser={onLogin}
-              setToastOpen={setToastOpen}
-              setToastMessage={setToastMessage}
-            />
+          <Route path="/login/:email?">
+            <Login user={user} setUser={onLogin} setToast={setToast} />
           </Route>
         </Switch>
         <Footer />
-        <Toast
-          snackbarOpen={toastOpen}
-          setSnackbarOpen={setToastOpen}
-          snackbarMessage={toastMessage}
-        />
+        <Toast toast={toast} setToast={setToast} />
       </div>
     </Router>
   );

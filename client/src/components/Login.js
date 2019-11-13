@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
 import { withStyles } from "@material-ui/core";
-import { withFormik } from "formik";
+import { useFormik } from "formik";
 import * as Yup from "yup";
 import * as accountService from "../services/account-service";
 import {
@@ -42,16 +42,48 @@ const styles = theme => ({
 });
 
 const LoginForm = props => {
-  const {
-    classes,
-    values,
-    touched,
-    errors,
-    isSubmitting,
-    handleChange,
-    handleBlur,
-    handleSubmit
-  } = props;
+  const { classes, setToast, setUser, history, match } = props;
+  const [submitting, setSubmitting] = useState(false);
+
+  // Pass the useFormik() hook initial form values and a submit function that will
+  // be called when the form is submitted
+  const formik = useFormik({
+    initialValues: {
+      email: match.params.email || "",
+      password: ""
+    },
+    validationSchema: Yup.object().shape({
+      email: Yup.string()
+        .email("Invalid email address format")
+        .required("Email is required"),
+      password: Yup.string()
+        .min(8, "Password must be 8 characters at minimum")
+        .required("Password is required")
+    }),
+    onSubmit: values => {
+      setSubmitting(true);
+      accountService
+        .login(values.email, values.password)
+        .then(result => {
+          setUser(result.user);
+          setSubmitting(false);
+        })
+        .then(() => {
+          setToast({
+            message: "Login successful."
+          });
+          history.push("/stakeholders");
+        })
+        .catch(err => {
+          setToast({
+            message:
+              "Login failed. Please check your email and password and try again."
+          });
+          console.log(err);
+          setSubmitting(false);
+        });
+    }
+  });
 
   return (
     <Container component="main" maxWidth="xs">
@@ -63,7 +95,11 @@ const LoginForm = props => {
         <Typography component="h1" variant="h5">
           Login
         </Typography>
-        <form className={classes.form} noValidate onSubmit={handleSubmit}>
+        <form
+          className={classes.form}
+          noValidate
+          onSubmit={formik.handleSubmit}
+        >
           <TextField
             type="email"
             id="email"
@@ -74,11 +110,11 @@ const LoginForm = props => {
             fullWidth
             autoComplete="email"
             autoFocus
-            value={values.email}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            helperText={touched.email ? errors.email : ""}
-            error={touched.email && Boolean(errors.email)}
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            helperText={formik.touched.email ? formik.errors.email : ""}
+            error={formik.touched.email && Boolean(formik.errors.email)}
           />
           <TextField
             variant="outlined"
@@ -89,23 +125,19 @@ const LoginForm = props => {
             type="password"
             id="password"
             autoComplete="current-password"
-            value={values.password}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            helperText={touched.password ? errors.password : ""}
-            error={touched.password && Boolean(errors.password)}
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            helperText={formik.touched.password ? formik.errors.password : ""}
+            error={formik.touched.password && Boolean(formik.errors.password)}
           />
-          {/* <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          /> */}
           <Button
             type="submit"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
-            disabled={isSubmitting}
+            disabled={submitting}
           >
             Sign In
           </Button>
@@ -127,46 +159,48 @@ const LoginForm = props => {
   );
 };
 
-const Login = withFormik({
-  mapPropsToValues: ({ email, password }) => {
-    return {
-      email: email || "",
-      password: password || ""
-    };
-  },
+// const Login = withFormik({
+//   mapPropsToValues: ({ email, password, match }) => {
+//     const values = {
+//       email: email || match.params.email || "",
+//       password: password || ""
+//     };
+//     return values;
+//   },
+//   enableReinitialize: true,
+//   validationSchema: Yup.object().shape({
+//     email: Yup.string()
+//       .email("Invalid email address format")
+//       .required("Email is required"),
+//     password: Yup.string()
+//       .min(8, "Password must be 8 characters at minimum")
+//       .required("Password is required")
+//   }),
 
-  validationSchema: Yup.object().shape({
-    email: Yup.string()
-      .email("Invalid email address format")
-      .required("Email is required"),
-    password: Yup.string()
-      .min(8, "Password must be 8 characters at minimum")
-      .required("Password is required")
-  }),
+//   handleSubmit: (values, { setSubmitting, props }) => {
+//     setTimeout(() => {
+//       // submit to the server
+//       accountService
+//         .login(values.email, values.password)
+//         .then(result => {
+//           props.setUser(result.user);
+//         })
+//         .then(() => {
+//           props.setToast({
+//             message: "Login successful."
+//           });
+//           props.history.push("/stakeholders");
+//         })
+//         .catch(err => {
+//           props.setToast({
+//             message:
+//               "Login failed. Please check your email and password and try again."
+//           });
+//           console.log(err);
+//           setSubmitting(false);
+//         });
+//     }, 1000);
+//   }
+// })(LoginForm);
 
-  handleSubmit: (values, { setSubmitting, props }) => {
-    setTimeout(() => {
-      // submit to the server
-      accountService
-        .login(values.email, values.password)
-        .then(result => {
-          props.setUser(result.user);
-        })
-        .then(() => {
-          setSubmitting(false);
-          props.history.push("/stakeholders");
-        })
-        .catch(err => {
-          // replace with notification
-          props.setToastMessage(
-            "Login failed. Please check your email and password and try again."
-          );
-          props.setToastOpen(true);
-          console.log(err);
-          setSubmitting(false);
-        });
-    }, 1000);
-  }
-})(LoginForm);
-
-export default withStyles(styles)(withRouter(Login));
+export default withStyles(styles)(withRouter(LoginForm));

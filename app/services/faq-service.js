@@ -2,7 +2,7 @@ const { pool } = require("./postgres-pool");
 
 const selectAll = language => {
   const sql = `
-    select id, question, answer, language
+    select id, question, answer, language, identifier
     from faq
     order by id
     where language = $1
@@ -13,16 +13,17 @@ const selectAll = language => {
 };
 
 const selectById = (id, language) => {
-  const sql = `select id, question, answer, language from faq where id = $1 and language = $2`;
+  const sql = `select id, question, answer, language, identifier from faq where id = $1 and language = $2`;
   return pool.query(sql, [id, language]).then(res => {
     return res.rows[0];
   });
 };
 
+// Assuming Admins will have enough bandwidth, make multiple requests at the same time to insert the different language FAQs
 const insert = model => {
-  const { question, answer, language } = model;
-  const sql = `insert into faq (question, answer, language) values ($1, $2, $3) returning id`;
-  return pool.query(sql, [question, answer, language]).then(res => {
+  const { question, answer, language, identifier } = model;
+  const sql = `insert into faq (question, answer, language, identifier) values ($1, $2, $3, $4) returning id`;
+  return pool.query(sql, [question, answer, language, identifier]).then(res => {
     return res.rows[0];
   });
 };
@@ -56,8 +57,9 @@ module.exports = {
 
 /*
 Concern: when I add a new FAQ, I need both (ex.) English and Spanish to be posted.
+Will need to query to last identifier and increment by 1
 ex. [
-  {question: "", answer: "", language: "en"}, {question: "", answer: "", language: "es"}
+  {question: "", answer: "", language: "en", identifier: 1}, {question: "", answer: "", language: "es", identifier: 1}
 ]
 How I see it, is that I do a map on the array coming in, and add a new FAQ with a new id for each.
 When I update, I want to pull both English and Spanish versions from one of the ids.
@@ -72,6 +74,4 @@ unique key -- general question
 
 faq
 unique key -- primary key(faq_identifier) -- question -- answer -- language
-
-- Don't think I will be using selectById
 */

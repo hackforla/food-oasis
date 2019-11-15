@@ -1,7 +1,5 @@
 import React from "react";
-import MapIcon from "@material-ui/icons/Map";
-import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
-import { Typography, IconButton } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import StakeholderSearch from "./StakeholderSearch";
 import StakeholderCriteria from "./StakeholderCriteria";
 import StakeholderList from "./StakeholderList";
@@ -16,9 +14,9 @@ const styles = {
   },
   header: {
     display: "flex",
-    justifyContent: "space-between",
   },
 };
+
 function StakeholdersContainer() {
   const { state, dispatch, actionTypes, search } = useStakeholders();
   const [isMapView, setIsMapView] = React.useState(true);
@@ -44,19 +42,12 @@ function StakeholdersContainer() {
       <div style={styles.header}>
         <Typography
           variant={"h4"}
-          component={"h1"}
+          component={"h4"}
           align="center"
           style={{ marginBottom: "0.5em" }}
         >
           Stakeholders{" "}
         </Typography>
-        <IconButton
-          onClick={() => setIsMapView(!isMapView)}
-          title={`Go to ${isMapView ? "List" : "Map"}`}
-        >
-          {isMapView && <FormatListBulletedIcon />}
-          {!isMapView && <MapIcon style={{ color: "#90C146" }} />}
-        </IconButton>
       </div>
       <div>
         {isSearchPanelOpen ? (
@@ -69,6 +60,8 @@ function StakeholdersContainer() {
             selectedCategories={selectedCategories}
             selectedDistance={selectedDistance}
             search={search}
+            switchResultsView={() => setIsMapView(!isMapView)}
+            isMapView={isMapView}
           />
         ) : (
           <StakeholderCriteria
@@ -79,6 +72,8 @@ function StakeholdersContainer() {
             selectedCategories={selectedCategories}
             selectedDistance={selectedDistance}
             openSearchPanel={openSearchPanel}
+            switchResultsView={() => setIsMapView(!isMapView)}
+            isMapView={isMapView}
           />
         )}
         {/* TODO: make a loading component! */}

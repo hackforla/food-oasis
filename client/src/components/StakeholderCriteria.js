@@ -1,24 +1,26 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Card, CardContent, Grid, Typography } from "@material-ui/core";
+import { Card, CardContent, Grid } from "@material-ui/core";
 import { List, ListItem } from "@material-ui/core";
 import EditButton from "../components/EditButton";
+import SwitchViewsButton from "./SwitchViewsButton";
 
 const useStyles = makeStyles(theme => ({
   card: {
-    margin: "0px"
-  }
+    margin: "0px",
+  },
 }));
 
-function StakeholderCriteria(props) {
-  const {
-    selectedCategories,
-    latitude,
-    longitude,
-    selectedDistance,
-    searchString
-  } = props;
-
+function StakeholderCriteria({
+  selectedCategories,
+  latitude,
+  longitude,
+  selectedDistance,
+  searchString,
+  isMapView,
+  switchResultsView,
+  openSearchPanel,
+}) {
   const classes = useStyles();
 
   return (
@@ -26,17 +28,17 @@ function StakeholderCriteria(props) {
       <CardContent>
         <Grid container spacing={1} alignItems="center">
           <Grid item container xs={6} justify="space-between">
-            <Typography variant={"h5"} component={"h2"}>
-              Criteria
-            </Typography>
+            <EditButton
+              label="Edit"
+              onClick={() => {
+                openSearchPanel(true);
+              }}
+            />
           </Grid>
           <Grid item container xs={6} justify="flex-end">
-            <EditButton
-              label="Change"
-              variant="outlined"
-              onClick={() => {
-                props.openSearchPanel(true);
-              }}
+            <SwitchViewsButton
+              isMapView={isMapView}
+              onClick={switchResultsView}
             />
           </Grid>
           <Grid item>

@@ -5,8 +5,7 @@ import { Search } from "@material-ui/icons";
 const styles = {
   button: {
     backgroundColor: "#FAEBD7",
-    margin: "10px"
-  }
+  },
 };
 
 const SearchButton = props => {

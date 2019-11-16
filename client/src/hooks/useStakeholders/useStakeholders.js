@@ -57,7 +57,6 @@ export function useStakeholders() {
 
       const {
         searchString,
-        selectedCategories,
         selectedLatitude,
         selectedLongitude,
         selectedDistance,
@@ -66,7 +65,10 @@ export function useStakeholders() {
       dispatch({ type: FETCH_REQUEST });
       try {
         const categories = await categoryService.getAll();
-        dispatch({ type: FETCH_SUCCESS, categories });
+        const selectedCategories = categories.filter(
+          category => category.id === 1,
+        ); // setting the initial selection to FoodPantry
+        dispatch({ type: FETCH_SUCCESS, categories, selectedCategories });
 
         if (latitude && longitude) {
           search(

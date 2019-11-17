@@ -12,9 +12,9 @@ import {
   TextField,
   Chip,
   FormLabel,
-  Typography,
 } from "@material-ui/core";
 import SearchButton from "./SearchButton";
+import SwitchViewsButton from "./SwitchViewsButton";
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -26,6 +26,9 @@ const useStyles = makeStyles(theme => ({
   },
   chip: {
     margin: 2,
+  },
+  formLabel: {
+    margin: "1rem 0 .5rem",
   },
 }));
 
@@ -46,69 +49,74 @@ function StakeholderSearch(props) {
     <Card className={classes.card}>
       <CardContent>
         <Grid container spacing={1} alignItems="center">
-          <Grid item container xs={6} justify="space-between">
-            <Typography variant={"h5"} component={"h2"}>
-              Criteria
-            </Typography>
+          <Grid item container alignItems="center">
+            <Grid item container xs={6}>
+              <SearchButton
+                onClick={() => {
+                  props.search(
+                    searchString,
+                    latitude,
+                    longitude,
+                    selectedCategories,
+                    selectedDistance,
+                  );
+                }}
+              />
+            </Grid>
+            <Grid item container xs={6} justify="flex-end">
+              <SwitchViewsButton
+                isMapView={props.isMapView}
+                onClick={props.switchResultsView}
+              />
+            </Grid>
           </Grid>
-          <Grid item container xs={6} justify="flex-end">
-            <SearchButton
-              onClick={() => {
-                props.search(
-                  searchString,
-                  latitude,
-                  longitude,
-                  selectedCategories,
-                  selectedDistance,
-                );
-              }}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <FormLabel>Categories</FormLabel>
-            <Select
-              multiple
-              label="Categories"
-              placeholder="Category(ies)"
-              name="select-multiple-chip"
-              fullWidth
-              variant="outlined"
-              value={selectedCategories}
-              onChange={event => {
-                setSelectedCategories(event.target.value);
-              }}
-              className={classes.chips}
-              input={<Input id="select-categories" />}
-              renderValue={selected => (
-                <div className={classes.chips}>
-                  {selected.map(category => (
-                    <Chip
-                      key={category.id}
-                      label={category.name}
-                      className={classes.chip}
+          <Grid item container alignItems="center" lg={6}>
+            <Grid item container>
+              <FormLabel className={classes.formLabel}>Categories</FormLabel>
+              <Select
+                multiple
+                label="Categories"
+                placeholder="Category(ies)"
+                name="select-multiple-chip"
+                fullWidth
+                variant="outlined"
+                value={selectedCategories}
+                onChange={event => {
+                  setSelectedCategories(event.target.value);
+                }}
+                className={classes.chips}
+                input={<Input id="select-categories" />}
+                renderValue={selected => (
+                  <div className={classes.chips}>
+                    {selected.map(category => (
+                      <Chip
+                        key={category.id}
+                        label={category.name}
+                        className={classes.chip}
+                      />
+                    ))}
+                  </div>
+                )}
+              >
+                {props.categories.map(category => (
+                  <MenuItem key={category.id} value={category}>
+                    <Checkbox
+                      checked={
+                        selectedCategories
+                          .map(cat => cat.id)
+                          .indexOf(category.id) > -1
+                      }
                     />
-                  ))}
-                </div>
-              )}
-            >
-              {props.categories.map(category => (
-                <MenuItem key={category.id} value={category}>
-                  <Checkbox
-                    checked={
-                      selectedCategories
-                        .map(cat => cat.id)
-                        .indexOf(category.id) > -1
-                    }
-                  />
-                  <ListItemText primary={category.name} />
-                </MenuItem>
-              ))}
-            </Select>
+                    <ListItemText primary={category.name} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <FormLabel>Location</FormLabel>
-            <div>
-              <span>{"Within "}</span>
+          <Grid item container lg={6} direction="column">
+            <FormLabel className={classes.formLabel}>Location</FormLabel>
+            <Grid item container alignItems="center">
+              <div style={{ marginRight: "0.5rem" }}>{"Within "}</div>
               <Select
                 name="select-distance"
                 variant="outlined"
@@ -140,27 +148,32 @@ function StakeholderSearch(props) {
                   50
                 </MenuItem>
               </Select>
-              <span>{" miles of "}</span>
-            </div>
-            {latitude ? (
+              <div style={{ margin: "0 1rem 0 .5rem" }}>{"miles of"}</div>
               <div>
-                longitude: {longitude} latitude: {latitude}{" "}
+                {latitude ? (
+                  <Grid container direction="column">
+                    <div>longitude: {longitude}</div>
+                    <div>latitude: {latitude}</div>
+                  </Grid>
+                ) : null}
               </div>
-            ) : null}
+            </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <FormLabel>Name</FormLabel>
-            <TextField
-              autoComplete="fname"
-              name="searchString"
-              value={searchString}
-              variant="outlined"
-              fullWidth
-              id="name"
-              onChange={event => {
-                setSearchString(event.target.value);
-              }}
-            />
+          <Grid item container>
+            <Grid item container>
+              <FormLabel className={classes.formLabel}>Name</FormLabel>
+              <TextField
+                autoComplete="fname"
+                name="searchString"
+                value={searchString}
+                variant="outlined"
+                fullWidth
+                id="name"
+                onChange={event => {
+                  setSearchString(event.target.value);
+                }}
+              />
+            </Grid>
           </Grid>
         </Grid>
       </CardContent>

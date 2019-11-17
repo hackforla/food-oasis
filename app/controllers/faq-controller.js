@@ -2,7 +2,7 @@ const faqService = require("../services/faq-service");
 
 const getAll = (req, res) => {
   faqService
-    .selectAll()
+    .selectAll(req.body)
     .then(resp => {
       res.send(resp);
     })
@@ -12,9 +12,8 @@ const getAll = (req, res) => {
 };
 
 const getById = (req, res) => {
-  const { id } = req.params;
   faqService
-    .selectById(id)
+    .selectById(req.params.id)
     .then(resp => {
       res.send(resp);
     })
@@ -46,9 +45,8 @@ const put = (req, res) => {
 };
 
 const remove = (req, res) => {
-  const { id } = req.params;
   faqService
-    .remove(id)
+    .remove(req.body) // identifier
     .then(resp => {
       res.sendStatus(200);
     })

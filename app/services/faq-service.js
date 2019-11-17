@@ -20,6 +20,10 @@ const selectById = (id, language) => {
 };
 
 // Assuming Admins will have enough bandwidth, make multiple requests at the same time to insert the different language FAQs
+/* 
+ex. [{question: "", answer: "", language: "en", identifier: "example"}, {question: "", answer: "", language: "es", identifier: "example"}]
+Do 2 requests to POST /api/faqs/
+*/ 
 const insert = model => {
   const { question, answer, language, identifier } = model;
   const sql = `insert into faq (question, answer, language, identifier) values ($1, $2, $3, $4) returning id`;
@@ -28,6 +32,11 @@ const insert = model => {
   });
 };
 
+// Assuming Admins will have enough bandwidth, make multiple requests at the same time to update the different language FAQs
+/* 
+ex. [{question: "", answer: "", language: "en", identifier: "example"}, {question: "", answer: "", language: "es", identifier: "example"}]
+Do 2 requests to PUT /api/faqs/
+*/
 const update = (id, model) => {
   const { question, answer, language } = model;
   const sql = `
@@ -40,9 +49,13 @@ const update = (id, model) => {
   });
 };
 
-const remove = id => {
-  const sql = `delete from faq where id = $1`;
-  return pool.query(sql, [id]).then(res => {
+// Deletes all FAQs from identifier
+/*
+Verify that admin wants to delete FAQs, as it will delete all languages for FAQ.
+*/
+const remove = identifier => {
+  const sql = `delete from faq where identifier = $1`;
+  return pool.query(sql, [identifier]).then(res => {
     return res;
   });
 };
@@ -54,24 +67,3 @@ module.exports = {
   update,
   remove
 };
-
-/*
-Concern: when I add a new FAQ, I need both (ex.) English and Spanish to be posted.
-Will need to query to last identifier and increment by 1
-ex. [
-  {question: "", answer: "", language: "en", identifier: 1}, {question: "", answer: "", language: "es", identifier: 1}
-]
-How I see it, is that I do a map on the array coming in, and add a new FAQ with a new id for each.
-When I update, I want to pull both English and Spanish versions from one of the ids.
-Then do a map and update both objects from their specific ids.
-When I delete, I want to delete both English and Spanish versions from one of the ids.
-
-1 idea
-Data Tables
-
-faq_identifier
-unique key -- general question
-
-faq
-unique key -- primary key(faq_identifier) -- question -- answer -- language
-*/

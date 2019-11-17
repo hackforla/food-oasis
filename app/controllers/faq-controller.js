@@ -13,7 +13,7 @@ const getAll = (req, res) => {
 
 const getById = (req, res) => {
   faqService
-    .selectById(req.params.id)
+    .selectById(req.params.id, req.body)
     .then(resp => {
       res.send(resp);
     })

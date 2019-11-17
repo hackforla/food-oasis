@@ -5,6 +5,6 @@ router.get("/", faqController.getAll);
 router.get("/:id", faqController.getById);
 router.post("/", faqController.post);
 router.put("/:id", faqController.put);
-router.delete("/:id", faqController.remove);
+router.delete("/", faqController.remove);
 
 module.exports = router;

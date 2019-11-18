@@ -1,8 +1,9 @@
 const faqService = require("../services/faq-service");
 
 const getAll = (req, res) => {
+  const { language } = req.body;
   faqService
-    .selectAll(req.body)
+    .selectAll(language)
     .then(resp => {
       res.send(resp);
     })

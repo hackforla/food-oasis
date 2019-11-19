@@ -4,7 +4,6 @@ const selectAll = language => {
   const sql = `
     select id, question, answer, language, identifier
     from faq
-    order by id
     where language = $1
   `;
   return pool.query(sql, [language]).then(res => {
@@ -23,7 +22,8 @@ const selectById = (id, language) => {
 /* 
 ex. [{question: "", answer: "", language: "en", identifier: "example"}, {question: "", answer: "", language: "es", identifier: "example"}]
 Do 2 requests to POST /api/faqs/
-*/ 
+*/
+
 const insert = model => {
   const { question, answer, language, identifier } = model;
   const sql = `insert into faq (question, answer, language, identifier) values ($1, $2, $3, $4) returning id`;
@@ -38,7 +38,16 @@ ex. [{question: "", answer: "", language: "en", identifier: "example"}, {questio
 Do 2 requests to PUT /api/faqs/
 */
 const update = (id, model) => {
-  const { question, answer, language } = model;
+  let question, answer, language;
+  if (model.question) {
+    question = model.question;
+  }
+  if (model.answer) {
+    answer = model.answer;
+  }
+  if (model.language) {
+    language = model.language;
+  }
   const sql = `
     update faq
     set question = $1, answer = $2, language = $3

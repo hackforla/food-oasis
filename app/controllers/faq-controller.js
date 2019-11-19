@@ -13,8 +13,9 @@ const getAll = (req, res) => {
 };
 
 const getById = (req, res) => {
+  const { language } = req.body
   faqService
-    .selectById(req.params.id, req.body)
+    .selectById(req.params.id, language)
     .then(resp => {
       res.send(resp);
     })

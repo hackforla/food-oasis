@@ -11,15 +11,25 @@ const selectAll = language => {
   });
 };
 
-const selectById = (id, language) => {
-  const sql = `select id, question, answer, language, identifier from faq where id = $1 and language = $2`;
-  return pool.query(sql, [id, language]).then(res => {
+const selectById = id => {
+  const sql = `select id, question, answer, language, identifier from faq where id = $1`;
+  return pool.query(sql, [id]).then(res => {
     return res.rows[0];
   });
 };
 
-// Assuming Admins will have enough bandwidth, make multiple requests at the same time to insert the different language FAQs
+// {identifier: ""}
+const selectByIdentifier = identifierInput => {
+  const { identifier } = identifierInput;
+  console.log(identifier)
+  const sql = `select id, question, answer, language, identifier from faq where identifier = $1`;
+  return pool.query(sql, [identifier]).then(res => {
+    return res.rows[0];
+  });
+};
+
 /* 
+Assuming Admins will have enough bandwidth, make multiple requests at the same time to insert the different language FAQs
 ex. [{question: "", answer: "", language: "en", identifier: "example"}, {question: "", answer: "", language: "es", identifier: "example"}]
 Do 2 requests to POST /api/faqs/
 */
@@ -32,22 +42,13 @@ const insert = model => {
   });
 };
 
-// Assuming Admins will have enough bandwidth, make multiple requests at the same time to update the different language FAQs
 /* 
+Assuming Admins will have enough bandwidth, make multiple requests at the same time to update the different language FAQs
 ex. [{question: "", answer: "", language: "en", identifier: "example"}, {question: "", answer: "", language: "es", identifier: "example"}]
 Do 2 requests to PUT /api/faqs/
 */
 const update = (id, model) => {
-  let question, answer, language;
-  if (model.question) {
-    question = model.question;
-  }
-  if (model.answer) {
-    answer = model.answer;
-  }
-  if (model.language) {
-    language = model.language;
-  }
+  const { question, answer, language } = model;
   const sql = `
     update faq
     set question = $1, answer = $2, language = $3
@@ -58,11 +59,13 @@ const update = (id, model) => {
   });
 };
 
-// Deletes all FAQs from identifier
 /*
+Deletes all FAQs from identifier
+ex. {identifier: ""}
 Verify that admin wants to delete FAQs, as it will delete all languages for FAQ.
 */
-const remove = identifier => {
+const remove = identifierInput => {
+  const { identifier } = identifierInput;
   const sql = `delete from faq where identifier = $1`;
   return pool.query(sql, [identifier]).then(res => {
     return res;
@@ -72,6 +75,7 @@ const remove = identifier => {
 module.exports = {
   selectAll,
   selectById,
+  selectByIdentifier,
   insert,
   update,
   remove

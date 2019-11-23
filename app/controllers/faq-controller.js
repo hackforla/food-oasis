@@ -13,9 +13,21 @@ const getAll = (req, res) => {
 };
 
 const getById = (req, res) => {
-  const { language } = req.body
   faqService
-    .selectById(req.params.id, language)
+    .selectById(req.params.id)
+    .then(resp => {
+      res.send(resp);
+    })
+    .catch(err => {
+      res.status("500").json({ error: err.toString() });
+    });
+};
+
+const getByIdentifier = (req, res) => {
+  const { identifier } = req.body
+  console.log(identifier)
+  faqService
+    .selectByIdentifier(req.body)
     .then(resp => {
       res.send(resp);
     })
@@ -48,7 +60,7 @@ const put = (req, res) => {
 
 const remove = (req, res) => {
   faqService
-    .remove(req.body) // identifier
+    .remove(req.body)
     .then(resp => {
       res.sendStatus(200);
     })
@@ -60,6 +72,7 @@ const remove = (req, res) => {
 module.exports = {
   getAll,
   getById,
+  getByIdentifier,
   post,
   put,
   remove

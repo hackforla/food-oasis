@@ -7,16 +7,18 @@ export const getAll = async language => {
   return response.data;
 };
 
-export const getById = async (id, language) => {
-  const response = await axios.get(`${baseUrl}/${id}`, language);
+export const getById = async id => {
+  const response = await axios.get(`${baseUrl}/${id}`);
   return response.data;
 };
 
+// model = {question: "", answer: "", language: "", identifier: ""}
 export const add = async model => {
   const response = axios.put(baseUrl, model);
   return response.data;
 };
 
+// model = {question: "", answer: "", language: ""}
 export const update = async (id, model) => {
   const response = await axios.put(`${baseUrl}/${id}`, model);
   return response.data;

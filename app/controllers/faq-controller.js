@@ -24,10 +24,9 @@ const getById = (req, res) => {
 };
 
 const getByIdentifier = (req, res) => {
-  const { identifier } = req.body
-  console.log(identifier)
+  const { identifier } = req.body;
   faqService
-    .selectByIdentifier(req.body)
+    .selectByIdentifier(identifier)
     .then(resp => {
       res.send(resp);
     })
@@ -59,8 +58,9 @@ const put = (req, res) => {
 };
 
 const remove = (req, res) => {
+  const { identifier } = req.body
   faqService
-    .remove(req.body)
+    .remove(identifier)
     .then(resp => {
       res.sendStatus(200);
     })

@@ -1,5 +1,6 @@
 import React from "react";
 import { Grid, Typography, Card, CardContent, Button } from "@material-ui/core";
+import { UserContext } from "./user-context";
 
 const StakeholderListItem = props => {
   const { stakeholder } = props;
@@ -32,6 +33,15 @@ const StakeholderListItem = props => {
           {stakeholder.distance && (
             <div>distance: {stakeholder.distance.toFixed(2)} mi.</div>
           )}
+          <UserContext.Consumer>
+            {user =>
+              user && user.isAdmin ? (
+                <Button href={`/stakeholderedit/${stakeholder.id}`}>
+                  Edit
+                </Button>
+              ) : null
+            }
+          </UserContext.Consumer>
         </CardContent>
       </Card>
     </Grid>

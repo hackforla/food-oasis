@@ -42,16 +42,17 @@ const styles = theme => ({
 });
 
 const validationSchema = Yup.object().shape({
-  email: Yup.string()
-    .email("Invalid email address format")
-    .required("Email is required"),
+  token: Yup.string().required("Token is required"),
   password: Yup.string()
     .min(8, "Password must be 8 characters at minimum")
-    .required("Password is required")
+    .required("Password is required"),
+  passwordConfirm: Yup.string()
+    .required("Confirm your password")
+    .oneOf([Yup.ref("password")], "Password does not match")
 });
 
-const LoginForm = props => {
-  const { classes, setToast, setUser, history, match } = props;
+const ResetPassword = props => {
+  const { classes, setToast, history, match } = props;
 
   return (
     <Container component="main" maxWidth="xs">
@@ -61,62 +62,44 @@ const LoginForm = props => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Login
+          Reset Password
         </Typography>
         <Formik
           initialValues={{
-            email: match.params.email || "",
-            password: ""
+            token: match.params.token,
+            password: "",
+            passwordConfirm: ""
           }}
           validationSchema={validationSchema}
           onSubmit={async (values, formikBag) => {
             try {
-              const response = await accountService.login(
-                values.email,
+              const response = await accountService.resetPassword(
+                values.token,
                 values.password
               );
               if (response.isSuccess) {
-                setUser(response.user);
                 setToast({
-                  message: "Login successful."
+                  message: "Password has been reset. Please use it to login."
                 });
-                history.push("/stakeholders");
-              } else if (response.code === "AUTH_NOT_CONFIRMED") {
-                try {
-                  await accountService.resendConfirmationEmail(values.email);
-                  setToast({
-                    message: `Your email has not been confirmed. 
-                      Please look through your email for a Registration 
-                      Confirmation link and use it to confirm that you 
-                      own this email address.`
-                  });
-                  formikBag.setSubmitting(false);
-                } catch (err) {
-                  setToast({
-                    message: `An internal error occurred in sending 
-                    an email to ${values.email}`
-                  });
-                  formikBag.setSubmitting(false);
-                }
-              } else if (response.code === "AUTH_NO_ACCOUNT") {
-                console.log("Account not found!!");
-                setToast({
-                  message: `The email ${values.email} does not correspond to an 
-                    existing account. Please verify the email or register as a
-                    new account.`
-                });
+                history.push(`/login/${response.email}`);
+              } else if (
+                response.code === "RESET_PASSWORD_TOKEN_INVALID" ||
+                response.code === "RESET_PASSWORD_TOKEN_EXPIRED"
+              ) {
+                console.log(
+                  "The reset token is invalid or has expired. Use the forgot password link to try again."
+                );
                 formikBag.setSubmitting(false);
               } else {
-                // Presumably response.code === "AUTH_INVALID_PASSWORD"
+                // RESET_PASSWORD_FAILED  with unexpected error
                 setToast({
-                  message: `The password is incorrect, please check it 
-                  and try again or use the Forgot Password feature.`
+                  message: `${response.message}`
                 });
                 formikBag.setSubmitting(false);
               }
             } catch (err) {
               setToast({
-                message: "Server error. Please contact support."
+                message: `Password reset failed. ${err.message}`
               });
               console.log(err);
               formikBag.setSubmitting(false);
@@ -142,22 +125,6 @@ const LoginForm = props => {
               }}
             >
               <TextField
-                type="email"
-                id="email"
-                label="Email"
-                name="email"
-                variant="outlined"
-                margin="normal"
-                fullWidth
-                autoComplete="email"
-                autoFocus
-                value={values.email}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                helperText={touched.email ? errors.email : ""}
-                error={touched.email && Boolean(errors.email)}
-              />
-              <TextField
                 variant="outlined"
                 margin="normal"
                 fullWidth
@@ -172,6 +139,24 @@ const LoginForm = props => {
                 helperText={touched.password ? errors.password : ""}
                 error={touched.password && Boolean(errors.password)}
               />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                name="passwordConfirm"
+                label="Password"
+                type="password"
+                id="passwordConfirm"
+                value={values.passwordConfirm}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                helperText={
+                  touched.passwordConfirm ? errors.passwordConfirm : ""
+                }
+                error={
+                  touched.passwordConfirm && Boolean(errors.passwordConfirm)
+                }
+              />
               <Button
                 type="submit"
                 fullWidth
@@ -180,20 +165,12 @@ const LoginForm = props => {
                 className={classes.submit}
                 disabled={isSubmitting}
               >
-                Sign In
+                Reset Password
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link
-                    href={`/forgotpassword/${values.email || ""}`}
-                    variant="body2"
-                  >
+                  <Link href="/forgotpassword" variant="body2">
                     Forgot password?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link href="/register" variant="body2">
-                    {"Register"}
                   </Link>
                 </Grid>
               </Grid>
@@ -205,4 +182,4 @@ const LoginForm = props => {
   );
 };
 
-export default withStyles(styles)(withRouter(LoginForm));
+export default withStyles(styles)(withRouter(ResetPassword));

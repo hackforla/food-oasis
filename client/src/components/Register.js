@@ -161,12 +161,12 @@ const form = props => {
             className={classes.submit}
             disabled={isSubmitting}
           >
-            Sign Up
+            Register
           </Button>
           <Grid container justify="center">
             <Grid item>
               <Link href="/login" variant="body2">
-                Already have an account? Sign in
+                Already have an account? Login
               </Link>
             </Grid>
           </Grid>
@@ -216,7 +216,7 @@ const Register = withFormik({
         .register(firstName, lastName, email, password, passwordConfirm)
         .then(result => {
           setSubmitting(false);
-          if (result.success) {
+          if (result.isSuccess) {
             props.setToast({
               message: `Registration successful. Please check your email for a confirmation link.`
             });

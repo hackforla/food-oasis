@@ -14,6 +14,18 @@ export const resendConfirmationEmail = async email => {
   return response.data;
 };
 
+export const forgotPassword = async email => {
+  const body = { email };
+  const response = await axios.post(baseUrl + "/forgotPassword", body);
+  return response.data;
+};
+
+export const resetPassword = async (token, password) => {
+  const body = { token, password };
+  const response = await axios.post(baseUrl + "/resetPassword", body);
+  return response.data;
+};
+
 export const confirmRegister = async token => {
   const body = { token };
   const response = await axios.post(baseUrl + "/confirmRegister", body);

@@ -42,8 +42,10 @@ const selectAll = () => {
           .trim();
         if (name) {
           const mapElement = articleElement.find("a.show-map-link");
-          const lat = mapElement.attr("data-latitude");
-          const lon = mapElement.attr("data-longitude");
+          let lat = Number.parseFloat(mapElement.attr("data-latitude"));
+          lat = Number.isNaN(lat) ? null : lat;
+          let lon = Number.parseFloat(mapElement.attr("data-longitude"));
+          lon = Number.isNaN(lon) ? null : lon;
           const addrPhone = articleElement.find("p:nth-child(3)").text();
           let addr = "";
           let phone = "";

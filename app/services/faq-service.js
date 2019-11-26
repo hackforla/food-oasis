@@ -1,6 +1,16 @@
 const { pool } = require("./postgres-pool");
 
-const selectAll = language => {
+const selectAll = () => {
+  const sql = `
+    select id, question, answer, language, identifier
+    from faq
+  `;
+  return pool.query(sql, []).then(res => {
+    return res.rows;
+  });
+};
+
+const selectAllByLanguage = language => {
   const sql = `
     select id, question, answer, language, identifier
     from faq
@@ -70,6 +80,7 @@ const remove = identifier => {
 
 module.exports = {
   selectAll,
+  selectAllByLanguage,
   selectById,
   selectByIdentifier,
   insert,

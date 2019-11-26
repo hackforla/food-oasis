@@ -2,9 +2,14 @@ import axios from "axios";
 
 const baseUrl = "/api/faqs";
 
-// { language: "" }
 export const getAll = async language => {
-  const response = await axios.get(baseUrl, language);
+  const response = await axios.get(baseUrl);
+  return response.data;
+};
+
+// { language: "" }
+export const getAllByLanguage = async language => {
+  const response = await axios.get(baseUrl, { params: { language } });
   return response.data;
 };
 

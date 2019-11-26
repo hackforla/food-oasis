@@ -1,14 +1,25 @@
-const faqService = require("../services/faq-service");
+const faqService = require('../services/faq-service');
 
 const getAll = (req, res) => {
-  const { language } = req.body;
+  faqService
+    .selectAll()
+    .then(resp => {
+      res.send(resp);
+    })
+    .catch(err => {
+      res.status('404').json({ error: err.toString() });
+    });
+};
+
+const getAllByLanguage = (req, res) => {
+  const { language } = req.params;
   faqService
     .selectAll(language)
     .then(resp => {
       res.send(resp);
     })
     .catch(err => {
-      res.status("404").json({ error: err.toString() });
+      res.status('404').json({ error: err.toString() });
     });
 };
 
@@ -19,7 +30,7 @@ const getById = (req, res) => {
       res.send(resp);
     })
     .catch(err => {
-      res.status("500").json({ error: err.toString() });
+      res.status('500').json({ error: err.toString() });
     });
 };
 
@@ -31,7 +42,7 @@ const getByIdentifier = (req, res) => {
       res.send(resp);
     })
     .catch(err => {
-      res.status("500").json({ error: err.toString() });
+      res.status('500').json({ error: err.toString() });
     });
 };
 
@@ -42,7 +53,7 @@ const post = (req, res) => {
       res.json(resp);
     })
     .catch(err => {
-      res.status("500").json({ error: err.toString() });
+      res.status('500').json({ error: err.toString() });
     });
 };
 
@@ -53,24 +64,25 @@ const put = (req, res) => {
       res.json(resp);
     })
     .catch(err => {
-      res.status("500").json({ error: err.toString() });
+      res.status('500').json({ error: err.toString() });
     });
 };
 
 const remove = (req, res) => {
-  const { identifier } = req.body
+  const { identifier } = req.body;
   faqService
     .remove(identifier)
     .then(resp => {
       res.sendStatus(200);
     })
     .catch(err => {
-      res.status("500").json({ error: err.toString() });
+      res.status('500').json({ error: err.toString() });
     });
 };
 
 module.exports = {
   getAll,
+  getAllByLanguage,
   getById,
   getByIdentifier,
   post,

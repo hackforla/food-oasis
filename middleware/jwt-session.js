@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 // const autoCatch = require("./lib/auto-catch");
 
 const jwtSecret = process.env.JWT_SECRET || "mark it zero";
-const jwtOpts = { algorithm: "HS256", expiresIn: "30d" };
+const jwtOpts = { algorithm: "HS256", expiresIn: "1d" };
 
 module.exports = {
   //login: autoCatch(login),
@@ -24,13 +24,8 @@ module.exports = {
 async function login(req, res, next) {
   const token = await sign({ email: req.user.email, id: req.user.id });
   res.cookie("jwt", token, { httpOnly: true });
-  const user = {
-    id: req.user.id,
-    firstName: req.user.firstName,
-    lastName: req.user.lastName,
-    email: req.user.email
-  };
-  res.json({ success: true, token: token, user });
+  const user = req.user;
+  res.json({ isSuccess: true, token: token, user });
 }
 
 // When a request is received for a route that requires an

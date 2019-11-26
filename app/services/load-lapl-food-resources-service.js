@@ -1,4 +1,5 @@
 const { pool } = require("./postgres-pool");
+const { toSqlString, toSqlNumeric } = require("./postgres-utils");
 
 const selectAll = () => {
   const sql = `
@@ -26,10 +27,6 @@ const selectAll = () => {
   });
 };
 
-const toSqlString = originalString => {
-  return originalString.replace("'", "''");
-};
-
 const insert = model => {
   let {
     name,
@@ -47,11 +44,13 @@ const insert = model => {
   (name, addr, phone, population_served, 
     resource_categories, general_resources, additional_offerings,
     lat, lon ) 
-    values ('${toSqlString(name)}', '${toSqlString(
-    addr
-  )}', '${phone}', '${populationServed}', 
-    '${resourceCategories}', '${generalResources}', '${additionalOfferings}', 
-    '${lat}', '${lon}') `;
+    values (
+      ${toSqlString(name)}, ${toSqlString(addr)}, 
+      ${toSqlString(phone)}, ${toSqlString(populationServed)}, 
+      ${toSqlString(resourceCategories)}, 
+      ${toSqlString(generalResources)}, 
+      ${toSqlString(additionalOfferings)}, 
+      ${toSqlNumeric(lat)}, ${toSqlNumeric(lon)}) `;
   return pool.query(sql).catch(err => {
     msg = err.message;
     console.log(msg);

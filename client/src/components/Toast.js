@@ -19,7 +19,7 @@ const Toast = props => {
     setToast(false);
   };
 
-  return (
+  return toast.message ? (
     <Snackbar
       anchorOrigin={{
         vertical: "bottom",
@@ -52,7 +52,7 @@ const Toast = props => {
         </IconButton>
       ]}
     />
-  );
+  ) : null;
 };
 
 export default withStyles(styles)(Toast);

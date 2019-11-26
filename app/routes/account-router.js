@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const accountController = require("../controllers/account-controller");
 const jwtSession = require("../../middleware/jwt-session");
-const authenticate = require("../../middleware/authenticate");
+//const authenticate = require("../../middleware/authenticate");
 
 router.get("/", jwtSession.validateUser, accountController.getAll);
 
@@ -12,7 +12,10 @@ router.post(
 );
 router.post("/confirmRegister", accountController.confirmRegister);
 
-router.post("/login/:email?", authenticate.authenticate, jwtSession.login);
+router.post("/forgotPassword", accountController.forgotPassword);
+router.post("/resetPassword", accountController.resetPassword);
+
+router.post("/login/:email?", accountController.login, jwtSession.login);
 router.get("/logout", (req, res) => {
   console.log("logging out");
   req.logout();

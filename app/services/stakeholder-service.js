@@ -1,4 +1,5 @@
 const { pool } = require("./postgres-pool");
+const { toSqlString, toSqlNumeric, toSqlBoolean } = require("./postgres-utils");
 
 const selectAll = async (name, categoryIds, latitude, longitude, distance) => {
   const categoryClause = "(" + categoryIds.join(",") + ")";
@@ -18,18 +19,18 @@ const selectAll = async (name, categoryIds, latitude, longitude, distance) => {
   stakeholderResult.rows.forEach(row => {
     stakeholders.push({
       id: row.id,
-      name: row.name,
-      address1: row.address_1,
-      address2: row.address_2,
-      city: row.city,
-      state: row.state,
-      zip: row.zip,
-      phone: row.phone,
+      name: row.name || "",
+      address1: row.address_1 || "",
+      address2: row.address_2 || "",
+      city: row.city || "",
+      state: row.state || "",
+      zip: row.zip || "",
+      phone: row.phone || "",
       latitude: row.latitude ? Number(row.latitude) : null,
       longitude: row.longitude ? Number(row.longitude) : null,
-      website: row.website,
-      active: row.active,
-      notes: row.notes,
+      website: row.website || "",
+      active: row.active || true,
+      notes: row.notes || "",
       categories: []
     });
   });
@@ -89,31 +90,150 @@ const getAllStakeholderCategories = async (categoryClause, nameClause) => {
   return stakeholderCategoriesResult;
 };
 
-const selectById = id => {
+const getStakeholderCategories = async stakeholderId => {
+  const sql = `select sc.stakeholder_id, sc.category_id, c.name
+  from stakeholder_category sc 
+  join category c on sc.category_id = c.id
+  where sc.stakeholder_id = ${stakeholderId} `;
+  const stakeholderCategoriesResult = await pool.query(sql);
+  return stakeholderCategoriesResult;
+};
+
+const selectById = async id => {
   const sql = `select s.* 
     from stakeholder s 
     where s.id = ${id}`;
-  return pool.query(sql).then(res => {
-    return res.rows[0];
+  const result = await pool.query(sql);
+  const row = result.rows[0];
+  const stakeholder = {
+    id: row.id,
+    name: row.name || "",
+    address1: row.address_1 || "",
+    address2: row.address_2 || "",
+    city: row.city || "",
+    state: row.state || "",
+    zip: row.zip || "",
+    phone: row.phone || "",
+    latitude: row.latitude ? Number(row.latitude) : null,
+    longitude: row.longitude ? Number(row.longitude) : null,
+    website: row.website || "",
+    active: row.active || true,
+    notes: row.notes || "",
+    categories: []
+  };
+
+  // unfortunately, pg doesn't support multiple result sets, so
+  // we have to hit the server a second time to get stakeholders' categories
+  const stakeholderCategoryResult = await getStakeholderCategories(id);
+  stakeholderCategories = [];
+  stakeholderCategoryResult.rows.forEach(stakeholderCategory => {
+    const category = {
+      id: stakeholderCategory.category_id,
+      name: stakeholderCategory.name
+    };
+    if (stakeholder && stakeholder.categories) {
+      stakeholder.categories.push(category);
+    } else {
+      stakeholder.categories = [category];
+    }
   });
+
+  // Don't have a distance, since we didn't specify origin
+  stakeholder.distance = null;
+  return stakeholder;
 };
 
-const insert = model => {
-  const { name } = model;
-  const sql = `insert into stakeholder (name) values ('${name}') returning id`;
-  return pool.query(sql).then(res => {
-    return res.rows[0];
-  });
+const insert = async model => {
+  const {
+    name,
+    address1,
+    address2,
+    city,
+    state,
+    zip,
+    phone,
+    latitude,
+    longitude,
+    website,
+    active,
+    notes,
+    selectedCategoryIds
+  } = model;
+  try {
+    const sql = `insert into stakeholder 
+    (name, address_1, address_2, 
+      city, state, zip, 
+      phone, latitude, longitude, 
+      website, active, notes) 
+    values (
+    ${toSqlString(name)}, ${toSqlString(address1)}, ${toSqlString(address2)}, 
+    ${toSqlString(city)}, ${toSqlString(state)}, ${toSqlString(zip)}, 
+    ${toSqlString(phone)}, 
+    ${toSqlNumeric(latitude)}, ${toSqlNumeric(longitude)}, 
+    ${toSqlString(website)}, ${toSqlBoolean(active)}, 
+    ${toSqlString(notes)}) returning id`;
+    const stakeholderResult = await pool.query(sql);
+    const retObject = stakeholderResult.rows[0];
+    const id = retObject.id;
+
+    for (let i = 0; i < selectedCategoryIds.length; i++) {
+      const categoryId = selectedCategoryIds[i];
+      const sqlInsert = `insert into stakeholder_category 
+    (stakeholder_id, category_id) 
+    values (${id}, ${categoryId})`;
+      await pool.query(sqlDelete);
+    }
+
+    return retObject;
+  } catch (err) {
+    return new Error(err.message);
+  }
 };
 
-const update = model => {
-  const { id, name } = model;
+const update = async model => {
+  const {
+    id,
+    name,
+    address1,
+    address2,
+    city,
+    state,
+    zip,
+    phone,
+    latitude,
+    longitude,
+    website,
+    active,
+    notes,
+    selectedCategoryIds
+  } = model;
   const sql = `update stakeholder
-               set name = '${name}'
-                where id = ${id}`;
-  return pool.query(sql).then(res => {
-    return res;
-  });
+               set name = ${toSqlString(name)}, 
+               address_1 = ${toSqlString(address1)}, 
+               address_2 = ${toSqlString(address2)}, 
+               city = ${toSqlString(city)}, 
+               state = ${toSqlString(state)}, 
+               zip = ${toSqlString(zip)}, 
+               phone = ${toSqlString(phone)}, 
+               latitude = ${toSqlNumeric(latitude)}, 
+               longitude = ${toSqlNumeric(longitude)}, 
+               website = ${toSqlString(website)}, 
+               active = ${toSqlBoolean(active)}, 
+               notes = ${toSqlString(notes)}
+              where id = ${id}`;
+  const result = await pool.query(sql);
+
+  const sqlDelete = `delete from stakeholder_category 
+    where stakeholder_id = ${id}`;
+  await pool.query(sqlDelete);
+
+  for (let i = 0; i < selectedCategoryIds.length; i++) {
+    const categoryId = selectedCategoryIds[i];
+    const sqlInsert = `insert into stakeholder_category 
+      (stakeholder_id, category_id) 
+      values (${id}, ${categoryId})`;
+    await pool.query(sqlInsert);
+  }
 };
 
 const remove = id => {

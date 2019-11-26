@@ -1,6 +1,8 @@
 import React from "react";
 import { Grid, Typography, Card, CardContent, Button } from "@material-ui/core";
 import { UserContext } from "./user-context";
+import EditButton from "./EditButton";
+import { withRouter } from "react-router-dom";
 
 const StakeholderListItem = props => {
   const { stakeholder } = props;
@@ -36,9 +38,12 @@ const StakeholderListItem = props => {
           <UserContext.Consumer>
             {user =>
               user && user.isAdmin ? (
-                <Button href={`/stakeholderedit/${stakeholder.id}`}>
-                  Edit
-                </Button>
+                <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                  <EditButton
+                    label="Edit"
+                    href={`/stakeholderedit/${stakeholder.id}`}
+                  />
+                </div>
               ) : null
             }
           </UserContext.Consumer>
@@ -48,4 +53,4 @@ const StakeholderListItem = props => {
   );
 };
 
-export default StakeholderListItem;
+export default withRouter(StakeholderListItem);

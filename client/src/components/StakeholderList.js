@@ -1,4 +1,5 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 import { Grid, Typography } from "@material-ui/core";
 import StakeholderListItem from "./StakeholderListItem";
 
@@ -31,4 +32,4 @@ const StakeholderList = props => {
   );
 };
 
-export default StakeholderList;
+export default withRouter(StakeholderList);

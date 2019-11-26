@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { UserContext } from "./user-context";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
@@ -58,6 +59,17 @@ export default function Menu(props) {
         {props.user ? null : (
           <MenuItemLink key="Register" to="/register" text="Register" />
         )}
+        <UserContext.Consumer>
+          {user =>
+            user && user.isAdmin ? (
+              <MenuItemLink
+                key="stakeholderedit"
+                to="/stakeholderedit"
+                text="New Stakeholder"
+              />
+            ) : null
+          }
+        </UserContext.Consumer>
       </List>
     </div>
   );

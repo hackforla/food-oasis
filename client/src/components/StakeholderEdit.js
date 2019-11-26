@@ -90,7 +90,7 @@ const StakeholderEdit = props => {
       }
     };
     fetchData();
-  }, [editId, originalData]);
+  }, [editId]);
 
   return (
     <Container component="main" maxWidth="sm">
@@ -241,6 +241,36 @@ const StakeholderEdit = props => {
                     error={touched.zip && Boolean(errors.zip)}
                   />
                 </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    name="latitude"
+                    label="latitude"
+                    type="text"
+                    value={values.latitude}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={touched.latitude ? errors.latitude : ""}
+                    error={touched.latitude && Boolean(errors.latitude)}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    name="longitude"
+                    label="Longitude"
+                    type="text"
+                    value={values.longitude}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={touched.longitude ? errors.longitude : ""}
+                    error={touched.longitude && Boolean(errors.longitude)}
+                  />
+                </Grid>
                 <Grid item xs={12}>
                   <TextField
                     variant="outlined"
@@ -359,7 +389,6 @@ const StakeholderEdit = props => {
           )}
         </Formik>
       </div>
-      <pre>{JSON.stringify(originalData, null, 2)}</pre>
     </Container>
   );
 };

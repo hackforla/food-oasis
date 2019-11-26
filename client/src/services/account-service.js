@@ -34,8 +34,12 @@ export const confirmRegister = async token => {
 
 export const login = async (email, password) => {
   const body = { email, password };
-  const response = await axios.post(baseUrl + "/login", body);
-  return response.data;
+  try {
+    const response = await axios.post(baseUrl + "/login", body);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 export const logout = async () => {

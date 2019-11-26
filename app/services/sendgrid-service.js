@@ -10,7 +10,7 @@ const sendRegistrationConfirmation = async (email, token) => {
     to: `${email}`,
     from: emailUser,
     subject: `Verify your account`,
-    text: "and easy to do anywhere, even with Node.js",
+    text: `Verify your account`,
     html: `<p>Hello, please click the following link to verify your account.</p>
               <br>
               <p><a href="${clientUrl}/confirm/${token}">Verify Me</a></p>
@@ -18,15 +18,39 @@ const sendRegistrationConfirmation = async (email, token) => {
               <p>Thanks,</p>
               <p>Food Oasis</p>`
   };
-  sgMail.send(msg, false, (err, result) => {
+  return sgMail.send(msg, false, (err, result) => {
     if (err) {
       return Promise.reject("Sending registration confirmation email failed.");
+    }
+    return Promise.resolve(true);
+  });
+};
+
+const sendResetPasswordConfirmation = async (email, token) => {
+  const msg = {
+    to: `${email}`,
+    from: emailUser,
+    subject: `Confirm Password Reset for Food Oasis`,
+    text: `Confirm Password Reset for Food Oasis`,
+    html: `<p>Hello, please click the following link to reset your password for Food Oasis.</p>
+              <br>
+              <p><a href="${clientUrl}/resetPassword/${token}">Reset Password</a></p>
+              <br>
+              <p>Thanks,</p>
+              <p>Food Oasis</p>`
+  };
+  return sgMail.send(msg, false, (err, result) => {
+    if (err) {
+      return Promise.reject(
+        "Sending password reset confirmation email failed."
+      );
     } else {
-      return Promise.resolve(result);
+      return Promise.resolve(true);
     }
   });
 };
 
 module.exports = {
-  sendRegistrationConfirmation
+  sendRegistrationConfirmation,
+  sendResetPasswordConfirmation
 };

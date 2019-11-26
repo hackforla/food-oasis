@@ -48,3 +48,9 @@ Postgres database, node/express Web API server, and React client.
 
 1.  Run `npm start` from the food-oasis directory to start the node server.
 1.  Open a separate command shell and set the directory to the /client subdirectory, then `npm start` again to start the client application and open a browser pointing to it.
+
+## Features
+
+[Registration and Login](/register.md)
+
+[Forgot Password](/forgot-password.md)

@@ -40,7 +40,27 @@ const register = async (req, res) => {
 
 const resendConfirmationEmail = async (req, res) => {
   try {
-    const response = await accountService.resendConfirmationEmail(req.body);
+    const response = await accountService.resendConfirmationEmail(
+      req.body.email
+    );
+    res.send(response);
+  } catch (err) {
+    res.status("500").json({ error: err.toString() });
+  }
+};
+
+const forgotPassword = async (req, res) => {
+  try {
+    const response = await accountService.forgotPassword(req.body);
+    res.send(response);
+  } catch (err) {
+    res.status("500").json({ error: err.toString() });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  try {
+    const response = await accountService.resetPassword(req.body);
     res.send(response);
   } catch (err) {
     res.status("500").json({ error: err.toString() });
@@ -57,15 +77,19 @@ const confirmRegister = async (req, res) => {
   }
 };
 
-const login = async (req, res) => {
-  accountService
-    .authenticate(req.body)
-    .then(resp => {
+const login = async (req, res, next) => {
+  const { email, password } = req.body;
+  try {
+    const resp = await accountService.authenticate(email, password);
+    if (resp.isSuccess) {
+      req.user = resp.user;
+      next();
+    } else {
       res.json(resp);
-    })
-    .catch(err => {
-      res.status("500").json({ error: err.toString() });
-    });
+    }
+  } catch (err) {
+    res.status("500").json({ error: err.toString() });
+  }
 };
 
 const put = async (req, res) => {
@@ -94,6 +118,8 @@ module.exports = {
   register,
   confirmRegister,
   resendConfirmationEmail,
+  forgotPassword,
+  resetPassword,
   login,
   put,
   remove

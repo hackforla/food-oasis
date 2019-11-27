@@ -24,8 +24,9 @@ const getAllByLanguage = (req, res) => {
 };
 
 const getById = (req, res) => {
+  const { id } = req.params;
   faqService
-    .selectById(req.params.id)
+    .selectById(id)
     .then(resp => {
       res.send(resp);
     })
@@ -58,8 +59,9 @@ const post = (req, res) => {
 };
 
 const put = (req, res) => {
+  const { id } = req.params;
   faqService
-    .update(req.params.id, req.body)
+    .update(id, req.body)
     .then(resp => {
       res.json(resp);
     })

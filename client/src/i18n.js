@@ -28,7 +28,8 @@ i18n
     fallbackLng: "en",
     debug: true,
     react: {
-      useSuspense: false
+      useSuspense: false,
+      // wait: true
     },
     ns: ["news", "about", "donate"]
   });

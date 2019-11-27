@@ -32,8 +32,8 @@ export const post = async stakeholder => {
 };
 
 // edit user-created job
-export const put = async (stakeholder, id) => {
-  const response = await axios.put(`${baseUrl}/${id}`, stakeholder);
+export const put = async stakeholder => {
+  const response = await axios.put(`${baseUrl}/${stakeholder.id}`, stakeholder);
   return response.data;
 };
 

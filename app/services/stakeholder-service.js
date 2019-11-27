@@ -59,18 +59,22 @@ const selectAll = async (name, categoryIds, latitude, longitude, distance) => {
 
   // Should move distance calc into stored proc
   stakeholders.forEach(stakeholder => {
-    stakeholder.distance =
-      Math.sqrt(
-        (Math.abs(stakeholder.longitude - longitude) *
-          Math.cos((latitude / 360) * 2 * Math.PI)) **
-          2 +
-          Math.abs(stakeholder.latitude - latitude) ** 2
-      ) * 69.097;
+    if (stakeholder.latitude && stakeholder.longitude) {
+      stakeholder.distance =
+        Math.sqrt(
+          (Math.abs(stakeholder.longitude - longitude) *
+            Math.cos((latitude / 360) * 2 * Math.PI)) **
+            2 +
+            Math.abs(stakeholder.latitude - latitude) ** 2
+        ) * 69.097;
+    } else {
+      stakeholder.distance = 999;
+    }
   });
   // Should move sorting into stored proc
   stakeholders.sort((a, b) => a.distance - b.distance);
   // Should move distance filter into stored proc
-  if (distance) {
+  if (distance > 0) {
     stakeholders = stakeholders.filter(
       stakeholder => stakeholder.distance <= distance
     );
@@ -181,7 +185,7 @@ const insert = async model => {
       const sqlInsert = `insert into stakeholder_category 
     (stakeholder_id, category_id) 
     values (${id}, ${categoryId})`;
-      await pool.query(sqlDelete);
+      await pool.query(sqlInsert);
     }
 
     return retObject;

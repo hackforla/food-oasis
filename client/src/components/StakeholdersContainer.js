@@ -1,4 +1,5 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 import { Typography } from "@material-ui/core";
 import StakeholderSearch from "./StakeholderSearch";
 import StakeholderCriteria from "./StakeholderCriteria";
@@ -10,11 +11,11 @@ const styles = {
   container: {
     display: "flex",
     flexDirection: "column",
-    padding: "1rem",
+    padding: "1rem"
   },
   header: {
-    display: "flex",
-  },
+    display: "flex"
+  }
 };
 
 function StakeholdersContainer() {
@@ -34,7 +35,7 @@ function StakeholdersContainer() {
     selectedDistance,
     selectedCategories,
     isSearchPanelOpen,
-    isLoading,
+    isLoading
   } = state;
 
   return (
@@ -93,4 +94,4 @@ function StakeholdersContainer() {
   );
 }
 
-export default StakeholdersContainer;
+export default withRouter(StakeholdersContainer);

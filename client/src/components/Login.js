@@ -69,58 +69,62 @@ const LoginForm = props => {
             password: ""
           }}
           validationSchema={validationSchema}
-          onSubmit={async (values, formikBag) => {
-            try {
-              const response = await accountService.login(
-                values.email,
-                values.password
-              );
-              if (response.isSuccess) {
-                setUser(response.user);
-                setToast({
-                  message: "Login successful."
-                });
-                history.push("/stakeholders");
-              } else if (response.code === "AUTH_NOT_CONFIRMED") {
-                try {
-                  await accountService.resendConfirmationEmail(values.email);
+          onSubmit={(values, formikBag) => {
+            setTimeout(async () => {
+              try {
+                const response = await accountService.login(
+                  values.email,
+                  values.password
+                );
+                if (response.isSuccess) {
+                  setUser(response.user);
                   setToast({
-                    message: `Your email has not been confirmed. 
+                    message: "Login successful."
+                  });
+                  history.push("/stakeholders");
+                } else if (response.code === "AUTH_NOT_CONFIRMED") {
+                  try {
+                    await accountService.resendConfirmationEmail(values.email);
+                    setToast({
+                      message: `Your email has not been confirmed. 
                       Please look through your email for a Registration 
                       Confirmation link and use it to confirm that you 
                       own this email address.`
+                    });
+                    formikBag.setSubmitting(false);
+                  } catch (err) {
+                    setToast({
+                      message: `An internal error occurred in sending 
+                    an email to ${values.email}`
+                    });
+                    formikBag.setSubmitting(false);
+                  }
+                } else if (response.code === "AUTH_NO_ACCOUNT") {
+                  console.log("Account not found!!");
+                  setToast({
+                    message: `The email ${values.email} does not correspond to an 
+                    existing account. Please verify the email or register as a
+                    new account.`
                   });
                   formikBag.setSubmitting(false);
-                } catch (err) {
+                } else {
+                  // Presumably response.code === "AUTH_INVALID_PASSWORD"
                   setToast({
-                    message: `An internal error occurred in sending 
-                    an email to ${values.email}`
+                    message: `The password is incorrect, please check it 
+                  and try again or use the Forgot Password feature.`
                   });
                   formikBag.setSubmitting(false);
                 }
-              } else if (response.code === "AUTH_NO_ACCOUNT") {
-                console.log("Account not found!!");
+                // async function muist return something
+                return true;
+              } catch (err) {
                 setToast({
-                  message: `The email ${values.email} does not correspond to an 
-                    existing account. Please verify the email or register as a
-                    new account.`
+                  message: "Server error. Please contact support."
                 });
-                formikBag.setSubmitting(false);
-              } else {
-                // Presumably response.code === "AUTH_INVALID_PASSWORD"
-                setToast({
-                  message: `The password is incorrect, please check it 
-                  and try again or use the Forgot Password feature.`
-                });
+                console.log(err);
                 formikBag.setSubmitting(false);
               }
-            } catch (err) {
-              setToast({
-                message: "Server error. Please contact support."
-              });
-              console.log(err);
-              formikBag.setSubmitting(false);
-            }
+            }, 400);
           }}
         >
           {({
@@ -133,14 +137,7 @@ const LoginForm = props => {
             isSubmitting
             /* and other goodies */
           }) => (
-            <form
-              className={classes.form}
-              noValidate
-              onSubmit={evt => {
-                evt.preventDefault();
-                handleSubmit(evt);
-              }}
-            >
+            <form className={classes.form} noValidate onSubmit={handleSubmit}>
               <TextField
                 type="email"
                 id="email"

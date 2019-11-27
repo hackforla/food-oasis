@@ -11,36 +11,36 @@ import {
   Grid,
   TextField,
   Chip,
-  FormLabel,
+  FormLabel
 } from "@material-ui/core";
 import SearchButton from "./SearchButton";
 import SwitchViewsButton from "./SwitchViewsButton";
 
 const useStyles = makeStyles(theme => ({
   card: {
-    margin: "0px",
+    margin: "0px"
   },
   chips: {
     display: "flex",
-    flexWrap: "wrap",
+    flexWrap: "wrap"
   },
   chip: {
-    margin: 2,
+    margin: 2
   },
   formLabel: {
-    margin: "1rem 0 .5rem",
-  },
+    margin: "1rem 0 .5rem"
+  }
 }));
 
 function StakeholderSearch(props) {
   const [selectedCategories, setSelectedCategories] = useState(
-    props.selectedCategories,
+    props.selectedCategories
   );
   const [searchString, setSearchString] = useState(props.searchString);
   const [latitude] = useState(props.latitude);
   const [longitude] = useState(props.longitude);
   const [selectedDistance, setSelectedDistance] = useState(
-    props.selectedDistance,
+    props.selectedDistance
   );
 
   const classes = useStyles();
@@ -58,7 +58,7 @@ function StakeholderSearch(props) {
                     latitude,
                     longitude,
                     selectedCategories,
-                    selectedDistance,
+                    selectedDistance
                   );
                 }}
               />
@@ -126,6 +126,9 @@ function StakeholderSearch(props) {
                 }}
                 input={<Input id="select-distance" />}
               >
+                <MenuItem key={0} value={0}>
+                  (Any)
+                </MenuItem>
                 <MenuItem key={1} value={1}>
                   1
                 </MenuItem>

@@ -1,4 +1,4 @@
-const faqService = require('../services/faq-service');
+const faqService = require("../services/faq-service");
 
 const getAll = (req, res) => {
   faqService
@@ -7,7 +7,7 @@ const getAll = (req, res) => {
       res.send(resp);
     })
     .catch(err => {
-      res.status('404').json({ error: err.toString() });
+      res.status("404").json({ error: err.toString() });
     });
 };
 
@@ -19,18 +19,19 @@ const getAllByLanguage = (req, res) => {
       res.send(resp);
     })
     .catch(err => {
-      res.status('404').json({ error: err.toString() });
+      res.status("404").json({ error: err.toString() });
     });
 };
 
 const getById = (req, res) => {
+  const { id } = req.params;
   faqService
-    .selectById(req.params.id)
+    .selectById(id)
     .then(resp => {
       res.send(resp);
     })
     .catch(err => {
-      res.status('500').json({ error: err.toString() });
+      res.status("500").json({ error: err.toString() });
     });
 };
 
@@ -42,7 +43,7 @@ const getByIdentifier = (req, res) => {
       res.send(resp);
     })
     .catch(err => {
-      res.status('500').json({ error: err.toString() });
+      res.status("500").json({ error: err.toString() });
     });
 };
 
@@ -53,18 +54,19 @@ const post = (req, res) => {
       res.json(resp);
     })
     .catch(err => {
-      res.status('500').json({ error: err.toString() });
+      res.status("500").json({ error: err.toString() });
     });
 };
 
 const put = (req, res) => {
+  const { id } = req.params;
   faqService
-    .update(req.params.id, req.body)
+    .update(id, req.body)
     .then(resp => {
       res.json(resp);
     })
     .catch(err => {
-      res.status('500').json({ error: err.toString() });
+      res.status("500").json({ error: err.toString() });
     });
 };
 
@@ -76,7 +78,7 @@ const remove = (req, res) => {
       res.sendStatus(200);
     })
     .catch(err => {
-      res.status('500').json({ error: err.toString() });
+      res.status("500").json({ error: err.toString() });
     });
 };
 

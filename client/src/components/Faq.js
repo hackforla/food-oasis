@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import * as faqService from "../services/faq-service";
 
+import FaqInput from "./FaqInput";
+
 const Faq = () => {
   // Load in current FAQs
   // If FAQs need to be updated, go into admin portal
@@ -29,6 +31,7 @@ const Faq = () => {
 
   return (
     <>
+      <FaqInput previousInput={'hello'}/>
       <p>{t("title")}</p>
       {faqs[0] ? (
         faqs.map(faq => (
@@ -40,6 +43,15 @@ const Faq = () => {
       ) : (
         <div>FAQs are loading...</div>
       )}
+      <p>-----------------</p>
+      {faqs[0]
+        ? faqs.map(faq => (
+            <div key={faq.question}>
+              <FaqInput previousInput={faq.question} />
+              <FaqInput previousInput={faq.answer} />
+            </div>
+          ))
+        : null}
     </>
   );
 };

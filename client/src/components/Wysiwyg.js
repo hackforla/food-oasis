@@ -3,7 +3,6 @@ import Trix from "trix";
 
 const Wysiwyg = ({ content, setContent }) => {
   const [textInput, setTextInput] = useState(content);
-  console.log(textInput);
   const trixInput = useRef();
 
   useEffect(() => {

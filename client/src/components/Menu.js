@@ -7,6 +7,7 @@ import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
 import MenuIcon from "@material-ui/icons/Menu";
 import MenuItemLink from "./MenuItemLink";
+import LanguageChooser from "./LanguageChooser";
 
 const useStyles = makeStyles({
   list: {
@@ -70,6 +71,7 @@ export default function Menu(props) {
             ) : null
           }
         </UserContext.Consumer>
+        <LanguageChooser />
       </List>
     </div>
   );

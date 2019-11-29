@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import * as faqService from "../services/faq-service";
 
-import FaqInput from "./FaqInput";
-
 const Faq = () => {
   // Load in current FAQs
   // If FAQs need to be updated, go into admin portal
@@ -11,9 +9,8 @@ const Faq = () => {
 
   const [faqs, setFaqs] = useState([]);
   const { t, i18n } = useTranslation("faq");
+  const [message, setMessage] = useState("FAQs are loading...");
 
-  // Should I create a faq-service? to follow current design pattern, or can this stay here?
-  // Query in the english version of FAQs
   useEffect(() => {
     async function fetchFaqs() {
       try {
@@ -21,9 +18,14 @@ const Faq = () => {
         const fetchedFaqs = await faqService.getAll({
           language: twoLetterLanguage
         });
-        setFaqs(fetchedFaqs);
+        if (fetchedFaqs.length > 0) {
+          setFaqs(fetchedFaqs);
+        } else {
+          setMessage("There are currently no FAQs.");
+        }
       } catch {
-        throw new Error("Cannot fetch FAQs");
+        setMessage("Cannot fetch FAQs...");
+        throw new Error("Cannot fetch FAQs...");
       }
     }
     fetchFaqs();
@@ -31,7 +33,6 @@ const Faq = () => {
 
   return (
     <>
-      <FaqInput previousInput={'hello'}/>
       <p>{t("title")}</p>
       {faqs[0] ? (
         faqs.map(faq => (
@@ -41,17 +42,8 @@ const Faq = () => {
           </div>
         ))
       ) : (
-        <div>FAQs are loading...</div>
+        <div>{message}</div>
       )}
-      <p>-----------------</p>
-      {faqs[0]
-        ? faqs.map(faq => (
-            <div key={faq.question}>
-              <FaqInput previousInput={faq.question} />
-              <FaqInput previousInput={faq.answer} />
-            </div>
-          ))
-        : null}
     </>
   );
 };

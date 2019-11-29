@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import Trix from "trix";
 
 const Wysiwyg = ({ content, setContent }) => {
-  const [textInput, setTextInput] = useState("" || content);
-  console.log(textInput)
+  const [textInput, setTextInput] = useState(content);
+  console.log(textInput);
   const trixInput = useRef();
 
   useEffect(() => {

@@ -4,7 +4,7 @@ import Wysiwyg from "./Wysiwyg";
 import "trix/dist/trix.css";
 
 const FaqInput = ({ previousInput }) => {
-  const [content, setContent] = useState("" || previousInput);
+  const [content, setContent] = useState(previousInput);
 
   return (
     <div>

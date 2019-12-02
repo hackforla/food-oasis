@@ -1,6 +1,8 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 
+import Container from '@material-ui/core/Container'
+
 const About = () => {
   const { t } = useTranslation("about");
   return (

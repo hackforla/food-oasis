@@ -12,7 +12,7 @@ const Language = ({ language, languageAbbr, word }) => {
     <div>
       <input
         type="checkbox"
-        value={i18n.language}
+        value={i18n.language.slice(0,2)}
         name={language}
         id={language}
         onChange={() => changeLanguage(languageAbbr)}

@@ -11,10 +11,34 @@ const getAll = (req, res) => {
     });
 };
 
+const getAllByLanguage = (req, res) => {
+  const { language } = req.params;
+  faqService
+    .selectAll(language)
+    .then(resp => {
+      res.send(resp);
+    })
+    .catch(err => {
+      res.status("404").json({ error: err.toString() });
+    });
+};
+
 const getById = (req, res) => {
   const { id } = req.params;
   faqService
     .selectById(id)
+    .then(resp => {
+      res.send(resp);
+    })
+    .catch(err => {
+      res.status("500").json({ error: err.toString() });
+    });
+};
+
+const getByIdentifier = (req, res) => {
+  const { identifier } = req.body;
+  faqService
+    .selectByIdentifier(identifier)
     .then(resp => {
       res.send(resp);
     })
@@ -35,8 +59,9 @@ const post = (req, res) => {
 };
 
 const put = (req, res) => {
+  const { id } = req.params;
   faqService
-    .update(req.params.id, req.body)
+    .update(id, req.body)
     .then(resp => {
       res.json(resp);
     })
@@ -46,9 +71,9 @@ const put = (req, res) => {
 };
 
 const remove = (req, res) => {
-  const { id } = req.params;
+  const { identifier } = req.body;
   faqService
-    .remove(id)
+    .remove(identifier)
     .then(resp => {
       res.sendStatus(200);
     })
@@ -59,7 +84,9 @@ const remove = (req, res) => {
 
 module.exports = {
   getAll,
+  getAllByLanguage,
   getById,
+  getByIdentifier,
   post,
   put,
   remove

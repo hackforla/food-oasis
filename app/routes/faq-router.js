@@ -2,9 +2,11 @@ const router = require("express").Router();
 const faqController = require("../controllers/faq-controller");
 
 router.get("/", faqController.getAll);
-router.get("/:id", faqController.getById);
+router.get("/:language", faqController.getAllByLanguage);
+router.get("/faq/:id", faqController.getById);
+router.get("/identifier", faqController.getByIdentifier);
 router.post("/", faqController.post);
-router.put("/:id", faqController.put);
-router.delete("/:id", faqController.remove);
+router.put("/faq/:id", faqController.put);
+router.delete("/", faqController.remove);
 
 module.exports = router;

@@ -56,5 +56,8 @@
       "government": "Government Data Links",
       "education": "Education",
       "useful-links": "Other Useful Links"
+    },
+    "choose-language": {
+      "choose": "Change Language"
     }
   }

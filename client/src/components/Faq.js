@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useTranslation } from "react-i18next";
+import * as faqService from "../services/faq-service";
 
 const Faq = () => {
   // Load in current FAQs
@@ -8,30 +8,42 @@ const Faq = () => {
   // This will only display the current FAQs
 
   const [faqs, setFaqs] = useState([]);
-  const { t } = useTranslation("faq");
+  const { t, i18n } = useTranslation("faq");
+  const [message, setMessage] = useState("FAQs are loading...");
 
-  // Should I create a faq-service? to follow current design pattern, or can this stay here?
-  // Query in the english version of FAQs
   useEffect(() => {
     async function fetchFaqs() {
-      const response = await axios.get("/api/faqs");
-      console.log(response);
-      // if response is an array
-      setFaqs(response);
+      try {
+        let twoLetterLanguage = i18n.language.slice(0, 2);
+        const fetchedFaqs = await faqService.getAll({
+          language: twoLetterLanguage
+        });
+        if (fetchedFaqs.length > 0) {
+          setFaqs(fetchedFaqs);
+        } else {
+          setMessage("There are currently no FAQs.");
+        }
+      } catch {
+        setMessage("Cannot fetch FAQs...");
+        throw new Error("Cannot fetch FAQs...");
+      }
     }
     fetchFaqs();
-  }, []);
+  }, [i18n.language]);
 
   return (
     <>
       <p>{t("title")}</p>
-      {faqs.map(faq => (
-        <div>
-          {/* ex. Loading: t(faq.question), t(faq.answer) */}
-          <p>Question</p>
-          <p>Answer</p>
-        </div>
-      ))}
+      {faqs[0] ? (
+        faqs.map(faq => (
+          <div key={faq.question}>
+            <p>Question: {faq.question}</p>
+            <p>Answer: {faq.answer}</p>
+          </div>
+        ))
+      ) : (
+        <div>{message}</div>
+      )}
     </>
   );
 };

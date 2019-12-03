@@ -42,7 +42,13 @@
       "title": "This project is sponsored by:",
       "support": "Support this project",
       "support-p": "We’re a volunteer-based project and would love your donation! On the donation page, please choose Los Angeles Brigade and make it in honor of Food Oasis LA with the email address info@foodoasis.la",
-      "donate": "Donate"
+      "donate": "Donate",
+      "subscribe": "Subscribe to our mailing list",
+      "subscribe-text": "Hear the latest from Food Oasis LA!",
+      "subscribe-button": "Subscribe",
+      "questions": "Have a question? Want to help?",
+      "questions-text": "Join us at Hack For LA, Tuesdays at 6pm",
+      "send-a-message": "Send us a message"
     },
     "organizations": {
       "title": "Food Organizations in Los Angeles"

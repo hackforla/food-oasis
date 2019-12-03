@@ -20,6 +20,7 @@ import {
 } from "@material-ui/core";
 import * as stakeholderService from "../services/stakeholder-service";
 import * as categoryService from "../services/category-service";
+import * as esriService from "../services/esri_service";
 
 const styles = theme => ({
   form: {
@@ -50,6 +51,7 @@ const StakeholderEdit = props => {
   const { classes, setToast, match } = props;
   const editId = match.params.id;
   const [categories, setCategories] = useState([]);
+  const [geocodeResults, setGeocodeResults] = useState([]);
   const [originalData, setOriginalData] = useState({
     id: 0,
     name: "",
@@ -91,6 +93,17 @@ const StakeholderEdit = props => {
     };
     fetchData();
   }, [editId]);
+
+  function formatMapAddress(formData) {
+    return `${formData.address1 || ""} ${formData.address2 ||
+      ""} ${formData.city || ""}, ${formData.state || ""} ${formData.zip ||
+      ""}`;
+  }
+
+  const geocode = async formData => {
+    const result = await esriService.geocode(formatMapAddress(formData));
+    setGeocodeResults(result);
+  };
 
   return (
     <Container component="main" maxWidth="sm">
@@ -145,7 +158,8 @@ const StakeholderEdit = props => {
             handleChange,
             handleBlur,
             handleSubmit,
-            isSubmitting
+            isSubmitting,
+            setFieldValue
           }) => (
             <form className={classes.form} noValidate onSubmit={handleSubmit}>
               <Grid container spacing={1}>
@@ -271,6 +285,48 @@ const StakeholderEdit = props => {
                     error={touched.longitude && Boolean(errors.longitude)}
                   />
                 </Grid>
+                <Grid xs={12} style={{ backgroundColor: "#FFF" }}>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => geocode(values)}
+                  >
+                    <Typography>Get Lat/Lon from Address</Typography>
+                  </Button>
+
+                  <div style={{ padding: "0.5em" }}>
+                    {geocodeResults ? (
+                      geocodeResults.map((result, index) => (
+                        <div
+                          style={{
+                            border: "1px solid black",
+                            backgroundColor: "#EEE",
+                            margin: "0.1em",
+                            padding: "0.5em"
+                          }}
+                          key={index}
+                        >
+                          <Typography>{`(${result.location.y}, ${result.location.x})`}</Typography>
+                          <Typography>{`${result.attributes.Match_addr}`}</Typography>
+                          <Typography>{`${result.attributes.Addr_type}`}</Typography>
+                          <Button
+                            variant="outlined"
+                            color="primary"
+                            onClick={() => {
+                              setFieldValue("latitude", result.location.y);
+                              setFieldValue("longitude", result.location.x);
+                              setGeocodeResults([]);
+                            }}
+                          >
+                            Choose
+                          </Button>
+                        </div>
+                      ))
+                    ) : (
+                      <div>No Results</div>
+                    )}
+                  </div>
+                </Grid>
                 <Grid item xs={12}>
                   <TextField
                     variant="outlined"
@@ -369,6 +425,7 @@ const StakeholderEdit = props => {
                     </Select>
                   </FormControl>
                 </Grid>
+
                 <Grid item xs={12}>
                   <Button
                     type="submit"

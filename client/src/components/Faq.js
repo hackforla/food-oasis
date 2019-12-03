@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import * as faqService from "../services/faq-service";
 
+import Container from '@material-ui/core/Container'
+
 const Faq = () => {
   // Load in current FAQs
   // If FAQs need to be updated, go into admin portal
@@ -32,19 +34,19 @@ const Faq = () => {
   }, [i18n.language]);
 
   return (
-    <>
+    <Container maxWidth="md">
       <p>{t("title")}</p>
       {faqs[0] ? (
         faqs.map(faq => (
-          <div key={faq.question}>
-            <p>Question: {faq.question}</p>
+          <details key={faq.question}>
+            <summary>Question: {faq.question}</summary>
             <p>Answer: {faq.answer}</p>
-          </div>
+          </details>
         ))
       ) : (
         <div>{message}</div>
       )}
-    </>
+    </Container>
   );
 };
 

@@ -19,8 +19,8 @@ export const getById = async id => {
 };
 
 // { identifier: "" }
-export const getByIdentifier = async id => {
-  const response = await axios.get(`${baseUrl}/identifier`);
+export const getByIdentifier = async ({ identifier }) => {
+  const response = await axios.get(`${baseUrl}/identifier/${identifier}`);
   return response.data;
 };
 

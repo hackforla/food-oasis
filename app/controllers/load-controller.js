@@ -6,7 +6,7 @@ const { json2csv } = require('json-2-csv');
 // and scrapers.
 
 const getLaplFoodResources = async (req, res) => {
-	laplFoodResourcesService
+		laplFoodResourcesService
 		.selectAll()
 		.then(async (resp) => {
 			// Give preference to download via csv, so non-devcelopers

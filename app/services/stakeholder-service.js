@@ -6,17 +6,23 @@ const selectAll = async (name, categoryIds, latitude, longitude, distance) => {
   const nameClause = "'%" + name + "%'";
   const sql = `
     select s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
-      s.phone, s.latitude, s.longitude, s.website, s.active, s.notes
+      s.phone, s.latitude, s.longitude, s.website, s.active, s.notes, 
+      (select array(select row_to_json(row) 
+        from (
+          select stakeholder_id, day_of_week, open, close, week_of_month from stakeholder_schedule where stakeholder_id = 3028
+        ) row
+      )) as hours
     from stakeholder s
     left join stakeholder_category sc on s.id = sc.stakeholder_id
     left join category c on sc.category_id = c.id 
+    left join stakeholder_schedule ss on ss.stakeholder_id = s.id
     where c.id in ${categoryClause}
     and s.name ilike ${nameClause} 
     order by s.name
   `;
   const stakeholderResult = await pool.query(sql);
   let stakeholders = [];
-  stakeholderResult.rows.forEach(row => {
+  stakeholderResult.rows.forEach(async row => {
     stakeholders.push({
       id: row.id,
       name: row.name || "",
@@ -31,7 +37,8 @@ const selectAll = async (name, categoryIds, latitude, longitude, distance) => {
       website: row.website || "",
       active: row.active || true,
       notes: row.notes || "",
-      categories: []
+      categories: [],
+      hours: row.hours
     });
   });
 

@@ -15,7 +15,6 @@ const selectAll = async (name, categoryIds, latitude, longitude, distance) => {
     from stakeholder s
     left join stakeholder_category sc on s.id = sc.stakeholder_id
     left join category c on sc.category_id = c.id 
-    left join stakeholder_schedule ss on ss.stakeholder_id = s.id
     where c.id in ${categoryClause}
     and s.name ilike ${nameClause} 
     order by s.name

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import * as faqService from "../services/faq-service";
+import FaqItem from "./FaqItem";
 
-import Container from '@material-ui/core/Container'
+import Container from "@material-ui/core/Container";
 
 const Faq = () => {
   // Load in current FAQs
@@ -37,12 +38,7 @@ const Faq = () => {
     <Container maxWidth="md">
       <p>{t("title")}</p>
       {faqs[0] ? (
-        faqs.map(faq => (
-          <details key={faq.question}>
-            <summary>Question: {faq.question}</summary>
-            <p>Answer: {faq.answer}</p>
-          </details>
-        ))
+        faqs.map(faq => <FaqItem faq={faq} key={faq.question} />)
       ) : (
         <div>{message}</div>
       )}

@@ -22,7 +22,7 @@ const selectAll = async (name, categoryIds, latitude, longitude, distance) => {
   `;
   const stakeholderResult = await pool.query(sql);
   let stakeholders = [];
-  stakeholderResult.rows.forEach(async row => {
+  stakeholderResult.rows.forEach(row => {
     stakeholders.push({
       id: row.id,
       name: row.name || "",

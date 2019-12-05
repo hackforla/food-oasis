@@ -1,8 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import Trix from "trix";
+import "trix/dist/trix.css";
 
 const Wysiwyg = ({ content, setContent }) => {
   const [textInput, setTextInput] = useState(content);
+  console.log(content)
+  console.log(textInput)
   const trixInput = useRef();
 
   useEffect(() => {

@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { withRouter } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import * as faqService from "../services/faq-service";
 import { Formik } from "formik";
 import * as Yup from "yup";
+
+// check out CKEditor and React Quill for WYSIWYG Editor
 
 const FaqEdit = ({ match }) => {
   const [currentFaq, setCurrentFaq] = useState([
@@ -56,23 +58,25 @@ const FaqEdit = ({ match }) => {
           } = props;
           console.log(values);
           return (
-            <form onSubmit={handleSubmit}>
-              <label htmlFor="question">Question</label>
-              <input
-                id="question"
-                placeholder="Enter your question..."
-                type="text"
-                value={values.question}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-              {errors.question && touched.question && (
-                <div>{errors.question}</div>
-              )}
-              <button type="submit" disabled={isSubmitting}>
-                Update
-              </button>
-            </form>
+            <div>
+              <form onSubmit={handleSubmit}>
+                <label htmlFor="question">Question</label>
+                <input
+                  id="question"
+                  placeholder="Enter your question..."
+                  type="text"
+                  value={values.question}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.question && touched.question && (
+                  <div>{errors.question}</div>
+                )}
+                <button type="submit" disabled={isSubmitting}>
+                  Update
+                </button>
+              </form>
+            </div>
           );
         }}
       </Formik>

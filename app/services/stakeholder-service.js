@@ -115,7 +115,11 @@ const getStakeholderCategories = async stakeholderId => {
 };
 
 const selectById = async id => {
-  const sql = `select s.* 
+  const sql = `select s.* , (select array(select row_to_json(row) 
+  from (
+    select day_of_week, open, close, week_of_month from stakeholder_schedule where stakeholder_id = ${id}
+  ) row
+)) as hours
     from stakeholder s 
     where s.id = ${id}`;
   const result = await pool.query(sql);
@@ -134,7 +138,8 @@ const selectById = async id => {
     website: row.website || "",
     active: row.active || true,
     notes: row.notes || "",
-    categories: []
+    categories: [],
+    hours: row.hours
   };
 
   // unfortunately, pg doesn't support multiple result sets, so

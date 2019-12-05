@@ -21,6 +21,8 @@ import {
 import * as stakeholderService from "../services/stakeholder-service";
 import * as categoryService from "../services/category-service";
 import * as esriService from "../services/esri_service";
+import OpenTimeForm from './OpenTimeForm'
+
 
 const styles = theme => ({
   form: {
@@ -51,6 +53,7 @@ const StakeholderEdit = props => {
   const { classes, setToast, match } = props;
   const editId = match.params.id;
   const [categories, setCategories] = useState([]);
+  const [openTimes, setOpenTimes] = useState([])
   const [geocodeResults, setGeocodeResults] = useState([]);
   const [originalData, setOriginalData] = useState({
     id: 0,
@@ -66,7 +69,8 @@ const StakeholderEdit = props => {
     active: true,
     website: "",
     notes: "",
-    selectedCategoryIds: []
+    selectedCategoryIds: [],
+    hours: []
   });
 
   useEffect(() => {
@@ -104,7 +108,7 @@ const StakeholderEdit = props => {
     const result = await esriService.geocode(formatMapAddress(formData));
     setGeocodeResults(result);
   };
-
+  console.log('original', originalData)
   return (
     <Container component="main" maxWidth="sm">
       <CssBaseline />
@@ -326,6 +330,9 @@ const StakeholderEdit = props => {
                       <div>No Results</div>
                     )}
                   </div>
+                </Grid>
+                <Grid item xs={12}>
+                  <OpenTimeForm openTimes={openTimes} setOpenTimes={setOpenTimes}/>
                 </Grid>
                 <Grid item xs={12}>
                   <TextField

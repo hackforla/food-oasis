@@ -76,7 +76,7 @@ const StakeholderEdit = props => {
     verifiedDate: "",
     verifiedUser: "",
     selectedCategoryIds: [],
-    schedules: []
+    hours: []
   });
 
   useEffect(() => {
@@ -472,8 +472,8 @@ const StakeholderEdit = props => {
                   </FormControl>
                 </Grid>
                 <Grid item xs={12}>
-                  {values.schedules ? (
-                    <pre>{JSON.stringify(values.schedules, null, 2)}</pre>
+                  {values.hours ? (
+                    <pre>{JSON.stringify(values.hours, null, 2)}</pre>
                   ) : null}
                 </Grid>
                 <Grid item xs={12}>

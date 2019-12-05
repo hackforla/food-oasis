@@ -8,20 +8,20 @@ const selectAll = async (name, categoryIds, latitude, longitude, distance) => {
     select s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
       s.phone, s.latitude, s.longitude, s.website,  s.notes,
       (select array(select row_to_json(row) 
-      from (
-        select day_of_week, open, close, week_of_month 
-        from stakeholder_schedule 
-        where stakeholder_id = s.id
-      ) row
-    )) as hours,
-    (select array(select row_to_json(category_row) 
-      from (
-        select c.id, c.name 
-        from category c 
-          join stakeholder_category sc on c.id = sc.category_id 
-        where sc.stakeholder_id = s.id 
-      ) category_row
-    )) as categories
+        from (
+          select day_of_week, open, close, week_of_month 
+          from stakeholder_schedule 
+          where stakeholder_id = s.id
+        ) row
+      )) as hours,
+      (select array(select row_to_json(category_row) 
+        from (
+          select c.id, c.name 
+          from category c 
+            join stakeholder_category sc on c.id = sc.category_id 
+          where sc.stakeholder_id = s.id 
+        ) category_row
+      )) as categories,
       s.created_date, s.created_login_id, 
       s.modified_date, s.modified_login_id,
       s.verified_date, s.verified_login_id,
@@ -161,15 +161,15 @@ const selectById = async id => {
         from stakeholder_schedule 
         where stakeholder_id = s.id
       ) row
-    )) as hours,
-    (select array(select row_to_json(category_row) 
-      from (
-        select c.id, c.name 
-        from category c
-          join stakeholder_category sc on c.id = sc.category_id 
-        where sc.stakeholder_id = s.id 
-      ) category_row
-    )) as categories
+      )) as hours,
+      (select array(select row_to_json(category_row) 
+        from (
+          select c.id, c.name 
+          from category c
+            join stakeholder_category sc on c.id = sc.category_id 
+          where sc.stakeholder_id = s.id 
+        ) category_row
+      )) as categories,
       s.created_date, s.created_login_id, 
       s.modified_date, s.modified_login_id,
       s.verified_date, s.verified_login_id,

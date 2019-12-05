@@ -235,6 +235,8 @@ node_modules
 
 .env
 
+/.vscode
+
 # End of project-specific exclusions
 
 # Remove package-lock

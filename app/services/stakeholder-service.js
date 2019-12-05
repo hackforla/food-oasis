@@ -7,6 +7,21 @@ const selectAll = async (name, categoryIds, latitude, longitude, distance) => {
   const sql = `
     select s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
       s.phone, s.latitude, s.longitude, s.website,  s.notes,
+      (select array(select row_to_json(row) 
+      from (
+        select day_of_week, open, close, week_of_month 
+        from stakeholder_schedule 
+        where stakeholder_id = s.id
+      ) row
+    )) as hours,
+    (select array(select row_to_json(category_row) 
+      from (
+        select c.id, c.name 
+        from category c 
+          join stakeholder_category sc on c.id = sc.category_id 
+        where sc.stakeholder_id = s.id 
+      ) category_row
+    )) as categories
       s.created_date, s.created_login_id, 
       s.modified_date, s.modified_login_id,
       s.verified_date, s.verified_login_id,
@@ -52,31 +67,9 @@ const selectAll = async (name, categoryIds, latitude, longitude, distance) => {
       createdUser: row.created_user || "",
       modifiedUser: row.modified_user || "",
       verifiedUser: row.verified_user || "",
-      categories: [],
-      schedules: []
+      categories: row.categories,
+      hours: row.hours
     });
-  });
-
-  // unfortunately, pg doesn't support multiple result sets, so
-  // we have to hit the server a second time to get stakeholders' categories
-  const stakeholderCategoryResult = await getAllStakeholderCategories(
-    categoryClause,
-    nameClause
-  );
-  stakeholderCategories = [];
-  stakeholderCategoryResult.rows.forEach(stakeholderCategory => {
-    const parent = stakeholders.find(
-      stakeholder => stakeholder.id == stakeholderCategory.stakeholder_id
-    );
-    const category = {
-      id: stakeholderCategory.category_id,
-      name: stakeholderCategory.name
-    };
-    if (parent && parent.categories) {
-      parent.categories.push(category);
-    } else {
-      parent.categories = [category];
-    }
   });
 
   // Should move distance calc into stored proc
@@ -101,30 +94,6 @@ const selectAll = async (name, categoryIds, latitude, longitude, distance) => {
       stakeholder => stakeholder.distance <= distance
     );
   }
-
-  // and a third query to get schedules
-  const stakeholderScheduleResult = await getAllStakeholderSchedules(
-    categoryClause,
-    nameClause
-  );
-  stakeholderCategories = [];
-  stakeholderScheduleResult.rows.forEach(stakeholderSchedule => {
-    const parent = stakeholders.find(
-      stakeholder => stakeholder.id == stakeholderSchedule.stakeholder_id
-    );
-    const schedule = {
-      dayOfWeek: stakeholderSchedule.day_of_week,
-      open: stakeholderSchedule.open,
-      close: stakeholderSchedule.close,
-      weekOfMonth: stakeholderSchedule.week_of_month,
-      seasonId: stakeholderSchedule.season_id
-    };
-    if (parent && parent.schedules) {
-      parent.schedules.push(schedule);
-    } else {
-      parent.schedules = [schedule];
-    }
-  });
 
   return stakeholders;
 };
@@ -186,6 +155,21 @@ const selectById = async id => {
   const sql = `select 
       s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
       s.phone, s.latitude, s.longitude, s.website,  s.notes,
+      (select array(select row_to_json(row) 
+      from (
+        select day_of_week, open, close, week_of_month 
+        from stakeholder_schedule 
+        where stakeholder_id = s.id
+      ) row
+    )) as hours,
+    (select array(select row_to_json(category_row) 
+      from (
+        select c.id, c.name 
+        from category c
+          join stakeholder_category sc on c.id = sc.category_id 
+        where sc.stakeholder_id = s.id 
+      ) category_row
+    )) as categories
       s.created_date, s.created_login_id, 
       s.modified_date, s.modified_login_id,
       s.verified_date, s.verified_login_id,
@@ -225,45 +209,12 @@ const selectById = async id => {
     createdUser: row.created_user || "",
     modifiedUser: row.modified_user || "",
     verifiedUser: row.verified_user || "",
-    categories: [],
-    schedules: []
+    categories: row.categories,
+    hours: row.hours
   };
-
-  // unfortunately, pg doesn't support multiple result sets, so
-  // we have to hit the server a second time to get stakeholders' categories
-  const stakeholderCategoryResult = await getStakeholderCategories(id);
-  stakeholderCategories = [];
-  stakeholderCategoryResult.rows.forEach(stakeholderCategory => {
-    const category = {
-      id: stakeholderCategory.category_id,
-      name: stakeholderCategory.name
-    };
-    if (stakeholder && stakeholder.categories) {
-      stakeholder.categories.push(category);
-    } else {
-      stakeholder.categories = [category];
-    }
-  });
 
   // Don't have a distance, since we didn't specify origin
   stakeholder.distance = null;
-
-  // Third query for schedule
-  const stakeholderSchduleResult = await getStakeholderSchedules(id);
-  stakeholderSchduleResult.rows.forEach(stakeholderSchedule => {
-    const schedule = {
-      dayOfWeek: stakeholderSchedule.day_of_week,
-      open: stakeholderSchedule.open,
-      close: stakeholderSchedule.close,
-      weekOfMonth: stakeholderSchedule.week_of_month,
-      seasonId: stakeholderSchedule.season_id
-    };
-    if (stakeholder && stakeholder.schedules) {
-      stakeholder.schedules.push(schedule);
-    } else {
-      stakeholder.schedules = [schedule];
-    }
-  });
 
   return stakeholder;
 };

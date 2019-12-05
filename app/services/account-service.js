@@ -77,9 +77,9 @@ const register = async model => {
   await hashPassword(model);
   try {
     const sql = `insert into login (first_name, last_name, email, 
-        password_hash, email_confirmed ) 
+        password_hash, email_confirmed, is_admin ) 
         values ('${firstName}', '${lastName}', '${email}', 
-        '${model.passwordHash}', false ) returning id`;
+        '${model.passwordHash}', false, true ) returning id`;
     const insertResult = await pool.query(sql);
     result = {
       isSuccess: true,
@@ -242,7 +242,7 @@ const requestResetPasswordConfirmation = async (email, result) => {
 const resetPassword = async ({ token, password }) => {
   const sql = `select email, date_created
     from security_token where token = '${token}'`;
-    const now = moment();
+  const now = moment();
   try {
     const sqlResult = await pool.query(sql);
 

@@ -22,7 +22,7 @@ import * as stakeholderService from "../services/stakeholder-service";
 import * as categoryService from "../services/category-service";
 import * as esriService from "../services/esri_service";
 import OpenTimeForm from './OpenTimeForm'
-
+import moment from "moment";
 
 const styles = theme => ({
   form: {
@@ -50,7 +50,7 @@ const MenuProps = {
 };
 
 const StakeholderEdit = props => {
-  const { classes, setToast, match } = props;
+  const { classes, setToast, match, user } = props;
   const editId = match.params.id;
   const [categories, setCategories] = useState([]);
   const [openTimes, setOpenTimes] = useState([])
@@ -66,9 +66,17 @@ const StakeholderEdit = props => {
     phone: "",
     latitude: "",
     longitude: "",
-    active: true,
+    inactive: false,
     website: "",
     notes: "",
+    requirements: "",
+    adminNotes: "",
+    createdDate: "",
+    createdUser: "",
+    modifiedDate: "",
+    modifiedUser: "",
+    verifiedDate: "",
+    verifiedUser: "",
     selectedCategoryIds: [],
     hours: []
   });
@@ -122,7 +130,7 @@ const StakeholderEdit = props => {
           onSubmit={(values, { setSubmitting, setFieldValue }) => {
             if (values.id) {
               return stakeholderService
-                .put(values)
+                .put({ ...values, loginId: user.id })
                 .then(response => {
                   setToast({
                     message: "Update successful."
@@ -137,7 +145,7 @@ const StakeholderEdit = props => {
                 });
             } else {
               return stakeholderService
-                .post(values)
+                .post({ ...values, loginId: user.id })
                 .then(response => {
                   setToast({
                     message: "Insert successful."
@@ -368,19 +376,55 @@ const StakeholderEdit = props => {
                   />
                 </Grid>
                 <Grid item xs={12}>
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    name="requirements"
+                    label="Requirements"
+                    type="text"
+                    multiline
+                    rows={2}
+                    rowsMax={12}
+                    value={values.requirements}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={touched.requirements ? errors.requirements : ""}
+                    error={touched.requirements && Boolean(errors.requirements)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    name="adminNotes"
+                    label="Administrator Notes"
+                    type="text"
+                    multiline
+                    rows={2}
+                    rowsMax={12}
+                    value={values.adminNotes}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={touched.adminNotes ? errors.adminNotes : ""}
+                    error={touched.adminNotes && Boolean(errors.adminNotes)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
                   <FormControlLabel
                     control={
                       <Checkbox
                         margin="normal"
-                        name="active"
-                        label="Active"
+                        name="inactive"
+                        label="Inactive"
                         value="1"
-                        checked={values.active}
+                        checked={values.inactive}
                         onChange={handleChange}
                         onBlur={handleBlur}
                       />
                     }
-                    label="Active"
+                    label="Inactive"
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -432,7 +476,11 @@ const StakeholderEdit = props => {
                     </Select>
                   </FormControl>
                 </Grid>
-
+                <Grid item xs={12}>
+                  {values.hours ? (
+                    <pre>{JSON.stringify(values.hours, null, 2)}</pre>
+                  ) : null}
+                </Grid>
                 <Grid item xs={12}>
                   <Button
                     type="submit"
@@ -447,6 +495,36 @@ const StakeholderEdit = props => {
                 </Grid>
                 <Grid item xs={12}>
                   <div>Id: {values.id} </div>
+                  <div>
+                    Created:{" "}
+                    {(values.createdDate
+                      ? moment(values.createdDate).format(
+                          "MM/DD/YYYY hh:mm:ss a"
+                        )
+                      : "") +
+                      " " +
+                      values.createdUser}
+                  </div>
+                  <div>
+                    Modified:{" "}
+                    {(values.modifiedDate
+                      ? moment(values.modifiedDate).format(
+                          "MM/DD/YYYY hh:mm:ss a"
+                        )
+                      : "") +
+                      " " +
+                      values.modifiedUser}
+                  </div>
+                  <div>
+                    Verified:{" "}
+                    {(values.verifiedDate
+                      ? moment(values.verifiedDate).format(
+                          "MM/DD/YYYY hh:mm:ss a"
+                        )
+                      : "") +
+                      " " +
+                      values.verifiedUser}
+                  </div>
                 </Grid>
               </Grid>
             </form>

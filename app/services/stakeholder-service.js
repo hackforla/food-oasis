@@ -6,20 +6,35 @@ const selectAll = async (name, categoryIds, latitude, longitude, distance) => {
   const nameClause = "'%" + name + "%'";
   const sql = `
     select s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
-      s.phone, s.latitude, s.longitude, s.website, s.active, s.notes, 
+      s.phone, s.latitude, s.longitude, s.website,  s.notes,
       (select array(select row_to_json(row) 
         from (
-          select day_of_week, open, close, week_of_month from stakeholder_schedule where stakeholder_id = s.id
+          select day_of_week, open, close, week_of_month 
+          from stakeholder_schedule 
+          where stakeholder_id = s.id
         ) row
       )) as hours,
       (select array(select row_to_json(category_row) 
         from (
-          select c.id, c.name from category c left join stakeholder_category sc on c.id = sc.category_id where sc.stakeholder_id = s.id 
+          select c.id, c.name 
+          from category c 
+            join stakeholder_category sc on c.id = sc.category_id 
+          where sc.stakeholder_id = s.id 
         ) category_row
-      )) as categories
+      )) as categories,
+      s.created_date, s.created_login_id, 
+      s.modified_date, s.modified_login_id,
+      s.verified_date, s.verified_login_id,
+      s.requirements, s.admin_notes, s.inactive,
+      L1.email as created_user,
+      L2.email as modified_user,
+      L3.email as verified_user
     from stakeholder s
     left join stakeholder_category sc on s.id = sc.stakeholder_id
     left join category c on sc.category_id = c.id 
+    left join login L1 on s.created_login_id = L1.id
+    left join login L2 on s.modified_login_id = L2.id
+    left join login L3 on s.verified_login_id = L3.id
     where c.id in ${categoryClause}
     and s.name ilike ${nameClause} 
     order by s.name
@@ -39,34 +54,23 @@ const selectAll = async (name, categoryIds, latitude, longitude, distance) => {
       latitude: row.latitude ? Number(row.latitude) : null,
       longitude: row.longitude ? Number(row.longitude) : null,
       website: row.website || "",
-      active: row.active || true,
       notes: row.notes || "",
+      createdDate: row.created_date,
+      createdLoginId: row.created_login_id,
+      modifiedDate: row.modified_date,
+      modifiedLoginId: row.modified_login_id,
+      verifiedDate: row.verified_date,
+      verfiedLoginId: row.verified_login_id,
+      requirements: row.requirements || "",
+      adminNotes: row.admin_notes || "",
+      inactive: row.inactive,
+      createdUser: row.created_user || "",
+      modifiedUser: row.modified_user || "",
+      verifiedUser: row.verified_user || "",
       categories: row.categories,
       hours: row.hours
     });
   });
-
-  // unfortunately, pg doesn't support multiple result sets, so
-  // we have to hit the server a second time to get stakeholders' categories
-  // const stakeholderCategoryResult = await getAllStakeholderCategories(
-  //   categoryClause,
-  //   nameClause
-  // );
-  // stakeholderCategories = [];
-  // stakeholderCategoryResult.rows.forEach(stakeholderCategory => {
-  //   const parent = stakeholders.find(
-  //     stakeholder => stakeholder.id == stakeholderCategory.stakeholder_id
-  //   );
-  //   const category = {
-  //     id: stakeholderCategory.category_id,
-  //     name: stakeholderCategory.name
-  //   };
-  //   if (parent && parent.categories) {
-  //     parent.categories.push(category);
-  //   } else {
-  //     parent.categories = [category];
-  //   }
-  // });
 
   // Should move distance calc into stored proc
   stakeholders.forEach(stakeholder => {
@@ -105,6 +109,24 @@ const getAllStakeholderCategories = async (categoryClause, nameClause) => {
   return stakeholderCategoriesResult;
 };
 
+const getAllStakeholderSchedules = async (categoryClause, nameClause) => {
+  const sql = `select 
+    ss.stakeholder_id, ss.day_of_week, ss.open, ss.close, 
+    ss.week_of_month, ss.season_id, 
+    se.name, se.start_date, se.end_date, dow.display_order
+  from stakeholder_category sc 
+  join category c on sc.category_id = c.id
+  join stakeholder s on s.id = sc.stakeholder_id
+  join stakeholder_schedule ss on s.id = ss.stakeholder_id
+  left join stakeholder_season se on ss.season_id = se.id
+  left join day_of_week dow on ss.day_of_week = dow.name
+  where c.id in ${categoryClause}
+  and s.name ilike ${nameClause}
+  order by s.id, dow.display_order `;
+  const stakeholderCategoriesResult = await pool.query(sql);
+  return stakeholderCategoriesResult;
+};
+
 const getStakeholderCategories = async stakeholderId => {
   const sql = `select sc.stakeholder_id, sc.category_id, c.name
   from stakeholder_category sc 
@@ -114,9 +136,51 @@ const getStakeholderCategories = async stakeholderId => {
   return stakeholderCategoriesResult;
 };
 
+const getStakeholderSchedules = async stakeholderId => {
+  const sql = `select 
+    ss.stakeholder_id, ss.day_of_week, ss.open, ss.close, 
+    ss.week_of_month, ss.season_id, 
+    se.name, se.start_date, se.end_date,
+    dow.display_order
+  from stakeholder_schedule ss
+  left join stakeholder_season se on ss.season_id = se.id
+  left join day_of_week dow on ss.day_of_week = dow.name
+  where ss.stakeholder_id = ${stakeholderId}
+  order by dow.display_order `;
+  const stakeholderCategoriesResult = await pool.query(sql);
+  return stakeholderCategoriesResult;
+};
+
 const selectById = async id => {
-  const sql = `select s.* 
+  const sql = `select 
+      s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
+      s.phone, s.latitude, s.longitude, s.website,  s.notes,
+      (select array(select row_to_json(row) 
+      from (
+        select day_of_week, open, close, week_of_month 
+        from stakeholder_schedule 
+        where stakeholder_id = s.id
+      ) row
+      )) as hours,
+      (select array(select row_to_json(category_row) 
+        from (
+          select c.id, c.name 
+          from category c
+            join stakeholder_category sc on c.id = sc.category_id 
+          where sc.stakeholder_id = s.id 
+        ) category_row
+      )) as categories,
+      s.created_date, s.created_login_id, 
+      s.modified_date, s.modified_login_id,
+      s.verified_date, s.verified_login_id,
+      s.requirements, s.admin_notes, s.inactive,
+      L1.email as created_user,
+      L2.email as modified_user,
+      L3.email as verified_user
     from stakeholder s 
+    left join login L1 on s.created_login_id = L1.id
+    left join login L2 on s.modified_login_id = L2.id
+    left join login L3 on s.verified_login_id = L3.id
     where s.id = ${id}`;
   const result = await pool.query(sql);
   const row = result.rows[0];
@@ -132,29 +196,26 @@ const selectById = async id => {
     latitude: row.latitude ? Number(row.latitude) : null,
     longitude: row.longitude ? Number(row.longitude) : null,
     website: row.website || "",
-    active: row.active || true,
+    createdDate: row.created_date,
     notes: row.notes || "",
-    categories: []
+    createdLoginId: row.created_login_id,
+    modifiedDate: row.modified_date,
+    modifiedLoginId: row.modified_login_id,
+    verifiedDate: row.verified_date,
+    verfiedLoginId: row.verified_login_id,
+    requirements: row.requirements || "",
+    adminNotes: row.admin_notes || "",
+    inactive: row.inactive,
+    createdUser: row.created_user || "",
+    modifiedUser: row.modified_user || "",
+    verifiedUser: row.verified_user || "",
+    categories: row.categories,
+    hours: row.hours
   };
-
-  // unfortunately, pg doesn't support multiple result sets, so
-  // we have to hit the server a second time to get stakeholders' categories
-  const stakeholderCategoryResult = await getStakeholderCategories(id);
-  stakeholderCategories = [];
-  stakeholderCategoryResult.rows.forEach(stakeholderCategory => {
-    const category = {
-      id: stakeholderCategory.category_id,
-      name: stakeholderCategory.name
-    };
-    if (stakeholder && stakeholder.categories) {
-      stakeholder.categories.push(category);
-    } else {
-      stakeholder.categories = [category];
-    }
-  });
 
   // Don't have a distance, since we didn't specify origin
   stakeholder.distance = null;
+
   return stakeholder;
 };
 
@@ -170,23 +231,28 @@ const insert = async model => {
     latitude,
     longitude,
     website,
-    active,
+    inactive,
     notes,
-    selectedCategoryIds
+    requirements,
+    adminNotes,
+    selectedCategoryIds,
+    schedules,
+    loginId
   } = model;
   try {
     const sql = `insert into stakeholder 
     (name, address_1, address_2, 
       city, state, zip, 
       phone, latitude, longitude, 
-      website, active, notes) 
+      website, inactive, notes, requirements, adminNotes, created_login_id) 
     values (
     ${toSqlString(name)}, ${toSqlString(address1)}, ${toSqlString(address2)}, 
     ${toSqlString(city)}, ${toSqlString(state)}, ${toSqlString(zip)}, 
     ${toSqlString(phone)}, 
     ${toSqlNumeric(latitude)}, ${toSqlNumeric(longitude)}, 
-    ${toSqlString(website)}, ${toSqlBoolean(active)}, 
-    ${toSqlString(notes)}) returning id`;
+    ${toSqlString(website)}, ${toSqlBoolean(inactive)}, 
+    ${toSqlString(notes)}, ${toSqlString(requirements)},
+    ${toSqlString(adminNotes)}, ${toSqlNumeric(loginId)}) returning id`;
     const stakeholderResult = await pool.query(sql);
     const retObject = stakeholderResult.rows[0];
     const id = retObject.id;
@@ -218,9 +284,13 @@ const update = async model => {
     latitude,
     longitude,
     website,
-    active,
+    inactive,
     notes,
-    selectedCategoryIds
+    requirements,
+    adminNotes,
+    selectedCategoryIds,
+    schedules,
+    loginId
   } = model;
   const sql = `update stakeholder
                set name = ${toSqlString(name)}, 
@@ -233,8 +303,12 @@ const update = async model => {
                latitude = ${toSqlNumeric(latitude)}, 
                longitude = ${toSqlNumeric(longitude)}, 
                website = ${toSqlString(website)}, 
-               active = ${toSqlBoolean(active)}, 
-               notes = ${toSqlString(notes)}
+               inactive = ${toSqlBoolean(inactive)}, 
+               notes = ${toSqlString(notes)},
+               requirements = ${toSqlString(requirements)},
+               admin_notes = ${toSqlString(adminNotes)},
+               modified_login_id = ${toSqlNumeric(loginId)},
+               modified_date = CURRENT_TIMESTAMP
               where id = ${id}`;
   const result = await pool.query(sql);
 

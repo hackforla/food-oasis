@@ -53,7 +53,6 @@ const StakeholderEdit = props => {
   const { classes, setToast, match, user } = props;
   const editId = match.params.id;
   const [categories, setCategories] = useState([]);
-  const [openTimes, setOpenTimes] = useState([])
   const [geocodeResults, setGeocodeResults] = useState([]);
   const [originalData, setOriginalData] = useState({
     id: 0,
@@ -173,6 +172,7 @@ const StakeholderEdit = props => {
             isSubmitting,
             setFieldValue
           }) => (
+            
             <form className={classes.form} noValidate onSubmit={handleSubmit}>
               <Grid container spacing={1}>
                 <Grid item xs={12}>
@@ -340,7 +340,7 @@ const StakeholderEdit = props => {
                   </div>
                 </Grid>
                 <Grid item xs={12}>
-                  <OpenTimeForm openTimes={openTimes} setOpenTimes={setOpenTimes}/>
+                  <OpenTimeForm handleChange={handleChange} originalData={originalData.hours}/>
                 </Grid>
                 <Grid item xs={12}>
                   <TextField

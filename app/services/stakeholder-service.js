@@ -157,7 +157,7 @@ const selectById = async id => {
       s.phone, s.latitude, s.longitude, s.website,  s.notes,
       (select array(select row_to_json(row) 
       from (
-        select day_of_week, open, close, week_of_month 
+        select day_of_week as "dayOfWeek", open, close, week_of_month as "weekOfMonth" 
         from stakeholder_schedule 
         where stakeholder_id = s.id
       ) row

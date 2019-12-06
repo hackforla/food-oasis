@@ -21,6 +21,7 @@ import {
 import * as stakeholderService from "../services/stakeholder-service";
 import * as categoryService from "../services/category-service";
 import * as esriService from "../services/esri_service";
+import OpenTimeForm from './OpenTimeForm'
 import moment from "moment";
 
 const styles = theme => ({
@@ -114,7 +115,7 @@ const StakeholderEdit = props => {
     const result = await esriService.geocode(formatMapAddress(formData));
     setGeocodeResults(result);
   };
-
+  console.log('original', originalData)
   return (
     <Container component="main" maxWidth="sm">
       <CssBaseline />
@@ -171,6 +172,7 @@ const StakeholderEdit = props => {
             isSubmitting,
             setFieldValue
           }) => (
+            
             <form className={classes.form} noValidate onSubmit={handleSubmit}>
               <Grid container spacing={1}>
                 <Grid item xs={12}>
@@ -336,6 +338,9 @@ const StakeholderEdit = props => {
                       <div>No Results</div>
                     )}
                   </div>
+                </Grid>
+                <Grid item xs={12}>
+                  <OpenTimeForm handleChange={handleChange} originalData={originalData.hours}/>
                 </Grid>
                 <Grid item xs={12}>
                   <TextField

@@ -16,7 +16,7 @@ export const search = async searchParams => {
     params: searchParams
   });
   let stakeholders = response.data;
-
+  console.log('stakeholders', stakeholders)
   return stakeholders;
 };
 

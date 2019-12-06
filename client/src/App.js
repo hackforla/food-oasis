@@ -88,7 +88,7 @@ function App() {
                 <StakeholdersContainer />
               </Route>
               <Route path="/stakeholderedit/:id?">
-                <StakeholderEdit setToast={setToast} />
+                <StakeholderEdit setToast={setToast} user={user} />
               </Route>
               <Route path="/donate">
                 <Donate />

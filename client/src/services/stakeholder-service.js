@@ -16,7 +16,7 @@ export const search = async searchParams => {
     params: searchParams
   });
   let stakeholders = response.data;
-
+  console.log("stakeholders", stakeholders);
   return stakeholders;
 };
 
@@ -31,9 +31,19 @@ export const post = async stakeholder => {
   return response.data;
 };
 
-// edit user-created job
 export const put = async stakeholder => {
   const response = await axios.put(`${baseUrl}/${stakeholder.id}`, stakeholder);
+  return response.data;
+};
+
+// id = stakeholderId, setVerified = true to verify data, false to un-verify,
+// loginId is user.id of logged in user
+export const verify = async (id, setVerified, loginId) => {
+  const response = await axios.put(`${baseUrl}/${id}/verify`, {
+    id,
+    setVerified,
+    loginId
+  });
   return response.data;
 };
 

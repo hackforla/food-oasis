@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom";
 import { Formik } from "formik";
 import {
   withStyles,
+  Box,
   Button,
   Checkbox,
   Container,
@@ -21,6 +22,10 @@ import {
 import * as stakeholderService from "../services/stakeholder-service";
 import * as categoryService from "../services/category-service";
 import * as esriService from "../services/esri_service";
+import OpenTimeForm from "./OpenTimeForm";
+import SaveButton from "./SaveButton";
+import CancelButton from "./CancelButton";
+import VerifyButton from "./VerifyButton";
 import moment from "moment";
 
 const styles = theme => ({
@@ -31,9 +36,6 @@ const styles = theme => ({
   formControl: {
     margin: theme.spacing(1),
     minWidth: 120
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2)
   }
 });
 
@@ -82,8 +84,11 @@ const StakeholderEdit = props => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const allCategories = await categoryService.getAll();
-        setCategories(allCategories);
+        const categories = await categoryService.getAll();
+        const activeCategories = categories.filter(
+          category => !category.inactive
+        );
+        setCategories(activeCategories);
 
         if (editId) {
           const stakeholder = await stakeholderService.getById(editId);
@@ -104,6 +109,14 @@ const StakeholderEdit = props => {
     fetchData();
   }, [editId]);
 
+  const cancel = () => {
+    props.history.goBack();
+  };
+
+  const verify = setVerify => {
+    stakeholderService.verify(editId, setVerify, user.id);
+  };
+
   function formatMapAddress(formData) {
     return `${formData.address1 || ""} ${formData.address2 ||
       ""} ${formData.city || ""}, ${formData.state || ""} ${formData.zip ||
@@ -114,9 +127,9 @@ const StakeholderEdit = props => {
     const result = await esriService.geocode(formatMapAddress(formData));
     setGeocodeResults(result);
   };
-
+  console.log("original", originalData);
   return (
-    <Container component="main" maxWidth="sm">
+    <Container component="main" maxWidth="lg">
       <CssBaseline />
       <div className={classes.paper}>
         <Typography component="h1" variant="h5">
@@ -265,6 +278,21 @@ const StakeholderEdit = props => {
                     error={touched.zip && Boolean(errors.zip)}
                   />
                 </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    name="phone"
+                    label="Phone"
+                    type="text"
+                    value={values.phone}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={touched.phone ? errors.phone : ""}
+                    error={touched.phone && Boolean(errors.phone)}
+                  />
+                </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
                     variant="outlined"
@@ -295,7 +323,7 @@ const StakeholderEdit = props => {
                     error={touched.longitude && Boolean(errors.longitude)}
                   />
                 </Grid>
-                <Grid xs={12} style={{ backgroundColor: "#FFF" }}>
+                <Grid item style={{ backgroundColor: "#FFF" }}>
                   <Button
                     variant="outlined"
                     color="primary"
@@ -336,6 +364,12 @@ const StakeholderEdit = props => {
                       <div>No Results</div>
                     )}
                   </div>
+                </Grid>
+                <Grid item xs={12}>
+                  <OpenTimeForm
+                    handleChange={handleChange}
+                    originalData={originalData.hours}
+                  />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
@@ -471,55 +505,81 @@ const StakeholderEdit = props => {
                     </Select>
                   </FormControl>
                 </Grid>
-                <Grid item xs={12}>
-                  {values.hours ? (
-                    <pre>{JSON.stringify(values.hours, null, 2)}</pre>
-                  ) : null}
-                </Grid>
-                <Grid item xs={12}>
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    color="primary"
+                <Grid
+                  item
+                  xs={12}
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <VerifyButton
+                    type="button"
+                    onClick={() => {
+                      const setVerified = !!!values.verifiedDate;
+                      verify(setVerified);
+                      setFieldValue(
+                        "verifiedDate",
+                        setVerified ? moment().format() : ""
+                      );
+                      setFieldValue(
+                        "verifiedUser",
+                        setVerified ? user.firstName + " " + user.lastName : ""
+                      );
+                    }}
                     className={classes.submit}
-                    disabled={isSubmitting}
+                    disabled={!values.id}
                   >
-                    Save
-                  </Button>
+                    {values.verifiedDate ? "Unverify" : "Verify"}
+                  </VerifyButton>
+                  <div>
+                    <CancelButton type="button" onClick={cancel}>
+                      Cancel
+                    </CancelButton>
+                    <SaveButton
+                      type="submit"
+                      className={classes.submit}
+                      disabled={isSubmitting}
+                      style={{ marginLeft: "0.5em" }}
+                    >
+                      Save
+                    </SaveButton>
+                  </div>
                 </Grid>
                 <Grid item xs={12}>
-                  <div>Id: {values.id} </div>
-                  <div>
-                    Created:{" "}
-                    {(values.createdDate
-                      ? moment(values.createdDate).format(
-                          "MM/DD/YYYY hh:mm:ss a"
-                        )
-                      : "") +
-                      " " +
-                      values.createdUser}
-                  </div>
-                  <div>
-                    Modified:{" "}
-                    {(values.modifiedDate
-                      ? moment(values.modifiedDate).format(
-                          "MM/DD/YYYY hh:mm:ss a"
-                        )
-                      : "") +
-                      " " +
-                      values.modifiedUser}
-                  </div>
-                  <div>
-                    Verified:{" "}
-                    {(values.verifiedDate
-                      ? moment(values.verifiedDate).format(
-                          "MM/DD/YYYY hh:mm:ss a"
-                        )
-                      : "") +
-                      " " +
-                      values.verifiedUser}
-                  </div>
+                  <Box
+                    style={{
+                      border: "1px solid gray",
+                      borderRadius: "4px",
+                      padding: "0.5em"
+                    }}
+                  >
+                    <div>Id: {values.id} </div>
+                    <div>
+                      {`Entered: ${values.createdUser} ${
+                        values.createdDate
+                          ? moment(values.createdDate).format(
+                              "MM/DD/YY hh:mm a"
+                            )
+                          : ""
+                      }`}
+                    </div>
+                    <div>
+                      {`Last Modified: ${values.modifiedUser} ${
+                        values.modifiedDate
+                          ? moment(values.modifiedDate).format(
+                              "MM/DD/YY hh:mm a"
+                            )
+                          : ""
+                      }`}
+                    </div>
+                    <div>
+                      {`Verified: ${values.verifiedUser} ${
+                        values.verifiedDate
+                          ? moment(values.verifiedDate).format(
+                              "MM/DD/YY hh:mm a"
+                            )
+                          : ""
+                      }`}
+                    </div>
+                  </Box>
                 </Grid>
               </Grid>
             </form>

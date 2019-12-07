@@ -108,32 +108,35 @@ export function useStakeholders() {
   };
 
   useEffect(() => {
-    const {
-      searchString,
-      selectedLatitude,
-      selectedLongitude,
-      selectedLocationName,
-      selectedDistance,
-      selectedCategories,
-    } = initialState;
-
     // Runs once on initialization to get list of all active categories
     fetchCategories();
 
     // Runs once on initialization to get user's browser lat/lon, if
     // browser permits
     fetchLocation();
+  }, []);
 
-    // Exposed to consuming component to execute search
+  useEffect(() => {
+    // if we don't have the categories fetched yet, bail
+    if (!state.selectedCategories) return;
+
+    const {
+      searchString,
+      selectedLatitude,
+      selectedLongitude,
+      selectedLocationName,
+      selectedDistance,
+    } = initialState;
+
     search(
       searchString,
       selectedLatitude,
       selectedLongitude,
       selectedLocationName,
-      selectedCategories,
+      state.selectedCategories,
       selectedDistance,
     );
-  }, []);
+  }, [state.selectedCategories]);
 
   return { state, dispatch, actionTypes, search };
 }

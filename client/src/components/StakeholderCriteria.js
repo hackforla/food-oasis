@@ -22,7 +22,7 @@ function StakeholderCriteria({
   openSearchPanel,
 }) {
   const classes = useStyles();
-
+  if (!selectedCategories) return null;
   return (
     <Card className={classes.card}>
       <CardContent>

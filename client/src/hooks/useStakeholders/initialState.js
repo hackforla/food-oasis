@@ -1,5 +1,5 @@
 export const initialState = {
-  isLoading: true,
+  isLoading: false,
   categoriesError: null,
   stakeholdersError: null,
   locationError: null,
@@ -7,15 +7,11 @@ export const initialState = {
   stakeholders: [],
   categories: [],
   searchString: "",
-  selectedCategories: [
-    { id: 1, name: "Food Pantry" },
-    { id: 8, name: "Food Bank" },
-    { id: 9, name: "Soup Kitchen" }
-  ],
+  selectedCategories: null,
   latitude: null,
   longitude: null,
   selectedLatitude: 34.041001,
   selectedLongitude: -118.235036,
   selectedLocationName: "LACI",
-  selectedDistance: 10
+  selectedDistance: 10,
 };

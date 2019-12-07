@@ -191,7 +191,7 @@ const insert = async model => {
     (name, address_1, address_2, 
       city, state, zip, 
       phone, latitude, longitude, 
-      website, inactive, notes, requirements, adminNotes, created_login_id) 
+      website, inactive, notes, requirements, admin_notes, created_login_id) 
     values (
     ${toSqlString(name)}, ${toSqlString(address1)}, ${toSqlString(address2)}, 
     ${toSqlString(city)}, ${toSqlString(state)}, ${toSqlString(zip)}, 

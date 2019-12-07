@@ -183,7 +183,7 @@ const insert = async model => {
     requirements,
     adminNotes,
     selectedCategoryIds,
-    schedules,
+    hours,
     loginId
   } = model;
   try {
@@ -247,22 +247,24 @@ const update = async model => {
     requirements,
     adminNotes,
     selectedCategoryIds,
-    schedules,
     hours,
     loginId
   } = model;
 
-  const hoursSqlDelete = `delete from stakeholder_schedule where stakeholder_id = ${id}`
+  const hoursSqlDelete = `delete from stakeholder_schedule where stakeholder_id = ${id}`;
 
-  let hoursSqlValues = hours.length 
-  ? hours.reduce((acc, cur) => { return acc += `(${id}, '${cur.dayOfWeek}', '${cur.open}', '${cur.close}', ${cur.weekOfMonth}), `}, '').slice(0, -2)
-  : null
-  
-  const hoursSqlInsert = 
-    `insert into stakeholder_schedule 
+  let hoursSqlValues = hours.length
+    ? hours
+        .reduce((acc, cur) => {
+          return (acc += `(${id}, '${cur.dayOfWeek}', '${cur.open}', '${cur.close}', ${cur.weekOfMonth}), `);
+        }, "")
+        .slice(0, -2)
+    : null;
+
+  const hoursSqlInsert = `insert into stakeholder_schedule 
     (stakeholder_id, day_of_week, open, close, week_of_month) 
-    values ${hoursSqlValues}`
-  
+    values ${hoursSqlValues}`;
+
   const sql = `update stakeholder
                set name = ${toSqlString(name)}, 
                address_1 = ${toSqlString(address1)}, 
@@ -298,15 +300,15 @@ const update = async model => {
   if (hoursSqlValues) {
     pool.query(hoursSqlDelete, (deleteErr, deleteRes) => {
       if (deleteErr) {
-        console.log('sql delete error', deleteErr)
+        console.log("sql delete error", deleteErr);
       } else {
         pool.query(hoursSqlInsert, (insertErr, insertRes) => {
           if (insertErr) {
-            console.log('sql insert error', insertErr)
+            console.log("sql insert error", insertErr);
           }
-      })
+        });
       }
-    })
+    });
   }
 };
 

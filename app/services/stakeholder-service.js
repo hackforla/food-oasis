@@ -248,8 +248,21 @@ const update = async model => {
     adminNotes,
     selectedCategoryIds,
     schedules,
+    hours,
     loginId
   } = model;
+
+  const hoursSqlDelete = `delete from stakeholder_schedule where stakeholder_id = ${id}`
+
+  let hoursSqlValues = hours.length 
+  ? hours.reduce((acc, cur) => { return acc += `(${id}, '${cur.dayOfWeek}', '${cur.open}', '${cur.close}', ${cur.weekOfMonth}), `}, '').slice(0, -2)
+  : null
+  
+  const hoursSqlInsert = 
+    `insert into stakeholder_schedule 
+    (stakeholder_id, day_of_week, open, close, week_of_month) 
+    values ${hoursSqlValues}`
+  
   const sql = `update stakeholder
                set name = ${toSqlString(name)}, 
                address_1 = ${toSqlString(address1)}, 
@@ -280,6 +293,20 @@ const update = async model => {
       (stakeholder_id, category_id) 
       values (${id}, ${categoryId})`;
     await pool.query(sqlInsert);
+  }
+
+  if (hoursSqlValues) {
+    pool.query(hoursSqlDelete, (deleteErr, deleteRes) => {
+      if (deleteErr) {
+        console.log('sql delete error', deleteErr)
+      } else {
+        pool.query(hoursSqlInsert, (insertErr, insertRes) => {
+          if (insertErr) {
+            console.log('sql insert error', insertErr)
+          }
+      })
+      }
+    })
   }
 };
 

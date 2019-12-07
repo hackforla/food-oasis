@@ -8,6 +8,7 @@ import FaqEditForm from "./FaqEditForm";
 const FaqEdit = ({ match }) => {
   const [currentFaq, setCurrentFaq] = useState([
     {
+      id: 0,
       question: "",
       answer: "",
       identifier: "",
@@ -36,7 +37,7 @@ const FaqEdit = ({ match }) => {
         Editing Frequently Asked Questions
       </Typography>
       {currentFaq.map(faq => (
-        <FaqEditForm faq={faq} />
+        <FaqEditForm faq={faq} key={faq.question} />
       ))}
     </Container>
   );

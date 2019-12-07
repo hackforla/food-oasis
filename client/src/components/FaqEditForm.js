@@ -1,28 +1,51 @@
 import React, { useState } from "react";
+import { withRouter } from "react-router-dom";
+import * as faqService from "../services/faq-service";
+
+import TextField from '@material-ui/core/Textfield'
 
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-const FaqEditForm = ({ faq }) => {
+const FaqEditForm = ({ faq, history }) => {
+  const [question, setQuestion] = useState(faq.question);
+  const [answer, setAnswer] = useState(faq.answer);
+
+  console.log(question, answer);
+
+  const handleQuestionChange = event => {
+    setQuestion(event.target.value);
+  };
+
+  const handleAnswerChange = html => {
+    setAnswer(html);
+  };
+
+  const handleSubmit = () => {
+    faqService.add({
+      ...faq,
+      question,
+      answer
+    });
+    history.push("/faqs");
+  };
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
         <label htmlFor="question">Question</label>
-        <input
+        <TextField
           id="question"
-          placeholder="Enter your question..."
+          label="Question"
           type="text"
-          value={currentFaq.question}
-          onChange={handleQuestionChange}
+          value={question}
+          onChange={event => handleQuestionChange(event)}
           name="question"
         />
-        <button type="submit">Update</button>
-      </form>
-      <form onSubmit={handleSubmit}>
         <ReactQuill
-          value={currentFaq.answer}
+          value={answer}
           onChange={handleAnswerChange}
-          name="question"
+          name="answer"
         />
         <button type="submit">Update</button>
       </form>
@@ -30,4 +53,4 @@ const FaqEditForm = ({ faq }) => {
   );
 };
 
-export default FaqEditForm;
+export default withRouter(FaqEditForm);

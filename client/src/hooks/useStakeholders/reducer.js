@@ -9,10 +9,11 @@ export function reducer(state, action) {
         ...state,
         stakeholders: action.stakeholders,
         isLoading: false,
-        isSearchPanelOpen: false,
+        isSearchPanelOpen: false
       };
     case actionTypes.STAKEHOLDERS.FETCH_FAILURE:
       return { ...state, stakeholdersError: action.error, isLoading: false };
+
     case actionTypes.CATEGORIES.FETCH_REQUEST:
       return { ...state, isLoading: true };
     case actionTypes.CATEGORIES.FETCH_SUCCESS:
@@ -20,10 +21,23 @@ export function reducer(state, action) {
         ...state,
         categories: action.categories,
         selectedCategories: action.selectedCategories,
-        isLoading: false,
+        isLoading: false
       };
     case actionTypes.CATEGORIES.FETCH_FAILURE:
       return { ...state, categoriesError: action.error, isLoading: false };
+
+    case actionTypes.LOCATION.FETCH_REQUEST:
+      return { ...state, isLoading: true };
+    case actionTypes.LOCATION.FETCH_SUCCESS:
+      return {
+        ...state,
+        latitude: action.userCoordinates.latitude,
+        longitude: action.userCoordinates.longitude,
+        isLoading: false
+      };
+    case actionTypes.LOCATION.FETCH_FAILURE:
+      return { ...state, isLoading: false };
+
     case actionTypes.TOGGLE_SEARCH_PANEL:
       return { ...state, isSearchPanelOpen: action.isOpen };
     case actionTypes.UPDATE_CRITERIA:

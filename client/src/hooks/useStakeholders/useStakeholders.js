@@ -13,12 +13,12 @@ export function useStakeholders() {
     latitude,
     longitude,
     selectedCategories,
-    selectedDistance,
+    selectedDistance
   ) => {
     const {
       FETCH_FAILURE,
       FETCH_REQUEST,
-      FETCH_SUCCESS,
+      FETCH_SUCCESS
     } = actionTypes.STAKEHOLDERS;
     if (!selectedCategories) return;
     try {
@@ -28,7 +28,7 @@ export function useStakeholders() {
         categoryIds: selectedCategories.map(category => category.id),
         latitude,
         longitude,
-        distance: selectedDistance,
+        distance: selectedDistance
       });
       dispatch({ type: FETCH_SUCCESS, stakeholders });
       dispatch({
@@ -38,8 +38,8 @@ export function useStakeholders() {
           selectedLatitude: latitude,
           selectedLongitude: longitude,
           selectedCategories,
-          selectedDistance,
-        },
+          selectedDistance
+        }
       });
     } catch (err) {
       console.log(err);
@@ -52,22 +52,25 @@ export function useStakeholders() {
       const {
         FETCH_FAILURE,
         FETCH_REQUEST,
-        FETCH_SUCCESS,
+        FETCH_SUCCESS
       } = actionTypes.CATEGORIES;
 
       const {
         searchString,
         selectedLatitude,
         selectedLongitude,
-        selectedDistance,
+        selectedDistance
       } = initialState;
 
       dispatch({ type: FETCH_REQUEST });
       try {
-        const categories = await categoryService.getAll();
+        const allCategories = await categoryService.getAll();
+        const categories = allCategories.filter(category => !category.inactive);
+
         const selectedCategories = categories.filter(
-          category => category.id === 1,
-        ); // setting the initial selection to FoodPantry
+          category =>
+            category.id === 1 || category.id === 8 || category.id === 9
+        ); // setting the initial selection to FoodPantry, Food Bank, Soup Kitchen
         dispatch({ type: FETCH_SUCCESS, categories, selectedCategories });
 
         if (latitude && longitude) {
@@ -76,7 +79,7 @@ export function useStakeholders() {
             latitude,
             longitude,
             selectedCategories,
-            selectedDistance,
+            selectedDistance
           );
         } else {
           search(
@@ -84,7 +87,7 @@ export function useStakeholders() {
             selectedLatitude,
             selectedLongitude,
             selectedCategories,
-            selectedDistance,
+            selectedDistance
           );
         }
       } catch (error) {
@@ -110,7 +113,7 @@ export function useStakeholders() {
         async error => {
           console.log(error);
           fetchCategories();
-        },
+        }
       );
     } else {
       fetchCategories();

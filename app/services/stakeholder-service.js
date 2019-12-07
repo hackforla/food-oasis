@@ -26,9 +26,9 @@ const selectAll = async (name, categoryIds, latitude, longitude, distance) => {
       s.modified_date, s.modified_login_id,
       s.verified_date, s.verified_login_id,
       s.requirements, s.admin_notes, s.inactive,
-      L1.email as created_user,
-      L2.email as modified_user,
-      L3.email as verified_user
+      L1.first_name || ' ' || L1.last_name as created_user,
+      L2.first_name || ' ' || L2.last_name as modified_user,
+      L3.first_name || ' ' || L3.last_name as verified_user
     from stakeholder s
     left join stakeholder_category sc on s.id = sc.stakeholder_id
     left join category c on sc.category_id = c.id 
@@ -98,59 +98,6 @@ const selectAll = async (name, categoryIds, latitude, longitude, distance) => {
   return stakeholders;
 };
 
-const getAllStakeholderCategories = async (categoryClause, nameClause) => {
-  const sql = `select sc.stakeholder_id, sc.category_id, c.name
-  from stakeholder_category sc 
-  join category c on sc.category_id = c.id
-  join stakeholder s on s.id = sc.stakeholder_id
-  where c.id in ${categoryClause}
-  and s.name ilike ${nameClause} `;
-  const stakeholderCategoriesResult = await pool.query(sql);
-  return stakeholderCategoriesResult;
-};
-
-const getAllStakeholderSchedules = async (categoryClause, nameClause) => {
-  const sql = `select 
-    ss.stakeholder_id, ss.day_of_week, ss.open, ss.close, 
-    ss.week_of_month, ss.season_id, 
-    se.name, se.start_date, se.end_date, dow.display_order
-  from stakeholder_category sc 
-  join category c on sc.category_id = c.id
-  join stakeholder s on s.id = sc.stakeholder_id
-  join stakeholder_schedule ss on s.id = ss.stakeholder_id
-  left join stakeholder_season se on ss.season_id = se.id
-  left join day_of_week dow on ss.day_of_week = dow.name
-  where c.id in ${categoryClause}
-  and s.name ilike ${nameClause}
-  order by s.id, dow.display_order `;
-  const stakeholderCategoriesResult = await pool.query(sql);
-  return stakeholderCategoriesResult;
-};
-
-const getStakeholderCategories = async stakeholderId => {
-  const sql = `select sc.stakeholder_id, sc.category_id, c.name
-  from stakeholder_category sc 
-  join category c on sc.category_id = c.id
-  where sc.stakeholder_id = ${stakeholderId} `;
-  const stakeholderCategoriesResult = await pool.query(sql);
-  return stakeholderCategoriesResult;
-};
-
-const getStakeholderSchedules = async stakeholderId => {
-  const sql = `select 
-    ss.stakeholder_id, ss.day_of_week, ss.open, ss.close, 
-    ss.week_of_month, ss.season_id, 
-    se.name, se.start_date, se.end_date,
-    dow.display_order
-  from stakeholder_schedule ss
-  left join stakeholder_season se on ss.season_id = se.id
-  left join day_of_week dow on ss.day_of_week = dow.name
-  where ss.stakeholder_id = ${stakeholderId}
-  order by dow.display_order `;
-  const stakeholderCategoriesResult = await pool.query(sql);
-  return stakeholderCategoriesResult;
-};
-
 const selectById = async id => {
   const sql = `select 
       s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
@@ -174,9 +121,9 @@ const selectById = async id => {
       s.modified_date, s.modified_login_id,
       s.verified_date, s.verified_login_id,
       s.requirements, s.admin_notes, s.inactive,
-      L1.email as created_user,
-      L2.email as modified_user,
-      L3.email as verified_user
+      L1.first_name || ' ' || L1.last_name as created_user,
+      L2.first_name || ' ' || L2.last_name as modified_user,
+      L3.first_name || ' ' || L3.last_name as verified_user
     from stakeholder s 
     left join login L1 on s.created_login_id = L1.id
     left join login L2 on s.modified_login_id = L2.id
@@ -271,6 +218,17 @@ const insert = async model => {
   }
 };
 
+const verify = async model => {
+  const { id, loginId, setVerified } = model;
+  const sql = `update stakeholder set
+               verified_login_id = ${
+                 setVerified ? toSqlNumeric(loginId) : "null"
+               },
+               verified_date = ${setVerified ? "CURRENT_TIMESTAMP" : "null"}
+              where id = ${id}`;
+  const result = await pool.query(sql);
+};
+
 const update = async model => {
   const {
     id,
@@ -337,5 +295,6 @@ module.exports = {
   selectById,
   insert,
   update,
-  remove
+  remove,
+  verify
 };

@@ -6,8 +6,12 @@ export const initialState = {
   stakeholders: [],
   categories: [],
   searchString: "",
-  selectedCategories: [{ id: 1, name: "Food Pantry" }],
+  selectedCategories: [
+    { id: 1, name: "Food Pantry" },
+    { id: 8, name: "Food Bank" },
+    { id: 9, name: "Soup Kitchen" }
+  ],
   selectedLatitude: 34.041001,
   selectedLongitude: -118.235036,
-  selectedDistance: 3,
+  selectedDistance: 10
 };

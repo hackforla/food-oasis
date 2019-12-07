@@ -14,12 +14,12 @@ export function useStakeholders() {
     longitude,
     selectedLocationName,
     selectedCategories,
-    selectedDistance
+    selectedDistance,
   ) => {
     const {
       FETCH_FAILURE,
       FETCH_REQUEST,
-      FETCH_SUCCESS
+      FETCH_SUCCESS,
     } = actionTypes.STAKEHOLDERS;
     if (!selectedCategories) return;
     try {
@@ -29,7 +29,7 @@ export function useStakeholders() {
         categoryIds: selectedCategories.map(category => category.id),
         latitude,
         longitude,
-        distance: selectedDistance
+        distance: selectedDistance,
       });
       dispatch({ type: FETCH_SUCCESS, stakeholders });
       dispatch({
@@ -40,8 +40,8 @@ export function useStakeholders() {
           selectedLongitude: longitude,
           selectedLocationName,
           selectedCategories,
-          selectedDistance
-        }
+          selectedDistance,
+        },
       });
     } catch (err) {
       console.log(err);
@@ -53,7 +53,7 @@ export function useStakeholders() {
     const {
       FETCH_FAILURE,
       FETCH_REQUEST,
-      FETCH_SUCCESS
+      FETCH_SUCCESS,
     } = actionTypes.CATEGORIES;
 
     dispatch({ type: FETCH_REQUEST });
@@ -62,7 +62,7 @@ export function useStakeholders() {
       const categories = allCategories.filter(category => !category.inactive);
 
       const selectedCategories = categories.filter(
-        category => category.id === 1 || category.id === 8 || category.id === 9
+        category => category.id === 1 || category.id === 8 || category.id === 9,
       ); // setting the initial selection to FoodPantry, Food Bank, Soup Kitchen
       dispatch({ type: FETCH_SUCCESS, categories, selectedCategories });
     } catch (error) {
@@ -70,44 +70,40 @@ export function useStakeholders() {
     }
   };
 
-  const fetchLocation = async () => {
+  const fetchLocation = () => {
     const {
       FETCH_FAILURE,
       FETCH_REQUEST,
-      FETCH_SUCCESS
+      FETCH_SUCCESS,
     } = actionTypes.LOCATION;
 
     dispatch({ type: FETCH_REQUEST });
-    try {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          async position => {
-            if (position) {
-              const userCoordinates = {
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude
-              };
-              dispatch({ type: FETCH_SUCCESS, userCoordinates });
-            }
-            // async fn must return something
-            return { latitude: null, longitude: null };
-          },
-          async error => {
-            dispatch({ type: FETCH_FAILURE, error });
-            return { latitude: null, longitude: null };
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          if (!position) {
+            dispatch({
+              type: FETCH_SUCCESS,
+              userCoordinates: { latitude: null, longitude: null },
+            });
           }
-        );
-      } else {
-        // If browser location permission is denied, the request is
-        // "successful", but the result is null coordinates.
-        dispatch({
-          type: FETCH_SUCCESS,
-          userCoordinates: { latitude: null, longitude: null }
-        });
-      }
-    } catch (error) {
-      dispatch({ type: FETCH_FAILURE, error });
-      return error;
+          const userCoordinates = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          };
+          dispatch({ type: FETCH_SUCCESS, userCoordinates });
+        },
+        error => {
+          dispatch({ type: FETCH_FAILURE, error });
+        },
+      );
+    } else {
+      // If browser location permission is denied, the request is
+      // "successful", but the result is null coordinates.
+      dispatch({
+        type: FETCH_SUCCESS,
+        userCoordinates: { latitude: null, longitude: null },
+      });
     }
   };
 
@@ -118,7 +114,7 @@ export function useStakeholders() {
       selectedLongitude,
       selectedLocationName,
       selectedDistance,
-      selectedCategories
+      selectedCategories,
     } = initialState;
 
     // Runs once on initialization to get list of all active categories
@@ -135,7 +131,7 @@ export function useStakeholders() {
       selectedLongitude,
       selectedLocationName,
       selectedCategories,
-      selectedDistance
+      selectedDistance,
     );
   }, []);
 

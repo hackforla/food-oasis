@@ -2,7 +2,7 @@ const { pool } = require("./postgres-pool");
 
 const selectAll = () => {
   const sql = `
-    select w.id, w.name
+    select w.id, w.name, w.inactive
     from category w
     order by w.name
   `;
@@ -12,15 +12,17 @@ const selectAll = () => {
 };
 
 const selectById = id => {
-  const sql = `select w.id, w.name from category w where w.id = ${id}`;
+  const sql = `select w.id, w.name, w.inactive
+   from category w where w.id = ${id}`;
   return pool.query(sql).then(res => {
     return res.rows[0];
   });
 };
 
 const insert = model => {
+  // Partial implementation need to escape characters, add other columns
   const { name } = model;
-  const sql = `insert into category (name) values ('${name}') returning id`;
+  const sql = `insert into category (name) values ('${name}',) returning id`;
   return pool.query(sql).then(res => {
     return res.rows[0];
   });
@@ -28,6 +30,7 @@ const insert = model => {
 
 const update = model => {
   const { id, name } = model;
+  // Partial implementation need to escape characters, add other columns
   const sql = `update category
                set name = '${name}'
                 where id = ${id}`;

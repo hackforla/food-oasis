@@ -6,5 +6,6 @@ router.get("/:id", stakeholderController.getById);
 router.post("/", stakeholderController.post);
 router.put("/:id", stakeholderController.put);
 router.delete("/:id", stakeholderController.remove);
+router.put("/:id/verify", stakeholderController.verify);
 
 module.exports = router;

@@ -1,19 +1,19 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createMuiTheme } from "@material-ui/core/styles";
 
 const theme = createMuiTheme({
   palette: {
     primary: {
       // green
-      main:'rgba(144, 194, 70)',
-      contrastText: '#ffffff'
+      main: "rgba(144, 194, 70)",
+      contrastText: "#ffffff"
     },
     secondary: {
       // orange
-      main: 'rgb(249, 192, 88)',
-      contrastText: '#ffcc00',
+      main: "rgb(249, 192, 88)",
+      contrastText: "#ffcc00"
     },
     text: {
-      primary: '#313233'
+      primary: "#313233"
     }
   },
   typography: {
@@ -29,7 +29,7 @@ const theme = createMuiTheme({
     MuiLink: {
       underlineHover: {
         textDecoration: "none",
-        '&:hover': {
+        "&:hover": {
           textDecoration: "underline"
         }
       }

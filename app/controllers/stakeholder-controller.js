@@ -69,10 +69,22 @@ const remove = (req, res) => {
     });
 };
 
+const verify = (req, res) => {
+  stakeholderService
+    .verify(req.body)
+    .then(resp => {
+      res.sendStatus(200);
+    })
+    .catch(err => {
+      res.status("500").json({ error: err.toString() });
+    });
+};
+
 module.exports = {
   getAll,
   getById,
   post,
   put,
-  remove
+  remove,
+  verify
 };

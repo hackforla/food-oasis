@@ -11,10 +11,15 @@ import {
   Grid,
   TextField,
   Chip,
-  FormLabel
+  FormLabel,
+  FormControlLabel,
+  Typography,
+  RadioGroup,
+  Radio
 } from "@material-ui/core";
 import SearchButton from "./SearchButton";
 import SwitchViewsButton from "./SwitchViewsButton";
+import LocationAutocomplete from "./LocationAutocomplete";
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -39,11 +44,36 @@ function StakeholderSearch(props) {
   const [searchString, setSearchString] = useState(props.searchString);
   const [latitude] = useState(props.latitude);
   const [longitude] = useState(props.longitude);
+  const [selectedLatitude, setSelectedLatitude] = useState(
+    props.selectedLatitude
+  );
+  const [selectedLongitude, setSelectedLongitude] = useState(
+    props.selectedLongitude
+  );
+  const [selectedLocationName, setSelectedLocationName] = useState(
+    props.selectedLocationName
+  );
   const [selectedDistance, setSelectedDistance] = useState(
     props.selectedDistance
   );
+  const [useMyLocation, setUseMyLocation] = useState("other");
 
   const classes = useStyles();
+
+  const handleRadioChange = evt => {
+    const val = evt.target.value;
+    setUseMyLocation(val);
+    if (val === "my") {
+      setSelectedLatitude(latitude);
+      setSelectedLongitude(longitude);
+    }
+  };
+
+  const setLocation = location => {
+    setSelectedLatitude(location.location.y);
+    setSelectedLongitude(location.location.x);
+    setSelectedLocationName(location.address);
+  };
 
   return (
     <Card className={classes.card}>
@@ -55,8 +85,9 @@ function StakeholderSearch(props) {
                 onClick={() => {
                   props.search(
                     searchString,
-                    latitude,
-                    longitude,
+                    selectedLatitude,
+                    selectedLongitude,
+                    selectedLocationName,
                     selectedCategories,
                     selectedDistance
                   );
@@ -70,7 +101,7 @@ function StakeholderSearch(props) {
               />
             </Grid>
           </Grid>
-          <Grid item container alignItems="center" lg={6}>
+          <Grid item container alignItems="center">
             <Grid item container>
               <FormLabel className={classes.formLabel}>Categories</FormLabel>
               <Select
@@ -113,7 +144,7 @@ function StakeholderSearch(props) {
               </Select>
             </Grid>
           </Grid>
-          <Grid item container lg={6} direction="column">
+          <Grid item container>
             <FormLabel className={classes.formLabel}>Location</FormLabel>
             <Grid item container alignItems="center">
               <div style={{ marginRight: "0.5rem" }}>{"Within "}</div>
@@ -152,14 +183,39 @@ function StakeholderSearch(props) {
                 </MenuItem>
               </Select>
               <div style={{ margin: "0 1rem 0 .5rem" }}>{"miles of"}</div>
-              <div>
-                {latitude ? (
-                  <Grid container direction="column">
-                    <div>longitude: {longitude}</div>
-                    <div>latitude: {latitude}</div>
-                  </Grid>
-                ) : null}
-              </div>
+            </Grid>
+            <Grid item xs={12}>
+              {/* If we got location from browser, allow using current location */}
+              {latitude ? (
+                <RadioGroup
+                  name="useMyLocation"
+                  value={useMyLocation}
+                  onChange={handleRadioChange}
+                >
+                  <FormControlLabel
+                    value="my"
+                    control={<Radio />}
+                    label={`My Location (${latitude}, ${longitude})`}
+                  />
+                  <FormControlLabel
+                    value="other"
+                    control={<Radio />}
+                    label={`Custom Location (${selectedLatitude}, ${selectedLongitude}) ${selectedLocationName}`}
+                  ></FormControlLabel>
+                  <LocationAutocomplete fullWidth setLocation={setLocation} />
+                </RadioGroup>
+              ) : (
+                <div>
+                  <LocationAutocomplete />
+                  {selectedLatitude ? (
+                    <Grid container direction="column">
+                      <Typography>Selected Location</Typography>
+                      <div>longitude: {selectedLongitude}</div>
+                      <div>latitude: {selectedLatitude}</div>
+                    </Grid>
+                  ) : null}
+                </div>
+              )}
             </Grid>
           </Grid>
           <Grid item container>

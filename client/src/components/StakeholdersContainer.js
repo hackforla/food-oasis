@@ -32,10 +32,13 @@ function StakeholdersContainer() {
     searchString,
     selectedLongitude,
     selectedLatitude,
+    selectedLocationName,
     selectedDistance,
     selectedCategories,
     isSearchPanelOpen,
-    isLoading
+    isLoading,
+    latitude,
+    longitude
   } = state;
 
   return (
@@ -54,8 +57,11 @@ function StakeholdersContainer() {
         {isSearchPanelOpen ? (
           <StakeholderSearch
             key={selectedLatitude}
-            latitude={selectedLatitude}
-            longitude={selectedLongitude}
+            latitude={latitude}
+            longitude={longitude}
+            selectedLatitude={selectedLatitude}
+            selectedLongitude={selectedLongitude}
+            selectedLocationName={selectedLocationName}
             categories={categories}
             searchString={searchString}
             selectedCategories={selectedCategories}
@@ -90,6 +96,10 @@ function StakeholdersContainer() {
           <StakeholderList stakeholders={stakeholders} />
         )}
       </div>
+      <pre>{JSON.stringify({ latitude, longitude }, null, 2)}</pre>
+      <pre>
+        {JSON.stringify({ selectedLatitude, selectedLongitude }, null, 2)}
+      </pre>
     </div>
   );
 }

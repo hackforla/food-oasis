@@ -2,6 +2,7 @@ export const initialState = {
   isLoading: true,
   categoriesError: null,
   stakeholdersError: null,
+  locationError: null,
   isSearchPanelOpen: false,
   stakeholders: [],
   categories: [],
@@ -11,7 +12,10 @@ export const initialState = {
     { id: 8, name: "Food Bank" },
     { id: 9, name: "Soup Kitchen" }
   ],
+  latitude: null,
+  longitude: null,
   selectedLatitude: 34.041001,
   selectedLongitude: -118.235036,
+  selectedLocationName: "LACI",
   selectedDistance: 10
 };

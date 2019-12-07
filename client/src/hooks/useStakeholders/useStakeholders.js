@@ -12,6 +12,7 @@ export function useStakeholders() {
     searchString,
     latitude,
     longitude,
+    selectedLocationName,
     selectedCategories,
     selectedDistance
   ) => {
@@ -37,6 +38,7 @@ export function useStakeholders() {
           searchString,
           selectedLatitude: latitude,
           selectedLongitude: longitude,
+          selectedLocationName,
           selectedCategories,
           selectedDistance
         }
@@ -47,77 +49,94 @@ export function useStakeholders() {
     }
   };
 
-  useEffect(() => {
-    const fetchCategories = async (latitude = null, longitude = null) => {
-      const {
-        FETCH_FAILURE,
-        FETCH_REQUEST,
-        FETCH_SUCCESS
-      } = actionTypes.CATEGORIES;
+  const fetchCategories = async () => {
+    const {
+      FETCH_FAILURE,
+      FETCH_REQUEST,
+      FETCH_SUCCESS
+    } = actionTypes.CATEGORIES;
 
-      const {
-        searchString,
-        selectedLatitude,
-        selectedLongitude,
-        selectedDistance
-      } = initialState;
+    dispatch({ type: FETCH_REQUEST });
+    try {
+      const allCategories = await categoryService.getAll();
+      const categories = allCategories.filter(category => !category.inactive);
 
-      dispatch({ type: FETCH_REQUEST });
-      try {
-        const allCategories = await categoryService.getAll();
-        const categories = allCategories.filter(category => !category.inactive);
-
-        const selectedCategories = categories.filter(
-          category =>
-            category.id === 1 || category.id === 8 || category.id === 9
-        ); // setting the initial selection to FoodPantry, Food Bank, Soup Kitchen
-        dispatch({ type: FETCH_SUCCESS, categories, selectedCategories });
-
-        if (latitude && longitude) {
-          search(
-            searchString,
-            latitude,
-            longitude,
-            selectedCategories,
-            selectedDistance
-          );
-        } else {
-          search(
-            searchString,
-            selectedLatitude,
-            selectedLongitude,
-            selectedCategories,
-            selectedDistance
-          );
-        }
-      } catch (error) {
-        dispatch({ type: FETCH_FAILURE, error });
-      }
-    };
-
-    // The fact that the geolocation api only uses callbacks makes
-    // this function convoluted - need to work on cleaning this up
-    // somehow. If user agent (browser) does not support geolocation
-    // of machine, or user disables location, we currently use the
-    // lat, lon of LACI as the current location. Need to work on
-    // allowing user to enter a street address of their choosing.
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        async position => {
-          if (position) {
-            let latitude = position.coords.latitude;
-            let longitude = position.coords.longitude;
-            fetchCategories(latitude, longitude);
-          }
-        },
-        async error => {
-          console.log(error);
-          fetchCategories();
-        }
-      );
-    } else {
-      fetchCategories();
+      const selectedCategories = categories.filter(
+        category => category.id === 1 || category.id === 8 || category.id === 9
+      ); // setting the initial selection to FoodPantry, Food Bank, Soup Kitchen
+      dispatch({ type: FETCH_SUCCESS, categories, selectedCategories });
+    } catch (error) {
+      dispatch({ type: FETCH_FAILURE, error });
     }
+  };
+
+  const fetchLocation = async () => {
+    const {
+      FETCH_FAILURE,
+      FETCH_REQUEST,
+      FETCH_SUCCESS
+    } = actionTypes.LOCATION;
+
+    dispatch({ type: FETCH_REQUEST });
+    try {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          async position => {
+            if (position) {
+              const userCoordinates = {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude
+              };
+              dispatch({ type: FETCH_SUCCESS, userCoordinates });
+            }
+            // async fn must return something
+            return { latitude: null, longitude: null };
+          },
+          async error => {
+            dispatch({ type: FETCH_FAILURE, error });
+            return { latitude: null, longitude: null };
+          }
+        );
+      } else {
+        // If browser location permission is denied, the request is
+        // "successful", but the result is null coordinates.
+        dispatch({
+          type: FETCH_SUCCESS,
+          userCoordinates: { latitude: null, longitude: null }
+        });
+      }
+    } catch (error) {
+      dispatch({ type: FETCH_FAILURE, error });
+      return error;
+    }
+  };
+
+  useEffect(() => {
+    const {
+      searchString,
+      selectedLatitude,
+      selectedLongitude,
+      selectedLocationName,
+      selectedDistance,
+      selectedCategories
+    } = initialState;
+
+    // Runs once on initialization to get list of all active categories
+    fetchCategories();
+
+    // Runs once on initialization to get user's browser lat/lon, if
+    // browser permits
+    fetchLocation();
+
+    // Exposed to consuming component to execute search
+    search(
+      searchString,
+      selectedLatitude,
+      selectedLongitude,
+      selectedLocationName,
+      selectedCategories,
+      selectedDistance
+    );
   }, []);
 
   return { state, dispatch, actionTypes, search };

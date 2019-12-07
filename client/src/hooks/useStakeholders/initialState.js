@@ -8,11 +8,6 @@ export const initialState = {
   categories: [],
   searchString: "",
   selectedCategories: null,
-  // [
-  //   { id: 1, name: "Food Pantry" },
-  //   { id: 8, name: "Food Bank" },
-  //   { id: 9, name: "Soup Kitchen" },
-  // ],
   latitude: null,
   longitude: null,
   selectedLatitude: 34.041001,

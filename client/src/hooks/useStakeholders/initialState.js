@@ -1,17 +1,17 @@
 export const initialState = {
-  isLoading: true,
+  isLoading: false,
   categoriesError: null,
   stakeholdersError: null,
+  locationError: null,
   isSearchPanelOpen: false,
   stakeholders: [],
   categories: [],
   searchString: "",
-  selectedCategories: [
-    { id: 1, name: "Food Pantry" },
-    { id: 8, name: "Food Bank" },
-    { id: 9, name: "Soup Kitchen" }
-  ],
+  selectedCategories: null,
+  latitude: null,
+  longitude: null,
   selectedLatitude: 34.041001,
   selectedLongitude: -118.235036,
-  selectedDistance: 10
+  selectedLocationName: "LACI",
+  selectedDistance: 10,
 };

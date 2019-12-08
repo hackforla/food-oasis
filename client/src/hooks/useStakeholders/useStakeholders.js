@@ -12,13 +12,14 @@ export function useStakeholders() {
     searchString,
     latitude,
     longitude,
+    selectedLocationName,
     selectedCategories,
-    selectedDistance
+    selectedDistance,
   ) => {
     const {
       FETCH_FAILURE,
       FETCH_REQUEST,
-      FETCH_SUCCESS
+      FETCH_SUCCESS,
     } = actionTypes.STAKEHOLDERS;
     if (!selectedCategories) return;
     try {
@@ -28,7 +29,7 @@ export function useStakeholders() {
         categoryIds: selectedCategories.map(category => category.id),
         latitude,
         longitude,
-        distance: selectedDistance
+        distance: selectedDistance,
       });
       dispatch({ type: FETCH_SUCCESS, stakeholders });
       dispatch({
@@ -37,9 +38,10 @@ export function useStakeholders() {
           searchString,
           selectedLatitude: latitude,
           selectedLongitude: longitude,
+          selectedLocationName,
           selectedCategories,
-          selectedDistance
-        }
+          selectedDistance,
+        },
       });
     } catch (err) {
       console.log(err);
@@ -47,78 +49,94 @@ export function useStakeholders() {
     }
   };
 
-  useEffect(() => {
-    const fetchCategories = async (latitude = null, longitude = null) => {
-      const {
-        FETCH_FAILURE,
-        FETCH_REQUEST,
-        FETCH_SUCCESS
-      } = actionTypes.CATEGORIES;
+  const fetchCategories = async () => {
+    const {
+      FETCH_FAILURE,
+      FETCH_REQUEST,
+      FETCH_SUCCESS,
+    } = actionTypes.CATEGORIES;
 
-      const {
-        searchString,
-        selectedLatitude,
-        selectedLongitude,
-        selectedDistance
-      } = initialState;
+    dispatch({ type: FETCH_REQUEST });
+    try {
+      const allCategories = await categoryService.getAll();
+      const categories = allCategories.filter(category => !category.inactive);
 
-      dispatch({ type: FETCH_REQUEST });
-      try {
-        const allCategories = await categoryService.getAll();
-        const categories = allCategories.filter(category => !category.inactive);
+      const selectedCategories = categories.filter(
+        category => category.id === 1 || category.id === 8 || category.id === 9,
+      ); // setting the initial selection to FoodPantry, Food Bank, Soup Kitchen
+      dispatch({ type: FETCH_SUCCESS, categories, selectedCategories });
+    } catch (error) {
+      dispatch({ type: FETCH_FAILURE, error });
+    }
+  };
 
-        const selectedCategories = categories.filter(
-          category =>
-            category.id === 1 || category.id === 8 || category.id === 9
-        ); // setting the initial selection to FoodPantry, Food Bank, Soup Kitchen
-        dispatch({ type: FETCH_SUCCESS, categories, selectedCategories });
+  const fetchLocation = () => {
+    const {
+      FETCH_FAILURE,
+      FETCH_REQUEST,
+      FETCH_SUCCESS,
+    } = actionTypes.LOCATION;
 
-        if (latitude && longitude) {
-          search(
-            searchString,
-            latitude,
-            longitude,
-            selectedCategories,
-            selectedDistance
-          );
-        } else {
-          search(
-            searchString,
-            selectedLatitude,
-            selectedLongitude,
-            selectedCategories,
-            selectedDistance
-          );
-        }
-      } catch (error) {
-        dispatch({ type: FETCH_FAILURE, error });
-      }
-    };
-
-    // The fact that the geolocation api only uses callbacks makes
-    // this function convoluted - need to work on cleaning this up
-    // somehow. If user agent (browser) does not support geolocation
-    // of machine, or user disables location, we currently use the
-    // lat, lon of LACI as the current location. Need to work on
-    // allowing user to enter a street address of their choosing.
+    dispatch({ type: FETCH_REQUEST });
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        async position => {
-          if (position) {
-            let latitude = position.coords.latitude;
-            let longitude = position.coords.longitude;
-            fetchCategories(latitude, longitude);
+        position => {
+          if (!position) {
+            dispatch({
+              type: FETCH_SUCCESS,
+              userCoordinates: { latitude: null, longitude: null },
+            });
           }
+          const userCoordinates = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          };
+          dispatch({ type: FETCH_SUCCESS, userCoordinates });
         },
-        async error => {
-          console.log(error);
-          fetchCategories();
-        }
+        error => {
+          dispatch({ type: FETCH_FAILURE, error });
+        },
       );
     } else {
-      fetchCategories();
+      // If browser location permission is denied, the request is
+      // "successful", but the result is null coordinates.
+      dispatch({
+        type: FETCH_SUCCESS,
+        userCoordinates: { latitude: null, longitude: null },
+      });
     }
+  };
+
+  useEffect(() => {
+    // Runs once on initialization to get list of all active categories
+    fetchCategories();
+
+    // Runs once on initialization to get user's browser lat/lon, if
+    // browser permits
+    fetchLocation();
   }, []);
+
+  useEffect(() => {
+    // if we don't have the categories fetched yet, bail
+    if (!state.selectedCategories) return;
+
+    const {
+      searchString,
+      selectedLatitude,
+      selectedLongitude,
+      selectedLocationName,
+      selectedDistance,
+    } = initialState;
+
+    search(
+      searchString,
+      selectedLatitude,
+      selectedLongitude,
+      selectedLocationName,
+      state.selectedCategories,
+      selectedDistance,
+    );
+  }, [state.selectedCategories]);
 
   return { state, dispatch, actionTypes, search };
 }

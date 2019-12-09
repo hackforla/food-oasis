@@ -8,7 +8,7 @@ import FaqEditForm from "./FaqEditForm";
 
 const FaqEdit = ({ match }) => {
   const { i18n } = useTranslation();
-  const [currentFaq, setCurrentFaq] = useState([
+  const [addedFaq, setAddedFaq] = useState([
     {
       id: 0,
       question: "",
@@ -17,15 +17,38 @@ const FaqEdit = ({ match }) => {
       language: ""
     }
   ]);
+  const [needToAddFaqs, setNeedToAddFaqs] = useState([""]);
   const faqIdentifier = match.params.identifier;
 
   useEffect(() => {
+    const checkHowManySavedLanguageTexts = faqs => {
+      let currentLanguages = {};
+      let addedLanguages = faqs.map(faq => {
+        currentLanguages[faq.language] = true;
+        return faq;
+      });
+      let needToAddLanguages;
+      if (addedFaq.length !== i18n.languages) {
+        needToAddLanguages = i18n.languages.filter(
+          language => !currentLanguages[language]
+        );
+      }
+      return { addedLanguages, needToAddLanguages };
+    };
+
     async function fetchFaq() {
       try {
         const fetchedFaq = await faqService.getByIdentifier({
           identifier: faqIdentifier
         });
-        setCurrentFaq(fetchedFaq);
+
+        let {
+          addedLanguages,
+          needToAddLanguages
+        } = checkHowManySavedLanguageTexts(fetchedFaq);
+
+        setAddedFaq(addedLanguages);
+        setNeedToAddFaqs(needToAddLanguages);
       } catch {
         throw new Error("Cannot fetch FAQs...");
       }
@@ -33,20 +56,25 @@ const FaqEdit = ({ match }) => {
     fetchFaq();
   }, []);
 
-  // const checkHowManySavedLanguageTexts = () => {
-  //   let missingLanguage;
-  //   if (currentFaq.length !== i18n.languages) {
-  //     missingLanguage = 
-  //   }
-  // }
-
   return (
     <Container maxWidth="md">
       <Typography component="h1" variant="h5" gutterBottom>
         Editing Frequently Asked Questions
       </Typography>
-      {currentFaq.map(faq => (
+      {addedFaq.map(faq => (
         <FaqEditForm faq={faq} key={faq.question} />
+      ))}
+      {needToAddFaqs.map(language => (
+        <FaqEditForm
+          faq={{
+            question: "",
+            answer: "",
+            identifier: faqIdentifier,
+            language: language
+          }}
+          notAdded={true}
+          key={language}
+        />
       ))}
     </Container>
   );

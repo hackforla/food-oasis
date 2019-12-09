@@ -37,7 +37,6 @@ const getById = (req, res) => {
 
 const getByIdentifier = (req, res) => {
   const { identifier } = req.params;
-  console.log(identifier)
   faqService
     .selectByIdentifier(identifier)
     .then(resp => {

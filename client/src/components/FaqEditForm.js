@@ -9,9 +9,12 @@ import Button from "@material-ui/core/Button";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-const FaqEditForm = ({ faq, history }) => {
+const FaqEditForm = ({ faq, history, notAdded }) => {
   const [question, setQuestion] = useState(faq.question);
   const [answer, setAnswer] = useState(faq.answer);
+
+  console.log(faq);
+  console.log(answer);
 
   let language;
   switch (faq.language) {
@@ -34,18 +37,27 @@ const FaqEditForm = ({ faq, history }) => {
   };
 
   const handleSubmit = () => {
-    faqService.update({
-      ...faq,
-      question,
-      answer
-    });
+    if (notAdded) {
+      faqService.add({
+        ...faq,
+        question,
+        answer
+      });
+    } else {
+      // Need to double check on how updating works with service
+      faqService.update({
+        ...faq,
+        question,
+        answer
+      });
+    }
     history.push("/faqs");
   };
 
   return (
     <div>
       <Typography component="h4" variant="h4">
-        {language} Edit
+        {language} Edit {notAdded && "(Not Saved in System)"}
       </Typography>
       <form onSubmit={handleSubmit}>
         <Typography component="h4" variant="h5">
@@ -69,7 +81,7 @@ const FaqEditForm = ({ faq, history }) => {
           name="answer"
         />
         <Button type="submit" variant="outlined">
-          Update
+          {notAdded ? "Add Faq" : "Update Faq"}
         </Button>
       </form>
     </div>

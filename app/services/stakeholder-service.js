@@ -28,7 +28,10 @@ const selectAll = async (name, categoryIds, latitude, longitude, distance) => {
       s.requirements, s.admin_notes, s.inactive,
       L1.first_name || ' ' || L1.last_name as created_user,
       L2.first_name || ' ' || L2.last_name as modified_user,
-      L3.first_name || ' ' || L3.last_name as verified_user
+      L3.first_name || ' ' || L3.last_name as verified_user,
+      s.parent_organization, s.physical_access, s.email,
+      s.items, s.services, s.facebook,
+      s.twitter, s.pinterest, s.linkedin, s.description
     from stakeholder s
     left join stakeholder_category sc on s.id = sc.stakeholder_id
     left join category c on sc.category_id = c.id 
@@ -68,7 +71,17 @@ const selectAll = async (name, categoryIds, latitude, longitude, distance) => {
       modifiedUser: row.modified_user || "",
       verifiedUser: row.verified_user || "",
       categories: row.categories,
-      hours: row.hours
+      hours: row.hours,
+      parentOrganization: row.parent_organization || "",
+      physicalAccess: row.physical_access || "",
+      email: row.email || "",
+      items: row.items || "",
+      services: row.services || "",
+      facebook: row.facebook || "",
+      twitter: row.twitter || "",
+      pinterest: row.pinterest || "",
+      linkedin: row.linkedin || "",
+      description: row.description
     });
   });
 
@@ -123,7 +136,10 @@ const selectById = async id => {
       s.requirements, s.admin_notes, s.inactive,
       L1.first_name || ' ' || L1.last_name as created_user,
       L2.first_name || ' ' || L2.last_name as modified_user,
-      L3.first_name || ' ' || L3.last_name as verified_user
+      L3.first_name || ' ' || L3.last_name as verified_user,
+      s.parent_organization, s.physical_access, s.email,
+      s.items, s.services, s.facebook,
+      s.twitter, s.pinterest, s.linkedin, s.description
     from stakeholder s 
     left join login L1 on s.created_login_id = L1.id
     left join login L2 on s.modified_login_id = L2.id
@@ -157,7 +173,17 @@ const selectById = async id => {
     modifiedUser: row.modified_user || "",
     verifiedUser: row.verified_user || "",
     categories: row.categories,
-    hours: row.hours
+    hours: row.hours,
+    parentOrganization: row.parent_organization || "",
+    physicalAccess: row.physical_access || "",
+    email: row.email || "",
+    items: row.items || "",
+    services: row.services || "",
+    facebook: row.facebook || "",
+    twitter: row.twitter || "",
+    pinterest: row.pinterest || "",
+    linkedin: row.linkedin || "",
+    description: row.description
   };
 
   // Don't have a distance, since we didn't specify origin
@@ -184,22 +210,40 @@ const insert = async model => {
     adminNotes,
     selectedCategoryIds,
     hours,
-    loginId
+    parentOrganization,
+    physicalAccess,
+    email,
+    items,
+    services,
+    facebook,
+    twitter,
+    pinterest,
+    linkedin,
+    loginId,
+    description
   } = model;
   try {
     const sql = `insert into stakeholder 
     (name, address_1, address_2, 
       city, state, zip, 
       phone, latitude, longitude, 
-      website, inactive, notes, requirements, admin_notes, created_login_id) 
+      website, inactive, notes, requirements, admin_notes, created_login_id,
+      parent_organization, physical_access, email,
+      items, services, facebook, twitter, pinterest, linkedin, description) 
     values (
-    ${toSqlString(name)}, ${toSqlString(address1)}, ${toSqlString(address2)}, 
-    ${toSqlString(city)}, ${toSqlString(state)}, ${toSqlString(zip)}, 
-    ${toSqlString(phone)}, 
-    ${toSqlNumeric(latitude)}, ${toSqlNumeric(longitude)}, 
-    ${toSqlString(website)}, ${toSqlBoolean(inactive)}, 
-    ${toSqlString(notes)}, ${toSqlString(requirements)},
-    ${toSqlString(adminNotes)}, ${toSqlNumeric(loginId)}) returning id`;
+      ${toSqlString(name)}, ${toSqlString(address1)}, ${toSqlString(address2)}, 
+      ${toSqlString(city)}, ${toSqlString(state)}, ${toSqlString(zip)}, 
+      ${toSqlString(phone)}, 
+      ${toSqlNumeric(latitude)}, ${toSqlNumeric(longitude)}, 
+      ${toSqlString(website)}, ${toSqlBoolean(inactive)}, 
+      ${toSqlString(notes)}, ${toSqlString(requirements)},
+      ${toSqlString(adminNotes)}, ${toSqlNumeric(loginId)},
+      ${toSqlString(parentOrganization)}, ${toSqlString(physicalAccess)},
+      ${toSqlString(email)}, ${toSqlString(items)},
+      ${toSqlString(services)}, ${toSqlString(facebook)},
+      ${toSqlString(twitter)}, ${toSqlString(pinterest)},
+      ${toSqlString(linkedin)}, ${toSqlString(description)}
+    ) returning id`;
     const stakeholderResult = await pool.query(sql);
     const retObject = stakeholderResult.rows[0];
     const id = retObject.id;
@@ -214,7 +258,7 @@ const insert = async model => {
 
     return retObject;
   } catch (err) {
-    return new Error(err.message);
+    return Promise.reject(err.message);
   }
 };
 
@@ -248,7 +292,17 @@ const update = async model => {
     adminNotes,
     selectedCategoryIds,
     hours,
-    loginId
+    parentOrganization,
+    physicalAccess,
+    email,
+    items,
+    services,
+    facebook,
+    twitter,
+    pinterest,
+    linkedin,
+    loginId,
+    description
   } = model;
 
   const hoursSqlDelete = `delete from stakeholder_schedule where stakeholder_id = ${id}`;
@@ -280,6 +334,16 @@ const update = async model => {
                notes = ${toSqlString(notes)},
                requirements = ${toSqlString(requirements)},
                admin_notes = ${toSqlString(adminNotes)},
+               parent_organization = ${toSqlString(parentOrganization)},
+               physical_access = ${toSqlString(physicalAccess)},
+               email = ${toSqlString(email)},
+               items = ${toSqlString(items)},
+               services = ${toSqlString(services)},
+               facebook = ${toSqlString(facebook)},
+               twitter = ${toSqlString(twitter)},
+               pinterest = ${toSqlString(pinterest)},
+               linkedin = ${toSqlString(linkedin)},
+               description = ${toSqlString(description)},
                modified_login_id = ${toSqlNumeric(loginId)},
                modified_date = CURRENT_TIMESTAMP
               where id = ${id}`;

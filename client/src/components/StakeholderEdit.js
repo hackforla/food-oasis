@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import { Formik } from "formik";
+import * as Yup from "yup";
 import {
   withStyles,
   Box,
@@ -50,6 +51,23 @@ const MenuProps = {
   }
 };
 
+const validationSchema = Yup.object().shape({
+  name: Yup.string().required("Name is required"),
+  address1: Yup.string().required("Street address is required"),
+  city: Yup.string().required("City is required"),
+  state: Yup.string().required("State is required"),
+  zip: Yup.string().required("Zip code is required"),
+  latitude: Yup.number()
+    .required("Latitude is required")
+    .min(-90)
+    .max(90),
+  longitude: Yup.number()
+    .required("Longitude is required")
+    .min(-180)
+    .max(180),
+  email: Yup.string().email("Invalid email address format")
+});
+
 const StakeholderEdit = props => {
   const { classes, setToast, match, user } = props;
   const editId = match.params.id;
@@ -58,14 +76,23 @@ const StakeholderEdit = props => {
   const [originalData, setOriginalData] = useState({
     id: 0,
     name: "",
+    parentOrganization: "",
     address1: "",
     address2: "",
     city: "",
     state: "",
     zip: "",
     phone: "",
+    email: "",
     latitude: "",
     longitude: "",
+    physicalAccess: "",
+    items: "",
+    services: "",
+    facebook: "",
+    twitter: "",
+    pinterest: "",
+    linkedin: "",
     inactive: false,
     website: "",
     notes: "",
@@ -138,6 +165,7 @@ const StakeholderEdit = props => {
         <Formik
           initialValues={originalData}
           enableReinitialize={true}
+          validationSchema={validationSchema}
           onSubmit={(values, { setSubmitting, setFieldValue }) => {
             if (values.id) {
               return stakeholderService
@@ -189,7 +217,7 @@ const StakeholderEdit = props => {
                 <Grid item xs={12}>
                   <TextField
                     type="text"
-                    label="name"
+                    label="Name"
                     name="name"
                     variant="outlined"
                     margin="normal"
@@ -200,6 +228,44 @@ const StakeholderEdit = props => {
                     onBlur={handleBlur}
                     helperText={touched.name ? errors.name : ""}
                     error={touched.name && Boolean(errors.name)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    type="text"
+                    label="Description"
+                    name="description"
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    value={values.description}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={touched.description ? errors.description : ""}
+                    error={touched.description && Boolean(errors.description)}
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <TextField
+                    type="text"
+                    label="Parent Organization"
+                    name="parentOrganization"
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    value={values.parentOrganization}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={
+                      touched.parentOrganization
+                        ? errors.parentOrganization
+                        : ""
+                    }
+                    error={
+                      touched.parentOrganization &&
+                      Boolean(errors.parentOrganization)
+                    }
                   />
                 </Grid>
 
@@ -278,28 +344,14 @@ const StakeholderEdit = props => {
                     error={touched.zip && Boolean(errors.zip)}
                   />
                 </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    variant="outlined"
-                    margin="normal"
-                    fullWidth
-                    name="phone"
-                    label="Phone"
-                    type="text"
-                    value={values.phone}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    helperText={touched.phone ? errors.phone : ""}
-                    error={touched.phone && Boolean(errors.phone)}
-                  />
-                </Grid>
+
                 <Grid item xs={12} sm={6}>
                   <TextField
                     variant="outlined"
                     margin="normal"
                     fullWidth
                     name="latitude"
-                    label="latitude"
+                    label="Latitude"
                     type="text"
                     value={values.latitude}
                     onChange={handleChange}
@@ -371,6 +423,37 @@ const StakeholderEdit = props => {
                     originalData={originalData.hours}
                   />
                 </Grid>
+                <Grid item sm={6} xs={12}>
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    name="phone"
+                    label="Phone"
+                    type="text"
+                    value={values.phone}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={touched.phone ? errors.phone : ""}
+                    error={touched.phone && Boolean(errors.phone)}
+                  />
+                </Grid>
+                <Grid item sm={6} xs={12}>
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    name="email"
+                    label="Email"
+                    type="text"
+                    value={values.email}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={touched.email ? errors.email : ""}
+                    error={touched.email && Boolean(errors.email)}
+                  />
+                </Grid>
+
                 <Grid item xs={12}>
                   <TextField
                     variant="outlined"
@@ -384,6 +467,36 @@ const StakeholderEdit = props => {
                     onBlur={handleBlur}
                     helperText={touched.website ? errors.website : ""}
                     error={touched.website && Boolean(errors.website)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    name="items"
+                    label="Items"
+                    type="text"
+                    value={values.items}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={touched.items ? errors.items : ""}
+                    error={touched.items && Boolean(errors.items)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    name="services"
+                    label="Services"
+                    type="text"
+                    value={values.services}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={touched.services ? errors.services : ""}
+                    error={touched.services && Boolean(errors.services)}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -410,7 +523,7 @@ const StakeholderEdit = props => {
                     margin="normal"
                     fullWidth
                     name="requirements"
-                    label="Requirements"
+                    label="Eligibility / Requirements"
                     type="text"
                     multiline
                     rows={2}
@@ -420,6 +533,66 @@ const StakeholderEdit = props => {
                     onBlur={handleBlur}
                     helperText={touched.requirements ? errors.requirements : ""}
                     error={touched.requirements && Boolean(errors.requirements)}
+                  />
+                </Grid>
+                <Grid item sm={6} xs={12}>
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    name="facebook"
+                    label="Facebook"
+                    type="text"
+                    value={values.facebook}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={touched.facebook ? errors.facebook : ""}
+                    error={touched.facebook && Boolean(errors.facebook)}
+                  />
+                </Grid>
+                <Grid item sm={6} xs={12}>
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    name="twitter"
+                    label="Twitter"
+                    type="text"
+                    value={values.twitter}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={touched.twitter ? errors.twitter : ""}
+                    error={touched.twitter && Boolean(errors.twitter)}
+                  />
+                </Grid>
+                <Grid item sm={6} xs={12}>
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    name="pinterest"
+                    label="Pinterest"
+                    type="text"
+                    value={values.pinterest}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={touched.pinterest ? errors.pinterest : ""}
+                    error={touched.pinterest && Boolean(errors.pinterest)}
+                  />
+                </Grid>
+                <Grid item sm={6} xs={12}>
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    name="linkedin"
+                    label="LinkedIn"
+                    type="text"
+                    value={values.linkedin}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={touched.linkedin ? errors.linkedin : ""}
+                    error={touched.linkedin && Boolean(errors.linkedin)}
                   />
                 </Grid>
                 <Grid item xs={12}>

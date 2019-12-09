@@ -1,8 +1,10 @@
 import React from "react";
-import { Grid, Typography, Card, CardContent, Button } from "@material-ui/core";
+import { Grid, Typography, Card, CardContent, Link } from "@material-ui/core";
+import { Check } from "@material-ui/icons";
 import { UserContext } from "./user-context";
 import EditButton from "./EditButton";
 import { withRouter } from "react-router-dom";
+import moment from "moment";
 
 const StakeholderListItem = props => {
   const { stakeholder } = props;
@@ -19,9 +21,9 @@ const StakeholderListItem = props => {
 
           {stakeholder.website ? (
             <div>
-              <Button href={stakeholder.website} target="_blank">
-                website
-              </Button>
+              <Link href={stakeholder.website} target="_blank">
+                {stakeholder.website}
+              </Link>
             </div>
           ) : null}
           <div>{stakeholder.address1}</div>
@@ -35,18 +37,40 @@ const StakeholderListItem = props => {
           {stakeholder.distance && (
             <div>distance: {stakeholder.distance.toFixed(2)} mi.</div>
           )}
-          <UserContext.Consumer>
-            {user =>
-              user && user.isAdmin ? (
-                <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                  <EditButton
-                    label="Edit"
-                    href={`/stakeholderedit/${stakeholder.id}`}
-                  />
-                </div>
-              ) : null
-            }
-          </UserContext.Consumer>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              justifyItems: "center"
+            }}
+          >
+            {stakeholder.verifiedDate ? (
+              <div>
+                <Check />
+                <Typography
+                  variant={"caption"}
+                  component={"p"}
+                  display={"inline"}
+                >
+                  {" " + moment(stakeholder.verifiedDate).format("MM/DD/YY")}
+                </Typography>
+              </div>
+            ) : (
+              <span></span>
+            )}
+            <UserContext.Consumer>
+              {user =>
+                user && user.isAdmin ? (
+                  <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                    <EditButton
+                      label="Edit"
+                      href={`/stakeholderedit/${stakeholder.id}`}
+                    />
+                  </div>
+                ) : null
+              }
+            </UserContext.Consumer>
+          </div>
         </CardContent>
       </Card>
     </Grid>

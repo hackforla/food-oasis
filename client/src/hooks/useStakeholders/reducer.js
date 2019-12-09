@@ -24,7 +24,11 @@ export function reducer(state, action) {
         isLoading: false
       };
     case actionTypes.CATEGORIES.FETCH_FAILURE:
-      return { ...state, categoriesError: action.error, isLoading: false };
+      return {
+        ...state,
+        categoriesError: action.error
+        //isLoading: false
+      };
 
     case actionTypes.LOCATION.FETCH_REQUEST:
       return { ...state, isLoading: true };
@@ -32,8 +36,8 @@ export function reducer(state, action) {
       return {
         ...state,
         latitude: action.userCoordinates.latitude,
-        longitude: action.userCoordinates.longitude,
-        isLoading: false
+        longitude: action.userCoordinates.longitude
+        //isLoading: false
       };
     case actionTypes.LOCATION.FETCH_FAILURE:
       return { ...state, isLoading: false };

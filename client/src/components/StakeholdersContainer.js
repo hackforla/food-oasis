@@ -18,9 +18,13 @@ const styles = {
   }
 };
 
-function StakeholdersContainer() {
-  const { state, dispatch, actionTypes, search } = useStakeholders();
-  const [isMapView, setIsMapView] = React.useState(true);
+function StakeholdersContainer(props) {
+  const { match, history } = props;
+  const { state, dispatch, actionTypes, search } = useStakeholders(
+    match,
+    history
+  );
+  const [isMapView, setIsMapView] = React.useState(false);
 
   const openSearchPanel = isOpen => {
     dispatch({ type: actionTypes.TOGGLE_SEARCH_PANEL, isOpen });
@@ -86,7 +90,7 @@ function StakeholdersContainer() {
         {/* TODO: make a loading component! */}
         {isLoading ? (
           <h3>Loading...</h3>
-        ) : isMapView ? (
+        ) : isMapView && selectedLatitude && selectedLongitude ? (
           <Map
             stakeholders={stakeholders}
             selectedLatitude={selectedLatitude}
@@ -100,6 +104,8 @@ function StakeholdersContainer() {
       <pre>
         {JSON.stringify({ selectedLatitude, selectedLongitude }, null, 2)}
       </pre>
+      <pre>{JSON.stringify(props.match, null, 2)}</pre>
+      <pre>{JSON.stringify(props.history, null, 2)}</pre>
     </div>
   );
 }

@@ -43,6 +43,8 @@ export function reducer(state, action) {
       return { ...state, isSearchPanelOpen: action.isOpen };
     // case actionTypes.UPDATE_CRITERIA:
     //   return { ...state, ...action.payload };
+    case actionTypes.INITIALIZE_STATE:
+      return { ...state, ...action.payload };
     default:
       return state;
   }

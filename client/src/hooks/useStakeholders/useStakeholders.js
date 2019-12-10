@@ -4,6 +4,7 @@ import * as categoryService from "../../services/category-service";
 import { actionTypes } from "./actionTypes";
 import { reducer } from "./reducer";
 import { initialState } from "./initialState";
+import queryString from "query-string";
 
 export function useStakeholders(history) {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -126,19 +127,47 @@ export function useStakeholders(history) {
     fetchLocation();
   }, []);
 
-  useEffect(() => {
-    function setDefaultState() {
-      const {
-        searchString,
-        selectedLatitude,
-        selectedLongitude,
-        selectedLocationName,
-        selectedDistance
-      } = initialState;
-    }
+  // useEffect(() => {
+  //   // The goal here is to overwrite the initialState with
+  //   // search criteria from the query string parameters, if
+  //   // supplied. The effect should only run once, after the
+  //   // list of categories has loaded.
+  //   let {
+  //     searchString,
+  //     selectedLatitude,
+  //     selectedLongitude,
+  //     selectedLocationName,
+  //     selectedDistance,
+  //     selectedCategoryIds
+  //   } = initialState;
 
-    setDefaultState();
-  }, [state.selectedCategories, history]);
+  //   const params = queryString.parse(history.location.search);
+
+  //   // override initial search parameters with any
+  //   // query string parameters
+  //   searchString = params.name || searchString;
+  //   selectedDistance = params.radius || selectedDistance;
+  //   selectedLatitude = Number.parseFloat(params.lat) || selectedLatitude;
+  //   selectedLongitude = Number.parseFloat(params.lon) || selectedLongitude;
+  //   if (params.categoryIds) {
+  //     selectedCategoryIds = params.categoryIds.split(",");
+  //   }
+  //   const selectedCategories = selectedCategoryIds.map(
+  //     sel => state.categories.map(cat => cat.id === sel.id)[0]
+  //   );
+
+  //   dispatch({
+  //     type: actionTypes.INITIALIZE_STATE,
+  //     payload: {
+  //       searchString,
+  //       selectedLatitude: selectedLatitude,
+  //       selectedLongitude: selectedLongitude,
+  //       selectedLocationName,
+  //       selectedCategories,
+  //       selectedDistance
+  //     }
+  //   });
+  // }, [history, state.categories]);
 
   useEffect(() => {
     // if we don't have the categories fetched yet, bail
@@ -150,7 +179,7 @@ export function useStakeholders(history) {
       selectedLongitude,
       selectedLocationName,
       selectedDistance
-    } = defaultState;
+    } = initialState;
 
     search(
       searchString,
@@ -160,7 +189,7 @@ export function useStakeholders(history) {
       state.selectedCategories,
       selectedDistance
     );
-  }, [state.selectedCategories, defaultState]);
+  }, [state.selectedCategories, initialState]);
 
   return { state, dispatch, actionTypes, search };
 }

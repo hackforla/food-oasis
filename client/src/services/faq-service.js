@@ -31,8 +31,8 @@ export const add = async model => {
 };
 
 // model = { question: "", answer: "", language: "" }
-export const update = async (id, model) => {
-  const response = await axios.put(`${baseUrl}/faq/${id}`, model);
+export const update = async model => {
+  const response = await axios.put(`${baseUrl}/faq/${model.id}`, model);
   return response.data;
 };
 

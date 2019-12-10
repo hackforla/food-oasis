@@ -4,6 +4,7 @@ import * as faqService from "../services/faq-service";
 import FaqItem from "./FaqItem";
 
 import Container from "@material-ui/core/Container";
+import Button from "@material-ui/core/Button";
 
 const Faq = () => {
   // Load in current FAQs
@@ -37,6 +38,9 @@ const Faq = () => {
   return (
     <Container maxWidth="md">
       <p>{t("title")}</p>
+      <Button variant="outlined" label="Add New Faq" href="/faqs/add">
+        Add New Faq
+      </Button>
       {faqs[0] ? (
         faqs.map(faq => <FaqItem faq={faq} key={faq.question} />)
       ) : (

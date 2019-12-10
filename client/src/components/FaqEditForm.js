@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { withRouter } from "react-router-dom";
 import * as faqService from "../services/faq-service";
 
 import TextField from "@material-ui/core/Textfield";
@@ -9,12 +8,9 @@ import Button from "@material-ui/core/Button";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-const FaqEditForm = ({ faq, history, notAdded }) => {
+const FaqEditForm = ({ faq, notAdded }) => {
   const [question, setQuestion] = useState(faq.question);
   const [answer, setAnswer] = useState(faq.answer);
-
-  console.log(faq);
-  console.log(answer);
 
   let language;
   switch (faq.language) {
@@ -36,7 +32,7 @@ const FaqEditForm = ({ faq, history, notAdded }) => {
     setAnswer(html);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = e => {
     if (notAdded) {
       faqService.add({
         ...faq,
@@ -44,14 +40,12 @@ const FaqEditForm = ({ faq, history, notAdded }) => {
         answer
       });
     } else {
-      // Need to double check on how updating works with service
       faqService.update({
         ...faq,
         question,
         answer
       });
     }
-    history.push("/faqs");
   };
 
   return (
@@ -88,4 +82,4 @@ const FaqEditForm = ({ faq, history, notAdded }) => {
   );
 };
 
-export default withRouter(FaqEditForm);
+export default FaqEditForm;

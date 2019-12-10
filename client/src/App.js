@@ -22,6 +22,7 @@ import Footer from "./components/Footer";
 import ConfirmEmail from "./components/ConfirmEmail";
 import Faq from "./components/Faq";
 import FaqEdit from "./components/FaqEdit";
+import FaqAdd from "./components/FaqAdd";
 import Organizations from "./components/Organizations";
 
 const styles = {
@@ -105,8 +106,11 @@ function App() {
               <Route path="/team">
                 <Team />
               </Route>
-              <Route path="/faqs">
+              <Route exact path="/faqs">
                 <Faq />
+              </Route>
+              <Route path="/faqs/add">
+                <FaqAdd />
               </Route>
               <Route path="/faqsedit/:identifier?">
                 <FaqEdit setToast={setToast} />

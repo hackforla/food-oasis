@@ -8,6 +8,7 @@ export function reducer(state, action) {
       return {
         ...state,
         stakeholders: action.stakeholders,
+        ...action.payload,
         isLoading: false,
         isSearchPanelOpen: false
       };
@@ -40,8 +41,8 @@ export function reducer(state, action) {
 
     case actionTypes.TOGGLE_SEARCH_PANEL:
       return { ...state, isSearchPanelOpen: action.isOpen };
-    case actionTypes.UPDATE_CRITERIA:
-      return { ...state, ...action.payload };
+    // case actionTypes.UPDATE_CRITERIA:
+    //   return { ...state, ...action.payload };
     default:
       return state;
   }

@@ -96,10 +96,10 @@ function StakeholdersContainer() {
           <StakeholderList stakeholders={stakeholders} />
         )}
       </div>
-      <pre>{JSON.stringify({ latitude, longitude }, null, 2)}</pre>
+      {/* <pre>{JSON.stringify({ latitude, longitude }, null, 2)}</pre>
       <pre>
         {JSON.stringify({ selectedLatitude, selectedLongitude }, null, 2)}
-      </pre>
+      </pre> */}
     </div>
   );
 }

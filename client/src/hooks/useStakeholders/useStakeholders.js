@@ -8,6 +8,8 @@ import { initialState } from "./initialState";
 export function useStakeholders(history) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  const defaultState = null;
+
   const search = async (
     searchString,
     latitude,
@@ -43,18 +45,14 @@ export function useStakeholders(history) {
           selectedDistance
         }
       });
-
-      // dispatch({
-      //   type: actionTypes.UPDATE_CRITERIA,
-      //   payload: {
-      //     searchString,
-      //     selectedLatitude: latitude,
-      //     selectedLongitude: longitude,
-      //     selectedLocationName,
-      //     selectedCategories,
-      //     selectedDistance,
-      //   },
-      // });
+      history.push(
+        `/stakeholders?name=${searchString}` +
+          `&radius=${selectedDistance}` +
+          `&lat=${latitude}` +
+          `&lon=${longitude}` +
+          `&placeName=${selectedLocationName}` +
+          `&categoryIds=${selectedCategories.map(c => c.id).join(",")}`
+      );
     } catch (err) {
       console.log(err);
       dispatch({ type: FETCH_FAILURE });
@@ -129,6 +127,20 @@ export function useStakeholders(history) {
   }, []);
 
   useEffect(() => {
+    function setDefaultState() {
+      const {
+        searchString,
+        selectedLatitude,
+        selectedLongitude,
+        selectedLocationName,
+        selectedDistance
+      } = initialState;
+    }
+
+    setDefaultState();
+  }, [state.selectedCategories, history]);
+
+  useEffect(() => {
     // if we don't have the categories fetched yet, bail
     if (!state.selectedCategories) return;
 
@@ -138,7 +150,7 @@ export function useStakeholders(history) {
       selectedLongitude,
       selectedLocationName,
       selectedDistance
-    } = initialState;
+    } = defaultState;
 
     search(
       searchString,
@@ -148,7 +160,7 @@ export function useStakeholders(history) {
       state.selectedCategories,
       selectedDistance
     );
-  }, [state.selectedCategories]);
+  }, [state.selectedCategories, defaultState]);
 
   return { state, dispatch, actionTypes, search };
 }

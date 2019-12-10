@@ -18,8 +18,9 @@ const styles = {
   }
 };
 
-function StakeholdersContainer() {
-  const { state, dispatch, actionTypes, search } = useStakeholders();
+function StakeholdersContainer(props) {
+  const { history } = props;
+  const { state, dispatch, actionTypes, search } = useStakeholders(history);
   const [isMapView, setIsMapView] = React.useState(true);
 
   const openSearchPanel = isOpen => {

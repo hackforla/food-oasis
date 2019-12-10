@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import { Typography } from "@material-ui/core";
+import { initialState } from "../hooks/useStakeholders/initialState";
+// import { RotateLoader } from "react-spinners";
 import StakeholderSearch from "./StakeholderSearch";
 import StakeholderCriteria from "./StakeholderCriteria";
 import StakeholderList from "./StakeholderList";
 import Map from "./Map";
 import { useStakeholders } from "../hooks/useStakeholders/useStakeholders";
+import queryString from "query-string";
 
 const styles = {
   container: {
@@ -18,13 +21,53 @@ const styles = {
   }
 };
 
+const applyQueryStringParameters = (history, defaultState) => {
+  let {
+    searchString,
+    selectedLatitude,
+    selectedLongitude,
+    selectedLocationName,
+    selectedDistance,
+    selectedCategoryIds
+  } = defaultState;
+
+  const params = queryString.parse(history.location.search);
+
+  // override initial search parameters with any
+  // query string parameters
+  searchString = params.name || searchString;
+  selectedDistance = params.radius || selectedDistance;
+  selectedLatitude = Number.parseFloat(params.lat) || selectedLatitude;
+  selectedLongitude = Number.parseFloat(params.lon) || selectedLongitude;
+  if (params.categoryIds) {
+    selectedCategoryIds = params.categoryIds.split(",");
+  }
+
+  const initialState = {
+    searchString,
+    selectedLatitude,
+    selectedLongitude,
+    selectedLocationName,
+    selectedDistance,
+    selectedCategoryIds
+  };
+
+  return initialState;
+};
+
 function StakeholdersContainer(props) {
-  const { match, history } = props;
+  const { history } = props;
+
+  const modifiedInitialState = applyQueryStringParameters(
+    history,
+    initialState
+  );
+
   const { state, dispatch, actionTypes, search } = useStakeholders(
-    match,
+    modifiedInitialState,
     history
   );
-  const [isMapView, setIsMapView] = React.useState(false);
+  const [isMapView, setIsMapView] = React.useState(true);
 
   const openSearchPanel = isOpen => {
     dispatch({ type: actionTypes.TOGGLE_SEARCH_PANEL, isOpen });
@@ -89,7 +132,24 @@ function StakeholdersContainer(props) {
         )}
         {/* TODO: make a loading component! */}
         {isLoading ? (
-          <h3>Loading...</h3>
+          // <div
+          //   style={{
+          //     height: "200",
+          //     width: "100%",
+          //     margin: "100px auto",
+          //     display: "flex",
+          //     justifyContent: "space-around"
+          //   }}
+          // >
+          //   <RotateLoader
+          //     // css={}
+          //     sizeUnit={"px"}
+          //     size={15}
+          //     color={"#266294"}
+          //     loading={true}
+          //   />
+          // </div>
+          <div>Loading...</div>
         ) : isMapView && selectedLatitude && selectedLongitude ? (
           <Map
             stakeholders={stakeholders}

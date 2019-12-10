@@ -3,10 +3,9 @@ import * as stakeholderService from "../../services/stakeholder-service";
 import * as categoryService from "../../services/category-service";
 import { actionTypes } from "./actionTypes";
 import { reducer } from "./reducer";
-import { initialState } from "./initialState";
-import queryString from "query-string";
+// import { initialState } from "./initialState";
 
-export function useStakeholders(match, history) {
+export function useStakeholders(initialState, history) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const search = async (
@@ -32,9 +31,17 @@ export function useStakeholders(match, history) {
         longitude,
         distance: selectedDistance
       });
-      dispatch({ type: FETCH_SUCCESS, stakeholders });
+      history.push(
+        `/stakeholders?name=${searchString}` +
+          `&radius=${selectedDistance}` +
+          `&lat=${latitude}` +
+          `&lon=${longitude}` +
+          `&placeName=${selectedLocationName}` +
+          `&categoryIds=${selectedCategories.map(c => c.id).join(",")}`
+      );
       dispatch({
-        type: actionTypes.UPDATE_CRITERIA,
+        type: FETCH_SUCCESS,
+        stakeholders,
         payload: {
           searchString,
           selectedLatitude: latitude,
@@ -44,15 +51,6 @@ export function useStakeholders(match, history) {
           selectedDistance
         }
       });
-
-      history.push(
-        `/stakeholders?name=${searchString}` +
-          `&radius=${selectedDistance}` +
-          `&lat=${latitude}` +
-          `&lon=${longitude}` +
-          `&placeName=${selectedLocationName}` +
-          `&categoryIds=${selectedCategories.map(c => c.id).join(",")}`
-      );
     } catch (err) {
       console.log(err);
       dispatch({ type: FETCH_FAILURE });
@@ -120,55 +118,40 @@ export function useStakeholders(match, history) {
   };
 
   useEffect(() => {
-    const initialize = async () => {
-      let {
-        searchString,
-        selectedLatitude,
-        selectedLongitude,
-        selectedLocationName,
-        selectedDistance,
-        selectedCategories
-      } = initialState;
+    // Runs once on initialization to get list of all active categories
+    fetchCategories();
 
-      // Runs once on initialization to get list of all active categories
-      const categories = await fetchCategories();
+    // Runs once on initialization to get user's browser lat/lon, if
+    // browser permits
+    fetchLocation();
+  }, []);
 
-      // Runs once on initialization to get user's browser lat/lon, if
-      // browser permits
-      fetchLocation();
+  useEffect(() => {
+    // if we don't have the categories fetched yet, bail
+    if (!state.categories) return;
 
-      const params = queryString.parse(history.location.search);
+    let {
+      searchString,
+      selectedLatitude,
+      selectedLongitude,
+      selectedLocationName,
+      selectedDistance,
+      selectedCategoryIds
+    } = initialState;
 
-      // override initial search parameters with any
-      // query string parameters
-      searchString = params.name || searchString;
-      selectedDistance = params.radius || selectedDistance;
-      selectedLatitude = params.lat || selectedLatitude;
-      selectedLongitude = params.lon || selectedLongitude;
-      if (params.categoryIds) {
-        selectedCategories = params.categoryIds
-          .split(",")
-          .map(id => categories.filter(cat => cat.id === Number(id))[0]);
-      } else {
-        selectedCategories = categories.map(
-          cat => selectedCategories.filter(c => c.id === cat.id)[0]
-        );
-      }
+    let selectedCategories = selectedCategoryIds.map(
+      id => state.categories.filter(cat => cat.id === Number(id))[0]
+    );
 
-      // Run once on initialization (but can be called again later, since exposed as export)
-      search(
-        searchString,
-        selectedLatitude,
-        selectedLongitude,
-        selectedLocationName,
-        selectedCategories,
-        selectedDistance
-      );
-      return true;
-    };
-
-    initialize();
-  }, [history.location.search]);
+    search(
+      searchString,
+      selectedLatitude,
+      selectedLongitude,
+      selectedLocationName,
+      selectedCategories,
+      selectedDistance
+    );
+  }, [state.categories, initialState, search]);
 
   return { state, dispatch, actionTypes, search };
 }

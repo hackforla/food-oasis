@@ -33,7 +33,6 @@
     "passport-local": "^1.0.0",
     "pg": "^7.12.1",
     "pino-noir": "^2.2.1",
-    "trix": "^1.2.1",
     "uuid": "^3.3.3"
   },
   "devDependencies": {

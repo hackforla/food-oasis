@@ -25,10 +25,10 @@ i18n
   // for all options read: https://www.i18next.com/overview/configuration-options
   .init({
     resources,
-    fallbackLng: "en",
+    fallbackLng: ["en", "es"],
     debug: true,
     react: {
-      useSuspense: false,
+      useSuspense: false
       // wait: true
     },
     ns: ["news", "about", "donate"]

@@ -18,8 +18,9 @@ const styles = {
   }
 };
 
-function StakeholdersContainer() {
-  const { state, dispatch, actionTypes, search } = useStakeholders();
+function StakeholdersContainer(props) {
+  const { history } = props;
+  const { state, dispatch, actionTypes, search } = useStakeholders(history);
   const [isMapView, setIsMapView] = React.useState(true);
 
   const openSearchPanel = isOpen => {
@@ -96,10 +97,10 @@ function StakeholdersContainer() {
           <StakeholderList stakeholders={stakeholders} />
         )}
       </div>
-      <pre>{JSON.stringify({ latitude, longitude }, null, 2)}</pre>
+      {/* <pre>{JSON.stringify({ latitude, longitude }, null, 2)}</pre>
       <pre>
         {JSON.stringify({ selectedLatitude, selectedLongitude }, null, 2)}
-      </pre>
+      </pre> */}
     </div>
   );
 }

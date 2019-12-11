@@ -20,6 +20,7 @@
     "i18next-browser-languagedetector": "^4.0.0",
     "i18next-xhr-backend": "^3.2.0",
     "moment": "^2.24.0",
+    "query-string": "^6.9.0",
     "react": "^16.10.1",
     "react-dom": "^16.10.1",
     "react-i18next": "^10.13.1",

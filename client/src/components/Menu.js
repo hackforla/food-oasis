@@ -22,6 +22,17 @@ const useStyles = makeStyles({
 export default function Menu(props) {
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
+  const MENU_ITEMS = [
+    "Map",
+    "Stakeholders",
+    "Donate",
+    "FAQs",
+    // "News",
+    "Resources",
+    // "Organizations",
+    "About",
+    // "Team"
+  ];
 
   const toggleDrawer = event => {
     if (
@@ -42,17 +53,7 @@ export default function Menu(props) {
       onKeyDown={e => toggleDrawer(e)}
     >
       <List>
-        {[
-          "Map",
-          "Stakeholders",
-          "Donate",
-          "FAQs",
-          "News",
-          "Resources",
-          "Organizations",
-          "About",
-          "Team"
-        ].map((text, index) => {
+        {MENU_ITEMS.map((text, index) => {
           const route = text.toLowerCase();
 
           return <MenuItemLink key={index} to={`/${route}`} text={text} />;

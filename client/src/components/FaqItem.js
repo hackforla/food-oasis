@@ -22,7 +22,7 @@ const FaqItem = ({ faq }) => {
       <UserContext.Consumer>
         {user =>
           user && user.isAdmin ? (
-            <EditButton label="Edit" href={`/faqsedit/${faq.identifier}`} />
+            <EditButton label="Edit" href={`/faqs/${faq.identifier}`} />
           ) : null
         }
       </UserContext.Consumer>

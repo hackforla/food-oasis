@@ -51,7 +51,9 @@ const FaqEditForm = ({ faq, notAdded }) => {
   return (
     <div>
       <Typography component="h4" variant="h4">
-        {language} Edit {notAdded && "(Not Saved in System)"}
+        {`${language} ${faq.identifier ? "Edit" : ""} ${
+          faq.identifier && notAdded ? "(Not Saved in System)" : ""
+        }`}
       </Typography>
       <form onSubmit={handleSubmit}>
         <Typography component="h4" variant="h5">

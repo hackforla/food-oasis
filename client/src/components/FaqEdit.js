@@ -54,7 +54,7 @@ const FaqEdit = ({ match }) => {
       }
     }
     fetchFaq();
-  }, []);
+  }, [addedFaq.length, faqIdentifier, i18n.languages]);
 
   return (
     <Container maxWidth="md">

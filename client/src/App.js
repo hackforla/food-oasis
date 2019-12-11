@@ -94,30 +94,30 @@ function App() {
               <Route path="/donate">
                 <Donate />
               </Route>
-              <Route path="/news">
+              {/* <Route path="/news">
                 <News />
-              </Route>
+              </Route> */}
               <Route path="/resources">
                 <Resources />
               </Route>
               <Route path="/about">
                 <About />
               </Route>
-              <Route path="/team">
+              {/* <Route path="/team">
                 <Team />
-              </Route>
+              </Route> */}
               <Route exact path="/faqs">
                 <Faq />
               </Route>
               <Route path="/faqs/add">
                 <FaqAdd />
               </Route>
-              <Route path="/faqsedit/:identifier?">
+              <Route path="/faqs/:identifier?">
                 <FaqEdit setToast={setToast} />
               </Route>
-              <Route path="/organizations">
+              {/* <Route path="/organizations">
                 <Organizations />
-              </Route>
+              </Route> */}
               <Route path="/register">
                 <Register setToast={setToast} />
               </Route>

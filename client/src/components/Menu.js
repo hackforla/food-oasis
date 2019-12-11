@@ -30,7 +30,7 @@ export default function Menu(props) {
     // "News",
     "Resources",
     // "Organizations",
-    "About",
+    "About"
     // "Team"
   ];
 
@@ -67,13 +67,13 @@ export default function Menu(props) {
               <MenuItemLink
                 key="stakeholderedit"
                 to="/stakeholderedit"
-                text="New Stakeholder"
+                text="Add New Stakeholder"
               />
             ) : null
           }
         </UserContext.Consumer>
-        <LanguageChooser />
       </List>
+      <LanguageChooser />
     </div>
   );
 

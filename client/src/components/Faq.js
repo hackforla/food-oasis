@@ -16,6 +16,12 @@ const Faq = () => {
   const [message, setMessage] = useState("FAQs are loading...");
 
   useEffect(() => {
+    if (localStorage.getItem("faqs")) {
+      setFaqs(JSON.parse(localStorage.getItem("faqs")));
+    }
+  }, []);
+
+  useEffect(() => {
     async function fetchFaqs() {
       try {
         let twoLetterLanguage = i18n.language.slice(0, 2);
@@ -24,6 +30,7 @@ const Faq = () => {
         });
         if (fetchedFaqs.length > 0) {
           setFaqs(fetchedFaqs);
+          localStorage.setItem("faqs", JSON.stringify(fetchedFaqs));
         } else {
           setMessage("There are currently no FAQs.");
         }

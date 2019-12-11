@@ -7,7 +7,7 @@ const useStyles = makeStyles({
   language: {
     position: "absolute",
     bottom: 0,
-    margin: "16px"
+    margin: "32px 16px"
   }
 });
 

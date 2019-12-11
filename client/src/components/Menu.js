@@ -59,7 +59,12 @@ export default function Menu(props) {
           return <MenuItemLink key={index} to={`/${route}`} text={text} />;
         })}
         {props.user ? null : (
-          <MenuItemLink key="Register" to="/register" text="Register" />
+          <MenuItemLink
+            key="Register"
+            to="/register"
+            text="Register"
+            userSection={true}
+          />
         )}
         <UserContext.Consumer>
           {user =>
@@ -68,6 +73,7 @@ export default function Menu(props) {
                 key="stakeholderedit"
                 to="/stakeholderedit"
                 text="Add New Stakeholder"
+                userSection={true}
               />
             ) : null
           }

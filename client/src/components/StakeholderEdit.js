@@ -76,6 +76,7 @@ const StakeholderEdit = props => {
   const [originalData, setOriginalData] = useState({
     id: 0,
     name: "",
+    description: "",
     parentOrganization: "",
     address1: "",
     address2: "",

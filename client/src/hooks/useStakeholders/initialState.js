@@ -7,11 +7,11 @@ export const initialState = {
   stakeholders: [],
   categories: [],
   searchString: "",
-  selectedCategories: null,
+  selectedCategoryIds: [1, 8, 9],
   latitude: null,
   longitude: null,
   selectedLatitude: 34.041001,
   selectedLongitude: -118.235036,
   selectedLocationName: "LACI",
-  selectedDistance: 10,
+  selectedDistance: 10
 };

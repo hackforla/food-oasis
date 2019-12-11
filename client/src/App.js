@@ -6,7 +6,7 @@ import { UserContext } from "./components/user-context";
 import Toast from "./components/Toast";
 import Header from "./components/Header";
 import Main from "./components/Main";
-import Map from "./components/Map";
+import SearchPage from "./components/SearchPage";
 import StakeholdersContainer from "./components/StakeholdersContainer";
 import StakeholderEdit from "./components/StakeholderEdit";
 import Donate from "./components/Donate";
@@ -30,15 +30,15 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     justifyContent: "flex-start",
-    alignItems: "stretch"
+    alignItems: "stretch",
   },
   mainContent: {
     margin: "0",
     paddingBottom: "50px",
     backgroundColor: "green",
     overflowY: "scroll",
-    flexGrow: 1
-  }
+    flexGrow: 1,
+  },
 };
 
 function App() {
@@ -81,7 +81,7 @@ function App() {
                 <Main />
               </Route>
               <Route path="/map">
-                <Map />
+                <SearchPage />
               </Route>
               <Route path="/stakeholders">
                 <StakeholdersContainer />

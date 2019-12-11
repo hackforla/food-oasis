@@ -5,8 +5,8 @@ import Button from '@material-ui/core/Button';
 function OpenTimeForm(props) {
 	const { handleChange, originalData } = props
 	const [ inputs, setInputs ] = useState([{
-		weekOfMonth: [], 
-		dayOfWeek: [], 
+		weekOfMonth: 0, 
+		dayOfWeek: 'Mon', 
 		open: '', 
 		close: '' 
 	}]);
@@ -21,12 +21,14 @@ function OpenTimeForm(props) {
 
 	useEffect(
 		() => {
+			if (originalData.length) {
 			setInputs(originalData)
+			}
 		}, [originalData]
 	)
 
 	const addInput = () => {
-		let newList = [ ...inputs, {weekOfMonth: [], dayOfWeek: [], open: '', close: '' } ];
+		let newList = [ ...inputs, {weekOfMonth: 0, dayOfWeek: 'Mon', open: '', close: '' } ];
 		setInputs(newList);
 	};
 
@@ -75,7 +77,6 @@ function OpenTimeForm(props) {
 			</div>
 		);
 	});
-
 	return (
 		<div>
 			<div>{inputsMap}</div>

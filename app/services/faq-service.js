@@ -42,6 +42,7 @@ Do 2 requests to POST /api/faqs/
 */
 
 const insert = model => {
+  console.log(model);
   const { question, answer, language, identifier } = model;
   const sql = `insert into faq (question, answer, language, identifier) values ($1, $2, $3, $4) returning id`;
   return pool.query(sql, [question, answer, language, identifier]).then(res => {

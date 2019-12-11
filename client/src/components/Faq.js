@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import * as faqService from "../services/faq-service";
-import FaqItem from "./FaqItem";
+import { UserContext } from "./user-context";
 
+import FaqItem from "./FaqItem";
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
 
@@ -45,9 +46,16 @@ const Faq = () => {
   return (
     <Container maxWidth="md">
       <p>{t("title")}</p>
-      <Button variant="outlined" label="Add New Faq" href="/faqs/add">
-        Add New Faq
-      </Button>
+      <UserContext.Consumer>
+        {user =>
+          user &&
+          user.isAdmin && (
+            <Button variant="outlined" label="Add New Faq" href="/faqs/add">
+              Add New Faq
+            </Button>
+          )
+        }
+      </UserContext.Consumer>
       {faqs[0] ? (
         faqs.map(faq => <FaqItem faq={faq} key={faq.question} />)
       ) : (

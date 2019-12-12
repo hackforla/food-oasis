@@ -55,33 +55,32 @@ function OpenTimeForm(props) {
     return output;
   };
 
-  const inputsMap = () =>
-    inputs.map((val, i) => {
-      let stateChange = (value, name) => {
-        let newList = [...inputs];
-        if (name === "open" || name === "close") {
-          newList[i][name] = handleTime(value);
-        } else {
-          newList[i][name] = value;
-        }
-        setInputs(newList);
-      };
+  const inputsMap = inputs.map((val, i) => {
+    let stateChange = (value, name) => {
+      let newList = [...inputs];
+      if (name === "open" || name === "close") {
+        newList[i][name] = handleTime(value);
+      } else {
+        newList[i][name] = value;
+      }
+      setInputs(newList);
+    };
 
-      return (
-        <div key={i}>
-          {/* <OpenTimeInputs
+    return (
+      <div key={i}>
+        {/* <OpenTimeInputs
             values={val}
             stateChange={stateChange}
             removeInput={removeInput}
             index={i}
           /> */}
-        </div>
-      );
-    });
+      </div>
+    );
+  });
 
   return (
     <div>
-      <div>{inputsMap()}</div>
+      <div>{inputsMap}</div>
       <Button onClick={addInput}>Add Another Time</Button>
     </div>
   );

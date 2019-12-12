@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-//import OpenTimeInputs from "./OpenTimeInput";
+import OpenTimeInputs from "./OpenTimeInput";
 import Button from "@material-ui/core/Button";
 
 function OpenTimeForm(props) {
@@ -56,32 +56,32 @@ function OpenTimeForm(props) {
   };
 
   const inputsMap = inputs.map((val, i) => {
-    // let stateChange = (value, name) => {
-    //   let newList = [...inputs];
-    //   if (name === "open" || name === "close") {
-    //     newList[i][name] = handleTime(value);
-    //   } else {
-    //     newList[i][name] = value;
-    //   }
-    //   setInputs(newList);
-    // };
+    let stateChange = (value, name) => {
+      let newList = [...inputs];
+      if (name === "open" || name === "close") {
+        newList[i][name] = handleTime(value);
+      } else {
+        newList[i][name] = value;
+      }
+      setInputs(newList);
+    };
 
     return (
       <div key={i}>
         {i}
-        {/* <OpenTimeInputs
-            values={val}
-            stateChange={stateChange}
-            removeInput={removeInput}
-            index={i}
-          /> */}
+        <OpenTimeInputs
+          values={val}
+          stateChange={stateChange}
+          removeInput={removeInput}
+          index={i}
+        />
       </div>
     );
   });
 
   return (
     <div>
-      {/* <div>{inputsMap}</div> */}
+      <div>{inputsMap}</div>
       <Button onClick={addInput}>Add Another Time</Button>
     </div>
   );

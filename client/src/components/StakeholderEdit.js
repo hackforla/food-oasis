@@ -23,7 +23,7 @@ import {
 import * as stakeholderService from "../services/stakeholder-service";
 import * as categoryService from "../services/category-service";
 import * as esriService from "../services/esri_service";
-import OpenTimeForm from "./OpenTimeForm";
+// import OpenTimeForm from "./OpenTimeForm";
 import SaveButton from "./SaveButton";
 import CancelButton from "./CancelButton";
 import VerifyButton from "./VerifyButton";
@@ -418,12 +418,12 @@ const StakeholderEdit = props => {
                     )}
                   </div>
                 </Grid>
-                <Grid item xs={12}>
+                {/* <Grid item xs={12}>
                   <OpenTimeForm
                     handleChange={handleChange}
                     originalData={originalData.hours}
                   />
-                </Grid>
+                </Grid> */}
                 <Grid item sm={6} xs={12}>
                   <TextField
                     variant="outlined"

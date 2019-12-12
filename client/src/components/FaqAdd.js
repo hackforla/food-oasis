@@ -19,12 +19,12 @@ const FaqAdd = () => {
   
   return (
     <Container maxWidth="md">
-      <Typography component="h4" variant="h4" gutterBottom>
+      <h2>
         Add New FAQ
-      </Typography>
-      <Typography component="h4" variant="h4" gutterBottom>
+      </h2>
+      <h4>
         Set up an Identifier for the question
-      </Typography>
+      </h4>
       <TextField
         placeholder="Identifier"
         type="text"

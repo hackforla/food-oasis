@@ -42,9 +42,9 @@ export default function Header(props) {
               <Logout user={props.user} setUser={props.setUser} />
             </div>
           ) : (
-            <Link key="Login" to="/login">
-              LOGIN
-            </Link>
+            <p>
+              <em>Healthy Food for All Angelenos</em>
+            </p>
           )}
         </Toolbar>
       </AppBar>

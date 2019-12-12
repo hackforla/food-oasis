@@ -45,7 +45,7 @@ const Faq = () => {
 
   return (
     <Container maxWidth="md">
-      <p>{t("title")}</p>
+      <h1>{t("title")}</h1>
       <UserContext.Consumer>
         {user =>
           user &&

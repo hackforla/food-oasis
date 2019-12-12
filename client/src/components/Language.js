@@ -16,7 +16,7 @@ const Language = ({ language, languageAbbr, word }) => {
         name={language}
         id={language}
         onChange={() => changeLanguage(languageAbbr)}
-        checked={i18n.language === languageAbbr ? true : false}
+        checked={i18n.language.slice(0,2) === languageAbbr ? true : false}
       />
       <label htmlFor={language}>{word}</label>
     </div>

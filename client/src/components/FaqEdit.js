@@ -58,9 +58,8 @@ const FaqEdit = ({ match }) => {
 
   return (
     <Container maxWidth="md">
-      <Typography component="h1" variant="h5" gutterBottom>
-        Editing Frequently Asked Questions
-      </Typography>
+      <h2>Editing Frequently Asked Questions</h2>
+      <h3>FAQ Identifier: {faqIdentifier}</h3>
       {addedFaq.map(faq => (
         <FaqEditForm faq={faq} key={faq.question} />
       ))}

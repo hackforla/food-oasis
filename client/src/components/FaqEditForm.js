@@ -50,15 +50,13 @@ const FaqEditForm = ({ faq, notAdded }) => {
 
   return (
     <div>
-      <Typography component="h4" variant="h4">
+      <h3>
         {`${language} ${faq.identifier ? "Edit" : ""} ${
           faq.identifier && notAdded ? "(Not in System)" : ""
         }`}
-      </Typography>
+      </h3>
       <form onSubmit={handleSubmit}>
-        <Typography component="h4" variant="h5">
-          Question
-        </Typography>
+        <h5>Question</h5>
         <TextField
           placeholder="Question"
           type="text"
@@ -68,9 +66,7 @@ const FaqEditForm = ({ faq, notAdded }) => {
           onChange={event => handleQuestionChange(event)}
           name="question"
         />
-        <Typography component="h4" variant="h5">
-          Answer
-        </Typography>
+        <h5>Answer</h5>
         <ReactQuill
           value={answer}
           onChange={handleAnswerChange}

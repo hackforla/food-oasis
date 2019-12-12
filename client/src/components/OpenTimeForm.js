@@ -6,8 +6,8 @@ function OpenTimeForm(props) {
   const { handleChange, originalData } = props;
   const [inputs, setInputs] = useState([
     {
-      weekOfMonth: [],
-      dayOfWeek: [],
+      weekOfMonth: 0,
+      dayOfWeek: "",
       open: "",
       close: ""
     }
@@ -25,7 +25,7 @@ function OpenTimeForm(props) {
   const addInput = () => {
     let newList = [
       ...inputs,
-      { weekOfMonth: [], dayOfWeek: [], open: "", close: "" }
+      { weekOfMonth: 0, dayOfWeek: "", open: "", close: "" }
     ];
     setInputs(newList);
   };

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import OpenTimeInputs from "./OpenTimeInput";
+//import OpenTimeInputs from "./OpenTimeInput";
 import Button from "@material-ui/core/Button";
 
 function OpenTimeForm(props) {
@@ -68,12 +68,12 @@ function OpenTimeForm(props) {
 
     return (
       <div key={i}>
-        <OpenTimeInputs
-          values={val}
-          stateChange={stateChange}
-          removeInput={removeInput}
-          index={i}
-        />
+        {/* <OpenTimeInputs
+            values={val}
+            stateChange={stateChange}
+            removeInput={removeInput}
+            index={i}
+          /> */}
       </div>
     );
   });

@@ -56,18 +56,19 @@ function OpenTimeForm(props) {
   };
 
   const inputsMap = inputs.map((val, i) => {
-    let stateChange = (value, name) => {
-      let newList = [...inputs];
-      if (name === "open" || name === "close") {
-        newList[i][name] = handleTime(value);
-      } else {
-        newList[i][name] = value;
-      }
-      setInputs(newList);
-    };
+    // let stateChange = (value, name) => {
+    //   let newList = [...inputs];
+    //   if (name === "open" || name === "close") {
+    //     newList[i][name] = handleTime(value);
+    //   } else {
+    //     newList[i][name] = value;
+    //   }
+    //   setInputs(newList);
+    // };
 
     return (
       <div key={i}>
+        {i}
         {/* <OpenTimeInputs
             values={val}
             stateChange={stateChange}

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import OpenTimeInputs from "./OpenTimeInput";
-import Button from "@material-ui/core/Button";
+import { AddButton } from "./Buttons";
+import { Card, CardContent, Typography } from "@material-ui/core";
 
 function OpenTimeForm(props) {
-  const { handleChange, originalData } = props;
+  const { originalData } = props;
   const [inputs, setInputs] = useState([
     {
       weekOfMonth: 0,
@@ -68,7 +69,6 @@ function OpenTimeForm(props) {
 
     return (
       <div key={i}>
-        {i}
         <OpenTimeInputs
           values={val}
           stateChange={stateChange}
@@ -80,10 +80,13 @@ function OpenTimeForm(props) {
   });
 
   return (
-    <div>
-      <div>{inputsMap}</div>
-      <Button onClick={addInput}>Add Another Time</Button>
-    </div>
+    <Card style={{ border: "1px solid lightgray", borderRadius: "4px" }}>
+      <CardContent>
+        <Typography>Hours</Typography>
+        <div>{inputsMap}</div>
+        <AddButton onClick={addInput} label={"Add Another Time"} />
+      </CardContent>
+    </Card>
   );
 }
 

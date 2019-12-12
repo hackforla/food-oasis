@@ -3,7 +3,7 @@ import * as faqService from "../services/faq-service";
 
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
+import { SaveButton } from "./Buttons";
 
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -76,9 +76,11 @@ const FaqEditForm = ({ faq, notAdded }) => {
           onChange={handleAnswerChange}
           name="answer"
         />
-        <Button type="submit" variant="outlined">
-          {notAdded ? "Add Faq" : "Update Faq"}
-        </Button>
+        <SaveButton
+          type="submit"
+          variant="outlined"
+          label={notAdded ? "Add Faq" : "Update Faq"}
+        />
       </form>
     </div>
   );

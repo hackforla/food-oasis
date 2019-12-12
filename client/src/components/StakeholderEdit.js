@@ -24,9 +24,8 @@ import * as stakeholderService from "../services/stakeholder-service";
 import * as categoryService from "../services/category-service";
 import * as esriService from "../services/esri_service";
 import OpenTimeForm from "./OpenTimeForm";
-import SaveButton from "./SaveButton";
-import CancelButton from "./CancelButton";
-import VerifyButton from "./VerifyButton";
+import { SaveButton, CloseButton, CancelButton, VerifyButton } from "./Buttons";
+
 import moment from "moment";
 
 const styles = theme => ({
@@ -698,23 +697,17 @@ const StakeholderEdit = props => {
                         setVerified ? user.firstName + " " + user.lastName : ""
                       );
                     }}
-                    className={classes.submit}
                     disabled={!values.id}
-                  >
-                    {values.verifiedDate ? "Unverify" : "Verify"}
-                  </VerifyButton>
+                    label={values.verifiedDate ? "Unverify" : "Verify"}
+                  />
                   <div>
-                    <CancelButton type="button" onClick={cancel}>
-                      Cancel
-                    </CancelButton>
+                    <CloseButton type="button" onClick={cancel} />
                     <SaveButton
                       type="submit"
                       className={classes.submit}
                       disabled={isSubmitting}
                       style={{ marginLeft: "0.5em" }}
-                    >
-                      Save
-                    </SaveButton>
+                    />
                   </div>
                 </Grid>
                 <Grid item xs={12}>

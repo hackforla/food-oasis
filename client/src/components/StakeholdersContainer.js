@@ -86,7 +86,7 @@ function StakeholdersContainer(props) {
             isMapView={isMapView}
           />
         )}
-        {isLoading ? (
+        {isSearchPanelOpen ? null : isLoading ? (
           <div
             style={{
               height: "200",

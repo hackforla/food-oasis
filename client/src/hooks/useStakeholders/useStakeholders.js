@@ -4,6 +4,7 @@ import * as categoryService from "../../services/category-service";
 import { actionTypes } from "./actionTypes";
 import { reducer } from "./reducer";
 import { initialState } from "./initialState";
+import queryString from "query-string";
 
 export function useStakeholders(history) {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -119,6 +120,46 @@ export function useStakeholders(history) {
     return userCoordinates;
   };
 
+  const applyQueryStringParameters = (history, initialState) => {
+    // The goal here is to overwrite the initialState with
+    // search criteria from the query string parameters, if
+    // supplied. The effect should only run once when the
+    // this hook loads, after the list of categories has loaded.
+    let {
+      searchString,
+      selectedLatitude,
+      selectedLongitude,
+      selectedLocationName,
+      selectedDistance,
+      selectedCategoryIds
+    } = initialState;
+
+    const params = queryString.parse(history.location.search);
+
+    // override initial search parameters with any
+    // query string parameters
+    searchString = params.name || searchString;
+    selectedDistance = params.radius || selectedDistance;
+    selectedLatitude = Number.parseFloat(params.lat) || selectedLatitude;
+    selectedLongitude = Number.parseFloat(params.lon) || selectedLongitude;
+    if (params.categoryIds) {
+      selectedCategoryIds = params.categoryIds.split(",");
+    }
+
+    dispatch({
+      type: actionTypes.INITIALIZE_STATE,
+      payload: {
+        searchString,
+        selectedLatitude: selectedLatitude,
+        selectedLongitude: selectedLongitude,
+        selectedLocationName,
+        selectedCategoryIds,
+        selectedDistance,
+        queryParametersLoaded: true
+      }
+    });
+  };
+
   useEffect(() => {
     // Runs once on initialization to get list of all active categories
     fetchCategories();
@@ -128,51 +169,16 @@ export function useStakeholders(history) {
     fetchLocation();
   }, []);
 
-  // useEffect(() => {
-  //   // The goal here is to overwrite the initialState with
-  //   // search criteria from the query string parameters, if
-  //   // supplied. The effect should only run once, after the
-  //   // list of categories has loaded.
-  //   let {
-  //     searchString,
-  //     selectedLatitude,
-  //     selectedLongitude,
-  //     selectedLocationName,
-  //     selectedDistance,
-  //     selectedCategoryIds
-  //   } = initialState;
-
-  //   const params = queryString.parse(history.location.search);
-
-  //   // override initial search parameters with any
-  //   // query string parameters
-  //   searchString = params.name || searchString;
-  //   selectedDistance = params.radius || selectedDistance;
-  //   selectedLatitude = Number.parseFloat(params.lat) || selectedLatitude;
-  //   selectedLongitude = Number.parseFloat(params.lon) || selectedLongitude;
-  //   if (params.categoryIds) {
-  //     selectedCategoryIds = params.categoryIds.split(",");
-  //   }
-  //   const selectedCategories = selectedCategoryIds.map(
-  //     sel => state.categories.map(cat => cat.id === sel.id)[0]
-  //   );
-
-  //   dispatch({
-  //     type: actionTypes.INITIALIZE_STATE,
-  //     payload: {
-  //       searchString,
-  //       selectedLatitude: selectedLatitude,
-  //       selectedLongitude: selectedLongitude,
-  //       selectedLocationName,
-  //       selectedCategories,
-  //       selectedDistance
-  //     }
-  //   });
-  // }, [history, state.categories]);
+  useEffect(() => {
+    applyQueryStringParameters(history, initialState);
+  }, [history, initialState]);
 
   useEffect(() => {
     // if we don't have the categories fetched yet, bail
     if (!state.categories) return;
+
+    // If the query string parameters have not been applie, bail
+    if (!state.queryParametersLoaded) return;
 
     let {
       searchString,
@@ -181,7 +187,7 @@ export function useStakeholders(history) {
       selectedLocationName,
       selectedDistance,
       selectedCategoryIds
-    } = initialState;
+    } = state;
 
     let selectedCategories = selectedCategoryIds.map(
       id => state.categories.filter(cat => cat.id === Number(id))[0]
@@ -195,7 +201,7 @@ export function useStakeholders(history) {
       selectedCategories,
       selectedDistance
     );
-  }, [state.categories, initialState]);
+  }, [state.categories, state.queryParametersLoaded, initialState]);
 
   return { state, dispatch, actionTypes, search };
 }

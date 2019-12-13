@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/styles";
 import EditButton from "./EditButton";
 import { UserContext } from "./user-context";
+import { ReactComponent as Hamburger } from "../images/hamburger.svg";
 
 const useStyles = makeStyles({
   answer: {
@@ -11,26 +12,24 @@ const useStyles = makeStyles({
 
 const FaqItem = ({ faq }) => {
   const classes = useStyles();
-  const [toggle, setToggle] = useState(false);
   return (
-    <div>
-      <h4 onClick={() => setToggle(t => !t)}>{faq.question}</h4>
-      <div
-        className={toggle ? classes.answer : null}
-        dangerouslySetInnerHTML={{ __html: faq.answer }}
-      />
-      <UserContext.Consumer>
-        {user =>
-          user &&
-          user.isAdmin && (
-            <>
-              <h6>Identifier: {faq.identifier}</h6>
-              <EditButton label="Edit" href={`/faqs/${faq.identifier}`} />
-            </>
-          )
-        }
-      </UserContext.Consumer>
-    </div>
+    <UserContext.Consumer>
+      {user =>
+        user && user.isAdmin ? (
+          <li>
+            <h4>{faq.question}</h4>
+            <div dangerouslySetInnerHTML={{ __html: faq.answer }} />
+            <h6>Identifier: {faq.identifier}</h6>
+            <EditButton label="Edit" href={`/faqs/${faq.identifier}`} />
+          </li>
+        ) : (
+          <li>
+            <h4>{faq.question}</h4>
+            <div dangerouslySetInnerHTML={{ __html: faq.answer }} />
+          </li>
+        )
+      }
+    </UserContext.Consumer>
   );
 };
 

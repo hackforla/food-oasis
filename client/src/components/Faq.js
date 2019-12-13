@@ -8,10 +8,6 @@ import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
 
 const Faq = () => {
-  // Load in current FAQs
-  // If FAQs need to be updated, go into admin portal
-  // This will only display the current FAQs
-
   const [faqs, setFaqs] = useState([]);
   const { t, i18n } = useTranslation("faq");
   const [message, setMessage] = useState("FAQs are loading...");
@@ -57,7 +53,11 @@ const Faq = () => {
         }
       </UserContext.Consumer>
       {faqs[0] ? (
-        faqs.map(faq => <FaqItem faq={faq} key={faq.question} />)
+        <ul>
+          {faqs.map(faq => (
+            <FaqItem faq={faq} key={faq.question} />
+          ))}
+        </ul>
       ) : (
         <div>{message}</div>
       )}

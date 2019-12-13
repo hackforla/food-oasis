@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import * as esriService from "../services/esri_service";
-import { TextField, Typography, Button } from "@material-ui/core";
+import { TextField, Typography } from "@material-ui/core";
+import { VerifyButton } from "./Buttons";
+
+let latestSearchString = "";
 
 const LocationAutocomplete = props => {
   const [searchString, setSearchString] = useState("");
@@ -9,9 +12,19 @@ const LocationAutocomplete = props => {
 
   const geocode = async evt => {
     const s = evt.target.value;
+    latestSearchString = s;
     setSearchString(s);
-    const result = await esriService.geocode(s);
-    setGeocodeResults(result);
+
+    setTimeout(async () => {
+      // If the geocode fn gets called again, before
+      // this request starts executing after the
+      // setTimeout delay, this request is stale
+      // and we don't want to run it.
+      if (s.length > 8 && s === latestSearchString) {
+        const result = await esriService.geocode(s);
+        setGeocodeResults(result);
+      }
+    }, 500);
   };
 
   const selectLocation = location => {
@@ -24,8 +37,10 @@ const LocationAutocomplete = props => {
     <div>
       <TextField
         name="searchString"
+        variant="outlined"
         value={searchString}
         onChange={geocode}
+        fullWidth
         placeholder={"Type here"}
       />
       {geocodeResults ? (
@@ -40,15 +55,11 @@ const LocationAutocomplete = props => {
             key={index}
           >
             <Typography>{`(${result.location.y}, ${result.location.x})`}</Typography>
-            <Typography>{`${result.attributes.Match_addr}`}</Typography>
-            <Typography>{`${result.attributes.Addr_type}`}</Typography>
-            <Button
-              variant="outlined"
-              color="primary"
-              onClick={() => selectLocation(result)}
-            >
-              Choose
-            </Button>
+            <Typography>{`${result.attributes.PlaceName}`}</Typography>
+            <Typography>{`${result.attributes.StAddr}`}</Typography>
+            <Typography>{`${result.attributes.City}`}</Typography>
+            <VerifyButton label="" onClick={() => selectLocation(result)} />
+            {/* <pre>{JSON.stringify(result, null, 2)}</pre> */}
           </div>
         ))
       ) : (

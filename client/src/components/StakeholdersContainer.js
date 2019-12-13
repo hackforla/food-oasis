@@ -5,6 +5,7 @@ import StakeholderSearch from "./StakeholderSearch";
 import StakeholderCriteria from "./StakeholderCriteria";
 import StakeholderList from "./StakeholderList";
 import Map from "./Map";
+import { RotateLoader } from "react-spinners";
 import { useStakeholders } from "../hooks/useStakeholders/useStakeholders";
 
 const styles = {
@@ -84,26 +85,24 @@ function StakeholdersContainer(props) {
             isMapView={isMapView}
           />
         )}
-        {/* TODO: make a loading component! */}
         {isLoading ? (
-          // <div
-          //   style={{
-          //     height: "200",
-          //     width: "100%",
-          //     margin: "100px auto",
-          //     display: "flex",
-          //     justifyContent: "space-around"
-          //   }}
-          // >
-          //   <RotateLoader
-          //     // css={}
-          //     sizeUnit={"px"}
-          //     size={15}
-          //     color={"#266294"}
-          //     loading={true}
-          //   />
-          // </div>
-          <div>Loading...</div>
+          <div
+            style={{
+              height: "200",
+              width: "100%",
+              margin: "100px auto",
+              display: "flex",
+              justifyContent: "space-around"
+            }}
+          >
+            <RotateLoader
+              // css={}
+              sizeUnit={"px"}
+              size={15}
+              color={"#FAEBD7"}
+              loading={true}
+            />
+          </div>
         ) : isMapView && selectedLatitude && selectedLongitude ? (
           <Map
             stakeholders={stakeholders}
@@ -114,10 +113,6 @@ function StakeholdersContainer(props) {
           <StakeholderList stakeholders={stakeholders} />
         )}
       </div>
-      {/* <pre>{JSON.stringify({ latitude, longitude }, null, 2)}</pre>
-      <pre>
-        {JSON.stringify({ selectedLatitude, selectedLongitude }, null, 2)}
-      </pre> */}
     </div>
   );
 }

@@ -97,11 +97,11 @@ const RemoveIconButton = props => {
   return (
     <IconButton
       variant="contained"
-      color="default"
+      color="primary"
       aria-label="remove row"
       {...props}
     >
-      <Delete />
+      <Remove />
     </IconButton>
   );
 };

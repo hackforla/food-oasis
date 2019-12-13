@@ -10,10 +10,10 @@ import Map from "./components/Map";
 import StakeholdersContainer from "./components/StakeholdersContainer";
 import StakeholderEdit from "./components/StakeholderEdit";
 import Donate from "./components/Donate";
-import News from "./components/News";
+// import News from "./components/News";
 import Resources from "./components/Resources";
 import About from "./components/About";
-import Team from "./components/Team";
+// import Team from "./components/Team";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import ForgotPassword from "./components/ForgotPassword";
@@ -23,7 +23,7 @@ import ConfirmEmail from "./components/ConfirmEmail";
 import Faq from "./components/Faq";
 import FaqEdit from "./components/FaqEdit";
 import FaqAdd from "./components/FaqAdd";
-import Organizations from "./components/Organizations";
+// import Organizations from "./components/Organizations";
 
 const styles = {
   app: {

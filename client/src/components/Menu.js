@@ -23,7 +23,6 @@ export default function Menu(props) {
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
   const MENU_ITEMS = [
-    "Map",
     "Stakeholders",
     "Donate",
     "FAQs",
@@ -59,12 +58,7 @@ export default function Menu(props) {
           return <MenuItemLink key={index} to={`/${route}`} text={text} />;
         })}
         {props.user ? null : (
-          <MenuItemLink
-            key="Register"
-            to="/register"
-            text="Register"
-            userSection={true}
-          />
+          <MenuItemLink key="Register" to="/register" text="Register" />
         )}
         <UserContext.Consumer>
           {user =>
@@ -73,7 +67,6 @@ export default function Menu(props) {
                 key="stakeholderedit"
                 to="/stakeholderedit"
                 text="Add New Stakeholder"
-                userSection={true}
               />
             ) : null
           }

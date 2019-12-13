@@ -4,12 +4,9 @@ import * as categoryService from "../../services/category-service";
 import { actionTypes } from "./actionTypes";
 import { reducer } from "./reducer";
 import { initialState } from "./initialState";
-import queryString from "query-string";
 
 export function useStakeholders(history) {
   const [state, dispatch] = useReducer(reducer, initialState);
-
-  const defaultState = null;
 
   const search = async (
     searchString,

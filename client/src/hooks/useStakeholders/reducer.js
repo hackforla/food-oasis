@@ -5,13 +5,14 @@ export function reducer(state, action) {
     case actionTypes.STAKEHOLDERS.FETCH_REQUEST:
       return { ...state, isLoading: true };
     case actionTypes.STAKEHOLDERS.FETCH_SUCCESS:
-      return {
+      const newState = {
         ...state,
         stakeholders: action.stakeholders,
         ...action.payload,
         isLoading: false,
         isSearchPanelOpen: false
       };
+      return newState;
     case actionTypes.STAKEHOLDERS.FETCH_FAILURE:
       return { ...state, stakeholdersError: action.error, isLoading: false };
 
@@ -25,7 +26,11 @@ export function reducer(state, action) {
         isLoading: false
       };
     case actionTypes.CATEGORIES.FETCH_FAILURE:
-      return { ...state, categoriesError: action.error, isLoading: false };
+      return {
+        ...state,
+        categoriesError: action.error
+        //isLoading: false
+      };
 
     case actionTypes.LOCATION.FETCH_REQUEST:
       return { ...state, isLoading: true };
@@ -43,8 +48,6 @@ export function reducer(state, action) {
       return { ...state, isSearchPanelOpen: action.isOpen };
     // case actionTypes.UPDATE_CRITERIA:
     //   return { ...state, ...action.payload };
-    case actionTypes.INITIALIZE_STATE:
-      return { ...state, ...action.payload };
     default:
       return state;
   }

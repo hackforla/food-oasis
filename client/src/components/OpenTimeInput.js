@@ -96,6 +96,7 @@ function OpenTimeInput(props) {
         <TextField
           onChange={e => stateChange(e.target.value, "open")}
           variant="outlined"
+          fullWidth
           label="Opening Time"
           value={values.open}
         />
@@ -109,6 +110,7 @@ function OpenTimeInput(props) {
         <TextField
           onChange={e => stateChange(e.target.value, "close")}
           variant="outlined"
+          fullWidth
           label="Closing Time"
           value={values.close}
         />

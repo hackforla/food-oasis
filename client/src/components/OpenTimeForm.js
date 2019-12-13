@@ -84,7 +84,7 @@ function OpenTimeForm(props) {
       <CardContent>
         <Typography>Hours</Typography>
         <div>{inputsMap}</div>
-        <AddButton onClick={addInput} label={"Add Another Time"} />
+        <AddButton onClick={addInput} label={"Add Hours"} />
       </CardContent>
     </Card>
   );

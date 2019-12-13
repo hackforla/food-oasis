@@ -4,12 +4,9 @@ import * as categoryService from "../../services/category-service";
 import { actionTypes } from "./actionTypes";
 import { reducer } from "./reducer";
 import { initialState } from "./initialState";
-import queryString from "query-string";
 
 export function useStakeholders(history) {
   const [state, dispatch] = useReducer(reducer, initialState);
-
-  const defaultState = null;
 
   const search = async (
     searchString,
@@ -76,6 +73,7 @@ export function useStakeholders(history) {
         category => category.id === 1 || category.id === 8 || category.id === 9
       ); // setting the initial selection to FoodPantry, Food Bank, Soup Kitchen
       dispatch({ type: FETCH_SUCCESS, categories, selectedCategories });
+      return categories;
     } catch (error) {
       dispatch({ type: FETCH_FAILURE, error });
     }
@@ -87,6 +85,8 @@ export function useStakeholders(history) {
       FETCH_REQUEST,
       FETCH_SUCCESS
     } = actionTypes.LOCATION;
+
+    let userCoordinates = { latitude: null, longitude: null };
 
     dispatch({ type: FETCH_REQUEST });
     if (navigator.geolocation) {
@@ -113,9 +113,10 @@ export function useStakeholders(history) {
       // "successful", but the result is null coordinates.
       dispatch({
         type: FETCH_SUCCESS,
-        userCoordinates: { latitude: null, longitude: null }
+        userCoordinates
       });
     }
+    return userCoordinates;
   };
 
   useEffect(() => {
@@ -171,25 +172,30 @@ export function useStakeholders(history) {
 
   useEffect(() => {
     // if we don't have the categories fetched yet, bail
-    if (!state.selectedCategories) return;
+    if (!state.categories) return;
 
-    const {
+    let {
       searchString,
       selectedLatitude,
       selectedLongitude,
       selectedLocationName,
-      selectedDistance
+      selectedDistance,
+      selectedCategoryIds
     } = initialState;
+
+    let selectedCategories = selectedCategoryIds.map(
+      id => state.categories.filter(cat => cat.id === Number(id))[0]
+    );
 
     search(
       searchString,
       selectedLatitude,
       selectedLongitude,
       selectedLocationName,
-      state.selectedCategories,
+      selectedCategories,
       selectedDistance
     );
-  }, [state.selectedCategories, initialState]);
+  }, [state.categories, initialState]);
 
   return { state, dispatch, actionTypes, search };
 }

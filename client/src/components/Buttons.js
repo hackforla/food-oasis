@@ -40,6 +40,19 @@ const CancelButton = props => {
   );
 };
 
+const CancelIconButton = props => {
+  return (
+    <IconButton
+      variant="contained"
+      color="default"
+      aria-label="cancel"
+      {...props}
+    >
+      <Cancel />
+    </IconButton>
+  );
+};
+
 // For closing a dialog, page or panel without saving changes, if any
 const CloseButton = props => {
   return (
@@ -58,6 +71,19 @@ const DeleteButton = props => {
       <Delete />
       {props.label || props.label === "" ? props.label : "Delete"}
     </Button>
+  );
+};
+
+const DeleteIconButton = props => {
+  return (
+    <IconButton
+      variant="contained"
+      color="default"
+      aria-label="delete"
+      {...props}
+    >
+      <Delete />
+    </IconButton>
   );
 };
 
@@ -97,7 +123,7 @@ const RemoveIconButton = props => {
   return (
     <IconButton
       variant="contained"
-      color="primary"
+      color="default"
       aria-label="remove row"
       {...props}
     >
@@ -140,8 +166,10 @@ const VerifyButton = props => {
 export {
   AddButton,
   CancelButton,
+  CancelIconButton,
   CloseButton,
   DeleteButton,
+  DeleteIconButton,
   DetailsButton,
   EditButton,
   RemoveButton,

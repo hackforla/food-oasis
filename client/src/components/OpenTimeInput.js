@@ -8,7 +8,7 @@ import {
   Select,
   TextField
 } from "@material-ui/core";
-import { RemoveIconButton } from "./Buttons";
+import { CancelIconButton } from "./Buttons";
 
 const useStyles = makeStyles(theme => ({
   row: {
@@ -116,7 +116,7 @@ function OpenTimeInput(props) {
         />
       </Grid>
       <Grid item xs={2} sm={1}>
-        <RemoveIconButton onClick={() => removeInput(index)} />
+        <CancelIconButton onClick={() => removeInput(index)} />
       </Grid>
     </Grid>
   );

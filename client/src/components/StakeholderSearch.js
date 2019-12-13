@@ -17,7 +17,7 @@ import {
   RadioGroup,
   Radio
 } from "@material-ui/core";
-import SearchButton from "./SearchButton";
+import { SearchButton } from "./Buttons";
 import SwitchViewsButton from "./SwitchViewsButton";
 import LocationAutocomplete from "./LocationAutocomplete";
 

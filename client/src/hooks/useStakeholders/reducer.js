@@ -25,7 +25,11 @@ export function reducer(state, action) {
         isLoading: false
       };
     case actionTypes.CATEGORIES.FETCH_FAILURE:
-      return { ...state, categoriesError: action.error, isLoading: false };
+      return {
+        ...state,
+        categoriesError: action.error
+        //isLoading: false
+      };
 
     case actionTypes.LOCATION.FETCH_REQUEST:
       return { ...state, isLoading: true };
@@ -39,12 +43,18 @@ export function reducer(state, action) {
     case actionTypes.LOCATION.FETCH_FAILURE:
       return { ...state, isLoading: false };
 
+    case actionTypes.INITIALIZE_STATE:
+      return {
+        ...state,
+        stakeholders: action.stakeholders,
+        ...action.payload,
+        isLoading: false,
+        isSearchPanelOpen: false
+      };
     case actionTypes.TOGGLE_SEARCH_PANEL:
       return { ...state, isSearchPanelOpen: action.isOpen };
     // case actionTypes.UPDATE_CRITERIA:
     //   return { ...state, ...action.payload };
-    case actionTypes.INITIALIZE_STATE:
-      return { ...state, ...action.payload };
     default:
       return state;
   }

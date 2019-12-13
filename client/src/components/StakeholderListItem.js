@@ -15,13 +15,13 @@ const StakeholderListItem = props => {
           <Typography variant={"h5"} component={"h2"}>
             {stakeholder.name}
           </Typography>
-          <Typography variant={"caption"} component={"p"}>
+          <Typography variant={"body1"} component={"div"}>
             {stakeholder.categories.map(cat => cat.name).join(", ")}
           </Typography>
 
           {stakeholder.website ? (
             <div>
-              <Link href={stakeholder.website} target="_blank">
+              <Link color="default" href={stakeholder.website} target="_blank">
                 {stakeholder.website}
               </Link>
             </div>
@@ -45,16 +45,12 @@ const StakeholderListItem = props => {
             }}
           >
             {stakeholder.verifiedDate ? (
-              <div>
+              <Grid container justifyItems="center" justifyContent="flex-start">
                 <Check />
-                <Typography
-                  variant={"caption"}
-                  component={"p"}
-                  display={"inline"}
-                >
+                <span>
                   {" " + moment(stakeholder.verifiedDate).format("MM/DD/YY")}
-                </Typography>
-              </div>
+                </span>
+              </Grid>
             ) : (
               <span></span>
             )}

@@ -23,7 +23,6 @@ export default function Menu(props) {
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
   const MENU_ITEMS = [
-    "Map",
     "Stakeholders",
     "Donate",
     "FAQs",
@@ -83,7 +82,6 @@ export default function Menu(props) {
                 key="stakeholderedit"
                 to="/stakeholderedit"
                 text="Add New Stakeholder"
-                userSection={true}
               />
             ) : null
           }

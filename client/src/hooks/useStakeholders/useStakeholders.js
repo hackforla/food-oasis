@@ -9,8 +9,6 @@ import queryString from "query-string";
 export function useStakeholders(history) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const defaultState = null;
-
   const search = async (
     searchString,
     latitude,
@@ -76,6 +74,7 @@ export function useStakeholders(history) {
         category => category.id === 1 || category.id === 8 || category.id === 9
       ); // setting the initial selection to FoodPantry, Food Bank, Soup Kitchen
       dispatch({ type: FETCH_SUCCESS, categories, selectedCategories });
+      return categories;
     } catch (error) {
       dispatch({ type: FETCH_FAILURE, error });
     }
@@ -87,6 +86,8 @@ export function useStakeholders(history) {
       FETCH_REQUEST,
       FETCH_SUCCESS
     } = actionTypes.LOCATION;
+
+    let userCoordinates = { latitude: null, longitude: null };
 
     dispatch({ type: FETCH_REQUEST });
     if (navigator.geolocation) {
@@ -113,9 +114,50 @@ export function useStakeholders(history) {
       // "successful", but the result is null coordinates.
       dispatch({
         type: FETCH_SUCCESS,
-        userCoordinates: { latitude: null, longitude: null }
+        userCoordinates
       });
     }
+    return userCoordinates;
+  };
+
+  const applyQueryStringParameters = (history, initialState) => {
+    // The goal here is to overwrite the initialState with
+    // search criteria from the query string parameters, if
+    // supplied. The effect should only run once when the
+    // this hook loads, after the list of categories has loaded.
+    let {
+      searchString,
+      selectedLatitude,
+      selectedLongitude,
+      selectedLocationName,
+      selectedDistance,
+      selectedCategoryIds
+    } = initialState;
+
+    const params = queryString.parse(history.location.search);
+
+    // override initial search parameters with any
+    // query string parameters
+    searchString = params.name || searchString;
+    selectedDistance = params.radius || selectedDistance;
+    selectedLatitude = Number.parseFloat(params.lat) || selectedLatitude;
+    selectedLongitude = Number.parseFloat(params.lon) || selectedLongitude;
+    if (params.categoryIds) {
+      selectedCategoryIds = params.categoryIds.split(",");
+    }
+
+    dispatch({
+      type: actionTypes.INITIALIZE_STATE,
+      payload: {
+        searchString,
+        selectedLatitude: selectedLatitude,
+        selectedLongitude: selectedLongitude,
+        selectedLocationName,
+        selectedCategoryIds,
+        selectedDistance,
+        queryParametersLoaded: true
+      }
+    });
   };
 
   useEffect(() => {
@@ -127,69 +169,39 @@ export function useStakeholders(history) {
     fetchLocation();
   }, []);
 
-  // useEffect(() => {
-  //   // The goal here is to overwrite the initialState with
-  //   // search criteria from the query string parameters, if
-  //   // supplied. The effect should only run once, after the
-  //   // list of categories has loaded.
-  //   let {
-  //     searchString,
-  //     selectedLatitude,
-  //     selectedLongitude,
-  //     selectedLocationName,
-  //     selectedDistance,
-  //     selectedCategoryIds
-  //   } = initialState;
-
-  //   const params = queryString.parse(history.location.search);
-
-  //   // override initial search parameters with any
-  //   // query string parameters
-  //   searchString = params.name || searchString;
-  //   selectedDistance = params.radius || selectedDistance;
-  //   selectedLatitude = Number.parseFloat(params.lat) || selectedLatitude;
-  //   selectedLongitude = Number.parseFloat(params.lon) || selectedLongitude;
-  //   if (params.categoryIds) {
-  //     selectedCategoryIds = params.categoryIds.split(",");
-  //   }
-  //   const selectedCategories = selectedCategoryIds.map(
-  //     sel => state.categories.map(cat => cat.id === sel.id)[0]
-  //   );
-
-  //   dispatch({
-  //     type: actionTypes.INITIALIZE_STATE,
-  //     payload: {
-  //       searchString,
-  //       selectedLatitude: selectedLatitude,
-  //       selectedLongitude: selectedLongitude,
-  //       selectedLocationName,
-  //       selectedCategories,
-  //       selectedDistance
-  //     }
-  //   });
-  // }, [history, state.categories]);
+  useEffect(() => {
+    applyQueryStringParameters(history, initialState);
+  }, [history, initialState]);
 
   useEffect(() => {
     // if we don't have the categories fetched yet, bail
-    if (!state.selectedCategories) return;
+    if (!state.categories) return;
 
-    const {
+    // If the query string parameters have not been applie, bail
+    if (!state.queryParametersLoaded) return;
+
+    let {
       searchString,
       selectedLatitude,
       selectedLongitude,
       selectedLocationName,
-      selectedDistance
-    } = initialState;
+      selectedDistance,
+      selectedCategoryIds
+    } = state;
+
+    let selectedCategories = selectedCategoryIds.map(
+      id => state.categories.filter(cat => cat.id === Number(id))[0]
+    );
 
     search(
       searchString,
       selectedLatitude,
       selectedLongitude,
       selectedLocationName,
-      state.selectedCategories,
+      selectedCategories,
       selectedDistance
     );
-  }, [state.selectedCategories, initialState]);
+  }, [state.categories, state.queryParametersLoaded, initialState]);
 
   return { state, dispatch, actionTypes, search };
 }

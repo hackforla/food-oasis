@@ -5,7 +5,6 @@ import * as Yup from "yup";
 import {
   withStyles,
   Box,
-  Button,
   Checkbox,
   Container,
   CssBaseline,
@@ -24,9 +23,8 @@ import * as stakeholderService from "../services/stakeholder-service";
 import * as categoryService from "../services/category-service";
 import * as esriService from "../services/esri_service";
 import OpenTimeForm from "./OpenTimeForm";
-import SaveButton from "./SaveButton";
-import CancelButton from "./CancelButton";
-import VerifyButton from "./VerifyButton";
+import { SaveButton, CloseButton, SearchButton, VerifyButton } from "./Buttons";
+
 import moment from "moment";
 
 const styles = theme => ({
@@ -346,7 +344,7 @@ const StakeholderEdit = props => {
                   />
                 </Grid>
 
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={6} md={3}>
                   <TextField
                     variant="outlined"
                     margin="normal"
@@ -361,7 +359,7 @@ const StakeholderEdit = props => {
                     error={touched.latitude && Boolean(errors.latitude)}
                   />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={6} md={3}>
                   <TextField
                     variant="outlined"
                     margin="normal"
@@ -376,16 +374,41 @@ const StakeholderEdit = props => {
                     error={touched.longitude && Boolean(errors.longitude)}
                   />
                 </Grid>
-                <Grid item style={{ backgroundColor: "#FFF" }}>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    onClick={() => geocode(values)}
-                  >
-                    <Typography>Get Lat/Lon from Address</Typography>
-                  </Button>
-
-                  <div style={{ padding: "0.5em" }}>
+                <Grid
+                  item
+                  xs={12}
+                  md={6}
+                  fullWidth
+                  style={{ backgroundColor: "#FFF" }}
+                >
+                  <Grid container justifyContent="space-between">
+                    <Grid item>
+                      <SearchButton
+                        onClick={() => {
+                          (geocodeResults && geocodeResults.length) < 1
+                            ? geocode(values)
+                            : setGeocodeResults([]);
+                        }}
+                        label={
+                          (geocodeResults && geocodeResults.length) < 1
+                            ? "Lat/Lon"
+                            : "Close"
+                        }
+                        style={{ marginTop: "1.2em" }}
+                      />
+                    </Grid>
+                    {/* <Grid item>
+                      {(geocodeResults && geocodeResults.length) < 1 ? null : (
+                        <CloseButton
+                          onClick={() => {
+                            setGeocodeResults([]);
+                          }}
+                          style={{ marginTop: "1.2em" }}
+                        />
+                      )}
+                    </Grid> */}
+                  </Grid>
+                  <div style={{ padding: "0.5em 0" }}>
                     {geocodeResults ? (
                       geocodeResults.map((result, index) => (
                         <div
@@ -397,20 +420,23 @@ const StakeholderEdit = props => {
                           }}
                           key={index}
                         >
-                          <Typography>{`(${result.location.y}, ${result.location.x})`}</Typography>
-                          <Typography>{`${result.attributes.Match_addr}`}</Typography>
-                          <Typography>{`${result.attributes.Addr_type}`}</Typography>
-                          <Button
-                            variant="outlined"
-                            color="primary"
-                            onClick={() => {
-                              setFieldValue("latitude", result.location.y);
-                              setFieldValue("longitude", result.location.x);
-                              setGeocodeResults([]);
-                            }}
-                          >
-                            Choose
-                          </Button>
+                          <Grid container>
+                            <Grid item xs={10}>
+                              <Typography>{`(${result.location.y}, ${result.location.x})`}</Typography>
+                              <Typography>{`${result.attributes.Match_addr}`}</Typography>
+                              <Typography>{`${result.attributes.Addr_type}`}</Typography>
+                            </Grid>
+                            <Grid item xs={2}>
+                              <VerifyButton
+                                label=""
+                                onClick={() => {
+                                  setFieldValue("latitude", result.location.y);
+                                  setFieldValue("longitude", result.location.x);
+                                  setGeocodeResults([]);
+                                }}
+                              />
+                            </Grid>
+                          </Grid>
                         </div>
                       ))
                     ) : (
@@ -698,23 +724,17 @@ const StakeholderEdit = props => {
                         setVerified ? user.firstName + " " + user.lastName : ""
                       );
                     }}
-                    className={classes.submit}
                     disabled={!values.id}
-                  >
-                    {values.verifiedDate ? "Unverify" : "Verify"}
-                  </VerifyButton>
+                    label={values.verifiedDate ? "Unverify" : "Verify"}
+                  />
                   <div>
-                    <CancelButton type="button" onClick={cancel}>
-                      Cancel
-                    </CancelButton>
+                    <CloseButton type="button" onClick={cancel} />
                     <SaveButton
                       type="submit"
                       className={classes.submit}
                       disabled={isSubmitting}
                       style={{ marginLeft: "0.5em" }}
-                    >
-                      Save
-                    </SaveButton>
+                    />
                   </div>
                 </Grid>
                 <Grid item xs={12}>

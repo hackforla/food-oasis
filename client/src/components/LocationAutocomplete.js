@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import * as esriService from "../services/esri_service";
-import { TextField, Typography } from "@material-ui/core";
-import { VerifyButton } from "./Buttons";
+import { Grid, TextField, Typography } from "@material-ui/core";
 
 let latestSearchString = "";
 
 const LocationAutocomplete = props => {
   const [searchString, setSearchString] = useState("");
-  const [selectedLocation, setSelectedLocation] = useState({});
+  //const [selectedLocation, setSelectedLocation] = useState({});
   const [geocodeResults, setGeocodeResults] = useState([]);
 
   const geocode = async evt => {
@@ -28,7 +27,7 @@ const LocationAutocomplete = props => {
   };
 
   const selectLocation = location => {
-    setSelectedLocation(location);
+    //setSelectedLocation(location);
     setGeocodeResults([]);
     props.setLocation(location);
   };
@@ -53,12 +52,16 @@ const LocationAutocomplete = props => {
               padding: "0.5em"
             }}
             key={index}
+            onClick={() => selectLocation(result)}
           >
             <Typography>{`(${result.location.y}, ${result.location.x})`}</Typography>
             <Typography>{`${result.attributes.PlaceName}`}</Typography>
             <Typography>{`${result.attributes.StAddr}`}</Typography>
-            <Typography>{`${result.attributes.City}`}</Typography>
-            <VerifyButton label="" onClick={() => selectLocation(result)} />
+            <Grid container justify="space-between">
+              <Typography>{`${result.attributes.City} `}</Typography>
+
+              <Typography>{`${result.attributes.Addr_type}`}</Typography>
+            </Grid>
             {/* <pre>{JSON.stringify(result, null, 2)}</pre> */}
           </div>
         ))

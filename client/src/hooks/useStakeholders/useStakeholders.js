@@ -171,7 +171,7 @@ export function useStakeholders(history) {
 
   useEffect(() => {
     applyQueryStringParameters(history, initialState);
-  }, [history, initialState]);
+  }, [history]);
 
   useEffect(() => {
     // if we don't have the categories fetched yet, bail

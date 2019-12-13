@@ -31,7 +31,13 @@
       "title": "",
       "support": "",
       "support-p": "",
-      "donate": ""
+      "donate": "",
+      "subscribe": "",
+      "subscribe-text": "",
+      "subscribe-button": "",
+      "questions": "",
+      "questions-text": "",
+      "send-a-message": ""
     },
     "organizations": {
       "title": ""

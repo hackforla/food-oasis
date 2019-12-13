@@ -21,6 +21,8 @@ import ResetPassword from "./components/ResetPassword";
 import Footer from "./components/Footer";
 import ConfirmEmail from "./components/ConfirmEmail";
 import Faq from "./components/Faq";
+import FaqEdit from "./components/FaqEdit";
+import FaqAdd from "./components/FaqAdd";
 import Organizations from "./components/Organizations";
 
 const styles = {
@@ -92,24 +94,30 @@ function App() {
               <Route path="/donate">
                 <Donate />
               </Route>
-              <Route path="/news">
+              {/* <Route path="/news">
                 <News />
-              </Route>
+              </Route> */}
               <Route path="/resources">
                 <Resources />
               </Route>
               <Route path="/about">
                 <About />
               </Route>
-              <Route path="/team">
+              {/* <Route path="/team">
                 <Team />
-              </Route>
-              <Route path="/faqs">
+              </Route> */}
+              <Route exact path="/faqs">
                 <Faq />
               </Route>
-              <Route path="/organizations">
-                <Organizations />
+              <Route path="/faqs/add">
+                <FaqAdd />
               </Route>
+              <Route path="/faqs/:identifier?">
+                <FaqEdit setToast={setToast} />
+              </Route>
+              {/* <Route path="/organizations">
+                <Organizations />
+              </Route> */}
               <Route path="/register">
                 <Register setToast={setToast} />
               </Route>

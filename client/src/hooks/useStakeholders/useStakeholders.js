@@ -3,10 +3,13 @@ import * as stakeholderService from "../../services/stakeholder-service";
 import * as categoryService from "../../services/category-service";
 import { actionTypes } from "./actionTypes";
 import { reducer } from "./reducer";
-// import { initialState } from "./initialState";
+import { initialState } from "./initialState";
+import queryString from "query-string";
 
-export function useStakeholders(initialState, history) {
+export function useStakeholders(history) {
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  const defaultState = null;
 
   const search = async (
     searchString,
@@ -31,14 +34,6 @@ export function useStakeholders(initialState, history) {
         longitude,
         distance: selectedDistance
       });
-      history.push(
-        `/stakeholders?name=${searchString}` +
-          `&radius=${selectedDistance}` +
-          `&lat=${latitude}` +
-          `&lon=${longitude}` +
-          `&placeName=${selectedLocationName}` +
-          `&categoryIds=${selectedCategories.map(c => c.id).join(",")}`
-      );
       dispatch({
         type: FETCH_SUCCESS,
         stakeholders,
@@ -51,6 +46,14 @@ export function useStakeholders(initialState, history) {
           selectedDistance
         }
       });
+      history.push(
+        `/stakeholders?name=${searchString}` +
+          `&radius=${selectedDistance}` +
+          `&lat=${latitude}` +
+          `&lon=${longitude}` +
+          `&placeName=${selectedLocationName}` +
+          `&categoryIds=${selectedCategories.map(c => c.id).join(",")}`
+      );
     } catch (err) {
       console.log(err);
       dispatch({ type: FETCH_FAILURE });
@@ -95,11 +98,13 @@ export function useStakeholders(initialState, history) {
           if (!position) {
             dispatch({
               type: FETCH_SUCCESS,
-              userCoordinates
+              userCoordinates: { latitude: null, longitude: null }
             });
           }
-          userCoordinates.latitude = position.coords.latitude;
-          userCoordinates.longitude = position.coords.longitude;
+          const userCoordinates = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+          };
           dispatch({ type: FETCH_SUCCESS, userCoordinates });
         },
         error => {
@@ -126,6 +131,48 @@ export function useStakeholders(initialState, history) {
     fetchLocation();
   }, []);
 
+  // useEffect(() => {
+  //   // The goal here is to overwrite the initialState with
+  //   // search criteria from the query string parameters, if
+  //   // supplied. The effect should only run once, after the
+  //   // list of categories has loaded.
+  //   let {
+  //     searchString,
+  //     selectedLatitude,
+  //     selectedLongitude,
+  //     selectedLocationName,
+  //     selectedDistance,
+  //     selectedCategoryIds
+  //   } = initialState;
+
+  //   const params = queryString.parse(history.location.search);
+
+  //   // override initial search parameters with any
+  //   // query string parameters
+  //   searchString = params.name || searchString;
+  //   selectedDistance = params.radius || selectedDistance;
+  //   selectedLatitude = Number.parseFloat(params.lat) || selectedLatitude;
+  //   selectedLongitude = Number.parseFloat(params.lon) || selectedLongitude;
+  //   if (params.categoryIds) {
+  //     selectedCategoryIds = params.categoryIds.split(",");
+  //   }
+  //   const selectedCategories = selectedCategoryIds.map(
+  //     sel => state.categories.map(cat => cat.id === sel.id)[0]
+  //   );
+
+  //   dispatch({
+  //     type: actionTypes.INITIALIZE_STATE,
+  //     payload: {
+  //       searchString,
+  //       selectedLatitude: selectedLatitude,
+  //       selectedLongitude: selectedLongitude,
+  //       selectedLocationName,
+  //       selectedCategories,
+  //       selectedDistance
+  //     }
+  //   });
+  // }, [history, state.categories]);
+
   useEffect(() => {
     // if we don't have the categories fetched yet, bail
     if (!state.categories) return;
@@ -151,7 +198,7 @@ export function useStakeholders(initialState, history) {
       selectedCategories,
       selectedDistance
     );
-  }, [state.categories, initialState, search]);
+  }, [state.categories, initialState]);
 
   return { state, dispatch, actionTypes, search };
 }

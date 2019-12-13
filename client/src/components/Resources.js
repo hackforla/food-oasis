@@ -1,11 +1,13 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 
+import Container from '@material-ui/core/Container'
+
 const Resources = () => {
   const { t } = useTranslation("resources");
 
   return (
-    <div>
+    <Container maxWidth="md">
       <h1>{t("title")}</h1>
       <h4>{t("non-profit")}</h4>
       <ul>
@@ -95,7 +97,7 @@ const Resources = () => {
           </a>
         </li>
       </ul>
-    </div>
+    </Container>
   );
 };
 

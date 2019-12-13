@@ -1,14 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { withRouter } from "react-router-dom";
 import { Typography } from "@material-ui/core";
-import { initialState } from "../hooks/useStakeholders/initialState";
-// import { RotateLoader } from "react-spinners";
 import StakeholderSearch from "./StakeholderSearch";
 import StakeholderCriteria from "./StakeholderCriteria";
 import StakeholderList from "./StakeholderList";
 import Map from "./Map";
 import { useStakeholders } from "../hooks/useStakeholders/useStakeholders";
-import queryString from "query-string";
 
 const styles = {
   container: {
@@ -21,52 +18,9 @@ const styles = {
   }
 };
 
-const applyQueryStringParameters = (history, defaultState) => {
-  let {
-    searchString,
-    selectedLatitude,
-    selectedLongitude,
-    selectedLocationName,
-    selectedDistance,
-    selectedCategoryIds
-  } = defaultState;
-
-  const params = queryString.parse(history.location.search);
-
-  // override initial search parameters with any
-  // query string parameters
-  searchString = params.name || searchString;
-  selectedDistance = params.radius || selectedDistance;
-  selectedLatitude = Number.parseFloat(params.lat) || selectedLatitude;
-  selectedLongitude = Number.parseFloat(params.lon) || selectedLongitude;
-  if (params.categoryIds) {
-    selectedCategoryIds = params.categoryIds.split(",");
-  }
-
-  const initialState = {
-    searchString,
-    selectedLatitude,
-    selectedLongitude,
-    selectedLocationName,
-    selectedDistance,
-    selectedCategoryIds
-  };
-
-  return initialState;
-};
-
 function StakeholdersContainer(props) {
   const { history } = props;
-
-  const modifiedInitialState = applyQueryStringParameters(
-    history,
-    initialState
-  );
-
-  const { state, dispatch, actionTypes, search } = useStakeholders(
-    modifiedInitialState,
-    history
-  );
+  const { state, dispatch, actionTypes, search } = useStakeholders(history);
   const [isMapView, setIsMapView] = React.useState(true);
 
   const openSearchPanel = isOpen => {
@@ -160,12 +114,10 @@ function StakeholdersContainer(props) {
           <StakeholderList stakeholders={stakeholders} />
         )}
       </div>
-      <pre>{JSON.stringify({ latitude, longitude }, null, 2)}</pre>
+      {/* <pre>{JSON.stringify({ latitude, longitude }, null, 2)}</pre>
       <pre>
         {JSON.stringify({ selectedLatitude, selectedLongitude }, null, 2)}
-      </pre>
-      <pre>{JSON.stringify(props.match, null, 2)}</pre>
-      <pre>{JSON.stringify(props.history, null, 2)}</pre>
+      </pre> */}
     </div>
   );
 }

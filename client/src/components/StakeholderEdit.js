@@ -397,16 +397,6 @@ const StakeholderEdit = props => {
                         style={{ marginTop: "1.2em" }}
                       />
                     </Grid>
-                    {/* <Grid item>
-                      {(geocodeResults && geocodeResults.length) < 1 ? null : (
-                        <CloseButton
-                          onClick={() => {
-                            setGeocodeResults([]);
-                          }}
-                          style={{ marginTop: "1.2em" }}
-                        />
-                      )}
-                    </Grid> */}
                   </Grid>
                   <div style={{ padding: "0.5em 0" }}>
                     {geocodeResults ? (

@@ -2,15 +2,16 @@ import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import * as faqService from "../services/faq-service";
 import { UserContext } from "./user-context";
+import { AddButton, EditButton } from "./Buttons";
 
-import FaqItem from "./FaqItem";
+import FaqList from "./FaqList";
 import Container from "@material-ui/core/Container";
-import Button from "@material-ui/core/Button";
 
 const Faq = () => {
   const [faqs, setFaqs] = useState([]);
   const { t, i18n } = useTranslation("faq");
   const [message, setMessage] = useState("FAQs are loading...");
+  const [reorder, setReorder] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem("faqs")) {
@@ -39,28 +40,34 @@ const Faq = () => {
     fetchFaqs();
   }, [i18n.language]);
 
+  const onReorderClick = () => {
+    setReorder(r => !r);
+  };
+
   return (
     <Container maxWidth="md">
       <h1>{t("title")}</h1>
-      <UserContext.Consumer>
+      {/* <UserContext.Consumer>
         {user =>
-          user &&
-          user.isAdmin && (
-            <Button variant="outlined" label="Add New Faq" href="/faqs/add">
-              Add New Faq
-            </Button>
+          user && user.isAdmin ? ( */}
+            <>
+              <AddButton label="Add New Faq" href="/faqs/add" />
+              <EditButton
+                label={
+                  reorder
+                    ? "Click to Stop Reordering Faqs"
+                    : "Click to Reorder Faqs"
+                }
+                onClick={onReorderClick}
+                color={reorder ? "secondary" : "primary"}
+              />
+              <FaqList faqs={faqs} message={message} reorder={reorder} />
+            </>
+          {/* ) : (
+            <FaqList faqs={faqs} message={message} reorder={reorder} />
           )
         }
-      </UserContext.Consumer>
-      {faqs[0] ? (
-        <ul>
-          {faqs.map(faq => (
-            <FaqItem faq={faq} key={faq.question} />
-          ))}
-        </ul>
-      ) : (
-        <div>{message}</div>
-      )}
+      </UserContext.Consumer> */}
     </Container>
   );
 };

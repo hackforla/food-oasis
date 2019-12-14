@@ -77,6 +77,7 @@ function StakeholdersContainer(props) {
             key={selectedLatitude}
             latitude={selectedLatitude}
             longitude={selectedLongitude}
+            selectedLocationName={selectedLocationName}
             searchString={searchString}
             selectedCategories={selectedCategories}
             selectedDistance={selectedDistance}
@@ -85,7 +86,7 @@ function StakeholdersContainer(props) {
             isMapView={isMapView}
           />
         )}
-        {isLoading ? (
+        {isSearchPanelOpen ? null : isLoading ? (
           <div
             style={{
               height: "200",

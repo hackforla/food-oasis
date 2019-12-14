@@ -1,21 +1,33 @@
 import React, { useState } from "react";
 import * as esriService from "../services/esri_service";
-import { TextField, Typography, Button } from "@material-ui/core";
+import { Grid, TextField, Typography } from "@material-ui/core";
+
+let latestSearchString = "";
 
 const LocationAutocomplete = props => {
   const [searchString, setSearchString] = useState("");
-  const [selectedLocation, setSelectedLocation] = useState({});
+  //const [selectedLocation, setSelectedLocation] = useState({});
   const [geocodeResults, setGeocodeResults] = useState([]);
 
   const geocode = async evt => {
     const s = evt.target.value;
+    latestSearchString = s;
     setSearchString(s);
-    const result = await esriService.geocode(s);
-    setGeocodeResults(result);
+
+    setTimeout(async () => {
+      // If the geocode fn gets called again, before
+      // this request starts executing after the
+      // setTimeout delay, this request is stale
+      // and we don't want to run it.
+      if (s.length > 8 && s === latestSearchString) {
+        const result = await esriService.geocode(s);
+        setGeocodeResults(result);
+      }
+    }, 500);
   };
 
   const selectLocation = location => {
-    setSelectedLocation(location);
+    //setSelectedLocation(location);
     setGeocodeResults([]);
     props.setLocation(location);
   };
@@ -24,8 +36,10 @@ const LocationAutocomplete = props => {
     <div>
       <TextField
         name="searchString"
+        variant="outlined"
         value={searchString}
         onChange={geocode}
+        fullWidth
         placeholder={"Type here"}
       />
       {geocodeResults ? (
@@ -38,17 +52,17 @@ const LocationAutocomplete = props => {
               padding: "0.5em"
             }}
             key={index}
+            onClick={() => selectLocation(result)}
           >
             <Typography>{`(${result.location.y}, ${result.location.x})`}</Typography>
-            <Typography>{`${result.attributes.Match_addr}`}</Typography>
-            <Typography>{`${result.attributes.Addr_type}`}</Typography>
-            <Button
-              variant="outlined"
-              color="primary"
-              onClick={() => selectLocation(result)}
-            >
-              Choose
-            </Button>
+            <Typography>{`${result.attributes.PlaceName}`}</Typography>
+            <Typography>{`${result.attributes.StAddr}`}</Typography>
+            <Grid container justify="space-between">
+              <Typography>{`${result.attributes.City} `}</Typography>
+
+              <Typography>{`${result.attributes.Addr_type}`}</Typography>
+            </Grid>
+            {/* <pre>{JSON.stringify(result, null, 2)}</pre> */}
           </div>
         ))
       ) : (

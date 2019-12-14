@@ -45,6 +45,7 @@ const styles = {
 
 function App() {
   const [user, setUser] = useState(null);
+  const [userCoordinates, setUserCoordinates] = useState({});
 
   useEffect(() => {
     const storedJson = localStorage.getItem("user");
@@ -68,6 +69,35 @@ function App() {
     }
     setUser(user);
   };
+
+  const fetchLocation = () => {
+    let userCoordinates = { latitude: null, longitude: null };
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          if (position) {
+            const userCoordinates = {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude
+            };
+            setUserCoordinates(userCoordinates);
+          }
+        },
+        error => {
+          console.log(`Getting browser location failed: ${error.message}`);
+        }
+      );
+    } else {
+      // If browser location permission is denied, the request is
+      // "successful", but the result is null coordinates.
+      console.log(`Enable location permission to use location-based features.`);
+    }
+    return userCoordinates;
+  };
+
+  useEffect(() => {
+    fetchLocation();
+  }, []);
 
   return (
     <UserContext.Provider value={user}>
@@ -134,7 +164,7 @@ function App() {
                 <ResetPassword setToast={setToast} />
               </Route>
             </Switch>
-            <Footer />
+            <Footer userCoordinates={userCoordinates} />
             <Toast toast={toast} setToast={setToast} />
           </div>
         </Router>

@@ -36,15 +36,10 @@ function SearchPage() {
       mapboxApiAccessToken={MAPBOX_TOKEN}
       mapStyle={MAPBOX_STYLE}
     >
-      {/*
-
-
-      StakeholderList
-      SearchResults --> Markers
-      */}
       <div className={classes.searchBarContainer}>
         <FilterMenu />
-        <CurrentLocationIcon isTrackingEnabled={false} />
+        {/* TODO: hook up to user location tracking logic */}
+        <CurrentLocationIcon isTrackingEnabled={true} />
         <div>🔎 LocationAutoComplete</div>
       </div>
     </ReactMapGL>

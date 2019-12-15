@@ -2,7 +2,8 @@ import React from "react";
 import ReactMapGL from "react-map-gl";
 import { makeStyles } from "@material-ui/core/styles";
 import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
-
+import "./SearchPage.css";
+import Geocoder from "react-map-gl-geocoder";
 import FilterMenu from "./FilterMenu";
 import CurrentLocationIcon from "./CurrentLocationIcon";
 import SearchBarAutocomplete from "./SearchBarAutocomplete";
@@ -14,6 +15,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: "white",
     display: "flex",
     justifyContent: "flex-end",
+    alignItems: "center",
     margin: ".5rem",
     boxShadow: "0px 2px 10px -1px #bfbfbf",
     borderRadius: "30px",
@@ -28,23 +30,41 @@ function SearchPage() {
     latitude: 34.041001,
     longitude: -118.235036,
   });
+  const mapRef = React.useRef();
+  const geocoderContainerRef = React.useRef();
+
+  const handleOnResult = event => {
+    console.log(event.result);
+  };
 
   return (
-    <ReactMapGL
-      {...viewport}
-      width={`100vw`}
-      height={`90vh`}
-      onViewportChange={newViewport => setViewport(newViewport)}
-      mapboxApiAccessToken={MAPBOX_TOKEN}
-      mapStyle={MAPBOX_STYLE}
-    >
+    <>
       <div className={classes.searchBarContainer}>
-        <SearchBarAutocomplete />
+        <SearchBarAutocomplete ref={geocoderContainerRef} />
         {/* TODO: hook up to user location tracking logic */}
         <CurrentLocationIcon isTrackingEnabled={true} />
         <FilterMenu />
       </div>
-    </ReactMapGL>
+      <ReactMapGL
+        ref={mapRef}
+        {...viewport}
+        width={`100vw`}
+        height={`90vh`}
+        onViewportChange={newViewport => setViewport(newViewport)}
+        mapboxApiAccessToken={MAPBOX_TOKEN}
+        mapStyle={MAPBOX_STYLE}
+      >
+        <Geocoder
+          mapRef={mapRef}
+          containerRef={geocoderContainerRef}
+          onResult={handleOnResult}
+          onViewportChange={() => {}}
+          mapboxApiAccessToken={MAPBOX_TOKEN}
+          proximity={{ latitude: 34.041001, longitude: -118.235036 }}
+          placeholder="Search"
+        />
+      </ReactMapGL>
+    </>
   );
 }
 

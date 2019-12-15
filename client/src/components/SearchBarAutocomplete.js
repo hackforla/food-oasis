@@ -6,10 +6,12 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    flexGrow: "5",
+    width: "100%",
   },
 }));
-export default function SearchBarAutocomplete() {
+const SearchBarAutocomplete = React.forwardRef((props, ref) => {
   const classes = useStyles();
-  return <div className={classes.container}>🔎 LocationAutoComplete</div>;
-}
+  return <div className={classes.container} ref={ref} {...props}></div>;
+});
+
+export default SearchBarAutocomplete;

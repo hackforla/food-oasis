@@ -2,12 +2,10 @@ import React from "react";
 import { makeStyles } from "@material-ui/styles";
 
 import FaqItem from "./FaqItem";
-import Hamburger from "../images/hamburger.svg"
 
 const useStyles = makeStyles({
   edit: {
     listStyle: "none",
-    listStyleImage: `url(${Hamburger})`,
     fontSize: "2rem"
   }
 });

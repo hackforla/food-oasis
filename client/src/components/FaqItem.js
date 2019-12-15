@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/styles";
 import { UserContext } from "./user-context";
 import { EditButton } from "./Buttons";
@@ -22,7 +22,7 @@ const FaqItem = ({ faq, reorder }) => {
     // <UserContext.Consumer>
     //   {user =>
     //     user && user.isAdmin ? (
-    <li className={reorder ? classes.edit : ""} draggable={reorder}>
+    <li className={reorder ? classes.edit : ""}>
       <h4>{faq.question}</h4>
       <div dangerouslySetInnerHTML={{ __html: faq.answer }} />
       <h6>Identifier: {faq.identifier}</h6>

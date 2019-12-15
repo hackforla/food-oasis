@@ -44,26 +44,26 @@ const Faq = () => {
     setReorder(r => !r);
   };
 
+  // New plan - use buttons to reorder FAQs, up arrow and down arrow
+
   return (
     <Container maxWidth="md">
       <h1>{t("title")}</h1>
       {/* <UserContext.Consumer>
         {user =>
           user && user.isAdmin ? ( */}
-            <>
-              <AddButton label="Add New Faq" href="/faqs/add" />
-              <EditButton
-                label={
-                  reorder
-                    ? "Click to Stop Reordering Faqs"
-                    : "Click to Reorder Faqs"
-                }
-                onClick={onReorderClick}
-                color={reorder ? "secondary" : "primary"}
-              />
-              <FaqList faqs={faqs} message={message} reorder={reorder} />
-            </>
-          {/* ) : (
+      <>
+        <AddButton label="Add New Faq" href="/faqs/add" />
+        <EditButton
+          label={
+            reorder ? "Click to Stop Reordering Faqs" : "Click to Reorder Faqs"
+          }
+          onClick={onReorderClick}
+          color={reorder ? "secondary" : "primary"}
+        />
+        <FaqList faqs={faqs} message={message} reorder={reorder} />
+      </>
+      {/* ) : (
             <FaqList faqs={faqs} message={message} reorder={reorder} />
           )
         }

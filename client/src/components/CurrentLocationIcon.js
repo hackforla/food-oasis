@@ -8,7 +8,10 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    padding: "1rem",
+    padding: ".5rem",
+  },
+  active: {
+    color: "hsl(243, 95%, 30%)",
   },
 }));
 export default function CurrentLocationIcon({ isTrackingEnabled }) {
@@ -24,7 +27,7 @@ export default function CurrentLocationIcon({ isTrackingEnabled }) {
 
   return (
     <div className={classes.container}>
-      <LocationSearchingIcon color="primary" />
+      <LocationSearchingIcon className={classes.active} />
     </div>
   );
 }

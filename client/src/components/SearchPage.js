@@ -5,6 +5,7 @@ import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
 
 import FilterMenu from "./FilterMenu";
 import CurrentLocationIcon from "./CurrentLocationIcon";
+import SearchBarAutocomplete from "./SearchBarAutocomplete";
 import { MAPBOX_TOKEN } from "../secrets";
 import { MAPBOX_STYLE } from "../constants/map";
 
@@ -12,10 +13,11 @@ const useStyles = makeStyles(theme => ({
   searchBarContainer: {
     backgroundColor: "white",
     display: "flex",
-    justifyContent: "flex-start",
+    justifyContent: "flex-end",
     margin: ".5rem",
     boxShadow: "0px 2px 10px -1px #bfbfbf",
     borderRadius: "30px",
+    paddingLeft: "1rem",
   },
 }));
 
@@ -37,10 +39,10 @@ function SearchPage() {
       mapStyle={MAPBOX_STYLE}
     >
       <div className={classes.searchBarContainer}>
-        <FilterMenu />
+        <SearchBarAutocomplete />
         {/* TODO: hook up to user location tracking logic */}
         <CurrentLocationIcon isTrackingEnabled={true} />
-        <div>🔎 LocationAutoComplete</div>
+        <FilterMenu />
       </div>
     </ReactMapGL>
   );

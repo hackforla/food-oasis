@@ -1,14 +1,15 @@
 import React from "react";
 import ReactMapGL from "react-map-gl";
-import { makeStyles } from "@material-ui/core/styles";
-import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
-import "./SearchPage.css";
+import DeckGL, { GeoJsonLayer } from "deck.gl";
 import Geocoder from "react-map-gl-geocoder";
 import FilterMenu from "./FilterMenu";
 import CurrentLocationIcon from "./CurrentLocationIcon";
 import SearchBarAutocomplete from "./SearchBarAutocomplete";
 import { MAPBOX_TOKEN } from "../secrets";
 import { MAPBOX_STYLE } from "../constants/map";
+import { makeStyles } from "@material-ui/core/styles";
+import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
+import "./SearchPage.css";
 
 const useStyles = makeStyles(theme => ({
   searchBarContainer: {
@@ -30,11 +31,22 @@ function SearchPage() {
     latitude: 34.041001,
     longitude: -118.235036,
   });
+  const [searchResultLayer, setSearchResultLayer] = React.useState(null);
   const mapRef = React.useRef();
   const geocoderContainerRef = React.useRef();
 
   const handleOnResult = event => {
     console.log(event.result);
+    const layer = new GeoJsonLayer({
+      id: "search-result",
+      data: event.result.geometry,
+      getFillColor: [255, 0, 0, 128],
+      getRadius: 1000,
+      pointRadiusMinPixels: 10,
+      pointRadiusMaxPixels: 10,
+    });
+    console.log(layer);
+    setSearchResultLayer(layer);
   };
 
   return (
@@ -49,7 +61,7 @@ function SearchPage() {
         ref={mapRef}
         {...viewport}
         width={`100vw`}
-        height={`90vh`}
+        height={`80vh`}
         onViewportChange={newViewport => setViewport(newViewport)}
         mapboxApiAccessToken={MAPBOX_TOKEN}
         mapStyle={MAPBOX_STYLE}
@@ -58,11 +70,12 @@ function SearchPage() {
           mapRef={mapRef}
           containerRef={geocoderContainerRef}
           onResult={handleOnResult}
-          onViewportChange={() => {}}
+          onViewportChange={newViewport => setViewport(newViewport)}
           mapboxApiAccessToken={MAPBOX_TOKEN}
           proximity={{ latitude: 34.041001, longitude: -118.235036 }}
           placeholder="Search"
         />
+        <DeckGL {...viewport} layers={[searchResultLayer]} />
       </ReactMapGL>
     </>
   );

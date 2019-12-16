@@ -13,6 +13,8 @@ import {
   Details,
   Remove
 } from "@material-ui/icons";
+import ArrowUpward from "@material-ui/icons/ArrowUpward";
+import ArrowDownward from "@material-ui/icons/ArrowDownward";
 
 const useStyles = makeStyles(theme => ({
   deleteButton: {
@@ -163,6 +165,24 @@ const VerifyButton = props => {
   );
 };
 
+const MoveUpButton = props => {
+  return (
+    <Button variant="contained" color="primary" {...props}>
+      <ArrowUpward />
+      {props.label || props.label === "" ? props.label : "Move Up"}
+    </Button>
+  );
+};
+
+const MoveDownButton = props => {
+  return (
+    <Button variant="contained" color="primary" {...props}>
+      <ArrowDownward />
+      {props.label || props.label === "" ? props.label : "Move Down"}
+    </Button>
+  );
+};
+
 export {
   AddButton,
   CancelButton,
@@ -176,5 +196,7 @@ export {
   RemoveIconButton,
   SaveButton,
   SearchButton,
-  VerifyButton
+  VerifyButton,
+  MoveUpButton,
+  MoveDownButton
 };

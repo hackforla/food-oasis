@@ -10,13 +10,19 @@ const useStyles = makeStyles({
   }
 });
 
-const FaqList = ({ faqs, message, reorder }) => {
+const FaqList = ({ faqs, message, reorder, reorderFaqs }) => {
   const classes = useStyles();
 
   return faqs[0] ? (
     <ul className={reorder ? classes.edit : ""}>
       {faqs.map(faq => (
-        <FaqItem faq={faq} key={faq.question} reorder={reorder} />
+        <FaqItem
+          faq={faq}
+          key={faq.question}
+          reorder={reorder}
+          reorderFaqs={reorderFaqs}
+          faqLength={faqs.length}
+        />
       ))}
     </ul>
   ) : (

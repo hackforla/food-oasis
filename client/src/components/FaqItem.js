@@ -1,21 +1,23 @@
 import React from "react";
 import { makeStyles } from "@material-ui/styles";
 import { UserContext } from "./user-context";
-import { EditButton } from "./Buttons";
+import { EditButton, MoveUpButton, MoveDownButton } from "./Buttons";
 
 const useStyles = makeStyles({
   edit: {
     marginBottom: "10px",
-    cursor: "pointer",
     border: "2px dashed #FAEBD7",
     "& h4, h6, div": {
       fontSize: "1rem",
       margin: "0.5rem"
     }
+  },
+  hide: {
+    display: "hidden"
   }
 });
 
-const FaqItem = ({ faq, reorder }) => {
+const FaqItem = ({ faq, reorder, reorderFaqs, faqLength }) => {
   const classes = useStyles();
 
   return (
@@ -26,7 +28,16 @@ const FaqItem = ({ faq, reorder }) => {
       <h4>{faq.question}</h4>
       <div dangerouslySetInnerHTML={{ __html: faq.answer }} />
       <h6>Identifier: {faq.identifier}</h6>
-      <EditButton label="Edit" href={`/faqs/${faq.identifier}`} />
+      {reorder ? (
+        <>
+          <MoveUpButton className={faq.order !== 0 ? classes.hide : ""} />
+          <MoveDownButton
+            className={faq.order !== faqLength - 1 ? classes.hide : ""}
+          />
+        </>
+      ) : (
+        <EditButton label="Edit" href={`/faqs/${faq.identifier}`} />
+      )}
     </li>
     //     ) : (
     //       <li>

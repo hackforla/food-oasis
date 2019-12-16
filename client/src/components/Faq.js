@@ -45,6 +45,19 @@ const Faq = () => {
   };
 
   // New plan - use buttons to reorder FAQs, up arrow and down arrow
+  // Assuming order starts at 0
+  const reorderFaqs = (direction, order) => {
+    let currentFaqs = faqs;
+    if (direction === "up" && order !== 0) {
+      [faqs[order], faqs[order - 1]] = [faqs[order - 1], faqs[order]];
+    } else if (direction === "down" && order !== faqs.length - 1) {
+      [faqs[order], faqs[order + 1]] = [faqs[order + 1], faqs[order]];
+    } else {
+      return;
+    }
+
+    setFaqs(currentFaqs);
+  };
 
   return (
     <Container maxWidth="md">
@@ -61,7 +74,12 @@ const Faq = () => {
           onClick={onReorderClick}
           color={reorder ? "secondary" : "primary"}
         />
-        <FaqList faqs={faqs} message={message} reorder={reorder} />
+        <FaqList
+          faqs={faqs}
+          message={message}
+          reorder={reorder}
+          reorderFaqs={reorderFaqs}
+        />
       </>
       {/* ) : (
             <FaqList faqs={faqs} message={message} reorder={reorder} />

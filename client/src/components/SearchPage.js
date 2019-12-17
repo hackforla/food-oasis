@@ -25,18 +25,54 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function SearchPage() {
+  const mapRef = React.useRef();
+  const geocoderContainerRef = React.useRef();
   const classes = useStyles();
+
   const [viewport, setViewport] = React.useState({
     zoom: 10, // TODO: can we dynamically control zoom radius based on selectedDistance?
     latitude: 34.041001,
     longitude: -118.235036,
   });
   const [searchResultLayer, setSearchResultLayer] = React.useState(null);
-  const mapRef = React.useRef();
-  const geocoderContainerRef = React.useRef();
+  const [isTrackingEnabled, setIsTrackingEnabled] = React.useState(false);
+  const [coordinates, setCoordinates] = React.useState({
+    latitude: null,
+    longitude: null,
+  });
+
+  const handleTrackingToggle = async () => {
+    if (isTrackingEnabled) {
+      setIsTrackingEnabled(false);
+      setCoordinates({ latitude: null, longitude: null });
+      return;
+    }
+
+    // TODO: Handle the loading state for this operation at the Icon Button
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        console.log(position.coords);
+        setIsTrackingEnabled(true);
+        setCoordinates({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
+      },
+      error => {
+        console.log(error);
+        setIsTrackingEnabled(false);
+        setCoordinates({ latitude: null, longitude: null });
+      },
+    );
+  };
 
   const handleOnResult = event => {
     console.log(event.result);
+
+    const [longitude, latitude] = event.result.geometry.coordinates;
+    setCoordinates({ longitude, latitude });
+
+    // create new geojsonlayer for searchresult flyto
     const layer = new GeoJsonLayer({
       id: "search-result",
       data: event.result.geometry,
@@ -45,7 +81,7 @@ function SearchPage() {
       pointRadiusMinPixels: 10,
       pointRadiusMaxPixels: 10,
     });
-    console.log(layer);
+
     setSearchResultLayer(layer);
   };
 
@@ -53,8 +89,10 @@ function SearchPage() {
     <>
       <div className={classes.searchBarContainer}>
         <SearchBarAutocomplete ref={geocoderContainerRef} />
-        {/* TODO: hook up to user location tracking logic */}
-        <CurrentLocationIcon isTrackingEnabled={true} />
+        <CurrentLocationIcon
+          isTrackingEnabled={isTrackingEnabled}
+          onClick={handleTrackingToggle}
+        />
         <FilterMenu />
       </div>
       <ReactMapGL

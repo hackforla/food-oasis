@@ -69,13 +69,15 @@ function StakeholderSearch(props) {
     props.selectedDistance
   );
   const [useMyLocation, setUseMyLocation] = useState(
-    closeTo(
-      props.selectedLatitude,
-      props.selectedLongitude,
-      props.latitude,
-      props.longitude
-    )
-      ? "my"
+    latitude
+      ? closeTo(
+          props.selectedLatitude,
+          props.selectedLongitude,
+          props.latitude,
+          props.longitude
+        )
+        ? "my"
+        : "custom"
       : "custom"
   );
 
@@ -248,7 +250,7 @@ function StakeholderSearch(props) {
                     }
                   />
                   <FormControlLabel
-                    value="other"
+                    value="custom"
                     control={<Radio />}
                     style={{ alignItems: "flex-start" }}
                     label={

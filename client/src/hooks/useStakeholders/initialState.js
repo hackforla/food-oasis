@@ -13,7 +13,7 @@ export const initialState = {
   longitude: null,
   selectedLatitude: 34.041001,
   selectedLongitude: -118.235036,
-  selectedLocationName: "LACI",
+  selectedLocationName: "",
   selectedDistance: 10,
   queryParametersLoaded: false
 };

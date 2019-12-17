@@ -10,6 +10,7 @@ import {
   CssBaseline,
   FormControl,
   FormControlLabel,
+  FormHelperText,
   Grid,
   Input,
   InputLabel,
@@ -63,7 +64,11 @@ const validationSchema = Yup.object().shape({
     .required("Longitude is required")
     .min(-180)
     .max(180),
-  email: Yup.string().email("Invalid email address format")
+  email: Yup.string().email("Invalid email address format"),
+  selectedCategoryIds: Yup.array().min(
+    1,
+    "You must select at least one category"
+  )
 });
 
 const StakeholderEdit = props => {
@@ -412,9 +417,15 @@ const StakeholderEdit = props => {
                         >
                           <Grid container>
                             <Grid item xs={10}>
-                              <Typography>{`(${result.location.y}, ${result.location.x})`}</Typography>
-                              <Typography>{`${result.attributes.Match_addr}`}</Typography>
-                              <Typography>{`${result.attributes.Addr_type}`}</Typography>
+                              <Typography>{`(${result.location.y}, ${
+                                result.location.x
+                              })`}</Typography>
+                              <Typography>{`${
+                                result.attributes.Match_addr
+                              }`}</Typography>
+                              <Typography>{`${
+                                result.attributes.Addr_type
+                              }`}</Typography>
                             </Grid>
                             <Grid item xs={2}>
                               <VerifyButton
@@ -658,11 +669,23 @@ const StakeholderEdit = props => {
                       variant="outlined"
                       name="selectedCategoryIds"
                       multiple
-                      fullWidth
+                      fullWidths
                       value={values.selectedCategoryIds}
                       onChange={handleChange}
                       input={<Input />}
+                      helperText={
+                        touched.selectedCategoryIds
+                          ? errors.selectedCategoryIds
+                          : ""
+                      }
+                      error={
+                        touched.selectedCategoryIds &&
+                        Boolean(errors.selectedCategoryIds)
+                      }
                       renderValue={selectedCategoryIds => {
+                        if (!categories) {
+                          return "Loading categories...";
+                        }
                         if (selectedCategoryIds.length === 0) {
                           return "(Select Categories)";
                         }
@@ -693,6 +716,11 @@ const StakeholderEdit = props => {
                         </MenuItem>
                       ))}
                     </Select>
+                    <FormHelperText>
+                      {touched.selectedCategoryIds
+                        ? errors.selectedCategoryIds
+                        : ""}
+                    </FormHelperText>
                   </FormControl>
                 </Grid>
                 <Grid

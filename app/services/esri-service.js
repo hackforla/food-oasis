@@ -28,16 +28,20 @@ const buildGeocodeUrl = address =>
 
 const geocode = async address => {
   const searchString = encodeURI(address);
-  if (esriToken === "") {
-    await generateToken();
-  }
 
   try {
+    if (esriToken === "") {
+      console.log("Generating initial ESRI token...");
+      await generateToken();
+    }
+    console.log("Trying geocoding with existing token...");
     let addressResult = await axios.get(buildGeocodeUrl(searchString));
     if (addressResult.error && addressResult.error.code === 498) {
       // Invalid token - need to generate a new token
       // and try again.
+      console.log("ESRI token expired, generating a new one...");
       await generateToken();
+      console.log("Retrying geolocation query...");
       addressResult = await axios.get(buildGeocodeUrl(searchString));
     } else if (addressResult.error) {
       throw new Error(
@@ -46,7 +50,7 @@ const geocode = async address => {
     }
     return addressResult.data.candidates;
   } catch (err) {
-    throw new Error("Geocoding error");
+    throw err;
   }
 };
 

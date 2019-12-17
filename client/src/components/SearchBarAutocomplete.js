@@ -11,7 +11,7 @@ const useStyles = makeStyles(() => ({
 }));
 const SearchBarAutocomplete = React.forwardRef((props, ref) => {
   const classes = useStyles();
-  return <div className={classes.container} ref={ref} {...props}></div>;
+  return <div className={classes.container} ref={ref} {...props} />;
 });
 
 export default SearchBarAutocomplete;

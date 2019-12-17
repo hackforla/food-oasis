@@ -51,9 +51,26 @@ function SearchPage() {
     // TODO: Handle the loading state for this operation at the Icon Button
     navigator.geolocation.getCurrentPosition(
       position => {
-        console.log(position.coords);
         setIsTrackingEnabled(true);
         setCoordinates({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
+
+        const layer = new GeoJsonLayer({
+          id: "search-result",
+          data: {
+            coordinates: [position.coords.longitude, position.coords.latitude],
+            type: "Point",
+          },
+          getFillColor: [255, 0, 0, 128],
+          getRadius: 1000,
+          pointRadiusMinPixels: 10,
+          pointRadiusMaxPixels: 10,
+        });
+        setSearchResultLayer(layer);
+        setViewport({
+          ...viewport,
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
         });
@@ -66,9 +83,7 @@ function SearchPage() {
     );
   };
 
-  const handleOnResult = event => {
-    console.log(event.result);
-
+  const handleOnSearchResult = event => {
     const [longitude, latitude] = event.result.geometry.coordinates;
     setCoordinates({ longitude, latitude });
 
@@ -107,7 +122,7 @@ function SearchPage() {
         <Geocoder
           mapRef={mapRef}
           containerRef={geocoderContainerRef}
-          onResult={handleOnResult}
+          onResult={handleOnSearchResult}
           onViewportChange={newViewport => setViewport(newViewport)}
           mapboxApiAccessToken={MAPBOX_TOKEN}
           proximity={{ latitude: 34.041001, longitude: -118.235036 }}

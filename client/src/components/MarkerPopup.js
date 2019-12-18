@@ -1,6 +1,7 @@
 import React from "react";
 import { Popup } from "react-map-gl";
 import { Link } from "@material-ui/core";
+
 function MarkerPopup({ entity, handleClose }) {
   const {
     latitude,

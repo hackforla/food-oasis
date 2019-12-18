@@ -158,7 +158,7 @@ const StakeholderEdit = props => {
     const result = await esriService.geocode(formatMapAddress(formData));
     setGeocodeResults(result);
   };
-  console.log("original", originalData);
+  
   return (
     <Container component="main" maxWidth="lg">
       <CssBaseline />
@@ -379,7 +379,7 @@ const StakeholderEdit = props => {
                     error={touched.longitude && Boolean(errors.longitude)}
                   />
                 </Grid>
-                <Grid item xs={12} md={6} style={{ backgroundColor: "#FFF" }}>
+                <Grid item xs={12} md={6}>
                   <Grid container justifycontent={"space-between"}>
                     <Grid item>
                       <SearchButton
@@ -390,7 +390,7 @@ const StakeholderEdit = props => {
                         }}
                         label={
                           (geocodeResults && geocodeResults.length) < 1
-                            ? "Lat/Lon"
+                            ? "Get Coordinates"
                             : "Close"
                         }
                         style={{ marginTop: "1.2em" }}

@@ -43,7 +43,7 @@ const intervals = [
 
 function OpenTimeInput(props) {
   const classes = useStyles();
-  const { values, stateChange, removeInput, index } = props;
+  const { values, onChange, removeInput } = props;
 
   return (
     <Grid container spacing={1} className={classes.row}>
@@ -57,8 +57,9 @@ function OpenTimeInput(props) {
           <Select
             labelId="open-days-select-id"
             id="open-days-select"
+            name="weekOfMonth"
             labelWidth={75}
-            onChange={e => stateChange(e.target.value, "weekOfMonth")}
+            onChange={onChange}
             value={values.weekOfMonth}
           >
             {intervals.map(day => (
@@ -80,8 +81,9 @@ function OpenTimeInput(props) {
             labelId="open-days-select-id"
             id="open-days-select"
             variant="outlined"
+            name="dayOfWeek"
             labelWidth={75}
-            onChange={e => stateChange(e.target.value, "dayOfWeek")}
+            onChange={onChange}
             value={values.dayOfWeek}
           >
             {days.map(day => (
@@ -94,7 +96,8 @@ function OpenTimeInput(props) {
       </Grid>
       <Grid item xs={12} sm={3}>
         <TextField
-          onChange={e => stateChange(e.target.value, "open")}
+          name="open"
+          onChange={onChange}
           variant="outlined"
           fullWidth
           label="Opening Time"
@@ -108,7 +111,8 @@ function OpenTimeInput(props) {
         styles={{ display: "flex", flexDirection: "column" }}
       >
         <TextField
-          onChange={e => stateChange(e.target.value, "close")}
+          name="close"
+          onChange={onChange}
           variant="outlined"
           fullWidth
           label="Closing Time"
@@ -116,7 +120,7 @@ function OpenTimeInput(props) {
         />
       </Grid>
       <Grid item xs={2} sm={1}>
-        <CancelIconButton onClick={() => removeInput(index)} />
+        <CancelIconButton onClick={removeInput} />
       </Grid>
     </Grid>
   );

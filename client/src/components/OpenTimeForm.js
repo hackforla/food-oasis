@@ -4,8 +4,8 @@ import { AddButton } from "./Buttons";
 import { Card, CardContent, Typography } from "@material-ui/core";
 
 function OpenTimeForm(props) {
-  const { originalHours } = props;
-  const [hours, setHours] = useState([...originalHours]);
+  const { value, onChange } = props;
+  const [hours, setHours] = useState(props.value);
 
   // useEffect(() => {
   //   // uses the handleChange from Formik to change form
@@ -13,8 +13,12 @@ function OpenTimeForm(props) {
   // }, [hours, props.handleChange]);
 
   useEffect(() => {
-    setHours(originalHours);
-  }, [originalHours]);
+    setHours(value);
+  }, [value]);
+
+  const handleChange = () => {
+    onChange({ target: { value: hours, name: "hours" } });
+  };
 
   const addHours = () => {
     let newList = [
@@ -22,11 +26,26 @@ function OpenTimeForm(props) {
       { weekOfMonth: 0, dayOfWeek: "", open: "", close: "" }
     ];
     setHours(newList);
+    handleChange();
   };
 
-  const removeHours = index => {
+  const removeHours = (e, index) => {
     let newList = hours.slice().filter((val, i) => i !== index);
     setHours(newList);
+    handleChange();
+  };
+
+  const stateChange = (e, rowIndex) => {
+    let newList = [...hours];
+    const name = e.target.name;
+    const value = e.target.value;
+    if (name === "open" || name === "close") {
+      newList[rowIndex][name] = handleTime(value);
+    } else {
+      newList[rowIndex][name] = value;
+    }
+    setHours(newList);
+    handleChange();
   };
 
   const handleTime = number => {
@@ -49,24 +68,14 @@ function OpenTimeForm(props) {
     return output;
   };
 
-  const inputsMap = hours.map((val, i) => {
-    let stateChange = (value, name) => {
-      let newList = [...hours];
-      if (name === "open" || name === "close") {
-        newList[i][name] = handleTime(value);
-      } else {
-        newList[i][name] = value;
-      }
-      setHours(newList);
-    };
-
+  const inputsMap = hours.map((val, rowIndex) => {
     return (
-      <div key={i}>
+      <div key={rowIndex}>
         <OpenTimeInputs
           values={val}
-          stateChange={stateChange}
-          removeInput={removeHours}
-          index={i}
+          onChange={e => stateChange(e, rowIndex)}
+          removeInput={e => removeHours(e, rowIndex)}
+          index={rowIndex}
         />
       </div>
     );

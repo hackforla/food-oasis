@@ -5,7 +5,7 @@ const toSqlString = originalString => {
   if (!originalString) {
     return "''";
   }
-  return "'" + originalString.replace("'", "''") + "'";
+  return "'" + originalString.replace(/'/g, "''") + "'";
 };
 
 const toSqlNumeric = originalNumeric => {

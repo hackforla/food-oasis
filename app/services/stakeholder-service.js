@@ -3,7 +3,7 @@ const { toSqlString, toSqlNumeric, toSqlBoolean } = require("./postgres-utils");
 
 const selectAll = async (name, categoryIds, latitude, longitude, distance) => {
   const categoryClause = "(" + categoryIds.join(",") + ")";
-  const nameClause = "'%" + name + "%'";
+  const nameClause = "'%" + name.replace(/'/g, "''") + "%'";
   const sql = `
     select s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
       s.phone, s.latitude, s.longitude, s.website,  s.notes,
@@ -273,7 +273,7 @@ const insert = async model => {
         if (insertErr) {
           console.log("sql insert error", insertErr);
         }
-      })
+      });
     }
 
     return retObject;
@@ -394,7 +394,7 @@ const update = async model => {
       }
     }
   });
-}
+};
 
 const remove = id => {
   const sql = `delete from stakeholder where id = ${id}`;

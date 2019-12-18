@@ -100,7 +100,6 @@ function OpenTimeInput(props) {
           name="open"
           onChange={onChange}
           variant="outlined"
-          required
           fullWidth
           label="Opening Time"
           value={values.open}
@@ -119,7 +118,6 @@ function OpenTimeInput(props) {
           inputProps={{ step: 300 }}
           onChange={onChange}
           variant="outlined"
-          required
           fullWidth
           label="Closing Time"
           value={values.close}

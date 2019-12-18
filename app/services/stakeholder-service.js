@@ -3,7 +3,7 @@ const { toSqlString, toSqlNumeric, toSqlBoolean } = require("./postgres-utils");
 
 const selectAll = async (name, categoryIds, latitude, longitude, distance) => {
   const categoryClause = "(" + categoryIds.join(",") + ")";
-  const nameClause = "'%" + name + "%'";
+  const nameClause = "'%" + name.replace(/'/g, "''") + "%'";
   const sql = `
     select s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
       s.phone, s.latitude, s.longitude, s.website,  s.notes,
@@ -256,6 +256,26 @@ const insert = async model => {
       await pool.query(sqlInsert);
     }
 
+    let hoursSqlValues = hours.length
+      ? hours
+          .reduce((acc, cur) => {
+            return (acc += `(${id}, '${cur.dayOfWeek}', '${cur.open}', '${cur.close}', ${cur.weekOfMonth}), `);
+          }, "")
+          .slice(0, -2)
+      : null;
+
+    const hoursSqlInsert = `insert into stakeholder_schedule 
+      (stakeholder_id, day_of_week, open, close, week_of_month) 
+      values ${hoursSqlValues}`;
+
+    if (hoursSqlValues) {
+      pool.query(hoursSqlInsert, (insertErr, insertRes) => {
+        if (insertErr) {
+          console.log("sql insert error", insertErr);
+        }
+      });
+    }
+
     return retObject;
   } catch (err) {
     return Promise.reject(err.message);
@@ -361,19 +381,19 @@ const update = async model => {
     await pool.query(sqlInsert);
   }
 
-  if (hoursSqlValues) {
-    pool.query(hoursSqlDelete, (deleteErr, deleteRes) => {
-      if (deleteErr) {
-        console.log("sql delete error", deleteErr);
-      } else {
+  pool.query(hoursSqlDelete, (deleteErr, deleteRes) => {
+    if (deleteErr) {
+      console.log("sql delete error", deleteErr);
+    } else {
+      if (hoursSqlValues) {
         pool.query(hoursSqlInsert, (insertErr, insertRes) => {
           if (insertErr) {
             console.log("sql insert error", insertErr);
           }
         });
       }
-    });
-  }
+    }
+  });
 };
 
 const remove = id => {

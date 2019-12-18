@@ -14,3 +14,18 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.mapboxgl-popup-content {
+  padding-right: 48px;
+}
+
+.mapboxgl-popup-content h4 {
+  margin-top: 8px;
+}
+
+.mapboxgl-popup-close-button {
+  font-size: 32px;
+  padding-top: 4px;
+  font-weight: bold;
+  padding-right: 8px;
+}

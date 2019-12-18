@@ -31,8 +31,9 @@ const styles = {
     margin: "0",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "flex-start",
-    alignItems: "stretch"
+    justifyContent: "space-between",
+    alignItems: "stretch",
+    height: "100%"
   },
   mainContent: {
     margin: "0",

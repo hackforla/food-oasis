@@ -16,36 +16,36 @@ function OpenTimeForm(props) {
     setHours(value);
   }, [value]);
 
-  const handleChange = () => {
-    onChange({ target: { value: hours, name: "hours" } });
+  const handleChange = newHours => {
+    onChange({ target: { value: newHours, name: "hours" } });
   };
 
   const addHours = () => {
-    let newList = [
+    let newHours = [
       ...hours,
       { weekOfMonth: 0, dayOfWeek: "", open: "", close: "" }
     ];
-    setHours(newList);
-    handleChange();
+    setHours(newHours);
+    handleChange(newHours);
   };
 
   const removeHours = (e, index) => {
-    let newList = hours.slice().filter((val, i) => i !== index);
-    setHours(newList);
-    handleChange();
+    let newHours = hours.filter((val, i) => i !== index);
+    setHours(newHours);
+    handleChange(newHours);
   };
 
   const stateChange = (e, rowIndex) => {
-    let newList = [...hours];
+    let newHours = [...hours];
     const name = e.target.name;
     const value = e.target.value;
     if (name === "open" || name === "close") {
-      newList[rowIndex][name] = handleTime(value);
+      newHours[rowIndex][name] = handleTime(value);
     } else {
-      newList[rowIndex][name] = value;
+      newHours[rowIndex][name] = value;
     }
-    setHours(newList);
-    handleChange();
+    setHours(newHours);
+    handleChange(newHours);
   };
 
   const handleTime = number => {
@@ -75,7 +75,6 @@ function OpenTimeForm(props) {
           values={val}
           onChange={e => stateChange(e, rowIndex)}
           removeInput={e => removeHours(e, rowIndex)}
-          index={rowIndex}
         />
       </div>
     );

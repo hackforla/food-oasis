@@ -4,7 +4,6 @@ import { AddButton } from "./Buttons";
 import { Card, CardContent, Typography } from "@material-ui/core";
 
 function OpenTimeForm(props) {
-<<<<<<< HEAD
   const { value, onChange } = props;
   const [hours, setHours] = useState(props.value);
 
@@ -20,14 +19,6 @@ function OpenTimeForm(props) {
   const handleChange = () => {
     onChange({ target: { value: hours, name: "hours" } });
   };
-=======
-  const { originalHours, handleChange } = props;
-  const [hours, setHours] = useState([]);
-
-  useEffect(() => {
-    setHours([...originalHours]);
-  }, [originalHours]);
->>>>>>> origin/master
 
   const addHours = () => {
     let newList = [
@@ -44,7 +35,6 @@ function OpenTimeForm(props) {
 
   const removeHours = (e, index) => {
     let newList = hours.slice().filter((val, i) => i !== index);
-<<<<<<< HEAD
     setHours(newList);
     handleChange();
   };
@@ -61,15 +51,6 @@ function OpenTimeForm(props) {
     setHours(newList);
     handleChange();
   };
-=======
-    handleInputs(newList);
-	};
-	
-  const handleInputs = (inputs) => {
-     setHours(inputs);
-     handleChange({ target: { value: inputs, name: "hours" } });
-  }
->>>>>>> origin/master
 
   const handleTime = number => {
     //formats time input into HH:MM:SS format
@@ -91,21 +72,7 @@ function OpenTimeForm(props) {
     return output;
   };
 
-<<<<<<< HEAD
   const inputsMap = hours.map((val, rowIndex) => {
-=======
-  const inputsMap = hours.map((val, i) => {
-    let stateChange = (value, name) => {
-      let newList = [...hours];
-      if (name === "open" || name === "close") {
-        newList[i][name] = handleTime(value);
-      } else {
-        newList[i][name] = value;
-      }
-      handleInputs(newList);
-    };
-
->>>>>>> origin/master
     return (
       <div key={rowIndex}>
         <OpenTimeInputs

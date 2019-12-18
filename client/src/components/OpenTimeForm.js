@@ -4,36 +4,29 @@ import { AddButton } from "./Buttons";
 import { Card, CardContent, Typography } from "@material-ui/core";
 
 function OpenTimeForm(props) {
-  const { originalData } = props;
-  const [inputs, setInputs] = useState([
-    {
-      weekOfMonth: 0,
-      dayOfWeek: "",
-      open: "",
-      close: ""
-    }
-  ]);
-
-  // useEffect(() => {
-  //   // uses the handleChange from Formik to change form
-  //   handleChange({ target: { value: inputs, name: "hours" } });
-  // }, [inputs, handleChange]);
+  const { originalHours } = props;
+  const [hours, setHours] = useState([...originalHours]);
 
   useEffect(() => {
-    setInputs(originalData);
-  }, [originalData]);
+    // uses the handleChange from Formik to change form
+    props.handleChange({ target: { value: hours, name: "hours" } });
+  }, [hours, props.handleChange]);
 
-  const addInput = () => {
+  useEffect(() => {
+    setHours(originalHours);
+  }, [originalHours]);
+
+  const addHours = () => {
     let newList = [
-      ...inputs,
+      ...hours,
       { weekOfMonth: 0, dayOfWeek: "", open: "", close: "" }
     ];
-    setInputs(newList);
+    setHours(newList);
   };
 
-  const removeInput = index => {
-    let newList = inputs.slice().filter((val, i) => i !== index);
-    setInputs(newList);
+  const removeHours = index => {
+    let newList = hours.slice().filter((val, i) => i !== index);
+    setHours(newList);
   };
 
   const handleTime = number => {
@@ -56,15 +49,15 @@ function OpenTimeForm(props) {
     return output;
   };
 
-  const inputsMap = inputs.map((val, i) => {
+  const inputsMap = hours.map((val, i) => {
     let stateChange = (value, name) => {
-      let newList = [...inputs];
+      let newList = [...hours];
       if (name === "open" || name === "close") {
         newList[i][name] = handleTime(value);
       } else {
         newList[i][name] = value;
       }
-      setInputs(newList);
+      setHours(newList);
     };
 
     return (
@@ -72,7 +65,7 @@ function OpenTimeForm(props) {
         <OpenTimeInputs
           values={val}
           stateChange={stateChange}
-          removeInput={removeInput}
+          removeInput={removeHours}
           index={i}
         />
       </div>
@@ -84,7 +77,7 @@ function OpenTimeForm(props) {
       <CardContent>
         <Typography>Hours</Typography>
         <div>{inputsMap}</div>
-        <AddButton onClick={addInput} label={"Add Hours"} />
+        <AddButton onClick={addHours} label={"Add Hours"} />
       </CardContent>
     </Card>
   );

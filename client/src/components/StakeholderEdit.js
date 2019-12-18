@@ -379,14 +379,8 @@ const StakeholderEdit = props => {
                     error={touched.longitude && Boolean(errors.longitude)}
                   />
                 </Grid>
-                <Grid
-                  item
-                  xs={12}
-                  md={6}
-                  fullWidth
-                  style={{ backgroundColor: "#FFF" }}
-                >
-                  <Grid container justifyContent="space-between">
+                <Grid item xs={12} md={6} style={{ backgroundColor: "#FFF" }}>
+                  <Grid container justifycontent={"space-between"}>
                     <Grid item>
                       <SearchButton
                         onClick={() => {
@@ -448,7 +442,7 @@ const StakeholderEdit = props => {
                 <Grid item xs={12}>
                   <OpenTimeForm
                     handleChange={handleChange}
-                    originalData={originalData.hours}
+                    originalHours={originalData.hours}
                   />
                 </Grid>
                 <Grid item sm={6} xs={12}>
@@ -669,19 +663,10 @@ const StakeholderEdit = props => {
                       variant="outlined"
                       name="selectedCategoryIds"
                       multiple
-                      fullWidths
+                      fullWidth
                       value={values.selectedCategoryIds}
                       onChange={handleChange}
                       input={<Input />}
-                      helperText={
-                        touched.selectedCategoryIds
-                          ? errors.selectedCategoryIds
-                          : ""
-                      }
-                      error={
-                        touched.selectedCategoryIds &&
-                        Boolean(errors.selectedCategoryIds)
-                      }
                       renderValue={selectedCategoryIds => {
                         if (!categories) {
                           return "Loading categories...";

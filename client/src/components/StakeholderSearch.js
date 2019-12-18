@@ -240,7 +240,7 @@ function StakeholderSearch(props) {
                 >
                   <FormControlLabel
                     value="my"
-                    control={<Radio />}
+                    control={<Radio color="primary" />}
                     style={{ alignItems: "flex-start" }}
                     label={
                       <div>
@@ -251,7 +251,7 @@ function StakeholderSearch(props) {
                   />
                   <FormControlLabel
                     value="custom"
-                    control={<Radio />}
+                    control={<Radio color="primary" />}
                     style={{ alignItems: "flex-start" }}
                     label={
                       <div>

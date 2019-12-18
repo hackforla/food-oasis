@@ -2,7 +2,7 @@ import React from "react";
 import { Grid, Typography, Card, CardContent, Link } from "@material-ui/core";
 import { Check } from "@material-ui/icons";
 import { UserContext } from "./user-context";
-import EditButton from "./EditButton";
+import { EditButton } from "../components/Buttons";
 import { withRouter } from "react-router-dom";
 import moment from "moment";
 

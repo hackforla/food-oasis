@@ -269,7 +269,6 @@ const insert = async model => {
       values ${hoursSqlValues}`;
 
     if (hoursSqlValues) {
-      console.log('hitttttttt')
       pool.query(hoursSqlInsert, (insertErr, insertRes) => {
         if (insertErr) {
           console.log("sql insert error", insertErr);

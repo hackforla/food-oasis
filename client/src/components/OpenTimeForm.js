@@ -25,12 +25,8 @@ function OpenTimeForm(props) {
       ...hours,
       { weekOfMonth: 0, dayOfWeek: "", open: "", close: "" }
     ];
-<<<<<<< HEAD
     setHours(newList);
     handleChange();
-=======
-    handleInputs(newList);
->>>>>>> origin/master
   };
 
   const removeHours = (e, index) => {

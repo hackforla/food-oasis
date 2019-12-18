@@ -17,7 +17,7 @@ import {
   RadioGroup,
   Radio
 } from "@material-ui/core";
-import SearchButton from "./SearchButton";
+import { SearchButton } from "./Buttons";
 import SwitchViewsButton from "./SwitchViewsButton";
 import LocationAutocomplete from "./LocationAutocomplete";
 
@@ -37,6 +37,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const closeTo = (lat1, lon1, lat2, lon2) => {
+  return Math.abs(lat1 - lat2) + Math.abs(lon1 - lon2) < 0.01;
+};
+
 function StakeholderSearch(props) {
   const [selectedCategories, setSelectedCategories] = useState(
     props.selectedCategories
@@ -44,6 +48,14 @@ function StakeholderSearch(props) {
   const [searchString, setSearchString] = useState(props.searchString);
   const [latitude] = useState(props.latitude);
   const [longitude] = useState(props.longitude);
+  const [customLatitude, setCustomLatitude] = useState(props.selectedLatitude);
+  const [customLongitude, setCustomLongitude] = useState(
+    props.selectedLongitude
+  );
+  const [customLocationName, setCustomLocationName] = useState(
+    props.selectedLocationName
+  );
+
   const [selectedLatitude, setSelectedLatitude] = useState(
     props.selectedLatitude
   );
@@ -56,7 +68,18 @@ function StakeholderSearch(props) {
   const [selectedDistance, setSelectedDistance] = useState(
     props.selectedDistance
   );
-  const [useMyLocation, setUseMyLocation] = useState("other");
+  const [useMyLocation, setUseMyLocation] = useState(
+    latitude
+      ? closeTo(
+          props.selectedLatitude,
+          props.selectedLongitude,
+          props.latitude,
+          props.longitude
+        )
+        ? "my"
+        : "custom"
+      : "custom"
+  );
 
   const classes = useStyles();
 
@@ -66,13 +89,22 @@ function StakeholderSearch(props) {
     if (val === "my") {
       setSelectedLatitude(latitude);
       setSelectedLongitude(longitude);
+      setSelectedLocationName("");
+    } else {
+      setSelectedLatitude(customLatitude);
+      setSelectedLongitude(customLongitude);
+      setSelectedLocationName(customLocationName);
     }
   };
 
   const setLocation = location => {
+    setCustomLatitude(location.location.y);
+    setCustomLongitude(location.location.x);
+    setCustomLocationName(location.address);
     setSelectedLatitude(location.location.y);
     setSelectedLongitude(location.location.x);
     setSelectedLocationName(location.address);
+    setUseMyLocation("custom");
   };
 
   return (
@@ -102,6 +134,20 @@ function StakeholderSearch(props) {
             </Grid>
           </Grid>
           <Grid item container alignItems="center">
+            <Grid item container>
+              <FormLabel className={classes.formLabel}>Name</FormLabel>
+              <TextField
+                autoComplete="fname"
+                name="searchString"
+                value={searchString}
+                variant="outlined"
+                fullWidth
+                id="name"
+                onChange={event => {
+                  setSearchString(event.target.value);
+                }}
+              />
+            </Grid>
             <Grid item container>
               <FormLabel className={classes.formLabel}>Categories</FormLabel>
               <Select
@@ -195,43 +241,53 @@ function StakeholderSearch(props) {
                   <FormControlLabel
                     value="my"
                     control={<Radio />}
-                    label={`My Location (${latitude}, ${longitude})`}
+                    style={{ alignItems: "flex-start" }}
+                    label={
+                      <div>
+                        <Typography>My Location: </Typography>
+                        <Typography>{`(${latitude}, ${longitude})`}</Typography>
+                      </div>
+                    }
                   />
                   <FormControlLabel
-                    value="other"
+                    value="custom"
                     control={<Radio />}
-                    label={`Custom Location (${selectedLatitude}, ${selectedLongitude}) ${selectedLocationName}`}
-                  ></FormControlLabel>
-                  <LocationAutocomplete fullWidth setLocation={setLocation} />
+                    style={{ alignItems: "flex-start" }}
+                    label={
+                      <div>
+                        <hr />
+                        <Typography>{`Custom Location:`} </Typography>
+                        {customLocationName ? (
+                          <Typography>{customLocationName}</Typography>
+                        ) : null}
+                        {customLatitude ? (
+                          <Typography>{`(${customLatitude.toFixed(
+                            6
+                          )}, ${customLongitude.toFixed(6)})`}</Typography>
+                        ) : null}
+
+                        <LocationAutocomplete
+                          fullWidth
+                          setLocation={setLocation}
+                        />
+                      </div>
+                    }
+                  />
                 </RadioGroup>
               ) : (
                 <div>
-                  <LocationAutocomplete />
-                  {selectedLatitude ? (
-                    <Grid container direction="column">
-                      <Typography>Selected Location</Typography>
-                      <div>longitude: {selectedLongitude}</div>
-                      <div>latitude: {selectedLatitude}</div>
-                    </Grid>
+                  {customLocationName ? (
+                    <Typography>{customLocationName}</Typography>
                   ) : null}
+                  {customLatitude ? (
+                    <Typography>{`(${customLatitude.toFixed(
+                      6
+                    )}, ${customLongitude.toFixed(6)})`}</Typography>
+                  ) : null}
+
+                  <LocationAutocomplete fullWidth setLocation={setLocation} />
                 </div>
               )}
-            </Grid>
-          </Grid>
-          <Grid item container>
-            <Grid item container>
-              <FormLabel className={classes.formLabel}>Name</FormLabel>
-              <TextField
-                autoComplete="fname"
-                name="searchString"
-                value={searchString}
-                variant="outlined"
-                fullWidth
-                id="name"
-                onChange={event => {
-                  setSearchString(event.target.value);
-                }}
-              />
             </Grid>
           </Grid>
         </Grid>

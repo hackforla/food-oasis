@@ -1,91 +1,125 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import {
+  Grid,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Select,
+  TextField
+} from "@material-ui/core";
+import { CancelIconButton } from "./Buttons";
 
-const useStyles = makeStyles((theme) => ({
-	formControl: {
-		margin: theme.spacing(1),
-		minWidth: 50,
-		maxWidth: 200
-	}
+const useStyles = makeStyles(theme => ({
+  row: {
+    margin: theme.spacing(1)
+  },
+  formControl: {
+    // margin: theme.spacing(1),
+    // minWidth: 50,
+    // maxWidth: 200
+  }
 }));
 
 const days = [
-	{ label: 'Sunday', value: 'Sun' },
-	{ label: 'Monday', value: 'Mon' },
-	{ label: 'Tuesday', value: 'Tue' },
-	{ label: 'Wednesday', value: 'Wed' },
-	{ label: 'Thursday', value: 'Thu' },
-	{ label: 'Friday', value: 'Fri' },
-	{ label: 'Saturday', value: 'Sat' }
+  { label: "(Select)", value: "" },
+  { label: "Sun", value: "Sun" },
+  { label: "Mon", value: "Mon" },
+  { label: "Tue", value: "Tue" },
+  { label: "Wed", value: "Wed" },
+  { label: "Thu", value: "Thu" },
+  { label: "Fri", value: "Fri" },
+  { label: "Sat", value: "Sat" }
 ];
 
 const intervals = [
-	{ label: 'Every', value: 0 },
-	{ label: 'First', value: 1 },
-	{ label: 'Second', value: 2 },
-	{ label: 'Third', value: 3 },
-	{ label: 'Fourth', value: 4 },
-	{ label: 'Last', value: -1}
-]
+  { label: "Every", value: 0 },
+  { label: "First", value: 1 },
+  { label: "Second", value: 2 },
+  { label: "Third", value: 3 },
+  { label: "Fourth", value: 4 },
+  { label: "Last", value: -1 }
+];
 
 function OpenTimeInput(props) {
-	const classes = useStyles();
-	const { values, stateChange, removeInput, index} = props
+  const classes = useStyles();
+  const { values, stateChange, removeInput, index } = props;
 
-	return (
-		<React.Fragment>
-      <FormControl className={classes.formControl}>
-				<InputLabel>Interval</InputLabel>
-				<Select
-					labelId='open-days-select-id'
-					id='open-days-select'
-					variant="outlined"
-					onChange={(e) => stateChange(e.target.value, 'weekOfMonth')}
-					value={values.weekOfMonth}
-				>
-					{intervals.map((day) => (
-						<MenuItem key={day.value} value={day.value}>
-							{day.label}
-						</MenuItem>
-					))}
-				</Select>
-			</FormControl>
-			<FormControl className={classes.formControl}>
-				<InputLabel>Days</InputLabel>
-				<Select
-					labelId='open-days-select-id'
-					id='open-days-select'
-					variant="outlined"
-					onChange={(e) => stateChange(e.target.value, 'dayOfWeek')}
-					value={values.dayOfWeek}
-				>
-					{days.map((day) => (
-						<MenuItem key={day.value} label={day.label} value={day.value}>
-							{day.label}
-						</MenuItem>
-					))}
-				</Select>
-			</FormControl>
-			<TextField
-				onChange={(e) => stateChange(e.target.value, 'open')}
-				variant="outlined"
-				label="Opening Time"
-				value={values.open}
-			/>
-			<TextField
-				onChange={(e) => stateChange(e.target.value, 'close')}
-				variant="outlined"
-				label="Closing Time"
-				value={values.close}
-			/>
-			<button onClick={()=> removeInput(index)}>Remove</button>
-		</React.Fragment>
-	);
+  return (
+    <Grid container spacing={1} className={classes.row}>
+      <Grid item xs={12} sm={3}>
+        <FormControl
+          variant="outlined"
+          fullWidth
+          className={classes.formControl}
+        >
+          <InputLabel>Interval</InputLabel>
+          <Select
+            labelId="open-days-select-id"
+            id="open-days-select"
+            labelWidth={75}
+            onChange={e => stateChange(e.target.value, "weekOfMonth")}
+            value={values.weekOfMonth}
+          >
+            {intervals.map(day => (
+              <MenuItem key={day.value} value={day.value}>
+                {day.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Grid>
+      <Grid item xs={12} sm={2}>
+        <FormControl
+          variant="outlined"
+          fullWidth
+          className={classes.formControl}
+        >
+          <InputLabel>Days</InputLabel>
+          <Select
+            labelId="open-days-select-id"
+            id="open-days-select"
+            variant="outlined"
+            labelWidth={75}
+            onChange={e => stateChange(e.target.value, "dayOfWeek")}
+            value={values.dayOfWeek}
+          >
+            {days.map(day => (
+              <MenuItem key={day.value} label={day.label} value={day.value}>
+                {day.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Grid>
+      <Grid item xs={12} sm={3}>
+        <TextField
+          onChange={e => stateChange(e.target.value, "open")}
+          variant="outlined"
+          fullWidth
+          label="Opening Time"
+          value={values.open}
+        />
+      </Grid>
+      <Grid
+        item
+        xs={10}
+        sm={3}
+        styles={{ display: "flex", flexDirection: "column" }}
+      >
+        <TextField
+          onChange={e => stateChange(e.target.value, "close")}
+          variant="outlined"
+          fullWidth
+          label="Closing Time"
+          value={values.close}
+        />
+      </Grid>
+      <Grid item xs={2} sm={1}>
+        <CancelIconButton onClick={() => removeInput(index)} />
+      </Grid>
+    </Grid>
+  );
 }
 
 export default OpenTimeInput;

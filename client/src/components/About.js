@@ -17,7 +17,7 @@ const About = () => {
       <p>{t("p2")}</p>
       <h2>{t("support")}</h2>
       <p>{t("support-p")}</p>
-      <Button>{t("donate")}</Button>
+      <Button variant="outlined">{t("donate")}</Button>
       <h2>{t("use")}</h2>
 
       <Grid container justify="space-between" spacing={4}>

@@ -1,25 +1,26 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Card, CardContent, Grid } from "@material-ui/core";
-import { List, ListItem } from "@material-ui/core";
-import EditButton from "../components/EditButton";
+import { List, ListItem, Typography } from "@material-ui/core";
+import { EditButton } from "../components/Buttons";
 import SwitchViewsButton from "./SwitchViewsButton";
 
 const useStyles = makeStyles(theme => ({
   card: {
-    margin: "0px",
-  },
+    margin: "0px"
+  }
 }));
 
 function StakeholderCriteria({
   selectedCategories,
   latitude,
   longitude,
+  selectedLocationName,
   selectedDistance,
   searchString,
   isMapView,
   switchResultsView,
-  openSearchPanel,
+  openSearchPanel
 }) {
   const classes = useStyles();
   if (!selectedCategories) return null;
@@ -44,13 +45,30 @@ function StakeholderCriteria({
           <Grid item>
             <List dense={true}>
               <ListItem>
-                {selectedCategories.map(cat => cat.name).join(", ")}
+                <Typography>
+                  {selectedCategories.map(cat => cat.name).join(", ")}
+                </Typography>
               </ListItem>
-              <ListItem>{` Within  ${selectedDistance} mi of (${longitude}, ${latitude})`}</ListItem>
               <ListItem>
-                {searchString
-                  ? ` Containing "${searchString}" in the name`
-                  : null}
+                <Typography>
+                  <span>
+                    {selectedDistance > 0
+                      ? ` Within  ${selectedDistance} mi of `
+                      : ` By distance from `}
+                  </span>
+                  <span>
+                    {selectedLocationName
+                      ? selectedLocationName
+                      : `(${longitude}, ${latitude})`}
+                  </span>
+                </Typography>
+              </ListItem>
+              <ListItem>
+                <Typography>
+                  {searchString
+                    ? ` Containing "${searchString}" in the name`
+                    : null}
+                </Typography>
               </ListItem>
             </List>
           </Grid>

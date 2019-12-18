@@ -10,10 +10,10 @@ import Map from "./components/Map";
 import StakeholdersContainer from "./components/StakeholdersContainer";
 import StakeholderEdit from "./components/StakeholderEdit";
 import Donate from "./components/Donate";
-import News from "./components/News";
+// import News from "./components/News";
 import Resources from "./components/Resources";
 import About from "./components/About";
-import Team from "./components/Team";
+// import Team from "./components/Team";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import ForgotPassword from "./components/ForgotPassword";
@@ -21,7 +21,9 @@ import ResetPassword from "./components/ResetPassword";
 import Footer from "./components/Footer";
 import ConfirmEmail from "./components/ConfirmEmail";
 import Faq from "./components/Faq";
-import Organizations from "./components/Organizations";
+import FaqEdit from "./components/FaqEdit";
+import FaqAdd from "./components/FaqAdd";
+// import Organizations from "./components/Organizations";
 
 const styles = {
   app: {
@@ -43,6 +45,7 @@ const styles = {
 
 function App() {
   const [user, setUser] = useState(null);
+  const [userCoordinates, setUserCoordinates] = useState({});
 
   useEffect(() => {
     const storedJson = localStorage.getItem("user");
@@ -66,6 +69,35 @@ function App() {
     }
     setUser(user);
   };
+
+  const fetchLocation = () => {
+    let userCoordinates = { latitude: null, longitude: null };
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          if (position) {
+            const userCoordinates = {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude
+            };
+            setUserCoordinates(userCoordinates);
+          }
+        },
+        error => {
+          console.log(`Getting browser location failed: ${error.message}`);
+        }
+      );
+    } else {
+      // If browser location permission is denied, the request is
+      // "successful", but the result is null coordinates.
+      console.log(`Enable location permission to use location-based features.`);
+    }
+    return userCoordinates;
+  };
+
+  useEffect(() => {
+    fetchLocation();
+  }, []);
 
   return (
     <UserContext.Provider value={user}>
@@ -92,24 +124,30 @@ function App() {
               <Route path="/donate">
                 <Donate />
               </Route>
-              <Route path="/news">
+              {/* <Route path="/news">
                 <News />
-              </Route>
+              </Route> */}
               <Route path="/resources">
                 <Resources />
               </Route>
               <Route path="/about">
                 <About />
               </Route>
-              <Route path="/team">
+              {/* <Route path="/team">
                 <Team />
-              </Route>
-              <Route path="/faqs">
+              </Route> */}
+              <Route exact path="/faqs">
                 <Faq />
               </Route>
-              <Route path="/organizations">
-                <Organizations />
+              <Route path="/faqs/add">
+                <FaqAdd />
               </Route>
+              <Route path="/faqs/:identifier?">
+                <FaqEdit setToast={setToast} />
+              </Route>
+              {/* <Route path="/organizations">
+                <Organizations />
+              </Route> */}
               <Route path="/register">
                 <Register setToast={setToast} />
               </Route>
@@ -126,7 +164,7 @@ function App() {
                 <ResetPassword setToast={setToast} />
               </Route>
             </Switch>
-            <Footer />
+            <Footer userCoordinates={userCoordinates} />
             <Toast toast={toast} setToast={setToast} />
           </div>
         </Router>

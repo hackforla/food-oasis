@@ -4,13 +4,18 @@ const theme = createMuiTheme({
   palette: {
     primary: {
       // green
-      main: "rgba(144, 194, 70)",
-      contrastText: "#ffffff"
+      //main: "rgba(144, 194, 70)",
+      main: "#FAEBD7",
+      contrastText: "#000000"
     },
     secondary: {
       // orange
       main: "rgb(249, 192, 88)",
-      contrastText: "#ffcc00"
+      contrastText: "#000000"
+    },
+    error: {
+      main: "rgb(249, 64, 64)",
+      contrastText: "#000000"
     },
     text: {
       primary: "#313233"

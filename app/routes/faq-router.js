@@ -4,7 +4,7 @@ const faqController = require("../controllers/faq-controller");
 router.get("/", faqController.getAll);
 router.get("/:language", faqController.getAllByLanguage);
 router.get("/faq/:id", faqController.getById);
-router.get("/identifier", faqController.getByIdentifier);
+router.get("/identifier/:identifier", faqController.getByIdentifier);
 router.post("/", faqController.post);
 router.put("/faq/:id", faqController.put);
 router.delete("/", faqController.remove);

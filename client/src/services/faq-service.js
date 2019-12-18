@@ -19,8 +19,8 @@ export const getById = async id => {
 };
 
 // { identifier: "" }
-export const getByIdentifier = async id => {
-  const response = await axios.get(`${baseUrl}/identifier`);
+export const getByIdentifier = async ({ identifier }) => {
+  const response = await axios.get(`${baseUrl}/identifier/${identifier}`);
   return response.data;
 };
 
@@ -31,8 +31,8 @@ export const add = async model => {
 };
 
 // model = { question: "", answer: "", language: "" }
-export const update = async (id, model) => {
-  const response = await axios.put(`${baseUrl}/faq/${id}`, model);
+export const update = async model => {
+  const response = await axios.put(`${baseUrl}/faq/${model.id}`, model);
   return response.data;
 };
 

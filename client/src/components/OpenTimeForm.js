@@ -16,13 +16,14 @@ function OpenTimeForm(props) {
 	// uses the handleChange from Formik to change form
 			handleChange({target: {value: inputs, name: 'hours'}});
 		},
-		[ inputs, handleChange ]
+		[ inputs ]
 	);
-
+		console.log ('original', originalData)
+	
 	useEffect(
 		() => {
-			if (originalData.length) {
-			setInputs(originalData)
+			if (originalHours.length) {
+				setInputs(originalHours)
 			}
 		}, [originalData]
 	)

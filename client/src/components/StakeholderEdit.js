@@ -420,8 +420,9 @@ const StakeholderEdit = props => {
                 </Grid>
                 <Grid item xs={12}>
                   <OpenTimeForm
+                    value={values.hours}
                     handleChange={handleChange}
-                    originalData={originalData.hours}
+                    originalHours={originalData.hours.slice()}
                   />
                 </Grid>
                 <Grid item sm={6} xs={12}>

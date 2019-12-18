@@ -7,10 +7,10 @@ function OpenTimeForm(props) {
   const { originalHours } = props;
   const [hours, setHours] = useState([...originalHours]);
 
-  useEffect(() => {
-    // uses the handleChange from Formik to change form
-    props.handleChange({ target: { value: hours, name: "hours" } });
-  }, [hours, props.handleChange]);
+  // useEffect(() => {
+  //   // uses the handleChange from Formik to change form
+  //   props.handleChange({ target: { value: hours, name: "hours" } });
+  // }, [hours, props.handleChange]);
 
   useEffect(() => {
     setHours(originalHours);

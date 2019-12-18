@@ -4,16 +4,11 @@ import { AddButton } from "./Buttons";
 import { Card, CardContent, Typography } from "@material-ui/core";
 
 function OpenTimeForm(props) {
-  const { originalHours } = props;
-  const [hours, setHours] = useState([...originalHours]);
-
-  // useEffect(() => {
-  //   // uses the handleChange from Formik to change form
-  //   props.handleChange({ target: { value: hours, name: "hours" } });
-  // }, [hours, props.handleChange]);
+  const { originalHours, handleChange } = props;
+  const [hours, setHours] = useState([]);
 
   useEffect(() => {
-    setHours(originalHours);
+    setHours([...originalHours]);
   }, [originalHours]);
 
   const addHours = () => {
@@ -21,13 +16,18 @@ function OpenTimeForm(props) {
       ...hours,
       { weekOfMonth: 0, dayOfWeek: "", open: "", close: "" }
     ];
-    setHours(newList);
+    handleInputs(newList);
   };
 
   const removeHours = index => {
     let newList = hours.slice().filter((val, i) => i !== index);
-    setHours(newList);
-  };
+    handleInputs(newList);
+	};
+	
+  const handleInputs = (inputs) => {
+     setHours(inputs);
+     handleChange({ target: { value: inputs, name: "hours" } });
+  }
 
   const handleTime = number => {
     //formats time input into HH:MM:SS format
@@ -57,7 +57,7 @@ function OpenTimeForm(props) {
       } else {
         newList[i][name] = value;
       }
-      setHours(newList);
+      handleInputs(newList);
     };
 
     return (

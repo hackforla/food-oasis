@@ -56,6 +56,8 @@ const FaqEdit = ({ match }) => {
     fetchFaq();
   }, [addedFaq.length, faqIdentifier, i18n.languages]);
 
+  console.log(i18n.languages)
+
   return (
     <Container maxWidth="md">
       <h2>Editing Frequently Asked Questions</h2>

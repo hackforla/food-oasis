@@ -13,7 +13,7 @@ const useStyles = makeStyles({
     }
   },
   hide: {
-    display: "hidden"
+    display: "none"
   }
 });
 
@@ -30,9 +30,9 @@ const FaqItem = ({ faq, reorder, reorderFaqs, faqLength }) => {
       <h6>Identifier: {faq.identifier}</h6>
       {reorder ? (
         <>
-          <MoveUpButton className={faq.order !== 0 ? classes.hide : ""} />
+          <MoveUpButton className={faq.order === 0 ? classes.hide : ""} />
           <MoveDownButton
-            className={faq.order !== faqLength - 1 ? classes.hide : ""}
+            className={faq.order === faqLength - 1 ? classes.hide : ""}
           />
         </>
       ) : (

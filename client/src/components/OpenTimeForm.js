@@ -7,7 +7,6 @@ function OpenTimeForm(props) {
   const { originalHours, handleChange } = props;
   const [hours, setHours] = useState([]);
 
-
   useEffect(() => {
     setHours([...originalHours]);
   }, [originalHours]);
@@ -25,11 +24,10 @@ function OpenTimeForm(props) {
     handleInputs(newList);
 	};
 	
-	const handleInputs = (inputs) => {
-		setHours(inputs);
-		handleChange({ target: { value: inputs, name: "hours" } });
-
-	}
+  const handleInputs = (inputs) => {
+     setHours(inputs);
+     handleChange({ target: { value: inputs, name: "hours" } });
+  }
 
   const handleTime = number => {
     //formats time input into HH:MM:SS format

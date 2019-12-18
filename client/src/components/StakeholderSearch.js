@@ -37,6 +37,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const closeTo = (lat1, lon1, lat2, lon2) => {
+  return Math.abs(lat1 - lat2) + Math.abs(lon1 - lon2) < 0.01;
+};
+
 function StakeholderSearch(props) {
   const [selectedCategories, setSelectedCategories] = useState(
     props.selectedCategories
@@ -64,7 +68,18 @@ function StakeholderSearch(props) {
   const [selectedDistance, setSelectedDistance] = useState(
     props.selectedDistance
   );
-  const [useMyLocation, setUseMyLocation] = useState("other");
+  const [useMyLocation, setUseMyLocation] = useState(
+    latitude
+      ? closeTo(
+          props.selectedLatitude,
+          props.selectedLongitude,
+          props.latitude,
+          props.longitude
+        )
+        ? "my"
+        : "custom"
+      : "custom"
+  );
 
   const classes = useStyles();
 
@@ -86,7 +101,10 @@ function StakeholderSearch(props) {
     setCustomLatitude(location.location.y);
     setCustomLongitude(location.location.x);
     setCustomLocationName(location.address);
-    setUseMyLocation(true);
+    setSelectedLatitude(location.location.y);
+    setSelectedLongitude(location.location.x);
+    setSelectedLocationName(location.address);
+    setUseMyLocation("custom");
   };
 
   return (
@@ -223,35 +241,51 @@ function StakeholderSearch(props) {
                   <FormControlLabel
                     value="my"
                     control={<Radio />}
-                    label={`My Location (${latitude}, ${longitude})`}
-                  />
-                  <FormControlLabel
-                    value="other"
-                    control={<Radio />}
+                    style={{ alignItems: "flex-start" }}
                     label={
                       <div>
-                        <div>
-                          {`Custom Location (${customLatitude}, ${customLongitude})`}
-                        </div>
-                        <div>{customLocationName}</div>
+                        <Typography>My Location: </Typography>
+                        <Typography>{`(${latitude}, ${longitude})`}</Typography>
+                      </div>
+                    }
+                  />
+                  <FormControlLabel
+                    value="custom"
+                    control={<Radio />}
+                    style={{ alignItems: "flex-start" }}
+                    label={
+                      <div>
+                        <hr />
+                        <Typography>{`Custom Location:`} </Typography>
+                        {customLocationName ? (
+                          <Typography>{customLocationName}</Typography>
+                        ) : null}
+                        {customLatitude ? (
+                          <Typography>{`(${customLatitude.toFixed(
+                            6
+                          )}, ${customLongitude.toFixed(6)})`}</Typography>
+                        ) : null}
+
                         <LocationAutocomplete
                           fullWidth
                           setLocation={setLocation}
                         />
                       </div>
                     }
-                  ></FormControlLabel>
+                  />
                 </RadioGroup>
               ) : (
                 <div>
-                  <LocationAutocomplete />
-                  {selectedLatitude ? (
-                    <Grid container direction="column">
-                      <Typography>Selected Location</Typography>
-                      <div>longitude: {selectedLongitude}</div>
-                      <div>latitude: {selectedLatitude}</div>
-                    </Grid>
+                  {customLocationName ? (
+                    <Typography>{customLocationName}</Typography>
                   ) : null}
+                  {customLatitude ? (
+                    <Typography>{`(${customLatitude.toFixed(
+                      6
+                    )}, ${customLongitude.toFixed(6)})`}</Typography>
+                  ) : null}
+
+                  <LocationAutocomplete fullWidth setLocation={setLocation} />
                 </div>
               )}
             </Grid>

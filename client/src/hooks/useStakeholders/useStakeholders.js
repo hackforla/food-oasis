@@ -142,6 +142,7 @@ export function useStakeholders(history) {
     selectedDistance = params.radius || selectedDistance;
     selectedLatitude = Number.parseFloat(params.lat) || selectedLatitude;
     selectedLongitude = Number.parseFloat(params.lon) || selectedLongitude;
+    selectedLocationName = params.placeName ? decodeURI(params.placeName) : "";
     if (params.categoryIds) {
       selectedCategoryIds = params.categoryIds.split(",");
     }

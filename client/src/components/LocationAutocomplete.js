@@ -6,7 +6,6 @@ let latestSearchString = "";
 
 const LocationAutocomplete = props => {
   const [searchString, setSearchString] = useState("");
-  //const [selectedLocation, setSelectedLocation] = useState({});
   const [geocodeResults, setGeocodeResults] = useState([]);
 
   const geocode = async evt => {
@@ -27,7 +26,6 @@ const LocationAutocomplete = props => {
   };
 
   const selectLocation = location => {
-    //setSelectedLocation(location);
     setGeocodeResults([]);
     props.setLocation(location);
   };
@@ -54,12 +52,15 @@ const LocationAutocomplete = props => {
             key={index}
             onClick={() => selectLocation(result)}
           >
-            <Typography>{`(${result.location.y}, ${result.location.x})`}</Typography>
+            <Typography>{`(${result.location.y}, ${
+              result.location.x
+            })`}</Typography>
             <Typography>{`${result.attributes.PlaceName}`}</Typography>
             <Typography>{`${result.attributes.StAddr}`}</Typography>
             <Grid container justify="space-between">
-              <Typography>{`${result.attributes.City} `}</Typography>
-
+              <Typography>
+                {`${result.attributes.City}, ${result.attributes.RegionAbbr} `}
+              </Typography>
               <Typography>{`${result.attributes.Addr_type}`}</Typography>
             </Grid>
             {/* <pre>{JSON.stringify(result, null, 2)}</pre> */}

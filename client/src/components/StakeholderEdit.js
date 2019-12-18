@@ -10,6 +10,7 @@ import {
   CssBaseline,
   FormControl,
   FormControlLabel,
+  FormHelperText,
   Grid,
   Input,
   InputLabel,
@@ -63,7 +64,11 @@ const validationSchema = Yup.object().shape({
     .required("Longitude is required")
     .min(-180)
     .max(180),
-  email: Yup.string().email("Invalid email address format")
+  email: Yup.string().email("Invalid email address format"),
+  selectedCategoryIds: Yup.array().min(
+    1,
+    "You must select at least one category"
+  )
 });
 
 const StakeholderEdit = props => {
@@ -374,14 +379,8 @@ const StakeholderEdit = props => {
                     error={touched.longitude && Boolean(errors.longitude)}
                   />
                 </Grid>
-                <Grid
-                  item
-                  xs={12}
-                  md={6}
-                  fullWidth
-                  style={{ backgroundColor: "#FFF" }}
-                >
-                  <Grid container justifyContent="space-between">
+                <Grid item xs={12} md={6} style={{ backgroundColor: "#FFF" }}>
+                  <Grid container justifycontent={"space-between"}>
                     <Grid item>
                       <SearchButton
                         onClick={() => {
@@ -412,9 +411,15 @@ const StakeholderEdit = props => {
                         >
                           <Grid container>
                             <Grid item xs={10}>
-                              <Typography>{`(${result.location.y}, ${result.location.x})`}</Typography>
-                              <Typography>{`${result.attributes.Match_addr}`}</Typography>
-                              <Typography>{`${result.attributes.Addr_type}`}</Typography>
+                              <Typography>{`(${result.location.y}, ${
+                                result.location.x
+                              })`}</Typography>
+                              <Typography>{`${
+                                result.attributes.Match_addr
+                              }`}</Typography>
+                              <Typography>{`${
+                                result.attributes.Addr_type
+                              }`}</Typography>
                             </Grid>
                             <Grid item xs={2}>
                               <VerifyButton
@@ -437,7 +442,7 @@ const StakeholderEdit = props => {
                 <Grid item xs={12}>
                   <OpenTimeForm
                     handleChange={handleChange}
-                    originalData={originalData.hours}
+                    originalHours={originalData.hours}
                   />
                 </Grid>
                 <Grid item sm={6} xs={12}>
@@ -663,6 +668,9 @@ const StakeholderEdit = props => {
                       onChange={handleChange}
                       input={<Input />}
                       renderValue={selectedCategoryIds => {
+                        if (!categories) {
+                          return "Loading categories...";
+                        }
                         if (selectedCategoryIds.length === 0) {
                           return "(Select Categories)";
                         }
@@ -693,6 +701,11 @@ const StakeholderEdit = props => {
                         </MenuItem>
                       ))}
                     </Select>
+                    <FormHelperText>
+                      {touched.selectedCategoryIds
+                        ? errors.selectedCategoryIds
+                        : ""}
+                    </FormHelperText>
                   </FormControl>
                 </Grid>
                 <Grid

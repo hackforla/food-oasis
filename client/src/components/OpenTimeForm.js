@@ -7,16 +7,12 @@ function OpenTimeForm(props) {
   const { value, onChange } = props;
   const [hours, setHours] = useState(props.value);
 
-  // useEffect(() => {
-  //   // uses the handleChange from Formik to change form
-  //   props.handleChange({ target: { value: hours, name: "hours" } });
-  // }, [hours, props.handleChange]);
-
   useEffect(() => {
     setHours(value);
   }, [value]);
 
   const handleChange = newHours => {
+    setHours(newHours);
     onChange({ target: { value: newHours, name: "hours" } });
   };
 
@@ -25,13 +21,11 @@ function OpenTimeForm(props) {
       ...hours,
       { weekOfMonth: 0, dayOfWeek: "", open: "", close: "" }
     ];
-    setHours(newHours);
     handleChange(newHours);
   };
 
   const removeHours = (e, index) => {
     let newHours = hours.filter((val, i) => i !== index);
-    setHours(newHours);
     handleChange(newHours);
   };
 
@@ -44,7 +38,6 @@ function OpenTimeForm(props) {
     } else {
       newHours[rowIndex][name] = value;
     }
-    setHours(newHours);
     handleChange(newHours);
   };
 

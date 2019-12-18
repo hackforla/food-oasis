@@ -3,10 +3,9 @@ import { createMuiTheme } from "@material-ui/core/styles";
 const theme = createMuiTheme({
   palette: {
     primary: {
-      // green
-      //main: "rgba(144, 194, 70)",
-      main: "#FAEBD7",
-      contrastText: "#000000"
+      // purple
+      main: "#772f7a",
+      contrastText: "#ffffff"
     },
     secondary: {
       // orange
@@ -32,6 +31,12 @@ const theme = createMuiTheme({
       }
     },
     MuiLink: {
+      root: {
+        color: "#1976d2",
+        "&:visited": {
+          color: "#772f7a"
+        }
+      },
       underlineHover: {
         textDecoration: "none",
         "&:hover": {

@@ -7,10 +7,6 @@ function OpenTimeForm(props) {
   const { originalHours, handleChange } = props;
   const [hours, setHours] = useState([]);
 
-  useEffect(() => {
-    // uses the handleChange from Formik to change form
-    handleChange({ target: { value: hours, name: "hours" } });
-  }, [hours, handleChange]);
 
   useEffect(() => {
     setHours([...originalHours]);
@@ -21,13 +17,19 @@ function OpenTimeForm(props) {
       ...hours,
       { weekOfMonth: 0, dayOfWeek: "", open: "", close: "" }
     ];
-    setHours(newList);
+    handleInputs(newList);
   };
 
   const removeHours = index => {
     let newList = hours.slice().filter((val, i) => i !== index);
-    setHours(newList);
-  };
+    handleInputs(newList);
+	};
+	
+	const handleInputs = (inputs) => {
+		setHours(inputs);
+		handleChange({ target: { value: inputs, name: "hours" } });
+
+	}
 
   const handleTime = number => {
     //formats time input into HH:MM:SS format
@@ -57,7 +59,7 @@ function OpenTimeForm(props) {
       } else {
         newList[i][name] = value;
       }
-      setHours(newList);
+      handleInputs(newList);
     };
 
     return (

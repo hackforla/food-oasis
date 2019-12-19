@@ -10,11 +10,13 @@ const selectAll = () => {
   });
 };
 
+// Identifier Table in DB follows `#:identifier` scheme, for both identifying and also ordering
 const selectAllByLanguage = language => {
   const sql = `
     select id, question, answer, language, identifier
     from faq
     where language = $1
+    order by identifier desc
   `;
   return pool.query(sql, [language]).then(res => {
     return res.rows;
@@ -42,7 +44,6 @@ Do 2 requests to POST /api/faqs/
 */
 
 const insert = model => {
-  console.log(model);
   const { question, answer, language, identifier } = model;
   const sql = `insert into faq (question, answer, language, identifier) values ($1, $2, $3, $4) returning id`;
   return pool.query(sql, [question, answer, language, identifier]).then(res => {

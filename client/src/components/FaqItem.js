@@ -19,6 +19,16 @@ const useStyles = makeStyles({
 
 const FaqItem = ({ faq, reorder, reorderFaqs, faqLength }) => {
   const classes = useStyles();
+  // Identifier Table in DB follows `#:identifier` scheme, for both identifying and also ordering
+  const identifier = faq.identifier.includes(":")
+    ? faq.identifier.slice(
+        faq.identifier.indexOf(":") + 1,
+        faq.identifier.length
+      )
+    : faq.identifier;
+  const order =
+    faq.identifier.includes(":") &&
+    faq.identifier.slice(0, faq.identifier.indexOf(":"));
 
   return (
     // <UserContext.Consumer>
@@ -27,12 +37,16 @@ const FaqItem = ({ faq, reorder, reorderFaqs, faqLength }) => {
     <li className={reorder ? classes.edit : ""}>
       <h4>{faq.question}</h4>
       <div dangerouslySetInnerHTML={{ __html: faq.answer }} />
-      <h6>Identifier: {faq.identifier}</h6>
+      <h6>Identifier: {identifier}</h6>
       {reorder ? (
         <>
-          <MoveUpButton className={faq.order === 0 ? classes.hide : ""} />
+          <MoveUpButton
+            className={faq.order === 0 ? classes.hide : ""}
+            onClick={() => reorderFaqs("up", order)}
+          />
           <MoveDownButton
             className={faq.order === faqLength - 1 ? classes.hide : ""}
+            onClick={() => reorderFaqs("down", order)}
           />
         </>
       ) : (

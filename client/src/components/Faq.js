@@ -27,7 +27,15 @@ const Faq = () => {
           language: twoLetterLanguage
         });
         if (fetchedFaqs.length > 0) {
-          setFaqs(fetchedFaqs);
+          let sorted = fetchedFaqs;
+          if (fetchedFaqs[0].identifier.includes(":")) {
+            sorted = fetchedFaqs.sort(
+              (a, b) =>
+                a.identifier.slice(0, a.identifier.indexOf(":")) -
+                b.identifier.slice(0, b.identifier.indexOf(":"))
+            );
+          }
+          setFaqs(sorted);
           localStorage.setItem("faqs", JSON.stringify(fetchedFaqs));
         } else {
           setMessage("There are currently no FAQs.");
@@ -45,17 +53,43 @@ const Faq = () => {
   };
 
   // New plan - use buttons to reorder FAQs, up arrow and down arrow
-  // Assuming order starts at 0
   const reorderFaqs = (direction, order) => {
-    let currentFaqs = faqs;
-    if (direction === "up" && order !== 0) {
-      [faqs[order], faqs[order - 1]] = [faqs[order - 1], faqs[order]];
-    } else if (direction === "down" && order !== faqs.length - 1) {
-      [faqs[order], faqs[order + 1]] = [faqs[order + 1], faqs[order]];
+    let currentFaqs = [...faqs];
+    let atFirstIndex;
+    let atSecondIndex;
+    let firstIdentifier;
+    let secondIdentifier;
+    // Assuming order starts at 1
+    if (direction === "up" && order !== 1) {
+      firstIdentifier = currentFaqs[order - 1].identifier;
+      secondIdentifier = currentFaqs[order - 2].identifier;
+      atFirstIndex = {
+        ...currentFaqs[order - 1],
+        identifier:
+          Number(order) -
+          1 +
+          firstIdentifier.slice(
+            firstIdentifier.indexOf(":"),
+            firstIdentifier.length
+          )
+      };
+      atSecondIndex = {
+        ...currentFaqs[order - 2],
+        identifier:
+          Number(order) +
+          secondIdentifier.slice(
+            secondIdentifier.indexOf(":"),
+            secondIdentifier.length
+          )
+      };
+      currentFaqs[order - 1] = atSecondIndex;
+      currentFaqs[order - 2] = atFirstIndex;
     } else {
-      return;
     }
 
+    console.log(atFirstIndex, atSecondIndex);
+    console.log(direction, order);
+    console.log(currentFaqs);
     setFaqs(currentFaqs);
   };
 

@@ -96,12 +96,14 @@ function OpenTimeInput(props) {
       </Grid>
       <Grid item xs={12} sm={3}>
         <TextField
+          type="time"
           name="open"
           onChange={onChange}
           variant="outlined"
           fullWidth
           label="Opening Time"
           value={values.open}
+          inputProps={{ step: 300 }}
         />
       </Grid>
       <Grid
@@ -112,6 +114,8 @@ function OpenTimeInput(props) {
       >
         <TextField
           name="close"
+          type="time"
+          inputProps={{ step: 300 }}
           onChange={onChange}
           variant="outlined"
           fullWidth

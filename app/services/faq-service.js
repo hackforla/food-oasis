@@ -57,15 +57,17 @@ ex. [{question: "", answer: "", language: "en"}, {question: "", answer: "", lang
 Do 2 requests to PUT /api/faqs/
 */
 const update = (id, model) => {
-  const { question, answer, language } = model;
+  const { question, answer, language, identifier } = model;
   const sql = `
     update faq
-    set question = $1, answer = $2, language = $3
+    set question = $1, answer = $2, language = $3, identifier = $4
     where id = $4 returning *
   `;
-  return pool.query(sql, [question, answer, language, id]).then(res => {
-    return res.rows[0];
-  });
+  return pool
+    .query(sql, [question, answer, language, identifier, id])
+    .then(res => {
+      return res.rows[0];
+    });
 };
 
 /*

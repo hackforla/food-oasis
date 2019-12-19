@@ -52,7 +52,7 @@ const Faq = () => {
     setReorder(r => !r);
   };
 
-  // New plan - use buttons to reorder FAQs, up arrow and down arrow
+  // When someone has time, refactor this to be more readable...
   const reorderFaqs = (direction, order) => {
     let currentFaqs = [...faqs];
     let atFirstIndex;
@@ -61,7 +61,9 @@ const Faq = () => {
     let secondIdentifier;
     // Assuming order starts at 1
     if (direction === "up" && order !== 1) {
+      // Position of current Faq
       firstIdentifier = currentFaqs[order - 1].identifier;
+      // Position of Faq we're swapping
       secondIdentifier = currentFaqs[order - 2].identifier;
       atFirstIndex = {
         ...currentFaqs[order - 1],
@@ -85,11 +87,36 @@ const Faq = () => {
       currentFaqs[order - 1] = atSecondIndex;
       currentFaqs[order - 2] = atFirstIndex;
     } else {
+      firstIdentifier = currentFaqs[order - 1].identifier;
+      // Position of Faq we're swapping
+      secondIdentifier = currentFaqs[order].identifier;
+      atFirstIndex = {
+        ...currentFaqs[order - 1],
+        identifier:
+          Number(order) +
+          1 +
+          firstIdentifier.slice(
+            firstIdentifier.indexOf(":"),
+            firstIdentifier.length
+          )
+      };
+      atSecondIndex = {
+        ...currentFaqs[order],
+        identifier:
+          Number(order) +
+          secondIdentifier.slice(
+            secondIdentifier.indexOf(":"),
+            secondIdentifier.length
+          )
+      };
+      currentFaqs[order - 1] = atSecondIndex;
+      currentFaqs[order] = atFirstIndex;
     }
 
+    // Something is wrong with the Database call
     console.log(atFirstIndex, atSecondIndex);
-    console.log(direction, order);
-    console.log(currentFaqs);
+    faqService.update(atFirstIndex);
+    faqService.update(atSecondIndex);
     setFaqs(currentFaqs);
   };
 

@@ -41,11 +41,11 @@ const FaqItem = ({ faq, reorder, reorderFaqs, faqLength }) => {
       {reorder ? (
         <>
           <MoveUpButton
-            className={faq.order === 0 ? classes.hide : ""}
+            className={order === 1 ? classes.hide : ""}
             onClick={() => reorderFaqs("up", order)}
           />
           <MoveDownButton
-            className={faq.order === faqLength - 1 ? classes.hide : ""}
+            className={order === faqLength ? classes.hide : ""}
             onClick={() => reorderFaqs("down", order)}
           />
         </>

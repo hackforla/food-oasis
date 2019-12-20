@@ -61,7 +61,7 @@ const update = (id, model) => {
   const sql = `
     update faq
     set question = $1, answer = $2, language = $3, identifier = $4
-    where id = $4 returning *
+    where id = $5 returning *
   `;
   return pool
     .query(sql, [question, answer, language, identifier, id])

@@ -12,6 +12,13 @@ const useStyles = makeStyles({
       margin: "0.5rem"
     }
   },
+  editBar: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-around",
+    backgroundColor: "rgb(249, 192, 88)",
+    height: '2.5rem'
+  },
   hide: {
     display: "none"
   }
@@ -31,36 +38,33 @@ const FaqItem = ({ faq, reorder, reorderFaqs, faqLength }) => {
     faq.identifier.slice(0, faq.identifier.indexOf(":"));
 
   return (
-    // <UserContext.Consumer>
-    //   {user =>
-    //     user && user.isAdmin ? (
     <li className={reorder ? classes.edit : ""}>
+      {/* <UserContext.Consumer>
+       {user =>
+         user && user.isAdmin ? ( */}
+      <div className={classes.editBar}>
+        <h4>Identifier: {identifier}</h4>
+        {reorder ? (
+          <>
+            <MoveUpButton
+              className={Number(order) === 1 ? classes.hide : ""}
+              onClick={() => reorderFaqs("up", order)}
+            />
+            <MoveDownButton
+              className={Number(order) === faqLength ? classes.hide : ""}
+              onClick={() => reorderFaqs("down", order)}
+            />
+          </>
+        ) : (
+          <EditButton label="Edit" href={`/faqs/${faq.identifier}`} />
+        )}
+      </div>
+      {/* )
+       }
+     </UserContext.Consumer> */}
       <h4>{faq.question}</h4>
       <div dangerouslySetInnerHTML={{ __html: faq.answer }} />
-      <h6>Identifier: {identifier}</h6>
-      {reorder ? (
-        <>
-          <MoveUpButton
-            className={order === 1 ? classes.hide : ""}
-            onClick={() => reorderFaqs("up", order)}
-          />
-          <MoveDownButton
-            className={order === faqLength ? classes.hide : ""}
-            onClick={() => reorderFaqs("down", order)}
-          />
-        </>
-      ) : (
-        <EditButton label="Edit" href={`/faqs/${faq.identifier}`} />
-      )}
     </li>
-    //     ) : (
-    //       <li>
-    //         <h4>{faq.question}</h4>
-    //         <div dangerouslySetInnerHTML={{ __html: faq.answer }} />
-    //       </li>
-    //     )
-    //   }
-    // </UserContext.Consumer>
   );
 };
 

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import * as faqService from "../services/faq-service";
 import FaqEditForm from "./FaqEditForm";
@@ -55,8 +54,6 @@ const FaqEdit = ({ match }) => {
     }
     fetchFaq();
   }, [addedFaq.length, faqIdentifier, i18n.languages]);
-
-  console.log(i18n.languages)
 
   return (
     <Container maxWidth="md">

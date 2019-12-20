@@ -113,10 +113,9 @@ const Faq = () => {
       currentFaqs[order] = atFirstIndex;
     }
 
-    // Something is wrong with the Database call
-    console.log(atFirstIndex, atSecondIndex);
-    faqService.update(atFirstIndex);
-    faqService.update(atSecondIndex);
+    faqService
+      .update(atFirstIndex)
+      .then(() => faqService.update(atSecondIndex));
     setFaqs(currentFaqs);
   };
 
@@ -126,24 +125,26 @@ const Faq = () => {
       {/* <UserContext.Consumer>
         {user =>
           user && user.isAdmin ? ( */}
-      <>
-        <AddButton label="Add New Faq" href="/faqs/add" />
-        <EditButton
-          label={
-            reorder ? "Click to Stop Reordering Faqs" : "Click to Reorder Faqs"
-          }
-          onClick={onReorderClick}
-          color={reorder ? "secondary" : "primary"}
-        />
-        <FaqList
-          faqs={faqs}
-          message={message}
-          reorder={reorder}
-          reorderFaqs={reorderFaqs}
-        />
-      </>
-      {/* ) : (
-            <FaqList faqs={faqs} message={message} reorder={reorder} />
+            <>
+              <AddButton label="Add New Faq" href="/faqs/add" />
+              <EditButton
+                label={
+                  reorder
+                    ? "Click to Stop Reordering Faqs"
+                    : "Click to Reorder Faqs"
+                }
+                onClick={onReorderClick}
+                color={reorder ? "secondary" : "primary"}
+              />
+              <FaqList
+                faqs={faqs}
+                message={message}
+                reorder={reorder}
+                reorderFaqs={reorderFaqs}
+              />
+            </>
+          {/* ) : (
+            <FaqList faqs={faqs} message={message} />
           )
         }
       </UserContext.Consumer> */}

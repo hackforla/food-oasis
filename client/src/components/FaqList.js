@@ -13,7 +13,7 @@ const useStyles = makeStyles({
 const FaqList = ({ faqs, message, reorder, reorderFaqs }) => {
   const classes = useStyles();
 
-  return faqs[0] ? (
+  return faqs.length ? (
     <ul className={reorder ? classes.edit : ""}>
       {faqs.map(faq => (
         <FaqItem

@@ -37,7 +37,10 @@ const FaqEditForm = ({ faq, notAdded }) => {
       faqService.add({
         ...faq,
         question,
-        answer
+        answer,
+        identifier: `${JSON.parse(localStorage.getItem("faqs")).length}:${
+          faq.identifier
+        }`
       });
     } else {
       faqService.update({

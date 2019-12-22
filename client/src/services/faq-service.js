@@ -9,6 +9,7 @@ export const getAll = async language => {
 
 // { language: "" }
 export const getAllByLanguage = async language => {
+  console.log(language)
   const response = await axios.get(baseUrl, { params: { language } });
   return response.data;
 };

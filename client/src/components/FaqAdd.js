@@ -3,14 +3,11 @@ import FaqEditForm from "./FaqEditForm";
 import { useTranslation } from "react-i18next";
 
 import Container from "@material-ui/core/Container";
-import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 
 const FaqAdd = () => {
   const { i18n } = useTranslation();
 
-  // Currently re-rendering twice because of where the props are located
-  // There has to be a better way than this
   const [identifier, setIdentifier] = useState("");
 
   const handleIdentifierChange = event => {

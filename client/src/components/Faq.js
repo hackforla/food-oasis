@@ -6,6 +6,7 @@ import { AddButton, EditButton } from "./Buttons";
 
 import FaqList from "./FaqList";
 import Container from "@material-ui/core/Container";
+import { Link } from "react-router-dom";
 
 const Faq = () => {
   const [faqs, setFaqs] = useState([]);
@@ -23,9 +24,11 @@ const Faq = () => {
     async function fetchFaqs() {
       try {
         let twoLetterLanguage = i18n.language.slice(0, 2);
-        const fetchedFaqs = await faqService.getAll({
+        console.log(twoLetterLanguage)
+        const fetchedFaqs = await faqService.getAllByLanguage({
           language: twoLetterLanguage
         });
+        console.log(fetchedFaqs)
         if (fetchedFaqs.length > 0) {
           let sorted = fetchedFaqs;
           if (fetchedFaqs[0].identifier.includes(":")) {
@@ -125,25 +128,25 @@ const Faq = () => {
       {/* <UserContext.Consumer>
         {user =>
           user && user.isAdmin ? ( */}
-            <>
-              <AddButton label="Add New Faq" href="/faqs/add" />
-              <EditButton
-                label={
-                  reorder
-                    ? "Click to Stop Reordering Faqs"
-                    : "Click to Reorder Faqs"
-                }
-                onClick={onReorderClick}
-                color={reorder ? "secondary" : "primary"}
-              />
-              <FaqList
-                faqs={faqs}
-                message={message}
-                reorder={reorder}
-                reorderFaqs={reorderFaqs}
-              />
-            </>
-          {/* ) : (
+      <>
+        <Link to="/faqs/add">
+          <AddButton label="Add New Faq" />
+        </Link>
+        <EditButton
+          label={
+            reorder ? "Click to Stop Reordering Faqs" : "Click to Reorder Faqs"
+          }
+          onClick={onReorderClick}
+          color={reorder ? "secondary" : "primary"}
+        />
+        <FaqList
+          faqs={faqs}
+          message={message}
+          reorder={reorder}
+          reorderFaqs={reorderFaqs}
+        />
+      </>
+      {/* ) : (
             <FaqList faqs={faqs} message={message} />
           )
         }

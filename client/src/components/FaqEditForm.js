@@ -2,27 +2,22 @@ import React, { useState } from "react";
 import * as faqService from "../services/faq-service";
 
 import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
 import { SaveButton } from "./Buttons";
 
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { withRouter } from "react-router-dom";
 
-const FaqEditForm = ({ faq, notAdded }) => {
+const languages = {
+  en: "English",
+  es: "Spanish"
+};
+
+const FaqEditForm = ({ faq, notAdded, history }) => {
   const [question, setQuestion] = useState(faq.question);
   const [answer, setAnswer] = useState(faq.answer);
 
-  let language;
-  switch (faq.language) {
-    case "en":
-      language = "English";
-      break;
-    case "es":
-      language = "Spanish";
-      break;
-    default:
-      break;
-  }
+  let language = languages[faq.language];
 
   const handleQuestionChange = event => {
     setQuestion(event.target.value);
@@ -32,16 +27,18 @@ const FaqEditForm = ({ faq, notAdded }) => {
     setAnswer(html);
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = event => {
+    event.preventDefault();
     if (notAdded) {
       faqService.add({
         ...faq,
         question,
         answer,
-        identifier: `${JSON.parse(localStorage.getItem("faqs")).length}:${
+        identifier: `${JSON.parse(localStorage.getItem("faqs")).length + 1}:${
           faq.identifier
         }`
       });
+      history.push(`/faqs`);
     } else {
       faqService.update({
         ...faq,
@@ -85,4 +82,4 @@ const FaqEditForm = ({ faq, notAdded }) => {
   );
 };
 
-export default FaqEditForm;
+export default withRouter(FaqEditForm);

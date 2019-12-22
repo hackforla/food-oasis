@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/styles";
 import { UserContext } from "./user-context";
 import { EditButton, MoveUpButton, MoveDownButton } from "./Buttons";
@@ -17,7 +18,7 @@ const useStyles = makeStyles({
     alignItems: "center",
     justifyContent: "space-around",
     backgroundColor: "rgb(249, 192, 88)",
-    height: '2.5rem'
+    height: "2.5rem"
   },
   hide: {
     display: "none"
@@ -56,7 +57,9 @@ const FaqItem = ({ faq, reorder, reorderFaqs, faqLength }) => {
             />
           </>
         ) : (
-          <EditButton label="Edit" href={`/faqs/${faq.identifier}`} />
+          <Link to={`/faqs/${faq.identifier}`}>
+            <EditButton label="Edit" />
+          </Link>
         )}
       </div>
       {/* )

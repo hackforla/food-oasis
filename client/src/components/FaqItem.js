@@ -7,7 +7,7 @@ import { EditButton, MoveUpButton, MoveDownButton } from "./Buttons";
 const useStyles = makeStyles({
   edit: {
     marginBottom: "10px",
-    border: "2px dashed #FAEBD7",
+    border: "10px solid #FAEBD7",
     "& h4, h6, div": {
       fontSize: "1rem",
       margin: "0.5rem"
@@ -40,31 +40,32 @@ const FaqItem = ({ faq, reorder, reorderFaqs, faqLength }) => {
 
   return (
     <li className={reorder ? classes.edit : ""}>
-      {/* <UserContext.Consumer>
-       {user =>
-         user && user.isAdmin ? ( */}
-      <div className={classes.editBar}>
-        <h4>Identifier: {identifier}</h4>
-        {reorder ? (
-          <>
-            <MoveUpButton
-              className={Number(order) === 1 ? classes.hide : ""}
-              onClick={() => reorderFaqs("up", order)}
-            />
-            <MoveDownButton
-              className={Number(order) === faqLength ? classes.hide : ""}
-              onClick={() => reorderFaqs("down", order)}
-            />
-          </>
-        ) : (
-          <Link to={`/faqs/${faq.identifier}`}>
-            <EditButton label="Edit" />
-          </Link>
-        )}
-      </div>
-      {/* )
-       }
-     </UserContext.Consumer> */}
+      <UserContext.Consumer>
+        {user =>
+          user &&
+          user.isAdmin && (
+            <div className={classes.editBar}>
+              <h4>Identifier: {identifier}</h4>
+              {reorder ? (
+                <>
+                  <MoveUpButton
+                    className={Number(order) === 1 ? classes.hide : ""}
+                    onClick={() => reorderFaqs("up", order)}
+                  />
+                  <MoveDownButton
+                    className={Number(order) === faqLength ? classes.hide : ""}
+                    onClick={() => reorderFaqs("down", order)}
+                  />
+                </>
+              ) : (
+                <Link to={`/faqs/${faq.identifier}`}>
+                  <EditButton label="Edit" />
+                </Link>
+              )}
+            </div>
+          )
+        }
+      </UserContext.Consumer>
       <h4>{faq.question}</h4>
       <div dangerouslySetInnerHTML={{ __html: faq.answer }} />
     </li>

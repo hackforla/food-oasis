@@ -12,7 +12,6 @@ const selectAll = () => {
 
 // Identifier Table in DB follows `#:identifier` scheme, for both identifying and also ordering
 const selectAllByLanguage = language => {
-  console.log(language)
   const sql = `
     select id, question, answer, language, identifier
     from faq

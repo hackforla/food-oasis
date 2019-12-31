@@ -58,7 +58,22 @@ export default function Menu(props) {
           return <MenuItemLink key={index} to={`/${route}`} text={text} />;
         })}
         {props.user ? null : (
-          <MenuItemLink key="Register" to="/register" text="Register" />
+          <>
+            <MenuItemLink
+              key="Register"
+              to="/register"
+              text="Register"
+              userSection={true}
+            />
+            <MenuItemLink
+              key="login"
+              to="/login"
+              text="Login"
+              userSection={true}
+            >
+              Login
+            </MenuItemLink>
+          </>
         )}
         <UserContext.Consumer>
           {user =>

@@ -26,7 +26,7 @@ export const getByIdentifier = async ({ identifier }) => {
 
 // model = { question: "", answer: "", language: "", identifier: "" }
 export const add = async model => {
-  const response = axios.put(baseUrl, model);
+  const response = axios.post(baseUrl, model);
   return response.data;
 };
 

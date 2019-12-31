@@ -4,13 +4,8 @@ import { initReactI18next } from "react-i18next";
 import Backend from "i18next-xhr-backend";
 import LanguageDetector from "i18next-browser-languagedetector";
 
-import en from "./locales/en/translation.json";
-import es from "./locales/es/translation.json";
-
-const resources = {
-  en,
-  es
-};
+import common_en from "./locales/en/translation.json";
+import common_es from "./locales/es/translation.json";
 
 i18n
   // load translation using xhr -> see /public/locales
@@ -24,7 +19,11 @@ i18n
   // init i18next
   // for all options read: https://www.i18next.com/overview/configuration-options
   .init({
-    resources,
+    resources: {
+      en: common_en,
+      es: common_es
+    },
+    lng: 'en',
     fallbackLng: ["en", "es"],
     debug: true,
     react: {

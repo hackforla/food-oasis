@@ -143,7 +143,7 @@ function App() {
               <Route path="/faqs/add">
                 <FaqAdd />
               </Route>
-              <Route path="/faqs/:identifier?">
+              <Route path="/faqs/:identifier">
                 <FaqEdit setToast={setToast} />
               </Route>
               {/* <Route path="/organizations">

@@ -14,7 +14,7 @@ const getAll = (req, res) => {
 const getAllByLanguage = (req, res) => {
   const { language } = req.params;
   faqService
-    .selectAll(language)
+    .selectAllByLanguage(language)
     .then(resp => {
       res.send(resp);
     })

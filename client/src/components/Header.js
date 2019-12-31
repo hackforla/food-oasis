@@ -31,9 +31,11 @@ export default function Header(props) {
       <AppBar position="sticky" style={styles.header} color="inherit">
         <Toolbar>
           <Menu user={props.user} setUser={props.setUser} />
-          <a href="/home" style={styles.homeLink}>
-            <img src={logo} style={styles.logo} alt="logo" />{" "}
-          </a>
+          <div style={styles.homeLink}>
+            <a href="/home">
+              <img src={logo} style={styles.logo} alt="logo" />{" "}
+            </a>
+          </div>
           {props.user ? (
             <div style={styles.userLoggedIn}>
               <Typography variant="h6" component="h1" style={styles.username}>
@@ -42,9 +44,9 @@ export default function Header(props) {
               <Logout user={props.user} setUser={props.setUser} />
             </div>
           ) : (
-            <Link key="Login" to="/login">
-              LOGIN
-            </Link>
+            <p>
+              <em>Healthy Food for All Angelenos</em>
+            </p>
           )}
         </Toolbar>
       </AppBar>

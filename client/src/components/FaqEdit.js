@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import * as faqService from "../services/faq-service";
 import FaqEditForm from "./FaqEditForm";
+import { EditButton, SaveButton, CancelButton } from "./Buttons";
+import TextField from "@material-ui/core/TextField";
 
-const FaqEdit = ({ match }) => {
+const FaqEdit = ({ match, history }) => {
   const { i18n } = useTranslation();
   const [addedFaq, setAddedFaq] = useState([
     {
@@ -19,6 +20,10 @@ const FaqEdit = ({ match }) => {
   ]);
   const [needToAddFaqs, setNeedToAddFaqs] = useState([""]);
   const faqIdentifier = match.params.identifier;
+  const [identifier, setIdentifier] = useState(
+    faqIdentifier.slice(faqIdentifier.indexOf(":") + 1, faqIdentifier.length)
+  );
+  const [editIdentifier, setEditIdentifier] = useState(false);
 
   useEffect(() => {
     const checkHowManySavedLanguageTexts = faqs => {
@@ -56,11 +61,55 @@ const FaqEdit = ({ match }) => {
     fetchFaq();
   }, [addedFaq.length, faqIdentifier, i18n.languages]);
 
+  const handleIdentifier = event => {
+    setIdentifier(event.target.value);
+  };
+
+  const handleEditIdentifier = () => {
+    setEditIdentifier(!editIdentifier);
+  };
+
+  const handleUpdateIdentifier = () => {
+    addedFaq.map(
+      async faq =>
+        await faqService.update({
+          ...faq,
+          identifier:
+            faqIdentifier.slice(0, faqIdentifier.indexOf(":") + 1) + identifier
+        })
+    );
+    handleEditIdentifier();
+    history.push(
+      `/faqs/${faqIdentifier.slice(0, faqIdentifier.indexOf(":") + 1) +
+        identifier}`
+    );
+  };
+
   return (
     <Container maxWidth="md">
-      <Typography component="h1" variant="h5" gutterBottom>
-        Editing Frequently Asked Questions
-      </Typography>
+      <h2>Editing Frequently Asked Questions</h2>
+      <h3>
+        FAQ Identifier:{" "}
+        {!editIdentifier ? (
+          <>
+            <span>{identifier}</span>
+            <EditButton onClick={handleEditIdentifier}>Edit</EditButton>
+          </>
+        ) : (
+          <>
+            <TextField
+              type="text"
+              name="identifier"
+              placeholder="Identifier"
+              variant="outlined"
+              value={identifier}
+              onChange={handleIdentifier}
+            />
+            <SaveButton onClick={handleUpdateIdentifier}>Update</SaveButton>
+            <CancelButton onClick={handleEditIdentifier}>Cancel</CancelButton>
+          </>
+        )}
+      </h3>
       {addedFaq.map(faq => (
         <FaqEditForm faq={faq} key={faq.question} />
       ))}

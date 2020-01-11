@@ -7,6 +7,7 @@ import Toast from "./components/Toast";
 import Header from "./components/Header";
 import Main from "./components/Main";
 import Map from "./components/Map";
+import SearchLanding from "./components/SearchLanding";
 import StakeholdersContainer from "./components/StakeholdersContainer";
 import StakeholderEdit from "./components/StakeholderEdit";
 import Donate from "./components/Donate";
@@ -33,15 +34,15 @@ const styles = {
     flexDirection: "column",
     justifyContent: "space-between",
     alignItems: "stretch",
-    height: "100%"
+    height: "100%",
   },
   mainContent: {
     margin: "0",
     paddingBottom: "50px",
     backgroundColor: "green",
     overflowY: "scroll",
-    flexGrow: 1
-  }
+    flexGrow: 1,
+  },
 };
 
 function App() {
@@ -79,14 +80,14 @@ function App() {
           if (position) {
             const userCoordinates = {
               latitude: position.coords.latitude,
-              longitude: position.coords.longitude
+              longitude: position.coords.longitude,
             };
             setUserCoordinates(userCoordinates);
           }
         },
         error => {
           console.log(`Getting browser location failed: ${error.message}`);
-        }
+        },
       );
     } else {
       // If browser location permission is denied, the request is
@@ -113,11 +114,17 @@ function App() {
               <Route path="/home">
                 <Main />
               </Route>
+              <Route path="/search">
+                <SearchLanding
+                  userCoordinates={userCoordinates}
+                  fetchLocation={fetchLocation}
+                />
+              </Route>
               <Route path="/map">
                 <Map />
               </Route>
               <Route path="/stakeholders">
-                <StakeholdersContainer />
+                <StakeholdersContainer userCoordinates={userCoordinates} />
               </Route>
               <Route path="/stakeholderedit/:id?">
                 <StakeholderEdit setToast={setToast} user={user} />

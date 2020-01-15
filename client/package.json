@@ -12,6 +12,7 @@
   "dependencies": {
     "@material-ui/core": "^4.6.1",
     "@material-ui/icons": "^4.4.3",
+    "@material-ui/lab": "^4.0.0-alpha.39",
     "axios": "^0.19.0",
     "debounce-fn": "^3.0.1",
     "dotenv": "^8.1.0",

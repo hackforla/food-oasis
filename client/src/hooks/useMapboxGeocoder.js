@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import debounce from "debounce-fn";
 
 const MAPBOX_TOKEN =
   "pk.eyJ1IjoibHVjYXNob21lciIsImEiOiJjazFqcnRjcm0wNmZ1M2JwZXg2eDFzMXd3In0.yYpkKLrFCxF-qyBfZH1a8w";

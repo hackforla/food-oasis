@@ -12,18 +12,18 @@ const styles = {
   container: {
     display: "flex",
     flexDirection: "column",
-    padding: "1rem"
+    padding: "1rem",
   },
   header: {
-    display: "flex"
-  }
+    display: "flex",
+  },
 };
 
 function StakeholdersContainer(props) {
-  const { history } = props;
+  const { history, userCoordinates } = props;
   const { state, dispatch, actionTypes, search } = useStakeholders(history);
   const [isMapView, setIsMapView] = React.useState(true);
-
+  console.log(userCoordinates);
   const openSearchPanel = isOpen => {
     dispatch({ type: actionTypes.TOGGLE_SEARCH_PANEL, isOpen });
   };
@@ -40,12 +40,12 @@ function StakeholdersContainer(props) {
     isSearchPanelOpen,
     isLoading,
     latitude,
-    longitude
+    longitude,
   } = state;
 
   return (
-    <div style={styles.container}>
-      <div style={styles.header}>
+    <main style={styles.container}>
+      <header style={styles.header}>
         <Typography
           variant={"h4"}
           component={"h4"}
@@ -54,8 +54,8 @@ function StakeholdersContainer(props) {
         >
           Stakeholders{" "}
         </Typography>
-      </div>
-      <div>
+      </header>
+      <>
         {isSearchPanelOpen ? (
           <StakeholderSearch
             key={selectedLatitude}
@@ -93,8 +93,9 @@ function StakeholdersContainer(props) {
               width: "100%",
               margin: "100px auto",
               display: "flex",
-              justifyContent: "space-around"
+              justifyContent: "space-around",
             }}
+            aria-label="Loading spinner"
           >
             <RotateLoader
               // css={}
@@ -113,8 +114,8 @@ function StakeholdersContainer(props) {
         ) : (
           <StakeholderList stakeholders={stakeholders} />
         )}
-      </div>
-    </div>
+      </>
+    </main>
   );
 }
 

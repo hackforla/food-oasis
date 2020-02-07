@@ -23,9 +23,6 @@ const useStyles = makeStyles({
   description: {
     margin: "1rem 0",
   },
-  button: {
-    color: "hsl(298, 84%, 43%)", // a bright variation of the primary purple
-  },
 });
 
 const Donate = () => {
@@ -49,27 +46,21 @@ const Donate = () => {
       <Typography className={classes.description} component={`p`}>
         {t("support-p")}
       </Typography>
-      <Button className={classes.button} variant="outlined">
-        {t("donate")}
-      </Button>
+      <Button variant="outlined">{t("donate")}</Button>
       <Typography className={classes.sectionHeader} align="center" variant="h4">
         {t("subscribe")}
       </Typography>
       <Typography className={classes.description} component={`p`}>
         {t("subscribe-text")}
       </Typography>
-      <Button className={classes.button} variant="outlined">
-        {t("subscribe-button")}
-      </Button>
+      <Button variant="outlined">{t("subscribe-button")}</Button>
       <Typography className={classes.sectionHeader} align="center" variant="h4">
         {t("questions")}
       </Typography>
       <Typography className={classes.description} component={`p`}>
         {t("questions-text")}
       </Typography>
-      <Button className={classes.button} variant="outlined">
-        {t("send-a-message")}
-      </Button>
+      <Button variant="outlined">{t("send-a-message")}</Button>
     </Container>
   );
 };

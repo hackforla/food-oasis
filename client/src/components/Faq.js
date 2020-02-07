@@ -6,9 +6,25 @@ import { AddButton, EditButton } from "./Buttons";
 
 import FaqList from "./FaqList";
 import Container from "@material-ui/core/Container";
+import Typography from "@material-ui/core/Typography";
 import { Link } from "react-router-dom";
+import { makeStyles } from "@material-ui/core";
+
+const useStyles = makeStyles(() => ({
+  title: {
+    margin: "2rem",
+  },
+  buttonsContainer: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  link: {
+    textDecoration: "none",
+  },
+}));
 
 const Faq = () => {
+  const classes = useStyles();
   const [faqs, setFaqs] = useState([]);
   const { t, i18n } = useTranslation("faq");
   const [message, setMessage] = useState("FAQs are loading...");
@@ -25,7 +41,7 @@ const Faq = () => {
       try {
         let twoLetterLanguage = i18n.language.slice(0, 2);
         const fetchedFaqs = await faqService.getAllByLanguage({
-          language: twoLetterLanguage
+          language: twoLetterLanguage,
         });
         if (fetchedFaqs.length > 0) {
           let sorted = fetchedFaqs;
@@ -33,7 +49,7 @@ const Faq = () => {
             sorted = fetchedFaqs.sort(
               (a, b) =>
                 a.identifier.slice(0, a.identifier.indexOf(":")) -
-                b.identifier.slice(0, b.identifier.indexOf(":"))
+                b.identifier.slice(0, b.identifier.indexOf(":")),
             );
           }
           setFaqs(sorted);
@@ -73,8 +89,8 @@ const Faq = () => {
           1 +
           firstIdentifier.slice(
             firstIdentifier.indexOf(":"),
-            firstIdentifier.length
-          )
+            firstIdentifier.length,
+          ),
       };
       atSecondIndex = {
         ...currentFaqs[order - 2],
@@ -82,8 +98,8 @@ const Faq = () => {
           Number(order) +
           secondIdentifier.slice(
             secondIdentifier.indexOf(":"),
-            secondIdentifier.length
-          )
+            secondIdentifier.length,
+          ),
       };
       currentFaqs[order - 1] = atSecondIndex;
       currentFaqs[order - 2] = atFirstIndex;
@@ -98,8 +114,8 @@ const Faq = () => {
           1 +
           firstIdentifier.slice(
             firstIdentifier.indexOf(":"),
-            firstIdentifier.length
-          )
+            firstIdentifier.length,
+          ),
       };
       atSecondIndex = {
         ...currentFaqs[order],
@@ -107,8 +123,8 @@ const Faq = () => {
           Number(order) +
           secondIdentifier.slice(
             secondIdentifier.indexOf(":"),
-            secondIdentifier.length
-          )
+            secondIdentifier.length,
+          ),
       };
       currentFaqs[order - 1] = atSecondIndex;
       currentFaqs[order] = atFirstIndex;
@@ -121,14 +137,16 @@ const Faq = () => {
   };
 
   return (
-    <Container maxWidth="md">
-      <h1>{t("title")}</h1>
+    <Container maxWidth="sm">
+      <Typography variant="h4" align="center" className={classes.title}>
+        {t("title")}
+      </Typography>
       <UserContext.Consumer>
         {user =>
           user &&
           user.isAdmin && (
-            <>
-              <Link to="/faqs/add">
+            <div className={classes.buttonsContainer}>
+              <Link className={classes.link} to="/faqs/add">
                 <AddButton label="Add New Faq" />
               </Link>
               <EditButton
@@ -140,7 +158,7 @@ const Faq = () => {
                 onClick={onReorderClick}
                 color={reorder ? "secondary" : "primary"}
               />
-            </>
+            </div>
           )
         }
       </UserContext.Consumer>

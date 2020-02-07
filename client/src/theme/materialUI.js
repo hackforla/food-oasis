@@ -27,10 +27,11 @@ const theme = createMuiTheme({
     MuiButton: {
       outlined: {
         margin: "10px",
-        border: "1px solid #772f7a",
-        boxShadow: "0px 0px 10px 2px hsl(298, 44%, 87%)",
+        border: "2px solid #772f7a",
+        color: "#772f7a",
         "&:hover": {
-          backgroundColor: "hsl(298, 44%, 96%)",
+          color: "hsl(298, 44%, 96%)",
+          backgroundColor: "#772f7a",
         },
       },
     },

@@ -18,7 +18,7 @@ import {
   MenuItem,
   Select,
   TextField,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import * as stakeholderService from "../services/stakeholder-service";
 import * as categoryService from "../services/category-service";
@@ -31,12 +31,12 @@ import moment from "moment";
 const styles = theme => ({
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1)
+    marginTop: theme.spacing(1),
   },
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 120
-  }
+    minWidth: 120,
+  },
 });
 
 const ITEM_HEIGHT = 48;
@@ -45,9 +45,9 @@ const MenuProps = {
   PaperProps: {
     style: {
       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250
-    }
-  }
+      width: 250,
+    },
+  },
 };
 
 const validationSchema = Yup.object().shape({
@@ -67,8 +67,8 @@ const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email address format"),
   selectedCategoryIds: Yup.array().min(
     1,
-    "You must select at least one category"
-  )
+    "You must select at least one category",
+  ),
 });
 
 const StakeholderEdit = props => {
@@ -109,7 +109,7 @@ const StakeholderEdit = props => {
     verifiedDate: "",
     verifiedUser: "",
     selectedCategoryIds: [],
-    hours: []
+    hours: [],
   });
 
   useEffect(() => {
@@ -117,7 +117,7 @@ const StakeholderEdit = props => {
       try {
         const categories = await categoryService.getAll();
         const activeCategories = categories.filter(
-          category => !category.inactive
+          category => !category.inactive,
         );
         setCategories(activeCategories);
 
@@ -127,7 +127,7 @@ const StakeholderEdit = props => {
           // stakeholder.categories array of objects to an array of
           // categoryIds as stakeholder.categoryIds
           stakeholder.selectedCategoryIds = stakeholder.categories.map(
-            category => category.id
+            category => category.id,
           );
           delete stakeholder.categories;
 
@@ -158,7 +158,7 @@ const StakeholderEdit = props => {
     const result = await esriService.geocode(formatMapAddress(formData));
     setGeocodeResults(result);
   };
-  
+
   return (
     <Container component="main" maxWidth="lg">
       <CssBaseline />
@@ -176,12 +176,12 @@ const StakeholderEdit = props => {
                 .put({ ...values, loginId: user.id })
                 .then(response => {
                   setToast({
-                    message: "Update successful."
+                    message: "Update successful.",
                   });
                 })
                 .catch(err => {
                   setToast({
-                    message: "Update failed."
+                    message: "Update failed.",
                   });
                   console.log(err);
                   setSubmitting(false);
@@ -191,14 +191,14 @@ const StakeholderEdit = props => {
                 .post({ ...values, loginId: user.id })
                 .then(response => {
                   setToast({
-                    message: "Insert successful."
+                    message: "Insert successful.",
                   });
                   setFieldValue("id", response.id);
                   //   history.push("/stakeholders");
                 })
                 .catch(err => {
                   setToast({
-                    message: "Insert failed."
+                    message: "Insert failed.",
                   });
                   console.log(err);
                   setSubmitting(false);
@@ -214,7 +214,7 @@ const StakeholderEdit = props => {
             handleBlur,
             handleSubmit,
             isSubmitting,
-            setFieldValue
+            setFieldValue,
           }) => (
             <form className={classes.form} noValidate onSubmit={handleSubmit}>
               <Grid container spacing={1}>
@@ -242,6 +242,9 @@ const StakeholderEdit = props => {
                     variant="outlined"
                     margin="normal"
                     fullWidth
+                    multiline
+                    rows={2}
+                    rowsMax={12}
                     value={values.description}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -405,21 +408,15 @@ const StakeholderEdit = props => {
                             border: "1px solid black",
                             backgroundColor: "#EEE",
                             margin: "0.1em",
-                            padding: "0.5em"
+                            padding: "0.5em",
                           }}
                           key={index}
                         >
                           <Grid container>
                             <Grid item xs={10}>
-                              <Typography>{`(${result.location.y}, ${
-                                result.location.x
-                              })`}</Typography>
-                              <Typography>{`${
-                                result.attributes.Match_addr
-                              }`}</Typography>
-                              <Typography>{`${
-                                result.attributes.Addr_type
-                              }`}</Typography>
+                              <Typography>{`(${result.location.y}, ${result.location.x})`}</Typography>
+                              <Typography>{`${result.attributes.Match_addr}`}</Typography>
+                              <Typography>{`${result.attributes.Addr_type}`}</Typography>
                             </Grid>
                             <Grid item xs={2}>
                               <VerifyButton
@@ -498,7 +495,7 @@ const StakeholderEdit = props => {
                     margin="normal"
                     fullWidth
                     name="items"
-                    label="Items"
+                    label="Items (separated by commas)"
                     type="text"
                     value={values.items}
                     onChange={handleChange}
@@ -513,7 +510,7 @@ const StakeholderEdit = props => {
                     margin="normal"
                     fullWidth
                     name="services"
-                    label="Services"
+                    label="Services (separated by commas)"
                     type="text"
                     value={values.services}
                     onChange={handleChange}
@@ -679,8 +676,8 @@ const StakeholderEdit = props => {
                           .map(
                             categoryId =>
                               categories.filter(
-                                category => category.id === categoryId
-                              )[0].name
+                                category => category.id === categoryId,
+                              )[0].name,
                           )
                           .join(", ");
                       }}
@@ -721,11 +718,11 @@ const StakeholderEdit = props => {
                       verify(setVerified);
                       setFieldValue(
                         "verifiedDate",
-                        setVerified ? moment().format() : ""
+                        setVerified ? moment().format() : "",
                       );
                       setFieldValue(
                         "verifiedUser",
-                        setVerified ? user.firstName + " " + user.lastName : ""
+                        setVerified ? user.firstName + " " + user.lastName : "",
                       );
                     }}
                     disabled={!values.id}
@@ -746,7 +743,7 @@ const StakeholderEdit = props => {
                     style={{
                       border: "1px solid gray",
                       borderRadius: "4px",
-                      padding: "0.5em"
+                      padding: "0.5em",
                     }}
                   >
                     <div>Id: {values.id} </div>
@@ -754,7 +751,7 @@ const StakeholderEdit = props => {
                       {`Entered: ${values.createdUser} ${
                         values.createdDate
                           ? moment(values.createdDate).format(
-                              "MM/DD/YY hh:mm a"
+                              "MM/DD/YY hh:mm a",
                             )
                           : ""
                       }`}
@@ -763,7 +760,7 @@ const StakeholderEdit = props => {
                       {`Last Modified: ${values.modifiedUser} ${
                         values.modifiedDate
                           ? moment(values.modifiedDate).format(
-                              "MM/DD/YY hh:mm a"
+                              "MM/DD/YY hh:mm a",
                             )
                           : ""
                       }`}
@@ -772,7 +769,7 @@ const StakeholderEdit = props => {
                       {`Verified: ${values.verifiedUser} ${
                         values.verifiedDate
                           ? moment(values.verifiedDate).format(
-                              "MM/DD/YY hh:mm a"
+                              "MM/DD/YY hh:mm a",
                             )
                           : ""
                       }`}

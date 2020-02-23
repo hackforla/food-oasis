@@ -640,9 +640,11 @@ const StakeholderEdit = props => {
                         margin="normal"
                         name="inactive"
                         label="Inactive"
-                        value="1"
+                        value={values.inactive}
                         checked={values.inactive}
-                        onChange={handleChange}
+                        onChange={() =>
+                          setFieldValue("inactive", !values.inactive)
+                        }
                         onBlur={handleBlur}
                       />
                     }

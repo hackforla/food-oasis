@@ -1,50 +1,50 @@
-import React, { useContext, useState } from 'react';
-import Downshift from 'downshift';
-import { MenuItem, TextField, Paper } from '@material-ui/core';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
-import { makeStyles } from '@material-ui/core/styles';
-import { useMapboxGeocoder } from 'hooks/useMapboxGeocoder';
-import { store } from 'state/store';
+import React, { useContext, useState } from "react";
+import Downshift from "downshift";
+import { MenuItem, TextField, Paper } from "@material-ui/core";
+import LocationOnIcon from "@material-ui/icons/LocationOn";
+import { makeStyles } from "@material-ui/core/styles";
+import { useMapboxGeocoder } from "../hooks/useMapboxGeocoder";
+// import { store } from 'state/store';
 
 const useStyles = makeStyles(() => ({
   paper: {
-    maxHeight: '150px',
-    overflowY: 'auto',
+    maxHeight: "150px",
+    overflowY: "auto",
     marginTop: 0,
-    borderRadius: 4,
+    borderRadius: 4
   },
   container: {
-    width: '100%',
+    width: "100%"
   },
   address: {
-    backgroundColor: '#fff',
-    borderRadius: '4px 0 0 4px',
+    backgroundColor: "#fff",
+    borderRadius: "4px 0 0 4px",
     height: 41,
-    '& .MuiInputLabel-outlined': {
-      transform: 'translate(14px, 14px) scale(1)',
+    "& .MuiInputLabel-outlined": {
+      transform: "translate(14px, 14px) scale(1)"
     },
-    '& .MuiOutlinedInput-input': {
-      padding: '11.5px 14px',
+    "& .MuiOutlinedInput-input": {
+      padding: "11.5px 14px"
     },
-    '& .MuiOutlinedInput-root': {
-      borderRadius: '4px 0 0 4px',
-    },
-  },
+    "& .MuiOutlinedInput-root": {
+      borderRadius: "4px 0 0 4px"
+    }
+  }
 }));
 
 export default function Search({ fetchLocation, setCoordinates }) {
   const classes = useStyles();
-  const [selectedPlace, setSelectedPlace] = useState('');
+  const [selectedPlace, setSelectedPlace] = useState("");
   const {
     error,
     isLoading,
     mapboxResults,
-    fetchMapboxResults,
+    fetchMapboxResults
   } = useMapboxGeocoder();
-  const globalState = useContext(store);
-  const { dispatch } = globalState;
+  // const globalState = useContext(store);
+  // const { dispatch } = globalState;
 
-  const handleInputChange = (event) => {
+  const handleInputChange = event => {
     setSelectedPlace(event.target.value);
     if (!event.target.value) {
       return;
@@ -52,11 +52,11 @@ export default function Search({ fetchLocation, setCoordinates }) {
     fetchMapboxResults(event.target.value);
   };
 
-  const handleDownshiftOnChange = (selectedResult) => {
+  const handleDownshiftOnChange = selectedResult => {
     setSelectedPlace(selectedResult);
   };
 
-  const renderInput = (inputProps) => {
+  const renderInput = inputProps => {
     const { InputProps, classes, availableItems, selectedItem } = inputProps;
 
     return (
@@ -71,22 +71,22 @@ export default function Search({ fetchLocation, setCoordinates }) {
         autoFocus
         InputProps={{
           classes: {
-            input: classes.input,
+            input: classes.input
           },
-          ...InputProps,
+          ...InputProps
         }}
       />
     );
   };
 
-  const renderSuggestion = (params) => {
+  const renderSuggestion = params => {
     const {
       item,
       index,
       itemProps,
       highlightedIndex,
       selectedItem,
-      inputValue,
+      inputValue
     } = params;
     if (!item) return;
     const isHighlighted = highlightedIndex === index;
@@ -106,7 +106,7 @@ export default function Search({ fetchLocation, setCoordinates }) {
     );
   };
 
-  const renderResults = (params) => {
+  const renderResults = params => {
     const {
       item,
       index,
@@ -114,7 +114,7 @@ export default function Search({ fetchLocation, setCoordinates }) {
       selectedItem,
       inputValue,
       mapboxResults,
-      getItemProps,
+      getItemProps
     } = params;
 
     if (!inputValue) {
@@ -123,7 +123,7 @@ export default function Search({ fetchLocation, setCoordinates }) {
           component="div"
           onClick={() => {
             fetchLocation();
-            handleDownshiftOnChange('Current Location');
+            handleDownshiftOnChange("Current Location");
           }}
         >
           <LocationOnIcon /> Current Location
@@ -137,7 +137,7 @@ export default function Search({ fetchLocation, setCoordinates }) {
         const [long, lat] = item.center;
         const userCoordinates = {
           latitude: lat,
-          longitude: long,
+          longitude: long
         };
         return renderSuggestion({
           item,
@@ -146,11 +146,11 @@ export default function Search({ fetchLocation, setCoordinates }) {
             item: item.place_name,
             onClick: () => {
               setCoordinates(userCoordinates);
-            },
+            }
           }),
           highlightedIndex,
           selectedItem,
-          inputValue,
+          inputValue
         });
       })
     );
@@ -160,7 +160,7 @@ export default function Search({ fetchLocation, setCoordinates }) {
     <>
       <Downshift
         onChange={handleDownshiftOnChange}
-        itemToString={(item) => (item ? item.place_name : '')}
+        itemToString={item => (item ? item.place_name : "")}
       >
         {({
           getInputProps,
@@ -169,7 +169,7 @@ export default function Search({ fetchLocation, setCoordinates }) {
           selectedItem,
           highlightedIndex,
           toggleMenu,
-          isOpen,
+          isOpen
         }) => (
           <div className={classes.container}>
             {renderInput({
@@ -180,9 +180,9 @@ export default function Search({ fetchLocation, setCoordinates }) {
                 ...getInputProps({
                   onClick: () => toggleMenu(),
                   onChange: handleInputChange,
-                  value: inputValue || selectedPlace,
-                }),
-              },
+                  value: inputValue || selectedPlace
+                })
+              }
             })}
 
             {isOpen && (
@@ -192,7 +192,7 @@ export default function Search({ fetchLocation, setCoordinates }) {
                   selectedItem,
                   inputValue,
                   mapboxResults,
-                  getItemProps,
+                  getItemProps
                 })}
 
                 {/* {mapboxResults.length > 0 &&

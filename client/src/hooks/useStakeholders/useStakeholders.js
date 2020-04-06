@@ -1,10 +1,10 @@
-import { useReducer, useEffect } from 'react';
-import * as stakeholderService from '../../services/stakeholder-service';
-import * as categoryService from '../../services/category-service';
-import { actionTypes } from './actionTypes';
-import { reducer } from './reducer';
-import { initialState } from './initialState';
-import queryString from 'query-string';
+import { useReducer, useEffect } from "react";
+import * as stakeholderService from "../../services/stakeholder-service";
+import * as categoryService from "../../services/category-service";
+import { actionTypes } from "./actionTypes";
+import { reducer } from "./reducer";
+import { initialState } from "./initialState";
+import queryString from "query-string";
 
 export function useStakeholders(history, userCoordinates) {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -16,24 +16,24 @@ export function useStakeholders(history, userCoordinates) {
     longitude,
     selectedLocationName,
     selectedCategories,
-    selectedDistance,
+    selectedDistance
   ) => {
     const {
       FETCH_FAILURE,
       FETCH_REQUEST,
-      FETCH_SUCCESS,
+      FETCH_SUCCESS
     } = actionTypes.STAKEHOLDERS;
     if (!selectedCategories) return;
     try {
-      console.warn('latitude', latitude);
-      console.warn('longitude', longitude);
+      console.warn("latitude", latitude);
+      console.warn("longitude", longitude);
       dispatch({ type: FETCH_REQUEST });
       const stakeholders = await stakeholderService.search({
         name: searchString,
-        categoryIds: selectedCategories.map((category) => category.id),
+        categoryIds: selectedCategories.map(category => category.id),
         latitude,
         longitude,
-        distance: selectedDistance,
+        distance: selectedDistance
       });
       dispatch({
         type: FETCH_SUCCESS,
@@ -44,8 +44,8 @@ export function useStakeholders(history, userCoordinates) {
           selectedLongitude: longitude,
           selectedLocationName,
           selectedCategories,
-          selectedDistance,
-        },
+          selectedDistance
+        }
       });
       history.push(
         `/stakeholders?name=${searchString}` +
@@ -53,7 +53,7 @@ export function useStakeholders(history, userCoordinates) {
           `&lat=${latitude}` +
           `&lon=${longitude}` +
           `&placeName=${selectedLocationName}` +
-          `&categoryIds=${selectedCategories.map((c) => c.id).join(',')}`,
+          `&categoryIds=${selectedCategories.map(c => c.id).join(",")}`
       );
     } catch (err) {
       console.log(err);
@@ -65,17 +65,16 @@ export function useStakeholders(history, userCoordinates) {
     const {
       FETCH_FAILURE,
       FETCH_REQUEST,
-      FETCH_SUCCESS,
+      FETCH_SUCCESS
     } = actionTypes.CATEGORIES;
 
     dispatch({ type: FETCH_REQUEST });
     try {
       const allCategories = await categoryService.getAll();
-      const categories = allCategories.filter((category) => !category.inactive);
+      const categories = allCategories.filter(category => !category.inactive);
 
       const selectedCategories = categories.filter(
-        (category) =>
-          category.id === 1 || category.id === 8 || category.id === 9,
+        category => category.id === 1 || category.id === 8 || category.id === 9
       ); // setting the initial selection to FoodPantry, Food Bank, Soup Kitchen
       dispatch({ type: FETCH_SUCCESS, categories, selectedCategories });
       return categories;
@@ -84,47 +83,48 @@ export function useStakeholders(history, userCoordinates) {
     }
   };
 
-  const fetchLocation = () => {
-    console.warn('fetching');
-    const {
-      FETCH_FAILURE,
-      FETCH_REQUEST,
-      FETCH_SUCCESS,
-    } = actionTypes.LOCATION;
+  // apparently dead code ?
+  // const fetchLocation = () => {
+  //   console.warn('fetching');
+  //   const {
+  //     FETCH_FAILURE,
+  //     FETCH_REQUEST,
+  //     FETCH_SUCCESS,
+  //   } = actionTypes.LOCATION;
 
-    let userCoordinates = { latitude: null, longitude: null };
+  //   let userCoordinates = { latitude: null, longitude: null };
 
-    dispatch({ type: FETCH_REQUEST });
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          if (!position) {
-            dispatch({
-              type: FETCH_SUCCESS,
-              userCoordinates: { latitude: null, longitude: null },
-            });
-          }
-          const userCoordinates = {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          };
-          dispatch({ type: FETCH_SUCCESS, userCoordinates });
-        },
-        (error) => {
-          dispatch({ type: FETCH_FAILURE, error });
-        },
-      );
-    } else {
-      // If browser location permission is denied, the request is
-      // "successful", but the result is null coordinates.
-      dispatch({
-        type: FETCH_SUCCESS,
-        userCoordinates,
-      });
-    }
-    console.warn('userCoordinates in hook', userCoordinates);
-    return userCoordinates;
-  };
+  //   dispatch({ type: FETCH_REQUEST });
+  //   if (navigator.geolocation) {
+  //     navigator.geolocation.getCurrentPosition(
+  //       (position) => {
+  //         if (!position) {
+  //           dispatch({
+  //             type: FETCH_SUCCESS,
+  //             userCoordinates: { latitude: null, longitude: null },
+  //           });
+  //         }
+  //         const userCoordinates = {
+  //           latitude: position.coords.latitude,
+  //           longitude: position.coords.longitude,
+  //         };
+  //         dispatch({ type: FETCH_SUCCESS, userCoordinates });
+  //       },
+  //       (error) => {
+  //         dispatch({ type: FETCH_FAILURE, error });
+  //       },
+  //     );
+  //   } else {
+  //     // If browser location permission is denied, the request is
+  //     // "successful", but the result is null coordinates.
+  //     dispatch({
+  //       type: FETCH_SUCCESS,
+  //       userCoordinates,
+  //     });
+  //   }
+  //   console.warn('userCoordinates in hook', userCoordinates);
+  //   return userCoordinates;
+  // };
 
   const applyQueryStringParameters = (history, initialState) => {
     // The goal here is to overwrite the initialState with
@@ -137,7 +137,7 @@ export function useStakeholders(history, userCoordinates) {
       selectedLongitude,
       selectedLocationName,
       selectedDistance,
-      selectedCategoryIds,
+      selectedCategoryIds
     } = initialState;
 
     const params = queryString.parse(history.location.search);
@@ -148,9 +148,9 @@ export function useStakeholders(history, userCoordinates) {
     selectedDistance = params.radius || selectedDistance;
     selectedLatitude = Number.parseFloat(params.lat) || selectedLatitude;
     selectedLongitude = Number.parseFloat(params.lon) || selectedLongitude;
-    selectedLocationName = params.placeName ? decodeURI(params.placeName) : '';
+    selectedLocationName = params.placeName ? decodeURI(params.placeName) : "";
     if (params.categoryIds) {
-      selectedCategoryIds = params.categoryIds.split(',');
+      selectedCategoryIds = params.categoryIds.split(",");
     }
 
     dispatch({
@@ -162,8 +162,8 @@ export function useStakeholders(history, userCoordinates) {
         selectedLocationName,
         selectedCategoryIds,
         selectedDistance,
-        queryParametersLoaded: true,
-      },
+        queryParametersLoaded: true
+      }
     });
   };
 
@@ -189,11 +189,11 @@ export function useStakeholders(history, userCoordinates) {
       selectedLongitude,
       selectedLocationName,
       selectedDistance,
-      selectedCategoryIds,
+      selectedCategoryIds
     } = state;
 
     let selectedCategories = selectedCategoryIds.map(
-      (id) => state.categories.filter((cat) => cat.id === Number(id))[0],
+      id => state.categories.filter(cat => cat.id === Number(id))[0]
     );
 
     search(
@@ -202,7 +202,7 @@ export function useStakeholders(history, userCoordinates) {
       selectedLongitude,
       selectedLocationName,
       selectedCategories,
-      selectedDistance,
+      selectedDistance
     );
   }, [state.categories, state.queryParametersLoaded, initialState]);
 

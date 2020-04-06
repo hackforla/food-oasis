@@ -2,7 +2,6 @@ import React from "react";
 import Menu from "./Menu";
 import logo from "../images/fola.svg";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
-import { Link } from "react-router-dom";
 import Logout from "./Logout";
 
 const styles = {

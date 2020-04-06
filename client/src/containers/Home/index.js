@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { withRouter } from "react-router";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import SearchIcon from "@material-ui/icons/Search";
@@ -9,8 +10,14 @@ import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Search from "../../components/Search";
 import logo from "../../images/fola.svg";
+import landingPageImage from "../../images/landing-page/1.jpg";
 
 const useStyles = makeStyles(theme => ({
+  container: {
+    backgroundImage: `url(${landingPageImage})`,
+    margin: 0,
+    width: "100vw"
+  },
   paper: {
     margin: "0 auto",
     display: "flex",
@@ -83,6 +90,7 @@ const useStyles = makeStyles(theme => ({
 
 const Home = props => {
   const classes = useStyles();
+  const [origin, setOrigin] = useState(null);
 
   return (
     <Container component="main" maxWidth="sm" className={classes.container}>
@@ -94,20 +102,29 @@ const Home = props => {
         <Box className={classes.formContainer}>
           <form className={classes.form} noValidate>
             <Box className={classes.inputContainer}>
-              <Search {...props} />
+              <Search {...props} setOrigin={setOrigin} />
               <Button
-                type="submit"
+                type="button"
+                disabled={!origin}
                 variant="contained"
                 className={classes.submit}
                 startIcon={
                   <SearchIcon fontSize="large" className={classes.searchIcon} />
                 }
-                //href="/stakeholders"
+                onClick={() => {
+                  const url = `/stakeholders?lat=${origin.latitude}&lon=${
+                    origin.longitude
+                  }&placeName=${origin.locationName || ""}`;
+                  props.history.push(url);
+                }}
               ></Button>
             </Box>
             <Typography className={classes.label}>
               Food Oasis has links to food pantries and meals in Los Angeles
             </Typography>
+            {/* <div>
+              <pre>{JSON.stringify(props.backgroundImage, null, 2)}</pre>
+            </div> */}
           </form>
         </Box>
       </Paper>
@@ -115,4 +132,4 @@ const Home = props => {
   );
 };
 
-export default Home;
+export default withRouter(Home);

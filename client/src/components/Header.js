@@ -31,7 +31,7 @@ export default function Header(props) {
         <Toolbar>
           <Menu user={props.user} setUser={props.setUser} />
           <div style={styles.homeLink}>
-            <a href="/home">
+            <a href="/">
               <img src={logo} style={styles.logo} alt="logo" />{" "}
             </a>
           </div>

@@ -29,9 +29,10 @@ import Home from "./containers/Home";
 // import { store } from "state/store";
 // import { SET_USER, SET_COORDINATES } from "state/types";
 import { makeStyles } from "@material-ui/core/styles";
+import lpi from "./images/landing-page/1.jpg";
 
 const useStyles = makeStyles({
-  app: {
+  app: props => ({
     color: "black",
     margin: "0",
     display: "flex",
@@ -39,13 +40,12 @@ const useStyles = makeStyles({
     justifyContent: "space-between",
     alignItems: "stretch",
     height: "100%",
-    backgroundColor: "rgb(144, 194, 70)",
-    backgroundImage: props => props.backgroundImage
-  },
+    backgroundColor: "rgb(144, 194, 70)"
+  }),
   mainContent: {
     margin: "0",
     paddingBottom: "50px",
-    backgroundColor: "green",
+    backgroundColor: "yellow",
     overflowY: "scroll",
     flexGrow: 1
   }
@@ -56,16 +56,10 @@ function App() {
   const [userCoordinates, setUserCoordinates] = useState({});
   const [toast, setToast] = useState({ message: "" });
   const [bgImg, setBgImg] = useState("");
-  // const globalState = useContext(store);
-  // const { dispatch, state } = globalState;
-  // const [persistedCoordinates, setPersistedCoordinates] = usePersistedState(
-  //   "coordinates",
-  //   {}
-  // );
 
   useEffect(() => {
     const imgNum = Math.floor(Math.random() * (22 - 1)) + 1;
-    const backgroundImage = `url("/landing-page/${imgNum}.jpg")`;
+    const backgroundImage = `url("../images/landing-page/${imgNum}.jpg")`;
     setBgImg(backgroundImage);
   }, []);
 
@@ -80,6 +74,10 @@ function App() {
       setUser(JSON.parse(storedJson));
     }
   }, [user, userCoordinates]);
+
+  useEffect(() => {
+    fetchLocation();
+  }, []);
 
   // useEffect(() => {
   //   console.warn("persist coordssss", persistedCoordinates);
@@ -129,12 +127,13 @@ function App() {
   };
 
   const classes = useStyles({ backgroundImage: bgImg });
+  // const classes = useStyles();
 
   return (
     <UserContext.Provider value={user}>
       <ThemeProvider theme={theme}>
         <Router>
-          <div className={classes.app}>
+          <div className={classes.app} backgroundImage={bgImg}>
             <Header user={user} setUser={onLogin} />
             <Switch className={classes.mainContent}>
               {/* <Route exact path="/">
@@ -145,6 +144,8 @@ function App() {
                   userCoordinates={userCoordinates}
                   fetchLocation={fetchLocation}
                   setCoordinates={setCoordinates}
+                  backgroundImage={bgImg}
+                  backgroundColor={"yellow"}
                 />
               </Route>
               <Route path="/map">
@@ -202,6 +203,7 @@ function App() {
                 <ResetPassword setToast={setToast} />
               </Route>
             </Switch>
+            <pre>{bgImg}</pre>
             <Footer userCoordinates={userCoordinates} />
             <Toast toast={toast} setToast={setToast} />
           </div>

@@ -1,10 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import Downshift from "downshift";
 import { MenuItem, TextField, Paper } from "@material-ui/core";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { makeStyles } from "@material-ui/core/styles";
 import { useMapboxGeocoder } from "../hooks/useMapboxGeocoder";
-// import { store } from 'state/store';
 
 const useStyles = makeStyles(() => ({
   paper: {
@@ -32,17 +31,16 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-export default function Search({ fetchLocation, setCoordinates }) {
+export default function Search({ userCoordinates, setOrigin }) {
   const classes = useStyles();
   const [selectedPlace, setSelectedPlace] = useState("");
+
   const {
-    error,
-    isLoading,
+    // _error,
+    // _isLoading,
     mapboxResults,
     fetchMapboxResults
   } = useMapboxGeocoder();
-  // const globalState = useContext(store);
-  // const { dispatch } = globalState;
 
   const handleInputChange = event => {
     setSelectedPlace(event.target.value);
@@ -53,11 +51,12 @@ export default function Search({ fetchLocation, setCoordinates }) {
   };
 
   const handleDownshiftOnChange = selectedResult => {
+    console.log(`Downshift.onChange ${JSON.stringify(selectedResult)}`);
     setSelectedPlace(selectedResult);
   };
 
   const renderInput = inputProps => {
-    const { InputProps, classes, availableItems, selectedItem } = inputProps;
+    const { InputProps, classes } = inputProps;
 
     return (
       <TextField
@@ -80,14 +79,7 @@ export default function Search({ fetchLocation, setCoordinates }) {
   };
 
   const renderSuggestion = params => {
-    const {
-      item,
-      index,
-      itemProps,
-      highlightedIndex,
-      selectedItem,
-      inputValue
-    } = params;
+    const { item, index, itemProps, highlightedIndex, selectedItem } = params;
     if (!item) return;
     const isHighlighted = highlightedIndex === index;
     const isSelected = selectedItem && selectedItem.indexOf(item.name) > -1;
@@ -108,8 +100,6 @@ export default function Search({ fetchLocation, setCoordinates }) {
 
   const renderResults = params => {
     const {
-      item,
-      index,
       highlightedIndex,
       selectedItem,
       inputValue,
@@ -117,12 +107,13 @@ export default function Search({ fetchLocation, setCoordinates }) {
       getItemProps
     } = params;
 
-    if (!inputValue) {
+    if (!inputValue && userCoordinates && userCoordinates.latitude) {
       return (
         <MenuItem
           component="div"
           onClick={() => {
-            fetchLocation();
+            console.log(`Current Location Suggestion.onClick`);
+            setOrigin({ ...userCoordinates, locationName: "Current Location" });
             handleDownshiftOnChange("Current Location");
           }}
         >
@@ -135,7 +126,7 @@ export default function Search({ fetchLocation, setCoordinates }) {
       mapboxResults.length > 0 &&
       mapboxResults.slice(0, 10).map((item, index) => {
         const [long, lat] = item.center;
-        const userCoordinates = {
+        const itemCoordinates = {
           latitude: lat,
           longitude: long
         };
@@ -145,7 +136,10 @@ export default function Search({ fetchLocation, setCoordinates }) {
           itemProps: getItemProps({
             item: item.place_name,
             onClick: () => {
-              setCoordinates(userCoordinates);
+              setOrigin({
+                ...itemCoordinates,
+                locationName: item.place_name
+              });
             }
           }),
           highlightedIndex,
@@ -160,7 +154,9 @@ export default function Search({ fetchLocation, setCoordinates }) {
     <>
       <Downshift
         onChange={handleDownshiftOnChange}
-        itemToString={item => (item ? item.place_name : "")}
+        itemToString={item => {
+          return item ? item.place_name : "";
+        }}
       >
         {({
           getInputProps,
@@ -194,132 +190,16 @@ export default function Search({ fetchLocation, setCoordinates }) {
                   mapboxResults,
                   getItemProps
                 })}
-
-                {/* {mapboxResults.length > 0 &&
-                  mapboxResults.slice(0, 10).map((item, index) =>
-                    renderSuggestion({
-                      item,
-                      index,
-                      itemProps: getItemProps({
-                        item: item.place_name,
-                      }),
-                      highlightedIndex,
-                      selectedItem,
-                      inputValue,
-                    }),
-                  )} */}
               </Paper>
             )}
+            {/* <div>
+              <div>
+                <div>SelectedPlace</div>
+                <pre>{JSON.stringify(selectedPlace, null, 2)}</pre>
+              </div>
+            </div>*/}
           </div>
         )}
-
-        {/* {({
-          selectedItem,
-          getInputProps,
-          getItemProps,
-          getLabelProps,
-          getMenuProps,
-          getToggleButtonProps,
-          clearSelection,
-          highlightedIndex,
-          isOpen,
-          inputValue,
-        }) => {
-          return (
-            <div style={{ width: 250, margin: 'auto', position: 'relative' }}>
-              <label
-                style={{
-                  fontWeight: 'bold',
-                  display: 'block',
-                  marginBottom: 10,
-                }}
-                {...getLabelProps()}
-              >
-                Search for a place
-              </label>{' '}
-              <div style={{ position: 'relative' }}>
-                <input
-                  {...getInputProps({
-                    placeholder: 'Name, address, etc...',
-                    onChange: handleInputChange,
-                  })}
-                  style={{ width: 175 }}
-                />
-                {selectedItem ? (
-                  <button
-                    onClick={clearSelection} // TODO: handleClearSelection to incorporate other necessary side effects
-                    aria-label="clear selection"
-                  >
-                    X
-                  </button>
-                ) : (
-                  <button {...getToggleButtonProps()}>Toggle</button>
-                )}
-              </div>
-              {isOpen && (
-                <ul
-                  style={{
-                    padding: 0,
-                    marginTop: 0,
-                    position: 'absolute',
-                    backgroundColor: 'white',
-                    width: '100%',
-                    maxHeight: '20rem',
-                    overflowY: 'auto',
-                    overflowX: 'hidden',
-                    outline: '0',
-                    transition: 'opacity .1s ease',
-                    borderRadius: '0 0 .28571429rem .28571429rem',
-                    boxShadow: '0 2px 3px 0 rgba(34,36,38,.15)',
-                    borderColor: '#96c8da',
-                    borderTopWidth: '0',
-                    borderRightWidth: 1,
-                    borderBottomWidth: 1,
-                    borderLeftWidth: 1,
-                    borderStyle: 'solid',
-                  }}
-                  {...getMenuProps({ isOpen })}
-                >
-                  <button
-                    style={{ width: 200, margin: 15 }}
-                    onClick={() => console.log('Hello')}
-                  >
-                    Use Current Location
-                  </button>
-
-                  {isLoading && <div disabled>Loading...</div>}
-
-                  {error && <div disabled>Error!</div>}
-
-                  {!isLoading && !error && !mapboxResults.length && (
-                    <div>No results returned</div>
-                  )}
-
-                  {inputValue &&
-                    mapboxResults.length > 0 &&
-                    mapboxResults.slice(0, 10).map((item, index) => (
-                      <div
-                        {...getItemProps({
-                          key: index,
-                          index,
-                          item,
-                          isActive: highlightedIndex === index,
-                          isSelected: selectedItem === item,
-                        })}
-                        style={{
-                          backgroundColor:
-                            highlightedIndex === index ? 'lightgray' : 'white',
-                          fontWeight: selectedItem === item ? 'bold' : 'normal',
-                        }}
-                      >
-                        <p>{item.place_name}</p>
-                      </div>
-                    ))}
-                </ul>
-              )}
-            </div>
-          );
-        }}} */}
       </Downshift>
     </>
   );

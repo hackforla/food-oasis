@@ -1,12 +1,14 @@
 import { useReducer, useEffect } from "react";
 import * as stakeholderService from "../../services/stakeholder-service";
 import * as categoryService from "../../services/category-service";
+import { useCategories } from "../useCategories";
 import { actionTypes } from "./actionTypes";
 import { reducer } from "./reducer";
 import { initialState } from "./initialState";
 import queryString from "query-string";
 
 export function useStakeholders(history, userCoordinates) {
+  const cats = useCategories();
   const [state, dispatch] = useReducer(reducer, initialState);
   //const { latitude, longitude } = userCoordinates;
 

@@ -29,7 +29,6 @@ import Home from "./containers/Home";
 // import { store } from "state/store";
 // import { SET_USER, SET_COORDINATES } from "state/types";
 import { makeStyles } from "@material-ui/core/styles";
-import lpi from "./images/landing-page/1.jpg";
 
 const useStyles = makeStyles({
   app: props => ({
@@ -40,12 +39,13 @@ const useStyles = makeStyles({
     justifyContent: "space-between",
     alignItems: "stretch",
     height: "100%",
+    backgroundImage: props => props.backgroundImage,
     backgroundColor: "rgb(144, 194, 70)"
   }),
   mainContent: {
     margin: "0",
     paddingBottom: "50px",
-    backgroundColor: "yellow",
+    backgroundColor: "green",
     overflowY: "scroll",
     flexGrow: 1
   }
@@ -59,7 +59,7 @@ function App() {
 
   useEffect(() => {
     const imgNum = Math.floor(Math.random() * (22 - 1)) + 1;
-    const backgroundImage = `url("../images/landing-page/${imgNum}.jpg")`;
+    const backgroundImage = `url("/landing-page/${imgNum}.jpg")`;
     setBgImg(backgroundImage);
   }, []);
 
@@ -94,11 +94,11 @@ function App() {
     // dispatch({ type: SET_USER, payload: user });
   };
 
-  const setCoordinates = coordinates => {
-    setUserCoordinates(coordinates);
-    // setPersistedCoordinates(coordinates);
-    // dispatch({ type: SET_COORDINATES, payload: coordinates });
-  };
+  // const setCoordinates = coordinates => {
+  //   setUserCoordinates(coordinates);
+  //   // setPersistedCoordinates(coordinates);
+  //   // dispatch({ type: SET_COORDINATES, payload: coordinates });
+  // };
 
   const fetchLocation = () => {
     console.warn("fetching location in app");
@@ -133,20 +133,30 @@ function App() {
     <UserContext.Provider value={user}>
       <ThemeProvider theme={theme}>
         <Router>
-          <div className={classes.app} backgroundImage={bgImg}>
+          <div className={classes.app}>
             <Header user={user} setUser={onLogin} />
             <Switch className={classes.mainContent}>
               {/* <Route exact path="/">
                 <StakeholdersContainer />
               </Route> */}
               <Route exact path="/">
-                <Home
-                  userCoordinates={userCoordinates}
-                  fetchLocation={fetchLocation}
-                  setCoordinates={setCoordinates}
-                  backgroundImage={bgImg}
-                  backgroundColor={"yellow"}
-                />
+                <div
+                  style={{
+                    backgroundImage: bgImg,
+                    backgroundSize: "cover",
+
+                    height: "100vh",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center"
+                  }}
+                >
+                  <Home
+                    userCoordinates={userCoordinates}
+                    // fetchLocation={fetchLocation}
+                    // setCoordinates={setCoordinates}
+                  />
+                </div>
               </Route>
               <Route path="/map">
                 <Map />
@@ -203,7 +213,6 @@ function App() {
                 <ResetPassword setToast={setToast} />
               </Route>
             </Switch>
-            <pre>{bgImg}</pre>
             <Footer userCoordinates={userCoordinates} />
             <Toast toast={toast} setToast={setToast} />
           </div>

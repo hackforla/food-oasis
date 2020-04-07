@@ -10,14 +10,8 @@ import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Search from "../../components/Search";
 import logo from "../../images/fola.svg";
-import landingPageImage from "../../images/landing-page/1.jpg";
 
 const useStyles = makeStyles(theme => ({
-  container: {
-    backgroundImage: `url(${landingPageImage})`,
-    margin: 0,
-    width: "100vw"
-  },
   paper: {
     margin: "0 auto",
     display: "flex",
@@ -122,9 +116,6 @@ const Home = props => {
             <Typography className={classes.label}>
               Food Oasis has links to food pantries and meals in Los Angeles
             </Typography>
-            {/* <div>
-              <pre>{JSON.stringify(props.backgroundImage, null, 2)}</pre>
-            </div> */}
           </form>
         </Box>
       </Paper>

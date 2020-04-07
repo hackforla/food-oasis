@@ -150,11 +150,7 @@ function App() {
                   className={classes.homeWrapper}
                   style={{ backgroundImage: bgImg }}
                 >
-                  <Home
-                    userCoordinates={userCoordinates}
-                    // fetchLocation={fetchLocation}
-                    // setCoordinates={setCoordinates}
-                  />
+                  <Home userCoordinates={userCoordinates} />
                 </div>
               </Route>
               <Route path="/map">

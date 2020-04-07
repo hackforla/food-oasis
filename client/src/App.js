@@ -39,7 +39,6 @@ const useStyles = makeStyles({
     justifyContent: "space-between",
     alignItems: "stretch",
     height: "100%",
-    backgroundImage: props => props.backgroundImage,
     backgroundColor: "rgb(144, 194, 70)"
   }),
   mainContent: {
@@ -48,6 +47,13 @@ const useStyles = makeStyles({
     backgroundColor: "green",
     overflowY: "scroll",
     flexGrow: 1
+  },
+  homeWrapper: {
+    backgroundSize: "cover",
+    height: "100vh",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center"
   }
 });
 
@@ -141,15 +147,8 @@ function App() {
               </Route> */}
               <Route exact path="/">
                 <div
-                  style={{
-                    backgroundImage: bgImg,
-                    backgroundSize: "cover",
-
-                    height: "100vh",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center"
-                  }}
+                  className={classes.homeWrapper}
+                  style={{ backgroundImage: bgImg }}
                 >
                   <Home
                     userCoordinates={userCoordinates}

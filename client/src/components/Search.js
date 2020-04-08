@@ -35,12 +35,7 @@ export default function Search({ userCoordinates, setOrigin }) {
   const classes = useStyles();
   const [selectedPlace, setSelectedPlace] = useState("");
 
-  const {
-    // _error,
-    // _isLoading,
-    mapboxResults,
-    fetchMapboxResults
-  } = useMapboxGeocoder();
+  const { mapboxResults, fetchMapboxResults } = useMapboxGeocoder();
 
   const handleInputChange = event => {
     setSelectedPlace(event.target.value);
@@ -192,12 +187,6 @@ export default function Search({ userCoordinates, setOrigin }) {
                 })}
               </Paper>
             )}
-            {/* <div>
-              <div>
-                <div>SelectedPlace</div>
-                <pre>{JSON.stringify(selectedPlace, null, 2)}</pre>
-              </div>
-            </div>*/}
           </div>
         )}
       </Downshift>

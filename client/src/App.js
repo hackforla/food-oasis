@@ -5,15 +5,12 @@ import theme from "./theme/materialUI";
 import { UserContext } from "./components/user-context";
 import Toast from "./components/Toast";
 import Header from "./components/Header";
-// import Main from './components/Main';
 import Map from "./components/Map";
 import StakeholdersContainer from "./components/StakeholdersContainer";
 import StakeholderEdit from "./components/StakeholderEdit";
 import Donate from "./components/Donate";
-// import News from "./components/News";
 import Resources from "./components/Resources";
 import About from "./components/About";
-// import Team from "./components/Team";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import ForgotPassword from "./components/ForgotPassword";
@@ -23,11 +20,13 @@ import ConfirmEmail from "./components/ConfirmEmail";
 import Faq from "./components/Faq";
 import FaqEdit from "./components/FaqEdit";
 import FaqAdd from "./components/FaqAdd";
-// import Organizations from "./components/Organizations";
 import Home from "./containers/Home";
-// import usePersistedState from "./hooks/usePersistedState";
-// import { store } from "state/store";
-// import { SET_USER, SET_COORDINATES } from "state/types";
+
+// Temporarily unused components
+// import Main from './components/Main';
+// import News from "./components/News";
+// import Team from "./components/Team";
+// import Organizations from "./components/Organizations";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
@@ -39,12 +38,12 @@ const useStyles = makeStyles({
     justifyContent: "space-between",
     alignItems: "stretch",
     height: "100%",
-    backgroundColor: "rgb(144, 194, 70)"
+    overflowY: "scroll"
+    // backgroundColor: "rgb(144, 194, 70)"
   }),
   mainContent: {
     margin: "0",
     paddingBottom: "50px",
-    backgroundColor: "green",
     overflowY: "scroll",
     flexGrow: 1
   },
@@ -85,11 +84,6 @@ function App() {
     fetchLocation();
   }, []);
 
-  // useEffect(() => {
-  //   console.warn("persist coordssss", persistedCoordinates);
-  //   setPersistedCoordinates(userCoordinates);
-  // }, [userCoordinates, setPersistedCoordinates]);
-
   const onLogin = user => {
     if (user) {
       localStorage.setItem("user", JSON.stringify(user));
@@ -97,14 +91,7 @@ function App() {
       localStorage.removeItem("user");
     }
     setUser(user);
-    // dispatch({ type: SET_USER, payload: user });
   };
-
-  // const setCoordinates = coordinates => {
-  //   setUserCoordinates(coordinates);
-  //   // setPersistedCoordinates(coordinates);
-  //   // dispatch({ type: SET_COORDINATES, payload: coordinates });
-  // };
 
   const fetchLocation = () => {
     console.warn("fetching location in app");
@@ -132,8 +119,7 @@ function App() {
     return userCoordinates;
   };
 
-  const classes = useStyles({ backgroundImage: bgImg });
-  // const classes = useStyles();
+  const classes = useStyles();
 
   return (
     <UserContext.Provider value={user}>
@@ -142,9 +128,6 @@ function App() {
           <div className={classes.app}>
             <Header user={user} setUser={onLogin} />
             <Switch className={classes.mainContent}>
-              {/* <Route exact path="/">
-                <StakeholdersContainer />
-              </Route> */}
               <Route exact path="/">
                 <div
                   className={classes.homeWrapper}

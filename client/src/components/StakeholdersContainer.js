@@ -7,26 +7,31 @@ import StakeholderList from "./StakeholderList";
 import Map from "./Map";
 import { RotateLoader } from "react-spinners";
 import { useStakeholders } from "../hooks/useStakeholders/useStakeholders";
+// import { store } from 'state/store';
 
 const styles = {
   container: {
     display: "flex",
     flexDirection: "column",
-    padding: "1rem",
+    padding: "1rem"
   },
   header: {
-    display: "flex",
-  },
+    display: "flex"
+  }
 };
 
 function StakeholdersContainer(props) {
   const { history, userCoordinates } = props;
-  const { state, dispatch, actionTypes, search } = useStakeholders(history);
+  const { state, dispatch, actionTypes, search } = useStakeholders(
+    history,
+    userCoordinates
+  );
   const [isMapView, setIsMapView] = React.useState(true);
-  console.log(userCoordinates);
   const openSearchPanel = isOpen => {
     dispatch({ type: actionTypes.TOGGLE_SEARCH_PANEL, isOpen });
   };
+  // const globalState = useContext(store);
+  // console.log("globalState", globalState);
 
   const {
     stakeholders,
@@ -40,8 +45,10 @@ function StakeholdersContainer(props) {
     isSearchPanelOpen,
     isLoading,
     latitude,
-    longitude,
+    longitude
   } = state;
+  // console.warn('latitude', latitude);
+  // console.warn('longitude', longitude);
 
   return (
     <main style={styles.container}>
@@ -93,7 +100,7 @@ function StakeholdersContainer(props) {
               width: "100%",
               margin: "100px auto",
               display: "flex",
-              justifyContent: "space-around",
+              justifyContent: "space-around"
             }}
             aria-label="Loading spinner"
           >

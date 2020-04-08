@@ -2,7 +2,6 @@ import React from "react";
 import Menu from "./Menu";
 import logo from "../images/fola.svg";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
-import { Link } from "react-router-dom";
 import Logout from "./Logout";
 
 const styles = {
@@ -32,7 +31,7 @@ export default function Header(props) {
         <Toolbar>
           <Menu user={props.user} setUser={props.setUser} />
           <div style={styles.homeLink}>
-            <a href="/home">
+            <a href="/">
               <img src={logo} style={styles.logo} alt="logo" />{" "}
             </a>
           </div>

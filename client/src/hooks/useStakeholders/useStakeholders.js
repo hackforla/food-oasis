@@ -6,8 +6,9 @@ import { reducer } from "./reducer";
 import { initialState } from "./initialState";
 import queryString from "query-string";
 
-export function useStakeholders(history) {
+export function useStakeholders(history, userCoordinates) {
   const [state, dispatch] = useReducer(reducer, initialState);
+  //const { latitude, longitude } = userCoordinates;
 
   const search = async (
     searchString,
@@ -24,6 +25,8 @@ export function useStakeholders(history) {
     } = actionTypes.STAKEHOLDERS;
     if (!selectedCategories) return;
     try {
+      console.warn("latitude", latitude);
+      console.warn("longitude", longitude);
       dispatch({ type: FETCH_REQUEST });
       const stakeholders = await stakeholderService.search({
         name: searchString,
@@ -80,45 +83,48 @@ export function useStakeholders(history) {
     }
   };
 
-  const fetchLocation = () => {
-    const {
-      FETCH_FAILURE,
-      FETCH_REQUEST,
-      FETCH_SUCCESS
-    } = actionTypes.LOCATION;
+  // apparently dead code ?
+  // const fetchLocation = () => {
+  //   console.warn('fetching');
+  //   const {
+  //     FETCH_FAILURE,
+  //     FETCH_REQUEST,
+  //     FETCH_SUCCESS,
+  //   } = actionTypes.LOCATION;
 
-    let userCoordinates = { latitude: null, longitude: null };
+  //   let userCoordinates = { latitude: null, longitude: null };
 
-    dispatch({ type: FETCH_REQUEST });
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        position => {
-          if (!position) {
-            dispatch({
-              type: FETCH_SUCCESS,
-              userCoordinates: { latitude: null, longitude: null }
-            });
-          }
-          const userCoordinates = {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude
-          };
-          dispatch({ type: FETCH_SUCCESS, userCoordinates });
-        },
-        error => {
-          dispatch({ type: FETCH_FAILURE, error });
-        }
-      );
-    } else {
-      // If browser location permission is denied, the request is
-      // "successful", but the result is null coordinates.
-      dispatch({
-        type: FETCH_SUCCESS,
-        userCoordinates
-      });
-    }
-    return userCoordinates;
-  };
+  //   dispatch({ type: FETCH_REQUEST });
+  //   if (navigator.geolocation) {
+  //     navigator.geolocation.getCurrentPosition(
+  //       (position) => {
+  //         if (!position) {
+  //           dispatch({
+  //             type: FETCH_SUCCESS,
+  //             userCoordinates: { latitude: null, longitude: null },
+  //           });
+  //         }
+  //         const userCoordinates = {
+  //           latitude: position.coords.latitude,
+  //           longitude: position.coords.longitude,
+  //         };
+  //         dispatch({ type: FETCH_SUCCESS, userCoordinates });
+  //       },
+  //       (error) => {
+  //         dispatch({ type: FETCH_FAILURE, error });
+  //       },
+  //     );
+  //   } else {
+  //     // If browser location permission is denied, the request is
+  //     // "successful", but the result is null coordinates.
+  //     dispatch({
+  //       type: FETCH_SUCCESS,
+  //       userCoordinates,
+  //     });
+  //   }
+  //   console.warn('userCoordinates in hook', userCoordinates);
+  //   return userCoordinates;
+  // };
 
   const applyQueryStringParameters = (history, initialState) => {
     // The goal here is to overwrite the initialState with
@@ -164,10 +170,6 @@ export function useStakeholders(history) {
   useEffect(() => {
     // Runs once on initialization to get list of all active categories
     fetchCategories();
-
-    // Runs once on initialization to get user's browser lat/lon, if
-    // browser permits
-    fetchLocation();
   }, []);
 
   useEffect(() => {

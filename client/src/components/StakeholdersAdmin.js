@@ -1,12 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import { Typography } from "@material-ui/core";
-import StakeholderSearch from "./StakeholderSearch";
-import StakeholderCriteria from "./StakeholderCriteria";
 import StakeholderList from "./StakeholderList";
-import Map from "./Map";
 import { RotateLoader } from "react-spinners";
-import { useStakeholders } from "../hooks/useStakeholders/useStakeholders";
+import { useOrganizations } from "../hooks/useOrganizations/useOrganizations";
+import { useCategories } from "../hooks/useCategories/useCategories";
 
 const styles = {
   container: {
@@ -19,35 +17,37 @@ const styles = {
   }
 };
 
-function StakeholdersContainer(props) {
+function StakeholdersAdmin(props) {
   const { history, userCoordinates } = props;
-  const { state, dispatch, actionTypes, search } = useStakeholders(
-    history,
-    userCoordinates
-  );
-  const [isMapView, setIsMapView] = React.useState(true);
-  const openSearchPanel = isOpen => {
-    dispatch({ type: actionTypes.TOGGLE_SEARCH_PANEL, isOpen });
-  };
-  // const globalState = useContext(store);
-  // console.log("globalState", globalState);
+  const [criteria, setCriteria] = useState({
+    name: "",
+    latitude: 33.837,
+    longitude: -118.373,
+    radius: 5000,
+    categoryIds: [1, 8, 9]
+  });
+
+  const [stakeholders, setStakeholders] = useState(null);
 
   const {
-    stakeholders,
-    categories,
-    searchString,
-    selectedLongitude,
-    selectedLatitude,
-    selectedLocationName,
-    selectedDistance,
-    selectedCategories,
-    isSearchPanelOpen,
-    isLoading,
-    latitude,
-    longitude
-  } = state;
-  // console.warn('latitude', latitude);
-  // console.warn('longitude', longitude);
+    data: categories,
+    loading: categoriesLoading,
+    error: categoriesError
+  } = useCategories();
+
+  const {
+    data,
+    loading: stakeholdersLoading,
+    error: stakeholdersError,
+    search: stakeholderSearch
+  } = useOrganizations();
+
+  useEffect = (() => {}, [criteria]);
+
+  const search = async () => {
+    const stakeholders = await stakeholderSearch(criteria);
+    setStakeholders(stakeholders);
+  };
 
   return (
     <main style={styles.container}>
@@ -62,7 +62,7 @@ function StakeholdersContainer(props) {
         </Typography>
       </header>
       <>
-        {isSearchPanelOpen ? (
+        {/* {isSearchPanelOpen ? (
           <StakeholderSearch
             key={selectedLatitude}
             latitude={latitude}
@@ -91,8 +91,9 @@ function StakeholdersContainer(props) {
             switchResultsView={() => setIsMapView(!isMapView)}
             isMapView={isMapView}
           />
-        )}
-        {isSearchPanelOpen ? null : isLoading ? (
+        )} */}
+        <button onClick={search}>Search</button>
+        {categoriesLoading || stakeholdersLoading ? (
           <div
             style={{
               height: "200",
@@ -111,12 +112,6 @@ function StakeholdersContainer(props) {
               loading={true}
             />
           </div>
-        ) : isMapView && selectedLatitude && selectedLongitude ? (
-          <Map
-            stakeholders={stakeholders}
-            selectedLatitude={selectedLatitude}
-            selectedLongitude={selectedLongitude}
-          />
         ) : (
           <StakeholderList stakeholders={stakeholders} />
         )}
@@ -125,4 +120,4 @@ function StakeholdersContainer(props) {
   );
 }
 
-export default withRouter(StakeholdersContainer);
+export default withRouter(StakeholdersAdmin);

@@ -8,6 +8,7 @@ import Header from "./components/Header";
 // import Main from './components/Main';
 import Map from "./components/Map";
 import StakeholdersContainer from "./components/StakeholdersContainer";
+import StakeholdersAdmin from "./components/StakeholdersAdmin";
 import StakeholderEdit from "./components/StakeholderEdit";
 import Donate from "./components/Donate";
 // import News from "./components/News";
@@ -39,12 +40,12 @@ const useStyles = makeStyles({
     justifyContent: "space-between",
     alignItems: "stretch",
     height: "100%",
+    overflow: "scroll",
     backgroundColor: "rgb(144, 194, 70)"
   }),
   mainContent: {
     margin: "0",
     paddingBottom: "50px",
-    backgroundColor: "green",
     overflowY: "scroll",
     flexGrow: 1
   },
@@ -164,6 +165,12 @@ function App() {
               </Route>
               <Route path="/stakeholderedit/:id?">
                 <StakeholderEdit setToast={setToast} user={user} />
+              </Route>
+              <Route path="/stakeholdersadmin">
+                <StakeholdersAdmin
+                  user={user}
+                  userCoordinates={userCoordinates}
+                />
               </Route>
               <Route path="/donate">
                 <Donate />

@@ -78,11 +78,18 @@ export default function Menu(props) {
         <UserContext.Consumer>
           {user =>
             user && user.isAdmin ? (
-              <MenuItemLink
-                key="stakeholderedit"
-                to="/stakeholderedit"
-                text="Add New Stakeholder"
-              />
+              <>
+                <MenuItemLink
+                  key="stakeholderedit"
+                  to="/stakeholderedit"
+                  text="Add New Stakeholder"
+                />
+                <MenuItemLink
+                  key="stakeholdersadmin"
+                  to="/stakeholdersadmin"
+                  text="Stakeholder Admin"
+                />
+              </>
             ) : null
           }
         </UserContext.Consumer>

@@ -1,14 +1,13 @@
 import { useReducer, useEffect } from "react";
 import * as stakeholderService from "../../services/stakeholder-service";
-import * as categoryService from "../../services/category-service";
-import { useCategories } from "../useCategories";
+import { useCategories } from "../useCategories/useCategories";
 import { actionTypes } from "./actionTypes";
 import { reducer } from "./reducer";
 import { initialState } from "./initialState";
 import queryString from "query-string";
 
 export function useStakeholders(history, userCoordinates) {
-  const cats = useCategories();
+  const { data: categories, loading: categoriesLoading } = useCategories();
   const [state, dispatch] = useReducer(reducer, initialState);
   //const { latitude, longitude } = userCoordinates;
 
@@ -60,28 +59,6 @@ export function useStakeholders(history, userCoordinates) {
     } catch (err) {
       console.log(err);
       dispatch({ type: FETCH_FAILURE });
-    }
-  };
-
-  const fetchCategories = async () => {
-    const {
-      FETCH_FAILURE,
-      FETCH_REQUEST,
-      FETCH_SUCCESS
-    } = actionTypes.CATEGORIES;
-
-    dispatch({ type: FETCH_REQUEST });
-    try {
-      const allCategories = await categoryService.getAll();
-      const categories = allCategories.filter(category => !category.inactive);
-
-      const selectedCategories = categories.filter(
-        category => category.id === 1 || category.id === 8 || category.id === 9
-      ); // setting the initial selection to FoodPantry, Food Bank, Soup Kitchen
-      dispatch({ type: FETCH_SUCCESS, categories, selectedCategories });
-      return categories;
-    } catch (error) {
-      dispatch({ type: FETCH_FAILURE, error });
     }
   };
 
@@ -169,10 +146,11 @@ export function useStakeholders(history, userCoordinates) {
     });
   };
 
-  useEffect(() => {
-    // Runs once on initialization to get list of all active categories
-    fetchCategories();
-  }, []);
+  // useEffect(() => {
+
+  //     fetchCategories();
+
+  // }, []);
 
   useEffect(() => {
     applyQueryStringParameters(history, initialState);
@@ -180,9 +158,9 @@ export function useStakeholders(history, userCoordinates) {
 
   useEffect(() => {
     // if we don't have the categories fetched yet, bail
-    if (!state.categories) return;
+    if (!categories) return;
 
-    // If the query string parameters have not been applie, bail
+    // If the query string parameters have not been applied, bail
     if (!state.queryParametersLoaded) return;
 
     let {
@@ -195,7 +173,7 @@ export function useStakeholders(history, userCoordinates) {
     } = state;
 
     let selectedCategories = selectedCategoryIds.map(
-      id => state.categories.filter(cat => cat.id === Number(id))[0]
+      id => categories.filter(cat => cat.id === Number(id))[0]
     );
 
     search(
@@ -206,7 +184,7 @@ export function useStakeholders(history, userCoordinates) {
       selectedCategories,
       selectedDistance
     );
-  }, [state.categories, state.queryParametersLoaded, initialState]);
+  }, [categories, state.queryParametersLoaded, initialState]);
 
   return { state, dispatch, actionTypes, search };
 }

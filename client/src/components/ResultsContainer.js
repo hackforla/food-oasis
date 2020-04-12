@@ -1,102 +1,90 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Button } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
+import ResultsFilters from "./ResultsFilters";
+import ResultsList from "./ResultsList";
+import ResultsMap from "./ResultsMap";
 
 const useStyles = makeStyles(theme => ({
   filterButton: {
     margin: "0 .25rem",
     padding: "0 0.5rem",
-    fontSize: "12px",
+    fontSize: "12px"
   },
   div: {
-    padding: "1rem 0",
     textAlign: "center",
     fontSize: "12px",
-    border: "1px solid blue",
+    border: "1px solid blue"
   },
   container: {
     display: "flex",
-    flexDirection: "column",
-    // flexGrow: 1,
+    flexDirection: "column"
   },
-  resultsContainer: {
-    width: "100%",
-    height: "100%",
+  list: {
+    textAlign: "center",
+    fontSize: "12px",
+    border: "1px solid blue"
   },
-  controlPanel: {
-    width: "100%",
-    padding: ".5rem 1rem",
-  },
+  map: {
+    textAlign: "center",
+    fontSize: "12px",
+    border: "1px solid blue"
+  }
 }));
 
-export default function ResultsContainer() {
+export default function ResultsContainer(
+  {
+    // TODO: stub out the props coming in
+  }
+) {
   const classes = useStyles();
+  /**
+   * ***PLAN!***
+   *
+   * get the initial search params from the query string
+   *
+   * pass query string params down to ResultsFilters as props
+   * pass function down to search filter to update qs-params??
+   *     maybe this is already handled by useStakeholders?? should it be????
+   *
+   * pass stakeholders array down to map and list components
+   *
+   * hold 'selected stakeholder' in local state
+   */
+
   return (
     <div className={classes.container}>
-      <SearchFilter />
-      <Results />
+      <ResultsFilters
+      /**
+       * distance: PropTypes.number,
+       * placeName: PropTypes.string,
+       * isPantryCategorySelected: PropTypes.bool,
+       * isMealCategorySelected: PropTypes.bool,
+       * isVerifiedFilterSelected: PropTypes.bool,
+       */
+      />
+      <Grid container wrap="wrap-reverse">
+        <Grid item xs={12} md={4} className={classes.list}>
+          <ResultsList
+          // selectedStakeholder={selectedStakeholder}
+          // stakeholders={stakeholders}
+          />
+        </Grid>
+        <Grid item xs={12} md={8} className={classes.map}>
+          <ResultsMap
+          // selectedStakeholder={selectedStakeholder}
+          // stakeholders={stakeholders}
+          // selectedLatitude={selectedLatitude}
+          // selectedLongitude={selectedLongitude}
+          /**
+           * selectedLatitude: PropTypes.number,
+           * selectedLongitude: PropTypes.number,
+           * selectedStakeholder: PropTypes.object,
+           * stakeholders: PropTypes.arrayOf(PropTypes.object)
+           */
+          />
+        </Grid>
+      </Grid>
     </div>
-  );
-}
-
-function Results() {
-  const classes = useStyles();
-  return (
-    <Grid container wrap="wrap-reverse" className={classes.resultsContainer}>
-      <Grid item xs={12} md={4}>
-        <div className={classes.div}>LIST</div>
-      </Grid>
-      <Grid item xs={12} md={8}>
-        <div className={classes.div}>MAP</div>
-      </Grid>
-    </Grid>
-  );
-}
-
-function SearchFilter() {
-  const classes = useStyles();
-  return (
-    <Grid container wrap="wrap-reverse" className={classes.controlPanel}>
-      <Grid
-        item
-        container
-        xs={12}
-        sm={6}
-        md={4}
-        justify="center"
-        alignItems="center"
-      >
-        <Grid item>
-          <Button
-            variant="outlined"
-            className={classes.filterButton}
-            onClick={() => {}}
-          >
-            Distance
-          </Button>
-        </Grid>
-        <Grid item>
-          <Button
-            variant="outlined"
-            className={classes.filterButton}
-            onClick={() => {}}
-          >
-            Food Pantries
-          </Button>
-        </Grid>
-        <Grid item>
-          <Button
-            variant="outlined"
-            className={classes.filterButton}
-            onClick={() => {}}
-          >
-            Meals
-          </Button>
-        </Grid>
-      </Grid>
-      <Grid item xs={12} sm={6} md={8}>
-        <div className={classes.div}>Search Input</div>
-      </Grid>
-    </Grid>
   );
 }

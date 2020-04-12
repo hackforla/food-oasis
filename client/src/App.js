@@ -21,7 +21,7 @@ import Faq from "./components/Faq";
 import FaqEdit from "./components/FaqEdit";
 import FaqAdd from "./components/FaqAdd";
 import Home from "./containers/Home";
-
+import ResultsContainer from "./components/ResultsContainer";
 // Temporarily unused components
 // import Main from './components/Main';
 // import News from "./components/News";
@@ -137,7 +137,7 @@ function App() {
                 </div>
               </Route>
               <Route path="/map">
-                <Map />
+                <ResultsContainer />
               </Route>
               <Route path="/stakeholders">
                 <StakeholdersContainer

@@ -25,6 +25,7 @@
     "moment": "^2.24.0",
     "query-string": "^6.9.0",
     "react": "^16.10.1",
+    "react-data-grid": "^5.0.4",
     "react-dom": "^16.10.1",
     "react-i18next": "^10.13.1",
     "react-map-gl": "^5.1.3",

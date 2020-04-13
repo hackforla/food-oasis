@@ -3,26 +3,39 @@ import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/styles";
 import { UserContext } from "./user-context";
 import { EditButton, MoveUpButton, MoveDownButton } from "./Buttons";
+import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles({
   edit: {
-    marginBottom: "10px",
+    marginBottom: "2rem",
     border: "10px solid #FAEBD7",
     "& h4, h6, div": {
       fontSize: "1rem",
-      margin: "0.5rem"
-    }
+      margin: "0.5rem",
+    },
+  },
+  readOnly: {
+    marginBottom: "2rem",
   },
   editBar: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-around",
-    backgroundColor: "rgb(249, 192, 88)",
-    height: "2.5rem"
+    justifyContent: "space-between",
+    backgroundColor: "rgb(241, 241, 241)",
   },
   hide: {
-    display: "none"
-  }
+    display: "none",
+  },
+  link: {
+    textDecoration: "none",
+  },
+  identifier: {
+    height: "100%",
+    marginLeft: "1rem",
+  },
+  faqText: {
+    padding: "1rem",
+  },
 });
 
 const FaqItem = ({ faq, reorder, reorderFaqs, faqLength }) => {
@@ -31,7 +44,7 @@ const FaqItem = ({ faq, reorder, reorderFaqs, faqLength }) => {
   const identifier = faq.identifier.includes(":")
     ? faq.identifier.slice(
         faq.identifier.indexOf(":") + 1,
-        faq.identifier.length
+        faq.identifier.length,
       )
     : faq.identifier;
   const order =
@@ -39,13 +52,15 @@ const FaqItem = ({ faq, reorder, reorderFaqs, faqLength }) => {
     faq.identifier.slice(0, faq.identifier.indexOf(":"));
 
   return (
-    <li className={reorder ? classes.edit : ""}>
+    <li className={reorder ? classes.edit : classes.readOnly}>
       <UserContext.Consumer>
         {user =>
           user &&
           user.isAdmin && (
             <div className={classes.editBar}>
-              <h4>Identifier: {identifier}</h4>
+              <Typography className={classes.identifier} variant="h6">
+                {identifier}
+              </Typography>
               {reorder ? (
                 <>
                   <MoveUpButton
@@ -58,16 +73,21 @@ const FaqItem = ({ faq, reorder, reorderFaqs, faqLength }) => {
                   />
                 </>
               ) : (
-                <Link to={`/faqs/${faq.identifier}`}>
-                  <EditButton label="Edit" />
+                <Link className={classes.link} to={`/faqs/${faq.identifier}`}>
+                  <EditButton label="  Edit  " />
                 </Link>
               )}
             </div>
           )
         }
       </UserContext.Consumer>
-      <h4>{faq.question}</h4>
-      <div dangerouslySetInnerHTML={{ __html: faq.answer }} />
+      <section className={classes.faqText}>
+        <Typography variant="h6">{faq.question}</Typography>
+        <Typography
+          component="p"
+          dangerouslySetInnerHTML={{ __html: faq.answer }}
+        />
+      </section>
     </li>
   );
 };

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import * as stakeholderService from "../../services/stakeholder-service";
 
-export function useOrganizations() {
+export const useOrganizations = () => {
   const [state, setState] = useState({
     data: null,
     loading: false,
@@ -28,5 +28,6 @@ export function useOrganizations() {
     }
   };
 
-  return { state, search };
-}
+  // return [search, state];
+  return { ...state, search };
+};

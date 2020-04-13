@@ -2,7 +2,9 @@ const { pool } = require("./postgres-pool");
 const { toSqlString, toSqlNumeric, toSqlBoolean } = require("./postgres-utils");
 
 const selectAll = async (name, categoryIds, latitude, longitude, distance) => {
-  const categoryClause = "(" + categoryIds.join(",") + ")";
+  const categoryClause = `(select sc.stakeholder_id from stakeholder_category sc where sc.category_id in (${categoryIds.join(
+    ","
+  )}))`;
   const nameClause = "'%" + name.replace(/'/g, "''") + "%'";
   const sql = `
     select s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
@@ -25,23 +27,28 @@ const selectAll = async (name, categoryIds, latitude, longitude, distance) => {
       s.created_date, s.created_login_id, 
       s.modified_date, s.modified_login_id,
       s.verified_date, s.verified_login_id,
+      s.approved_date, s.approved_login_id,
+      s.assigned_login_id,
       s.requirements, s.admin_notes, s.inactive,
       L1.first_name || ' ' || L1.last_name as created_user,
       L2.first_name || ' ' || L2.last_name as modified_user,
       L3.first_name || ' ' || L3.last_name as verified_user,
+      L4.first_name || ' ' || L4.last_name as approved_user,
+      L5.first_name || ' ' || L5.last_name as approved_user,
       s.parent_organization, s.physical_access, s.email,
       s.items, s.services, s.facebook,
       s.twitter, s.pinterest, s.linkedin, s.description
     from stakeholder s
-    left join stakeholder_category sc on s.id = sc.stakeholder_id
-    left join category c on sc.category_id = c.id 
     left join login L1 on s.created_login_id = L1.id
     left join login L2 on s.modified_login_id = L2.id
     left join login L3 on s.verified_login_id = L3.id
-    where c.id in ${categoryClause}
+    left join login L4 on s.approved_login_id = L4.id
+    left join login L5 on s.assigned_login_id = L5.id
+    where s.id in ${categoryClause}
     and s.name ilike ${nameClause} 
     order by s.name
   `;
+  console.log(sql);
   const stakeholderResult = await pool.query(sql);
   let stakeholders = [];
   stakeholderResult.rows.forEach(row => {
@@ -64,12 +71,17 @@ const selectAll = async (name, categoryIds, latitude, longitude, distance) => {
       modifiedLoginId: row.modified_login_id,
       verifiedDate: row.verified_date,
       verfiedLoginId: row.verified_login_id,
+      assignedLoginId: row.assigned_login_id,
+      approvedDate: row.approved_date,
+      approvedLoginId: row.approved_login_id,
       requirements: row.requirements || "",
       adminNotes: row.admin_notes || "",
       inactive: row.inactive,
       createdUser: row.created_user || "",
       modifiedUser: row.modified_user || "",
       verifiedUser: row.verified_user || "",
+      approvedUser: row.approved_user || "",
+      assignedUser: row.assigend_user || "",
       categories: row.categories,
       hours: row.hours,
       parentOrganization: row.parent_organization || "",
@@ -133,10 +145,14 @@ const selectById = async id => {
       s.created_date, s.created_login_id, 
       s.modified_date, s.modified_login_id,
       s.verified_date, s.verified_login_id,
+      s.approved_date, s.approved_login_id,
+      s.assigned_login_id,
       s.requirements, s.admin_notes, s.inactive,
       L1.first_name || ' ' || L1.last_name as created_user,
       L2.first_name || ' ' || L2.last_name as modified_user,
       L3.first_name || ' ' || L3.last_name as verified_user,
+      L4.first_name || ' ' || L4.last_name as approved_user,
+      L5.first_name || ' ' || L5.last_name as assigned_user,
       s.parent_organization, s.physical_access, s.email,
       s.items, s.services, s.facebook,
       s.twitter, s.pinterest, s.linkedin, s.description
@@ -144,6 +160,8 @@ const selectById = async id => {
     left join login L1 on s.created_login_id = L1.id
     left join login L2 on s.modified_login_id = L2.id
     left join login L3 on s.verified_login_id = L3.id
+    left join login L4 on s.approved_login_id = L4.id
+    left join login L5 on s.assigned_login_id = L5.id
     where s.id = ${id}`;
   const result = await pool.query(sql);
   const row = result.rows[0];
@@ -166,12 +184,17 @@ const selectById = async id => {
     modifiedLoginId: row.modified_login_id,
     verifiedDate: row.verified_date,
     verfiedLoginId: row.verified_login_id,
+    approvedDate: row.approved_date,
+    approvedLoginId: row.approved_login_id,
+    assingedLoginId: row.assigned_login_id,
     requirements: row.requirements || "",
     adminNotes: row.admin_notes || "",
     inactive: row.inactive,
     createdUser: row.created_user || "",
     modifiedUser: row.modified_user || "",
     verifiedUser: row.verified_user || "",
+    approvedUser: row.approved_user || "",
+    assigendUser: row.assigned_user || "",
     categories: row.categories,
     hours: row.hours,
     parentOrganization: row.parent_organization || "",
@@ -289,6 +312,27 @@ const verify = async model => {
                  setVerified ? toSqlNumeric(loginId) : "null"
                },
                verified_date = ${setVerified ? "CURRENT_TIMESTAMP" : "null"}
+              where id = ${id}`;
+  const result = await pool.query(sql);
+};
+
+const approve = async model => {
+  const { id, loginId, setApproved } = model;
+  const sql = `update stakeholder set
+               approved_login_id = ${
+                 setApproved ? toSqlNumeric(loginId) : "null"
+               },
+               approved_date = ${setapproved ? "CURRENT_TIMESTAMP" : "null"}
+              where id = ${id}`;
+  const result = await pool.query(sql);
+};
+
+const assign = async model => {
+  const { id, loginId, setAssigned } = model;
+  const sql = `update stakeholder set
+               assigned_login_id = ${
+                 setAssigned ? toSqlNumeric(loginId) : "null"
+               }
               where id = ${id}`;
   const result = await pool.query(sql);
 };

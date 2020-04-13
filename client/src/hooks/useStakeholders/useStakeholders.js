@@ -7,7 +7,7 @@ import { initialState } from "./initialState";
 import queryString from "query-string";
 
 export function useStakeholders(history, userCoordinates) {
-  const { data: categories, loading: categoriesLoading } = useCategories();
+  const { data: categories } = useCategories();
   const [state, dispatch] = useReducer(reducer, initialState);
   //const { latitude, longitude } = userCoordinates;
 

@@ -63,7 +63,9 @@ const selectByEmail = email => {
         email: row.email,
         dateCreated: row.date_created,
         emailConfirmed: row.email_confirmed,
-        isAdmin: row.is_admin
+        isAdmin: row.is_admin,
+        isSecurityAdmin: row.is_security_admin,
+        isDataEntry: row.is_data_entry
       };
     }
     return null;

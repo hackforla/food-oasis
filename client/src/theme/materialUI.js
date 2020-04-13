@@ -5,51 +5,56 @@ const theme = createMuiTheme({
     primary: {
       // purple
       main: "#772f7a",
-      contrastText: "#ffffff"
+      contrastText: "#ffffff",
     },
     secondary: {
       // orange
       main: "rgb(249, 192, 88)",
-      contrastText: "#000000"
+      contrastText: "#000000",
     },
     error: {
       main: "rgb(249, 64, 64)",
-      contrastText: "#000000"
+      contrastText: "#000000",
     },
     text: {
-      primary: "#313233"
-    }
+      primary: "#313233",
+    },
   },
   typography: {
-    fontFamily: '"Open Sans", sans-serif'
+    fontFamily: '"Reem Kufi", "Helvetica Neue", Helvetica, sans-serif;',
   },
   overrides: {
     MuiButton: {
       outlined: {
-        backgroundColor: "#FAEBD7",
-        margin: "10px"
-      }
+        margin: "10px",
+        border: "2px solid #772f7a",
+        color: "#772f7a",
+        "&:hover": {
+          color: "hsl(298, 44%, 96%)",
+          backgroundColor: "#772f7a",
+        },
+      },
     },
     MuiLink: {
       root: {
         color: "#1976d2",
         "&:visited": {
-          color: "#772f7a"
-        }
+          color: "#772f7a",
+        },
       },
       underlineHover: {
         textDecoration: "none",
         "&:hover": {
-          textDecoration: "underline"
-        }
-      }
+          textDecoration: "underline",
+        },
+      },
     },
     MuiAppBar: {
       root: {
-        backgroundColor: "blanchedalmond"
-      }
-    }
-  }
+        backgroundColor: "rgb(241, 241, 241)",
+      },
+    },
+  },
 });
 
 export default theme;

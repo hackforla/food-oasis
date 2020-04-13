@@ -47,6 +47,28 @@ export const verify = async (id, setVerified, loginId) => {
   return response.data;
 };
 
+// id = stakeholderId, setApproved = true to approve data, false to un-approve,
+// loginId is user.id of logged in user
+export const approve = async (id, setApproved, loginId) => {
+  const response = await axios.put(`${baseUrl}/${id}/approve`, {
+    id,
+    setApproved,
+    loginId
+  });
+  return response.data;
+};
+
+// id = stakeholderId, setAssigned = true to assign to user for verification, false to un-assigne,
+// loginId is user.id of person being assigned to.
+export const assign = async (id, setAssigned, loginId) => {
+  const response = await axios.put(`${baseUrl}/${id}/assign`, {
+    id,
+    setAssigned,
+    loginId
+  });
+  return response.data;
+};
+
 // delete user-created job
 export const remove = async id => {
   const response = await axios.post(`${baseUrl}/${id}`, {

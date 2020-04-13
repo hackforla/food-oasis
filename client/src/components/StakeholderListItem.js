@@ -21,7 +21,7 @@ const StakeholderListItem = props => {
 
           {stakeholder.website ? (
             <div>
-              <Link color="default" href={stakeholder.website} target="_blank">
+              <Link color="primary" href={stakeholder.website} target="_blank">
                 {stakeholder.website}
               </Link>
             </div>
@@ -45,11 +45,15 @@ const StakeholderListItem = props => {
             }}
           >
             {stakeholder.verifiedDate ? (
-              <Grid container justifyItems="center" justifyContent="flex-start">
-                <Check />
-                <span>
-                  {" " + moment(stakeholder.verifiedDate).format("MM/DD/YY")}
-                </span>
+              <Grid container>
+                <Grid item>
+                  <Check />
+                </Grid>
+                <Grid item>
+                  <Typography>
+                    {" " + moment(stakeholder.verifiedDate).format("MM/DD/YY")}
+                  </Typography>
+                </Grid>
               </Grid>
             ) : (
               <span></span>

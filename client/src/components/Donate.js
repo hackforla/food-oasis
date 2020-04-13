@@ -5,13 +5,24 @@ import { makeStyles } from "@material-ui/styles";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
 import hackForLA from "../images/hackforla.svg";
 import codeForAmerica from "../images/codeforamerica.svg";
 
 const useStyles = makeStyles({
   root: {
-    textAlign: "center"
-  }
+    textAlign: "center",
+    padding: "2rem",
+  },
+  image: {
+    margin: "1rem",
+  },
+  sectionHeader: {
+    marginTop: "3rem",
+  },
+  description: {
+    margin: "1rem 0",
+  },
 });
 
 const Donate = () => {
@@ -19,24 +30,36 @@ const Donate = () => {
   const classes = useStyles();
 
   return (
-    <Container maxWidth="md" className={classes.root}>
-      <h2>{t("title")}</h2>
+    <Container maxWidth="sm" className={classes.root}>
+      <Typography variant="h6">{t("title")}</Typography>
       <Grid container justify="space-around" alignItems="center">
-        <Grid item>
+        <Grid item className={classes.image}>
           <img src={hackForLA} alt="Hack for LA logo" />
         </Grid>
-        <Grid item>
+        <Grid item className={classes.image}>
           <img src={codeForAmerica} alt="Code for America logo" />
         </Grid>
       </Grid>
-      <h2>{t("support")}</h2>
-      <p>{t("support-p")}</p>
+      <Typography className={classes.sectionHeader} align="center" variant="h4">
+        {t("support")}
+      </Typography>
+      <Typography className={classes.description} component={`p`}>
+        {t("support-p")}
+      </Typography>
       <Button variant="outlined">{t("donate")}</Button>
-      <h2>{t("subscribe")}</h2>
-      <p>{t("subscribe-text")}</p>
+      <Typography className={classes.sectionHeader} align="center" variant="h4">
+        {t("subscribe")}
+      </Typography>
+      <Typography className={classes.description} component={`p`}>
+        {t("subscribe-text")}
+      </Typography>
       <Button variant="outlined">{t("subscribe-button")}</Button>
-      <h2>{t("questions")}</h2>
-      <p>{t("questions-text")}</p>
+      <Typography className={classes.sectionHeader} align="center" variant="h4">
+        {t("questions")}
+      </Typography>
+      <Typography className={classes.description} component={`p`}>
+        {t("questions-text")}
+      </Typography>
       <Button variant="outlined">{t("send-a-message")}</Button>
     </Container>
   );

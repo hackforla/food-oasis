@@ -3,7 +3,7 @@ import * as categoryService from "../../services/category-service";
 
 export const useCategories = () => {
   const [state, setState] = useState({
-    data: null,
+    data: [],
     loading: false,
     error: false
   });
@@ -13,10 +13,10 @@ export const useCategories = () => {
       setState({ data: null, loading: true, error: false });
       try {
         const categories = await categoryService.getAll();
-        setState({ data: categories, loading: false, error: false });
+        setState({ data: categories || [], loading: false, error: false });
       } catch (err) {
-        setState({ data: null, loading: false, error: true });
-        throw console.error(err);
+        setState({ data: [], loading: false, error: true });
+        Promise.reject(console.error(err));
       }
     };
 

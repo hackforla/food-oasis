@@ -108,6 +108,8 @@ const StakeholderEdit = props => {
     modifiedUser: "",
     verifiedDate: "",
     verifiedUser: "",
+    approvedDate: "",
+    approvedUser: "",
     selectedCategoryIds: [],
     hours: []
   });
@@ -148,6 +150,10 @@ const StakeholderEdit = props => {
     stakeholderService.verify(editId, setVerify, user.id);
   };
 
+  const approve = setApprove => {
+    stakeholderService.approve(editId, setApprove, user.id);
+  };
+
   function formatMapAddress(formData) {
     return `${formData.address1 || ""} ${formData.address2 ||
       ""} ${formData.city || ""}, ${formData.state || ""} ${formData.zip ||
@@ -158,7 +164,7 @@ const StakeholderEdit = props => {
     const result = await esriService.geocode(formatMapAddress(formData));
     setGeocodeResults(result);
   };
-  
+
   return (
     <Container component="main" maxWidth="lg">
       <CssBaseline />
@@ -242,6 +248,9 @@ const StakeholderEdit = props => {
                     variant="outlined"
                     margin="normal"
                     fullWidth
+                    multiline
+                    rows={2}
+                    rowsMax={12}
                     value={values.description}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -411,15 +420,9 @@ const StakeholderEdit = props => {
                         >
                           <Grid container>
                             <Grid item xs={10}>
-                              <Typography>{`(${result.location.y}, ${
-                                result.location.x
-                              })`}</Typography>
-                              <Typography>{`${
-                                result.attributes.Match_addr
-                              }`}</Typography>
-                              <Typography>{`${
-                                result.attributes.Addr_type
-                              }`}</Typography>
+                              <Typography>{`(${result.location.y}, ${result.location.x})`}</Typography>
+                              <Typography>{`${result.attributes.Match_addr}`}</Typography>
+                              <Typography>{`${result.attributes.Addr_type}`}</Typography>
                             </Grid>
                             <Grid item xs={2}>
                               <VerifyButton
@@ -498,7 +501,7 @@ const StakeholderEdit = props => {
                     margin="normal"
                     fullWidth
                     name="items"
-                    label="Items"
+                    label="Items (separated by commas)"
                     type="text"
                     value={values.items}
                     onChange={handleChange}
@@ -513,7 +516,7 @@ const StakeholderEdit = props => {
                     margin="normal"
                     fullWidth
                     name="services"
-                    label="Services"
+                    label="Services (separated by commas)"
                     type="text"
                     value={values.services}
                     onChange={handleChange}
@@ -643,9 +646,11 @@ const StakeholderEdit = props => {
                         margin="normal"
                         name="inactive"
                         label="Inactive"
-                        value="1"
+                        value={values.inactive}
                         checked={values.inactive}
-                        onChange={handleChange}
+                        onChange={() =>
+                          setFieldValue("inactive", !values.inactive)
+                        }
                         onBlur={handleBlur}
                       />
                     }
@@ -717,6 +722,23 @@ const StakeholderEdit = props => {
                   <VerifyButton
                     type="button"
                     onClick={() => {
+                      const setApproved = !!!values.approvedDate;
+                      approve(setApproved);
+                      setFieldValue(
+                        "approvedDate",
+                        setApproved ? moment().format() : ""
+                      );
+                      setFieldValue(
+                        "approvedUser",
+                        setApproved ? user.firstName + " " + user.lastName : ""
+                      );
+                    }}
+                    disabled={!values.id}
+                    label={values.approvedDate ? "Disapprove" : "Approve"}
+                  />
+                  <VerifyButton
+                    type="button"
+                    onClick={() => {
                       const setVerified = !!!values.verifiedDate;
                       verify(setVerified);
                       setFieldValue(
@@ -772,6 +794,15 @@ const StakeholderEdit = props => {
                       {`Verified: ${values.verifiedUser} ${
                         values.verifiedDate
                           ? moment(values.verifiedDate).format(
+                              "MM/DD/YY hh:mm a"
+                            )
+                          : ""
+                      }`}
+                    </div>
+                    <div>
+                      {`Approved: ${values.approvedUser} ${
+                        values.approvedDate
+                          ? moment(values.approvedDate).format(
                               "MM/DD/YY hh:mm a"
                             )
                           : ""

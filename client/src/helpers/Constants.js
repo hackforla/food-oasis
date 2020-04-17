@@ -1,7 +1,7 @@
 export const MENU_ITEMS = [
-  { name: 'Stakeholders', link: '/stakeholders' },
-  { name: 'Donate', link: '/donate' },
-  { name: 'FAQs', link: '/faqs' },
-  { name: 'Resources', link: '/resources' },
-  { name: 'About', link: '/about' }
+  { text: 'Stakeholders', link: '/stakeholders' },
+  { text: 'Donate', link: '/donate' },
+  { text: 'FAQs', link: '/faqs' },
+  { text: 'Resources', link: '/resources' },
+  { text: 'About', link: '/about' }
 ];

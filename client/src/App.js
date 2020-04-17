@@ -1,75 +1,74 @@
-import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { ThemeProvider } from "@material-ui/core/styles";
-import theme from "./theme/materialUI";
-import { UserContext } from "./components/user-context";
-import Toast from "./components/Toast";
-import Header from "./components/Header";
-import Map from "./components/Map";
-import StakeholdersContainer from "./components/StakeholdersContainer";
-import StakeholderEdit from "./components/StakeholderEdit";
-import Donate from "./components/Donate";
-import Resources from "./components/Resources";
-import About from "./components/About";
-import Register from "./components/Register";
-import Login from "./components/Login";
-import ForgotPassword from "./components/ForgotPassword";
-import ResetPassword from "./components/ResetPassword";
-import Footer from "./components/Footer";
-import ConfirmEmail from "./components/ConfirmEmail";
-import Faq from "./components/Faq";
-import FaqEdit from "./components/FaqEdit";
-import FaqAdd from "./components/FaqAdd";
-import Home from "./containers/Home";
-import ResultsContainer from "./components/ResultsContainer";
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { ThemeProvider } from '@material-ui/core/styles';
+import theme from 'theme/materialUI';
+import { UserContext } from 'components/user-context';
+import Toast from 'components/Toast';
+import Header from 'components/Header';
+import Map from 'components/Map';
+import StakeholdersContainer from 'components/StakeholdersContainer';
+import StakeholderEdit from 'components/StakeholderEdit';
+import Donate from 'components/Donate';
+import Resources from 'components/Resources';
+import About from 'components/About';
+import Register from 'components/Register';
+import Login from 'components/Login';
+import ForgotPassword from 'components/ForgotPassword';
+import ResetPassword from 'components/ResetPassword';
+import Footer from 'components/Footer';
+import ConfirmEmail from 'components/ConfirmEmail';
+import Faq from 'components/Faq';
+import FaqEdit from 'components/FaqEdit';
+import FaqAdd from 'components/FaqAdd';
+import Home from 'containers/Home';
+import ResultsContainer from 'components/ResultsContainer';
 // Temporarily unused components
-// import Main from './components/Main';
-// import News from "./components/News";
-// import Team from "./components/Team";
-// import Organizations from "./components/Organizations";
-import { makeStyles } from "@material-ui/core/styles";
+// import Main from 'components/Main';
+// import News from "components/News";
+// import Team from "components/Team";
+// import Organizations from "components/Organizations";
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
-  app: props => ({
-    color: "black",
-    margin: "0",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    alignItems: "stretch",
-    height: "100%",
-    overflowY: "scroll"
-    // backgroundColor: "rgb(144, 194, 70)"
+  app: (props) => ({
+    color: 'black',
+    margin: '0',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'stretch',
+    height: '100%',
+    overflowY: 'scroll',
   }),
   mainContent: {
-    margin: "0",
-    paddingBottom: "50px",
-    overflowY: "scroll",
-    flexGrow: 1
+    margin: '0',
+    paddingBottom: '50px',
+    overflowY: 'scroll',
+    flexGrow: 1,
   },
   homeWrapper: {
-    backgroundSize: "cover",
-    height: "100vh",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center"
-  }
+    backgroundSize: 'cover',
+    height: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
 });
 
 function App() {
   const [user, setUser] = useState(null);
   const [userCoordinates, setUserCoordinates] = useState({});
-  const [toast, setToast] = useState({ message: "" });
-  const [bgImg, setBgImg] = useState("");
+  const [toast, setToast] = useState({ message: '' });
+  const [bgImg, setBgImg] = useState('');
 
   useEffect(() => {
-    const imgNum = Math.floor(Math.random() * (22 - 1)) + 1;
+    const imgNum = Math.floor(Math.random() * (21 - 1)) + 1;
     const backgroundImage = `url("/landing-page/${imgNum}.jpg")`;
     setBgImg(backgroundImage);
   }, []);
 
   useEffect(() => {
-    const storedJson = localStorage.getItem("user");
+    const storedJson = localStorage.getItem('user');
     const userJson = JSON.stringify(user);
     if (!userJson && !storedJson) {
       return;
@@ -84,32 +83,31 @@ function App() {
     fetchLocation();
   }, []);
 
-  const onLogin = user => {
+  const onLogin = (user) => {
     if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem('user', JSON.stringify(user));
     } else {
-      localStorage.removeItem("user");
+      localStorage.removeItem('user');
     }
     setUser(user);
   };
 
   const fetchLocation = () => {
-    console.warn("fetching location in app");
     let userCoordinates = { latitude: null, longitude: null };
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        position => {
+        (position) => {
           if (position) {
             const userCoordinates = {
               latitude: position.coords.latitude,
-              longitude: position.coords.longitude
+              longitude: position.coords.longitude,
             };
             setUserCoordinates(userCoordinates);
           }
         },
-        error => {
+        (error) => {
           console.log(`Getting browser location failed: ${error.message}`);
-        }
+        },
       );
     } else {
       // If browser location permission is denied, the request is

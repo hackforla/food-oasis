@@ -1,37 +1,31 @@
-import React from "react";
-import { withRouter } from "react-router-dom";
-import { Typography } from "@material-ui/core";
-import StakeholderSearch from "./StakeholderSearch";
-import StakeholderCriteria from "./StakeholderCriteria";
-import StakeholderList from "./StakeholderList";
-import Map from "./Map";
-import { RotateLoader } from "react-spinners";
-import { useStakeholders } from "../hooks/useStakeholders/useStakeholders";
-// import { store } from 'state/store';
+import React from 'react';
+import { withRouter } from 'react-router-dom';
+import { Typography } from '@material-ui/core';
+import StakeholderSearch from './StakeholderSearch';
+import StakeholderCriteria from './StakeholderCriteria';
+import StakeholderList from './StakeholderList';
+import Map from './Map';
+import { RotateLoader } from 'react-spinners';
+import { useStakeholders } from 'hooks/useStakeholders/useStakeholders';
 
 const styles = {
   container: {
-    display: "flex",
-    flexDirection: "column",
-    padding: "1rem"
+    display: 'flex',
+    flexDirection: 'column',
+    padding: '1rem',
   },
   header: {
-    display: "flex"
-  }
+    display: 'flex',
+  },
 };
 
 function StakeholdersContainer(props) {
-  const { history, userCoordinates } = props;
-  const { state, dispatch, actionTypes, search } = useStakeholders(
-    history,
-    userCoordinates
-  );
+  const { history } = props;
+  const { state, dispatch, actionTypes, search } = useStakeholders(history);
   const [isMapView, setIsMapView] = React.useState(true);
-  const openSearchPanel = isOpen => {
+  const openSearchPanel = (isOpen) => {
     dispatch({ type: actionTypes.TOGGLE_SEARCH_PANEL, isOpen });
   };
-  // const globalState = useContext(store);
-  // console.log("globalState", globalState);
 
   const {
     stakeholders,
@@ -45,21 +39,19 @@ function StakeholdersContainer(props) {
     isSearchPanelOpen,
     isLoading,
     latitude,
-    longitude
+    longitude,
   } = state;
-  // console.warn('latitude', latitude);
-  // console.warn('longitude', longitude);
 
   return (
     <main style={styles.container}>
       <header style={styles.header}>
         <Typography
-          variant={"h4"}
-          component={"h4"}
+          variant={'h4'}
+          component={'h4'}
           align="center"
-          style={{ marginBottom: "0.5em" }}
+          style={{ marginBottom: '0.5em' }}
         >
-          Stakeholders{" "}
+          Stakeholders{' '}
         </Typography>
       </header>
       <>
@@ -96,19 +88,19 @@ function StakeholdersContainer(props) {
         {isSearchPanelOpen ? null : isLoading ? (
           <div
             style={{
-              height: "200",
-              width: "100%",
-              margin: "100px auto",
-              display: "flex",
-              justifyContent: "space-around"
+              height: '200',
+              width: '100%',
+              margin: '100px auto',
+              display: 'flex',
+              justifyContent: 'space-around',
             }}
             aria-label="Loading spinner"
           >
             <RotateLoader
               // css={}
-              sizeUnit={"px"}
+              sizeUnit={'px'}
               size={15}
-              color={"#FAEBD7"}
+              color={'#FAEBD7'}
               loading={true}
             />
           </div>

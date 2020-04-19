@@ -12,11 +12,11 @@ const styles = {
   container: {
     display: "flex",
     flexDirection: "column",
-    padding: "1rem"
+    padding: "1rem",
   },
   header: {
-    display: "flex"
-  }
+    display: "flex",
+  },
 };
 
 function StakeholdersContainer(props) {
@@ -26,7 +26,7 @@ function StakeholdersContainer(props) {
     userCoordinates
   );
   const [isMapView, setIsMapView] = React.useState(true);
-  const openSearchPanel = isOpen => {
+  const openSearchPanel = (isOpen) => {
     dispatch({ type: actionTypes.TOGGLE_SEARCH_PANEL, isOpen });
   };
   // const globalState = useContext(store);
@@ -44,7 +44,7 @@ function StakeholdersContainer(props) {
     isSearchPanelOpen,
     isLoading,
     latitude,
-    longitude
+    longitude,
   } = state;
   // console.warn('latitude', latitude);
   // console.warn('longitude', longitude);
@@ -64,7 +64,10 @@ function StakeholdersContainer(props) {
       <>
         {isSearchPanelOpen ? (
           <StakeholderSearch
-            key={selectedLatitude}
+            key={JSON.stringify({
+              userLatitude: userCoordinates.latitude,
+              categories,
+            })}
             latitude={latitude}
             longitude={longitude}
             selectedLatitude={selectedLatitude}
@@ -99,7 +102,7 @@ function StakeholdersContainer(props) {
               width: "100%",
               margin: "100px auto",
               display: "flex",
-              justifyContent: "space-around"
+              justifyContent: "space-around",
             }}
             aria-label="Loading spinner"
           >

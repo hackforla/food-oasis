@@ -22,7 +22,7 @@ export function useStakeholders(history, userCoordinates) {
     const {
       FETCH_FAILURE,
       FETCH_REQUEST,
-      FETCH_SUCCESS
+      FETCH_SUCCESS,
     } = actionTypes.STAKEHOLDERS;
     if (!selectedCategories) return;
     try {
@@ -31,10 +31,10 @@ export function useStakeholders(history, userCoordinates) {
       dispatch({ type: FETCH_REQUEST });
       const stakeholders = await stakeholderService.search({
         name: searchString,
-        categoryIds: selectedCategories.map(category => category.id),
+        categoryIds: selectedCategories.map((category) => category.id),
         latitude,
         longitude,
-        distance: selectedDistance
+        distance: selectedDistance,
       });
       dispatch({
         type: FETCH_SUCCESS,
@@ -45,8 +45,8 @@ export function useStakeholders(history, userCoordinates) {
           selectedLongitude: longitude,
           selectedLocationName,
           selectedCategories,
-          selectedDistance
-        }
+          selectedDistance,
+        },
       });
       history.push(
         `/stakeholders?name=${searchString}` +
@@ -54,7 +54,7 @@ export function useStakeholders(history, userCoordinates) {
           `&lat=${latitude}` +
           `&lon=${longitude}` +
           `&placeName=${selectedLocationName}` +
-          `&categoryIds=${selectedCategories.map(c => c.id).join(",")}`
+          `&categoryIds=${selectedCategories.map((c) => c.id).join(",")}`
       );
     } catch (err) {
       console.log(err);
@@ -116,7 +116,7 @@ export function useStakeholders(history, userCoordinates) {
       selectedLongitude,
       selectedLocationName,
       selectedDistance,
-      selectedCategoryIds
+      selectedCategoryIds,
     } = initialState;
 
     const params = queryString.parse(history.location.search);
@@ -141,8 +141,8 @@ export function useStakeholders(history, userCoordinates) {
         selectedLocationName,
         selectedCategoryIds,
         selectedDistance,
-        queryParametersLoaded: true
-      }
+        queryParametersLoaded: true,
+      },
     });
   };
 
@@ -169,11 +169,11 @@ export function useStakeholders(history, userCoordinates) {
       selectedLongitude,
       selectedLocationName,
       selectedDistance,
-      selectedCategoryIds
+      selectedCategoryIds,
     } = state;
 
     let selectedCategories = selectedCategoryIds.map(
-      id => categories.filter(cat => cat.id === Number(id))[0]
+      (id) => categories.filter((cat) => cat.id === Number(id))[0]
     );
 
     search(
@@ -186,5 +186,5 @@ export function useStakeholders(history, userCoordinates) {
     );
   }, [categories, state.queryParametersLoaded, initialState]);
 
-  return { state, dispatch, actionTypes, search };
+  return { state: { ...state, categories }, dispatch, actionTypes, search };
 }

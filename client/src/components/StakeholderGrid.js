@@ -19,10 +19,10 @@ const DateFormatter = ({ value }) =>
 const defaultColumnProperties = {
   resizable: true,
   sortable: true,
-  width: 150
+  width: 150,
 };
 
-const sortRows = (initialRows, sortColumn, sortDirection) => rows => {
+const sortRows = (initialRows, sortColumn, sortDirection) => (rows) => {
   const comparer = (a, b) => {
     if (sortDirection === "ASC") {
       return a[sortColumn] > b[sortColumn] ? 1 : -1;
@@ -44,40 +44,52 @@ const columns = [
     key: "distance",
     name: "Distance (mi)",
     formatter: DistanceFormatter,
-    width: 85
+    width: 85,
   },
   { key: "assignedUser", name: "Assigned To" },
+  {
+    key: "assignedDate",
+    name: "Assigned",
+    formatter: DateFormatter,
+    dataType: "datetime",
+  },
   { key: "verifiedUser", name: "Verified By" },
   {
     key: "verifiedDate",
     name: "Verified",
     formatter: DateFormatter,
-    dataType: "datetime"
+    dataType: "datetime",
   },
-  { key: "approvedUser", name: "Approved By" },
+  { key: "reviewedUser", name: "Reviewed By" },
+  {
+    key: "rejectedDate",
+    name: "Rejected",
+    formatter: DateFormatter,
+    dataType: "datetime",
+  },
   {
     key: "approvedDate",
     name: "Approved",
     formatter: DateFormatter,
-    dataType: "datetime"
+    dataType: "datetime",
   },
   { key: "createdUser", name: "Entered By" },
   {
     key: "createdDate",
     name: "Entered",
     formatter: DateFormatter,
-    dataType: "datetime"
+    dataType: "datetime",
   },
   { key: "modifiedUser", name: "Modified By" },
   {
     key: "modifiedDate",
     name: "Modified",
     formatter: DateFormatter,
-    dataType: "datetime"
-  }
-].map(c => ({ ...defaultColumnProperties, ...c }));
+    dataType: "datetime",
+  },
+].map((c) => ({ ...defaultColumnProperties, ...c }));
 
-const StakeholderGrid = props => {
+const StakeholderGrid = (props) => {
   const { stakeholders } = props;
   const [rows, setRows] = useState(props.stakeholders);
   return (
@@ -86,7 +98,7 @@ const StakeholderGrid = props => {
         <div>
           <DataGrid
             columns={columns}
-            rowGetter={i => rows[i]}
+            rowGetter={(i) => rows[i]}
             rowsCount={rows.length}
             onGridSort={(sortColumn, sortDirection) =>
               setRows(sortRows(stakeholders, sortColumn, sortDirection))

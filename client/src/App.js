@@ -31,7 +31,7 @@ import Home from "./containers/Home";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
-  app: props => ({
+  app: (props) => ({
     color: "black",
     margin: "0",
     display: "flex",
@@ -39,22 +39,27 @@ const useStyles = makeStyles({
     justifyContent: "space-between",
     alignItems: "stretch",
     height: "100%",
-    overflowY: "scroll"
+    overflowY: "scroll",
     // backgroundColor: "rgb(144, 194, 70)"
   }),
   mainContent: {
     margin: "0",
     paddingBottom: "50px",
     overflowY: "scroll",
-    flexGrow: 1
+    flexGrow: 1,
+  },
+  stakeholderEditWrapper: {
+    flexBasis: "90%",
+    paddingTop: "1em",
+    paddingBottom: "1em",
   },
   homeWrapper: {
     backgroundSize: "cover",
     height: "100vh",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
 });
 
 function App() {
@@ -85,7 +90,7 @@ function App() {
     fetchLocation();
   }, []);
 
-  const onLogin = user => {
+  const onLogin = (user) => {
     if (user) {
       localStorage.setItem("user", JSON.stringify(user));
     } else {
@@ -99,16 +104,16 @@ function App() {
     let userCoordinates = { latitude: null, longitude: null };
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        position => {
+        (position) => {
           if (position) {
             const userCoordinates = {
               latitude: position.coords.latitude,
-              longitude: position.coords.longitude
+              longitude: position.coords.longitude,
             };
             setUserCoordinates(userCoordinates);
           }
         },
-        error => {
+        (error) => {
           console.log(`Getting browser location failed: ${error.message}`);
         }
       );
@@ -147,7 +152,9 @@ function App() {
                 />
               </Route>
               <Route path="/stakeholderedit/:id?">
-                <StakeholderEdit setToast={setToast} user={user} />
+                <div className={classes.stakeholderEditWrapper}>
+                  <StakeholderEdit setToast={setToast} user={user} />
+                </div>
               </Route>
               <Route path="/stakeholdersadmin">
                 <StakeholdersAdmin

@@ -9,7 +9,7 @@ module.exports = {
   //login: autoCatch(login),
   login,
   //ensureUser: autoCatch(ensureUser),
-  validateUser
+  validateUser,
 };
 
 // This module manages the user's session using a JSON Web Token in the
@@ -33,16 +33,19 @@ async function login(req, res, next) {
 // the authorization cookie has a valid JWT.
 async function validateUser(req, res, next) {
   const jwtString = req.headers.authorization || req.cookies.jwt;
-  const payload = await verify(jwtString);
 
-  if (payload.email) {
-    req.user = payload;
-    return next();
+  try {
+    const payload = await verify(jwtString);
+
+    if (payload.email) {
+      req.user = payload;
+      return next();
+    }
+  } catch (err) {
+    // 401 Unauthorize, indicating that user is not
+    // authenticated.
+    res.status(401).send(err.message);
   }
-
-  const err = new Error("Unauthorized");
-  err.statusCode = 401;
-  next(err);
 }
 
 // Helper function to create JWT token

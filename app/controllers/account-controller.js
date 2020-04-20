@@ -67,6 +67,15 @@ const resetPassword = async (req, res) => {
   }
 };
 
+const setPermissions = async (req, res) => {
+  try {
+    const response = await accountService.setPermissions(req.body);
+    res.send(response);
+  } catch (err) {
+    res.status("500").json({ error: err.toString() });
+  }
+};
+
 const confirmRegister = async (req, res) => {
   try {
     const { id } = req.params;
@@ -118,6 +127,7 @@ module.exports = {
   register,
   confirmRegister,
   resendConfirmationEmail,
+  setPermissions,
   forgotPassword,
   resetPassword,
   login,

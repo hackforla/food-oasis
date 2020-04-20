@@ -11,8 +11,9 @@ const uuid4 = require("uuid/v4");
 const SALT_ROUNDS = 10;
 
 const selectAll = () => {
-  let sql = `
-    select w.id, w.first_name, w.last_name, w.email, w.date_created, 
+
+let sql = `
+    select w.id, w.first_name, w.last_name, w.email, w.date_created,
       w.email_confirmed, w.is_admin
     from login w
     order by w.last_name, w.first_name, w.date_created
@@ -49,7 +50,7 @@ const selectById = id => {
 };
 
 const selectByEmail = email => {
-  const sql = `select id, first_name, last_name, email, password_hash, 
+  const sql = `select id, first_name, last_name, email, password_hash,
     email_confirmed, date_created, is_admin
     from login where email ilike '${email}'`;
   return pool.query(sql).then(res => {
@@ -76,9 +77,9 @@ const register = async model => {
   let result = null;
   await hashPassword(model);
   try {
-    const sql = `insert into login (first_name, last_name, email, 
-        password_hash, email_confirmed, is_admin ) 
-        values ('${firstName}', '${lastName}', '${email}', 
+    const sql = `insert into login (first_name, last_name, email,
+        password_hash, email_confirmed, is_admin )
+        values ('${firstName}', '${lastName}', '${email}',
         '${model.passwordHash}', false, true ) returning id`;
     const insertResult = await pool.query(sql);
     result = {
@@ -167,8 +168,8 @@ const confirmRegistration = async token => {
 
     // If we get this far, we can update the login.email_confirmed flag
     const email = sqlResult.rows[0].email;
-    const confirmSql = `update login 
-            set email_confirmed = true 
+    const confirmSql = `update login
+            set email_confirmed = true
             where email = '${email}'`;
     await pool.query(confirmSql);
 
@@ -265,7 +266,7 @@ const resetPassword = async ({ token, password }) => {
     // If we get this far, we can update the password
     const passwordHash = await promisify(bcrypt.hash)(password, SALT_ROUNDS);
     const email = sqlResult.rows[0].email;
-    const resetSql = `update login 
+    const resetSql = `update login
             set password_hash = '${passwordHash}'
             where email = '${email}'`;
     await pool.query(resetSql);
@@ -350,12 +351,55 @@ async function hashPassword(user) {
   user.passwordHash = await promisify(bcrypt.hash)(user.password, SALT_ROUNDS);
 }
 
+
+// Update login table with the specified permissionName column set to value
+const setPermissions = async (userId, permissionName, value) => {
+
+  const user = await selectById(userId);
+  if (!user) {
+    return {
+      success: false,
+      code: "AUTH_NO_ACCOUNT",
+      reason: `No account found for id ${id}`
+    };
+  }
+  // Don't expose any columns besides the currently allowed ones:
+  // is_admin, is_security_admin, is_data_entry
+  var allowedPermissions = ["is_admin", "is_security_admin", "is_data_entry"];
+  if (!allowedPermissions.includes(permissionName)) {
+    return {
+      success: false,
+      code: "DB_ERROR",
+      message: `Cannot modify login field ${permissionName}.`
+    };
+  }
+
+  try {
+    // do a tiny bit of sanity checking on our input
+    var booleanValue = Boolean(value);
+    const updateSql = `update login set ${permissionName}=${booleanValue}`;
+    await pool.query(updateSql);
+    return {
+      success: true,
+      code: "UPDATE_SUCCESS",
+      reason: `${permissionName} successfully set to ${booleanValue}`
+    };
+  } catch (err) {
+    return {
+      success: false,
+      code: "DB_ERROR",
+      message: `Updating login.${permissionName} failed: ${err}`
+    };
+  }
+};
+
 module.exports = {
   selectAll,
   selectById,
   register,
   confirmRegistration,
   resendConfirmationEmail,
+  setPermissions,
   forgotPassword,
   resetPassword,
   authenticate,

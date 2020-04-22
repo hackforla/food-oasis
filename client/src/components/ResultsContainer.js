@@ -1,43 +1,47 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Grid } from "@material-ui/core";
-import ResultsFilters from "./ResultsFilters";
-import ResultsList from "./ResultsList";
-import ResultsMap from "./ResultsMap";
+import React from "react"
+import { makeStyles } from "@material-ui/core/styles"
+import { Grid } from "@material-ui/core"
+import ResultsFilters from "./ResultsFilters"
+import ResultsList from "./ResultsList"
+import ResultsMap from "./ResultsMap"
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   filterButton: {
     margin: "0 .25rem",
     padding: "0 0.5rem",
-    fontSize: "12px"
+    fontSize: "12px",
   },
   div: {
     textAlign: "center",
     fontSize: "12px",
-    border: "1px solid blue"
+    border: "1px solid blue",
   },
   container: {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   list: {
     textAlign: "center",
     fontSize: "12px",
-    border: "1px solid blue"
+    border: "1px solid blue",
+    height: "46em",
+    overflow: "scroll"
   },
   map: {
     textAlign: "center",
     fontSize: "12px",
-    border: "1px solid blue"
-  }
-}));
+    border: "1px solid blue",
+    maxWidth: "100%",
+    flexGrow: 1,
+  },
+}))
 
 export default function ResultsContainer(
   {
     // TODO: stub out the props coming in
   }
 ) {
-  const classes = useStyles();
+  const classes = useStyles()
   /**
    * ***PLAN!***
    *
@@ -52,6 +56,22 @@ export default function ResultsContainer(
    * hold 'selected stakeholder' in local state
    */
 
+  const [changeListWidth, setListWidth] = React.useState(
+    window.innerWidth <= 960 ? true : false
+  )
+
+  React.useEffect(() => {
+    const sizeResults = () => {
+      if (window.innerWidth <= 960) {
+        setListWidth(true)
+      } else {
+        setListWidth(false)
+      }
+    }
+
+    window.addEventListener("resize", sizeResults)
+  })
+
   return (
     <div className={classes.container}>
       <ResultsFilters
@@ -64,7 +84,13 @@ export default function ResultsContainer(
        */
       />
       <Grid container wrap="wrap-reverse">
-        <Grid item xs={12} md={4} className={classes.list}>
+        <Grid
+          item
+          xs={12}
+          md={4}
+          className={classes.list}
+          style={{ maxWidth: changeListWidth ? "100%" : "25em" }}
+        >
           <ResultsList
           // selectedStakeholder={selectedStakeholder}
           // stakeholders={stakeholders}
@@ -86,5 +112,5 @@ export default function ResultsContainer(
         </Grid>
       </Grid>
     </div>
-  );
+  )
 }

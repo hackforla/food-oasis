@@ -11,19 +11,19 @@ import {
   Cancel,
   Search,
   Details,
-  Remove
+  Remove,
 } from "@material-ui/icons";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   deleteButton: {
     backgroundColor: theme.palette.error.main,
-    color: theme.palette.primary.main
-  }
+    color: theme.palette.primary.main,
+  },
 }));
 
-const AddButton = props => {
+const AddButton = (props) => {
   return (
     <Button variant="contained" color="primary" {...props}>
       <Add />
@@ -33,7 +33,7 @@ const AddButton = props => {
 };
 
 // For saving changes
-const CancelButton = props => {
+const CancelButton = (props) => {
   return (
     <Button variant="contained" {...props}>
       <Cancel />
@@ -42,7 +42,7 @@ const CancelButton = props => {
   );
 };
 
-const CancelIconButton = props => {
+const CancelIconButton = (props) => {
   return (
     <IconButton
       variant="contained"
@@ -56,7 +56,7 @@ const CancelIconButton = props => {
 };
 
 // For closing a dialog, page or panel without saving changes, if any
-const CloseButton = props => {
+const CloseButton = (props) => {
   return (
     <Button variant="contained" color="primary" {...props}>
       <Close />
@@ -66,7 +66,7 @@ const CloseButton = props => {
 };
 
 // For deleting something from the application entirely and committing the deletion
-const DeleteButton = props => {
+const DeleteButton = (props) => {
   const classes = useStyles();
   return (
     <Button variant="contained" className={classes.deleteButton} {...props}>
@@ -76,7 +76,7 @@ const DeleteButton = props => {
   );
 };
 
-const DeleteIconButton = props => {
+const DeleteIconButton = (props) => {
   return (
     <IconButton
       variant="contained"
@@ -90,7 +90,7 @@ const DeleteIconButton = props => {
 };
 
 // For accessing more detailed information
-const DetailsButton = props => {
+const DetailsButton = (props) => {
   return (
     <Button variant="contained" color="primary" {...props}>
       <Details />
@@ -100,7 +100,7 @@ const DetailsButton = props => {
 };
 
 // To initiate editing of a object
-const EditButton = props => {
+const EditButton = (props) => {
   return (
     <Button variant="contained" color="primary" {...props}>
       <Edit />
@@ -110,7 +110,7 @@ const EditButton = props => {
 };
 
 // To remove a row from a table without committing the change to the database
-const RemoveButton = props => {
+const RemoveButton = (props) => {
   return (
     <Button variant="contained" color="primary" {...props}>
       <Remove />
@@ -121,7 +121,7 @@ const RemoveButton = props => {
 
 // To remove a row from a table without committing the change to the database
 // More subtle than a RemoveButton
-const RemoveIconButton = props => {
+const RemoveIconButton = (props) => {
   return (
     <IconButton
       variant="contained"
@@ -135,7 +135,7 @@ const RemoveIconButton = props => {
 };
 
 // To save a new or modified existing item to the database.
-const SaveButton = props => {
+const SaveButton = (props) => {
   return (
     <Button variant="contained" color="primary" {...props}>
       <Save />
@@ -145,7 +145,7 @@ const SaveButton = props => {
 };
 
 // To initiate a search or open a search feature
-const SearchButton = props => {
+const SearchButton = (props) => {
   return (
     <Button variant="contained" color="primary" {...props}>
       <Search />
@@ -156,7 +156,7 @@ const SearchButton = props => {
 
 // To initiate an operation that marks an object's data as verified
 // by the user.
-const VerifyButton = props => {
+const VerifyButton = (props) => {
   return (
     <Button variant="contained" color="primary" {...props}>
       <Check />
@@ -165,7 +165,7 @@ const VerifyButton = props => {
   );
 };
 
-const MoveUpButton = props => {
+const MoveUpButton = (props) => {
   return (
     <Button variant="contained" color="primary" {...props}>
       <ArrowUpward />
@@ -174,7 +174,7 @@ const MoveUpButton = props => {
   );
 };
 
-const MoveDownButton = props => {
+const MoveDownButton = (props) => {
   return (
     <Button variant="contained" color="primary" {...props}>
       <ArrowDownward />
@@ -198,5 +198,5 @@ export {
   SearchButton,
   VerifyButton,
   MoveUpButton,
-  MoveDownButton
+  MoveDownButton,
 };

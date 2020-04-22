@@ -1,12 +1,13 @@
-import { useReducer, useEffect } from 'react';
-import queryString from 'query-string';
-import * as stakeholderService from 'services/stakeholder-service';
-import * as categoryService from 'services/category-service';
-import { actionTypes } from './actionTypes';
-import { reducer } from './reducer';
-import { initialState } from './initialState';
+import { useReducer, useEffect } from "react";
+import * as stakeholderService from "../../services/stakeholder-service";
+import { useCategories } from "../useCategories/useCategories";
+import { actionTypes } from "./actionTypes";
+import { reducer } from "./reducer";
+import { initialState } from "./initialState";
+import queryString from "query-string";
 
-export function useStakeholders(history) {
+export function useStakeholders(history, userCoordinates) {
+  const { data: categories } = useCategories();
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const search = async (
@@ -15,7 +16,7 @@ export function useStakeholders(history) {
     longitude,
     selectedLocationName,
     selectedCategories,
-    selectedDistance,
+    selectedDistance
   ) => {
     const {
       FETCH_FAILURE,
@@ -50,79 +51,13 @@ export function useStakeholders(history) {
           `&lat=${latitude}` +
           `&lon=${longitude}` +
           `&placeName=${selectedLocationName}` +
-          `&categoryIds=${selectedCategories.map((c) => c.id).join(',')}`,
+          `&categoryIds=${selectedCategories.map((c) => c.id).join(",")}`
       );
     } catch (err) {
       console.log(err);
       dispatch({ type: FETCH_FAILURE });
     }
   };
-
-  const fetchCategories = async () => {
-    const {
-      FETCH_FAILURE,
-      FETCH_REQUEST,
-      FETCH_SUCCESS,
-    } = actionTypes.CATEGORIES;
-
-    dispatch({ type: FETCH_REQUEST });
-    try {
-      const allCategories = await categoryService.getAll();
-      const categories = allCategories.filter((category) => !category.inactive);
-
-      const selectedCategories = categories.filter(
-        (category) =>
-          category.id === 1 || category.id === 8 || category.id === 9,
-      ); // setting the initial selection to FoodPantry, Food Bank, Soup Kitchen
-      dispatch({ type: FETCH_SUCCESS, categories, selectedCategories });
-      return categories;
-    } catch (error) {
-      dispatch({ type: FETCH_FAILURE, error });
-    }
-  };
-
-  // apparently dead code ?
-  // const fetchLocation = () => {
-  //   console.warn('fetching');
-  //   const {
-  //     FETCH_FAILURE,
-  //     FETCH_REQUEST,
-  //     FETCH_SUCCESS,
-  //   } = actionTypes.LOCATION;
-
-  //   let userCoordinates = { latitude: null, longitude: null };
-
-  //   dispatch({ type: FETCH_REQUEST });
-  //   if (navigator.geolocation) {
-  //     navigator.geolocation.getCurrentPosition(
-  //       (position) => {
-  //         if (!position) {
-  //           dispatch({
-  //             type: FETCH_SUCCESS,
-  //             userCoordinates: { latitude: null, longitude: null },
-  //           });
-  //         }
-  //         const userCoordinates = {
-  //           latitude: position.coords.latitude,
-  //           longitude: position.coords.longitude,
-  //         };
-  //         dispatch({ type: FETCH_SUCCESS, userCoordinates });
-  //       },
-  //       (error) => {
-  //         dispatch({ type: FETCH_FAILURE, error });
-  //       },
-  //     );
-  //   } else {
-  //     // If browser location permission is denied, the request is
-  //     // "successful", but the result is null coordinates.
-  //     dispatch({
-  //       type: FETCH_SUCCESS,
-  //       userCoordinates,
-  //     });
-  //   }
-  //   console.warn('userCoordinates in hook', userCoordinates);
-  //   return userCoordinates;
-  // };
 
   const applyQueryStringParameters = (history, initialState) => {
     // The goal here is to overwrite the initialState with
@@ -146,9 +81,9 @@ export function useStakeholders(history) {
     selectedDistance = params.radius || selectedDistance;
     selectedLatitude = Number.parseFloat(params.lat) || selectedLatitude;
     selectedLongitude = Number.parseFloat(params.lon) || selectedLongitude;
-    selectedLocationName = params.placeName ? decodeURI(params.placeName) : '';
+    selectedLocationName = params.placeName ? decodeURI(params.placeName) : "";
     if (params.categoryIds) {
-      selectedCategoryIds = params.categoryIds.split(',');
+      selectedCategoryIds = params.categoryIds.split(",");
     }
 
     dispatch({
@@ -165,10 +100,11 @@ export function useStakeholders(history) {
     });
   };
 
-  useEffect(() => {
-    // Runs once on initialization to get list of all active categories
-    fetchCategories();
-  }, []);
+  // useEffect(() => {
+
+  //     fetchCategories();
+
+  // }, []);
 
   useEffect(() => {
     applyQueryStringParameters(history, initialState);
@@ -176,9 +112,9 @@ export function useStakeholders(history) {
 
   useEffect(() => {
     // if we don't have the categories fetched yet, bail
-    if (!state.categories) return;
+    if (!categories) return;
 
-    // If the query string parameters have not been applie, bail
+    // If the query string parameters have not been applied, bail
     if (!state.queryParametersLoaded) return;
 
     let {
@@ -191,7 +127,7 @@ export function useStakeholders(history) {
     } = state;
 
     let selectedCategories = selectedCategoryIds.map(
-      (id) => state.categories.filter((cat) => cat.id === Number(id))[0],
+      (id) => categories.filter((cat) => cat.id === Number(id))[0]
     );
 
     search(
@@ -200,9 +136,9 @@ export function useStakeholders(history) {
       selectedLongitude,
       selectedLocationName,
       selectedCategories,
-      selectedDistance,
+      selectedDistance
     );
-  }, [state.categories, state.queryParametersLoaded, initialState]);
+  }, [categories, state.queryParametersLoaded, initialState]);
 
-  return { state, dispatch, actionTypes, search };
+  return { state: { ...state, categories }, dispatch, actionTypes, search };
 }

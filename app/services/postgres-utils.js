@@ -1,24 +1,32 @@
 // Module of utilties for working with PostgreSQL
 
 // Convert a javascript string to a string for postgres
-const toSqlString = originalString => {
+const toSqlString = (originalString) => {
   if (!originalString) {
     return "''";
   }
   return "'" + originalString.replace(/'/g, "''") + "'";
 };
 
-const toSqlNumeric = originalNumeric => {
+const toSqlNumeric = (originalNumeric) => {
   if (!originalNumeric) {
     return "null";
   }
-  return originalNumeric;
+  return originalNumeric.toString();
 };
 
-const toSqlBoolean = originalBoolean => (originalBoolean ? "true" : "false");
+const toSqlTimestamp = (originalDatetime) => {
+  if (!originalDatetime) {
+    return "null";
+  }
+  return `'${originalDatetime.toString()}'`;
+};
+
+const toSqlBoolean = (originalBoolean) => (originalBoolean ? "true" : "false");
 
 module.exports = {
   toSqlString,
   toSqlNumeric,
-  toSqlBoolean
+  toSqlBoolean,
+  toSqlTimestamp,
 };

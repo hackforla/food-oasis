@@ -5,9 +5,9 @@ import theme from "./theme/materialUI";
 import { UserContext } from "./components/user-context";
 import Toast from "./components/Toast";
 import Header from "./components/Header";
-import Map from "./components/Map";
+// import Map from './components/Map';
 import StakeholdersContainer from "./components/StakeholdersContainer";
-import StakeholdersAdmin from "./components/StakeholdersAdmin";
+import VerificationAdmin from "./components/Verification/VerificationAdmin";
 import StakeholderEdit from "./components/StakeholderEdit";
 import Donate from "./components/Donate";
 import Resources from "./components/Resources";
@@ -22,12 +22,12 @@ import Faq from "./components/Faq";
 import FaqEdit from "./components/FaqEdit";
 import FaqAdd from "./components/FaqAdd";
 import Home from "./containers/Home";
-
+import ResultsContainer from "components/ResultsContainer";
 // Temporarily unused components
-// import Main from './components/Main';
-// import News from "./components/News";
-// import Team from "./components/Team";
-// import Organizations from "./components/Organizations";
+// import Main from 'components/Main';
+// import News from "components/News";
+// import Team from "components/Team";
+// import Organizations from "components/Organizations";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
@@ -60,7 +60,7 @@ const useStyles = makeStyles({
     flexDirection: "column",
     justifyContent: "center",
   },
-  adminDashboardWrapper: {
+  verificationAdminWrapper: {
     flexBasis: "100%",
     flexGrow: 1,
     display: "flex",
@@ -75,7 +75,7 @@ function App() {
   const [bgImg, setBgImg] = useState("");
 
   useEffect(() => {
-    const imgNum = Math.floor(Math.random() * (22 - 1)) + 1;
+    const imgNum = Math.floor(Math.random() * (21 - 1)) + 1;
     const backgroundImage = `url("/landing-page/${imgNum}.jpg")`;
     setBgImg(backgroundImage);
   }, []);
@@ -106,7 +106,6 @@ function App() {
   };
 
   const fetchLocation = () => {
-    console.warn("fetching location in app");
     let userCoordinates = { latitude: null, longitude: null };
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -148,8 +147,8 @@ function App() {
                   <Home userCoordinates={userCoordinates} />
                 </div>
               </Route>
-              <Route path="/map">
-                <Map />
+              <Route path="/organizations">
+                <ResultsContainer />
               </Route>
               <Route path="/stakeholders">
                 <StakeholdersContainer
@@ -157,16 +156,26 @@ function App() {
                   userCoordinates={userCoordinates}
                 />
               </Route>
-              <Route path="/stakeholderedit/:id?">
+              <Route path="/organizationedit/:id?">
                 <div className={classes.stakeholderEditWrapper}>
                   <StakeholderEdit setToast={setToast} user={user} />
                 </div>
               </Route>
-              <Route path="/stakeholdersadmin">
-                <div className={classes.adminDashboardWrapper}>
-                  <StakeholdersAdmin
+              <Route path="/verificationdashboard">
+                <div className={classes.verificationAdminWrapper}>
+                  <VerificationAdmin
                     user={user}
                     userCoordinates={userCoordinates}
+                    asAdmin={false}
+                  />
+                </div>
+              </Route>
+              <Route path="/verificationadmin">
+                <div className={classes.verificationAdminWrapper}>
+                  <VerificationAdmin
+                    user={user}
+                    userCoordinates={userCoordinates}
+                    asAdmin={true}
                   />
                 </div>
               </Route>

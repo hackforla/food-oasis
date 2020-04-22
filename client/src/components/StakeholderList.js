@@ -6,27 +6,20 @@ import StakeholderListItem from "./StakeholderListItem";
 const StakeholderList = props => {
   const { stakeholders } = props;
   return (
-    <Grid
-      container
-      spacing={2}
-      style={{ padding: "16px" }}
-      alignItems={"stretch"}
-    >
-      {stakeholders && stakeholders.length > 0 ? (
-        stakeholders.map(stakeholder => {
-          return (
-            <StakeholderListItem
-              stakeholder={stakeholder}
-              key={stakeholder.id}
-            />
-          );
-        })
-      ) : (
-        <Grid item>
-          <Typography variant={"h5"} component={"h5"}>
-            No matches found, please try different Criteria
-          </Typography>
-        </Grid>
+    <Grid container spacing={2} style={{ padding: "16px" }}>
+      {stakeholders &&
+        stakeholders.length > 0 &&
+        stakeholders.map(stakeholder => (
+          <StakeholderListItem key={stakeholder.id} stakeholder={stakeholder} />
+        ))}
+      {!stakeholders ||
+        (stakeholders.length < 1 && (
+          <Grid item>
+            <Typography variant={"h5"} component={"h5"}>
+              No matches found, please try different Criteria
+            </Typography>
+          </Grid>
+        ))}
       )}
     </Grid>
   );

@@ -11,7 +11,7 @@ import { useCategories } from "../../hooks/useCategories/useCategories";
 
 import SearchCriteria from "./SearchCriteria";
 
-const CRITERIA_STORAGE_TOKEN = "stakeholderAdminCriteria";
+const CRITERIA_TOKEN = "verificationAdminCriteria";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,26 +64,29 @@ const DialogTitle = (props) => {
   );
 };
 
-function StakeholdersAdmin(props) {
+const defaultCriteria = {
+  name: "",
+  latitude: 34,
+  longitude: -118,
+  placeName: "",
+  radius: 0,
+  categoryIds: [],
+  isInactive: "either",
+  isAssigned: "either",
+  isVerified: "either",
+  isApproved: "either",
+  isRejected: "either",
+  isClaimed: "either",
+  assignedLoginId: null,
+  claimedLoginId: null,
+};
+
+function VerificationAdmin(props) {
+  const { asAdmin, user } = props;
   const classes = useStyles();
   const { history, userCoordinates } = props;
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [criteria, setCriteria] = useState({
-    name: "",
-    latitude: userCoordinates.latitude,
-    longitude: userCoordinates.longitude,
-    placeName: "",
-    radius: 0,
-    categoryIds: [],
-    isInactive: "either",
-    isAssigned: "either",
-    isVerified: "either",
-    isApproved: "either",
-    isRejected: "either",
-    isClaimed: "either",
-    assignedLoginId: null,
-    claimedLoginId: null,
-  });
+  const [criteria, setCriteria] = useState(defaultCriteria);
 
   const {
     data: categories,
@@ -99,17 +102,38 @@ function StakeholdersAdmin(props) {
   } = useOrganizations();
 
   useEffect(() => {
-    const criteriaString = localStorage.getItem(CRITERIA_STORAGE_TOKEN);
-    const storedCriteria = JSON.parse(criteriaString);
-    if (storedCriteria && stakeholderSearch) {
-      setCriteria(storedCriteria);
-      stakeholderSearch(storedCriteria);
+    // If user is admin, this effect initializes and executes
+    // with query from localStorage, if any.
+    if (!asAdmin || !stakeholderSearch) return;
+    const criteriaString = localStorage.getItem(CRITERIA_TOKEN);
+    let initialCriteria = JSON.parse(criteriaString);
+    if (!initialCriteria) {
+      initialCriteria = {
+        ...defaultCriteria,
+        latitude: userCoordinates.latitude,
+        longitude: userCoordinates.longitude,
+      };
     }
-  }, []);
+    setCriteria(initialCriteria);
+    stakeholderSearch(initialCriteria);
+  }, [asAdmin, userCoordinates]);
+
+  useEffect(() => {
+    // If component is not in admin mode, criteria are set to look
+    // for organizations where current user is assigned.
+    if (asAdmin === true || !user) return;
+    const initialCriteria = { ...defaultCriteria, assignedLoginId: user.id };
+    if (initialCriteria && !asAdmin) {
+      setCriteria(initialCriteria);
+      stakeholderSearch(initialCriteria);
+    }
+  }, [asAdmin, user]);
 
   const search = async () => {
     await stakeholderSearch(criteria);
-    localStorage.setItem(CRITERIA_STORAGE_TOKEN, JSON.stringify(criteria));
+    if (asAdmin) {
+      localStorage.setItem(CRITERIA_TOKEN, JSON.stringify(criteria));
+    }
   };
 
   const handleDialogOpen = () => {
@@ -140,7 +164,11 @@ function StakeholdersAdmin(props) {
           >
             Administrative Dashboard - Organizations
           </Typography>
-          <SearchButton onClick={handleDialogOpen} label="Criteria..." />
+          {asAdmin ? (
+            <SearchButton onClick={handleDialogOpen} label="Criteria..." />
+          ) : (
+            <SearchButton onClick={search} label="Refresh" />
+          )}
         </header>
       </div>
       <div className={classes.root}>
@@ -231,4 +259,4 @@ function StakeholdersAdmin(props) {
   );
 }
 
-export default withRouter(StakeholdersAdmin);
+export default withRouter(VerificationAdmin);

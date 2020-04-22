@@ -1,43 +1,47 @@
-import React, { useState } from "react";
-import Downshift from "downshift";
-import { MenuItem, TextField, Paper } from "@material-ui/core";
-import LocationOnIcon from "@material-ui/icons/LocationOn";
-import { makeStyles } from "@material-ui/core/styles";
-import { useMapboxGeocoder } from "../hooks/useMapboxGeocoder";
+import React, { useState } from 'react';
+import Downshift from 'downshift';
+import { MenuItem, TextField, Paper } from '@material-ui/core';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
+import { makeStyles } from '@material-ui/core/styles';
+import { useMapboxGeocoder } from 'hooks/useMapboxGeocoder';
 
 const useStyles = makeStyles(() => ({
   paper: {
-    maxHeight: "150px",
-    overflowY: "auto",
+    maxHeight: '150px',
+    overflowY: 'auto',
     marginTop: 0,
-    borderRadius: 4
+    borderRadius: 4,
   },
   container: {
-    width: "100%"
+    width: '100%',
   },
   address: {
-    backgroundColor: "#fff",
-    borderRadius: "4px 0 0 4px",
+    backgroundColor: '#fff',
+    borderRadius: '4px 0 0 4px',
     height: 41,
-    "& .MuiInputLabel-outlined": {
-      transform: "translate(14px, 14px) scale(1)"
+    '& .MuiOutlinedInput-root': {
+      borderRadius: '4px 0 0 4px',
     },
-    "& .MuiOutlinedInput-input": {
-      padding: "11.5px 14px"
+    '& .MuiOutlinedInput-input': {
+      padding: '11.5px 14px',
     },
-    "& .MuiOutlinedInput-root": {
-      borderRadius: "4px 0 0 4px"
-    }
-  }
+    '& .MuiInputLabel-outlined': {
+      transform: 'translate(14px, 14px) scale(1)',
+    },
+    '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+      borderColor: '#63A4E5',
+      borderRight: 'none',
+    },
+  },
 }));
 
 export default function Search({ userCoordinates, setOrigin }) {
   const classes = useStyles();
-  const [selectedPlace, setSelectedPlace] = useState("");
+  const [selectedPlace, setSelectedPlace] = useState('');
 
   const { mapboxResults, fetchMapboxResults } = useMapboxGeocoder();
 
-  const handleInputChange = event => {
+  const handleInputChange = (event) => {
     setSelectedPlace(event.target.value);
     if (!event.target.value) {
       return;
@@ -45,12 +49,11 @@ export default function Search({ userCoordinates, setOrigin }) {
     fetchMapboxResults(event.target.value);
   };
 
-  const handleDownshiftOnChange = selectedResult => {
-    console.log(`Downshift.onChange ${JSON.stringify(selectedResult)}`);
+  const handleDownshiftOnChange = (selectedResult) => {
     setSelectedPlace(selectedResult);
   };
 
-  const renderInput = inputProps => {
+  const renderInput = (inputProps) => {
     const { InputProps, classes } = inputProps;
 
     return (
@@ -65,15 +68,15 @@ export default function Search({ userCoordinates, setOrigin }) {
         autoFocus
         InputProps={{
           classes: {
-            input: classes.input
+            input: classes.input,
           },
-          ...InputProps
+          ...InputProps,
         }}
       />
     );
   };
 
-  const renderSuggestion = params => {
+  const renderSuggestion = (params) => {
     const { item, index, itemProps, highlightedIndex, selectedItem } = params;
     if (!item) return;
     const isHighlighted = highlightedIndex === index;
@@ -93,13 +96,13 @@ export default function Search({ userCoordinates, setOrigin }) {
     );
   };
 
-  const renderResults = params => {
+  const renderResults = (params) => {
     const {
       highlightedIndex,
       selectedItem,
       inputValue,
       mapboxResults,
-      getItemProps
+      getItemProps,
     } = params;
 
     if (!inputValue && userCoordinates && userCoordinates.latitude) {
@@ -107,9 +110,8 @@ export default function Search({ userCoordinates, setOrigin }) {
         <MenuItem
           component="div"
           onClick={() => {
-            console.log(`Current Location Suggestion.onClick`);
-            setOrigin({ ...userCoordinates, locationName: "Current Location" });
-            handleDownshiftOnChange("Current Location");
+            setOrigin({ ...userCoordinates, locationName: 'Current Location' });
+            handleDownshiftOnChange('Current Location');
           }}
         >
           <LocationOnIcon /> Current Location
@@ -123,7 +125,7 @@ export default function Search({ userCoordinates, setOrigin }) {
         const [long, lat] = item.center;
         const itemCoordinates = {
           latitude: lat,
-          longitude: long
+          longitude: long,
         };
         return renderSuggestion({
           item,
@@ -133,13 +135,13 @@ export default function Search({ userCoordinates, setOrigin }) {
             onClick: () => {
               setOrigin({
                 ...itemCoordinates,
-                locationName: item.place_name
+                locationName: item.place_name,
               });
-            }
+            },
           }),
           highlightedIndex,
           selectedItem,
-          inputValue
+          inputValue,
         });
       })
     );
@@ -149,8 +151,8 @@ export default function Search({ userCoordinates, setOrigin }) {
     <>
       <Downshift
         onChange={handleDownshiftOnChange}
-        itemToString={item => {
-          return item ? item.place_name : "";
+        itemToString={(item) => {
+          return item ? item.place_name : '';
         }}
       >
         {({
@@ -160,7 +162,7 @@ export default function Search({ userCoordinates, setOrigin }) {
           selectedItem,
           highlightedIndex,
           toggleMenu,
-          isOpen
+          isOpen,
         }) => (
           <div className={classes.container}>
             {renderInput({
@@ -171,9 +173,9 @@ export default function Search({ userCoordinates, setOrigin }) {
                 ...getInputProps({
                   onClick: () => toggleMenu(),
                   onChange: handleInputChange,
-                  value: inputValue || selectedPlace
-                })
-              }
+                  value: inputValue || selectedPlace,
+                }),
+              },
             })}
 
             {isOpen && (
@@ -183,7 +185,7 @@ export default function Search({ userCoordinates, setOrigin }) {
                   selectedItem,
                   inputValue,
                   mapboxResults,
-                  getItemProps
+                  getItemProps,
                 })}
               </Paper>
             )}

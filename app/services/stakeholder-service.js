@@ -90,7 +90,7 @@ const search = async ({
     ${claimedLoginId ? ` and s.claimed_login_id = ${claimedLoginId} ` : ""}
     order by s.name
   `;
-  console.log(sql);
+  // console.console.log(sql);
   const stakeholderResult = await pool.query(sql);
   let stakeholders = [];
   stakeholderResult.rows.forEach((row) => {
@@ -370,7 +370,7 @@ const insert = async (model) => {
     if (hoursSqlValues) {
       pool.query(hoursSqlInsert, (insertErr, insertRes) => {
         if (insertErr) {
-          console.log("sql insert error", insertErr);
+          throw new Error(insertErr);
         }
       });
     }
@@ -392,51 +392,51 @@ const verify = async (model) => {
   const result = await pool.query(sql);
 };
 
-const assign = async (model) => {
-  const { id, loginId, setAssigned } = model;
-  const sql = `update stakeholder set
-               assigned_login_id = ${
-                 setAssigned ? toSqlNumeric(loginId) : "null"
-               },
-               assigned_date = ${setAssigned ? "CURRENT_TIMESTAMP" : "null"}
-              where id = ${id}`;
-  const result = await pool.query(sql);
-};
+// const assign = async (model) => {
+//   const { id, loginId, setAssigned } = model;
+//   const sql = `update stakeholder set
+//                assigned_login_id = ${
+//                  setAssigned ? toSqlNumeric(loginId) : "null"
+//                },
+//                assigned_date = ${setAssigned ? "CURRENT_TIMESTAMP" : "null"}
+//               where id = ${id}`;
+//   const result = await pool.query(sql);
+// };
 
-const claim = async (model) => {
-  const { id, loginId, setClaimed } = model;
-  const sql = `update stakeholder set
-               claimed_login_id = ${
-                 setClaimed ? toSqlNumeric(loginId) : "null"
-               },
-               claimed_date = ${setClaimed ? "CURRENT_TIMESTAMP" : "null"}
-              where id = ${id}`;
-  const result = await pool.query(sql);
-};
+// const claim = async (model) => {
+//   const { id, loginId, setClaimed } = model;
+//   const sql = `update stakeholder set
+//                claimed_login_id = ${
+//                  setClaimed ? toSqlNumeric(loginId) : "null"
+//                },
+//                claimed_date = ${setClaimed ? "CURRENT_TIMESTAMP" : "null"}
+//               where id = ${id}`;
+//   const result = await pool.query(sql);
+// };
 
-const approve = async (model) => {
-  const { id, loginId, setApproved } = model;
-  const sql = `update stakeholder set
-               reviewed_login_id = ${
-                 setApproved ? toSqlNumeric(loginId) : "null"
-               },
-               approved_date = ${setApproved ? "CURRENT_TIMESTAMP" : "null"},
-               rejected_date = null
-              where id = ${id}`;
-  const result = await pool.query(sql);
-};
+// const approve = async (model) => {
+//   const { id, loginId, setApproved } = model;
+//   const sql = `update stakeholder set
+//                reviewed_login_id = ${
+//                  setApproved ? toSqlNumeric(loginId) : "null"
+//                },
+//                approved_date = ${setApproved ? "CURRENT_TIMESTAMP" : "null"},
+//                rejected_date = null
+//               where id = ${id}`;
+//   const result = await pool.query(sql);
+// };
 
-const reject = async (model) => {
-  const { id, loginId, setRejected } = model;
-  const sql = `update stakeholder set
-               reviewed_login_id = ${
-                 setRejected ? toSqlNumeric(loginId) : "null"
-               },
-               rejected_date = ${setApproved ? "CURRENT_TIMESTAMP" : "null"},
-               approved_date = null
-              where id = ${id}`;
-  const result = await pool.query(sql);
-};
+// const reject = async (model) => {
+//   const { id, loginId, setRejected } = model;
+//   const sql = `update stakeholder set
+//                reviewed_login_id = ${
+//                  setRejected ? toSqlNumeric(loginId) : "null"
+//                },
+//                rejected_date = ${setApproved ? "CURRENT_TIMESTAMP" : "null"},
+//                approved_date = null
+//               where id = ${id}`;
+//   const result = await pool.query(sql);
+// };
 
 const update = async (model) => {
   const {

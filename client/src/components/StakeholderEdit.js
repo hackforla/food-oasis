@@ -203,20 +203,30 @@ const StakeholderEdit = (props) => {
 
   const noteTooltip = (
     <div>
-      <Typography>{`IF YOU GET THROUGH TO THEM:`}</Typography>
+      <Typography>{`These are notes for clients to see, for example:`}</Typography>
       <List dense={true}>
         <ListItem>
           <ListItemText
-            primary={`COVID Updates: (i.e., different hours, fewer days, low on staff)`}
+            primary={`Holiday hours may differ. Call or text message to confirm.`}
           />
         </ListItem>
         <ListItem>
           <ListItemText
-            primary={`Perishable or nonperishable food (or both)`}
+            primary={`Call ahead to make appointment or confirm that they are actually open`}
           />
         </ListItem>
         <ListItem>
-          <ListItemText primary={`Prepared food (Y/N)`} />
+          <ListItemText primary={`Food tends to run out early on Saturdays`} />
+        </ListItem>
+        <ListItem>
+          <ListItemText
+            primary={`This pantry was acquired by Shepherds Pantry`}
+          />
+        </ListItem>
+        <ListItem>
+          <ListItemText
+            primary={`Enter through double doors on Figueroa St.`}
+          />
         </ListItem>
       </List>
     </div>
@@ -224,20 +234,38 @@ const StakeholderEdit = (props) => {
 
   const adminNoteTooltip = (
     <div>
-      <Typography>{`IF YOU GET THROUGH TO THEM:`}</Typography>
+      <Typography>{`Notes about Verification. For example,`}</Typography>
       <List dense={true}>
         <ListItem>
-          <ListItemText
-            primary={`FOLA liason name, number, and email: (someone from your org who responds to requests for future updates)`}
-          />
+          <ListItemText>
+            They are most responsive to email (or Facebook or whatever).
+          </ListItemText>
         </ListItem>
         <ListItem>
-          <ListItemText
-            primary={`Distribute food to the public or to other food pantries?`}
-          />
+          <ListItemText>
+            We do not have any good contact information for them.
+          </ListItemText>
+        </ListItem>
+        <ListItem>
+          <ListItemText>
+            You might have been able to verify some information, but need to
+            follow-up with another phone call, Facebook message, etc.
+          </ListItemText>
+        </ListItem>
+        <ListItem>
+          <ListItemText>
+            You might have been able to verify some information online, but need
+            to make phone contact.
+          </ListItemText>
+        </ListItem>
+        <ListItem>
+          <ListItemText>
+            You might have sent email or Facebook message, and are waiting for a
+            response.
+          </ListItemText>
         </ListItem>
       </List>
-      <Typography>{`IF YOU DON'T GET THROUGH TO THEM: (choose one)`}</Typography>
+      <Typography>{`If you don't get through to them: (choose one)`}</Typography>
       <List dense={true}>
         <ListItem>
           <ListItemText primary={`1. The phone was inactive`} />
@@ -246,7 +274,9 @@ const StakeholderEdit = (props) => {
           <ListItemText primary={`2. Weren't available but call back`} />
         </ListItem>
         <ListItem>
-          <ListItemText primary={`3. Put any info that was in a voicemail`} />
+          <ListItemText
+            primary={`3. Got partial information from voicemail (also enter this information in the appropriate formfields)`}
+          />
         </ListItem>
       </List>
     </div>
@@ -1136,7 +1166,7 @@ const StakeholderEdit = (props) => {
                         margin="normal"
                         fullWidth
                         name="adminNotes"
-                        label="Administrator Notes"
+                        label="Verification Notes"
                         type="text"
                         size="small"
                         multiline
@@ -1157,7 +1187,7 @@ const StakeholderEdit = (props) => {
                         margin="normal"
                         fullWidth
                         name="adminContactName"
-                        label="Administrator Name"
+                        label="Verification Contact Name"
                         type="text"
                         size="small"
                         value={values.adminContactName}
@@ -1182,7 +1212,7 @@ const StakeholderEdit = (props) => {
                         margin="normal"
                         fullWidth
                         name="adminContactPhone"
-                        label="Administrator Phone"
+                        label="Verification Phone"
                         type="phone"
                         size="small"
                         value={values.adminContactPhone}
@@ -1207,7 +1237,7 @@ const StakeholderEdit = (props) => {
                         margin="normal"
                         fullWidth
                         name="adminContactEmail"
-                        label="Administrator Email"
+                        label="Verification Email"
                         type="email"
                         size="small"
                         value={values.adminContactEmail}
@@ -1305,23 +1335,40 @@ const StakeholderEdit = (props) => {
                         </Typography>
                       </div>
                       <div className={classes.workflowColumn4}>
-                        <AccountAutocomplete
-                          accountId={values.assignedLoginId || ""}
-                          setAccount={(login) => {
-                            if (login) {
-                              setFieldValue("assignedLoginId", login.id);
-                              setFieldValue(
-                                "assignedUser",
-                                `${login.firstName} ${login.lastName}`
-                              );
-                              setFieldValue("assignedDate", moment());
-                            } else {
-                              setFieldValue("assignedLoginId", "");
-                              setFieldValue("assignedUser", "");
-                              setFieldValue("assignedDate", "");
-                            }
-                          }}
-                        />
+                        <UserContext.Consumer>
+                          {(user) =>
+                            user && user.isAdmin ? (
+                              <div
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "row",
+                                  justifyContent: "flex-end",
+                                }}
+                              >
+                                <AccountAutocomplete
+                                  accountId={values.assignedLoginId || ""}
+                                  setAccount={(login) => {
+                                    if (login) {
+                                      setFieldValue(
+                                        "assignedLoginId",
+                                        login.id
+                                      );
+                                      setFieldValue(
+                                        "assignedUser",
+                                        `${login.firstName} ${login.lastName}`
+                                      );
+                                      setFieldValue("assignedDate", moment());
+                                    } else {
+                                      setFieldValue("assignedLoginId", "");
+                                      setFieldValue("assignedUser", "");
+                                      setFieldValue("assignedDate", "");
+                                    }
+                                  }}
+                                />
+                              </div>
+                            ) : null
+                          }
+                        </UserContext.Consumer>
                       </div>
                     </div>
                     <div className={classes.workflowRow}>
@@ -1415,81 +1462,99 @@ const StakeholderEdit = (props) => {
                         </Typography>
                       </div>
                       <div className={classes.workflowColumn4}>
-                        <div
-                          style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "flex-end",
-                          }}
-                        >
-                          <FormControlLabel
-                            control={
-                              <Checkbox
-                                margin="normal"
-                                name="inactive"
-                                label="Approve"
-                                value={!!values.approvedDate}
-                                checked={!!values.approvedDate}
-                                onChange={() => {
-                                  const set = !!!values.approvedDate;
-                                  setFieldValue(
-                                    "approvedDate",
-                                    set ? moment() : ""
-                                  );
-                                  setFieldValue(
-                                    "reviewedUser",
-                                    set
-                                      ? user.firstName + " " + user.lastName
-                                      : ""
-                                  );
-                                  setFieldValue(
-                                    "reviewedLoginId",
-                                    set ? user.id : ""
-                                  );
-                                  if (set) {
-                                    setFieldValue("rejectedDate", "");
-                                  }
+                        <UserContext.Consumer>
+                          {(user) =>
+                            user && user.isAdmin ? (
+                              <div
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "row",
+                                  justifyContent: "flex-end",
                                 }}
-                                onBlur={handleBlur}
-                              />
-                            }
-                            label="Approve"
-                          />
+                              >
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    justifyContent: "flex-end",
+                                  }}
+                                >
+                                  <FormControlLabel
+                                    control={
+                                      <Checkbox
+                                        margin="normal"
+                                        name="inactive"
+                                        label="Approve"
+                                        value={!!values.approvedDate}
+                                        checked={!!values.approvedDate}
+                                        onChange={() => {
+                                          const set = !!!values.approvedDate;
+                                          setFieldValue(
+                                            "approvedDate",
+                                            set ? moment() : ""
+                                          );
+                                          setFieldValue(
+                                            "reviewedUser",
+                                            set
+                                              ? user.firstName +
+                                                  " " +
+                                                  user.lastName
+                                              : ""
+                                          );
+                                          setFieldValue(
+                                            "reviewedLoginId",
+                                            set ? user.id : ""
+                                          );
+                                          if (set) {
+                                            setFieldValue("rejectedDate", "");
+                                          }
+                                        }}
+                                        onBlur={handleBlur}
+                                      />
+                                    }
+                                    label="Approve"
+                                  />
 
-                          <FormControlLabel
-                            control={
-                              <Checkbox
-                                margin="normal"
-                                name="inactive"
-                                label="Reject"
-                                value={!!values.rejectedDate}
-                                checked={!!values.rejectedDate}
-                                onChange={() => {
-                                  const set = !!!values.rejectedDate;
-                                  setFieldValue(
-                                    "rejectedDate",
-                                    set ? moment() : ""
-                                  );
-                                  setFieldValue(
-                                    "reviewedUser",
-                                    set
-                                      ? user.firstName + " " + user.lastName
-                                      : ""
-                                  );
-                                  setFieldValue(
-                                    "reviewedLoginId",
-                                    set ? user.id : ""
-                                  );
-                                  if (set) {
-                                    setFieldValue("approvedDate", "");
-                                  }
-                                }}
-                                onBlur={handleBlur}
-                              />
-                            }
-                            label="Reject"
-                          />
-                        </div>
+                                  <FormControlLabel
+                                    control={
+                                      <Checkbox
+                                        margin="normal"
+                                        name="inactive"
+                                        label="Reject"
+                                        value={!!values.rejectedDate}
+                                        checked={!!values.rejectedDate}
+                                        onChange={() => {
+                                          const set = !!!values.rejectedDate;
+                                          setFieldValue(
+                                            "rejectedDate",
+                                            set ? moment() : ""
+                                          );
+                                          setFieldValue(
+                                            "reviewedUser",
+                                            set
+                                              ? user.firstName +
+                                                  " " +
+                                                  user.lastName
+                                              : ""
+                                          );
+                                          setFieldValue(
+                                            "reviewedLoginId",
+                                            set ? user.id : ""
+                                          );
+                                          if (set) {
+                                            setFieldValue("approvedDate", "");
+                                          }
+                                        }}
+                                        onBlur={handleBlur}
+                                      />
+                                    }
+                                    label="Reject"
+                                  />
+                                </div>
+                              </div>
+                            ) : null
+                          }
+                        </UserContext.Consumer>
                       </div>
                     </div>
 
@@ -1512,24 +1577,38 @@ const StakeholderEdit = (props) => {
                         </Typography>
                       </div>
                       <div className={classes.workflowColumn4}>
-                        <AccountAutocomplete
-                          style={{ width: "100%" }}
-                          accountId={values.claimedLoginId || ""}
-                          setAccount={(login) => {
-                            if (login) {
-                              setFieldValue("claimedLoginId", login.id);
-                              setFieldValue(
-                                "claimedUser",
-                                `${login.firstName} ${login.lastName}`
-                              );
-                              setFieldValue("claimedDate", moment());
-                            } else {
-                              setFieldValue("claimedLoginId", "");
-                              setFieldValue("claimedUser", "");
-                              setFieldValue("claimedDate", "");
-                            }
-                          }}
-                        />
+                        <UserContext.Consumer>
+                          {(user) =>
+                            user && user.isAdmin ? (
+                              <div
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "row",
+                                  justifyContent: "flex-end",
+                                }}
+                              >
+                                <AccountAutocomplete
+                                  style={{ width: "100%" }}
+                                  accountId={values.claimedLoginId || ""}
+                                  setAccount={(login) => {
+                                    if (login) {
+                                      setFieldValue("claimedLoginId", login.id);
+                                      setFieldValue(
+                                        "claimedUser",
+                                        `${login.firstName} ${login.lastName}`
+                                      );
+                                      setFieldValue("claimedDate", moment());
+                                    } else {
+                                      setFieldValue("claimedLoginId", "");
+                                      setFieldValue("claimedUser", "");
+                                      setFieldValue("claimedDate", "");
+                                    }
+                                  }}
+                                />
+                              </div>
+                            ) : null
+                          }
+                        </UserContext.Consumer>
                       </div>
                     </div>
                   </Grid>

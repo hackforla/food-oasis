@@ -21,16 +21,11 @@ const styles = {
 
 function StakeholdersContainer(props) {
   const { history, userCoordinates } = props;
-  const { state, dispatch, actionTypes, search } = useStakeholders(
-    history,
-    userCoordinates
-  );
+  const { state, dispatch, actionTypes, search } = useStakeholders(history);
   const [isMapView, setIsMapView] = React.useState(true);
   const openSearchPanel = (isOpen) => {
     dispatch({ type: actionTypes.TOGGLE_SEARCH_PANEL, isOpen });
   };
-  // const globalState = useContext(store);
-  // console.log("globalState", globalState);
 
   const {
     stakeholders,
@@ -46,8 +41,6 @@ function StakeholdersContainer(props) {
     latitude,
     longitude,
   } = state;
-  // console.warn('latitude', latitude);
-  // console.warn('longitude', longitude);
 
   return (
     <main style={styles.container}>

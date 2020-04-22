@@ -1,166 +1,232 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
-import {
-  ExpansionPanel,
-  ExpansionPanelSummary,
-  ExpansionPanelDetails,
-  FormControl,
-  InputLabel,
-  Typography,
-  Select,
-  MenuItem
-} from "@material-ui/core";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import StakeholderList from "../StakeholderList";
+import { CssBaseline, Dialog, Typography } from "@material-ui/core";
+import MuiDialogTitle from "@material-ui/core/DialogTitle";
+import { makeStyles } from "@material-ui/core/styles";
+import { SearchButton } from "../Buttons";
 import StakeholderGrid from "../StakeholderGrid";
-import Map from "../Map";
 import { RotateLoader } from "react-spinners";
 import { useOrganizations } from "../../hooks/useOrganizations/useOrganizations";
 import { useCategories } from "../../hooks/useCategories/useCategories";
 
 import SearchCriteria from "./SearchCriteria";
 
-const styles = {
-  container: {
+const CRITERIA_STORAGE_TOKEN = "stakeholderAdminCriteria";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(2),
     display: "flex",
     flexDirection: "column",
-    padding: "1rem"
+  },
+  closeButton: {
+    position: "absolute",
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    // color: theme.palette.grey[500],
+  },
+  container: {
+    flexGrow: 1,
+    flexBasis: "100%",
+    display: "flex",
+    flexDirection: "column",
+    padding: "2rem",
+    paddingBottom: "0",
   },
   header: {
-    display: "flex"
-  }
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  hide: {
+    display: "none",
+  },
+}));
+
+const DialogTitle = (props) => {
+  const classes = useStyles();
+  const { children, onClose, ...other } = props;
+  return (
+    <MuiDialogTitle disableTypography className={classes.root} {...other}>
+      <Typography variant="h6">{children}</Typography>
+      {onClose ? (
+        <SearchButton
+          aria-label="close"
+          onClick={onClose}
+          className={classes.closeButton}
+        />
+      ) : null}
+    </MuiDialogTitle>
+  );
 };
 
 function StakeholdersAdmin(props) {
+  const classes = useStyles();
   const { history, userCoordinates } = props;
-  const [view, setView] = useState("grid");
+  const [dialogOpen, setDialogOpen] = useState(false);
   const [criteria, setCriteria] = useState({
     name: "",
-    latitude: 0,
-    longitude: 0,
+    latitude: userCoordinates.latitude,
+    longitude: userCoordinates.longitude,
     placeName: "",
-    radius: 10,
-    categoryIds: [1, 8, 9],
-    approvedOnly: false
+    radius: 0,
+    categoryIds: [],
+    isInactive: "either",
+    isAssigned: "either",
+    isVerified: "either",
+    isApproved: "either",
+    isRejected: "either",
+    isClaimed: "either",
+    assignedLoginId: null,
+    claimedLoginId: null,
   });
 
   const {
     data: categories,
     loading: categoriesLoading,
-    error: categoriesError
+    error: categoriesError,
   } = useCategories();
 
   const {
     data: stakeholders,
     loading: stakeholdersLoading,
     error: stakeholdersError,
-    search: stakeholderSearch
+    search: stakeholderSearch,
   } = useOrganizations();
+
+  useEffect(() => {
+    const criteriaString = localStorage.getItem(CRITERIA_STORAGE_TOKEN);
+    const storedCriteria = JSON.parse(criteriaString);
+    if (storedCriteria && stakeholderSearch) {
+      setCriteria(storedCriteria);
+      stakeholderSearch(storedCriteria);
+    }
+  }, []);
 
   const search = async () => {
     await stakeholderSearch(criteria);
+    localStorage.setItem(CRITERIA_STORAGE_TOKEN, JSON.stringify(criteria));
+  };
+
+  const handleDialogOpen = () => {
+    setDialogOpen(true);
+  };
+
+  const handleDialogClose = () => {
+    search();
+    setDialogOpen(false);
   };
 
   return (
-    <main style={styles.container}>
+    <main className={classes.container}>
       <div
         style={{
           display: "flex",
-          flexDirection: "row",
+          flexDirection: "column",
           justifyContent: "space-between",
-          margin: "10px"
+          margin: "10px",
         }}
       >
-        <header style={styles.header}>
+        <header className={classes.header}>
           <Typography
             variant={"h4"}
             component={"h4"}
             align="center"
             style={{ marginBottom: "0.5em" }}
           >
-            Stakeholders{" "}
+            Administrative Dashboard - Organizations
           </Typography>
+          <SearchButton onClick={handleDialogOpen} label="Criteria..." />
         </header>
-        <FormControl style={{ minWidth: "120px" }}>
-          <InputLabel id="view-select_label">Results View</InputLabel>
-          <Select
-            labelId="view-select_label"
-            value={view}
-            onChange={evt => {
-              setView(evt.target.value);
-            }}
-          >
-            <MenuItem value={"grid"}>Data Grid</MenuItem>
-            <MenuItem value={"card"}>Cards</MenuItem>
-            <MenuItem value={"map"}>Map</MenuItem>
-          </Select>
-        </FormControl>
       </div>
-      <>
-        {criteria ? (
-          <ExpansionPanel style={{ backgroundColor: "#80ee80" }}>
-            <ExpansionPanelSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-label="Expand"
-              aria-controls="additional-actions1-content"
-              id="additional-actions1-header"
-              style={{ borderBottom: "1px solid gray" }}
-            >
-              <Typography variant={"h5"} component={"h5"}>
-                Search Criteria
-              </Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-              {/* <pre>{JSON.stringify(criteria, null, 2)}</pre> */}
+      <div className={classes.root}>
+        <CssBaseline />
+
+        <Dialog
+          open={dialogOpen}
+          onClose={handleDialogClose}
+          fullWidth={true}
+          maxWidth="lg"
+        >
+          <DialogTitle onClose={handleDialogClose}>Search Criteria</DialogTitle>
+
+          {criteria ? (
+            <div style={{ overflowY: "scroll" }}>
               <SearchCriteria
                 key={JSON.stringify({
                   userLatitude: userCoordinates.latitude,
-                  categories
+                  categories,
                 })}
                 userLatitude={userCoordinates.latitude}
                 userLongitude={userCoordinates.longitude}
-                categories={categories && categories.filter(c => !c.inactive)}
+                categories={categories && categories.filter((c) => !c.inactive)}
                 criteria={criteria}
                 setCriteria={setCriteria}
-                search={search}
+                search={() => {
+                  search();
+                  setDialogOpen(false);
+                }}
               />
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-        ) : null}
-
-        {categoriesError || stakeholdersError ? (
-          <div> Uh Oh! Something went wrong!</div>
-        ) : categoriesLoading || stakeholdersLoading ? (
-          <div
-            style={{
-              height: "200",
-              width: "100%",
-              margin: "100px auto",
-              display: "flex",
-              justifyContent: "space-around"
-            }}
-            aria-label="Loading spinner"
-          >
-            <RotateLoader
-              // css={}
-              sizeUnit={"px"}
-              size={15}
-              color={"#FAEBD7"}
-              loading={true}
-            />
-          </div>
-        ) : !stakeholders ? null : view === "card" ? (
-          <StakeholderList stakeholders={stakeholders} />
-        ) : view === "grid" ? (
-          <StakeholderGrid stakeholders={stakeholders} />
-        ) : (
-          <Map
-            stakeholders={stakeholders}
-            selectedLatitude={criteria.latitude}
-            selectedLongitude={criteria.longitude}
-          />
-        )}
-      </>
+              {/* <pre>{JSON.stringify(criteria, null, 2)}</pre> */}
+            </div>
+          ) : null}
+          {categoriesError || stakeholdersError ? (
+            <div> Uh Oh! Something went wrong!</div>
+          ) : categoriesLoading || stakeholdersLoading ? (
+            <div
+              style={{
+                height: "200",
+                width: "100%",
+                margin: "100px auto",
+                display: "flex",
+                justifyContent: "space-around",
+              }}
+              aria-label="Loading spinner"
+            >
+              <RotateLoader
+                // css={}
+                sizeUnit={"px"}
+                size={15}
+                color={"#FAEBD7"}
+                loading={true}
+              />
+            </div>
+          ) : null}
+        </Dialog>
+        <>
+          {categoriesError || stakeholdersError ? (
+            <div> Uh Oh! Something went wrong!</div>
+          ) : categoriesLoading || stakeholdersLoading ? (
+            <div
+              style={{
+                height: "200",
+                width: "100%",
+                margin: "100px auto",
+                display: "flex",
+                justifyContent: "space-around",
+              }}
+              aria-label="Loading spinner"
+            >
+              <RotateLoader
+                // css={}
+                sizeUnit={"px"}
+                size={15}
+                color={"#FAEBD7"}
+                loading={true}
+              />
+            </div>
+          ) : stakeholders ? (
+            <StakeholderGrid stakeholders={stakeholders} />
+          ) : (
+            "Please enter search criteria and execute a search"
+          )}
+          {/* <pre>{JSON.stringify(criteria, null, 2)}</pre> */}
+        </>
+      </div>
     </main>
   );
 }

@@ -1,20 +1,15 @@
 const stakeholderService = require("../services/stakeholder-service");
 
-const getAll = (req, res) => {
+const search = (req, res) => {
   let categoryIds = req.query.categoryIds;
   if (!categoryIds) {
     categoryIds = ["1", "2", "3", "4", "5", "6"];
   } else if (typeof categoryIds == "string") {
     categoryIds = [categoryIds];
   }
+  const params = { ...req.query, categoryIds };
   stakeholderService
-    .selectAll(
-      req.query.name || "",
-      categoryIds,
-      req.query.latitude,
-      req.query.longitude,
-      req.query.distance
-    )
+    .search(params)
     .then((resp) => {
       res.send(resp);
     })
@@ -125,7 +120,7 @@ const reject = (req, res) => {
 };
 
 module.exports = {
-  getAll,
+  search,
   getById,
   post,
   put,

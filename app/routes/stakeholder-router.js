@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const stakeholderController = require("../controllers/stakeholder-controller");
 
-router.get("/", stakeholderController.getAll);
+router.get("/", stakeholderController.search);
 router.get("/:id", stakeholderController.getById);
 router.post("/", stakeholderController.post);
 router.put("/:id", stakeholderController.put);

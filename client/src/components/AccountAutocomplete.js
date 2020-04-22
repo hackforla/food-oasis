@@ -3,11 +3,17 @@ import { TextField } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { useAccounts } from "../hooks/useAccounts/useAccounts";
 
-export default function AccountAutocomplete({ accountId, setAccount, label }) {
+export default function AccountAutocomplete({
+  accountId,
+  setAccount,
+  setAccountId,
+  label,
+}) {
   const { data: accounts } = useAccounts();
 
   const handleChange = (event, value, reason) => {
-    setAccount(value);
+    setAccount && setAccount(value);
+    setAccountId && setAccountId(value ? value.id : null);
   };
 
   return (

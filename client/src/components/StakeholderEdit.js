@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
+import { UserContext } from "./user-context";
 import { Formik } from "formik";
 import AccountAutocomplete from "./AccountAutocomplete";
 import * as Yup from "yup";
 import {
   AppBar,
   withStyles,
-  Box,
   Checkbox,
   Container,
   CssBaseline,
@@ -31,6 +31,7 @@ import * as stakeholderService from "../services/stakeholder-service";
 import * as categoryService from "../services/category-service";
 import * as esriService from "../services/esri_service";
 import OpenTimeForm from "./OpenTimeForm";
+import { TabPanel, a11yProps } from "./TabPanel";
 // import BigTooltip from "./BigTooltip";
 import { SaveButton, CloseButton, SearchButton, VerifyButton } from "./Buttons";
 
@@ -76,29 +77,12 @@ const styles = (theme) => ({
 
 const DATE_FORMAT = "MM/DD/YY h:mm a";
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <Typography
-      component="div"
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box p={3}>{children}</Box>}
-    </Typography>
-  );
-}
-
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
-}
+// function a11yProps(index) {
+//   return {
+//     id: `tab-${index}`,
+//     "aria-controls": `tab-${index}`,
+//   };
+// }
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -347,6 +331,7 @@ const StakeholderEdit = (props) => {
                   <Grid item xs={12}>
                     <TextField
                       type="text"
+                      size="small"
                       label="Name"
                       name="name"
                       variant="outlined"
@@ -442,6 +427,7 @@ const StakeholderEdit = (props) => {
                     <BigTooltip title="The mission statement or other description.">
                       <TextField
                         type="text"
+                        size="small"
                         label="Description"
                         name="description"
                         variant="outlined"
@@ -467,6 +453,7 @@ const StakeholderEdit = (props) => {
                     <BigTooltip title="If part of a larger organization, the parent name">
                       <TextField
                         type="text"
+                        size="small"
                         label="Parent Organization"
                         name="parentOrganization"
                         variant="outlined"
@@ -496,6 +483,7 @@ const StakeholderEdit = (props) => {
                         name="address1"
                         label="Address Line 1"
                         type="text"
+                        size="small"
                         value={values.address1}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -511,6 +499,7 @@ const StakeholderEdit = (props) => {
                         name="address2"
                         label="Address Line 2"
                         type="text"
+                        size="small"
                         value={values.address2}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -526,6 +515,7 @@ const StakeholderEdit = (props) => {
                         name="city"
                         label="City"
                         type="text"
+                        size="small"
                         value={values.city}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -541,6 +531,7 @@ const StakeholderEdit = (props) => {
                         name="state"
                         label="State"
                         type="text"
+                        size="small"
                         value={values.state}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -556,6 +547,7 @@ const StakeholderEdit = (props) => {
                         name="zip"
                         label="Zip Code"
                         type="text"
+                        size="small"
                         value={values.zip}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -572,6 +564,7 @@ const StakeholderEdit = (props) => {
                         name="latitude"
                         label="Latitude"
                         type="text"
+                        size="small"
                         value={values.latitude}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -587,6 +580,7 @@ const StakeholderEdit = (props) => {
                         name="longitude"
                         label="Longitude"
                         type="text"
+                        size="small"
                         value={values.longitude}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -670,6 +664,7 @@ const StakeholderEdit = (props) => {
                         name="phone"
                         label="Phone"
                         type="text"
+                        size="small"
                         value={values.phone}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -687,6 +682,7 @@ const StakeholderEdit = (props) => {
                         name="email"
                         label="Email"
                         type="text"
+                        size="small"
                         value={values.email}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -705,6 +701,7 @@ const StakeholderEdit = (props) => {
                         name="website"
                         label="Web Site"
                         type="text"
+                        size="small"
                         value={values.website}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -721,6 +718,7 @@ const StakeholderEdit = (props) => {
                       name="instagram"
                       label="Instagram"
                       type="text"
+                      size="small"
                       value={values.instagram}
                       onChange={handleChange}
                       onBlur={handleBlur}
@@ -736,6 +734,7 @@ const StakeholderEdit = (props) => {
                       name="facebook"
                       label="Facebook"
                       type="text"
+                      size="small"
                       value={values.facebook}
                       onChange={handleChange}
                       onBlur={handleBlur}
@@ -751,6 +750,7 @@ const StakeholderEdit = (props) => {
                       name="twitter"
                       label="Twitter"
                       type="text"
+                      size="small"
                       value={values.twitter}
                       onChange={handleChange}
                       onBlur={handleBlur}
@@ -766,6 +766,7 @@ const StakeholderEdit = (props) => {
                       name="pinterest"
                       label="Pinterest"
                       type="text"
+                      size="small"
                       value={values.pinterest}
                       onChange={handleChange}
                       onBlur={handleBlur}
@@ -781,6 +782,7 @@ const StakeholderEdit = (props) => {
                       name="linkedin"
                       label="LinkedIn"
                       type="text"
+                      size="small"
                       value={values.linkedin}
                       onChange={handleChange}
                       onBlur={handleBlur}
@@ -812,6 +814,7 @@ const StakeholderEdit = (props) => {
                         name="items"
                         label="Items (separated by commas)"
                         type="text"
+                        size="small"
                         value={values.items}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -829,6 +832,7 @@ const StakeholderEdit = (props) => {
                         name="services"
                         label="Services (separated by commas)"
                         type="text"
+                        size="small"
                         value={values.services}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -846,6 +850,7 @@ const StakeholderEdit = (props) => {
                         name="requirements"
                         label="Eligibility / Requirements"
                         type="text"
+                        size="small"
                         multiline
                         rows={2}
                         rowsMax={12}
@@ -870,6 +875,7 @@ const StakeholderEdit = (props) => {
                         name="notes"
                         label="Notes"
                         type="text"
+                        size="small"
                         multiline
                         rows={2}
                         rowsMax={12}
@@ -894,6 +900,7 @@ const StakeholderEdit = (props) => {
                         name="donationContactName"
                         label="Donation Contact Name"
                         type="text"
+                        size="small"
                         value={values.donationContactName}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -918,6 +925,7 @@ const StakeholderEdit = (props) => {
                         name="donationPhone"
                         label="Donation Phone"
                         type="phone"
+                        size="small"
                         value={values.donationPhone}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -938,7 +946,8 @@ const StakeholderEdit = (props) => {
                         fullWidth
                         name="donationEmail"
                         label="Donation Email"
-                        type="phone"
+                        type="email"
+                        size="small"
                         value={values.donationEmail}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -947,6 +956,171 @@ const StakeholderEdit = (props) => {
                         }
                         error={
                           touched.donationEmail && Boolean(errors.donationEmail)
+                        }
+                      />
+                    </BigTooltip>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <BigTooltip title="When can organization receive or pickup donations">
+                      <TextField
+                        variant="outlined"
+                        margin="normal"
+                        fullWidth
+                        name="donationSchedule"
+                        label="Donation Schedule"
+                        type="text"
+                        size="small"
+                        value={values.donationSchedule}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        helperText={
+                          touched.donationSchedule
+                            ? errors.donationSchedule
+                            : ""
+                        }
+                        error={
+                          touched.donationSchedule &&
+                          Boolean(errors.donationSchedule)
+                        }
+                      />
+                    </BigTooltip>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <BigTooltip title="Check if organization can pick up food from source">
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            margin="normal"
+                            name="donationCanPickUp"
+                            label="Pick Up"
+                            value={values.donationCanPickUp}
+                            checked={values.donationCanPickUp}
+                            onChange={() =>
+                              setFieldValue(
+                                "donationCanPickUp",
+                                !values.donationCanPickUp
+                              )
+                            }
+                            onBlur={handleBlur}
+                          />
+                        }
+                        label="Pick Up"
+                      />
+                    </BigTooltip>
+                  </Grid>
+                  <Grid item xs={12} sm={4}>
+                    <BigTooltip title="Check if organization can accept frozen food">
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            margin="normal"
+                            name="donationAcceptFrozen"
+                            label="Frozen"
+                            value={values.donationAcceptFrozen}
+                            checked={values.donationAcceptFrozen}
+                            onChange={() =>
+                              setFieldValue(
+                                "donationAcceptFrozen",
+                                !values.donationAcceptFrozen
+                              )
+                            }
+                            onBlur={handleBlur}
+                          />
+                        }
+                        label="Frozen"
+                      />
+                    </BigTooltip>
+                  </Grid>
+                  <Grid item xs={12} sm={4}>
+                    <BigTooltip title="Check if organization can accept refrigerated food">
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            margin="normal"
+                            name="donationAcceptRefrigerated"
+                            label="Refrigerated"
+                            value={values.donationAcceptRefrigerated}
+                            checked={values.donationAcceptRefrigerated}
+                            onChange={() =>
+                              setFieldValue(
+                                "donationAcceptRefrigerated",
+                                !values.donationAcceptRefrigerated
+                              )
+                            }
+                            onBlur={handleBlur}
+                          />
+                        }
+                        label="Refrigerated"
+                      />
+                    </BigTooltip>
+                  </Grid>
+                  <Grid item xs={12} sm={4}>
+                    <BigTooltip title="Check if organization can accept perishables">
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            margin="normal"
+                            name="donationAcceptPerishable"
+                            label="Perishable"
+                            value={values.donationAcceptPerishable}
+                            checked={values.donationAcceptPerishable}
+                            onChange={() =>
+                              setFieldValue(
+                                "donationAcceptPerishable",
+                                !values.donationAcceptPerishable
+                              )
+                            }
+                            onBlur={handleBlur}
+                          />
+                        }
+                        label="Perishable"
+                      />
+                    </BigTooltip>
+                  </Grid>
+
+                  <Grid item xs={12} sm={6}>
+                    <BigTooltip title="Delivery Instructions">
+                      <TextField
+                        variant="outlined"
+                        margin="normal"
+                        fullWidth
+                        name="donationDeliveryInstructions"
+                        label="Donation Delivery or Pickup Instructions"
+                        type="text"
+                        size="small"
+                        value={values.donationDeliveryInstructions}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        helperText={
+                          touched.donationDeliveryInstructions
+                            ? errors.donationDeliveryInstructions
+                            : ""
+                        }
+                        error={
+                          touched.donationDeliveryInstructions &&
+                          Boolean(errors.donationDeliveryInstructions)
+                        }
+                      />
+                    </BigTooltip>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <BigTooltip title="Other donation notes">
+                      <TextField
+                        variant="outlined"
+                        margin="normal"
+                        fullWidth
+                        name="donationNotes"
+                        label="Donation Notes"
+                        type="text"
+                        size="small"
+                        value={values.donationNotes}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        helperText={
+                          touched.donationNotes ? errors.donationNotes : ""
+                        }
+                        error={
+                          touched.donationNotes && Boolean(errors.donationNotes)
                         }
                       />
                     </BigTooltip>
@@ -964,6 +1138,7 @@ const StakeholderEdit = (props) => {
                         name="adminNotes"
                         label="Administrator Notes"
                         type="text"
+                        size="small"
                         multiline
                         rows={2}
                         rowsMax={12}
@@ -984,6 +1159,7 @@ const StakeholderEdit = (props) => {
                         name="adminContactName"
                         label="Administrator Name"
                         type="text"
+                        size="small"
                         value={values.adminContactName}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -1008,6 +1184,7 @@ const StakeholderEdit = (props) => {
                         name="adminContactPhone"
                         label="Administrator Phone"
                         type="phone"
+                        size="small"
                         value={values.adminContactPhone}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -1032,6 +1209,7 @@ const StakeholderEdit = (props) => {
                         name="adminContactEmail"
                         label="Administrator Email"
                         type="email"
+                        size="small"
                         value={values.adminContactEmail}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -1168,44 +1346,52 @@ const StakeholderEdit = (props) => {
                         className={classes.workflowColumn4}
                         style={{ textAlign: "right" }}
                       >
-                        <div
-                          style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "flex-end",
-                          }}
-                        >
-                          <FormControlLabel
-                            control={
-                              <Checkbox
-                                margin="normal"
-                                name="inactive"
-                                label="Verify"
-                                value={!!values.verifiedDate}
-                                checked={!!values.verifiedDate}
-                                onChange={() => {
-                                  const setVerified = !!!values.verifiedDate;
-                                  setFieldValue(
-                                    "verifiedDate",
-                                    setVerified ? moment() : ""
-                                  );
-                                  setFieldValue(
-                                    "verifiedUser",
-                                    setVerified
-                                      ? user.firstName + " " + user.lastName
-                                      : ""
-                                  );
-                                  setFieldValue(
-                                    "verifiedLoginId",
-                                    setVerified ? user.id : ""
-                                  );
+                        <UserContext.Consumer>
+                          {(user) =>
+                            user && (user.isDataEntry || user.isAdmin) ? (
+                              <div
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "row",
+                                  justifyContent: "flex-end",
                                 }}
-                                onBlur={handleBlur}
-                              />
-                            }
-                            label="Verify"
-                          />
-                        </div>
+                              >
+                                <FormControlLabel
+                                  control={
+                                    <Checkbox
+                                      margin="normal"
+                                      name="inactive"
+                                      label="Verify"
+                                      value={!!values.verifiedDate}
+                                      checked={!!values.verifiedDate}
+                                      onChange={() => {
+                                        const setVerified = !!!values.verifiedDate;
+                                        setFieldValue(
+                                          "verifiedDate",
+                                          setVerified ? moment() : ""
+                                        );
+                                        setFieldValue(
+                                          "verifiedUser",
+                                          setVerified
+                                            ? user.firstName +
+                                                " " +
+                                                user.lastName
+                                            : ""
+                                        );
+                                        setFieldValue(
+                                          "verifiedLoginId",
+                                          setVerified ? user.id : ""
+                                        );
+                                      }}
+                                      onBlur={handleBlur}
+                                    />
+                                  }
+                                  label="Verify"
+                                />
+                              </div>
+                            ) : null
+                          }
+                        </UserContext.Consumer>
                       </div>
                     </div>
                     <div className={classes.workflowRow}>

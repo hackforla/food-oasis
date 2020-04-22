@@ -6,7 +6,28 @@ const {
   toSqlTimestamp,
 } = require("./postgres-utils");
 
-const selectAll = async (name, categoryIds, latitude, longitude, distance) => {
+const trueFalseEitherClause = (columnName, value) =>
+  value === "true"
+    ? ` and ${columnName} is not null `
+    : value === "false"
+    ? ` and ${columnName} is null `
+    : "";
+
+const search = async ({
+  name,
+  categoryIds,
+  latitude,
+  longitude,
+  distance,
+  inactive,
+  isAssigned,
+  isVerified,
+  isApproved,
+  isRejected,
+  isClaimed,
+  assignedLoginId,
+  claimedLoginId,
+}) => {
   const categoryClause = `(select sc.stakeholder_id from stakeholder_category sc where sc.category_id in (${categoryIds.join(
     ","
   )}))`;
@@ -53,8 +74,20 @@ const selectAll = async (name, categoryIds, latitude, longitude, distance) => {
     left join login L4 on s.reviewed_login_id = L4.id
     left join login L5 on s.assigned_login_id = L5.id
     left join login L6 on s.claimed_login_id = L6.id
-    where s.id in ${categoryClause}
-    and s.name ilike ${nameClause} 
+    where s.name ilike ${nameClause} 
+    ${
+      categoryIds && categoryIds.length > 0
+        ? ` and s.id in ${categoryClause} `
+        : ""
+    }
+    ${trueFalseEitherClause("s.assigned_date", isAssigned)}
+    ${trueFalseEitherClause("s.verified_date", isVerified)}
+    ${trueFalseEitherClause("s.approved_date", isApproved)}
+    ${trueFalseEitherClause("s.rejected_date", isRejected)}
+    ${trueFalseEitherClause("s.claimed_date", isClaimed)}
+    ${trueFalseEitherClause("s.inactive", inactive)}
+    ${assignedLoginId ? ` and s.assigned_login_id = ${assignedLoginId} ` : ""}
+    ${claimedLoginId ? ` and s.claimed_login_id = ${claimedLoginId} ` : ""}
     order by s.name
   `;
   console.log(sql);
@@ -534,7 +567,7 @@ const remove = (id) => {
 };
 
 module.exports = {
-  selectAll,
+  search,
   selectById,
   insert,
   update,

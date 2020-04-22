@@ -60,6 +60,12 @@ const useStyles = makeStyles({
     flexDirection: "column",
     justifyContent: "center",
   },
+  adminDashboardWrapper: {
+    flexBasis: "100%",
+    flexGrow: 1,
+    display: "flex",
+    flexDirection: "column",
+  },
 });
 
 function App() {
@@ -157,10 +163,12 @@ function App() {
                 </div>
               </Route>
               <Route path="/stakeholdersadmin">
-                <StakeholdersAdmin
-                  user={user}
-                  userCoordinates={userCoordinates}
-                />
+                <div className={classes.adminDashboardWrapper}>
+                  <StakeholdersAdmin
+                    user={user}
+                    userCoordinates={userCoordinates}
+                  />
+                </div>
               </Route>
               <Route path="/donate">
                 <Donate />

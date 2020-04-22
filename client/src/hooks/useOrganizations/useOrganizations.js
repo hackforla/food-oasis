@@ -5,11 +5,25 @@ export const useOrganizations = () => {
   const [state, setState] = useState({
     data: null,
     loading: false,
-    error: false
+    error: false,
   });
 
-  const search = async ({ name, latitude, longitude, radius, categoryIds }) => {
-    if (!categoryIds || categoryIds.length === 0) return;
+  const search = async ({
+    name,
+    latitude,
+    longitude,
+    radius,
+    categoryIds,
+    isInactive,
+    isAssigned,
+    isVerified,
+    isApproved,
+    isRejected,
+    isClaimed,
+    assignedLoginId,
+    claimedLoginId,
+  }) => {
+    //if (!categoryIds || categoryIds.length === 0) return;
     try {
       setState({ data: null, loading: true, error: false });
       const stakeholders = await stakeholderService.search({
@@ -17,7 +31,15 @@ export const useOrganizations = () => {
         categoryIds,
         latitude,
         longitude,
-        distance: radius
+        distance: radius,
+        isInactive,
+        isAssigned,
+        isVerified,
+        isApproved,
+        isRejected,
+        isClaimed,
+        assignedLoginId,
+        claimedLoginId,
       });
       setState({ data: stakeholders, loading: false, error: false });
       return stakeholders;
@@ -28,6 +50,5 @@ export const useOrganizations = () => {
     }
   };
 
-  // return [search, state];
   return { ...state, search };
 };

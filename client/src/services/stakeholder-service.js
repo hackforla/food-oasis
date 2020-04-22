@@ -9,6 +9,13 @@ const baseUrl = "/api/stakeholders";
         latitude
         longitude
         distance - radius around latitude and longitude
+        isAssigned - ("yes", "no", "either")
+        isVerified - ("yes", "no", "either")
+        isApproved - ("yes", "no", "either")
+        isRejected - ("yes", "no", "either")
+        isClaimed - ("yes", "no", "either")
+        assignedLoginId
+        claimedLoginId
 */
 export const search = async (searchParams) => {
   searchParams = searchParams || {};

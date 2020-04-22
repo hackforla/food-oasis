@@ -1,19 +1,23 @@
 import React, { useState } from "react";
 import { withRouter, Link } from "react-router-dom";
-import { Grid, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import moment from "moment";
 
 import DataGrid from "react-data-grid";
 
-const LinkFormatter = ({ value, row }) => {
+const linkFormatter = ({ value, row }) => {
   return <Link to={`/stakeholderedit/${row.id}`}>{value}</Link>;
 };
 
-const DistanceFormatter = ({ value }) => {
+const booleanFormatter = ({ value, row }) => {
+  return value ? "y" : "n";
+};
+
+const distanceFormatter = ({ value }) => {
   return value ? value.toFixed(2) : value;
 };
 
-const DateFormatter = ({ value }) =>
+const dateFormatter = ({ value }) =>
   value ? moment(value).format("MM/DD/YY hh:mm a") : "";
 
 const defaultColumnProperties = {
@@ -35,7 +39,8 @@ const sortRows = (initialRows, sortColumn, sortDirection) => (rows) => {
 
 const columns = [
   { key: "id", name: "ID", width: 60 },
-  { key: "name", name: "Name", formatter: LinkFormatter, width: 240 },
+  { key: "name", name: "Name", formatter: linkFormatter, width: 240 },
+  { key: "inactive", name: "Inactive", formatter: booleanFormatter, width: 80 },
   { key: "city", name: "City" },
   { key: "zip", name: "Zip Code" },
   { key: "phone", name: "Phone" },
@@ -43,48 +48,48 @@ const columns = [
   {
     key: "distance",
     name: "Distance (mi)",
-    formatter: DistanceFormatter,
-    width: 85,
+    formatter: distanceFormatter,
+    width: 95,
   },
   { key: "assignedUser", name: "Assigned To" },
   {
     key: "assignedDate",
     name: "Assigned",
-    formatter: DateFormatter,
+    formatter: dateFormatter,
     dataType: "datetime",
   },
   { key: "verifiedUser", name: "Verified By" },
   {
     key: "verifiedDate",
     name: "Verified",
-    formatter: DateFormatter,
+    formatter: dateFormatter,
     dataType: "datetime",
   },
   { key: "reviewedUser", name: "Reviewed By" },
   {
     key: "rejectedDate",
     name: "Rejected",
-    formatter: DateFormatter,
+    formatter: dateFormatter,
     dataType: "datetime",
   },
   {
     key: "approvedDate",
     name: "Approved",
-    formatter: DateFormatter,
+    formatter: dateFormatter,
     dataType: "datetime",
   },
   { key: "createdUser", name: "Entered By" },
   {
     key: "createdDate",
     name: "Entered",
-    formatter: DateFormatter,
+    formatter: dateFormatter,
     dataType: "datetime",
   },
   { key: "modifiedUser", name: "Modified By" },
   {
     key: "modifiedDate",
     name: "Modified",
-    formatter: DateFormatter,
+    formatter: dateFormatter,
     dataType: "datetime",
   },
 ].map((c) => ({ ...defaultColumnProperties, ...c }));
@@ -93,29 +98,26 @@ const StakeholderGrid = (props) => {
   const { stakeholders } = props;
   const [rows, setRows] = useState(props.stakeholders);
   return (
-    <div style={{ padding: "16px" }}>
+    <>
       {stakeholders && stakeholders.length > 0 ? (
-        <div>
-          <DataGrid
-            columns={columns}
-            rowGetter={(i) => rows[i]}
-            rowsCount={rows.length}
-            onGridSort={(sortColumn, sortDirection) =>
-              setRows(sortRows(stakeholders, sortColumn, sortDirection))
-            }
-            onColumnResize={(idx, width) =>
-              console.log(`Column ${idx} has been resized to ${width}`)
-            }
-          />
-        </div>
+        <DataGrid
+          styles={{ flexGrow: 1, minHeight: "100%" }}
+          columns={columns}
+          rowGetter={(i) => rows[i]}
+          rowsCount={rows.length}
+          onGridSort={(sortColumn, sortDirection) =>
+            setRows(sortRows(stakeholders, sortColumn, sortDirection))
+          }
+          onColumnResize={(idx, width) =>
+            console.log(`Column ${idx} has been resized to ${width}`)
+          }
+        />
       ) : (
-        <Grid item>
-          <Typography variant={"h5"} component={"h5"}>
-            No matches found, please try different Criteria
-          </Typography>
-        </Grid>
+        <Typography variant={"h5"} component={"h5"}>
+          No matches found, please try different Criteria
+        </Typography>
       )}
-    </div>
+    </>
   );
 };
 

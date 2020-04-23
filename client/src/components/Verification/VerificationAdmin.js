@@ -46,6 +46,14 @@ const useStyles = makeStyles((theme) => ({
   hide: {
     display: "none",
   },
+  bigMessage: {
+    flexGrow: 1,
+    flexDirection: "column",
+    justifyContent: "center",
+    backgroundColor: "#E8E8E8",
+    textAlign: "center",
+    padding: "4em",
+  },
 }));
 
 const DialogTitle = (props) => {
@@ -227,15 +235,9 @@ function VerificationAdmin(props) {
         </Dialog>
         <>
           {categoriesError || stakeholdersError ? (
-            <div
-              style={{
-                flexGrow: 1,
-                flexDirection: "column",
-                justifyContent: "center",
-              }}
-            >
-              <Typography variant="h3" component="h3">
-                " Uh Oh! Something went wrong!"
+            <div className={classes.bigMessage}>
+              <Typography variant="h5" component="h5" style={{ color: "red" }}>
+                Uh Oh! Something went wrong!
               </Typography>
             </div>
           ) : categoriesLoading || stakeholdersLoading ? (
@@ -253,19 +255,13 @@ function VerificationAdmin(props) {
                 // css={}
                 sizeUnit={"px"}
                 size={15}
-                color={"#FAEBD7"}
+                color={"green"}
                 loading={true}
               />
             </div>
           ) : stakeholders && stakeholders.length === 0 ? (
-            <div
-              style={{
-                flexGrow: 1,
-                flexDirection: "column",
-                justifyContent: "center",
-              }}
-            >
-              <Typography variant="h3" component="h3">
+            <div className={classes.bigMessage}>
+              <Typography variant="h5" component="h5">
                 {asAdmin
                   ? "No matches found, please try different criteria"
                   : "No organizations have been assigned to you."}
@@ -274,15 +270,9 @@ function VerificationAdmin(props) {
           ) : stakeholders ? (
             <StakeholderGrid stakeholders={stakeholders} />
           ) : (
-            <div
-              style={{
-                flexGrow: 1,
-                flexDirection: "column",
-                justifyContent: "center",
-              }}
-            >
-              <Typography variant="h3" component="h3">
-                "Please enter search criteria and execute a search"
+            <div className={classes.bigMessage}>
+              <Typography variant="h5" component="h5">
+                Please enter search criteria and execute a search
               </Typography>
             </div>
           )}

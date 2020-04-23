@@ -287,7 +287,7 @@ const StakeholderEdit = (props) => {
       <CssBaseline />
       <div className={classes.paper}>
         <Typography component="h1" variant="h5">
-          Stakeholder Information
+          Organization Information
         </Typography>
         <Formik
           initialValues={originalData}

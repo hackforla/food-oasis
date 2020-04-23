@@ -38,14 +38,12 @@ function Map({
     setSelectedStakeholder(null)
   }
 
-  //height={`calc(100vh - 250px)`}
-
   return (
     <div>
       <ReactMapGL
         {...viewport}
-        width={`100%`} //I think this will work as a percentage, though we can calculate it on the fly with a useEffect hook
-        height={`max(calc(100vh - 250px),46em)`} // TODO: this should be calculated depending on the screen width...
+        width={`100%`}
+        height={`max(calc(100vh - 250px),47em)`}
         onViewportChange={(newViewport) => setViewport(newViewport)}
         mapboxApiAccessToken={MAPBOX_TOKEN}
         mapStyle={MAPBOX_STYLE}

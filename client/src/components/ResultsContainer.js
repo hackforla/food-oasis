@@ -23,14 +23,12 @@ const useStyles = makeStyles((theme) => ({
   list: {
     textAlign: "center",
     fontSize: "12px",
-    border: "1px solid blue",
     height: "46em",
     overflow: "scroll"
   },
   map: {
     textAlign: "center",
     fontSize: "12px",
-    border: "1px solid blue",
     maxWidth: "100%",
     flexGrow: 1,
   },
@@ -56,21 +54,7 @@ export default function ResultsContainer(
    * hold 'selected stakeholder' in local state
    */
 
-  const [changeListWidth, setListWidth] = React.useState(
-    window.innerWidth <= 960 ? true : false
-  )
-
-  React.useEffect(() => {
-    const sizeResults = () => {
-      if (window.innerWidth <= 960) {
-        setListWidth(true)
-      } else {
-        setListWidth(false)
-      }
-    }
-
-    window.addEventListener("resize", sizeResults)
-  })
+  //fix mobile view flows
 
   return (
     <div className={classes.container}>
@@ -89,7 +73,6 @@ export default function ResultsContainer(
           xs={12}
           md={4}
           className={classes.list}
-          style={{ maxWidth: changeListWidth ? "100%" : "25em" }}
         >
           <ResultsList
           // selectedStakeholder={selectedStakeholder}

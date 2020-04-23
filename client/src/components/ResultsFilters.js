@@ -6,22 +6,49 @@ import { Grid, Select, MenuItem, FormControl, Button } from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
   filterButton: {
     margin: "0 .25rem",
-    padding: "0 0.5rem",
     fontSize: "12px",
+    backgroundColor: "#fff",
+    border: ".1em solid #000",
+    color: "#000",
   },
-  div: {
-    textAlign: "center",
+  distanceControl: {
+    margin: "0 .25rem",
+    padding: 0,
+    backgroundColor: "#fff",
+    padding: ".25em 0 .25em .7em",
+    border: ".09em solid #000",
+    outline: "none",
+  },
+  menuItems: {
     fontSize: "12px",
-    border: "1px solid blue",
+    color: "#000",
   },
   controlPanel: {
     width: "100%",
-    padding: ".5rem 1rem",
+    backgroundColor: "#336699",
+    height: "4em",
+  },
+  inputHolder: {
+    display: "flex",
+    justifyContent: "flex-start",
+    alignItems: "center",
+  },
+  input: {
+    fontSize: "12px",
+    width: "25em",
+    height: "2em",
+    outline: "none",
+    padding: ".25em",
   },
 }));
 
+const distanceInfo = [1, 2, 3, 5, 10, 20, 50]
+
 function ResultsFilters() {
   const classes = useStyles();
+
+  const [distanceValue, changeDistanceValue] = React.useState(0)
+  const [searchValue, changeSearchValue] = React.useState("")
 
   return (
     <Grid container wrap="wrap-reverse" className={classes.controlPanel}>
@@ -35,64 +62,64 @@ function ResultsFilters() {
         alignItems="center"
       >
         <Grid item>
-          <FormControl className={classes.filterButton} variant="outlined">
+          <Button as={FormControl} className={classes.distanceControl}>
             <Select
               name="select-distance"
-              value={0} // TODO: plug in live value
-              onChange={() => {}} // TODO: plug in handler function
+              disableUnderline
+              value={distanceValue}
+              onChange={(e) => changeDistanceValue(e.target.value)}
               inputProps={{
                 name: "select-distance",
                 id: "select-distance",
               }}
+              className={classes.menuItems}
             >
-              <MenuItem key={0} value={0}>
-                Distance
+              <MenuItem key={0} value={0} className={classes.menuItems}>
+                DISTANCE
               </MenuItem>
-              <MenuItem key={1} value={1}>
-                1
-              </MenuItem>
-              <MenuItem key={2} value={2}>
-                2
-              </MenuItem>
-              <MenuItem key={3} value={3}>
-                3
-              </MenuItem>
-              <MenuItem key={5} value={5}>
-                5
-              </MenuItem>
-              <MenuItem key={10} value={10}>
-                10
-              </MenuItem>
-              <MenuItem key={20} value={20}>
-                20
-              </MenuItem>
-              <MenuItem key={50} value={50}>
-                50
-              </MenuItem>
+              {distanceInfo.map(distance =>
+                <MenuItem
+                  key={distance}
+                  value={distance}
+                  className={classes.menuItems}>
+                  {`${distance} MILE${distance > 1 ? "S" : ""}`}
+                </MenuItem>)
+              }
             </Select>
-          </FormControl>
+          </Button>
         </Grid>
         <Grid item>
           <Button
-            variant="outlined"
             className={classes.filterButton}
-            onClick={() => {}}
+            onClick={() => { }}
           >
             Food Pantries
           </Button>
         </Grid>
         <Grid item>
           <Button
-            variant="outlined"
             className={classes.filterButton}
-            onClick={() => {}}
+            onClick={() => { }}
           >
             Meals
           </Button>
         </Grid>
+        <Grid item>
+          <Button
+            className={classes.filterButton}
+            onClick={() => { }}
+          >
+            Verified
+          </Button>
+        </Grid>
       </Grid>
-      <Grid item xs={12} sm={6} md={8}>
-        <div className={classes.div}>Search Input</div>
+      <Grid item xs={12} sm={6} md={8} className={classes.inputHolder}>
+        <input
+          className={classes.input}
+          placeholder={"Search Food Banks"}
+          value={searchValue}
+          onChange={(e) => changeSearchValue(e.target.value)}
+        />
       </Grid>
     </Grid>
   );

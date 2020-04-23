@@ -15,7 +15,15 @@ const CRITERIA_TOKEN = "verificationAdminCriteria";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    margin: 0,
+    flexGrow: 1,
+    flexBasis: "100%",
+    display: "flex",
+    flexDirection: "column",
+    padding: "2rem",
+    paddingBottom: "0",
+  },
+  mainContent: {
+    flexGrow: 1,
     padding: theme.spacing(2),
     display: "flex",
     flexDirection: "column",
@@ -26,14 +34,7 @@ const useStyles = makeStyles((theme) => ({
     top: theme.spacing(1),
     // color: theme.palette.grey[500],
   },
-  container: {
-    flexGrow: 1,
-    flexBasis: "100%",
-    display: "flex",
-    flexDirection: "column",
-    padding: "2rem",
-    paddingBottom: "0",
-  },
+
   header: {
     display: "flex",
     justifyContent: "space-between",
@@ -146,7 +147,8 @@ function VerificationAdmin(props) {
   };
 
   return (
-    <main className={classes.container}>
+    <main className={classes.root}>
+      <CssBaseline />
       <div
         style={{
           display: "flex",
@@ -157,8 +159,8 @@ function VerificationAdmin(props) {
       >
         <header className={classes.header}>
           <Typography
-            variant={"h4"}
-            component={"h4"}
+            variant="h4"
+            component="h4"
             align="center"
             style={{ marginBottom: "0.5em" }}
           >
@@ -171,9 +173,7 @@ function VerificationAdmin(props) {
           )}
         </header>
       </div>
-      <div className={classes.root}>
-        <CssBaseline />
-
+      <div className={classes.mainContent}>
         <Dialog
           open={dialogOpen}
           onClose={handleDialogClose}
@@ -227,11 +227,21 @@ function VerificationAdmin(props) {
         </Dialog>
         <>
           {categoriesError || stakeholdersError ? (
-            <div> Uh Oh! Something went wrong!</div>
+            <div
+              style={{
+                flexGrow: 1,
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
+            >
+              <Typography variant="h3" component="h3">
+                " Uh Oh! Something went wrong!"
+              </Typography>
+            </div>
           ) : categoriesLoading || stakeholdersLoading ? (
             <div
               style={{
-                height: "200",
+                flexGrow: 1,
                 width: "100%",
                 margin: "100px auto",
                 display: "flex",
@@ -247,10 +257,34 @@ function VerificationAdmin(props) {
                 loading={true}
               />
             </div>
+          ) : stakeholders && stakeholders.length === 0 ? (
+            <div
+              style={{
+                flexGrow: 1,
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
+            >
+              <Typography variant="h3" component="h3">
+                {asAdmin
+                  ? "No matches found, please try different criteria"
+                  : "No organizations have been assigned to you."}
+              </Typography>
+            </div>
           ) : stakeholders ? (
             <StakeholderGrid stakeholders={stakeholders} />
           ) : (
-            "Please enter search criteria and execute a search"
+            <div
+              style={{
+                flexGrow: 1,
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
+            >
+              <Typography variant="h3" component="h3">
+                "Please enter search criteria and execute a search"
+              </Typography>
+            </div>
           )}
           {/* <pre>{JSON.stringify(criteria, null, 2)}</pre> */}
         </>

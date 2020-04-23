@@ -162,7 +162,7 @@ function VerificationAdmin(props) {
             align="center"
             style={{ marginBottom: "0.5em" }}
           >
-            Administrative Dashboard - Organizations
+            {asAdmin ? `Verification Administration` : `Verification Dashboard`}
           </Typography>
           {asAdmin ? (
             <SearchButton onClick={handleDialogOpen} label="Criteria..." />

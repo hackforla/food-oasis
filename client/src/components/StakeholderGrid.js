@@ -38,7 +38,7 @@ const sortRows = (initialRows, sortColumn, sortDirection) => (rows) => {
 };
 
 const columns = [
-  { key: "id", name: "ID", width: 60, frozen: true },
+  { key: "id", name: "ID", formatter: linkFormatter, width: 60, frozen: true },
   {
     key: "name",
     name: "Name",

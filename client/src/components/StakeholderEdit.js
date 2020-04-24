@@ -301,6 +301,7 @@ const StakeholderEdit = (props) => {
                   setToast({
                     message: "Update successful.",
                   });
+                  props.history.goBack();
                 })
                 .catch((err) => {
                   setToast({
@@ -317,7 +318,7 @@ const StakeholderEdit = (props) => {
                     message: "Insert successful.",
                   });
                   setFieldValue("id", response.id);
-                  //   history.push("/stakeholders");
+                  props.history.goBack();
                 })
                 .catch((err) => {
                   setToast({
@@ -1543,6 +1544,11 @@ const StakeholderEdit = (props) => {
                                           );
                                           if (set) {
                                             setFieldValue("approvedDate", "");
+                                            setFieldValue("verifiedDate", "");
+                                            setFieldValue(
+                                              "verifiedLoginid",
+                                              ""
+                                            );
                                           }
                                         }}
                                         onBlur={handleBlur}

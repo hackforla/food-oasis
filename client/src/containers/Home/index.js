@@ -123,9 +123,9 @@ const Home = (props) => {
                   <SearchIcon fontSize="large" className={classes.searchIcon} />
                 }
                 onClick={() => {
-                  const url = `/stakeholders?lat=${origin.latitude}&lon=${
+                  const url = `/ stakeholders ? lat = ${origin.latitude}& lon=${
                     origin.longitude
-                  }&placeName=${origin.locationName || ''}`;
+                    }& placeName=${origin.locationName || ''} `;
                   props.history.push(url);
                 }}
               ></Button>

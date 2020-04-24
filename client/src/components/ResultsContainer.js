@@ -34,11 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function ResultsContainer(
-  {
-    // TODO: stub out the props coming in
-  }
-) {
+export default function ResultsContainer(props) {
   const classes = useStyles()
   /**
    * ***PLAN!***

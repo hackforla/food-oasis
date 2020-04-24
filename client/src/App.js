@@ -135,7 +135,7 @@ function App() {
                 </div>
               </Route>
               <Route path="/map">
-                <ResultsContainer />
+                <ResultsContainer userCoordinates={userCoordinates} />
               </Route>
               <Route path="/stakeholders">
                 <StakeholdersContainer

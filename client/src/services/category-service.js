@@ -3,11 +3,15 @@ import axios from "axios";
 const baseUrl = "/api/categories";
 
 export const getAll = async searchParams => {
-  searchParams = searchParams || {};
-  const response = await axios.get(baseUrl, {
-    params: searchParams
-  });
-  return response.data;
+  searchParams = searchParams || { doh: 67 };
+  try {
+    const response = await axios.get(baseUrl, {
+      params: searchParams
+    });
+    return response.data;
+  } catch (err) {
+    throw new Error(err.message);
+  }
 };
 
 export const getById = async id => {

@@ -4,11 +4,11 @@ import { Grid, TextField, Typography } from "@material-ui/core";
 
 let latestSearchString = "";
 
-const LocationAutocomplete = props => {
+const LocationAutocomplete = (props) => {
   const [searchString, setSearchString] = useState("");
   const [geocodeResults, setGeocodeResults] = useState([]);
 
-  const geocode = async evt => {
+  const geocode = async (evt) => {
     const s = evt.target.value;
     latestSearchString = s;
     setSearchString(s);
@@ -25,7 +25,7 @@ const LocationAutocomplete = props => {
     }, 500);
   };
 
-  const selectLocation = location => {
+  const selectLocation = (location) => {
     setGeocodeResults([]);
     props.setLocation(location);
   };
@@ -38,6 +38,7 @@ const LocationAutocomplete = props => {
         value={searchString}
         onChange={geocode}
         fullWidth
+        size="small"
         placeholder={"Type here"}
       />
       {geocodeResults ? (
@@ -47,14 +48,12 @@ const LocationAutocomplete = props => {
               border: "1px solid black",
               backgroundColor: "#EEE",
               margin: "0.1em",
-              padding: "0.5em"
+              padding: "0.5em",
             }}
             key={index}
             onClick={() => selectLocation(result)}
           >
-            <Typography>{`(${result.location.y}, ${
-              result.location.x
-            })`}</Typography>
+            <Typography>{`(${result.location.y}, ${result.location.x})`}</Typography>
             <Typography>{`${result.attributes.PlaceName}`}</Typography>
             <Typography>{`${result.attributes.StAddr}`}</Typography>
             <Grid container justify="space-between">

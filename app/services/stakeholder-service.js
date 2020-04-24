@@ -1,8 +1,36 @@
 const { pool } = require("./postgres-pool");
-const { toSqlString, toSqlNumeric, toSqlBoolean } = require("./postgres-utils");
+const {
+  toSqlString,
+  toSqlNumeric,
+  toSqlBoolean,
+  toSqlTimestamp,
+} = require("./postgres-utils");
 
-const selectAll = async (name, categoryIds, latitude, longitude, distance) => {
-  const categoryClause = "(" + categoryIds.join(",") + ")";
+const trueFalseEitherClause = (columnName, value) =>
+  value === "true"
+    ? ` and ${columnName} is not null `
+    : value === "false"
+    ? ` and ${columnName} is null `
+    : "";
+
+const search = async ({
+  name,
+  categoryIds,
+  latitude,
+  longitude,
+  distance,
+  inactive,
+  isAssigned,
+  isVerified,
+  isApproved,
+  isRejected,
+  isClaimed,
+  assignedLoginId,
+  claimedLoginId,
+}) => {
+  const categoryClause = `(select sc.stakeholder_id from stakeholder_category sc where sc.category_id in (${categoryIds.join(
+    ","
+  )}))`;
   const nameClause = "'%" + name.replace(/'/g, "''") + "%'";
   const sql = `
     select s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
@@ -25,26 +53,47 @@ const selectAll = async (name, categoryIds, latitude, longitude, distance) => {
       s.created_date, s.created_login_id, 
       s.modified_date, s.modified_login_id,
       s.verified_date, s.verified_login_id,
+      s.approved_date, s.rejected_date, s.reviewed_login_id,
+      s.assigned_date, s.assigned_login_id,
+      s.claimed_date, s.claimed_login_id,
       s.requirements, s.admin_notes, s.inactive,
       L1.first_name || ' ' || L1.last_name as created_user,
       L2.first_name || ' ' || L2.last_name as modified_user,
       L3.first_name || ' ' || L3.last_name as verified_user,
+      L4.first_name || ' ' || L4.last_name as reviewed_user,
+      L5.first_name || ' ' || L5.last_name as assigned_user,
+      L6.first_name || ' ' || L6.last_name as claimed_user,
       s.parent_organization, s.physical_access, s.email,
       s.items, s.services, s.facebook,
-      s.twitter, s.pinterest, s.linkedin, s.description
+      s.twitter, s.pinterest, s.linkedin, s.description,
+      s.review_notes
     from stakeholder s
-    left join stakeholder_category sc on s.id = sc.stakeholder_id
-    left join category c on sc.category_id = c.id 
     left join login L1 on s.created_login_id = L1.id
     left join login L2 on s.modified_login_id = L2.id
     left join login L3 on s.verified_login_id = L3.id
-    where c.id in ${categoryClause}
-    and s.name ilike ${nameClause} 
+    left join login L4 on s.reviewed_login_id = L4.id
+    left join login L5 on s.assigned_login_id = L5.id
+    left join login L6 on s.claimed_login_id = L6.id
+    where s.name ilike ${nameClause} 
+    ${
+      categoryIds && categoryIds.length > 0
+        ? ` and s.id in ${categoryClause} `
+        : ""
+    }
+    ${trueFalseEitherClause("s.assigned_date", isAssigned)}
+    ${trueFalseEitherClause("s.verified_date", isVerified)}
+    ${trueFalseEitherClause("s.approved_date", isApproved)}
+    ${trueFalseEitherClause("s.rejected_date", isRejected)}
+    ${trueFalseEitherClause("s.claimed_date", isClaimed)}
+    ${trueFalseEitherClause("s.inactive", inactive)}
+    ${assignedLoginId ? ` and s.assigned_login_id = ${assignedLoginId} ` : ""}
+    ${claimedLoginId ? ` and s.claimed_login_id = ${claimedLoginId} ` : ""}
     order by s.name
   `;
+  // console.console.log(sql);
   const stakeholderResult = await pool.query(sql);
   let stakeholders = [];
-  stakeholderResult.rows.forEach(row => {
+  stakeholderResult.rows.forEach((row) => {
     stakeholders.push({
       id: row.id,
       name: row.name || "",
@@ -63,13 +112,23 @@ const selectAll = async (name, categoryIds, latitude, longitude, distance) => {
       modifiedDate: row.modified_date,
       modifiedLoginId: row.modified_login_id,
       verifiedDate: row.verified_date,
-      verfiedLoginId: row.verified_login_id,
+      verifiedLoginId: row.verified_login_id,
+      assignedDate: row.assigned_date,
+      assignedLoginId: row.assigned_login_id,
+      approvedDate: row.approved_date,
+      rejectedDate: row.rejected_date,
+      reviewedLoginId: row.reviewed_login_id,
+      claimedDate: row.claimed_date,
+      claimedLoginId: row.claimed_login_id,
       requirements: row.requirements || "",
       adminNotes: row.admin_notes || "",
       inactive: row.inactive,
       createdUser: row.created_user || "",
       modifiedUser: row.modified_user || "",
       verifiedUser: row.verified_user || "",
+      reviewedUser: row.reviewed_user || "",
+      assignedUser: row.assigned_user || "",
+      claimedUser: row.claimed_user || "",
       categories: row.categories,
       hours: row.hours,
       parentOrganization: row.parent_organization || "",
@@ -81,12 +140,13 @@ const selectAll = async (name, categoryIds, latitude, longitude, distance) => {
       twitter: row.twitter || "",
       pinterest: row.pinterest || "",
       linkedin: row.linkedin || "",
-      description: row.description
+      description: row.description,
+      reviewNotes: row.review_notes,
     });
   });
 
   // Should move distance calc into stored proc
-  stakeholders.forEach(stakeholder => {
+  stakeholders.forEach((stakeholder) => {
     if (stakeholder.latitude && stakeholder.longitude) {
       stakeholder.distance =
         Math.sqrt(
@@ -104,14 +164,14 @@ const selectAll = async (name, categoryIds, latitude, longitude, distance) => {
   // Should move distance filter into stored proc
   if (distance > 0) {
     stakeholders = stakeholders.filter(
-      stakeholder => stakeholder.distance <= distance
+      (stakeholder) => stakeholder.distance <= distance
     );
   }
 
   return stakeholders;
 };
 
-const selectById = async id => {
+const selectById = async (id) => {
   const sql = `select 
       s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
       s.phone, s.latitude, s.longitude, s.website,  s.notes,
@@ -133,17 +193,27 @@ const selectById = async id => {
       s.created_date, s.created_login_id, 
       s.modified_date, s.modified_login_id,
       s.verified_date, s.verified_login_id,
+      s.approved_date, s.rejected_date, s.reviewed_login_id,
+      s.assigned_date, s.assigned_login_id,
+      s.claimed_date, s.claimed_login_id,
       s.requirements, s.admin_notes, s.inactive,
       L1.first_name || ' ' || L1.last_name as created_user,
       L2.first_name || ' ' || L2.last_name as modified_user,
       L3.first_name || ' ' || L3.last_name as verified_user,
+      L4.first_name || ' ' || L4.last_name as reviewed_user,
+      L5.first_name || ' ' || L5.last_name as assigned_user,
+      L6.first_name || ' ' || L6.last_name as claimed_user,
       s.parent_organization, s.physical_access, s.email,
       s.items, s.services, s.facebook,
-      s.twitter, s.pinterest, s.linkedin, s.description
+      s.twitter, s.pinterest, s.linkedin, s.description,
+      s.review_notes
     from stakeholder s 
     left join login L1 on s.created_login_id = L1.id
     left join login L2 on s.modified_login_id = L2.id
     left join login L3 on s.verified_login_id = L3.id
+    left join login L4 on s.reviewed_login_id = L4.id
+    left join login L5 on s.assigned_login_id = L5.id
+    left join login L6 on s.claimed_login_id = L6.id
     where s.id = ${id}`;
   const result = await pool.query(sql);
   const row = result.rows[0];
@@ -165,13 +235,23 @@ const selectById = async id => {
     modifiedDate: row.modified_date,
     modifiedLoginId: row.modified_login_id,
     verifiedDate: row.verified_date,
-    verfiedLoginId: row.verified_login_id,
+    verifiedLoginId: row.verified_login_id,
+    approvedDate: row.approved_date,
+    rejectedDate: row.rejected_date,
+    reviewedLoginId: row.approved_login_id,
+    assignedLoginId: row.assigned_login_id,
+    assignedDate: row.assigned_date,
+    claimedLoginId: row.claimed_login_id,
+    claimedDate: row.claimed_date,
     requirements: row.requirements || "",
     adminNotes: row.admin_notes || "",
     inactive: row.inactive,
     createdUser: row.created_user || "",
     modifiedUser: row.modified_user || "",
     verifiedUser: row.verified_user || "",
+    reviewedUser: row.reviewed_user || "",
+    assignedUser: row.assigned_user || "",
+    claimedUser: row.claimed_user || "",
     categories: row.categories,
     hours: row.hours,
     parentOrganization: row.parent_organization || "",
@@ -183,7 +263,8 @@ const selectById = async id => {
     twitter: row.twitter || "",
     pinterest: row.pinterest || "",
     linkedin: row.linkedin || "",
-    description: row.description
+    description: row.description,
+    reviewNotes: row.review_notes,
   };
 
   // Don't have a distance, since we didn't specify origin
@@ -192,7 +273,7 @@ const selectById = async id => {
   return stakeholder;
 };
 
-const insert = async model => {
+const insert = async (model) => {
   const {
     name,
     address1,
@@ -220,7 +301,16 @@ const insert = async model => {
     pinterest,
     linkedin,
     loginId,
-    description
+    description,
+    verifiedDate,
+    verifiedLoginId,
+    approvedDate,
+    rejectedDate,
+    reviewedLoginId,
+    assignedDate,
+    assignedLoginId,
+    claimedDate,
+    claimedLoginId,
   } = model;
   try {
     const sql = `insert into stakeholder 
@@ -229,7 +319,9 @@ const insert = async model => {
       phone, latitude, longitude, 
       website, inactive, notes, requirements, admin_notes, created_login_id,
       parent_organization, physical_access, email,
-      items, services, facebook, twitter, pinterest, linkedin, description) 
+      items, services, facebook, twitter, pinterest, linkedin, description,
+      verified_date, verified_login_id, approved_date, rejected_date, reviewed_login_id,
+      assigned_date, assigned_login_id, claimed_date, claimed_login_id) 
     values (
       ${toSqlString(name)}, ${toSqlString(address1)}, ${toSqlString(address2)}, 
       ${toSqlString(city)}, ${toSqlString(state)}, ${toSqlString(zip)}, 
@@ -242,7 +334,14 @@ const insert = async model => {
       ${toSqlString(email)}, ${toSqlString(items)},
       ${toSqlString(services)}, ${toSqlString(facebook)},
       ${toSqlString(twitter)}, ${toSqlString(pinterest)},
-      ${toSqlString(linkedin)}, ${toSqlString(description)}
+      ${toSqlString(linkedin)}, ${toSqlString(description)},
+      ${toSqlTimestamp(verifiedDate)}, ${toSqlNumeric(verifiedLoginId)},
+      ${toSqlTimestamp(approvedDate)}, ${toSqlTimestamp(
+      rejectedDate
+    )}, ${toSqlNumeric(reviewedLoginId)},
+      ${toSqlTimestamp(assignedDate)}, ${toSqlNumeric(assignedLoginId)},
+      ${toSqlTimestamp(claimedDate)}, ${toSqlNumeric(claimedLoginId)}
+      }
     ) returning id`;
     const stakeholderResult = await pool.query(sql);
     const retObject = stakeholderResult.rows[0];
@@ -271,7 +370,7 @@ const insert = async model => {
     if (hoursSqlValues) {
       pool.query(hoursSqlInsert, (insertErr, insertRes) => {
         if (insertErr) {
-          console.log("sql insert error", insertErr);
+          throw new Error(insertErr);
         }
       });
     }
@@ -282,7 +381,7 @@ const insert = async model => {
   }
 };
 
-const verify = async model => {
+const verify = async (model) => {
   const { id, loginId, setVerified } = model;
   const sql = `update stakeholder set
                verified_login_id = ${
@@ -293,7 +392,53 @@ const verify = async model => {
   const result = await pool.query(sql);
 };
 
-const update = async model => {
+const assign = async (model) => {
+  const { id, loginId, setAssigned } = model;
+  const sql = `update stakeholder set
+               assigned_login_id = ${
+                 setAssigned ? toSqlNumeric(loginId) : "null"
+               },
+               assigned_date = ${setAssigned ? "CURRENT_TIMESTAMP" : "null"}
+              where id = ${id}`;
+  const result = await pool.query(sql);
+};
+
+const claim = async (model) => {
+  const { id, loginId, setClaimed } = model;
+  const sql = `update stakeholder set
+               claimed_login_id = ${
+                 setClaimed ? toSqlNumeric(loginId) : "null"
+               },
+               claimed_date = ${setClaimed ? "CURRENT_TIMESTAMP" : "null"}
+              where id = ${id}`;
+  const result = await pool.query(sql);
+};
+
+const approve = async (model) => {
+  const { id, loginId, setApproved } = model;
+  const sql = `update stakeholder set
+               reviewed_login_id = ${
+                 setApproved ? toSqlNumeric(loginId) : "null"
+               },
+               approved_date = ${setApproved ? "CURRENT_TIMESTAMP" : "null"},
+               rejected_date = null
+              where id = ${id}`;
+  const result = await pool.query(sql);
+};
+
+const reject = async (model) => {
+  const { id, loginId, setRejected } = model;
+  const sql = `update stakeholder set
+               reviewed_login_id = ${
+                 setRejected ? toSqlNumeric(loginId) : "null"
+               },
+               rejected_date = ${setApproved ? "CURRENT_TIMESTAMP" : "null"},
+               approved_date = null
+              where id = ${id}`;
+  const result = await pool.query(sql);
+};
+
+const update = async (model) => {
   const {
     id,
     name,
@@ -322,7 +467,16 @@ const update = async model => {
     pinterest,
     linkedin,
     loginId,
-    description
+    description,
+    verifiedDate,
+    verifiedLoginId,
+    approvedDate,
+    rejectedDate,
+    reviewedLoginId,
+    assignedDate,
+    assignedLoginId,
+    claimedDate,
+    claimedLoginId,
   } = model;
 
   const hoursSqlDelete = `delete from stakeholder_schedule where stakeholder_id = ${id}`;
@@ -340,32 +494,41 @@ const update = async model => {
     values ${hoursSqlValues}`;
 
   const sql = `update stakeholder
-               set name = ${toSqlString(name)}, 
-               address_1 = ${toSqlString(address1)}, 
-               address_2 = ${toSqlString(address2)}, 
-               city = ${toSqlString(city)}, 
-               state = ${toSqlString(state)}, 
-               zip = ${toSqlString(zip)}, 
-               phone = ${toSqlString(phone)}, 
-               latitude = ${toSqlNumeric(latitude)}, 
-               longitude = ${toSqlNumeric(longitude)}, 
-               website = ${toSqlString(website)}, 
-               inactive = ${toSqlBoolean(inactive)}, 
-               notes = ${toSqlString(notes)},
-               requirements = ${toSqlString(requirements)},
-               admin_notes = ${toSqlString(adminNotes)},
-               parent_organization = ${toSqlString(parentOrganization)},
-               physical_access = ${toSqlString(physicalAccess)},
-               email = ${toSqlString(email)},
-               items = ${toSqlString(items)},
-               services = ${toSqlString(services)},
-               facebook = ${toSqlString(facebook)},
-               twitter = ${toSqlString(twitter)},
-               pinterest = ${toSqlString(pinterest)},
-               linkedin = ${toSqlString(linkedin)},
-               description = ${toSqlString(description)},
-               modified_login_id = ${toSqlNumeric(loginId)},
-               modified_date = CURRENT_TIMESTAMP
+              set name = ${toSqlString(name)}, 
+              address_1 = ${toSqlString(address1)}, 
+              address_2 = ${toSqlString(address2)}, 
+              city = ${toSqlString(city)}, 
+              state = ${toSqlString(state)}, 
+              zip = ${toSqlString(zip)}, 
+              phone = ${toSqlString(phone)}, 
+              latitude = ${toSqlNumeric(latitude)}, 
+              longitude = ${toSqlNumeric(longitude)}, 
+              website = ${toSqlString(website)}, 
+              inactive = ${toSqlBoolean(inactive)}, 
+              notes = ${toSqlString(notes)},
+              requirements = ${toSqlString(requirements)},
+              admin_notes = ${toSqlString(adminNotes)},
+              parent_organization = ${toSqlString(parentOrganization)},
+              physical_access = ${toSqlString(physicalAccess)},
+              email = ${toSqlString(email)},
+              items = ${toSqlString(items)},
+              services = ${toSqlString(services)},
+              facebook = ${toSqlString(facebook)},
+              twitter = ${toSqlString(twitter)},
+              pinterest = ${toSqlString(pinterest)},
+              linkedin = ${toSqlString(linkedin)},
+              description = ${toSqlString(description)},
+              modified_login_id = ${toSqlNumeric(loginId)},
+              modified_date = CURRENT_TIMESTAMP,
+              verified_date = ${toSqlTimestamp(verifiedDate)}, 
+              verified_login_id = ${toSqlNumeric(verifiedLoginId)},
+              approved_date = ${toSqlTimestamp(approvedDate)}, 
+              rejected_date = ${toSqlTimestamp(rejectedDate)}, 
+              reviewed_login_id = ${toSqlNumeric(reviewedLoginId)},
+              assigned_date = ${toSqlTimestamp(assignedDate)}, 
+              assigned_login_id = ${toSqlNumeric(assignedLoginId)},
+              claimed_date = ${toSqlTimestamp(claimedDate)}, 
+              claimed_login_id = ${toSqlNumeric(claimedLoginId)}
               where id = ${id}`;
   const result = await pool.query(sql);
 
@@ -396,18 +559,22 @@ const update = async model => {
   });
 };
 
-const remove = id => {
+const remove = (id) => {
   const sql = `delete from stakeholder where id = ${id}`;
-  return pool.query(sql).then(res => {
+  return pool.query(sql).then((res) => {
     return res;
   });
 };
 
 module.exports = {
-  selectAll,
+  search,
   selectById,
   insert,
   update,
   remove,
-  verify
+  verify,
+  assign,
+  claim,
+  approve,
+  reject,
 };

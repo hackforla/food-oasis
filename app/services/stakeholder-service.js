@@ -50,12 +50,13 @@ const search = async ({
           where sc.stakeholder_id = s.id 
         ) category_row
       )) as categories,
-      s.created_date, s.created_login_id, 
-      s.modified_date, s.modified_login_id,
-      s.verified_date, s.verified_login_id,
-      s.approved_date, s.rejected_date, s.reviewed_login_id,
-      s.assigned_date, s.assigned_login_id,
-      s.claimed_date, s.claimed_login_id,
+      to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as created_date, s.created_login_id, 
+      to_char(s.modified_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as modified_date, s.modified_login_id,
+      to_char(s.verified_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as verified_date, s.verified_login_id,
+      to_char(s.approved_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as approved_date, 
+      to_char(s.rejected_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as rejected_date, s.reviewed_login_id,
+      to_char(s.assigned_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')as assigned_date, s.assigned_login_id,
+      to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as claimed_date, s.claimed_login_id,
       s.requirements, s.admin_notes, s.inactive,
       L1.first_name || ' ' || L1.last_name as created_user,
       L2.first_name || ' ' || L2.last_name as modified_user,
@@ -93,6 +94,7 @@ const search = async ({
   // console.console.log(sql);
   const stakeholderResult = await pool.query(sql);
   let stakeholders = [];
+  console.log(process.env.TZ);
   stakeholderResult.rows.forEach((row) => {
     stakeholders.push({
       id: row.id,
@@ -190,13 +192,13 @@ const selectById = async (id) => {
           where sc.stakeholder_id = s.id 
         ) category_row
       )) as categories,
-      s.created_date, s.created_login_id, 
-      s.modified_date, s.modified_login_id,
-      s.verified_date, s.verified_login_id,
-      s.approved_date, s.rejected_date, s.reviewed_login_id,
-      s.assigned_date, s.assigned_login_id,
-      s.claimed_date, s.claimed_login_id,
-      s.requirements, s.admin_notes, s.inactive,
+      s.created_date::varchar, s.created_login_id, 
+      s.modified_date::varchar, s.modified_login_id,
+      s.verified_date::varchar, s.verified_login_id,
+      s.approved_date::varchar, s.rejected_date, s.reviewed_login_id,
+      s.assigned_date::varchar, s.assigned_login_id,
+      s.claimed_date::varchar, s.claimed_login_id,
+      s.requirements::varchar, s.admin_notes, s.inactive,
       L1.first_name || ' ' || L1.last_name as created_user,
       L2.first_name || ' ' || L2.last_name as modified_user,
       L3.first_name || ' ' || L3.last_name as verified_user,

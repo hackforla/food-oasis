@@ -76,28 +76,31 @@ export default function Menu(props) {
         )}
 
         <UserContext.Consumer>
-          {(user) =>
-            user && user.isAdmin ? (
-              <>
+          {(user) => (
+            <>
+              {user && user.isAdmin ? (
+                <>
+                  <MenuItemLink
+                    key="organizationedit"
+                    to="/organizationedit"
+                    text="Add New Organization"
+                  />
+                  <MenuItemLink
+                    key="verificationadmin"
+                    to="/verificationadmin"
+                    text="Verification Admin"
+                  />
+                </>
+              ) : null}
+              {user && user.isDataEntry ? (
                 <MenuItemLink
-                  key="organizationedit"
-                  to="/organizationedit"
-                  text="Add New Organization"
+                  key="verificationdashboard"
+                  to="/verificationdashboard"
+                  text="Verification Dashboard"
                 />
-                <MenuItemLink
-                  key="verificationadmin"
-                  to="/verificationadmin"
-                  text="Verification Admin"
-                />
-              </>
-            ) : user && user.isDataEntry ? (
-              <MenuItemLink
-                key="verificationdashboard"
-                to="/verificationdashboard"
-                text="Verification Dashboard"
-              />
-            ) : null
-          }
+              ) : null}
+            </>
+          )}
         </UserContext.Consumer>
       </List>
       <LanguageChooser />

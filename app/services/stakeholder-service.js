@@ -67,7 +67,13 @@ const search = async ({
       s.parent_organization, s.physical_access, s.email,
       s.items, s.services, s.facebook,
       s.twitter, s.pinterest, s.linkedin, s.description,
-      s.review_notes
+      s.review_notes, s.instagram, s.admin_contact_name,
+      s.admin_contact_phone, s.admin_contact_email,
+      s.donation_contact_name, s.donation_contact_phone,
+      s.donation_contact_email, s.donation_pickup,
+      s.donation_accept_frozen, s.donation_accept_refrigerated,
+      s.donation_accept_perishable, s.donation_schedule,
+      s.donation_delivery_instructions, s.covid_notes
     from stakeholder s
     left join login L1 on s.created_login_id = L1.id
     left join login L2 on s.modified_login_id = L2.id
@@ -144,6 +150,20 @@ const search = async ({
       linkedin: row.linkedin || "",
       description: row.description,
       reviewNotes: row.review_notes,
+      instagram: row.instagram || "",
+      admin_contact_name: row.admin_contact_name || "",
+      admin_contact_phone: row.admin_contact_phone || "",
+      admin_contact_email: row.admin_contact_email || "",
+      donation_contact_name: row.donation_contact_name || "",
+      donation_contact_phone: row.donation_contact_phone || "",
+      donation_contact_email: row.donation_contact_email || "",
+      donation_pickup: row.donation_pickup || false,
+      donation_accept_frozen: row.donation_accept_frozen || false,
+      donation_accept_refrigerated: row.donation_accept_refrigerated || false,
+      donation_accept_perishable: row.donation_accept_perishable || false,
+      donation_schedule: row.donation_schedule || "",
+      donation_delivery_instructions: row.donation_delivery_instructions || "",
+      covid_notes: row.covid_notes || "",
     });
   });
 
@@ -208,7 +228,13 @@ const selectById = async (id) => {
       s.parent_organization, s.physical_access, s.email,
       s.items, s.services, s.facebook,
       s.twitter, s.pinterest, s.linkedin, s.description,
-      s.review_notes
+      s.review_notes, s.instagram, s.admin_contact_name,
+      s.admin_contact_phone, s.admin_contact_email,
+      s.donation_contact_name, s.donation_contact_phone,
+      s.donation_contact_email, s.donation_pickup,
+      s.donation_accept_frozen, s.donation_accept_refrigerated,
+      s.donation_accept_perishable, s.donation_schedule,
+      s.donation_delivery_instructions, s.covid_notes
     from stakeholder s 
     left join login L1 on s.created_login_id = L1.id
     left join login L2 on s.modified_login_id = L2.id
@@ -267,6 +293,20 @@ const selectById = async (id) => {
     linkedin: row.linkedin || "",
     description: row.description,
     reviewNotes: row.review_notes,
+    instagram: row.instagram || "",
+    admin_contact_name: row.admin_contact_name || "",
+    admin_contact_phone: row.admin_contact_phone || "",
+    admin_contact_email: row.admin_contact_email || "",
+    donation_contact_name: row.donation_contact_name || "",
+    donation_contact_phone: row.donation_contact_phone || "",
+    donation_contact_email: row.donation_contact_email || "",
+    donation_pickup: row.donation_pickup || false,
+    donation_accept_frozen: row.donation_accept_frozen || false,
+    donation_accept_refrigerated: row.donation_accept_refrigerated || false,
+    donation_accept_perishable: row.donation_accept_perishable || false,
+    donation_schedule: row.donation_schedule || "",
+    donation_delivery_instructions: row.donation_delivery_instructions || "",
+    covid_notes: row.covid_notes || "",
   };
 
   // Don't have a distance, since we didn't specify origin

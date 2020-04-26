@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { withRouter, Link } from "react-router-dom";
 import { Typography } from "@material-ui/core";
-import moment from "moment";
+// import moment from "moment";
 
 import DataGrid from "react-data-grid";
 
@@ -17,8 +17,13 @@ const distanceFormatter = ({ value }) => {
   return value ? value.toFixed(2) : value;
 };
 
-const dateFormatter = ({ value }) =>
-  value ? moment(value).format("MM/DD/YY hh:mm a") : "";
+const dateFormatter = ({ value }) => {
+  return !value
+    ? ""
+    : value.format
+    ? value.format("MM/DD/YY hh:mm a")
+    : value.toString();
+};
 
 const defaultColumnProperties = {
   resizable: true,
@@ -103,8 +108,29 @@ const columns = [
 ].map((c) => ({ ...defaultColumnProperties, ...c }));
 
 const StakeholderGrid = (props) => {
-  const { stakeholders } = props;
+  const { stakeholders, setSelectedStakeholderIds } = props;
+  const [selectedIndexes, setSelectedIndexes] = useState([]);
   const [rows, setRows] = useState(props.stakeholders);
+
+  const onRowsSelected = (newlySelectedRows) => {
+    const newSelectedIndexes = selectedIndexes.concat(
+      newlySelectedRows.map((row) => row.rowIdx)
+    );
+    setSelectedIndexes(newSelectedIndexes);
+    const newSelectedStakeholderIds = newSelectedIndexes.map((i) => rows[i].id);
+    setSelectedStakeholderIds(newSelectedStakeholderIds);
+  };
+
+  const onRowsDeselected = (newlyDeselectedRows) => {
+    let rowIndexes = newlyDeselectedRows.map((r) => r.rowIdx);
+    const newSelectedIndexes = selectedIndexes.filter(
+      (i) => rowIndexes.indexOf(i) === -1
+    );
+    setSelectedIndexes(newSelectedIndexes);
+    const newSelectedStakeholderIds = newSelectedIndexes.map((i) => rows[i].id);
+    setSelectedStakeholderIds(newSelectedStakeholderIds);
+  };
+
   return (
     <div
       style={{
@@ -125,6 +151,15 @@ const StakeholderGrid = (props) => {
           onColumnResize={(idx, width) =>
             console.log(`Column ${idx} has been resized to ${width}`)
           }
+          rowSelection={{
+            showCheckbox: true,
+            enableShiftSelect: true,
+            onRowsSelected: onRowsSelected,
+            onRowsDeselected: onRowsDeselected,
+            selectBy: {
+              indexes: selectedIndexes,
+            },
+          }}
         />
       ) : (
         <Typography variant={"h5"} component={"h5"}>

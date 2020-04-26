@@ -1,6 +1,11 @@
 import axios from "axios";
+import moment from "moment";
 
 const baseUrl = "/api/stakeholders";
+
+const toLocalMoment = (ts) => {
+  return !ts ? null : moment.utc(ts).local();
+};
 
 /* 
     searchParams is an object with any/all of the following properties:
@@ -22,15 +27,36 @@ export const search = async (searchParams) => {
   const response = await axios.get(baseUrl, {
     params: searchParams,
   });
-  let stakeholders = response.data;
+  let stakeholders = response.data.map((s) => {
+    return {
+      ...s,
+      createdDate: toLocalMoment(s.createdDate),
+      modifiedDate: toLocalMoment(s.modifiedDate),
+      assignedDate: toLocalMoment(s.assignedDate),
+      verifiedDate: toLocalMoment(s.verifiedDate),
+      approvedDate: toLocalMoment(s.approvedDate),
+      rejectedDate: toLocalMoment(s.rejectedDate),
+      claimedDate: toLocalMoment(s.claimedDate),
+    };
+  });
+
   console.log("stakeholders", stakeholders);
   return stakeholders;
 };
 
 export const getById = async (id) => {
   const response = await axios.get(`${baseUrl}/${id}`);
-  const stakeholder = response.data;
-  return stakeholder;
+  const s = response.data;
+  return {
+    ...s,
+    createdDate: toLocalMoment(s.createdDate),
+    modifiedDate: toLocalMoment(s.modifiedDate),
+    assignedDate: toLocalMoment(s.assignedDate),
+    verifiedDate: toLocalMoment(s.verifiedDate),
+    approvedDate: toLocalMoment(s.approvedDate),
+    rejectedDate: toLocalMoment(s.rejectedDate),
+    claimedDate: toLocalMoment(s.claimedDate),
+  };
 };
 
 export const post = async (stakeholder) => {

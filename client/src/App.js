@@ -5,9 +5,9 @@ import theme from "./theme/materialUI";
 import { UserContext } from "./components/user-context";
 import Toast from "./components/Toast";
 import Header from "./components/Header";
-// import Map from './components/Map';
 import StakeholdersContainer from "./components/StakeholdersContainer";
 import VerificationAdmin from "./components/Verification/VerificationAdmin";
+import VerificationDashboard from "./components/Verification/VerificationDashboard";
 import StakeholderEdit from "./components/StakeholderEdit";
 import Donate from "./components/Donate";
 import Resources from "./components/Resources";
@@ -23,11 +23,9 @@ import FaqEdit from "./components/FaqEdit";
 import FaqAdd from "./components/FaqAdd";
 import Home from "./containers/Home";
 import ResultsContainer from "components/ResultsContainer";
-// Temporarily unused components
-// import Main from 'components/Main';
+// News page not currently used, but shows how we might
+// implement internationalization
 // import News from "components/News";
-// import Team from "components/Team";
-// import Organizations from "components/Organizations";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
@@ -163,10 +161,9 @@ function App() {
               </Route>
               <Route path="/verificationdashboard">
                 <div className={classes.verificationAdminWrapper}>
-                  <VerificationAdmin
+                  <VerificationDashboard
                     user={user}
                     userCoordinates={userCoordinates}
-                    asAdmin={false}
                   />
                 </div>
               </Route>
@@ -175,7 +172,6 @@ function App() {
                   <VerificationAdmin
                     user={user}
                     userCoordinates={userCoordinates}
-                    asAdmin={true}
                   />
                 </div>
               </Route>

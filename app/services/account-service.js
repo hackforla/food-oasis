@@ -79,9 +79,9 @@ const register = async (model) => {
   await hashPassword(model);
   try {
     const sql = `insert into login (first_name, last_name, email,
-        password_hash, email_confirmed, is_admin )
+        password_hash)
         values ('${firstName}', '${lastName}', '${email}',
-        '${model.passwordHash}', false, true ) returning id`;
+        '${model.passwordHash}') returning id`;
     const insertResult = await pool.query(sql);
     result = {
       isSuccess: true,

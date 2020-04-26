@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
-import { CssBaseline, Dialog, Typography } from "@material-ui/core";
+import { Button, CssBaseline, Dialog, Typography } from "@material-ui/core";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import { makeStyles } from "@material-ui/core/styles";
 import { SearchButton } from "../Buttons";
@@ -8,7 +8,8 @@ import StakeholderGrid from "../StakeholderGrid";
 import { RotateLoader } from "react-spinners";
 import { useOrganizations } from "../../hooks/useOrganizations/useOrganizations";
 import { useCategories } from "../../hooks/useCategories/useCategories";
-
+import { assign } from "../../services/stakeholder-service";
+import AssignDialog from "./AssignDialog";
 import SearchCriteria from "./SearchCriteria";
 
 const CRITERIA_TOKEN = "verificationAdminCriteria";
@@ -91,11 +92,12 @@ const defaultCriteria = {
 };
 
 function VerificationAdmin(props) {
-  const { asAdmin, user } = props;
+  const { userCoordinates } = props;
   const classes = useStyles();
-  const { history, userCoordinates } = props;
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [assignDialogOpen, setAssignDialogOpen] = useState(false);
   const [criteria, setCriteria] = useState(defaultCriteria);
+  const [selectedStakeholderIds, setSelectedStakeholderIds] = useState([]);
 
   const {
     data: categories,
@@ -111,9 +113,7 @@ function VerificationAdmin(props) {
   } = useOrganizations();
 
   useEffect(() => {
-    // If user is admin, this effect initializes and executes
-    // with query from localStorage, if any.
-    if (!asAdmin || !stakeholderSearch) return;
+    if (!stakeholderSearch) return;
     const criteriaString = localStorage.getItem(CRITERIA_TOKEN);
     let initialCriteria = JSON.parse(criteriaString);
     if (!initialCriteria) {
@@ -125,24 +125,27 @@ function VerificationAdmin(props) {
     }
     setCriteria(initialCriteria);
     stakeholderSearch(initialCriteria);
-  }, [asAdmin, userCoordinates]);
-
-  useEffect(() => {
-    // If component is not in admin mode, criteria are set to look
-    // for organizations where current user is assigned.
-    if (asAdmin === true || !user) return;
-    const initialCriteria = { ...defaultCriteria, assignedLoginId: user.id };
-    if (initialCriteria && !asAdmin) {
-      setCriteria(initialCriteria);
-      stakeholderSearch(initialCriteria);
-    }
-  }, [asAdmin, user]);
+  }, [userCoordinates]);
 
   const search = async () => {
     await stakeholderSearch(criteria);
-    if (asAdmin) {
-      localStorage.setItem(CRITERIA_TOKEN, JSON.stringify(criteria));
+    localStorage.setItem(CRITERIA_TOKEN, JSON.stringify(criteria));
+  };
+
+  const handleAssignDialogOpen = async () => {
+    setAssignDialogOpen(true);
+    console.log(selectedStakeholderIds);
+  };
+
+  const handleAssignDialogClose = async (loginId) => {
+    setAssignDialogOpen(false);
+    // Dialog returns false if cancelled, null if
+    // want to unassign, otherwisd a loginId > 0
+    if (loginId === false) return;
+    for (let i = 0; i < selectedStakeholderIds.length; i++) {
+      await assign(selectedStakeholderIds[i], !!loginId, loginId);
     }
+    search();
   };
 
   const handleDialogOpen = () => {
@@ -172,13 +175,9 @@ function VerificationAdmin(props) {
             align="center"
             style={{ marginBottom: "0.5em" }}
           >
-            {asAdmin ? `Verification Administration` : `Verification Dashboard`}
+            Verification Administration
           </Typography>
-          {asAdmin ? (
-            <SearchButton onClick={handleDialogOpen} label="Criteria..." />
-          ) : (
-            <SearchButton onClick={search} label="Refresh" />
-          )}
+          <SearchButton onClick={handleDialogOpen} label="Criteria..." />
         </header>
       </div>
       <div className={classes.mainContent}>
@@ -233,6 +232,12 @@ function VerificationAdmin(props) {
             </div>
           ) : null}
         </Dialog>
+        <AssignDialog
+          id="assign-dialog"
+          keepMounted
+          open={assignDialogOpen}
+          onClose={handleAssignDialogClose}
+        ></AssignDialog>
         <>
           {categoriesError || stakeholdersError ? (
             <div className={classes.bigMessage}>
@@ -262,13 +267,35 @@ function VerificationAdmin(props) {
           ) : stakeholders && stakeholders.length === 0 ? (
             <div className={classes.bigMessage}>
               <Typography variant="h5" component="h5">
-                {asAdmin
-                  ? "No matches found, please try different criteria"
-                  : "No organizations have been assigned to you."}
+                No matches found, please try different criteria
               </Typography>
             </div>
           ) : stakeholders ? (
-            <StakeholderGrid stakeholders={stakeholders} />
+            <>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "flex-end",
+                }}
+              >
+                <Button
+                  variant="contained"
+                  title="Assign selected Organizations to User for Verification"
+                  color="primary"
+                  disabled={selectedStakeholderIds.length === 0}
+                  onClick={handleAssignDialogOpen}
+                >
+                  Assign
+                </Button>
+                <div>{`${stakeholders.length} rows`} </div>
+              </div>
+              <StakeholderGrid
+                stakeholders={stakeholders}
+                setSelectedStakeholderIds={setSelectedStakeholderIds}
+              />
+            </>
           ) : (
             <div className={classes.bigMessage}>
               <Typography variant="h5" component="h5">

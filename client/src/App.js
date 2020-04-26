@@ -147,85 +147,86 @@ function App() {
                   <Home userCoordinates={userCoordinates} />
                 </div>
               </Route>
-              <Route path="/map">
+              {/* <Route path="/map">
                 <ResultsContainer userCoordinates={userCoordinates} />
-                <Route path="/organizations">
-                  <ResultsContainer />
-                </Route>
-                <Route path="/stakeholders">
-                  <StakeholdersContainer
+              </Route> */}
+              <Route path="/organizations">
+                <ResultsContainer userCoordinates={userCoordinates} />
+              </Route>
+              <Route path="/stakeholders">
+                <StakeholdersContainer
+                  user={user}
+                  userCoordinates={userCoordinates}
+                />
+              </Route>
+              <Route path="/organizationedit/:id?">
+                <div className={classes.stakeholderEditWrapper}>
+                  <StakeholderEdit setToast={setToast} user={user} />
+                </div>
+              </Route>
+              <Route path="/verificationdashboard">
+                <div className={classes.verificationAdminWrapper}>
+                  <VerificationAdmin
                     user={user}
                     userCoordinates={userCoordinates}
+                    asAdmin={false}
                   />
-                </Route>
-                <Route path="/organizationedit/:id?">
-                  <div className={classes.stakeholderEditWrapper}>
-                    <StakeholderEdit setToast={setToast} user={user} />
-                  </div>
-                </Route>
-                <Route path="/verificationdashboard">
-                  <div className={classes.verificationAdminWrapper}>
-                    <VerificationAdmin
-                      user={user}
-                      userCoordinates={userCoordinates}
-                      asAdmin={false}
-                    />
-                  </div>
-                </Route>
-                <Route path="/verificationadmin">
-                  <div className={classes.verificationAdminWrapper}>
-                    <VerificationAdmin
-                      user={user}
-                      userCoordinates={userCoordinates}
-                      asAdmin={true}
-                    />
-                  </div>
-                </Route>
-                <Route path="/donate">
-                  <Donate />
-                </Route>
-                {/* <Route path="/news">
+                </div>
+              </Route>
+              <Route path="/verificationadmin">
+                <div className={classes.verificationAdminWrapper}>
+                  <VerificationAdmin
+                    user={user}
+                    userCoordinates={userCoordinates}
+                    asAdmin={true}
+                  />
+                </div>
+              </Route>
+              <Route path="/donate">
+                <Donate />
+              </Route>
+              {/* <Route path="/news">
                 <News />
               </Route> */}
-                <Route path="/resources">
-                  <Resources />
-                </Route>
-                <Route path="/about">
-                  <About />
-                </Route>
-                {/* <Route path="/team">
+              <Route path="/resources">
+                <Resources />
+              </Route>
+              <Route path="/about">
+                <About />
+              </Route>
+              {/* <Route path="/team">
                 <Team />
               </Route> */}
-                <Route exact path="/faqs">
-                  <Faq />
-                </Route>
-                <Route path="/faqs/add">
-                  <FaqAdd />
-                </Route>
-                <Route path="/faqs/:identifier">
-                  <FaqEdit setToast={setToast} />
-                </Route>
-                {/* <Route path="/organizations">
+              <Route exact path="/faqs">
+                <Faq />
+              </Route>
+              <Route path="/faqs/add">
+                <FaqAdd />
+              </Route>
+              <Route path="/faqs/:identifier">
+                <FaqEdit setToast={setToast} />
+              </Route>
+              {/* <Route path="/organizations">
                 <Organizations />
               </Route> */}
-                <Route path="/register">
-                  <Register setToast={setToast} />
-                </Route>
-                <Route path="/confirm/:token">
-                  <ConfirmEmail setToast={setToast} />
-                </Route>
-                <Route path="/login/:email?">
-                  <Login user={user} setUser={onLogin} setToast={setToast} />
-                </Route>
-                <Route path="/forgotpassword/:email?">
-                  <ForgotPassword setToast={setToast} />
-                </Route>
-                <Route path="/resetPassword/:token">
-                  <ResetPassword setToast={setToast} />
-                </Route>
+              <Route path="/register">
+                <Register setToast={setToast} />
+              </Route>
+              <Route path="/confirm/:token">
+                <ConfirmEmail setToast={setToast} />
+              </Route>
+              <Route path="/login/:email?">
+                <Login user={user} setUser={onLogin} setToast={setToast} />
+              </Route>
+              <Route path="/forgotpassword/:email?">
+                <ForgotPassword setToast={setToast} />
+              </Route>
+              <Route path="/resetPassword/:token">
+                <ResetPassword setToast={setToast} />
+              </Route>
             </Switch>
-              <Footer userCoordinates={userCoordinates} />
-              <Toast toast={toast} setToast={setToast} />
+            <Footer userCoordinates={userCoordinates} />
+            <Toast toast={toast} setToast={setToast} />
           </div>
         </Router>
       </ThemeProvider>

@@ -1,32 +1,34 @@
 import React from "react";
+import Search from '../components/Search';
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Select, MenuItem, FormControl, Button } from "@material-ui/core";
+import { Grid, Select, MenuItem, FormControl, Button, Box } from "@material-ui/core";
+import SearchIcon from '@material-ui/icons/Search';
+
 
 const useStyles = makeStyles((theme) => ({
   filterButton: {
     margin: "0 .25rem",
-    fontSize: "12px",
+    fontSize: "max(.8vw,10px)",
     backgroundColor: "#fff",
     border: ".1em solid #000",
     color: "#000",
   },
   distanceControl: {
     margin: "0 .25rem",
-    padding: 0,
     backgroundColor: "#fff",
     padding: ".25em 0 .25em .7em",
     border: ".09em solid #000",
     outline: "none",
   },
   menuItems: {
-    fontSize: "12px",
+    fontSize: "max(.8vw,10px)",
     color: "#000",
   },
   controlPanel: {
     width: "100%",
     backgroundColor: "#336699",
-    height: "4em",
+    height: "5em",
   },
   inputHolder: {
     display: "flex",
@@ -40,26 +42,56 @@ const useStyles = makeStyles((theme) => ({
     outline: "none",
     padding: ".25em",
   },
+  inputContainer: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  searchIcon: {
+    width: 22,
+    height: 22,
+  },
+  submit: {
+    height: '42px',
+    minWidth: '25px',
+    backgroundColor: '#BCE76D',
+    borderRadius: '0 4px 4px 0',
+    boxShadow: 'none',
+    '& .MuiButton-startIcon': {
+      marginRight: 0,
+    },
+    '&.Mui-disabled': {
+      backgroundColor: '#BCE76D',
+      opacity: 0.8,
+    },
+    '&:hover': {
+      backgroundColor: '#C7F573',
+      boxShadow: 'none',
+    },
+  },
+  buttonHolder: {
+    display: 'flex'
+  },
 }));
 
 const distanceInfo = [1, 2, 3, 5, 10, 20, 50]
 
-function ResultsFilters() {
+function ResultsFilters(props) {
   const classes = useStyles();
 
   const [distanceValue, changeDistanceValue] = React.useState(0)
-  const [searchValue, changeSearchValue] = React.useState("")
+  // const [searchValue, changeSearchValue] = React.useState("")
+  const [origin, setOrigin] = React.useState(null);
 
   return (
     <Grid container wrap="wrap-reverse" className={classes.controlPanel}>
       <Grid
         item
-        container
         xs={12}
         sm={6}
         md={4}
         justify="center"
         alignItems="center"
+        className={classes.buttonHolder}
       >
         <Grid item>
           <Button as={FormControl} className={classes.distanceControl}>
@@ -96,6 +128,7 @@ function ResultsFilters() {
             Food Pantries
           </Button>
         </Grid>
+        {/* <Grid className={classes.buttonHolder}> */}
         <Grid item>
           <Button
             className={classes.filterButton}
@@ -112,15 +145,35 @@ function ResultsFilters() {
             Verified
           </Button>
         </Grid>
+        {/* </Grid> */}
       </Grid>
-      <Grid item xs={12} sm={6} md={8} className={classes.inputHolder}>
+      {/* <Grid item xs={12} sm={6} md={8} className={classes.inputHolder}>
         <input
           className={classes.input}
           placeholder={"Search Food Banks"}
           value={searchValue}
           onChange={(e) => changeSearchValue(e.target.value)}
         />
-      </Grid>
+      </Grid> */}
+      <Box className={classes.inputContainer}>
+        <Search {...props} setOrigin={setOrigin} />
+        <Button
+          type="button"
+          //disabled={!origin}
+          variant="contained"
+          className={classes.submit}
+          startIcon={
+            <SearchIcon fontSize="large" className={classes.searchIcon} />
+          }
+          // onClick={() => {
+          // const url = `/ stakeholders ? lat = ${origin.latitude}& lon=${
+          // origin.longitude
+          //}& placeName=${origin.locationName || ''} `;
+          // props.history.push(url);
+          //}}
+          onClick={() => { console.log(origin) }}
+        />
+      </Box>
     </Grid>
   );
 }

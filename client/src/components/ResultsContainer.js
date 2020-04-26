@@ -5,6 +5,7 @@ import ResultsFilters from "./ResultsFilters"
 import ResultsList from "./ResultsList"
 import ResultsMap from "./ResultsMap"
 
+
 const useStyles = makeStyles((theme) => ({
   filterButton: {
     margin: "0 .25rem",
@@ -35,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function ResultsContainer(props) {
+  const { userCoordinates } = props
   const classes = useStyles()
   /**
    * ***PLAN!***
@@ -55,13 +57,14 @@ export default function ResultsContainer(props) {
   return (
     <div className={classes.container}>
       <ResultsFilters
-      /**
-       * distance: PropTypes.number,
-       * placeName: PropTypes.string,
-       * isPantryCategorySelected: PropTypes.bool,
-       * isMealCategorySelected: PropTypes.bool,
-       * isVerifiedFilterSelected: PropTypes.bool,
-       */
+        /**
+         * distance: PropTypes.number,
+         * placeName: PropTypes.string,
+         * isPantryCategorySelected: PropTypes.bool,
+         * isMealCategorySelected: PropTypes.bool,
+         * isVerifiedFilterSelected: PropTypes.bool,
+         */
+        userCoordinates={userCoordinates}
       />
       <Grid container wrap="wrap-reverse">
         <Grid

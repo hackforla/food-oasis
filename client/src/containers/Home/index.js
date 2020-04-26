@@ -128,7 +128,7 @@ const Home = (props) => {
                     }& placeName=${origin.locationName || ''} `;
                   props.history.push(url);
                 }}
-              ></Button>
+              />
             </Box>
             <Typography className={classes.label}>
               Food Oasis has links to food pantries and meals in Los Angeles

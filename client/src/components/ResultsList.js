@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 function ResultsList({ selectedStakeholder, stakeholders }) {
-  return <div>RESULTS List</div>;
+  return <div>Results List</div>;
 }
 
 ResultsList.propTypes = {

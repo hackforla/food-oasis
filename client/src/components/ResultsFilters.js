@@ -78,9 +78,18 @@ const distanceInfo = [1, 2, 3, 5, 10, 20, 50]
 function ResultsFilters(props) {
   const classes = useStyles();
 
-  const [distanceValue, changeDistanceValue] = React.useState(0)
-  // const [searchValue, changeSearchValue] = React.useState("")
-  const [origin, setOrigin] = React.useState(null);
+  const {
+    distanceValue,
+    changeDistanceValue,
+    isFoodPantrySelected,
+    selectFoodPantry,
+    isMealsSelected,
+    selectMeals,
+    isVerifiedSelected,
+    selectVerified,
+    origin,
+    search
+  } = props
 
   return (
     <Grid container wrap="wrap-reverse" className={classes.controlPanel}>
@@ -123,16 +132,17 @@ function ResultsFilters(props) {
         <Grid item>
           <Button
             className={classes.filterButton}
-            onClick={() => { }}
+            style={{ backgroundColor: isFoodPantrySelected ? "transparent" : "#fff" }}
+            onClick={() => selectFoodPantry(!isFoodPantrySelected)}
           >
             Food Pantries
           </Button>
         </Grid>
-        {/* <Grid className={classes.buttonHolder}> */}
         <Grid item>
           <Button
             className={classes.filterButton}
-            onClick={() => { }}
+            style={{ backgroundColor: isMealsSelected ? "transparent" : "#fff" }}
+            onClick={() => selectMeals(!isMealsSelected)}
           >
             Meals
           </Button>
@@ -140,38 +150,49 @@ function ResultsFilters(props) {
         <Grid item>
           <Button
             className={classes.filterButton}
-            onClick={() => { }}
+            style={{ backgroundColor: isVerifiedSelected ? "transparent" : "#fff" }}
+            onClick={() => selectVerified(!isVerifiedSelected)}
           >
             Verified
           </Button>
         </Grid>
-        {/* </Grid> */}
       </Grid>
-      {/* <Grid item xs={12} sm={6} md={8} className={classes.inputHolder}>
-        <input
-          className={classes.input}
-          placeholder={"Search Food Banks"}
-          value={searchValue}
-          onChange={(e) => changeSearchValue(e.target.value)}
-        />
-      </Grid> */}
       <Box className={classes.inputContainer}>
-        <Search {...props} setOrigin={setOrigin} />
+        <Search {...props} />
         <Button
           type="button"
-          //disabled={!origin}
+          disabled={!origin}
           variant="contained"
           className={classes.submit}
           startIcon={
             <SearchIcon fontSize="large" className={classes.searchIcon} />
           }
-          // onClick={() => {
-          // const url = `/ stakeholders ? lat = ${origin.latitude}& lon=${
-          // origin.longitude
-          //}& placeName=${origin.locationName || ''} `;
-          // props.history.push(url);
-          //}}
-          onClick={() => { console.log(origin) }}
+
+          /* onClick={() => {
+            const url = `/ stakeholders ? lat = ${origin.latitude}& lon=${
+              origin.longitude
+              }& placeName=${origin.locationName || ''} `;
+            props.history.push(url);
+          }} */
+
+          onClick={() => {
+            search({
+              //name: origin.locationName,
+              latitude: origin.latitude,
+              longitude: origin.longitude,
+              radius: distanceValue,
+              //categoryIds: [],
+              //isInactive: false,
+              //isAssigned: "either",
+              //isVerified: isVerifiedSelected ? "yes" : "no",
+              //isApproved: "either",
+              //isRejected: "either",
+              //isClaimed: "either",
+              //assignedLoginId: undefined,
+              //claimedLoginId: undefined,
+            })
+          }
+          }
         />
       </Box>
     </Grid>

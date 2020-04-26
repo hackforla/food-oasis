@@ -38,7 +38,8 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function Search({ userCoordinates, setOrigin }) {
+export default function Search(props) {
+  const { userCoordinates, setOrigin } = props
   const classes = useStyles();
   const [selectedPlace, setSelectedPlace] = useState('');
 

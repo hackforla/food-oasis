@@ -1,6 +1,7 @@
 import React from "react"
 import { makeStyles } from "@material-ui/core/styles"
 import { Grid } from "@material-ui/core"
+import { useOrganizations } from "../hooks/useOrganizations/useOrganizations"
 import ResultsFilters from "./ResultsFilters"
 import ResultsList from "./ResultsList"
 import ResultsMap from "./ResultsMap"
@@ -37,7 +38,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ResultsContainer(props) {
   const { userCoordinates } = props
+  const { state, search } = useOrganizations()
   const classes = useStyles()
+
   /**
    * ***PLAN!***
    *
@@ -52,19 +55,40 @@ export default function ResultsContainer(props) {
    * hold 'selected stakeholder' in local state
    */
 
-  //fix mobile view flows
+  const [distanceValue, changeDistanceValue] = React.useState(0)
+  const [origin, setOrigin] = React.useState(null)
+  const [isFoodPantrySelected, selectFoodPantry] = React.useState(false)
+  const [isMealsSelected, selectMeals] = React.useState(false)
+  const [isVerifiedSelected, selectVerified] = React.useState(false)
+
+  const topLevelProps = {
+    distanceValue,
+    changeDistanceValue,
+    origin,
+    setOrigin,
+    isFoodPantrySelected,
+    selectFoodPantry,
+    isMealsSelected,
+    selectMeals,
+    isVerifiedSelected,
+    selectVerified,
+    userCoordinates
+  }
+
+  React.useEffect(() => {
+    console.log(state)
+  }, [state])
 
   return (
     <div className={classes.container}>
-      <ResultsFilters
-        /**
-         * distance: PropTypes.number,
-         * placeName: PropTypes.string,
-         * isPantryCategorySelected: PropTypes.bool,
-         * isMealCategorySelected: PropTypes.bool,
-         * isVerifiedFilterSelected: PropTypes.bool,
-         */
-        userCoordinates={userCoordinates}
+      <ResultsFilters {...topLevelProps} search={search}
+      /**
+       * distance: PropTypes.number,
+       * placeName: PropTypes.string,
+       * isPantryCategorySelected: PropTypes.bool,
+       * isMealCategorySelected: PropTypes.bool,
+       * isVerifiedFilterSelected: PropTypes.bool,
+       */
       />
       <Grid container wrap="wrap-reverse">
         <Grid

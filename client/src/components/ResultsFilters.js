@@ -91,6 +91,12 @@ function ResultsFilters(props) {
     search
   } = props
 
+  const [searchTerm, setSearchTerm] = React.useState("")
+
+  React.useEffect(() => {
+    console.log(searchTerm)
+  }, [searchTerm])
+
   return (
     <Grid container wrap="wrap-reverse" className={classes.controlPanel}>
       <Grid
@@ -158,7 +164,7 @@ function ResultsFilters(props) {
         </Grid>
       </Grid>
       <Box className={classes.inputContainer}>
-        <Search {...props} />
+        <Search {...props} setSearchTerm={setSearchTerm} />
         <Button
           type="button"
           disabled={!origin}
@@ -177,14 +183,14 @@ function ResultsFilters(props) {
 
           onClick={() => {
             search({
-              //name: origin.locationName,
+              name: searchTerm,
               latitude: origin.latitude,
               longitude: origin.longitude,
               radius: distanceValue,
               //categoryIds: [],
               //isInactive: false,
               //isAssigned: "either",
-              //isVerified: isVerifiedSelected ? "yes" : "no",
+              isVerified: isVerifiedSelected ? "yes" : "no",
               //isApproved: "either",
               //isRejected: "either",
               //isClaimed: "either",

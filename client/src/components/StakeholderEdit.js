@@ -152,6 +152,21 @@ const StakeholderEdit = (props) => {
     approvedUser: "",
     selectedCategoryIds: [],
     hours: [],
+    instagram: "",
+    adminContactName: "",
+    adminContactPhone: "",
+    adminContactEmail: "",
+    donationContactName: "",
+    donationContactPhone: "",
+    donationContactEmail: "",
+    donationPickup: false,
+    donationAcceptFrozen: false,
+    donationAcceptRefrigerated: false,
+    donationAcceptPerishable: false,
+    donationSchedule: "",
+    donationNotes: "",
+    donationDeliveryInstructions: "",
+    covidNotes: "",
   });
 
   useEffect(() => {
@@ -411,11 +426,7 @@ const StakeholderEdit = (props) => {
                         MenuProps={MenuProps}
                       >
                         {categories.map((category) => (
-                          <MenuItem
-                            key={category.id}
-                            value={category.id}
-                            // style={getStyles(name, personName, theme)}
-                          >
+                          <MenuItem key={category.id} value={category.id}>
                             <Checkbox
                               checked={
                                 values.selectedCategoryIds.indexOf(
@@ -434,7 +445,7 @@ const StakeholderEdit = (props) => {
                       </FormHelperText>
                     </FormControl>
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={12} sm={4}>
                     <BigTooltip title="Check if they are permanently closed.">
                       <FormControlLabel
                         control={
@@ -454,6 +465,28 @@ const StakeholderEdit = (props) => {
                       />
                     </BigTooltip>
                   </Grid>
+                  <Grid item xs={12} sm={8}>
+                    <BigTooltip title="COVID-related conditions">
+                      <TextField
+                        type="text"
+                        size="small"
+                        label="COVID Notes"
+                        name="covidNotes"
+                        variant="outlined"
+                        margin="normal"
+                        fullWidth
+                        multiline
+                        rows={2}
+                        rowsMax={12}
+                        value={values.covidNotes}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        helperText={touched.covidNotes ? errors.covidNotes : ""}
+                        error={touched.covidNotes && Boolean(errors.covidNotes)}
+                      />
+                    </BigTooltip>
+                  </Grid>
+
                   <Grid item xs={12}>
                     <BigTooltip title="The mission statement or other description.">
                       <TextField
@@ -953,18 +986,21 @@ const StakeholderEdit = (props) => {
                         variant="outlined"
                         margin="normal"
                         fullWidth
-                        name="donationPhone"
+                        name="donationContactPhone"
                         label="Donation Phone"
                         type="phone"
                         size="small"
-                        value={values.donationPhone}
+                        value={values.donationContactPhone}
                         onChange={handleChange}
                         onBlur={handleBlur}
                         helperText={
-                          touched.donationPhone ? errors.donationPhone : ""
+                          touched.donationContactPhone
+                            ? errors.donationContactPhone
+                            : ""
                         }
                         error={
-                          touched.donationPhone && Boolean(errors.donationPhone)
+                          touched.donationContactPhone &&
+                          Boolean(errors.donationContactPhone)
                         }
                       />
                     </BigTooltip>
@@ -975,18 +1011,21 @@ const StakeholderEdit = (props) => {
                         variant="outlined"
                         margin="normal"
                         fullWidth
-                        name="donationEmail"
+                        name="donationContactEmail"
                         label="Donation Email"
                         type="email"
                         size="small"
-                        value={values.donationEmail}
+                        value={values.donationContactEmail}
                         onChange={handleChange}
                         onBlur={handleBlur}
                         helperText={
-                          touched.donationEmail ? errors.donationEmail : ""
+                          touched.donationContactEmail
+                            ? errors.donationContactEmail
+                            : ""
                         }
                         error={
-                          touched.donationEmail && Boolean(errors.donationEmail)
+                          touched.donationContactEmail &&
+                          Boolean(errors.donationContactEmail)
                         }
                       />
                     </BigTooltip>
@@ -1022,14 +1061,14 @@ const StakeholderEdit = (props) => {
                         control={
                           <Checkbox
                             margin="normal"
-                            name="donationCanPickUp"
+                            name="donationPickup"
                             label="Pick Up"
-                            value={values.donationCanPickUp}
-                            checked={values.donationCanPickUp}
+                            value={values.donationPickup}
+                            checked={values.donationPickup}
                             onChange={() =>
                               setFieldValue(
-                                "donationCanPickUp",
-                                !values.donationCanPickUp
+                                "donationPickup",
+                                !values.donationPickup
                               )
                             }
                             onBlur={handleBlur}
@@ -1617,6 +1656,31 @@ const StakeholderEdit = (props) => {
                         </UserContext.Consumer>
                       </div>
                     </div>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <BigTooltip title="Verification review comments and instructions">
+                      <TextField
+                        type="text"
+                        size="small"
+                        label="Verification Review Notes"
+                        name="reviewNotes"
+                        variant="outlined"
+                        margin="normal"
+                        fullWidth
+                        multiline
+                        rows={2}
+                        rowsMax={12}
+                        value={values.reviewNotes}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        helperText={
+                          touched.reviewNotes ? errors.reviewNotes : ""
+                        }
+                        error={
+                          touched.reviewNotes && Boolean(errors.reviewNotes)
+                        }
+                      />
+                    </BigTooltip>
                   </Grid>
                 </Grid>
               </TabPanel>

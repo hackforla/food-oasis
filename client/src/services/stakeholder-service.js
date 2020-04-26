@@ -4,7 +4,7 @@ import moment from "moment";
 const baseUrl = "/api/stakeholders";
 
 const toLocalMoment = (ts) => {
-  return !ts ? null : moment.utc(ts).toLocaleString();
+  return !ts ? null : moment.utc(ts).local();
 };
 
 /* 
@@ -30,13 +30,13 @@ export const search = async (searchParams) => {
   let stakeholders = response.data.map((s) => {
     return {
       ...s,
-      // createdDate: toLocalMoment(s.createdDate),
-      // modifiedDate: toLocalMoment(s.modifiedDate),
-      // assignedDate: toLocalMoment(s.assignedDate),
-      // verifiedDate: toLocalMoment(s.verifiedDate),
-      // approvedDate: toLocalMoment(s.approvedDate),
-      // rejectedDate: toLocalMoment(s.rejectedDate),
-      // claimedDate: toLocalMoment(s.claimedDate),
+      createdDate: toLocalMoment(s.createdDate),
+      modifiedDate: toLocalMoment(s.modifiedDate),
+      assignedDate: toLocalMoment(s.assignedDate),
+      verifiedDate: toLocalMoment(s.verifiedDate),
+      approvedDate: toLocalMoment(s.approvedDate),
+      rejectedDate: toLocalMoment(s.rejectedDate),
+      claimedDate: toLocalMoment(s.claimedDate),
     };
   });
 

@@ -73,7 +73,7 @@ const search = async ({
       s.donation_contact_email, s.donation_pickup,
       s.donation_accept_frozen, s.donation_accept_refrigerated,
       s.donation_accept_perishable, s.donation_schedule,
-      s.donation_delivery_instructions, s.covid_notes
+      s.donation_delivery_instructions, s.donation_notes, s.covid_notes
     from stakeholder s
     left join login L1 on s.created_login_id = L1.id
     left join login L2 on s.modified_login_id = L2.id
@@ -100,7 +100,6 @@ const search = async ({
   // console.console.log(sql);
   const stakeholderResult = await pool.query(sql);
   let stakeholders = [];
-  console.log(process.env.TZ);
   stakeholderResult.rows.forEach((row) => {
     stakeholders.push({
       id: row.id,
@@ -151,19 +150,20 @@ const search = async ({
       description: row.description,
       reviewNotes: row.review_notes,
       instagram: row.instagram || "",
-      admin_contact_name: row.admin_contact_name || "",
-      admin_contact_phone: row.admin_contact_phone || "",
-      admin_contact_email: row.admin_contact_email || "",
-      donation_contact_name: row.donation_contact_name || "",
-      donation_contact_phone: row.donation_contact_phone || "",
-      donation_contact_email: row.donation_contact_email || "",
-      donation_pickup: row.donation_pickup || false,
-      donation_accept_frozen: row.donation_accept_frozen || false,
-      donation_accept_refrigerated: row.donation_accept_refrigerated || false,
-      donation_accept_perishable: row.donation_accept_perishable || false,
-      donation_schedule: row.donation_schedule || "",
-      donation_delivery_instructions: row.donation_delivery_instructions || "",
-      covid_notes: row.covid_notes || "",
+      adminContactName: row.admin_contact_name || "",
+      adminContactPhone: row.admin_contact_phone || "",
+      adminContactEmail: row.admin_contact_email || "",
+      donationContactName: row.donation_contact_name || "",
+      donationContactPhone: row.donation_contact_phone || "",
+      donationContactEmail: row.donation_contact_email || "",
+      donationPickup: row.donation_pickup || false,
+      donationAcceptFrozen: row.donation_accept_frozen || false,
+      donationAcceptRefrigerated: row.donation_accept_refrigerated || false,
+      donationAcceptPerishable: row.donation_accept_perishable || false,
+      donationSchedule: row.donation_schedule || "",
+      donationDeliveryInstructions: row.donation_delivery_instructions || "",
+      donationNotes: row.donation_notes || "",
+      covid_Notes: row.covid_notes || "",
     });
   });
 
@@ -212,12 +212,13 @@ const selectById = async (id) => {
           where sc.stakeholder_id = s.id 
         ) category_row
       )) as categories,
-      s.created_date::varchar, s.created_login_id, 
-      s.modified_date::varchar, s.modified_login_id,
-      s.verified_date::varchar, s.verified_login_id,
-      s.approved_date::varchar, s.rejected_date, s.reviewed_login_id,
-      s.assigned_date::varchar, s.assigned_login_id,
-      s.claimed_date::varchar, s.claimed_login_id,
+      to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as created_date, s.created_login_id, 
+      to_char(s.modified_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as modified_date, s.modified_login_id,
+      to_char(s.verified_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as verified_date, s.verified_login_id,
+      to_char(s.approved_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as approved_date, 
+      to_char(s.rejected_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as rejected_date, s.reviewed_login_id,
+      to_char(s.assigned_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')as assigned_date, s.assigned_login_id,
+      to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as claimed_date, s.claimed_login_id,
       s.requirements::varchar, s.admin_notes, s.inactive,
       L1.first_name || ' ' || L1.last_name as created_user,
       L2.first_name || ' ' || L2.last_name as modified_user,
@@ -234,7 +235,7 @@ const selectById = async (id) => {
       s.donation_contact_email, s.donation_pickup,
       s.donation_accept_frozen, s.donation_accept_refrigerated,
       s.donation_accept_perishable, s.donation_schedule,
-      s.donation_delivery_instructions, s.covid_notes
+      s.donation_delivery_instructions, s.donation_notes, s.covid_notes
     from stakeholder s 
     left join login L1 on s.created_login_id = L1.id
     left join login L2 on s.modified_login_id = L2.id
@@ -294,19 +295,20 @@ const selectById = async (id) => {
     description: row.description,
     reviewNotes: row.review_notes,
     instagram: row.instagram || "",
-    admin_contact_name: row.admin_contact_name || "",
-    admin_contact_phone: row.admin_contact_phone || "",
-    admin_contact_email: row.admin_contact_email || "",
-    donation_contact_name: row.donation_contact_name || "",
-    donation_contact_phone: row.donation_contact_phone || "",
-    donation_contact_email: row.donation_contact_email || "",
-    donation_pickup: row.donation_pickup || false,
-    donation_accept_frozen: row.donation_accept_frozen || false,
-    donation_accept_refrigerated: row.donation_accept_refrigerated || false,
-    donation_accept_perishable: row.donation_accept_perishable || false,
-    donation_schedule: row.donation_schedule || "",
-    donation_delivery_instructions: row.donation_delivery_instructions || "",
-    covid_notes: row.covid_notes || "",
+    adminContactName: row.admin_contact_name || "",
+    adminContactPhone: row.admin_contact_phone || "",
+    adminContactEmail: row.admin_contact_email || "",
+    donationContactName: row.donation_contact_name || "",
+    donationContactPhone: row.donation_contact_phone || "",
+    donationContactEmail: row.donation_contact_email || "",
+    donationPickup: row.donation_pickup || false,
+    donationAcceptFrozen: row.donation_accept_frozen || false,
+    donationAcceptRefrigerated: row.donation_accept_refrigerated || false,
+    donationAcceptPerishable: row.donation_accept_perishable || false,
+    donationSchedule: row.donation_schedule || "",
+    donationDeliveryInstructions: row.donation_delivery_instructions || "",
+    donationNotes: row.donation_notes || "",
+    covidNotes: row.covid_notes || "",
   };
 
   // Don't have a distance, since we didn't specify origin
@@ -353,6 +355,22 @@ const insert = async (model) => {
     assignedLoginId,
     claimedDate,
     claimedLoginId,
+    reviewNotes,
+    instagram,
+    adminContactName,
+    adminContactPhone,
+    adminContactEmail,
+    donationContactName,
+    donationContactPhone,
+    donationContactEmail,
+    donationPickup,
+    donationAcceptFrozen,
+    donationAcceptRefrigerated,
+    donationAcceptPerishable,
+    donationSchedule,
+    donationDeliveryInstructions,
+    donationNotes,
+    covidNotes,
   } = model;
   try {
     const sql = `insert into stakeholder 
@@ -363,7 +381,14 @@ const insert = async (model) => {
       parent_organization, physical_access, email,
       items, services, facebook, twitter, pinterest, linkedin, description,
       verified_date, verified_login_id, approved_date, rejected_date, reviewed_login_id,
-      assigned_date, assigned_login_id, claimed_date, claimed_login_id) 
+      assigned_date, assigned_login_id, claimed_date, claimed_login_id,
+      review_notes, instagram, admin_contact_name,
+      admin_contact_phone, admin_contact_email,
+      donation_contact_name, donation_contact_phone,
+      donation_contact_email, donation_pickup,
+      donation_accept_frozen, donation_accept_refrigerated,
+      donation_accept_perishable, donation_schedule,
+      donation_delivery_instructions, donation_notes, covid_notes) 
     values (
       ${toSqlString(name)}, ${toSqlString(address1)}, ${toSqlString(address2)}, 
       ${toSqlString(city)}, ${toSqlString(state)}, ${toSqlString(zip)}, 
@@ -378,12 +403,24 @@ const insert = async (model) => {
       ${toSqlString(twitter)}, ${toSqlString(pinterest)},
       ${toSqlString(linkedin)}, ${toSqlString(description)},
       ${toSqlTimestamp(verifiedDate)}, ${toSqlNumeric(verifiedLoginId)},
-      ${toSqlTimestamp(approvedDate)}, ${toSqlTimestamp(
-      rejectedDate
-    )}, ${toSqlNumeric(reviewedLoginId)},
+      ${toSqlTimestamp(approvedDate)}, ${toSqlTimestamp(rejectedDate)}, 
+      ${toSqlNumeric(reviewedLoginId)},
       ${toSqlTimestamp(assignedDate)}, ${toSqlNumeric(assignedLoginId)},
-      ${toSqlTimestamp(claimedDate)}, ${toSqlNumeric(claimedLoginId)}
-      }
+      ${toSqlTimestamp(claimedDate)}, ${toSqlNumeric(claimedLoginId)},
+      ${toSqlString(reviewNotes)}, ${toSqlString(instagram)}, 
+      ${toSqlString(adminContactName)}, ${toSqlString(adminContactPhone)}, 
+      ${toSqlString(adminContactEmail)}, 
+      ${toSqlString(donationContactName)}, 
+      ${toSqlString(donationContactPhone)}, 
+      ${toSqlString(donationContactEmail)}, 
+      ${toSqlBoolean(donationPickup)}, 
+      ${toSqlBoolean(donationAcceptFrozen)}, 
+      ${toSqlBoolean(donationAcceptRefrigerated)}, 
+      ${toSqlBoolean(donationAcceptPerishable)}, 
+      ${toSqlString(donationSchedule)}, 
+      ${toSqlString(donationDeliveryInstructions)}, 
+      ${toSqlString(donationNotes)}
+      ${toSqlString(covidNotes)}
     ) returning id`;
     const stakeholderResult = await pool.query(sql);
     const retObject = stakeholderResult.rows[0];
@@ -519,6 +556,22 @@ const update = async (model) => {
     assignedLoginId,
     claimedDate,
     claimedLoginId,
+    reviewNotes,
+    instagram,
+    adminContactName,
+    adminContactPhone,
+    adminContactEmail,
+    donationContactName,
+    donationContactPhone,
+    donationContactEmail,
+    donationPickup,
+    donationAcceptFrozen,
+    donationAcceptRefrigerated,
+    donationAcceptPerishable,
+    donationSchedule,
+    donationDeliveryInstructions,
+    donationNotes,
+    covidNotes,
   } = model;
 
   const hoursSqlDelete = `delete from stakeholder_schedule where stakeholder_id = ${id}`;
@@ -535,43 +588,64 @@ const update = async (model) => {
     (stakeholder_id, day_of_week, open, close, week_of_month) 
     values ${hoursSqlValues}`;
 
-  const sql = `update stakeholder
-              set name = ${toSqlString(name)}, 
-              address_1 = ${toSqlString(address1)}, 
-              address_2 = ${toSqlString(address2)}, 
-              city = ${toSqlString(city)}, 
-              state = ${toSqlString(state)}, 
-              zip = ${toSqlString(zip)}, 
-              phone = ${toSqlString(phone)}, 
-              latitude = ${toSqlNumeric(latitude)}, 
-              longitude = ${toSqlNumeric(longitude)}, 
-              website = ${toSqlString(website)}, 
-              inactive = ${toSqlBoolean(inactive)}, 
-              notes = ${toSqlString(notes)},
-              requirements = ${toSqlString(requirements)},
-              admin_notes = ${toSqlString(adminNotes)},
-              parent_organization = ${toSqlString(parentOrganization)},
-              physical_access = ${toSqlString(physicalAccess)},
-              email = ${toSqlString(email)},
-              items = ${toSqlString(items)},
-              services = ${toSqlString(services)},
-              facebook = ${toSqlString(facebook)},
-              twitter = ${toSqlString(twitter)},
-              pinterest = ${toSqlString(pinterest)},
-              linkedin = ${toSqlString(linkedin)},
-              description = ${toSqlString(description)},
-              modified_login_id = ${toSqlNumeric(loginId)},
-              modified_date = CURRENT_TIMESTAMP,
-              verified_date = ${toSqlTimestamp(verifiedDate)}, 
-              verified_login_id = ${toSqlNumeric(verifiedLoginId)},
-              approved_date = ${toSqlTimestamp(approvedDate)}, 
-              rejected_date = ${toSqlTimestamp(rejectedDate)}, 
-              reviewed_login_id = ${toSqlNumeric(reviewedLoginId)},
-              assigned_date = ${toSqlTimestamp(assignedDate)}, 
-              assigned_login_id = ${toSqlNumeric(assignedLoginId)},
-              claimed_date = ${toSqlTimestamp(claimedDate)}, 
-              claimed_login_id = ${toSqlNumeric(claimedLoginId)}
-              where id = ${id}`;
+  const sql = `
+    update stakeholder set
+      name = ${toSqlString(name)}, 
+      address_1 = ${toSqlString(address1)}, 
+      address_2 = ${toSqlString(address2)}, 
+      city = ${toSqlString(city)}, 
+      state = ${toSqlString(state)}, 
+      zip = ${toSqlString(zip)}, 
+      phone = ${toSqlString(phone)}, 
+      latitude = ${toSqlNumeric(latitude)}, 
+      longitude = ${toSqlNumeric(longitude)}, 
+      website = ${toSqlString(website)}, 
+      inactive = ${toSqlBoolean(inactive)}, 
+      notes = ${toSqlString(notes)},
+      requirements = ${toSqlString(requirements)},
+      admin_notes = ${toSqlString(adminNotes)},
+      parent_organization = ${toSqlString(parentOrganization)},
+      physical_access = ${toSqlString(physicalAccess)},
+      email = ${toSqlString(email)},
+      items = ${toSqlString(items)},
+      services = ${toSqlString(services)},
+      facebook = ${toSqlString(facebook)},
+      twitter = ${toSqlString(twitter)},
+      pinterest = ${toSqlString(pinterest)},
+      linkedin = ${toSqlString(linkedin)},
+      description = ${toSqlString(description)},
+      modified_login_id = ${toSqlNumeric(loginId)},
+      modified_date = CURRENT_TIMESTAMP,
+      verified_date = ${toSqlTimestamp(verifiedDate)}, 
+      verified_login_id = ${toSqlNumeric(verifiedLoginId)},
+      approved_date = ${toSqlTimestamp(approvedDate)}, 
+      rejected_date = ${toSqlTimestamp(rejectedDate)}, 
+      reviewed_login_id = ${toSqlNumeric(reviewedLoginId)},
+      assigned_date = ${toSqlTimestamp(assignedDate)}, 
+      assigned_login_id = ${toSqlNumeric(assignedLoginId)},
+      claimed_date = ${toSqlTimestamp(claimedDate)}, 
+      claimed_login_id = ${toSqlNumeric(claimedLoginId)},
+      review_notes = ${toSqlString(reviewNotes)}, 
+      instagram = ${toSqlString(instagram)}, 
+      admin_contact_name = ${toSqlString(adminContactName)}, 
+      admin_contact_phone = ${toSqlString(adminContactPhone)}, 
+      admin_contact_email = ${toSqlString(adminContactEmail)}, 
+      donation_contact_name = ${toSqlString(donationContactName)}, 
+      donation_contact_phone = ${toSqlString(donationContactPhone)}, 
+      donation_contact_email = ${toSqlString(donationContactEmail)}, 
+      donation_pickup = ${toSqlBoolean(donationPickup)}, 
+      donation_accept_frozen = ${toSqlBoolean(donationAcceptFrozen)}, 
+      donation_accept_refrigerated = ${toSqlBoolean(
+        donationAcceptRefrigerated
+      )}, 
+      donation_accept_perishable = ${toSqlBoolean(donationAcceptPerishable)}, 
+      donation_schedule = ${toSqlString(donationSchedule)}, 
+      donation_delivery_instructions = ${toSqlString(
+        donationDeliveryInstructions
+      )}, 
+      donation_notes = ${toSqlString(donationNotes)},
+      covid_notes = ${toSqlString(covidNotes)}
+    where id = ${id}`;
   const result = await pool.query(sql);
 
   const sqlDelete = `delete from stakeholder_category 

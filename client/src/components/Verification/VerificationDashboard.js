@@ -6,7 +6,6 @@ import { SearchButton } from "../Buttons";
 import StakeholderGrid from "../StakeholderGrid";
 import { RotateLoader } from "react-spinners";
 import { useOrganizations } from "../../hooks/useOrganizations/useOrganizations";
-import { useCategories } from "../../hooks/useCategories/useCategories";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -74,12 +73,6 @@ function VerificationDashboard(props) {
   const [criteria, setCriteria] = useState(defaultCriteria);
 
   const {
-    data: categories,
-    loading: categoriesLoading,
-    error: categoriesError,
-  } = useCategories();
-
-  const {
     data: stakeholders,
     loading: stakeholdersLoading,
     error: stakeholdersError,
@@ -124,13 +117,13 @@ function VerificationDashboard(props) {
       </div>
       <div className={classes.mainContent}>
         <>
-          {categoriesError || stakeholdersError ? (
+          {stakeholdersError ? (
             <div className={classes.bigMessage}>
               <Typography variant="h5" component="h5" style={{ color: "red" }}>
                 Uh Oh! Something went wrong!
               </Typography>
             </div>
-          ) : categoriesLoading || stakeholdersLoading ? (
+          ) : stakeholdersLoading ? (
             <div
               style={{
                 flexGrow: 1,

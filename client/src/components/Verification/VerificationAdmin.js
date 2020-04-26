@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { Button, CssBaseline, Dialog, Typography } from "@material-ui/core";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
@@ -93,9 +92,8 @@ const defaultCriteria = {
 };
 
 function VerificationAdmin(props) {
-  const { user } = props;
-  const classes = useStyles();
   const { userCoordinates } = props;
+  const classes = useStyles();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [assignDialogOpen, setAssignDialogOpen] = useState(false);
   const [criteria, setCriteria] = useState(defaultCriteria);
@@ -239,7 +237,6 @@ function VerificationAdmin(props) {
           keepMounted
           open={assignDialogOpen}
           onClose={handleAssignDialogClose}
-          loginId={""}
         ></AssignDialog>
         <>
           {categoriesError || stakeholdersError ? (

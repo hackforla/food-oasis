@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import PropTypes from "prop-types";
 import {
   Button,
@@ -11,8 +11,8 @@ import AccountAutocomplete from "../AccountAutocomplete";
 
 function AssignDialog(props) {
   const { onClose, open, ...other } = props;
-  const [accountId, setAccountId] = React.useState(null);
-  const accountRef = React.useRef(null);
+  const [accountId, setAccountId] = useState(null);
+  const accountRef = useRef(null);
 
   const handleEntering = () => {
     if (accountRef.current != null) {
@@ -37,7 +37,7 @@ function AssignDialog(props) {
       disableBackdropClick
       disableEscapeKeyDown
       maxWidth="xs"
-      // onEntering={handleEntering}
+      onEntering={handleEntering}
       aria-labelledby="confirmation-dialog-title"
       open={open}
       {...other}

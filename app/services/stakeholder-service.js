@@ -73,7 +73,8 @@ const search = async ({
       s.donation_contact_email, s.donation_pickup,
       s.donation_accept_frozen, s.donation_accept_refrigerated,
       s.donation_accept_perishable, s.donation_schedule,
-      s.donation_delivery_instructions, s.donation_notes, s.covid_notes
+      s.donation_delivery_instructions, s.donation_notes, s.covid_notes,
+      s.category_notes, s.eligibility_notes, s.food_types, s.languages
     from stakeholder s
     left join login L1 on s.created_login_id = L1.id
     left join login L2 on s.modified_login_id = L2.id
@@ -163,7 +164,11 @@ const search = async ({
       donationSchedule: row.donation_schedule || "",
       donationDeliveryInstructions: row.donation_delivery_instructions || "",
       donationNotes: row.donation_notes || "",
-      covid_Notes: row.covid_notes || "",
+      covidNotes: row.covid_notes || "",
+      categoryNotes: row.category_notes || "",
+      eligibilityNotes: row.eligibility_notes || "",
+      foodTypes: row.food_types || "",
+      languages: row.languages || "",
     });
   });
 
@@ -235,7 +240,8 @@ const selectById = async (id) => {
       s.donation_contact_email, s.donation_pickup,
       s.donation_accept_frozen, s.donation_accept_refrigerated,
       s.donation_accept_perishable, s.donation_schedule,
-      s.donation_delivery_instructions, s.donation_notes, s.covid_notes
+      s.donation_delivery_instructions, s.donation_notes, s.covid_notes,
+      s.category_notes, s.eligibility_notes, s.food_types, s.languages
     from stakeholder s 
     left join login L1 on s.created_login_id = L1.id
     left join login L2 on s.modified_login_id = L2.id
@@ -309,6 +315,10 @@ const selectById = async (id) => {
     donationDeliveryInstructions: row.donation_delivery_instructions || "",
     donationNotes: row.donation_notes || "",
     covidNotes: row.covid_notes || "",
+    categoryNotes: row.category_notes || "",
+    eligibilityNotes: row.eligibility_notes || "",
+    foodTypes: row.food_types || "",
+    languages: row.languages || "",
   };
 
   // Don't have a distance, since we didn't specify origin
@@ -371,6 +381,10 @@ const insert = async (model) => {
     donationDeliveryInstructions,
     donationNotes,
     covidNotes,
+    categoryNotes,
+    eligibilityNotes,
+    foodTypes,
+    languages,
   } = model;
   try {
     const sql = `insert into stakeholder 
@@ -388,7 +402,8 @@ const insert = async (model) => {
       donation_contact_email, donation_pickup,
       donation_accept_frozen, donation_accept_refrigerated,
       donation_accept_perishable, donation_schedule,
-      donation_delivery_instructions, donation_notes, covid_notes) 
+      donation_delivery_instructions, donation_notes, covid_notes,
+      category_notes, eligiblity_notes, food_types, languages) 
     values (
       ${toSqlString(name)}, ${toSqlString(address1)}, ${toSqlString(address2)}, 
       ${toSqlString(city)}, ${toSqlString(state)}, ${toSqlString(zip)}, 
@@ -419,8 +434,12 @@ const insert = async (model) => {
       ${toSqlBoolean(donationAcceptPerishable)}, 
       ${toSqlString(donationSchedule)}, 
       ${toSqlString(donationDeliveryInstructions)}, 
-      ${toSqlString(donationNotes)}
-      ${toSqlString(covidNotes)}
+      ${toSqlString(donationNotes)},
+      ${toSqlString(covidNotes)},
+      ${toSqlString(categoryNotes)},
+      ${toSqlString(eligibilityNotes)},
+      ${toSqlString(foodTypes)},
+      ${toSqlString(languages)}
     ) returning id`;
     const stakeholderResult = await pool.query(sql);
     const retObject = stakeholderResult.rows[0];
@@ -572,6 +591,10 @@ const update = async (model) => {
     donationDeliveryInstructions,
     donationNotes,
     covidNotes,
+    categoryNotes,
+    eligibilityNotes,
+    foodTypes,
+    languages,
   } = model;
 
   const hoursSqlDelete = `delete from stakeholder_schedule where stakeholder_id = ${id}`;
@@ -644,7 +667,11 @@ const update = async (model) => {
         donationDeliveryInstructions
       )}, 
       donation_notes = ${toSqlString(donationNotes)},
-      covid_notes = ${toSqlString(covidNotes)}
+      covid_notes = ${toSqlString(covidNotes)},
+      category_notes = ${toSqlString(categoryNotes)},
+      eligibility_notes = ${toSqlString(eligibilityNotes)},
+      food_types = ${toSqlString(foodTypes)},
+      languages = ${toSqlString(languages)}
     where id = ${id}`;
   const result = await pool.query(sql);
 

@@ -167,6 +167,10 @@ const StakeholderEdit = (props) => {
     donationNotes: "",
     donationDeliveryInstructions: "",
     covidNotes: "",
+    categoryNotes: "",
+    eligibilityNotes: "",
+    foodTypes: "",
+    languages: "English",
   });
 
   useEffect(() => {
@@ -391,7 +395,7 @@ const StakeholderEdit = (props) => {
                       error={touched.name && Boolean(errors.name)}
                     />
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={12} sm={6}>
                     <FormControl className={classes.formControl}>
                       <InputLabel id="selectCategoryIds-label">
                         Categories
@@ -445,7 +449,32 @@ const StakeholderEdit = (props) => {
                       </FormHelperText>
                     </FormControl>
                   </Grid>
-                  <Grid item xs={12} sm={4}>
+                  <Grid item xs={12} sm={6}>
+                    <BigTooltip title="Notes about identifying organization category">
+                      <TextField
+                        type="text"
+                        size="small"
+                        label="Category Notes"
+                        name="categoryNotes"
+                        variant="outlined"
+                        margin="normal"
+                        fullWidth
+                        multiline
+                        rows={2}
+                        rowsMax={12}
+                        value={values.categoryNotes}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        helperText={
+                          touched.categoryNotes ? errors.categoryNotes : ""
+                        }
+                        error={
+                          touched.categoryNotes && Boolean(errors.categoryNotes)
+                        }
+                      />
+                    </BigTooltip>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
                     <BigTooltip title="Check if they are permanently closed.">
                       <FormControlLabel
                         control={
@@ -465,7 +494,7 @@ const StakeholderEdit = (props) => {
                       />
                     </BigTooltip>
                   </Grid>
-                  <Grid item xs={12} sm={8}>
+                  <Grid item xs={12} sm={6}>
                     <BigTooltip title="COVID-related conditions">
                       <TextField
                         type="text"
@@ -870,13 +899,32 @@ const StakeholderEdit = (props) => {
               <TabPanel value={tabPage} index={3}>
                 <Grid container spacing={1}>
                   <Grid item xs={12}>
+                    <TextField
+                      variant="outlined"
+                      margin="normal"
+                      fullWidth
+                      name="foodTypes"
+                      label="Food Types"
+                      type="text"
+                      size="small"
+                      multiline
+                      rows={2}
+                      rowsMax={12}
+                      value={values.foodTypes}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      helperText={touched.foodTypes ? errors.foodTypes : ""}
+                      error={touched.foodTypes && Boolean(errors.foodTypes)}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
                     <BigTooltip title="(Items besides food, i.e. dog food, cat food, hygiene products, diapers, female hygiene products)">
                       <TextField
                         variant="outlined"
                         margin="normal"
                         fullWidth
                         name="items"
-                        label="Items (separated by commas)"
+                        label="Non-Food Items"
                         type="text"
                         size="small"
                         value={values.items}
@@ -929,6 +977,53 @@ const StakeholderEdit = (props) => {
                         }
                       />
                     </BigTooltip>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <BigTooltip title="Other notes about eligibility requirements">
+                      <TextField
+                        variant="outlined"
+                        margin="normal"
+                        fullWidth
+                        name="eligibilityNotes"
+                        label="Eligibility Notes"
+                        type="text"
+                        size="small"
+                        multiline
+                        rows={2}
+                        rowsMax={12}
+                        value={values.eligibilityNotes}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        helperText={
+                          touched.eligibilityNotes
+                            ? errors.eligibilityNotes
+                            : ""
+                        }
+                        error={
+                          touched.eligibilityNotes &&
+                          Boolean(errors.eligibilityNotes)
+                        }
+                      />
+                    </BigTooltip>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      variant="outlined"
+                      margin="normal"
+                      fullWidth
+                      name="languages"
+                      label="Languages"
+                      type="text"
+                      size="small"
+                      multiline
+                      rows={2}
+                      rowsMax={12}
+                      value={values.languages}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      helperText={touched.languages ? errors.languages : ""}
+                      error={touched.languages && Boolean(errors.languages)}
+                    />
                   </Grid>
                   <Grid item xs={12}>
                     <BigTooltip title={noteTooltip}>

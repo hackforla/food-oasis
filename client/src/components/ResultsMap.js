@@ -20,6 +20,9 @@ function Map({
   selectedLongitude = -118.243328,
   stakeholders,
 }) {
+
+  React.useEffect(() => { console.log("map", stakeholders) }, [stakeholders])
+
   const [isPopupOpen, setIsPopupOpen] = React.useState(false)
   const [selectedStakeholder, setSelectedStakeholder] = React.useState(null)
   const [viewport, setViewport] = React.useState({

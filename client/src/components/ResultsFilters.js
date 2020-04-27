@@ -93,10 +93,6 @@ function ResultsFilters(props) {
 
   const [searchTerm, setSearchTerm] = React.useState("")
 
-  React.useEffect(() => {
-    console.log(searchTerm)
-  }, [searchTerm])
-
   return (
     <Grid container wrap="wrap-reverse" className={classes.controlPanel}>
       <Grid
@@ -173,14 +169,6 @@ function ResultsFilters(props) {
           startIcon={
             <SearchIcon fontSize="large" className={classes.searchIcon} />
           }
-
-          /* onClick={() => {
-            const url = `/ stakeholders ? lat = ${origin.latitude}& lon=${
-              origin.longitude
-              }& placeName=${origin.locationName || ''} `;
-            props.history.push(url);
-          }} */
-
           onClick={() => {
             search({
               name: searchTerm,

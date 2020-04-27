@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ResultsContainer(props) {
   const { userCoordinates } = props
-  const { state, search } = useOrganizations()
+  const { data, search } = useOrganizations()
   const classes = useStyles()
 
   /**
@@ -75,10 +75,6 @@ export default function ResultsContainer(props) {
     userCoordinates
   }
 
-  React.useEffect(() => {
-    console.log(state)
-  }, [state])
-
   return (
     <div className={classes.container}>
       <ResultsFilters {...topLevelProps} search={search}
@@ -98,14 +94,14 @@ export default function ResultsContainer(props) {
           className={classes.list}
         >
           <ResultsList
-          // selectedStakeholder={selectedStakeholder}
-          // stakeholders={stakeholders}
+            // selectedStakeholder={selectedStakeholder}
+            stakeholders={data}
           />
         </Grid>
         <Grid item xs={12} md={8} className={classes.map}>
           <ResultsMap
-          // selectedStakeholder={selectedStakeholder}
-          // stakeholders={stakeholders}
+            // selectedStakeholder={selectedStakeholder}
+            stakeholders={data}
           // selectedLatitude={selectedLatitude}
           // selectedLongitude={selectedLongitude}
           /**

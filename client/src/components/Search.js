@@ -42,7 +42,6 @@ export default function Search(props) {
   const { userCoordinates, setOrigin, setSearchTerm } = props
   const classes = useStyles();
   const [selectedPlace, setSelectedPlace] = useState('');
-  React.useEffect(() => { console.log(selectedPlace) }, [selectedPlace])
 
   const { mapboxResults, fetchMapboxResults } = useMapboxGeocoder();
 

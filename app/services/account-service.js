@@ -13,7 +13,7 @@ const SALT_ROUNDS = 10;
 const selectAll = () => {
   let sql = `
     select w.id, w.first_name, w.last_name, w.email, w.date_created,
-      w.email_confirmed, w.is_admin
+      w.email_confirmed, w.is_admin, w.is_security_admin, w.is_data_entry
     from login w
     order by w.last_name, w.first_name, w.date_created
   `;
@@ -26,13 +26,15 @@ const selectAll = () => {
       dateCreated: row.date_created,
       emailConfirmed: row.email_confirmed,
       isAdmin: row.is_admin,
+      isSecurityAdmin: row.is_security_admin,
+      isDataEntry: row.is_data_entry,
     }));
   });
 };
 
 const selectById = (id) => {
   const sql = `select w.id, w.first_name, w.last_name, w.email,
-  w.date_created, w.email_confirmed, w.is_admin
+  w.date_created, w.email_confirmed, w.is_admin, w.is_security_admin, w.is_data_entry
   from login w where w.id = ${id}`;
   return pool.query(sql).then((res) => {
     const row = res.rows[0];
@@ -44,6 +46,9 @@ const selectById = (id) => {
       dateCreated: row.date_created,
       emailConfirmed: row.email_confirmed,
       isAdmin: row.is_admin,
+      isAdmin: row.is_admin,
+      isSecurityAdmin: row.is_security_admin,
+      isDataEntry: row.is_data_entry,
     };
   });
 };

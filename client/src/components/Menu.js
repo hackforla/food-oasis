@@ -99,6 +99,13 @@ export default function Menu(props) {
                   text="Verification Dashboard"
                 />
               ) : null}
+              { user && user.isSecurityAdmin ? (
+                <MenuItemLink 
+                  key="securityadmindashboard"
+                  to="/securityadmindashboard"
+                  text="Security Admin Dashboard"
+                />
+              ) : null }
             </>
           )}
         </UserContext.Consumer>

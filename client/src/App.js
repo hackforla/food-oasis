@@ -8,6 +8,7 @@ import Header from "./components/Header";
 import StakeholdersContainer from "./components/StakeholdersContainer";
 import VerificationAdmin from "./components/Verification/VerificationAdmin";
 import VerificationDashboard from "./components/Verification/VerificationDashboard";
+import SecurityAdminDashboard from "./components/Verification/SecurityAdminDashboard";
 import StakeholderEdit from "./components/StakeholderEdit";
 import Donate from "./components/Donate";
 import Resources from "./components/Resources";
@@ -175,6 +176,16 @@ function App() {
                   />
                 </div>
               </Route>
+              {/* here i am-----------------------------------------------------------------  */}
+              <Route path="/securityadmindashboard">
+                <div className={classes.verificationAdminWrapper}>
+                  <SecurityAdminDashboard
+                    user={user}
+                    userCoordinates={userCoordinates}
+                  />
+                </div>
+              </Route>
+
               <Route path="/donate">
                 <Donate />
               </Route>

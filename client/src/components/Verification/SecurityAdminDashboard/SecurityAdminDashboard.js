@@ -19,19 +19,18 @@ const useStyles = makeStyles({
 
 function SecurityAdminDashboard() {
   const [acc, setAcc] = useState([])
-  const [search, setSearch] = useState("")
+  const [accAgain, setAccAgain] = useState([])
 
   const classes = useStyles();
 
   const handleChange = (e) => {
-    setSearch(e.target.value)
-    let oldAcc = acc
+    // setSearch(e.target.value)
     const result = acc.filter((elem, i) => {
-      return elem.firstName.toLowerCase().includes(search)
+      return elem.firstName.toLowerCase().includes(e.target.value)
     })
     setAcc(result)
     if(result === null || result === ""){
-      setAcc(oldAcc)
+      setAcc(accAgain)
     }
   }
 
@@ -40,6 +39,7 @@ function SecurityAdminDashboard() {
       try {
         const account = await accountService.getAll()
         setAcc(account.data)
+        setAccAgain(account.data)
       } catch (err) {
         console.log(err)
       }

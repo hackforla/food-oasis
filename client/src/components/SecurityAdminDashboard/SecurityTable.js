@@ -60,16 +60,7 @@ export default function SecurityTable(props) {
               </TableCell>
               <TableCell align="right">
                 <Checkbox
-                  // onChange={toggleAdmin}
-                  onChange={(e) => {
-                    let checked = e.target.checked
-                    let result = props?.accounts?.map((elem, i) => {
-                      if(elem.id === row.id) {
-                        setAdminCheck(!checked)
-                      }
-                    })
-                    return result
-                  }}
+                  onChange={toggleAdmin}
                   checked={adminCheck}
                 />
               </TableCell>

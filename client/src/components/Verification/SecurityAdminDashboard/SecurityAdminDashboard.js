@@ -25,9 +25,14 @@ function SecurityAdminDashboard() {
 
   const handleChange = (e) => {
     setSearch(e.target.value)
-    acc.filter((elem, i) => {
+    let oldAcc = acc
+    const result = acc.filter((elem, i) => {
       return elem.firstName.toLowerCase().includes(search)
     })
+    setAcc(result)
+    if(result === null || result === ""){
+      setAcc(oldAcc)
+    }
   }
 
   useEffect(() => {
@@ -55,7 +60,6 @@ function SecurityAdminDashboard() {
         onChange={(e) => handleChange(e)}
         // value={search}
       />
-      <h3>{search}</h3>
       <SecurityTable accounts={acc} />
     </Container>
   )

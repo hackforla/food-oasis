@@ -32,7 +32,8 @@ massive(
     database: process.env.POSTGRES_DATABASE,
     password: process.env.POSTGRES_PASSWORD,
     port: Number(process.env.POSTGRES_PORT),
-    ssl: process.env.POSTGRES_SSL === "true",
+    ssl: { rejectUnauthorized: false },
+    // ssl: process.env.POSTGRES_SSL === "true",
   }
 )
   .then((database) => {

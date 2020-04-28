@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import SecurityTable from './SecurityTable' 
+import SecurityTable from './SecurityTable'
 import { makeStyles } from "@material-ui/styles";
 import Typography from '@material-ui/core/Typography';
 import Container from "@material-ui/core/Container";
@@ -27,7 +27,7 @@ function SecurityAdminDashboard() {
       try {
         const account = await accountService.getAll()
         setAcc(account.data)
-      } catch(err) {
+      } catch (err) {
         console.log(err)
       }
     }
@@ -45,7 +45,7 @@ function SecurityAdminDashboard() {
         size="small"
         className={classes.textInput}
       />
-      <SecurityTable accounts={acc}/>
+      <SecurityTable accounts={acc} />
     </Container>
   )
 }

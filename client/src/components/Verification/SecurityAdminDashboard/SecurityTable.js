@@ -20,17 +20,9 @@ const useStyles = makeStyles({
   }
 });
 
-function createData(email, name, admin, securityAdmin) {
-  return { email, name, admin, securityAdmin };
+function createData(email, firstName, admin, securityAdmin) {
+  return { email, firstName, admin, securityAdmin };
 }
-
-// const rows = [
-//   createData('Frozen yoghurt', 159, 6.0, 24),
-//   createData('Ice cream sandwich', 237, 9.0, 37),
-//   createData('Eclair', 262, 16.0, 24),
-//   createData('Cupcake', 305, 3.7, 67),
-//   createData('Gingerbread', 356, 16.0, 49),
-// ];
 
 export default function SecurityTable(props) {
   const classes = useStyles();
@@ -48,13 +40,15 @@ export default function SecurityTable(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.accounts && props.accounts.map((row) => (
+          {props?.accounts?.map((row) => (
             <TableRow key={row.id}>
               <TableCell component="th" scope="row">
                 {row.email}
               </TableCell>
-                <TableCell align="right">{row.lastname}</TableCell>
-              {/* <TableCell align="right">{row.admin}</TableCell>
+                <TableCell align="right">
+                  {row.lastName}, {row.firstName}
+                </TableCell>
+              {/* <TableCell align="right">{row.lastName}</TableCell>
               <TableCell align="right">{row.securityAdmin}</TableCell> */}
             </TableRow>
           ))}

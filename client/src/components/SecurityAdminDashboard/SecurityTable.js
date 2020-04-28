@@ -21,10 +21,6 @@ const useStyles = makeStyles({
   }
 });
 
-function createData(email, firstName, admin, securityAdmin) {
-  return { email, firstName, admin, securityAdmin };
-}
-
 export default function SecurityTable(props) {
   const classes = useStyles();
 

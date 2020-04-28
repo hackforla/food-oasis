@@ -3,9 +3,8 @@ import SecurityTable from './SecurityTable'
 import { makeStyles } from "@material-ui/styles";
 import Typography from '@material-ui/core/Typography';
 import Container from "@material-ui/core/Container";
-import Grid from "@material-ui/core/Grid";
 import { TextField } from '@material-ui/core';
-import * as accountService from "../../../services/account-service";
+import * as accountService from "../../services/account-service";
 
 const useStyles = makeStyles({
   root: {
@@ -29,10 +28,14 @@ function SecurityAdminDashboard() {
   }
 
   useEffect(() => {
-    const result = acc.filter((elem, i) => {
-      return elem.firstName.toLowerCase().includes(search)
-    })
-    setAcc(result)
+    if (search.length === 0) {
+      setAcc(accAgain) 
+    } else {
+      const result = acc.filter((elem, i) => {
+        return elem.firstName.toLowerCase().includes(search) || elem.lastName.toLowerCase().includes(search)
+      })
+      setAcc(result)
+    }
   }, [search])
 
   useEffect(() => {

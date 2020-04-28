@@ -1,99 +1,194 @@
 import React from "react";
+import Search from '../components/Search';
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Select, MenuItem, FormControl, Button } from "@material-ui/core";
+import { Grid, Select, MenuItem, FormControl, Button, Box } from "@material-ui/core";
+import SearchIcon from '@material-ui/icons/Search';
+
 
 const useStyles = makeStyles((theme) => ({
   filterButton: {
     margin: "0 .25rem",
-    padding: "0 0.5rem",
-    fontSize: "12px",
+    fontSize: "max(.8vw,10px)",
+    backgroundColor: "#fff",
+    border: ".1em solid #000",
+    color: "#000",
   },
-  div: {
-    textAlign: "center",
-    fontSize: "12px",
-    border: "1px solid blue",
+  distanceControl: {
+    margin: "0 .25rem",
+    backgroundColor: "#fff",
+    padding: ".25em 0 .25em .7em",
+    border: ".09em solid #000",
+    outline: "none",
+  },
+  menuItems: {
+    fontSize: "max(.8vw,10px)",
+    color: "#000",
   },
   controlPanel: {
     width: "100%",
-    padding: ".5rem 1rem",
+    backgroundColor: "#336699",
+    height: "5em",
+  },
+  inputHolder: {
+    display: "flex",
+    justifyContent: "flex-start",
+    alignItems: "center",
+  },
+  input: {
+    fontSize: "12px",
+    width: "25em",
+    height: "2em",
+    outline: "none",
+    padding: ".25em",
+  },
+  inputContainer: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  searchIcon: {
+    width: 22,
+    height: 22,
+  },
+  submit: {
+    height: '42px',
+    minWidth: '25px',
+    backgroundColor: '#BCE76D',
+    borderRadius: '0 4px 4px 0',
+    boxShadow: 'none',
+    '& .MuiButton-startIcon': {
+      marginRight: 0,
+    },
+    '&.Mui-disabled': {
+      backgroundColor: '#BCE76D',
+      opacity: 0.8,
+    },
+    '&:hover': {
+      backgroundColor: '#C7F573',
+      boxShadow: 'none',
+    },
+  },
+  buttonHolder: {
+    display: 'flex'
   },
 }));
 
-function ResultsFilters() {
+const distanceInfo = [1, 2, 3, 5, 10, 20, 50]
+
+function ResultsFilters(props) {
   const classes = useStyles();
+
+  const {
+    distanceValue,
+    changeDistanceValue,
+    isFoodPantrySelected,
+    selectFoodPantry,
+    isMealsSelected,
+    selectMeals,
+    isVerifiedSelected,
+    selectVerified,
+    origin,
+    search
+  } = props
+
+  const [searchTerm, setSearchTerm] = React.useState("")
 
   return (
     <Grid container wrap="wrap-reverse" className={classes.controlPanel}>
       <Grid
         item
-        container
         xs={12}
         sm={6}
         md={4}
         justify="center"
         alignItems="center"
+        className={classes.buttonHolder}
       >
         <Grid item>
-          <FormControl className={classes.filterButton} variant="outlined">
+          <Button as={FormControl} className={classes.distanceControl}>
             <Select
               name="select-distance"
-              value={0} // TODO: plug in live value
-              onChange={() => {}} // TODO: plug in handler function
+              disableUnderline
+              value={distanceValue}
+              onChange={(e) => changeDistanceValue(e.target.value)}
               inputProps={{
                 name: "select-distance",
                 id: "select-distance",
               }}
+              className={classes.menuItems}
             >
-              <MenuItem key={0} value={0}>
-                Distance
+              <MenuItem key={0} value={0} className={classes.menuItems}>
+                DISTANCE
               </MenuItem>
-              <MenuItem key={1} value={1}>
-                1
-              </MenuItem>
-              <MenuItem key={2} value={2}>
-                2
-              </MenuItem>
-              <MenuItem key={3} value={3}>
-                3
-              </MenuItem>
-              <MenuItem key={5} value={5}>
-                5
-              </MenuItem>
-              <MenuItem key={10} value={10}>
-                10
-              </MenuItem>
-              <MenuItem key={20} value={20}>
-                20
-              </MenuItem>
-              <MenuItem key={50} value={50}>
-                50
-              </MenuItem>
+              {distanceInfo.map(distance =>
+                <MenuItem
+                  key={distance}
+                  value={distance}
+                  className={classes.menuItems}>
+                  {`${distance} MILE${distance > 1 ? "S" : ""}`}
+                </MenuItem>)
+              }
             </Select>
-          </FormControl>
+          </Button>
         </Grid>
         <Grid item>
           <Button
-            variant="outlined"
             className={classes.filterButton}
-            onClick={() => {}}
+            style={{ backgroundColor: isFoodPantrySelected ? "transparent" : "#fff" }}
+            onClick={() => selectFoodPantry(!isFoodPantrySelected)}
           >
             Food Pantries
           </Button>
         </Grid>
         <Grid item>
           <Button
-            variant="outlined"
             className={classes.filterButton}
-            onClick={() => {}}
+            style={{ backgroundColor: isMealsSelected ? "transparent" : "#fff" }}
+            onClick={() => selectMeals(!isMealsSelected)}
           >
             Meals
           </Button>
         </Grid>
+        <Grid item>
+          <Button
+            className={classes.filterButton}
+            style={{ backgroundColor: isVerifiedSelected ? "transparent" : "#fff" }}
+            onClick={() => selectVerified(!isVerifiedSelected)}
+          >
+            Verified
+          </Button>
+        </Grid>
       </Grid>
-      <Grid item xs={12} sm={6} md={8}>
-        <div className={classes.div}>Search Input</div>
-      </Grid>
+      <Box className={classes.inputContainer}>
+        <Search {...props} setSearchTerm={setSearchTerm} />
+        <Button
+          type="button"
+          disabled={!origin}
+          variant="contained"
+          className={classes.submit}
+          startIcon={
+            <SearchIcon fontSize="large" className={classes.searchIcon} />
+          }
+          onClick={() => {
+            search({
+              name: searchTerm,
+              latitude: origin.latitude,
+              longitude: origin.longitude,
+              radius: distanceValue,
+              //categoryIds: [],
+              //isInactive: false,
+              //isAssigned: "either",
+              isVerified: isVerifiedSelected ? "yes" : "no",
+              //isApproved: "either",
+              //isRejected: "either",
+              //isClaimed: "either",
+              //assignedLoginId: undefined,
+              //claimedLoginId: undefined,
+            })
+          }
+          }
+        />
+      </Box>
     </Grid>
   );
 }

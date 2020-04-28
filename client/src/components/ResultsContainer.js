@@ -1,43 +1,46 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Grid } from "@material-ui/core";
-import ResultsFilters from "./ResultsFilters";
-import ResultsList from "./ResultsList";
-import ResultsMap from "./ResultsMap";
+import React from "react"
+import { makeStyles } from "@material-ui/core/styles"
+import { Grid } from "@material-ui/core"
+import { useOrganizations } from "../hooks/useOrganizations/useOrganizations"
+import ResultsFilters from "./ResultsFilters"
+import ResultsList from "./ResultsList"
+import ResultsMap from "./ResultsMap"
 
-const useStyles = makeStyles(theme => ({
+
+const useStyles = makeStyles((theme) => ({
   filterButton: {
     margin: "0 .25rem",
     padding: "0 0.5rem",
-    fontSize: "12px"
+    fontSize: "12px",
   },
   div: {
     textAlign: "center",
     fontSize: "12px",
-    border: "1px solid blue"
+    border: "1px solid blue",
   },
   container: {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   list: {
     textAlign: "center",
     fontSize: "12px",
-    border: "1px solid blue"
+    height: "46em",
+    overflow: "scroll"
   },
   map: {
     textAlign: "center",
     fontSize: "12px",
-    border: "1px solid blue"
-  }
-}));
+    maxWidth: "100%",
+    flexGrow: 1,
+  },
+}))
 
-export default function ResultsContainer(
-  {
-    // TODO: stub out the props coming in
-  }
-) {
-  const classes = useStyles();
+export default function ResultsContainer(props) {
+  const { userCoordinates } = props
+  const { data, search } = useOrganizations()
+  const classes = useStyles()
+
   /**
    * ***PLAN!***
    *
@@ -52,9 +55,29 @@ export default function ResultsContainer(
    * hold 'selected stakeholder' in local state
    */
 
+  const [distanceValue, changeDistanceValue] = React.useState(0)
+  const [origin, setOrigin] = React.useState(null)
+  const [isFoodPantrySelected, selectFoodPantry] = React.useState(false)
+  const [isMealsSelected, selectMeals] = React.useState(false)
+  const [isVerifiedSelected, selectVerified] = React.useState(false)
+
+  const topLevelProps = {
+    distanceValue,
+    changeDistanceValue,
+    origin,
+    setOrigin,
+    isFoodPantrySelected,
+    selectFoodPantry,
+    isMealsSelected,
+    selectMeals,
+    isVerifiedSelected,
+    selectVerified,
+    userCoordinates
+  }
+
   return (
     <div className={classes.container}>
-      <ResultsFilters
+      <ResultsFilters {...topLevelProps} search={search}
       /**
        * distance: PropTypes.number,
        * placeName: PropTypes.string,
@@ -64,16 +87,21 @@ export default function ResultsContainer(
        */
       />
       <Grid container wrap="wrap-reverse">
-        <Grid item xs={12} md={4} className={classes.list}>
+        <Grid
+          item
+          xs={12}
+          md={4}
+          className={classes.list}
+        >
           <ResultsList
-          // selectedStakeholder={selectedStakeholder}
-          // stakeholders={stakeholders}
+            // selectedStakeholder={selectedStakeholder}
+            stakeholders={data}
           />
         </Grid>
         <Grid item xs={12} md={8} className={classes.map}>
           <ResultsMap
-          // selectedStakeholder={selectedStakeholder}
-          // stakeholders={stakeholders}
+            // selectedStakeholder={selectedStakeholder}
+            stakeholders={data}
           // selectedLatitude={selectedLatitude}
           // selectedLongitude={selectedLongitude}
           /**
@@ -86,5 +114,5 @@ export default function ResultsContainer(
         </Grid>
       </Grid>
     </div>
-  );
+  )
 }

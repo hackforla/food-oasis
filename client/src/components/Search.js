@@ -7,15 +7,18 @@ import { useMapboxGeocoder } from 'hooks/useMapboxGeocoder';
 
 const useStyles = makeStyles(() => ({
   paper: {
+    position: 'absolute',
     maxHeight: '150px',
     overflowY: 'auto',
     marginTop: 0,
     borderRadius: 4,
+    zIndex: 1,
   },
   container: {
     width: '100%',
   },
   address: {
+    width: "31em",
     backgroundColor: '#fff',
     borderRadius: '4px 0 0 4px',
     height: 41,
@@ -35,7 +38,8 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function Search({ userCoordinates, setOrigin }) {
+export default function Search(props) {
+  const { userCoordinates, setOrigin, setSearchTerm } = props
   const classes = useStyles();
   const [selectedPlace, setSelectedPlace] = useState('');
 
@@ -137,6 +141,7 @@ export default function Search({ userCoordinates, setOrigin }) {
                 ...itemCoordinates,
                 locationName: item.place_name,
               });
+              setSearchTerm(selectedPlace)
             },
           }),
           highlightedIndex,
@@ -164,33 +169,33 @@ export default function Search({ userCoordinates, setOrigin }) {
           toggleMenu,
           isOpen,
         }) => (
-          <div className={classes.container}>
-            {renderInput({
-              classes,
-              selectedItem,
-              availableItems: mapboxResults,
-              InputProps: {
-                ...getInputProps({
-                  onClick: () => toggleMenu(),
-                  onChange: handleInputChange,
-                  value: inputValue || selectedPlace,
-                }),
-              },
-            })}
+            <div className={classes.container}>
+              {renderInput({
+                classes,
+                selectedItem,
+                availableItems: mapboxResults,
+                InputProps: {
+                  ...getInputProps({
+                    onClick: () => toggleMenu(),
+                    onChange: handleInputChange,
+                    value: inputValue || selectedPlace,
+                  }),
+                },
+              })}
 
-            {isOpen && (
-              <Paper className={classes.paper} square>
-                {renderResults({
-                  highlightedIndex,
-                  selectedItem,
-                  inputValue,
-                  mapboxResults,
-                  getItemProps,
-                })}
-              </Paper>
-            )}
-          </div>
-        )}
+              {isOpen && (
+                <Paper className={classes.paper} square>
+                  {renderResults({
+                    highlightedIndex,
+                    selectedItem,
+                    inputValue,
+                    mapboxResults,
+                    getItemProps,
+                  })}
+                </Paper>
+              )}
+            </div>
+          )}
       </Downshift>
     </>
   );

@@ -30,7 +30,6 @@ export default function SecurityTable(props) {
 
   return (
     <TableContainer component={Paper}>
-      {console.log(props, "<=========================i think the props are here?")}
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow className={classes.header}>

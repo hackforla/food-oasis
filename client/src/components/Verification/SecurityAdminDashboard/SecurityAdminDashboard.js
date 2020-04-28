@@ -19,8 +19,17 @@ const useStyles = makeStyles({
 
 function SecurityAdminDashboard() {
   const [acc, setAcc] = useState([])
+  const [search, setSearch] = useState("")
 
   const classes = useStyles();
+
+  const handleChange = (e) => {
+    if(e.target.value === null){
+      return acc
+    }
+    setSearch(e.target.value)
+    console.log(search, "<--------------------does this actually work?")
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,7 +53,10 @@ function SecurityAdminDashboard() {
         placeholder="Find"
         size="small"
         className={classes.textInput}
+        onChange={(e) => handleChange(e)}
+        value={search}
       />
+      <h3>{search}</h3>
       <SecurityTable accounts={acc} />
     </Container>
   )

@@ -24,11 +24,10 @@ function SecurityAdminDashboard() {
   const classes = useStyles();
 
   const handleChange = (e) => {
-    if(e.target.value === null){
-      return acc
-    }
     setSearch(e.target.value)
-    console.log(search, "<--------------------does this actually work?")
+    acc.filter((elem, i) => {
+      return elem.firstName.toLowerCase().includes(search)
+    })
   }
 
   useEffect(() => {
@@ -54,7 +53,7 @@ function SecurityAdminDashboard() {
         size="small"
         className={classes.textInput}
         onChange={(e) => handleChange(e)}
-        value={search}
+        // value={search}
       />
       <h3>{search}</h3>
       <SecurityTable accounts={acc} />

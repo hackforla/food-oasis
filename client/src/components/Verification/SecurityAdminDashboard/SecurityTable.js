@@ -7,6 +7,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Checkbox from '@material-ui/core/Checkbox';
 
 const useStyles = makeStyles({
   table: {
@@ -45,11 +46,17 @@ export default function SecurityTable(props) {
               <TableCell component="th" scope="row">
                 {row.email}
               </TableCell>
-                <TableCell align="right">
-                  {row.lastName}, {row.firstName}
-                </TableCell>
-              {/* <TableCell align="right">{row.lastName}</TableCell>
-              <TableCell align="right">{row.securityAdmin}</TableCell> */}
+              <TableCell align="right">
+                {row.lastName}, {row.firstName}
+              </TableCell>
+              <TableCell align="right">
+                <Checkbox
+                />
+              </TableCell>
+              <TableCell align="right">
+                <Checkbox
+                />
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

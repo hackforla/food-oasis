@@ -28,6 +28,14 @@ function createData(email, firstName, admin, securityAdmin) {
 export default function SecurityTable(props) {
   const classes = useStyles();
 
+  const adminCheck = (e) => {
+    console.log("admin checkbox check hittin")
+  }
+
+  const securityAdminCheck = (e) => {
+    console.log("Security admin checkbox check hittin")
+  }
+
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">
@@ -50,10 +58,12 @@ export default function SecurityTable(props) {
               </TableCell>
               <TableCell align="right">
                 <Checkbox
+                  onChange={adminCheck}
                 />
               </TableCell>
               <TableCell align="right">
                 <Checkbox
+                  onChange={securityAdminCheck}
                 />
               </TableCell>
             </TableRow>

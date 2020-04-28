@@ -20,16 +20,20 @@ const useStyles = makeStyles({
 function SecurityAdminDashboard() {
   const [acc, setAcc] = useState([])
   const [accAgain, setAccAgain] = useState([])
+  const [search, setSearch] = useState("")
 
   const classes = useStyles();
 
   const handleChange = (e) => {
-    // setSearch(e.target.value)
+    setSearch(e.target.value)
+  }
+
+  useEffect(() => {
     const result = acc.filter((elem, i) => {
-      return elem.firstName.toLowerCase().includes(e.target.value)
+      return elem.firstName.toLowerCase().includes(search)
     })
     setAcc(result)
-  }
+  }, [search])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,8 +58,8 @@ function SecurityAdminDashboard() {
         placeholder="Find"
         size="small"
         className={classes.textInput}
-        onChange={(e) => handleChange(e)}
-      // value={search}
+        onChange={handleChange}
+        value={search}
       />
       <SecurityTable accounts={acc} />
     </Container>

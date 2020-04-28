@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import SecurityFrom from './SecurityForm' 
 import { makeStyles } from "@material-ui/styles";
 import Typography from '@material-ui/core/Typography';
 import Container from "@material-ui/core/Container";
@@ -22,17 +23,17 @@ const useStyles = makeStyles({
   },
 });
 
+  // data = [
+  //   { email: "placeholder@yahoo.com", email: "placeholder", admin: "placeholder", securityAdmin: "placeholder" },
+  //   { email: "placeholder@yahoo.com", email: "placeholder", admin: "placeholder", securityAdmin: "placeholder" },
+  //   { email: "placeholder@yahoo.com", email: "placeholder", admin: "placeholder", securityAdmin: "placeholder" },
+  //   { email: "placeholder@yahoo.com", email: "placeholder", admin: "placeholder", securityAdmin: "placeholder" },
+  //   { email: "placeholder@yahoo.com", email: "placeholder", admin: "placeholder", securityAdmin: "placeholder" },
+  // ]
+
 function SecurityAdminDashboard() {
 
   const classes = useStyles();
-
-  data = [
-    { email: "placeholder@yahoo.com",  email: "placeholder", admin: "placeholder", securityAdmin: "placeholder"},
-    { email: "placeholder@yahoo.com",  email: "placeholder", admin: "placeholder", securityAdmin: "placeholder"},
-    { email: "placeholder@yahoo.com",  email: "placeholder", admin: "placeholder", securityAdmin: "placeholder"},
-    { email: "placeholder@yahoo.com",  email: "placeholder", admin: "placeholder", securityAdmin: "placeholder"},
-    { email: "placeholder@yahoo.com",  email: "placeholder", admin: "placeholder", securityAdmin: "placeholder"},
-  ]
 
   return (
     <Container maxWidth="lg" className={classes.root}>
@@ -40,10 +41,11 @@ function SecurityAdminDashboard() {
       <Typography variant="h6">Grant or Revoke Admin Permissions</Typography>
       <TextField
         variant="outlined"
-        margin="none" 
+        margin="none"
         placeholder="Find"
         size="small"
       />
+      <SecurityFrom />
     </Container>
   )
 }

@@ -8,7 +8,7 @@ import Header from "./components/Header";
 import StakeholdersContainer from "./components/StakeholdersContainer";
 import VerificationAdmin from "./components/Verification/VerificationAdmin";
 import VerificationDashboard from "./components/Verification/VerificationDashboard";
-import SecurityAdminDashboard from "./components/Verification/SecurityAdminDashboard";
+import SecurityAdminDashboard from "./components/Verification/SecurityAdminDashboard/SecurityAdminDashboard";
 import StakeholderEdit from "./components/StakeholderEdit";
 import Donate from "./components/Donate";
 import Resources from "./components/Resources";

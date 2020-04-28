@@ -49,6 +49,7 @@ export default function SecurityTable(props) {
             <TableCell align="right" className={classes.text}>Security Admin</TableCell>
           </TableRow>
         </TableHead>
+        {console.log(props.accounts)}
         <TableBody>
           {props?.accounts?.map((row) => (
             <TableRow key={row.id}>
@@ -65,10 +66,6 @@ export default function SecurityTable(props) {
                 />
               </TableCell>
               <TableCell align="right">
-                <Checkbox
-                  // onChange={securityAdminChecked}
-                  // checked={securityAdminCheck}
-                />
               </TableCell>
             </TableRow>
           ))}

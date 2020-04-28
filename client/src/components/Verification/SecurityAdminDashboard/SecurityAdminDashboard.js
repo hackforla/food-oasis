@@ -29,9 +29,6 @@ function SecurityAdminDashboard() {
       return elem.firstName.toLowerCase().includes(e.target.value)
     })
     setAcc(result)
-    if(result === null || result === ""){
-      setAcc(accAgain)
-    }
   }
 
   useEffect(() => {
@@ -58,7 +55,7 @@ function SecurityAdminDashboard() {
         size="small"
         className={classes.textInput}
         onChange={(e) => handleChange(e)}
-        // value={search}
+      // value={search}
       />
       <SecurityTable accounts={acc} />
     </Container>

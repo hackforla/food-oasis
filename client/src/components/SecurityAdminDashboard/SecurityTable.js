@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -22,15 +22,21 @@ const useStyles = makeStyles({
 });
 
 export default function SecurityTable(props) {
+  const [adminCheck, setAdminCheck] = useState(false)
+  // const [securityAdminCheck, setSecurityAdminCheck] = useState()
   const classes = useStyles();
 
-  const adminCheck = (e) => {
+  const toggleAdmin = (e) => {
+    // setAdminCheck(!adminCheck)
+    setAdminCheck(e.target.checked)
     console.log("admin checkbox check hittin")
   }
 
-  const securityAdminCheck = (e) => {
-    console.log("Security admin checkbox check hittin")
-  }
+  // const securityAdminChecked = (e) => {
+  //   console.log(e.target.checked)
+  //   setSecurityAdminCheck(e.target.value)
+  //   console.log("Security admin checkbox check hittin")
+  // }
 
   return (
     <TableContainer component={Paper}>
@@ -54,12 +60,23 @@ export default function SecurityTable(props) {
               </TableCell>
               <TableCell align="right">
                 <Checkbox
-                  onChange={adminCheck}
+                  // onChange={toggleAdmin}
+                  onChange={(e) => {
+                    let checked = e.target.checked
+                    let result = props?.accounts?.map((elem, i) => {
+                      if(elem.id === row.id) {
+                        setAdminCheck(!checked)
+                      }
+                    })
+                    return result
+                  }}
+                  checked={adminCheck}
                 />
               </TableCell>
               <TableCell align="right">
                 <Checkbox
-                  onChange={securityAdminCheck}
+                  // onChange={securityAdminChecked}
+                  // checked={securityAdminCheck}
                 />
               </TableCell>
             </TableRow>

@@ -8,6 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
+import * as accountService from "../../services/account-service";
 
 const useStyles = makeStyles({
   table: {
@@ -22,21 +23,7 @@ const useStyles = makeStyles({
 });
 
 export default function SecurityTable(props) {
-  const [adminCheck, setAdminCheck] = useState(false)
-  // const [securityAdminCheck, setSecurityAdminCheck] = useState()
   const classes = useStyles();
-
-  const toggleAdmin = (e) => {
-    // setAdminCheck(!adminCheck)
-    setAdminCheck(e.target.checked)
-    console.log("admin checkbox check hittin")
-  }
-
-  // const securityAdminChecked = (e) => {
-  //   console.log(e.target.checked)
-  //   setSecurityAdminCheck(e.target.value)
-  //   console.log("Security admin checkbox check hittin")
-  // }
 
   return (
     <TableContainer component={Paper}>
@@ -49,7 +36,6 @@ export default function SecurityTable(props) {
             <TableCell align="right" className={classes.text}>Security Admin</TableCell>
           </TableRow>
         </TableHead>
-        {console.log(props.accounts)}
         <TableBody>
           {props?.accounts?.map((row) => (
             <TableRow key={row.id}>
@@ -61,11 +47,20 @@ export default function SecurityTable(props) {
               </TableCell>
               <TableCell align="right">
                 <Checkbox
-                  onChange={toggleAdmin}
-                  checked={adminCheck}
+                  checked={row.isAdmin}
+                  onChange={(e) => {
+                    props.accounts.map(async(ch) => {
+                      if(ch.id === row.id){
+                        let check = e.target.checked
+                        let update = await accountService.setPermissions(row.id, "is_admin", check) //not sure what to pass inside here?
+                        //not sure what I am doing here lol
+                      }
+                    })
+                  }}
                 />
               </TableCell>
               <TableCell align="right">
+                {/* <Checkbox /> I cannot get it to work right ^^ */}
               </TableCell>
             </TableRow>
           ))}

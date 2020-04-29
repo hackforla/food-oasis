@@ -42,8 +42,8 @@ function SecurityAdminDashboard() {
     const fetchData = async () => {
       try {
         const account = await accountService.getAll()
-        // setAcc(account.data)
-        setAcc(account.data.map(obj => ({ ...obj, isChecked: false })))
+        setAcc(account.data)
+        // setAcc(account.data.map(obj => ({ ...obj, adminChecked })))
         setAccAgain(account.data)
       } catch (err) {
         console.log(err)

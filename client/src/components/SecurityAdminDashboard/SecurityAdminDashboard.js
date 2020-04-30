@@ -53,20 +53,24 @@ function SecurityAdminDashboard() {
 
   const handlePermissionChange = (userId, permission, value) => {
     const account = acc.find((row) => {
-      console.log(row.id, "<---------------- row id")
-      console.log(userId, "<0000000000000000 user id")
       return row.id === userId
     })
-    if(account){
-      if(permission === "is_admin"){
+    if (account) {
+      if (permission === "is_admin") {
         account["isAdmin"] = value
       }
-      else if(permission === "is_security_admin"){
+      else if (permission === "is_security_admin") {
         account["isSecurityAdmin"] = value
       } 
-      // account[permission] = value 
+      else if (permission === "is_entry") {
+        account["isDataEntry"] = value
+      }
     }
-    // setAcc({ ...account, })
+    console.log(acc, "<-----------------------the acc")
+    console.log(account, "<-------------does this update")
+    console.log([acc, ...account], "<---------------------how does this make anything?")
+    // setAcc({ acc, ...account })
+    // setAcc(acc, ...account)
   }
 
   return (
@@ -82,7 +86,7 @@ function SecurityAdminDashboard() {
         onChange={handleChange}
         value={search}
       />
-      <SecurityTable accounts={acc} handlePermissionChange={handlePermissionChange}/>
+      <SecurityTable accounts={acc} handlePermissionChange={handlePermissionChange} />
     </Container>
   )
 }

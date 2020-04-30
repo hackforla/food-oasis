@@ -33,7 +33,7 @@ export default function SecurityTable(props) {
         if (userId === each.id) {
           let check = e.target.checked
           await accountService.setPermissions({ userId: each.id, permissionName: "is_security_admin", value: check })
-          props.handlePermissionChange(each.id, "is_security_admin", check)
+          await props.handlePermissionChange(each.id, "is_security_admin", check)
         }
       })
     } else if( securityOrAdminOrDataEntry === "admin") {
@@ -41,7 +41,7 @@ export default function SecurityTable(props) {
         if (userId === each.id) {
           let check = e.target.checked
           await accountService.setPermissions({ userId: each.id, permissionName: "is_admin", value: check })
-          props.handlePermissionChange(each.id, "is_admin", check)
+          await props.handlePermissionChange(each.id, "is_admin", check)
         }
       })
     } else if(securityOrAdminOrDataEntry === "dataEntry"){

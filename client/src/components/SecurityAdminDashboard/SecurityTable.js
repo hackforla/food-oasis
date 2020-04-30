@@ -25,6 +25,26 @@ const useStyles = makeStyles({
 export default function SecurityTable(props) {
   const classes = useStyles();
 
+  const handleToggle = (userId, e, securityOrAdmin) => {
+    console.log(userId)
+    console.log(securityOrAdmin, "<---------------what does this produce")
+    if (securityOrAdmin === "security") {
+      props.accounts.map(async (each) => {
+        if (userId === each.id) {
+          let check = e.target.checked
+          await accountService.setPermissions({ userId: each.id, permissionName: "is_admin", value: check })
+        }
+      })
+    } else {
+      props.accounts.map(async (each) => {
+        if (userId === each.id) {
+          let check = e.target.checked
+          await accountService.setPermissions({ useId: each.id, setPermissions: "is_security_admin", value: check })
+        }
+      })
+    }
+  }
+
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">
@@ -48,29 +68,14 @@ export default function SecurityTable(props) {
               <TableCell align="right">
                 <Checkbox
                   checked={row.isAdmin}
-                  onChange={(e) => {
-                    props.accounts.map(async (ch) => {
-                      if (ch.id === row.id) {
-                        let check = e.target.checked
-                        const update = await accountService.setPermissions({ userId: ch.id, permissionName: "is_admin", value: check})
-                        console.log(update, "<----------whats inside here?")
-                      }
-                    })
-                  }}
+                  onChange={(e) => handleToggle(row.id, e, "admin")}
                 />
               </TableCell>
               <TableCell align="right">
-                {/* <Checkbox
+                <Checkbox
                   checked={row.isSecurityAdmin}
-                  onChange={(e) => {
-                    props.accounts.map(async (ch) => {
-                      if (ch.id === row.id) {
-                        let check = e.target.checked
-                        await accountService.setPermissions()
-                      }
-                    })
-                  }}
-                /> */}
+                  onChange={(e) => handleToggle(row.id, e, "security")}
+                />
               </TableCell>
             </TableRow>
           ))}

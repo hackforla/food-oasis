@@ -1,30 +1,30 @@
-import React, { useState } from 'react';
-import { withRouter } from 'react-router';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import SearchIcon from '@material-ui/icons/Search';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Paper from '@material-ui/core/Paper';
-import Box from '@material-ui/core/Box';
-import Search from 'components/Search';
-import logo from 'images/fola.svg';
+import React, { useState } from "react";
+import { withRouter } from "react-router";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import SearchIcon from "@material-ui/icons/Search";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+import Paper from "@material-ui/core/Paper";
+import Box from "@material-ui/core/Box";
+import Search from "components/Search";
+import logo from "images/fola.svg";
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down("xs")]: {
       padding: 0,
     },
   },
   paper: {
-    margin: '0 auto',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    margin: "0 auto",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   logoContainer: {
-    margin: '20px 0',
+    margin: "20px 0",
   },
   header: {
     marginBottom: theme.spacing(1),
@@ -33,31 +33,31 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(3),
   },
   label: {
-    textAlign: 'center',
+    textAlign: "center",
     fontWeight: 600,
     marginTop: 10,
-    padding: '0 100px',
-    [theme.breakpoints.down('xs')]: {
+    padding: "0 100px",
+    [theme.breakpoints.down("xs")]: {
       padding: 0,
     },
   },
   form: {
-    width: '100%',
+    width: "100%",
     marginTop: theme.spacing(1),
   },
   formContainer: {
-    width: '100%',
-    backgroundColor: '#336699',
-    padding: '10px 35px',
-    color: '#fff',
-    [theme.breakpoints.down('xs')]: {
-      padding: '15px',
+    width: "100%",
+    backgroundColor: "#336699",
+    padding: "10px 35px",
+    color: "#fff",
+    [theme.breakpoints.down("xs")]: {
+      padding: "15px",
     },
   },
   inputContainer: {
-    display: 'flex',
-    alignItems: 'flex-start',
-    justifyContent: 'center',
+    display: "flex",
+    alignItems: "flex-start",
+    justifyContent: "center",
   },
   address: {
     marginTop: theme.spacing(1),
@@ -69,29 +69,29 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   endAdornment: {
-    display: 'none',
+    display: "none",
   },
   submit: {
-    height: '42px',
-    minWidth: '25px',
-    backgroundColor: '#BCE76D',
-    borderRadius: '0 4px 4px 0',
-    boxShadow: 'none',
-    '& .MuiButton-startIcon': {
+    height: "42px",
+    minWidth: "25px",
+    backgroundColor: "#BCE76D",
+    borderRadius: "0 4px 4px 0",
+    boxShadow: "none",
+    "& .MuiButton-startIcon": {
       marginRight: 0,
     },
-    '&.Mui-disabled': {
-      backgroundColor: '#BCE76D',
+    "&.Mui-disabled": {
+      backgroundColor: "#BCE76D",
       opacity: 0.8,
     },
-    '&:hover': {
-      backgroundColor: '#C7F573',
-      boxShadow: 'none',
+    "&:hover": {
+      backgroundColor: "#C7F573",
+      boxShadow: "none",
     },
   },
   logo: {
     width: 161,
-    height: 'auto',
+    height: "auto",
   },
   searchIcon: {
     width: 22,
@@ -123,9 +123,9 @@ const Home = (props) => {
                   <SearchIcon fontSize="large" className={classes.searchIcon} />
                 }
                 onClick={() => {
-                  const url = `/ stakeholders ? lat = ${origin.latitude}& lon=${
+                  const url = `/stakeholders?lat=${origin.latitude}&lon=${
                     origin.longitude
-                    }& placeName=${origin.locationName || ''} `;
+                  }&placeName=${origin.locationName || ""} `;
                   props.history.push(url);
                 }}
               />

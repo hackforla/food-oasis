@@ -361,6 +361,9 @@ async function hashPassword(user) {
 
 // Update login table with the specified permissionName column set to value
 const setPermissions = async (userId, permissionName, value) => {
+  console.log(userId, "<------------whats the userId from service")
+  console.log(permissionName, "<--------------------the permission from services")
+  console.log(value, "<-----------------and the value from service")
   const user = await selectById(userId);
   if (!user) {
     return {

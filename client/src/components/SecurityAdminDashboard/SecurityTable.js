@@ -49,10 +49,10 @@ export default function SecurityTable(props) {
                 <Checkbox
                   checked={row.isAdmin}
                   onChange={(e) => {
-                    props.accounts.map(async(ch) => {
-                      if(ch.id === row.id){
+                    props.accounts.map(async (ch) => {
+                      if (ch.id === row.id) {
                         let check = e.target.checked
-                        let update = await accountService.setPermissions(row.id, "is_admin", check) //not sure what to pass inside here?
+                        let update = await accountService.setPermissions({ userId: ch.id, permissionName: "is_admin", value: check}) //not sure what to pass inside here?
                         //not sure what I am doing here lol
                       }
                     })
@@ -60,7 +60,20 @@ export default function SecurityTable(props) {
                 />
               </TableCell>
               <TableCell align="right">
-                {/* <Checkbox /> I cannot get it to work right ^^ */}
+                <Checkbox
+                  checked={row.isSecurityAdmin}
+                  onChange={(e) => {
+                    props.accounts.map(async (ch) => {
+                      if (ch.id === row.id) {
+                        let check = e.target.checked
+                        console.log(row.id, "<------the user id")
+                        console.log(check, "<------check")
+                        let update = await accountService.setPermissions() //not sure what to pass inside here?
+                        //not sure what I am doing here lol
+                      }
+                    })
+                  }}
+                />
               </TableCell>
             </TableRow>
           ))}

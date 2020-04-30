@@ -3,7 +3,8 @@ import ReactMapGL, { NavigationControl } from "react-map-gl"
 import MarkerPopup from "./MarkerPopup"
 import Marker from "./Marker"
 import { MAPBOX_TOKEN } from "../secrets"
-import { MAPBOX_STYLE } from "../constants/map"
+import { MAPBOX_STYLE, MEAL, ORGANIZATION_COLORS, PANTRY } from "../constants/map";
+import moment from "moment";
 
 const styles = {
   geolocate: {
@@ -57,14 +58,25 @@ function Map({
         {stakeholders &&
           stakeholders
             .filter((sh) => sh.latitude && sh.longitude)
-            .map((stakeholder, index) => (
-              <Marker
-                onClick={() => handleMarkerClick(stakeholder)}
-                key={`marker-${index}`}
-                longitude={stakeholder.longitude}
-                latitude={stakeholder.latitude}
-              />
-            ))}
+            .map((stakeholder, index) => {
+              const isVerified = stakeholder.verifiedDate && moment.isDate(stakeholder.verifiedDate) //can we assume it will be a date of some sort?
+
+              /*todo
+              * implement condition based on api data
+              * */
+              const organizationType = MEAL
+
+              return (
+                <Marker
+                  onClick={() => handleMarkerClick(stakeholder)}
+                  key={`marker-${index}`}
+                  longitude={stakeholder.longitude}
+                  latitude={stakeholder.latitude}
+                  isVerified={isVerified}
+                  color={ORGANIZATION_COLORS[organizationType]}
+                />
+              )
+            })}
         {isPopupOpen && selectedStakeholder && (
           <MarkerPopup entity={selectedStakeholder} handleClose={handleClose} />
         )}

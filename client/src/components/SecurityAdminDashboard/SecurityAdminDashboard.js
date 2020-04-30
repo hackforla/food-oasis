@@ -67,7 +67,6 @@ function SecurityAdminDashboard() {
       }
     }
     setAcc([...acc, {...account} ])
-    console.log(acc.length, "<---------------------------is it incrementing?")
   }
 
   return (

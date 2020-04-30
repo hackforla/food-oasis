@@ -59,6 +59,7 @@ export default function ResultsContainer(props) {
   const [isFoodPantrySelected, selectFoodPantry] = React.useState(true);
   const [isMealsSelected, selectMeals] = React.useState(true);
   const [isVerifiedSelected, selectVerified] = React.useState(false);
+  const [selectedStakeholder, doSelectStakeholder] = React.useState(null);
 
   const topLevelProps = {
     radius,
@@ -90,7 +91,8 @@ export default function ResultsContainer(props) {
       <Grid container wrap="wrap-reverse">
         <Grid item xs={12} md={4} className={classes.list}>
           <ResultsList
-            // selectedStakeholder={selectedStakeholder}
+            selectedStakeholder={selectedStakeholder}
+            doSelectStakeholder={doSelectStakeholder}
             stakeholders={data}
           />
         </Grid>

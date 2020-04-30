@@ -85,17 +85,19 @@ const useStyles = makeStyles((theme) => ({
 const distanceInfo = [1, 2, 3, 5, 10, 20, 50];
 
 const ResultsFilters = ({
-  distanceValue,
-  changeDistanceValue,
+  origin,
+  setOrigin,
+  radius,
+  setRadius,
   isFoodPantrySelected,
   selectFoodPantry,
   isMealsSelected,
   selectMeals,
   isVerifiedSelected,
   selectVerified,
-  origin,
-  setOrigin,
+
   search,
+  userCoordinates,
 }) => {
   const classes = useStyles();
 
@@ -115,8 +117,8 @@ const ResultsFilters = ({
             <Select
               name="select-distance"
               disableUnderline
-              value={distanceValue}
-              onChange={(e) => changeDistanceValue(e.target.value)}
+              value={radius}
+              onChange={(e) => setRadius(e.target.value)}
               inputProps={{
                 name: "select-distance",
                 id: "select-distance",
@@ -173,7 +175,7 @@ const ResultsFilters = ({
         </Grid>
       </Grid>
       <Box className={classes.inputContainer}>
-        <Search setOrigin={setOrigin} />
+        <Search userCoordinates={userCoordinates} setOrigin={setOrigin} />
         <Button
           type="button"
           disabled={!origin}
@@ -197,14 +199,14 @@ const ResultsFilters = ({
               name: "",
               latitude: origin.latitude,
               longitude: origin.longitude,
-              radius: distanceValue,
+              radius,
               categoryIds,
               isInactive: "no",
               isAssigned: "either",
               // isApproved is the search criteria for verification, but
               // will be re-named later.
               isApproved: isVerifiedSelected ? "yes" : "either",
-              isApproved: "either",
+              isVerified: "either",
               isRejected: "either",
               isClaimed: "either",
               assignedLoginId: "",

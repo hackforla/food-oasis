@@ -54,15 +54,15 @@ export default function ResultsContainer(props) {
    * hold 'selected stakeholder' in local state
    */
 
-  const [distanceValue, changeDistanceValue] = React.useState(0);
+  const [radius, setRadius] = React.useState(5);
   const [origin, setOrigin] = React.useState({ latitude: 0, longitude: 0 });
-  const [isFoodPantrySelected, selectFoodPantry] = React.useState(false);
-  const [isMealsSelected, selectMeals] = React.useState(false);
+  const [isFoodPantrySelected, selectFoodPantry] = React.useState(true);
+  const [isMealsSelected, selectMeals] = React.useState(true);
   const [isVerifiedSelected, selectVerified] = React.useState(false);
 
   const topLevelProps = {
-    distanceValue,
-    changeDistanceValue,
+    radius,
+    setRadius,
     origin,
     setOrigin,
     isFoodPantrySelected,

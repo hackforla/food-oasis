@@ -62,11 +62,12 @@ function SecurityAdminDashboard() {
       else if (permission === "is_security_admin") {
         account["isSecurityAdmin"] = value
       } 
-      else if (permission === "is_entry") {
+      else if (permission === "is_data_entry") {
         account["isDataEntry"] = value
       }
     }
     setAcc([...acc, {...account} ])
+    console.log(acc.length, "<---------------------------is it incrementing?")
   }
 
   return (

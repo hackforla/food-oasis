@@ -1,5 +1,6 @@
 const { pool } = require("./postgres-pool");
 const { promisify } = require("util");
+const { toSqlBoolean } = require("./postgres-utils");
 const moment = require("moment");
 const bcrypt = require("bcrypt");
 const {
@@ -360,7 +361,7 @@ async function hashPassword(user) {
 }
 
 // Update login table with the specified permissionName column set to value
-const setPermissions = async (userId, permissionName, value) => {
+const setPermissions = async ({ userId, permissionName, value }) => {
   const user = await selectById(userId);
   if (!user) {
     return {
@@ -383,7 +384,9 @@ const setPermissions = async (userId, permissionName, value) => {
   try {
     // do a tiny bit of sanity checking on our input
     var booleanValue = Boolean(value);
-    const updateSql = `update login set ${permissionName}=${booleanValue}`;
+    const updateSql = `update login set ${permissionName}=${toSqlBoolean(
+      booleanValue
+    )} where id = ${userId}`;
     await pool.query(updateSql);
     return {
       success: true,

@@ -29,21 +29,20 @@ function SecurityAdminDashboard() {
 
   useEffect(() => {
     if (search.length === 0) {
-      setAcc(accAgain) 
+      setAcc(accAgain)
     } else {
       const result = acc.filter((elem, i) => {
         return elem.firstName.toLowerCase().includes(search) || elem.lastName.toLowerCase().includes(search)
       })
       setAcc(result)
     }
-  }, [search])
+  }, [search, acc, accAgain])
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const account = await accountService.getAll()
         setAcc(account.data)
-        // setAcc(account.data.map(obj => ({ ...obj, adminChecked })))
         setAccAgain(account.data)
       } catch (err) {
         console.log(err)

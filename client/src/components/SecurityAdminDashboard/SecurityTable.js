@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -52,8 +52,8 @@ export default function SecurityTable(props) {
                     props.accounts.map(async (ch) => {
                       if (ch.id === row.id) {
                         let check = e.target.checked
-                        let update = await accountService.setPermissions({ userId: ch.id, permissionName: "is_admin", value: check}) //not sure what to pass inside here?
-                        //not sure what I am doing here lol
+                        await accountService.setPermissions({ userId: ch.id, permissionName: "is_admin", value: check}) //
+                        console.log(ch, "<---------what all this in here?")
                       }
                     })
                   }}
@@ -68,7 +68,7 @@ export default function SecurityTable(props) {
                         let check = e.target.checked
                         console.log(row.id, "<------the user id")
                         console.log(check, "<------check")
-                        let update = await accountService.setPermissions() //not sure what to pass inside here?
+                        await accountService.setPermissions() //not sure what to pass inside here?
                         //not sure what I am doing here lol
                       }
                     })

@@ -68,8 +68,9 @@ const resetPassword = async (req, res) => {
 };
 
 const setPermissions = async (req, res) => {
+  const { userId, permissionName, value } = req.body.name
   try {
-    const response = await accountService.setPermissions(req.body.name.userId, req.body.name.permissionName, req.body.name.value);
+    const response = await accountService.setPermissions(userId, permissionName, value);
     res.send(response);
   } catch (err) {
     res.status("500").json({ error: err.toString() });

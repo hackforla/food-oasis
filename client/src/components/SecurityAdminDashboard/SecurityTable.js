@@ -52,27 +52,25 @@ export default function SecurityTable(props) {
                     props.accounts.map(async (ch) => {
                       if (ch.id === row.id) {
                         let check = e.target.checked
-                        await accountService.setPermissions({ userId: ch.id, permissionName: "is_admin", value: check})
+                        const update = await accountService.setPermissions({ userId: ch.id, permissionName: "is_admin", value: check})
+                        console.log(update, "<----------whats inside here?")
                       }
                     })
                   }}
                 />
               </TableCell>
               <TableCell align="right">
-                <Checkbox
+                {/* <Checkbox
                   checked={row.isSecurityAdmin}
                   onChange={(e) => {
                     props.accounts.map(async (ch) => {
                       if (ch.id === row.id) {
                         let check = e.target.checked
-                        console.log(row.id, "<------the user id")
-                        console.log(check, "<------check")
-                        await accountService.setPermissions() //not sure what to pass inside here?
-                        //not sure what I am doing here lol
+                        await accountService.setPermissions()
                       }
                     })
                   }}
-                />
+                /> */}
               </TableCell>
             </TableRow>
           ))}

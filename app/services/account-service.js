@@ -388,7 +388,7 @@ const setPermissions = async (userId, permissionName, value) => {
     return {
       success: true,
       code: "UPDATE_SUCCESS",
-      reason: `${permissionName} successfully set to ${booleanValue}`,
+      reason: `${permissionName} successfully set to ${booleanValue} for ${userId}`,
     };
   } catch (err) {
     return {

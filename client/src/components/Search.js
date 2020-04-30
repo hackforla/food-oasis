@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import Downshift from "downshift";
 import { MenuItem, TextField, Paper } from "@material-ui/core";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
@@ -200,3 +201,11 @@ export default function Search(props) {
     </>
   );
 }
+
+Search.propTypes = {
+  userCoordinates: PropTypes.shape({
+    latitude: PropTypes.number,
+    longitude: PropTypes.number,
+  }),
+  setOrigin: PropTypes.func,
+};

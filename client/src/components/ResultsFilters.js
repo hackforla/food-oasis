@@ -1,10 +1,19 @@
 import React from "react";
-import Search from '../components/Search';
+import Search from "../components/Search";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Select, MenuItem, FormControl, Button, Box } from "@material-ui/core";
-import SearchIcon from '@material-ui/icons/Search';
+import {
+  Grid,
+  Select,
+  MenuItem,
+  FormControl,
+  Button,
+  Box,
+} from "@material-ui/core";
+import SearchIcon from "@material-ui/icons/Search";
 
+const FOOD_PANTRY_CATEGORY_ID = 1;
+const MEAL_PROGRAM_CATEGORY_ID = 9;
 
 const useStyles = makeStyles((theme) => ({
   filterButton: {
@@ -43,55 +52,52 @@ const useStyles = makeStyles((theme) => ({
     padding: ".25em",
   },
   inputContainer: {
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    alignItems: "center",
   },
   searchIcon: {
     width: 22,
     height: 22,
   },
   submit: {
-    height: '42px',
-    minWidth: '25px',
-    backgroundColor: '#BCE76D',
-    borderRadius: '0 4px 4px 0',
-    boxShadow: 'none',
-    '& .MuiButton-startIcon': {
+    height: "42px",
+    minWidth: "25px",
+    backgroundColor: "#BCE76D",
+    borderRadius: "0 4px 4px 0",
+    boxShadow: "none",
+    "& .MuiButton-startIcon": {
       marginRight: 0,
     },
-    '&.Mui-disabled': {
-      backgroundColor: '#BCE76D',
+    "&.Mui-disabled": {
+      backgroundColor: "#BCE76D",
       opacity: 0.8,
     },
-    '&:hover': {
-      backgroundColor: '#C7F573',
-      boxShadow: 'none',
+    "&:hover": {
+      backgroundColor: "#C7F573",
+      boxShadow: "none",
     },
   },
   buttonHolder: {
-    display: 'flex'
+    display: "flex",
   },
 }));
 
-const distanceInfo = [1, 2, 3, 5, 10, 20, 50]
+const distanceInfo = [1, 2, 3, 5, 10, 20, 50];
 
-function ResultsFilters(props) {
+const ResultsFilters = ({
+  distanceValue,
+  changeDistanceValue,
+  isFoodPantrySelected,
+  selectFoodPantry,
+  isMealsSelected,
+  selectMeals,
+  isVerifiedSelected,
+  selectVerified,
+  origin,
+  setOrigin,
+  search,
+}) => {
   const classes = useStyles();
-
-  const {
-    distanceValue,
-    changeDistanceValue,
-    isFoodPantrySelected,
-    selectFoodPantry,
-    isMealsSelected,
-    selectMeals,
-    isVerifiedSelected,
-    selectVerified,
-    origin,
-    search
-  } = props
-
-  const [searchTerm, setSearchTerm] = React.useState("")
 
   return (
     <Grid container wrap="wrap-reverse" className={classes.controlPanel}>
@@ -120,21 +126,24 @@ function ResultsFilters(props) {
               <MenuItem key={0} value={0} className={classes.menuItems}>
                 DISTANCE
               </MenuItem>
-              {distanceInfo.map(distance =>
+              {distanceInfo.map((distance) => (
                 <MenuItem
                   key={distance}
                   value={distance}
-                  className={classes.menuItems}>
+                  className={classes.menuItems}
+                >
                   {`${distance} MILE${distance > 1 ? "S" : ""}`}
-                </MenuItem>)
-              }
+                </MenuItem>
+              ))}
             </Select>
           </Button>
         </Grid>
         <Grid item>
           <Button
             className={classes.filterButton}
-            style={{ backgroundColor: isFoodPantrySelected ? "transparent" : "#fff" }}
+            style={{
+              backgroundColor: isFoodPantrySelected ? "transparent" : "#fff",
+            }}
             onClick={() => selectFoodPantry(!isFoodPantrySelected)}
           >
             Food Pantries
@@ -143,7 +152,9 @@ function ResultsFilters(props) {
         <Grid item>
           <Button
             className={classes.filterButton}
-            style={{ backgroundColor: isMealsSelected ? "transparent" : "#fff" }}
+            style={{
+              backgroundColor: isMealsSelected ? "transparent" : "#fff",
+            }}
             onClick={() => selectMeals(!isMealsSelected)}
           >
             Meals
@@ -152,7 +163,9 @@ function ResultsFilters(props) {
         <Grid item>
           <Button
             className={classes.filterButton}
-            style={{ backgroundColor: isVerifiedSelected ? "transparent" : "#fff" }}
+            style={{
+              backgroundColor: isVerifiedSelected ? "transparent" : "#fff",
+            }}
             onClick={() => selectVerified(!isVerifiedSelected)}
           >
             Verified
@@ -160,7 +173,7 @@ function ResultsFilters(props) {
         </Grid>
       </Grid>
       <Box className={classes.inputContainer}>
-        <Search {...props} setSearchTerm={setSearchTerm} />
+        <Search setOrigin={setOrigin} />
         <Button
           type="button"
           disabled={!origin}
@@ -170,28 +183,39 @@ function ResultsFilters(props) {
             <SearchIcon fontSize="large" className={classes.searchIcon} />
           }
           onClick={() => {
+            const categoryIds = [];
+            if (isFoodPantrySelected) {
+              categoryIds.push(FOOD_PANTRY_CATEGORY_ID);
+            }
+            if (isMealsSelected) {
+              categoryIds.push(MEAL_PROGRAM_CATEGORY_ID);
+            }
+            if (categoryIds.length === 0) {
+            }
+
             search({
-              name: searchTerm,
+              name: "",
               latitude: origin.latitude,
               longitude: origin.longitude,
               radius: distanceValue,
-              //categoryIds: [],
-              //isInactive: false,
-              //isAssigned: "either",
-              isVerified: isVerifiedSelected ? "yes" : "no",
-              //isApproved: "either",
-              //isRejected: "either",
-              //isClaimed: "either",
-              //assignedLoginId: undefined,
-              //claimedLoginId: undefined,
-            })
-          }
-          }
+              categoryIds,
+              isInactive: "no",
+              isAssigned: "either",
+              // isApproved is the search criteria for verification, but
+              // will be re-named later.
+              isApproved: isVerifiedSelected ? "yes" : "either",
+              isApproved: "either",
+              isRejected: "either",
+              isClaimed: "either",
+              assignedLoginId: "",
+              claimedLoginId: "",
+            });
+          }}
         />
       </Box>
     </Grid>
   );
-}
+};
 
 ResultsFilters.propTypes = {
   distance: PropTypes.number,
@@ -199,6 +223,7 @@ ResultsFilters.propTypes = {
   isPantryCategorySelected: PropTypes.bool,
   isMealCategorySelected: PropTypes.bool,
   isVerifiedFilterSelected: PropTypes.bool,
+  search: PropTypes.func,
 };
 
 export default ResultsFilters;

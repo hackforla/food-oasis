@@ -53,12 +53,20 @@ function SecurityAdminDashboard() {
 
   const handlePermissionChange = (userId, permission, value) => {
     const account = acc.find((row) => {
-      row.id === userId
+      console.log(row.id, "<---------------- row id")
+      console.log(userId, "<0000000000000000 user id")
+      return row.id === userId
     })
     if(account){
-      account[permission] = value 
+      if(permission === "is_admin"){
+        account["isAdmin"] = value
+      }
+      else if(permission === "is_security_admin"){
+        account["isSecurityAdmin"] = value
+      } 
+      // account[permission] = value 
     }
-    setAcc({ ...account, })
+    // setAcc({ ...account, })
   }
 
   return (

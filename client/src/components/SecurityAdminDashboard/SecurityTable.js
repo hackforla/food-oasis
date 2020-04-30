@@ -25,10 +25,10 @@ const useStyles = makeStyles({
 export default function SecurityTable(props) {
   const classes = useStyles();
 
-  const handleToggle = (userId, e, securityOrAdmin) => {
+  const handleToggle = (userId, e, securityOrAdminOrDataEntry) => {
     console.log(userId)
-    console.log(securityOrAdmin, "<---------------what does this produce")
-    if (securityOrAdmin === "security") {
+    console.log(securityOrAdminOrDataEntry, "<---------------what does this produce")
+    if (securityOrAdminOrDataEntry === "security") {
       props.accounts.map(async (each) => {
         if (userId === each.id) {
           let check = e.target.checked
@@ -36,13 +36,16 @@ export default function SecurityTable(props) {
           props.handlePermissionChange(each.id, "is_security_admin", check)
         }
       })
-    } else {
+    } else if( securityOrAdminOrDataEntry === "admin") {
       props.accounts.map(async (each) => {
         if (userId === each.id) {
           let check = e.target.checked
           await accountService.setPermissions({ userId: each.id, permissionName: "is_admin", value: check })
+          props.handlePermissionChange(each.id, "is_admin", check)
         }
       })
+    } else if(securityOrAdminOrDataEntry === "dataEntry"){
+      console.log("Data entry")
     }
   }
 

@@ -1,11 +1,10 @@
-import React from "react"
-import { makeStyles } from "@material-ui/core/styles"
-import { Grid } from "@material-ui/core"
-import { useOrganizations } from "../hooks/useOrganizations/useOrganizations"
-import ResultsFilters from "./ResultsFilters"
-import ResultsList from "./ResultsList"
-import ResultsMap from "./ResultsMap"
-
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import { Grid } from "@material-ui/core";
+import { useOrganizations } from "../hooks/useOrganizations/useOrganizations";
+import ResultsFilters from "./ResultsFilters";
+import ResultsList from "./ResultsList";
+import ResultsMap from "./ResultsMap";
 
 const useStyles = makeStyles((theme) => ({
   filterButton: {
@@ -26,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     fontSize: "12px",
     height: "46em",
-    overflow: "scroll"
+    overflow: "scroll",
   },
   map: {
     textAlign: "center",
@@ -34,12 +33,12 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "100%",
     flexGrow: 1,
   },
-}))
+}));
 
 export default function ResultsContainer(props) {
-  const { userCoordinates } = props
-  const { data, search } = useOrganizations()
-  const classes = useStyles()
+  const { userCoordinates } = props;
+  const { data, search } = useOrganizations();
+  const classes = useStyles();
 
   /**
    * ***PLAN!***
@@ -55,16 +54,16 @@ export default function ResultsContainer(props) {
    * hold 'selected stakeholder' in local state
    */
 
-  const [distanceValue, changeDistanceValue] = React.useState(0)
-  const [origin, setOrigin] = React.useState(null)
-  const [isFoodPantrySelected, selectFoodPantry] = React.useState(false)
-  const [isMealsSelected, selectMeals] = React.useState(false)
-  const [isVerifiedSelected, selectVerified] = React.useState(false)
-  const [selectedStakeholder, doSelectStakeholder] = React.useState(null)
+  const [radius, setRadius] = React.useState(5);
+  const [origin, setOrigin] = React.useState({ latitude: 0, longitude: 0 });
+  const [isFoodPantrySelected, selectFoodPantry] = React.useState(true);
+  const [isMealsSelected, selectMeals] = React.useState(true);
+  const [isVerifiedSelected, selectVerified] = React.useState(false);
+  const [selectedStakeholder, doSelectStakeholder] = React.useState(null);
 
   const topLevelProps = {
-    distanceValue,
-    changeDistanceValue,
+    radius,
+    setRadius,
     origin,
     setOrigin,
     isFoodPantrySelected,
@@ -73,27 +72,24 @@ export default function ResultsContainer(props) {
     selectMeals,
     isVerifiedSelected,
     selectVerified,
-    userCoordinates
-  }
+    userCoordinates,
+  };
 
   return (
     <div className={classes.container}>
-      <ResultsFilters {...topLevelProps} search={search}
-      /**
-       * distance: PropTypes.number,
-       * placeName: PropTypes.string,
-       * isPantryCategorySelected: PropTypes.bool,
-       * isMealCategorySelected: PropTypes.bool,
-       * isVerifiedFilterSelected: PropTypes.bool,
-       */
+      <ResultsFilters
+        {...topLevelProps}
+        search={search}
+        /**
+         * distance: PropTypes.number,
+         * placeName: PropTypes.string,
+         * isPantryCategorySelected: PropTypes.bool,
+         * isMealCategorySelected: PropTypes.bool,
+         * isVerifiedFilterSelected: PropTypes.bool,
+         */
       />
       <Grid container wrap="wrap-reverse">
-        <Grid
-          item
-          xs={12}
-          md={4}
-          className={classes.list}
-        >
+        <Grid item xs={12} md={4} className={classes.list}>
           <ResultsList
             selectedStakeholder={selectedStakeholder}
             doSelectStakeholder={doSelectStakeholder}
@@ -104,17 +100,17 @@ export default function ResultsContainer(props) {
           <ResultsMap
             // selectedStakeholder={selectedStakeholder}
             stakeholders={data}
-          // selectedLatitude={selectedLatitude}
-          // selectedLongitude={selectedLongitude}
-          /**
-           * selectedLatitude: PropTypes.number,
-           * selectedLongitude: PropTypes.number,
-           * selectedStakeholder: PropTypes.object,
-           * stakeholders: PropTypes.arrayOf(PropTypes.object)
-           */
+            // selectedLatitude={selectedLatitude}
+            // selectedLongitude={selectedLongitude}
+            /**
+             * selectedLatitude: PropTypes.number,
+             * selectedLongitude: PropTypes.number,
+             * selectedStakeholder: PropTypes.object,
+             * stakeholders: PropTypes.arrayOf(PropTypes.object)
+             */
           />
         </Grid>
       </Grid>
     </div>
-  )
+  );
 }

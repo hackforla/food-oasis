@@ -66,11 +66,7 @@ function SecurityAdminDashboard() {
         account["isDataEntry"] = value
       }
     }
-    console.log(acc, "<-----------------------the acc")
-    console.log(account, "<-------------does this update")
-    console.log([acc, ...account], "<---------------------how does this make anything?")
-    // setAcc({ acc, ...account })
-    // setAcc(acc, ...account)
+    setAcc([...acc, {...account} ])
   }
 
   return (

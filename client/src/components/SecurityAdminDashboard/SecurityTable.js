@@ -36,7 +36,7 @@ export default function SecurityTable(props) {
           await props.handlePermissionChange(each.id, "is_security_admin", check)
         }
       })
-    } else if( securityOrAdminOrDataEntry === "admin") {
+    } else if (securityOrAdminOrDataEntry === "admin") {
       props.accounts.map(async (each) => {
         if (userId === each.id) {
           let check = e.target.checked
@@ -44,8 +44,14 @@ export default function SecurityTable(props) {
           await props.handlePermissionChange(each.id, "is_admin", check)
         }
       })
-    } else if(securityOrAdminOrDataEntry === "dataEntry"){
-      console.log("Data entry")
+    } else if (securityOrAdminOrDataEntry === "dataEntry") {
+      props.accounts.map(async (each) => {
+        if (userId === each.id) {
+          let check = e.target.checked
+          await accountService.setPermissions({ userId: each.id, permissionName: "is_data_entry", value: check })
+          await props.handlePermissionChange(each.id, "is_data_entry", check)
+        }
+      })
     }
   }
 
@@ -58,10 +64,11 @@ export default function SecurityTable(props) {
             <TableCell align="right" className={classes.text}>Name</TableCell>
             <TableCell align="right" className={classes.text}>Admin</TableCell>
             <TableCell align="right" className={classes.text}>Security Admin</TableCell>
+            <TableCell align="right" className={classes.text}>Data Entry</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {props?.accounts?.map((row) => ( 
+          {props && props.accounts.map((row) => (
             <TableRow key={row.id}>
               <TableCell component="th" scope="row">
                 {row.email}
@@ -79,6 +86,12 @@ export default function SecurityTable(props) {
                 <Checkbox
                   checked={row.isSecurityAdmin}
                   onChange={(e) => handleToggle(row.id, e, "security")}
+                />
+              </TableCell>
+              <TableCell align="right">
+                <Checkbox
+                  checked={row.isDataEntry}
+                  onChange={(e) => handleToggle(row.id, e, "dataEntry")}
                 />
               </TableCell>
             </TableRow>

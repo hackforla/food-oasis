@@ -52,8 +52,7 @@ export default function SecurityTable(props) {
                     props.accounts.map(async (ch) => {
                       if (ch.id === row.id) {
                         let check = e.target.checked
-                        await accountService.setPermissions({ userId: ch.id, permissionName: "is_admin", value: check}) //
-                        console.log(ch, "<---------what all this in here?")
+                        await accountService.setPermissions({ userId: ch.id, permissionName: "is_admin", value: check})
                       }
                     })
                   }}
@@ -79,6 +78,7 @@ export default function SecurityTable(props) {
           ))}
         </TableBody>
       </Table>
+      {console.log(props, "<--------------------what in the props")}
     </TableContainer>
   );
 }

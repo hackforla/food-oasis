@@ -36,7 +36,7 @@ function SecurityAdminDashboard() {
       })
       setAcc(result)
     }
-  }, [search, acc, accAgain])
+  }, [search])
 
   useEffect(() => {
     const fetchData = async () => {

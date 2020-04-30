@@ -60,6 +60,7 @@ export default function ResultsContainer(props) {
   const [isFoodPantrySelected, selectFoodPantry] = React.useState(false)
   const [isMealsSelected, selectMeals] = React.useState(false)
   const [isVerifiedSelected, selectVerified] = React.useState(false)
+  const [selectedStakeholder, doSelectStakeholder] = React.useState(null)
 
   const topLevelProps = {
     distanceValue,
@@ -94,7 +95,8 @@ export default function ResultsContainer(props) {
           className={classes.list}
         >
           <ResultsList
-            // selectedStakeholder={selectedStakeholder}
+            selectedStakeholder={selectedStakeholder}
+            doSelectStakeholder={doSelectStakeholder}
             stakeholders={data}
           />
         </Grid>

@@ -1,43 +1,45 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
+import { useOrganizations } from "../hooks/useOrganizations/useOrganizations";
 import ResultsFilters from "./ResultsFilters";
 import ResultsList from "./ResultsList";
 import ResultsMap from "./ResultsMap";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   filterButton: {
     margin: "0 .25rem",
     padding: "0 0.5rem",
-    fontSize: "12px"
+    fontSize: "12px",
   },
   div: {
     textAlign: "center",
     fontSize: "12px",
-    border: "1px solid blue"
+    border: "1px solid blue",
   },
   container: {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   list: {
     textAlign: "center",
     fontSize: "12px",
-    border: "1px solid blue"
+    height: "46em",
+    overflow: "scroll",
   },
   map: {
     textAlign: "center",
     fontSize: "12px",
-    border: "1px solid blue"
-  }
+    maxWidth: "100%",
+    flexGrow: 1,
+  },
 }));
 
-export default function ResultsContainer(
-  {
-    // TODO: stub out the props coming in
-  }
-) {
+export default function ResultsContainer(props) {
+  const { userCoordinates } = props;
+  const { data, search } = useOrganizations();
   const classes = useStyles();
+
   /**
    * ***PLAN!***
    *
@@ -52,36 +54,60 @@ export default function ResultsContainer(
    * hold 'selected stakeholder' in local state
    */
 
+  const [radius, setRadius] = React.useState(5);
+  const [origin, setOrigin] = React.useState({ latitude: 0, longitude: 0 });
+  const [isFoodPantrySelected, selectFoodPantry] = React.useState(true);
+  const [isMealsSelected, selectMeals] = React.useState(true);
+  const [isVerifiedSelected, selectVerified] = React.useState(false);
+  const [selectedStakeholder, doSelectStakeholder] = React.useState(null);
+
+  const topLevelProps = {
+    radius,
+    setRadius,
+    origin,
+    setOrigin,
+    isFoodPantrySelected,
+    selectFoodPantry,
+    isMealsSelected,
+    selectMeals,
+    isVerifiedSelected,
+    selectVerified,
+    userCoordinates,
+  };
+
   return (
     <div className={classes.container}>
       <ResultsFilters
-      /**
-       * distance: PropTypes.number,
-       * placeName: PropTypes.string,
-       * isPantryCategorySelected: PropTypes.bool,
-       * isMealCategorySelected: PropTypes.bool,
-       * isVerifiedFilterSelected: PropTypes.bool,
-       */
+        {...topLevelProps}
+        search={search}
+        /**
+         * distance: PropTypes.number,
+         * placeName: PropTypes.string,
+         * isPantryCategorySelected: PropTypes.bool,
+         * isMealCategorySelected: PropTypes.bool,
+         * isVerifiedFilterSelected: PropTypes.bool,
+         */
       />
       <Grid container wrap="wrap-reverse">
         <Grid item xs={12} md={4} className={classes.list}>
           <ResultsList
-          // selectedStakeholder={selectedStakeholder}
-          // stakeholders={stakeholders}
+            selectedStakeholder={selectedStakeholder}
+            doSelectStakeholder={doSelectStakeholder}
+            stakeholders={data}
           />
         </Grid>
         <Grid item xs={12} md={8} className={classes.map}>
           <ResultsMap
-          // selectedStakeholder={selectedStakeholder}
-          // stakeholders={stakeholders}
-          // selectedLatitude={selectedLatitude}
-          // selectedLongitude={selectedLongitude}
-          /**
-           * selectedLatitude: PropTypes.number,
-           * selectedLongitude: PropTypes.number,
-           * selectedStakeholder: PropTypes.object,
-           * stakeholders: PropTypes.arrayOf(PropTypes.object)
-           */
+            // selectedStakeholder={selectedStakeholder}
+            stakeholders={data}
+            // selectedLatitude={selectedLatitude}
+            // selectedLongitude={selectedLongitude}
+            /**
+             * selectedLatitude: PropTypes.number,
+             * selectedLongitude: PropTypes.number,
+             * selectedStakeholder: PropTypes.object,
+             * stakeholders: PropTypes.arrayOf(PropTypes.object)
+             */
           />
         </Grid>
       </Grid>

@@ -51,6 +51,16 @@ function SecurityAdminDashboard() {
     fetchData()
   }, [])
 
+  const handlePermissionChange = (userId, permission, value) => {
+    const account = acc.find((row) => {
+      row.id === userId
+    })
+    if(account){
+      account[permission] = value 
+    }
+    setAcc({ ...account, })
+  }
+
   return (
     <Container maxWidth="lg" className={classes.root}>
       <Typography variant="h4">Security Roles</Typography>
@@ -64,7 +74,7 @@ function SecurityAdminDashboard() {
         onChange={handleChange}
         value={search}
       />
-      <SecurityTable accounts={acc} />
+      <SecurityTable accounts={acc} handlePermissionChange={handlePermissionChange}/>
     </Container>
   )
 }

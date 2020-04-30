@@ -146,8 +146,11 @@ function App() {
                   <Home userCoordinates={userCoordinates} />
                 </div>
               </Route>
+              {/* <Route path="/map">
+                <ResultsContainer userCoordinates={userCoordinates} />
+              </Route> */}
               <Route path="/organizations">
-                <ResultsContainer />
+                <ResultsContainer userCoordinates={userCoordinates} />
               </Route>
               <Route path="/stakeholders">
                 <StakeholdersContainer

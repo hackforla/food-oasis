@@ -32,14 +32,15 @@ export default function SecurityTable(props) {
       props.accounts.map(async (each) => {
         if (userId === each.id) {
           let check = e.target.checked
-          await accountService.setPermissions({ userId: each.id, permissionName: "is_admin", value: check })
+          await accountService.setPermissions({ userId: each.id, permissionName: "is_security_admin", value: check })
+          props.handlePermissionChange(each.id, "is_security_admin", check)
         }
       })
     } else {
       props.accounts.map(async (each) => {
         if (userId === each.id) {
           let check = e.target.checked
-          await accountService.setPermissions({ useId: each.id, setPermissions: "is_security_admin", value: check })
+          await accountService.setPermissions({ userId: each.id, permissionName: "is_admin", value: check })
         }
       })
     }
@@ -57,7 +58,7 @@ export default function SecurityTable(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {props?.accounts?.map((row) => (
+          {props?.accounts?.map((row) => ( 
             <TableRow key={row.id}>
               <TableCell component="th" scope="row">
                 {row.email}

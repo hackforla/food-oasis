@@ -3,7 +3,15 @@ import ReactMapGL, { NavigationControl } from "react-map-gl"
 import MarkerPopup from "./MarkerPopup"
 import Marker from "./Marker"
 import { MAPBOX_TOKEN } from "../secrets"
-import { MAPBOX_STYLE, MEAL, ORGANIZATION_COLORS, PANTRY } from "../constants/map";
+import {
+  DEFAULT_CATEGORIES,
+  FOOD_PANTRY_CATEGORY_ID,
+  MAPBOX_STYLE,
+  MEAL,
+  MEAL_PROGRAM_CATEGORY_ID,
+  ORGANIZATION_COLORS,
+  PANTRY
+} from "../constants/map";
 import moment from "moment";
 
 const styles = {
@@ -20,9 +28,12 @@ function Map({
   selectedLatitude = 34.07872,
   selectedLongitude = -118.243328,
   stakeholders,
-}) {
+  categoryIds,
+ }) {
 
   React.useEffect(() => { console.log("map", stakeholders) }, [stakeholders])
+
+  const categoryIdsOrDefault = categoryIds.length ? categoryIds : DEFAULT_CATEGORIES
 
   const [isPopupOpen, setIsPopupOpen] = React.useState(false)
   const [selectedStakeholder, setSelectedStakeholder] = React.useState(null)
@@ -59,13 +70,18 @@ function Map({
           stakeholders
             .filter((sh) => sh.latitude && sh.longitude)
             .map((stakeholder, index) => {
-              const isVerified = stakeholder.verifiedDate && moment.isDate(stakeholder.verifiedDate) //can we assume it will be a date of some sort?
-
+              const isVerified = !!stakeholder.verifiedDate //can we assume it will be a date of some sort?
               /*todo
               * implement condition based on api data
               * */
-              const organizationType = MEAL
 
+              const categories = stakeholder.categories.filter(({ id }) => {
+                return categoryIdsOrDefault.includes(id)
+              })
+
+              console.log(categories)
+
+              const color = categories.find(({ id }) => id === MEAL_PROGRAM_CATEGORY_ID) ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID] : ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
               return (
                 <Marker
                   onClick={() => handleMarkerClick(stakeholder)}
@@ -73,7 +89,7 @@ function Map({
                   longitude={stakeholder.longitude}
                   latitude={stakeholder.latitude}
                   isVerified={isVerified}
-                  color={ORGANIZATION_COLORS[organizationType]}
+                  color={color}
                 />
               )
             })}

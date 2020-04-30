@@ -5,6 +5,8 @@ import { useOrganizations } from "../hooks/useOrganizations/useOrganizations";
 import ResultsFilters from "./ResultsFilters";
 import ResultsList from "./ResultsList";
 import ResultsMap from "./ResultsMap";
+import useCategoryIds from "../hooks/useCategoryIds";
+import { FOOD_PANTRY_CATEGORY_ID, MEAL_PROGRAM_CATEGORY_ID } from "../constants/map";
 
 const useStyles = makeStyles((theme) => ({
   filterButton: {
@@ -35,6 +37,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+
 export default function ResultsContainer(props) {
   const { userCoordinates } = props;
   const { data, search } = useOrganizations();
@@ -54,10 +58,10 @@ export default function ResultsContainer(props) {
    * hold 'selected stakeholder' in local state
    */
 
+  const { categoryIds, toggleCategory } = useCategoryIds([])
+
   const [radius, setRadius] = React.useState(5);
   const [origin, setOrigin] = React.useState({ latitude: 0, longitude: 0 });
-  const [isFoodPantrySelected, selectFoodPantry] = React.useState(true);
-  const [isMealsSelected, selectMeals] = React.useState(true);
   const [isVerifiedSelected, selectVerified] = React.useState(false);
   const [selectedStakeholder, doSelectStakeholder] = React.useState(null);
 
@@ -66,10 +70,8 @@ export default function ResultsContainer(props) {
     setRadius,
     origin,
     setOrigin,
-    isFoodPantrySelected,
-    selectFoodPantry,
-    isMealsSelected,
-    selectMeals,
+    toggleCategory,
+    categoryIds,
     isVerifiedSelected,
     selectVerified,
     userCoordinates,
@@ -100,6 +102,7 @@ export default function ResultsContainer(props) {
           <ResultsMap
             // selectedStakeholder={selectedStakeholder}
             stakeholders={data}
+            categoryIds={categoryIds}
             // selectedLatitude={selectedLatitude}
             // selectedLongitude={selectedLongitude}
             /**

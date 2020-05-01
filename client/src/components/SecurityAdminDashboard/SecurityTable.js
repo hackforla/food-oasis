@@ -26,8 +26,6 @@ export default function SecurityTable(props) {
   const classes = useStyles();
 
   const handleToggle = (userId, e, securityOrAdminOrDataEntry) => {
-    console.log(userId)
-    console.log(securityOrAdminOrDataEntry, "<---------------what does this produce")
     if (securityOrAdminOrDataEntry === "security") {
       props.accounts.map(async (each) => {
         if (userId === each.id) {
@@ -98,7 +96,6 @@ export default function SecurityTable(props) {
           ))}
         </TableBody>
       </Table>
-      {console.log(props, "<--------------------what in the props")}
     </TableContainer>
   );
 }

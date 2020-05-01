@@ -17,7 +17,7 @@ import {
   RadioGroup,
   Radio,
 } from "@material-ui/core";
-import RadioYesNoEither from "../RadioYesNoEither";
+import RadioTrueFalseEither from "../RadioTrueFalseEither";
 import LocationAutocomplete from "../LocationAutocomplete";
 import AccountAutocomplete from "../AccountAutocomplete";
 
@@ -209,7 +209,7 @@ const SearchCriteria = ({
             />
           </Grid>
           <Grid item xs={6} sm={2}>
-            <RadioYesNoEither
+            <RadioTrueFalseEither
               label="Inactive"
               name="isInactive"
               value={criteria.isInactive || "either"}
@@ -217,7 +217,7 @@ const SearchCriteria = ({
             />
           </Grid>
           <Grid item xs={6} sm={2}>
-            <RadioYesNoEither
+            <RadioTrueFalseEither
               label="Assigned"
               name="isAssigned"
               value={criteria.isAssigned || "either"}
@@ -225,7 +225,7 @@ const SearchCriteria = ({
             />
           </Grid>
           <Grid item xs={6} sm={2}>
-            <RadioYesNoEither
+            <RadioTrueFalseEither
               label="Verified"
               name="isVerified"
               value={criteria.isVerified || "either"}
@@ -233,7 +233,7 @@ const SearchCriteria = ({
             />
           </Grid>
           <Grid item xs={6} sm={2}>
-            <RadioYesNoEither
+            <RadioTrueFalseEither
               label="Approved"
               name="isApproved"
               value={criteria.isApproved || "either"}
@@ -241,7 +241,7 @@ const SearchCriteria = ({
             />
           </Grid>
           <Grid item xs={6} sm={2}>
-            <RadioYesNoEither
+            <RadioTrueFalseEither
               label="Rejected"
               name="isRejected"
               value={criteria.isRejected || "either"}
@@ -249,7 +249,7 @@ const SearchCriteria = ({
             />
           </Grid>
           <Grid item xs={6} sm={2}>
-            <RadioYesNoEither
+            <RadioTrueFalseEither
               label="Claimed"
               name="isClaimed"
               value={criteria.isClaimed || "either"}

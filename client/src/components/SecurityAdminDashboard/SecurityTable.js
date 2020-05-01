@@ -39,8 +39,7 @@ export default function SecurityTable(props) {
       props.accounts.map(async (each) => {
         if (userId === each.id) {
           let check = e.target.checked
-          // await accountService.setPermissions({ userId: each.id, permissionName: "is_admin", value: check })
-          await accountService.setPermissions(each.id, "is_admin", check)
+          await accountService.setPermissions({ userId: each.id, permissionName: "is_admin", value: check })
           await props.handlePermissionChange(each.id, "is_admin", check)
         }
       })

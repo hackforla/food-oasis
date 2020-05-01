@@ -12,13 +12,16 @@ import {
   ButtonGroup,
 } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
-import { MEAL_PROGRAM_CATEGORY_ID, FOOD_PANTRY_CATEGORY_ID, DEFAULT_CATEGORIES } from "../constants/map";
-
+import {
+  MEAL_PROGRAM_CATEGORY_ID,
+  FOOD_PANTRY_CATEGORY_ID,
+  DEFAULT_CATEGORIES,
+} from "../constants/map";
 
 const useStyles = makeStyles((theme) => ({
   filterGroup: {
     margin: "0 .25rem",
-    padding:0,
+    padding: 0,
   },
   filterGroupButton: {
     margin: 0,
@@ -113,13 +116,12 @@ const ResultsFilters = ({
   const isPantrySelected = categoryIds.indexOf(FOOD_PANTRY_CATEGORY_ID) >= 0;
 
   const toggleMeal = useCallback(() => {
-    toggleCategory(MEAL_PROGRAM_CATEGORY_ID)
-  }, [toggleCategory])
+    toggleCategory(MEAL_PROGRAM_CATEGORY_ID);
+  }, [toggleCategory]);
 
   const togglePantry = useCallback(() => {
-    toggleCategory(FOOD_PANTRY_CATEGORY_ID)
-  }, [toggleCategory])
-
+    toggleCategory(FOOD_PANTRY_CATEGORY_ID);
+  }, [toggleCategory]);
 
   return (
     <Grid container wrap="wrap-reverse" className={classes.controlPanel}>
@@ -208,21 +210,22 @@ const ResultsFilters = ({
             <SearchIcon fontSize="large" className={classes.searchIcon} />
           }
           onClick={() => {
-
-            console.log(categoryIds)
+            console.log(categoryIds);
 
             search({
               name: "",
               latitude: origin.latitude,
               longitude: origin.longitude,
               radius,
-              categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
+              categoryIds: categoryIds.length
+                ? categoryIds
+                : DEFAULT_CATEGORIES,
               isInactive: "no",
               isAssigned: "either",
               // isApproved is the search criteria for verification, but
               // will be re-named later.
-              isApproved: "yes",
-              isVerified: isVerifiedSelected ? "yes" : "either",
+              isApproved: "either",
+              isVerified: isVerifiedSelected ? "true" : "either",
               isRejected: "either",
               isClaimed: "either",
               assignedLoginId: "",

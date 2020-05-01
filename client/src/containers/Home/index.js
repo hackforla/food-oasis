@@ -103,6 +103,13 @@ const Home = (props) => {
   const classes = useStyles();
   const [origin, setOrigin] = useState(null);
 
+  const handleSubmit = () => {
+    const url = `/stakeholders?lat=${origin.latitude}&lon=${
+      origin.longitude
+    }&placeName=${origin.locationName || ""} `;
+    props.history.push(url);
+  };
+
   return (
     <Container component="main" maxWidth="sm" className={classes.container}>
       <CssBaseline />
@@ -111,23 +118,18 @@ const Home = (props) => {
           <img src={logo} alt="logo" className={classes.logo} />
         </Box>
         <Box className={classes.formContainer}>
-          <form className={classes.form} noValidate>
+          <form className={classes.form} noValidate onSubmit={handleSubmit}>
             <Box className={classes.inputContainer}>
               <Search {...props} setOrigin={setOrigin} />
               <Button
-                type="button"
+                type="submit"
                 disabled={!origin}
                 variant="contained"
                 className={classes.submit}
                 startIcon={
                   <SearchIcon fontSize="large" className={classes.searchIcon} />
                 }
-                onClick={() => {
-                  const url = `/stakeholders?lat=${origin.latitude}&lon=${
-                    origin.longitude
-                  }&placeName=${origin.locationName || ""} `;
-                  props.history.push(url);
-                }}
+                onClick={() => handleSubmit()}
               />
             </Box>
             <Typography className={classes.label}>

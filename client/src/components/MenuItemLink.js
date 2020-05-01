@@ -6,11 +6,11 @@ import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   background: {
-    backgroundColor: "rgba(144, 194, 70)"
-  }
+    backgroundColor: "rgba(144, 194, 70)",
+  },
 });
 
-export default function MenuItemLink({ to, text, userSection }) {
+export default function MenuItemLink({ to, text, userSection, onClick }) {
   const classes = useStyles();
 
   const renderLink = React.useMemo(
@@ -23,7 +23,7 @@ export default function MenuItemLink({ to, text, userSection }) {
 
   return (
     <li className={userSection && classes.background}>
-      <ListItem button component={renderLink}>
+      <ListItem button component={renderLink} onClick={onClick}>
         <ListItemText primary={text} />
       </ListItem>
     </li>

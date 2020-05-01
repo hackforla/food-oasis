@@ -1,25 +1,35 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { UserContext } from "./user-context";
-import useLocationHook from "hooks/useLocationHook";
 import { makeStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import Button from "@material-ui/core/Button";
-import List from "@material-ui/core/List";
+import {
+  Drawer,
+  Button,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemAvatar,
+  Avatar,
+  Divider,
+} from "@material-ui/core";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import MenuIcon from "@material-ui/icons/Menu";
 import { MENU_ITEMS } from "helpers/Constants";
 import MenuItemLink from "./MenuItemLink";
 import LanguageChooser from "./LanguageChooser";
+import { logout } from "./Logout";
 
 const useStyles = makeStyles({
   list: {
     width: 250,
   },
   menuButton: {
+    backgroundColor: "#F1F1F1",
     padding: "0.5rem",
     minWidth: "0",
-  },
-  whiteMenu: {
-    fill: "#F1F1F1",
+    "&:hover": {
+      backgroundColor: "#F1F1F1",
+    },
   },
   blueMenu: {
     fill: "#336699",
@@ -27,10 +37,10 @@ const useStyles = makeStyles({
 });
 
 export default function Menu(props) {
+  const { user } = props;
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
-  const isHomePage = useLocationHook();
-  const menuFill = isHomePage ? classes.whiteMenu : classes.blueMenu;
+  const history = useHistory();
 
   const toggleDrawer = (event) => {
     if (
@@ -43,6 +53,25 @@ export default function Menu(props) {
     setIsOpen(!isOpen);
   };
 
+  const unAuthLinks = (
+    <>
+      <MenuItemLink key="Register" to="/register" text="Register" />
+      <MenuItemLink key="login" to="/login" text="Login">
+        Login
+      </MenuItemLink>
+    </>
+  );
+
+  const authedLinks = (
+    <MenuItemLink
+      key="logout"
+      text="Logout"
+      onClick={() => logout(props, history)}
+    >
+      Logout
+    </MenuItemLink>
+  );
+
   const sideList = () => (
     <div
       className={classes.list}
@@ -51,30 +80,19 @@ export default function Menu(props) {
       onKeyDown={(e) => toggleDrawer(e)}
     >
       <List>
-        {MENU_ITEMS.map((item, index) => {
-          const { text, link } = item;
-          return <MenuItemLink key={index} to={link} text={text} />;
-        })}
-
-        {props.user ? null : (
+        {user && (
           <>
-            <MenuItemLink
-              key="Register"
-              to="/register"
-              text="Register"
-              userSection={true}
-            />
-            <MenuItemLink
-              key="login"
-              to="/login"
-              text="Login"
-              userSection={true}
-            >
-              Login
-            </MenuItemLink>
+            <ListItem>
+              <ListItemAvatar>
+                <Avatar>
+                  <AccountCircleIcon />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary={user.firstName} />
+            </ListItem>
+            <Divider />
           </>
         )}
-
         <UserContext.Consumer>
           {(user) => (
             <>
@@ -102,6 +120,13 @@ export default function Menu(props) {
             </>
           )}
         </UserContext.Consumer>
+
+        {MENU_ITEMS.map((item, index) => {
+          const { text, link } = item;
+          return <MenuItemLink key={index} to={link} text={text} />;
+        })}
+
+        {user ? authedLinks : unAuthLinks}
       </List>
       <LanguageChooser />
     </div>
@@ -110,7 +135,7 @@ export default function Menu(props) {
   return (
     <div>
       <Button className={classes.menuButton} onClick={toggleDrawer}>
-        <MenuIcon className={menuFill} />
+        <MenuIcon className={classes.blueMenu} />
       </Button>
 
       <Drawer open={isOpen} onClose={toggleDrawer}>

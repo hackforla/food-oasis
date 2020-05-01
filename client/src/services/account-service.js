@@ -2,19 +2,24 @@ import axios from "axios";
 
 const baseUrl = "/api/accounts";
 
+export const getAll = async () => {
+  const response = await axios.get(baseUrl);
+  return response;
+};
+
 export const register = async (firstName, lastName, email, password) => {
   const body = { firstName, lastName, email, password };
   const response = await axios.post(baseUrl + "/register", body);
   return response.data;
 };
 
-export const resendConfirmationEmail = async email => {
+export const resendConfirmationEmail = async (email) => {
   const body = { email };
   const response = await axios.post(baseUrl + "/resendConfirmationEmail", body);
   return response.data;
 };
 
-export const forgotPassword = async email => {
+export const forgotPassword = async (email) => {
   const body = { email };
   const response = await axios.post(baseUrl + "/forgotPassword", body);
   return response.data;
@@ -26,7 +31,7 @@ export const resetPassword = async (token, password) => {
   return response.data;
 };
 
-export const confirmRegister = async token => {
+export const confirmRegister = async (token) => {
   const body = { token };
   const response = await axios.post(baseUrl + "/confirmRegister", body);
   return response.data;
@@ -46,3 +51,15 @@ export const logout = async () => {
   const response = await axios.get(baseUrl + "/logout");
   return response.data;
 };
+
+// This is used to updated login table with the specified permissionName column set to value
+// i.e. is_admin, is_security_admin, is_data_entry
+export const setPermissions = async (name, value) => {
+  const body = { name, value };
+  try {
+    const response = await axios.post(baseUrl + "/setPermissions", body);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+}

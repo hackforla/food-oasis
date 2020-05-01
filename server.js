@@ -13,7 +13,7 @@ const router = require("./app/routes/index");
 
 const app = express();
 app.use(middleware.cors);
-app.use(middleware.logger);
+// app.use(middleware.logger);
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, "client/build")));
@@ -32,14 +32,15 @@ massive(
     database: process.env.POSTGRES_DATABASE,
     password: process.env.POSTGRES_PASSWORD,
     port: Number(process.env.POSTGRES_PORT),
-    ssl: process.env.POSTGRES_SSL === "true"
+    ssl: { rejectUnauthorized: false },
+    // ssl: process.env.POSTGRES_SSL === "true",
   }
 )
-  .then(database => {
+  .then((database) => {
     app.set("db", database);
     console.log("database connected!");
   })
-  .catch(err => {
+  .catch((err) => {
     console.log(err);
   });
 

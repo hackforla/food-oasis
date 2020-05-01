@@ -1,43 +1,48 @@
-import React, { useState } from 'react';
-import Downshift from 'downshift';
-import { MenuItem, TextField, Paper } from '@material-ui/core';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
-import { makeStyles } from '@material-ui/core/styles';
-import { useMapboxGeocoder } from 'hooks/useMapboxGeocoder';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import Downshift from "downshift";
+import { MenuItem, TextField, Paper } from "@material-ui/core";
+import LocationOnIcon from "@material-ui/icons/LocationOn";
+import { makeStyles } from "@material-ui/core/styles";
+import { useMapboxGeocoder } from "hooks/useMapboxGeocoder";
 
 const useStyles = makeStyles(() => ({
   paper: {
-    maxHeight: '150px',
-    overflowY: 'auto',
+    position: "absolute",
+    maxHeight: "150px",
+    overflowY: "auto",
     marginTop: 0,
     borderRadius: 4,
+    zIndex: 1,
   },
   container: {
-    width: '100%',
+    width: "100%",
   },
   address: {
-    backgroundColor: '#fff',
-    borderRadius: '4px 0 0 4px',
+    width: "31em",
+    backgroundColor: "#fff",
+    borderRadius: "4px 0 0 4px",
     height: 41,
-    '& .MuiOutlinedInput-root': {
-      borderRadius: '4px 0 0 4px',
+    "& .MuiOutlinedInput-root": {
+      borderRadius: "4px 0 0 4px",
     },
-    '& .MuiOutlinedInput-input': {
-      padding: '11.5px 14px',
+    "& .MuiOutlinedInput-input": {
+      padding: "11.5px 14px",
     },
-    '& .MuiInputLabel-outlined': {
-      transform: 'translate(14px, 14px) scale(1)',
+    "& .MuiInputLabel-outlined": {
+      transform: "translate(14px, 14px) scale(1)",
     },
-    '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
-      borderColor: '#63A4E5',
-      borderRight: 'none',
+    "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#63A4E5",
+      borderRight: "none",
     },
   },
 }));
 
-export default function Search({ userCoordinates, setOrigin }) {
+export default function Search(props) {
+  const { userCoordinates, setOrigin } = props;
   const classes = useStyles();
-  const [selectedPlace, setSelectedPlace] = useState('');
+  const [selectedPlace, setSelectedPlace] = useState("");
 
   const { mapboxResults, fetchMapboxResults } = useMapboxGeocoder();
 
@@ -110,8 +115,8 @@ export default function Search({ userCoordinates, setOrigin }) {
         <MenuItem
           component="div"
           onClick={() => {
-            setOrigin({ ...userCoordinates, locationName: 'Current Location' });
-            handleDownshiftOnChange('Current Location');
+            setOrigin({ ...userCoordinates, locationName: "Current Location" });
+            handleDownshiftOnChange("Current Location");
           }}
         >
           <LocationOnIcon /> Current Location
@@ -137,6 +142,7 @@ export default function Search({ userCoordinates, setOrigin }) {
                 ...itemCoordinates,
                 locationName: item.place_name,
               });
+              // setSearchTerm(selectedPlace)
             },
           }),
           highlightedIndex,
@@ -152,7 +158,7 @@ export default function Search({ userCoordinates, setOrigin }) {
       <Downshift
         onChange={handleDownshiftOnChange}
         itemToString={(item) => {
-          return item ? item.place_name : '';
+          return item ? item.place_name : "";
         }}
       >
         {({
@@ -195,3 +201,11 @@ export default function Search({ userCoordinates, setOrigin }) {
     </>
   );
 }
+
+Search.propTypes = {
+  userCoordinates: PropTypes.shape({
+    latitude: PropTypes.number,
+    longitude: PropTypes.number,
+  }),
+  setOrigin: PropTypes.func,
+};

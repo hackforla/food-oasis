@@ -96,15 +96,31 @@ export default function Menu(props) {
           </>
         )}
         <UserContext.Consumer>
-          {(user) =>
-            user && user.isAdmin ? (
-              <MenuItemLink
-                key="stakeholderedit"
-                to="/stakeholderedit"
-                text="Add New Stakeholder"
-              />
-            ) : null
-          }
+          {(user) => (
+            <>
+              {user && user.isAdmin ? (
+                <>
+                  <MenuItemLink
+                    key="organizationedit"
+                    to="/organizationedit"
+                    text="Add New Organization"
+                  />
+                  <MenuItemLink
+                    key="verificationadmin"
+                    to="/verificationadmin"
+                    text="Verification Admin"
+                  />
+                </>
+              ) : null}
+              {user && user.isDataEntry ? (
+                <MenuItemLink
+                  key="verificationdashboard"
+                  to="/verificationdashboard"
+                  text="Verification Dashboard"
+                />
+              ) : null}
+            </>
+          )}
         </UserContext.Consumer>
 
         {MENU_ITEMS.map((item, index) => {

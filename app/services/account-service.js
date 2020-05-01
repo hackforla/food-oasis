@@ -1,10 +1,11 @@
 const { pool } = require("./postgres-pool");
 const { promisify } = require("util");
+const { toSqlBoolean } = require("./postgres-utils");
 const moment = require("moment");
 const bcrypt = require("bcrypt");
 const {
   sendRegistrationConfirmation,
-  sendResetPasswordConfirmation
+  sendResetPasswordConfirmation,
 } = require("./sendgrid-service");
 const uuid4 = require("uuid/v4");
 
@@ -12,29 +13,31 @@ const SALT_ROUNDS = 10;
 
 const selectAll = () => {
   let sql = `
-    select w.id, w.first_name, w.last_name, w.email, w.date_created, 
-      w.email_confirmed, w.is_admin
+    select w.id, w.first_name, w.last_name, w.email, w.date_created,
+      w.email_confirmed, w.is_admin, w.is_security_admin, w.is_data_entry
     from login w
     order by w.last_name, w.first_name, w.date_created
   `;
-  return pool.query(sql).then(res => {
-    return res.rows.map(row => ({
+  return pool.query(sql).then((res) => {
+    return res.rows.map((row) => ({
       id: row.id,
       firstName: row.first_name,
       lastName: row.last_name,
       email: row.email,
       dateCreated: row.date_created,
       emailConfirmed: row.email_confirmed,
-      isAdmin: row.is_admin
+      isAdmin: row.is_admin,
+      isSecurityAdmin: row.is_security_admin,
+      isDataEntry: row.is_data_entry,
     }));
   });
 };
 
-const selectById = id => {
+const selectById = (id) => {
   const sql = `select w.id, w.first_name, w.last_name, w.email,
-  w.date_created, w.email_confirmed, w.is_admin
+  w.date_created, w.email_confirmed, w.is_admin, w.is_security_admin, w.is_data_entry
   from login w where w.id = ${id}`;
-  return pool.query(sql).then(res => {
+  return pool.query(sql).then((res) => {
     const row = res.rows[0];
     return {
       id: row.id,
@@ -43,16 +46,19 @@ const selectById = id => {
       email: row.email,
       dateCreated: row.date_created,
       emailConfirmed: row.email_confirmed,
-      isAdmin: row.is_admin
+      isAdmin: row.is_admin,
+      isAdmin: row.is_admin,
+      isSecurityAdmin: row.is_security_admin,
+      isDataEntry: row.is_data_entry,
     };
   });
 };
 
-const selectByEmail = email => {
+const selectByEmail = (email) => {
   const sql = `select id, first_name, last_name, email, password_hash, 
-    email_confirmed, date_created, is_admin
+    email_confirmed, date_created, is_admin, is_security_admin, is_data_entry 
     from login where email ilike '${email}'`;
-  return pool.query(sql).then(res => {
+  return pool.query(sql).then((res) => {
     const row = res.rows[0];
     if (row) {
       return {
@@ -63,29 +69,31 @@ const selectByEmail = email => {
         email: row.email,
         dateCreated: row.date_created,
         emailConfirmed: row.email_confirmed,
-        isAdmin: row.is_admin
+        isAdmin: row.is_admin,
+        isSecurityAdmin: row.is_security_admin,
+        isDataEntry: row.is_data_entry,
       };
     }
     return null;
   });
 };
 
-const register = async model => {
+const register = async (model) => {
   const { firstName, lastName, email } = model;
   const token = uuid4();
   let result = null;
   await hashPassword(model);
   try {
-    const sql = `insert into login (first_name, last_name, email, 
-        password_hash, email_confirmed, is_admin ) 
-        values ('${firstName}', '${lastName}', '${email}', 
-        '${model.passwordHash}', false, true ) returning id`;
+    const sql = `insert into login (first_name, last_name, email,
+        password_hash)
+        values ('${firstName}', '${lastName}', '${email}',
+        '${model.passwordHash}') returning id`;
     const insertResult = await pool.query(sql);
     result = {
       isSuccess: true,
       code: "REG_SUCCESS",
       newId: insertResult.rows[0].id,
-      message: "Registration successful."
+      message: "Registration successful.",
     };
     await requestRegistrationConfirmation(email, result);
     return result;
@@ -93,13 +101,13 @@ const register = async model => {
     return {
       isSuccess: false,
       code: "REG_DUPLICATE_EMAIL",
-      message: `Email ${email} is already registered. `
+      message: `Email ${email} is already registered. `,
     };
   }
 };
 
 // Re-transmit confirmation email
-const resendConfirmationEmail = async email => {
+const resendConfirmationEmail = async (email) => {
   let result = null;
   try {
     const sql = `select id from  login where email = '${email}'`;
@@ -108,7 +116,7 @@ const resendConfirmationEmail = async email => {
       success: true,
       code: "REG_SUCCESS",
       newId: insertResult.rows[0].id,
-      message: "Account found."
+      message: "Account found.",
     };
     result = await requestRegistrationConfirmation(email, result);
     return result;
@@ -118,7 +126,7 @@ const resendConfirmationEmail = async email => {
     return {
       success: false,
       code: "REG_ACCOUNT_NOT_FOUND",
-      message: `Email ${email} is not registered. `
+      message: `Email ${email} is not registered. `,
     };
   }
 };
@@ -137,12 +145,12 @@ const requestRegistrationConfirmation = async (email, result) => {
     return {
       success: false,
       code: "REG_EMAIL_FAILED",
-      message: `Sending registration confirmation email to ${email} failed.`
+      message: `Sending registration confirmation email to ${email} failed.`,
     };
   }
 };
 
-const confirmRegistration = async token => {
+const confirmRegistration = async (token) => {
   const sql = `select email, date_created
     from security_token where token = '${token}'`;
   try {
@@ -154,21 +162,21 @@ const confirmRegistration = async token => {
         success: false,
         code: "REG_CONFIRM_TOKEN_INVALID",
         message:
-          "Email confirmation failed. Invalid security token. Re-send confirmation email."
+          "Email confirmation failed. Invalid security token. Re-send confirmation email.",
       };
     } else if (moment(now).diff(sqlResult.rows[0].date_created, "hours") >= 1) {
       return {
         success: false,
         code: "REG_CONFIRM_TOKEN_EXPIRED",
         message:
-          "Email confirmation failed. Security token expired. Re-send confirmation email."
+          "Email confirmation failed. Security token expired. Re-send confirmation email.",
       };
     }
 
     // If we get this far, we can update the login.email_confirmed flag
     const email = sqlResult.rows[0].email;
-    const confirmSql = `update login 
-            set email_confirmed = true 
+    const confirmSql = `update login
+            set email_confirmed = true
             where email = '${email}'`;
     await pool.query(confirmSql);
 
@@ -176,7 +184,7 @@ const confirmRegistration = async token => {
       success: true,
       code: "REG_CONFIRM_SUCCESS",
       message: "Email confirmed.",
-      email
+      email,
     };
   } catch (err) {
     return { message: err.message };
@@ -185,7 +193,7 @@ const confirmRegistration = async token => {
 
 // Forgot Password - verify email matches an account and
 // send password reset confirmation email.
-const forgotPassword = async model => {
+const forgotPassword = async (model) => {
   const { email } = model;
   const token = uuid4();
   let result = null;
@@ -201,13 +209,13 @@ const forgotPassword = async model => {
         isSuccess: true,
         code: "FORGOT_PASSWORD_SUCCESS",
         newId: checkAccountResult.rows[0].id,
-        message: "Account found."
+        message: "Account found.",
       };
     } else {
       return {
         isSuccess: false,
         code: "FORGOT_PASSWORD_ACCOUNT_NOT_FOUND",
-        message: `Email ${email} is not registered. `
+        message: `Email ${email} is not registered. `,
       };
     }
     // Replace the success result if there is a prob
@@ -233,7 +241,7 @@ const requestResetPasswordConfirmation = async (email, result) => {
     return {
       success: false,
       code: "FORGOT_PASSWORD_EMAIL_FAILED",
-      message: `Sending registration confirmation email to ${email} failed.`
+      message: `Sending registration confirmation email to ${email} failed.`,
     };
   }
 };
@@ -251,21 +259,21 @@ const resetPassword = async ({ token, password }) => {
         isSuccess: false,
         code: "RESET_PASSWORD_TOKEN_INVALID",
         message:
-          "Password reset failed. Invalid security token. Re-send confirmation email."
+          "Password reset failed. Invalid security token. Re-send confirmation email.",
       };
     } else if (moment(now).diff(sqlResult.rows[0].date_created, "hours") >= 1) {
       return {
         isSuccess: false,
         code: "RESET_PASSWORD_TOKEN_EXPIRED",
         message:
-          "Password reset failed. Security token expired. Re-send confirmation email."
+          "Password reset failed. Security token expired. Re-send confirmation email.",
       };
     }
 
     // If we get this far, we can update the password
     const passwordHash = await promisify(bcrypt.hash)(password, SALT_ROUNDS);
     const email = sqlResult.rows[0].email;
-    const resetSql = `update login 
+    const resetSql = `update login
             set password_hash = '${passwordHash}'
             where email = '${email}'`;
     await pool.query(resetSql);
@@ -274,14 +282,14 @@ const resetPassword = async ({ token, password }) => {
       isSuccess: true,
       code: "RESET_PASSWORD_SUCCESS",
       message: "Password reset.",
-      email
+      email,
     };
   } catch (err) {
     return {
       isSuccess: false,
       code: "RESET_PASSWORD_FAILED",
       message: `Password reset failed. ${err.message}`,
-      email
+      email,
     };
   }
 };
@@ -292,14 +300,14 @@ const authenticate = async (email, password) => {
     return {
       isSuccess: false,
       code: "AUTH_NO_ACCOUNT",
-      reason: `No account found for email ${email}`
+      reason: `No account found for email ${email}`,
     };
   }
   if (!user.emailConfirmed) {
     return {
       isSuccess: false,
       code: "AUTH_NOT_CONFIRMED",
-      reason: `Email ${email} not confirmed`
+      reason: `Email ${email} not confirmed`,
     };
   }
   const isUser = await bcrypt.compare(password, user.passwordHash);
@@ -313,31 +321,33 @@ const authenticate = async (email, password) => {
         lastName: user.lastName,
         email: user.email,
         isAdmin: user.isAdmin,
-        emailConfirmed: user.emailConfirmed
-      }
+        isSecurityAdmin: user.isSecurityAdmin,
+        isDataEntry: user.isDataEntry,
+        emailConfirmed: user.emailConfirmed,
+      },
     };
   }
   return {
     isSuccess: false,
     code: "AUTH_INCORRECT_PASSWORD",
-    reason: `Incorrect password`
+    reason: `Incorrect password`,
   };
 };
 
-const update = model => {
+const update = (model) => {
   const { id, firstName, lastName } = model;
   const sql = `update login
                set firstName = '${firstName}',
                 lastName = '${lastName}'
                 where id = ${id}`;
-  return pool.query(sql).then(res => {
+  return pool.query(sql).then((res) => {
     return res;
   });
 };
 
-const remove = id => {
+const remove = (id) => {
   const sql = `delete from login where id = ${id}`;
-  return pool.query(sql).then(res => {
+  return pool.query(sql).then((res) => {
     return res;
   });
 };
@@ -350,15 +360,58 @@ async function hashPassword(user) {
   user.passwordHash = await promisify(bcrypt.hash)(user.password, SALT_ROUNDS);
 }
 
+// Update login table with the specified permissionName column set to value
+const setPermissions = async ({ userId, permissionName, value }) => {
+  const user = await selectById(userId);
+  if (!user) {
+    return {
+      success: false,
+      code: "AUTH_NO_ACCOUNT",
+      reason: `No account found for id ${id}`,
+    };
+  }
+  // Don't expose any columns besides the currently allowed ones:
+  // is_admin, is_security_admin, is_data_entry
+  var allowedPermissions = ["is_admin", "is_security_admin", "is_data_entry"];
+  if (!allowedPermissions.includes(permissionName)) {
+    return {
+      success: false,
+      code: "DB_ERROR",
+      message: `Cannot modify login field ${permissionName}.`,
+    };
+  }
+
+  try {
+    // do a tiny bit of sanity checking on our input
+    var booleanValue = Boolean(value);
+    const updateSql = `update login set ${permissionName}=${toSqlBoolean(
+      booleanValue
+    )} where id = ${userId}`;
+    await pool.query(updateSql);
+    return {
+      success: true,
+      code: "UPDATE_SUCCESS",
+      reason: `${permissionName} successfully set to ${booleanValue}`,
+    };
+  } catch (err) {
+    return {
+      success: false,
+      code: "DB_ERROR",
+      message: `Updating login.${permissionName} failed: ${err}`,
+    };
+  }
+};
+
 module.exports = {
   selectAll,
   selectById,
   register,
   confirmRegistration,
   resendConfirmationEmail,
+  setPermissions,
   forgotPassword,
   resetPassword,
   authenticate,
   update,
-  remove
+  remove,
 };

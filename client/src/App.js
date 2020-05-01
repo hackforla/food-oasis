@@ -5,8 +5,9 @@ import theme from "theme/materialUI";
 import { UserContext } from "components/user-context";
 import Toast from "components/Toast";
 import Header from "components/Header";
-import Map from "components/Map";
 import StakeholdersContainer from "components/StakeholdersContainer";
+import VerificationAdmin from "./components/Verification/VerificationAdmin";
+import VerificationDashboard from "./components/Verification/VerificationDashboard";
 import StakeholderEdit from "components/StakeholderEdit";
 import Donate from "components/Donate";
 import Resources from "components/Resources";
@@ -46,12 +47,23 @@ const useStyles = makeStyles({
     overflowY: "scroll",
     flexGrow: 1,
   },
+  stakeholderEditWrapper: {
+    flexBasis: "90%",
+    paddingTop: "1em",
+    paddingBottom: "1em",
+  },
   homeWrapper: {
     backgroundSize: "cover",
     height: "100vh",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
+  },
+  verificationAdminWrapper: {
+    flexBasis: "100%",
+    flexGrow: 1,
+    display: "flex",
+    flexDirection: "column",
   },
 });
 
@@ -134,8 +146,11 @@ function App() {
                   <Home userCoordinates={userCoordinates} />
                 </div>
               </Route>
-              <Route path="/map">
-                <ResultsContainer />
+              {/* <Route path="/map">
+                <ResultsContainer userCoordinates={userCoordinates} />
+              </Route> */}
+              <Route path="/organizations">
+                <ResultsContainer userCoordinates={userCoordinates} />
               </Route>
               <Route path="/stakeholders">
                 <StakeholdersContainer
@@ -143,8 +158,26 @@ function App() {
                   userCoordinates={userCoordinates}
                 />
               </Route>
-              <Route path="/stakeholderedit/:id?">
-                <StakeholderEdit setToast={setToast} user={user} />
+              <Route path="/organizationedit/:id?">
+                <div className={classes.stakeholderEditWrapper}>
+                  <StakeholderEdit setToast={setToast} user={user} />
+                </div>
+              </Route>
+              <Route path="/verificationdashboard">
+                <div className={classes.verificationAdminWrapper}>
+                  <VerificationDashboard
+                    user={user}
+                    userCoordinates={userCoordinates}
+                  />
+                </div>
+              </Route>
+              <Route path="/verificationadmin">
+                <div className={classes.verificationAdminWrapper}>
+                  <VerificationAdmin
+                    user={user}
+                    userCoordinates={userCoordinates}
+                  />
+                </div>
               </Route>
               <Route path="/donate">
                 <Donate />

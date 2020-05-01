@@ -1,27 +1,27 @@
-import React from "react";
-import { Grid, Typography, Card, CardContent, Link } from "@material-ui/core";
-import { Check } from "@material-ui/icons";
-import { UserContext } from "./user-context";
-import { EditButton } from "../components/Buttons";
-import { withRouter } from "react-router-dom";
-import moment from "moment";
+import React from 'react';
+import { Grid, Typography, Card, CardContent, Link } from '@material-ui/core';
+import { Check } from '@material-ui/icons';
+import { UserContext } from './user-context';
+import { EditButton } from '../components/Buttons';
+import { withRouter } from 'react-router-dom';
+import moment from 'moment';
 
-const StakeholderListItem = props => {
+const StakeholderListItem = (props) => {
   const { stakeholder } = props;
   return (
     <Grid item xs={12} sm={6} lg={4} xl={3} key={stakeholder.id}>
-      <Card style={{ height: "100%" }}>
+      <Card style={{ height: '100%' }}>
         <CardContent>
-          <Typography variant={"h5"} component={"h2"}>
+          <Typography variant={'h5'} component={'h2'}>
             {stakeholder.name}
           </Typography>
-          <Typography variant={"body1"} component={"div"}>
-            {stakeholder.categories.map(cat => cat.name).join(", ")}
+          <Typography variant={'body1'} component={'div'}>
+            {stakeholder.categories.map((cat) => cat.name).join(', ')}
           </Typography>
 
           {stakeholder.website ? (
             <div>
-              <Link color="default" href={stakeholder.website} target="_blank">
+              <Link color="primary" href={stakeholder.website} target="_blank">
                 {stakeholder.website}
               </Link>
             </div>
@@ -39,28 +39,32 @@ const StakeholderListItem = props => {
           )}
           <div
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              justifyItems: "center"
+              display: 'flex',
+              justifyContent: 'space-between',
+              justifyItems: 'center',
             }}
           >
             {stakeholder.verifiedDate ? (
-              <Grid container justifyItems="center" justifyContent="flex-start">
-                <Check />
-                <span>
-                  {" " + moment(stakeholder.verifiedDate).format("MM/DD/YY")}
-                </span>
+              <Grid container>
+                <Grid item>
+                  <Check />
+                </Grid>
+                <Grid item>
+                  <Typography>
+                    {' ' + moment(stakeholder.verifiedDate).format('MM/DD/YY')}
+                  </Typography>
+                </Grid>
               </Grid>
             ) : (
               <span></span>
             )}
             <UserContext.Consumer>
-              {user =>
+              {(user) =>
                 user && user.isAdmin ? (
-                  <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                  <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <EditButton
                       label="Edit"
-                      href={`/stakeholderedit/${stakeholder.id}`}
+                      href={`/organizationedit/${stakeholder.id}`}
                     />
                   </div>
                 ) : null

@@ -27,6 +27,9 @@ const useStyles = makeStyles({
     backgroundColor: "#F1F1F1",
     padding: "0.5rem",
     minWidth: "0",
+    "&:hover": {
+      backgroundColor: "#F1F1F1",
+    },
   },
   blueMenu: {
     fill: "#336699",

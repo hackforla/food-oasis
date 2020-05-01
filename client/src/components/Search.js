@@ -56,6 +56,22 @@ export default function Search(props) {
 
   const handleDownshiftOnChange = (selectedResult) => {
     setSelectedPlace(selectedResult);
+
+    const result = mapboxResults.find(
+      (item) => item.place_name === selectedResult
+    );
+
+    if (result) {
+      const [long, lat] = result.center;
+      const itemCoordinates = {
+        latitude: lat,
+        longitude: long,
+      };
+      setOrigin({
+        ...itemCoordinates,
+        locationName: result.place_name,
+      });
+    }
   };
 
   const renderInput = (inputProps) => {
@@ -127,23 +143,11 @@ export default function Search(props) {
     return (
       mapboxResults.length > 0 &&
       mapboxResults.slice(0, 10).map((item, index) => {
-        const [long, lat] = item.center;
-        const itemCoordinates = {
-          latitude: lat,
-          longitude: long,
-        };
         return renderSuggestion({
           item,
           index,
           itemProps: getItemProps({
             item: item.place_name,
-            onClick: () => {
-              setOrigin({
-                ...itemCoordinates,
-                locationName: item.place_name,
-              });
-              // setSearchTerm(selectedPlace)
-            },
           }),
           highlightedIndex,
           selectedItem,

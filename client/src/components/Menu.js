@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "./user-context";
-import useLocationHook from "hooks/useLocationHook";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Drawer,
@@ -25,11 +24,9 @@ const useStyles = makeStyles({
     width: 250,
   },
   menuButton: {
+    backgroundColor: "#F1F1F1",
     padding: "0.5rem",
     minWidth: "0",
-  },
-  whiteMenu: {
-    fill: "#F1F1F1",
   },
   blueMenu: {
     fill: "#336699",
@@ -40,9 +37,7 @@ export default function Menu(props) {
   const { user } = props;
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
-  const isHomePage = useLocationHook();
   const history = useHistory();
-  const menuFill = isHomePage ? classes.whiteMenu : classes.blueMenu;
 
   const toggleDrawer = (event) => {
     if (
@@ -137,7 +132,7 @@ export default function Menu(props) {
   return (
     <div>
       <Button className={classes.menuButton} onClick={toggleDrawer}>
-        <MenuIcon className={menuFill} />
+        <MenuIcon className={classes.blueMenu} />
       </Button>
 
       <Drawer open={isOpen} onClose={toggleDrawer}>

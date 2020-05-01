@@ -1,14 +1,15 @@
 export const MAPBOX_STYLE = "mapbox://styles/mapbox/streets-v11";
 
-export const PANTRY = 'pantry'
-export const MEAL = 'meal'
+export const FOOD_PANTRY_CATEGORY_ID = 1
+export const MEAL_PROGRAM_CATEGORY_ID = 9
+export const DEFAULT_CATEGORIES = [FOOD_PANTRY_CATEGORY_ID, MEAL_PROGRAM_CATEGORY_ID]
 
 export const ORGANIZATION_LABELS = {
-  [PANTRY]: "Food Pantry",
-  [MEAL]: "Meal",
+  [FOOD_PANTRY_CATEGORY_ID]: "Food Pantry",
+  [MEAL_PROGRAM_CATEGORY_ID]: "Meal",
 }
 
 export const ORGANIZATION_COLORS = {
-  [PANTRY]: "#336699",
-  [MEAL]: "#CC3333",
+  [FOOD_PANTRY_CATEGORY_ID]: "#336699",
+  [MEAL_PROGRAM_CATEGORY_ID]: "#CC3333",
 }

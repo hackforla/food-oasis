@@ -9,6 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import * as accountService from "../../services/account-service";
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles({
   table: {
@@ -38,7 +39,8 @@ export default function SecurityTable(props) {
       props.accounts.map(async (each) => {
         if (userId === each.id) {
           let check = e.target.checked
-          await accountService.setPermissions({ userId: each.id, permissionName: "is_admin", value: check })
+          // await accountService.setPermissions({ userId: each.id, permissionName: "is_admin", value: check })
+          await accountService.setPermissions(each.id, "is_admin", check)
           await props.handlePermissionChange(each.id, "is_admin", check)
         }
       })
@@ -98,4 +100,9 @@ export default function SecurityTable(props) {
       </Table>
     </TableContainer>
   );
+}
+
+SecurityTable.prototype = {
+  accounts: PropTypes.array,
+  handlePermissionChange: PropTypes.func
 }

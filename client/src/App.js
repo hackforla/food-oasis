@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ThemeProvider } from "@material-ui/core/styles";
-import theme from "./theme/materialUI";
-import { UserContext } from "./components/user-context";
-import Toast from "./components/Toast";
-import Header from "./components/Header";
-import StakeholdersContainer from "./components/StakeholdersContainer";
+import theme from "theme/materialUI";
+import { UserContext } from "components/user-context";
+import Toast from "components/Toast";
+import Header from "components/Header";
+import StakeholdersContainer from "components/StakeholdersContainer";
 import VerificationAdmin from "./components/Verification/VerificationAdmin";
 import VerificationDashboard from "./components/Verification/VerificationDashboard";
 import SecurityAdminDashboard from "./components/SecurityAdminDashboard/SecurityAdminDashboard";
@@ -24,9 +24,11 @@ import FaqEdit from "./components/FaqEdit";
 import FaqAdd from "./components/FaqAdd";
 import Home from "./containers/Home";
 import ResultsContainer from "components/ResultsContainer";
-// News page not currently used, but shows how we might
-// implement internationalization
+// Temporarily unused components
+// import Main from 'components/Main';
 // import News from "components/News";
+// import Team from "components/Team";
+// import Organizations from "components/Organizations";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
@@ -39,7 +41,6 @@ const useStyles = makeStyles({
     alignItems: "stretch",
     height: "100%",
     overflowY: "scroll",
-    // backgroundColor: "rgb(144, 194, 70)"
   }),
   mainContent: {
     margin: "0",
@@ -136,7 +137,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <Router>
           <div className={classes.app}>
-            <Header user={user} setUser={onLogin} />
+            <Header user={user} setUser={onLogin} setToast={setToast} />
             <Switch className={classes.mainContent}>
               <Route exact path="/">
                 <div
@@ -179,7 +180,6 @@ function App() {
                   />
                 </div>
               </Route>
-              {/* here i am-----------------------------------------------------------------  */}
               <Route path="/securityadmindashboard">
                 <div className={classes.verificationAdminWrapper}>
                   <SecurityAdminDashboard

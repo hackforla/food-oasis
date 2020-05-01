@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import Search from "../components/Search";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
@@ -9,13 +9,27 @@ import {
   FormControl,
   Button,
   Box,
+  ButtonGroup,
 } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
-
-const FOOD_PANTRY_CATEGORY_ID = 1;
-const MEAL_PROGRAM_CATEGORY_ID = 9;
+import {
+  MEAL_PROGRAM_CATEGORY_ID,
+  FOOD_PANTRY_CATEGORY_ID,
+  DEFAULT_CATEGORIES,
+} from "../constants/map";
 
 const useStyles = makeStyles((theme) => ({
+  filterGroup: {
+    margin: "0 .25rem",
+    padding: 0,
+  },
+  filterGroupButton: {
+    margin: 0,
+    fontSize: "max(.8vw,10px)",
+    backgroundColor: "#fff",
+    border: ".1em solid #000",
+    color: "#000",
+  },
   filterButton: {
     margin: "0 .25rem",
     fontSize: "max(.8vw,10px)",
@@ -89,17 +103,25 @@ const ResultsFilters = ({
   setOrigin,
   radius,
   setRadius,
-  isFoodPantrySelected,
-  selectFoodPantry,
-  isMealsSelected,
-  selectMeals,
   isVerifiedSelected,
   selectVerified,
-
   search,
   userCoordinates,
+  categoryIds,
+  toggleCategory,
 }) => {
   const classes = useStyles();
+
+  const isMealsSelected = categoryIds.indexOf(MEAL_PROGRAM_CATEGORY_ID) >= 0;
+  const isPantrySelected = categoryIds.indexOf(FOOD_PANTRY_CATEGORY_ID) >= 0;
+
+  const toggleMeal = useCallback(() => {
+    toggleCategory(MEAL_PROGRAM_CATEGORY_ID);
+  }, [toggleCategory]);
+
+  const togglePantry = useCallback(() => {
+    toggleCategory(FOOD_PANTRY_CATEGORY_ID);
+  }, [toggleCategory]);
 
   return (
     <Grid container wrap="wrap-reverse" className={classes.controlPanel}>
@@ -144,9 +166,10 @@ const ResultsFilters = ({
           <Button
             className={classes.filterButton}
             style={{
-              backgroundColor: isFoodPantrySelected ? "transparent" : "#fff",
+              backgroundColor: isPantrySelected ? "#0A3865" : "#fff",
+              color: isPantrySelected ? "#fff" : "#000",
             }}
-            onClick={() => selectFoodPantry(!isFoodPantrySelected)}
+            onClick={togglePantry}
           >
             Food Pantries
           </Button>
@@ -155,18 +178,20 @@ const ResultsFilters = ({
           <Button
             className={classes.filterButton}
             style={{
-              backgroundColor: isMealsSelected ? "transparent" : "#fff",
+              backgroundColor: isMealsSelected ? "#0A3865" : "#fff",
+              color: isMealsSelected ? "#fff" : "#000",
             }}
-            onClick={() => selectMeals(!isMealsSelected)}
+            onClick={toggleMeal}
           >
             Meals
           </Button>
         </Grid>
         <Grid item>
           <Button
-            className={classes.filterButton}
+            className={classes.filterGroupButton}
             style={{
-              backgroundColor: isVerifiedSelected ? "transparent" : "#fff",
+              backgroundColor: isVerifiedSelected ? "#0A3865" : "#fff",
+              color: isVerifiedSelected ? "#fff" : "#000",
             }}
             onClick={() => selectVerified(!isVerifiedSelected)}
           >
@@ -185,28 +210,22 @@ const ResultsFilters = ({
             <SearchIcon fontSize="large" className={classes.searchIcon} />
           }
           onClick={() => {
-            const categoryIds = [];
-            if (isFoodPantrySelected) {
-              categoryIds.push(FOOD_PANTRY_CATEGORY_ID);
-            }
-            if (isMealsSelected) {
-              categoryIds.push(MEAL_PROGRAM_CATEGORY_ID);
-            }
-            if (categoryIds.length === 0) {
-            }
+            console.log(categoryIds);
 
             search({
               name: "",
               latitude: origin.latitude,
               longitude: origin.longitude,
               radius,
-              categoryIds,
+              categoryIds: categoryIds.length
+                ? categoryIds
+                : DEFAULT_CATEGORIES,
               isInactive: "no",
               isAssigned: "either",
               // isApproved is the search criteria for verification, but
               // will be re-named later.
-              isApproved: isVerifiedSelected ? "yes" : "either",
-              isVerified: "either",
+              isApproved: "either",
+              isVerified: isVerifiedSelected ? "true" : "either",
               isRejected: "either",
               isClaimed: "either",
               assignedLoginId: "",

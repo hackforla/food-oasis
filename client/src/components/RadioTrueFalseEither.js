@@ -7,7 +7,7 @@ import {
   RadioGroup,
 } from "@material-ui/core";
 
-const RadioYesNoEither = (props) => {
+const RadioTrueFalseEither = (props) => {
   const { label, name, value, onChange } = props;
   return (
     <FormControl
@@ -31,4 +31,4 @@ const RadioYesNoEither = (props) => {
   );
 };
 
-export default RadioYesNoEither;
+export default RadioTrueFalseEither;

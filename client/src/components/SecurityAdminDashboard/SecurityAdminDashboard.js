@@ -66,7 +66,7 @@ function SecurityAdminDashboard() {
         account["isDataEntry"] = value
       }
     }
-    setAcc([...acc, {...account} ]) //its making duplicates!!1
+    setAcc([...acc, {...account} ]) 
   }
 
   return (

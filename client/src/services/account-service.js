@@ -62,4 +62,4 @@ export const setPermissions = async (name, value) => {
   } catch (err) {
     console.log(err);
   }
-}
+};

@@ -10,34 +10,30 @@ const FaqAdd = () => {
 
   const [identifier, setIdentifier] = useState("");
 
-  const handleIdentifierChange = event => {
+  const handleIdentifierChange = (event) => {
     setIdentifier(event.target.value);
   };
-  
+
   return (
     <Container maxWidth="md">
-      <h2>
-        Add New FAQ
-      </h2>
-      <h4>
-        Set up an Identifier for the question
-      </h4>
+      <h2>Add New FAQ</h2>
+      <h4>Set up an Identifier for the question</h4>
       <TextField
         placeholder="Identifier"
         type="text"
         variant="outlined"
         fullWidth
         value={identifier}
-        onChange={event => handleIdentifierChange(event)}
+        onChange={(event) => handleIdentifierChange(event)}
         name="identifier"
       />
-      {i18n.languages.map(language => (
+      {i18n.languages.map((language) => (
         <FaqEditForm
           faq={{
             question: "",
             answer: "",
             language: language,
-            identifier: identifier
+            identifier: identifier,
           }}
           notAdded={true}
           key={language}

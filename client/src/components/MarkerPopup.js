@@ -21,13 +21,13 @@ function MarkerPopup({ entity, handleClose }) {
 
     const address1urlArray = address1.split(" ");
     const address1url = address1urlArray.reduce(
-      (acc, currentWord) => `${acc}+${currentWord}`,
+      (acc, currentWord) => `${acc}+${currentWord}`
     );
 
     if (address2) {
       const address2urlArray = address2.split(" ");
       const address2url = address2urlArray.reduce(
-        (acc, currentWord) => `${acc}+${currentWord}`,
+        (acc, currentWord) => `${acc}+${currentWord}`
       );
       return `${baseUrl}${address1url},+${address2url},+${zip}`;
     }

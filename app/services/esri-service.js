@@ -22,11 +22,11 @@ const generateToken = async () => {
   }
 };
 
-const buildGeocodeUrl = address =>
+const buildGeocodeUrl = (address) =>
   `${findAddressCandidateUrl}?f=json&outFields=*&outFields=*&` +
   `singleline=${address}&token=${esriToken}`;
 
-const geocode = async address => {
+const geocode = async (address) => {
   const searchString = encodeURI(address);
 
   try {
@@ -55,5 +55,5 @@ const geocode = async address => {
 };
 
 module.exports = {
-  geocode
+  geocode,
 };

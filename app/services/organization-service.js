@@ -17,33 +17,33 @@ const selectAll = () => {
     from organization g
     order by g.id
   `;
-  return pool.query(sql).then(res => {
+  return pool.query(sql).then((res) => {
     return res.rows;
   });
 };
 
-const selectById = id => {
+const selectById = (id) => {
   const sql = `select g.id, g.description, g.url
    from organization g where g.id = ${id}`;
-  return pool.query(sql).then(res => {
+  return pool.query(sql).then((res) => {
     return res.rows[0];
   });
 };
 
-const create = model => {
+const create = (model) => {
   // Partial implementation need to escape characters, add other columns
 
   // TODO: verify the model for org table
   const { description, url } = model;
   const sql = `insert into organization (description, url) values (${toSqlString(
-    description,
+    description
   )},${toSqlString(url)}) returning id`;
-  return pool.query(sql).then(res => {
+  return pool.query(sql).then((res) => {
     return res.rows[0];
   });
 };
 
-const update = model => {
+const update = (model) => {
   // TODO: verify the model for org table
 
   const { id, url, description } = model;
@@ -52,14 +52,14 @@ const update = model => {
                set url = '${toSqlString(url)}',
                description = ${toSqlString(description)}
                 where id = ${id}`;
-  return pool.query(sql).then(res => {
+  return pool.query(sql).then((res) => {
     return res;
   });
 };
 
-const remove = id => {
+const remove = (id) => {
   const sql = `delete from resource where id = ${id}`;
-  return pool.query(sql).then(res => {
+  return pool.query(sql).then((res) => {
     return res;
   });
 };

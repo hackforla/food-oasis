@@ -3,10 +3,10 @@ const faqService = require("../services/faq-service");
 const getAll = (req, res) => {
   faqService
     .selectAll()
-    .then(resp => {
+    .then((resp) => {
       res.send(resp);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status("404").json({ error: err.toString() });
     });
 };
@@ -15,10 +15,10 @@ const getAllByLanguage = (req, res) => {
   const { language } = req.params;
   faqService
     .selectAllByLanguage(language)
-    .then(resp => {
+    .then((resp) => {
       res.send(resp);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status("404").json({ error: err.toString() });
     });
 };
@@ -27,10 +27,10 @@ const getById = (req, res) => {
   const { id } = req.params;
   faqService
     .selectById(id)
-    .then(resp => {
+    .then((resp) => {
       res.send(resp);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status("500").json({ error: err.toString() });
     });
 };
@@ -39,10 +39,10 @@ const getByIdentifier = (req, res) => {
   const { identifier } = req.params;
   faqService
     .selectByIdentifier(identifier)
-    .then(resp => {
+    .then((resp) => {
       res.send(resp);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status("500").json({ error: err.toString() });
     });
 };
@@ -50,10 +50,10 @@ const getByIdentifier = (req, res) => {
 const post = (req, res) => {
   faqService
     .insert(req.body)
-    .then(resp => {
+    .then((resp) => {
       res.json(resp);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status("500").json({ error: err.toString() });
     });
 };
@@ -62,10 +62,10 @@ const put = (req, res) => {
   const { id } = req.params;
   faqService
     .update(id, req.body)
-    .then(resp => {
+    .then((resp) => {
       res.json(resp);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status("500").json({ error: err.toString() });
     });
 };
@@ -74,10 +74,10 @@ const remove = (req, res) => {
   const { identifier } = req.body;
   faqService
     .remove(identifier)
-    .then(resp => {
+    .then((resp) => {
       res.sendStatus(200);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status("500").json({ error: err.toString() });
     });
 };
@@ -89,5 +89,5 @@ module.exports = {
   getByIdentifier,
   post,
   put,
-  remove
+  remove,
 };

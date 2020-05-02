@@ -24,7 +24,7 @@ const FaqList = ({ faqs, message, reorder, reorderFaqs }) => {
 
   return faqs.length ? (
     <ul className={reorder ? classes.edit : classes.readOnly}>
-      {faqs.map(faq => (
+      {faqs.map((faq) => (
         <FaqItem
           faq={faq}
           key={faq.question}

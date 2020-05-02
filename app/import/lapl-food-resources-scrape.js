@@ -31,15 +31,12 @@ const url = "https://www.lapl.org/homeless-resources-food";
 
 const selectAll = () => {
   return axios(url)
-    .then(result => {
+    .then((result) => {
       const $ = cheerio.load(result.data);
       const articles = [];
       $(".views-row").each((i, elem) => {
         const articleElement = $(elem);
-        const name = articleElement
-          .find("h3")
-          .text()
-          .trim();
+        const name = articleElement.find("h3").text().trim();
         if (name) {
           const mapElement = articleElement.find("a.show-map-link");
           let lat = Number.parseFloat(mapElement.attr("data-latitude"));
@@ -67,9 +64,7 @@ const selectAll = () => {
               .text()
               .trim()
               .toLowerCase();
-            const text = $(infoElement)
-              .text()
-              .trim();
+            const text = $(infoElement).text().trim();
             if (label.includes("population")) {
               const pos = text.lastIndexOf(":") + 1;
               populationServed = text.substring(pos).trim();
@@ -94,7 +89,7 @@ const selectAll = () => {
             populationServed,
             resourceCategories,
             generalResources,
-            additionalOfferings
+            additionalOfferings,
           };
 
           articles.push(article);
@@ -103,11 +98,11 @@ const selectAll = () => {
       return articles;
       console.log(JSON.stringify(articles, null, 2));
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
     });
 };
 
 module.exports = {
-  selectAll
+  selectAll,
 };

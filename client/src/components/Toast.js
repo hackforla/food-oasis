@@ -2,13 +2,13 @@ import React from "react";
 import { Snackbar, IconButton, withStyles } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
 
-const styles = theme => ({
+const styles = (theme) => ({
   close: {
-    padding: theme.spacing(0.5)
-  }
+    padding: theme.spacing(0.5),
+  },
 });
 
-const Toast = props => {
+const Toast = (props) => {
   const { classes, toast, setToast } = props;
 
   const handleSnackbarClose = (event, reason) => {
@@ -23,13 +23,13 @@ const Toast = props => {
     <Snackbar
       anchorOrigin={{
         vertical: "bottom",
-        horizontal: "left"
+        horizontal: "left",
       }}
       open={!!toast}
       autoHideDuration={toast.duration || 4000}
       onClose={handleSnackbarClose}
       ContentProps={{
-        "aria-describedby": "message-id"
+        "aria-describedby": "message-id",
       }}
       message={<span id="message-id">{toast.message}</span>}
       action={[
@@ -49,7 +49,7 @@ const Toast = props => {
           onClick={handleSnackbarClose}
         >
           <Close />
-        </IconButton>
+        </IconButton>,
       ]}
     />
   ) : null;

@@ -1,43 +1,51 @@
 import { useCallback, useReducer } from "react";
 
-export const CATEGORY_ADD = 'categoryAdd'
-export const CATEGORY_CLEAR = 'categoryClear'
-export const CATEGORY_REMOVE = 'categoryRemove'
-
+export const CATEGORY_ADD = "categoryAdd";
+export const CATEGORY_CLEAR = "categoryClear";
+export const CATEGORY_REMOVE = "categoryRemove";
 
 const reducer = (state, { type, value, initialState }) => {
-
-  const valueIndex = state.indexOf(value)
-  switch(type) {
+  const valueIndex = state.indexOf(value);
+  switch (type) {
     case CATEGORY_ADD:
       return [
         ...state.slice(0, valueIndex),
         value,
         ...state.slice(valueIndex + 1),
-      ]
+      ];
     case CATEGORY_CLEAR:
-      return initialState || []
+      return initialState || [];
     case CATEGORY_REMOVE:
-      return [
-        ...state.slice(0, valueIndex),
-        ...state.slice(valueIndex + 1)
-      ]
-    default: return state
+      return [...state.slice(0, valueIndex), ...state.slice(valueIndex + 1)];
+    default:
+      return state;
   }
-}
+};
 
 export default (initialState) => {
-  const [ categoryIds, dispatch ] = useReducer(reducer, initialState)
-  
-  const addCategory = useCallback((value) => dispatch({ type: CATEGORY_ADD, value }), [dispatch])
-  const removeCategory = useCallback((value) => dispatch({ type: CATEGORY_REMOVE, value }), [dispatch])
-  const clearCategories = useCallback((value) => dispatch({ type: CATEGORY_CLEAR, initialState }), [initialState])
+  const [categoryIds, dispatch] = useReducer(reducer, initialState);
 
-  const toggleCategory = useCallback((value) => {
-    if(categoryIds.indexOf(value) >= 0) {
-      removeCategory(value)
-    } else addCategory(value)
-  }, [addCategory, categoryIds, removeCategory])
+  const addCategory = useCallback(
+    (value) => dispatch({ type: CATEGORY_ADD, value }),
+    [dispatch]
+  );
+  const removeCategory = useCallback(
+    (value) => dispatch({ type: CATEGORY_REMOVE, value }),
+    [dispatch]
+  );
+  const clearCategories = useCallback(
+    (value) => dispatch({ type: CATEGORY_CLEAR, initialState }),
+    [initialState]
+  );
+
+  const toggleCategory = useCallback(
+    (value) => {
+      if (categoryIds.indexOf(value) >= 0) {
+        removeCategory(value);
+      } else addCategory(value);
+    },
+    [addCategory, categoryIds, removeCategory]
+  );
 
   return {
     categoryIds,
@@ -45,6 +53,5 @@ export default (initialState) => {
     removeCategory,
     clearCategories,
     toggleCategory,
-
-  }
-}
+  };
+};

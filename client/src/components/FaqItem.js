@@ -44,7 +44,7 @@ const FaqItem = ({ faq, reorder, reorderFaqs, faqLength }) => {
   const identifier = faq.identifier.includes(":")
     ? faq.identifier.slice(
         faq.identifier.indexOf(":") + 1,
-        faq.identifier.length,
+        faq.identifier.length
       )
     : faq.identifier;
   const order =
@@ -54,7 +54,7 @@ const FaqItem = ({ faq, reorder, reorderFaqs, faqLength }) => {
   return (
     <li className={reorder ? classes.edit : classes.readOnly}>
       <UserContext.Consumer>
-        {user =>
+        {(user) =>
           user &&
           user.isAdmin && (
             <div className={classes.editBar}>

@@ -11,7 +11,7 @@ function OpenTimeForm(props) {
     setHours(value);
   }, [value]);
 
-  const handleChange = newHours => {
+  const handleChange = (newHours) => {
     setHours(newHours);
     onChange({ target: { value: newHours, name: "hours" } });
   };
@@ -19,7 +19,7 @@ function OpenTimeForm(props) {
   const addHours = () => {
     let newHours = [
       ...hours,
-      { weekOfMonth: 0, dayOfWeek: "", open: "", close: "" }
+      { weekOfMonth: 0, dayOfWeek: "", open: "", close: "" },
     ];
     handleChange(newHours);
   };
@@ -41,7 +41,7 @@ function OpenTimeForm(props) {
     handleChange(newHours);
   };
 
-  const handleTime = number => {
+  const handleTime = (number) => {
     //formats time input into HH:MM:SS format
     let output = "";
     number.replace(
@@ -66,8 +66,8 @@ function OpenTimeForm(props) {
       <div key={rowIndex}>
         <OpenTimeInputs
           values={val}
-          onChange={e => stateChange(e, rowIndex)}
-          removeInput={e => removeHours(e, rowIndex)}
+          onChange={(e) => stateChange(e, rowIndex)}
+          removeInput={(e) => removeHours(e, rowIndex)}
         />
       </div>
     );

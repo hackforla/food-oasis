@@ -1,11 +1,11 @@
-const { pool } = require('./postgres-pool');
-const { toSqlString, toSqlNumeric } = require('./postgres-utils');
+const { pool } = require("./postgres-pool");
+const { toSqlString, toSqlNumeric } = require("./postgres-utils");
 
 const selectAll = () => {
   const sql = `select * from load_211`;
-	return pool.query(sql).then((res) => {
-		return res;
-	});
+  return pool.query(sql).then((res) => {
+    return res;
+  });
 };
 
 const insert = (row) => {
@@ -27,10 +27,10 @@ const insert = (row) => {
     site_name,
     site_phones,
     site_services,
-    site_url
-	} = row;
+    site_url,
+  } = row;
 
-	const sql = `insert into load_211 (
+  const sql = `insert into load_211 (
     agency_description,
     agency_id,
     agency_name,
@@ -71,13 +71,13 @@ const insert = (row) => {
       ${site_url}
     )`;
 
-	return pool.query(sql).catch((err) => {
-		msg = err.message;
-		console.log(msg);
-	});
+  return pool.query(sql).catch((err) => {
+    msg = err.message;
+    console.log(msg);
+  });
 };
 
 module.exports = {
-	selectAll,
-	insert
+  selectAll,
+  insert,
 };

@@ -3,13 +3,13 @@ import { withRouter } from "react-router-dom";
 import { Grid, Typography } from "@material-ui/core";
 import StakeholderListItem from "./StakeholderListItem";
 
-const StakeholderList = props => {
+const StakeholderList = (props) => {
   const { stakeholders } = props;
   return (
     <Grid container spacing={2} style={{ padding: "16px" }}>
       {stakeholders &&
         stakeholders.length > 0 &&
-        stakeholders.map(stakeholder => (
+        stakeholders.map((stakeholder) => (
           <StakeholderListItem key={stakeholder.id} stakeholder={stakeholder} />
         ))}
       {!stakeholders ||

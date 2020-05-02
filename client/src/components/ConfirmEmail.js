@@ -3,7 +3,7 @@ import { Redirect, withRouter } from "react-router-dom";
 import { Card, Button, TextField } from "@material-ui/core";
 import * as accountService from "../services/account-service";
 
-const ConfirmEmail = props => {
+const ConfirmEmail = (props) => {
   const [confirmResult, setConfirmResult] = useState(false);
   const [email, setEmail] = useState("");
   const [emailSent, setEmailSent] = useState(false);
@@ -11,7 +11,7 @@ const ConfirmEmail = props => {
   const setToast = props.setToast;
 
   useEffect(() => {
-    const confirmEmail = async tok => {
+    const confirmEmail = async (tok) => {
       const result = await accountService.confirmRegister(tok);
       setConfirmResult(result);
       if (result.success) {
@@ -24,7 +24,7 @@ const ConfirmEmail = props => {
     }
   }, [token, setToast]);
 
-  const resendConfirmationEmail = async evt => {
+  const resendConfirmationEmail = async (evt) => {
     evt.preventDefault();
     await accountService.resendConfirmationEmail(email);
     setEmailSent(true);
@@ -59,7 +59,7 @@ const ConfirmEmail = props => {
                 type="email"
                 id="email"
                 value={email}
-                onChange={evt => {
+                onChange={(evt) => {
                   setEmail(evt.target.value);
                 }}
               />

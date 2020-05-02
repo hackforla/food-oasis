@@ -1,8 +1,8 @@
-import React from "react"
-import ReactMapGL, { NavigationControl } from "react-map-gl"
-import MarkerPopup from "./MarkerPopup"
-import Marker from "./Marker"
-import { MAPBOX_TOKEN } from "../secrets"
+import React from "react";
+import ReactMapGL, { NavigationControl } from "react-map-gl";
+import MarkerPopup from "./MarkerPopup";
+import Marker from "./Marker";
+import { MAPBOX_TOKEN } from "../secrets";
 import {
   DEFAULT_CATEGORIES,
   FOOD_PANTRY_CATEGORY_ID,
@@ -10,7 +10,7 @@ import {
   MEAL,
   MEAL_PROGRAM_CATEGORY_ID,
   ORGANIZATION_COLORS,
-  PANTRY
+  PANTRY,
 } from "../constants/map";
 import moment from "moment";
 
@@ -22,36 +22,39 @@ const styles = {
     margin: 10,
   },
   navigationControl: { position: "absolute", top: 0, right: 0, margin: 10 },
-}
+};
 
 function Map({
   selectedLatitude = 34.07872,
   selectedLongitude = -118.243328,
   stakeholders,
   categoryIds,
- }) {
+}) {
+  React.useEffect(() => {
+    console.log("map", stakeholders);
+  }, [stakeholders]);
 
-  React.useEffect(() => { console.log("map", stakeholders) }, [stakeholders])
+  const categoryIdsOrDefault = categoryIds.length
+    ? categoryIds
+    : DEFAULT_CATEGORIES;
 
-  const categoryIdsOrDefault = categoryIds.length ? categoryIds : DEFAULT_CATEGORIES
-
-  const [isPopupOpen, setIsPopupOpen] = React.useState(false)
-  const [selectedStakeholder, setSelectedStakeholder] = React.useState(null)
+  const [isPopupOpen, setIsPopupOpen] = React.useState(false);
+  const [selectedStakeholder, setSelectedStakeholder] = React.useState(null);
   const [viewport, setViewport] = React.useState({
     zoom: 10, // TODO: can we dynamically control zoom radius based on selectedDistance?
     latitude: selectedLatitude,
     longitude: selectedLongitude,
-  })
+  });
 
   const handleMarkerClick = (clickedStakeholder) => {
-    setSelectedStakeholder(clickedStakeholder)
-    setIsPopupOpen(true)
-  }
+    setSelectedStakeholder(clickedStakeholder);
+    setIsPopupOpen(true);
+  };
 
   const handleClose = () => {
-    setIsPopupOpen(false)
-    setSelectedStakeholder(null)
-  }
+    setIsPopupOpen(false);
+    setSelectedStakeholder(null);
+  };
 
   return (
     <div>
@@ -70,18 +73,22 @@ function Map({
           stakeholders
             .filter((sh) => sh.latitude && sh.longitude)
             .map((stakeholder, index) => {
-              const isVerified = !!stakeholder.verifiedDate //can we assume it will be a date of some sort?
+              const isVerified = !!stakeholder.verifiedDate; //can we assume it will be a date of some sort?
               /*todo
-              * implement condition based on api data
-              * */
+               * implement condition based on api data
+               * */
 
               const categories = stakeholder.categories.filter(({ id }) => {
-                return categoryIdsOrDefault.includes(id)
-              })
+                return categoryIdsOrDefault.includes(id);
+              });
 
-              console.log(categories)
+              console.log(categories);
 
-              const color = categories.find(({ id }) => id === MEAL_PROGRAM_CATEGORY_ID) ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID] : ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
+              const color = categories.find(
+                ({ id }) => id === MEAL_PROGRAM_CATEGORY_ID
+              )
+                ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
+                : ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID];
               return (
                 <Marker
                   onClick={() => handleMarkerClick(stakeholder)}
@@ -91,14 +98,14 @@ function Map({
                   isVerified={isVerified}
                   color={color}
                 />
-              )
+              );
             })}
         {isPopupOpen && selectedStakeholder && (
           <MarkerPopup entity={selectedStakeholder} handleClose={handleClose} />
         )}
       </ReactMapGL>
     </div>
-  )
+  );
 }
 
-export default Map
+export default Map;

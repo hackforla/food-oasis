@@ -6,7 +6,7 @@ const getLaplFoodResources = async (req, res) => {
   try {
     const response = await scraperLaplFoodResourcesService.selectAll();
     await svc.removeAll();
-    response.forEach(async row => {
+    response.forEach(async (row) => {
       await svc.insert(row);
     });
     res.send(response);
@@ -16,5 +16,5 @@ const getLaplFoodResources = async (req, res) => {
 };
 
 module.exports = {
-  getLaplFoodResources
+  getLaplFoodResources,
 };

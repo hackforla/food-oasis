@@ -8,20 +8,21 @@ import Header from "components/Header";
 import StakeholdersContainer from "components/StakeholdersContainer";
 import VerificationAdmin from "./components/Verification/VerificationAdmin";
 import VerificationDashboard from "./components/Verification/VerificationDashboard";
-import StakeholderEdit from "components/StakeholderEdit";
-import Donate from "components/Donate";
-import Resources from "components/Resources";
-import About from "components/About";
-import Register from "components/Register";
-import Login from "components/Login";
-import ForgotPassword from "components/ForgotPassword";
-import ResetPassword from "components/ResetPassword";
-import Footer from "components/Footer";
-import ConfirmEmail from "components/ConfirmEmail";
-import Faq from "components/Faq";
-import FaqEdit from "components/FaqEdit";
-import FaqAdd from "components/FaqAdd";
-import Home from "containers/Home";
+import SecurityAdminDashboard from "./components/SecurityAdminDashboard/SecurityAdminDashboard";
+import StakeholderEdit from "./components/StakeholderEdit";
+import Donate from "./components/Donate";
+import Resources from "./components/Resources";
+import About from "./components/About";
+import Register from "./components/Register";
+import Login from "./components/Login";
+import ForgotPassword from "./components/ForgotPassword";
+import ResetPassword from "./components/ResetPassword";
+import Footer from "./components/Footer";
+import ConfirmEmail from "./components/ConfirmEmail";
+import Faq from "./components/Faq";
+import FaqEdit from "./components/FaqEdit";
+import FaqAdd from "./components/FaqAdd";
+import Home from "./containers/Home";
 import ResultsContainer from "components/ResultsContainer";
 // Temporarily unused components
 // import Main from 'components/Main';
@@ -179,6 +180,15 @@ function App() {
                   />
                 </div>
               </Route>
+              <Route path="/securityadmindashboard">
+                <div className={classes.verificationAdminWrapper}>
+                  <SecurityAdminDashboard
+                    user={user}
+                    userCoordinates={userCoordinates}
+                  />
+                </div>
+              </Route>
+
               <Route path="/donate">
                 <Donate />
               </Route>

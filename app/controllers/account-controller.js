@@ -68,7 +68,7 @@ const resetPassword = async (req, res) => {
 };
 
 const setPermissions = async (req, res) => {
-  const { userId, permissionName, value } = req.body.name
+  const { userId, permissionName, value } = req.body
   try {
     const response = await accountService.setPermissions(userId, permissionName, value);
     res.send(response);

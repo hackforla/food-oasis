@@ -102,6 +102,16 @@ export default function SecurityTable(props) {
 }
 
 SecurityTable.prototype = {
-  accounts: PropTypes.array,
+  accounts: PropTypes.arrayOf(PropTypes.shape({
+    dateCreated: PropTypes.string,
+    email: PropTypes.string,
+    emailConfirmed: PropTypes.bool,
+    firstName: PropTypes.string,
+    id: PropTypes.number,
+    isAdmin: PropTypes.bool,
+    isDataEntry: PropTypes.bool,
+    isSecurityAdmin: PropTypes.bool,
+    lastName: PropTypes.string
+  })),
   handlePermissionChange: PropTypes.func
 }

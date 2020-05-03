@@ -54,8 +54,8 @@ export const logout = async () => {
 
 // This is used to updated login table with the specified permissionName column set to value
 // i.e. is_admin, is_security_admin, is_data_entry
-export const setPermissions = async (userId, permissionValue, value) => {
-  const body = { userId, permissionValue, value };
+export const setPermissions = async (userId, permissionName, value) => {
+  const body = { userId, permissionName, value };
   try {
     const response = await axios.post(baseUrl + "/setPermissions", body);
     return response.data;

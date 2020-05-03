@@ -361,7 +361,7 @@ async function hashPassword(user) {
 }
 
 // Update login table with the specified permissionName column set to value
-const setPermissions = async ({ userId, permissionName, value }) => {
+const setPermissions = async (userId, permissionName, value) => {
   const user = await selectById(userId);
   if (!user) {
     return {
@@ -391,7 +391,7 @@ const setPermissions = async ({ userId, permissionName, value }) => {
     return {
       success: true,
       code: "UPDATE_SUCCESS",
-      reason: `${permissionName} successfully set to ${booleanValue}`,
+      reason: `${permissionName} successfully set to ${booleanValue} for ${userId}`,
     };
   } catch (err) {
     return {

@@ -9,7 +9,8 @@
     "heroku-postbuild": "cd client && npm i && npm run build",
     "server": "nodemon server.js",
     "client": "npm run start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "format": "prettier --write  \"**/*.js\" "
   },
   "author": "John Darragh",
   "license": "MIT",
@@ -36,6 +37,7 @@
     "uuid": "^3.3.3"
   },
   "devDependencies": {
-    "concurrently": "^5.0.0"
+    "concurrently": "^5.0.0",
+    "prettier": "2.0.5"
   }
 }

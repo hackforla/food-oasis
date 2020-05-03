@@ -5,34 +5,34 @@ const selectAll = () => {
     select id, question, answer, language, identifier
     from faq
   `;
-  return pool.query(sql, []).then(res => {
+  return pool.query(sql, []).then((res) => {
     return res.rows;
   });
 };
 
 // Identifier Table in DB follows `#:identifier` scheme, for both identifying and also ordering
-const selectAllByLanguage = language => {
+const selectAllByLanguage = (language) => {
   const sql = `
     select id, question, answer, language, identifier
     from faq
     where language = $1
     order by identifier desc
   `;
-  return pool.query(sql, [language]).then(res => {
+  return pool.query(sql, [language]).then((res) => {
     return res.rows;
   });
 };
 
-const selectById = id => {
+const selectById = (id) => {
   const sql = `select id, question, answer, language, identifier from faq where id = $1`;
-  return pool.query(sql, [id]).then(res => {
+  return pool.query(sql, [id]).then((res) => {
     return res.rows[0];
   });
 };
 
-const selectByIdentifier = identifier => {
+const selectByIdentifier = (identifier) => {
   const sql = `select id, question, answer, language, identifier from faq where identifier = $1`;
-  return pool.query(sql, [identifier]).then(res => {
+  return pool.query(sql, [identifier]).then((res) => {
     return res.rows;
   });
 };
@@ -43,12 +43,14 @@ ex. [{question: "", answer: "", language: "en", identifier: "example"}, {questio
 Do 2 requests to POST /api/faqs/
 */
 
-const insert = model => {
+const insert = (model) => {
   const { question, answer, language, identifier } = model;
   const sql = `insert into faq (question, answer, language, identifier) values ($1, $2, $3, $4) returning id`;
-  return pool.query(sql, [question, answer, language, identifier]).then(res => {
-    return res.rows[0];
-  });
+  return pool
+    .query(sql, [question, answer, language, identifier])
+    .then((res) => {
+      return res.rows[0];
+    });
 };
 
 /* 
@@ -65,7 +67,7 @@ const update = (id, model) => {
   `;
   return pool
     .query(sql, [question, answer, language, identifier, id])
-    .then(res => {
+    .then((res) => {
       return res.rows[0];
     });
 };
@@ -75,9 +77,9 @@ Deletes all FAQs from identifier
 ex. {identifier: ""}
 Verify that admin wants to delete FAQs, as it will delete all languages for FAQ.
 */
-const remove = identifier => {
+const remove = (identifier) => {
   const sql = `delete from faq where identifier = $1`;
-  return pool.query(sql, [identifier]).then(res => {
+  return pool.query(sql, [identifier]).then((res) => {
     return res;
   });
 };
@@ -89,5 +91,5 @@ module.exports = {
   selectByIdentifier,
   insert,
   update,
-  remove
+  remove,
 };

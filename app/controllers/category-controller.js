@@ -3,10 +3,10 @@ const categoryService = require("../services/category-service");
 const getAll = (req, res) => {
   categoryService
     .selectAll()
-    .then(resp => {
+    .then((resp) => {
       res.send(resp);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status("404").json({ error: err.toString() });
     });
 };
@@ -15,10 +15,10 @@ const getById = (req, res) => {
   const { id } = req.params;
   categoryService
     .selectById(id)
-    .then(resp => {
+    .then((resp) => {
       res.send(resp);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status("500").json({ error: err.toString() });
     });
 };
@@ -26,10 +26,10 @@ const getById = (req, res) => {
 const post = (req, res) => {
   categoryService
     .insert(req.body)
-    .then(resp => {
+    .then((resp) => {
       res.json(resp);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status("500").json({ error: err.toString() });
     });
 };
@@ -37,10 +37,10 @@ const post = (req, res) => {
 const put = (req, res) => {
   categoryService
     .update(req.body)
-    .then(resp => {
+    .then((resp) => {
       res.sendStatus(200);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status("500").json({ error: err.toString() });
     });
 };
@@ -49,10 +49,10 @@ const remove = (req, res) => {
   const { id } = req.params;
   categoryService
     .remove(id)
-    .then(resp => {
+    .then((resp) => {
       res.sendStatus(200);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status("500").json({ error: err.toString() });
     });
 };
@@ -62,5 +62,5 @@ module.exports = {
   getById,
   post,
   put,
-  remove
+  remove,
 };

@@ -1,15 +1,15 @@
-import React from 'react';
-import { Box, Typography } from '@material-ui/core';
-import Copyright from './Copyright';
-import { makeStyles } from '@material-ui/core/styles';
-import useLocationHook from 'hooks/useLocationHook';
+import React from "react";
+import { Box, Typography } from "@material-ui/core";
+import Copyright from "./Copyright";
+import { makeStyles } from "@material-ui/core/styles";
+import useLocationHook from "hooks/useLocationHook";
 
 const useStyles = makeStyles((theme) => ({
   footer: {
-    height: '50px',
-    backgroundColor: '#FAEBD7',
+    height: "50px",
+    backgroundColor: "#FAEBD7",
     flexGrow: 0,
-    padding: '0.75em',
+    padding: "0.75em",
   },
 }));
 
@@ -26,9 +26,9 @@ const Footer = (props) => {
       <Typography variant="body2" color="textSecondary" align="center">
         {userCoordinates && userCoordinates.latitude
           ? `My location - Lat: ${userCoordinates.latitude.toFixed(
-              6,
+              6
             )} Lon: ${userCoordinates.longitude.toFixed(6)}`
-          : 'Enable location in your browser to use location-dependent features'}
+          : "Enable location in your browser to use location-dependent features"}
       </Typography>
     </Box>
   );

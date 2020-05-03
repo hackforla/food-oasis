@@ -15,26 +15,26 @@ import {
   FormControlLabel,
   Typography,
   RadioGroup,
-  Radio
+  Radio,
 } from "@material-ui/core";
 import { SearchButton } from "./Buttons";
 import SwitchViewsButton from "./SwitchViewsButton";
 import LocationAutocomplete from "./LocationAutocomplete";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   card: {
-    margin: "0px"
+    margin: "0px",
   },
   chips: {
     display: "flex",
-    flexWrap: "wrap"
+    flexWrap: "wrap",
   },
   chip: {
-    margin: 2
+    margin: 2,
   },
   formLabel: {
-    margin: "1rem 0 .5rem"
-  }
+    margin: "1rem 0 .5rem",
+  },
 }));
 
 const closeTo = (lat1, lon1, lat2, lon2) => {
@@ -83,7 +83,7 @@ function StakeholderSearch(props) {
 
   const classes = useStyles();
 
-  const handleRadioChange = evt => {
+  const handleRadioChange = (evt) => {
     const val = evt.target.value;
     setUseMyLocation(val);
     if (val === "my") {
@@ -97,7 +97,7 @@ function StakeholderSearch(props) {
     }
   };
 
-  const setLocation = location => {
+  const setLocation = (location) => {
     setCustomLatitude(location.location.y);
     setCustomLongitude(location.location.x);
     setCustomLocationName(location.address);
@@ -143,7 +143,7 @@ function StakeholderSearch(props) {
                 variant="outlined"
                 fullWidth
                 id="name"
-                onChange={event => {
+                onChange={(event) => {
                   setSearchString(event.target.value);
                 }}
               />
@@ -158,14 +158,14 @@ function StakeholderSearch(props) {
                 fullWidth
                 variant="outlined"
                 value={selectedCategories}
-                onChange={event => {
+                onChange={(event) => {
                   setSelectedCategories(event.target.value);
                 }}
                 className={classes.chips}
                 input={<Input id="select-categories" />}
-                renderValue={selected => (
+                renderValue={(selected) => (
                   <div className={classes.chips}>
-                    {selected.map(category => (
+                    {selected.map((category) => (
                       <Chip
                         key={category.id}
                         label={category.name}
@@ -175,12 +175,12 @@ function StakeholderSearch(props) {
                   </div>
                 )}
               >
-                {props.categories.map(category => (
+                {props.categories.map((category) => (
                   <MenuItem key={category.id} value={category}>
                     <Checkbox
                       checked={
                         selectedCategories
-                          .map(cat => cat.id)
+                          .map((cat) => cat.id)
                           .indexOf(category.id) > -1
                       }
                     />
@@ -198,7 +198,7 @@ function StakeholderSearch(props) {
                 name="select-distance"
                 variant="outlined"
                 value={selectedDistance}
-                onChange={event => {
+                onChange={(event) => {
                   setSelectedDistance(event.target.value);
                 }}
                 input={<Input id="select-distance" />}

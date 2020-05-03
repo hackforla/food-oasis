@@ -5,10 +5,10 @@ import { List, ListItem, Typography } from "@material-ui/core";
 import { EditButton } from "../components/Buttons";
 import SwitchViewsButton from "./SwitchViewsButton";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   card: {
-    margin: "0px"
-  }
+    margin: "0px",
+  },
 }));
 
 function StakeholderCriteria({
@@ -20,7 +20,7 @@ function StakeholderCriteria({
   searchString,
   isMapView,
   switchResultsView,
-  openSearchPanel
+  openSearchPanel,
 }) {
   const classes = useStyles();
   if (!selectedCategories) return null;
@@ -46,7 +46,7 @@ function StakeholderCriteria({
             <List dense={true}>
               <ListItem>
                 <Typography>
-                  {selectedCategories.map(cat => cat.name).join(", ")}
+                  {selectedCategories.map((cat) => cat.name).join(", ")}
                 </Typography>
               </ListItem>
               <ListItem>

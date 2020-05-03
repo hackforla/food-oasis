@@ -7,7 +7,7 @@ passport.use(localStrategy());
 // This module hooks up passport to our authentication service
 const authenticate = passport.authenticate("local", {
   session: false,
-  failureFlash: true
+  failureFlash: true,
 });
 
 module.exports = { authenticate };
@@ -15,7 +15,7 @@ module.exports = { authenticate };
 function localStrategy() {
   return new Strategy(
     { usernameField: "email", passwordField: "password" },
-    async function(username, password, done) {
+    async function (username, password, done) {
       try {
         const response = await accountService.authenticate(username, password);
         if (response.isSuccess) {

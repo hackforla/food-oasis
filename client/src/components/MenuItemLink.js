@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/styles";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -29,3 +30,10 @@ export default function MenuItemLink({ to, text, userSection, onClick }) {
     </li>
   );
 }
+
+MenuItemLink.propTypes = {
+  to: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
+  userSection: PropTypes.bool,
+  onClick: PropTypes.func,
+};

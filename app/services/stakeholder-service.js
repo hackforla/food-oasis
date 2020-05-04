@@ -403,7 +403,7 @@ const insert = async (model) => {
       donation_accept_frozen, donation_accept_refrigerated,
       donation_accept_perishable, donation_schedule,
       donation_delivery_instructions, donation_notes, covid_notes,
-      category_notes, eligiblity_notes, food_types, languages) 
+      category_notes, eligibility_notes, food_types, languages)
     values (
       ${toSqlString(name)}, ${toSqlString(address1)}, ${toSqlString(address2)}, 
       ${toSqlString(city)}, ${toSqlString(state)}, ${toSqlString(zip)}, 
@@ -597,19 +597,36 @@ const update = async (model) => {
     languages,
   } = model;
 
-  const hoursSqlDelete = `delete from stakeholder_schedule where stakeholder_id = ${id}`;
-
   let hoursSqlValues = hours.length
     ? hours
         .reduce((acc, cur) => {
-          return (acc += `(${id}, '${cur.dayOfWeek}', '${cur.open}', '${cur.close}', ${cur.weekOfMonth}), `);
+          return (acc += `'(${cur.weekOfMonth},${cur.dayOfWeek},${cur.open},${cur.close})', `);
         }, "")
         .slice(0, -2)
-    : null;
+    : '';
+  categories = `ARRAY[` + selectedCategoryIds.join(",") + `]::int[]`;
+  formattedHours = `ARRAY[` + hoursSqlValues + `]::stakeholder_hours[]`;
 
-  const hoursSqlInsert = `insert into stakeholder_schedule 
-    (stakeholder_id, day_of_week, open, close, week_of_month) 
-    values ${hoursSqlValues}`;
+
+  // update_stakeholder_schedule_category is a postgres stored procedure. Source of this stored
+  // procedure is in the repo at db/stored_procs/update_stakeholder_schedule_category.sql.
+  //
+  // Here's an example invocation:
+  // CALL update_stakeholder_schedule_category(4437,                           --stakeholder.id
+  // ARRAY[3,5,7]::int[],                                                      --array of integer category_ids
+  // (ARRAY['(2,Wed,13:02,13:04)', '(3,Thu,07:00,08:00)'])::stakeholder_hours[]); --array of stakeholder_hours
+  // objects, which are defined as a postgres type (see repo file for more detail on this type).
+  //
+  // Currently, it updates stakeholder category and schedule by deleting the existing category/schedule rows,
+  // and creating new ones.
+  const invokeSprocSql = `CALL update_stakeholder_schedule_category(${id}, ${categories}, ${formattedHours})`;
+  try {
+    await pool.query(invokeSprocSql);
+  } catch(e) {
+    console.error(e);
+    // If this fails we probably shouldn't update anything
+    return;
+  }
 
   const sql = `
     update stakeholder set
@@ -675,31 +692,6 @@ const update = async (model) => {
     where id = ${id}`;
   const result = await pool.query(sql);
 
-  const sqlDelete = `delete from stakeholder_category 
-    where stakeholder_id = ${id}`;
-  await pool.query(sqlDelete);
-
-  for (let i = 0; i < selectedCategoryIds.length; i++) {
-    const categoryId = selectedCategoryIds[i];
-    const sqlInsert = `insert into stakeholder_category 
-      (stakeholder_id, category_id) 
-      values (${id}, ${categoryId})`;
-    await pool.query(sqlInsert);
-  }
-
-  pool.query(hoursSqlDelete, (deleteErr, deleteRes) => {
-    if (deleteErr) {
-      console.log("sql delete error", deleteErr);
-    } else {
-      if (hoursSqlValues) {
-        pool.query(hoursSqlInsert, (insertErr, insertRes) => {
-          if (insertErr) {
-            console.log("sql insert error", insertErr);
-          }
-        });
-      }
-    }
-  });
 };
 
 const remove = (id) => {

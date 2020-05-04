@@ -21,12 +21,10 @@
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
-      "prettier --config .prettierrc.yml --write",
-      "git add"
+      "prettier --config .prettierrc.yml --write"
     ],
     "**/*.{js,jsx}": [
-      "eslint -c .eslintrc.js --ignore-path .eslintignore --fix",
-      "git add"
+      "eslint -c .eslintrc.js --ignore-path .eslintignore --fix"
     ]
   },
   "author": "John Darragh",

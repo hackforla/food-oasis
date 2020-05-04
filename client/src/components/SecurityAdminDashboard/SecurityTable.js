@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -9,7 +10,6 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
 import * as accountService from "../../services/account-service";
-import PropTypes from "prop-types";
 
 const useStyles = makeStyles({
   table: {
@@ -121,13 +121,13 @@ export default function SecurityTable(props) {
 SecurityTable.propTypes = {
   accounts: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number,
-      email: PropTypes.string,
-      firstName: PropTypes.string,
-      lastName: PropTypes.string,
-      isAdmin: PropTypes.bool,
-      isSecurityAdmin: PropTypes.bool,
-      isDataEntry: PropTypes.bool,
+      id: PropTypes.number.isRequired,
+      email: PropTypes.string.isRequired,
+      firstName: PropTypes.string.isRequired,
+      lastName: PropTypes.string.isRequired,
+      isAdmin: PropTypes.bool.isRequired,
+      isSecurityAdmin: PropTypes.bool.isRequired,
+      isDataEntry: PropTypes.bool.isRequired,
     }).isRequired
   ),
   handlePermissionChange: PropTypes.func.isRequired,

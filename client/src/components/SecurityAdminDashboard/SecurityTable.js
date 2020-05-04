@@ -31,24 +31,24 @@ export default function SecurityTable(props) {
       props.accounts.map(async (each) => {
         if (userId === each.id) {
           let check = e.target.checked
-          await accountService.setPermissions(each.id, "is_security_admin", check)
-          await props.handlePermissionChange(each.id, "is_security_admin", check)
+          await accountService.setPermissions(each.id, "isSecurityAdmin", check)
+          await props.handlePermissionChange(each.id, "isSecurityAdmin", check)
         }
       })
     } else if (securityOrAdminOrDataEntry === "admin") {
       props.accounts.map(async (each) => {
         if (userId === each.id) {
           let check = e.target.checked
-          await accountService.setPermissions(each.id, "is_admin", check)
-          await props.handlePermissionChange(each.id, "is_admin", check)
+          await accountService.setPermissions(each.id, "isAdmin", check)
+          await props.handlePermissionChange(each.id, "isAdmin", check)
         }
       })
     } else if (securityOrAdminOrDataEntry === "dataEntry") {
       props.accounts.map(async (each) => {
         if (userId === each.id) {
           let check = e.target.checked
-          await accountService.setPermissions(each.id, "is_data_entry", check)
-          await props.handlePermissionChange(each.id, "is_data_entry", check)
+          await accountService.setPermissions(each.id, "isDataEntry", check)
+          await props.handlePermissionChange(each.id, "isDataEntry", check)
         }
       })
     }

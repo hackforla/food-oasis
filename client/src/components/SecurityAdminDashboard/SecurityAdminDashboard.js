@@ -20,6 +20,7 @@ function SecurityAdminDashboard() {
   const [acc, setAcc] = useState([])
   const [accAgain, setAccAgain] = useState([])
   const [search, setSearch] = useState("")
+  const [error, setError] = useState("")
 
   const classes = useStyles();
 
@@ -29,11 +30,13 @@ function SecurityAdminDashboard() {
 
   useEffect(() => {
     if (search.length === 0) {
+      setError("")
       setAcc(accAgain)
     } else {
       const result = acc.filter((elem, i) => {
         return elem.firstName.toLowerCase().includes(search) || elem.lastName.toLowerCase().includes(search)
       })
+      result.length === 0 ? setError("User Does not Exist") : 
       setAcc(result)
     }
   }, [search])
@@ -56,17 +59,19 @@ function SecurityAdminDashboard() {
       return row.id === userId
     })
     if (account) {
-      if (permission === "is_admin") {
+      if (permission === "isAdmin") {
         account["isAdmin"] = value
       }
-      else if (permission === "is_security_admin") {
+      else if (permission === "isSecurityAdmin") {
         account["isSecurityAdmin"] = value
       } 
-      else if (permission === "is_data_entry") {
+      else if (permission === "isDataEntry") {
         account["isDataEntry"] = value
       }
     }
-    setAcc([...acc, {...account} ])
+    let newAccounts = [...acc, {...account}]
+    const unique = [...new Map(newAccounts.map(item => [item.id, item])).values()]
+    setAcc(unique)
   }
 
   return (
@@ -82,7 +87,11 @@ function SecurityAdminDashboard() {
         onChange={handleChange}
         value={search}
       />
-      <SecurityTable accounts={acc} handlePermissionChange={handlePermissionChange} />
+      {
+        error === "User Does not Exist"
+          ? <Typography variant="h6" style={{color: "red", marginTop: 18}}>{error}</Typography>
+          : <SecurityTable accounts={acc} handlePermissionChange={handlePermissionChange} />
+      }
     </Container>
   )
 }

@@ -226,9 +226,9 @@ const SearchCriteria = ({
           </Grid>
           <Grid item xs={6} sm={2}>
             <RadioTrueFalseEither
-              label="Verified"
-              name="isVerified"
-              value={criteria.isVerified || "either"}
+              label="Submitted"
+              name="isSubmitted"
+              value={criteria.isSubmitted || "either"}
               onChange={setCriterion}
             />
           </Grid>

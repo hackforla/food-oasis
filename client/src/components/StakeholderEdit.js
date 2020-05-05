@@ -146,8 +146,8 @@ const StakeholderEdit = (props) => {
     createdUser: "",
     modifiedDate: "",
     modifiedUser: "",
-    verifiedDate: "",
-    verifiedUser: "",
+    submittedDate: "",
+    submittedUser: "",
     approvedDate: "",
     approvedUser: "",
     selectedCategoryIds: [],
@@ -1509,19 +1509,19 @@ const StakeholderEdit = (props) => {
                     <div className={classes.workflowRow}>
                       <div className={classes.workflowColumn1}>
                         <Typography className={classes.workflowText}>
-                          Verified:
+                          Submitted:
                         </Typography>
                       </div>
                       <div className={classes.workflowColumn2}>
                         <Typography className={classes.workflowText}>
-                          {values.verifiedUser}
+                          {values.submittedUser}
                         </Typography>
                       </div>
                       <div className={classes.workflowColumn3}>
                         <Typography className={classes.workflowText}>
-                          {!values.verifiedDate
+                          {!values.submittedDate
                             ? null
-                            : moment(values.verifiedDate).format(DATE_FORMAT)}
+                            : moment(values.submittedDate).format(DATE_FORMAT)}
                         </Typography>
                       </div>
                       <div
@@ -1544,25 +1544,25 @@ const StakeholderEdit = (props) => {
                                       margin="normal"
                                       name="inactive"
                                       label="Verify"
-                                      value={!!values.verifiedDate}
-                                      checked={!!values.verifiedDate}
+                                      value={!!values.submittedDate}
+                                      checked={!!values.submittedDate}
                                       onChange={() => {
-                                        const setVerified = !!!values.verifiedDate;
+                                        const setSubmitted = !!!values.submittedDate;
                                         setFieldValue(
-                                          "verifiedDate",
-                                          setVerified ? moment() : ""
+                                          "submittedDate",
+                                          setSubmitted ? moment() : ""
                                         );
                                         setFieldValue(
-                                          "verifiedUser",
-                                          setVerified
+                                          "submittedUser",
+                                          setSubmitted
                                             ? user.firstName +
                                                 " " +
                                                 user.lastName
                                             : ""
                                         );
                                         setFieldValue(
-                                          "verifiedLoginId",
-                                          setVerified ? user.id : ""
+                                          "submittedLoginId",
+                                          setSubmitted ? user.id : ""
                                         );
                                       }}
                                       onBlur={handleBlur}
@@ -1678,9 +1678,9 @@ const StakeholderEdit = (props) => {
                                           );
                                           if (set) {
                                             setFieldValue("approvedDate", "");
-                                            setFieldValue("verifiedDate", "");
+                                            setFieldValue("submittedDate", "");
                                             setFieldValue(
-                                              "verifiedLoginid",
+                                              "submittedLoginid",
                                               ""
                                             );
                                           }

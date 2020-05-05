@@ -21,7 +21,7 @@ const search = async ({
   distance,
   inactive,
   isAssigned,
-  isVerified,
+  isSubmitted,
   isApproved,
   isRejected,
   isClaimed,
@@ -52,7 +52,7 @@ const search = async ({
       )) as categories,
       to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as created_date, s.created_login_id, 
       to_char(s.modified_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as modified_date, s.modified_login_id,
-      to_char(s.verified_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as verified_date, s.verified_login_id,
+      to_char(s.submitted_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as submitted_date, s.submitted_login_id,
       to_char(s.approved_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as approved_date, 
       to_char(s.rejected_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as rejected_date, s.reviewed_login_id,
       to_char(s.assigned_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')as assigned_date, s.assigned_login_id,
@@ -60,7 +60,7 @@ const search = async ({
       s.requirements, s.admin_notes, s.inactive,
       L1.first_name || ' ' || L1.last_name as created_user,
       L2.first_name || ' ' || L2.last_name as modified_user,
-      L3.first_name || ' ' || L3.last_name as verified_user,
+      L3.first_name || ' ' || L3.last_name as submitted_user,
       L4.first_name || ' ' || L4.last_name as reviewed_user,
       L5.first_name || ' ' || L5.last_name as assigned_user,
       L6.first_name || ' ' || L6.last_name as claimed_user,
@@ -78,7 +78,7 @@ const search = async ({
     from stakeholder s
     left join login L1 on s.created_login_id = L1.id
     left join login L2 on s.modified_login_id = L2.id
-    left join login L3 on s.verified_login_id = L3.id
+    left join login L3 on s.submitted_login_id = L3.id
     left join login L4 on s.reviewed_login_id = L4.id
     left join login L5 on s.assigned_login_id = L5.id
     left join login L6 on s.claimed_login_id = L6.id
@@ -89,7 +89,7 @@ const search = async ({
         : ""
     }
     ${trueFalseEitherClause("s.assigned_date", isAssigned)}
-    ${trueFalseEitherClause("s.verified_date", isVerified)}
+    ${trueFalseEitherClause("s.submitted_date", isSubmitted)}
     ${trueFalseEitherClause("s.approved_date", isApproved)}
     ${trueFalseEitherClause("s.rejected_date", isRejected)}
     ${trueFalseEitherClause("s.claimed_date", isClaimed)}
@@ -119,8 +119,8 @@ const search = async ({
       createdLoginId: row.created_login_id,
       modifiedDate: row.modified_date,
       modifiedLoginId: row.modified_login_id,
-      verifiedDate: row.verified_date,
-      verifiedLoginId: row.verified_login_id,
+      submittedDate: row.submitted_date,
+      submittedLoginId: row.submitted_login_id,
       assignedDate: row.assigned_date,
       assignedLoginId: row.assigned_login_id,
       approvedDate: row.approved_date,
@@ -133,7 +133,7 @@ const search = async ({
       inactive: row.inactive,
       createdUser: row.created_user || "",
       modifiedUser: row.modified_user || "",
-      verifiedUser: row.verified_user || "",
+      submittedUser: row.submitted_user || "",
       reviewedUser: row.reviewed_user || "",
       assignedUser: row.assigned_user || "",
       claimedUser: row.claimed_user || "",
@@ -219,7 +219,7 @@ const selectById = async (id) => {
       )) as categories,
       to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as created_date, s.created_login_id, 
       to_char(s.modified_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as modified_date, s.modified_login_id,
-      to_char(s.verified_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as verified_date, s.verified_login_id,
+      to_char(s.submitted_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as submitted_date, s.submitted_login_id,
       to_char(s.approved_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as approved_date, 
       to_char(s.rejected_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as rejected_date, s.reviewed_login_id,
       to_char(s.assigned_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')as assigned_date, s.assigned_login_id,
@@ -227,7 +227,7 @@ const selectById = async (id) => {
       s.requirements::varchar, s.admin_notes, s.inactive,
       L1.first_name || ' ' || L1.last_name as created_user,
       L2.first_name || ' ' || L2.last_name as modified_user,
-      L3.first_name || ' ' || L3.last_name as verified_user,
+      L3.first_name || ' ' || L3.last_name as submitted_user,
       L4.first_name || ' ' || L4.last_name as reviewed_user,
       L5.first_name || ' ' || L5.last_name as assigned_user,
       L6.first_name || ' ' || L6.last_name as claimed_user,
@@ -245,7 +245,7 @@ const selectById = async (id) => {
     from stakeholder s 
     left join login L1 on s.created_login_id = L1.id
     left join login L2 on s.modified_login_id = L2.id
-    left join login L3 on s.verified_login_id = L3.id
+    left join login L3 on s.submitted_login_id = L3.id
     left join login L4 on s.reviewed_login_id = L4.id
     left join login L5 on s.assigned_login_id = L5.id
     left join login L6 on s.claimed_login_id = L6.id
@@ -269,8 +269,8 @@ const selectById = async (id) => {
     createdLoginId: row.created_login_id,
     modifiedDate: row.modified_date,
     modifiedLoginId: row.modified_login_id,
-    verifiedDate: row.verified_date,
-    verifiedLoginId: row.verified_login_id,
+    submittedDate: row.submitted_date,
+    submittedLoginId: row.submitted_login_id,
     approvedDate: row.approved_date,
     rejectedDate: row.rejected_date,
     reviewedLoginId: row.approved_login_id,
@@ -283,7 +283,7 @@ const selectById = async (id) => {
     inactive: row.inactive,
     createdUser: row.created_user || "",
     modifiedUser: row.modified_user || "",
-    verifiedUser: row.verified_user || "",
+    submittedUser: row.submitted_user || "",
     reviewedUser: row.reviewed_user || "",
     assignedUser: row.assigned_user || "",
     claimedUser: row.claimed_user || "",
@@ -356,8 +356,8 @@ const insert = async (model) => {
     linkedin,
     loginId,
     description,
-    verifiedDate,
-    verifiedLoginId,
+    submittedDate,
+    submittedLoginId,
     approvedDate,
     rejectedDate,
     reviewedLoginId,
@@ -394,7 +394,7 @@ const insert = async (model) => {
       website, inactive, notes, requirements, admin_notes, created_login_id,
       parent_organization, physical_access, email,
       items, services, facebook, twitter, pinterest, linkedin, description,
-      verified_date, verified_login_id, approved_date, rejected_date, reviewed_login_id,
+      submitted_date, submitted_login_id, approved_date, rejected_date, reviewed_login_id,
       assigned_date, assigned_login_id, claimed_date, claimed_login_id,
       review_notes, instagram, admin_contact_name,
       admin_contact_phone, admin_contact_email,
@@ -417,7 +417,7 @@ const insert = async (model) => {
       ${toSqlString(services)}, ${toSqlString(facebook)},
       ${toSqlString(twitter)}, ${toSqlString(pinterest)},
       ${toSqlString(linkedin)}, ${toSqlString(description)},
-      ${toSqlTimestamp(verifiedDate)}, ${toSqlNumeric(verifiedLoginId)},
+      ${toSqlTimestamp(submittedDate)}, ${toSqlNumeric(submittedLoginId)},
       ${toSqlTimestamp(approvedDate)}, ${toSqlTimestamp(rejectedDate)}, 
       ${toSqlNumeric(reviewedLoginId)},
       ${toSqlTimestamp(assignedDate)}, ${toSqlNumeric(assignedLoginId)},
@@ -479,13 +479,24 @@ const insert = async (model) => {
   }
 };
 
+const submit = async (model) => {
+  const { id, loginId, setSubmitted } = model;
+  const sql = `update stakeholder set
+               submitted_login_id = ${
+                 setSubmitted ? toSqlNumeric(loginId) : "null"
+               },
+               submitted_date = ${setSubmitted ? "CURRENT_TIMESTAMP" : "null"}
+              where id = ${id}`;
+  const result = await pool.query(sql);
+};
+
 const verify = async (model) => {
   const { id, loginId, setVerified } = model;
   const sql = `update stakeholder set
-               verified_login_id = ${
+               submitted_login_id = ${
                  setVerified ? toSqlNumeric(loginId) : "null"
                },
-               verified_date = ${setVerified ? "CURRENT_TIMESTAMP" : "null"}
+               submitted_date = ${setVerified ? "CURRENT_TIMESTAMP" : "null"}
               where id = ${id}`;
   const result = await pool.query(sql);
 };
@@ -566,8 +577,8 @@ const update = async (model) => {
     linkedin,
     loginId,
     description,
-    verifiedDate,
-    verifiedLoginId,
+    submittedDate,
+    submittedLoginId,
     approvedDate,
     rejectedDate,
     reviewedLoginId,
@@ -603,10 +614,9 @@ const update = async (model) => {
           return (acc += `'(${cur.weekOfMonth},${cur.dayOfWeek},${cur.open},${cur.close})', `);
         }, "")
         .slice(0, -2)
-    : '';
+    : "";
   categories = `ARRAY[` + selectedCategoryIds.join(",") + `]::int[]`;
   formattedHours = `ARRAY[` + hoursSqlValues + `]::stakeholder_hours[]`;
-
 
   // update_stakeholder_schedule_category is a postgres stored procedure. Source of this stored
   // procedure is in the repo at db/stored_procs/update_stakeholder_schedule_category.sql.
@@ -622,7 +632,7 @@ const update = async (model) => {
   const invokeSprocSql = `CALL update_stakeholder_schedule_category(${id}, ${categories}, ${formattedHours})`;
   try {
     await pool.query(invokeSprocSql);
-  } catch(e) {
+  } catch (e) {
     console.error(e);
     // If this fails we probably shouldn't update anything
     return;
@@ -656,8 +666,8 @@ const update = async (model) => {
       description = ${toSqlString(description)},
       modified_login_id = ${toSqlNumeric(loginId)},
       modified_date = CURRENT_TIMESTAMP,
-      verified_date = ${toSqlTimestamp(verifiedDate)}, 
-      verified_login_id = ${toSqlNumeric(verifiedLoginId)},
+      submitted_date = ${toSqlTimestamp(submittedDate)}, 
+      submitted_login_id = ${toSqlNumeric(submittedLoginId)},
       approved_date = ${toSqlTimestamp(approvedDate)}, 
       rejected_date = ${toSqlTimestamp(rejectedDate)}, 
       reviewed_login_id = ${toSqlNumeric(reviewedLoginId)},
@@ -691,7 +701,6 @@ const update = async (model) => {
       languages = ${toSqlString(languages)}
     where id = ${id}`;
   const result = await pool.query(sql);
-
 };
 
 const remove = (id) => {
@@ -707,6 +716,7 @@ module.exports = {
   insert,
   update,
   remove,
+  submit,
   verify,
   assign,
   claim,

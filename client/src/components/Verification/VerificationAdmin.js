@@ -83,7 +83,7 @@ const defaultCriteria = {
   categoryIds: [],
   isInactive: "either",
   isAssigned: "either",
-  isVerified: "either",
+  isSubmitted: "either",
   isApproved: "either",
   isRejected: "either",
   isClaimed: "either",

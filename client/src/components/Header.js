@@ -1,5 +1,5 @@
 import React from 'react'
-import PropTypes from 'react-proptypes'
+import PropTypes from "prop-types"
 import useLocationHook from 'hooks/useLocationHook'
 import Menu from './Menu'
 import logo from 'images/fola.svg'

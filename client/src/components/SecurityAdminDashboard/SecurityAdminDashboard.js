@@ -20,6 +20,7 @@ const SecurityAdminDashboard = () => {
   const [accounts, setAccounts] = useState([]);
   const [filteredAccounts, setFilteredAccounts] = useState([]);
   const [search, setSearch] = useState("");
+  const [error, setError] = useState("")
 
   const classes = useStyles();
 
@@ -38,6 +39,7 @@ const SecurityAdminDashboard = () => {
   useEffect(() => {
     if (accounts.length === 0) return;
     if (search.length === 0) {
+      setError("")
       setFilteredAccounts(accounts);
     } else {
       const result = accounts.filter((account) => {
@@ -47,6 +49,7 @@ const SecurityAdminDashboard = () => {
           account.email.toLowerCase().includes(search)
         );
       });
+      result.length === 0 ? setError("User does not Exist") : 
       setFilteredAccounts(result);
     }
   }, [search, accounts]);
@@ -68,7 +71,9 @@ const SecurityAdminDashboard = () => {
         account["isDataEntry"] = value;
       }
     }
-    setFilteredAccounts([...filteredAccounts, { ...account }]);
+    let filtered = [...filteredAccounts, { ...account }];
+    const unique = [...new Map(filtered.map(item => [item.id, item])).values()]
+    setFilteredAccounts(unique)
   };
 
   return (
@@ -84,10 +89,14 @@ const SecurityAdminDashboard = () => {
         onChange={handleChange}
         value={search}
       />
-      <SecurityTable
-        accounts={filteredAccounts}
-        handlePermissionChange={handlePermissionChange}
-      />
+      {
+        error === "User does not Exist"
+          ? <Typography variant="h6" color="error">{error}</Typography>
+          : <SecurityTable
+            accounts={filteredAccounts}
+            handlePermissionChange={handlePermissionChange}
+          />
+      }
     </Container>
   );
 };

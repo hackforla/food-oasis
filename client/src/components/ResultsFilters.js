@@ -222,10 +222,11 @@ const ResultsFilters = ({
                 : DEFAULT_CATEGORIES,
               isInactive: "no",
               isAssigned: "either",
-              // isApproved is the search criteria for verification, but
-              // will be re-named later.
               isApproved: "either",
-              isVerified: isVerifiedSelected ? "true" : "either",
+              // Temporarily have this filter show the organizations
+              // that are submitted, instead of verified, since we
+              // have very few verified/approved organizations.
+              isSubmitted: isVerifiedSelected ? "true" : "either",
               isRejected: "either",
               isClaimed: "either",
               assignedLoginId: "",

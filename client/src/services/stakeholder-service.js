@@ -15,7 +15,7 @@ const toLocalMoment = (ts) => {
         longitude
         distance - radius around latitude and longitude
         isAssigned - ("yes", "no", "either")
-        isVerified - ("yes", "no", "either")
+        isSubmitted - ("yes", "no", "either")
         isApproved - ("yes", "no", "either")
         isRejected - ("yes", "no", "either")
         isClaimed - ("yes", "no", "either")
@@ -33,7 +33,7 @@ export const search = async (searchParams) => {
       createdDate: toLocalMoment(s.createdDate),
       modifiedDate: toLocalMoment(s.modifiedDate),
       assignedDate: toLocalMoment(s.assignedDate),
-      verifiedDate: toLocalMoment(s.verifiedDate),
+      submittedDate: toLocalMoment(s.submittedDate),
       approvedDate: toLocalMoment(s.approvedDate),
       rejectedDate: toLocalMoment(s.rejectedDate),
       claimedDate: toLocalMoment(s.claimedDate),
@@ -52,7 +52,7 @@ export const getById = async (id) => {
     createdDate: toLocalMoment(s.createdDate),
     modifiedDate: toLocalMoment(s.modifiedDate),
     assignedDate: toLocalMoment(s.assignedDate),
-    verifiedDate: toLocalMoment(s.verifiedDate),
+    submittedDate: toLocalMoment(s.submittedDate),
     approvedDate: toLocalMoment(s.approvedDate),
     rejectedDate: toLocalMoment(s.rejectedDate),
     claimedDate: toLocalMoment(s.claimedDate),
@@ -80,7 +80,7 @@ export const verify = async (id, setVerified, loginId) => {
   return response.data;
 };
 
-// id = stakeholderId, setVerified = true to verify data, false to un-verify,
+// id = stakeholderId, setAssigned = true to assign, false to un-assign,
 // loginId is user.id of user being assigned to stakeholder
 export const assign = async (id, setAssigned, loginId) => {
   const response = await axios.put(`${baseUrl}/${id}/assign`, {
@@ -91,7 +91,7 @@ export const assign = async (id, setAssigned, loginId) => {
   return response.data;
 };
 
-// id = stakeholderId, setClaimed = true to claim data, false to un-verify,
+// id = stakeholderId, setClaimed = true to claim data, false to un-claim,
 // loginId is user.id of user that claims stakeholder
 export const claim = async (id, setClaimed, loginId) => {
   const response = await axios.put(`${baseUrl}/${id}/claim`, {

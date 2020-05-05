@@ -60,10 +60,10 @@ const columns = [
     formatter: dateFormatter,
     dataType: "datetime",
   },
-  { key: "verifiedUser", name: "Verified By" },
+  { key: "submittedUser", name: "Submitted By" },
   {
-    key: "verifiedDate",
-    name: "Verified",
+    key: "submittedDate",
+    name: "Submitted",
     formatter: dateFormatter,
     dataType: "datetime",
   },

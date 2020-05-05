@@ -15,45 +15,45 @@ const selectAll = () => {
     from resource r
     order by r.id
   `;
-  return pool.query(sql).then(res => {
+  return pool.query(sql).then((res) => {
     return res.rows;
   });
 };
 
-const selectById = id => {
+const selectById = (id) => {
   const sql = `select r.id, r.description, r.url
    from resource r where r.id = ${id}`;
-  return pool.query(sql).then(res => {
+  return pool.query(sql).then((res) => {
     return res.rows[0];
   });
 };
 
-const create = model => {
+const create = (model) => {
   // Partial implementation need to escape characters, add other columns
   const { description, url } = model;
   const sql = `insert into resource (description, url) values (${toSqlString(
-    description,
+    description
   )},${toSqlString(url)}) returning id`;
-  return pool.query(sql).then(res => {
+  return pool.query(sql).then((res) => {
     return res.rows[0];
   });
 };
 
-const update = model => {
+const update = (model) => {
   const { id, url, description } = model;
   // Partial implementation need to escape characters, add other columns
   const sql = `update resource
                set url = '${toSqlString(url)}',
                description = ${toSqlString(description)}
                 where id = ${id}`;
-  return pool.query(sql).then(res => {
+  return pool.query(sql).then((res) => {
     return res;
   });
 };
 
-const remove = id => {
+const remove = (id) => {
   const sql = `delete from resource where id = ${id}`;
-  return pool.query(sql).then(res => {
+  return pool.query(sql).then((res) => {
     return res;
   });
 };

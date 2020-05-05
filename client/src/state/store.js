@@ -1,8 +1,8 @@
-import React, { createContext, useReducer } from 'react';
-import { SET_USER, SET_COORDINATES } from './types';
+import React, { createContext, useReducer } from "react";
+import { SET_USER, SET_COORDINATES } from "./types";
 
-const user = localStorage.getItem('user');
-const coordinates = localStorage.getItem('coordinates');
+const user = localStorage.getItem("user");
+const coordinates = localStorage.getItem("coordinates");
 const initialState = {
   user: JSON.parse(user),
   coordinates: JSON.parse(coordinates),

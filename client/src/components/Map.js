@@ -10,7 +10,7 @@ const styles = {
     position: "absolute",
     top: 0,
     left: 0,
-    margin: 10
+    margin: 10,
   },
   mapContainer: {
     display: "flex",
@@ -18,14 +18,14 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     padding: "1rem",
-    margin: "1rem"
+    margin: "1rem",
   },
   controlPanel: {
     display: "flex",
     justifyContent: "space-between",
-    width: "100%"
+    width: "100%",
   },
-  navigationControl: { position: "absolute", top: 0, right: 0, margin: 10 }
+  navigationControl: { position: "absolute", top: 0, right: 0, margin: 10 },
 };
 
 function Map({ selectedLatitude, selectedLongitude, stakeholders }) {
@@ -34,10 +34,10 @@ function Map({ selectedLatitude, selectedLongitude, stakeholders }) {
   const [viewport, setViewport] = React.useState({
     zoom: 10, // TODO: can we dynamically control zoom radius based on selectedDistance?
     latitude: selectedLatitude,
-    longitude: selectedLongitude
+    longitude: selectedLongitude,
   });
 
-  const handleMarkerClick = clickedStakeholder => {
+  const handleMarkerClick = (clickedStakeholder) => {
     setSelectedStakeholder(clickedStakeholder);
     setIsPopupOpen(true);
   };
@@ -53,7 +53,7 @@ function Map({ selectedLatitude, selectedLongitude, stakeholders }) {
         {...viewport}
         width={`90vw`}
         height={`82vh`}
-        onViewportChange={newViewport => setViewport(newViewport)}
+        onViewportChange={(newViewport) => setViewport(newViewport)}
         mapboxApiAccessToken={MAPBOX_TOKEN}
         mapStyle={MAPBOX_STYLE}
       >
@@ -68,7 +68,7 @@ function Map({ selectedLatitude, selectedLongitude, stakeholders }) {
         </div>
         {stakeholders &&
           stakeholders
-            .filter(sh => sh.latitude && sh.longitude)
+            .filter((sh) => sh.latitude && sh.longitude)
             .map((stakeholder, index) => (
               <Marker
                 onClick={() => handleMarkerClick(stakeholder)}

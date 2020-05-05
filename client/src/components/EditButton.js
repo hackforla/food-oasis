@@ -8,7 +8,7 @@ const styles = {
   },
 };
 
-const EditButton = props => {
+const EditButton = (props) => {
   return (
     <Button style={styles.button} {...props}>
       <Edit />

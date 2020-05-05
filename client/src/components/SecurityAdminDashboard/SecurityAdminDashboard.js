@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react'
-import SecurityTable from './SecurityTable'
+import React, { useState, useEffect } from "react";
+import SecurityTable from "./SecurityTable";
 import { makeStyles } from "@material-ui/styles";
-import Typography from '@material-ui/core/Typography';
+import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-import { TextField } from '@material-ui/core';
+import { TextField } from "@material-ui/core";
 import * as accountService from "../../services/account-service";
 
 const useStyles = makeStyles({
@@ -12,72 +12,69 @@ const useStyles = makeStyles({
     padding: "2rem",
   },
   textInput: {
-    marginBottom: 10
-  }
+    marginBottom: 10,
+  },
 });
 
-function SecurityAdminDashboard() {
-  const [acc, setAcc] = useState([])
-  const [accAgain, setAccAgain] = useState([])
-  const [search, setSearch] = useState("")
-  const [error, setError] = useState("")
+const SecurityAdminDashboard = () => {
+  const [accounts, setAccounts] = useState([]);
+  const [filteredAccounts, setFilteredAccounts] = useState([]);
+  const [search, setSearch] = useState("");
 
   const classes = useStyles();
-
-  const handleChange = (e) => {
-    setSearch(e.target.value)
-  }
-
-  useEffect(() => {
-    if (search.length === 0) {
-      setError("")
-      setAcc(accAgain)
-    } else {
-      const result = acc.filter((elem, i) => {
-        return elem.firstName.toLowerCase().includes(search) || elem.lastName.toLowerCase().includes(search)
-      })
-      result.length === 0 ? setError("User Does not Exist") : 
-      setAcc(result)
-    }
-  }, [search])
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const account = await accountService.getAll()
-        setAcc(account.data)
-        setAccAgain(account.data)
+        const response = await accountService.getAll();
+        setAccounts(response.data);
       } catch (err) {
-        console.log(err)
+        console.log(err);
       }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (accounts.length === 0) return;
+    if (search.length === 0) {
+      setFilteredAccounts(accounts);
+    } else {
+      const result = accounts.filter((account) => {
+        return (
+          account.firstName.toLowerCase().includes(search) ||
+          account.lastName.toLowerCase().includes(search) ||
+          account.email.toLowerCase().includes(search)
+        );
+      });
+      setFilteredAccounts(result);
     }
-    fetchData()
-  }, [])
+  }, [search, accounts]);
+
+  const handleChange = (e) => {
+    setSearch(e.target.value.toLowerCase());
+  };
 
   const handlePermissionChange = (userId, permission, value) => {
-    const account = acc.find((row) => {
-      return row.id === userId
-    })
+    const account = filteredAccounts.find((row) => {
+      return row.id === userId;
+    });
     if (account) {
-      if (permission === "isAdmin") {
-        account["isAdmin"] = value
-      }
-      else if (permission === "isSecurityAdmin") {
-        account["isSecurityAdmin"] = value
-      } 
-      else if (permission === "isDataEntry") {
-        account["isDataEntry"] = value
+      if (permission === "is_admin") {
+        account["isAdmin"] = value;
+      } else if (permission === "is_security_admin") {
+        account["isSecurityAdmin"] = value;
+      } else if (permission === "is_data_entry") {
+        account["isDataEntry"] = value;
       }
     }
-    let newAccounts = [...acc, {...account}]
-    const unique = [...new Map(newAccounts.map(item => [item.id, item])).values()]
-    setAcc(unique)
-  }
+    setFilteredAccounts([...filteredAccounts, { ...account }]);
+  };
 
   return (
     <Container maxWidth="lg" className={classes.root}>
       <Typography variant="h4">Security Roles</Typography>
-      <Typography variant="h6">Grant or Revoke Admin Permissions</Typography>
+      <Typography variant="h6">Grant or Revoke Permissions</Typography>
       <TextField
         variant="outlined"
         margin="none"
@@ -87,13 +84,12 @@ function SecurityAdminDashboard() {
         onChange={handleChange}
         value={search}
       />
-      {
-        error === "User Does not Exist"
-          ? <Typography variant="h6" style={{color: "red", marginTop: 18}}>{error}</Typography>
-          : <SecurityTable accounts={acc} handlePermissionChange={handlePermissionChange} />
-      }
+      <SecurityTable
+        accounts={filteredAccounts}
+        handlePermissionChange={handlePermissionChange}
+      />
     </Container>
-  )
-}
+  );
+};
 
-export default SecurityAdminDashboard
+export default SecurityAdminDashboard;

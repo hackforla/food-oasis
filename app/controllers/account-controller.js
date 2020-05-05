@@ -68,9 +68,13 @@ const resetPassword = async (req, res) => {
 };
 
 const setPermissions = async (req, res) => {
-  const { userId, permissionName, value } = req.body
+  const { userId, permissionName, value } = req.body;
   try {
-    const response = await accountService.setPermissions(userId, permissionName, value);
+    const response = await accountService.setPermissions(
+      userId,
+      permissionName,
+      value
+    );
     res.send(response);
   } catch (err) {
     res.status("500").json({ error: err.toString() });
@@ -133,5 +137,5 @@ module.exports = {
   resetPassword,
   login,
   put,
-  remove
+  remove,
 };

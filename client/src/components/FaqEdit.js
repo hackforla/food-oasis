@@ -15,8 +15,8 @@ const FaqEdit = ({ match, history }) => {
       question: "",
       answer: "",
       identifier: "",
-      language: ""
-    }
+      language: "",
+    },
   ]);
   const [needToAddFaqs, setNeedToAddFaqs] = useState([""]);
   const faqIdentifier = match.params.identifier;
@@ -26,16 +26,16 @@ const FaqEdit = ({ match, history }) => {
   const [editIdentifier, setEditIdentifier] = useState(false);
 
   useEffect(() => {
-    const checkHowManySavedLanguageTexts = faqs => {
+    const checkHowManySavedLanguageTexts = (faqs) => {
       let currentLanguages = {};
-      let addedLanguages = faqs.map(faq => {
+      let addedLanguages = faqs.map((faq) => {
         currentLanguages[faq.language] = true;
         return faq;
       });
       let needToAddLanguages;
       if (addedFaq.length !== i18n.languages) {
         needToAddLanguages = i18n.languages.filter(
-          language => !currentLanguages[language]
+          (language) => !currentLanguages[language]
         );
       }
       return { addedLanguages, needToAddLanguages };
@@ -44,12 +44,12 @@ const FaqEdit = ({ match, history }) => {
     async function fetchFaq() {
       try {
         const fetchedFaq = await faqService.getByIdentifier({
-          identifier: faqIdentifier
+          identifier: faqIdentifier,
         });
 
         let {
           addedLanguages,
-          needToAddLanguages
+          needToAddLanguages,
         } = checkHowManySavedLanguageTexts(fetchedFaq);
 
         setAddedFaq(addedLanguages);
@@ -61,7 +61,7 @@ const FaqEdit = ({ match, history }) => {
     fetchFaq();
   }, [addedFaq.length, faqIdentifier, i18n.languages]);
 
-  const handleIdentifier = event => {
+  const handleIdentifier = (event) => {
     setIdentifier(event.target.value);
   };
 
@@ -71,17 +71,18 @@ const FaqEdit = ({ match, history }) => {
 
   const handleUpdateIdentifier = () => {
     addedFaq.map(
-      async faq =>
+      async (faq) =>
         await faqService.update({
           ...faq,
           identifier:
-            faqIdentifier.slice(0, faqIdentifier.indexOf(":") + 1) + identifier
+            faqIdentifier.slice(0, faqIdentifier.indexOf(":") + 1) + identifier,
         })
     );
     handleEditIdentifier();
     history.push(
-      `/faqs/${faqIdentifier.slice(0, faqIdentifier.indexOf(":") + 1) +
-        identifier}`
+      `/faqs/${
+        faqIdentifier.slice(0, faqIdentifier.indexOf(":") + 1) + identifier
+      }`
     );
   };
 
@@ -110,16 +111,16 @@ const FaqEdit = ({ match, history }) => {
           </>
         )}
       </h3>
-      {addedFaq.map(faq => (
+      {addedFaq.map((faq) => (
         <FaqEditForm faq={faq} key={faq.question} />
       ))}
-      {needToAddFaqs.map(language => (
+      {needToAddFaqs.map((language) => (
         <FaqEditForm
           faq={{
             question: "",
             answer: "",
             identifier: faqIdentifier,
-            language: language
+            language: language,
           }}
           notAdded={true}
           key={language}

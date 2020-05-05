@@ -3,10 +3,10 @@ const widgetService = require("../services/widget-service");
 const getAll = (req, res) => {
   widgetService
     .selectAll()
-    .then(resp => {
+    .then((resp) => {
       res.send(resp);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status("404").json({ error: err.toString() });
     });
 };
@@ -15,10 +15,10 @@ const getById = (req, res) => {
   const { id } = req.params;
   widgetService
     .selectById(id)
-    .then(resp => {
+    .then((resp) => {
       res.send(resp);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status("500").json({ error: err.toString() });
     });
 };
@@ -26,10 +26,10 @@ const getById = (req, res) => {
 const post = (req, res) => {
   widgetService
     .insert(req.body)
-    .then(resp => {
+    .then((resp) => {
       res.json(resp);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status("500").json({ error: err.toString() });
     });
 };
@@ -37,10 +37,10 @@ const post = (req, res) => {
 const put = (req, res) => {
   widgetService
     .update(req.body)
-    .then(resp => {
+    .then((resp) => {
       res.sendStatus(200);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status("500").json({ error: err.toString() });
     });
 };
@@ -49,10 +49,10 @@ const remove = (req, res) => {
   const { id } = req.params;
   widgetService
     .remove(id)
-    .then(resp => {
+    .then((resp) => {
       res.sendStatus(200);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status("500").json({ error: err.toString() });
     });
 };
@@ -62,5 +62,5 @@ module.exports = {
   getById,
   post,
   put,
-  remove
+  remove,
 };

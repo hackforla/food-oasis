@@ -10,7 +10,7 @@ import { withRouter } from "react-router-dom";
 
 const languages = {
   en: "English",
-  es: "Spanish"
+  es: "Spanish",
 };
 
 const FaqEditForm = ({ faq, notAdded, history }) => {
@@ -19,15 +19,15 @@ const FaqEditForm = ({ faq, notAdded, history }) => {
 
   let language = languages[faq.language];
 
-  const handleQuestionChange = event => {
+  const handleQuestionChange = (event) => {
     setQuestion(event.target.value);
   };
 
-  const handleAnswerChange = html => {
+  const handleAnswerChange = (html) => {
     setAnswer(html);
   };
 
-  const handleSubmit = event => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     if (notAdded) {
       faqService.add({
@@ -36,14 +36,14 @@ const FaqEditForm = ({ faq, notAdded, history }) => {
         answer,
         identifier: `${JSON.parse(localStorage.getItem("faqs")).length + 1}:${
           faq.identifier
-        }`
+        }`,
       });
       history.push(`/faqs`);
     } else {
       faqService.update({
         ...faq,
         question,
-        answer
+        answer,
       });
     }
   };
@@ -63,7 +63,7 @@ const FaqEditForm = ({ faq, notAdded, history }) => {
           variant="outlined"
           fullWidth
           value={question}
-          onChange={event => handleQuestionChange(event)}
+          onChange={(event) => handleQuestionChange(event)}
           name="question"
         />
         <h5>Answer</h5>

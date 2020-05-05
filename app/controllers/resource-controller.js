@@ -3,10 +3,10 @@ const resourceService = require("../services/resource-service");
 const getAll = (req, res) => {
   resourceService
     .selectAll()
-    .then(resp => {
+    .then((resp) => {
       res.send(resp);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status("404").json({ error: err.toString() });
     });
 };
@@ -15,10 +15,10 @@ const getById = (req, res) => {
   const { id } = req.params;
   resourceService
     .selectById(id)
-    .then(resp => {
+    .then((resp) => {
       res.send(resp);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status("500").json({ error: err.toString() });
     });
 };
@@ -26,10 +26,10 @@ const getById = (req, res) => {
 const createResource = (req, res) => {
   resourceService
     .create(req.body)
-    .then(resp => {
+    .then((resp) => {
       res.json(resp);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status("500").json({ error: err.toString() });
     });
 };
@@ -37,10 +37,10 @@ const createResource = (req, res) => {
 const updateResource = (req, res) => {
   resourceService
     .update(req.body)
-    .then(resp => {
+    .then((resp) => {
       res.sendStatus(200);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status("500").json({ error: err.toString() });
     });
 };
@@ -49,10 +49,10 @@ const deleteResource = (req, res) => {
   const { id } = req.params;
   resourceService
     .remove(id)
-    .then(resp => {
+    .then((resp) => {
       res.sendStatus(200);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status("500").json({ error: err.toString() });
     });
 };

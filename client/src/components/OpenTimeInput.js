@@ -6,19 +6,19 @@ import {
   FormControl,
   InputLabel,
   Select,
-  TextField
+  TextField,
 } from "@material-ui/core";
 import { CancelIconButton } from "./Buttons";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   row: {
-    margin: theme.spacing(1)
+    margin: theme.spacing(1),
   },
   formControl: {
     // margin: theme.spacing(1),
     // minWidth: 50,
     // maxWidth: 200
-  }
+  },
 }));
 
 const days = [
@@ -29,7 +29,7 @@ const days = [
   { label: "Wed", value: "Wed" },
   { label: "Thu", value: "Thu" },
   { label: "Fri", value: "Fri" },
-  { label: "Sat", value: "Sat" }
+  { label: "Sat", value: "Sat" },
 ];
 
 const intervals = [
@@ -38,7 +38,7 @@ const intervals = [
   { label: "Second", value: 2 },
   { label: "Third", value: 3 },
   { label: "Fourth", value: 4 },
-  { label: "Last", value: -1 }
+  { label: "Last", value: -1 },
 ];
 
 function OpenTimeInput(props) {
@@ -62,7 +62,7 @@ function OpenTimeInput(props) {
             onChange={onChange}
             value={values.weekOfMonth}
           >
-            {intervals.map(day => (
+            {intervals.map((day) => (
               <MenuItem key={day.value} value={day.value}>
                 {day.label}
               </MenuItem>
@@ -86,7 +86,7 @@ function OpenTimeInput(props) {
             onChange={onChange}
             value={values.dayOfWeek}
           >
-            {days.map(day => (
+            {days.map((day) => (
               <MenuItem key={day.value} label={day.label} value={day.value}>
                 {day.label}
               </MenuItem>

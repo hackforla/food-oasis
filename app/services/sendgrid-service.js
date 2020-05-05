@@ -16,7 +16,7 @@ const sendRegistrationConfirmation = async (email, token) => {
               <p><a href="${clientUrl}/confirm/${token}">Verify Me</a></p>
               <br>
               <p>Thanks,</p>
-              <p>Food Oasis</p>`
+              <p>Food Oasis</p>`,
   };
   return sgMail.send(msg, false, (err, result) => {
     if (err) {
@@ -37,7 +37,7 @@ const sendResetPasswordConfirmation = async (email, token) => {
               <p><a href="${clientUrl}/resetPassword/${token}">Reset Password</a></p>
               <br>
               <p>Thanks,</p>
-              <p>Food Oasis</p>`
+              <p>Food Oasis</p>`,
   };
   return sgMail.send(msg, false, (err, result) => {
     if (err) {
@@ -52,5 +52,5 @@ const sendResetPasswordConfirmation = async (email, token) => {
 
 module.exports = {
   sendRegistrationConfirmation,
-  sendResetPasswordConfirmation
+  sendResetPasswordConfirmation,
 };

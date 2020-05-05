@@ -1,8 +1,8 @@
-import React from "react"
-import ReactMapGL, { NavigationControl } from "react-map-gl"
-import MarkerPopup from "./MarkerPopup"
-import Marker from "./Marker"
-import { MAPBOX_TOKEN } from "../secrets"
+import React from 'react'
+import ReactMapGL, { NavigationControl } from 'react-map-gl'
+import MarkerPopup from './MarkerPopup'
+import Marker from './Marker'
+import { MAPBOX_TOKEN } from '../secrets'
 import {
   DEFAULT_CATEGORIES,
   FOOD_PANTRY_CATEGORY_ID,
@@ -10,18 +10,18 @@ import {
   MEAL,
   MEAL_PROGRAM_CATEGORY_ID,
   ORGANIZATION_COLORS,
-  PANTRY
-} from "../constants/map";
-import moment from "moment";
+  PANTRY,
+} from '../constants/map'
+import moment from 'moment'
 
 const styles = {
   geolocate: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
     margin: 10,
   },
-  navigationControl: { position: "absolute", top: 0, right: 0, margin: 10 },
+  navigationControl: { position: 'absolute', top: 0, right: 0, margin: 10 },
 }
 
 function Map({
@@ -29,11 +29,14 @@ function Map({
   selectedLongitude = -118.243328,
   stakeholders,
   categoryIds,
- }) {
+}) {
+  React.useEffect(() => {
+    console.log('map', stakeholders)
+  }, [stakeholders])
 
-  React.useEffect(() => { console.log("map", stakeholders) }, [stakeholders])
-
-  const categoryIdsOrDefault = categoryIds.length ? categoryIds : DEFAULT_CATEGORIES
+  const categoryIdsOrDefault = categoryIds.length
+    ? categoryIds
+    : DEFAULT_CATEGORIES
 
   const [isPopupOpen, setIsPopupOpen] = React.useState(false)
   const [selectedStakeholder, setSelectedStakeholder] = React.useState(null)
@@ -57,8 +60,8 @@ function Map({
     <div>
       <ReactMapGL
         {...viewport}
-        width={`100%`}
-        height={`max(calc(100vh - 250px),47em)`}
+        width="100%"
+        height="max(calc(100vh - 250px),47em)"
         onViewportChange={(newViewport) => setViewport(newViewport)}
         mapboxApiAccessToken={MAPBOX_TOKEN}
         mapStyle={MAPBOX_STYLE}
@@ -70,10 +73,15 @@ function Map({
           stakeholders
             .filter((sh) => sh.latitude && sh.longitude)
             .map((stakeholder, index) => {
-              const isVerified = !!stakeholder.verifiedDate //can we assume it will be a date of some sort?
+              // The verifiedDate property was removed from the
+              // stakeholder object. For now, show the stakeholders with
+              // a submittedDate as "verified", since there are engough
+              // of them to work with. This might change to approvedDate
+              // or something later.
+              const isVerified = !!stakeholder.submittedDate
               /*todo
-              * implement condition based on api data
-              * */
+               * implement condition based on api data
+               * */
 
               const categories = stakeholder.categories.filter(({ id }) => {
                 return categoryIdsOrDefault.includes(id)
@@ -81,7 +89,11 @@ function Map({
 
               console.log(categories)
 
-              const color = categories.find(({ id }) => id === MEAL_PROGRAM_CATEGORY_ID) ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID] : ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
+              const color = categories.find(
+                ({ id }) => id === MEAL_PROGRAM_CATEGORY_ID,
+              )
+                ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
+                : ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
               return (
                 <Marker
                   onClick={() => handleMarkerClick(stakeholder)}

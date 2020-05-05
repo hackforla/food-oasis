@@ -1,18 +1,18 @@
 import React, { useEffect, useRef } from "react";
 import { loadModules } from "esri-loader";
 
-export const WebMapView = props => {
+export const WebMapView = (props) => {
   const { searchString, setCoordinates } = props;
   const mapRef = useRef();
 
   useEffect(() => {
     // lazy load the required ArcGIS API for JavaScript modules and CSS
     loadModules(["esri/Map", "esri/views/MapView", "esri/widgets/Search"], {
-      css: true
+      css: true,
     }).then(([ArcGISMap, MapView, Search]) => {
       const map = new ArcGISMap({
         //basemap: "topo-vector"
-        basemap: "streets-navigation-vector"
+        basemap: "streets-navigation-vector",
       });
 
       // load the map view at the ref's DOM node
@@ -20,7 +20,7 @@ export const WebMapView = props => {
         container: mapRef.current,
         map: map,
         center: [-118, 34],
-        zoom: 12
+        zoom: 12,
       });
 
       const search = new Search({ view });
@@ -34,11 +34,11 @@ export const WebMapView = props => {
       //       console.log(searchResponse);
       //     }
       //   });
-      search.on("select-result", response => {
+      search.on("select-result", (response) => {
         const coords = response.result.extent.center;
         setCoordinates({
           latitude: coords.latitude,
-          longitude: coords.longitude
+          longitude: coords.longitude,
         });
         console.log(response.result);
       });

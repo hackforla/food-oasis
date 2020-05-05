@@ -7,8 +7,8 @@ const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
     user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASSWORD
-  }
+    pass: process.env.EMAIL_PASSWORD,
+  },
 });
 
 const sendRegistrationConfirmation = async (email, token) => {
@@ -21,9 +21,9 @@ const sendRegistrationConfirmation = async (email, token) => {
             <p><a href="${serverUrl}/accounts/confirm/${token}">Verify Me</a></p>
             <br>
             <p>Thanks,</p>
-            <p>Food Oasis</p>`
+            <p>Food Oasis</p>`,
   };
-  transporter.sendMail(options, function(err, result) {
+  transporter.sendMail(options, function (err, result) {
     if (err) {
       return Promise.reject("Sending registration confirmation email failed.");
     } else {
@@ -43,9 +43,9 @@ const sendResetPasswordConfirmation = async (email, token) => {
                 <p><a href='${clientUrl}/accounts/reset/${token}'>Reset</a></p>
                 <br>
                 <p>Thanks,</p>
-                <p>Food Oasis</p>`
+                <p>Food Oasis</p>`,
   };
-  transporter.sendMail(options, function(err, result) {
+  transporter.sendMail(options, function (err, result) {
     if (err) {
       return Promise.reject(
         "Sending reset password confirmation email failed."
@@ -58,5 +58,5 @@ const sendResetPasswordConfirmation = async (email, token) => {
 
 module.exports = {
   sendRegistrationConfirmation,
-  sendResetPasswordConfirmation
+  sendResetPasswordConfirmation,
 };

@@ -362,14 +362,6 @@ async function hashPassword(user) {
 
 // Update login table with the specified permissionName column set to value
 const setPermissions = async (userId, permissionName, value) => {
-  if(permissionName === "isAdmin"){
-    permissionName = "is_admin"
-  } else if(permissionName === "isSecurityAdmin"){
-    permissionName = "is_security_admin"
-  } else if(permissionName === "isDataEntry"){
-    permissionName = "is_data_entry"
-  }
-
   const user = await selectById(userId);
   if (!user) {
     return {

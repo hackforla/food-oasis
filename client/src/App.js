@@ -1,112 +1,112 @@
-import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { ThemeProvider } from "@material-ui/core/styles";
-import theme from "theme/materialUI";
-import { UserContext } from "components/user-context";
-import Toast from "components/Toast";
-import Header from "components/Header";
-import StakeholdersContainer from "components/StakeholdersContainer";
-import VerificationAdmin from "./components/Verification/VerificationAdmin";
-import VerificationDashboard from "./components/Verification/VerificationDashboard";
-import SecurityAdminDashboard from "./components/SecurityAdminDashboard/SecurityAdminDashboard";
-import StakeholderEdit from "./components/StakeholderEdit";
-import Donate from "./components/Donate";
-import Resources from "./components/Resources";
-import About from "./components/About";
-import Register from "./components/Register";
-import Login from "./components/Login";
-import ForgotPassword from "./components/ForgotPassword";
-import ResetPassword from "./components/ResetPassword";
-import Footer from "./components/Footer";
-import ConfirmEmail from "./components/ConfirmEmail";
-import Faq from "./components/Faq";
-import FaqEdit from "./components/FaqEdit";
-import FaqAdd from "./components/FaqAdd";
-import Home from "./containers/Home";
-import ResultsContainer from "components/ResultsContainer";
+import React, { useState, useEffect } from 'react'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { ThemeProvider } from '@material-ui/core/styles'
+import theme from 'theme/materialUI'
+import { UserContext } from 'components/user-context'
+import Toast from 'components/Toast'
+import Header from 'components/Header'
+import StakeholdersContainer from 'components/StakeholdersContainer'
+import VerificationAdmin from './components/Verification/VerificationAdmin'
+import VerificationDashboard from './components/Verification/VerificationDashboard'
+import SecurityAdminDashboard from './components/SecurityAdminDashboard/SecurityAdminDashboard'
+import StakeholderEdit from './components/StakeholderEdit'
+import Donate from './components/Donate'
+import Resources from './components/Resources'
+import About from './components/About'
+import Register from './components/Register'
+import Login from './components/Login'
+import ForgotPassword from './components/ForgotPassword'
+import ResetPassword from './components/ResetPassword'
+import Footer from './components/Footer'
+import ConfirmEmail from './components/ConfirmEmail'
+import Faq from './components/Faq'
+import FaqEdit from './components/FaqEdit'
+import FaqAdd from './components/FaqAdd'
+import Home from './containers/Home'
+import ResultsContainer from 'components/ResultsContainer'
 // Temporarily unused components
 // import Main from 'components/Main';
 // import News from "components/News";
 // import Team from "components/Team";
 // import Organizations from "components/Organizations";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles({
   app: (props) => ({
-    color: "black",
-    margin: "0",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    alignItems: "stretch",
-    height: "100%",
-    overflowY: "scroll",
+    color: 'black',
+    margin: '0',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'stretch',
+    height: '100%',
+    overflowY: 'scroll',
   }),
   mainContent: {
-    margin: "0",
-    paddingBottom: "50px",
-    overflowY: "scroll",
+    margin: '0',
+    paddingBottom: '50px',
+    overflowY: 'scroll',
     flexGrow: 1,
   },
   stakeholderEditWrapper: {
-    flexBasis: "90%",
-    paddingTop: "1em",
-    paddingBottom: "1em",
+    flexBasis: '90%',
+    paddingTop: '1em',
+    paddingBottom: '1em',
   },
   homeWrapper: {
-    backgroundSize: "cover",
-    height: "100vh",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
+    backgroundSize: 'cover',
+    height: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
   verificationAdminWrapper: {
-    flexBasis: "100%",
+    flexBasis: '100%',
     flexGrow: 1,
-    display: "flex",
-    flexDirection: "column",
+    display: 'flex',
+    flexDirection: 'column',
   },
-});
+})
 
 function App() {
-  const [user, setUser] = useState(null);
-  const [userCoordinates, setUserCoordinates] = useState({});
-  const [toast, setToast] = useState({ message: "" });
-  const [bgImg, setBgImg] = useState("");
+  const [user, setUser] = useState(null)
+  const [userCoordinates, setUserCoordinates] = useState({})
+  const [toast, setToast] = useState({ message: '' })
+  const [bgImg, setBgImg] = useState('')
 
   useEffect(() => {
-    const imgNum = Math.floor(Math.random() * (21 - 1)) + 1;
-    const backgroundImage = `url("/landing-page/${imgNum}.jpg")`;
-    setBgImg(backgroundImage);
-  }, []);
+    const imgNum = Math.floor(Math.random() * (21 - 1)) + 1
+    const backgroundImage = `url("/landing-page/${imgNum}.jpg")`
+    setBgImg(backgroundImage)
+  }, [])
 
   useEffect(() => {
-    const storedJson = localStorage.getItem("user");
-    const userJson = JSON.stringify(user);
+    const storedJson = localStorage.getItem('user')
+    const userJson = JSON.stringify(user)
     if (!userJson && !storedJson) {
-      return;
+      return
     } else if (userJson === storedJson) {
-      return;
+      return
     } else {
-      setUser(JSON.parse(storedJson));
+      setUser(JSON.parse(storedJson))
     }
-  }, [user, userCoordinates]);
+  }, [user, userCoordinates])
 
   useEffect(() => {
-    fetchLocation();
-  }, []);
+    fetchLocation()
+  }, [])
 
   const onLogin = (user) => {
     if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem('user', JSON.stringify(user))
     } else {
-      localStorage.removeItem("user");
+      localStorage.removeItem('user')
     }
-    setUser(user);
-  };
+    setUser(user)
+  }
 
   const fetchLocation = () => {
-    let userCoordinates = { latitude: null, longitude: null };
+    let userCoordinates = { latitude: null, longitude: null }
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -114,23 +114,23 @@ function App() {
             const userCoordinates = {
               latitude: position.coords.latitude,
               longitude: position.coords.longitude,
-            };
-            setUserCoordinates(userCoordinates);
+            }
+            setUserCoordinates(userCoordinates)
           }
         },
         (error) => {
-          console.log(`Getting browser location failed: ${error.message}`);
-        }
-      );
+          console.log(`Getting browser location failed: ${error.message}`)
+        },
+      )
     } else {
       // If browser location permission is denied, the request is
       // "successful", but the result is null coordinates.
-      console.log(`Enable location permission to use location-based features.`);
+      console.log('Enable location permission to use location-based features.')
     }
-    return userCoordinates;
-  };
+    return userCoordinates
+  }
 
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <UserContext.Provider value={user}>
@@ -147,9 +147,6 @@ function App() {
                   <Home userCoordinates={userCoordinates} />
                 </div>
               </Route>
-              {/* <Route path="/map">
-                <ResultsContainer userCoordinates={userCoordinates} />
-              </Route> */}
               <Route path="/organizations">
                 <ResultsContainer userCoordinates={userCoordinates} />
               </Route>
@@ -213,9 +210,6 @@ function App() {
               <Route path="/faqs/:identifier">
                 <FaqEdit setToast={setToast} />
               </Route>
-              {/* <Route path="/organizations">
-                <Organizations />
-              </Route> */}
               <Route path="/register">
                 <Register setToast={setToast} />
               </Route>
@@ -238,7 +232,7 @@ function App() {
         </Router>
       </ThemeProvider>
     </UserContext.Provider>
-  );
+  )
 }
 
-export default App;
+export default App

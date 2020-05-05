@@ -49,7 +49,7 @@ const Faq = () => {
             sorted = fetchedFaqs.sort(
               (a, b) =>
                 a.identifier.slice(0, a.identifier.indexOf(":")) -
-                b.identifier.slice(0, b.identifier.indexOf(":")),
+                b.identifier.slice(0, b.identifier.indexOf(":"))
             );
           }
           setFaqs(sorted);
@@ -66,7 +66,7 @@ const Faq = () => {
   }, [i18n.language]);
 
   const onReorderClick = () => {
-    setReorder(r => !r);
+    setReorder((r) => !r);
   };
 
   // When someone has time, refactor this to be more readable...
@@ -89,7 +89,7 @@ const Faq = () => {
           1 +
           firstIdentifier.slice(
             firstIdentifier.indexOf(":"),
-            firstIdentifier.length,
+            firstIdentifier.length
           ),
       };
       atSecondIndex = {
@@ -98,7 +98,7 @@ const Faq = () => {
           Number(order) +
           secondIdentifier.slice(
             secondIdentifier.indexOf(":"),
-            secondIdentifier.length,
+            secondIdentifier.length
           ),
       };
       currentFaqs[order - 1] = atSecondIndex;
@@ -114,7 +114,7 @@ const Faq = () => {
           1 +
           firstIdentifier.slice(
             firstIdentifier.indexOf(":"),
-            firstIdentifier.length,
+            firstIdentifier.length
           ),
       };
       atSecondIndex = {
@@ -123,7 +123,7 @@ const Faq = () => {
           Number(order) +
           secondIdentifier.slice(
             secondIdentifier.indexOf(":"),
-            secondIdentifier.length,
+            secondIdentifier.length
           ),
       };
       currentFaqs[order - 1] = atSecondIndex;
@@ -142,7 +142,7 @@ const Faq = () => {
         {t("title")}
       </Typography>
       <UserContext.Consumer>
-        {user =>
+        {(user) =>
           user &&
           user.isAdmin && (
             <div className={classes.buttonsContainer}>

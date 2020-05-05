@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 const Language = ({ language, languageAbbr, word }) => {
   const { i18n } = useTranslation();
 
-  const changeLanguage = lng => {
+  const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
   };
 
@@ -12,11 +12,11 @@ const Language = ({ language, languageAbbr, word }) => {
     <div>
       <input
         type="checkbox"
-        value={i18n.language.slice(0,2)}
+        value={i18n.language.slice(0, 2)}
         name={language}
         id={language}
         onChange={() => changeLanguage(languageAbbr)}
-        checked={i18n.language.slice(0,2) === languageAbbr ? true : false}
+        checked={i18n.language.slice(0, 2) === languageAbbr ? true : false}
       />
       <label htmlFor={language}>{word}</label>
     </div>

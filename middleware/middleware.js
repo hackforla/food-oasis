@@ -34,8 +34,8 @@ function logger() {
     serializers: pinoNoir([
       "res.headers.set-cookie",
       "req.headers.cookie",
-      "req.headers.authorization"
-    ])
+      "req.headers.authorization",
+    ]),
   });
 }
 
@@ -43,5 +43,5 @@ module.exports = {
   cors,
   handleError,
   notFound,
-  logger: logger()
+  logger: logger(),
 };

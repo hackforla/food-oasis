@@ -40,11 +40,11 @@ function reducer(state = initialState, action) {
 export function useMapboxGeocoder() {
   const [{ isLoading, error, mapboxResults }, dispatch] = React.useReducer(
     reducer,
-    initialState,
+    initialState
   );
 
   const fetchMapboxResults = debounce(
-    async searchString => {
+    async (searchString) => {
       const mapboxUrl = `${baseUrl}/${searchString}.json?access_token=${MAPBOX_TOKEN}`;
 
       dispatch({ type: actionTypes.FETCH_REQUEST });
@@ -58,7 +58,7 @@ export function useMapboxGeocoder() {
         dispatch({ type: actionTypes.FETCH_FAILURE, error });
       }
     },
-    { wait: 300 },
+    { wait: 300 }
   );
 
   return { error, isLoading, mapboxResults, fetchMapboxResults };

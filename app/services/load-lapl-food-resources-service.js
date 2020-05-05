@@ -12,8 +12,8 @@ const selectAll = () => {
     from load_lapl_food_resource 
     order by name
   `;
-  return pool.query(sql).then(res => {
-    return res.rows.map(row => ({
+  return pool.query(sql).then((res) => {
+    return res.rows.map((row) => ({
       name: row.name,
       addr: row.addr,
       phone: row.phone,
@@ -22,12 +22,12 @@ const selectAll = () => {
       populationServed: row.population_served,
       resourceCategories: row.resource_categories,
       generalResources: row.general_resources,
-      additionalOfferings: row.additional_offerings
+      additionalOfferings: row.additional_offerings,
     }));
   });
 };
 
-const insert = model => {
+const insert = (model) => {
   let {
     name,
     addr,
@@ -37,7 +37,7 @@ const insert = model => {
     generalResources,
     additionalOfferings,
     lat,
-    lon
+    lon,
   } = model;
 
   const sql = `insert into load_lapl_food_resource 
@@ -51,7 +51,7 @@ const insert = model => {
       ${toSqlString(generalResources)}, 
       ${toSqlString(additionalOfferings)}, 
       ${toSqlNumeric(lat)}, ${toSqlNumeric(lon)}) `;
-  return pool.query(sql).catch(err => {
+  return pool.query(sql).catch((err) => {
     msg = err.message;
     console.log(msg);
   });
@@ -59,7 +59,7 @@ const insert = model => {
 
 const removeAll = () => {
   const sql = `delete from load_lapl_food_resource`;
-  return pool.query(sql).then(res => {
+  return pool.query(sql).then((res) => {
     return res;
   });
 };
@@ -67,5 +67,5 @@ const removeAll = () => {
 module.exports = {
   selectAll,
   insert,
-  removeAll
+  removeAll,
 };

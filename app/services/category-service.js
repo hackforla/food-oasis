@@ -6,42 +6,42 @@ const selectAll = () => {
     from category w
     order by w.name
   `;
-  return pool.query(sql).then(res => {
+  return pool.query(sql).then((res) => {
     return res.rows;
   });
 };
 
-const selectById = id => {
+const selectById = (id) => {
   const sql = `select w.id, w.name, w.inactive
    from category w where w.id = ${id}`;
-  return pool.query(sql).then(res => {
+  return pool.query(sql).then((res) => {
     return res.rows[0];
   });
 };
 
-const insert = model => {
+const insert = (model) => {
   // Partial implementation need to escape characters, add other columns
   const { name } = model;
   const sql = `insert into category (name) values ('${name}',) returning id`;
-  return pool.query(sql).then(res => {
+  return pool.query(sql).then((res) => {
     return res.rows[0];
   });
 };
 
-const update = model => {
+const update = (model) => {
   const { id, name } = model;
   // Partial implementation need to escape characters, add other columns
   const sql = `update category
                set name = '${name}'
                 where id = ${id}`;
-  return pool.query(sql).then(res => {
+  return pool.query(sql).then((res) => {
     return res;
   });
 };
 
-const remove = id => {
+const remove = (id) => {
   const sql = `delete from category where id = ${id}`;
-  return pool.query(sql).then(res => {
+  return pool.query(sql).then((res) => {
     return res;
   });
 };
@@ -51,5 +51,5 @@ module.exports = {
   selectById,
   insert,
   update,
-  remove
+  remove,
 };

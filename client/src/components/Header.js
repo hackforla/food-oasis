@@ -1,5 +1,5 @@
 import React from 'react'
-import PropTypes from 'react-proptypes'
+import PropTypes from 'prop-types'
 import useLocationHook from 'hooks/useLocationHook'
 import Menu from './Menu'
 import logo from 'images/fola.svg'
@@ -9,7 +9,7 @@ import LogoutButton from './Logout'
 
 Header.propTypes = {
   user: PropTypes.object,
-  setUser: PropTypes.object,
+  setUser: PropTypes.func,
   setToast: PropTypes.func,
 }
 

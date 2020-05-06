@@ -4,7 +4,7 @@ import { Button } from '@material-ui/core'
 import { useHistory, withRouter } from 'react-router-dom'
 
 LogoutButton.propTypes = {
-  setUser: PropTypes.object,
+  setUser: PropTypes.func,
   setToast: PropTypes.func,
 }
 

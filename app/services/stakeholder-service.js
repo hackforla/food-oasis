@@ -410,6 +410,12 @@ const insert = async (model) => {
     eligibilityNotes,
     foodTypes,
     languages,
+    confirmedName,
+    confirmedCategories,
+    confirmedAddress,
+    confirmedPhone,
+    confirmedEmail,
+    confirmedHours,
   } = model
   try {
     const sql = `insert into stakeholder 
@@ -428,7 +434,9 @@ const insert = async (model) => {
       donation_accept_frozen, donation_accept_refrigerated,
       donation_accept_perishable, donation_schedule,
       donation_delivery_instructions, donation_notes, covid_notes,
-      category_notes, eligibility_notes, food_types, languages)
+      category_notes, eligibility_notes, food_types, languages,
+      v_name, v_categories, v_address,
+      v_phone, v_email, v_hours,)
     values (
       ${toSqlString(name)}, ${toSqlString(address1)}, ${toSqlString(address2)}, 
       ${toSqlString(city)}, ${toSqlString(state)}, ${toSqlString(zip)}, 
@@ -464,7 +472,13 @@ const insert = async (model) => {
       ${toSqlString(categoryNotes)},
       ${toSqlString(eligibilityNotes)},
       ${toSqlString(foodTypes)},
-      ${toSqlString(languages)}
+      ${toSqlString(languages)},
+      ${toSqlBoolean(confirmedName)},
+      ${toSqlBoolean(confirmedCategories)},
+      ${toSqlBoolean(confirmedAddress)},
+      ${toSqlBoolean(confirmedPhone)},
+      ${toSqlBoolean(confirmedEmail)},
+      ${toSqlBoolean(confirmedHours)}
     ) returning id`
     const stakeholderResult = await pool.query(sql)
     const retObject = stakeholderResult.rows[0]
@@ -534,7 +548,7 @@ const assign = async (model) => {
                },
                assigned_date = ${setAssigned ? 'CURRENT_TIMESTAMP' : 'null'}
               where id = ${id}`
-  const result = await pool.query(sql)
+  await pool.query(sql)
 }
 
 const claim = async (model) => {
@@ -631,6 +645,12 @@ const update = async (model) => {
     eligibilityNotes,
     foodTypes,
     languages,
+    confirmedName,
+    confirmedCategories,
+    confirmedAddress,
+    confirmedPhone,
+    confirmedEmail,
+    confirmedHours,
   } = model
 
   let hoursSqlValues = hours.length
@@ -723,7 +743,13 @@ const update = async (model) => {
       category_notes = ${toSqlString(categoryNotes)},
       eligibility_notes = ${toSqlString(eligibilityNotes)},
       food_types = ${toSqlString(foodTypes)},
-      languages = ${toSqlString(languages)}
+      languages = ${toSqlString(languages)},
+      v_name = ${toSqlBoolean(confirmedName)},
+      v_categories = ${toSqlBoolean(confirmedCategories)},
+      v_address = ${toSqlBoolean(confirmedAddress)},
+      v_phone = ${toSqlBoolean(confirmedPhone)},
+      v_email = ${toSqlBoolean(confirmedEmail)},
+      v_hours = ${toSqlBoolean(confirmedHours)}
     where id = ${id}`
   await pool.query(sql)
 }

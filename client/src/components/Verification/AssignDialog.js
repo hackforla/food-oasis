@@ -1,43 +1,35 @@
-import React, { useState, useRef } from "react";
-import PropTypes from "prop-types";
+import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import {
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-} from "@material-ui/core";
-import AccountAutocomplete from "../AccountAutocomplete";
+} from '@material-ui/core'
+import AccountAutocomplete from '../AccountAutocomplete'
 
 function AssignDialog(props) {
-  const { onClose, open, ...other } = props;
-  const [accountId, setAccountId] = useState(null);
-  const accountRef = useRef(null);
-
-  const handleEntering = () => {
-    if (accountRef.current != null) {
-      accountRef.current.focus();
-    }
-  };
+  const { onClose, open, ...other } = props
+  const [accountId, setAccountId] = useState(null)
 
   const handleCancel = () => {
-    onClose(false);
-  };
+    onClose(false)
+  }
 
   const handleAssign = () => {
-    onClose(accountId);
-  };
+    onClose(accountId)
+  }
 
   const handleUnassign = () => {
-    onClose(null);
-  };
+    onClose(null)
+  }
 
   return (
     <Dialog
       disableBackdropClick
       disableEscapeKeyDown
       maxWidth="xs"
-      onEntering={handleEntering}
       aria-labelledby="confirmation-dialog-title"
       open={open}
       {...other}
@@ -48,7 +40,6 @@ function AssignDialog(props) {
       <DialogContent dividers>
         <AccountAutocomplete
           name="assignedLoginId"
-          ref={accountRef}
           accountId={accountId}
           setAccountId={(assignedAccountId) => setAccountId(assignedAccountId)}
         />
@@ -65,13 +56,12 @@ function AssignDialog(props) {
         </Button>
       </DialogActions>
     </Dialog>
-  );
+  )
 }
 
 AssignDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
-  loginId: PropTypes.string.isRequired,
-};
+}
 
-export default AssignDialog;
+export default AssignDialog

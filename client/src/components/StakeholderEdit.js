@@ -9,6 +9,7 @@ import AccountAutocomplete from './AccountAutocomplete'
 import * as Yup from 'yup'
 import {
   AppBar,
+  Box,
   withStyles,
   Checkbox,
   Container,
@@ -36,7 +37,11 @@ import * as esriService from '../services/esri_service'
 import OpenTimeForm from './OpenTimeForm'
 import { TabPanel, a11yProps } from './TabPanel'
 // import BigTooltip from "./BigTooltip";
-import { SaveButton, CloseButton, SearchButton, VerifyButton } from './Buttons'
+import { PlainButton, SearchButton, VerifyButton } from './Buttons'
+import {
+  VERIFICATION_STATUS,
+  VERIFICATION_STATUS_NAMES,
+} from '../constants/stakeholder'
 
 import moment from 'moment'
 
@@ -54,6 +59,11 @@ const styles = (theme) => ({
   formControl: {
     margin: theme.spacing(1),
     minWidth: 120,
+  },
+  tabPanel: {
+    borderLeft: '1px solid lightgray',
+    borderRight: '1px solid lightgray',
+    borderBottom: '1px solid lightgray',
   },
   workflowRow: {
     display: 'flex',
@@ -76,15 +86,18 @@ const styles = (theme) => ({
     marginTop: '0.4em',
     marginBottom: '0.2em',
   },
+  confirmableGroupWrapper: {
+    display: 'flex',
+  },
   confirmableFieldWrapper: {
     flexGrow: 1,
-    display: 'flex',
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
   },
   confirmableField: {
     flexGow: 1,
+  },
+  confirmCheckboxWrapper: {
+    flexGrow: 0,
+    paddingTop: '0.75em',
   },
   confirmCheckbox: {
     marginLeft: '0.2em',
@@ -193,6 +206,7 @@ const StakeholderEdit = (props) => {
     confirmedEmail: false,
     confirmedPhone: false,
     confirmedHours: false,
+    verificationStatusId: VERIFICATION_STATUS.NEEDS_VERIFICATION,
   })
 
   useEffect(() => {
@@ -223,10 +237,6 @@ const StakeholderEdit = (props) => {
     fetchData()
   }, [editId])
 
-  const cancel = () => {
-    history.goBack()
-  }
-
   function formatMapAddress(formData) {
     return `${formData.address1 || ''} ${formData.address2 || ''} ${
       formData.city || ''
@@ -240,6 +250,42 @@ const StakeholderEdit = (props) => {
 
   const handleChangeTabPage = (event, newValue) => {
     setTabPage(newValue)
+  }
+
+  const criticalFieldsValidate = (values) => {
+    if (values.inactive) {
+      return (
+        values.confirmedName &&
+        values.confirmedCategories &&
+        values.confirmedAddress &&
+        values.name &&
+        values.address1 &&
+        values.city &&
+        values.state &&
+        values.zip &&
+        values.latitude &&
+        values.longitude
+      )
+    }
+    return (
+      values.confirmedName &&
+      values.confirmedCategories &&
+      values.confirmedAddress &&
+      values.confirmedEmail &&
+      values.confirmedPhone &&
+      values.confirmedHours &&
+      values.name &&
+      values.address1 &&
+      values.city &&
+      values.state &&
+      values.zip &&
+      values.latitude &&
+      values.longitude
+    )
+  }
+
+  const isUnchanged = (values) => {
+    return JSON.stringify(values) === JSON.stringify(originalData)
   }
 
   const noteTooltip = (
@@ -317,9 +363,16 @@ const StakeholderEdit = (props) => {
     <Container component="main" maxWidth="lg">
       <CssBaseline />
       <div className={classes.paper}>
-        <Typography component="h1" variant="h5">
-          Organization Information
-        </Typography>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Typography component="h1" variant="h5">
+            {`Organization - ${originalData.name}`}
+          </Typography>
+          <Box bgcolor="secondary.main" style={{ padding: '0.2em 0.65em' }}>
+            <Typography component="h1" variant="h5">
+              {VERIFICATION_STATUS_NAMES[originalData.verificationStatusId]}
+            </Typography>
+          </Box>
+        </div>
         <Formik
           initialValues={originalData}
           enableReinitialize
@@ -332,7 +385,7 @@ const StakeholderEdit = (props) => {
                   setToast({
                     message: 'Update successful.',
                   })
-                  props.history.goBack()
+                  // props.history.goBack();
                 })
                 .catch((err) => {
                   setToast({
@@ -349,7 +402,7 @@ const StakeholderEdit = (props) => {
                     message: 'Insert successful.',
                   })
                   setFieldValue('id', response.id)
-                  props.history.goBack()
+                  // props.history.goBack();
                 })
                 .catch((err) => {
                   setToast({
@@ -381,107 +434,203 @@ const StakeholderEdit = (props) => {
                   aria-label="stakeholder tabs"
                 >
                   <Tab label="Identification" {...a11yProps(0)} />
-                  <Tab label="Client Contact" {...a11yProps(1)} />
-                  <Tab label="Hours" {...a11yProps(2)} />
-                  <Tab label="Details" {...a11yProps(3)} />
+                  <Tab label="Business Hours" {...a11yProps(1)} />
+                  <Tab label="Contact Details" {...a11yProps(2)} />
+                  <Tab label="More Details" {...a11yProps(3)} />
                   <Tab label="Donations" {...a11yProps(4)} />
                   <Tab label="Verification" {...a11yProps(5)} />
                 </Tabs>
               </AppBar>
-              <TabPanel value={tabPage} index={0}>
+              <TabPanel value={tabPage} index={0} className={classes.tabPanel}>
                 <Grid container spacing={1}>
-                  <Grid item xs={12} style={{ display: 'flex' }}>
-                    <div style={{ flexGrow: 1 }}>
-                      <TextField
-                        type="text"
-                        size="small"
-                        label="Name"
-                        name="name"
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        autoFocus
-                        value={values.name}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        helperText={touched.name ? errors.name : ''}
-                        error={touched.name && Boolean(errors.name)}
-                      />
-                    </div>
-                    <div style={{ flexGrow: 0, paddingTop: '0.75em' }}>
+                  <Grid
+                    item
+                    xs={12}
+                    className={classes.confirmableGroupWrapper}
+                  >
+                    <TextField
+                      type="text"
+                      size="small"
+                      label="Name"
+                      name="name"
+                      variant="outlined"
+                      margin="normal"
+                      fullWidth
+                      autoFocus
+                      value={values.name}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      helperText={touched.name ? errors.name : ''}
+                      error={touched.name && Boolean(errors.name)}
+                    />
+
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          margin="normal"
+                          name="confirmedName"
+                          value={values.confirmedName}
+                          checked={values.confirmedName}
+                          onChange={(e) =>
+                            setFieldValue('confirmedName', e.target.checked)
+                          }
+                          onBlur={handleBlur}
+                          size="medium"
+                        />
+                      }
+                      label="confirm"
+                    />
+                  </Grid>
+                  <Grid item sm={6} xs={12}>
+                    <div className={classes.confirmableGroupWrapper}>
+                      <BigTooltip title="Phone number for clients to use">
+                        <TextField
+                          variant="outlined"
+                          margin="normal"
+                          fullWidth
+                          name="phone"
+                          label="Phone"
+                          type="text"
+                          size="small"
+                          value={values.phone}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          helperText={touched.phone ? errors.phone : ''}
+                          error={touched.phone && Boolean(errors.phone)}
+                        />
+                      </BigTooltip>
                       <FormControlLabel
                         control={
                           <Checkbox
                             margin="normal"
-                            name="confirmedName"
-                            value={values.confirmedName}
-                            checked={values.confirmedName}
-                            onChange={(e) =>
-                              setFieldValue('confirmedName', e.target.checked)
+                            name="confirmedPhone"
+                            value={values.confirmedPhone}
+                            checked={values.confirmedPhone}
+                            onChange={() =>
+                              setFieldValue(
+                                'confirmedPhone',
+                                !values.confirmedPhone,
+                              )
                             }
                             onBlur={handleBlur}
                           />
                         }
-                        style={{
-                          backgroundColor: 'lightgray',
-                        }}
                         label="confirm"
                       />
                     </div>
                   </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <FormControl className={classes.formControl}>
-                      <InputLabel id="selectCategoryIds-label">
-                        Categories
-                      </InputLabel>
+                  <Grid item sm={6} xs={12}>
+                    <div className={classes.confirmableGroupWrapper}>
+                      <BigTooltip title="Email for clients to use">
+                        <TextField
+                          variant="outlined"
+                          margin="normal"
+                          fullWidth
+                          name="email"
+                          label="Email"
+                          type="text"
+                          size="small"
+                          value={values.email}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          helperText={touched.email ? errors.email : ''}
+                          error={touched.email && Boolean(errors.email)}
+                        />
+                      </BigTooltip>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            margin="normal"
+                            name="confirmedEmail"
+                            value={values.confirmedEmail}
+                            checked={values.confirmedEmail}
+                            onChange={() =>
+                              setFieldValue(
+                                'confirmedEmail',
+                                !values.confirmedEmail,
+                              )
+                            }
+                            onBlur={handleBlur}
+                          />
+                        }
+                        label="confirm"
+                      />
+                    </div>
+                  </Grid>
 
-                      <Select
-                        labelId="selectCategoryIds-label"
-                        id="selectedCategoryIds"
-                        variant="outlined"
-                        name="selectedCategoryIds"
-                        multiple
-                        fullWidth
-                        value={values.selectedCategoryIds}
-                        onChange={handleChange}
-                        input={<Input />}
-                        renderValue={(selectedCategoryIds) => {
-                          if (!categories) {
-                            return 'Loading categories...'
-                          }
-                          if (selectedCategoryIds.length === 0) {
-                            return '(Select Categories)'
-                          }
-                          return selectedCategoryIds
-                            .map(
-                              (categoryId) =>
-                                categories.filter(
-                                  (category) => category.id === categoryId,
-                                )[0].name,
-                            )
-                            .join(', ')
-                        }}
-                        MenuProps={MenuProps}
-                      >
-                        {categories.map((category) => (
-                          <MenuItem key={category.id} value={category.id}>
-                            <Checkbox
-                              checked={
-                                values.selectedCategoryIds.indexOf(
-                                  category.id,
-                                ) > -1
-                              }
-                            />
-                            <ListItemText primary={category.name} />
-                          </MenuItem>
-                        ))}
-                      </Select>
-                      <FormHelperText>
-                        {touched.selectedCategoryIds
-                          ? errors.selectedCategoryIds
-                          : ''}
-                      </FormHelperText>
-                    </FormControl>
+                  <Grid item xs={12} sm={6}>
+                    <div className={classes.confirmableGroupWrapper}>
+                      <FormControl className={classes.formControl} fullWidth>
+                        <InputLabel id="selectCategoryIds-label">
+                          Categories
+                        </InputLabel>
+
+                        <Select
+                          labelId="selectCategoryIds-label"
+                          id="selectedCategoryIds"
+                          variant="outlined"
+                          name="selectedCategoryIds"
+                          multiple
+                          fullWidth
+                          value={values.selectedCategoryIds}
+                          onChange={handleChange}
+                          input={<Input />}
+                          renderValue={(selectedCategoryIds) => {
+                            if (!categories) {
+                              return 'Loading categories...'
+                            }
+                            if (selectedCategoryIds.length === 0) {
+                              return '(Select Categories)'
+                            }
+                            return selectedCategoryIds
+                              .map(
+                                (categoryId) =>
+                                  categories.filter(
+                                    (category) => category.id === categoryId,
+                                  )[0].name,
+                              )
+                              .join(', ')
+                          }}
+                          MenuProps={MenuProps}
+                        >
+                          {categories.map((category) => (
+                            <MenuItem key={category.id} value={category.id}>
+                              <Checkbox
+                                checked={
+                                  values.selectedCategoryIds.indexOf(
+                                    category.id,
+                                  ) > -1
+                                }
+                              />
+                              <ListItemText primary={category.name} />
+                            </MenuItem>
+                          ))}
+                        </Select>
+                        <FormHelperText>
+                          {touched.selectedCategoryIds
+                            ? errors.selectedCategoryIds
+                            : ''}
+                        </FormHelperText>
+                      </FormControl>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            margin="normal"
+                            name="confirmedCategories"
+                            value={values.confirmedCategories}
+                            checked={values.confirmedCategories}
+                            onChange={() =>
+                              setFieldValue(
+                                'confirmedCategories',
+                                !values.confirmedCategories,
+                              )
+                            }
+                            onBlur={handleBlur}
+                          />
+                        }
+                        label="confirm"
+                      />
+                    </div>
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <BigTooltip title="Notes about identifying organization category">
@@ -524,7 +673,7 @@ const StakeholderEdit = (props) => {
                             onBlur={handleBlur}
                           />
                         }
-                        label="Inactive"
+                        label="Permanently Closed"
                       />
                     </BigTooltip>
                   </Grid>
@@ -548,108 +697,6 @@ const StakeholderEdit = (props) => {
                         error={touched.covidNotes && Boolean(errors.covidNotes)}
                       />
                     </BigTooltip>
-                  </Grid>
-
-                  <Grid item xs={6} sm={2}></Grid>
-                  <Grid item xs={6} sm={2}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          margin="normal"
-                          name="confirmedCategories"
-                          value={values.confirmedCategories}
-                          checked={values.confirmedCategories}
-                          onChange={() =>
-                            setFieldValue(
-                              'confirmedCategories',
-                              !values.confirmedCategories,
-                            )
-                          }
-                          onBlur={handleBlur}
-                        />
-                      }
-                      label="Confirm Categories"
-                    />
-                  </Grid>
-                  <Grid item xs={6} sm={2}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          margin="normal"
-                          name="confirmedAddress"
-                          value={values.confirmedAddress}
-                          checked={values.confirmedAddress}
-                          onChange={() =>
-                            setFieldValue(
-                              'confirmedAddress',
-                              !values.confirmedAddress,
-                            )
-                          }
-                          onBlur={handleBlur}
-                        />
-                      }
-                      label="Confirm Address"
-                    />
-                  </Grid>
-                  <Grid item xs={6} sm={2}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          margin="normal"
-                          name="confirmedEmail"
-                          value={values.confirmedEmail}
-                          checked={values.confirmedEmail}
-                          onChange={() =>
-                            setFieldValue(
-                              'confirmedEmail',
-                              !values.confirmedEmail,
-                            )
-                          }
-                          onBlur={handleBlur}
-                        />
-                      }
-                      label="Confirm Email"
-                    />
-                  </Grid>
-                  <Grid item xs={6} sm={2}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          margin="normal"
-                          name="confirmedPhone"
-                          value={values.confirmedPhone}
-                          checked={values.confirmedPhone}
-                          onChange={() =>
-                            setFieldValue(
-                              'confirmedPhone',
-                              !values.confirmedPhone,
-                            )
-                          }
-                          onBlur={handleBlur}
-                        />
-                      }
-                      label="Confirm Phone"
-                    />
-                  </Grid>
-                  <Grid item xs={6} sm={2}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          margin="normal"
-                          name="confirmedHours"
-                          value={values.confirmedHours}
-                          checked={values.confirmedHours}
-                          onChange={() =>
-                            setFieldValue(
-                              'confirmedHours',
-                              !values.confirmedHours,
-                            )
-                          }
-                          onBlur={handleBlur}
-                        />
-                      }
-                      label="Confirm Hours"
-                    />
                   </Grid>
 
                   <Grid item xs={12}>
@@ -818,24 +865,54 @@ const StakeholderEdit = (props) => {
                       />
                     </Grid>
                     <Grid item xs={12} md={6}>
-                      <Grid container justifycontent="space-between">
-                        <BigTooltip title="Click to get latitude / longitude for address">
-                          <Grid item>
-                            <SearchButton
-                              onClick={() => {
-                                ;(geocodeResults && geocodeResults.length) < 1
-                                  ? geocode(values)
-                                  : setGeocodeResults([])
-                              }}
-                              label={
-                                (geocodeResults && geocodeResults.length) < 1
-                                  ? 'Get Coordinates'
-                                  : 'Close'
+                      <Grid container>
+                        <Grid
+                          xs={12}
+                          item
+                          className={classes.confirmableGroupWrapper}
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                          }}
+                        >
+                          <BigTooltip title="Click to get latitude / longitude for address">
+                            <Grid item>
+                              <SearchButton
+                                onClick={() => {
+                                  ;(geocodeResults && geocodeResults.length) < 1
+                                    ? geocode(values)
+                                    : setGeocodeResults([])
+                                }}
+                                label={
+                                  (geocodeResults && geocodeResults.length) < 1
+                                    ? 'Get Coordinates'
+                                    : 'Close'
+                                }
+                                style={{ marginTop: '1.2em' }}
+                              />
+                            </Grid>
+                          </BigTooltip>
+                          <div className={classes.confirmCheckboxWrapper}>
+                            <FormControlLabel
+                              control={
+                                <Checkbox
+                                  margin="normal"
+                                  name="confirmedAddress"
+                                  value={values.confirmedAddress}
+                                  checked={values.confirmedAddress}
+                                  onChange={() =>
+                                    setFieldValue(
+                                      'confirmedAddress',
+                                      !values.confirmedAddress,
+                                    )
+                                  }
+                                  onBlur={handleBlur}
+                                />
                               }
-                              style={{ marginTop: '1.2em' }}
+                              label="Confirm Address"
                             />
-                          </Grid>
-                        </BigTooltip>
+                          </div>
+                        </Grid>
                       </Grid>
                       <div style={{ padding: '0.5em 0' }}>
                         {geocodeResults ? (
@@ -882,45 +959,48 @@ const StakeholderEdit = (props) => {
                   </Grid>
                 </Grid>
               </TabPanel>
-              <TabPanel value={tabPage} index={1}>
+              <TabPanel value={tabPage} index={1} className={classes.tabPanel}>
                 <Grid container spacing={1}>
-                  <Grid item sm={6} xs={12}>
-                    <BigTooltip title="Phone number for clients to use">
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        name="phone"
-                        label="Phone"
-                        type="text"
-                        size="small"
-                        value={values.phone}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        helperText={touched.phone ? errors.phone : ''}
-                        error={touched.phone && Boolean(errors.phone)}
-                      />
-                    </BigTooltip>
+                  <Grid item xs={12}>
+                    <Typography>Business hours for Food Seekers</Typography>
                   </Grid>
-                  <Grid item sm={6} xs={12}>
-                    <BigTooltip title="Email for clients to use">
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        name="email"
-                        label="Email"
-                        type="text"
-                        size="small"
-                        value={values.email}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        helperText={touched.email ? errors.email : ''}
-                        error={touched.email && Boolean(errors.email)}
+                  <Grid item xs={12}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'flex-end',
+                      }}
+                    >
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            margin="normal"
+                            name="confirmedHours"
+                            value={values.confirmedHours}
+                            checked={values.confirmedHours}
+                            onChange={() =>
+                              setFieldValue(
+                                'confirmedHours',
+                                !values.confirmedHours,
+                              )
+                            }
+                            onBlur={handleBlur}
+                          />
+                        }
+                        label="Confirm Hours"
                       />
-                    </BigTooltip>
+                    </div>
+                    <OpenTimeForm
+                      name="hours"
+                      onChange={handleChange}
+                      value={values.hours}
+                    />
                   </Grid>
-
+                </Grid>
+              </TabPanel>
+              <TabPanel value={tabPage} index={2} className={classes.tabPanel}>
+                <Grid container spacing={1}>
                   <Grid item xs={12}>
                     <BigTooltip title="The organization's web address">
                       <TextField
@@ -1021,19 +1101,11 @@ const StakeholderEdit = (props) => {
                   </Grid>
                 </Grid>
               </TabPanel>
-              <TabPanel value={tabPage} index={2}>
+              <TabPanel value={tabPage} index={3} className={classes.tabPanel}>
                 <Grid container spacing={1}>
                   <Grid item xs={12}>
-                    <OpenTimeForm
-                      name="hours"
-                      onChange={handleChange}
-                      value={values.hours}
-                    />
+                    <Typography>Details for Food Seekers to See</Typography>
                   </Grid>
-                </Grid>
-              </TabPanel>
-              <TabPanel value={tabPage} index={3}>
-                <Grid container spacing={1}>
                   <Grid item xs={12}>
                     <TextField
                       variant="outlined"
@@ -1168,7 +1240,7 @@ const StakeholderEdit = (props) => {
                         margin="normal"
                         fullWidth
                         name="notes"
-                        label="Notes"
+                        label="Notes for the Public"
                         type="text"
                         size="small"
                         multiline
@@ -1184,7 +1256,7 @@ const StakeholderEdit = (props) => {
                   </Grid>
                 </Grid>
               </TabPanel>
-              <TabPanel value={tabPage} index={4}>
+              <TabPanel value={tabPage} index={4} className={classes.tabPanel}>
                 <Grid container spacing={1}>
                   <Grid item xs={12} sm={6}>
                     <BigTooltip title="Name of person(s) to contact for donations">
@@ -1428,29 +1500,8 @@ const StakeholderEdit = (props) => {
                   </Grid>
                 </Grid>
               </TabPanel>
-              <TabPanel value={tabPage} index={5}>
+              <TabPanel value={tabPage} index={5} className={classes.tabPanel}>
                 <Grid container spacing={1}>
-                  <Grid item xs={12}>
-                    <BigTooltip title={adminNoteTooltip}>
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        name="adminNotes"
-                        label="Verification Notes"
-                        type="text"
-                        size="small"
-                        multiline
-                        rows={2}
-                        rowsMax={12}
-                        value={values.adminNotes}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        helperText={touched.adminNotes ? errors.adminNotes : ''}
-                        error={touched.adminNotes && Boolean(errors.adminNotes)}
-                      />
-                    </BigTooltip>
-                  </Grid>
                   <Grid item xs={12} sm={6}>
                     <BigTooltip title="Name of person(s) to contact for organization information">
                       <TextField
@@ -1626,10 +1677,18 @@ const StakeholderEdit = (props) => {
                                         `${login.firstName} ${login.lastName}`,
                                       )
                                       setFieldValue('assignedDate', moment())
+                                      setFieldValue(
+                                        'verificationStatusId',
+                                        VERIFICATION_STATUS.ASSIGNED,
+                                      )
                                     } else {
                                       setFieldValue('assignedLoginId', '')
                                       setFieldValue('assignedUser', '')
                                       setFieldValue('assignedDate', '')
+                                      setFieldValue(
+                                        'verificationStatusId',
+                                        VERIFICATION_STATUS.NEEDS_VERIFICATION,
+                                      )
                                     }
                                   }}
                                 />
@@ -1657,62 +1716,11 @@ const StakeholderEdit = (props) => {
                             : moment(values.submittedDate).format(DATE_FORMAT)}
                         </Typography>
                       </div>
-                      <div
-                        className={classes.workflowColumn4}
-                        style={{ textAlign: 'right' }}
-                      >
-                        <UserContext.Consumer>
-                          {(user) =>
-                            user && (user.isDataEntry || user.isAdmin) ? (
-                              <div
-                                style={{
-                                  display: 'flex',
-                                  flexDirection: 'row',
-                                  justifyContent: 'flex-end',
-                                }}
-                              >
-                                <FormControlLabel
-                                  control={
-                                    <Checkbox
-                                      margin="normal"
-                                      name="inactive"
-                                      label="Verify"
-                                      value={!!values.submittedDate}
-                                      checked={!!values.submittedDate}
-                                      onChange={() => {
-                                        const setSubmitted = !!!values.submittedDate
-                                        setFieldValue(
-                                          'submittedDate',
-                                          setSubmitted ? moment() : '',
-                                        )
-                                        setFieldValue(
-                                          'submittedUser',
-                                          setSubmitted
-                                            ? user.firstName +
-                                                ' ' +
-                                                user.lastName
-                                            : '',
-                                        )
-                                        setFieldValue(
-                                          'submittedLoginId',
-                                          setSubmitted ? user.id : '',
-                                        )
-                                      }}
-                                      onBlur={handleBlur}
-                                    />
-                                  }
-                                  label="Verify"
-                                />
-                              </div>
-                            ) : null
-                          }
-                        </UserContext.Consumer>
-                      </div>
                     </div>
                     <div className={classes.workflowRow}>
                       <div className={classes.workflowColumn1}>
                         <Typography className={classes.workflowText}>
-                          {values.rejectedDate ? 'Rejected:' : 'Approved:'}
+                          "Approved:"
                         </Typography>
                       </div>
                       <div className={classes.workflowColumn2}>
@@ -1722,115 +1730,12 @@ const StakeholderEdit = (props) => {
                       </div>
                       <div className={classes.workflowColumn3}>
                         <Typography className={classes.workflowText}>
-                          {!!values.rejectedDate
-                            ? moment(values.rejectedDate).format(DATE_FORMAT)
-                            : !!values.approvedDate
+                          {!!values.approvedDate
                             ? moment(values.approvedDate).format(DATE_FORMAT)
                             : ''}
                         </Typography>
                       </div>
-                      <div className={classes.workflowColumn4}>
-                        <UserContext.Consumer>
-                          {(user) =>
-                            user && user.isAdmin ? (
-                              <div
-                                style={{
-                                  display: 'flex',
-                                  flexDirection: 'row',
-                                  justifyContent: 'flex-end',
-                                }}
-                              >
-                                <div
-                                  style={{
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    justifyContent: 'flex-end',
-                                  }}
-                                >
-                                  <FormControlLabel
-                                    control={
-                                      <Checkbox
-                                        margin="normal"
-                                        name="inactive"
-                                        label="Approve"
-                                        value={!!values.approvedDate}
-                                        checked={!!values.approvedDate}
-                                        onChange={() => {
-                                          const set = !!!values.approvedDate
-                                          setFieldValue(
-                                            'approvedDate',
-                                            set ? moment() : '',
-                                          )
-                                          setFieldValue(
-                                            'reviewedUser',
-                                            set
-                                              ? user.firstName +
-                                                  ' ' +
-                                                  user.lastName
-                                              : '',
-                                          )
-                                          setFieldValue(
-                                            'reviewedLoginId',
-                                            set ? user.id : '',
-                                          )
-                                          if (set) {
-                                            setFieldValue('rejectedDate', '')
-                                          }
-                                        }}
-                                        onBlur={handleBlur}
-                                      />
-                                    }
-                                    label="Approve"
-                                  />
-
-                                  <FormControlLabel
-                                    control={
-                                      <Checkbox
-                                        margin="normal"
-                                        name="inactive"
-                                        label="Reject"
-                                        value={!!values.rejectedDate}
-                                        checked={!!values.rejectedDate}
-                                        onChange={() => {
-                                          const set = !!!values.rejectedDate
-                                          setFieldValue(
-                                            'rejectedDate',
-                                            set ? moment() : '',
-                                          )
-                                          setFieldValue(
-                                            'reviewedUser',
-                                            set
-                                              ? user.firstName +
-                                                  ' ' +
-                                                  user.lastName
-                                              : '',
-                                          )
-                                          setFieldValue(
-                                            'reviewedLoginId',
-                                            set ? user.id : '',
-                                          )
-                                          if (set) {
-                                            setFieldValue('approvedDate', '')
-                                            setFieldValue('submittedDate', '')
-                                            setFieldValue(
-                                              'submittedLoginid',
-                                              '',
-                                            )
-                                          }
-                                        }}
-                                        onBlur={handleBlur}
-                                      />
-                                    }
-                                    label="Reject"
-                                  />
-                                </div>
-                              </div>
-                            ) : null
-                          }
-                        </UserContext.Consumer>
-                      </div>
                     </div>
-
                     <div className={classes.workflowRow}>
                       <div className={classes.workflowColumn1}>
                         <Typography className={classes.workflowText}>
@@ -1890,7 +1795,7 @@ const StakeholderEdit = (props) => {
                       <TextField
                         type="text"
                         size="small"
-                        label="Verification Review Notes"
+                        label="Reviewer Notes"
                         name="reviewNotes"
                         variant="outlined"
                         margin="normal"
@@ -1901,6 +1806,7 @@ const StakeholderEdit = (props) => {
                         value={values.reviewNotes}
                         onChange={handleChange}
                         onBlur={handleBlur}
+                        disabled={!user || !user.isAdmin}
                         helperText={
                           touched.reviewNotes ? errors.reviewNotes : ''
                         }
@@ -1912,28 +1818,135 @@ const StakeholderEdit = (props) => {
                   </Grid>
                 </Grid>
               </TabPanel>
-              <Grid container spacing={1}>
-                <Grid
-                  item
-                  xs={12}
-                  style={{ display: 'flex', justifyContent: 'flex-end' }}
-                >
-                  <div>
-                    <CloseButton
-                      type="button"
-                      onClick={cancel}
-                      label="CANCEL CHANGES"
+              <div style={{ display: 'flex' }}>
+                <div style={{ flexBasis: '20%', flexGrow: 1 }}>
+                  <BigTooltip title={adminNoteTooltip}>
+                    <TextField
+                      variant="outlined"
+                      margin="normal"
+                      fullWidth
+                      name="adminNotes"
+                      label="Verification Notes"
+                      type="text"
+                      size="small"
+                      multiline
+                      rows={2}
+                      rowsMax={12}
+                      value={values.adminNotes}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      helperText={touched.adminNotes ? errors.adminNotes : ''}
+                      error={touched.adminNotes && Boolean(errors.adminNotes)}
                     />
+                  </BigTooltip>
+                </div>
 
-                    <SaveButton
-                      type="submit"
-                      className={classes.submit}
-                      disabled={isSubmitting}
-                      style={{ marginLeft: '0.5em' }}
-                    />
-                  </div>
-                </Grid>
-              </Grid>
+                <div
+                  style={{
+                    flexGrow: '0',
+                    flexBasis: '65%',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'flex-end',
+                    alignContent: 'center',
+                  }}
+                >
+                  {user && (user.isAdmin || user.isCoordinator) ? (
+                    <>
+                      <PlainButton
+                        type="submit"
+                        label="Save Progress"
+                        className={classes.submit}
+                        disabled={isSubmitting || isUnchanged(values)}
+                        style={{ margin: 'auto 0.5em' }}
+                      />
+                      <PlainButton
+                        type="button"
+                        onClick={() => {
+                          setFieldValue('assignedLoginId', '')
+                          setFieldValue('assignedUser', '')
+                          setFieldValue('assignedDate', '')
+                          setFieldValue(
+                            'verificationStatusId',
+                            VERIFICATION_STATUS.NEEDS_VERIFICATION,
+                          )
+                          handleSubmit()
+                        }}
+                        label="Unassign"
+                        disabled={criticalFieldsValidate(values)}
+                        style={{ margin: 'auto 0.5em' }}
+                      />
+                      <PlainButton
+                        type="button"
+                        onClick={() => {
+                          setFieldValue('approvedDate', moment())
+                          setFieldValue(
+                            'approvedUser',
+                            user.firstName + ' ' + user.lastName,
+                          )
+                          setFieldValue('approvedLoginId', user.id)
+                          setFieldValue(
+                            'verificationStatusId',
+                            VERIFICATION_STATUS.VERIFIED,
+                          )
+                          handleSubmit()
+                        }}
+                        label="Save and Approve"
+                        disabled={!criticalFieldsValidate(values)}
+                        style={{ margin: 'auto 0.5em' }}
+                      />
+                    </>
+                  ) : user && user.isDataEntry ? (
+                    <>
+                      <PlainButton
+                        type="submit"
+                        label="Save Progress"
+                        className={classes.submit}
+                        disabled={() => isSubmitting || isUnchanged(values)}
+                        style={{ margin: 'auto' }}
+                      />
+                      <PlainButton
+                        type="button"
+                        onClick={() => {
+                          setFieldValue('assignedLoginId', '')
+                          setFieldValue('assignedUser', '')
+                          setFieldValue('assignedDate', '')
+                          setFieldValue(
+                            'verificationStatusId',
+                            VERIFICATION_STATUS.NEEDS_VERIFICATION,
+                          )
+                          handleSubmit()
+                        }}
+                        label="Hand Off"
+                        disabled={criticalFieldsValidate(values)}
+                        style={{ margin: 'auto' }}
+                      />
+                      <PlainButton
+                        type="button"
+                        onClick={() => {
+                          setFieldValue('submittedDate', moment())
+                          setFieldValue(
+                            'submittedUser',
+                            user.firstName + ' ' + user.lastName,
+                          )
+                          setFieldValue('submittedLoginId', user.id)
+                          setFieldValue(
+                            'verificationStatusId',
+                            VERIFICATION_STATUS.SUBMITTED,
+                          )
+                          handleSubmit()
+                        }}
+                        label="Submit For Review"
+                        disabled={
+                          !criticalFieldsValidate(values) ||
+                          !!values.submittedDate
+                        }
+                        style={{ margin: 'auto' }}
+                      />
+                    </>
+                  ) : null}
+                </div>
+              </div>
             </form>
           )}
         </Formik>

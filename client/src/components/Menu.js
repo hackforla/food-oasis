@@ -121,7 +121,7 @@ export default function Menu(props) {
                 <MenuItemLink
                   key="verificationdashboard"
                   to="/verificationdashboard"
-                  text="Verification Dashboard"
+                  text="My Dashboard"
                 />
               ) : null}
               {user && user.isSecurityAdmin ? (

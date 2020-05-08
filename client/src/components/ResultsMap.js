@@ -7,12 +7,9 @@ import {
   DEFAULT_CATEGORIES,
   FOOD_PANTRY_CATEGORY_ID,
   MAPBOX_STYLE,
-  MEAL,
   MEAL_PROGRAM_CATEGORY_ID,
   ORGANIZATION_COLORS,
-  PANTRY,
 } from '../constants/map'
-import moment from 'moment'
 
 const styles = {
   geolocate: {
@@ -31,8 +28,15 @@ function Map({
   categoryIds,
 }) {
   React.useEffect(() => {
+    if (stakeholders && stakeholders.length > 0) {
+      setViewport({
+        ...viewport,
+        latitude: stakeholders[0].latitude,
+        longitude: stakeholders[0].longitude,
+      })
+    }
     console.log('map', stakeholders)
-  }, [stakeholders])
+  }, [stakeholders, viewport])
 
   const categoryIdsOrDefault = categoryIds.length
     ? categoryIds
@@ -73,12 +77,7 @@ function Map({
           stakeholders
             .filter((sh) => sh.latitude && sh.longitude)
             .map((stakeholder, index) => {
-              // The verifiedDate property was removed from the
-              // stakeholder object. For now, show the stakeholders with
-              // a submittedDate as "verified", since there are engough
-              // of them to work with. This might change to approvedDate
-              // or something later.
-              const isVerified = !!stakeholder.submittedDate
+              const isVerified = !!stakeholder.approvedDate
               /*todo
                * implement condition based on api data
                * */

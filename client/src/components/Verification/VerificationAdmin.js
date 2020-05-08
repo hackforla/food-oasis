@@ -1,65 +1,65 @@
-import React, { useState, useEffect } from "react";
-import { withRouter } from "react-router-dom";
-import { Button, CssBaseline, Dialog, Typography } from "@material-ui/core";
-import MuiDialogTitle from "@material-ui/core/DialogTitle";
-import { makeStyles } from "@material-ui/core/styles";
-import { SearchButton } from "../Buttons";
-import StakeholderGrid from "../StakeholderGrid";
-import { RotateLoader } from "react-spinners";
-import { useOrganizations } from "../../hooks/useOrganizations/useOrganizations";
-import { useCategories } from "../../hooks/useCategories/useCategories";
-import { assign } from "../../services/stakeholder-service";
-import AssignDialog from "./AssignDialog";
-import SearchCriteria from "./SearchCriteria";
+import React, { useState, useEffect } from 'react'
+import { withRouter } from 'react-router-dom'
+import { Button, CssBaseline, Dialog, Typography } from '@material-ui/core'
+import MuiDialogTitle from '@material-ui/core/DialogTitle'
+import { makeStyles } from '@material-ui/core/styles'
+import { SearchButton } from '../Buttons'
+import StakeholderGrid from '../StakeholderGrid'
+import { RotateLoader } from 'react-spinners'
+import { useOrganizations } from '../../hooks/useOrganizations/useOrganizations'
+import { useCategories } from '../../hooks/useCategories/useCategories'
+import { assign } from '../../services/stakeholder-service'
+import AssignDialog from './AssignDialog'
+import SearchCriteria from './SearchCriteria'
 
-const CRITERIA_TOKEN = "verificationAdminCriteria";
+const CRITERIA_TOKEN = 'verificationAdminCriteria'
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    flexBasis: "100%",
-    display: "flex",
-    flexDirection: "column",
-    padding: "2rem",
-    paddingBottom: "0",
+    flexBasis: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    padding: '2rem',
+    paddingBottom: '0',
   },
   mainContent: {
     flexGrow: 1,
     padding: theme.spacing(2),
-    display: "flex",
-    flexDirection: "column",
+    display: 'flex',
+    flexDirection: 'column',
   },
   closeButton: {
-    position: "absolute",
+    position: 'absolute',
     right: theme.spacing(1),
     top: theme.spacing(1),
     // color: theme.palette.grey[500],
   },
 
   header: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   menuButton: {
     marginRight: theme.spacing(2),
   },
   hide: {
-    display: "none",
+    display: 'none',
   },
   bigMessage: {
     flexGrow: 1,
-    flexDirection: "column",
-    justifyContent: "center",
-    backgroundColor: "#E8E8E8",
-    textAlign: "center",
-    padding: "4em",
+    flexDirection: 'column',
+    justifyContent: 'center',
+    backgroundColor: '#E8E8E8',
+    textAlign: 'center',
+    padding: '4em',
   },
-}));
+}))
 
 const DialogTitle = (props) => {
-  const classes = useStyles();
-  const { children, onClose, ...other } = props;
+  const classes = useStyles()
+  const { children, onClose, ...other } = props
   return (
     <MuiDialogTitle disableTypography className={classes.root} {...other}>
       <Typography variant="h6">{children}</Typography>
@@ -71,101 +71,101 @@ const DialogTitle = (props) => {
         />
       ) : null}
     </MuiDialogTitle>
-  );
-};
+  )
+}
 
 const defaultCriteria = {
-  name: "",
+  name: '',
   latitude: 34,
   longitude: -118,
-  placeName: "",
+  placeName: '',
   radius: 0,
   categoryIds: [],
-  isInactive: "either",
-  isAssigned: "either",
-  isSubmitted: "either",
-  isApproved: "either",
-  isRejected: "either",
-  isClaimed: "either",
+  isInactive: 'either',
+  isAssigned: 'either',
+  isSubmitted: 'either',
+  isApproved: 'either',
+  isRejected: 'either',
+  isClaimed: 'either',
   assignedLoginId: null,
   claimedLoginId: null,
-};
+}
 
 function VerificationAdmin(props) {
-  const { userCoordinates } = props;
-  const classes = useStyles();
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [assignDialogOpen, setAssignDialogOpen] = useState(false);
-  const [criteria, setCriteria] = useState(defaultCriteria);
-  const [selectedStakeholderIds, setSelectedStakeholderIds] = useState([]);
+  const { userCoordinates } = props
+  const classes = useStyles()
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [assignDialogOpen, setAssignDialogOpen] = useState(false)
+  const [criteria, setCriteria] = useState(defaultCriteria)
+  const [selectedStakeholderIds, setSelectedStakeholderIds] = useState([])
 
   const {
     data: categories,
     loading: categoriesLoading,
     error: categoriesError,
-  } = useCategories();
+  } = useCategories()
 
   const {
     data: stakeholders,
     loading: stakeholdersLoading,
     error: stakeholdersError,
     search: stakeholderSearch,
-  } = useOrganizations();
+  } = useOrganizations()
 
   useEffect(() => {
-    if (!stakeholderSearch) return;
-    const criteriaString = localStorage.getItem(CRITERIA_TOKEN);
-    let initialCriteria = JSON.parse(criteriaString);
+    if (!stakeholderSearch) return
+    const criteriaString = localStorage.getItem(CRITERIA_TOKEN)
+    let initialCriteria = JSON.parse(criteriaString)
     if (!initialCriteria) {
       initialCriteria = {
         ...defaultCriteria,
         latitude: userCoordinates.latitude,
         longitude: userCoordinates.longitude,
-      };
+      }
     }
-    setCriteria(initialCriteria);
-    stakeholderSearch(initialCriteria);
-  }, [userCoordinates]);
+    setCriteria(initialCriteria)
+    stakeholderSearch(initialCriteria)
+  }, [stakeholderSearch, userCoordinates])
 
   const search = async () => {
-    await stakeholderSearch(criteria);
-    localStorage.setItem(CRITERIA_TOKEN, JSON.stringify(criteria));
-  };
+    await stakeholderSearch(criteria)
+    localStorage.setItem(CRITERIA_TOKEN, JSON.stringify(criteria))
+  }
 
   const handleAssignDialogOpen = async () => {
-    setAssignDialogOpen(true);
-    console.log(selectedStakeholderIds);
-  };
+    setAssignDialogOpen(true)
+    console.log(selectedStakeholderIds)
+  }
 
   const handleAssignDialogClose = async (loginId) => {
-    setAssignDialogOpen(false);
+    setAssignDialogOpen(false)
     // Dialog returns false if cancelled, null if
     // want to unassign, otherwisd a loginId > 0
-    if (loginId === false) return;
+    if (loginId === false) return
     for (let i = 0; i < selectedStakeholderIds.length; i++) {
-      await assign(selectedStakeholderIds[i], !!loginId, loginId);
+      await assign(selectedStakeholderIds[i], !!loginId, loginId)
     }
-    search();
-  };
+    search()
+  }
 
   const handleDialogOpen = () => {
-    setDialogOpen(true);
-  };
+    setDialogOpen(true)
+  }
 
   const handleDialogClose = () => {
-    search();
-    setDialogOpen(false);
-  };
+    search()
+    setDialogOpen(false)
+  }
 
   return (
     <main className={classes.root}>
       <CssBaseline />
       <div
         style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          margin: "10px",
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          margin: '10px',
         }}
       >
         <header className={classes.header}>
@@ -173,7 +173,7 @@ function VerificationAdmin(props) {
             variant="h4"
             component="h4"
             align="center"
-            style={{ marginBottom: "0.5em" }}
+            style={{ marginBottom: '0.5em' }}
           >
             Verification Administration
           </Typography>
@@ -184,13 +184,13 @@ function VerificationAdmin(props) {
         <Dialog
           open={dialogOpen}
           onClose={handleDialogClose}
-          fullWidth={true}
+          fullWidth
           maxWidth="lg"
         >
           <DialogTitle onClose={handleDialogClose}>Search Criteria</DialogTitle>
 
           {criteria ? (
-            <div style={{ overflowY: "scroll" }}>
+            <div style={{ overflowY: 'scroll' }}>
               <SearchCriteria
                 key={JSON.stringify({
                   userLatitude: userCoordinates.latitude,
@@ -202,8 +202,8 @@ function VerificationAdmin(props) {
                 criteria={criteria}
                 setCriteria={setCriteria}
                 search={() => {
-                  search();
-                  setDialogOpen(false);
+                  search()
+                  setDialogOpen(false)
                 }}
               />
               {/* <pre>{JSON.stringify(criteria, null, 2)}</pre> */}
@@ -214,20 +214,20 @@ function VerificationAdmin(props) {
           ) : categoriesLoading || stakeholdersLoading ? (
             <div
               style={{
-                height: "200",
-                width: "100%",
-                margin: "100px auto",
-                display: "flex",
-                justifyContent: "space-around",
+                height: '200',
+                width: '100%',
+                margin: '100px auto',
+                display: 'flex',
+                justifyContent: 'space-around',
               }}
               aria-label="Loading spinner"
             >
               <RotateLoader
                 // css={}
-                sizeUnit={"px"}
+                sizeUnit="px"
                 size={15}
-                color={"#FAEBD7"}
-                loading={true}
+                color="#FAEBD7"
+                loading
               />
             </div>
           ) : null}
@@ -237,11 +237,11 @@ function VerificationAdmin(props) {
           keepMounted
           open={assignDialogOpen}
           onClose={handleAssignDialogClose}
-        ></AssignDialog>
+        />
         <>
           {categoriesError || stakeholdersError ? (
             <div className={classes.bigMessage}>
-              <Typography variant="h5" component="h5" style={{ color: "red" }}>
+              <Typography variant="h5" component="h5" style={{ color: 'red' }}>
                 Uh Oh! Something went wrong!
               </Typography>
             </div>
@@ -249,19 +249,19 @@ function VerificationAdmin(props) {
             <div
               style={{
                 flexGrow: 1,
-                width: "100%",
-                margin: "100px auto",
-                display: "flex",
-                justifyContent: "space-around",
+                width: '100%',
+                margin: '100px auto',
+                display: 'flex',
+                justifyContent: 'space-around',
               }}
               aria-label="Loading spinner"
             >
               <RotateLoader
                 // css={}
-                sizeUnit={"px"}
+                sizeUnit="px"
                 size={15}
-                color={"green"}
-                loading={true}
+                color="green"
+                loading
               />
             </div>
           ) : stakeholders && stakeholders.length === 0 ? (
@@ -274,10 +274,10 @@ function VerificationAdmin(props) {
             <>
               <div
                 style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "flex-end",
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'flex-end',
                 }}
               >
                 <Button
@@ -307,7 +307,7 @@ function VerificationAdmin(props) {
         </>
       </div>
     </main>
-  );
+  )
 }
 
-export default withRouter(VerificationAdmin);
+export default withRouter(VerificationAdmin)

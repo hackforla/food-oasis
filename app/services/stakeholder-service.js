@@ -29,6 +29,7 @@ const search = async ({
   isClaimed,
   assignedLoginId,
   claimedLoginId,
+  verificationStatusId,
 }) => {
   const categoryClause = `(select sc.stakeholder_id 
     from stakeholder_category sc 
@@ -85,7 +86,7 @@ const search = async ({
       s.donation_delivery_instructions, s.donation_notes, s.covid_notes,
       s.category_notes, s.eligibility_notes, s.food_types, s.languages,
       s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email, 
-      s.v_hours
+      s.v_hours, s.verification_status_id
     from stakeholder s
     left join login L1 on s.created_login_id = L1.id
     left join login L2 on s.modified_login_id = L2.id
@@ -186,6 +187,7 @@ const search = async ({
       confirmedPhone: row.v_phone,
       confirmedEmail: row.v_email,
       confirmedHours: row.v_hours,
+      verificationStatusId: row.verification_status_id,
     })
   })
 
@@ -260,7 +262,7 @@ const selectById = async (id) => {
       s.donation_delivery_instructions, s.donation_notes, s.covid_notes,
       s.category_notes, s.eligibility_notes, s.food_types, s.languages,
       s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email, 
-      s.v_hours
+      s.v_hours, s.verification_status_id
     from stakeholder s 
     left join login L1 on s.created_login_id = L1.id
     left join login L2 on s.modified_login_id = L2.id
@@ -344,6 +346,7 @@ const selectById = async (id) => {
     confirmedPhone: row.v_phone,
     confirmedEmail: row.v_email,
     confirmedHours: row.v_hours,
+    verificationStatusId: row.verification_status_id,
   }
 
   // Don't have a distance, since we didn't specify origin
@@ -416,6 +419,7 @@ const insert = async (model) => {
     confirmedPhone,
     confirmedEmail,
     confirmedHours,
+    verificationStatusId,
   } = model
   try {
     const sql = `insert into stakeholder 
@@ -436,7 +440,7 @@ const insert = async (model) => {
       donation_delivery_instructions, donation_notes, covid_notes,
       category_notes, eligibility_notes, food_types, languages,
       v_name, v_categories, v_address,
-      v_phone, v_email, v_hours,)
+      v_phone, v_email, v_hours, verification_status_id)
     values (
       ${toSqlString(name)}, ${toSqlString(address1)}, ${toSqlString(address2)}, 
       ${toSqlString(city)}, ${toSqlString(state)}, ${toSqlString(zip)}, 
@@ -478,7 +482,8 @@ const insert = async (model) => {
       ${toSqlBoolean(confirmedAddress)},
       ${toSqlBoolean(confirmedPhone)},
       ${toSqlBoolean(confirmedEmail)},
-      ${toSqlBoolean(confirmedHours)}
+      ${toSqlBoolean(confirmedHours)},
+      ${toSqlNumeric(verificationStatusId)}
     ) returning id`
     const stakeholderResult = await pool.query(sql)
     const retObject = stakeholderResult.rows[0]
@@ -651,6 +656,7 @@ const update = async (model) => {
     confirmedPhone,
     confirmedEmail,
     confirmedHours,
+    verificationStatusId,
   } = model
 
   let hoursSqlValues = hours.length
@@ -749,7 +755,8 @@ const update = async (model) => {
       v_address = ${toSqlBoolean(confirmedAddress)},
       v_phone = ${toSqlBoolean(confirmedPhone)},
       v_email = ${toSqlBoolean(confirmedEmail)},
-      v_hours = ${toSqlBoolean(confirmedHours)}
+      v_hours = ${toSqlBoolean(confirmedHours)},
+      verification_status_id = ${toSqlNumeric(verificationStatusId)}
     where id = ${id}`
   await pool.query(sql)
 }

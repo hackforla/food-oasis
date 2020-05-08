@@ -1,5 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import mapMarker from "./mapMarker"
 import pantryIcon from "../images/pantryIcon.svg";
 import mealIcon from "../images/mealIcon.svg";
 
@@ -34,6 +35,9 @@ const useStyles = makeStyles((theme) => ({
   },
   checkHolder: {
     width: "10%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between"
   },
   title: {
     alignSelf: "flex-start",
@@ -47,7 +51,11 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     display: "inherit",
     justifyContent: "space-between",
+    margin: ".8em 0"
   },
+  phoneNum: {
+    fontSize: "14px"
+  }
 }));
 
 const SelectedStakeholderDisplay = (props) => {
@@ -63,8 +71,6 @@ const SelectedStakeholderDisplay = (props) => {
       : `${timeStr.substring(0, 5)}AM`;
   };
 
-  console.log(doSelectStakeholder, selectedStakeholder);
-
   return (
     <div className={classes.stakeholderHolder}>
       <div className={classes.topInfoHolder}>
@@ -74,7 +80,7 @@ const SelectedStakeholderDisplay = (props) => {
               selectedStakeholder.categories[0].id === 1 ? pantryIcon : mealIcon
             }
             className={classes.typeLogo}
-            onClick={() => doSelectStakeholder(null)}
+
           />
         </div>
         <div className={classes.infoHolder}>
@@ -97,11 +103,13 @@ const SelectedStakeholderDisplay = (props) => {
         <div className={classes.checkHolder}>
           {selectedStakeholder.distance >= 10
             ? selectedStakeholder.distance
-                .toString()
-                .substring(0, 3)
-                .padEnd(4, "0")
+              .toString()
+              .substring(0, 3)
+              .padEnd(4, "0")
             : selectedStakeholder.distance.toString().substring(0, 3)}{" "}
           mi
+          {mapMarker(selectedStakeholder.categories[0].id === 1 ? "#336699" : "#CC3333",
+              selectedStakeholder.submittedDate ? true : false)}
         </div>
       </div>
       <h2 className={classes.title}>Hours</h2>
@@ -118,7 +126,7 @@ const SelectedStakeholderDisplay = (props) => {
       {selectedStakeholder.phone ? (
         <React.Fragment>
           <h2 className={classes.title}>Phone</h2>
-          <span>{selectedStakeholder.phone}</span>
+          <span className={classes.phoneNum}>{selectedStakeholder.phone}</span>
         </React.Fragment>
       ) : null}
       {selectedStakeholder.website ? (
@@ -131,61 +139,75 @@ const SelectedStakeholderDisplay = (props) => {
           >
             {selectedStakeholder.website}
           </a>
+
+
         </React.Fragment>
+
       ) : null}
+      <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"
+        onClick={() => doSelectStakeholder(null)}>
+        <circle cx="20" cy="20" r="20" fill={selectedStakeholder.categories[0].id === 1 ? "#336699" : "#CC3333"} />
+        <path d="M5.38477 19.6153L19.8078 11.2882L19.8078 27.9425L5.38477 19.6153Z" fill="white" />
+        <line x1="19.2309" y1="18.8076" x2="31.5386" y2="18.8076" stroke="white" stroke-width="7" />
+      </svg>
     </div>
   );
 };
 
 export default SelectedStakeholderDisplay;
 
-// address1: "Logan St. and Sunset Blvd"
-// address2: ""
-// adminNotes: ""
-// admin_contact_email: ""
-// admin_contact_name: ""
-// admin_contact_phone: ""
+// address1: "1725 Beverly Boulevard"
+// address2: "Ste 1-B"
+// adminContactEmail: ""
+// adminContactName: ""
+// adminContactPhone: ""
+// adminNotes: "could not find website or facebook page.↵called but no answer, mailbox is full"
 // approvedDate: null
 // assignedDate: null
 // assignedLoginId: null
 // assignedUser: ""
 // categories: [{…}]
+// categoryNotes: ""
 // city: "Los Angeles"
-// claimedDate: null
+// claimedDate: Moment {_isAMomentObject: true, _i: "2019-12-01T08:00:00", _f: "YYYY-MM-DDTHH:mm:ss", _isUTC: false, _pf: {…}, …}
 // claimedLoginId: null
 // claimedUser: ""
-// covid_notes: ""
-// createdDate: "2019-12-01T08:00:00.000Z"
+// covidNotes: ""
+// createdDate: Moment {_isAMomentObject: true, _i: "2019-12-01T08:00:00", _f: "YYYY-MM-DDTHH:mm:ss", _isUTC: false, _pf: {…}, …}
 // createdLoginId: null
 // createdUser: ""
 // description: ""
-// distance: 0.23975261461947162
-// donation_accept_frozen: false
-// donation_accept_perishable: false
-// donation_accept_refrigerated: false
-// donation_contact_email: ""
-// donation_contact_name: ""
-// donation_contact_phone: ""
-// donation_delivery_instructions: ""
-// donation_pickup: false
-// donation_schedule: ""
+// distance: 0.6749636545572547
+// donationAcceptFrozen: false
+// donationAcceptPerishable: false
+// donationAcceptRefrigerated: false
+// donationContactEmail: ""
+// donationContactName: ""
+// donationContactPhone: ""
+// donationDeliveryInstructions: ""
+// donationNotes: ""
+// donationPickup: false
+// donationSchedule: ""
+// eligibilityNotes: ""
 // email: ""
 // facebook: ""
-// hours: [{…}]
-// id: 2770
+// foodTypes: ""
+// hours: (2) [{…}, {…}]
+// id: 2893
 // inactive: false
 // instagram: ""
 // items: ""
-// latitude: 34.0769
+// languages: "English"
+// latitude: 34.065401
 // linkedin: ""
-// longitude: -118.2586
-// modifiedDate: null
-// modifiedLoginId: null
-// modifiedUser: ""
-// name: "Echo Park Farmers Market"
+// longitude: -118.266495
+// modifiedDate: Moment {_isAMomentObject: true, _i: "2020-04-18T17:01:39", _f: "YYYY-MM-DDTHH:mm:ss", _isUTC: false, _pf: {…}, …}
+// modifiedLoginId: 106
+// modifiedUser: "Webinar User"
+// name: "Chinese Community Service Center"
 // notes: ""
 // parentOrganization: ""
-// phone: ""
+// phone: "(323)483-3035"
 // physicalAccess: ""
 // pinterest: ""
 // rejectedDate: null
@@ -194,10 +216,10 @@ export default SelectedStakeholderDisplay;
 // reviewedLoginId: null
 // reviewedUser: ""
 // services: ""
-// state: "California"
+// state: "CA"
+// submittedDate: Moment {_isAMomentObject: true, _i: "2020-04-18T17:35:32", _f: "YYYY-MM-DDTHH:mm:ss", _isUTC: false, _pf: {…}, …}
+// submittedLoginId: 106
+// submittedUser: "Webinar User"
 // twitter: ""
-// verifiedDate: null
-// verifiedLoginId: null
-// verifiedUser: ""
-// website: "https://www.facebook.com/Echo-Park-Farmers-Market-313522200882/"
+// website: ""
 // zip: "90026"

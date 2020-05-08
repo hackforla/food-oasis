@@ -30,9 +30,9 @@ function Map({
   stakeholders,
   categoryIds,
 }) {
-  React.useEffect(() => {
-    console.log('map', stakeholders)
-  }, [stakeholders])
+  // React.useEffect(() => {
+  //   console.log('map', stakeholders)
+  // }, [stakeholders])
 
   const categoryIdsOrDefault = categoryIds.length
     ? categoryIds
@@ -87,7 +87,7 @@ function Map({
                 return categoryIdsOrDefault.includes(id)
               })
 
-              console.log(categories)
+              /* console.log(categories) */
 
               const color = categories.find(
                 ({ id }) => id === MEAL_PROGRAM_CATEGORY_ID,

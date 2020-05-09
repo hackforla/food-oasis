@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { withRouter } from 'react-router-dom'
 import { CssBaseline, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
@@ -79,17 +79,19 @@ function VerificationDashboard(props) {
     search: stakeholderSearch,
   } = useOrganizations()
 
+  const searchCallback = useCallback(stakeholderSearch, [])
+
   useEffect(() => {
     if (!user) return
     const initialCriteria = { ...defaultCriteria, assignedLoginId: user.id }
     if (initialCriteria) {
       setCriteria(initialCriteria)
-      stakeholderSearch(initialCriteria)
+      searchCallback(initialCriteria)
     }
-  }, [stakeholderSearch, user])
+  }, [searchCallback, user])
 
   const search = async () => {
-    await stakeholderSearch(criteria)
+    await searchCallback(criteria)
   }
 
   return (

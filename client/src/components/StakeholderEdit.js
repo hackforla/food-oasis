@@ -1934,7 +1934,9 @@ const StakeholderEdit = (props) => {
                           disabled={
                             isSubmitting ||
                             isUnchanged(values) ||
-                            !criticalFieldsValidate(values)
+                            (!criticalFieldsValidate(values) &&
+                              values.verificationStatusId !==
+                                VERIFICATION_STATUS.SUBMITTED)
                           }
                           style={{ margin: 'auto 0.5em' }}
                         />

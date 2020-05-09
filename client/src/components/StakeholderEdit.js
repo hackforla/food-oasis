@@ -355,16 +355,6 @@ const StakeholderEdit = (props) => {
     <Container component="main" maxWidth="lg">
       <CssBaseline />
       <div className={classes.paper}>
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Typography component="h1" variant="h5">
-            {`Organization - ${originalData.name}`}
-          </Typography>
-          <Box bgcolor="secondary.main" style={{ padding: '0.2em 0.65em' }}>
-            <Typography component="h1" variant="h5">
-              {VERIFICATION_STATUS_NAMES[originalData.verificationStatusId]}
-            </Typography>
-          </Box>
-        </div>
         <Formik
           initialValues={originalData}
           enableReinitialize
@@ -417,6 +407,19 @@ const StakeholderEdit = (props) => {
             setFieldValue,
           }) => (
             <form className={classes.form} noValidate onSubmit={handleSubmit}>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Typography component="h1" variant="h5">
+                  {`Organization - ${values.name}`}
+                </Typography>
+                <Box
+                  bgcolor="secondary.main"
+                  style={{ padding: '0.2em 0.65em' }}
+                >
+                  <Typography component="h1" variant="h5">
+                    {VERIFICATION_STATUS_NAMES[values.verificationStatusId]}
+                  </Typography>
+                </Box>
+              </div>
               <AppBar position="static">
                 <Tabs
                   value={tabPage}
@@ -1943,7 +1946,7 @@ const StakeholderEdit = (props) => {
                         type="submit"
                         label="Save Progress"
                         className={classes.submit}
-                        disabled={() => isSubmitting || isUnchanged(values)}
+                        disabled={isSubmitting || isUnchanged(values)}
                         style={{ margin: 'auto' }}
                       />
                       <PlainButton

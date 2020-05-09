@@ -47,7 +47,6 @@ const selectById = (id) => {
       dateCreated: row.date_created,
       emailConfirmed: row.email_confirmed,
       isAdmin: row.is_admin,
-      isAdmin: row.is_admin,
       isSecurityAdmin: row.is_security_admin,
       isDataEntry: row.is_data_entry,
     };
@@ -80,7 +79,6 @@ const selectByEmail = (email) => {
 
 const register = async (model) => {
   const { firstName, lastName, email } = model;
-  const token = uuid4();
   let result = null;
   await hashPassword(model);
   try {
@@ -195,7 +193,6 @@ const confirmRegistration = async (token) => {
 // send password reset confirmation email.
 const forgotPassword = async (model) => {
   const { email } = model;
-  const token = uuid4();
   let result = null;
   try {
     const sql = `select id from  login where email = '${email}'`;
@@ -251,6 +248,7 @@ const resetPassword = async ({ token, password }) => {
   const sql = `select email, date_created
     from security_token where token = '${token}'`;
   const now = moment();
+  let email = "";
   try {
     const sqlResult = await pool.query(sql);
 
@@ -272,7 +270,7 @@ const resetPassword = async ({ token, password }) => {
 
     // If we get this far, we can update the password
     const passwordHash = await promisify(bcrypt.hash)(password, SALT_ROUNDS);
-    const email = sqlResult.rows[0].email;
+    email = sqlResult.rows[0].email;
     const resetSql = `update login
             set password_hash = '${passwordHash}'
             where email = '${email}'`;
@@ -367,7 +365,7 @@ const setPermissions = async (userId, permissionName, value) => {
     return {
       success: false,
       code: "AUTH_NO_ACCOUNT",
-      reason: `No account found for id ${id}`,
+      reason: `No account found for id ${userId}`,
     };
   }
   // Don't expose any columns besides the currently allowed ones:

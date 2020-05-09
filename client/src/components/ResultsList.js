@@ -1,7 +1,7 @@
 import React from "react";
-import SelectedStakeholderDisplay from "./ResultsSelectedStakehoder";
+import SelectedStakeholderDisplay from "./ResultsSelectedStakeholder";
 import PropTypes from "prop-types";
-import mapMarker from "./mapMarker"
+import mapMarker from "./mapMarker";
 import { makeStyles } from "@material-ui/core/styles";
 import pantryIcon from "../images/pantryIcon.svg";
 import mealIcon from "../images/mealIcon.svg";
@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     width: "10%",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
 }));
 
@@ -61,15 +61,20 @@ const ResultsList = ({
         />
       ) : stakeholders ? (
         stakeholders.map((stakeholder) => (
-          <div className={classes.stakeholderHolder}
+          <div
+            className={classes.stakeholderHolder}
             key={stakeholder.id}
-            onClick={() => doSelectStakeholder(stakeholder)}>
+            onClick={() => doSelectStakeholder(stakeholder)}
+          >
             <div className={classes.imgHolder}>
               <img
                 src={stakeholder.categories[0].id === 1 ? pantryIcon : mealIcon}
-                alt={stakeholder.categories[0].id === 1 ? 'Pantry Icon' : 'Meal Icon'}
+                alt={
+                  stakeholder.categories[0].id === 1
+                    ? "Pantry Icon"
+                    : "Meal Icon"
+                }
                 className={classes.typeLogo}
-
               />
             </div>
             <div className={classes.infoHolder}>
@@ -92,14 +97,14 @@ const ResultsList = ({
                 ? stakeholder.distance.toString().substring(0, 3).padEnd(4, "0")
                 : stakeholder.distance.toString().substring(0, 3)}{" "}
               mi
-              {mapMarker(stakeholder.categories[0].id === 1 ? "#336699" : "#CC3333",
-                  stakeholder.submittedDate ? true : false)}
+              {mapMarker(
+                stakeholder.categories[0].id === 1 ? "#336699" : "#CC3333",
+                stakeholder.submittedDate ? true : false
+              )}
             </div>
-
           </div>
         ))
       ) : null}
-
     </div>
   );
 };

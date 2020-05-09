@@ -1,8 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Marker } from "react-map-gl";
-import { ORGANIZATION_COLORS } from "../constants/map";
-import shadows from "@material-ui/core/styles/shadows";
 
 const style = {
   svg: {

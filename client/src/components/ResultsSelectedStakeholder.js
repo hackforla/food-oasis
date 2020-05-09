@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import mapMarker from "./mapMarker"
+import mapMarker from "./mapMarker";
 import pantryIcon from "../images/pantryIcon.svg";
 import mealIcon from "../images/mealIcon.svg";
 
@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     width: "10%",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   title: {
     alignSelf: "flex-start",
@@ -51,11 +51,11 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     display: "inherit",
     justifyContent: "space-between",
-    margin: ".8em 0"
+    margin: ".8em 0",
   },
   phoneNum: {
-    fontSize: "14px"
-  }
+    fontSize: "14px",
+  },
 }));
 
 const SelectedStakeholderDisplay = (props) => {
@@ -80,7 +80,6 @@ const SelectedStakeholderDisplay = (props) => {
               selectedStakeholder.categories[0].id === 1 ? pantryIcon : mealIcon
             }
             className={classes.typeLogo}
-
           />
         </div>
         <div className={classes.infoHolder}>
@@ -103,19 +102,24 @@ const SelectedStakeholderDisplay = (props) => {
         <div className={classes.checkHolder}>
           {selectedStakeholder.distance >= 10
             ? selectedStakeholder.distance
-              .toString()
-              .substring(0, 3)
-              .padEnd(4, "0")
+                .toString()
+                .substring(0, 3)
+                .padEnd(4, "0")
             : selectedStakeholder.distance.toString().substring(0, 3)}{" "}
           mi
-          {mapMarker(selectedStakeholder.categories[0].id === 1 ? "#336699" : "#CC3333",
-              selectedStakeholder.submittedDate ? true : false)}
+          {mapMarker(
+            selectedStakeholder.categories[0].id === 1 ? "#336699" : "#CC3333",
+            selectedStakeholder.submittedDate ? true : false
+          )}
         </div>
       </div>
       <h2 className={classes.title}>Hours</h2>
       <div className={classes.hoursContainer}>
         {selectedStakeholder.hours.map((hour) => (
-          <div className={classes.singleHourContainer}>
+          <div
+            key={JSON.stringify(hour)}
+            className={classes.singleHourContainer}
+          >
             <span>{hour.day_of_week}</span>
             <span>
               {standardTime(hour.open)}-{standardTime(hour.close)}
@@ -139,16 +143,36 @@ const SelectedStakeholderDisplay = (props) => {
           >
             {selectedStakeholder.website}
           </a>
-
-
         </React.Fragment>
-
       ) : null}
-      <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"
-        onClick={() => doSelectStakeholder(null)}>
-        <circle cx="20" cy="20" r="20" fill={selectedStakeholder.categories[0].id === 1 ? "#336699" : "#CC3333"} />
-        <path d="M5.38477 19.6153L19.8078 11.2882L19.8078 27.9425L5.38477 19.6153Z" fill="white" />
-        <line x1="19.2309" y1="18.8076" x2="31.5386" y2="18.8076" stroke="white" stroke-width="7" />
+      <svg
+        width="40"
+        height="40"
+        viewBox="0 0 40 40"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        onClick={() => doSelectStakeholder(null)}
+      >
+        <circle
+          cx="20"
+          cy="20"
+          r="20"
+          fill={
+            selectedStakeholder.categories[0].id === 1 ? "#336699" : "#CC3333"
+          }
+        />
+        <path
+          d="M5.38477 19.6153L19.8078 11.2882L19.8078 27.9425L5.38477 19.6153Z"
+          fill="white"
+        />
+        <line
+          x1="19.2309"
+          y1="18.8076"
+          x2="31.5386"
+          y2="18.8076"
+          stroke="white"
+          stroke-width="7"
+        />
       </svg>
     </div>
   );

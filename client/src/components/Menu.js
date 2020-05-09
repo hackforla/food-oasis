@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "./user-context";
 import { makeStyles } from "@material-ui/core/styles";
@@ -16,8 +17,14 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import MenuIcon from "@material-ui/icons/Menu";
 import { MENU_ITEMS } from "helpers/Constants";
 import MenuItemLink from "./MenuItemLink";
-import LanguageChooser from "./LanguageChooser";
+// import LanguageChooser from './LanguageChooser'
 import { logout } from "./Logout";
+
+Menu.propTypes = {
+  user: PropTypes.object,
+  setUser: PropTypes.func,
+  setToast: PropTypes.func,
+};
 
 const useStyles = makeStyles({
   list: {
@@ -37,7 +44,7 @@ const useStyles = makeStyles({
 });
 
 export default function Menu(props) {
-  const { user } = props;
+  const { user, setUser, setToast } = props;
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
   const history = useHistory();
@@ -66,7 +73,7 @@ export default function Menu(props) {
     <MenuItemLink
       key="logout"
       text="Logout"
-      onClick={() => logout(props, history)}
+      onClick={() => logout(setUser, setToast, history)}
     >
       Logout
     </MenuItemLink>
@@ -114,7 +121,7 @@ export default function Menu(props) {
                 <MenuItemLink
                   key="verificationdashboard"
                   to="/verificationdashboard"
-                  text="Verification Dashboard"
+                  text="My Dashboard"
                 />
               ) : null}
               {user && user.isSecurityAdmin ? (
@@ -135,7 +142,7 @@ export default function Menu(props) {
 
         {user ? authedLinks : unAuthLinks}
       </List>
-      <LanguageChooser />
+      {/* <LanguageChooser /> */}
     </div>
   );
 

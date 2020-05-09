@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { Button, CssBaseline, Dialog, Typography } from "@material-ui/core";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
@@ -74,6 +75,11 @@ const DialogTitle = (props) => {
   );
 };
 
+DialogTitle.propTypes = {
+  children: PropTypes.object,
+  onClose: PropTypes.func,
+};
+
 const defaultCriteria = {
   name: "",
   latitude: 34,
@@ -89,6 +95,13 @@ const defaultCriteria = {
   isClaimed: "either",
   assignedLoginId: null,
   claimedLoginId: null,
+};
+
+VerificationAdmin.propTypes = {
+  userCoordinates: PropTypes.shape({
+    latitude: PropTypes.number,
+    longitude: PropTypes.number,
+  }),
 };
 
 function VerificationAdmin(props) {
@@ -112,8 +125,9 @@ function VerificationAdmin(props) {
     search: stakeholderSearch,
   } = useOrganizations();
 
+  const searchCallback = useCallback(stakeholderSearch, []);
+
   useEffect(() => {
-    if (!stakeholderSearch) return;
     const criteriaString = localStorage.getItem(CRITERIA_TOKEN);
     let initialCriteria = JSON.parse(criteriaString);
     if (!initialCriteria) {
@@ -124,11 +138,11 @@ function VerificationAdmin(props) {
       };
     }
     setCriteria(initialCriteria);
-    stakeholderSearch(initialCriteria);
-  }, [userCoordinates]);
+    searchCallback(initialCriteria);
+  }, [userCoordinates, searchCallback]);
 
   const search = async () => {
-    await stakeholderSearch(criteria);
+    await searchCallback(criteria);
     localStorage.setItem(CRITERIA_TOKEN, JSON.stringify(criteria));
   };
 
@@ -184,7 +198,7 @@ function VerificationAdmin(props) {
         <Dialog
           open={dialogOpen}
           onClose={handleDialogClose}
-          fullWidth={true}
+          fullWidth
           maxWidth="lg"
         >
           <DialogTitle onClose={handleDialogClose}>Search Criteria</DialogTitle>
@@ -224,10 +238,10 @@ function VerificationAdmin(props) {
             >
               <RotateLoader
                 // css={}
-                sizeUnit={"px"}
+                sizeUnit="px"
                 size={15}
-                color={"#FAEBD7"}
-                loading={true}
+                color="#FAEBD7"
+                loading
               />
             </div>
           ) : null}
@@ -237,7 +251,7 @@ function VerificationAdmin(props) {
           keepMounted
           open={assignDialogOpen}
           onClose={handleAssignDialogClose}
-        ></AssignDialog>
+        />
         <>
           {categoriesError || stakeholdersError ? (
             <div className={classes.bigMessage}>
@@ -258,10 +272,10 @@ function VerificationAdmin(props) {
             >
               <RotateLoader
                 // css={}
-                sizeUnit={"px"}
+                sizeUnit="px"
                 size={15}
-                color={"green"}
-                loading={true}
+                color="green"
+                loading
               />
             </div>
           ) : stakeholders && stakeholders.length === 0 ? (

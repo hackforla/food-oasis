@@ -1,17 +1,19 @@
-const { pool } = require("./postgres-pool");
+/* eslint-disable indent */
+const { pool } = require('./postgres-pool')
 const {
   toSqlString,
   toSqlNumeric,
   toSqlBoolean,
   toSqlTimestamp,
-} = require("./postgres-utils");
+} = require('./postgres-utils')
 
-const trueFalseEitherClause = (columnName, value) =>
-  value === "true"
+const trueFalseEitherClause = (columnName, value) => {
+  return value === 'true'
     ? ` and ${columnName} is not null `
-    : value === "false"
+    : value === 'false'
     ? ` and ${columnName} is null `
-    : "";
+    : ''
+}
 
 const search = async ({
   name,
@@ -27,11 +29,12 @@ const search = async ({
   isClaimed,
   assignedLoginId,
   claimedLoginId,
+  verificationStatusId,
 }) => {
-  const categoryClause = `(select sc.stakeholder_id from stakeholder_category sc where sc.category_id in (${categoryIds.join(
-    ","
-  )}))`;
-  const nameClause = "'%" + name.replace(/'/g, "''") + "%'";
+  const categoryClause = `(select sc.stakeholder_id 
+    from stakeholder_category sc 
+    where sc.category_id in (${categoryIds.join(',')}))`
+  const nameClause = "'%" + name.replace(/'/g, "''") + "%'"
   const sql = `
     select s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
       s.phone, s.latitude, s.longitude, s.website,  s.notes,
@@ -50,13 +53,20 @@ const search = async ({
           where sc.stakeholder_id = s.id 
         ) category_row
       )) as categories,
-      to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as created_date, s.created_login_id, 
-      to_char(s.modified_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as modified_date, s.modified_login_id,
-      to_char(s.submitted_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as submitted_date, s.submitted_login_id,
-      to_char(s.approved_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as approved_date, 
-      to_char(s.rejected_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as rejected_date, s.reviewed_login_id,
-      to_char(s.assigned_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')as assigned_date, s.assigned_login_id,
-      to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as claimed_date, s.claimed_login_id,
+      to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') 
+        as created_date, s.created_login_id, 
+      to_char(s.modified_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') 
+        as modified_date, s.modified_login_id,
+      to_char(s.submitted_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') 
+        as submitted_date, s.submitted_login_id,
+      to_char(s.approved_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') 
+        as approved_date, 
+      to_char(s.rejected_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') 
+        as rejected_date, s.reviewed_login_id,
+      to_char(s.assigned_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
+        as assigned_date, s.assigned_login_id,
+      to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') 
+        as claimed_date, s.claimed_login_id,
       s.requirements, s.admin_notes, s.inactive,
       L1.first_name || ' ' || L1.last_name as created_user,
       L2.first_name || ' ' || L2.last_name as modified_user,
@@ -74,7 +84,9 @@ const search = async ({
       s.donation_accept_frozen, s.donation_accept_refrigerated,
       s.donation_accept_perishable, s.donation_schedule,
       s.donation_delivery_instructions, s.donation_notes, s.covid_notes,
-      s.category_notes, s.eligibility_notes, s.food_types, s.languages
+      s.category_notes, s.eligibility_notes, s.food_types, s.languages,
+      s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email, 
+      s.v_hours, s.verification_status_id
     from stakeholder s
     left join login L1 on s.created_login_id = L1.id
     left join login L2 on s.modified_login_id = L2.id
@@ -86,35 +98,35 @@ const search = async ({
     ${
       categoryIds && categoryIds.length > 0
         ? ` and s.id in ${categoryClause} `
-        : ""
+        : ''
     }
-    ${trueFalseEitherClause("s.assigned_date", isAssigned)}
-    ${trueFalseEitherClause("s.submitted_date", isSubmitted)}
-    ${trueFalseEitherClause("s.approved_date", isApproved)}
-    ${trueFalseEitherClause("s.rejected_date", isRejected)}
-    ${trueFalseEitherClause("s.claimed_date", isClaimed)}
-    ${trueFalseEitherClause("s.inactive", inactive)}
-    ${assignedLoginId ? ` and s.assigned_login_id = ${assignedLoginId} ` : ""}
-    ${claimedLoginId ? ` and s.claimed_login_id = ${claimedLoginId} ` : ""}
+    ${trueFalseEitherClause('s.assigned_date', isAssigned)}
+    ${trueFalseEitherClause('s.submitted_date', isSubmitted)}
+    ${trueFalseEitherClause('s.approved_date', isApproved)}
+    ${trueFalseEitherClause('s.rejected_date', isRejected)}
+    ${trueFalseEitherClause('s.claimed_date', isClaimed)}
+    ${trueFalseEitherClause('s.inactive', inactive)}
+    ${assignedLoginId ? ` and s.assigned_login_id = ${assignedLoginId} ` : ''}
+    ${claimedLoginId ? ` and s.claimed_login_id = ${claimedLoginId} ` : ''}
     order by s.name
-  `;
+  `
   // console.console.log(sql);
-  const stakeholderResult = await pool.query(sql);
-  let stakeholders = [];
+  const stakeholderResult = await pool.query(sql)
+  let stakeholders = []
   stakeholderResult.rows.forEach((row) => {
     stakeholders.push({
       id: row.id,
-      name: row.name || "",
-      address1: row.address_1 || "",
-      address2: row.address_2 || "",
-      city: row.city || "",
-      state: row.state || "",
-      zip: row.zip || "",
-      phone: row.phone || "",
+      name: row.name || '',
+      address1: row.address_1 || '',
+      address2: row.address_2 || '',
+      city: row.city || '',
+      state: row.state || '',
+      zip: row.zip || '',
+      phone: row.phone || '',
       latitude: row.latitude ? Number(row.latitude) : null,
       longitude: row.longitude ? Number(row.longitude) : null,
-      website: row.website || "",
-      notes: row.notes || "",
+      website: row.website || '',
+      notes: row.notes || '',
       createdDate: row.created_date,
       createdLoginId: row.created_login_id,
       modifiedDate: row.modified_date,
@@ -128,49 +140,56 @@ const search = async ({
       reviewedLoginId: row.reviewed_login_id,
       claimedDate: row.claimed_date,
       claimedLoginId: row.claimed_login_id,
-      requirements: row.requirements || "",
-      adminNotes: row.admin_notes || "",
+      requirements: row.requirements || '',
+      adminNotes: row.admin_notes || '',
       inactive: row.inactive,
-      createdUser: row.created_user || "",
-      modifiedUser: row.modified_user || "",
-      submittedUser: row.submitted_user || "",
-      reviewedUser: row.reviewed_user || "",
-      assignedUser: row.assigned_user || "",
-      claimedUser: row.claimed_user || "",
+      createdUser: row.created_user || '',
+      modifiedUser: row.modified_user || '',
+      submittedUser: row.submitted_user || '',
+      reviewedUser: row.reviewed_user || '',
+      assignedUser: row.assigned_user || '',
+      claimedUser: row.claimed_user || '',
       categories: row.categories,
       hours: row.hours,
-      parentOrganization: row.parent_organization || "",
-      physicalAccess: row.physical_access || "",
-      email: row.email || "",
-      items: row.items || "",
-      services: row.services || "",
-      facebook: row.facebook || "",
-      twitter: row.twitter || "",
-      pinterest: row.pinterest || "",
-      linkedin: row.linkedin || "",
+      parentOrganization: row.parent_organization || '',
+      physicalAccess: row.physical_access || '',
+      email: row.email || '',
+      items: row.items || '',
+      services: row.services || '',
+      facebook: row.facebook || '',
+      twitter: row.twitter || '',
+      pinterest: row.pinterest || '',
+      linkedin: row.linkedin || '',
       description: row.description,
       reviewNotes: row.review_notes,
-      instagram: row.instagram || "",
-      adminContactName: row.admin_contact_name || "",
-      adminContactPhone: row.admin_contact_phone || "",
-      adminContactEmail: row.admin_contact_email || "",
-      donationContactName: row.donation_contact_name || "",
-      donationContactPhone: row.donation_contact_phone || "",
-      donationContactEmail: row.donation_contact_email || "",
+      instagram: row.instagram || '',
+      adminContactName: row.admin_contact_name || '',
+      adminContactPhone: row.admin_contact_phone || '',
+      adminContactEmail: row.admin_contact_email || '',
+      donationContactName: row.donation_contact_name || '',
+      donationContactPhone: row.donation_contact_phone || '',
+      donationContactEmail: row.donation_contact_email || '',
       donationPickup: row.donation_pickup || false,
       donationAcceptFrozen: row.donation_accept_frozen || false,
       donationAcceptRefrigerated: row.donation_accept_refrigerated || false,
       donationAcceptPerishable: row.donation_accept_perishable || false,
-      donationSchedule: row.donation_schedule || "",
-      donationDeliveryInstructions: row.donation_delivery_instructions || "",
-      donationNotes: row.donation_notes || "",
-      covidNotes: row.covid_notes || "",
-      categoryNotes: row.category_notes || "",
-      eligibilityNotes: row.eligibility_notes || "",
-      foodTypes: row.food_types || "",
-      languages: row.languages || "",
-    });
-  });
+      donationSchedule: row.donation_schedule || '',
+      donationDeliveryInstructions: row.donation_delivery_instructions || '',
+      donationNotes: row.donation_notes || '',
+      covidNotes: row.covid_notes || '',
+      categoryNotes: row.category_notes || '',
+      eligibilityNotes: row.eligibility_notes || '',
+      foodTypes: row.food_types || '',
+      languages: row.languages || '',
+      confirmedName: row.v_name,
+      confirmedCategories: row.v_categories,
+      confirmedAddress: row.v_address,
+      confirmedPhone: row.v_phone,
+      confirmedEmail: row.v_email,
+      confirmedHours: row.v_hours,
+      verificationStatusId: row.verification_status_id,
+    })
+  })
 
   // Should move distance calc into stored proc
   stakeholders.forEach((stakeholder) => {
@@ -180,23 +199,23 @@ const search = async ({
           (Math.abs(stakeholder.longitude - longitude) *
             Math.cos((latitude / 360) * 2 * Math.PI)) **
             2 +
-            Math.abs(stakeholder.latitude - latitude) ** 2
-        ) * 69.097;
+            Math.abs(stakeholder.latitude - latitude) ** 2,
+        ) * 69.097
     } else {
-      stakeholder.distance = 999;
+      stakeholder.distance = 999
     }
-  });
+  })
   // Should move sorting into stored proc
-  stakeholders.sort((a, b) => a.distance - b.distance);
+  stakeholders.sort((a, b) => a.distance - b.distance)
   // Should move distance filter into stored proc
   if (distance > 0) {
     stakeholders = stakeholders.filter(
-      (stakeholder) => stakeholder.distance <= distance
-    );
+      (stakeholder) => stakeholder.distance <= distance,
+    )
   }
 
-  return stakeholders;
-};
+  return stakeholders
+}
 
 const selectById = async (id) => {
   const sql = `select 
@@ -241,7 +260,9 @@ const selectById = async (id) => {
       s.donation_accept_frozen, s.donation_accept_refrigerated,
       s.donation_accept_perishable, s.donation_schedule,
       s.donation_delivery_instructions, s.donation_notes, s.covid_notes,
-      s.category_notes, s.eligibility_notes, s.food_types, s.languages
+      s.category_notes, s.eligibility_notes, s.food_types, s.languages,
+      s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email, 
+      s.v_hours, s.verification_status_id
     from stakeholder s 
     left join login L1 on s.created_login_id = L1.id
     left join login L2 on s.modified_login_id = L2.id
@@ -249,23 +270,23 @@ const selectById = async (id) => {
     left join login L4 on s.reviewed_login_id = L4.id
     left join login L5 on s.assigned_login_id = L5.id
     left join login L6 on s.claimed_login_id = L6.id
-    where s.id = ${id}`;
-  const result = await pool.query(sql);
-  const row = result.rows[0];
+    where s.id = ${id}`
+  const result = await pool.query(sql)
+  const row = result.rows[0]
   const stakeholder = {
     id: row.id,
-    name: row.name || "",
-    address1: row.address_1 || "",
-    address2: row.address_2 || "",
-    city: row.city || "",
-    state: row.state || "",
-    zip: row.zip || "",
-    phone: row.phone || "",
+    name: row.name || '',
+    address1: row.address_1 || '',
+    address2: row.address_2 || '',
+    city: row.city || '',
+    state: row.state || '',
+    zip: row.zip || '',
+    phone: row.phone || '',
     latitude: row.latitude ? Number(row.latitude) : null,
     longitude: row.longitude ? Number(row.longitude) : null,
-    website: row.website || "",
+    website: row.website || '',
     createdDate: row.created_date,
-    notes: row.notes || "",
+    notes: row.notes || '',
     createdLoginId: row.created_login_id,
     modifiedDate: row.modified_date,
     modifiedLoginId: row.modified_login_id,
@@ -278,54 +299,61 @@ const selectById = async (id) => {
     assignedDate: row.assigned_date,
     claimedLoginId: row.claimed_login_id,
     claimedDate: row.claimed_date,
-    requirements: row.requirements || "",
-    adminNotes: row.admin_notes || "",
+    requirements: row.requirements || '',
+    adminNotes: row.admin_notes || '',
     inactive: row.inactive,
-    createdUser: row.created_user || "",
-    modifiedUser: row.modified_user || "",
-    submittedUser: row.submitted_user || "",
-    reviewedUser: row.reviewed_user || "",
-    assignedUser: row.assigned_user || "",
-    claimedUser: row.claimed_user || "",
+    createdUser: row.created_user || '',
+    modifiedUser: row.modified_user || '',
+    submittedUser: row.submitted_user || '',
+    reviewedUser: row.reviewed_user || '',
+    assignedUser: row.assigned_user || '',
+    claimedUser: row.claimed_user || '',
     categories: row.categories,
     hours: row.hours,
-    parentOrganization: row.parent_organization || "",
-    physicalAccess: row.physical_access || "",
-    email: row.email || "",
-    items: row.items || "",
-    services: row.services || "",
-    facebook: row.facebook || "",
-    twitter: row.twitter || "",
-    pinterest: row.pinterest || "",
-    linkedin: row.linkedin || "",
+    parentOrganization: row.parent_organization || '',
+    physicalAccess: row.physical_access || '',
+    email: row.email || '',
+    items: row.items || '',
+    services: row.services || '',
+    facebook: row.facebook || '',
+    twitter: row.twitter || '',
+    pinterest: row.pinterest || '',
+    linkedin: row.linkedin || '',
     description: row.description,
     reviewNotes: row.review_notes,
-    instagram: row.instagram || "",
-    adminContactName: row.admin_contact_name || "",
-    adminContactPhone: row.admin_contact_phone || "",
-    adminContactEmail: row.admin_contact_email || "",
-    donationContactName: row.donation_contact_name || "",
-    donationContactPhone: row.donation_contact_phone || "",
-    donationContactEmail: row.donation_contact_email || "",
+    instagram: row.instagram || '',
+    adminContactName: row.admin_contact_name || '',
+    adminContactPhone: row.admin_contact_phone || '',
+    adminContactEmail: row.admin_contact_email || '',
+    donationContactName: row.donation_contact_name || '',
+    donationContactPhone: row.donation_contact_phone || '',
+    donationContactEmail: row.donation_contact_email || '',
     donationPickup: row.donation_pickup || false,
     donationAcceptFrozen: row.donation_accept_frozen || false,
     donationAcceptRefrigerated: row.donation_accept_refrigerated || false,
     donationAcceptPerishable: row.donation_accept_perishable || false,
-    donationSchedule: row.donation_schedule || "",
-    donationDeliveryInstructions: row.donation_delivery_instructions || "",
-    donationNotes: row.donation_notes || "",
-    covidNotes: row.covid_notes || "",
-    categoryNotes: row.category_notes || "",
-    eligibilityNotes: row.eligibility_notes || "",
-    foodTypes: row.food_types || "",
-    languages: row.languages || "",
-  };
+    donationSchedule: row.donation_schedule || '',
+    donationDeliveryInstructions: row.donation_delivery_instructions || '',
+    donationNotes: row.donation_notes || '',
+    covidNotes: row.covid_notes || '',
+    categoryNotes: row.category_notes || '',
+    eligibilityNotes: row.eligibility_notes || '',
+    foodTypes: row.food_types || '',
+    languages: row.languages || '',
+    confirmedName: row.v_name,
+    confirmedCategories: row.v_categories,
+    confirmedAddress: row.v_address,
+    confirmedPhone: row.v_phone,
+    confirmedEmail: row.v_email,
+    confirmedHours: row.v_hours,
+    verificationStatusId: row.verification_status_id,
+  }
 
   // Don't have a distance, since we didn't specify origin
-  stakeholder.distance = null;
+  stakeholder.distance = null
 
-  return stakeholder;
-};
+  return stakeholder
+}
 
 const insert = async (model) => {
   const {
@@ -385,7 +413,14 @@ const insert = async (model) => {
     eligibilityNotes,
     foodTypes,
     languages,
-  } = model;
+    confirmedName,
+    confirmedCategories,
+    confirmedAddress,
+    confirmedPhone,
+    confirmedEmail,
+    confirmedHours,
+    verificationStatusId,
+  } = model
   try {
     const sql = `insert into stakeholder 
     (name, address_1, address_2, 
@@ -403,7 +438,9 @@ const insert = async (model) => {
       donation_accept_frozen, donation_accept_refrigerated,
       donation_accept_perishable, donation_schedule,
       donation_delivery_instructions, donation_notes, covid_notes,
-      category_notes, eligibility_notes, food_types, languages)
+      category_notes, eligibility_notes, food_types, languages,
+      v_name, v_categories, v_address,
+      v_phone, v_email, v_hours, verification_status_id)
     values (
       ${toSqlString(name)}, ${toSqlString(address1)}, ${toSqlString(address2)}, 
       ${toSqlString(city)}, ${toSqlString(state)}, ${toSqlString(zip)}, 
@@ -439,113 +476,120 @@ const insert = async (model) => {
       ${toSqlString(categoryNotes)},
       ${toSqlString(eligibilityNotes)},
       ${toSqlString(foodTypes)},
-      ${toSqlString(languages)}
-    ) returning id`;
-    const stakeholderResult = await pool.query(sql);
-    const retObject = stakeholderResult.rows[0];
-    const id = retObject.id;
+      ${toSqlString(languages)},
+      ${toSqlBoolean(confirmedName)},
+      ${toSqlBoolean(confirmedCategories)},
+      ${toSqlBoolean(confirmedAddress)},
+      ${toSqlBoolean(confirmedPhone)},
+      ${toSqlBoolean(confirmedEmail)},
+      ${toSqlBoolean(confirmedHours)},
+      ${toSqlNumeric(verificationStatusId)}
+    ) returning id`
+    const stakeholderResult = await pool.query(sql)
+    const retObject = stakeholderResult.rows[0]
+    const id = retObject.id
 
     for (let i = 0; i < selectedCategoryIds.length; i++) {
-      const categoryId = selectedCategoryIds[i];
+      const categoryId = selectedCategoryIds[i]
       const sqlInsert = `insert into stakeholder_category 
     (stakeholder_id, category_id) 
-    values (${id}, ${categoryId})`;
-      await pool.query(sqlInsert);
+    values (${id}, ${categoryId})`
+      await pool.query(sqlInsert)
     }
 
     let hoursSqlValues = hours.length
       ? hours
           .reduce((acc, cur) => {
-            return (acc += `(${id}, '${cur.dayOfWeek}', '${cur.open}', '${cur.close}', ${cur.weekOfMonth}), `);
-          }, "")
+            return (acc += `(${id}, '${cur.dayOfWeek}', '${cur.open}', '${cur.close}', ${cur.weekOfMonth}), `)
+          }, '')
           .slice(0, -2)
-      : null;
+      : null
 
     const hoursSqlInsert = `insert into stakeholder_schedule 
       (stakeholder_id, day_of_week, open, close, week_of_month) 
-      values ${hoursSqlValues}`;
+      values ${hoursSqlValues}`
 
     if (hoursSqlValues) {
       pool.query(hoursSqlInsert, (insertErr, insertRes) => {
         if (insertErr) {
-          throw new Error(insertErr);
+          throw new Error(insertErr)
         }
-      });
+      })
     }
 
-    return retObject;
+    return retObject
   } catch (err) {
-    return Promise.reject(err.message);
+    return Promise.reject(err.message)
   }
-};
+}
 
 const submit = async (model) => {
-  const { id, loginId, setSubmitted } = model;
+  const { id, loginId, setSubmitted } = model
   const sql = `update stakeholder set
                submitted_login_id = ${
-                 setSubmitted ? toSqlNumeric(loginId) : "null"
+                 setSubmitted ? toSqlNumeric(loginId) : 'null'
                },
-               submitted_date = ${setSubmitted ? "CURRENT_TIMESTAMP" : "null"}
-              where id = ${id}`;
-  const result = await pool.query(sql);
-};
+               submitted_date = ${setSubmitted ? 'CURRENT_TIMESTAMP' : 'null'}
+              where id = ${id}`
+  await pool.query(sql)
+}
 
 const verify = async (model) => {
-  const { id, loginId, setVerified } = model;
+  const { id, loginId, setVerified } = model
   const sql = `update stakeholder set
                submitted_login_id = ${
-                 setVerified ? toSqlNumeric(loginId) : "null"
+                 setVerified ? toSqlNumeric(loginId) : 'null'
                },
-               submitted_date = ${setVerified ? "CURRENT_TIMESTAMP" : "null"}
-              where id = ${id}`;
-  const result = await pool.query(sql);
-};
+               submitted_date = ${setVerified ? 'CURRENT_TIMESTAMP' : 'null'}
+              where id = ${id}`
+  await pool.query(sql)
+}
 
 const assign = async (model) => {
-  const { id, loginId, setAssigned } = model;
+  const { id, loginId, setAssigned } = model
   const sql = `update stakeholder set
                assigned_login_id = ${
-                 setAssigned ? toSqlNumeric(loginId) : "null"
+                 setAssigned ? toSqlNumeric(loginId) : 'null'
                },
-               assigned_date = ${setAssigned ? "CURRENT_TIMESTAMP" : "null"}
-              where id = ${id}`;
-  const result = await pool.query(sql);
-};
+               assigned_date = ${setAssigned ? 'CURRENT_TIMESTAMP' : 'null'}
+              where id = ${id}`
+  await pool.query(sql)
+}
 
 const claim = async (model) => {
-  const { id, loginId, setClaimed } = model;
+  const { id, loginId, setClaimed } = model
   const sql = `update stakeholder set
                claimed_login_id = ${
-                 setClaimed ? toSqlNumeric(loginId) : "null"
+                 setClaimed ? toSqlNumeric(loginId) : 'null'
                },
-               claimed_date = ${setClaimed ? "CURRENT_TIMESTAMP" : "null"}
-              where id = ${id}`;
-  const result = await pool.query(sql);
-};
+               claimed_date = ${setClaimed ? 'CURRENT_TIMESTAMP' : 'null'}
+              where id = ${id}`
+  await pool.query(sql)
+}
 
 const approve = async (model) => {
-  const { id, loginId, setApproved } = model;
+  const { id, loginId, setApproved } = model
   const sql = `update stakeholder set
                reviewed_login_id = ${
-                 setApproved ? toSqlNumeric(loginId) : "null"
+                 setApproved ? toSqlNumeric(loginId) : 'null'
                },
-               approved_date = ${setApproved ? "CURRENT_TIMESTAMP" : "null"},
+               approved_date = ${setApproved ? 'CURRENT_TIMESTAMP' : 'null'},
                rejected_date = null
-              where id = ${id}`;
-  const result = await pool.query(sql);
-};
+              where id = ${id}`
+  await pool.query(sql)
+}
 
 const reject = async (model) => {
-  const { id, loginId, setRejected } = model;
+  const { id, loginId, setRejected } = model
   const sql = `update stakeholder set
                reviewed_login_id = ${
-                 setRejected ? toSqlNumeric(loginId) : "null"
+                 setRejected ? toSqlNumeric(loginId) : 'null'
                },
-               rejected_date = ${setApproved ? "CURRENT_TIMESTAMP" : "null"},
+               rejected_date = ${setRejected ? 'CURRENT_TIMESTAMP' : 'null'},
                approved_date = null
-              where id = ${id}`;
-  const result = await pool.query(sql);
-};
+              where id = ${id}`
+  await pool.query(sql)
+}
 
 const update = async (model) => {
   const {
@@ -606,17 +650,24 @@ const update = async (model) => {
     eligibilityNotes,
     foodTypes,
     languages,
-  } = model;
+    confirmedName,
+    confirmedCategories,
+    confirmedAddress,
+    confirmedPhone,
+    confirmedEmail,
+    confirmedHours,
+    verificationStatusId,
+  } = model
 
   let hoursSqlValues = hours.length
     ? hours
         .reduce((acc, cur) => {
-          return (acc += `'(${cur.weekOfMonth},${cur.dayOfWeek},${cur.open},${cur.close})', `);
-        }, "")
+          return (acc += `'(${cur.weekOfMonth},${cur.dayOfWeek},${cur.open},${cur.close})', `)
+        }, '')
         .slice(0, -2)
-    : "";
-  categories = `ARRAY[` + selectedCategoryIds.join(",") + `]::int[]`;
-  formattedHours = `ARRAY[` + hoursSqlValues + `]::stakeholder_hours[]`;
+    : ''
+  const categories = 'ARRAY[' + selectedCategoryIds.join(',') + ']::int[]'
+  const formattedHours = 'ARRAY[' + hoursSqlValues + ']::stakeholder_hours[]'
 
   // update_stakeholder_schedule_category is a postgres stored procedure. Source of this stored
   // procedure is in the repo at db/stored_procs/update_stakeholder_schedule_category.sql.
@@ -629,13 +680,13 @@ const update = async (model) => {
   //
   // Currently, it updates stakeholder category and schedule by deleting the existing category/schedule rows,
   // and creating new ones.
-  const invokeSprocSql = `CALL update_stakeholder_schedule_category(${id}, ${categories}, ${formattedHours})`;
+  const invokeSprocSql = `CALL update_stakeholder_schedule_category(${id}, ${categories}, ${formattedHours})`
   try {
-    await pool.query(invokeSprocSql);
+    await pool.query(invokeSprocSql)
   } catch (e) {
-    console.error(e);
+    console.error(e)
     // If this fails we probably shouldn't update anything
-    return;
+    return
   }
 
   const sql = `
@@ -686,29 +737,36 @@ const update = async (model) => {
       donation_pickup = ${toSqlBoolean(donationPickup)}, 
       donation_accept_frozen = ${toSqlBoolean(donationAcceptFrozen)}, 
       donation_accept_refrigerated = ${toSqlBoolean(
-        donationAcceptRefrigerated
+        donationAcceptRefrigerated,
       )}, 
       donation_accept_perishable = ${toSqlBoolean(donationAcceptPerishable)}, 
       donation_schedule = ${toSqlString(donationSchedule)}, 
       donation_delivery_instructions = ${toSqlString(
-        donationDeliveryInstructions
+        donationDeliveryInstructions,
       )}, 
       donation_notes = ${toSqlString(donationNotes)},
       covid_notes = ${toSqlString(covidNotes)},
       category_notes = ${toSqlString(categoryNotes)},
       eligibility_notes = ${toSqlString(eligibilityNotes)},
       food_types = ${toSqlString(foodTypes)},
-      languages = ${toSqlString(languages)}
-    where id = ${id}`;
-  const result = await pool.query(sql);
-};
+      languages = ${toSqlString(languages)},
+      v_name = ${toSqlBoolean(confirmedName)},
+      v_categories = ${toSqlBoolean(confirmedCategories)},
+      v_address = ${toSqlBoolean(confirmedAddress)},
+      v_phone = ${toSqlBoolean(confirmedPhone)},
+      v_email = ${toSqlBoolean(confirmedEmail)},
+      v_hours = ${toSqlBoolean(confirmedHours)},
+      verification_status_id = ${toSqlNumeric(verificationStatusId)}
+    where id = ${id}`
+  await pool.query(sql)
+}
 
 const remove = (id) => {
-  const sql = `delete from stakeholder where id = ${id}`;
+  const sql = `delete from stakeholder where id = ${id}`
   return pool.query(sql).then((res) => {
-    return res;
-  });
-};
+    return res
+  })
+}
 
 module.exports = {
   search,
@@ -722,4 +780,4 @@ module.exports = {
   claim,
   approve,
   reject,
-};
+}

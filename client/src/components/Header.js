@@ -1,17 +1,17 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import useLocationHook from 'hooks/useLocationHook'
-import Menu from './Menu'
-import logo from 'images/fola.svg'
-import { AppBar, Toolbar, Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import LogoutButton from './Logout'
+import React from "react";
+import PropTypes from "prop-types";
+import useLocationHook from "hooks/useLocationHook";
+import Menu from "./Menu";
+import logo from "images/fola.svg";
+import { AppBar, Toolbar, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import LogoutButton from "./Logout";
 
 Header.propTypes = {
   user: PropTypes.object,
   setUser: PropTypes.func,
   setToast: PropTypes.func,
-}
+};
 
 const useStyles = makeStyles({
   header: {
@@ -20,52 +20,52 @@ const useStyles = makeStyles({
     boxShadow: (props) => props.headerShadow,
   },
   content: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
   },
   homeLink: {
     flexGrow: 1,
   },
   logo: {
-    width: '3.5rem',
-    height: '2.5rem',
-    margin: '.5rem .75rem',
+    width: "3.5rem",
+    height: "2.5rem",
+    margin: ".5rem .75rem",
   },
   userLoggedIn: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    flexGrow: '1',
-    minHewight: '3rem',
+    display: "flex",
+    justifyContent: "space-between",
+    flexGrow: "1",
+    minHewight: "3rem",
   },
   username: {
-    color: 'black',
+    color: "black",
   },
   tagline: {
-    color: '#336699',
-    fontStyle: 'italic',
+    color: "#336699",
+    fontStyle: "italic",
   },
-})
+});
 
 export default function Header(props) {
-  const { user, setUser, setToast } = props
-  const isHomePage = useLocationHook()
+  const { user, setUser, setToast } = props;
+  const isHomePage = useLocationHook();
 
   const homePageStyles = {
-    headerColor: 'transparent',
-    headerMargin: '-65px',
-    headerShadow: 'none',
-  }
+    headerColor: "transparent",
+    headerMargin: "-65px",
+    headerShadow: "none",
+  };
 
   const defaultStyles = {
-    headerColor: '#F1F1F1',
-    headerMargin: '0',
-  }
+    headerColor: "#F1F1F1",
+    headerMargin: "0",
+  };
 
-  const styles = isHomePage ? homePageStyles : defaultStyles
-  const classes = useStyles(styles)
-  const taglineText = isHomePage ? '' : 'Hunger Free Los Angeles'
+  const styles = isHomePage ? homePageStyles : defaultStyles;
+  const classes = useStyles(styles);
+  const taglineText = isHomePage ? "" : "Hunger Free Los Angeles";
 
   return (
     <>
@@ -76,7 +76,7 @@ export default function Header(props) {
             {!isHomePage && (
               <div className={classes.homeLink}>
                 <a href="/">
-                  <img src={logo} className={classes.logo} alt="logo" />{' '}
+                  <img src={logo} className={classes.logo} alt="logo" />{" "}
                 </a>
               </div>
             )}
@@ -100,5 +100,5 @@ export default function Header(props) {
         </Toolbar>
       </AppBar>
     </>
-  )
+  );
 }

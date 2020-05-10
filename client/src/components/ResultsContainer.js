@@ -81,6 +81,7 @@ export default function ResultsContainer(props) {
     isVerifiedSelected,
     selectVerified,
     userCoordinates,
+    userSearch,
   };
 
   return (

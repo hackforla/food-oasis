@@ -116,10 +116,12 @@ const ResultsFilters = ({
 
   const toggleMeal = useCallback(() => {
     toggleCategory(MEAL_PROGRAM_CATEGORY_ID)
+    doHandleSearch()
   }, [toggleCategory])
 
   const togglePantry = useCallback(() => {
     toggleCategory(FOOD_PANTRY_CATEGORY_ID)
+    doHandleSearch()
   }, [toggleCategory])
 
   const doHandleSearch = (e) => {
@@ -166,7 +168,10 @@ const ResultsFilters = ({
               name="select-distance"
               disableUnderline
               value={radius}
-              onChange={(e) => setRadius(e.target.value)}
+              onChange={(e) => {
+                setRadius(e.target.value)
+                doHandleSearch()
+              }}
               inputProps={{
                 name: 'select-distance',
                 id: 'select-distance',
@@ -219,9 +224,12 @@ const ResultsFilters = ({
               backgroundColor: isVerifiedSelected ? '#0A3865' : '#fff',
               color: isVerifiedSelected ? '#fff' : '#000',
             }}
-            onClick={() => selectVerified(!isVerifiedSelected)}
+            onClick={() => {
+              selectVerified(!isVerifiedSelected)
+              doHandleSearch()
+            }}
           >
-            Verified
+            Verified Data
           </Button>
         </Grid>
       </Grid>

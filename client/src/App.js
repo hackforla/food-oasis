@@ -76,10 +76,6 @@ function App() {
   const [origin, setOrigin] = useState(null)
 
   useEffect(() => {
-    console.log('top level origin is', origin)
-  }, [origin])
-
-  useEffect(() => {
     const imgNum = Math.floor(Math.random() * (21 - 1)) + 1
     const backgroundImage = `url("/landing-page/${imgNum}.jpg")`
     setBgImg(backgroundImage)

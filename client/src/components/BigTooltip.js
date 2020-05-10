@@ -1,4 +1,3 @@
-import React, { withStyles } from "react";
 import { Tooltip, withStyles } from "@material-ui/core";
 
 const BigTooltip = withStyles((theme) => ({

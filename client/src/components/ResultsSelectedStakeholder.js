@@ -79,6 +79,7 @@ const SelectedStakeholderDisplay = (props) => {
             src={
               selectedStakeholder.categories[0].id === 1 ? pantryIcon : mealIcon
             }
+            alt="Organization Category Icon"
             className={classes.typeLogo}
           />
         </div>
@@ -139,7 +140,7 @@ const SelectedStakeholderDisplay = (props) => {
           <a
             href={selectedStakeholder.website}
             target="_blank"
-            url="noopener noreferrer"
+            rel="noopener noreferrer"
           >
             {selectedStakeholder.website}
           </a>

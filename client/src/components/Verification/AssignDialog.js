@@ -1,29 +1,29 @@
-import React, { useState } from 'react'
-import PropTypes from 'prop-types'
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 import {
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-} from '@material-ui/core'
-import AccountAutocomplete from '../AccountAutocomplete'
+} from "@material-ui/core";
+import AccountAutocomplete from "../AccountAutocomplete";
 
 function AssignDialog(props) {
-  const { onClose, open, ...other } = props
-  const [accountId, setAccountId] = useState(null)
+  const { onClose, open, ...other } = props;
+  const [accountId, setAccountId] = useState(null);
 
   const handleCancel = () => {
-    onClose(false)
-  }
+    onClose(false);
+  };
 
   const handleAssign = () => {
-    onClose(accountId)
-  }
+    onClose(accountId);
+  };
 
   const handleUnassign = () => {
-    onClose(null)
-  }
+    onClose(null);
+  };
 
   return (
     <Dialog
@@ -56,12 +56,12 @@ function AssignDialog(props) {
         </Button>
       </DialogActions>
     </Dialog>
-  )
+  );
 }
 
 AssignDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
-}
+};
 
-export default AssignDialog
+export default AssignDialog;

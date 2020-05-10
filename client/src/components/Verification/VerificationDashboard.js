@@ -1,108 +1,108 @@
-import React, { useState, useEffect, useCallback } from 'react'
-import { withRouter } from 'react-router-dom'
-import { CssBaseline, Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import { SearchButton } from '../Buttons'
-import StakeholderGrid from '../StakeholderGrid'
-import { RotateLoader } from 'react-spinners'
-import { useOrganizations } from '../../hooks/useOrganizations/useOrganizations'
+import React, { useState, useEffect, useCallback } from "react";
+import { withRouter } from "react-router-dom";
+import { CssBaseline, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import { SearchButton } from "../Buttons";
+import StakeholderGrid from "../StakeholderGrid";
+import { RotateLoader } from "react-spinners";
+import { useOrganizations } from "../../hooks/useOrganizations/useOrganizations";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    flexBasis: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    padding: '2rem',
-    paddingBottom: '0',
+    flexBasis: "100%",
+    display: "flex",
+    flexDirection: "column",
+    padding: "2rem",
+    paddingBottom: "0",
   },
   mainContent: {
     flexGrow: 1,
     padding: theme.spacing(2),
-    display: 'flex',
-    flexDirection: 'column',
+    display: "flex",
+    flexDirection: "column",
   },
   closeButton: {
-    position: 'absolute',
+    position: "absolute",
     right: theme.spacing(1),
     top: theme.spacing(1),
     // color: theme.palette.grey[500],
   },
 
   header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   menuButton: {
     marginRight: theme.spacing(2),
   },
   hide: {
-    display: 'none',
+    display: "none",
   },
   bigMessage: {
     flexGrow: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    backgroundColor: '#E8E8E8',
-    textAlign: 'center',
-    padding: '4em',
+    flexDirection: "column",
+    justifyContent: "center",
+    backgroundColor: "#E8E8E8",
+    textAlign: "center",
+    padding: "4em",
   },
-}))
+}));
 
 const defaultCriteria = {
-  name: '',
+  name: "",
   latitude: 34,
   longitude: -118,
-  placeName: '',
+  placeName: "",
   radius: 0,
   categoryIds: [],
-  isInactive: 'either',
-  isAssigned: 'either',
-  isVerified: 'either',
-  isApproved: 'either',
-  isRejected: 'either',
-  isClaimed: 'either',
+  isInactive: "either",
+  isAssigned: "either",
+  isVerified: "either",
+  isApproved: "either",
+  isRejected: "either",
+  isClaimed: "either",
   assignedLoginId: null,
   claimedLoginId: null,
-}
+};
 
 function VerificationDashboard(props) {
-  const { user } = props
-  const classes = useStyles()
-  const [criteria, setCriteria] = useState(defaultCriteria)
+  const { user } = props;
+  const classes = useStyles();
+  const [criteria, setCriteria] = useState(defaultCriteria);
 
   const {
     data: stakeholders,
     loading: stakeholdersLoading,
     error: stakeholdersError,
     search: stakeholderSearch,
-  } = useOrganizations()
+  } = useOrganizations();
 
-  const searchCallback = useCallback(stakeholderSearch, [])
+  const searchCallback = useCallback(stakeholderSearch, []);
 
   useEffect(() => {
-    if (!user) return
-    const initialCriteria = { ...defaultCriteria, assignedLoginId: user.id }
+    if (!user) return;
+    const initialCriteria = { ...defaultCriteria, assignedLoginId: user.id };
     if (initialCriteria) {
-      setCriteria(initialCriteria)
-      searchCallback(initialCriteria)
+      setCriteria(initialCriteria);
+      searchCallback(initialCriteria);
     }
-  }, [searchCallback, user])
+  }, [searchCallback, user]);
 
   const search = async () => {
-    await searchCallback(criteria)
-  }
+    await searchCallback(criteria);
+  };
 
   return (
     <main className={classes.root}>
       <CssBaseline />
       <div
         style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          margin: '10px',
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          margin: "10px",
         }}
       >
         <header className={classes.header}>
@@ -110,7 +110,7 @@ function VerificationDashboard(props) {
             variant="h4"
             component="h4"
             align="center"
-            style={{ marginBottom: '0.5em' }}
+            style={{ marginBottom: "0.5em" }}
           >
             {`${user.firstName} ${user.lastName}'s Dashboard`}
           </Typography>
@@ -121,7 +121,7 @@ function VerificationDashboard(props) {
         <>
           {stakeholdersError ? (
             <div className={classes.bigMessage}>
-              <Typography variant="h5" component="h5" style={{ color: 'red' }}>
+              <Typography variant="h5" component="h5" style={{ color: "red" }}>
                 Uh Oh! Something went wrong!
               </Typography>
             </div>
@@ -129,10 +129,10 @@ function VerificationDashboard(props) {
             <div
               style={{
                 flexGrow: 1,
-                width: '100%',
-                margin: '100px auto',
-                display: 'flex',
-                justifyContent: 'space-around',
+                width: "100%",
+                margin: "100px auto",
+                display: "flex",
+                justifyContent: "space-around",
               }}
               aria-label="Loading spinner"
             >
@@ -163,7 +163,7 @@ function VerificationDashboard(props) {
         </>
       </div>
     </main>
-  )
+  );
 }
 
-export default withRouter(VerificationDashboard)
+export default withRouter(VerificationDashboard);

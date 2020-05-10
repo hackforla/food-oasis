@@ -96,7 +96,7 @@ const selectAll = () => {
         }
       });
       return articles;
-      console.log(JSON.stringify(articles, null, 2));
+      // console.log(JSON.stringify(articles, null, 2));
     })
     .catch((err) => {
       console.log(err);

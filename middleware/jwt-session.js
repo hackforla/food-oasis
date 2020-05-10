@@ -21,7 +21,7 @@ module.exports = {
 // the client. The token is returned as both an authorization cookie,
 // as as a JSON response body (for clients that may not be able to
 // work with cookies).
-async function login(req, res, next) {
+async function login(req, res) {
   const token = await sign({ email: req.user.email, id: req.user.id });
   res.cookie("jwt", token, { httpOnly: true });
   const user = req.user;

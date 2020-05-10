@@ -1,4 +1,3 @@
-/* eslint-disable indent */
 const { pool } = require("./postgres-pool");
 const {
   toSqlString,

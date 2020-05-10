@@ -1,6 +1,6 @@
 module.exports = {
-  extends: ['eslint:recommended', 'plugin:prettier/recommended'],
-  plugins: ['react', 'prettier', 'eslint-plugin-react'],
+  extends: ["eslint:recommended", "plugin:prettier/recommended"],
+  plugins: ["react", "prettier", "eslint-plugin-react"],
   env: {
     mocha: true,
     es6: true,
@@ -8,12 +8,12 @@ module.exports = {
   },
   parserOptions: {
     ecmaVersion: 2018,
-    sourceType: 'module',
+    sourceType: "module",
     ecmaFeatures: {
       jsx: true,
     },
   },
   rules: {
-    'prettier/prettier': 'error',
+    "prettier/prettier": "error",
   },
-}
+};

@@ -84,6 +84,11 @@ const setPermissions = async (req, res) => {
 const confirmRegister = async (req, res) => {
   try {
     const { id } = req.params;
+    if (id !== req.body.id) {
+      res
+        .status("400")
+        .json({ error: "id in url does not match id in request body." });
+    }
     const response = await accountService.confirmRegistration(req.body.token);
     res.send(response);
   } catch (err) {
@@ -118,7 +123,7 @@ const put = async (req, res) => {
 const remove = async (req, res) => {
   try {
     const { id } = req.params;
-    const response = await accountService.remove(id);
+    await accountService.remove(id);
     res.sendStatus(200);
   } catch (err) {
     res.status("500").json({ error: err.toString() });

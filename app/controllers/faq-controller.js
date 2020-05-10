@@ -74,7 +74,7 @@ const remove = (req, res) => {
   const { identifier } = req.body;
   faqService
     .remove(identifier)
-    .then((resp) => {
+    .then(() => {
       res.sendStatus(200);
     })
     .catch((err) => {

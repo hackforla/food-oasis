@@ -37,7 +37,7 @@ const createOrganization = (req, res) => {
 const updateOrganization = (req, res) => {
   organizationService
     .update(req.body)
-    .then((resp) => {
+    .then(() => {
       res.sendStatus(200);
     })
     .catch((err) => {
@@ -49,7 +49,7 @@ const deleteOrganization = (req, res) => {
   const { id } = req.params;
   organizationService
     .remove(id)
-    .then((resp) => {
+    .then(() => {
       res.sendStatus(200);
     })
     .catch((err) => {

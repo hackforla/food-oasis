@@ -1,7 +1,6 @@
-"use strict";
 const express = require("express");
 const dotenv = require("dotenv");
-const massive = require("massive");
+// const massive = require("massive");
 
 dotenv.config();
 

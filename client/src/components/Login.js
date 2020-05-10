@@ -1,5 +1,5 @@
-import React from 'react'
-import { withRouter } from 'react-router-dom'
+import React from "react";
+import { withRouter } from "react-router-dom";
 import {
   withStyles,
   Avatar,
@@ -10,49 +10,49 @@ import {
   Link,
   Grid,
   Typography,
-} from '@material-ui/core'
-import { Formik } from 'formik'
-import * as Yup from 'yup'
-import * as accountService from 'services/account-service'
+} from "@material-ui/core";
+import { Formik } from "formik";
+import * as Yup from "yup";
+import * as accountService from "services/account-service";
 
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
 const styles = (theme) => ({
-  '@global': {
+  "@global": {
     body: {
       backgroundColor: theme.palette.common.white,
     },
   },
   paper: {
     marginTop: theme.spacing(1),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-})
+});
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
-    .email('Invalid email address format')
-    .required('Email is required'),
+    .email("Invalid email address format")
+    .required("Email is required"),
   password: Yup.string()
-    .min(8, 'Password must be 8 characters at minimum')
-    .required('Password is required'),
-})
+    .min(8, "Password must be 8 characters at minimum")
+    .required("Password is required"),
+});
 
 const LoginForm = (props) => {
-  const { classes, setToast, setUser, history, match } = props
+  const { classes, setToast, setUser, history, match } = props;
 
   return (
     <Container component="main" maxWidth="xs">
@@ -66,8 +66,8 @@ const LoginForm = (props) => {
         </Typography>
         <Formik
           initialValues={{
-            email: match.params.email || '',
-            password: '',
+            email: match.params.email || "",
+            password: "",
           }}
           validationSchema={validationSchema}
           onSubmit={(values, formikBag) => {
@@ -75,65 +75,65 @@ const LoginForm = (props) => {
               try {
                 const response = await accountService.login(
                   values.email,
-                  values.password,
-                )
+                  values.password
+                );
                 if (response.isSuccess) {
-                  setUser(response.user)
+                  setUser(response.user);
                   setToast({
-                    message: 'Login successful.',
-                  })
+                    message: "Login successful.",
+                  });
                   if (response.user.isAdmin) {
-                    history.push('/verificationAdmin')
+                    history.push("/verificationAdmin");
                   } else if (response.user.isSecurityAdmin) {
-                    history.push('/securityadmindashboard')
+                    history.push("/securityadmindashboard");
                   } else if (response.user.isDataEntry) {
-                    history.push('/verificationdashboard')
+                    history.push("/verificationdashboard");
                   } else {
-                    history.push('/home')
+                    history.push("/home");
                   }
-                } else if (response.code === 'AUTH_NOT_CONFIRMED') {
+                } else if (response.code === "AUTH_NOT_CONFIRMED") {
                   try {
-                    await accountService.resendConfirmationEmail(values.email)
+                    await accountService.resendConfirmationEmail(values.email);
                     setToast({
                       message: `Your email has not been confirmed. 
                       Please look through your email for a Registration 
                       Confirmation link and use it to confirm that you 
                       own this email address.`,
-                    })
-                    formikBag.setSubmitting(false)
+                    });
+                    formikBag.setSubmitting(false);
                   } catch (err) {
                     setToast({
                       message: `An internal error occurred in sending 
                     an email to ${values.email}`,
-                    })
-                    formikBag.setSubmitting(false)
+                    });
+                    formikBag.setSubmitting(false);
                   }
-                } else if (response.code === 'AUTH_NO_ACCOUNT') {
-                  console.log('Account not found!!')
+                } else if (response.code === "AUTH_NO_ACCOUNT") {
+                  console.log("Account not found!!");
                   setToast({
                     message: `The email ${values.email} does not correspond to an 
                     existing account. Please verify the email or register as a
                     new account.`,
-                  })
-                  formikBag.setSubmitting(false)
+                  });
+                  formikBag.setSubmitting(false);
                 } else {
                   // Presumably response.code === "AUTH_INVALID_PASSWORD"
                   setToast({
                     message: `The password is incorrect, please check it 
                   and try again or use the Forgot Password feature.`,
-                  })
-                  formikBag.setSubmitting(false)
+                  });
+                  formikBag.setSubmitting(false);
                 }
                 // async function muist return something
-                return true
+                return true;
               } catch (err) {
                 setToast({
-                  message: 'Server error. Please contact support.',
-                })
-                console.log(err)
-                formikBag.setSubmitting(false)
+                  message: "Server error. Please contact support.",
+                });
+                console.log(err);
+                formikBag.setSubmitting(false);
               }
-            }, 400)
+            }, 400);
           }}
         >
           {({
@@ -160,7 +160,7 @@ const LoginForm = (props) => {
                 value={values.email}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                helperText={touched.email ? errors.email : ''}
+                helperText={touched.email ? errors.email : ""}
                 error={touched.email && Boolean(errors.email)}
               />
               <TextField
@@ -175,7 +175,7 @@ const LoginForm = (props) => {
                 value={values.password}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                helperText={touched.password ? errors.password : ''}
+                helperText={touched.password ? errors.password : ""}
                 error={touched.password && Boolean(errors.password)}
               />
               <Button
@@ -191,7 +191,7 @@ const LoginForm = (props) => {
               <Grid container>
                 <Grid item xs>
                   <Link
-                    href={`/forgotpassword/${values.email || ''}`}
+                    href={`/forgotpassword/${values.email || ""}`}
                     variant="body2"
                   >
                     Forgot password?
@@ -208,7 +208,7 @@ const LoginForm = (props) => {
         </Formik>
       </div>
     </Container>
-  )
-}
+  );
+};
 
-export default withStyles(styles)(withRouter(LoginForm))
+export default withStyles(styles)(withRouter(LoginForm));

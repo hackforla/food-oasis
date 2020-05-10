@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import Search from '../components/Search'
 import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
@@ -122,6 +122,33 @@ const ResultsFilters = ({
     toggleCategory(FOOD_PANTRY_CATEGORY_ID)
   }, [toggleCategory])
 
+  const doHandleSearch = (e) => {
+    if (e) { e.preventDefault() }
+
+    search({
+      name: '',
+      latitude: origin.latitude,
+      longitude: origin.longitude,
+      radius,
+      categoryIds: categoryIds.length
+        ? categoryIds
+        : DEFAULT_CATEGORIES,
+      isInactive: 'no',
+      isAssigned: 'either',
+      isApproved: isVerifiedSelected ? 'true' : 'either',
+      isSubmitted: 'either',
+      isRejected: 'either',
+      isClaimed: 'either',
+      assignedLoginId: '',
+      claimedLoginId: '',
+    })
+  }
+
+  //loading search
+  useEffect(() => {
+    doHandleSearch()
+  }, [])
+
   return (
     <Grid container wrap="wrap-reverse" className={classes.controlPanel}>
       <Grid
@@ -199,39 +226,21 @@ const ResultsFilters = ({
         </Grid>
       </Grid>
       <Box className={classes.inputContainer}>
-        <Search userCoordinates={userCoordinates} setOrigin={setOrigin} />
-        <Button
-          type="button"
-          disabled={!origin}
-          variant="contained"
-          className={classes.submit}
-          startIcon={
-            <SearchIcon fontSize="large" className={classes.searchIcon} />
-          }
-          onClick={() => {
-            console.log(categoryIds)
-
-            search({
-              name: '',
-              latitude: origin.latitude,
-              longitude: origin.longitude,
-              radius,
-              categoryIds: categoryIds.length
-                ? categoryIds
-                : DEFAULT_CATEGORIES,
-              isInactive: 'no',
-              isAssigned: 'either',
-              isApproved: isVerifiedSelected ? 'true' : 'either',
-              isSubmitted: 'either',
-              isRejected: 'either',
-              isClaimed: 'either',
-              assignedLoginId: '',
-              claimedLoginId: '',
-            })
-          }}
-        />
+        <form noValidate onSubmit={(e) => doHandleSearch(e)} style={{ all: "inherit" }}>
+          <Search userCoordinates={userCoordinates} setOrigin={setOrigin} />
+          <Button
+            type="submit"
+            disabled={!origin}
+            variant="contained"
+            className={classes.submit}
+            startIcon={
+              <SearchIcon fontSize="large" className={classes.searchIcon} />
+            }
+            onClick={() => doHandleSearch()}
+          />
+        </form>
       </Box>
-    </Grid>
+    </Grid >
   )
 }
 

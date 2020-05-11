@@ -7,7 +7,7 @@ export default function AccountAutocomplete({
   accountId,
   setAccount,
   setAccountId,
-  label
+  label,
 }) {
   const { data: accounts } = useAccounts();
 

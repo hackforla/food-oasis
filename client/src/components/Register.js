@@ -12,33 +12,33 @@ import {
   Link,
   Grid,
   Typography,
-  Container
+  Container,
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
 const styles = (theme) => ({
   "@global": {
     body: {
-      backgroundColor: theme.palette.common.white
-    }
+      backgroundColor: theme.palette.common.white,
+    },
   },
   paper: {
     marginTop: theme.spacing(1),
     display: "flex",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
+    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1)
+    marginTop: theme.spacing(1),
   },
   submit: {
-    margin: theme.spacing(3, 0, 2)
-  }
+    margin: theme.spacing(3, 0, 2),
+  },
 });
 
 // Core component is the Material UI form itself
@@ -51,7 +51,7 @@ const form = (props) => {
     isSubmitting,
     handleChange,
     handleBlur,
-    handleSubmit
+    handleSubmit,
   } = props;
 
   return (
@@ -184,14 +184,14 @@ const Register = withFormik({
     lastName,
     email,
     password,
-    passwordConfirm
+    passwordConfirm,
   }) => {
     return {
       firstName: firstName || "",
       lastName: lastName || "",
       email: email || "",
       password: password || "",
-      passwordConfirm: passwordConfirm || ""
+      passwordConfirm: passwordConfirm || "",
     };
   },
 
@@ -206,7 +206,7 @@ const Register = withFormik({
       .required("Enter your password"),
     passwordConfirm: Yup.string()
       .required("Confirm your password")
-      .oneOf([Yup.ref("password")], "Password does not match")
+      .oneOf([Yup.ref("password")], "Password does not match"),
   }),
 
   handleSubmit: (values, { setSubmitting, props }) => {
@@ -218,33 +218,33 @@ const Register = withFormik({
           setSubmitting(false);
           if (result.isSuccess) {
             props.setToast({
-              message: `Registration successful. Please check your email for a confirmation link.`
+              message: `Registration successful. Please check your email for a confirmation link.`,
             });
             props.history.push("/stakeholders");
           } else if (result.code === "REG_DUPLICATE_EMAIL") {
             props.setToast({
               message: `The email ${email} is already registered. 
               Please login or use the Forgot Password feature if you have 
-              forgotten your password.`
+              forgotten your password.`,
             });
           } else {
             props.setToast({
               message: `An error occurred in sending the 
               confirmation message to ${email}. 
               Try to log in, and follow the instructions for re-sending the 
-              confirmation email.`
+              confirmation email.`,
             });
           }
         })
         .catch((err) => {
           setSubmitting(false);
           props.setToast({
-            message: `Registration failed. ${err.message || ""}`
+            message: `Registration failed. ${err.message || ""}`,
           });
           console.log(err);
         });
     }, 1000);
-  }
+  },
 })(form);
 
 export default withStyles(styles)(withRouter(Register));

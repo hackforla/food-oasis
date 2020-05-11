@@ -142,5 +142,5 @@ module.exports = {
   resetPassword,
   login,
   put,
-  remove
+  remove,
 };

@@ -26,7 +26,7 @@ const insert = (row) => {
     site_name,
     site_phones,
     site_services,
-    site_url
+    site_url,
   } = row;
 
   const sql = `insert into load_211 (
@@ -78,5 +78,5 @@ const insert = (row) => {
 
 module.exports = {
   selectAll,
-  insert
+  insert,
 };

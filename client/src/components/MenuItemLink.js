@@ -7,8 +7,8 @@ import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   background: {
-    backgroundColor: "rgba(144, 194, 70)"
-  }
+    backgroundColor: "rgba(144, 194, 70)",
+  },
 });
 
 export default function MenuItemLink({ to, text, userSection, onClick }) {
@@ -35,5 +35,5 @@ MenuItemLink.propTypes = {
   to: PropTypes.string,
   text: PropTypes.string.isRequired,
   userSection: PropTypes.bool,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
 };

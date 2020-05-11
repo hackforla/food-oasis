@@ -7,8 +7,8 @@ import SwitchViewsButton from "./SwitchViewsButton";
 
 const useStyles = makeStyles((theme) => ({
   card: {
-    margin: "0px"
-  }
+    margin: "0px",
+  },
 }));
 
 function StakeholderCriteria({
@@ -20,7 +20,7 @@ function StakeholderCriteria({
   searchString,
   isMapView,
   switchResultsView,
-  openSearchPanel
+  openSearchPanel,
 }) {
   const classes = useStyles();
   if (!selectedCategories) return null;

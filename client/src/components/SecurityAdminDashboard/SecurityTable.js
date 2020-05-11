@@ -13,14 +13,14 @@ import * as accountService from "../../services/account-service";
 
 const useStyles = makeStyles({
   table: {
-    minWidth: 650
+    minWidth: 650,
   },
   header: {
-    backgroundColor: "#000080"
+    backgroundColor: "#000080",
   },
   text: {
-    color: "#fff"
-  }
+    color: "#fff",
+  },
 });
 
 export default function SecurityTable(props) {
@@ -127,8 +127,8 @@ SecurityTable.propTypes = {
       lastName: PropTypes.string.isRequired,
       isAdmin: PropTypes.bool.isRequired,
       isSecurityAdmin: PropTypes.bool.isRequired,
-      isDataEntry: PropTypes.bool.isRequired
+      isDataEntry: PropTypes.bool.isRequired,
     }).isRequired
   ),
-  handlePermissionChange: PropTypes.func.isRequired
+  handlePermissionChange: PropTypes.func.isRequired,
 };

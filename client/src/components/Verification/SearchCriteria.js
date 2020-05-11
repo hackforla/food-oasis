@@ -15,7 +15,7 @@ import {
   FormControlLabel,
   Typography,
   RadioGroup,
-  Radio
+  Radio,
 } from "@material-ui/core";
 import RadioTrueFalseEither from "../RadioTrueFalseEither";
 import LocationAutocomplete from "../LocationAutocomplete";
@@ -23,18 +23,18 @@ import AccountAutocomplete from "../AccountAutocomplete";
 
 const useStyles = makeStyles((theme) => ({
   card: {
-    margin: "0px"
+    margin: "0px",
   },
   chips: {
     display: "flex",
-    flexWrap: "wrap"
+    flexWrap: "wrap",
   },
   chip: {
-    margin: 2
+    margin: 2,
   },
   formLabel: {
-    margin: "1rem 0 .5rem"
-  }
+    margin: "1rem 0 .5rem",
+  },
 }));
 
 const closeTo = (lat1, lon1, lat2, lon2) => {
@@ -47,7 +47,7 @@ const SearchCriteria = ({
   categories,
   criteria,
   setCriteria,
-  search
+  search,
 }) => {
   const [useMyLocation, setUseMyLocation] = useState(
     criteria.latitude
@@ -86,14 +86,14 @@ const SearchCriteria = ({
         ...criteria,
         latitude: userLatitude,
         longitude: userLongitude,
-        placeName: ""
+        placeName: "",
       });
     } else {
       setCriteria({
         ...criteria,
         latitude: customLatitude,
         longitude: customLongitude,
-        placeName: customPlaceName
+        placeName: customPlaceName,
       });
     }
   };
@@ -106,7 +106,7 @@ const SearchCriteria = ({
       ...criteria,
       latitude: location.location.y,
       longitude: location.location.x,
-      placeName: location.address
+      placeName: location.address,
     });
     setUseMyLocation("custom");
   };

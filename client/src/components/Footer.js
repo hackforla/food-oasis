@@ -9,8 +9,8 @@ const useStyles = makeStyles((theme) => ({
     height: "50px",
     backgroundColor: "#FAEBD7",
     flexGrow: 0,
-    padding: "0.75em"
-  }
+    padding: "0.75em",
+  },
 }));
 
 const Footer = (props) => {

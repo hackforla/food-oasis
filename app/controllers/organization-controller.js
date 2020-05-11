@@ -62,5 +62,5 @@ module.exports = {
   getById,
   createOrganization,
   updateOrganization,
-  deleteOrganization
+  deleteOrganization,
 };

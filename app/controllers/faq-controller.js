@@ -89,5 +89,5 @@ module.exports = {
   getByIdentifier,
   post,
   put,
-  remove
+  remove,
 };

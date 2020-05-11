@@ -22,31 +22,31 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     padding: "2rem",
-    paddingBottom: "0"
+    paddingBottom: "0",
   },
   mainContent: {
     flexGrow: 1,
     padding: theme.spacing(2),
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   closeButton: {
     position: "absolute",
     right: theme.spacing(1),
-    top: theme.spacing(1)
+    top: theme.spacing(1),
     // color: theme.palette.grey[500],
   },
 
   header: {
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
   },
   menuButton: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
   },
   hide: {
-    display: "none"
+    display: "none",
   },
   bigMessage: {
     flexGrow: 1,
@@ -54,8 +54,8 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     backgroundColor: "#E8E8E8",
     textAlign: "center",
-    padding: "4em"
-  }
+    padding: "4em",
+  },
 }));
 
 const DialogTitle = (props) => {
@@ -77,7 +77,7 @@ const DialogTitle = (props) => {
 
 DialogTitle.propTypes = {
   children: PropTypes.object,
-  onClose: PropTypes.func
+  onClose: PropTypes.func,
 };
 
 const defaultCriteria = {
@@ -94,14 +94,14 @@ const defaultCriteria = {
   isRejected: "either",
   isClaimed: "either",
   assignedLoginId: null,
-  claimedLoginId: null
+  claimedLoginId: null,
 };
 
 VerificationAdmin.propTypes = {
   userCoordinates: PropTypes.shape({
     latitude: PropTypes.number,
-    longitude: PropTypes.number
-  })
+    longitude: PropTypes.number,
+  }),
 };
 
 function VerificationAdmin(props) {
@@ -115,14 +115,14 @@ function VerificationAdmin(props) {
   const {
     data: categories,
     loading: categoriesLoading,
-    error: categoriesError
+    error: categoriesError,
   } = useCategories();
 
   const {
     data: stakeholders,
     loading: stakeholdersLoading,
     error: stakeholdersError,
-    search: stakeholderSearch
+    search: stakeholderSearch,
   } = useOrganizations();
 
   const searchCallback = useCallback(stakeholderSearch, []);
@@ -134,7 +134,7 @@ function VerificationAdmin(props) {
       initialCriteria = {
         ...defaultCriteria,
         latitude: userCoordinates.latitude,
-        longitude: userCoordinates.longitude
+        longitude: userCoordinates.longitude,
       };
     }
     setCriteria(initialCriteria);
@@ -179,7 +179,7 @@ function VerificationAdmin(props) {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          margin: "10px"
+          margin: "10px",
         }}
       >
         <header className={classes.header}>
@@ -208,7 +208,7 @@ function VerificationAdmin(props) {
               <SearchCriteria
                 key={JSON.stringify({
                   userLatitude: userCoordinates.latitude,
-                  categories
+                  categories,
                 })}
                 userLatitude={userCoordinates.latitude}
                 userLongitude={userCoordinates.longitude}
@@ -232,7 +232,7 @@ function VerificationAdmin(props) {
                 width: "100%",
                 margin: "100px auto",
                 display: "flex",
-                justifyContent: "space-around"
+                justifyContent: "space-around",
               }}
               aria-label="Loading spinner"
             >
@@ -266,7 +266,7 @@ function VerificationAdmin(props) {
                 width: "100%",
                 margin: "100px auto",
                 display: "flex",
-                justifyContent: "space-around"
+                justifyContent: "space-around",
               }}
               aria-label="Loading spinner"
             >
@@ -291,7 +291,7 @@ function VerificationAdmin(props) {
                   display: "flex",
                   flexDirection: "row",
                   justifyContent: "space-between",
-                  alignItems: "flex-end"
+                  alignItems: "flex-end",
                 }}
               >
                 <Button

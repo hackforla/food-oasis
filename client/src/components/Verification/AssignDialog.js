@@ -5,7 +5,7 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle
+  DialogTitle,
 } from "@material-ui/core";
 import AccountAutocomplete from "../AccountAutocomplete";
 
@@ -61,7 +61,7 @@ function AssignDialog(props) {
 
 AssignDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
-  open: PropTypes.bool.isRequired
+  open: PropTypes.bool.isRequired,
 };
 
 export default AssignDialog;

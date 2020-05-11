@@ -28,5 +28,5 @@ module.exports = {
   toSqlString,
   toSqlNumeric,
   toSqlBoolean,
-  toSqlTimestamp
+  toSqlTimestamp,
 };

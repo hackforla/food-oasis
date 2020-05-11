@@ -8,69 +8,69 @@ import {
   MenuItem,
   FormControl,
   Button,
-  Box
+  Box,
 } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
-  DEFAULT_CATEGORIES
+  DEFAULT_CATEGORIES,
 } from "../constants/map";
 
 const useStyles = makeStyles((theme) => ({
   filterGroup: {
     margin: "0 .25rem",
-    padding: 0
+    padding: 0,
   },
   filterGroupButton: {
     margin: 0,
     fontSize: "max(.8vw,10px)",
     backgroundColor: "#fff",
     border: ".1em solid #000",
-    color: "#000"
+    color: "#000",
   },
   filterButton: {
     margin: "0 .25rem",
     fontSize: "max(.8vw,10px)",
     backgroundColor: "#fff",
     border: ".1em solid #000",
-    color: "#000"
+    color: "#000",
   },
   distanceControl: {
     margin: "0 .25rem",
     backgroundColor: "#fff",
     padding: ".25em 0 .25em .7em",
     border: ".09em solid #000",
-    outline: "none"
+    outline: "none",
   },
   menuItems: {
     fontSize: "max(.8vw,10px)",
-    color: "#000"
+    color: "#000",
   },
   controlPanel: {
     width: "100%",
     backgroundColor: "#336699",
-    height: "5em"
+    height: "5em",
   },
   inputHolder: {
     display: "flex",
     justifyContent: "flex-start",
-    alignItems: "center"
+    alignItems: "center",
   },
   input: {
     fontSize: "12px",
     width: "25em",
     height: "2em",
     outline: "none",
-    padding: ".25em"
+    padding: ".25em",
   },
   inputContainer: {
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
   },
   searchIcon: {
     width: 22,
-    height: 22
+    height: 22,
   },
   submit: {
     height: "42px",
@@ -79,20 +79,20 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "0 4px 4px 0",
     boxShadow: "none",
     "& .MuiButton-startIcon": {
-      marginRight: 0
+      marginRight: 0,
     },
     "&.Mui-disabled": {
       backgroundColor: "#BCE76D",
-      opacity: 0.8
+      opacity: 0.8,
     },
     "&:hover": {
       backgroundColor: "#C7F573",
-      boxShadow: "none"
-    }
+      boxShadow: "none",
+    },
   },
   buttonHolder: {
-    display: "flex"
-  }
+    display: "flex",
+  },
 }));
 
 const distanceInfo = [1, 2, 3, 5, 10, 20, 50];
@@ -107,7 +107,7 @@ const ResultsFilters = ({
   search,
   userCoordinates,
   categoryIds,
-  toggleCategory
+  toggleCategory,
 }) => {
   const classes = useStyles();
 
@@ -142,7 +142,7 @@ const ResultsFilters = ({
               onChange={(e) => setRadius(e.target.value)}
               inputProps={{
                 name: "select-distance",
-                id: "select-distance"
+                id: "select-distance",
               }}
               className={classes.menuItems}
             >
@@ -166,7 +166,7 @@ const ResultsFilters = ({
             className={classes.filterButton}
             style={{
               backgroundColor: isPantrySelected ? "#0A3865" : "#fff",
-              color: isPantrySelected ? "#fff" : "#000"
+              color: isPantrySelected ? "#fff" : "#000",
             }}
             onClick={togglePantry}
           >
@@ -178,7 +178,7 @@ const ResultsFilters = ({
             className={classes.filterButton}
             style={{
               backgroundColor: isMealsSelected ? "#0A3865" : "#fff",
-              color: isMealsSelected ? "#fff" : "#000"
+              color: isMealsSelected ? "#fff" : "#000",
             }}
             onClick={toggleMeal}
           >
@@ -190,7 +190,7 @@ const ResultsFilters = ({
             className={classes.filterGroupButton}
             style={{
               backgroundColor: isVerifiedSelected ? "#0A3865" : "#fff",
-              color: isVerifiedSelected ? "#fff" : "#000"
+              color: isVerifiedSelected ? "#fff" : "#000",
             }}
             onClick={() => selectVerified(!isVerifiedSelected)}
           >
@@ -226,7 +226,7 @@ const ResultsFilters = ({
               isRejected: "either",
               isClaimed: "either",
               assignedLoginId: "",
-              claimedLoginId: ""
+              claimedLoginId: "",
             });
           }}
         />
@@ -241,7 +241,7 @@ ResultsFilters.propTypes = {
   // isPantryCategorySelected: PropTypes.bool,
   // isMealCategorySelected: PropTypes.bool,
   // isVerifiedFilterSelected: PropTypes.bool,
-  search: PropTypes.func
+  search: PropTypes.func,
 };
 
 export default ResultsFilters;

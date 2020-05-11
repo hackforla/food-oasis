@@ -13,7 +13,7 @@ function MarkerPopup({ entity, handleClose }) {
     state,
     zip,
     phone,
-    website
+    website,
   } = entity;
 
   const getGoogleMapsUrl = () => {
@@ -52,7 +52,7 @@ function MarkerPopup({ entity, handleClose }) {
           style={{
             display: "flex",
             flexDirection: "column",
-            justifyContent: "left"
+            justifyContent: "left",
           }}
         >
           {address1 && <div>{address1}</div>}

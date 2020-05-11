@@ -40,32 +40,32 @@ const useStyles = makeStyles({
     justifyContent: "space-between",
     alignItems: "stretch",
     height: "100%",
-    overflowY: "scroll"
+    overflowY: "scroll",
   }),
   mainContent: {
     margin: "0",
     paddingBottom: "50px",
     overflowY: "scroll",
-    flexGrow: 1
+    flexGrow: 1,
   },
   stakeholderEditWrapper: {
     flexBasis: "90%",
     paddingTop: "1em",
-    paddingBottom: "1em"
+    paddingBottom: "1em",
   },
   homeWrapper: {
     backgroundSize: "cover",
     height: "100vh",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   verificationAdminWrapper: {
     flexBasis: "100%",
     flexGrow: 1,
     display: "flex",
-    flexDirection: "column"
-  }
+    flexDirection: "column",
+  },
 });
 
 function App() {
@@ -113,7 +113,7 @@ function App() {
           if (position) {
             const userCoordinates = {
               latitude: position.coords.latitude,
-              longitude: position.coords.longitude
+              longitude: position.coords.longitude,
             };
             setUserCoordinates(userCoordinates);
           }

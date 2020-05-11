@@ -14,31 +14,31 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     padding: "2rem",
-    paddingBottom: "0"
+    paddingBottom: "0",
   },
   mainContent: {
     flexGrow: 1,
     padding: theme.spacing(2),
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   closeButton: {
     position: "absolute",
     right: theme.spacing(1),
-    top: theme.spacing(1)
+    top: theme.spacing(1),
     // color: theme.palette.grey[500],
   },
 
   header: {
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
   },
   menuButton: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
   },
   hide: {
-    display: "none"
+    display: "none",
   },
   bigMessage: {
     flexGrow: 1,
@@ -46,8 +46,8 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     backgroundColor: "#E8E8E8",
     textAlign: "center",
-    padding: "4em"
-  }
+    padding: "4em",
+  },
 }));
 
 const defaultCriteria = {
@@ -64,7 +64,7 @@ const defaultCriteria = {
   isRejected: "either",
   isClaimed: "either",
   assignedLoginId: null,
-  claimedLoginId: null
+  claimedLoginId: null,
 };
 
 function VerificationDashboard(props) {
@@ -76,7 +76,7 @@ function VerificationDashboard(props) {
     data: stakeholders,
     loading: stakeholdersLoading,
     error: stakeholdersError,
-    search: stakeholderSearch
+    search: stakeholderSearch,
   } = useOrganizations();
 
   const searchCallback = useCallback(stakeholderSearch, []);
@@ -102,7 +102,7 @@ function VerificationDashboard(props) {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          margin: "10px"
+          margin: "10px",
         }}
       >
         <header className={classes.header}>
@@ -132,7 +132,7 @@ function VerificationDashboard(props) {
                 width: "100%",
                 margin: "100px auto",
                 display: "flex",
-                justifyContent: "space-around"
+                justifyContent: "space-around",
               }}
               aria-label="Loading spinner"
             >

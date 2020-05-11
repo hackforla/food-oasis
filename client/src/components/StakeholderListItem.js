@@ -41,7 +41,7 @@ const StakeholderListItem = (props) => {
             style={{
               display: "flex",
               justifyContent: "space-between",
-              justifyItems: "center"
+              justifyItems: "center",
             }}
           >
             {stakeholder.verifiedDate ? (

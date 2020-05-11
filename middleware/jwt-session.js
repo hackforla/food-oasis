@@ -9,7 +9,7 @@ module.exports = {
   //login: autoCatch(login),
   login,
   //ensureUser: autoCatch(ensureUser),
-  validateUser
+  validateUser,
 };
 
 // This module manages the user's session using a JSON Web Token in the

@@ -5,7 +5,7 @@ export const useOrganizations = () => {
   const [state, setState] = useState({
     data: null,
     loading: false,
-    error: false
+    error: false,
   });
 
   const search = async ({
@@ -21,7 +21,7 @@ export const useOrganizations = () => {
     isRejected,
     isClaimed,
     assignedLoginId,
-    claimedLoginId
+    claimedLoginId,
   }) => {
     //if (!categoryIds || categoryIds.length === 0) return;
     try {
@@ -39,7 +39,7 @@ export const useOrganizations = () => {
         isRejected,
         isClaimed,
         assignedLoginId,
-        claimedLoginId
+        claimedLoginId,
       });
       setState({ data: stakeholders, loading: false, error: false });
       return stakeholders;

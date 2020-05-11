@@ -12,17 +12,17 @@ import codeForAmerica from "../images/codeforamerica.svg";
 const useStyles = makeStyles({
   root: {
     textAlign: "center",
-    padding: "2rem"
+    padding: "2rem",
   },
   image: {
-    margin: "1rem"
+    margin: "1rem",
   },
   sectionHeader: {
-    marginTop: "3rem"
+    marginTop: "3rem",
   },
   description: {
-    margin: "1rem 0"
-  }
+    margin: "1rem 0",
+  },
 });
 
 const Donate = () => {

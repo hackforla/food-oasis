@@ -11,7 +11,7 @@ import {
   ListItemText,
   ListItemAvatar,
   Avatar,
-  Divider
+  Divider,
 } from "@material-ui/core";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import MenuIcon from "@material-ui/icons/Menu";
@@ -23,24 +23,24 @@ import { logout } from "./Logout";
 Menu.propTypes = {
   user: PropTypes.object,
   setUser: PropTypes.func,
-  setToast: PropTypes.func
+  setToast: PropTypes.func,
 };
 
 const useStyles = makeStyles({
   list: {
-    width: 250
+    width: 250,
   },
   menuButton: {
     backgroundColor: "#F1F1F1",
     padding: "0.5rem",
     minWidth: "0",
     "&:hover": {
-      backgroundColor: "#F1F1F1"
-    }
+      backgroundColor: "#F1F1F1",
+    },
   },
   blueMenu: {
-    fill: "#336699"
-  }
+    fill: "#336699",
+  },
 });
 
 export default function Menu(props) {

@@ -10,7 +10,7 @@ import { withRouter } from "react-router-dom";
 
 const languages = {
   en: "English",
-  es: "Spanish"
+  es: "Spanish",
 };
 
 const FaqEditForm = ({ faq, notAdded, history }) => {
@@ -36,14 +36,14 @@ const FaqEditForm = ({ faq, notAdded, history }) => {
         answer,
         identifier: `${JSON.parse(localStorage.getItem("faqs")).length + 1}:${
           faq.identifier
-        }`
+        }`,
       });
       history.push(`/faqs`);
     } else {
       faqService.update({
         ...faq,
         question,
-        answer
+        answer,
       });
     }
   };

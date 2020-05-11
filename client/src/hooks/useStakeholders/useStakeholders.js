@@ -22,7 +22,7 @@ export function useStakeholders(history, userCoordinates) {
       const {
         FETCH_FAILURE,
         FETCH_REQUEST,
-        FETCH_SUCCESS
+        FETCH_SUCCESS,
       } = actionTypes.STAKEHOLDERS;
       if (!selectedCategories) return;
       try {
@@ -32,7 +32,7 @@ export function useStakeholders(history, userCoordinates) {
           categoryIds: selectedCategories.map((category) => category.id),
           latitude,
           longitude,
-          distance: selectedDistance
+          distance: selectedDistance,
         });
         dispatch({
           type: FETCH_SUCCESS,
@@ -43,8 +43,8 @@ export function useStakeholders(history, userCoordinates) {
             selectedLongitude: longitude,
             selectedLocationName,
             selectedCategories,
-            selectedDistance
-          }
+            selectedDistance,
+          },
         });
         history.push(
           `/stakeholders?name=${searchString}` +
@@ -72,7 +72,7 @@ export function useStakeholders(history, userCoordinates) {
       selectedLongitude,
       selectedLocationName,
       selectedDistance,
-      selectedCategoryIds
+      selectedCategoryIds,
     } = initialState;
 
     const params = queryString.parse(history.location.search);
@@ -97,8 +97,8 @@ export function useStakeholders(history, userCoordinates) {
         selectedLocationName,
         selectedCategoryIds,
         selectedDistance,
-        queryParametersLoaded: true
-      }
+        queryParametersLoaded: true,
+      },
     });
   };
 
@@ -125,7 +125,7 @@ export function useStakeholders(history, userCoordinates) {
       selectedLongitude,
       selectedLocationName,
       selectedDistance,
-      selectedCategoryIds
+      selectedCategoryIds,
     } = state;
 
     let selectedCategories = selectedCategoryIds.map(

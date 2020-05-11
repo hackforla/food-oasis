@@ -11,7 +11,7 @@ const reducer = (state, { type, value, initialState }) => {
       return [
         ...state.slice(0, valueIndex),
         value,
-        ...state.slice(valueIndex + 1)
+        ...state.slice(valueIndex + 1),
       ];
     case CATEGORY_CLEAR:
       return initialState || [];
@@ -52,6 +52,6 @@ export default (initialState) => {
     addCategory,
     removeCategory,
     clearCategories,
-    toggleCategory
+    toggleCategory,
   };
 };

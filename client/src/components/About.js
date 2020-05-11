@@ -11,26 +11,26 @@ import { makeStyles, Typography } from "@material-ui/core";
 
 const useStyles = makeStyles(() => ({
   title: {
-    margin: "1rem 0"
+    margin: "1rem 0",
   },
   subtitle: {
-    margin: "2rem 0 1rem 0"
+    margin: "2rem 0 1rem 0",
   },
   support: {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   button: {
     maxWidth: "20rem",
     margin: "auto",
-    marginTop: "1rem"
+    marginTop: "1rem",
   },
   usesItem: {
-    maxWidth: "15rem"
+    maxWidth: "15rem",
   },
   section: {
-    margin: "3rem 0"
-  }
+    margin: "3rem 0",
+  },
 }));
 const About = () => {
   const classes = useStyles();

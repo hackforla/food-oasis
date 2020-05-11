@@ -7,14 +7,14 @@ import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles(() => ({
   listItem: {
-    margin: "1rem 0"
+    margin: "1rem 0",
   },
   subtitle: {
-    marginTop: "2rem"
+    marginTop: "2rem",
   },
   title: {
-    margin: "1rem 0 .5rem 0"
-  }
+    margin: "1rem 0 .5rem 0",
+  },
 }));
 
 const Resources = () => {

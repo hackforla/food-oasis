@@ -8,15 +8,15 @@ const useStyles = makeStyles({
     listStyle: "none",
     padding: "0",
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   edit: {
     listStyle: "none",
     fontSize: "2rem",
     padding: "0",
     display: "flex",
-    flexDirection: "column"
-  }
+    flexDirection: "column",
+  },
 });
 
 const FaqList = ({ faqs, message, reorder, reorderFaqs }) => {

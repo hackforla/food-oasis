@@ -69,5 +69,5 @@ module.exports = {
   selectById,
   create,
   update,
-  remove
+  remove,
 };

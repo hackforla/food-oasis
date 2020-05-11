@@ -4,7 +4,7 @@ import { Box, Typography } from "@material-ui/core";
 export function a11yProps(index) {
   return {
     id: `tab-${index}`,
-    "aria-controls": `tab-${index}`
+    "aria-controls": `tab-${index}`,
   };
 }
 

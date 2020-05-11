@@ -5,10 +5,10 @@ import { Marker } from "react-map-gl";
 const style = {
   svg: {
     height: "100%",
-    cursor: "pointer"
+    cursor: "pointer",
   },
   path: ({ color }) => ({
-    fill: color
+    fill: color,
   }),
   check: ({ isVerified }) => ({
     opacity: isVerified ? 1 : 0,
@@ -17,13 +17,13 @@ const style = {
     strokeLinecap: "round",
     strokeLinejoin: "round",
     strokeMiterlimit: 10,
-    stroke: "#ffffff"
+    stroke: "#ffffff",
   }),
   circle: ({ isVerified }) => ({
-    opacity: isVerified ? 0 : 1
+    opacity: isVerified ? 0 : 1,
   }),
   container: {
-    height: 48
+    height: 48,
   },
   shadow: {
     position: "absolute",
@@ -34,8 +34,8 @@ const style = {
     left: 0,
     background: "radial-gradient(circle, rgba(0,0,0,.5) 0%, rgba(0,0,0,0) 95%)",
     transformOrigin: "center",
-    transform: "translate(-50%, -50%) scaleY(.5)"
-  }
+    transform: "translate(-50%, -50%) scaleY(.5)",
+  },
 };
 
 export default function MapMarker({
@@ -43,7 +43,7 @@ export default function MapMarker({
   longitude,
   onClick,
   isVerified,
-  color
+  color,
 }) {
   return (
     <Marker longitude={longitude} latitude={latitude}>
@@ -52,7 +52,7 @@ export default function MapMarker({
           onClick={onClick}
           style={{
             ...style.svg,
-            transform: `translate(-50%,-100%)`
+            transform: `translate(-50%,-100%)`,
           }}
           viewBox="0 0 35 48"
           xmlns="http://www.w3.org/2000/svg"
@@ -96,5 +96,5 @@ MapMarker.propTypes = {
   longitude: PropTypes.number,
   onClick: PropTypes.func,
   isVerified: PropTypes.bool,
-  color: PropTypes.string
+  color: PropTypes.string,
 };

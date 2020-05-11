@@ -9,11 +9,11 @@ import * as accountService from "../../services/account-service";
 const useStyles = makeStyles({
   root: {
     textAlign: "center",
-    padding: "2rem"
+    padding: "2rem",
   },
   textInput: {
-    marginBottom: 10
-  }
+    marginBottom: 10,
+  },
 });
 
 const SecurityAdminDashboard = () => {
@@ -74,7 +74,7 @@ const SecurityAdminDashboard = () => {
     }
     let filtered = [...filteredAccounts, { ...account }];
     const unique = [
-      ...new Map(filtered.map((item) => [item.id, item])).values()
+      ...new Map(filtered.map((item) => [item.id, item])).values(),
     ];
     setFilteredAccounts(unique);
   };

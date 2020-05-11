@@ -11,31 +11,31 @@ const useStyles = makeStyles({
     border: "10px solid #FAEBD7",
     "& h4, h6, div": {
       fontSize: "1rem",
-      margin: "0.5rem"
-    }
+      margin: "0.5rem",
+    },
   },
   readOnly: {
-    marginBottom: "2rem"
+    marginBottom: "2rem",
   },
   editBar: {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: "rgb(241, 241, 241)"
+    backgroundColor: "rgb(241, 241, 241)",
   },
   hide: {
-    display: "none"
+    display: "none",
   },
   link: {
-    textDecoration: "none"
+    textDecoration: "none",
   },
   identifier: {
     height: "100%",
-    marginLeft: "1rem"
+    marginLeft: "1rem",
   },
   faqText: {
-    padding: "1rem"
-  }
+    padding: "1rem",
+  },
 });
 
 const FaqItem = ({ faq, reorder, reorderFaqs, faqLength }) => {

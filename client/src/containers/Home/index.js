@@ -14,23 +14,23 @@ import logo from "images/fola.svg";
 const useStyles = makeStyles((theme) => ({
   container: {
     [theme.breakpoints.down("xs")]: {
-      padding: 0
-    }
+      padding: 0,
+    },
   },
   paper: {
     margin: "0 auto",
     display: "flex",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
   },
   logoContainer: {
-    margin: "20px 0"
+    margin: "20px 0",
   },
   header: {
-    marginBottom: theme.spacing(1)
+    marginBottom: theme.spacing(1),
   },
   subtitle: {
-    marginBottom: theme.spacing(3)
+    marginBottom: theme.spacing(3),
   },
   label: {
     textAlign: "center",
@@ -38,12 +38,12 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 10,
     padding: "0 100px",
     [theme.breakpoints.down("xs")]: {
-      padding: 0
-    }
+      padding: 0,
+    },
   },
   form: {
     width: "100%",
-    marginTop: theme.spacing(1)
+    marginTop: theme.spacing(1),
   },
   formContainer: {
     width: "100%",
@@ -51,25 +51,25 @@ const useStyles = makeStyles((theme) => ({
     padding: "10px 35px",
     color: "#fff",
     [theme.breakpoints.down("xs")]: {
-      padding: "15px"
-    }
+      padding: "15px",
+    },
   },
   inputContainer: {
     display: "flex",
     alignItems: "flex-start",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   address: {
     marginTop: theme.spacing(1),
-    paddingRight: 0
+    paddingRight: 0,
   },
   inputRoot: {
     '&[class*="MuiOutlinedInput-root"]': {
-      paddingRight: 0
-    }
+      paddingRight: 0,
+    },
   },
   endAdornment: {
-    display: "none"
+    display: "none",
   },
   submit: {
     height: "42px",
@@ -78,25 +78,25 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "0 4px 4px 0",
     boxShadow: "none",
     "& .MuiButton-startIcon": {
-      marginRight: 0
+      marginRight: 0,
     },
     "&.Mui-disabled": {
       backgroundColor: "#BCE76D",
-      opacity: 0.8
+      opacity: 0.8,
     },
     "&:hover": {
       backgroundColor: "#C7F573",
-      boxShadow: "none"
-    }
+      boxShadow: "none",
+    },
   },
   logo: {
     width: 161,
-    height: "auto"
+    height: "auto",
   },
   searchIcon: {
     width: 22,
-    height: 22
-  }
+    height: 22,
+  },
 }));
 
 const Home = (props) => {

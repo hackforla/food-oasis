@@ -25,7 +25,7 @@ const toLocalMoment = (ts) => {
 export const search = async (searchParams) => {
   searchParams = searchParams || {};
   const response = await axios.get(baseUrl, {
-    params: searchParams
+    params: searchParams,
   });
   let stakeholders = response.data.map((s) => {
     return {
@@ -36,7 +36,7 @@ export const search = async (searchParams) => {
       submittedDate: toLocalMoment(s.submittedDate),
       approvedDate: toLocalMoment(s.approvedDate),
       rejectedDate: toLocalMoment(s.rejectedDate),
-      claimedDate: toLocalMoment(s.claimedDate)
+      claimedDate: toLocalMoment(s.claimedDate),
     };
   });
 
@@ -55,7 +55,7 @@ export const getById = async (id) => {
     submittedDate: toLocalMoment(s.submittedDate),
     approvedDate: toLocalMoment(s.approvedDate),
     rejectedDate: toLocalMoment(s.rejectedDate),
-    claimedDate: toLocalMoment(s.claimedDate)
+    claimedDate: toLocalMoment(s.claimedDate),
   };
 };
 
@@ -75,7 +75,7 @@ export const verify = async (id, setVerified, loginId) => {
   const response = await axios.put(`${baseUrl}/${id}/verify`, {
     id,
     setVerified,
-    loginId
+    loginId,
   });
   return response.data;
 };
@@ -86,7 +86,7 @@ export const assign = async (id, setAssigned, loginId) => {
   const response = await axios.put(`${baseUrl}/${id}/assign`, {
     id,
     setAssigned,
-    loginId
+    loginId,
   });
   return response.data;
 };
@@ -97,7 +97,7 @@ export const claim = async (id, setClaimed, loginId) => {
   const response = await axios.put(`${baseUrl}/${id}/claim`, {
     id,
     setClaimed,
-    loginId
+    loginId,
   });
   return response.data;
 };
@@ -108,7 +108,7 @@ export const approve = async (id, setApproved, loginId) => {
   const response = await axios.put(`${baseUrl}/${id}/approve`, {
     id,
     setApproved,
-    loginId
+    loginId,
   });
   return response.data;
 };
@@ -119,7 +119,7 @@ export const reject = async (id, setRejected, loginId) => {
   const response = await axios.put(`${baseUrl}/${id}/reject`, {
     id,
     setRejected,
-    loginId
+    loginId,
   });
   return response.data;
 };
@@ -127,7 +127,7 @@ export const reject = async (id, setRejected, loginId) => {
 // delete user-created job
 export const remove = async (id) => {
   const response = await axios.post(`${baseUrl}/${id}`, {
-    id
+    id,
   });
   return response.data;
 };

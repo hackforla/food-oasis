@@ -9,13 +9,13 @@ const baseUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places`;
 const initialState = {
   isLoading: false,
   error: false,
-  mapboxResults: []
+  mapboxResults: [],
 };
 
 const actionTypes = {
   FETCH_REQUEST: "FETCH_REQUEST",
   FETCH_SUCCESS: "FETCH_SUCCESS",
-  FETCH_FAILURE: "FETCH_FAILURE"
+  FETCH_FAILURE: "FETCH_FAILURE",
 };
 
 function reducer(state = initialState, action) {
@@ -27,7 +27,7 @@ function reducer(state = initialState, action) {
         ...state,
         error: false,
         isLoading: false,
-        mapboxResults: action.results
+        mapboxResults: action.results,
       };
     case actionTypes.FETCH_FAILURE:
       console.log(action.error);
@@ -52,7 +52,7 @@ export function useMapboxGeocoder() {
         const response = await axios.get(mapboxUrl);
         dispatch({
           type: actionTypes.FETCH_SUCCESS,
-          results: response.data.features
+          results: response.data.features,
         });
       } catch (error) {
         dispatch({ type: actionTypes.FETCH_FAILURE, error });

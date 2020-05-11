@@ -1,5 +1,4 @@
 const { pool } = require("./postgres-pool");
-const { toSqlString, toSqlNumeric } = require("./postgres-utils");
 
 const selectAll = () => {
   const sql = `select * from load_211`;
@@ -72,7 +71,7 @@ const insert = (row) => {
     )`;
 
   return pool.query(sql).catch((err) => {
-    msg = err.message;
+    const msg = err.message;
     console.log(msg);
   });
 };

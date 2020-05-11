@@ -19,7 +19,7 @@ const poolConfig = process.env.DATABASE_URL
 
 const pool = new Pool(poolConfig);
 
-pool.on("error", (err, client) => {
+pool.on("error", (err) => {
   console.error("Unexpected error on idle node-postgres client", err);
   //process.exit(-1)
 });

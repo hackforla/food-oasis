@@ -119,7 +119,6 @@ export default function ResultsContainer(props) {
            */
           />
         </Grid>
-        {/* <pre>{JSON.stringify(origin, null, 2)}</pre> */}
       </Grid>
     </div>
   );

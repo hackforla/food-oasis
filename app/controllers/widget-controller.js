@@ -37,7 +37,7 @@ const post = (req, res) => {
 const put = (req, res) => {
   widgetService
     .update(req.body)
-    .then((resp) => {
+    .then(() => {
       res.sendStatus(200);
     })
     .catch((err) => {
@@ -49,7 +49,7 @@ const remove = (req, res) => {
   const { id } = req.params;
   widgetService
     .remove(id)
-    .then((resp) => {
+    .then(() => {
       res.sendStatus(200);
     })
     .catch((err) => {

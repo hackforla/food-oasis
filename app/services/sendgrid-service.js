@@ -18,7 +18,7 @@ const sendRegistrationConfirmation = async (email, token) => {
               <p>Thanks,</p>
               <p>Food Oasis</p>`,
   };
-  return sgMail.send(msg, false, (err, result) => {
+  return sgMail.send(msg, false, (err) => {
     if (err) {
       return Promise.reject("Sending registration confirmation email failed.");
     }
@@ -39,7 +39,7 @@ const sendResetPasswordConfirmation = async (email, token) => {
               <p>Thanks,</p>
               <p>Food Oasis</p>`,
   };
-  return sgMail.send(msg, false, (err, result) => {
+  return sgMail.send(msg, false, (err) => {
     if (err) {
       return Promise.reject(
         "Sending password reset confirmation email failed."

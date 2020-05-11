@@ -2,6 +2,7 @@ import React, { useCallback, useEffect } from 'react'
 import Search from '../components/Search'
 import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
+
 import {
   Grid,
   Select,
@@ -9,93 +10,93 @@ import {
   FormControl,
   Button,
   Box,
-} from '@material-ui/core'
-import SearchIcon from '@material-ui/icons/Search'
+} from "@material-ui/core";
+import SearchIcon from "@material-ui/icons/Search";
 import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
   DEFAULT_CATEGORIES,
-} from '../constants/map'
+} from "../constants/map";
 
 const useStyles = makeStyles((theme) => ({
   filterGroup: {
-    margin: '0 .25rem',
+    margin: "0 .25rem",
     padding: 0,
   },
   filterGroupButton: {
     margin: 0,
-    fontSize: 'max(.8vw,10px)',
-    backgroundColor: '#fff',
-    border: '.1em solid #000',
-    color: '#000',
+    fontSize: "max(.8vw,10px)",
+    backgroundColor: "#fff",
+    border: ".1em solid #000",
+    color: "#000",
   },
   filterButton: {
-    margin: '0 .25rem',
-    fontSize: 'max(.8vw,10px)',
-    backgroundColor: '#fff',
-    border: '.1em solid #000',
-    color: '#000',
+    margin: "0 .25rem",
+    fontSize: "max(.8vw,10px)",
+    backgroundColor: "#fff",
+    border: ".1em solid #000",
+    color: "#000",
   },
   distanceControl: {
-    margin: '0 .25rem',
-    backgroundColor: '#fff',
-    padding: '.25em 0 .25em .7em',
-    border: '.09em solid #000',
-    outline: 'none',
+    margin: "0 .25rem",
+    backgroundColor: "#fff",
+    padding: ".25em 0 .25em .7em",
+    border: ".09em solid #000",
+    outline: "none",
   },
   menuItems: {
-    fontSize: 'max(.8vw,10px)',
-    color: '#000',
+    fontSize: "max(.8vw,10px)",
+    color: "#000",
   },
   controlPanel: {
-    width: '100%',
-    backgroundColor: '#336699',
-    height: '5em',
+    width: "100%",
+    backgroundColor: "#336699",
+    height: "5em",
   },
   inputHolder: {
-    display: 'flex',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
+    display: "flex",
+    justifyContent: "flex-start",
+    alignItems: "center",
   },
   input: {
-    fontSize: '12px',
-    width: '25em',
-    height: '2em',
-    outline: 'none',
-    padding: '.25em',
+    fontSize: "12px",
+    width: "25em",
+    height: "2em",
+    outline: "none",
+    padding: ".25em",
   },
   inputContainer: {
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    alignItems: "center",
   },
   searchIcon: {
     width: 22,
     height: 22,
   },
   submit: {
-    height: '42px',
-    minWidth: '25px',
-    backgroundColor: '#BCE76D',
-    borderRadius: '0 4px 4px 0',
-    boxShadow: 'none',
-    '& .MuiButton-startIcon': {
+    height: "42px",
+    minWidth: "25px",
+    backgroundColor: "#BCE76D",
+    borderRadius: "0 4px 4px 0",
+    boxShadow: "none",
+    "& .MuiButton-startIcon": {
       marginRight: 0,
     },
-    '&.Mui-disabled': {
-      backgroundColor: '#BCE76D',
+    "&.Mui-disabled": {
+      backgroundColor: "#BCE76D",
       opacity: 0.8,
     },
-    '&:hover': {
-      backgroundColor: '#C7F573',
-      boxShadow: 'none',
+    "&:hover": {
+      backgroundColor: "#C7F573",
+      boxShadow: "none",
     },
   },
   buttonHolder: {
-    display: 'flex',
+    display: "flex",
   },
-}))
+}));
 
-const distanceInfo = [1, 2, 3, 5, 10, 20, 50]
+const distanceInfo = [1, 2, 3, 5, 10, 20, 50];
 
 const ResultsFilters = ({
   origin,
@@ -109,12 +110,13 @@ const ResultsFilters = ({
   categoryIds,
   toggleCategory,
 }) => {
-  const classes = useStyles()
+  const classes = useStyles();
 
-  const isMealsSelected = categoryIds.indexOf(MEAL_PROGRAM_CATEGORY_ID) >= 0
-  const isPantrySelected = categoryIds.indexOf(FOOD_PANTRY_CATEGORY_ID) >= 0
+  const isMealsSelected = categoryIds.indexOf(MEAL_PROGRAM_CATEGORY_ID) >= 0;
+  const isPantrySelected = categoryIds.indexOf(FOOD_PANTRY_CATEGORY_ID) >= 0;
 
   const toggleMeal = useCallback(() => {
+
     toggleCategory(MEAL_PROGRAM_CATEGORY_ID)
     doHandleSearch()
   }, [toggleCategory])
@@ -173,8 +175,8 @@ const ResultsFilters = ({
                 doHandleSearch()
               }}
               inputProps={{
-                name: 'select-distance',
-                id: 'select-distance',
+                name: "select-distance",
+                id: "select-distance",
               }}
               className={classes.menuItems}
             >
@@ -187,7 +189,7 @@ const ResultsFilters = ({
                   value={distance}
                   className={classes.menuItems}
                 >
-                  {`${distance} MILE${distance > 1 ? 'S' : ''}`}
+                  {`${distance} MILE${distance > 1 ? "S" : ""}`}
                 </MenuItem>
               ))}
             </Select>
@@ -197,8 +199,8 @@ const ResultsFilters = ({
           <Button
             className={classes.filterButton}
             style={{
-              backgroundColor: isPantrySelected ? '#0A3865' : '#fff',
-              color: isPantrySelected ? '#fff' : '#000',
+              backgroundColor: isPantrySelected ? "#0A3865" : "#fff",
+              color: isPantrySelected ? "#fff" : "#000",
             }}
             onClick={togglePantry}
           >
@@ -209,8 +211,8 @@ const ResultsFilters = ({
           <Button
             className={classes.filterButton}
             style={{
-              backgroundColor: isMealsSelected ? '#0A3865' : '#fff',
-              color: isMealsSelected ? '#fff' : '#000',
+              backgroundColor: isMealsSelected ? "#0A3865" : "#fff",
+              color: isMealsSelected ? "#fff" : "#000",
             }}
             onClick={toggleMeal}
           >
@@ -221,8 +223,8 @@ const ResultsFilters = ({
           <Button
             className={classes.filterGroupButton}
             style={{
-              backgroundColor: isVerifiedSelected ? '#0A3865' : '#fff',
-              color: isVerifiedSelected ? '#fff' : '#000',
+              backgroundColor: isVerifiedSelected ? "#0A3865" : "#fff",
+              color: isVerifiedSelected ? "#fff" : "#000",
             }}
             onClick={() => {
               selectVerified(!isVerifiedSelected)
@@ -259,6 +261,6 @@ ResultsFilters.propTypes = {
   // isMealCategorySelected: PropTypes.bool,
   // isVerifiedFilterSelected: PropTypes.bool,
   search: PropTypes.func,
-}
+};
 
-export default ResultsFilters
+export default ResultsFilters;

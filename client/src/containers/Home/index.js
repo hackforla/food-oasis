@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { withRouter } from "react-router";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -101,12 +101,12 @@ const useStyles = makeStyles((theme) => ({
 
 const Home = (props) => {
   const classes = useStyles();
-  const { origin, setOrigin } = props
+  const { origin, setOrigin } = props;
 
   const handleSubmit = () => {
     const url = `/organizations?lat=${origin.latitude}&lon=${
       origin.longitude
-      }&placeName=${origin.locationName || ""} `;
+    }&placeName=${origin.locationName || ""} `;
     props.history.push(url);
   };
 

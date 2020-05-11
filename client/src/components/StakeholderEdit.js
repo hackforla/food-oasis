@@ -1936,8 +1936,8 @@ const StakeholderEdit = (props) => {
                           label="Approve"
                           disabled={
                             isSubmitting ||
-                            isUnchanged(values) ||
-                            (!criticalFieldsValidate(values) &&
+                            !criticalFieldsValidate(values) ||
+                            (isUnchanged(values) &&
                               values.verificationStatusId !==
                                 VERIFICATION_STATUS.SUBMITTED)
                           }

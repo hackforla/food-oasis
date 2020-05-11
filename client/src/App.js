@@ -69,11 +69,11 @@ const useStyles = makeStyles({
 });
 
 function App() {
-  const [user, setUser] = useState(null)
-  const [userCoordinates, setUserCoordinates] = useState({})
-  const [toast, setToast] = useState({ message: '' })
-  const [bgImg, setBgImg] = useState('')
-  const [origin, setOrigin] = useState(null)
+  const [user, setUser] = useState(null);
+  const [userCoordinates, setUserCoordinates] = useState({});
+  const [toast, setToast] = useState({ message: "" });
+  const [bgImg, setBgImg] = useState("");
+  const [origin, setOrigin] = useState(null);
 
   useEffect(() => {
     const imgNum = Math.floor(Math.random() * (21 - 1)) + 1;
@@ -145,11 +145,18 @@ function App() {
                   className={classes.homeWrapper}
                   style={{ backgroundImage: bgImg }}
                 >
-                  <Home userCoordinates={userCoordinates} origin={origin} setOrigin={setOrigin} />
+                  <Home
+                    userCoordinates={userCoordinates}
+                    origin={origin}
+                    setOrigin={setOrigin}
+                  />
                 </div>
               </Route>
               <Route path="/organizations">
-                <ResultsContainer userCoordinates={userCoordinates} userSearch={origin} />
+                <ResultsContainer
+                  userCoordinates={userCoordinates}
+                  userSearch={origin}
+                />
               </Route>
               <Route path="/stakeholders">
                 <StakeholdersContainer

@@ -40,34 +40,23 @@ export default function ResultsContainer(props) {
   const { userCoordinates, userSearch } = props;
   const { data, search } = useOrganizations();
   const classes = useStyles();
-
-  /**
-   * ***PLAN!***
-   *
-   * get the initial search params from the query string
-   *
-   * pass query string params down to ResultsFilters as props
-   * pass function down to search filter to update qs-params??
-   *     maybe this is already handled by useStakeholders?? should it be????
-   *
-   * pass stakeholders array down to map and list components
-   *
-   * hold 'selected stakeholder' in local state
-   */
-
   const { categoryIds, toggleCategory } = useCategoryIds([]);
 
   const initialCoords = {
-    latitude: userSearch ? userSearch.latitude :
-      userCoordinates ? userCoordinates.latitude :
-        34.07872,
-    longitude: userSearch ? userSearch.longitude :
-      userCoordinates ? userCoordinates.longitude :
-        -118.243328,
-  }
+    latitude: userSearch
+      ? userSearch.latitude
+      : userCoordinates
+      ? userCoordinates.latitude
+      : 34.07872,
+    longitude: userSearch
+      ? userSearch.longitude
+      : userCoordinates
+      ? userCoordinates.longitude
+      : -118.243328,
+  };
 
   const [radius, setRadius] = React.useState(5);
-  const [origin, setOrigin] = React.useState(initialCoords)
+  const [origin, setOrigin] = React.useState(initialCoords);
   const [isVerifiedSelected, selectVerified] = React.useState(false);
   const [selectedStakeholder, doSelectStakeholder] = React.useState(null);
 
@@ -86,17 +75,7 @@ export default function ResultsContainer(props) {
 
   return (
     <div className={classes.container}>
-      <ResultsFilters
-        {...topLevelProps}
-        search={search}
-      /**
-       * distance: PropTypes.number,
-       * placeName: PropTypes.string,
-       * isPantryCategorySelected: PropTypes.bool,
-       * isMealCategorySelected: PropTypes.bool,
-       * isVerifiedFilterSelected: PropTypes.bool,
-       */
-      />
+      <ResultsFilters {...topLevelProps} search={search} />
       <Grid container wrap="wrap-reverse">
         <Grid item xs={12} md={4} className={classes.list}>
           <ResultsList
@@ -111,12 +90,6 @@ export default function ResultsContainer(props) {
             categoryIds={categoryIds}
             selectedLatitude={origin.latitude}
             selectedLongitude={origin.longitude}
-          /**
-           * selectedLatitude: PropTypes.number,
-           * selectedLongitude: PropTypes.number,
-           * selectedStakeholder: PropTypes.object,
-           * stakeholders: PropTypes.arrayOf(PropTypes.object)
-           */
           />
         </Grid>
       </Grid>

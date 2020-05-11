@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ResultsContainer(props) {
-  const { userCoordinates } = props;
+  const { userCoordinates, userSearch } = props;
   const { data, search } = useOrganizations();
   const classes = useStyles();
 
@@ -57,11 +57,17 @@ export default function ResultsContainer(props) {
 
   const { categoryIds, toggleCategory } = useCategoryIds([]);
 
+  const initialCoords = {
+    latitude: userSearch ? userSearch.latitude :
+      userCoordinates ? userCoordinates.latitude :
+        34.07872,
+    longitude: userSearch ? userSearch.longitude :
+      userCoordinates ? userCoordinates.longitude :
+        -118.243328,
+  }
+
   const [radius, setRadius] = React.useState(5);
-  const [origin, setOrigin] = React.useState({
-    latitude: 34.07872,
-    longitude: -118.243328,
-  });
+  const [origin, setOrigin] = React.useState(initialCoords)
   const [isVerifiedSelected, selectVerified] = React.useState(false);
   const [selectedStakeholder, doSelectStakeholder] = React.useState(null);
 
@@ -75,6 +81,7 @@ export default function ResultsContainer(props) {
     isVerifiedSelected,
     selectVerified,
     userCoordinates,
+    userSearch,
   };
 
   return (
@@ -82,13 +89,13 @@ export default function ResultsContainer(props) {
       <ResultsFilters
         {...topLevelProps}
         search={search}
-        /**
-         * distance: PropTypes.number,
-         * placeName: PropTypes.string,
-         * isPantryCategorySelected: PropTypes.bool,
-         * isMealCategorySelected: PropTypes.bool,
-         * isVerifiedFilterSelected: PropTypes.bool,
-         */
+      /**
+       * distance: PropTypes.number,
+       * placeName: PropTypes.string,
+       * isPantryCategorySelected: PropTypes.bool,
+       * isMealCategorySelected: PropTypes.bool,
+       * isVerifiedFilterSelected: PropTypes.bool,
+       */
       />
       <Grid container wrap="wrap-reverse">
         <Grid item xs={12} md={4} className={classes.list}>
@@ -104,12 +111,12 @@ export default function ResultsContainer(props) {
             categoryIds={categoryIds}
             selectedLatitude={origin.latitude}
             selectedLongitude={origin.longitude}
-            /**
-             * selectedLatitude: PropTypes.number,
-             * selectedLongitude: PropTypes.number,
-             * selectedStakeholder: PropTypes.object,
-             * stakeholders: PropTypes.arrayOf(PropTypes.object)
-             */
+          /**
+           * selectedLatitude: PropTypes.number,
+           * selectedLongitude: PropTypes.number,
+           * selectedStakeholder: PropTypes.object,
+           * stakeholders: PropTypes.arrayOf(PropTypes.object)
+           */
           />
         </Grid>
       </Grid>

@@ -1,7 +1,8 @@
-import React, { useCallback } from "react";
-import Search from "../components/Search";
-import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/core/styles";
+import React, { useCallback, useEffect } from 'react'
+import Search from '../components/Search'
+import PropTypes from 'prop-types'
+import { makeStyles } from '@material-ui/core/styles'
+
 import {
   Grid,
   Select,
@@ -115,12 +116,42 @@ const ResultsFilters = ({
   const isPantrySelected = categoryIds.indexOf(FOOD_PANTRY_CATEGORY_ID) >= 0;
 
   const toggleMeal = useCallback(() => {
-    toggleCategory(MEAL_PROGRAM_CATEGORY_ID);
-  }, [toggleCategory]);
+
+    toggleCategory(MEAL_PROGRAM_CATEGORY_ID)
+    doHandleSearch()
+  }, [toggleCategory])
 
   const togglePantry = useCallback(() => {
-    toggleCategory(FOOD_PANTRY_CATEGORY_ID);
-  }, [toggleCategory]);
+    toggleCategory(FOOD_PANTRY_CATEGORY_ID)
+    doHandleSearch()
+  }, [toggleCategory])
+
+  const doHandleSearch = (e) => {
+    if (e) { e.preventDefault() }
+
+    search({
+      name: '',
+      latitude: origin.latitude,
+      longitude: origin.longitude,
+      radius,
+      categoryIds: categoryIds.length
+        ? categoryIds
+        : DEFAULT_CATEGORIES,
+      isInactive: 'no',
+      isAssigned: 'either',
+      isApproved: isVerifiedSelected ? 'true' : 'either',
+      isSubmitted: 'either',
+      isRejected: 'either',
+      isClaimed: 'either',
+      assignedLoginId: '',
+      claimedLoginId: '',
+    })
+  }
+
+  //loading search
+  useEffect(() => {
+    doHandleSearch()
+  }, [])
 
   return (
     <Grid container wrap="wrap-reverse" className={classes.controlPanel}>
@@ -139,7 +170,10 @@ const ResultsFilters = ({
               name="select-distance"
               disableUnderline
               value={radius}
-              onChange={(e) => setRadius(e.target.value)}
+              onChange={(e) => {
+                setRadius(e.target.value)
+                doHandleSearch()
+              }}
               inputProps={{
                 name: "select-distance",
                 id: "select-distance",
@@ -192,48 +226,33 @@ const ResultsFilters = ({
               backgroundColor: isVerifiedSelected ? "#0A3865" : "#fff",
               color: isVerifiedSelected ? "#fff" : "#000",
             }}
-            onClick={() => selectVerified(!isVerifiedSelected)}
+            onClick={() => {
+              selectVerified(!isVerifiedSelected)
+              doHandleSearch()
+            }}
           >
-            Verified
+            Verified Data
           </Button>
         </Grid>
       </Grid>
       <Box className={classes.inputContainer}>
-        <Search userCoordinates={userCoordinates} setOrigin={setOrigin} />
-        <Button
-          type="button"
-          disabled={!origin}
-          variant="contained"
-          className={classes.submit}
-          startIcon={
-            <SearchIcon fontSize="large" className={classes.searchIcon} />
-          }
-          onClick={() => {
-            console.log(categoryIds);
-
-            search({
-              name: "",
-              latitude: origin.latitude,
-              longitude: origin.longitude,
-              radius,
-              categoryIds: categoryIds.length
-                ? categoryIds
-                : DEFAULT_CATEGORIES,
-              isInactive: "no",
-              isAssigned: "either",
-              isApproved: isVerifiedSelected ? "true" : "either",
-              isSubmitted: "either",
-              isRejected: "either",
-              isClaimed: "either",
-              assignedLoginId: "",
-              claimedLoginId: "",
-            });
-          }}
-        />
+        <form noValidate onSubmit={(e) => doHandleSearch(e)} style={{ all: "inherit" }}>
+          <Search userCoordinates={userCoordinates} setOrigin={setOrigin} />
+          <Button
+            type="submit"
+            disabled={!origin}
+            variant="contained"
+            className={classes.submit}
+            startIcon={
+              <SearchIcon fontSize="large" className={classes.searchIcon} />
+            }
+            onClick={() => doHandleSearch()}
+          />
+        </form>
       </Box>
-    </Grid>
-  );
-};
+    </Grid >
+  )
+}
 
 ResultsFilters.propTypes = {
   // distance: PropTypes.number,

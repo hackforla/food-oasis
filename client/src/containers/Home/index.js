@@ -101,12 +101,12 @@ const useStyles = makeStyles((theme) => ({
 
 const Home = (props) => {
   const classes = useStyles();
-  const [origin, setOrigin] = useState(null);
+  const { origin, setOrigin } = props
 
   const handleSubmit = () => {
-    const url = `/stakeholders?lat=${origin.latitude}&lon=${
+    const url = `/organizations?lat=${origin.latitude}&lon=${
       origin.longitude
-    }&placeName=${origin.locationName || ""} `;
+      }&placeName=${origin.locationName || ""} `;
     props.history.push(url);
   };
 

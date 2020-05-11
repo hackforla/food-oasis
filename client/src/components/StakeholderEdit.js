@@ -1,12 +1,10 @@
-/* eslint-disable indent */
-/* eslint-disable react/jsx-curly-newline */
-import React, { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
-import { withRouter } from 'react-router-dom'
-import { UserContext } from './user-context'
-import { Formik } from 'formik'
-import AccountAutocomplete from './AccountAutocomplete'
-import * as Yup from 'yup'
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
+import { UserContext } from "./user-context";
+import { Formik } from "formik";
+import AccountAutocomplete from "./AccountAutocomplete";
+import * as Yup from "yup";
 import {
   AppBar,
   Box,
@@ -30,30 +28,30 @@ import {
   TextField,
   Tooltip,
   Typography,
-} from '@material-ui/core'
-import * as stakeholderService from '../services/stakeholder-service'
-import * as categoryService from '../services/category-service'
-import * as esriService from '../services/esri_service'
-import OpenTimeForm from './OpenTimeForm'
-import { TabPanel, a11yProps } from './TabPanel'
+} from "@material-ui/core";
+import * as stakeholderService from "../services/stakeholder-service";
+import * as categoryService from "../services/category-service";
+import * as esriService from "../services/esri_service";
+import OpenTimeForm from "./OpenTimeForm";
+import { TabPanel, a11yProps } from "./TabPanel";
 // import BigTooltip from "./BigTooltip";
-import { PlainButton, SearchButton, VerifyButton } from './Buttons'
+import { PlainButton, SearchButton, VerifyButton } from "./Buttons";
 import {
   VERIFICATION_STATUS,
   VERIFICATION_STATUS_NAMES,
-} from '../constants/stakeholder'
+} from "../constants/stakeholder";
 
-import moment from 'moment'
+import moment from "moment";
 
 const BigTooltip = withStyles((theme) => ({
   tooltip: {
     fontSize: 16,
   },
-}))(Tooltip)
+}))(Tooltip);
 
 const styles = (theme) => ({
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   formControl: {
@@ -61,33 +59,33 @@ const styles = (theme) => ({
     minWidth: 120,
   },
   tabPanel: {
-    borderLeft: '1px solid lightgray',
-    borderRight: '1px solid lightgray',
-    borderBottom: '1px solid lightgray',
+    borderLeft: "1px solid lightgray",
+    borderRight: "1px solid lightgray",
+    borderBottom: "1px solid lightgray",
   },
   workflowRow: {
-    display: 'flex',
-    flexDirection: 'row',
+    display: "flex",
+    flexDirection: "row",
   },
   workflowColumn1: {
-    flexBasis: '20%',
+    flexBasis: "20%",
   },
   workflowColumn2: {
-    flexBasis: '20%',
+    flexBasis: "20%",
   },
   workflowColumn3: {
-    flexBasis: '20%',
+    flexBasis: "20%",
   },
   workflowColumn4: {
-    flexBasis: '40%',
+    flexBasis: "40%",
   },
   workflowText: {
-    fontSize: '1.2em',
-    marginTop: '0.4em',
-    marginBottom: '0.2em',
+    fontSize: "1.2em",
+    marginTop: "0.4em",
+    marginBottom: "0.2em",
   },
   confirmableGroupWrapper: {
-    display: 'flex',
+    display: "flex",
   },
   confirmableFieldWrapper: {
     flexGrow: 1,
@@ -97,16 +95,16 @@ const styles = (theme) => ({
   },
   confirmCheckboxWrapper: {
     flexGrow: 0,
-    paddingTop: '0.75em',
+    paddingTop: "0.75em",
   },
   confirmCheckbox: {
-    marginLeft: '0.2em',
+    marginLeft: "0.2em",
   },
-})
+});
 
-const DATE_FORMAT = 'MM/DD/YY h:mm a'
-const ITEM_HEIGHT = 48
-const ITEM_PADDING_TOP = 8
+const DATE_FORMAT = "MM/DD/YY h:mm a";
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
 const MenuProps = {
   PaperProps: {
     style: {
@@ -114,84 +112,84 @@ const MenuProps = {
       width: 250,
     },
   },
-}
+};
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required('Name is required'),
-  address1: Yup.string().required('Street address is required'),
-  city: Yup.string().required('City is required'),
-  state: Yup.string().required('State is required'),
-  zip: Yup.string().required('Zip code is required'),
-  latitude: Yup.number().required('Latitude is required').min(-90).max(90),
-  longitude: Yup.number().required('Longitude is required').min(-180).max(180),
-  email: Yup.string().email('Invalid email address format'),
+  name: Yup.string().required("Name is required"),
+  address1: Yup.string().required("Street address is required"),
+  city: Yup.string().required("City is required"),
+  state: Yup.string().required("State is required"),
+  zip: Yup.string().required("Zip code is required"),
+  latitude: Yup.number().required("Latitude is required").min(-90).max(90),
+  longitude: Yup.number().required("Longitude is required").min(-180).max(180),
+  email: Yup.string().email("Invalid email address format"),
   selectedCategoryIds: Yup.array().min(
     1,
-    'You must select at least one category',
+    "You must select at least one category"
   ),
-})
+});
 
 const StakeholderEdit = (props) => {
-  const { classes, setToast, match, user } = props
-  const editId = match.params.id
-  const [tabPage, setTabPage] = useState(0)
-  const [categories, setCategories] = useState([])
-  const [geocodeResults, setGeocodeResults] = useState([])
+  const { classes, setToast, match, user } = props;
+  const editId = match.params.id;
+  const [tabPage, setTabPage] = useState(0);
+  const [categories, setCategories] = useState([]);
+  const [geocodeResults, setGeocodeResults] = useState([]);
   const [originalData, setOriginalData] = useState({
     id: 0,
-    name: '',
-    description: '',
-    parentOrganization: '',
-    address1: '',
-    address2: '',
-    city: '',
-    state: '',
-    zip: '',
-    phone: '',
-    email: '',
-    latitude: '',
-    longitude: '',
-    physicalAccess: '',
-    items: '',
-    services: '',
-    facebook: '',
-    twitter: '',
-    pinterest: '',
-    linkedin: '',
+    name: "",
+    description: "",
+    parentOrganization: "",
+    address1: "",
+    address2: "",
+    city: "",
+    state: "",
+    zip: "",
+    phone: "",
+    email: "",
+    latitude: "",
+    longitude: "",
+    physicalAccess: "",
+    items: "",
+    services: "",
+    facebook: "",
+    twitter: "",
+    pinterest: "",
+    linkedin: "",
     inactive: false,
-    website: '',
-    notes: '',
-    requirements: '',
-    adminNotes: '',
-    createdDate: '',
-    createdUser: '',
-    modifiedDate: '',
-    modifiedUser: '',
-    submittedDate: '',
-    submittedUser: '',
-    approvedDate: '',
-    approvedUser: '',
+    website: "",
+    notes: "",
+    requirements: "",
+    adminNotes: "",
+    createdDate: "",
+    createdUser: "",
+    modifiedDate: "",
+    modifiedUser: "",
+    submittedDate: "",
+    submittedUser: "",
+    approvedDate: "",
+    approvedUser: "",
     selectedCategoryIds: [],
     hours: [],
-    instagram: '',
-    adminContactName: '',
-    adminContactPhone: '',
-    adminContactEmail: '',
-    donationContactName: '',
-    donationContactPhone: '',
-    donationContactEmail: '',
+    instagram: "",
+    adminContactName: "",
+    adminContactPhone: "",
+    adminContactEmail: "",
+    donationContactName: "",
+    donationContactPhone: "",
+    donationContactEmail: "",
     donationPickup: false,
     donationAcceptFrozen: false,
     donationAcceptRefrigerated: false,
     donationAcceptPerishable: false,
-    donationSchedule: '',
-    donationNotes: '',
-    donationDeliveryInstructions: '',
-    covidNotes: '',
-    categoryNotes: '',
-    eligibilityNotes: '',
-    foodTypes: '',
-    languages: 'English',
+    donationSchedule: "",
+    donationNotes: "",
+    donationDeliveryInstructions: "",
+    covidNotes: "",
+    categoryNotes: "",
+    eligibilityNotes: "",
+    foodTypes: "",
+    languages: "English",
     confirmedName: false,
     confirmedCategories: false,
     confirmedAddress: false,
@@ -199,50 +197,50 @@ const StakeholderEdit = (props) => {
     confirmedPhone: false,
     confirmedHours: false,
     verificationStatusId: VERIFICATION_STATUS.NEEDS_VERIFICATION,
-  })
+  });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const categories = await categoryService.getAll()
+        const categories = await categoryService.getAll();
         const activeCategories = categories.filter(
-          (category) => !category.inactive,
-        )
-        setCategories(activeCategories)
+          (category) => !category.inactive
+        );
+        setCategories(activeCategories);
 
         if (editId) {
-          const stakeholder = await stakeholderService.getById(editId)
+          const stakeholder = await stakeholderService.getById(editId);
           // For editing purposes, it is better to convert the
           // stakeholder.categories array of objects to an array of
           // categoryIds as stakeholder.categoryIds
           stakeholder.selectedCategoryIds = stakeholder.categories.map(
-            (category) => category.id,
-          )
-          delete stakeholder.categories
+            (category) => category.id
+          );
+          delete stakeholder.categories;
 
-          setOriginalData(stakeholder)
+          setOriginalData(stakeholder);
         }
       } catch (err) {
-        console.log(err)
+        console.log(err);
       }
-    }
-    fetchData()
-  }, [editId])
+    };
+    fetchData();
+  }, [editId]);
 
   function formatMapAddress(formData) {
-    return `${formData.address1 || ''} ${formData.address2 || ''} ${
-      formData.city || ''
-    }, ${formData.state || ''} ${formData.zip || ''}`
+    return `${formData.address1 || ""} ${formData.address2 || ""} ${
+      formData.city || ""
+    }, ${formData.state || ""} ${formData.zip || ""}`;
   }
 
   const geocode = async (formData) => {
-    const result = await esriService.geocode(formatMapAddress(formData))
-    setGeocodeResults(result)
-  }
+    const result = await esriService.geocode(formatMapAddress(formData));
+    setGeocodeResults(result);
+  };
 
   const handleChangeTabPage = (event, newValue) => {
-    setTabPage(newValue)
-  }
+    setTabPage(newValue);
+  };
 
   const criticalFieldsValidate = (values) => {
     if (values.inactive) {
@@ -257,7 +255,7 @@ const StakeholderEdit = (props) => {
         values.zip &&
         values.latitude &&
         values.longitude
-      )
+      );
     }
     return (
       values.confirmedName &&
@@ -273,12 +271,12 @@ const StakeholderEdit = (props) => {
       values.zip &&
       values.latitude &&
       values.longitude
-    )
-  }
+    );
+  };
 
   const isUnchanged = (values) => {
-    return JSON.stringify(values) === JSON.stringify(originalData)
-  }
+    return JSON.stringify(values) === JSON.stringify(originalData);
+  };
 
   const noteTooltip = (
     <div>
@@ -301,7 +299,7 @@ const StakeholderEdit = (props) => {
         </ListItem>
       </List>
     </div>
-  )
+  );
 
   const adminNoteTooltip = (
     <div>
@@ -349,7 +347,7 @@ const StakeholderEdit = (props) => {
         </ListItem>
       </List>
     </div>
-  )
+  );
 
   return (
     <Container component="main" maxWidth="lg">
@@ -365,34 +363,36 @@ const StakeholderEdit = (props) => {
                 .put({ ...values, loginId: user.id })
                 .then((response) => {
                   setToast({
-                    message: 'Update successful.',
-                  })
+                    message: "Update successful.",
+                  });
+                  setOriginalData(values);
                   // props.history.goBack();
                 })
                 .catch((err) => {
                   setToast({
-                    message: 'Update failed.',
-                  })
-                  console.log(err)
-                  setSubmitting(false)
-                })
+                    message: "Update failed.",
+                  });
+                  console.log(err);
+                  setSubmitting(false);
+                });
             } else {
               return stakeholderService
                 .post({ ...values, loginId: user.id })
                 .then((response) => {
                   setToast({
-                    message: 'Insert successful.',
-                  })
-                  setFieldValue('id', response.id)
+                    message: "Insert successful.",
+                  });
+                  setFieldValue("id", response.id);
+                  setOriginalData(values);
                   // props.history.goBack();
                 })
                 .catch((err) => {
                   setToast({
-                    message: 'Insert failed.',
-                  })
-                  console.log(err)
-                  setSubmitting(false)
-                })
+                    message: "Insert failed.",
+                  });
+                  console.log(err);
+                  setSubmitting(false);
+                });
             }
           }}
         >
@@ -407,13 +407,13 @@ const StakeholderEdit = (props) => {
             setFieldValue,
           }) => (
             <form className={classes.form} noValidate onSubmit={handleSubmit}>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <Typography component="h1" variant="h5">
                   {`Organization - ${values.name}`}
                 </Typography>
                 <Box
                   bgcolor="secondary.main"
-                  style={{ padding: '0.2em 0.65em' }}
+                  style={{ padding: "0.2em 0.65em" }}
                 >
                   <Typography component="h1" variant="h5">
                     {VERIFICATION_STATUS_NAMES[values.verificationStatusId]}
@@ -455,7 +455,7 @@ const StakeholderEdit = (props) => {
                       value={values.name}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      helperText={touched.name ? errors.name : ''}
+                      helperText={touched.name ? errors.name : ""}
                       error={touched.name && Boolean(errors.name)}
                     />
 
@@ -467,7 +467,7 @@ const StakeholderEdit = (props) => {
                           value={values.confirmedName}
                           checked={values.confirmedName}
                           onChange={(e) =>
-                            setFieldValue('confirmedName', e.target.checked)
+                            setFieldValue("confirmedName", e.target.checked)
                           }
                           onBlur={handleBlur}
                           size="medium"
@@ -490,7 +490,7 @@ const StakeholderEdit = (props) => {
                           value={values.phone}
                           onChange={handleChange}
                           onBlur={handleBlur}
-                          helperText={touched.phone ? errors.phone : ''}
+                          helperText={touched.phone ? errors.phone : ""}
                           error={touched.phone && Boolean(errors.phone)}
                         />
                       </BigTooltip>
@@ -503,8 +503,8 @@ const StakeholderEdit = (props) => {
                             checked={values.confirmedPhone}
                             onChange={() =>
                               setFieldValue(
-                                'confirmedPhone',
-                                !values.confirmedPhone,
+                                "confirmedPhone",
+                                !values.confirmedPhone
                               )
                             }
                             onBlur={handleBlur}
@@ -528,7 +528,7 @@ const StakeholderEdit = (props) => {
                           value={values.email}
                           onChange={handleChange}
                           onBlur={handleBlur}
-                          helperText={touched.email ? errors.email : ''}
+                          helperText={touched.email ? errors.email : ""}
                           error={touched.email && Boolean(errors.email)}
                         />
                       </BigTooltip>
@@ -541,8 +541,8 @@ const StakeholderEdit = (props) => {
                             checked={values.confirmedEmail}
                             onChange={() =>
                               setFieldValue(
-                                'confirmedEmail',
-                                !values.confirmedEmail,
+                                "confirmedEmail",
+                                !values.confirmedEmail
                               )
                             }
                             onBlur={handleBlur}
@@ -572,19 +572,19 @@ const StakeholderEdit = (props) => {
                           input={<Input />}
                           renderValue={(selectedCategoryIds) => {
                             if (!categories) {
-                              return 'Loading categories...'
+                              return "Loading categories...";
                             }
                             if (selectedCategoryIds.length === 0) {
-                              return '(Select Categories)'
+                              return "(Select Categories)";
                             }
                             return selectedCategoryIds
                               .map(
                                 (categoryId) =>
                                   categories.filter(
-                                    (category) => category.id === categoryId,
-                                  )[0].name,
+                                    (category) => category.id === categoryId
+                                  )[0].name
                               )
-                              .join(', ')
+                              .join(", ");
                           }}
                           MenuProps={MenuProps}
                         >
@@ -593,7 +593,7 @@ const StakeholderEdit = (props) => {
                               <Checkbox
                                 checked={
                                   values.selectedCategoryIds.indexOf(
-                                    category.id,
+                                    category.id
                                   ) > -1
                                 }
                               />
@@ -604,7 +604,7 @@ const StakeholderEdit = (props) => {
                         <FormHelperText>
                           {touched.selectedCategoryIds
                             ? errors.selectedCategoryIds
-                            : ''}
+                            : ""}
                         </FormHelperText>
                       </FormControl>
                       <FormControlLabel
@@ -616,8 +616,8 @@ const StakeholderEdit = (props) => {
                             checked={values.confirmedCategories}
                             onChange={() =>
                               setFieldValue(
-                                'confirmedCategories',
-                                !values.confirmedCategories,
+                                "confirmedCategories",
+                                !values.confirmedCategories
                               )
                             }
                             onBlur={handleBlur}
@@ -644,7 +644,7 @@ const StakeholderEdit = (props) => {
                         onChange={handleChange}
                         onBlur={handleBlur}
                         helperText={
-                          touched.categoryNotes ? errors.categoryNotes : ''
+                          touched.categoryNotes ? errors.categoryNotes : ""
                         }
                         error={
                           touched.categoryNotes && Boolean(errors.categoryNotes)
@@ -663,7 +663,7 @@ const StakeholderEdit = (props) => {
                             value={values.inactive}
                             checked={values.inactive}
                             onChange={() =>
-                              setFieldValue('inactive', !values.inactive)
+                              setFieldValue("inactive", !values.inactive)
                             }
                             onBlur={handleBlur}
                           />
@@ -688,7 +688,7 @@ const StakeholderEdit = (props) => {
                         value={values.covidNotes}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        helperText={touched.covidNotes ? errors.covidNotes : ''}
+                        helperText={touched.covidNotes ? errors.covidNotes : ""}
                         error={touched.covidNotes && Boolean(errors.covidNotes)}
                       />
                     </BigTooltip>
@@ -711,7 +711,7 @@ const StakeholderEdit = (props) => {
                         onChange={handleChange}
                         onBlur={handleBlur}
                         helperText={
-                          touched.description ? errors.description : ''
+                          touched.description ? errors.description : ""
                         }
                         error={
                           touched.description && Boolean(errors.description)
@@ -736,7 +736,7 @@ const StakeholderEdit = (props) => {
                         helperText={
                           touched.parentOrganization
                             ? errors.parentOrganization
-                            : ''
+                            : ""
                         }
                         error={
                           touched.parentOrganization &&
@@ -758,7 +758,7 @@ const StakeholderEdit = (props) => {
                         value={values.address1}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        helperText={touched.address1 ? errors.address1 : ''}
+                        helperText={touched.address1 ? errors.address1 : ""}
                         error={touched.address1 && Boolean(errors.address1)}
                       />
                     </Grid>
@@ -774,7 +774,7 @@ const StakeholderEdit = (props) => {
                         value={values.address2}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        helperText={touched.address2 ? errors.address2 : ''}
+                        helperText={touched.address2 ? errors.address2 : ""}
                         error={touched.address2 && Boolean(errors.address2)}
                       />
                     </Grid>
@@ -790,7 +790,7 @@ const StakeholderEdit = (props) => {
                         value={values.city}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        helperText={touched.city ? errors.city : ''}
+                        helperText={touched.city ? errors.city : ""}
                         error={touched.city && Boolean(errors.city)}
                       />
                     </Grid>
@@ -806,7 +806,7 @@ const StakeholderEdit = (props) => {
                         value={values.state}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        helperText={touched.state ? errors.state : ''}
+                        helperText={touched.state ? errors.state : ""}
                         error={touched.state && Boolean(errors.state)}
                       />
                     </Grid>
@@ -822,7 +822,7 @@ const StakeholderEdit = (props) => {
                         value={values.zip}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        helperText={touched.zip ? errors.zip : ''}
+                        helperText={touched.zip ? errors.zip : ""}
                         error={touched.zip && Boolean(errors.zip)}
                       />
                     </Grid>
@@ -839,7 +839,7 @@ const StakeholderEdit = (props) => {
                         value={values.latitude}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        helperText={touched.latitude ? errors.latitude : ''}
+                        helperText={touched.latitude ? errors.latitude : ""}
                         error={touched.latitude && Boolean(errors.latitude)}
                       />
                     </Grid>
@@ -855,7 +855,7 @@ const StakeholderEdit = (props) => {
                         value={values.longitude}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        helperText={touched.longitude ? errors.longitude : ''}
+                        helperText={touched.longitude ? errors.longitude : ""}
                         error={touched.longitude && Boolean(errors.longitude)}
                       />
                     </Grid>
@@ -866,24 +866,24 @@ const StakeholderEdit = (props) => {
                           item
                           className={classes.confirmableGroupWrapper}
                           style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
+                            display: "flex",
+                            justifyContent: "space-between",
                           }}
                         >
                           <BigTooltip title="Click to get latitude / longitude for address">
                             <Grid item>
                               <SearchButton
                                 onClick={() => {
-                                  ;(geocodeResults && geocodeResults.length) < 1
+                                  (geocodeResults && geocodeResults.length) < 1
                                     ? geocode(values)
-                                    : setGeocodeResults([])
+                                    : setGeocodeResults([]);
                                 }}
                                 label={
                                   (geocodeResults && geocodeResults.length) < 1
-                                    ? 'Get Coordinates'
-                                    : 'Close'
+                                    ? "Get Coordinates"
+                                    : "Close"
                                 }
-                                style={{ marginTop: '1.2em' }}
+                                style={{ marginTop: "1.2em" }}
                               />
                             </Grid>
                           </BigTooltip>
@@ -897,8 +897,8 @@ const StakeholderEdit = (props) => {
                                   checked={values.confirmedAddress}
                                   onChange={() =>
                                     setFieldValue(
-                                      'confirmedAddress',
-                                      !values.confirmedAddress,
+                                      "confirmedAddress",
+                                      !values.confirmedAddress
                                     )
                                   }
                                   onBlur={handleBlur}
@@ -909,15 +909,15 @@ const StakeholderEdit = (props) => {
                           </div>
                         </Grid>
                       </Grid>
-                      <div style={{ padding: '0.5em 0' }}>
+                      <div style={{ padding: "0.5em 0" }}>
                         {geocodeResults ? (
                           geocodeResults.map((result, index) => (
                             <div
                               style={{
-                                border: '1px solid black',
-                                backgroundColor: '#EEE',
-                                margin: '0.1em',
-                                padding: '0.5em',
+                                border: "1px solid black",
+                                backgroundColor: "#EEE",
+                                margin: "0.1em",
+                                padding: "0.5em",
                               }}
                               key={index}
                             >
@@ -932,14 +932,14 @@ const StakeholderEdit = (props) => {
                                     label=""
                                     onClick={() => {
                                       setFieldValue(
-                                        'latitude',
-                                        result.location.y,
-                                      )
+                                        "latitude",
+                                        result.location.y
+                                      );
                                       setFieldValue(
-                                        'longitude',
-                                        result.location.x,
-                                      )
-                                      setGeocodeResults([])
+                                        "longitude",
+                                        result.location.x
+                                      );
+                                      setGeocodeResults([]);
                                     }}
                                   />
                                 </Grid>
@@ -962,9 +962,9 @@ const StakeholderEdit = (props) => {
                   <Grid item xs={12}>
                     <div
                       style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'flex-end',
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "flex-end",
                       }}
                     >
                       <FormControlLabel
@@ -976,8 +976,8 @@ const StakeholderEdit = (props) => {
                             checked={values.confirmedHours}
                             onChange={() =>
                               setFieldValue(
-                                'confirmedHours',
-                                !values.confirmedHours,
+                                "confirmedHours",
+                                !values.confirmedHours
                               )
                             }
                             onBlur={handleBlur}
@@ -1009,7 +1009,7 @@ const StakeholderEdit = (props) => {
                         value={values.website}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        helperText={touched.website ? errors.website : ''}
+                        helperText={touched.website ? errors.website : ""}
                         error={touched.website && Boolean(errors.website)}
                       />
                     </BigTooltip>
@@ -1026,7 +1026,7 @@ const StakeholderEdit = (props) => {
                       value={values.instagram}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      helperText={touched.instagram ? errors.instagram : ''}
+                      helperText={touched.instagram ? errors.instagram : ""}
                       error={touched.instagram && Boolean(errors.instagram)}
                     />
                   </Grid>
@@ -1042,7 +1042,7 @@ const StakeholderEdit = (props) => {
                       value={values.facebook}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      helperText={touched.facebook ? errors.facebook : ''}
+                      helperText={touched.facebook ? errors.facebook : ""}
                       error={touched.facebook && Boolean(errors.facebook)}
                     />
                   </Grid>
@@ -1058,7 +1058,7 @@ const StakeholderEdit = (props) => {
                       value={values.twitter}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      helperText={touched.twitter ? errors.twitter : ''}
+                      helperText={touched.twitter ? errors.twitter : ""}
                       error={touched.twitter && Boolean(errors.twitter)}
                     />
                   </Grid>
@@ -1074,7 +1074,7 @@ const StakeholderEdit = (props) => {
                       value={values.pinterest}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      helperText={touched.pinterest ? errors.pinterest : ''}
+                      helperText={touched.pinterest ? errors.pinterest : ""}
                       error={touched.pinterest && Boolean(errors.pinterest)}
                     />
                   </Grid>
@@ -1090,7 +1090,7 @@ const StakeholderEdit = (props) => {
                       value={values.linkedin}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      helperText={touched.linkedin ? errors.linkedin : ''}
+                      helperText={touched.linkedin ? errors.linkedin : ""}
                       error={touched.linkedin && Boolean(errors.linkedin)}
                     />
                   </Grid>
@@ -1116,7 +1116,7 @@ const StakeholderEdit = (props) => {
                       value={values.foodTypes}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      helperText={touched.foodTypes ? errors.foodTypes : ''}
+                      helperText={touched.foodTypes ? errors.foodTypes : ""}
                       error={touched.foodTypes && Boolean(errors.foodTypes)}
                     />
                   </Grid>
@@ -1133,7 +1133,7 @@ const StakeholderEdit = (props) => {
                         value={values.items}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        helperText={touched.items ? errors.items : ''}
+                        helperText={touched.items ? errors.items : ""}
                         error={touched.items && Boolean(errors.items)}
                       />
                     </BigTooltip>
@@ -1151,7 +1151,7 @@ const StakeholderEdit = (props) => {
                         value={values.services}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        helperText={touched.services ? errors.services : ''}
+                        helperText={touched.services ? errors.services : ""}
                         error={touched.services && Boolean(errors.services)}
                       />
                     </BigTooltip>
@@ -1173,7 +1173,7 @@ const StakeholderEdit = (props) => {
                         onChange={handleChange}
                         onBlur={handleBlur}
                         helperText={
-                          touched.requirements ? errors.requirements : ''
+                          touched.requirements ? errors.requirements : ""
                         }
                         error={
                           touched.requirements && Boolean(errors.requirements)
@@ -1200,7 +1200,7 @@ const StakeholderEdit = (props) => {
                         helperText={
                           touched.eligibilityNotes
                             ? errors.eligibilityNotes
-                            : ''
+                            : ""
                         }
                         error={
                           touched.eligibilityNotes &&
@@ -1224,7 +1224,7 @@ const StakeholderEdit = (props) => {
                       value={values.languages}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      helperText={touched.languages ? errors.languages : ''}
+                      helperText={touched.languages ? errors.languages : ""}
                       error={touched.languages && Boolean(errors.languages)}
                     />
                   </Grid>
@@ -1244,7 +1244,7 @@ const StakeholderEdit = (props) => {
                         value={values.notes}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        helperText={touched.notes ? errors.notes : ''}
+                        helperText={touched.notes ? errors.notes : ""}
                         error={touched.notes && Boolean(errors.notes)}
                       />
                     </BigTooltip>
@@ -1269,7 +1269,7 @@ const StakeholderEdit = (props) => {
                         helperText={
                           touched.donationContactName
                             ? errors.donationContactName
-                            : ''
+                            : ""
                         }
                         error={
                           touched.donationContactName &&
@@ -1294,7 +1294,7 @@ const StakeholderEdit = (props) => {
                         helperText={
                           touched.donationContactPhone
                             ? errors.donationContactPhone
-                            : ''
+                            : ""
                         }
                         error={
                           touched.donationContactPhone &&
@@ -1319,7 +1319,7 @@ const StakeholderEdit = (props) => {
                         helperText={
                           touched.donationContactEmail
                             ? errors.donationContactEmail
-                            : ''
+                            : ""
                         }
                         error={
                           touched.donationContactEmail &&
@@ -1344,7 +1344,7 @@ const StakeholderEdit = (props) => {
                         helperText={
                           touched.donationSchedule
                             ? errors.donationSchedule
-                            : ''
+                            : ""
                         }
                         error={
                           touched.donationSchedule &&
@@ -1365,8 +1365,8 @@ const StakeholderEdit = (props) => {
                             checked={values.donationPickup}
                             onChange={() =>
                               setFieldValue(
-                                'donationPickup',
-                                !values.donationPickup,
+                                "donationPickup",
+                                !values.donationPickup
                               )
                             }
                             onBlur={handleBlur}
@@ -1388,8 +1388,8 @@ const StakeholderEdit = (props) => {
                             checked={values.donationAcceptFrozen}
                             onChange={() =>
                               setFieldValue(
-                                'donationAcceptFrozen',
-                                !values.donationAcceptFrozen,
+                                "donationAcceptFrozen",
+                                !values.donationAcceptFrozen
                               )
                             }
                             onBlur={handleBlur}
@@ -1411,8 +1411,8 @@ const StakeholderEdit = (props) => {
                             checked={values.donationAcceptRefrigerated}
                             onChange={() =>
                               setFieldValue(
-                                'donationAcceptRefrigerated',
-                                !values.donationAcceptRefrigerated,
+                                "donationAcceptRefrigerated",
+                                !values.donationAcceptRefrigerated
                               )
                             }
                             onBlur={handleBlur}
@@ -1434,8 +1434,8 @@ const StakeholderEdit = (props) => {
                             checked={values.donationAcceptPerishable}
                             onChange={() =>
                               setFieldValue(
-                                'donationAcceptPerishable',
-                                !values.donationAcceptPerishable,
+                                "donationAcceptPerishable",
+                                !values.donationAcceptPerishable
                               )
                             }
                             onBlur={handleBlur}
@@ -1462,7 +1462,7 @@ const StakeholderEdit = (props) => {
                         helperText={
                           touched.donationDeliveryInstructions
                             ? errors.donationDeliveryInstructions
-                            : ''
+                            : ""
                         }
                         error={
                           touched.donationDeliveryInstructions &&
@@ -1485,7 +1485,7 @@ const StakeholderEdit = (props) => {
                         onChange={handleChange}
                         onBlur={handleBlur}
                         helperText={
-                          touched.donationNotes ? errors.donationNotes : ''
+                          touched.donationNotes ? errors.donationNotes : ""
                         }
                         error={
                           touched.donationNotes && Boolean(errors.donationNotes)
@@ -1513,7 +1513,7 @@ const StakeholderEdit = (props) => {
                         helperText={
                           touched.adminContactName
                             ? errors.adminContactName
-                            : ''
+                            : ""
                         }
                         error={
                           touched.adminContactName &&
@@ -1538,7 +1538,7 @@ const StakeholderEdit = (props) => {
                         helperText={
                           touched.adminContactPhone
                             ? errors.adminContactPhone
-                            : ''
+                            : ""
                         }
                         error={
                           touched.adminContactPhone &&
@@ -1563,7 +1563,7 @@ const StakeholderEdit = (props) => {
                         helperText={
                           touched.adminContactEmail
                             ? errors.adminContactEmail
-                            : ''
+                            : ""
                         }
                         error={
                           touched.adminContactEmail &&
@@ -1576,11 +1576,11 @@ const StakeholderEdit = (props) => {
                     item
                     xs={12}
                     style={{
-                      border: '1px solid gray',
-                      borderRadius: '4px',
-                      padding: '0.5em',
-                      display: 'flex',
-                      flexDirection: 'column',
+                      border: "1px solid gray",
+                      borderRadius: "4px",
+                      padding: "0.5em",
+                      display: "flex",
+                      flexDirection: "column",
                     }}
                   >
                     <div className={classes.workflowRow}>
@@ -1593,7 +1593,7 @@ const StakeholderEdit = (props) => {
                         <Typography className={classes.workflowText}>
                           {values.id}
                         </Typography>
-                      </div>{' '}
+                      </div>{" "}
                     </div>
                     <div className={classes.workflowRow}>
                       <div className={classes.workflowColumn1}>
@@ -1657,33 +1657,36 @@ const StakeholderEdit = (props) => {
                             user && user.isAdmin ? (
                               <div
                                 style={{
-                                  display: 'flex',
-                                  flexDirection: 'row',
-                                  justifyContent: 'flex-end',
+                                  display: "flex",
+                                  flexDirection: "row",
+                                  justifyContent: "flex-end",
                                 }}
                               >
                                 <AccountAutocomplete
-                                  accountId={values.assignedLoginId || ''}
+                                  accountId={values.assignedLoginId || ""}
                                   setAccount={(login) => {
                                     if (login) {
-                                      setFieldValue('assignedLoginId', login.id)
                                       setFieldValue(
-                                        'assignedUser',
-                                        `${login.firstName} ${login.lastName}`,
-                                      )
-                                      setFieldValue('assignedDate', moment())
+                                        "assignedLoginId",
+                                        login.id
+                                      );
                                       setFieldValue(
-                                        'verificationStatusId',
-                                        VERIFICATION_STATUS.ASSIGNED,
-                                      )
+                                        "assignedUser",
+                                        `${login.firstName} ${login.lastName}`
+                                      );
+                                      setFieldValue("assignedDate", moment());
+                                      setFieldValue(
+                                        "verificationStatusId",
+                                        VERIFICATION_STATUS.ASSIGNED
+                                      );
                                     } else {
-                                      setFieldValue('assignedLoginId', '')
-                                      setFieldValue('assignedUser', '')
-                                      setFieldValue('assignedDate', '')
+                                      setFieldValue("assignedLoginId", "");
+                                      setFieldValue("assignedUser", "");
+                                      setFieldValue("assignedDate", "");
                                       setFieldValue(
-                                        'verificationStatusId',
-                                        VERIFICATION_STATUS.NEEDS_VERIFICATION,
-                                      )
+                                        "verificationStatusId",
+                                        VERIFICATION_STATUS.NEEDS_VERIFICATION
+                                      );
                                     }
                                   }}
                                 />
@@ -1725,9 +1728,9 @@ const StakeholderEdit = (props) => {
                       </div>
                       <div className={classes.workflowColumn3}>
                         <Typography className={classes.workflowText}>
-                          {!!values.approvedDate
+                          {values.approvedDate
                             ? moment(values.approvedDate).format(DATE_FORMAT)
-                            : ''}
+                            : ""}
                         </Typography>
                       </div>
                     </div>
@@ -1755,26 +1758,26 @@ const StakeholderEdit = (props) => {
                             user && user.isAdmin ? (
                               <div
                                 style={{
-                                  display: 'flex',
-                                  flexDirection: 'row',
-                                  justifyContent: 'flex-end',
+                                  display: "flex",
+                                  flexDirection: "row",
+                                  justifyContent: "flex-end",
                                 }}
                               >
                                 <AccountAutocomplete
-                                  style={{ width: '100%' }}
-                                  accountId={values.claimedLoginId || ''}
+                                  style={{ width: "100%" }}
+                                  accountId={values.claimedLoginId || ""}
                                   setAccount={(login) => {
                                     if (login) {
-                                      setFieldValue('claimedLoginId', login.id)
+                                      setFieldValue("claimedLoginId", login.id);
                                       setFieldValue(
-                                        'claimedUser',
-                                        `${login.firstName} ${login.lastName}`,
-                                      )
-                                      setFieldValue('claimedDate', moment())
+                                        "claimedUser",
+                                        `${login.firstName} ${login.lastName}`
+                                      );
+                                      setFieldValue("claimedDate", moment());
                                     } else {
-                                      setFieldValue('claimedLoginId', '')
-                                      setFieldValue('claimedUser', '')
-                                      setFieldValue('claimedDate', '')
+                                      setFieldValue("claimedLoginId", "");
+                                      setFieldValue("claimedUser", "");
+                                      setFieldValue("claimedDate", "");
                                     }
                                   }}
                                 />
@@ -1803,7 +1806,7 @@ const StakeholderEdit = (props) => {
                         onBlur={handleBlur}
                         disabled={!user || !user.isAdmin}
                         helperText={
-                          touched.reviewNotes ? errors.reviewNotes : ''
+                          touched.reviewNotes ? errors.reviewNotes : ""
                         }
                         error={
                           touched.reviewNotes && Boolean(errors.reviewNotes)
@@ -1813,8 +1816,8 @@ const StakeholderEdit = (props) => {
                   </Grid>
                 </Grid>
               </TabPanel>
-              <div style={{ display: 'flex' }}>
-                <div style={{ flexBasis: '20%', flexGrow: 1 }}>
+              <div style={{ display: "flex" }}>
+                <div style={{ flexBasis: "20%", flexGrow: 1 }}>
                   <BigTooltip title={adminNoteTooltip}>
                     <TextField
                       variant="outlined"
@@ -1830,7 +1833,7 @@ const StakeholderEdit = (props) => {
                       value={values.adminNotes}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      helperText={touched.adminNotes ? errors.adminNotes : ''}
+                      helperText={touched.adminNotes ? errors.adminNotes : ""}
                       error={touched.adminNotes && Boolean(errors.adminNotes)}
                     />
                   </BigTooltip>
@@ -1838,12 +1841,12 @@ const StakeholderEdit = (props) => {
 
                 <div
                   style={{
-                    flexGrow: '0',
-                    flexBasis: '65%',
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'flex-end',
-                    alignContent: 'center',
+                    flexGrow: "0",
+                    flexBasis: "65%",
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "flex-end",
+                    alignContent: "center",
                   }}
                 >
                   {user && (user.isAdmin || user.isCoordinator) ? (
@@ -1854,56 +1857,56 @@ const StakeholderEdit = (props) => {
                           label="Save Progress"
                           className={classes.submit}
                           disabled={isSubmitting || isUnchanged(values)}
-                          style={{ margin: 'auto 0.5em' }}
+                          style={{ margin: "auto 0.5em" }}
                         />
                       </BigTooltip>
                       <BigTooltip title="Change to Needs Verification">
                         <PlainButton
                           type="button"
                           onClick={() => {
-                            setFieldValue('approvedLoginId', '')
-                            setFieldValue('approvedUser', '')
-                            setFieldValue('approvedDate', '')
+                            setFieldValue("approvedLoginId", "");
+                            setFieldValue("approvedUser", "");
+                            setFieldValue("approvedDate", "");
                             setFieldValue(
-                              'verificationStatusId',
-                              VERIFICATION_STATUS.NEEDS_VERIFICATION,
-                            )
-                            handleSubmit()
+                              "verificationStatusId",
+                              VERIFICATION_STATUS.NEEDS_VERIFICATION
+                            );
+                            handleSubmit();
                           }}
                           label="Needs Verification"
                           disabled={isSubmitting}
-                          style={{ margin: 'auto 0.5em' }}
+                          style={{ margin: "auto 0.5em" }}
                         />
                       </BigTooltip>
                       <BigTooltip
                         title={
-                          'Submitted record needs changes -> Assigned ' +
-                          'or Needs Verification (depending on whether you change the assignee)'
+                          "Submitted record needs changes -> Assigned " +
+                          "or Needs Verification (depending on whether you change the assignee)"
                         }
                       >
                         <PlainButton
                           type="button"
                           onClick={() => {
-                            setFieldValue('rejectedDate', moment())
+                            setFieldValue("rejectedDate", moment());
                             setFieldValue(
-                              'reviewedUser',
-                              user.firstName + ' ' + user.lastName,
-                            )
-                            setFieldValue('reviewedLoginId', user.id)
+                              "reviewedUser",
+                              user.firstName + " " + user.lastName
+                            );
+                            setFieldValue("reviewedLoginId", user.id);
                             // If it is marked as assigned, it goes to assigned
                             // state, otherwise to Needs Verification State
                             if (values.assignedDate) {
                               setFieldValue(
-                                'verificationStatusId',
-                                VERIFICATION_STATUS.ASSIGNED,
-                              )
+                                "verificationStatusId",
+                                VERIFICATION_STATUS.ASSIGNED
+                              );
                             } else {
                               setFieldValue(
-                                'verificationStatusId',
-                                VERIFICATION_STATUS.NEEDS_VERIFICATION,
-                              )
+                                "verificationStatusId",
+                                VERIFICATION_STATUS.NEEDS_VERIFICATION
+                              );
                             }
-                            handleSubmit()
+                            handleSubmit();
                           }}
                           label="Request Changes"
                           disabled={
@@ -1911,24 +1914,24 @@ const StakeholderEdit = (props) => {
                             !values.submittedDate ||
                             values.verificationStatusId !== 3
                           }
-                          style={{ margin: 'auto 0.5em' }}
+                          style={{ margin: "auto 0.5em" }}
                         />
                       </BigTooltip>
                       <BigTooltip title="Approve for Release => Verified">
                         <PlainButton
                           type="button"
                           onClick={() => {
-                            setFieldValue('approvedDate', moment())
+                            setFieldValue("approvedDate", moment());
                             setFieldValue(
-                              'reviewedUser',
-                              user.firstName + ' ' + user.lastName,
-                            )
-                            setFieldValue('reviewedLoginId', user.id)
+                              "reviewedUser",
+                              user.firstName + " " + user.lastName
+                            );
+                            setFieldValue("reviewedLoginId", user.id);
                             setFieldValue(
-                              'verificationStatusId',
-                              VERIFICATION_STATUS.VERIFIED,
-                            )
-                            handleSubmit()
+                              "verificationStatusId",
+                              VERIFICATION_STATUS.VERIFIED
+                            );
+                            handleSubmit();
                           }}
                           label="Approve"
                           disabled={
@@ -1938,7 +1941,7 @@ const StakeholderEdit = (props) => {
                               values.verificationStatusId !==
                                 VERIFICATION_STATUS.SUBMITTED)
                           }
-                          style={{ margin: 'auto 0.5em' }}
+                          style={{ margin: "auto 0.5em" }}
                         />
                       </BigTooltip>
                     </>
@@ -1949,47 +1952,49 @@ const StakeholderEdit = (props) => {
                         label="Save Progress"
                         className={classes.submit}
                         disabled={isSubmitting || isUnchanged(values)}
-                        style={{ margin: 'auto' }}
+                        style={{ margin: "auto" }}
                       />
                       <PlainButton
                         type="button"
                         onClick={() => {
-                          setFieldValue('assignedLoginId', '')
-                          setFieldValue('assignedUser', '')
-                          setFieldValue('assignedDate', '')
+                          setFieldValue("assignedLoginId", "");
+                          setFieldValue("assignedUser", "");
+                          setFieldValue("assignedDate", "");
                           setFieldValue(
-                            'verificationStatusId',
-                            VERIFICATION_STATUS.NEEDS_VERIFICATION,
-                          )
-                          handleSubmit()
+                            "verificationStatusId",
+                            VERIFICATION_STATUS.NEEDS_VERIFICATION
+                          );
+                          handleSubmit();
                         }}
                         label="Hand Off"
                         disabled={
-                          isSubmitting || criticalFieldsValidate(values)
+                          criticalFieldsValidate(values) ||
+                          values.verificationStatusId ===
+                            VERIFICATION_STATUS.NEEDS_VERIFICATION
                         }
-                        style={{ margin: 'auto' }}
+                        style={{ margin: "auto" }}
                       />
                       <PlainButton
                         type="button"
                         onClick={() => {
-                          setFieldValue('submittedDate', moment())
+                          setFieldValue("submittedDate", moment());
                           setFieldValue(
-                            'submittedUser',
-                            user.firstName + ' ' + user.lastName,
-                          )
-                          setFieldValue('submittedLoginId', user.id)
+                            "submittedUser",
+                            user.firstName + " " + user.lastName
+                          );
+                          setFieldValue("submittedLoginId", user.id);
                           setFieldValue(
-                            'verificationStatusId',
-                            VERIFICATION_STATUS.SUBMITTED,
-                          )
-                          handleSubmit()
+                            "verificationStatusId",
+                            VERIFICATION_STATUS.SUBMITTED
+                          );
+                          handleSubmit();
                         }}
                         label="Submit For Review"
                         disabled={
                           !criticalFieldsValidate(values) ||
                           !!values.submittedDate
                         }
-                        style={{ margin: 'auto' }}
+                        style={{ margin: "auto" }}
                       />
                     </>
                   ) : null}
@@ -2000,8 +2005,8 @@ const StakeholderEdit = (props) => {
         </Formik>
       </div>
     </Container>
-  )
-}
+  );
+};
 
 StakeholderEdit.propTypes = {
   classes: PropTypes.object,
@@ -2009,6 +2014,6 @@ StakeholderEdit.propTypes = {
   match: PropTypes.object,
   user: PropTypes.object,
   history: PropTypes.object,
-}
+};
 
-export default withStyles(styles)(withRouter(StakeholderEdit))
+export default withStyles(styles)(withRouter(StakeholderEdit));

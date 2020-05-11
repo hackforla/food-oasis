@@ -52,7 +52,7 @@ const get211 = async (req, res) => {
     return result;
   };
   load211.selectAll().then((sqlRes) => {
-    resJSON = [];
+    let resJSON = [];
     sqlRes.rows.forEach((row) => {
       const {
         agency_description,

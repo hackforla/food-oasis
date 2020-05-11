@@ -52,7 +52,7 @@ const insert = (model) => {
       ${toSqlString(additionalOfferings)}, 
       ${toSqlNumeric(lat)}, ${toSqlNumeric(lon)}) `;
   return pool.query(sql).catch((err) => {
-    msg = err.message;
+    const msg = err.message;
     console.log(msg);
   });
 };

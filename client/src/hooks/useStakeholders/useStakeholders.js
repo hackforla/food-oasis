@@ -10,6 +10,7 @@ export function useStakeholders(history, userCoordinates) {
   const { data: categories } = useCategories();
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const search = async (
     searchString,
     latitude,
@@ -138,7 +139,7 @@ export function useStakeholders(history, userCoordinates) {
       selectedCategories,
       selectedDistance
     );
-  }, [categories, state.queryParametersLoaded, initialState]);
+  }, [categories, state.queryParametersLoaded, state, search]);
 
   return { state: { ...state, categories }, dispatch, actionTypes, search };
 }

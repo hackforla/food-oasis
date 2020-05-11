@@ -37,7 +37,7 @@ const createResource = (req, res) => {
 const updateResource = (req, res) => {
   resourceService
     .update(req.body)
-    .then((resp) => {
+    .then(() => {
       res.sendStatus(200);
     })
     .catch((err) => {
@@ -49,7 +49,7 @@ const deleteResource = (req, res) => {
   const { id } = req.params;
   resourceService
     .remove(id)
-    .then((resp) => {
+    .then(() => {
       res.sendStatus(200);
     })
     .catch((err) => {

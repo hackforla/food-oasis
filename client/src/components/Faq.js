@@ -12,15 +12,15 @@ import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles(() => ({
   title: {
-    margin: "2rem",
+    margin: "2rem"
   },
   buttonsContainer: {
     display: "flex",
-    justifyContent: "space-between",
+    justifyContent: "space-between"
   },
   link: {
-    textDecoration: "none",
-  },
+    textDecoration: "none"
+  }
 }));
 
 const Faq = () => {
@@ -41,7 +41,7 @@ const Faq = () => {
       try {
         let twoLetterLanguage = i18n.language.slice(0, 2);
         const fetchedFaqs = await faqService.getAllByLanguage({
-          language: twoLetterLanguage,
+          language: twoLetterLanguage
         });
         if (fetchedFaqs.length > 0) {
           let sorted = fetchedFaqs;
@@ -90,7 +90,7 @@ const Faq = () => {
           firstIdentifier.slice(
             firstIdentifier.indexOf(":"),
             firstIdentifier.length
-          ),
+          )
       };
       atSecondIndex = {
         ...currentFaqs[order - 2],
@@ -99,7 +99,7 @@ const Faq = () => {
           secondIdentifier.slice(
             secondIdentifier.indexOf(":"),
             secondIdentifier.length
-          ),
+          )
       };
       currentFaqs[order - 1] = atSecondIndex;
       currentFaqs[order - 2] = atFirstIndex;
@@ -115,7 +115,7 @@ const Faq = () => {
           firstIdentifier.slice(
             firstIdentifier.indexOf(":"),
             firstIdentifier.length
-          ),
+          )
       };
       atSecondIndex = {
         ...currentFaqs[order],
@@ -124,7 +124,7 @@ const Faq = () => {
           secondIdentifier.slice(
             secondIdentifier.indexOf(":"),
             secondIdentifier.length
-          ),
+          )
       };
       currentFaqs[order - 1] = atSecondIndex;
       currentFaqs[order] = atFirstIndex;

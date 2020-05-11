@@ -3,7 +3,7 @@ const {
   toSqlString,
   toSqlNumeric,
   toSqlBoolean,
-  toSqlTimestamp,
+  toSqlTimestamp
 } = require("./postgres-utils");
 
 const trueFalseEitherClause = (columnName, value) => {
@@ -27,7 +27,7 @@ const search = async ({
   isRejected,
   isClaimed,
   assignedLoginId,
-  claimedLoginId,
+  claimedLoginId
   // TODO - Add verifcatonStatus to query filters
   // verificationStatusId,
 }) => {
@@ -187,7 +187,7 @@ const search = async ({
       confirmedPhone: row.v_phone,
       confirmedEmail: row.v_email,
       confirmedHours: row.v_hours,
-      verificationStatusId: row.verification_status_id,
+      verificationStatusId: row.verification_status_id
     });
   });
 
@@ -346,7 +346,7 @@ const selectById = async (id) => {
     confirmedPhone: row.v_phone,
     confirmedEmail: row.v_email,
     confirmedHours: row.v_hours,
-    verificationStatusId: row.verification_status_id,
+    verificationStatusId: row.verification_status_id
   };
 
   // Don't have a distance, since we didn't specify origin
@@ -419,7 +419,7 @@ const insert = async (model) => {
     confirmedPhone,
     confirmedEmail,
     confirmedHours,
-    verificationStatusId,
+    verificationStatusId
   } = model;
   try {
     const sql = `insert into stakeholder 
@@ -656,7 +656,7 @@ const update = async (model) => {
     confirmedPhone,
     confirmedEmail,
     confirmedHours,
-    verificationStatusId,
+    verificationStatusId
   } = model;
 
   let hoursSqlValues = hours.length
@@ -779,5 +779,5 @@ module.exports = {
   assign,
   claim,
   approve,
-  reject,
+  reject
 };

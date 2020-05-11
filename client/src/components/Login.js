@@ -9,7 +9,7 @@ import {
   TextField,
   Link,
   Grid,
-  Typography,
+  Typography
 } from "@material-ui/core";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -20,26 +20,26 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 const styles = (theme) => ({
   "@global": {
     body: {
-      backgroundColor: theme.palette.common.white,
-    },
+      backgroundColor: theme.palette.common.white
+    }
   },
   paper: {
     marginTop: theme.spacing(1),
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
+    alignItems: "center"
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.secondary.main
   },
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(1)
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
+    margin: theme.spacing(3, 0, 2)
+  }
 });
 
 const validationSchema = Yup.object().shape({
@@ -48,7 +48,7 @@ const validationSchema = Yup.object().shape({
     .required("Email is required"),
   password: Yup.string()
     .min(8, "Password must be 8 characters at minimum")
-    .required("Password is required"),
+    .required("Password is required")
 });
 
 const LoginForm = (props) => {
@@ -67,7 +67,7 @@ const LoginForm = (props) => {
         <Formik
           initialValues={{
             email: match.params.email || "",
-            password: "",
+            password: ""
           }}
           validationSchema={validationSchema}
           onSubmit={(values, formikBag) => {
@@ -80,7 +80,7 @@ const LoginForm = (props) => {
                 if (response.isSuccess) {
                   setUser(response.user);
                   setToast({
-                    message: "Login successful.",
+                    message: "Login successful."
                   });
                   if (response.user.isAdmin) {
                     history.push("/verificationAdmin");
@@ -98,13 +98,13 @@ const LoginForm = (props) => {
                       message: `Your email has not been confirmed. 
                       Please look through your email for a Registration 
                       Confirmation link and use it to confirm that you 
-                      own this email address.`,
+                      own this email address.`
                     });
                     formikBag.setSubmitting(false);
                   } catch (err) {
                     setToast({
                       message: `An internal error occurred in sending 
-                    an email to ${values.email}`,
+                    an email to ${values.email}`
                     });
                     formikBag.setSubmitting(false);
                   }
@@ -113,14 +113,14 @@ const LoginForm = (props) => {
                   setToast({
                     message: `The email ${values.email} does not correspond to an 
                     existing account. Please verify the email or register as a
-                    new account.`,
+                    new account.`
                   });
                   formikBag.setSubmitting(false);
                 } else {
                   // Presumably response.code === "AUTH_INVALID_PASSWORD"
                   setToast({
                     message: `The password is incorrect, please check it 
-                  and try again or use the Forgot Password feature.`,
+                  and try again or use the Forgot Password feature.`
                   });
                   formikBag.setSubmitting(false);
                 }
@@ -128,7 +128,7 @@ const LoginForm = (props) => {
                 return true;
               } catch (err) {
                 setToast({
-                  message: "Server error. Please contact support.",
+                  message: "Server error. Please contact support."
                 });
                 console.log(err);
                 formikBag.setSubmitting(false);
@@ -143,7 +143,7 @@ const LoginForm = (props) => {
             handleChange,
             handleBlur,
             handleSubmit,
-            isSubmitting,
+            isSubmitting
             /* and other goodies */
           }) => (
             <form className={classes.form} noValidate onSubmit={handleSubmit}>

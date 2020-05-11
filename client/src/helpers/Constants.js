@@ -4,5 +4,5 @@ export const MENU_ITEMS = [
   { text: "Donate", link: "/donate" },
   { text: "FAQs", link: "/faqs" },
   { text: "Resources", link: "/resources" },
-  { text: "About", link: "/about" },
+  { text: "About", link: "/about" }
 ];

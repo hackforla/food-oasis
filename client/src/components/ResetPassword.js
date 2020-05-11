@@ -12,33 +12,33 @@ import {
   TextField,
   Link,
   Grid,
-  Typography,
+  Typography
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
 const styles = (theme) => ({
   "@global": {
     body: {
-      backgroundColor: theme.palette.common.white,
-    },
+      backgroundColor: theme.palette.common.white
+    }
   },
   paper: {
     marginTop: theme.spacing(1),
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
+    alignItems: "center"
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.secondary.main
   },
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(1)
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
+    margin: theme.spacing(3, 0, 2)
+  }
 });
 
 const validationSchema = Yup.object().shape({
@@ -48,7 +48,7 @@ const validationSchema = Yup.object().shape({
     .required("Password is required"),
   passwordConfirm: Yup.string()
     .required("Confirm your password")
-    .oneOf([Yup.ref("password")], "Password does not match"),
+    .oneOf([Yup.ref("password")], "Password does not match")
 });
 
 const ResetPassword = (props) => {
@@ -68,7 +68,7 @@ const ResetPassword = (props) => {
           initialValues={{
             token: match.params.token,
             password: "",
-            passwordConfirm: "",
+            passwordConfirm: ""
           }}
           validationSchema={validationSchema}
           onSubmit={async (values, formikBag) => {
@@ -79,7 +79,7 @@ const ResetPassword = (props) => {
               );
               if (response.isSuccess) {
                 setToast({
-                  message: "Password has been reset. Please use it to login.",
+                  message: "Password has been reset. Please use it to login."
                 });
                 history.push(`/login/${response.email}`);
               } else if (
@@ -93,13 +93,13 @@ const ResetPassword = (props) => {
               } else {
                 // RESET_PASSWORD_FAILED  with unexpected error
                 setToast({
-                  message: `${response.message}`,
+                  message: `${response.message}`
                 });
                 formikBag.setSubmitting(false);
               }
             } catch (err) {
               setToast({
-                message: `Password reset failed. ${err.message}`,
+                message: `Password reset failed. ${err.message}`
               });
               console.log(err);
               formikBag.setSubmitting(false);
@@ -113,7 +113,7 @@ const ResetPassword = (props) => {
             handleChange,
             handleBlur,
             handleSubmit,
-            isSubmitting,
+            isSubmitting
             /* and other goodies */
           }) => (
             <form

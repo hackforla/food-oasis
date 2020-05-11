@@ -15,5 +15,5 @@ export const initialState = {
   selectedLongitude: -118.235036,
   selectedLocationName: "",
   selectedDistance: 10,
-  queryParametersLoaded: false,
+  queryParametersLoaded: false
 };

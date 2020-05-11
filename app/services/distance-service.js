@@ -13,5 +13,5 @@ const getDistances = (req) => {
 };
 
 module.exports = {
-  getDistances,
+  getDistances
 };

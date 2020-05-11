@@ -4,8 +4,8 @@ import { Edit } from "@material-ui/icons";
 
 const styles = {
   button: {
-    backgroundColor: "#FAEBD7",
-  },
+    backgroundColor: "#FAEBD7"
+  }
 };
 
 const EditButton = (props) => {

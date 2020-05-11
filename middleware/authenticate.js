@@ -7,7 +7,7 @@ passport.use(localStrategy());
 // This module hooks up passport to our authentication service
 const authenticate = passport.authenticate("local", {
   session: false,
-  failureFlash: true,
+  failureFlash: true
 });
 
 module.exports = { authenticate };

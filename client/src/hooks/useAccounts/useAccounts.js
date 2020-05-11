@@ -5,7 +5,7 @@ export const useAccounts = () => {
   const [state, setState] = useState({
     data: [],
     loading: false,
-    error: false,
+    error: false
   });
 
   const fetch = useCallback(() => {

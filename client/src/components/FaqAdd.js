@@ -33,7 +33,7 @@ const FaqAdd = () => {
             question: "",
             answer: "",
             language: language,
-            identifier: identifier,
+            identifier: identifier
           }}
           notAdded={true}
           key={language}

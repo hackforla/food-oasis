@@ -19,7 +19,7 @@ function OpenTimeForm(props) {
   const addHours = () => {
     let newHours = [
       ...hours,
-      { weekOfMonth: 0, dayOfWeek: "", open: "", close: "" },
+      { weekOfMonth: 0, dayOfWeek: "", open: "", close: "" }
     ];
     handleChange(newHours);
   };

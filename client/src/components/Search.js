@@ -13,10 +13,10 @@ const useStyles = makeStyles(() => ({
     overflowY: "auto",
     marginTop: 0,
     borderRadius: 4,
-    zIndex: 1,
+    zIndex: 1
   },
   container: {
-    width: "100%",
+    width: "100%"
   },
   address: {
     width: "31em",
@@ -24,19 +24,19 @@ const useStyles = makeStyles(() => ({
     borderRadius: "4px 0 0 4px",
     height: 41,
     "& .MuiOutlinedInput-root": {
-      borderRadius: "4px 0 0 4px",
+      borderRadius: "4px 0 0 4px"
     },
     "& .MuiOutlinedInput-input": {
-      padding: "11.5px 14px",
+      padding: "11.5px 14px"
     },
     "& .MuiInputLabel-outlined": {
-      transform: "translate(14px, 14px) scale(1)",
+      transform: "translate(14px, 14px) scale(1)"
     },
     "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
       borderColor: "#63A4E5",
-      borderRight: "none",
-    },
-  },
+      borderRight: "none"
+    }
+  }
 }));
 
 export default function Search(props) {
@@ -65,11 +65,11 @@ export default function Search(props) {
       const [long, lat] = result.center;
       const itemCoordinates = {
         latitude: lat,
-        longitude: long,
+        longitude: long
       };
       setOrigin({
         ...itemCoordinates,
-        locationName: result.place_name,
+        locationName: result.place_name
       });
     }
   };
@@ -89,9 +89,9 @@ export default function Search(props) {
         autoFocus
         InputProps={{
           classes: {
-            input: classes.input,
+            input: classes.input
           },
-          ...InputProps,
+          ...InputProps
         }}
       />
     );
@@ -123,7 +123,7 @@ export default function Search(props) {
       selectedItem,
       inputValue,
       mapboxResults,
-      getItemProps,
+      getItemProps
     } = params;
 
     if (!inputValue && userCoordinates && userCoordinates.latitude) {
@@ -147,11 +147,11 @@ export default function Search(props) {
           item,
           index,
           itemProps: getItemProps({
-            item: item.place_name,
+            item: item.place_name
           }),
           highlightedIndex,
           selectedItem,
-          inputValue,
+          inputValue
         });
       })
     );
@@ -172,7 +172,7 @@ export default function Search(props) {
           selectedItem,
           highlightedIndex,
           toggleMenu,
-          isOpen,
+          isOpen
         }) => (
           <div className={classes.container}>
             {renderInput({
@@ -183,9 +183,9 @@ export default function Search(props) {
                 ...getInputProps({
                   onClick: () => toggleMenu(),
                   onChange: handleInputChange,
-                  value: inputValue || selectedPlace,
-                }),
-              },
+                  value: inputValue || selectedPlace
+                })
+              }
             })}
 
             {isOpen && (
@@ -195,7 +195,7 @@ export default function Search(props) {
                   selectedItem,
                   inputValue,
                   mapboxResults,
-                  getItemProps,
+                  getItemProps
                 })}
               </Paper>
             )}
@@ -209,7 +209,7 @@ export default function Search(props) {
 Search.propTypes = {
   userCoordinates: PropTypes.shape({
     latitude: PropTypes.number,
-    longitude: PropTypes.number,
+    longitude: PropTypes.number
   }),
-  setOrigin: PropTypes.func,
+  setOrigin: PropTypes.func
 };

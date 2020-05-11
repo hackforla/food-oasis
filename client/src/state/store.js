@@ -5,7 +5,7 @@ const user = localStorage.getItem("user");
 const coordinates = localStorage.getItem("coordinates");
 const initialState = {
   user: JSON.parse(user),
-  coordinates: JSON.parse(coordinates),
+  coordinates: JSON.parse(coordinates)
 };
 const store = createContext(initialState);
 const { Provider } = store;
@@ -16,12 +16,12 @@ const StateProvider = ({ children }) => {
       case SET_USER:
         return {
           ...state,
-          user: { ...action.payload },
+          user: { ...action.payload }
         };
       case SET_COORDINATES:
         return {
           ...state,
-          coordinates: { ...action.payload },
+          coordinates: { ...action.payload }
         };
       default:
         throw new Error();

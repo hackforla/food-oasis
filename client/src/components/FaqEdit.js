@@ -15,8 +15,8 @@ const FaqEdit = ({ match, history }) => {
       question: "",
       answer: "",
       identifier: "",
-      language: "",
-    },
+      language: ""
+    }
   ]);
   const [needToAddFaqs, setNeedToAddFaqs] = useState([""]);
   const faqIdentifier = match.params.identifier;
@@ -44,12 +44,12 @@ const FaqEdit = ({ match, history }) => {
     async function fetchFaq() {
       try {
         const fetchedFaq = await faqService.getByIdentifier({
-          identifier: faqIdentifier,
+          identifier: faqIdentifier
         });
 
         let {
           addedLanguages,
-          needToAddLanguages,
+          needToAddLanguages
         } = checkHowManySavedLanguageTexts(fetchedFaq);
 
         setAddedFaq(addedLanguages);
@@ -75,7 +75,7 @@ const FaqEdit = ({ match, history }) => {
         await faqService.update({
           ...faq,
           identifier:
-            faqIdentifier.slice(0, faqIdentifier.indexOf(":") + 1) + identifier,
+            faqIdentifier.slice(0, faqIdentifier.indexOf(":") + 1) + identifier
         })
     );
     handleEditIdentifier();
@@ -120,7 +120,7 @@ const FaqEdit = ({ match, history }) => {
             question: "",
             answer: "",
             identifier: faqIdentifier,
-            language: language,
+            language: language
           }}
           notAdded={true}
           key={language}

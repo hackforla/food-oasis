@@ -12,39 +12,39 @@ import {
   TextField,
   Link,
   Grid,
-  Typography,
+  Typography
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
 const styles = (theme) => ({
   "@global": {
     body: {
-      backgroundColor: theme.palette.common.white,
-    },
+      backgroundColor: theme.palette.common.white
+    }
   },
   paper: {
     marginTop: theme.spacing(1),
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
+    alignItems: "center"
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.secondary.main
   },
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(1)
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
+    margin: theme.spacing(3, 0, 2)
+  }
 });
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
     .email("Invalid email address format")
-    .required("Email is required"),
+    .required("Email is required")
 });
 
 const ForgotPassword = (props) => {
@@ -62,7 +62,7 @@ const ForgotPassword = (props) => {
         </Typography>
         <Formik
           initialValues={{
-            email: match.params.email || "",
+            email: match.params.email || ""
           }}
           validationSchema={validationSchema}
           onSubmit={async (values, formikBag) => {
@@ -73,7 +73,7 @@ const ForgotPassword = (props) => {
               if (response.isSuccess) {
                 setToast({
                   message:
-                    "Please check your email for a 'Reset Password' link.",
+                    "Please check your email for a 'Reset Password' link."
                 });
                 history.push("/stakeholders");
               } else if (
@@ -83,7 +83,7 @@ const ForgotPassword = (props) => {
                   "Account not found. If you want to create a new account with this email, please register.";
                 console.log(msg);
                 setToast({
-                  message: msg,
+                  message: msg
                 });
                 formikBag.setSubmitting(false);
               } else if (response.code === "FORGOT_PASSWORD_EMAIL_FAILED") {
@@ -91,19 +91,19 @@ const ForgotPassword = (props) => {
                   "A problem occurred with sending an email to this address.";
                 console.log(msg);
                 setToast({
-                  message: msg,
+                  message: msg
                 });
                 formikBag.setSubmitting(false);
               } else {
                 console.log(response.message);
                 setToast({
-                  message: response.message,
+                  message: response.message
                 });
                 formikBag.setSubmitting(false);
               }
             } catch (err) {
               setToast({
-                message: `Server error. ${err.message}`,
+                message: `Server error. ${err.message}`
               });
               console.log(err);
               formikBag.setSubmitting(false);
@@ -117,7 +117,7 @@ const ForgotPassword = (props) => {
             handleChange,
             handleBlur,
             handleSubmit,
-            isSubmitting,
+            isSubmitting
             /* and other goodies */
           }) => (
             <form

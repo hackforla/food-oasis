@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
+    alignItems: "center"
   },
   stakeholderHolder: {
     width: "80%",
@@ -19,15 +19,15 @@ const useStyles = makeStyles((theme) => ({
     display: "inherit",
     justifyContent: "space-between",
     padding: "1em 0",
-    borderBottom: " .2em solid #f1f1f1",
+    borderBottom: " .2em solid #f1f1f1"
   },
   imgHolder: {
     display: "inherit",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
   },
   typeLogo: {
-    width: "72px",
+    width: "72px"
   },
   infoHolder: {
     fontSize: "1.1em",
@@ -35,20 +35,20 @@ const useStyles = makeStyles((theme) => ({
     width: "60%",
     display: "inherit",
     flexDirection: "column",
-    justifyContent: "space-between",
+    justifyContent: "space-between"
   },
   checkHolder: {
     width: "10%",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-between",
-  },
+    justifyContent: "space-between"
+  }
 }));
 
 const ResultsList = ({
   doSelectStakeholder,
   selectedStakeholder,
-  stakeholders,
+  stakeholders
 }) => {
   const classes = useStyles();
 
@@ -86,7 +86,7 @@ const ResultsList = ({
               <em
                 style={{
                   color:
-                    stakeholder.categories[0].id === 1 ? "#336699" : "#CC3333",
+                    stakeholder.categories[0].id === 1 ? "#336699" : "#CC3333"
                 }}
               >
                 {stakeholder.categories[0].name}
@@ -111,7 +111,7 @@ const ResultsList = ({
 
 ResultsList.propTypes = {
   selectedStakeholder: PropTypes.object,
-  stakeholders: PropTypes.arrayOf(PropTypes.object),
+  stakeholders: PropTypes.arrayOf(PropTypes.object)
 };
 
 export default ResultsList;

@@ -89,7 +89,7 @@ const selectAll = () => {
             populationServed,
             resourceCategories,
             generalResources,
-            additionalOfferings,
+            additionalOfferings
           };
 
           articles.push(article);
@@ -104,5 +104,5 @@ const selectAll = () => {
 };
 
 module.exports = {
-  selectAll,
+  selectAll
 };

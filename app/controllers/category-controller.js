@@ -62,5 +62,5 @@ module.exports = {
   getById,
   post,
   put,
-  remove,
+  remove
 };

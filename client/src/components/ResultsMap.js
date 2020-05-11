@@ -9,7 +9,7 @@ import {
   FOOD_PANTRY_CATEGORY_ID,
   MAPBOX_STYLE,
   MEAL_PROGRAM_CATEGORY_ID,
-  ORGANIZATION_COLORS,
+  ORGANIZATION_COLORS
 } from "../constants/map";
 
 const styles = {
@@ -17,16 +17,16 @@ const styles = {
     position: "absolute",
     top: 0,
     left: 0,
-    margin: 10,
+    margin: 10
   },
-  navigationControl: { position: "absolute", top: 0, right: 0, margin: 10 },
+  navigationControl: { position: "absolute", top: 0, right: 0, margin: 10 }
 };
 
 function Map({
   selectedLatitude,
   selectedLongitude,
   stakeholders,
-  categoryIds,
+  categoryIds
 }) {
   React.useEffect(() => {
     console.log("map", stakeholders);
@@ -41,7 +41,7 @@ function Map({
   const [viewport, setViewport] = React.useState({
     zoom: 10, // TODO: can we dynamically control zoom radius based on selectedDistance?
     latitude: selectedLatitude,
-    longitude: selectedLongitude,
+    longitude: selectedLongitude
   });
 
   const handleMarkerClick = (clickedStakeholder) => {
@@ -110,7 +110,7 @@ Map.propTypes = {
   stakeholders: PropTypes.array,
   categoryIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   selectedLatitude: PropTypes.number.isRequired,
-  selectedLongitude: PropTypes.number.isRequired,
+  selectedLongitude: PropTypes.number.isRequired
 };
 
 export default Map;

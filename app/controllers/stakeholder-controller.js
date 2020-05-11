@@ -129,5 +129,5 @@ module.exports = {
   assign,
   claim,
   approve,
-  reject,
+  reject
 };

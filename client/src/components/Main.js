@@ -2,7 +2,7 @@ import React from "react";
 import logo from "../images/fola.svg";
 const styles = {
   logo: {
-    height: "10vmin",
+    height: "10vmin"
   },
   main: {
     minHeight: "95vh",
@@ -11,20 +11,20 @@ const styles = {
     alignItems: "center",
     justifyContent: "center",
     fontSize: "calc(10px + 2vmin)",
-    textAlign: "center",
+    textAlign: "center"
   },
   title: {
-    fontSize: "2rem",
+    fontSize: "2rem"
   },
   container: {
     display: "flex",
     justifyContent: "center",
-    maxWidth: "300px",
+    maxWidth: "300px"
   },
   description: {
     width: "100%",
-    fontSize: "1.2rem",
-  },
+    fontSize: "1.2rem"
+  }
 };
 export default function Main() {
   return (

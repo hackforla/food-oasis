@@ -91,5 +91,5 @@ module.exports = {
   selectByIdentifier,
   insert,
   update,
-  remove,
+  remove
 };

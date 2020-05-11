@@ -12,11 +12,11 @@ const styles = {
   container: {
     display: "flex",
     flexDirection: "column",
-    padding: "1rem",
+    padding: "1rem"
   },
   header: {
-    display: "flex",
-  },
+    display: "flex"
+  }
 };
 
 function StakeholdersContainer(props) {
@@ -39,7 +39,7 @@ function StakeholdersContainer(props) {
     isSearchPanelOpen,
     isLoading,
     latitude,
-    longitude,
+    longitude
   } = state;
 
   return (
@@ -59,7 +59,7 @@ function StakeholdersContainer(props) {
           <StakeholderSearch
             key={JSON.stringify({
               userLatitude: userCoordinates.latitude,
-              categories,
+              categories
             })}
             latitude={latitude}
             longitude={longitude}
@@ -95,7 +95,7 @@ function StakeholdersContainer(props) {
               width: "100%",
               margin: "100px auto",
               display: "flex",
-              justifyContent: "space-around",
+              justifyContent: "space-around"
             }}
             aria-label="Loading spinner"
           >

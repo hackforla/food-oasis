@@ -10,20 +10,20 @@ const useStyles = makeStyles((theme) => ({
     display: "inherit",
     flexDirection: "inherit",
     justifyContent: "space-between",
-    padding: "1em 0",
+    padding: "1em 0"
   },
   topInfoHolder: {
     width: "100%",
     display: "inherit",
-    justifyContent: "inherit",
+    justifyContent: "inherit"
   },
   imgHolder: {
     display: "inherit",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
   },
   typeLogo: {
-    width: "72px",
+    width: "72px"
   },
   infoHolder: {
     fontSize: "1.1em",
@@ -31,31 +31,31 @@ const useStyles = makeStyles((theme) => ({
     width: "60%",
     display: "inherit",
     flexDirection: "column",
-    justifyContent: "space-between",
+    justifyContent: "space-between"
   },
   checkHolder: {
     width: "10%",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-between",
+    justifyContent: "space-between"
   },
   title: {
-    alignSelf: "flex-start",
+    alignSelf: "flex-start"
   },
   hoursContainer: {
     display: "inherit",
     flexDirection: "inherit",
-    fontSize: "1.2em",
+    fontSize: "1.2em"
   },
   singleHourContainer: {
     width: "100%",
     display: "inherit",
     justifyContent: "space-between",
-    margin: ".8em 0",
+    margin: ".8em 0"
   },
   phoneNum: {
-    fontSize: "14px",
-  },
+    fontSize: "14px"
+  }
 }));
 
 const SelectedStakeholderDisplay = (props) => {
@@ -94,7 +94,7 @@ const SelectedStakeholderDisplay = (props) => {
               color:
                 selectedStakeholder.categories[0].id === 1
                   ? "#336699"
-                  : "#CC3333",
+                  : "#CC3333"
             }}
           >
             {selectedStakeholder.categories[0].name}

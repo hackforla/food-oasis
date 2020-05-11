@@ -5,7 +5,7 @@ export const useCategories = () => {
   const [state, setState] = useState({
     data: [],
     loading: false,
-    error: false,
+    error: false
   });
 
   const fetch = useCallback(() => {

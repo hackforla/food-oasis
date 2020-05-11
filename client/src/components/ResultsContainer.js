@@ -11,29 +11,29 @@ const useStyles = makeStyles((theme) => ({
   filterButton: {
     margin: "0 .25rem",
     padding: "0 0.5rem",
-    fontSize: "12px",
+    fontSize: "12px"
   },
   div: {
     textAlign: "center",
     fontSize: "12px",
-    border: "1px solid blue",
+    border: "1px solid blue"
   },
   container: {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "column"
   },
   list: {
     textAlign: "center",
     fontSize: "12px",
     height: "46em",
-    overflow: "scroll",
+    overflow: "scroll"
   },
   map: {
     textAlign: "center",
     fontSize: "12px",
     maxWidth: "100%",
-    flexGrow: 1,
-  },
+    flexGrow: 1
+  }
 }));
 
 export default function ResultsContainer(props) {
@@ -60,7 +60,7 @@ export default function ResultsContainer(props) {
   const [radius, setRadius] = React.useState(5);
   const [origin, setOrigin] = React.useState({
     latitude: 34.07872,
-    longitude: -118.243328,
+    longitude: -118.243328
   });
   const [isVerifiedSelected, selectVerified] = React.useState(false);
   const [selectedStakeholder, doSelectStakeholder] = React.useState(null);
@@ -74,7 +74,7 @@ export default function ResultsContainer(props) {
     categoryIds,
     isVerifiedSelected,
     selectVerified,
-    userCoordinates,
+    userCoordinates
   };
 
   return (

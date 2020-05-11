@@ -15,7 +15,7 @@ import {
   FormControlLabel,
   Typography,
   RadioGroup,
-  Radio,
+  Radio
 } from "@material-ui/core";
 import { SearchButton } from "./Buttons";
 import SwitchViewsButton from "./SwitchViewsButton";
@@ -23,18 +23,18 @@ import LocationAutocomplete from "./LocationAutocomplete";
 
 const useStyles = makeStyles((theme) => ({
   card: {
-    margin: "0px",
+    margin: "0px"
   },
   chips: {
     display: "flex",
-    flexWrap: "wrap",
+    flexWrap: "wrap"
   },
   chip: {
-    margin: 2,
+    margin: 2
   },
   formLabel: {
-    margin: "1rem 0 .5rem",
-  },
+    margin: "1rem 0 .5rem"
+  }
 }));
 
 const closeTo = (lat1, lon1, lat2, lon2) => {

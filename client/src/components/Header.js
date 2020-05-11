@@ -10,42 +10,42 @@ import LogoutButton from "./Logout";
 Header.propTypes = {
   user: PropTypes.object,
   setUser: PropTypes.func,
-  setToast: PropTypes.func,
+  setToast: PropTypes.func
 };
 
 const useStyles = makeStyles({
   header: {
     backgroundColor: (props) => props.headerColor,
     marginBottom: (props) => props.headerMargin,
-    boxShadow: (props) => props.headerShadow,
+    boxShadow: (props) => props.headerShadow
   },
   content: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    width: "100%",
+    width: "100%"
   },
   homeLink: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   logo: {
     width: "3.5rem",
     height: "2.5rem",
-    margin: ".5rem .75rem",
+    margin: ".5rem .75rem"
   },
   userLoggedIn: {
     display: "flex",
     justifyContent: "space-between",
     flexGrow: "1",
-    minHewight: "3rem",
+    minHewight: "3rem"
   },
   username: {
-    color: "black",
+    color: "black"
   },
   tagline: {
     color: "#336699",
-    fontStyle: "italic",
-  },
+    fontStyle: "italic"
+  }
 });
 
 export default function Header(props) {
@@ -55,12 +55,12 @@ export default function Header(props) {
   const homePageStyles = {
     headerColor: "transparent",
     headerMargin: "-65px",
-    headerShadow: "none",
+    headerShadow: "none"
   };
 
   const defaultStyles = {
     headerColor: "#F1F1F1",
-    headerMargin: "0",
+    headerMargin: "0"
   };
 
   const styles = isHomePage ? homePageStyles : defaultStyles;

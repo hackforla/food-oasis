@@ -16,5 +16,5 @@ const getLaplFoodResources = async (req, res) => {
 };
 
 module.exports = {
-  getLaplFoodResources,
+  getLaplFoodResources
 };

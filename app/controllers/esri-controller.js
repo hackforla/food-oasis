@@ -11,5 +11,5 @@ const geocode = async (req, res) => {
 };
 
 module.exports = {
-  geocode,
+  geocode
 };

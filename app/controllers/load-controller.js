@@ -72,7 +72,7 @@ const get211 = async (req, res) => {
         site_name,
         site_phones,
         site_services,
-        site_url,
+        site_url
       } = row;
       let rowJson = {
         agency_description,
@@ -92,7 +92,7 @@ const get211 = async (req, res) => {
         site_name,
         site_phones: parseJSONArray(site_phones),
         site_services: parseJSONArray(site_services),
-        site_url,
+        site_url
       };
       resJSON.push(rowJson);
     });
@@ -102,5 +102,5 @@ const get211 = async (req, res) => {
 
 module.exports = {
   getLaplFoodResources,
-  get211,
+  get211
 };

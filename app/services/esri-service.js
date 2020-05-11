@@ -50,5 +50,5 @@ const geocode = async (address) => {
 };
 
 module.exports = {
-  geocode,
+  geocode
 };

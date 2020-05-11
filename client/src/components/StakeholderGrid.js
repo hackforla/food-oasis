@@ -28,7 +28,7 @@ const dateFormatter = ({ value }) => {
 const defaultColumnProperties = {
   resizable: true,
   sortable: true,
-  width: 150,
+  width: 150
 };
 
 const sortRows = (initialRows, sortColumn, sortDirection) => (rows) => {
@@ -49,7 +49,7 @@ const columns = [
     name: "Name",
     formatter: linkFormatter,
     width: 240,
-    frozen: true,
+    frozen: true
   },
   { key: "inactive", name: "Inactive", formatter: booleanFormatter, width: 80 },
 
@@ -58,41 +58,41 @@ const columns = [
     key: "assignedDate",
     name: "Assigned",
     formatter: dateFormatter,
-    dataType: "datetime",
+    dataType: "datetime"
   },
   { key: "submittedUser", name: "Submitted By" },
   {
     key: "submittedDate",
     name: "Submitted",
     formatter: dateFormatter,
-    dataType: "datetime",
+    dataType: "datetime"
   },
   { key: "reviewedUser", name: "Reviewed By" },
   {
     key: "rejectedDate",
     name: "Rejected",
     formatter: dateFormatter,
-    dataType: "datetime",
+    dataType: "datetime"
   },
   {
     key: "approvedDate",
     name: "Approved",
     formatter: dateFormatter,
-    dataType: "datetime",
+    dataType: "datetime"
   },
   { key: "createdUser", name: "Entered By" },
   {
     key: "createdDate",
     name: "Entered",
     formatter: dateFormatter,
-    dataType: "datetime",
+    dataType: "datetime"
   },
   { key: "modifiedUser", name: "Modified By" },
   {
     key: "modifiedDate",
     name: "Modified",
     formatter: dateFormatter,
-    dataType: "datetime",
+    dataType: "datetime"
   },
   { key: "address1", name: "Street" },
   { key: "city", name: "City" },
@@ -103,8 +103,8 @@ const columns = [
     key: "distance",
     name: "Distance (mi)",
     formatter: distanceFormatter,
-    width: 95,
-  },
+    width: 95
+  }
 ].map((c) => ({ ...defaultColumnProperties, ...c }));
 
 const StakeholderGrid = (props) => {
@@ -136,7 +136,7 @@ const StakeholderGrid = (props) => {
       style={{
         flexGrow: 1,
         display: "flex",
-        flexDirection: "column",
+        flexDirection: "column"
       }}
     >
       {stakeholders && stakeholders.length > 0 ? (
@@ -157,8 +157,8 @@ const StakeholderGrid = (props) => {
             onRowsSelected: onRowsSelected,
             onRowsDeselected: onRowsDeselected,
             selectBy: {
-              indexes: selectedIndexes,
-            },
+              indexes: selectedIndexes
+            }
           }}
         />
       ) : (

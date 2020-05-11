@@ -4,7 +4,7 @@ import {
   FormControlLabel,
   FormLabel,
   Radio,
-  RadioGroup,
+  RadioGroup
 } from "@material-ui/core";
 
 const RadioTrueFalseEither = (props) => {

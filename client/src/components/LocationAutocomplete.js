@@ -48,7 +48,7 @@ const LocationAutocomplete = (props) => {
               border: "1px solid black",
               backgroundColor: "#EEE",
               margin: "0.1em",
-              padding: "0.5em",
+              padding: "0.5em"
             }}
             key={index}
             onClick={() => selectLocation(result)}

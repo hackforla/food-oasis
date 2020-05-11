@@ -27,7 +27,7 @@ import {
   Tabs,
   TextField,
   Tooltip,
-  Typography,
+  Typography
 } from "@material-ui/core";
 import * as stakeholderService from "../services/stakeholder-service";
 import * as categoryService from "../services/category-service";
@@ -38,68 +38,68 @@ import { TabPanel, a11yProps } from "./TabPanel";
 import { PlainButton, SearchButton, VerifyButton } from "./Buttons";
 import {
   VERIFICATION_STATUS,
-  VERIFICATION_STATUS_NAMES,
+  VERIFICATION_STATUS_NAMES
 } from "../constants/stakeholder";
 
 import moment from "moment";
 
 const BigTooltip = withStyles((theme) => ({
   tooltip: {
-    fontSize: 16,
-  },
+    fontSize: 16
+  }
 }))(Tooltip);
 
 const styles = (theme) => ({
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(1)
   },
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 120,
+    minWidth: 120
   },
   tabPanel: {
     borderLeft: "1px solid lightgray",
     borderRight: "1px solid lightgray",
-    borderBottom: "1px solid lightgray",
+    borderBottom: "1px solid lightgray"
   },
   workflowRow: {
     display: "flex",
-    flexDirection: "row",
+    flexDirection: "row"
   },
   workflowColumn1: {
-    flexBasis: "20%",
+    flexBasis: "20%"
   },
   workflowColumn2: {
-    flexBasis: "20%",
+    flexBasis: "20%"
   },
   workflowColumn3: {
-    flexBasis: "20%",
+    flexBasis: "20%"
   },
   workflowColumn4: {
-    flexBasis: "40%",
+    flexBasis: "40%"
   },
   workflowText: {
     fontSize: "1.2em",
     marginTop: "0.4em",
-    marginBottom: "0.2em",
+    marginBottom: "0.2em"
   },
   confirmableGroupWrapper: {
-    display: "flex",
+    display: "flex"
   },
   confirmableFieldWrapper: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   confirmableField: {
-    flexGow: 1,
+    flexGow: 1
   },
   confirmCheckboxWrapper: {
     flexGrow: 0,
-    paddingTop: "0.75em",
+    paddingTop: "0.75em"
   },
   confirmCheckbox: {
-    marginLeft: "0.2em",
-  },
+    marginLeft: "0.2em"
+  }
 });
 
 const DATE_FORMAT = "MM/DD/YY h:mm a";
@@ -109,9 +109,9 @@ const MenuProps = {
   PaperProps: {
     style: {
       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
+      width: 250
+    }
+  }
 };
 
 const validationSchema = Yup.object().shape({
@@ -126,7 +126,7 @@ const validationSchema = Yup.object().shape({
   selectedCategoryIds: Yup.array().min(
     1,
     "You must select at least one category"
-  ),
+  )
 });
 
 const StakeholderEdit = (props) => {
@@ -196,7 +196,7 @@ const StakeholderEdit = (props) => {
     confirmedEmail: false,
     confirmedPhone: false,
     confirmedHours: false,
-    verificationStatusId: VERIFICATION_STATUS.NEEDS_VERIFICATION,
+    verificationStatusId: VERIFICATION_STATUS.NEEDS_VERIFICATION
   });
 
   useEffect(() => {
@@ -363,14 +363,14 @@ const StakeholderEdit = (props) => {
                 .put({ ...values, loginId: user.id })
                 .then((response) => {
                   setToast({
-                    message: "Update successful.",
+                    message: "Update successful."
                   });
                   setOriginalData(values);
                   // props.history.goBack();
                 })
                 .catch((err) => {
                   setToast({
-                    message: "Update failed.",
+                    message: "Update failed."
                   });
                   console.log(err);
                   setSubmitting(false);
@@ -380,7 +380,7 @@ const StakeholderEdit = (props) => {
                 .post({ ...values, loginId: user.id })
                 .then((response) => {
                   setToast({
-                    message: "Insert successful.",
+                    message: "Insert successful."
                   });
                   setFieldValue("id", response.id);
                   setOriginalData(values);
@@ -388,7 +388,7 @@ const StakeholderEdit = (props) => {
                 })
                 .catch((err) => {
                   setToast({
-                    message: "Insert failed.",
+                    message: "Insert failed."
                   });
                   console.log(err);
                   setSubmitting(false);
@@ -404,7 +404,7 @@ const StakeholderEdit = (props) => {
             handleBlur,
             handleSubmit,
             isSubmitting,
-            setFieldValue,
+            setFieldValue
           }) => (
             <form className={classes.form} noValidate onSubmit={handleSubmit}>
               <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -867,7 +867,7 @@ const StakeholderEdit = (props) => {
                           className={classes.confirmableGroupWrapper}
                           style={{
                             display: "flex",
-                            justifyContent: "space-between",
+                            justifyContent: "space-between"
                           }}
                         >
                           <BigTooltip title="Click to get latitude / longitude for address">
@@ -917,7 +917,7 @@ const StakeholderEdit = (props) => {
                                 border: "1px solid black",
                                 backgroundColor: "#EEE",
                                 margin: "0.1em",
-                                padding: "0.5em",
+                                padding: "0.5em"
                               }}
                               key={index}
                             >
@@ -964,7 +964,7 @@ const StakeholderEdit = (props) => {
                       style={{
                         display: "flex",
                         flexDirection: "row",
-                        justifyContent: "flex-end",
+                        justifyContent: "flex-end"
                       }}
                     >
                       <FormControlLabel
@@ -1580,7 +1580,7 @@ const StakeholderEdit = (props) => {
                       borderRadius: "4px",
                       padding: "0.5em",
                       display: "flex",
-                      flexDirection: "column",
+                      flexDirection: "column"
                     }}
                   >
                     <div className={classes.workflowRow}>
@@ -1659,7 +1659,7 @@ const StakeholderEdit = (props) => {
                                 style={{
                                   display: "flex",
                                   flexDirection: "row",
-                                  justifyContent: "flex-end",
+                                  justifyContent: "flex-end"
                                 }}
                               >
                                 <AccountAutocomplete
@@ -1760,7 +1760,7 @@ const StakeholderEdit = (props) => {
                                 style={{
                                   display: "flex",
                                   flexDirection: "row",
-                                  justifyContent: "flex-end",
+                                  justifyContent: "flex-end"
                                 }}
                               >
                                 <AccountAutocomplete
@@ -1846,7 +1846,7 @@ const StakeholderEdit = (props) => {
                     display: "flex",
                     flexDirection: "row",
                     justifyContent: "flex-end",
-                    alignContent: "center",
+                    alignContent: "center"
                   }}
                 >
                   {user && (user.isAdmin || user.isCoordinator) ? (
@@ -2013,7 +2013,7 @@ StakeholderEdit.propTypes = {
   setToast: PropTypes.object,
   match: PropTypes.object,
   user: PropTypes.object,
-  history: PropTypes.object,
+  history: PropTypes.object
 };
 
 export default withStyles(styles)(withRouter(StakeholderEdit));

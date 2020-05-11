@@ -62,5 +62,5 @@ module.exports = {
   getById,
   createResource,
   updateResource,
-  deleteResource,
+  deleteResource
 };

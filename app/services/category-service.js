@@ -51,5 +51,5 @@ module.exports = {
   selectById,
   insert,
   update,
-  remove,
+  remove
 };

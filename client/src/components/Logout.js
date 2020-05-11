@@ -5,7 +5,7 @@ import { useHistory, withRouter } from "react-router-dom";
 
 LogoutButton.propTypes = {
   setUser: PropTypes.func,
-  setToast: PropTypes.func,
+  setToast: PropTypes.func
 };
 
 export const logout = (setUser, setToast, history) => {
@@ -18,7 +18,7 @@ export const logout = (setUser, setToast, history) => {
   document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
   setUser(null);
   setToast({
-    message: "Logged out successfully.",
+    message: "Logged out successfully."
   });
   history.push("/");
 };

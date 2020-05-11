@@ -21,16 +21,16 @@ i18n
   .init({
     resources: {
       en: common_en,
-      es: common_es,
+      es: common_es
     },
     lng: "en",
     fallbackLng: ["en", "es"],
     debug: true,
     react: {
-      useSuspense: false,
+      useSuspense: false
       // wait: true
     },
-    ns: ["news", "about", "donate"],
+    ns: ["news", "about", "donate"]
   });
 
 export default i18n;

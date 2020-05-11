@@ -11,7 +11,7 @@ import {
   Cancel,
   Search,
   Details,
-  Remove,
+  Remove
 } from "@material-ui/icons";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
@@ -19,8 +19,8 @@ import ArrowDownward from "@material-ui/icons/ArrowDownward";
 const useStyles = makeStyles((theme) => ({
   deleteButton: {
     backgroundColor: theme.palette.error.main,
-    color: theme.palette.primary.main,
-  },
+    color: theme.palette.primary.main
+  }
 }));
 
 const PlainButton = (props) => {
@@ -207,5 +207,5 @@ export {
   SearchButton,
   VerifyButton,
   MoveUpButton,
-  MoveDownButton,
+  MoveDownButton
 };

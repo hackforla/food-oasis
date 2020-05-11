@@ -22,7 +22,7 @@ const selectAll = () => {
       populationServed: row.population_served,
       resourceCategories: row.resource_categories,
       generalResources: row.general_resources,
-      additionalOfferings: row.additional_offerings,
+      additionalOfferings: row.additional_offerings
     }));
   });
 };
@@ -37,7 +37,7 @@ const insert = (model) => {
     generalResources,
     additionalOfferings,
     lat,
-    lon,
+    lon
   } = model;
 
   const sql = `insert into load_lapl_food_resource 
@@ -67,5 +67,5 @@ const removeAll = () => {
 module.exports = {
   selectAll,
   insert,
-  removeAll,
+  removeAll
 };

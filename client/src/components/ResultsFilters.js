@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect } from 'react'
-import Search from '../components/Search'
-import PropTypes from 'prop-types'
-import { makeStyles } from '@material-ui/core/styles'
+import React, { useCallback, useEffect } from "react";
+import Search from "../components/Search";
+import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/core/styles";
 
 import {
   Grid,
@@ -115,43 +115,45 @@ const ResultsFilters = ({
   const isMealsSelected = categoryIds.indexOf(MEAL_PROGRAM_CATEGORY_ID) >= 0;
   const isPantrySelected = categoryIds.indexOf(FOOD_PANTRY_CATEGORY_ID) >= 0;
 
-  const toggleMeal = useCallback(() => {
+  const doHandleSearch = useCallback(
+    (e) => {
+      if (e) {
+        e.preventDefault();
+      }
 
-    toggleCategory(MEAL_PROGRAM_CATEGORY_ID)
-    doHandleSearch()
-  }, [toggleCategory])
+      search({
+        name: "",
+        latitude: origin.latitude,
+        longitude: origin.longitude,
+        radius,
+        categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
+        isInactive: "false",
+        isAssigned: "either",
+        isApproved: isVerifiedSelected ? "true" : "either",
+        isSubmitted: "either",
+        isRejected: "either",
+        isClaimed: "either",
+        assignedLoginId: "",
+        claimedLoginId: "",
+      });
+    },
+    [search, origin, categoryIds, isVerifiedSelected, radius]
+  );
+
+  const toggleMeal = useCallback(() => {
+    toggleCategory(MEAL_PROGRAM_CATEGORY_ID);
+    doHandleSearch();
+  }, [toggleCategory, doHandleSearch]);
 
   const togglePantry = useCallback(() => {
-    toggleCategory(FOOD_PANTRY_CATEGORY_ID)
-    doHandleSearch()
-  }, [toggleCategory])
-
-  const doHandleSearch = (e) => {
-    if (e) { e.preventDefault() }
-
-    search({
-      name: '',
-      latitude: origin.latitude,
-      longitude: origin.longitude,
-      radius,
-      categoryIds: categoryIds.length
-        ? categoryIds
-        : DEFAULT_CATEGORIES,
-      isInactive: 'no',
-      isAssigned: 'either',
-      isApproved: isVerifiedSelected ? 'true' : 'either',
-      isSubmitted: 'either',
-      isRejected: 'either',
-      isClaimed: 'either',
-      assignedLoginId: '',
-      claimedLoginId: '',
-    })
-  }
+    toggleCategory(FOOD_PANTRY_CATEGORY_ID);
+    doHandleSearch();
+  }, [toggleCategory, doHandleSearch]);
 
   //loading search
   useEffect(() => {
-    doHandleSearch()
-  }, [])
+    doHandleSearch();
+  }, [doHandleSearch]);
 
   return (
     <Grid container wrap="wrap-reverse" className={classes.controlPanel}>
@@ -171,8 +173,8 @@ const ResultsFilters = ({
               disableUnderline
               value={radius}
               onChange={(e) => {
-                setRadius(e.target.value)
-                doHandleSearch()
+                setRadius(e.target.value);
+                doHandleSearch();
               }}
               inputProps={{
                 name: "select-distance",
@@ -227,8 +229,8 @@ const ResultsFilters = ({
               color: isVerifiedSelected ? "#fff" : "#000",
             }}
             onClick={() => {
-              selectVerified(!isVerifiedSelected)
-              doHandleSearch()
+              selectVerified(!isVerifiedSelected);
+              doHandleSearch();
             }}
           >
             Verified Data
@@ -236,7 +238,11 @@ const ResultsFilters = ({
         </Grid>
       </Grid>
       <Box className={classes.inputContainer}>
-        <form noValidate onSubmit={(e) => doHandleSearch(e)} style={{ all: "inherit" }}>
+        <form
+          noValidate
+          onSubmit={(e) => doHandleSearch(e)}
+          style={{ all: "inherit" }}
+        >
           <Search userCoordinates={userCoordinates} setOrigin={setOrigin} />
           <Button
             type="submit"
@@ -250,9 +256,9 @@ const ResultsFilters = ({
           />
         </form>
       </Box>
-    </Grid >
-  )
-}
+    </Grid>
+  );
+};
 
 ResultsFilters.propTypes = {
   // distance: PropTypes.number,

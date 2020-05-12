@@ -151,11 +151,11 @@ const ResultsFilters = ({
   //loading search
   useEffect(() => {
     doHandleSearch();
-  }, [doHandleSearch]);
+  }, []);
 
   useEffect(() => {
     doHandleSearch();
-  }, [radius, categoryIds, isVerifiedSelected, toggleCategory, doHandleSearch]);
+  }, [radius, categoryIds, isVerifiedSelected, toggleCategory]);
 
   return (
     <Grid container wrap="wrap-reverse" className={classes.controlPanel}>

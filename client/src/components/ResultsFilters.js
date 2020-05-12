@@ -99,6 +99,7 @@ const useStyles = makeStyles((theme) => ({
 const distanceInfo = [1, 2, 3, 5, 10, 20, 50];
 
 const ResultsFilters = ({
+  data,
   origin,
   setOrigin,
   radius,
@@ -120,7 +121,6 @@ const ResultsFilters = ({
       if (e) {
         e.preventDefault();
       }
-
       search({
         name: "",
         latitude: origin.latitude,
@@ -142,18 +142,20 @@ const ResultsFilters = ({
 
   const toggleMeal = useCallback(() => {
     toggleCategory(MEAL_PROGRAM_CATEGORY_ID);
-    doHandleSearch();
-  }, [toggleCategory, doHandleSearch]);
+  }, [toggleCategory]);
 
   const togglePantry = useCallback(() => {
     toggleCategory(FOOD_PANTRY_CATEGORY_ID);
-    doHandleSearch();
-  }, [toggleCategory, doHandleSearch]);
+  }, [toggleCategory]);
 
   //loading search
   useEffect(() => {
     doHandleSearch();
-  }, [doHandleSearch]);
+  }, []);
+
+  useEffect(() => {
+    doHandleSearch()
+  }, [radius, categoryIds, isVerifiedSelected, toggleCategory])
 
   return (
     <Grid container wrap="wrap-reverse" className={classes.controlPanel}>
@@ -172,10 +174,7 @@ const ResultsFilters = ({
               name="select-distance"
               disableUnderline
               value={radius}
-              onChange={(e) => {
-                setRadius(e.target.value);
-                doHandleSearch();
-              }}
+              onChange={(e) => (setRadius(e.target.value))}
               inputProps={{
                 name: "select-distance",
                 id: "select-distance",
@@ -230,7 +229,6 @@ const ResultsFilters = ({
             }}
             onClick={() => {
               selectVerified(!isVerifiedSelected);
-              doHandleSearch();
             }}
           >
             Verified Data

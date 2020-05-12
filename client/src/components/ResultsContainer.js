@@ -46,13 +46,13 @@ export default function ResultsContainer(props) {
     latitude: userSearch
       ? userSearch.latitude
       : userCoordinates
-      ? userCoordinates.latitude
-      : 34.07872,
+        ? userCoordinates.latitude
+        : 34.07872,
     longitude: userSearch
       ? userSearch.longitude
       : userCoordinates
-      ? userCoordinates.longitude
-      : -118.243328,
+        ? userCoordinates.longitude
+        : -118.243328,
   };
 
   const [radius, setRadius] = React.useState(5);
@@ -75,7 +75,7 @@ export default function ResultsContainer(props) {
 
   return (
     <div className={classes.container}>
-      <ResultsFilters {...topLevelProps} search={search} />
+      <ResultsFilters {...topLevelProps} data={data} search={search} />
       <Grid container wrap="wrap-reverse">
         <Grid item xs={12} md={4} className={classes.list}>
           <ResultsList

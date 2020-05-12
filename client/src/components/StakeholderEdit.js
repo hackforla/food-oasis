@@ -1715,7 +1715,7 @@ const StakeholderEdit = (props) => {
                     <div className={classes.workflowRow}>
                       <div className={classes.workflowColumn1}>
                         <Typography className={classes.workflowText}>
-                          "Approved:"
+                          Approved:
                         </Typography>
                       </div>
                       <div className={classes.workflowColumn2}>
@@ -1866,6 +1866,7 @@ const StakeholderEdit = (props) => {
                           />
                         </div>
                       </BigTooltip>
+
                       <BigTooltip title="Mark for re-verification">
                         <div
                           style={{
@@ -1884,6 +1885,9 @@ const StakeholderEdit = (props) => {
                               setFieldValue("approvedDate", "");
                               // If it is marked as assigned, it goes to assigned
                               // state, otherwise to Needs Verification State
+                              // TODO: Really need to pop up a dialog and prompt the
+                              // user to determine if they want to make a review comment
+                              // and/or assign or un-assign to user.
                               if (values.assignedDate) {
                                 setFieldValue(
                                   "verificationStatusId",
@@ -1929,6 +1933,9 @@ const StakeholderEdit = (props) => {
                               setFieldValue("reviewedLoginId", user.id);
                               // If it is marked as assigned, it goes to assigned
                               // state, otherwise to Needs Verification State
+                              // TODO: Really need to pop up a dialog and prompt the
+                              // user to determine if they want to make a review comment
+                              // and/or assign or un-assign to user.
                               if (values.assignedDate) {
                                 setFieldValue(
                                   "verificationStatusId",

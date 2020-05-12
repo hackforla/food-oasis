@@ -34,9 +34,7 @@ function AssignDialog(props) {
       open={open}
       {...other}
     >
-      <DialogTitle id="confirmation-dialog-title">
-        Assign Selected Organizations to:
-      </DialogTitle>
+      <DialogTitle id="confirmation-dialog-title">Assign to:</DialogTitle>
       <DialogContent dividers>
         <AccountAutocomplete
           name="assignedLoginId"

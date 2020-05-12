@@ -1880,8 +1880,8 @@ const StakeholderEdit = (props) => {
                           <PlainButton
                             type="button"
                             onClick={() => {
-                              setFieldValue("approvedLoginId", "");
-                              setFieldValue("approvedUser", "");
+                              setFieldValue("reviewedLoginId", "");
+                              setFieldValue("reviewedUser", "");
                               setFieldValue("approvedDate", "");
                               // If it is marked as assigned, it goes to assigned
                               // state, otherwise to Needs Verification State

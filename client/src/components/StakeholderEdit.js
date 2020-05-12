@@ -1882,10 +1882,19 @@ const StakeholderEdit = (props) => {
                               setFieldValue("approvedLoginId", "");
                               setFieldValue("approvedUser", "");
                               setFieldValue("approvedDate", "");
-                              setFieldValue(
-                                "verificationStatusId",
-                                VERIFICATION_STATUS.NEEDS_VERIFICATION
-                              );
+                              // If it is marked as assigned, it goes to assigned
+                              // state, otherwise to Needs Verification State
+                              if (values.assignedDate) {
+                                setFieldValue(
+                                  "verificationStatusId",
+                                  VERIFICATION_STATUS.ASSIGNED
+                                );
+                              } else {
+                                setFieldValue(
+                                  "verificationStatusId",
+                                  VERIFICATION_STATUS.NEEDS_VERIFICATION
+                                );
+                              }
                               handleSubmit();
                             }}
                             label="Needs Verification"

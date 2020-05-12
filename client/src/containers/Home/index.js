@@ -118,7 +118,11 @@ const Home = (props) => {
           <img src={logo} alt="logo" className={classes.logo} />
         </Box>
         <Box className={classes.formContainer}>
-          <form className={classes.form} noValidate onSubmit={() => props.history.push('/organizations')}>
+          <form
+            className={classes.form}
+            noValidate
+            onSubmit={() => props.history.push("/organizations")}
+          >
             <Box className={classes.inputContainer}>
               <Search {...props} setOrigin={setOrigin} />
               <Button
@@ -129,7 +133,7 @@ const Home = (props) => {
                 startIcon={
                   <SearchIcon fontSize="large" className={classes.searchIcon} />
                 }
-                onClick={() => props.history.push('/organizations')}
+                onClick={() => props.history.push("/organizations")}
               />
             </Box>
             <Typography className={classes.label}>

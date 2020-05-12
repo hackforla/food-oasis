@@ -30,7 +30,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import * as stakeholderService from "../services/stakeholder-service";
-import * as categoryService from "../services/category-service";
+import { useCategories } from "../hooks/useCategories/useCategories";
 import * as esriService from "../services/esri_service";
 import OpenTimeForm from "./OpenTimeForm";
 import { TabPanel, a11yProps } from "./TabPanel";
@@ -133,7 +133,6 @@ const StakeholderEdit = (props) => {
   const { classes, setToast, match, user } = props;
   const editId = match.params.id;
   const [tabPage, setTabPage] = useState(0);
-  const [categories, setCategories] = useState([]);
   const [geocodeResults, setGeocodeResults] = useState([]);
   const [originalData, setOriginalData] = useState({
     id: 0,
@@ -199,15 +198,11 @@ const StakeholderEdit = (props) => {
     verificationStatusId: VERIFICATION_STATUS.NEEDS_VERIFICATION,
   });
 
+  const { data: categories } = useCategories();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const categories = await categoryService.getAll();
-        const activeCategories = categories.filter(
-          (category) => !category.inactive
-        );
-        setCategories(activeCategories);
-
         if (editId) {
           const stakeholder = await stakeholderService.getById(editId);
           // For editing purposes, it is better to convert the
@@ -588,18 +583,20 @@ const StakeholderEdit = (props) => {
                           }}
                           MenuProps={MenuProps}
                         >
-                          {categories.map((category) => (
-                            <MenuItem key={category.id} value={category.id}>
-                              <Checkbox
-                                checked={
-                                  values.selectedCategoryIds.indexOf(
-                                    category.id
-                                  ) > -1
-                                }
-                              />
-                              <ListItemText primary={category.name} />
-                            </MenuItem>
-                          ))}
+                          {!categories || categories.length === 0
+                            ? null
+                            : categories.map((category) => (
+                                <MenuItem key={category.id} value={category.id}>
+                                  <Checkbox
+                                    checked={
+                                      values.selectedCategoryIds.indexOf(
+                                        category.id
+                                      ) > -1
+                                    }
+                                  />
+                                  <ListItemText primary={category.name} />
+                                </MenuItem>
+                              ))}
                         </Select>
                         <FormHelperText>
                           {touched.selectedCategoryIds
@@ -1846,37 +1843,56 @@ const StakeholderEdit = (props) => {
                     display: "flex",
                     flexDirection: "row",
                     justifyContent: "flex-end",
-                    alignContent: "center",
                   }}
                 >
                   {user && (user.isAdmin || user.isCoordinator) ? (
                     <>
-                      <BigTooltip title="Save edits, but do not change the verification status">
-                        <PlainButton
-                          type="submit"
-                          label="Save Progress"
-                          className={classes.submit}
-                          disabled={isSubmitting || isUnchanged(values)}
-                          style={{ margin: "auto 0.5em" }}
-                        />
-                      </BigTooltip>
-                      <BigTooltip title="Change to Needs Verification">
-                        <PlainButton
-                          type="button"
-                          onClick={() => {
-                            setFieldValue("approvedLoginId", "");
-                            setFieldValue("approvedUser", "");
-                            setFieldValue("approvedDate", "");
-                            setFieldValue(
-                              "verificationStatusId",
-                              VERIFICATION_STATUS.NEEDS_VERIFICATION
-                            );
-                            handleSubmit();
+                      <BigTooltip title="Save updated information, but do not change the verification status">
+                        <div
+                          style={{
+                            margin: 0,
+                            paddingLeft: "0.2em",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
                           }}
-                          label="Needs Verification"
-                          disabled={isSubmitting}
-                          style={{ margin: "auto 0.5em" }}
-                        />
+                        >
+                          <PlainButton
+                            type="submit"
+                            label="Save Progress"
+                            className={classes.submit}
+                            disabled={isSubmitting || isUnchanged(values)}
+                            style={{ margin: "auto 0.5em" }}
+                          />
+                        </div>
+                      </BigTooltip>
+                      <BigTooltip title="Mark for re-verification">
+                        <div
+                          style={{
+                            margin: 0,
+                            paddingLeft: "0.2em",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <PlainButton
+                            type="button"
+                            onClick={() => {
+                              setFieldValue("approvedLoginId", "");
+                              setFieldValue("approvedUser", "");
+                              setFieldValue("approvedDate", "");
+                              setFieldValue(
+                                "verificationStatusId",
+                                VERIFICATION_STATUS.NEEDS_VERIFICATION
+                              );
+                              handleSubmit();
+                            }}
+                            label="Needs Verification"
+                            disabled={isSubmitting || !!values.verificationDate}
+                            style={{ margin: "auto 0.5em" }}
+                          />
+                        </div>
                       </BigTooltip>
                       <BigTooltip
                         title={
@@ -1884,118 +1900,174 @@ const StakeholderEdit = (props) => {
                           "or Needs Verification (depending on whether you change the assignee)"
                         }
                       >
-                        <PlainButton
-                          type="button"
-                          onClick={() => {
-                            setFieldValue("rejectedDate", moment());
-                            setFieldValue(
-                              "reviewedUser",
-                              user.firstName + " " + user.lastName
-                            );
-                            setFieldValue("reviewedLoginId", user.id);
-                            // If it is marked as assigned, it goes to assigned
-                            // state, otherwise to Needs Verification State
-                            if (values.assignedDate) {
+                        <div
+                          style={{
+                            margin: 0,
+                            paddingLeft: "0.2em",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <PlainButton
+                            type="button"
+                            onClick={() => {
+                              setFieldValue("rejectedDate", moment());
                               setFieldValue(
-                                "verificationStatusId",
-                                VERIFICATION_STATUS.ASSIGNED
+                                "reviewedUser",
+                                user.firstName + " " + user.lastName
                               );
-                            } else {
-                              setFieldValue(
-                                "verificationStatusId",
-                                VERIFICATION_STATUS.NEEDS_VERIFICATION
-                              );
+                              setFieldValue("reviewedLoginId", user.id);
+                              // If it is marked as assigned, it goes to assigned
+                              // state, otherwise to Needs Verification State
+                              if (values.assignedDate) {
+                                setFieldValue(
+                                  "verificationStatusId",
+                                  VERIFICATION_STATUS.ASSIGNED
+                                );
+                              } else {
+                                setFieldValue(
+                                  "verificationStatusId",
+                                  VERIFICATION_STATUS.NEEDS_VERIFICATION
+                                );
+                              }
+                              handleSubmit();
+                            }}
+                            label="Request Changes"
+                            disabled={
+                              isSubmitting ||
+                              !values.submittedDate ||
+                              values.verificationStatusId !== 3
                             }
-                            handleSubmit();
-                          }}
-                          label="Request Changes"
-                          disabled={
-                            isSubmitting ||
-                            !values.submittedDate ||
-                            values.verificationStatusId !== 3
-                          }
-                          style={{ margin: "auto 0.5em" }}
-                        />
+                            style={{ margin: "auto 0.5em" }}
+                          />
+                        </div>
                       </BigTooltip>
-                      <BigTooltip title="Approve for Release => Verified">
-                        <PlainButton
-                          type="button"
-                          onClick={() => {
-                            setFieldValue("approvedDate", moment());
-                            setFieldValue(
-                              "reviewedUser",
-                              user.firstName + " " + user.lastName
-                            );
-                            setFieldValue("reviewedLoginId", user.id);
-                            setFieldValue(
-                              "verificationStatusId",
-                              VERIFICATION_STATUS.VERIFIED
-                            );
-                            handleSubmit();
+                      <BigTooltip title="Approve as Verified">
+                        <div
+                          style={{
+                            margin: 0,
+                            paddingLeft: "0.2em",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
                           }}
-                          label="Approve"
-                          disabled={
-                            isSubmitting ||
-                            !criticalFieldsValidate(values) ||
-                            (isUnchanged(values) &&
-                              values.verificationStatusId !==
-                                VERIFICATION_STATUS.SUBMITTED)
-                          }
-                          style={{ margin: "auto 0.5em" }}
-                        />
+                        >
+                          <PlainButton
+                            type="button"
+                            onClick={() => {
+                              setFieldValue("approvedDate", moment());
+                              setFieldValue(
+                                "reviewedUser",
+                                user.firstName + " " + user.lastName
+                              );
+                              setFieldValue("reviewedLoginId", user.id);
+                              setFieldValue(
+                                "verificationStatusId",
+                                VERIFICATION_STATUS.VERIFIED
+                              );
+                              handleSubmit();
+                            }}
+                            label="Approve"
+                            disabled={
+                              isSubmitting ||
+                              !criticalFieldsValidate(values) ||
+                              (isUnchanged(values) &&
+                                values.verificationStatusId !==
+                                  VERIFICATION_STATUS.SUBMITTED)
+                            }
+                            style={{ margin: "auto 0.5em" }}
+                          />
+                        </div>
                       </BigTooltip>
                     </>
                   ) : user && user.isDataEntry ? (
                     <>
-                      <PlainButton
-                        type="submit"
-                        label="Save Progress"
-                        className={classes.submit}
-                        disabled={isSubmitting || isUnchanged(values)}
-                        style={{ margin: "auto" }}
-                      />
-                      <PlainButton
-                        type="button"
-                        onClick={() => {
-                          setFieldValue("assignedLoginId", "");
-                          setFieldValue("assignedUser", "");
-                          setFieldValue("assignedDate", "");
-                          setFieldValue(
-                            "verificationStatusId",
-                            VERIFICATION_STATUS.NEEDS_VERIFICATION
-                          );
-                          handleSubmit();
-                        }}
-                        label="Hand Off"
-                        disabled={
-                          criticalFieldsValidate(values) ||
-                          values.verificationStatusId ===
-                            VERIFICATION_STATUS.NEEDS_VERIFICATION
-                        }
-                        style={{ margin: "auto" }}
-                      />
-                      <PlainButton
-                        type="button"
-                        onClick={() => {
-                          setFieldValue("submittedDate", moment());
-                          setFieldValue(
-                            "submittedUser",
-                            user.firstName + " " + user.lastName
-                          );
-                          setFieldValue("submittedLoginId", user.id);
-                          setFieldValue(
-                            "verificationStatusId",
-                            VERIFICATION_STATUS.SUBMITTED
-                          );
-                          handleSubmit();
-                        }}
-                        label="Submit For Review"
-                        disabled={
-                          !criticalFieldsValidate(values) ||
-                          !!values.submittedDate
-                        }
-                        style={{ margin: "auto" }}
-                      />
+                      <BigTooltip title="Save changes to work on later">
+                        <div
+                          style={{
+                            margin: 0,
+                            paddingLeft: "0.2em",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <PlainButton
+                            type="submit"
+                            label="Save Progress"
+                            className={classes.submit}
+                            disabled={isSubmitting || isUnchanged(values)}
+                            style={{ margin: "auto" }}
+                          />
+                        </div>
+                      </BigTooltip>
+                      <BigTooltip title="Unable to complete six critical fields (*), but need to hand off to someone else to complete">
+                        <div
+                          style={{
+                            margin: 0,
+                            paddingLeft: "0.2em",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <PlainButton
+                            type="button"
+                            onClick={() => {
+                              setFieldValue("assignedLoginId", "");
+                              setFieldValue("assignedUser", "");
+                              setFieldValue("assignedDate", "");
+                              setFieldValue(
+                                "verificationStatusId",
+                                VERIFICATION_STATUS.NEEDS_VERIFICATION
+                              );
+                              handleSubmit();
+                            }}
+                            label="Hand Off"
+                            disabled={
+                              criticalFieldsValidate(values) ||
+                              values.verificationStatusId ===
+                                VERIFICATION_STATUS.NEEDS_VERIFICATION
+                            }
+                            style={{ margin: "auto" }}
+                          />
+                        </div>
+                      </BigTooltip>
+                      <BigTooltip title="Critical information entered, Submit for Review.">
+                        <div
+                          style={{
+                            margin: 0,
+                            paddingLeft: "0.2em",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <PlainButton
+                            type="button"
+                            onClick={() => {
+                              setFieldValue("submittedDate", moment());
+                              setFieldValue(
+                                "submittedUser",
+                                user.firstName + " " + user.lastName
+                              );
+                              setFieldValue("submittedLoginId", user.id);
+                              setFieldValue(
+                                "verificationStatusId",
+                                VERIFICATION_STATUS.SUBMITTED
+                              );
+                              handleSubmit();
+                            }}
+                            label="Submit For Review"
+                            disabled={
+                              !criticalFieldsValidate(values) ||
+                              !!values.submittedDate
+                            }
+                            style={{ margin: "auto" }}
+                          />
+                        </div>
+                      </BigTooltip>
                     </>
                   ) : null}
                 </div>

@@ -46,13 +46,13 @@ export default function ResultsContainer(props) {
     latitude: userSearch
       ? userSearch.latitude
       : userCoordinates
-        ? userCoordinates.latitude
-        : 34.07872,
+      ? userCoordinates.latitude
+      : 34.07872,
     longitude: userSearch
       ? userSearch.longitude
       : userCoordinates
-        ? userCoordinates.longitude
-        : -118.243328,
+      ? userCoordinates.longitude
+      : -118.243328,
   };
 
   const [radius, setRadius] = React.useState(5);

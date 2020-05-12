@@ -1718,7 +1718,7 @@ const StakeholderEdit = (props) => {
                     <div className={classes.workflowRow}>
                       <div className={classes.workflowColumn1}>
                         <Typography className={classes.workflowText}>
-                          "Approved:"
+                          Approved:
                         </Typography>
                       </div>
                       <div className={classes.workflowColumn2}>
@@ -1867,10 +1867,17 @@ const StakeholderEdit = (props) => {
                             setFieldValue("approvedLoginId", "");
                             setFieldValue("approvedUser", "");
                             setFieldValue("approvedDate", "");
-                            setFieldValue(
-                              "verificationStatusId",
-                              VERIFICATION_STATUS.NEEDS_VERIFICATION
-                            );
+                            if (values.assignedDate) {
+                              setFieldValue(
+                                "verificationStatusId",
+                                VERIFICATION_STATUS.ASSIGNED
+                              );
+                            } else {
+                              setFieldValue(
+                                "verificationStatusId",
+                                VERIFICATION_STATUS.NEEDS_VERIFICATION
+                              );
+                            }
                             handleSubmit();
                           }}
                           label="Needs Verification"

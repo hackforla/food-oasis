@@ -174,33 +174,33 @@ export default function Search(props) {
           toggleMenu,
           isOpen,
         }) => (
-          <div className={classes.container}>
-            {renderInput({
-              classes,
-              selectedItem,
-              availableItems: mapboxResults,
-              InputProps: {
-                ...getInputProps({
-                  onClick: () => toggleMenu(),
-                  onChange: handleInputChange,
-                  value: inputValue || selectedPlace,
-                }),
-              },
-            })}
+            <div className={classes.container}>
+              {renderInput({
+                classes,
+                selectedItem,
+                availableItems: mapboxResults,
+                InputProps: {
+                  ...getInputProps({
+                    onClick: () => toggleMenu(),
+                    onChange: handleInputChange,
+                    value: inputValue || selectedPlace
+                  }),
+                },
+              })}
 
-            {isOpen && (
-              <Paper className={classes.paper} square>
-                {renderResults({
-                  highlightedIndex,
-                  selectedItem,
-                  inputValue,
-                  mapboxResults,
-                  getItemProps,
-                })}
-              </Paper>
-            )}
-          </div>
-        )}
+              {isOpen && (
+                <Paper className={classes.paper} square>
+                  {renderResults({
+                    highlightedIndex,
+                    selectedItem,
+                    inputValue,
+                    mapboxResults,
+                    getItemProps,
+                  })}
+                </Paper>
+              )}
+            </div>
+          )}
       </Downshift>
     </>
   );

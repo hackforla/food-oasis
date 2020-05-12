@@ -103,12 +103,12 @@ const Home = (props) => {
   const classes = useStyles();
   const { origin, setOrigin } = props;
 
-  const handleSubmit = () => {
-    const url = `/organizations?lat=${origin.latitude}&lon=${
-      origin.longitude
-    }&placeName=${origin.locationName || ""} `;
-    props.history.push(url);
-  };
+  // const handleSubmit = () => {
+  //   const url = `/organizations?lat=${origin.latitude}&lon=${
+  //     origin.longitude
+  //   }&placeName=${origin.locationName || ""} `;
+  //   props.history.push(url);
+  // };
 
   return (
     <Container component="main" maxWidth="sm" className={classes.container}>
@@ -118,7 +118,7 @@ const Home = (props) => {
           <img src={logo} alt="logo" className={classes.logo} />
         </Box>
         <Box className={classes.formContainer}>
-          <form className={classes.form} noValidate onSubmit={handleSubmit}>
+          <form className={classes.form} noValidate onSubmit={() => props.history.push('/organizations')}>
             <Box className={classes.inputContainer}>
               <Search {...props} setOrigin={setOrigin} />
               <Button
@@ -129,7 +129,7 @@ const Home = (props) => {
                 startIcon={
                   <SearchIcon fontSize="large" className={classes.searchIcon} />
                 }
-                onClick={() => handleSubmit()}
+                onClick={() => props.history.push('/organizations')}
               />
             </Box>
             <Typography className={classes.label}>

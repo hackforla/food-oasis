@@ -151,11 +151,11 @@ const ResultsFilters = ({
   //loading search
   useEffect(() => {
     doHandleSearch();
-  }, []);
+  }, [doHandleSearch]);
 
   useEffect(() => {
-    doHandleSearch()
-  }, [radius, categoryIds, isVerifiedSelected, toggleCategory])
+    doHandleSearch();
+  }, [radius, categoryIds, isVerifiedSelected, toggleCategory, doHandleSearch]);
 
   return (
     <Grid container wrap="wrap-reverse" className={classes.controlPanel}>
@@ -174,7 +174,7 @@ const ResultsFilters = ({
               name="select-distance"
               disableUnderline
               value={radius}
-              onChange={(e) => (setRadius(e.target.value))}
+              onChange={(e) => setRadius(e.target.value)}
               inputProps={{
                 name: "select-distance",
                 id: "select-distance",

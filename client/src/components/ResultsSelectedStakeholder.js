@@ -3,6 +3,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import mapMarker from "./mapMarker";
 import pantryIcon from "../images/pantryIcon.svg";
 import mealIcon from "../images/mealIcon.svg";
+import fbIcon from "../images/fbIcon.png";
+import instaIcon from "../images/instaIcon.png";
 
 const useStyles = makeStyles((theme) => ({
   stakeholderHolder: {
@@ -11,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "inherit",
     justifyContent: "space-between",
     padding: "1em 0",
+    alignItems: "center",
   },
   topInfoHolder: {
     width: "100%",
@@ -42,7 +45,22 @@ const useStyles = makeStyles((theme) => ({
   title: {
     alignSelf: "flex-start",
   },
+  link: { textDecoration: "none" },
+  directions: {
+    alignSelf: "center",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    color: "white",
+    width: "15em",
+    height: "3em",
+    fontSize: "14px",
+    fontWeight: "bold",
+    borderRadius: "10px",
+    margin: "1em 0 0 0",
+  },
   hoursContainer: {
+    width: "100%",
     display: "inherit",
     flexDirection: "inherit",
     fontSize: "1.2em",
@@ -53,8 +71,22 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
     margin: ".8em 0",
   },
-  phoneNum: {
+  fontSize: {
     fontSize: "14px",
+    alignSelf: "flex-start",
+    textAlign: "left",
+  },
+  iconHolder: {
+    display: "flex",
+    alignSelf: "flex-start",
+  },
+  icons: {
+    alignSelf: "flex-start",
+    margin: "0 1em 0 0",
+  },
+  arrow: {
+    alignSelf: "flex-start",
+    margin: "1em 0 0 0",
   },
 }));
 
@@ -69,6 +101,25 @@ const SelectedStakeholderDisplay = (props) => {
     return parseInt(timeStr.substring(0, 2)) > 12
       ? `${parseInt(timeStr.substring(0, 2)) - 12}${timeStr.substring(2, 5)}PM`
       : `${timeStr.substring(0, 5)}AM`;
+  };
+
+  const getGoogleMapsUrl = (zip, address1, address2) => {
+    const baseUrl = `https://google.com/maps/place/`;
+
+    const address1urlArray = address1.split(" ");
+    const address1url = address1urlArray.reduce(
+      (acc, currentWord) => `${acc}+${currentWord}`
+    );
+
+    if (address2) {
+      const address2urlArray = address2.split(" ");
+      const address2url = address2urlArray.reduce(
+        (acc, currentWord) => `${acc}+${currentWord}`
+      );
+      return `${baseUrl}${address1url},+${address2url},+${zip}`;
+    }
+
+    return `${baseUrl}${address1url},+${zip}`;
   };
 
   return (
@@ -114,6 +165,29 @@ const SelectedStakeholderDisplay = (props) => {
           )}
         </div>
       </div>
+      <a
+        className={classes.link}
+        href={getGoogleMapsUrl(
+          selectedStakeholder.zip,
+          selectedStakeholder.address1,
+          selectedStakeholder.address2 || null
+        )}
+        underline="hover"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <div
+          className={classes.directions}
+          style={{
+            backgroundColor:
+              selectedStakeholder.categories[0].id === 1
+                ? "#336699"
+                : "#CC3333",
+          }}
+        >
+          Directions
+        </div>
+      </a>
       <h2 className={classes.title}>Hours</h2>
       <div className={classes.hoursContainer}>
         {selectedStakeholder.hours.map((hour) => (
@@ -131,19 +205,69 @@ const SelectedStakeholderDisplay = (props) => {
       {selectedStakeholder.phone ? (
         <React.Fragment>
           <h2 className={classes.title}>Phone</h2>
-          <span className={classes.phoneNum}>{selectedStakeholder.phone}</span>
+          <span className={classes.fontSize}>{selectedStakeholder.phone}</span>
         </React.Fragment>
       ) : null}
       {selectedStakeholder.website ? (
         <React.Fragment>
           <h2 className={classes.title}>Website</h2>
           <a
+            className={classes.fontSize}
             href={selectedStakeholder.website}
             target="_blank"
             rel="noopener noreferrer"
           >
             {selectedStakeholder.website}
           </a>
+        </React.Fragment>
+      ) : null}
+      {selectedStakeholder.requirements ? (
+        <React.Fragment>
+          <h2 className={classes.title}>Eligibility/Requirement</h2>
+          <span className={classes.fontSize}>
+            {selectedStakeholder.requirements}
+          </span>
+        </React.Fragment>
+      ) : null}
+      {selectedStakeholder.services ? (
+        <React.Fragment>
+          <h2 className={classes.title}>Services</h2>
+          <span className={classes.fontSize}>
+            {selectedStakeholder.services}
+          </span>
+        </React.Fragment>
+      ) : null}
+      {selectedStakeholder.items ? (
+        <React.Fragment>
+          <h2 className={classes.title}>Items Available</h2>
+          <span className={classes.fontSize}>{selectedStakeholder.items}</span>
+        </React.Fragment>
+      ) : null}
+      {selectedStakeholder.facebook || selectedStakeholder.instagram ? (
+        <React.Fragment>
+          <h2 className={classes.title}>Social Media</h2>
+          <div className={classes.iconHolder}>
+            {selectedStakeholder.facebook ? (
+              <a
+                className={classes.icons}
+                href={selectedStakeholder.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img alt="fb-logo" src={fbIcon} />
+              </a>
+            ) : null}
+            {selectedStakeholder.instagram ? (
+              <a
+                className={classes.icons}
+                href={selectedStakeholder.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img alt="ig-logo" src={instaIcon} />
+              </a>
+            ) : null}
+          </div>
         </React.Fragment>
       ) : null}
       <svg
@@ -153,6 +277,7 @@ const SelectedStakeholderDisplay = (props) => {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         onClick={() => doSelectStakeholder(null)}
+        className={classes.arrow}
       >
         <circle
           cx="20"

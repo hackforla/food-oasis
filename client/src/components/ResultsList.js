@@ -95,7 +95,7 @@ const ResultsList = ({
             <div className={classes.checkHolder}>
               {stakeholder.distance >= 10
                 ? stakeholder.distance.toString().substring(0, 3).padEnd(4, "0")
-                : stakeholder.distance.toString().substring(0, 3)}{" "}
+                : stakeholder.distance.toString().substring(0, 3)}
               mi
               {mapMarker(
                 stakeholder.categories[0].id === 1 ? "#336699" : "#CC3333",

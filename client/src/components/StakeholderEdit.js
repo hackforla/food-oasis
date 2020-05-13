@@ -1906,6 +1906,9 @@ const StakeholderEdit = (props) => {
                               setFieldValue("reviewedLoginId", "");
                               setFieldValue("reviewedUser", "");
                               setFieldValue("approvedDate", "");
+                              setFieldValue("assignedLoginId", "");
+                              setFieldValue("assignedUser", "");
+                              setFieldValue("assignedDate", "");
                               // If it is marked as assigned, it goes to assigned
                               // state, otherwise to Needs Verification State
                               // TODO: Really need to pop up a dialog and prompt the
@@ -1920,7 +1923,11 @@ const StakeholderEdit = (props) => {
                               handleSubmit();
                             }}
                             label="Needs Verification"
-                            disabled={isSubmitting || !!values.verificationDate}
+                            disabled={
+                              isSubmitting ||
+                              values.verifivation_status_id ===
+                                VERIFICATION_STATUS.NEEDS_VERIFICATION
+                            }
                             style={{ margin: "auto 0.5em" }}
                           />
                         </div>
@@ -1954,8 +1961,12 @@ const StakeholderEdit = (props) => {
                                 },
                               });
                             }}
-                            label="Assign"
-                            disabled={isSubmitting}
+                            label="(Re-)Assign"
+                            disabled={
+                              isSubmitting ||
+                              values.verification_status_id ===
+                                VERIFICATION_STATUS.SUBMITTED
+                            }
                             style={{ margin: "auto 0.5em" }}
                           />
                         </div>

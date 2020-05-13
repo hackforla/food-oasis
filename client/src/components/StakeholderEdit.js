@@ -36,6 +36,7 @@ import OpenTimeForm from "./OpenTimeForm";
 import { TabPanel, a11yProps } from "./TabPanel";
 // import BigTooltip from "./BigTooltip";
 import { PlainButton, SearchButton, VerifyButton } from "./Buttons";
+import AssignDialog from "./Verification/AssignDialog";
 import {
   VERIFICATION_STATUS,
   VERIFICATION_STATUS_NAMES,
@@ -132,6 +133,8 @@ const validationSchema = Yup.object().shape({
 const StakeholderEdit = (props) => {
   const { classes, setToast, match, user } = props;
   const editId = match.params.id;
+  const [assignDialogOpen, setAssignDialogOpen] = useState(false);
+  const [assignDialogCallback, setAssignDialogCallback] = useState({});
   const [tabPage, setTabPage] = useState(0);
   const [geocodeResults, setGeocodeResults] = useState([]);
   const [originalData, setOriginalData] = useState({
@@ -221,6 +224,21 @@ const StakeholderEdit = (props) => {
     };
     fetchData();
   }, [editId]);
+
+  const handleAssignDialogOpen = async (callbackObject) => {
+    setAssignDialogOpen(true);
+    setAssignDialogCallback(callbackObject);
+  };
+
+  const handleAssignDialogClose = async (loginId) => {
+    setAssignDialogOpen(false);
+    // Dialog returns false if cancelled, null if
+    // want to unassign, otherwisd a loginId > 0
+    if (loginId === false) return;
+    if (assignDialogCallback && assignDialogCallback.callback) {
+      assignDialogCallback.callback(loginId);
+    }
+  };
 
   function formatMapAddress(formData) {
     return `${formData.address1 || ""} ${formData.address2 || ""} ${
@@ -348,6 +366,12 @@ const StakeholderEdit = (props) => {
     <Container component="main" maxWidth="lg">
       <CssBaseline />
       <div className={classes.paper}>
+        <AssignDialog
+          id="assign-dialog"
+          keepMounted
+          open={assignDialogOpen}
+          onClose={handleAssignDialogClose}
+        />
         <Formik
           initialValues={originalData}
           enableReinitialize
@@ -1648,7 +1672,7 @@ const StakeholderEdit = (props) => {
                             : moment(values.assignedDate).format(DATE_FORMAT)}
                         </Typography>
                       </div>
-                      <div className={classes.workflowColumn4}>
+                      {/* <div className={classes.workflowColumn4}>
                         <UserContext.Consumer>
                           {(user) =>
                             user && user.isAdmin ? (
@@ -1691,7 +1715,7 @@ const StakeholderEdit = (props) => {
                             ) : null
                           }
                         </UserContext.Consumer>
-                      </div>
+                      </div>*/}
                     </div>
                     <div className={classes.workflowRow}>
                       <div className={classes.workflowColumn1}>
@@ -1866,7 +1890,6 @@ const StakeholderEdit = (props) => {
                           />
                         </div>
                       </BigTooltip>
-
                       <BigTooltip title="Mark for re-verification">
                         <div
                           style={{
@@ -1888,21 +1911,51 @@ const StakeholderEdit = (props) => {
                               // TODO: Really need to pop up a dialog and prompt the
                               // user to determine if they want to make a review comment
                               // and/or assign or un-assign to user.
-                              if (values.assignedDate) {
-                                setFieldValue(
-                                  "verificationStatusId",
-                                  VERIFICATION_STATUS.ASSIGNED
-                                );
-                              } else {
-                                setFieldValue(
-                                  "verificationStatusId",
-                                  VERIFICATION_STATUS.NEEDS_VERIFICATION
-                                );
-                              }
+
+                              setFieldValue(
+                                "verificationStatusId",
+                                VERIFICATION_STATUS.NEEDS_VERIFICATION
+                              );
+
                               handleSubmit();
                             }}
                             label="Needs Verification"
                             disabled={isSubmitting || !!values.verificationDate}
+                            style={{ margin: "auto 0.5em" }}
+                          />
+                        </div>
+                      </BigTooltip>
+                      <BigTooltip title="Assign for Verification">
+                        <div
+                          style={{
+                            margin: 0,
+                            paddingLeft: "0.2em",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <PlainButton
+                            type="button"
+                            onClick={() => {
+                              handleAssignDialogOpen({
+                                callback: (loginId) => {
+                                  setFieldValue("reviewedLoginId", "");
+                                  setFieldValue("reviewedUser", "");
+                                  setFieldValue("approvedDate", "");
+                                  setFieldValue("assignedLoginId", loginId);
+                                  setFieldValue("assignedDate", moment());
+                                  setFieldValue(
+                                    "verificationStatusId",
+                                    VERIFICATION_STATUS.ASSIGNED
+                                  );
+
+                                  handleSubmit();
+                                },
+                              });
+                            }}
+                            label="Assign"
+                            disabled={isSubmitting}
                             style={{ margin: "auto 0.5em" }}
                           />
                         </div>

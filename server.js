@@ -11,6 +11,20 @@ const middleware = require("./middleware/middleware");
 const router = require("./app/routes/index");
 
 const app = express();
+
+// Redirect HTTP requests to HTTPS
+if (process.env.NODE_ENV === "production") {
+  app.use((req, res, next) => {
+    // This way of detecting insecure requests is specific
+    // to a Heroku deployment. May need modification for
+    // other production deployment platforms.
+    if (req.header("x-forwarded-proto") !== "https")
+      // redirect to https with same host & url
+      res.redirect(`https://${req.header("host")}${req.url}`);
+    else next();
+  });
+}
+
 app.use(middleware.cors);
 // app.use(middleware.logger);
 

@@ -100,6 +100,11 @@ const ResultsList = ({
               >
                 {stakeholder.categories[0].name}
               </em>
+              {stakeholder.categories[1] ? <em style={{
+                color: "#CC3333",
+              }}>
+                {stakeholder.categories[1].name}
+              </em> : null}
             </div>
             <div className={classes.checkHolder}>
               {stakeholder.distance >= 10

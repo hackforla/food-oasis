@@ -22,7 +22,7 @@ export default function AccountAutocomplete({
         <Autocomplete
           value={accounts.find((acct) => acct.id === accountId)}
           onChange={handleChange}
-          options={accounts}
+          options={accounts.filter((a) => a.isAdmin || a.isDataEntry)}
           getOptionLabel={(option) =>
             `${option.lastName}, ${option.firstName} (${option.email})`
           }

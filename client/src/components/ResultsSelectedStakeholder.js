@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import mapMarker from "./mapMarker";
 import pantryIcon from "../images/pantryIcon.svg";
 import mealIcon from "../images/mealIcon.svg";
+import splitPantryMealIcon from "../images/splitPantryMealIcon.svg";
 import fbIcon from "../images/fbIcon.png";
 import instaIcon from "../images/instaIcon.png";
 
@@ -128,7 +129,13 @@ const SelectedStakeholderDisplay = (props) => {
         <div className={classes.imgHolder}>
           <img
             src={
-              selectedStakeholder.categories[0].id === 1 ? pantryIcon : mealIcon
+              selectedStakeholder.categories[0].id === 1 &&
+              selectedStakeholder.categories[1] &&
+              selectedStakeholder.categories[1].id === 9
+                ? splitPantryMealIcon
+                : selectedStakeholder.categories[0].id === 1
+                ? pantryIcon
+                : mealIcon
             }
             alt="Organization Category Icon"
             className={classes.typeLogo}
@@ -160,7 +167,13 @@ const SelectedStakeholderDisplay = (props) => {
             : selectedStakeholder.distance.toString().substring(0, 3)}{" "}
           mi
           {mapMarker(
-            selectedStakeholder.categories[0].id === 1 ? "#336699" : "#CC3333",
+            selectedStakeholder.categories[0].id === 1 &&
+              selectedStakeholder.categories[1] &&
+              selectedStakeholder.categories[1].id === 9
+              ? ""
+              : selectedStakeholder.categories[0].id === 1
+              ? "#336699"
+              : "#CC3333",
             selectedStakeholder.submittedDate ? true : false
           )}
         </div>

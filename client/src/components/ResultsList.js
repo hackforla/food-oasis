@@ -5,6 +5,7 @@ import mapMarker from "./mapMarker";
 import { makeStyles } from "@material-ui/core/styles";
 import pantryIcon from "../images/pantryIcon.svg";
 import mealIcon from "../images/mealIcon.svg";
+import splitPantryMealIcon from "../images/splitPantryMealIcon.svg";
 
 const useStyles = makeStyles((theme) => ({
   stakeholderArrayHolder: {
@@ -67,8 +68,17 @@ const ResultsList = ({
             onClick={() => doSelectStakeholder(stakeholder)}
           >
             <div className={classes.imgHolder}>
+              {console.log(stakeholder.categories[0].id === 9)}
               <img
-                src={stakeholder.categories[0].id === 1 ? pantryIcon : mealIcon}
+                src={
+                  stakeholder.categories[0].id === 1 &&
+                  stakeholder.categories[1] &&
+                  stakeholder.categories[1].id === 9
+                    ? splitPantryMealIcon
+                    : stakeholder.categories[0].id === 1
+                    ? pantryIcon
+                    : mealIcon
+                }
                 alt={
                   stakeholder.categories[0].id === 1
                     ? "Pantry Icon"
@@ -95,10 +105,16 @@ const ResultsList = ({
             <div className={classes.checkHolder}>
               {stakeholder.distance >= 10
                 ? stakeholder.distance.toString().substring(0, 3).padEnd(4, "0")
-                : stakeholder.distance.toString().substring(0, 3)}
+                : stakeholder.distance.toString().substring(0, 3)}{" "}
               mi
               {mapMarker(
-                stakeholder.categories[0].id === 1 ? "#336699" : "#CC3333",
+                stakeholder.categories[0].id === 1 &&
+                  stakeholder.categories[1] &&
+                  stakeholder.categories[1].id === 9
+                  ? ""
+                  : stakeholder.categories[0].id === 1
+                  ? "#336699"
+                  : "#CC3333",
                 stakeholder.submittedDate ? true : false
               )}
             </div>

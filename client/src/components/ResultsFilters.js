@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 0,
   },
   filterGroupButton: {
-    margin: 0,
+    margin: "0 .25rem",
     fontSize: "max(.8vw,10px)",
     backgroundColor: "#fff",
     border: ".1em solid #000",
@@ -151,10 +151,12 @@ const ResultsFilters = ({
   //loading search
   useEffect(() => {
     doHandleSearch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     doHandleSearch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [radius, categoryIds, isVerifiedSelected, toggleCategory]);
 
   return (
@@ -202,6 +204,8 @@ const ResultsFilters = ({
             style={{
               backgroundColor: isPantrySelected ? "#0A3865" : "#fff",
               color: isPantrySelected ? "#fff" : "#000",
+              marginRight: 0,
+              borderRadius: "5px 0 0 5px",
             }}
             onClick={togglePantry}
           >
@@ -214,6 +218,8 @@ const ResultsFilters = ({
             style={{
               backgroundColor: isMealsSelected ? "#0A3865" : "#fff",
               color: isMealsSelected ? "#fff" : "#000",
+              marginLeft: 0,
+              borderRadius: "0 5px 5px 0",
             }}
             onClick={toggleMeal}
           >

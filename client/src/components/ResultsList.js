@@ -68,16 +68,15 @@ const ResultsList = ({
             onClick={() => doSelectStakeholder(stakeholder)}
           >
             <div className={classes.imgHolder}>
-              {console.log(stakeholder.categories[0].id === 9)}
               <img
                 src={
                   stakeholder.categories[0].id === 1 &&
-                  stakeholder.categories[1] &&
-                  stakeholder.categories[1].id === 9
+                    stakeholder.categories[1] &&
+                    stakeholder.categories[1].id === 9
                     ? splitPantryMealIcon
                     : stakeholder.categories[0].id === 1
-                    ? pantryIcon
-                    : mealIcon
+                      ? pantryIcon
+                      : mealIcon
                 }
                 alt={
                   stakeholder.categories[0].id === 1
@@ -108,15 +107,15 @@ const ResultsList = ({
                 : stakeholder.distance.toString().substring(0, 3)}{" "}
               mi
               {mapMarker(
-                stakeholder.categories[0].id === 1 &&
-                  stakeholder.categories[1] &&
-                  stakeholder.categories[1].id === 9
-                  ? ""
-                  : stakeholder.categories[0].id === 1
-                  ? "#336699"
-                  : "#CC3333",
-                stakeholder.submittedDate ? true : false
-              )}
+                  stakeholder.categories[0].id === 1 &&
+                    stakeholder.categories[1] &&
+                    stakeholder.categories[1].id === 9
+                    ? ""
+                    : stakeholder.categories[0].id === 1
+                      ? "#336699"
+                      : "#CC3333",
+                  stakeholder.submittedDate ? true : false
+                )}
             </div>
           </div>
         ))

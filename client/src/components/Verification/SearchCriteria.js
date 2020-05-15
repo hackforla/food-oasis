@@ -11,7 +11,6 @@ import {
   Grid,
   TextField,
   Chip,
-  FormControl,
   FormLabel,
   FormControlLabel,
   Typography,
@@ -188,7 +187,7 @@ const SearchCriteria = ({
               </Select>
             ) : null}
           </Grid>
-          <Grid item xs={12} sm={6}>
+          {/* <Grid item xs={12} sm={6}>
             <FormControl variant="outlined" fullWidth>
               <FormLabel className={classes.formLabel}>
                 Verification Status
@@ -219,7 +218,7 @@ const SearchCriteria = ({
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={12} sm={6}></Grid>
+          <Grid item xs={12} sm={6}></Grid> */}
           <Grid item xs={12} sm={6}>
             <FormLabel className={classes.formLabel}>Assigned To</FormLabel>
             <AccountAutocomplete

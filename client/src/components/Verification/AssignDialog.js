@@ -21,15 +21,12 @@ function AssignDialog(props) {
     onClose(accountId);
   };
 
-  const handleUnassign = () => {
-    onClose(null);
-  };
-
   return (
     <Dialog
       disableBackdropClick
       disableEscapeKeyDown
-      maxWidth="md"
+      fullWidth
+      maxWidth="sm"
       aria-labelledby="confirmation-dialog-title"
       open={open}
       {...other}
@@ -46,11 +43,8 @@ function AssignDialog(props) {
         <Button autoFocus onClick={handleCancel} color="primary">
           Cancel
         </Button>
-        <Button onClick={handleAssign} color="primary">
+        <Button onClick={handleAssign} color="primary" disabled={!accountId}>
           Assign
-        </Button>
-        <Button onClick={handleUnassign} color="primary">
-          Unassign
         </Button>
       </DialogActions>
     </Dialog>

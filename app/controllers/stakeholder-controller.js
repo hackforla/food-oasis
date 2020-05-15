@@ -64,9 +64,9 @@ const remove = (req, res) => {
     });
 };
 
-const verify = (req, res) => {
+const assign = (req, res) => {
   stakeholderService
-    .verify(req.body)
+    .assign(req.body)
     .then(() => {
       res.sendStatus(200);
     })
@@ -75,9 +75,9 @@ const verify = (req, res) => {
     });
 };
 
-const assign = (req, res) => {
+const needsVerification = (req, res) => {
   stakeholderService
-    .assign(req.body)
+    .needsVerification(req.body)
     .then(() => {
       res.sendStatus(200);
     })
@@ -97,37 +97,13 @@ const claim = (req, res) => {
     });
 };
 
-const approve = (req, res) => {
-  stakeholderService
-    .approve(req.body)
-    .then(() => {
-      res.sendStatus(200);
-    })
-    .catch((err) => {
-      res.status("500").json({ error: err.toString() });
-    });
-};
-
-const reject = (req, res) => {
-  stakeholderService
-    .reject(req.body)
-    .then(() => {
-      res.sendStatus(200);
-    })
-    .catch((err) => {
-      res.status("500").json({ error: err.toString() });
-    });
-};
-
 module.exports = {
   search,
   getById,
   post,
   put,
   remove,
-  verify,
+  needsVerification,
   assign,
   claim,
-  approve,
-  reject,
 };

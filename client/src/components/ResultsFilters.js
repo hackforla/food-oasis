@@ -151,10 +151,12 @@ const ResultsFilters = ({
   //loading search
   useEffect(() => {
     doHandleSearch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     doHandleSearch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [radius, categoryIds, isVerifiedSelected, toggleCategory]);
 
   return (

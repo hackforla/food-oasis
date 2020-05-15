@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { withRouter, Link } from "react-router-dom";
 import { Typography } from "@material-ui/core";
-// import moment from "moment";
+import { VERIFICATION_STATUS_NAMES } from "../constants/stakeholder";
+import { Block, Check, Remove } from "@material-ui/icons";
 
 import DataGrid from "react-data-grid";
 
@@ -9,8 +10,30 @@ const linkFormatter = ({ value, row }) => {
   return <Link to={`/organizationedit/${row.id}`}>{value}</Link>;
 };
 
-const booleanFormatter = ({ value, row }) => {
-  return value ? "y" : "n";
+const inactiveFormatter = ({ value, row }) => {
+  return value ? (
+    <div style={{ textAlign: "center" }}>
+      <Block style={{ color: "red" }} />
+    </div>
+  ) : (
+    ""
+  );
+};
+
+const confirmationFormatter = ({ value, row }) => {
+  return value ? (
+    <div style={{ backgroundColor: "green", margin: "0", textAlign: "center" }}>
+      <Check style={{ color: "white" }} />
+    </div>
+  ) : (
+    <div style={{ backgroundColor: "red", margin: "0", textAlign: "center" }}>
+      <Remove style={{ color: "white" }} />
+    </div>
+  );
+};
+
+const verificationStatusFormatter = ({ value, row }) => {
+  return VERIFICATION_STATUS_NAMES[value];
 };
 
 const distanceFormatter = ({ value }) => {
@@ -51,8 +74,60 @@ const columns = [
     width: 240,
     frozen: true,
   },
-  { key: "inactive", name: "Inactive", formatter: booleanFormatter, width: 80 },
-
+  {
+    key: "inactive",
+    name: "Perm Closed",
+    formatter: inactiveFormatter,
+    width: 80,
+  },
+  {
+    key: "inactiveTemporary",
+    name: "Covid Closed",
+    formatter: inactiveFormatter,
+    width: 80,
+  },
+  {
+    key: "verificationStatusId",
+    name: "Status",
+    formatter: verificationStatusFormatter,
+    width: 100,
+  },
+  {
+    key: "confirmedName",
+    name: "Name",
+    formatter: confirmationFormatter,
+    width: 60,
+  },
+  {
+    key: "confirmedAddress",
+    name: "Address",
+    formatter: confirmationFormatter,
+    width: 60,
+  },
+  {
+    key: "confirmedPhone",
+    name: "Phone",
+    formatter: confirmationFormatter,
+    width: 60,
+  },
+  {
+    key: "confirmedEmail",
+    name: "Email",
+    formatter: confirmationFormatter,
+    width: 60,
+  },
+  {
+    key: "confirmedCategories",
+    name: "Categories",
+    formatter: confirmationFormatter,
+    width: 60,
+  },
+  {
+    key: "confirmedHours",
+    name: "Hours",
+    formatter: confirmationFormatter,
+    width: 60,
+  },
   { key: "assignedUser", name: "Assigned To" },
   {
     key: "assignedDate",
@@ -108,7 +183,7 @@ const columns = [
 ].map((c) => ({ ...defaultColumnProperties, ...c }));
 
 const StakeholderGrid = (props) => {
-  const { stakeholders, setSelectedStakeholderIds } = props;
+  const { stakeholders, setSelectedStakeholderIds, mode } = props;
   const [selectedIndexes, setSelectedIndexes] = useState([]);
   const [rows, setRows] = useState(props.stakeholders);
 
@@ -151,15 +226,19 @@ const StakeholderGrid = (props) => {
           onColumnResize={(idx, width) =>
             console.log(`Column ${idx} has been resized to ${width}`)
           }
-          rowSelection={{
-            showCheckbox: true,
-            enableShiftSelect: true,
-            onRowsSelected: onRowsSelected,
-            onRowsDeselected: onRowsDeselected,
-            selectBy: {
-              indexes: selectedIndexes,
-            },
-          }}
+          rowSelection={
+            mode === "admin"
+              ? {
+                  showCheckbox: true,
+                  enableShiftSelect: true,
+                  onRowsSelected: onRowsSelected,
+                  onRowsDeselected: onRowsDeselected,
+                  selectBy: {
+                    indexes: selectedIndexes,
+                  },
+                }
+              : null
+          }
         />
       ) : (
         <Typography variant={"h5"} component={"h5"}>

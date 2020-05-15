@@ -77,7 +77,7 @@ const DialogTitle = (props) => {
 };
 
 DialogTitle.propTypes = {
-  children: PropTypes.object,
+  children: PropTypes.string,
   onClose: PropTypes.func,
 };
 
@@ -96,7 +96,7 @@ const defaultCriteria = {
   isClaimed: "either",
   assignedLoginId: null,
   claimedLoginId: null,
-  verificationStatusId: 0,
+  verificationStatusId: "0",
 };
 
 VerificationAdmin.propTypes = {

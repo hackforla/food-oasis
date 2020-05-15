@@ -21,7 +21,7 @@ const RadioTrueFalseEither = (props) => {
         name={name}
         value={value}
         onChange={onChange}
-        fullWidth
+        fullwidth
       >
         <FormControlLabel value="true" control={<Radio />} label="Yes" />
         <FormControlLabel value="false" control={<Radio />} label="No" />

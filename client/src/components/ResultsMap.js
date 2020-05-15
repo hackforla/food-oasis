@@ -32,7 +32,7 @@ function Map({
   //   if (stakeholders && stakeholders.length) {
   //     stakeholders.forEach(stakeholder => console.log(stakeholder.name, stakeholder.hours))
   //   }
-  //   console.log("map", stakeholders);
+  //   // console.log("map", stakeholders);
   // }, [stakeholders]);
 
   const categoryIdsOrDefault = categoryIds.length

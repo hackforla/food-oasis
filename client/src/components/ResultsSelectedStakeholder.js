@@ -97,6 +97,8 @@ const SelectedStakeholderDisplay = (props) => {
   const { doSelectStakeholder, selectedStakeholder } = props;
   const classes = useStyles();
 
+  // console.log(moment(selectedStakeholder.dateClaimed).format())
+
   const standardTime = (timeStr) => {
     if (timeStr) {
       if (parseInt(timeStr.substring(0, 2)) === 12) {
@@ -194,6 +196,19 @@ const SelectedStakeholderDisplay = (props) => {
           )}
         </div>
       </div>
+      {selectedStakeholder.submittedDate ? (
+        <p
+          style={{
+            color:
+              selectedStakeholder.categories[0].id === 1
+                ? "#336699"
+                : "#CC3333",
+          }}
+        >
+          Data Verified on{" "}
+          {selectedStakeholder.submittedDate.format("MMM Do, YYYY")}
+        </p>
+      ) : null}
       <a
         className={classes.link}
         href={getGoogleMapsUrl(

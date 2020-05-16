@@ -684,8 +684,8 @@ const update = async (model) => {
     await pool.query(invokeSprocSql);
   } catch (e) {
     console.error(e);
-    // If this fails we probably shouldn't update anything
-    return;
+    // If this fails we don't update anything
+    return Promise.reject(e.message);
   }
 
   const sql = `

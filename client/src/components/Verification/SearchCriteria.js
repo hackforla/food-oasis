@@ -11,7 +11,7 @@ import {
   Grid,
   TextField,
   Chip,
-  // FormControl,
+  FormControl,
   FormLabel,
   FormControlLabel,
   Typography,
@@ -188,7 +188,7 @@ const SearchCriteria = ({
               </Select>
             ) : null}
           </Grid>
-          {/* <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={6}>
             <FormControl variant="outlined" fullWidth>
               <FormLabel className={classes.formLabel}>
                 Verification Status
@@ -201,25 +201,25 @@ const SearchCriteria = ({
                 onChange={setCriterion}
                 input={<Input id="verificationStatusId" variant="outlined" />}
               >
-                <MenuItem key={0} value="0">
+                <MenuItem key={0} value={0}>
                   (Any)
                 </MenuItem>
-                <MenuItem key={1} value="1">
+                <MenuItem key={1} value={1}>
                   Needs Verification
                 </MenuItem>
-                <MenuItem key={2} value="2">
+                <MenuItem key={2} value={2}>
                   Assigned
                 </MenuItem>
-                <MenuItem key={3} value="3">
+                <MenuItem key={3} value={3}>
                   Submitted
                 </MenuItem>
-                <MenuItem key={4} value="4">
+                <MenuItem key={4} value={4}>
                   Verified
                 </MenuItem>
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={12} sm={6}></Grid> */}
+          <Grid item xs={12} sm={6}></Grid>
           <Grid item xs={12} sm={6}>
             <FormLabel className={classes.formLabel}>Assigned To</FormLabel>
             <AccountAutocomplete

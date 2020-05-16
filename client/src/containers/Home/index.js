@@ -103,13 +103,6 @@ const Home = (props) => {
   const classes = useStyles();
   const { origin, setOrigin } = props;
 
-  // const handleSubmit = () => {
-  //   const url = `/organizations?lat=${origin.latitude}&lon=${
-  //     origin.longitude
-  //   }&placeName=${origin.locationName || ""} `;
-  //   props.history.push(url);
-  // };
-
   return (
     <Container component="main" maxWidth="sm" className={classes.container}>
       <CssBaseline />
@@ -120,11 +113,10 @@ const Home = (props) => {
         <Box className={classes.formContainer}>
           <form
             className={classes.form}
-            noValidate
             onSubmit={() => props.history.push("/organizations")}
           >
             <Box className={classes.inputContainer}>
-              <Search {...props} setOrigin={setOrigin} />
+              <Search setOrigin={setOrigin} origin={origin} />
               <Button
                 type="submit"
                 disabled={!origin}
@@ -133,7 +125,12 @@ const Home = (props) => {
                 startIcon={
                   <SearchIcon fontSize="large" className={classes.searchIcon} />
                 }
-                onClick={() => props.history.push("/organizations")}
+                onClick={() =>
+                  props.history.push({
+                    pathname: "/organizations",
+                    state: { howdy: "howdy" },
+                  })
+                }
               />
             </Box>
             <Typography className={classes.label}>

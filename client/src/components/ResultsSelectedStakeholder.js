@@ -97,8 +97,6 @@ const SelectedStakeholderDisplay = (props) => {
   const { doSelectStakeholder, selectedStakeholder } = props;
   const classes = useStyles();
 
-  // console.log(moment(selectedStakeholder.dateClaimed).format())
-
   const standardTime = (timeStr) => {
     if (timeStr) {
       if (parseInt(timeStr.substring(0, 2)) === 12) {

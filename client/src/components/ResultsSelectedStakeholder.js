@@ -130,12 +130,12 @@ const SelectedStakeholderDisplay = (props) => {
           <img
             src={
               selectedStakeholder.categories[0].id === 1 &&
-                selectedStakeholder.categories[1] &&
-                selectedStakeholder.categories[1].id === 9
+              selectedStakeholder.categories[1] &&
+              selectedStakeholder.categories[1].id === 9
                 ? splitPantryMealIcon
                 : selectedStakeholder.categories[0].id === 1
-                  ? pantryIcon
-                  : mealIcon
+                ? pantryIcon
+                : mealIcon
             }
             alt="Organization Category Icon"
             className={classes.typeLogo}
@@ -157,30 +157,34 @@ const SelectedStakeholderDisplay = (props) => {
           >
             {selectedStakeholder.categories[0].name}
           </em>
-          {selectedStakeholder.categories[1] ? <em style={{
-            color: "#CC3333",
-          }}>
-            {selectedStakeholder.categories[1].name}
-          </em> : null}
+          {selectedStakeholder.categories[1] ? (
+            <em
+              style={{
+                color: "#CC3333",
+              }}
+            >
+              {selectedStakeholder.categories[1].name}
+            </em>
+          ) : null}
         </div>
         <div className={classes.checkHolder}>
           {selectedStakeholder.distance >= 10
             ? selectedStakeholder.distance
-              .toString()
-              .substring(0, 3)
-              .padEnd(4, "0")
+                .toString()
+                .substring(0, 3)
+                .padEnd(4, "0")
             : selectedStakeholder.distance.toString().substring(0, 3)}{" "}
           mi
           {mapMarker(
-              selectedStakeholder.categories[0].id === 1 &&
-                selectedStakeholder.categories[1] &&
-                selectedStakeholder.categories[1].id === 9
-                ? ""
-                : selectedStakeholder.categories[0].id === 1
-                  ? "#336699"
-                  : "#CC3333",
-              selectedStakeholder.submittedDate ? true : false
-            )}
+            selectedStakeholder.categories[0].id === 1 &&
+              selectedStakeholder.categories[1] &&
+              selectedStakeholder.categories[1].id === 9
+              ? ""
+              : selectedStakeholder.categories[0].id === 1
+              ? "#336699"
+              : "#CC3333",
+            selectedStakeholder.submittedDate ? true : false
+          )}
         </div>
       </div>
       <a

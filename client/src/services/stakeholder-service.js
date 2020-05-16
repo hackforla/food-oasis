@@ -40,7 +40,7 @@ export const search = async (searchParams) => {
     };
   });
 
-  console.log("stakeholders", stakeholders);
+  // console.log("stakeholders", stakeholders);
   return stakeholders;
 };
 

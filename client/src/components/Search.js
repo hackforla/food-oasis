@@ -43,7 +43,7 @@ export default function Search(props) {
   const { userCoordinates, setOrigin } = props;
   const classes = useStyles();
   const [selectedPlace, setSelectedPlace] = useState("");
-  const [placeholderState, setPlaceholder] = useState("")
+  const [placeholderState, setPlaceholder] = useState("");
 
   const { mapboxResults, fetchMapboxResults } = useMapboxGeocoder();
 
@@ -71,7 +71,7 @@ export default function Search(props) {
         ...itemCoordinates,
         locationName: result.place_name,
       });
-      setPlaceholder(result.place_name)
+      setPlaceholder(result.place_name);
     }
   };
 
@@ -175,33 +175,33 @@ export default function Search(props) {
           toggleMenu,
           isOpen,
         }) => (
-            <div className={classes.container}>
-              {renderInput({
-                classes,
-                selectedItem,
-                availableItems: mapboxResults,
-                InputProps: {
-                  ...getInputProps({
-                    onClick: () => toggleMenu(),
-                    onChange: handleInputChange,
-                    value: inputValue || selectedPlace,
-                  }),
-                },
-              })}
+          <div className={classes.container}>
+            {renderInput({
+              classes,
+              selectedItem,
+              availableItems: mapboxResults,
+              InputProps: {
+                ...getInputProps({
+                  onClick: () => toggleMenu(),
+                  onChange: handleInputChange,
+                  value: inputValue || selectedPlace,
+                }),
+              },
+            })}
 
-              {isOpen && (
-                <Paper className={classes.paper} square>
-                  {renderResults({
-                    highlightedIndex,
-                    selectedItem,
-                    inputValue,
-                    mapboxResults,
-                    getItemProps,
-                  })}
-                </Paper>
-              )}
-            </div>
-          )}
+            {isOpen && (
+              <Paper className={classes.paper} square>
+                {renderResults({
+                  highlightedIndex,
+                  selectedItem,
+                  inputValue,
+                  mapboxResults,
+                  getItemProps,
+                })}
+              </Paper>
+            )}
+          </div>
+        )}
       </Downshift>
     </>
   );

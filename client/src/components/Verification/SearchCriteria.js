@@ -190,16 +190,19 @@ const SearchCriteria = ({
           </Grid>
           <Grid item xs={12} sm={6}>
             <FormControl variant="outlined" fullWidth>
-              <FormLabel className={classes.formLabel}>
+              <FormLabel
+                id="verification-status-id-label"
+                className={classes.formLabel}
+              >
                 Verification Status
               </FormLabel>
               <Select
-                labelId=""
+                labelId="verification-status-id-label"
                 name="verificationStatusId"
                 variant="outlined"
+                size="small"
                 value={criteria.verificationStatusId}
                 onChange={setCriterion}
-                input={<Input id="verificationStatusId" variant="outlined" />}
               >
                 <MenuItem key={0} value={0}>
                   (Any)
@@ -219,7 +222,6 @@ const SearchCriteria = ({
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={12} sm={6}></Grid>
           <Grid item xs={12} sm={6}>
             <FormLabel className={classes.formLabel}>Assigned To</FormLabel>
             <AccountAutocomplete
@@ -230,7 +232,7 @@ const SearchCriteria = ({
               }
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          {/* <Grid item xs={12} sm={6}>
             <FormLabel className={classes.formLabel}>Claimed By </FormLabel>
             <AccountAutocomplete
               name="claimedLoginId"
@@ -239,7 +241,7 @@ const SearchCriteria = ({
                 setCriteria({ ...criteria, claimedLoginId })
               }
             />
-          </Grid>
+          </Grid> */}
           <Grid item xs={6} sm={2}>
             <RadioTrueFalseEither
               label="Inactive"

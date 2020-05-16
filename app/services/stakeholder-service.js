@@ -122,7 +122,7 @@ const search = async ({
     }
     order by s.name
   `;
-  console.log(sql);
+  //console.log(sql);
   const stakeholderResult = await pool.query(sql);
   let stakeholders = [];
   stakeholderResult.rows.forEach((row) => {

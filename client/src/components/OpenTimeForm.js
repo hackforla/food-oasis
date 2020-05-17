@@ -6,13 +6,35 @@ import { Card, CardContent, Typography } from "@material-ui/core";
 function OpenTimeForm(props) {
   const { value, onChange } = props;
   const [hours, setHours] = useState(props.value);
+  const [errorMessages, setErrorMessages] = useState([]);
 
   useEffect(() => {
     setHours(value);
   }, [value]);
 
+  const validate = (hours) => {
+    let messages = [];
+    for (let i = 0; i < hours.length; i++) {
+      const row = hours[i];
+      if (!row.weekOfMonth) {
+        messages.push(`Row ${i + 1}: Week of Month is required`);
+      }
+      if (!row.dayOfWeek) {
+        messages.push(`Row ${i + 1}: Day of Week is required`);
+      }
+      if (!row.open) {
+        messages.push(`Row ${i + 1}: Opening  Time is required`);
+      }
+      if (!row.close) {
+        messages.push(`Row ${i + 1}: Closing Time is required`);
+      }
+    }
+    return messages;
+  };
+
   const handleChange = (newHours) => {
     setHours(newHours);
+    setErrorMessages(validate(newHours));
     onChange({ target: { value: newHours, name: "hours" } });
   };
 
@@ -78,6 +100,13 @@ function OpenTimeForm(props) {
       <CardContent>
         <Typography>Hours</Typography>
         <div>{inputsMap}</div>
+        {errorMessages.length > 0
+          ? errorMessages.map((msg) => (
+              <div key={msg} style={{ color: "red" }}>
+                {msg}
+              </div>
+            ))
+          : null}
         <AddButton onClick={addHours} label={"Add Hours"} />
       </CardContent>
     </Card>

@@ -687,8 +687,8 @@ const update = async (model) => {
     // If this fails we don't update anything
     return Promise.reject(e.message);
   }
-
-  const sql = `
+  try {
+    const sql = `
     update stakeholder set
       name = ${toSqlString(name)}, 
       address_1 = ${toSqlString(address1)}, 
@@ -758,7 +758,10 @@ const update = async (model) => {
       verification_status_id = ${toSqlNumeric(verificationStatusId)},
       inactive_temporary = ${toSqlBoolean(inactiveTemporary)}
     where id = ${id}`;
-  await pool.query(sql);
+    await pool.query(sql);
+  } catch (e) {
+    return Promise.reject(e.message);
+  }
 };
 
 const remove = (id) => {

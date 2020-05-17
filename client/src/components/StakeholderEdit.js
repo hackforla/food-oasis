@@ -473,7 +473,7 @@ const StakeholderEdit = (props) => {
                     <TextField
                       type="text"
                       size="small"
-                      label="Name"
+                      label="Name *"
                       name="name"
                       variant="outlined"
                       margin="normal"
@@ -511,7 +511,7 @@ const StakeholderEdit = (props) => {
                           margin="normal"
                           fullWidth
                           name="phone"
-                          label="Phone"
+                          label="Phone *"
                           type="text"
                           size="small"
                           value={values.phone}
@@ -549,7 +549,7 @@ const StakeholderEdit = (props) => {
                           margin="normal"
                           fullWidth
                           name="email"
-                          label="Email"
+                          label="Email *"
                           type="text"
                           size="small"
                           value={values.email}
@@ -584,7 +584,7 @@ const StakeholderEdit = (props) => {
                     <div className={classes.confirmableGroupWrapper}>
                       <FormControl className={classes.formControl} fullWidth>
                         <InputLabel id="selectCategoryIds-label">
-                          Categories
+                          Categories *
                         </InputLabel>
 
                         <Select
@@ -804,7 +804,7 @@ const StakeholderEdit = (props) => {
                         margin="normal"
                         fullWidth
                         name="address1"
-                        label="Address Line 1"
+                        label="Address Line 1 *"
                         type="text"
                         size="small"
                         value={values.address1}
@@ -836,7 +836,7 @@ const StakeholderEdit = (props) => {
                         margin="normal"
                         fullWidth
                         name="city"
-                        label="City"
+                        label="City *"
                         type="text"
                         size="small"
                         value={values.city}
@@ -852,7 +852,7 @@ const StakeholderEdit = (props) => {
                         margin="normal"
                         fullWidth
                         name="state"
-                        label="State"
+                        label="State *"
                         type="text"
                         size="small"
                         value={values.state}
@@ -868,7 +868,7 @@ const StakeholderEdit = (props) => {
                         margin="normal"
                         fullWidth
                         name="zip"
-                        label="Zip Code"
+                        label="Zip Code *"
                         type="text"
                         size="small"
                         value={values.zip}
@@ -885,7 +885,7 @@ const StakeholderEdit = (props) => {
                         margin="normal"
                         fullWidth
                         name="latitude"
-                        label="Latitude"
+                        label="Latitude *"
                         type="text"
                         size="small"
                         value={values.latitude}
@@ -901,8 +901,9 @@ const StakeholderEdit = (props) => {
                         margin="normal"
                         fullWidth
                         name="longitude"
-                        label="Longitude"
+                        label="Longitude *"
                         type="text"
+                        s
                         size="small"
                         value={values.longitude}
                         onChange={handleChange}

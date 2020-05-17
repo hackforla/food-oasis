@@ -91,17 +91,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+//still issue with hours at anne douglas center los angeles mission, but i think that it is an input error rather than anything that the source code is doing wrong
+
 const SelectedStakeholderDisplay = (props) => {
   const { doSelectStakeholder, selectedStakeholder } = props;
   const classes = useStyles();
 
   const standardTime = (timeStr) => {
-    if (parseInt(timeStr.substring(0, 2)) === 12) {
-      return `12${timeStr.substring(2, 5)}PM`;
+    if (timeStr) {
+      if (parseInt(timeStr.substring(0, 2)) === 12) {
+        return `12${timeStr.substring(2, 5)}PM`;
+      }
+      return parseInt(timeStr.substring(0, 2)) > 12
+        ? `${parseInt(timeStr.substring(0, 2)) - 12}${timeStr.substring(
+            2,
+            5
+          )}PM`
+        : `${timeStr.substring(0, 5)}AM`;
     }
-    return parseInt(timeStr.substring(0, 2)) > 12
-      ? `${parseInt(timeStr.substring(0, 2)) - 12}${timeStr.substring(2, 5)}PM`
-      : `${timeStr.substring(0, 5)}AM`;
   };
 
   const getGoogleMapsUrl = (zip, address1, address2) => {
@@ -187,6 +194,19 @@ const SelectedStakeholderDisplay = (props) => {
           )}
         </div>
       </div>
+      {selectedStakeholder.submittedDate ? (
+        <p
+          style={{
+            color:
+              selectedStakeholder.categories[0].id === 1
+                ? "#336699"
+                : "#CC3333",
+          }}
+        >
+          Data Verified on{" "}
+          {selectedStakeholder.submittedDate.format("MMM Do, YYYY")}
+        </p>
+      ) : null}
       <a
         className={classes.link}
         href={getGoogleMapsUrl(

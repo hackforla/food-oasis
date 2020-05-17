@@ -9,8 +9,9 @@ import StakeholderGrid from "../StakeholderGrid";
 import { RotateLoader } from "react-spinners";
 import { useOrganizations } from "../../hooks/useOrganizations/useOrganizations";
 import { useCategories } from "../../hooks/useCategories/useCategories";
-import { assign } from "../../services/stakeholder-service";
+import { needsVerification, assign } from "../../services/stakeholder-service";
 import AssignDialog from "./AssignDialog";
+import NeedsVerificationDialog from "./MessageConfirmDialog";
 import SearchCriteria from "./SearchCriteria";
 
 const CRITERIA_TOKEN = "verificationAdminCriteria";
@@ -76,7 +77,7 @@ const DialogTitle = (props) => {
 };
 
 DialogTitle.propTypes = {
-  children: PropTypes.object,
+  children: PropTypes.string,
   onClose: PropTypes.func,
 };
 
@@ -95,9 +96,13 @@ const defaultCriteria = {
   isClaimed: "either",
   assignedLoginId: null,
   claimedLoginId: null,
+  verificationStatusId: "0",
 };
 
 VerificationAdmin.propTypes = {
+  user: PropTypes.shape({
+    id: PropTypes.number,
+  }),
   userCoordinates: PropTypes.shape({
     latitude: PropTypes.number,
     longitude: PropTypes.number,
@@ -105,10 +110,14 @@ VerificationAdmin.propTypes = {
 };
 
 function VerificationAdmin(props) {
-  const { userCoordinates } = props;
+  const { user, userCoordinates } = props;
   const classes = useStyles();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [assignDialogOpen, setAssignDialogOpen] = useState(false);
+  const [
+    needsVerificationDialogOpen,
+    setNeedsVerificationDialogOpen,
+  ] = useState(false);
   const [criteria, setCriteria] = useState(defaultCriteria);
   const [selectedStakeholderIds, setSelectedStakeholderIds] = useState([]);
 
@@ -157,7 +166,22 @@ function VerificationAdmin(props) {
     // want to unassign, otherwisd a loginId > 0
     if (loginId === false) return;
     for (let i = 0; i < selectedStakeholderIds.length; i++) {
-      await assign(selectedStakeholderIds[i], !!loginId, loginId);
+      await assign(selectedStakeholderIds[i], user.id, loginId);
+    }
+    search();
+  };
+
+  const handleNeedsVerificationDialogOpen = async () => {
+    setNeedsVerificationDialogOpen(true);
+  };
+
+  const handleNeedsVerificationDialogClose = async (message) => {
+    setNeedsVerificationDialogOpen(false);
+    // Dialog returns false if cancelled, otherwise an optional
+    // message to attach to stakeholder(s)
+    if (message === false) return;
+    for (let i = 0; i < selectedStakeholderIds.length; i++) {
+      await needsVerification(selectedStakeholderIds[i], user.id, message);
     }
     search();
   };
@@ -252,6 +276,13 @@ function VerificationAdmin(props) {
           open={assignDialogOpen}
           onClose={handleAssignDialogClose}
         />
+        <NeedsVerificationDialog
+          id="needs-verification-dialog"
+          keepMounted
+          message={""}
+          open={needsVerificationDialogOpen}
+          onClose={handleNeedsVerificationDialogClose}
+        />
         <>
           {categoriesError || stakeholdersError ? (
             <div className={classes.bigMessage}>
@@ -291,21 +322,39 @@ function VerificationAdmin(props) {
                   display: "flex",
                   flexDirection: "row",
                   justifyContent: "space-between",
-                  alignItems: "flex-end",
                 }}
               >
-                <Button
-                  variant="contained"
-                  title="Assign selected Organizations to User for Verification"
-                  color="primary"
-                  disabled={selectedStakeholderIds.length === 0}
-                  onClick={handleAssignDialogOpen}
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "flex-start",
+                  }}
                 >
-                  Assign
-                </Button>
+                  <Button
+                    variant="contained"
+                    title="Mark for verification"
+                    color="primary"
+                    disabled={selectedStakeholderIds.length === 0}
+                    onClick={handleNeedsVerificationDialogOpen}
+                    style={{ marginRight: "0.2em" }}
+                  >
+                    Needs Verification
+                  </Button>
+                  <Button
+                    variant="contained"
+                    title="Assign selected Organizations to User for Verification"
+                    color="primary"
+                    disabled={selectedStakeholderIds.length === 0}
+                    onClick={handleAssignDialogOpen}
+                  >
+                    Assign
+                  </Button>
+                </div>
                 <div>{`${stakeholders.length} rows`} </div>
               </div>
               <StakeholderGrid
+                mode={"admin"}
                 stakeholders={stakeholders}
                 setSelectedStakeholderIds={setSelectedStakeholderIds}
               />

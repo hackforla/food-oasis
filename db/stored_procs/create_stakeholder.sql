@@ -23,7 +23,7 @@ CREATE OR REPLACE PROCEDURE create_stakeholder(
   s_covid_notes VARCHAR, s_category_notes VARCHAR, s_eligibility_notes VARCHAR,
   s_food_types VARCHAR, s_languages VARCHAR, s_v_name BOOLEAN, s_v_categories BOOLEAN,
   s_v_address BOOLEAN, s_v_phone BOOLEAN, s_v_email BOOLEAN, s_v_hours BOOLEAN,
-  s_verification_status_id INT,
+  s_verification_status_id INT, s_inactive_temporary BOOLEAN,
   categories INT[], hours_array stakeholder_hours[])
 AS $$
 DECLARE cat INT;
@@ -47,7 +47,7 @@ BEGIN
       donation_delivery_instructions, donation_notes, covid_notes,
       category_notes, eligibility_notes, food_types, languages,
       v_name, v_categories, v_address,
-      v_phone, v_email, v_hours, verification_status_id)
+      v_phone, v_email, v_hours, verification_status_id, inactive_temporary)
     VALUES (
       s_name, s_address_1, s_address_2, s_city, s_state, s_zip,
       s_phone, s_latitude, s_longitude,
@@ -65,7 +65,7 @@ BEGIN
       s_donation_delivery_instructions, s_donation_notes, s_covid_notes,
       s_category_notes, s_eligibility_notes, s_food_types, s_languages,
       s_v_name, s_v_categories, s_v_address,
-      s_v_phone, s_v_email, s_v_hours, s_verification_status_id
+      s_v_phone, s_v_email, s_v_hours, s_verification_status_id, s_inactive_temporary
     ) RETURNING id INTO s_id;
 
     -- insert new stakeholder category(s)

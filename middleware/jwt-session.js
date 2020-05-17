@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 // const autoCatch = require("./lib/auto-catch");
 
 const jwtSecret = process.env.JWT_SECRET || "mark it zero";
-const jwtOpts = { algorithm: "HS256", expiresIn: "1d" };
+const jwtOpts = { algorithm: "HS256", expiresIn: "14d" };
 
 module.exports = {
   //login: autoCatch(login),

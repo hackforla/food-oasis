@@ -25,7 +25,7 @@ CREATE OR REPLACE PROCEDURE update_stakeholder(
   s_covid_notes VARCHAR, s_category_notes VARCHAR, s_eligibility_notes VARCHAR,
   s_food_types VARCHAR, s_languages VARCHAR, s_v_name BOOLEAN, s_v_categories BOOLEAN,
   s_v_address BOOLEAN, s_v_phone BOOLEAN, s_v_email BOOLEAN, s_v_hours BOOLEAN,
-  s_verification_status_id INT,
+  s_verification_status_id INT, s_inactive_temporary BOOLEAN,
   s_id INT, categories INT[], hours_array stakeholder_hours[])
 AS $$
 DECLARE cat INT;
@@ -95,7 +95,8 @@ BEGIN
       v_phone = s_v_phone,
       v_email = s_v_email,
       v_hours = s_v_hours,
-      verification_status_id = s_verification_status_id
+      verification_status_id = s_verification_status_id,
+      inactive_temporary = s_inactive_temporary
     WHERE
       id=s_id;
 

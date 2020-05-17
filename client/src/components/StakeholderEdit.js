@@ -199,6 +199,7 @@ const StakeholderEdit = (props) => {
     confirmedPhone: false,
     confirmedHours: false,
     verificationStatusId: VERIFICATION_STATUS.NEEDS_VERIFICATION,
+    inactiveTemporary: false,
   });
 
   const { data: categories } = useCategories();
@@ -673,7 +674,7 @@ const StakeholderEdit = (props) => {
                       />
                     </BigTooltip>
                   </Grid>
-                  <Grid item xs={12} sm={6}>
+                  <Grid item xs={6} sm={3}>
                     <BigTooltip title="Check if they are permanently closed.">
                       <FormControlLabel
                         control={
@@ -690,6 +691,29 @@ const StakeholderEdit = (props) => {
                           />
                         }
                         label="Permanently Closed"
+                      />
+                    </BigTooltip>
+                  </Grid>
+                  <Grid item xs={6} sm={3}>
+                    <BigTooltip title="Check if they are temporarily closed.">
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            margin="normal"
+                            name="inactiveTemporary"
+                            label="Inactive"
+                            value={values.inactiveTemporary}
+                            checked={values.inactiveTemporary}
+                            onChange={() =>
+                              setFieldValue(
+                                "inactiveTemporary",
+                                !values.inactiveTemporary
+                              )
+                            }
+                            onBlur={handleBlur}
+                          />
+                        }
+                        label="Temporarily Closed (COVID)"
                       />
                     </BigTooltip>
                   </Grid>
@@ -1839,7 +1863,7 @@ const StakeholderEdit = (props) => {
               </TabPanel>
               <div style={{ display: "flex" }}>
                 <div style={{ flexBasis: "20%", flexGrow: 1 }}>
-                  <BigTooltip title={adminNoteTooltip}>
+                  <BigTooltip title={adminNoteTooltip} placement="right-end">
                     <TextField
                       variant="outlined"
                       margin="normal"
@@ -2162,7 +2186,7 @@ const StakeholderEdit = (props) => {
 
 StakeholderEdit.propTypes = {
   classes: PropTypes.object,
-  setToast: PropTypes.object,
+  setToast: PropTypes.func,
   match: PropTypes.object,
   user: PropTypes.object,
   history: PropTypes.object,

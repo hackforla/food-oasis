@@ -69,56 +69,36 @@ export const put = async (stakeholder) => {
   return response.data;
 };
 
-// id = stakeholderId, setVerified = true to verify data, false to un-verify,
-// loginId is user.id of logged in user
-export const verify = async (id, setVerified, loginId) => {
-  const response = await axios.put(`${baseUrl}/${id}/verify`, {
+// id = stakeholderId
+// userLoginId is the id of the user doing the assigning
+// loginId is user.id of user being assigned to stakeholder
+export const assign = async (id, userLoginId, loginId) => {
+  const response = await axios.put(`${baseUrl}/${id}/assign`, {
     id,
-    setVerified,
+    userLoginId,
     loginId,
   });
   return response.data;
 };
 
-// id = stakeholderId, setAssigned = true to assign, false to un-assign,
-// loginId is user.id of user being assigned to stakeholder
-export const assign = async (id, setAssigned, loginId) => {
-  const response = await axios.put(`${baseUrl}/${id}/assign`, {
+// id = stakeholderId
+// userLoginId is the id of the user
+export const needsVerification = async (id, userLoginId, message) => {
+  const response = await axios.put(`${baseUrl}/${id}/needsVerification`, {
     id,
-    setAssigned,
-    loginId,
+    userLoginId,
+    message,
   });
   return response.data;
 };
 
 // id = stakeholderId, setClaimed = true to claim data, false to un-claim,
 // loginId is user.id of user that claims stakeholder
-export const claim = async (id, setClaimed, loginId) => {
+export const claim = async (id, userLoginId, setClaimed, loginId) => {
   const response = await axios.put(`${baseUrl}/${id}/claim`, {
     id,
+    userLoginId,
     setClaimed,
-    loginId,
-  });
-  return response.data;
-};
-
-// id = stakeholderId, setApproved = true to approve data, false to un-approve,
-// loginId is user.id of logged in user
-export const approve = async (id, setApproved, loginId) => {
-  const response = await axios.put(`${baseUrl}/${id}/approve`, {
-    id,
-    setApproved,
-    loginId,
-  });
-  return response.data;
-};
-
-// id = stakeholderId, setRejected = true to reject data, false to un-reject,
-// loginId is user.id of logged in user
-export const reject = async (id, setRejected, loginId) => {
-  const response = await axios.put(`${baseUrl}/${id}/reject`, {
-    id,
-    setRejected,
     loginId,
   });
   return response.data;

@@ -12,7 +12,7 @@ const RadioTrueFalseEither = (props) => {
   return (
     <FormControl
       component="fieldset"
-      style={{ border: "1px solid gray", padding: "0.5em", widht: "100%" }}
+      style={{ border: "1px solid gray", padding: "0.5em", width: "100%" }}
     >
       <FormLabel component="legend">{label}</FormLabel>
       <RadioGroup
@@ -21,7 +21,6 @@ const RadioTrueFalseEither = (props) => {
         name={name}
         value={value}
         onChange={onChange}
-        fullWidth
       >
         <FormControlLabel value="true" control={<Radio />} label="Yes" />
         <FormControlLabel value="false" control={<Radio />} label="No" />

@@ -22,6 +22,7 @@ export const useOrganizations = () => {
     isClaimed,
     assignedLoginId,
     claimedLoginId,
+    verificationStatusId,
   }) => {
     //if (!categoryIds || categoryIds.length === 0) return;
     try {
@@ -40,6 +41,7 @@ export const useOrganizations = () => {
         isClaimed,
         assignedLoginId,
         claimedLoginId,
+        verificationStatusId,
       });
       setState({ data: stakeholders, loading: false, error: false });
       return stakeholders;

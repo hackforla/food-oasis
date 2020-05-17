@@ -151,7 +151,7 @@ function VerificationDashboard(props) {
               </Typography>
             </div>
           ) : stakeholders ? (
-            <StakeholderGrid stakeholders={stakeholders} />
+            <StakeholderGrid mode={"dataentry"} stakeholders={stakeholders} />
           ) : (
             <div className={classes.bigMessage}>
               <Typography variant="h5" component="h5">

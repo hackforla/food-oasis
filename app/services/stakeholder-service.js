@@ -28,8 +28,7 @@ const search = async ({
   isClaimed,
   assignedLoginId,
   claimedLoginId,
-  // TODO - Add verifcatonStatus to query filters
-  // verificationStatusId,
+  verificationStatusId,
 }) => {
   const categoryClause = `(select sc.stakeholder_id
     from stakeholder_category sc
@@ -86,7 +85,7 @@ const search = async ({
       s.donation_delivery_instructions, s.donation_notes, s.covid_notes,
       s.category_notes, s.eligibility_notes, s.food_types, s.languages,
       s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email,
-      s.v_hours, s.verification_status_id
+      s.v_hours, s.verification_status_id, s.inactive_temporary
     from stakeholder s
     left join login L1 on s.created_login_id = L1.id
     left join login L2 on s.modified_login_id = L2.id
@@ -108,6 +107,11 @@ const search = async ({
     ${trueFalseEitherClause("s.inactive", inactive)}
     ${assignedLoginId ? ` and s.assigned_login_id = ${assignedLoginId} ` : ""}
     ${claimedLoginId ? ` and s.claimed_login_id = ${claimedLoginId} ` : ""}
+    ${
+      Number(verificationStatusId) > 0
+        ? ` and s.verification_status_id = ${verificationStatusId} `
+        : ""
+    }
     order by s.name
   `;
   // console.console.log(sql);
@@ -188,6 +192,7 @@ const search = async ({
       confirmedEmail: row.v_email,
       confirmedHours: row.v_hours,
       verificationStatusId: row.verification_status_id,
+      inactiveTemporary: row.inactive_temporary,
     });
   });
 
@@ -262,7 +267,7 @@ const selectById = async (id) => {
       s.donation_delivery_instructions, s.donation_notes, s.covid_notes,
       s.category_notes, s.eligibility_notes, s.food_types, s.languages,
       s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email,
-      s.v_hours, s.verification_status_id
+      s.v_hours, s.verification_status_id, s.inactive_temporary
     from stakeholder s
     left join login L1 on s.created_login_id = L1.id
     left join login L2 on s.modified_login_id = L2.id
@@ -347,6 +352,7 @@ const selectById = async (id) => {
     confirmedEmail: row.v_email,
     confirmedHours: row.v_hours,
     verificationStatusId: row.verification_status_id,
+    inactiveTemporary: row.inactive_temporary,
   };
 
   // Don't have a distance, since we didn't specify origin
@@ -420,6 +426,7 @@ const insert = async (model) => {
     confirmedEmail,
     confirmedHours,
     verificationStatusId,
+    inactiveTemporary,
   } = model;
   try {
 
@@ -482,6 +489,7 @@ const insert = async (model) => {
       ${toSqlBoolean(confirmedEmail)},
       ${toSqlBoolean(confirmedHours)},
       ${toSqlNumeric(verificationStatusId)}::INT,
+      ${toSqlBoolean(inactiveTemporary)},
       ${categories}, ${formattedHours})`
     const stakeholderResult = await pool.query(invokeSprocSql)
     return stakeholderResult
@@ -490,70 +498,52 @@ const insert = async (model) => {
   }
 };
 
-const submit = async (model) => {
-  const { id, loginId, setSubmitted } = model;
-  const sql = `update stakeholder set
-               submitted_login_id = ${
-                 setSubmitted ? toSqlNumeric(loginId) : "null"
-               },
-               submitted_date = ${setSubmitted ? "CURRENT_TIMESTAMP" : "null"}
-              where id = ${id}`;
-  await pool.query(sql);
-};
-
-const verify = async (model) => {
-  const { id, loginId, setVerified } = model;
-  const sql = `update stakeholder set
-               submitted_login_id = ${
-                 setVerified ? toSqlNumeric(loginId) : "null"
-               },
-               submitted_date = ${setVerified ? "CURRENT_TIMESTAMP" : "null"}
-              where id = ${id}`;
-  await pool.query(sql);
-};
-
 const assign = async (model) => {
-  const { id, loginId, setAssigned } = model;
+  const { id, userLoginId, loginId } = model;
   const sql = `update stakeholder set
-               assigned_login_id = ${
-                 setAssigned ? toSqlNumeric(loginId) : "null"
-               },
-               assigned_date = ${setAssigned ? "CURRENT_TIMESTAMP" : "null"}
+                assigned_login_id = ${toSqlNumeric(loginId)},
+                assigned_date = CURRENT_TIMESTAMP,
+                submitted_date = null,
+                submitted_login_id = null,
+                modified_login_id = ${toSqlNumeric(userLoginId)},
+                modified_date = CURRENT_TIMESTAMP,
+                approved_date = null,
+                reviewed_login_id = null,
+                verification_status_id = 2
+              where id = ${id}`;
+  await pool.query(sql);
+};
+
+const needsVerification = async (model) => {
+  const { id, userLoginId, message } = model;
+  const sql = `update stakeholder set
+                assigned_login_id = null,
+                assigned_date = null,
+                submitted_date = null,
+                submitted_login_id = null,
+                modified_login_id = ${toSqlNumeric(userLoginId)},
+                modified_date = CURRENT_TIMESTAMP,
+                approved_date = null,
+                reviewed_login_id = null,
+                verification_status_id = 1,
+                review_notes = CASE WHEN length(review_notes) > 0  THEN review_notes ${
+                  message
+                    ? ` || chr(10) || chr(10) || ${toSqlString(message)} `
+                    : ""
+                } ELSE ${toSqlString(message)} END
               where id = ${id}`;
   await pool.query(sql);
 };
 
 const claim = async (model) => {
-  const { id, loginId, setClaimed } = model;
+  const { id, userLoginId, loginId, setClaimed } = model;
   const sql = `update stakeholder set
-               claimed_login_id = ${
-                 setClaimed ? toSqlNumeric(loginId) : "null"
-               },
-               claimed_date = ${setClaimed ? "CURRENT_TIMESTAMP" : "null"}
-              where id = ${id}`;
-  await pool.query(sql);
-};
-
-const approve = async (model) => {
-  const { id, loginId, setApproved } = model;
-  const sql = `update stakeholder set
-               reviewed_login_id = ${
-                 setApproved ? toSqlNumeric(loginId) : "null"
-               },
-               approved_date = ${setApproved ? "CURRENT_TIMESTAMP" : "null"},
-               rejected_date = null
-              where id = ${id}`;
-  await pool.query(sql);
-};
-
-const reject = async (model) => {
-  const { id, loginId, setRejected } = model;
-  const sql = `update stakeholder set
-               reviewed_login_id = ${
-                 setRejected ? toSqlNumeric(loginId) : "null"
-               },
-               rejected_date = ${setRejected ? "CURRENT_TIMESTAMP" : "null"},
-               approved_date = null
+                claimed_login_id = ${
+                  setClaimed ? toSqlNumeric(loginId) : "null"
+                },
+                claimed_date = ${setClaimed ? "CURRENT_TIMESTAMP" : "null"},
+                modified_login_id = ${toSqlNumeric(userLoginId)},
+                modified_date = CURRENT_TIMESTAMP,
               where id = ${id}`;
   await pool.query(sql);
 };
@@ -624,6 +614,7 @@ const update = async (model) => {
     confirmedEmail,
     confirmedHours,
     verificationStatusId,
+    inactiveTemporary,
   } = model;
 
   let hoursSqlValues = hours.length
@@ -667,7 +658,7 @@ const update = async (model) => {
     ${toSqlString(eligibilityNotes)}::VARCHAR, ${toSqlString(foodTypes)}::VARCHAR, ${toSqlString(languages)}::VARCHAR,
     ${toSqlBoolean(confirmedName)}, ${toSqlBoolean(confirmedCategories)}, ${toSqlBoolean(confirmedAddress)},
     ${toSqlBoolean(confirmedPhone)}, ${toSqlBoolean(confirmedEmail)}, ${toSqlBoolean(confirmedHours)},
-    ${toSqlNumeric(verificationStatusId)}::INT,
+    ${toSqlNumeric(verificationStatusId)}::INT, ${toSqlBoolean(inactiveTemporary)},
     ${id}, ${categories}, ${formattedHours})`
   try {
     await pool.query(invokeSprocSql);
@@ -692,10 +683,7 @@ module.exports = {
   insert,
   update,
   remove,
-  submit,
-  verify,
+  needsVerification,
   assign,
   claim,
-  approve,
-  reject,
 };

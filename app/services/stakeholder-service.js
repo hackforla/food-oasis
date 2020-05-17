@@ -429,16 +429,15 @@ const insert = async (model) => {
     inactiveTemporary,
   } = model;
   try {
-
     let hoursSqlValues = hours.length
-    ? hours
-        .reduce((acc, cur) => {
-          return (acc += `'(${cur.weekOfMonth},${cur.dayOfWeek},${cur.open},${cur.close})', `)
-        }, '')
-        .slice(0, -2)
-    : ''
-    const categories = 'ARRAY[' + selectedCategoryIds.join(',') + ']::int[]'
-    const formattedHours = 'ARRAY[' + hoursSqlValues + ']::stakeholder_hours[]'
+      ? hours
+          .reduce((acc, cur) => {
+            return (acc += `'(${cur.weekOfMonth},${cur.dayOfWeek},${cur.open},${cur.close})', `);
+          }, "")
+          .slice(0, -2)
+      : "";
+    const categories = "ARRAY[" + selectedCategoryIds.join(",") + "]::int[]";
+    const formattedHours = "ARRAY[" + hoursSqlValues + "]::stakeholder_hours[]";
 
     // create_stakeholder is a postgres stored procedure. Source of this stored
     // procedure is in the repo at db/stored_procs/create_stakeholder.sql.
@@ -447,25 +446,41 @@ const insert = async (model) => {
     // (ARRAY['(2,Wed,13:02,13:04)', '(3,Thu,07:00,08:00)'])::stakeholder_hours[]); --array of stakeholder_hours
     // objects, which are defined as a postgres type (see repo file for more detail on this type).
     const invokeSprocSql = `CALL create_stakeholder(
-      ${toSqlString(name)}::VARCHAR, ${toSqlString(address1)}::VARCHAR, ${toSqlString(address2)}::VARCHAR,
-      ${toSqlString(city)}::VARCHAR, ${toSqlString(state)}::VARCHAR, ${toSqlString(zip)}::VARCHAR,
+      ${toSqlString(name)}::VARCHAR, ${toSqlString(
+      address1
+    )}::VARCHAR, ${toSqlString(address2)}::VARCHAR,
+      ${toSqlString(city)}::VARCHAR, ${toSqlString(
+      state
+    )}::VARCHAR, ${toSqlString(zip)}::VARCHAR,
       ${toSqlString(phone)}::VARCHAR,
       ${toSqlNumeric(latitude)}::NUMERIC, ${toSqlNumeric(longitude)}::NUMERIC,
       ${toSqlString(website)}::VARCHAR, ${toSqlBoolean(inactive)},
       ${toSqlString(notes)}::VARCHAR, ${toSqlString(requirements)}::VARCHAR,
       ${toSqlString(adminNotes)}::VARCHAR, ${toSqlNumeric(loginId)}::INT,
-      ${toSqlString(parentOrganization)}::VARCHAR, ${toSqlString(physicalAccess)}::VARCHAR,
+      ${toSqlString(parentOrganization)}::VARCHAR, ${toSqlString(
+      physicalAccess
+    )}::VARCHAR,
       ${toSqlString(email)}::VARCHAR, ${toSqlString(items)}::VARCHAR,
       ${toSqlString(services)}::VARCHAR, ${toSqlString(facebook)}::VARCHAR,
       ${toSqlString(twitter)}::VARCHAR, ${toSqlString(pinterest)}::VARCHAR,
       ${toSqlString(linkedin)}::VARCHAR, ${toSqlString(description)}::VARCHAR,
-      ${toSqlTimestamp(submittedDate)}::TIMESTAMPTZ, ${toSqlNumeric(submittedLoginId)}::INT,
-      ${toSqlTimestamp(approvedDate)}::TIMESTAMP, ${toSqlTimestamp(rejectedDate)}::TIMESTAMP,
+      ${toSqlTimestamp(submittedDate)}::TIMESTAMPTZ, ${toSqlNumeric(
+      submittedLoginId
+    )}::INT,
+      ${toSqlTimestamp(approvedDate)}::TIMESTAMP, ${toSqlTimestamp(
+      rejectedDate
+    )}::TIMESTAMP,
       ${toSqlNumeric(reviewedLoginId)}::INT,
-      ${toSqlTimestamp(assignedDate)}::TIMESTAMP, ${toSqlNumeric(assignedLoginId)}::INT,
-      ${toSqlTimestamp(claimedDate)}::TIMESTAMP, ${toSqlNumeric(claimedLoginId)}::INT,
+      ${toSqlTimestamp(assignedDate)}::TIMESTAMP, ${toSqlNumeric(
+      assignedLoginId
+    )}::INT,
+      ${toSqlTimestamp(claimedDate)}::TIMESTAMP, ${toSqlNumeric(
+      claimedLoginId
+    )}::INT,
       ${toSqlString(reviewNotes)}::VARCHAR, ${toSqlString(instagram)}::VARCHAR,
-      ${toSqlString(adminContactName)}::VARCHAR, ${toSqlString(adminContactPhone)}::VARCHAR,
+      ${toSqlString(adminContactName)}::VARCHAR, ${toSqlString(
+      adminContactPhone
+    )}::VARCHAR,
       ${toSqlString(adminContactEmail)}::VARCHAR,
       ${toSqlString(donationContactName)}::VARCHAR,
       ${toSqlString(donationContactPhone)}::VARCHAR,
@@ -490,9 +505,9 @@ const insert = async (model) => {
       ${toSqlBoolean(confirmedHours)},
       ${toSqlNumeric(verificationStatusId)}::INT,
       ${toSqlBoolean(inactiveTemporary)},
-      ${categories}, ${formattedHours})`
-    const stakeholderResult = await pool.query(invokeSprocSql)
-    return stakeholderResult
+      ${categories}, ${formattedHours})`;
+    const stakeholderResult = await pool.query(invokeSprocSql);
+    return stakeholderResult;
   } catch (err) {
     return Promise.reject(err.message);
   }
@@ -627,7 +642,6 @@ const update = async (model) => {
   const categories = "ARRAY[" + selectedCategoryIds.join(",") + "]::int[]";
   const formattedHours = "ARRAY[" + hoursSqlValues + "]::stakeholder_hours[]";
 
-
   // update_stakeholder is a postgres stored procedure. Source of this stored
   // procedure is in the repo at db/stored_procs/update_stakeholder.sql.
   //
@@ -639,36 +653,77 @@ const update = async (model) => {
   // (ARRAY['(2,Wed,13:02,13:04)', '(3,Thu,07:00,08:00)'])::stakeholder_hours[]); --array of stakeholder_hours
   // objects, which are defined as a postgres type (see repo file for more detail on this type).
   const invokeSprocSql = `CALL update_stakeholder (
-    ${toSqlString(name)}::VARCHAR, ${toSqlString(address1)}::VARCHAR, ${toSqlString(address2)}::VARCHAR,
-    ${toSqlString(city)}::VARCHAR, ${toSqlString(state)}::VARCHAR, ${toSqlString(zip)}::VARCHAR, ${toSqlString(phone)}::VARCHAR,
-    ${toSqlNumeric(latitude)}::NUMERIC, ${toSqlNumeric(longitude)}::NUMERIC, ${toSqlString(website)}::VARCHAR,
-    ${toSqlBoolean(inactive)}, ${toSqlString(notes)}::VARCHAR, ${toSqlString(requirements)}::VARCHAR,
-    ${toSqlString(adminNotes)}::VARCHAR, ${toSqlString(parentOrganization)}::VARCHAR, ${toSqlString(physicalAccess)}::VARCHAR,
-    ${toSqlString(email)}::VARCHAR, ${toSqlString(items)}::VARCHAR, ${toSqlString(services)}::VARCHAR, ${toSqlString(facebook)}::VARCHAR,
-    ${toSqlString(twitter)}::VARCHAR, ${toSqlString(pinterest)}::VARCHAR, ${toSqlString(linkedin)}::VARCHAR, ${toSqlString(description)}::VARCHAR,
-    ${toSqlNumeric(loginId)}::INT, ${toSqlTimestamp(submittedDate)}::TIMESTAMPTZ, ${toSqlNumeric(submittedLoginId)}::INT,
-    ${toSqlTimestamp(approvedDate)}::TIMESTAMP, ${toSqlTimestamp(rejectedDate)}::TIMESTAMP, ${toSqlNumeric(reviewedLoginId)}::INT,
-    ${toSqlTimestamp(assignedDate)}::TIMESTAMP, ${toSqlNumeric(assignedLoginId)}::INT, ${toSqlTimestamp(claimedDate)}::TIMESTAMP,
-    ${toSqlNumeric(claimedLoginId)}::INT, ${toSqlString(reviewNotes)}::VARCHAR, ${toSqlString(instagram)}::VARCHAR,
-    ${toSqlString(adminContactName)}::VARCHAR, ${toSqlString(adminContactPhone)}::VARCHAR, ${toSqlString(adminContactEmail)}::VARCHAR,
-    ${toSqlString(donationContactName)}::VARCHAR, ${toSqlString(donationContactPhone)}::VARCHAR, ${toSqlString(donationContactEmail)}::VARCHAR,
-    ${toSqlBoolean(donationPickup)}, ${toSqlBoolean(donationAcceptFrozen)}, ${toSqlBoolean(donationAcceptRefrigerated)},
-    ${toSqlBoolean(donationAcceptPerishable)}, ${toSqlString(donationSchedule)}::VARCHAR, ${toSqlString(donationDeliveryInstructions)}::VARCHAR,
-    ${toSqlString(donationNotes)}::VARCHAR, ${toSqlString(covidNotes)}::VARCHAR, ${toSqlString(categoryNotes)}::VARCHAR,
-    ${toSqlString(eligibilityNotes)}::VARCHAR, ${toSqlString(foodTypes)}::VARCHAR, ${toSqlString(languages)}::VARCHAR,
-    ${toSqlBoolean(confirmedName)}, ${toSqlBoolean(confirmedCategories)}, ${toSqlBoolean(confirmedAddress)},
-    ${toSqlBoolean(confirmedPhone)}, ${toSqlBoolean(confirmedEmail)}, ${toSqlBoolean(confirmedHours)},
-    ${toSqlNumeric(verificationStatusId)}::INT, ${toSqlBoolean(inactiveTemporary)},
-    ${id}, ${categories}, ${formattedHours})`
+    ${toSqlString(name)}::VARCHAR, ${toSqlString(
+    address1
+  )}::VARCHAR, ${toSqlString(address2)}::VARCHAR,
+    ${toSqlString(city)}::VARCHAR, ${toSqlString(
+    state
+  )}::VARCHAR, ${toSqlString(zip)}::VARCHAR, ${toSqlString(phone)}::VARCHAR,
+    ${toSqlNumeric(latitude)}::NUMERIC, ${toSqlNumeric(
+    longitude
+  )}::NUMERIC, ${toSqlString(website)}::VARCHAR,
+    ${toSqlBoolean(inactive)}, ${toSqlString(notes)}::VARCHAR, ${toSqlString(
+    requirements
+  )}::VARCHAR,
+    ${toSqlString(adminNotes)}::VARCHAR, ${toSqlString(
+    parentOrganization
+  )}::VARCHAR, ${toSqlString(physicalAccess)}::VARCHAR,
+    ${toSqlString(email)}::VARCHAR, ${toSqlString(
+    items
+  )}::VARCHAR, ${toSqlString(services)}::VARCHAR, ${toSqlString(
+    facebook
+  )}::VARCHAR,
+    ${toSqlString(twitter)}::VARCHAR, ${toSqlString(
+    pinterest
+  )}::VARCHAR, ${toSqlString(linkedin)}::VARCHAR, ${toSqlString(
+    description
+  )}::VARCHAR,
+    ${toSqlNumeric(loginId)}::INT, ${toSqlTimestamp(
+    submittedDate
+  )}::TIMESTAMPTZ, ${toSqlNumeric(submittedLoginId)}::INT,
+    ${toSqlTimestamp(approvedDate)}::TIMESTAMP, ${toSqlTimestamp(
+    rejectedDate
+  )}::TIMESTAMP, ${toSqlNumeric(reviewedLoginId)}::INT,
+    ${toSqlTimestamp(assignedDate)}::TIMESTAMP, ${toSqlNumeric(
+    assignedLoginId
+  )}::INT, ${toSqlTimestamp(claimedDate)}::TIMESTAMP,
+    ${toSqlNumeric(claimedLoginId)}::INT, ${toSqlString(
+    reviewNotes
+  )}::VARCHAR, ${toSqlString(instagram)}::VARCHAR,
+    ${toSqlString(adminContactName)}::VARCHAR, ${toSqlString(
+    adminContactPhone
+  )}::VARCHAR, ${toSqlString(adminContactEmail)}::VARCHAR,
+    ${toSqlString(donationContactName)}::VARCHAR, ${toSqlString(
+    donationContactPhone
+  )}::VARCHAR, ${toSqlString(donationContactEmail)}::VARCHAR,
+    ${toSqlBoolean(donationPickup)}, ${toSqlBoolean(
+    donationAcceptFrozen
+  )}, ${toSqlBoolean(donationAcceptRefrigerated)},
+    ${toSqlBoolean(donationAcceptPerishable)}, ${toSqlString(
+    donationSchedule
+  )}::VARCHAR, ${toSqlString(donationDeliveryInstructions)}::VARCHAR,
+    ${toSqlString(donationNotes)}::VARCHAR, ${toSqlString(
+    covidNotes
+  )}::VARCHAR, ${toSqlString(categoryNotes)}::VARCHAR,
+    ${toSqlString(eligibilityNotes)}::VARCHAR, ${toSqlString(
+    foodTypes
+  )}::VARCHAR, ${toSqlString(languages)}::VARCHAR,
+    ${toSqlBoolean(confirmedName)}, ${toSqlBoolean(
+    confirmedCategories
+  )}, ${toSqlBoolean(confirmedAddress)},
+    ${toSqlBoolean(confirmedPhone)}, ${toSqlBoolean(
+    confirmedEmail
+  )}, ${toSqlBoolean(confirmedHours)},
+    ${toSqlNumeric(verificationStatusId)}::INT, ${toSqlBoolean(
+    inactiveTemporary
+  )},
+    ${id}, ${categories}, ${formattedHours})`;
   try {
     await pool.query(invokeSprocSql);
   } catch (e) {
-    console.error(e);
-    // If this fails we probably shouldn't update anything
-    return;
+    Promise.reject(e.message);
   }
-
-}
+};
 
 const remove = (id) => {
   const sql = `delete from stakeholder where id = ${id}`;

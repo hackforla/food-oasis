@@ -186,6 +186,23 @@ const StakeholderGrid = (props) => {
   const { stakeholders, setSelectedStakeholderIds, mode } = props;
   const [selectedIndexes, setSelectedIndexes] = useState([]);
   const [rows, setRows] = useState(props.stakeholders);
+  const targetRef = React.useRef();
+  const [dimensions, setDimensions] = useState();
+
+  React.useLayoutEffect(() => {
+    setDimensions(targetRef.current.getBoundingClientRect().toJSON());
+  }, []);
+
+  React.useEffect(() => {
+    function handleResize() {
+      setDimensions(targetRef.current.getBoundingClientRect().toJSON());
+    }
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  });
 
   const onRowsSelected = (newlySelectedRows) => {
     const newSelectedIndexes = selectedIndexes.concat(
@@ -208,15 +225,18 @@ const StakeholderGrid = (props) => {
 
   return (
     <div
+      ref={targetRef}
       style={{
         flexGrow: 1,
         display: "flex",
         flexDirection: "column",
+        backgroundColor: "yellow",
       }}
     >
-      {stakeholders && stakeholders.length > 0 ? (
+      {stakeholders && stakeholders.length > 0 && dimensions ? (
         <DataGrid
-          minHeight={"70vh"}
+          minWidth={dimensions.width}
+          minHeight={dimensions.height}
           columns={columns}
           rowGetter={(i) => rows[i]}
           rowsCount={rows.length}

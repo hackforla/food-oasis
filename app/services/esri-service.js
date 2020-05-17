@@ -1,7 +1,7 @@
 const axios = require("axios");
 
-const getTokenUrl = `https://www.arcgis.com/sharing/oauth2/token`;
-const findAddressCandidateUrl = `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates`;
+const getTokenUrl = `http://www.arcgis.com/sharing/oauth2/token`;
+const findAddressCandidateUrl = `http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates`;
 
 let esriToken = "";
 
@@ -41,9 +41,12 @@ const geocode = async (address) => {
     await generateToken();
     console.log("Retrying geolocation query...");
     addressResult = await axios.get(buildGeocodeUrl(searchString));
+    console.log(
+      "Geocoding results: " + JSON.stringify(addressResult.data, null, 2)
+    );
   } else if (addressResult.error) {
-    throw new Error(
-      `ESRI Error Code: ${addressResult.error.code} ${addressResult.message}`
+    Promise.reject(
+      "ESRI Geocoding error: " + JSON.stringify(addressResult.error, null, 2)
     );
   }
   return addressResult.data.candidates;

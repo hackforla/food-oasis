@@ -91,17 +91,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+//still issue with hours at anne douglas center los angeles mission, but i think that it is an input error rather than anything that the source code is doing wrong
+
 const SelectedStakeholderDisplay = (props) => {
   const { doSelectStakeholder, selectedStakeholder } = props;
   const classes = useStyles();
 
   const standardTime = (timeStr) => {
-    if (parseInt(timeStr.substring(0, 2)) === 12) {
-      return `12${timeStr.substring(2, 5)}PM`;
+    if (timeStr) {
+      if (parseInt(timeStr.substring(0, 2)) === 12) {
+        return `12${timeStr.substring(2, 5)}PM`;
+      }
+      return parseInt(timeStr.substring(0, 2)) > 12
+        ? `${parseInt(timeStr.substring(0, 2)) - 12}${timeStr.substring(
+            2,
+            5
+          )}PM`
+        : `${timeStr.substring(0, 5)}AM`;
     }
-    return parseInt(timeStr.substring(0, 2)) > 12
-      ? `${parseInt(timeStr.substring(0, 2)) - 12}${timeStr.substring(2, 5)}PM`
-      : `${timeStr.substring(0, 5)}AM`;
   };
 
   const getGoogleMapsUrl = (zip, address1, address2) => {
@@ -130,12 +137,12 @@ const SelectedStakeholderDisplay = (props) => {
           <img
             src={
               selectedStakeholder.categories[0].id === 1 &&
-                selectedStakeholder.categories[1] &&
-                selectedStakeholder.categories[1].id === 9
+              selectedStakeholder.categories[1] &&
+              selectedStakeholder.categories[1].id === 9
                 ? splitPantryMealIcon
                 : selectedStakeholder.categories[0].id === 1
-                  ? pantryIcon
-                  : mealIcon
+                ? pantryIcon
+                : mealIcon
             }
             alt="Organization Category Icon"
             className={classes.typeLogo}
@@ -157,32 +164,49 @@ const SelectedStakeholderDisplay = (props) => {
           >
             {selectedStakeholder.categories[0].name}
           </em>
-          {selectedStakeholder.categories[1] ? <em style={{
-            color: "#CC3333",
-          }}>
-            {selectedStakeholder.categories[1].name}
-          </em> : null}
+          {selectedStakeholder.categories[1] ? (
+            <em
+              style={{
+                color: "#CC3333",
+              }}
+            >
+              {selectedStakeholder.categories[1].name}
+            </em>
+          ) : null}
         </div>
         <div className={classes.checkHolder}>
           {selectedStakeholder.distance >= 10
             ? selectedStakeholder.distance
-              .toString()
-              .substring(0, 3)
-              .padEnd(4, "0")
+                .toString()
+                .substring(0, 3)
+                .padEnd(4, "0")
             : selectedStakeholder.distance.toString().substring(0, 3)}{" "}
           mi
           {mapMarker(
-              selectedStakeholder.categories[0].id === 1 &&
-                selectedStakeholder.categories[1] &&
-                selectedStakeholder.categories[1].id === 9
-                ? ""
-                : selectedStakeholder.categories[0].id === 1
-                  ? "#336699"
-                  : "#CC3333",
-              selectedStakeholder.submittedDate ? true : false
-            )}
+            selectedStakeholder.categories[0].id === 1 &&
+              selectedStakeholder.categories[1] &&
+              selectedStakeholder.categories[1].id === 9
+              ? ""
+              : selectedStakeholder.categories[0].id === 1
+              ? "#336699"
+              : "#CC3333",
+            selectedStakeholder.submittedDate ? true : false
+          )}
         </div>
       </div>
+      {selectedStakeholder.submittedDate ? (
+        <p
+          style={{
+            color:
+              selectedStakeholder.categories[0].id === 1
+                ? "#336699"
+                : "#CC3333",
+          }}
+        >
+          Data Verified on{" "}
+          {selectedStakeholder.submittedDate.format("MMM Do, YYYY")}
+        </p>
+      ) : null}
       <a
         className={classes.link}
         href={getGoogleMapsUrl(

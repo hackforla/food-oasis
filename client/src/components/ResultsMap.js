@@ -28,10 +28,6 @@ function Map({
   stakeholders,
   categoryIds,
 }) {
-  React.useEffect(() => {
-    console.log("map", stakeholders);
-  }, [stakeholders]);
-
   const categoryIdsOrDefault = categoryIds.length
     ? categoryIds
     : DEFAULT_CATEGORIES;

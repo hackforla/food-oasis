@@ -14,13 +14,21 @@ const trueFalseEitherClause = (columnName, value) => {
     : "";
 };
 
+const booleanEitherClause = (columnName, value) => {
+  return value === "true"
+    ? ` and ${columnName} is true `
+    : value === "false"
+    ? ` and ${columnName} is false `
+    : "";
+};
+
 const search = async ({
   name,
   categoryIds,
   latitude,
   longitude,
   distance,
-  inactive,
+  isInactive,
   isAssigned,
   isSubmitted,
   isApproved,
@@ -104,7 +112,7 @@ const search = async ({
     ${trueFalseEitherClause("s.approved_date", isApproved)}
     ${trueFalseEitherClause("s.rejected_date", isRejected)}
     ${trueFalseEitherClause("s.claimed_date", isClaimed)}
-    ${trueFalseEitherClause("s.inactive", inactive)}
+    ${booleanEitherClause("s.inactive", isInactive)}
     ${assignedLoginId ? ` and s.assigned_login_id = ${assignedLoginId} ` : ""}
     ${claimedLoginId ? ` and s.claimed_login_id = ${claimedLoginId} ` : ""}
     ${
@@ -114,7 +122,7 @@ const search = async ({
     }
     order by s.name
   `;
-  // console.console.log(sql);
+  //console.log(sql);
   const stakeholderResult = await pool.query(sql);
   let stakeholders = [];
   stakeholderResult.rows.forEach((row) => {

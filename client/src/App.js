@@ -123,7 +123,7 @@ function App() {
           console.log(`Getting browser location failed: ${error.message}`);
           const userCoordinates = {
             latitude: 34.0522,
-            longitude: -118.2437
+            longitude: -118.2437,
           };
           setUserCoordinates(userCoordinates);
         }
@@ -132,7 +132,6 @@ function App() {
       // If browser location permission is denied, the request is
       // "successful", but the result is null coordinates.
       console.log("Enable location permission to use location-based features.");
-
     }
 
     return userCoordinates;

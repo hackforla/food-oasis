@@ -131,12 +131,13 @@ const validationSchema = Yup.object().shape({
 });
 
 const StakeholderEdit = (props) => {
-  const { classes, setToast, match, user } = props;
+  const { classes, setToast, match, user, history } = props;
   const editId = match.params.id;
   const [assignDialogOpen, setAssignDialogOpen] = useState(false);
   const [assignDialogCallback, setAssignDialogCallback] = useState({});
   const [tabPage, setTabPage] = useState(0);
   const [geocodeResults, setGeocodeResults] = useState([]);
+  const [nextUrl, setNextUrl] = useState(null);
   const [originalData, setOriginalData] = useState({
     id: 0,
     name: "",
@@ -257,7 +258,7 @@ const StakeholderEdit = (props) => {
   };
 
   const criticalFieldsValidate = (values) => {
-    if (values.inactive) {
+    if (values.inactive || values.inactiveTemporary) {
       return (
         values.confirmedName &&
         values.confirmedCategories &&
@@ -386,13 +387,16 @@ const StakeholderEdit = (props) => {
                     message: "Update successful.",
                   });
                   setOriginalData(values);
-                  // props.history.goBack();
+                  if (nextUrl) {
+                    history.push(nextUrl);
+                  }
                 })
                 .catch((err) => {
                   setToast({
-                    message: "Update failed.",
+                    message:
+                      "Update failed. Please check for validation warnings on the Identification and Business Hours tabs and try again.",
                   });
-                  console.log(err);
+                  console.error(err);
                   setSubmitting(false);
                 });
             } else {
@@ -404,13 +408,16 @@ const StakeholderEdit = (props) => {
                   });
                   setFieldValue("id", response.id);
                   setOriginalData(values);
-                  // props.history.goBack();
+                  if (nextUrl) {
+                    history.push(nextUrl);
+                  }
                 })
                 .catch((err) => {
                   setToast({
-                    message: "Insert failed.",
+                    message:
+                      "Insert failed. Please check for validation warnings on the Identification and Business Hours tabs and try again.",
                   });
-                  console.log(err);
+                  console.error(err);
                   setSubmitting(false);
                 });
             }
@@ -466,7 +473,7 @@ const StakeholderEdit = (props) => {
                     <TextField
                       type="text"
                       size="small"
-                      label="Name"
+                      label="Name *"
                       name="name"
                       variant="outlined"
                       margin="normal"
@@ -504,7 +511,7 @@ const StakeholderEdit = (props) => {
                           margin="normal"
                           fullWidth
                           name="phone"
-                          label="Phone"
+                          label="Phone *"
                           type="text"
                           size="small"
                           value={values.phone}
@@ -542,7 +549,7 @@ const StakeholderEdit = (props) => {
                           margin="normal"
                           fullWidth
                           name="email"
-                          label="Email"
+                          label="Email *"
                           type="text"
                           size="small"
                           value={values.email}
@@ -577,7 +584,7 @@ const StakeholderEdit = (props) => {
                     <div className={classes.confirmableGroupWrapper}>
                       <FormControl className={classes.formControl} fullWidth>
                         <InputLabel id="selectCategoryIds-label">
-                          Categories
+                          Categories *
                         </InputLabel>
 
                         <Select
@@ -797,7 +804,7 @@ const StakeholderEdit = (props) => {
                         margin="normal"
                         fullWidth
                         name="address1"
-                        label="Address Line 1"
+                        label="Address Line 1 *"
                         type="text"
                         size="small"
                         value={values.address1}
@@ -829,7 +836,7 @@ const StakeholderEdit = (props) => {
                         margin="normal"
                         fullWidth
                         name="city"
-                        label="City"
+                        label="City *"
                         type="text"
                         size="small"
                         value={values.city}
@@ -845,7 +852,7 @@ const StakeholderEdit = (props) => {
                         margin="normal"
                         fullWidth
                         name="state"
-                        label="State"
+                        label="State *"
                         type="text"
                         size="small"
                         value={values.state}
@@ -861,7 +868,7 @@ const StakeholderEdit = (props) => {
                         margin="normal"
                         fullWidth
                         name="zip"
-                        label="Zip Code"
+                        label="Zip Code *"
                         type="text"
                         size="small"
                         value={values.zip}
@@ -878,7 +885,7 @@ const StakeholderEdit = (props) => {
                         margin="normal"
                         fullWidth
                         name="latitude"
-                        label="Latitude"
+                        label="Latitude *"
                         type="text"
                         size="small"
                         value={values.latitude}
@@ -894,8 +901,9 @@ const StakeholderEdit = (props) => {
                         margin="normal"
                         fullWidth
                         name="longitude"
-                        label="Longitude"
+                        label="Longitude *"
                         type="text"
+                        s
                         size="small"
                         value={values.longitude}
                         onChange={handleChange}
@@ -1933,17 +1941,15 @@ const StakeholderEdit = (props) => {
                               setFieldValue("assignedLoginId", "");
                               setFieldValue("assignedUser", "");
                               setFieldValue("assignedDate", "");
-                              // If it is marked as assigned, it goes to assigned
-                              // state, otherwise to Needs Verification State
-                              // TODO: Really need to pop up a dialog and prompt the
-                              // user to determine if they want to make a review comment
-                              // and/or assign or un-assign to user.
 
+                              // TODO: Really need to pop up a dialog and prompt the
+                              // user to determine for information about what needs
+                              // to be verified.
                               setFieldValue(
                                 "verificationStatusId",
                                 VERIFICATION_STATUS.NEEDS_VERIFICATION
                               );
-
+                              setNextUrl("/verificationadmin");
                               handleSubmit();
                             }}
                             label="Needs Verification"
@@ -1980,7 +1986,7 @@ const StakeholderEdit = (props) => {
                                     "verificationStatusId",
                                     VERIFICATION_STATUS.ASSIGNED
                                   );
-
+                                  setNextUrl("/verificationadmin");
                                   handleSubmit();
                                 },
                               });
@@ -1996,10 +2002,7 @@ const StakeholderEdit = (props) => {
                         </div>
                       </BigTooltip>
                       <BigTooltip
-                        title={
-                          "Submitted record needs changes -> Assigned " +
-                          "or Needs Verification (depending on whether you change the assignee)"
-                        }
+                        title={"Submitted record needs changes -> Assigned "}
                       >
                         <div
                           style={{
@@ -2019,22 +2022,16 @@ const StakeholderEdit = (props) => {
                                 user.firstName + " " + user.lastName
                               );
                               setFieldValue("reviewedLoginId", user.id);
-                              // If it is marked as assigned, it goes to assigned
-                              // state, otherwise to Needs Verification State
+
                               // TODO: Really need to pop up a dialog and prompt the
-                              // user to determine if they want to make a review comment
-                              // and/or assign or un-assign to user.
-                              if (values.assignedDate) {
-                                setFieldValue(
-                                  "verificationStatusId",
-                                  VERIFICATION_STATUS.ASSIGNED
-                                );
-                              } else {
-                                setFieldValue(
-                                  "verificationStatusId",
-                                  VERIFICATION_STATUS.NEEDS_VERIFICATION
-                                );
-                              }
+                              // user for a review comment
+                              // about what needs to be fixed.
+                              setFieldValue(
+                                "verificationStatusId",
+                                VERIFICATION_STATUS.ASSIGNED
+                              );
+
+                              setNextUrl("/verificationadmin");
                               handleSubmit();
                             }}
                             label="Request Changes"
@@ -2070,15 +2067,12 @@ const StakeholderEdit = (props) => {
                                 "verificationStatusId",
                                 VERIFICATION_STATUS.VERIFIED
                               );
+                              setNextUrl("/verificationadmin");
                               handleSubmit();
                             }}
                             label="Approve"
                             disabled={
-                              isSubmitting ||
-                              !criticalFieldsValidate(values) ||
-                              (isUnchanged(values) &&
-                                values.verificationStatusId !==
-                                  VERIFICATION_STATUS.SUBMITTED)
+                              isSubmitting || !criticalFieldsValidate(values)
                             }
                             style={{ margin: "auto 0.5em" }}
                           />
@@ -2126,6 +2120,7 @@ const StakeholderEdit = (props) => {
                                 "verificationStatusId",
                                 VERIFICATION_STATUS.NEEDS_VERIFICATION
                               );
+                              setNextUrl("/verificationdashboard");
                               handleSubmit();
                             }}
                             label="Hand Off"
@@ -2161,12 +2156,14 @@ const StakeholderEdit = (props) => {
                                 "verificationStatusId",
                                 VERIFICATION_STATUS.SUBMITTED
                               );
+                              setNextUrl("/verificationdashboard");
                               handleSubmit();
                             }}
                             label="Submit For Review"
                             disabled={
                               !criticalFieldsValidate(values) ||
-                              !!values.submittedDate
+                              values.verificationStatusId ===
+                                VERIFICATION_STATUS.SUBMITTED
                             }
                             style={{ margin: "auto" }}
                           />

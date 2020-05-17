@@ -10,7 +10,7 @@ import {
   Select,
   Grid,
   TextField,
-  Chip,
+  FormControl,
   FormLabel,
   FormControlLabel,
   Typography,
@@ -24,13 +24,6 @@ import AccountAutocomplete from "../AccountAutocomplete";
 const useStyles = makeStyles((theme) => ({
   card: {
     margin: "0px",
-  },
-  chips: {
-    display: "flex",
-    flexWrap: "wrap",
-  },
-  chip: {
-    margin: 2,
   },
   formLabel: {
     margin: "1rem 0 .5rem",
@@ -116,18 +109,40 @@ const SearchCriteria = ({
       <CardContent>
         <Grid container spacing={4}>
           <Grid item xs={12} sm={6}>
-            <FormLabel className={classes.formLabel}>Name</FormLabel>
-            <TextField
-              autoComplete="off"
-              name="name"
-              value={criteria.name}
-              variant="outlined"
-              fullWidth
-              size="small"
-              id="name"
-              onChange={setCriterion}
-            />
+            <FormControl variant="outlined" fullWidth>
+              <FormLabel
+                id="verification-status-id-label"
+                className={classes.formLabel}
+              >
+                Verification Status
+              </FormLabel>
+              <Select
+                labelId="verification-status-id-label"
+                name="verificationStatusId"
+                variant="outlined"
+                size="small"
+                value={criteria.verificationStatusId}
+                onChange={setCriterion}
+              >
+                <MenuItem key={0} value={0}>
+                  (Any)
+                </MenuItem>
+                <MenuItem key={1} value={1}>
+                  Needs Verification
+                </MenuItem>
+                <MenuItem key={2} value={2}>
+                  Assigned
+                </MenuItem>
+                <MenuItem key={3} value={3}>
+                  Submitted
+                </MenuItem>
+                <MenuItem key={4} value={4}>
+                  Verified
+                </MenuItem>
+              </Select>
+            </FormControl>
           </Grid>
+
           <Grid item xs={12} sm={6}>
             <FormLabel className={classes.formLabel}>Categories</FormLabel>
             {categories ? (
@@ -138,6 +153,7 @@ const SearchCriteria = ({
                 placeholder="Category(ies)"
                 name="select-multiple-chip"
                 fullWidth
+                height="50"
                 variant="outlined"
                 value={criteria.categoryIds}
                 onChange={(event) => {
@@ -151,19 +167,14 @@ const SearchCriteria = ({
                     ids.length > 0 &&
                     categories &&
                     categories.length > 0 ? (
-                      ids.map((categoryId) => {
-                        const c = categories.find(
-                          (cat) => cat.id === categoryId
-                        );
-                        if (!c) return null;
-                        return (
-                          <Chip
-                            key={c.id}
-                            label={c.name}
-                            className={classes.chip}
-                          />
-                        );
-                      })
+                      ids
+                        .map(
+                          (categoryId) =>
+                            categories.find(
+                              (category) => category.id === categoryId
+                            ).name
+                        )
+                        .join(", ")
                     ) : (
                       <em>(Any)</em>
                     )}
@@ -187,38 +198,19 @@ const SearchCriteria = ({
               </Select>
             ) : null}
           </Grid>
-          {/* <Grid item xs={12} sm={6}>
-            <FormControl variant="outlined" fullWidth>
-              <FormLabel className={classes.formLabel}>
-                Verification Status
-              </FormLabel>
-              <Select
-                labelId=""
-                name="verificationStatusId"
-                variant="outlined"
-                value={criteria.verificationStatusId}
-                onChange={setCriterion}
-                input={<Input id="verificationStatusId" variant="outlined" />}
-              >
-                <MenuItem key={0} value={0}>
-                  (Any)
-                </MenuItem>
-                <MenuItem key={1} value={1}>
-                  Needs Verification
-                </MenuItem>
-                <MenuItem key={2} value={2}>
-                  Assigned
-                </MenuItem>
-                <MenuItem key={3} value={3}>
-                  Submitted
-                </MenuItem>
-                <MenuItem key={4} value={4}>
-                  Verified
-                </MenuItem>
-              </Select>
-            </FormControl>
+          <Grid item xs={12} sm={6}>
+            <FormLabel className={classes.formLabel}>Name</FormLabel>
+            <TextField
+              autoComplete="off"
+              name="name"
+              value={criteria.name}
+              variant="outlined"
+              fullWidth
+              size="small"
+              id="name"
+              onChange={setCriterion}
+            />
           </Grid>
-          <Grid item xs={12} sm={6}></Grid> */}
           <Grid item xs={12} sm={6}>
             <FormLabel className={classes.formLabel}>Assigned To</FormLabel>
             <AccountAutocomplete
@@ -229,7 +221,7 @@ const SearchCriteria = ({
               }
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          {/* <Grid item xs={12} sm={6}>
             <FormLabel className={classes.formLabel}>Claimed By </FormLabel>
             <AccountAutocomplete
               name="claimedLoginId"
@@ -238,16 +230,9 @@ const SearchCriteria = ({
                 setCriteria({ ...criteria, claimedLoginId })
               }
             />
-          </Grid>
-          <Grid item xs={6} sm={2}>
-            <RadioTrueFalseEither
-              label="Inactive"
-              name="isInactive"
-              value={criteria.isInactive || "either"}
-              onChange={setCriterion}
-            />
-          </Grid>
-          <Grid item xs={6} sm={2}>
+          </Grid> */}
+
+          {/* <Grid item xs={6} sm={2}>
             <RadioTrueFalseEither
               label="Assigned"
               name="isAssigned"
@@ -286,110 +271,120 @@ const SearchCriteria = ({
               value={criteria.isClaimed || "either"}
               onChange={setCriterion}
             />
-          </Grid>
+          </Grid> */}
         </Grid>
-        <Grid item container>
-          <FormLabel className={classes.formLabel}>Location</FormLabel>
-          <Grid item container alignItems="center">
-            <div style={{ marginRight: "0.5rem" }}>{"Within "}</div>
-            <Select
-              name="radius"
-              variant="outlined"
-              value={criteria.radius}
-              onChange={setCriterion}
-              input={<Input id="radius" />}
-            >
-              <MenuItem key={0} value={0}>
-                (Any)
-              </MenuItem>
-              <MenuItem key={1} value={1}>
-                1
-              </MenuItem>
-              <MenuItem key={2} value={2}>
-                2
-              </MenuItem>
-              <MenuItem key={3} value={3}>
-                3
-              </MenuItem>
-              <MenuItem key={5} value={5}>
-                5
-              </MenuItem>
-              <MenuItem key={10} value={10}>
-                10
-              </MenuItem>
-              <MenuItem key={20} value={20}>
-                20
-              </MenuItem>
-              <MenuItem key={50} value={50}>
-                50
-              </MenuItem>
-            </Select>
-            <div style={{ margin: "0 1rem 0 .5rem" }}>{"miles of"}</div>
-          </Grid>
-          <Grid item xs={12}>
-            {/* If we got location from browser, allow using current location */}
-            {userLatitude ? (
-              <RadioGroup
-                name="useMyLocation"
-                value={useMyLocation}
-                onChange={handleRadioChange}
+        <Grid item xs={12} sm={4}>
+          <RadioTrueFalseEither
+            label="Inactive"
+            name="isInactive"
+            value={criteria.isInactive || "either"}
+            onChange={setCriterion}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Grid container>
+            <FormLabel className={classes.formLabel}>Location</FormLabel>
+            <Grid item container alignItems="center">
+              <div style={{ marginRight: "0.5rem" }}>{"Within "}</div>
+              <Select
+                name="radius"
+                variant="outlined"
+                value={criteria.radius}
+                onChange={setCriterion}
+                input={<Input id="radius" />}
               >
-                <FormControlLabel
-                  value="my"
-                  control={<Radio color="primary" />}
-                  style={{ alignItems: "flex-start" }}
-                  label={
-                    <div>
-                      <Typography>My Location: </Typography>
-                      <Typography>{`(${userLatitude.toFixed(
-                        6
-                      )}, ${userLongitude.toFixed(6)})`}</Typography>
-                    </div>
-                  }
-                />
-                <FormControlLabel
-                  value="custom"
-                  control={<Radio color="primary" />}
-                  style={{ alignItems: "flex-start" }}
-                  label={
-                    <div>
-                      <hr />
-                      <Typography>{`Custom Location:`} </Typography>
-                      {customPlaceName ? (
-                        <Typography>{customPlaceName}</Typography>
-                      ) : null}
-                      {customLatitude ? (
-                        <Typography>{`(${customLatitude.toFixed(
+                <MenuItem key={0} value={0}>
+                  (Any)
+                </MenuItem>
+                <MenuItem key={1} value={1}>
+                  1
+                </MenuItem>
+                <MenuItem key={2} value={2}>
+                  2
+                </MenuItem>
+                <MenuItem key={3} value={3}>
+                  3
+                </MenuItem>
+                <MenuItem key={5} value={5}>
+                  5
+                </MenuItem>
+                <MenuItem key={10} value={10}>
+                  10
+                </MenuItem>
+                <MenuItem key={20} value={20}>
+                  20
+                </MenuItem>
+                <MenuItem key={50} value={50}>
+                  50
+                </MenuItem>
+              </Select>
+              <div style={{ margin: "0 1rem 0 .5rem" }}>{"miles of"}</div>
+            </Grid>
+            <Grid item xs={12}>
+              {/* If we got location from browser, allow using current location */}
+              {userLatitude ? (
+                <RadioGroup
+                  name="useMyLocation"
+                  value={useMyLocation}
+                  onChange={handleRadioChange}
+                >
+                  <FormControlLabel
+                    value="my"
+                    control={<Radio color="primary" />}
+                    style={{ alignItems: "flex-start" }}
+                    label={
+                      <div>
+                        <Typography>My Location: </Typography>
+                        <Typography>{`(${userLatitude.toFixed(
                           6
-                        )}, ${customLongitude.toFixed(6)})`}</Typography>
-                      ) : null}
+                        )}, ${userLongitude.toFixed(6)})`}</Typography>
+                      </div>
+                    }
+                  />
+                  <FormControlLabel
+                    value="custom"
+                    control={<Radio color="primary" />}
+                    style={{ alignItems: "flex-start" }}
+                    label={
+                      <div>
+                        <hr />
+                        <Typography>{`Custom Location:`} </Typography>
+                        {customPlaceName ? (
+                          <Typography>{customPlaceName}</Typography>
+                        ) : null}
+                        {customLatitude ? (
+                          <Typography>{`(${customLatitude.toFixed(
+                            6
+                          )}, ${customLongitude.toFixed(6)})`}</Typography>
+                        ) : null}
 
-                      <LocationAutocomplete
-                        fullWidth
-                        setLocation={setLocation}
-                      />
-                    </div>
-                  }
-                />
-              </RadioGroup>
-            ) : (
-              <div>
-                {customPlaceName ? (
-                  <Typography>{customPlaceName}</Typography>
-                ) : null}
-                {customLatitude ? (
-                  <Typography>{`(${customLatitude.toFixed(
-                    6
-                  )}, ${customLongitude.toFixed(6)})`}</Typography>
-                ) : null}
+                        <LocationAutocomplete
+                          fullWidth
+                          setLocation={setLocation}
+                        />
+                      </div>
+                    }
+                  />
+                </RadioGroup>
+              ) : (
+                <div>
+                  {customPlaceName ? (
+                    <Typography>{customPlaceName}</Typography>
+                  ) : null}
+                  {customLatitude ? (
+                    <Typography>{`(${customLatitude.toFixed(
+                      6
+                    )}, ${customLongitude.toFixed(6)})`}</Typography>
+                  ) : null}
 
-                <LocationAutocomplete
-                  size="small"
-                  fullWidth
-                  setLocation={setLocation}
-                />
-              </div>
-            )}
+                  <LocationAutocomplete
+                    size="small"
+                    fullWidth
+                    setLocation={setLocation}
+                  />
+                </div>
+              )}
+            </Grid>
           </Grid>
         </Grid>
       </CardContent>

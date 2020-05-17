@@ -96,7 +96,7 @@ const defaultCriteria = {
   isClaimed: "either",
   assignedLoginId: null,
   claimedLoginId: null,
-  verificationStatusId: "0",
+  verificationStatusId: 0,
 };
 
 VerificationAdmin.propTypes = {
@@ -139,6 +139,7 @@ function VerificationAdmin(props) {
   useEffect(() => {
     const criteriaString = localStorage.getItem(CRITERIA_TOKEN);
     let initialCriteria = JSON.parse(criteriaString);
+    initialCriteria.verificationStatusId = 0;
     if (!initialCriteria) {
       initialCriteria = {
         ...defaultCriteria,

@@ -131,12 +131,13 @@ const validationSchema = Yup.object().shape({
 });
 
 const StakeholderEdit = (props) => {
-  const { classes, setToast, match, user } = props;
+  const { classes, setToast, match, user, history } = props;
   const editId = match.params.id;
   const [assignDialogOpen, setAssignDialogOpen] = useState(false);
   const [assignDialogCallback, setAssignDialogCallback] = useState({});
   const [tabPage, setTabPage] = useState(0);
   const [geocodeResults, setGeocodeResults] = useState([]);
+  const [nextUrl, setNextUrl] = useState(null);
   const [originalData, setOriginalData] = useState({
     id: 0,
     name: "",
@@ -257,7 +258,7 @@ const StakeholderEdit = (props) => {
   };
 
   const criticalFieldsValidate = (values) => {
-    if (values.inactive) {
+    if (values.inactive || values.inactiveTemporary) {
       return (
         values.confirmedName &&
         values.confirmedCategories &&
@@ -386,13 +387,16 @@ const StakeholderEdit = (props) => {
                     message: "Update successful.",
                   });
                   setOriginalData(values);
-                  // props.history.goBack();
+                  if (nextUrl) {
+                    history.push(nextUrl);
+                  }
                 })
                 .catch((err) => {
                   setToast({
-                    message: "Update failed.",
+                    message:
+                      "Update failed. Please check for validation warnings on the Identification and Business Hours tabs and try again.",
                   });
-                  console.log(err);
+                  console.error(err);
                   setSubmitting(false);
                 });
             } else {
@@ -404,13 +408,16 @@ const StakeholderEdit = (props) => {
                   });
                   setFieldValue("id", response.id);
                   setOriginalData(values);
-                  // props.history.goBack();
+                  if (nextUrl) {
+                    history.push(nextUrl);
+                  }
                 })
                 .catch((err) => {
                   setToast({
-                    message: "Insert failed.",
+                    message:
+                      "Insert failed. Please check for validation warnings on the Identification and Business Hours tabs and try again.",
                   });
-                  console.log(err);
+                  console.error(err);
                   setSubmitting(false);
                 });
             }
@@ -1933,17 +1940,15 @@ const StakeholderEdit = (props) => {
                               setFieldValue("assignedLoginId", "");
                               setFieldValue("assignedUser", "");
                               setFieldValue("assignedDate", "");
-                              // If it is marked as assigned, it goes to assigned
-                              // state, otherwise to Needs Verification State
-                              // TODO: Really need to pop up a dialog and prompt the
-                              // user to determine if they want to make a review comment
-                              // and/or assign or un-assign to user.
 
+                              // TODO: Really need to pop up a dialog and prompt the
+                              // user to determine for information about what needs
+                              // to be verified.
                               setFieldValue(
                                 "verificationStatusId",
                                 VERIFICATION_STATUS.NEEDS_VERIFICATION
                               );
-
+                              setNextUrl("/verificationadmin");
                               handleSubmit();
                             }}
                             label="Needs Verification"
@@ -1980,7 +1985,7 @@ const StakeholderEdit = (props) => {
                                     "verificationStatusId",
                                     VERIFICATION_STATUS.ASSIGNED
                                   );
-
+                                  setNextUrl("/verificationadmin");
                                   handleSubmit();
                                 },
                               });
@@ -1996,10 +2001,7 @@ const StakeholderEdit = (props) => {
                         </div>
                       </BigTooltip>
                       <BigTooltip
-                        title={
-                          "Submitted record needs changes -> Assigned " +
-                          "or Needs Verification (depending on whether you change the assignee)"
-                        }
+                        title={"Submitted record needs changes -> Assigned "}
                       >
                         <div
                           style={{
@@ -2019,22 +2021,16 @@ const StakeholderEdit = (props) => {
                                 user.firstName + " " + user.lastName
                               );
                               setFieldValue("reviewedLoginId", user.id);
-                              // If it is marked as assigned, it goes to assigned
-                              // state, otherwise to Needs Verification State
+
                               // TODO: Really need to pop up a dialog and prompt the
-                              // user to determine if they want to make a review comment
-                              // and/or assign or un-assign to user.
-                              if (values.assignedDate) {
-                                setFieldValue(
-                                  "verificationStatusId",
-                                  VERIFICATION_STATUS.ASSIGNED
-                                );
-                              } else {
-                                setFieldValue(
-                                  "verificationStatusId",
-                                  VERIFICATION_STATUS.NEEDS_VERIFICATION
-                                );
-                              }
+                              // user for a review comment
+                              // about what needs to be fixed.
+                              setFieldValue(
+                                "verificationStatusId",
+                                VERIFICATION_STATUS.ASSIGNED
+                              );
+
+                              setNextUrl("/verificationadmin");
                               handleSubmit();
                             }}
                             label="Request Changes"
@@ -2070,15 +2066,12 @@ const StakeholderEdit = (props) => {
                                 "verificationStatusId",
                                 VERIFICATION_STATUS.VERIFIED
                               );
+                              setNextUrl("/verificationadmin");
                               handleSubmit();
                             }}
                             label="Approve"
                             disabled={
-                              isSubmitting ||
-                              !criticalFieldsValidate(values) ||
-                              (isUnchanged(values) &&
-                                values.verificationStatusId !==
-                                  VERIFICATION_STATUS.SUBMITTED)
+                              isSubmitting || !criticalFieldsValidate(values)
                             }
                             style={{ margin: "auto 0.5em" }}
                           />
@@ -2126,6 +2119,7 @@ const StakeholderEdit = (props) => {
                                 "verificationStatusId",
                                 VERIFICATION_STATUS.NEEDS_VERIFICATION
                               );
+                              setNextUrl("/verificationdashboard");
                               handleSubmit();
                             }}
                             label="Hand Off"
@@ -2161,12 +2155,14 @@ const StakeholderEdit = (props) => {
                                 "verificationStatusId",
                                 VERIFICATION_STATUS.SUBMITTED
                               );
+                              setNextUrl("/verificationdashboard");
                               handleSubmit();
                             }}
                             label="Submit For Review"
                             disabled={
                               !criticalFieldsValidate(values) ||
-                              !!values.submittedDate
+                              values.verificationStatusId ===
+                                VERIFICATION_STATUS.SUBMITTED
                             }
                             style={{ margin: "auto" }}
                           />

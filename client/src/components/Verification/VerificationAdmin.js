@@ -139,12 +139,12 @@ function VerificationAdmin(props) {
   useEffect(() => {
     const criteriaString = localStorage.getItem(CRITERIA_TOKEN);
     let initialCriteria = JSON.parse(criteriaString);
-    initialCriteria.verificationStatusId = 0;
     if (!initialCriteria) {
       initialCriteria = {
         ...defaultCriteria,
         latitude: userCoordinates.latitude,
         longitude: userCoordinates.longitude,
+        verificationStatusId: 0,
       };
     }
     setCriteria(initialCriteria);

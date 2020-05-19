@@ -16,7 +16,7 @@ function OpenTimeForm(props) {
     let messages = [];
     for (let i = 0; i < hours.length; i++) {
       const row = hours[i];
-      if (!row.weekOfMonth) {
+      if (!row.weekOfMonth && row.weekOfMonth !== 0) {
         messages.push(`Row ${i + 1}: Week of Month is required`);
       }
       if (!row.dayOfWeek) {

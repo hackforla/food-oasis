@@ -726,11 +726,8 @@ const update = async (model) => {
     inactiveTemporary
   )},
     ${id}, ${categories}, ${formattedHours})`;
-  try {
-    await pool.query(invokeSprocSql);
-  } catch (e) {
-    Promise.reject(e.message);
-  }
+
+  await pool.query(invokeSprocSql);
 };
 
 const remove = (id) => {

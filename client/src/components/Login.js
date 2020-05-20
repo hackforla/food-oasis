@@ -82,7 +82,7 @@ const LoginForm = (props) => {
                   setToast({
                     message: "Login successful.",
                   });
-                  if (response.user.isAdmin) {
+                  if (response.user.isAdmin || response.user.isCoordinator) {
                     history.push("/verificationAdmin");
                   } else if (response.user.isSecurityAdmin) {
                     history.push("/securityadmindashboard");

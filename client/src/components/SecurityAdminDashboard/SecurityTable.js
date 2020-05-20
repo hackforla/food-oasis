@@ -26,8 +26,10 @@ const useStyles = makeStyles({
 export default function SecurityTable(props) {
   const classes = useStyles();
 
-  const handleToggle = (userId, e, securityOrAdminOrDataEntry) => {
-    if (securityOrAdminOrDataEntry === "security") {
+  // arg `roleType` is expected to be one of:
+  //   'security', 'admin, 'dataEntry', or 'coordinator'
+  const handleToggle = (userId, e, roleType) => {
+    if (roleType === "security") {
       props.accounts.map(async (each) => {
         if (userId === each.id) {
           let check = e.target.checked;
@@ -43,7 +45,7 @@ export default function SecurityTable(props) {
           );
         }
       });
-    } else if (securityOrAdminOrDataEntry === "admin") {
+    } else if (roleType === "admin") {
       props.accounts.map(async (each) => {
         if (userId === each.id) {
           let check = e.target.checked;
@@ -51,7 +53,15 @@ export default function SecurityTable(props) {
           await props.handlePermissionChange(each.id, "is_admin", check);
         }
       });
-    } else if (securityOrAdminOrDataEntry === "dataEntry") {
+    } else if (roleType === "coordinator") {
+      props.accounts.map(async (each) => {
+        if (userId === each.id) {
+          let check = e.target.checked;
+          await accountService.setPermissions(each.id, "is_coordinator", check);
+          await props.handlePermissionChange(each.id, "is_coordinator", check);
+        }
+      });
+    } else if (roleType === "dataEntry") {
       props.accounts.map(async (each) => {
         if (userId === each.id) {
           let check = e.target.checked;
@@ -75,6 +85,9 @@ export default function SecurityTable(props) {
               Admin
             </TableCell>
             <TableCell align="right" className={classes.text}>
+              Coordinator
+            </TableCell>
+            <TableCell align="right" className={classes.text}>
               Security Admin
             </TableCell>
             <TableCell align="right" className={classes.text}>
@@ -96,6 +109,12 @@ export default function SecurityTable(props) {
                   <Checkbox
                     checked={row.isAdmin}
                     onChange={(e) => handleToggle(row.id, e, "admin")}
+                  />
+                </TableCell>
+                <TableCell align="right">
+                  <Checkbox
+                    checked={row.isCoordinator}
+                    onChange={(e) => handleToggle(row.id, e, "coordinator")}
                   />
                 </TableCell>
                 <TableCell align="right">
@@ -126,6 +145,7 @@ SecurityTable.propTypes = {
       firstName: PropTypes.string.isRequired,
       lastName: PropTypes.string.isRequired,
       isAdmin: PropTypes.bool.isRequired,
+      isCoordinator: PropTypes.bool.isRequired,
       isSecurityAdmin: PropTypes.bool.isRequired,
       isDataEntry: PropTypes.bool.isRequired,
     }).isRequired

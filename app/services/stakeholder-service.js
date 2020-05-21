@@ -42,14 +42,17 @@ const search = async ({
     from stakeholder_category sc
     where sc.category_id in (${categoryIds.join(",")}))`;
   const nameClause = "'%" + name.replace(/'/g, "''") + "%'";
+  // Now that we potentially have several rows with the same stakeholder ID (representing several versions of the stakeholder
+  // info as it is modified via the UI), we want to only display the row with the highest version number. Do this via a
+  // SELECT DISTINCT ON, and order by s.id descending.
   const sql = `
-    select s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
+  select * from (select distinct on (s.id) s.stakeholder_version_id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip, s.id,
       s.phone, s.latitude, s.longitude, s.website,  s.notes,
       (select array(select row_to_json(row)
         from (
           select day_of_week, open, close, week_of_month
           from stakeholder_schedule
-          where stakeholder_id = s.id
+          where stakeholder_id = s.stakeholder_version_id
         ) row
       )) as hours,
       (select array(select row_to_json(category_row)
@@ -57,7 +60,7 @@ const search = async ({
           select c.id, c.name
           from category c
             join stakeholder_category sc on c.id = sc.category_id
-          where sc.stakeholder_id = s.id
+          where sc.stakeholder_id = s.stakeholder_version_id
         ) category_row
       )) as categories,
       to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
@@ -101,30 +104,38 @@ const search = async ({
     left join login L4 on s.reviewed_login_id = L4.id
     left join login L5 on s.assigned_login_id = L5.id
     left join login L6 on s.claimed_login_id = L6.id
-    where s.name ilike ${nameClause}
+    order by s.id DESC, s.stakeholder_version_id DESC) AS stakeholder
+    where stakeholder.name ilike ${nameClause}
     ${
       categoryIds && categoryIds.length > 0
-        ? ` and s.id in ${categoryClause} `
+        ? ` and stakeholder.stakeholder_version_id in ${categoryClause} `
         : ""
     }
-    ${trueFalseEitherClause("s.assigned_date", isAssigned)}
-    ${trueFalseEitherClause("s.submitted_date", isSubmitted)}
-    ${trueFalseEitherClause("s.approved_date", isApproved)}
-    ${trueFalseEitherClause("s.rejected_date", isRejected)}
-    ${trueFalseEitherClause("s.claimed_date", isClaimed)}
+    ${trueFalseEitherClause("stakeholder.assigned_date", isAssigned)}
+    ${trueFalseEitherClause("stakeholder.submitted_date", isSubmitted)}
+    ${trueFalseEitherClause("stakeholder.approved_date", isApproved)}
+    ${trueFalseEitherClause("stakeholder.rejected_date", isRejected)}
+    ${trueFalseEitherClause("stakeholder.claimed_date", isClaimed)}
     ${booleanEitherClause("s.inactive", isInactive)}
-    ${assignedLoginId ? ` and s.assigned_login_id = ${assignedLoginId} ` : ""}
-    ${claimedLoginId ? ` and s.claimed_login_id = ${claimedLoginId} ` : ""}
+    ${assignedLoginId ? ` and stakeholder.assigned_login_id = ${assignedLoginId} ` : ""}
+    ${claimedLoginId ? ` and stakeholder.claimed_login_id = ${claimedLoginId} ` : ""}
     ${
       Number(verificationStatusId) > 0
-        ? ` and s.verification_status_id = ${verificationStatusId} `
+        ? ` and stakeholder.verification_status_id = ${verificationStatusId} `
         : ""
     }
-    order by s.name
+    order by name
   `;
-  //console.log(sql);
-  const stakeholderResult = await pool.query(sql);
+  var stakeholderResult;
   let stakeholders = [];
+  try {
+    stakeholderResult = await pool.query(sql);
+  } catch (e) {
+    console.error(e);
+    // If this fails we probably shouldn't update anything
+    return stakeholders;
+  }
+
   stakeholderResult.rows.forEach((row) => {
     stakeholders.push({
       id: row.id,
@@ -232,13 +243,13 @@ const search = async ({
 
 const selectById = async (id) => {
   const sql = `select
-      s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
+      s.stakeholder_version_id, s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
       s.phone, s.latitude, s.longitude, s.website,  s.notes,
       (select array(select row_to_json(row)
       from (
         select day_of_week as "dayOfWeek", open, close, week_of_month as "weekOfMonth"
         from stakeholder_schedule
-        where stakeholder_id = s.id
+        where stakeholder_id = s.stakeholder_version_id
       ) row
       )) as hours,
       (select array(select row_to_json(category_row)
@@ -246,7 +257,7 @@ const selectById = async (id) => {
           select c.id, c.name
           from category c
             join stakeholder_category sc on c.id = sc.category_id
-          where sc.stakeholder_id = s.id
+          where sc.stakeholder_id = s.stakeholder_version_id
         ) category_row
       )) as categories,
       to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as created_date, s.created_login_id,
@@ -283,7 +294,8 @@ const selectById = async (id) => {
     left join login L4 on s.reviewed_login_id = L4.id
     left join login L5 on s.assigned_login_id = L5.id
     left join login L6 on s.claimed_login_id = L6.id
-    where s.id = ${id}`;
+    where s.id = ${id}
+    ORDER BY s.version DESC LIMIT 1`;
   const result = await pool.query(sql);
   const row = result.rows[0];
   const stakeholder = {
@@ -726,8 +738,11 @@ const update = async (model) => {
     inactiveTemporary
   )},
     ${id}, ${categories}, ${formattedHours})`;
-
-  await pool.query(invokeSprocSql);
+  try {
+    await pool.query(invokeSprocSql);
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 const remove = (id) => {

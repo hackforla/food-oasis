@@ -47,7 +47,7 @@ BEGIN
       donation_delivery_instructions, donation_notes, covid_notes,
       category_notes, eligibility_notes, food_types, languages,
       v_name, v_categories, v_address,
-      v_phone, v_email, v_hours, verification_status_id, inactive_temporary)
+      v_phone, v_email, v_hours, verification_status_id, inactive_temporary, id)
     VALUES (
       s_name, s_address_1, s_address_2, s_city, s_state, s_zip,
       s_phone, s_latitude, s_longitude,
@@ -65,8 +65,14 @@ BEGIN
       s_donation_delivery_instructions, s_donation_notes, s_covid_notes,
       s_category_notes, s_eligibility_notes, s_food_types, s_languages,
       s_v_name, s_v_categories, s_v_address,
-      s_v_phone, s_v_email, s_v_hours, s_verification_status_id, s_inactive_temporary
-    ) RETURNING id INTO s_id;
+      s_v_phone, s_v_email, s_v_hours, s_verification_status_id, s_inactive_temporary, 0
+    ) RETURNING stakeholder_version_id INTO s_id;
+
+    -- in the previous create statement, we explicitly set stakeholder_id to 0 since it cannot
+    -- be NULL, and we didn't (yet) know what the value of stakeholder_id should be. In this
+    -- case, we set the newly created row's stakeholder_id to its unique ID (we'll be using this
+    -- in the future to tie updated rows back to this stakeholder)
+    UPDATE stakeholder set id=s_id WHERE stakeholder_version_id=s_id;
 
     -- insert new stakeholder category(s)
     FOREACH cat IN ARRAY categories

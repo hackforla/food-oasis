@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Downshift from "downshift";
 import { MenuItem, TextField, Paper } from "@material-ui/core";
@@ -19,7 +19,6 @@ const useStyles = makeStyles(() => ({
     width: "100%",
   },
   address: {
-    width: "31em",
     backgroundColor: "#fff",
     borderRadius: "4px 0 0 4px",
     height: 41,
@@ -45,6 +44,20 @@ export default function Search(props) {
   const [selectedPlace, setSelectedPlace] = useState("");
 
   const { mapboxResults, fetchMapboxResults } = useMapboxGeocoder();
+
+  const initialWidth = window.innerWidth > 600 ? true : false;
+  const [isWindowSixHundredOrLess, switchAddressWidth] = useState(initialWidth);
+  useEffect(() => {
+    const changeAddressWidth = () => {
+      window.innerWidth > 600
+        ? switchAddressWidth(true)
+        : switchAddressWidth(false);
+    };
+
+    window.addEventListener("resize", changeAddressWidth);
+
+    return () => window.removeEventListener("resize", changeAddressWidth);
+  });
 
   const handleInputChange = (event) => {
     setSelectedPlace(event.target.value);
@@ -92,6 +105,7 @@ export default function Search(props) {
           },
           ...InputProps,
         }}
+        style={{ width: isWindowSixHundredOrLess ? "31em" : "82vw" }}
       />
     );
   };

@@ -56,7 +56,7 @@ const FaqItem = ({ faq, reorder, reorderFaqs, faqLength }) => {
       <UserContext.Consumer>
         {(user) =>
           user &&
-          user.isAdmin && (
+          (user.isAdmin || user.isCoordinator) && (
             <div className={classes.editBar}>
               <Typography className={classes.identifier} variant="h6">
                 {identifier}

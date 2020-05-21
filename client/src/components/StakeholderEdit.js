@@ -1808,7 +1808,7 @@ const StakeholderEdit = (props) => {
                       <div className={classes.workflowColumn4}>
                         <UserContext.Consumer>
                           {(user) =>
-                            user && user.isAdmin ? (
+                            user && (user.isAdmin || user.isCoordinator) ? (
                               <div
                                 style={{
                                   display: "flex",
@@ -2072,7 +2072,9 @@ const StakeholderEdit = (props) => {
                             }}
                             label="Approve"
                             disabled={
-                              isSubmitting || !criticalFieldsValidate(values)
+                              isSubmitting ||
+                              !criticalFieldsValidate(values) ||
+                              (user.isCoordinator && !user.isAdmin)
                             }
                             style={{ margin: "auto 0.5em" }}
                           />

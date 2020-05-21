@@ -2,11 +2,11 @@ const stakeholderService = require("../services/stakeholder-service");
 
 const search = (req, res) => {
   let categoryIds = req.query.categoryIds;
-  if (!categoryIds) {
-    categoryIds = ["1", "2", "3", "4", "5", "6"];
-  } else if (typeof categoryIds == "string") {
-    categoryIds = [categoryIds];
-  }
+  // if (!categoryIds) {
+  //   categoryIds = ["1", "2", "3", "4", "5", "6"];
+  // } else if (typeof categoryIds == "string") {
+  //   categoryIds = [categoryIds];
+  // }
   const params = { ...req.query, categoryIds };
   stakeholderService
     .search(params)

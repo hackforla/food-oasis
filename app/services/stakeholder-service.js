@@ -38,9 +38,11 @@ const search = async ({
   claimedLoginId,
   verificationStatusId,
 }) => {
-  const categoryClause = `(select sc.stakeholder_id
+  const categoryClause = categoryIds
+    ? `(select sc.stakeholder_id
     from stakeholder_category sc
-    where sc.category_id in (${categoryIds.join(",")}))`;
+    where sc.category_id in (${categoryIds.join(",")}))`
+    : "";
   const nameClause = "'%" + name.replace(/'/g, "''") + "%'";
   const sql = `
     select s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,

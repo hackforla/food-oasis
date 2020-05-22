@@ -44,6 +44,28 @@ export const search = async (searchParams) => {
   return stakeholders;
 };
 
+export const searchDashboard = async (searchParams) => {
+  searchParams = searchParams || {};
+  const response = await axios.get(`${baseUrl}/dashboard`, {
+    params: searchParams,
+  });
+  let stakeholders = response.data.map((s) => {
+    return {
+      ...s,
+      createdDate: toLocalMoment(s.createdDate),
+      modifiedDate: toLocalMoment(s.modifiedDate),
+      assignedDate: toLocalMoment(s.assignedDate),
+      submittedDate: toLocalMoment(s.submittedDate),
+      approvedDate: toLocalMoment(s.approvedDate),
+      rejectedDate: toLocalMoment(s.rejectedDate),
+      claimedDate: toLocalMoment(s.claimedDate),
+    };
+  });
+
+  // console.log("stakeholders", stakeholders);
+  return stakeholders;
+};
+
 export const getById = async (id) => {
   const response = await axios.get(`${baseUrl}/${id}`);
   const s = response.data;

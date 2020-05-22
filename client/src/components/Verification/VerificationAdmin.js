@@ -131,7 +131,7 @@ function VerificationAdmin(props) {
     data: stakeholders,
     loading: stakeholdersLoading,
     error: stakeholdersError,
-    search: stakeholderSearch,
+    searchDashboard: stakeholderSearch,
   } = useOrganizations();
 
   const searchCallback = useCallback(stakeholderSearch, []);

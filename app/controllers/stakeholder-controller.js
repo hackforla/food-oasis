@@ -2,14 +2,34 @@ const stakeholderService = require("../services/stakeholder-service");
 
 const search = (req, res) => {
   let categoryIds = req.query.categoryIds;
-  // if (!categoryIds) {
-  //   categoryIds = ["1", "2", "3", "4", "5", "6"];
-  // } else if (typeof categoryIds == "string") {
-  //   categoryIds = [categoryIds];
-  // }
+  if (!categoryIds) {
+    // If no filter, just use active categories.
+    categoryIds = ["1", "3", "8", "9", "10", "11"];
+  } else if (typeof categoryIds == "string") {
+    categoryIds = [categoryIds];
+  }
   const params = { ...req.query, categoryIds };
   stakeholderService
     .search(params)
+    .then((resp) => {
+      res.send(resp);
+    })
+    .catch((err) => {
+      res.status("404").json({ error: err.toString() });
+    });
+};
+
+const searchDashboard = (req, res) => {
+  let categoryIds = req.query.categoryIds;
+  if (!categoryIds) {
+    // If no filter, just use active categories.
+    categoryIds = ["1", "3", "8", "9", "10", "11"];
+  } else if (typeof categoryIds == "string") {
+    categoryIds = [categoryIds];
+  }
+  const params = { ...req.query, categoryIds };
+  stakeholderService
+    .searchDashboard(params)
     .then((resp) => {
       res.send(resp);
     })
@@ -99,6 +119,7 @@ const claim = (req, res) => {
 
 module.exports = {
   search,
+  searchDashboard,
   getById,
   post,
   put,

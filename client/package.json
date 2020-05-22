@@ -1,6 +1,9 @@
 {
   "name": "food-oasis-client",
-  "version": "0.1.0",
+  "description": "React Client for Food Oasis",
+  "version": "1.0.1",
+  "author": "Hack for LA",
+  "license": "MIT",
   "private": true,
   "proxy": "http://localhost:5000",
   "scripts": {

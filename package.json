@@ -1,7 +1,7 @@
 {
   "name": "starter",
-  "version": "1.0.0",
-  "description": "Starter Node Web API application",
+  "version": "1.0.1",
+  "description": "Web API Server for Food Oasis",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -11,7 +11,8 @@
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "lint": "eslint -c .eslintrc.js --ignore-path .eslintignore  **/*.{js,jsx}",
-    "lint:fix": "eslint -c .eslintrc.js --ignore-path .eslintignore --fix  **/*.{js,jsx}"
+    "lint:fix": "eslint -c .eslintrc.js --ignore-path .eslintignore --fix  **/*.{js,jsx}",
+    "release-notes": "gren release"
   },
   "husky": {
     "hooks": {
@@ -23,7 +24,7 @@
       "eslint -c .eslintrc.js --ignore-path .eslintignore --fix"
     ]
   },
-  "author": "John Darragh",
+  "author": "Hack for LA",
   "license": "MIT",
   "dependencies": {
     "@sendgrid/mail": "^6.4.0",

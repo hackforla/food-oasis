@@ -11,7 +11,8 @@
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "lint": "eslint -c .eslintrc.js --ignore-path .eslintignore  **/*.{js,jsx}",
-    "lint:fix": "eslint -c .eslintrc.js --ignore-path .eslintignore --fix  **/*.{js,jsx}"
+    "lint:fix": "eslint -c .eslintrc.js --ignore-path .eslintignore --fix  **/*.{js,jsx}",
+    "release-notes": "gren release"
   },
   "husky": {
     "hooks": {

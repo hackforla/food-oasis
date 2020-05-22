@@ -14,7 +14,7 @@ const SALT_ROUNDS = 10;
 const selectAll = () => {
   let sql = `
     select w.id, w.first_name, w.last_name, w.email, w.date_created,
-      w.email_confirmed, w.is_admin, w.is_security_admin, w.is_data_entry
+      w.email_confirmed, w.is_admin, w.is_coordinator, w.is_security_admin, w.is_data_entry
     from login w
     order by w.last_name, w.first_name, w.date_created
   `;
@@ -27,6 +27,7 @@ const selectAll = () => {
       dateCreated: row.date_created,
       emailConfirmed: row.email_confirmed,
       isAdmin: row.is_admin,
+      isCoordinator: row.is_coordinator,
       isSecurityAdmin: row.is_security_admin,
       isDataEntry: row.is_data_entry,
     }));
@@ -35,7 +36,7 @@ const selectAll = () => {
 
 const selectById = (id) => {
   const sql = `select w.id, w.first_name, w.last_name, w.email,
-  w.date_created, w.email_confirmed, w.is_admin, w.is_security_admin, w.is_data_entry
+  w.date_created, w.email_confirmed, w.is_admin, w.is_coordinator, w.is_security_admin, w.is_data_entry
   from login w where w.id = ${id}`;
   return pool.query(sql).then((res) => {
     const row = res.rows[0];
@@ -47,6 +48,7 @@ const selectById = (id) => {
       dateCreated: row.date_created,
       emailConfirmed: row.email_confirmed,
       isAdmin: row.is_admin,
+      isCoordinator: row.is_coordinator,
       isSecurityAdmin: row.is_security_admin,
       isDataEntry: row.is_data_entry,
     };
@@ -55,7 +57,7 @@ const selectById = (id) => {
 
 const selectByEmail = (email) => {
   const sql = `select id, first_name, last_name, email, password_hash, 
-    email_confirmed, date_created, is_admin, is_security_admin, is_data_entry 
+    email_confirmed, date_created, is_admin, is_coordinator, is_security_admin, is_data_entry 
     from login where email ilike '${email}'`;
   return pool.query(sql).then((res) => {
     const row = res.rows[0];
@@ -69,6 +71,7 @@ const selectByEmail = (email) => {
         dateCreated: row.date_created,
         emailConfirmed: row.email_confirmed,
         isAdmin: row.is_admin,
+        isCoordinator: row.is_coordinator,
         isSecurityAdmin: row.is_security_admin,
         isDataEntry: row.is_data_entry,
       };
@@ -319,6 +322,7 @@ const authenticate = async (email, password) => {
         lastName: user.lastName,
         email: user.email,
         isAdmin: user.isAdmin,
+        isCoordinator: user.isCoordinator,
         isSecurityAdmin: user.isSecurityAdmin,
         isDataEntry: user.isDataEntry,
         emailConfirmed: user.emailConfirmed,
@@ -369,8 +373,13 @@ const setPermissions = async (userId, permissionName, value) => {
     };
   }
   // Don't expose any columns besides the currently allowed ones:
-  // is_admin, is_security_admin, is_data_entry
-  var allowedPermissions = ["is_admin", "is_security_admin", "is_data_entry"];
+  // is_admin, is_coordinator, is_security_admin, is_data_entry
+  var allowedPermissions = [
+    "is_admin",
+    "is_coordinator",
+    "is_security_admin",
+    "is_data_entry",
+  ];
   if (!allowedPermissions.includes(permissionName)) {
     return {
       success: false,

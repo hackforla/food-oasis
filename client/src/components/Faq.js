@@ -144,7 +144,7 @@ const Faq = () => {
       <UserContext.Consumer>
         {(user) =>
           user &&
-          user.isAdmin && (
+          (user.isAdmin || user.isCoordinator) && (
             <div className={classes.buttonsContainer}>
               <Link className={classes.link} to="/faqs/add">
                 <AddButton label="Add New Faq" />

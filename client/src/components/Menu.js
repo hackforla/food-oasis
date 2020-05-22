@@ -103,7 +103,7 @@ export default function Menu(props) {
         <UserContext.Consumer>
           {(user) => (
             <>
-              {user && user.isAdmin ? (
+              {user && (user.isAdmin || user.isCoordinator) ? (
                 <>
                   <MenuItemLink
                     key="organizationedit"

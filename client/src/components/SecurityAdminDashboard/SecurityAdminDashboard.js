@@ -66,6 +66,8 @@ const SecurityAdminDashboard = () => {
     if (account) {
       if (permission === "is_admin") {
         account["isAdmin"] = value;
+      } else if (permission === "is_coordinator") {
+        account["isCoordinator"] = value;
       } else if (permission === "is_security_admin") {
         account["isSecurityAdmin"] = value;
       } else if (permission === "is_data_entry") {

@@ -60,7 +60,7 @@ const StakeholderListItem = (props) => {
             )}
             <UserContext.Consumer>
               {(user) =>
-                user && user.isAdmin ? (
+                user && (user.isAdmin || user.isCoordinator) ? (
                   <div style={{ display: "flex", justifyContent: "flex-end" }}>
                     <EditButton
                       label="Edit"

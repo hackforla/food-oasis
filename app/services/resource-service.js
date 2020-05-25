@@ -11,9 +11,9 @@ const { toSqlString } = require("./postgres-utils");
 */
 const selectAll = () => {
   const sql = `
-    select r.id, r.description, r.url
+    select id, description, url
     from resource r
-    order by r.id
+    order by id
   `;
   return pool.query(sql).then((res) => {
     return res.rows;
@@ -21,8 +21,8 @@ const selectAll = () => {
 };
 
 const selectById = (id) => {
-  const sql = `select r.id, r.description, r.url
-   from resource r where r.id = ${id}`;
+  const sql = `select id, description, url
+   from resource where id = ${id}`;
   return pool.query(sql).then((res) => {
     return res.rows[0];
   });

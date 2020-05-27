@@ -1,0 +1,22 @@
+{
+  "username": "hackforla",
+  "repo": "food-oasis",
+  "tags": "all",
+  "dataSource": "issues",
+  "ignoreLabels": ["closed", "documentation", "duplicate", "question"],
+  "ignoreIssuesWith": ["closed", "documentation", "duplicate", "question"],
+  "ignoreTagsWith": [],
+  "prefix": "v",
+  "override": true,
+  "onlyMilestones": false,
+  "groupBy": {
+    "Enhancements:": ["enhancement"],
+    "Bug Fixes:": ["bug"],
+    "Technical Debt:": ["refactor", "system update"]
+  },
+  "template": {
+    "issue": "- {{name}} [{{text}}]({{url}})"
+  },
+  "generate": true,
+  "changelogFilename": "CHANGELOG.md"
+}

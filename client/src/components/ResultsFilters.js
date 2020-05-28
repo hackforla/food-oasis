@@ -122,7 +122,7 @@ const ResultsFilters = ({
         e.preventDefault();
       }
       search({
-        name: "",
+        name: origin.locationName,
         latitude: origin.latitude,
         longitude: origin.longitude,
         radius,
@@ -148,11 +148,13 @@ const ResultsFilters = ({
     toggleCategory(FOOD_PANTRY_CATEGORY_ID);
   }, [toggleCategory]);
 
-  //loading search
-  useEffect(() => {
-    doHandleSearch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  //below causing double search
+
+  // //loading search
+  // useEffect(() => {
+  //   doHandleSearch();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   useEffect(() => {
     doHandleSearch();
@@ -247,7 +249,11 @@ const ResultsFilters = ({
           onSubmit={(e) => doHandleSearch(e)}
           style={{ all: "inherit" }}
         >
-          <Search userCoordinates={userCoordinates} setOrigin={setOrigin} />
+          <Search
+            userCoordinates={userCoordinates}
+            setOrigin={setOrigin}
+            origin={origin}
+          />
           <Button
             type="submit"
             disabled={!origin}

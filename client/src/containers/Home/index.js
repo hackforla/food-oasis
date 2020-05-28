@@ -125,12 +125,6 @@ const Home = (props) => {
                 startIcon={
                   <SearchIcon fontSize="large" className={classes.searchIcon} />
                 }
-                onClick={() =>
-                  props.history.push({
-                    pathname: "/organizations",
-                    state: { howdy: "howdy" },
-                  })
-                }
               />
             </Box>
             <Typography className={classes.label}>

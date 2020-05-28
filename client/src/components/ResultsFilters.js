@@ -256,7 +256,6 @@ const ResultsFilters = ({
             startIcon={
               <SearchIcon fontSize="large" className={classes.searchIcon} />
             }
-            onClick={() => doHandleSearch()}
           />
         </form>
       </Box>

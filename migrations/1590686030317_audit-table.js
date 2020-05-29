@@ -4,7 +4,7 @@ exports.shorthands = undefined;
 
 exports.up = (pgm) => {
   pgm.createTable(
-    { schema: "jf", name: "stakeholder_log" },
+    { schema: "public", name: "stakeholder_log" },
     {
       id: "id",
       stakeholder_id: "integer",
@@ -113,5 +113,5 @@ exports.up = (pgm) => {
 };
 
 exports.down = (pgm) => {
-  pgm.dropTable({ schema: "jf", name: "stakeholder_log" });
+  pgm.dropTable({ schema: "public", name: "stakeholder_log" });
 };

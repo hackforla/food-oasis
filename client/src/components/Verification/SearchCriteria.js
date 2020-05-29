@@ -221,65 +221,37 @@ const SearchCriteria = ({
               }
             />
           </Grid>
-          {/* <Grid item xs={12} sm={6}>
-            <FormLabel className={classes.formLabel}>Claimed By </FormLabel>
-            <AccountAutocomplete
-              name="claimedLoginId"
-              accountId={criteria.claimedLoginId || ""}
-              setAccountId={(claimedLoginId) =>
-                setCriteria({ ...criteria, claimedLoginId })
-              }
-            />
-          </Grid> */}
 
-          {/* <Grid item xs={6} sm={2}>
+          <Grid item xs={12} sm={4}>
             <RadioTrueFalseEither
-              label="Assigned"
-              name="isAssigned"
-              value={criteria.isAssigned || "either"}
+              label="Permanently Closed"
+              name="isInactive"
+              value={criteria.isInactive || "either"}
               onChange={setCriterion}
             />
           </Grid>
-          <Grid item xs={6} sm={2}>
+          <Grid item xs={12} sm={4}>
             <RadioTrueFalseEither
-              label="Submitted"
-              name="isSubmitted"
-              value={criteria.isSubmitted || "either"}
+              label="Closed for COVID"
+              name="isInactiveTemporary"
+              value={criteria.isInactiveTemporary || "either"}
               onChange={setCriterion}
             />
           </Grid>
-          <Grid item xs={6} sm={2}>
-            <RadioTrueFalseEither
-              label="Approved"
-              name="isApproved"
-              value={criteria.isApproved || "either"}
+          <Grid item xs={12} sm={4}>
+            <FormLabel className={classes.formLabel}>Organization ID</FormLabel>
+            <TextField
+              autoComplete="off"
+              type="number"
+              name="stakeholderId"
+              value={criteria.stakeholderId}
+              variant="outlined"
+              fullWidth
+              size="small"
+              id="stakeholderId"
               onChange={setCriterion}
             />
           </Grid>
-          <Grid item xs={6} sm={2}>
-            <RadioTrueFalseEither
-              label="Rejected"
-              name="isRejected"
-              value={criteria.isRejected || "either"}
-              onChange={setCriterion}
-            />
-          </Grid>
-          <Grid item xs={6} sm={2}>
-            <RadioTrueFalseEither
-              label="Claimed"
-              name="isClaimed"
-              value={criteria.isClaimed || "either"}
-              onChange={setCriterion}
-            />
-          </Grid> */}
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <RadioTrueFalseEither
-            label="Inactive"
-            name="isInactive"
-            value={criteria.isInactive || "either"}
-            onChange={setCriterion}
-          />
         </Grid>
         <Grid item xs={12} sm={6}>
           <Grid container>

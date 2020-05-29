@@ -1,11 +1,9 @@
-export const MAPBOX_STYLE = "mapbox://styles/mapbox/streets-v11";
-
-export const FOOD_PANTRY_CATEGORY_ID = 1;
-export const MEAL_PROGRAM_CATEGORY_ID = 9;
-export const DEFAULT_CATEGORIES = [
+import {
   FOOD_PANTRY_CATEGORY_ID,
   MEAL_PROGRAM_CATEGORY_ID,
-];
+} from "./stakeholder";
+
+export const MAPBOX_STYLE = "mapbox://styles/mapbox/streets-v11";
 
 export const ORGANIZATION_LABELS = {
   [FOOD_PANTRY_CATEGORY_ID]: "Food Pantry",

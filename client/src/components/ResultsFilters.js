@@ -16,7 +16,7 @@ import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
   DEFAULT_CATEGORIES,
-} from "../constants/map";
+} from "../constants/stakeholder";
 
 const useStyles = makeStyles((theme) => ({
   filterGroup: {

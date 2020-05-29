@@ -74,6 +74,8 @@ export const useOrganizations = () => {
     assignedLoginId,
     claimedLoginId,
     verificationStatusId,
+    isInactiveTemporary,
+    stakeholderId,
   }) => {
     //if (!categoryIds || categoryIds.length === 0) return;
     try {
@@ -93,13 +95,15 @@ export const useOrganizations = () => {
         assignedLoginId,
         claimedLoginId,
         verificationStatusId,
+        isInactiveTemporary,
+        stakeholderId,
       });
       setState({ data: stakeholders, loading: false, error: false });
       return stakeholders;
     } catch (err) {
       setState({ data: null, loading: false, error: true });
-      Promise.reject(err);
       console.log(err);
+      return Promise.reject(err);
     }
   };
 

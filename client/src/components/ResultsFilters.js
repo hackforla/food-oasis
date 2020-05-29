@@ -122,7 +122,7 @@ const ResultsFilters = ({
         e.preventDefault();
       }
       search({
-        name: origin.locationName,
+        name: "",
         latitude: origin.latitude,
         longitude: origin.longitude,
         radius,

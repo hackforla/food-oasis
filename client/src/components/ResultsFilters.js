@@ -123,8 +123,8 @@ const ResultsFilters = ({
       }
       search({
         name: "",
-        latitude: origin.latitude,
-        longitude: origin.longitude,
+        latitude: origin.latitude || userCoordinates.latitude,
+        longitude: origin.longitude || userCoordinates.longitude,
         radius,
         categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
         isInactive: "false",
@@ -137,7 +137,16 @@ const ResultsFilters = ({
         claimedLoginId: "",
       });
     },
-    [search, origin, categoryIds, isVerifiedSelected, radius]
+    [
+      search,
+      origin.latitude,
+      origin.longitude,
+      userCoordinates.latitude,
+      userCoordinates.longitude,
+      radius,
+      categoryIds,
+      isVerifiedSelected,
+    ]
   );
 
   const toggleMeal = useCallback(() => {
@@ -148,11 +157,11 @@ const ResultsFilters = ({
     toggleCategory(FOOD_PANTRY_CATEGORY_ID);
   }, [toggleCategory]);
 
-  //loading search
-  useEffect(() => {
-    doHandleSearch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // //loading search
+  // useEffect(() => {
+  //   doHandleSearch();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   useEffect(() => {
     doHandleSearch();
@@ -247,7 +256,11 @@ const ResultsFilters = ({
           onSubmit={(e) => doHandleSearch(e)}
           style={{ all: "inherit" }}
         >
-          <Search userCoordinates={userCoordinates} setOrigin={setOrigin} />
+          <Search
+            userCoordinates={userCoordinates}
+            setOrigin={setOrigin}
+            origin={origin}
+          />
           <Button
             type="submit"
             disabled={!origin}

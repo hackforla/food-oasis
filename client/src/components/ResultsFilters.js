@@ -123,8 +123,8 @@ const ResultsFilters = ({
       }
       search({
         name: "",
-        latitude: origin.latitude,
-        longitude: origin.longitude,
+        latitude: origin.latitude || userCoordinates.latitude,
+        longitude: origin.longitude || userCoordinates.longitude,
         radius,
         categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
         isInactive: "false",
@@ -137,7 +137,16 @@ const ResultsFilters = ({
         claimedLoginId: "",
       });
     },
-    [search, origin, categoryIds, isVerifiedSelected, radius]
+    [
+      search,
+      origin.latitude,
+      origin.longitude,
+      userCoordinates.latitude,
+      userCoordinates.longitude,
+      radius,
+      categoryIds,
+      isVerifiedSelected,
+    ]
   );
 
   const toggleMeal = useCallback(() => {
@@ -147,8 +156,6 @@ const ResultsFilters = ({
   const togglePantry = useCallback(() => {
     toggleCategory(FOOD_PANTRY_CATEGORY_ID);
   }, [toggleCategory]);
-
-  //below causing double search
 
   // //loading search
   // useEffect(() => {

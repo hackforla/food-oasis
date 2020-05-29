@@ -4,13 +4,12 @@ import ReactMapGL, { NavigationControl } from "react-map-gl";
 import MarkerPopup from "./MarkerPopup";
 import Marker from "./Marker";
 import { MAPBOX_TOKEN } from "../secrets";
+import { MAPBOX_STYLE, ORGANIZATION_COLORS } from "../constants/map";
 import {
   DEFAULT_CATEGORIES,
   FOOD_PANTRY_CATEGORY_ID,
-  MAPBOX_STYLE,
   MEAL_PROGRAM_CATEGORY_ID,
-  ORGANIZATION_COLORS,
-} from "../constants/map";
+} from "../constants/stakeholder";
 
 const styles = {
   geolocate: {
@@ -67,7 +66,7 @@ function Map({
           stakeholders
             .filter((sh) => sh.latitude && sh.longitude)
             .map((stakeholder, index) => {
-              const isVerified = !!stakeholder.approvedDate;
+              const isVerified = stakeholder.verificationStatusId === 4;
               /*todo
                * implement condition based on api data
                * */

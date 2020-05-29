@@ -62,21 +62,25 @@ export default function Menu(props) {
 
   const unAuthLinks = (
     <>
-      <MenuItemLink key="Register" to="/register" text="Register" />
-      <MenuItemLink key="login" to="/login" text="Login">
+      <Divider />
+      <MenuItemLink key="Register" to="/register" text="Volunteer Register" />
+      <MenuItemLink key="login" to="/login" text="Volunteer Login">
         Login
       </MenuItemLink>
     </>
   );
 
   const authedLinks = (
-    <MenuItemLink
-      key="logout"
-      text="Logout"
-      onClick={() => logout(setUser, setToast, history)}
-    >
-      Logout
-    </MenuItemLink>
+    <>
+      <Divider />
+      <MenuItemLink
+        key="logout"
+        text="Logout"
+        onClick={() => logout(setUser, setToast, history)}
+      >
+        Logout
+      </MenuItemLink>
+    </>
   );
 
   const sideList = () => (
@@ -115,21 +119,28 @@ export default function Menu(props) {
                     to="/verificationadmin"
                     text="Verification Admin"
                   />
+                  <Divider />
                 </>
               ) : null}
               {user && user.isDataEntry ? (
-                <MenuItemLink
-                  key="verificationdashboard"
-                  to="/verificationdashboard"
-                  text="My Dashboard"
-                />
+                <>
+                  <MenuItemLink
+                    key="verificationdashboard"
+                    to="/verificationdashboard"
+                    text="My Dashboard"
+                  />
+                  <Divider />
+                </>
               ) : null}
               {user && user.isSecurityAdmin ? (
-                <MenuItemLink
-                  key="securityadmindashboard"
-                  to="/securityadmindashboard"
-                  text="Security Admin Dashboard"
-                />
+                <>
+                  <MenuItemLink
+                    key="securityadmindashboard"
+                    to="/securityadmindashboard"
+                    text="Security Admin Dashboard"
+                  />
+                  <Divider />
+                </>
               ) : null}
             </>
           )}

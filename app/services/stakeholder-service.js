@@ -247,6 +247,8 @@ const searchDashboard = async ({
   latitude,
   longitude,
   distance,
+  isInactiveTemporary,
+  stakeholderId,
 }) => {
   const categoryClause = categoryIds
     ? `(select sc.stakeholder_id
@@ -310,6 +312,7 @@ const searchDashboard = async ({
     ${trueFalseEitherClause("s.rejected_date", isRejected)}
     ${trueFalseEitherClause("s.claimed_date", isClaimed)}
     ${booleanEitherClause("s.inactive", isInactive)}
+    ${booleanEitherClause("s.inactive_temporary", isInactiveTemporary)}
     ${assignedLoginId ? ` and s.assigned_login_id = ${assignedLoginId} ` : ""}
     ${claimedLoginId ? ` and s.claimed_login_id = ${claimedLoginId} ` : ""}
     ${
@@ -317,6 +320,7 @@ const searchDashboard = async ({
         ? ` and s.verification_status_id = ${verificationStatusId} `
         : ""
     }
+    ${Number(stakeholderId) > 0 ? ` and s.id = ${stakeholderId} ` : " "}
     order by s.name
   `;
   //console.log(sql);

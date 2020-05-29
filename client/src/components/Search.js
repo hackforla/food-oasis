@@ -22,6 +22,7 @@ const useStyles = makeStyles(() => ({
     backgroundColor: "#fff",
     borderRadius: "4px 0 0 4px",
     height: 41,
+
     "& .MuiOutlinedInput-root": {
       borderRadius: "4px 0 0 4px",
     },
@@ -36,12 +37,25 @@ const useStyles = makeStyles(() => ({
       borderRight: "none",
     },
   },
+  input: {
+    "&::placeholder": {
+      opacity: "1",
+    },
+  },
 }));
 
 export default function Search(props) {
-  const { userCoordinates, setOrigin } = props;
+  const { userCoordinates, setOrigin, origin } = props;
   const classes = useStyles();
   const [selectedPlace, setSelectedPlace] = useState("");
+
+  const [placeHolder, changePlaceholder] = useState(
+    "Enter an address, neighborhood, ZIP"
+  );
+
+  useEffect(() => {
+    if (origin?.locationName) changePlaceholder(origin.locationName);
+  }, [origin]);
 
   const { mapboxResults, fetchMapboxResults } = useMapboxGeocoder();
 
@@ -95,7 +109,7 @@ export default function Search(props) {
         variant="outlined"
         margin="none"
         fullWidth
-        placeholder={"Enter an address, neighborhood, ZIP"}
+        placeholder={placeHolder}
         name="address"
         size="small"
         autoFocus

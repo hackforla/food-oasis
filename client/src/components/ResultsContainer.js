@@ -43,6 +43,7 @@ export default function ResultsContainer(props) {
   const { categoryIds, toggleCategory } = useCategoryIds([]);
 
   const initialCoords = {
+    locationName: userSearch ? userSearch.locationName : null,
     latitude: userSearch
       ? userSearch.latitude
       : userCoordinates

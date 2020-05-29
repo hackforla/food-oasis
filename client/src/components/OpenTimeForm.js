@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import OpenTimeInputs from "./OpenTimeInput";
 import { AddButton } from "./Buttons";
 import { Card, CardContent, Typography } from "@material-ui/core";
@@ -51,6 +52,12 @@ function OpenTimeForm(props) {
     handleChange(newHours);
   };
 
+  const copyHours = (e, index) => {
+    const newRange = { ...hours[index] };
+    let newHours = [...hours, newRange];
+    handleChange(newHours);
+  };
+
   const stateChange = (e, rowIndex) => {
     let newHours = [...hours];
     const name = e.target.name;
@@ -90,6 +97,7 @@ function OpenTimeForm(props) {
           values={val}
           onChange={(e) => stateChange(e, rowIndex)}
           removeInput={(e) => removeHours(e, rowIndex)}
+          copyInput={(e) => copyHours(e, rowIndex)}
         />
       </div>
     );
@@ -112,5 +120,10 @@ function OpenTimeForm(props) {
     </Card>
   );
 }
+
+OpenTimeForm.propTypes = {
+  value: PropTypes.array,
+  onChange: PropTypes.func,
+};
 
 export default OpenTimeForm;

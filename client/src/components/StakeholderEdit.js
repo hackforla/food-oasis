@@ -903,7 +903,6 @@ const StakeholderEdit = (props) => {
                         name="longitude"
                         label="Longitude *"
                         type="text"
-                        s
                         size="small"
                         value={values.longitude}
                         onChange={handleChange}

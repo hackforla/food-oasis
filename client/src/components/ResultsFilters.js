@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Search from "../components/Search";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
@@ -112,6 +112,20 @@ const ResultsFilters = ({
   toggleCategory,
 }) => {
   const classes = useStyles();
+
+  const windowSize = window.innerWidth > 960 ? true : false;
+  const [isWindow960orLess, changeWindow] = useState(windowSize);
+
+  useEffect(() => {
+    const changeInputContainerWidth = () => {
+      window.innerWidth > 960 ? changeWindow(true) : changeWindow(false);
+    };
+
+    window.addEventListener("resize", changeInputContainerWidth);
+
+    return () =>
+      window.removeEventListener("resize", changeInputContainerWidth);
+  }, []);
 
   const isMealsSelected = categoryIds.indexOf(MEAL_PROGRAM_CATEGORY_ID) >= 0;
   const isPantrySelected = categoryIds.indexOf(FOOD_PANTRY_CATEGORY_ID) >= 0;
@@ -250,7 +264,10 @@ const ResultsFilters = ({
           </Button>
         </Grid>
       </Grid>
-      <Box className={classes.inputContainer}>
+      <Box
+        className={classes.inputContainer}
+        style={{ width: isWindow960orLess ? "30rem" : "100%" }}
+      >
         <form
           noValidate
           onSubmit={(e) => doHandleSearch(e)}

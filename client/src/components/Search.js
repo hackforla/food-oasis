@@ -59,11 +59,11 @@ export default function Search(props) {
 
   const { mapboxResults, fetchMapboxResults } = useMapboxGeocoder();
 
-  const initialWidth = window.innerWidth > 600 ? true : false;
-  const [isWindowSixHundredOrLess, switchAddressWidth] = useState(initialWidth);
+  const initialWidth = window.innerWidth > 960 ? true : false;
+  const [isWindow960orLess, switchAddressWidth] = useState(initialWidth);
   useEffect(() => {
     const changeAddressWidth = () => {
-      window.innerWidth > 600
+      window.innerWidth > 960
         ? switchAddressWidth(true)
         : switchAddressWidth(false);
     };
@@ -119,10 +119,11 @@ export default function Search(props) {
           },
           ...InputProps,
         }}
-        style={{ width: isWindowSixHundredOrLess ? "31em" : "82vw" }}
+        style={{ width: isWindow960orLess ? "27rem" : "100%" }}
       />
     );
   };
+  //need to add loading behavior to see if it's loading narrow or wide
 
   const renderSuggestion = (params) => {
     const { item, index, itemProps, highlightedIndex, selectedItem } = params;

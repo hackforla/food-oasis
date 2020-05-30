@@ -51,7 +51,8 @@ const useStyles = makeStyles((theme) => ({
   controlPanel: {
     width: "100%",
     backgroundColor: "#336699",
-    height: "5em",
+    padding: "1rem 0",
+    display: "flex",
   },
   inputHolder: {
     display: "flex",
@@ -183,7 +184,12 @@ const ResultsFilters = ({
   }, [radius, categoryIds, isVerifiedSelected, toggleCategory]);
 
   return (
-    <Grid container wrap="wrap-reverse" className={classes.controlPanel}>
+    <Grid
+      container
+      wrap="wrap-reverse"
+      className={classes.controlPanel}
+      style={{ justifyContent: isWindow960orLess ? null : "center" }}
+    >
       <Grid
         item
         xs={12}

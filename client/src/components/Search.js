@@ -123,7 +123,6 @@ export default function Search(props) {
       />
     );
   };
-  //need to add loading behavior to see if it's loading narrow or wide
 
   const renderSuggestion = (params) => {
     const { item, index, itemProps, highlightedIndex, selectedItem } = params;

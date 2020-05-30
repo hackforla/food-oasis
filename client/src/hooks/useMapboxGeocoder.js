@@ -2,9 +2,12 @@ import React from "react";
 import axios from "axios";
 import debounce from "debounce-fn";
 
+const baseUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places`;
+
+const losAngelesCountyLatLong = "-118.9517,33.6988,-117.6462,34.8233";
+
 const MAPBOX_TOKEN =
   "pk.eyJ1IjoibHVjYXNob21lciIsImEiOiJjazFqcnRjcm0wNmZ1M2JwZXg2eDFzMXd3In0.yYpkKLrFCxF-qyBfZH1a8w";
-const baseUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places`;
 
 const initialState = {
   isLoading: false,
@@ -45,7 +48,7 @@ export function useMapboxGeocoder() {
 
   const fetchMapboxResults = debounce(
     async (searchString) => {
-      const mapboxUrl = `${baseUrl}/${searchString}.json?access_token=${MAPBOX_TOKEN}`;
+      const mapboxUrl = `${baseUrl}/${searchString}.json?bbox=${losAngelesCountyLatLong}&access_token=${MAPBOX_TOKEN}`;
 
       dispatch({ type: actionTypes.FETCH_REQUEST });
       try {

@@ -24,6 +24,13 @@ export const useOrganizations = () => {
     claimedLoginId,
     verificationStatusId,
   }) => {
+    if (!latitude || !longitude) {
+      setState({ data: null, loading: false, error: true });
+      const msg =
+        "Call to search function missing latitude and/or longitude parameters";
+      console.error(msg);
+      return Promise.reject(msg);
+    }
     //if (!categoryIds || categoryIds.length === 0) return;
     try {
       setState({ data: null, loading: true, error: false });
@@ -47,8 +54,8 @@ export const useOrganizations = () => {
       return stakeholders;
     } catch (err) {
       setState({ data: null, loading: false, error: true });
-      Promise.reject(err);
-      console.log(err);
+      console.error(err);
+      return Promise.reject(err);
     }
   };
 
@@ -67,6 +74,8 @@ export const useOrganizations = () => {
     assignedLoginId,
     claimedLoginId,
     verificationStatusId,
+    isInactiveTemporary,
+    stakeholderId,
   }) => {
     //if (!categoryIds || categoryIds.length === 0) return;
     try {
@@ -86,13 +95,15 @@ export const useOrganizations = () => {
         assignedLoginId,
         claimedLoginId,
         verificationStatusId,
+        isInactiveTemporary,
+        stakeholderId,
       });
       setState({ data: stakeholders, loading: false, error: false });
       return stakeholders;
     } catch (err) {
       setState({ data: null, loading: false, error: true });
-      Promise.reject(err);
       console.log(err);
+      return Promise.reject(err);
     }
   };
 

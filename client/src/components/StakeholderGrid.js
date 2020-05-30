@@ -56,11 +56,27 @@ const defaultColumnProperties = {
 
 const sortRows = (initialRows, sortColumn, sortDirection) => (rows) => {
   const comparer = (a, b) => {
+    if (
+      typeof a[sortColumn] === "string" &&
+      typeof b[sortColumn] === "string"
+    ) {
+      if (sortDirection === "ASC") {
+        return a[sortColumn].toLowerCase() > b[sortColumn].toLowerCase()
+          ? 1
+          : -1;
+      } else if (sortDirection === "DESC") {
+        return a[sortColumn].toLowerCase() < b[sortColumn].toLowerCase()
+          ? 1
+          : -1;
+      }
+      return 0;
+    }
     if (sortDirection === "ASC") {
       return a[sortColumn] > b[sortColumn] ? 1 : -1;
     } else if (sortDirection === "DESC") {
       return a[sortColumn] < b[sortColumn] ? 1 : -1;
     }
+    return 0;
   };
   return sortDirection === "NONE" ? initialRows : [...rows].sort(comparer);
 };
@@ -142,13 +158,7 @@ const columns = [
     formatter: dateFormatter,
     dataType: "datetime",
   },
-  { key: "reviewedUser", name: "Reviewed By" },
-  {
-    key: "rejectedDate",
-    name: "Rejected",
-    formatter: dateFormatter,
-    dataType: "datetime",
-  },
+  { key: "reviewedUser", name: "Approved By" },
   {
     key: "approvedDate",
     name: "Approved",
@@ -188,6 +198,8 @@ const StakeholderGrid = (props) => {
   const [rows, setRows] = useState(props.stakeholders);
   const targetRef = React.useRef();
   const [dimensions, setDimensions] = useState();
+  const [sortCol, setSortCol] = useState(null);
+  const [sortDir, setSortDir] = useState(null);
 
   React.useLayoutEffect(() => {
     setDimensions(targetRef.current.getBoundingClientRect().toJSON());
@@ -203,6 +215,16 @@ const StakeholderGrid = (props) => {
       window.removeEventListener("resize", handleResize);
     };
   });
+
+  React.useEffect(() => {
+    const storedSettings = localStorage.getItem("stakeholderGridSettings");
+    if (storedSettings) {
+      const settings = JSON.parse(storedSettings);
+      setSortCol(settings.sortCol);
+      setSortDir(settings.sortDir);
+      setRows(sortRows(stakeholders, settings.sortCol, settings.sortDir));
+    }
+  }, [stakeholders]);
 
   const onRowsSelected = (newlySelectedRows) => {
     const newSelectedIndexes = selectedIndexes.concat(
@@ -230,7 +252,6 @@ const StakeholderGrid = (props) => {
         flexGrow: 1,
         display: "flex",
         flexDirection: "column",
-        backgroundColor: "yellow",
       }}
     >
       {stakeholders && stakeholders.length > 0 && dimensions ? (
@@ -240,9 +261,17 @@ const StakeholderGrid = (props) => {
           columns={columns}
           rowGetter={(i) => rows[i]}
           rowsCount={rows.length}
-          onGridSort={(sortColumn, sortDirection) =>
-            setRows(sortRows(stakeholders, sortColumn, sortDirection))
-          }
+          sortColumn={sortCol}
+          sortDirection={sortDir}
+          onGridSort={(sortColumn, sortDirection) => {
+            localStorage.setItem(
+              "stakeholderGridSettings",
+              JSON.stringify({ sortCol: sortColumn, sortDir: sortDirection })
+            );
+            setSortCol(sortColumn);
+            setSortDir(sortDirection);
+            setRows(sortRows(stakeholders, sortColumn, sortDirection));
+          }}
           onColumnResize={(idx, width) =>
             console.log(`Column ${idx} has been resized to ${width}`)
           }

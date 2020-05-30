@@ -1,14 +1,17 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Grid,
   MenuItem,
   FormControl,
+  IconButton,
   InputLabel,
   Select,
   TextField,
 } from "@material-ui/core";
 import { CancelIconButton } from "./Buttons";
+import { WrapText } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   row: {
@@ -43,11 +46,11 @@ const intervals = [
 
 function OpenTimeInput(props) {
   const classes = useStyles();
-  const { values, onChange, removeInput } = props;
+  const { values, onChange, removeInput, copyInput } = props;
 
   return (
     <Grid container spacing={1} className={classes.row}>
-      <Grid item xs={12} sm={3}>
+      <Grid item xs={12} sm={2}>
         <FormControl
           variant="outlined"
           fullWidth
@@ -94,7 +97,7 @@ function OpenTimeInput(props) {
           </Select>
         </FormControl>
       </Grid>
-      <Grid item xs={12} sm={3}>
+      <Grid item xs={12} sm={2}>
         <TextField
           type="time"
           name="open"
@@ -109,7 +112,7 @@ function OpenTimeInput(props) {
       <Grid
         item
         xs={10}
-        sm={3}
+        sm={2}
         styles={{ display: "flex", flexDirection: "column" }}
       >
         <TextField
@@ -126,8 +129,25 @@ function OpenTimeInput(props) {
       <Grid item xs={2} sm={1}>
         <CancelIconButton onClick={removeInput} />
       </Grid>
+      <Grid item xs={2} sm={1}>
+        <IconButton
+          variant="contained"
+          color="default"
+          aria-label="cancel"
+          onClick={copyInput}
+        >
+          <WrapText />
+        </IconButton>
+      </Grid>
     </Grid>
   );
 }
+
+OpenTimeInput.propTypes = {
+  values: PropTypes.object,
+  onChange: PropTypes.func,
+  removeInput: PropTypes.func,
+  copyInput: PropTypes.func,
+};
 
 export default OpenTimeInput;

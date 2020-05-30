@@ -6,6 +6,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import pantryIcon from "../images/pantryIcon.svg";
 import mealIcon from "../images/mealIcon.svg";
 import splitPantryMealIcon from "../images/splitPantryMealIcon.svg";
+import {
+  MEAL_PROGRAM_CATEGORY_ID,
+  FOOD_PANTRY_CATEGORY_ID,
+  VERIFICATION_STATUS,
+} from "../constants/stakeholder";
 
 const useStyles = makeStyles((theme) => ({
   stakeholderArrayHolder: {
@@ -70,16 +75,16 @@ const ResultsList = ({
             <div className={classes.imgHolder}>
               <img
                 src={
-                  stakeholder.categories[0].id === 1 &&
+                  stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID &&
                   stakeholder.categories[1] &&
-                  stakeholder.categories[1].id === 9
+                  stakeholder.categories[1].id === MEAL_PROGRAM_CATEGORY_ID
                     ? splitPantryMealIcon
-                    : stakeholder.categories[0].id === 1
+                    : stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
                     ? pantryIcon
                     : mealIcon
                 }
                 alt={
-                  stakeholder.categories[0].id === 1
+                  stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
                     ? "Pantry Icon"
                     : "Meal Icon"
                 }
@@ -95,7 +100,9 @@ const ResultsList = ({
               <em
                 style={{
                   color:
-                    stakeholder.categories[0].id === 1 ? "#336699" : "#CC3333",
+                    stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
+                      ? "#336699"
+                      : "#CC3333",
                 }}
               >
                 {stakeholder.categories[0].name}
@@ -116,14 +123,17 @@ const ResultsList = ({
                 : stakeholder.distance.toString().substring(0, 3)}{" "}
               mi
               {mapMarker(
-                stakeholder.categories[0].id === 1 &&
+                stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID &&
                   stakeholder.categories[1] &&
-                  stakeholder.categories[1].id === 9
+                  stakeholder.categories[1].id === MEAL_PROGRAM_CATEGORY_ID
                   ? ""
-                  : stakeholder.categories[0].id === 1
+                  : stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
                   ? "#336699"
                   : "#CC3333",
-                stakeholder.submittedDate ? true : false
+                stakeholder.verificationStatusId ===
+                  VERIFICATION_STATUS.VERIFIED
+                  ? true
+                  : false
               )}
             </div>
           </div>

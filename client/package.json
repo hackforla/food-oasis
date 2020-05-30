@@ -1,7 +1,7 @@
 {
   "name": "food-oasis-client",
   "description": "React Client for Food Oasis",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "Hack for LA",
   "license": "MIT",
   "private": true,

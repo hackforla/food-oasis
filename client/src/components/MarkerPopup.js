@@ -1,39 +1,39 @@
 import React from "react";
 import { Popup } from "react-map-gl";
-import { Link } from "@material-ui/core";
+// import { Link } from "@material-ui/core";
 
 function MarkerPopup({ entity, handleClose }) {
   const {
     latitude,
     longitude,
     name,
-    address1,
-    address2,
-    city,
-    state,
-    zip,
-    phone,
-    website,
+    // address1,
+    // address2,
+    // city,
+    // state,
+    // zip,
+    // phone,
+    // website,
   } = entity;
 
-  const getGoogleMapsUrl = () => {
-    const baseUrl = `https://google.com/maps/place/`;
+  // const getGoogleMapsUrl = () => {
+  //   const baseUrl = `https://google.com/maps/place/`;
 
-    const address1urlArray = address1.split(" ");
-    const address1url = address1urlArray.reduce(
-      (acc, currentWord) => `${acc}+${currentWord}`
-    );
+  //   const address1urlArray = address1.split(" ");
+  //   const address1url = address1urlArray.reduce(
+  //     (acc, currentWord) => `${acc}+${currentWord}`
+  //   );
 
-    if (address2) {
-      const address2urlArray = address2.split(" ");
-      const address2url = address2urlArray.reduce(
-        (acc, currentWord) => `${acc}+${currentWord}`
-      );
-      return `${baseUrl}${address1url},+${address2url},+${zip}`;
-    }
+  //   if (address2) {
+  //     const address2urlArray = address2.split(" ");
+  //     const address2url = address2urlArray.reduce(
+  //       (acc, currentWord) => `${acc}+${currentWord}`
+  //     );
+  //     return `${baseUrl}${address1url},+${address2url},+${zip}`;
+  //   }
 
-    return `${baseUrl}${address1url},+${zip}`;
-  };
+  //   return `${baseUrl}${address1url},+${zip}`;
+  // };
 
   return (
     <Popup
@@ -47,7 +47,8 @@ function MarkerPopup({ entity, handleClose }) {
       offsetTop={-20}
     >
       <div>
-        <h4>{name}</h4>
+        <h3>{name}</h3>
+        {/* <h4>{name}</h4> 
         <div
           style={{
             display: "flex",
@@ -85,7 +86,7 @@ function MarkerPopup({ entity, handleClose }) {
               {`Get Directions via Google`}
             </Link>
           )}
-        </div>
+        </div> */}
       </div>
     </Popup>
   );

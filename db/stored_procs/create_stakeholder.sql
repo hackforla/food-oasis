@@ -1,8 +1,4 @@
--- drop previous stored proc and stakeholder_hours datatype (to prevent errors if recreating this proc)
-drop type stakeholder_hours CASCADE;
 
--- handy struct to represent the various fields we'll need to set in the stakeholder schedule table
-CREATE TYPE stakeholder_hours AS (week_of_month INT, day_of_week VARCHAR, open VARCHAR, close VARCHAR);
 
 CREATE OR REPLACE PROCEDURE create_stakeholder(
   s_name VARCHAR, s_address_1 VARCHAR, s_address_2 VARCHAR, s_city VARCHAR, s_state VARCHAR, s_zip VARCHAR,
@@ -47,7 +43,7 @@ BEGIN
       donation_delivery_instructions, donation_notes, covid_notes,
       category_notes, eligibility_notes, food_types, languages,
       v_name, v_categories, v_address,
-      v_phone, v_email, v_hours, verification_status_id, inactive_temporary)
+      v_phone, v_email, v_hours, verification_status_id, inactive_temporary, hours, category_ids)
     VALUES (
       s_name, s_address_1, s_address_2, s_city, s_state, s_zip,
       s_phone, s_latitude, s_longitude,
@@ -65,7 +61,8 @@ BEGIN
       s_donation_delivery_instructions, s_donation_notes, s_covid_notes,
       s_category_notes, s_eligibility_notes, s_food_types, s_languages,
       s_v_name, s_v_categories, s_v_address,
-      s_v_phone, s_v_email, s_v_hours, s_verification_status_id, s_inactive_temporary
+      s_v_phone, s_v_email, s_v_hours, s_verification_status_id, s_inactive_temporary,
+      hours_array, categories
     ) RETURNING id INTO s_id;
 
     -- insert new stakeholder category(s)

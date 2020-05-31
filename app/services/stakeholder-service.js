@@ -6,6 +6,8 @@ const {
   toSqlTimestamp,
 } = require("./postgres-utils");
 
+const milesPerLatitudeDegree = 69.097; // used for distance calculations
+
 const trueFalseEitherClause = (columnName, value) => {
   return value === "true"
     ? ` and ${columnName} is not null `
@@ -38,77 +40,44 @@ const search = async ({
   claimedLoginId,
   verificationStatusId,
 }) => {
-  const categoryClause = categoryIds
-    ? `(select sc.stakeholder_id
-    from stakeholder_category sc
-    where sc.category_id in (${categoryIds.join(",")}))`
-    : "";
-  const nameClause = "'%" + name.replace(/'/g, "''") + "%'";
-  const sql = `
+  const locationClause = buildLocationClause(latitude, longitude, distance);
+  const categoryClause = buildCTEClause(categoryIds, name);
+  const usersClause = buildUsersClause();
+
+  const sql = `${categoryClause}
     select s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
-      s.phone, s.latitude, s.longitude, s.website,  s.notes,
-      (select array(select row_to_json(row)
-        from (
-          select day_of_week, open, close, week_of_month
-          from stakeholder_schedule
-          where stakeholder_id = s.id
-        ) row
-      )) as hours,
-      (select array(select row_to_json(category_row)
-        from (
-          select c.id, c.name
-          from category c
-            join stakeholder_category sc on c.id = sc.category_id
-          where sc.stakeholder_id = s.id
-        ) category_row
-      )) as categories,
-      to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
-        as created_date, s.created_login_id,
-      to_char(s.modified_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
-        as modified_date, s.modified_login_id,
-      to_char(s.submitted_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
-        as submitted_date, s.submitted_login_id,
-      to_char(s.approved_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
-        as approved_date,
-      to_char(s.rejected_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
-        as rejected_date, s.reviewed_login_id,
-      to_char(s.assigned_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
-        as assigned_date, s.assigned_login_id,
-      to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
-        as claimed_date, s.claimed_login_id,
-      s.requirements, s.admin_notes, s.inactive,
-      L1.first_name || ' ' || L1.last_name as created_user,
-      L2.first_name || ' ' || L2.last_name as modified_user,
-      L3.first_name || ' ' || L3.last_name as submitted_user,
-      L4.first_name || ' ' || L4.last_name as reviewed_user,
-      L5.first_name || ' ' || L5.last_name as assigned_user,
-      L6.first_name || ' ' || L6.last_name as claimed_user,
-      s.parent_organization, s.physical_access, s.email,
-      s.items, s.services, s.facebook,
-      s.twitter, s.pinterest, s.linkedin, s.description,
-      s.review_notes, s.instagram, s.admin_contact_name,
-      s.admin_contact_phone, s.admin_contact_email,
-      s.donation_contact_name, s.donation_contact_phone,
-      s.donation_contact_email, s.donation_pickup,
-      s.donation_accept_frozen, s.donation_accept_refrigerated,
-      s.donation_accept_perishable, s.donation_schedule,
-      s.donation_delivery_instructions, s.donation_notes, s.covid_notes,
-      s.category_notes, s.eligibility_notes, s.food_types, s.languages,
-      s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email,
-      s.v_hours, s.verification_status_id, s.inactive_temporary
-    from stakeholder s
-    left join login L1 on s.created_login_id = L1.id
-    left join login L2 on s.modified_login_id = L2.id
-    left join login L3 on s.submitted_login_id = L3.id
-    left join login L4 on s.reviewed_login_id = L4.id
-    left join login L5 on s.assigned_login_id = L5.id
-    left join login L6 on s.claimed_login_id = L6.id
-    where s.name ilike ${nameClause}
-    ${
-      categoryIds && categoryIds.length > 0
-        ? ` and s.id in ${categoryClause} `
-        : ""
-    }
+    s.phone, s.latitude, s.longitude, s.website,  s.notes,
+    to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
+      as created_date, s.created_login_id,
+    to_char(s.modified_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
+      as modified_date, s.modified_login_id,
+    to_char(s.submitted_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
+      as submitted_date, s.submitted_login_id,
+    to_char(s.approved_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
+      as approved_date,
+    to_char(s.rejected_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
+      as rejected_date, s.reviewed_login_id,
+    to_char(s.assigned_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
+      as assigned_date, s.assigned_login_id,
+    to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
+      as claimed_date, s.claimed_login_id,
+    s.requirements, s.admin_notes, s.inactive,
+    s.parent_organization, s.physical_access, s.email,
+    s.items, s.services, s.facebook,
+    s.twitter, s.pinterest, s.linkedin, s.description,
+    s.review_notes, s.instagram, s.admin_contact_name,
+    s.admin_contact_phone, s.admin_contact_email,
+    s.donation_contact_name, s.donation_contact_phone,
+    s.donation_contact_email, s.donation_pickup,
+    s.donation_accept_frozen, s.donation_accept_refrigerated,
+    s.donation_accept_perishable, s.donation_schedule,
+    s.donation_delivery_instructions, s.donation_notes, s.covid_notes,
+    s.category_notes, s.eligibility_notes, s.food_types, s.languages,
+    s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email,
+    s.v_hours, s.verification_status_id, s.inactive_temporary,
+    ${usersClause}
+    from stakeholder_set as s
+    ${locationClause}
     ${trueFalseEitherClause("s.assigned_date", isAssigned)}
     ${trueFalseEitherClause("s.submitted_date", isSubmitted)}
     ${trueFalseEitherClause("s.approved_date", isApproved)}
@@ -124,9 +93,32 @@ const search = async ({
     }
     order by s.name
   `;
-  //console.log(sql);
-  const stakeholderResult = await pool.query(sql);
+  // console.log(sql);
   let stakeholders = [];
+  let hoursResults = [];
+  let categoriesResults = [];
+  var stakeholderResult, stakeholder_ids;
+  try {
+    stakeholderResult = await pool.query(sql);
+    stakeholder_ids = stakeholderResult.rows.map((a) => a.id);
+
+    if (stakeholder_ids.length) {
+      // Hoover up all the stakeholder categories and hours
+      // for all of our stakeholder row results.
+      const hoursSql = `select stakeholder_id, day_of_week, open, close, week_of_month
+            from stakeholder_schedule
+            where stakeholder_id in (${stakeholder_ids.join(",")})`;
+      hoursResults = await pool.query(hoursSql);
+      const categoriesSql = `select sc.stakeholder_id, c.id, c.name
+          from category c
+          join stakeholder_category sc on c.id = sc.category_id
+          where sc.stakeholder_id in (${stakeholder_ids.join(",")})`;
+      categoriesResults = await pool.query(categoriesSql);
+    }
+  } catch (err) {
+    return Promise.reject(err.message);
+  }
+
   stakeholderResult.rows.forEach((row) => {
     stakeholders.push({
       id: row.id,
@@ -163,8 +155,12 @@ const search = async ({
       reviewedUser: row.reviewed_user || "",
       assignedUser: row.assigned_user || "",
       claimedUser: row.claimed_user || "",
-      categories: row.categories,
-      hours: row.hours,
+      categories: categoriesResults.rows.filter(
+        (cats) => cats.stakeholder_id == row.id
+      ),
+      hours: hoursResults.rows.filter(
+        (hours) => hours.stakeholder_id == row.id
+      ),
       parentOrganization: row.parent_organization || "",
       physicalAccess: row.physical_access || "",
       email: row.email || "",
@@ -215,7 +211,7 @@ const search = async ({
             Math.cos((latitude / 360) * 2 * Math.PI)) **
             2 +
             Math.abs(stakeholder.latitude - latitude) ** 2
-        ) * 69.097;
+        ) * milesPerLatitudeDegree;
     } else {
       stakeholder.distance = 999;
     }
@@ -250,15 +246,13 @@ const searchDashboard = async ({
   isInactiveTemporary,
   stakeholderId,
 }) => {
-  const categoryClause = categoryIds
-    ? `(select sc.stakeholder_id
-    from stakeholder_category sc
-    where sc.category_id in (${categoryIds.join(",")}))`
-    : "";
-  const nameClause = "'%" + name.replace(/'/g, "''") + "%'";
-  const sql = `
+  const locationClause = buildLocationClause(latitude, longitude, distance);
+  const categoryClause = buildCTEClause(categoryIds, name);
+  const usersClause = buildUsersClause();
+
+  const sql = `${categoryClause}
     select s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
-      s.phone, s.latitude, s.longitude, s.website,  
+      s.phone, s.latitude, s.longitude, s.website,
       (select array(select row_to_json(category_row)
         from (
           select c.id, c.name
@@ -281,31 +275,12 @@ const searchDashboard = async ({
         as assigned_date, s.assigned_login_id,
       to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
         as claimed_date, s.claimed_login_id,
-      s.requirements, s.admin_notes, s.inactive,
-      L1.first_name || ' ' || L1.last_name as created_user,
-      L2.first_name || ' ' || L2.last_name as modified_user,
-      L3.first_name || ' ' || L3.last_name as submitted_user,
-      L4.first_name || ' ' || L4.last_name as reviewed_user,
-      L5.first_name || ' ' || L5.last_name as assigned_user,
-      L6.first_name || ' ' || L6.last_name as claimed_user,
-       s.email,
-       s.covid_notes,
-      
+      s.requirements, s.admin_notes, s.inactive, s.email, s.covid_notes,
       s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email,
-      s.v_hours, s.verification_status_id, s.inactive_temporary
-    from stakeholder s
-    left join login L1 on s.created_login_id = L1.id
-    left join login L2 on s.modified_login_id = L2.id
-    left join login L3 on s.submitted_login_id = L3.id
-    left join login L4 on s.reviewed_login_id = L4.id
-    left join login L5 on s.assigned_login_id = L5.id
-    left join login L6 on s.claimed_login_id = L6.id
-    where s.name ilike ${nameClause}
-    ${
-      categoryIds && categoryIds.length > 0
-        ? ` and s.id in ${categoryClause} `
-        : ""
-    }
+      s.v_hours, s.verification_status_id, s.inactive_temporary,
+      ${usersClause}
+    from stakeholder_set as s
+    ${locationClause}
     ${trueFalseEitherClause("s.assigned_date", isAssigned)}
     ${trueFalseEitherClause("s.submitted_date", isSubmitted)}
     ${trueFalseEitherClause("s.approved_date", isApproved)}
@@ -323,9 +298,24 @@ const searchDashboard = async ({
     ${Number(stakeholderId) > 0 ? ` and s.id = ${stakeholderId} ` : " "}
     order by s.name
   `;
-  //console.log(sql);
-  const stakeholderResult = await pool.query(sql);
+  // console.log(sql);
   let stakeholders = [];
+  let categoriesResults = [];
+  var stakeholderResult, stakeholder_ids;
+  try {
+    stakeholderResult = await pool.query(sql);
+    stakeholder_ids = stakeholderResult.rows.map((a) => a.id);
+    // Hoover up all the stakeholder categories
+    // for all of our stakeholder row results.
+    const categoriesSql = `select sc.stakeholder_id, c.id, c.name
+        from category c
+        join stakeholder_category sc on c.id = sc.category_id
+        where sc.stakeholder_id in (${stakeholder_ids.join(",")})`;
+    categoriesResults = await pool.query(categoriesSql);
+  } catch (err) {
+    return Promise.reject(err.message);
+  }
+
   stakeholderResult.rows.forEach((row) => {
     stakeholders.push({
       id: row.id,
@@ -361,7 +351,9 @@ const searchDashboard = async ({
       reviewedUser: row.reviewed_user || "",
       assignedUser: row.assigned_user || "",
       claimedUser: row.claimed_user || "",
-      categories: row.categories,
+      categories: categoriesResults.rows.filter(
+        (cats) => cats.stakeholder_id == row.id
+      ),
       email: row.email || "",
       covidNotes: row.covid_notes || "",
       confirmedName: row.v_name,
@@ -385,7 +377,7 @@ const searchDashboard = async ({
               Math.cos((latitude / 360) * 2 * Math.PI)) **
               2 +
               Math.abs(stakeholder.latitude - latitude) ** 2
-          ) * 69.097;
+          ) * milesPerLatitudeDegree;
       } else {
         stakeholder.distance = 999;
       }
@@ -908,6 +900,63 @@ const remove = (id) => {
   return pool.query(sql).then((res) => {
     return res;
   });
+};
+
+const buildCTEClause = (categoryIds, name) => {
+  const categoryClause = categoryIds
+    ? `stakeholder_category_set AS (
+       select * from stakeholder_category
+       WHERE stakeholder_category.category_id in (${categoryIds.join(",")})),`
+    : "";
+  const nameClause = "'%" + name.replace(/'/g, "''") + "%'";
+  const cteClause = `WITH ${categoryClause}
+  stakeholder_set AS (
+    select * from stakeholder
+    where stakeholder.name ilike ${nameClause}
+    and stakeholder.id in (
+      select stakeholder_id from stakeholder_category_set
+    )
+  )`;
+  return cteClause;
+};
+
+const buildLocationClause = (latitude, longitude, distance) => {
+  var locationClause = "";
+  if (latitude && longitude) {
+    // Calculate a bounding box to limit our search to only stakeholders
+    // that are within our search distance.
+    const degToRads = Math.PI / 180.0;
+    const radsToDegs = 180.0 / Math.PI;
+    const earthRadius = 3960.0; // since when it the earth a perfect sphere? Oh well.
+    // r: radius of a circle around the earth at the given latitude
+    const r = earthRadius * Math.cos(latitude * degToRads);
+    const latitude_min = Number(latitude) - distance / milesPerLatitudeDegree;
+    const latitude_max = Number(latitude) + distance / milesPerLatitudeDegree;
+    const longitude_min = Number(longitude) - (distance / r) * radsToDegs;
+    const longitude_max = Number(longitude) + (distance / r) * radsToDegs;
+    locationClause =
+      "WHERE (s.latitude >= " +
+      latitude_min +
+      " AND s.latitude <= " +
+      latitude_max +
+      " AND s.longitude >= " +
+      longitude_min +
+      " AND s.longitude <= " +
+      longitude_max +
+      ")";
+  }
+  return locationClause;
+};
+
+const buildUsersClause = () => {
+  return `
+    (select concat(first_name,' ',last_name) as created_user   from login where id=s.created_login_id),
+    (select concat(first_name,' ',last_name) as modified_user  from login where id=s.modified_login_id),
+    (select concat(first_name,' ',last_name) as submitted_user from login where id=s.submitted_login_id),
+    (select concat(first_name,' ',last_name) as reviewed_user  from login where id=s.reviewed_login_id),
+    (select concat(first_name,' ',last_name) as assigned_user  from login where id=s.assigned_login_id),
+    (select concat(first_name,' ',last_name) as claimed_user   from login where id=s.claimed_login_id)
+    `;
 };
 
 module.exports = {

@@ -242,6 +242,6 @@ node_modules
 /.vscode
 
 # End of project-specific exclusions
-
-# Remove package-lock
-package-lock.json
+#
+# ignore docker postgres bind mount volume
+db/pg_data/**/*

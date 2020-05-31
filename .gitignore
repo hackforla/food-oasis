@@ -243,5 +243,3 @@ node_modules
 
 # End of project-specific exclusions
 #
-# ignore docker postgres bind mount volume
-db/pg_data/**/*

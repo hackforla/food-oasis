@@ -13,6 +13,7 @@ services:
       POSTGRES_DATABASE: food
       POSTGRES_HOST: db
       POSTGRES_PORT: 5432
+      WAIT_FOR: db:5432
 
     links:
       - db
@@ -30,6 +31,7 @@ services:
     image: postgres:12
     restart: always
     ports:
+      # exposed on localhost 5433
       - "5433:5432"
     environment:
       POSTGRES_USER: fola

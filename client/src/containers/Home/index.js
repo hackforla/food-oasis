@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     fontWeight: 600,
     marginTop: 10,
-    padding: "0 100px",
+    padding: "0 3vw",
     [theme.breakpoints.down("xs")]: {
       padding: 0,
     },

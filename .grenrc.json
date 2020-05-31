@@ -12,7 +12,7 @@
   "groupBy": {
     "Enhancements:": ["enhancement"],
     "Bug Fixes:": ["bug"],
-    "Technical Debt:": ["refactor", "system update"]
+    "Technical Debt:": ["refactor", "system update", "tech debt"]
   },
   "template": {
     "issue": "- {{name}} [{{text}}]({{url}})"

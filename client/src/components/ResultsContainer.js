@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   list: {
     textAlign: "center",
     fontSize: "12px",
-    height: "46em",
+    height: "55em",
     overflow: "scroll",
   },
   map: {

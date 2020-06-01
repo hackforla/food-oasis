@@ -54,7 +54,7 @@ function Map({
       <ReactMapGL
         {...viewport}
         width="100%"
-        height="max(calc(100vh - 250px),47em)"
+        height="max(calc(100vh - 250px),55em)"
         onViewportChange={(newViewport) => setViewport(newViewport)}
         mapboxApiAccessToken={MAPBOX_TOKEN}
         mapStyle={MAPBOX_STYLE}

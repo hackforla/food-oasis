@@ -2,10 +2,18 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import mapMarker from "./mapMarker";
 import pantryIcon from "../images/pantryIcon.svg";
+import pantryIconGrey from "../images/pantryIconGrey.svg";
 import mealIcon from "../images/mealIcon.svg";
+import mealIconGrey from "../images/mealIconGrey.svg";
 import splitPantryMealIcon from "../images/splitPantryMealIcon.svg";
+import splitPantryMealIconGrey from "../images/splitPantryMealIconGrey.svg";
 import fbIcon from "../images/fbIcon.png";
 import instaIcon from "../images/instaIcon.png";
+import {
+  MEAL_PROGRAM_CATEGORY_ID,
+  FOOD_PANTRY_CATEGORY_ID,
+  VERIFICATION_STATUS,
+} from "../constants/stakeholder";
 
 const useStyles = makeStyles((theme) => ({
   stakeholderHolder: {
@@ -89,9 +97,38 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: "flex-start",
     margin: "1em 0 0 0",
   },
+  labelHolder: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+  },
+  closedLabel: {
+    color: "#545454",
+    alignSelf: "flex-end",
+    backgroundColor: "#E0E0E0",
+    padding: ".25em .5em",
+    borderRadius: "3px",
+  },
 }));
 
-//still issue with hours at anne douglas center los angeles mission, but i think that it is an input error rather than anything that the source code is doing wrong
+const iconReturn = (stakeholder) => {
+  if (stakeholder.inactiveTemporary || stakeholder.inactive) {
+    return stakeholder.categories[0].id === MEAL_PROGRAM_CATEGORY_ID &&
+      stakeholder.categories[1] &&
+      stakeholder.categories[1].id === FOOD_PANTRY_CATEGORY_ID
+      ? splitPantryMealIconGrey
+      : stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
+      ? pantryIconGrey
+      : mealIconGrey;
+  }
+  return stakeholder.categories[0].id === MEAL_PROGRAM_CATEGORY_ID &&
+    stakeholder.categories[1] &&
+    stakeholder.categories[1].id === FOOD_PANTRY_CATEGORY_ID
+    ? splitPantryMealIcon
+    : stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
+    ? pantryIcon
+    : mealIcon;
+};
 
 const SelectedStakeholderDisplay = (props) => {
   const { doSelectStakeholder, selectedStakeholder } = props;
@@ -135,15 +172,7 @@ const SelectedStakeholderDisplay = (props) => {
       <div className={classes.topInfoHolder}>
         <div className={classes.imgHolder}>
           <img
-            src={
-              selectedStakeholder.categories[0].id === 1 &&
-              selectedStakeholder.categories[1] &&
-              selectedStakeholder.categories[1].id === 9
-                ? splitPantryMealIcon
-                : selectedStakeholder.categories[0].id === 1
-                ? pantryIcon
-                : mealIcon
-            }
+            src={iconReturn(selectedStakeholder)}
             alt="Organization Category Icon"
             className={classes.typeLogo}
           />
@@ -157,22 +186,40 @@ const SelectedStakeholderDisplay = (props) => {
           <em
             style={{
               color:
-                selectedStakeholder.categories[0].id === 1
-                  ? "#336699"
-                  : "#CC3333",
+                selectedStakeholder.inactiveTemporary ||
+                selectedStakeholder.inactive
+                  ? "#545454"
+                  : selectedStakeholder.categories[0].id ===
+                    MEAL_PROGRAM_CATEGORY_ID
+                  ? "#CC3333"
+                  : "#336699",
             }}
           >
             {selectedStakeholder.categories[0].name}
           </em>
-          {selectedStakeholder.categories[1] ? (
-            <em
-              style={{
-                color: "#CC3333",
-              }}
-            >
-              {selectedStakeholder.categories[1].name}
-            </em>
-          ) : null}
+          <div className={classes.labelHolder}>
+            {selectedStakeholder.categories[1] ? (
+              <em
+                style={{
+                  color:
+                    selectedStakeholder.categories[1].id ===
+                    FOOD_PANTRY_CATEGORY_ID
+                      ? "#336699"
+                      : "#CC3333",
+                }}
+              >
+                {selectedStakeholder.categories[1].name}
+              </em>
+            ) : null}
+            {selectedStakeholder.inactiveTemporary ||
+            selectedStakeholder.inactive ? (
+              <em className={classes.closedLabel}>
+                {selectedStakeholder.inactiveTemporary
+                  ? "Temporarily Closed"
+                  : "Closed"}
+              </em>
+            ) : null}
+          </div>
         </div>
         <div className={classes.checkHolder}>
           {selectedStakeholder.distance >= 10
@@ -183,14 +230,25 @@ const SelectedStakeholderDisplay = (props) => {
             : selectedStakeholder.distance.toString().substring(0, 3)}{" "}
           mi
           {mapMarker(
-            selectedStakeholder.categories[0].id === 1 &&
-              selectedStakeholder.categories[1] &&
-              selectedStakeholder.categories[1].id === 9
+            selectedStakeholder.inactiveTemporary ||
+              selectedStakeholder.inactive
+              ? "#545454"
+              : selectedStakeholder.categories[0].id ===
+                  MEAL_PROGRAM_CATEGORY_ID &&
+                selectedStakeholder.categories[1] &&
+                selectedStakeholder.categories[1].id === FOOD_PANTRY_CATEGORY_ID
               ? ""
-              : selectedStakeholder.categories[0].id === 1
+              : selectedStakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
               ? "#336699"
               : "#CC3333",
-            selectedStakeholder.submittedDate ? true : false
+            selectedStakeholder.verificationStatusId ===
+              VERIFICATION_STATUS.VERIFIED
+              ? true
+              : false,
+            selectedStakeholder.inactiveTemporary ||
+              selectedStakeholder.inactive
+              ? true
+              : false
           )}
         </div>
       </div>
@@ -198,7 +256,10 @@ const SelectedStakeholderDisplay = (props) => {
         <p
           style={{
             color:
-              selectedStakeholder.categories[0].id === 1
+              selectedStakeholder.inactiveTemporary ||
+              selectedStakeholder.inactive
+                ? "#545454"
+                : selectedStakeholder.categories[0].id === 1
                 ? "#336699"
                 : "#CC3333",
           }}
@@ -222,7 +283,10 @@ const SelectedStakeholderDisplay = (props) => {
           className={classes.directions}
           style={{
             backgroundColor:
-              selectedStakeholder.categories[0].id === 1
+              selectedStakeholder.inactiveTemporary ||
+              selectedStakeholder.inactive
+                ? "#545454"
+                : selectedStakeholder.categories[0].id === 1
                 ? "#336699"
                 : "#CC3333",
           }}
@@ -326,7 +390,12 @@ const SelectedStakeholderDisplay = (props) => {
           cy="20"
           r="20"
           fill={
-            selectedStakeholder.categories[0].id === 1 ? "#336699" : "#CC3333"
+            selectedStakeholder.inactiveTemporary ||
+            selectedStakeholder.inactive
+              ? "#545454"
+              : selectedStakeholder.categories[0].id === 1
+              ? "#336699"
+              : "#CC3333"
           }
         />
         <path
@@ -347,71 +416,3 @@ const SelectedStakeholderDisplay = (props) => {
 };
 
 export default SelectedStakeholderDisplay;
-
-// address1: "1725 Beverly Boulevard"
-// address2: "Ste 1-B"
-// adminContactEmail: ""
-// adminContactName: ""
-// adminContactPhone: ""
-// adminNotes: "could not find website or facebook page.↵called but no answer, mailbox is full"
-// approvedDate: null
-// assignedDate: null
-// assignedLoginId: null
-// assignedUser: ""
-// categories: [{…}]
-// categoryNotes: ""
-// city: "Los Angeles"
-// claimedDate: Moment {_isAMomentObject: true, _i: "2019-12-01T08:00:00", _f: "YYYY-MM-DDTHH:mm:ss", _isUTC: false, _pf: {…}, …}
-// claimedLoginId: null
-// claimedUser: ""
-// covidNotes: ""
-// createdDate: Moment {_isAMomentObject: true, _i: "2019-12-01T08:00:00", _f: "YYYY-MM-DDTHH:mm:ss", _isUTC: false, _pf: {…}, …}
-// createdLoginId: null
-// createdUser: ""
-// description: ""
-// distance: 0.6749636545572547
-// donationAcceptFrozen: false
-// donationAcceptPerishable: false
-// donationAcceptRefrigerated: false
-// donationContactEmail: ""
-// donationContactName: ""
-// donationContactPhone: ""
-// donationDeliveryInstructions: ""
-// donationNotes: ""
-// donationPickup: false
-// donationSchedule: ""
-// eligibilityNotes: ""
-// email: ""
-// facebook: ""
-// foodTypes: ""
-// hours: (2) [{…}, {…}]
-// id: 2893
-// inactive: false
-// instagram: ""
-// items: ""
-// languages: "English"
-// latitude: 34.065401
-// linkedin: ""
-// longitude: -118.266495
-// modifiedDate: Moment {_isAMomentObject: true, _i: "2020-04-18T17:01:39", _f: "YYYY-MM-DDTHH:mm:ss", _isUTC: false, _pf: {…}, …}
-// modifiedLoginId: 106
-// modifiedUser: "Webinar User"
-// name: "Chinese Community Service Center"
-// notes: ""
-// parentOrganization: ""
-// phone: "(323)483-3035"
-// physicalAccess: ""
-// pinterest: ""
-// rejectedDate: null
-// requirements: ""
-// reviewNotes: ""
-// reviewedLoginId: null
-// reviewedUser: ""
-// services: ""
-// state: "CA"
-// submittedDate: Moment {_isAMomentObject: true, _i: "2020-04-18T17:35:32", _f: "YYYY-MM-DDTHH:mm:ss", _isUTC: false, _pf: {…}, …}
-// submittedLoginId: 106
-// submittedUser: "Webinar User"
-// twitter: ""
-// website: ""
-// zip: "90026"

@@ -13,10 +13,7 @@ const SALT_ROUNDS = 10;
 
 const selectAll = () => {
   let sql = `
-    select w.id, w.first_name, w.last_name, w.email, w.date_created,
-      w.email_confirmed, w.is_admin, w.is_coordinator, w.is_security_admin, w.is_data_entry
-    from login w
-    order by w.last_name, w.first_name, w.date_created
+    select * from login order by last_name, first_name, date_created
   `;
   return pool.query(sql).then((res) => {
     return res.rows.map((row) => ({
@@ -35,9 +32,7 @@ const selectAll = () => {
 };
 
 const selectById = (id) => {
-  const sql = `select w.id, w.first_name, w.last_name, w.email,
-  w.date_created, w.email_confirmed, w.is_admin, w.is_coordinator, w.is_security_admin, w.is_data_entry
-  from login w where w.id = ${id}`;
+  const sql = `select * from login where id = ${id}`;
   return pool.query(sql).then((res) => {
     const row = res.rows[0];
     return {
@@ -56,9 +51,7 @@ const selectById = (id) => {
 };
 
 const selectByEmail = (email) => {
-  const sql = `select id, first_name, last_name, email, password_hash, 
-    email_confirmed, date_created, is_admin, is_coordinator, is_security_admin, is_data_entry 
-    from login where email ilike '${email}'`;
+  const sql = `select * from login where email ilike '${email}'`;
   return pool.query(sql).then((res) => {
     const row = res.rows[0];
     if (row) {

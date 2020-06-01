@@ -77,11 +77,12 @@ function Map({
 
               /* console.log(categories) */
 
-              const color = categories.find(
-                ({ id }) => id === MEAL_PROGRAM_CATEGORY_ID
-              )
-                ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
-                : ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID];
+              const color =
+                stakeholder.inactiveTemporary || stakeholder.inactive
+                  ? "#545454"
+                  : categories.find(({ id }) => id === MEAL_PROGRAM_CATEGORY_ID)
+                  ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
+                  : ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID];
               return (
                 <Marker
                   onClick={() => handleMarkerClick(stakeholder)}
@@ -90,6 +91,7 @@ function Map({
                   latitude={stakeholder.latitude}
                   isVerified={isVerified}
                   color={color}
+                  categories={stakeholder.categories}
                 />
               );
             })}

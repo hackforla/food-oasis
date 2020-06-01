@@ -1,6 +1,34 @@
 import React from "react";
 
-const MapMarker = (color, isVerified) => {
+const MapMarker = (color, isVerified, splitInactive) => {
+  if (splitInactive && !color)
+    return (
+      <svg
+        version="1.1"
+        id="Layer_2"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlnsXlink="http://www.w3.org/1999/xlink"
+        x="0px"
+        y="0px"
+        width="35px"
+        height="48px"
+        viewBox="0 0 35 48"
+        enable-background="new 0 0 35 48"
+        xmlSpace="preserve"
+      >
+        <path
+          fill="#545454"
+          d="M17.5,24.898c-4.766,0-8.627-3.863-8.627-8.628s3.863-8.628,8.627-8.628h0V0.093h0
+  C7.97,0.093,0.245,7.819,0.245,17.35c0,9.529,17.255,30.557,17.255,30.557l0-0.001L17.5,24.898L17.5,24.898z"
+        />
+        <path
+          fill="#545454"
+          d="M17.5,0.093v7.549c4.766,0,8.627,3.863,8.627,8.628s-3.861,8.628-8.627,8.628v23.007
+  c0.011-0.013,17.256-21.029,17.256-30.556C34.756,7.818,27.029,0.094,17.5,0.093z"
+        />
+      </svg>
+    );
+
   if (!color) {
     const splitUnverified = (
       <svg

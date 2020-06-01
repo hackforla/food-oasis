@@ -232,8 +232,7 @@ exports.down = (pgm) => {
   pgm.sql(
     `
         DROP PROCEDURE update_stakeholder;
-        DROP PROCEZDURE create_stakeholder;
-
-        `
+        DROP PROCEDURE create_stakeholder;
+    `
   );
 };

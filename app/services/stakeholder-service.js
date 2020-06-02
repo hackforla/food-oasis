@@ -305,13 +305,15 @@ const searchDashboard = async ({
   try {
     stakeholderResult = await pool.query(sql);
     stakeholder_ids = stakeholderResult.rows.map((a) => a.id);
-    // Hoover up all the stakeholder categories
-    // for all of our stakeholder row results.
-    const categoriesSql = `select sc.stakeholder_id, c.id, c.name
+    if (stakeholder_ids.length) {
+      // Hoover up all the stakeholder categories
+      // for all of our stakeholder row results.
+      const categoriesSql = `select sc.stakeholder_id, c.id, c.name
         from category c
         join stakeholder_category sc on c.id = sc.category_id
         where sc.stakeholder_id in (${stakeholder_ids.join(",")})`;
-    categoriesResults = await pool.query(categoriesSql);
+      categoriesResults = await pool.query(categoriesSql);
+    }
   } catch (err) {
     return Promise.reject(err.message);
   }
@@ -922,7 +924,8 @@ const buildCTEClause = (categoryIds, name) => {
 
 const buildLocationClause = (latitude, longitude, distance) => {
   var locationClause = "";
-  if (latitude && longitude) {
+  const radius = Number(distance || 0);
+  if (latitude && longitude && radius) {
     // Calculate a bounding box to limit our search to only stakeholders
     // that are within our search distance.
     const degToRads = Math.PI / 180.0;
@@ -930,10 +933,10 @@ const buildLocationClause = (latitude, longitude, distance) => {
     const earthRadius = 3960.0; // since when it the earth a perfect sphere? Oh well.
     // r: radius of a circle around the earth at the given latitude
     const r = earthRadius * Math.cos(latitude * degToRads);
-    const latitude_min = Number(latitude) - distance / milesPerLatitudeDegree;
-    const latitude_max = Number(latitude) + distance / milesPerLatitudeDegree;
-    const longitude_min = Number(longitude) - (distance / r) * radsToDegs;
-    const longitude_max = Number(longitude) + (distance / r) * radsToDegs;
+    const latitude_min = Number(latitude) - radius / milesPerLatitudeDegree;
+    const latitude_max = Number(latitude) + radius / milesPerLatitudeDegree;
+    const longitude_min = Number(longitude) - (radius / r) * radsToDegs;
+    const longitude_max = Number(longitude) + (radius / r) * radsToDegs;
     locationClause =
       "WHERE (s.latitude >= " +
       latitude_min +

@@ -68,17 +68,17 @@ const useStyles = makeStyles((theme) => ({
 
 const iconReturn = (stakeholder) => {
   if (stakeholder.inactiveTemporary || stakeholder.inactive) {
-    return stakeholder.categories[0].id === MEAL_PROGRAM_CATEGORY_ID &&
+    return stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID &&
       stakeholder.categories[1] &&
-      stakeholder.categories[1].id === FOOD_PANTRY_CATEGORY_ID
+      stakeholder.categories[1].id === MEAL_PROGRAM_CATEGORY_ID
       ? splitPantryMealIconGrey
       : stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
       ? pantryIconGrey
       : mealIconGrey;
   }
-  return stakeholder.categories[0].id === MEAL_PROGRAM_CATEGORY_ID &&
+  return stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID &&
     stakeholder.categories[1] &&
-    stakeholder.categories[1].id === FOOD_PANTRY_CATEGORY_ID
+    stakeholder.categories[1].id === MEAL_PROGRAM_CATEGORY_ID
     ? splitPantryMealIcon
     : stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
     ? pantryIcon
@@ -169,9 +169,9 @@ const ResultsList = ({
               {mapMarker(
                 stakeholder.inactiveTemporary || stakeholder.inactive
                   ? "#545454"
-                  : stakeholder.categories[0].id === MEAL_PROGRAM_CATEGORY_ID &&
+                  : stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID &&
                     stakeholder.categories[1] &&
-                    stakeholder.categories[1].id === FOOD_PANTRY_CATEGORY_ID
+                    stakeholder.categories[1].id === MEAL_PROGRAM_CATEGORY_ID
                   ? ""
                   : stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
                   ? "#336699"

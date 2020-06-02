@@ -1,17 +1,44 @@
-version: '3'
+version: '3.2'
 services:
-  pg_db:
-    image: postgres
+  api:
+    image: jred/fola
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: local
+      DATABASE_URL: postgres://fola:pgpass@db:5432/food
+      POSTGRES_USERNAME: fola
+      POSTGRES_PASSWORD: pgpass
+      POSTGRES_DATABASE: food
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      WAIT_FOR: db:5432
+
+    links:
+      - db
+    depends_on: 
+      - db
+    networks:
+      - backend
+    ports:
+      - "5000:5000"
     volumes:
-      - pgsql:/var/lib/postgresql/data/
+      - ./:/fola
+    command: npx nodemon -w /fola/app -w /fola/middleware -L server.js
+
+  db:
+    image: postgres:12
     restart: always
     ports:
-      - 5432:5432
+      # exposed on localhost 5433
+      - "5433:5432"
     environment:
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=food
+      POSTGRES_USER: fola
+      POSTGRES_PASSWORD: pgpass
+      POSTGRES_DB: food
+    networks:
+    - backend
 
-
-volumes:
-  pgsql:
+networks:
+  backend:

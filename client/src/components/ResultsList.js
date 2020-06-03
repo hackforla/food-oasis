@@ -92,8 +92,6 @@ const ResultsList = ({
 }) => {
   const classes = useStyles();
 
-  console.log(stakeholders);
-
   return (
     <div className={classes.stakeholderArrayHolder}>
       {stakeholders && selectedStakeholder ? (

@@ -94,7 +94,7 @@ const ResultsList = ({
 
   return (
     <div className={classes.stakeholderArrayHolder}>
-      {stakeholders && selectedStakeholder ? (
+      {stakeholders && selectedStakeholder && !selectedStakeholder.inactive ? (
         <SelectedStakeholderDisplay
           doSelectStakeholder={doSelectStakeholder}
           selectedStakeholder={selectedStakeholder}

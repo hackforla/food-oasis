@@ -77,6 +77,7 @@ const search = async ({
     s.v_hours, s.verification_status_id, s.inactive_temporary,
     ${usersClause}
     from stakeholder_set as s
+    where 1 = 1 
     ${locationClause}
     ${trueFalseEitherClause("s.assigned_date", isAssigned)}
     ${trueFalseEitherClause("s.submitted_date", isSubmitted)}
@@ -280,6 +281,7 @@ const searchDashboard = async ({
       s.v_hours, s.verification_status_id, s.inactive_temporary,
       ${usersClause}
     from stakeholder_set as s
+    where 1 = 1
     ${locationClause}
     ${trueFalseEitherClause("s.assigned_date", isAssigned)}
     ${trueFalseEitherClause("s.submitted_date", isSubmitted)}
@@ -938,7 +940,7 @@ const buildLocationClause = (latitude, longitude, distance) => {
     const longitude_min = Number(longitude) - (radius / r) * radsToDegs;
     const longitude_max = Number(longitude) + (radius / r) * radsToDegs;
     locationClause =
-      "WHERE (s.latitude >= " +
+      "AND (s.latitude >= " +
       latitude_min +
       " AND s.latitude <= " +
       latitude_max +

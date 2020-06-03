@@ -1,4 +1,4 @@
-version: '3.2'
+version: "3.2"
 services:
   api:
     image: jred/fola
@@ -17,7 +17,7 @@ services:
 
     links:
       - db
-    depends_on: 
+    depends_on:
       - db
     networks:
       - backend
@@ -25,6 +25,7 @@ services:
       - "5000:5000"
     volumes:
       - ./:/fola
+      - /fola/node_modules
     command: npx nodemon -w /fola/app -w /fola/middleware -L server.js
 
   db:
@@ -38,7 +39,7 @@ services:
       POSTGRES_PASSWORD: pgpass
       POSTGRES_DB: food
     networks:
-    - backend
+      - backend
 
 networks:
   backend:

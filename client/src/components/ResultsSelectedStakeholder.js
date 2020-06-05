@@ -111,7 +111,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+//name address phone number email hours category .email .covidNotes .languages .notes
+// (1) COVID notes
+// (2) Public notes
+// (3) Eligibility
+// (4) Languages
+
 const iconReturn = (stakeholder) => {
+  console.log(stakeholder);
   if (stakeholder.inactiveTemporary || stakeholder.inactive) {
     return stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID &&
       stakeholder.categories[1] &&
@@ -130,8 +137,10 @@ const iconReturn = (stakeholder) => {
     : mealIcon;
 };
 
-const SelectedStakeholderDisplay = (props) => {
-  const { doSelectStakeholder, selectedStakeholder } = props;
+const SelectedStakeholderDisplay = ({
+  doSelectStakeholder,
+  selectedStakeholder,
+}) => {
   const classes = useStyles();
 
   const standardTime = (timeStr) => {
@@ -314,7 +323,9 @@ const SelectedStakeholderDisplay = (props) => {
           <h2 className={classes.title}>Phone</h2>
           <span className={classes.fontSize}>{selectedStakeholder.phone}</span>
         </React.Fragment>
-      ) : null}
+      ) : (
+        <span>No Phone Number on Record</span>
+      )}
       {selectedStakeholder.website ? (
         <React.Fragment>
           <h2 className={classes.title}>Website</h2>
@@ -335,7 +346,9 @@ const SelectedStakeholderDisplay = (props) => {
             {selectedStakeholder.requirements}
           </span>
         </React.Fragment>
-      ) : null}
+      ) : (
+        <span>No requirements</span>
+      )}
       {selectedStakeholder.services ? (
         <React.Fragment>
           <h2 className={classes.title}>Services</h2>

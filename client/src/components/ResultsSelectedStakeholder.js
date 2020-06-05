@@ -318,13 +318,48 @@ const SelectedStakeholderDisplay = ({
           </div>
         ))}
       </div>
+      <h2 className={classes.title}>Phone</h2>
       {selectedStakeholder.phone ? (
-        <React.Fragment>
-          <h2 className={classes.title}>Phone</h2>
-          <span className={classes.fontSize}>{selectedStakeholder.phone}</span>
-        </React.Fragment>
+        <span className={classes.fontSize}>{selectedStakeholder.phone}</span>
       ) : (
-        <span>No Phone Number on Record</span>
+        <span className={classes.fontSize}>No Phone Number on Record</span>
+      )}
+      <h2 className={classes.title}>E-Mail</h2>
+      {selectedStakeholder.email ? (
+        <span className={classes.fontSize}>{selectedStakeholder.email}</span>
+      ) : (
+        <span className={classes.fontSize}>No E-Mail Address on Record</span>
+      )}
+
+      <h2 className={classes.title}>Eligibility/Requirements</h2>
+      {selectedStakeholder.requirements ? (
+        <span className={classes.fontSize}>
+          {selectedStakeholder.requirements}
+        </span>
+      ) : (
+        <span className={classes.fontSize}>No special requirements</span>
+      )}
+      <h2 className={classes.title}>Languages</h2>
+      {selectedStakeholder.requirements ? (
+        <span className={classes.fontSize}>
+          {selectedStakeholder.languages}
+        </span>
+      ) : (
+        <span className={classes.fontSize}>No information on languages.</span>
+      )}
+      <h2 className={classes.title}>Notes</h2>
+      {selectedStakeholder.requirements ? (
+        <span className={classes.fontSize}>{selectedStakeholder.notes}</span>
+      ) : (
+        <span className={classes.fontSize}>No notes to display.</span>
+      )}
+      <h2 className={classes.title}>Covid Notes</h2>
+      {selectedStakeholder.requirements ? (
+        <span className={classes.fontSize}>
+          {selectedStakeholder.covidNotes}
+        </span>
+      ) : (
+        <span className={classes.fontSize}>No covid notes to display.</span>
       )}
       {selectedStakeholder.website ? (
         <React.Fragment>
@@ -339,16 +374,6 @@ const SelectedStakeholderDisplay = ({
           </a>
         </React.Fragment>
       ) : null}
-      {selectedStakeholder.requirements ? (
-        <React.Fragment>
-          <h2 className={classes.title}>Eligibility/Requirement</h2>
-          <span className={classes.fontSize}>
-            {selectedStakeholder.requirements}
-          </span>
-        </React.Fragment>
-      ) : (
-        <span>No requirements</span>
-      )}
       {selectedStakeholder.services ? (
         <React.Fragment>
           <h2 className={classes.title}>Services</h2>

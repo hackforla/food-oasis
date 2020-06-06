@@ -4,8 +4,11 @@ import PropTypes from "prop-types";
 import mapMarker from "./mapMarker";
 import { makeStyles } from "@material-ui/core/styles";
 import pantryIcon from "../images/pantryIcon.svg";
+import pantryIconGrey from "../images/pantryIconGrey.svg";
 import mealIcon from "../images/mealIcon.svg";
+import mealIconGrey from "../images/mealIconGrey.svg";
 import splitPantryMealIcon from "../images/splitPantryMealIcon.svg";
+import splitPantryMealIconGrey from "../images/splitPantryMealIconGrey.svg";
 import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
@@ -49,7 +52,38 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "space-between",
   },
+  labelHolder: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+  },
+  closedLabel: {
+    color: "#545454",
+    alignSelf: "flex-end",
+    backgroundColor: "#E0E0E0",
+    padding: ".25em .5em",
+    borderRadius: "3px",
+  },
 }));
+
+const iconReturn = (stakeholder) => {
+  if (stakeholder.inactiveTemporary || stakeholder.inactive) {
+    return stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID &&
+      stakeholder.categories[1] &&
+      stakeholder.categories[1].id === MEAL_PROGRAM_CATEGORY_ID
+      ? splitPantryMealIconGrey
+      : stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
+      ? pantryIconGrey
+      : mealIconGrey;
+  }
+  return stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID &&
+    stakeholder.categories[1] &&
+    stakeholder.categories[1].id === MEAL_PROGRAM_CATEGORY_ID
+    ? splitPantryMealIcon
+    : stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
+    ? pantryIcon
+    : mealIcon;
+};
 
 const ResultsList = ({
   doSelectStakeholder,
@@ -60,7 +94,7 @@ const ResultsList = ({
 
   return (
     <div className={classes.stakeholderArrayHolder}>
-      {stakeholders && selectedStakeholder ? (
+      {stakeholders && selectedStakeholder && !selectedStakeholder.inactive ? (
         <SelectedStakeholderDisplay
           doSelectStakeholder={doSelectStakeholder}
           selectedStakeholder={selectedStakeholder}
@@ -74,15 +108,7 @@ const ResultsList = ({
           >
             <div className={classes.imgHolder}>
               <img
-                src={
-                  stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID &&
-                  stakeholder.categories[1] &&
-                  stakeholder.categories[1].id === MEAL_PROGRAM_CATEGORY_ID
-                    ? splitPantryMealIcon
-                    : stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
-                    ? pantryIcon
-                    : mealIcon
-                }
+                src={iconReturn(stakeholder)}
                 alt={
                   stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
                     ? "Pantry Icon"
@@ -100,22 +126,38 @@ const ResultsList = ({
               <em
                 style={{
                   color:
-                    stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
-                      ? "#336699"
-                      : "#CC3333",
+                    stakeholder.inactiveTemporary || stakeholder.inactive
+                      ? "#545454"
+                      : stakeholder.categories[0].id ===
+                        MEAL_PROGRAM_CATEGORY_ID
+                      ? "#CC3333"
+                      : "#336699",
                 }}
               >
                 {stakeholder.categories[0].name}
               </em>
-              {stakeholder.categories[1] ? (
-                <em
-                  style={{
-                    color: "#CC3333",
-                  }}
-                >
-                  {stakeholder.categories[1].name}
-                </em>
-              ) : null}
+              <div className={classes.labelHolder}>
+                {stakeholder.categories[1] ? (
+                  <em
+                    style={{
+                      alignSelf: "flex-start",
+                      color:
+                        stakeholder.categories[1].id === FOOD_PANTRY_CATEGORY_ID
+                          ? "#336699"
+                          : "#CC3333",
+                    }}
+                  >
+                    {stakeholder.categories[1].name}
+                  </em>
+                ) : null}
+                {stakeholder.inactiveTemporary || stakeholder.inactive ? (
+                  <em className={classes.closedLabel}>
+                    {stakeholder.inactiveTemporary
+                      ? "Temporarily Closed"
+                      : "Closed"}
+                  </em>
+                ) : null}
+              </div>
             </div>
             <div className={classes.checkHolder}>
               {stakeholder.distance >= 10
@@ -123,15 +165,20 @@ const ResultsList = ({
                 : stakeholder.distance.toString().substring(0, 3)}{" "}
               mi
               {mapMarker(
-                stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID &&
-                  stakeholder.categories[1] &&
-                  stakeholder.categories[1].id === MEAL_PROGRAM_CATEGORY_ID
+                stakeholder.inactiveTemporary || stakeholder.inactive
+                  ? "#545454"
+                  : stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID &&
+                    stakeholder.categories[1] &&
+                    stakeholder.categories[1].id === MEAL_PROGRAM_CATEGORY_ID
                   ? ""
                   : stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
                   ? "#336699"
                   : "#CC3333",
                 stakeholder.verificationStatusId ===
                   VERIFICATION_STATUS.VERIFIED
+                  ? true
+                  : false,
+                stakeholder.inactiveTemporary || stakeholder.inactive
                   ? true
                   : false
               )}

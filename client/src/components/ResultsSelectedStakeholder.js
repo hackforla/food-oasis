@@ -111,7 +111,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+//name address phone number email hours category .email .covidNotes .languages .notes
+// (1) COVID notes
+// (2) Public notes
+// (3) Eligibility
+// (4) Languages
+
 const iconReturn = (stakeholder) => {
+  console.log(stakeholder);
   if (stakeholder.inactiveTemporary || stakeholder.inactive) {
     return stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID &&
       stakeholder.categories[1] &&
@@ -130,8 +137,10 @@ const iconReturn = (stakeholder) => {
     : mealIcon;
 };
 
-const SelectedStakeholderDisplay = (props) => {
-  const { doSelectStakeholder, selectedStakeholder } = props;
+const SelectedStakeholderDisplay = ({
+  doSelectStakeholder,
+  selectedStakeholder,
+}) => {
   const classes = useStyles();
 
   const standardTime = (timeStr) => {
@@ -309,12 +318,49 @@ const SelectedStakeholderDisplay = (props) => {
           </div>
         ))}
       </div>
+      <h2 className={classes.title}>Phone</h2>
       {selectedStakeholder.phone ? (
-        <React.Fragment>
-          <h2 className={classes.title}>Phone</h2>
-          <span className={classes.fontSize}>{selectedStakeholder.phone}</span>
-        </React.Fragment>
-      ) : null}
+        <span className={classes.fontSize}>{selectedStakeholder.phone}</span>
+      ) : (
+        <span className={classes.fontSize}>No Phone Number on Record</span>
+      )}
+      <h2 className={classes.title}>E-Mail</h2>
+      {selectedStakeholder.email ? (
+        <span className={classes.fontSize}>{selectedStakeholder.email}</span>
+      ) : (
+        <span className={classes.fontSize}>No E-Mail Address on Record</span>
+      )}
+
+      <h2 className={classes.title}>Eligibility/Requirements</h2>
+      {selectedStakeholder.requirements ? (
+        <span className={classes.fontSize}>
+          {selectedStakeholder.requirements}
+        </span>
+      ) : (
+        <span className={classes.fontSize}>No special requirements</span>
+      )}
+      <h2 className={classes.title}>Languages</h2>
+      {selectedStakeholder.requirements ? (
+        <span className={classes.fontSize}>
+          {selectedStakeholder.languages}
+        </span>
+      ) : (
+        <span className={classes.fontSize}>No information on languages.</span>
+      )}
+      <h2 className={classes.title}>Notes</h2>
+      {selectedStakeholder.requirements ? (
+        <span className={classes.fontSize}>{selectedStakeholder.notes}</span>
+      ) : (
+        <span className={classes.fontSize}>No notes to display.</span>
+      )}
+      <h2 className={classes.title}>Covid Notes</h2>
+      {selectedStakeholder.requirements ? (
+        <span className={classes.fontSize}>
+          {selectedStakeholder.covidNotes}
+        </span>
+      ) : (
+        <span className={classes.fontSize}>No covid notes to display.</span>
+      )}
       {selectedStakeholder.website ? (
         <React.Fragment>
           <h2 className={classes.title}>Website</h2>
@@ -326,14 +372,6 @@ const SelectedStakeholderDisplay = (props) => {
           >
             {selectedStakeholder.website}
           </a>
-        </React.Fragment>
-      ) : null}
-      {selectedStakeholder.requirements ? (
-        <React.Fragment>
-          <h2 className={classes.title}>Eligibility/Requirement</h2>
-          <span className={classes.fontSize}>
-            {selectedStakeholder.requirements}
-          </span>
         </React.Fragment>
       ) : null}
       {selectedStakeholder.services ? (

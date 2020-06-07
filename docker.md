@@ -36,3 +36,17 @@ are not tracked in the [migrations](./migrations) folder.
 ```bash
 $ docker-compose up --build
 ```
+
+## debugging and development
+debugging and development should support the same workflow you use working out
+of docker. There are some helpful tools to consider using. 
+
+VSCode has a [helpful plugin and
+guide](https://code.visualstudio.com/docs/containers/debug-common) on
+debugging an application running in docker. 
+
+NodeJS [official guide to
+debugging](https://nodejs.org/en/docs/guides/debugging-getting-started/#command-line-options)
+describes how to use `node inspector`.
+
+

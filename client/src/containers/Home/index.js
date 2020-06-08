@@ -125,7 +125,9 @@ const Home = (props) => {
                 startIcon={
                   <SearchIcon fontSize="large" className={classes.searchIcon} />
                 }
-              />
+              >
+                {""}
+              </Button>
             </Box>
             <Typography className={classes.label}>
               Food Oasis has links to food pantries and meals in Los Angeles

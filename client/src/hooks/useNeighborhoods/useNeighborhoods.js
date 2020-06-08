@@ -16,7 +16,7 @@ export const useNeighborhoods = () => {
         setState({ data: neighborhoods || [], loading: false, error: false });
       } catch (err) {
         setState({ data: [], loading: false, error: true });
-        Promise.reject(console.error(err));
+        console.error(err);
       }
     };
 

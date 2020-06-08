@@ -93,12 +93,13 @@ const defaultCriteria = {
   isAssigned: "either",
   isSubmitted: "either",
   isApproved: "either",
-  isRejected: "either",
   isClaimed: "either",
   assignedLoginId: null,
   claimedLoginId: null,
   verificationStatusId: 0,
   neighborhoodId: null,
+  minCompleteCriticalPercent: 0,
+  maxCompleteCriticalPercent: 100,
 };
 
 VerificationAdmin.propTypes = {

@@ -18,7 +18,6 @@ export const useOrganizations = () => {
     isAssigned,
     isSubmitted,
     isApproved,
-    isRejected,
     isClaimed,
     assignedLoginId,
     claimedLoginId,
@@ -44,7 +43,6 @@ export const useOrganizations = () => {
         isAssigned,
         isSubmitted,
         isApproved,
-        isRejected,
         isClaimed,
         assignedLoginId,
         claimedLoginId,
@@ -69,7 +67,6 @@ export const useOrganizations = () => {
     isAssigned,
     isSubmitted,
     isApproved,
-    isRejected,
     isClaimed,
     assignedLoginId,
     claimedLoginId,
@@ -77,21 +74,21 @@ export const useOrganizations = () => {
     isInactiveTemporary,
     stakeholderId,
     neighborhoodId,
+    minCompleteCriticalPercent,
+    maxCompleteCriticalPercent,
   }) => {
-    //if (!categoryIds || categoryIds.length === 0) return;
     try {
       setState({ data: null, loading: true, error: false });
       const stakeholders = await stakeholderService.searchDashboard({
         name,
-        categoryIds,
         latitude,
         longitude,
-        distance: radius,
+        radius,
+        categoryIds,
         isInactive,
         isAssigned,
         isSubmitted,
         isApproved,
-        isRejected,
         isClaimed,
         assignedLoginId,
         claimedLoginId,
@@ -99,6 +96,8 @@ export const useOrganizations = () => {
         isInactiveTemporary,
         stakeholderId,
         neighborhoodId,
+        minCompleteCriticalPercent,
+        maxCompleteCriticalPercent,
       });
       setState({ data: stakeholders, loading: false, error: false });
       return stakeholders;

@@ -91,6 +91,11 @@ const columns = [
     frozen: true,
   },
   {
+    key: "completeCriticalPercent",
+    name: "Critical %",
+    width: 80,
+  },
+  {
     key: "inactive",
     name: "Perm Closed",
     formatter: inactiveFormatter,
@@ -115,6 +120,12 @@ const columns = [
     width: 60,
   },
   {
+    key: "confirmedCategories",
+    name: "Categories",
+    formatter: confirmationFormatter,
+    width: 60,
+  },
+  {
     key: "confirmedAddress",
     name: "Address",
     formatter: confirmationFormatter,
@@ -129,12 +140,6 @@ const columns = [
   {
     key: "confirmedEmail",
     name: "Email",
-    formatter: confirmationFormatter,
-    width: 60,
-  },
-  {
-    key: "confirmedCategories",
-    name: "Categories",
     formatter: confirmationFormatter,
     width: 60,
   },

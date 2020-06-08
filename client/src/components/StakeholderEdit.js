@@ -1012,12 +1012,7 @@ const StakeholderEdit = (props) => {
                     </Grid>
 
                     <Grid item xs={12} sm={6}>
-                      <FormControl
-                        variant="outlined"
-                        fullWidth
-                        size="small"
-                        style={{ margin: "theme.spacing(1)" }}
-                      >
+                      <FormControl variant="outlined" fullWidth size="small">
                         <InputLabel
                           id="neighborhood-select"
                           style={{
@@ -1036,7 +1031,7 @@ const StakeholderEdit = (props) => {
                           onBlur={handleBlur}
                         >
                           <MenuItem key={0} value={0}>
-                            (Any)
+                            (n/a)
                           </MenuItem>
                           {neighborhoods
                             ? neighborhoods.map((n) => {

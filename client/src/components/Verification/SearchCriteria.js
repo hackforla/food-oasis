@@ -254,18 +254,16 @@ const SearchCriteria = ({
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <FormControl variant="outlined" fullWidth>
+            <FormControl variant="outlined" size="small" fullWidth>
               <FormLabel
-                id="verification-status-id-label"
+                id="neighborhood-id-label"
                 className={classes.formLabel}
               >
-                Verification Status
+                Neighborhood
               </FormLabel>
               <Select
                 labelId="neighborhood-id-label"
                 name="neighborhoodId"
-                variant="outlined"
-                size="small"
                 value={criteria.neighborhoodId}
                 onChange={setCriterion}
               >

@@ -5,7 +5,7 @@ exports.shorthands = undefined;
 exports.up = (pgm) => {
   pgm.sql(
     `
-    CREATE TABLE public.neighborhood
+    CREATE TABLE IF NOT EXISTS public.neighborhood
     (
         id integer NOT NULL,
         name text COLLATE pg_catalog."default" NOT NULL,

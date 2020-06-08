@@ -10,9 +10,11 @@ Postgres database, node/express Web API server, and React client.
 
 ## Contributing
 
-[Contributing to Food Oasis](/contributing.md)
-[Working with Postgres](/postgres.md)
-[Load Testing](/loadtest.md)
+- [Contributing to Food Oasis](/contributing.md)
+- [Working with Postgres](/postgres.md)
+- [Load Testing](/loadtest.md)
+- [Database Migrations](/migrations.md)
+- [Docker](/docker.md)
 
 ## Features
 

@@ -53,7 +53,7 @@ const search = async ({
     to_char(s.submitted_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
       as submitted_date, s.submitted_login_id,
     to_char(s.approved_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
-      as approved_date,
+      as approved_date, s.reviewed_login_id,
     to_char(s.assigned_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
       as assigned_date, s.assigned_login_id,
     to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')

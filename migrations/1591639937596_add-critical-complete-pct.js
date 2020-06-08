@@ -168,14 +168,15 @@ exports.up = (pgm) => {
 
   //Populate with initial values
   pgm.sql(`
-    update stakeholder set
-    complete_critical_percent = case when inactive OR inactive_temporary then 
-      (v_name::integer + v_categories::integer + v_address::integer 
-        + v_email::integer + v_phone::integer + v_hours::integer) *100/6 
-      else 
-        (v_name::integer + v_categories::integer + v_address::integer 
-        ) *100/3
-      end
+  update stakeholder set
+	complete_critical_percent = case when (inactive OR inactive_temporary) then 
+	(v_name::integer + v_categories::integer + v_address::integer 
+			 ) *100/3
+		
+		 else 
+		 	(v_name::integer + v_categories::integer + v_address::integer 
+			 + v_email::integer + v_phone::integer + v_hours::integer) *100/6 
+		 end
   `);
 };
 

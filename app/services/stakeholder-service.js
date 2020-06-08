@@ -34,7 +34,6 @@ const search = async ({
   isAssigned,
   isSubmitted,
   isApproved,
-  isRejected,
   isClaimed,
   assignedLoginId,
   claimedLoginId,
@@ -55,8 +54,6 @@ const search = async ({
       as submitted_date, s.submitted_login_id,
     to_char(s.approved_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
       as approved_date,
-    to_char(s.rejected_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
-      as rejected_date, s.reviewed_login_id,
     to_char(s.assigned_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
       as assigned_date, s.assigned_login_id,
     to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
@@ -83,7 +80,6 @@ const search = async ({
     ${trueFalseEitherClause("s.assigned_date", isAssigned)}
     ${trueFalseEitherClause("s.submitted_date", isSubmitted)}
     ${trueFalseEitherClause("s.approved_date", isApproved)}
-    ${trueFalseEitherClause("s.rejected_date", isRejected)}
     ${trueFalseEitherClause("s.claimed_date", isClaimed)}
     ${booleanEitherClause("s.inactive", isInactive)}
     ${assignedLoginId ? ` and s.assigned_login_id = ${assignedLoginId} ` : ""}
@@ -144,7 +140,6 @@ const search = async ({
       assignedDate: row.assigned_date,
       assignedLoginId: row.assigned_login_id,
       approvedDate: row.approved_date,
-      rejectedDate: row.rejected_date,
       reviewedLoginId: row.reviewed_login_id,
       claimedDate: row.claimed_date,
       claimedLoginId: row.claimed_login_id,
@@ -238,7 +233,6 @@ const searchDashboard = async ({
   isAssigned,
   isSubmitted,
   isApproved,
-  isRejected,
   isClaimed,
   assignedLoginId,
   claimedLoginId,
@@ -274,9 +268,7 @@ const searchDashboard = async ({
       to_char(s.submitted_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
         as submitted_date, s.submitted_login_id,
       to_char(s.approved_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
-        as approved_date,
-      to_char(s.rejected_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
-        as rejected_date, s.reviewed_login_id,
+        as approved_date, s.reviewed_login_id,
       to_char(s.assigned_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
         as assigned_date, s.assigned_login_id,
       to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
@@ -293,7 +285,6 @@ const searchDashboard = async ({
     ${trueFalseEitherClause("s.assigned_date", isAssigned)}
     ${trueFalseEitherClause("s.submitted_date", isSubmitted)}
     ${trueFalseEitherClause("s.approved_date", isApproved)}
-    ${trueFalseEitherClause("s.rejected_date", isRejected)}
     ${trueFalseEitherClause("s.claimed_date", isClaimed)}
     ${booleanEitherClause("s.inactive", isInactive)}
     ${booleanEitherClause("s.inactive_temporary", isInactiveTemporary)}
@@ -364,7 +355,6 @@ const searchDashboard = async ({
       assignedDate: row.assigned_date,
       assignedLoginId: row.assigned_login_id,
       approvedDate: row.approved_date,
-      rejectedDate: row.rejected_date,
       reviewedLoginId: row.reviewed_login_id,
       claimedDate: row.claimed_date,
       claimedLoginId: row.claimed_login_id,
@@ -445,8 +435,7 @@ const selectById = async (id) => {
       to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as created_date, s.created_login_id,
       to_char(s.modified_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as modified_date, s.modified_login_id,
       to_char(s.submitted_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as submitted_date, s.submitted_login_id,
-      to_char(s.approved_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as approved_date,
-      to_char(s.rejected_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as rejected_date, s.reviewed_login_id,
+      to_char(s.approved_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as approved_date, s.reviewed_login_id,
       to_char(s.assigned_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')as assigned_date, s.assigned_login_id,
       to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as claimed_date, s.claimed_login_id,
       s.requirements::varchar, s.admin_notes, s.inactive,
@@ -500,7 +489,6 @@ const selectById = async (id) => {
     submittedDate: row.submitted_date,
     submittedLoginId: row.submitted_login_id,
     approvedDate: row.approved_date,
-    rejectedDate: row.rejected_date,
     reviewedLoginId: row.approved_login_id,
     assignedLoginId: row.assigned_login_id,
     assignedDate: row.assigned_date,
@@ -596,7 +584,6 @@ const insert = async (model) => {
     submittedDate,
     submittedLoginId,
     approvedDate,
-    rejectedDate,
     reviewedLoginId,
     assignedDate,
     assignedLoginId,
@@ -671,9 +658,7 @@ const insert = async (model) => {
       ${toSqlTimestamp(submittedDate)}::TIMESTAMPTZ, ${toSqlNumeric(
       submittedLoginId
     )}::INT,
-      ${toSqlTimestamp(approvedDate)}::TIMESTAMP, ${toSqlTimestamp(
-      rejectedDate
-    )}::TIMESTAMP,
+      ${toSqlTimestamp(approvedDate)}::TIMESTAMP, 
       ${toSqlNumeric(reviewedLoginId)}::INT,
       ${toSqlTimestamp(assignedDate)}::TIMESTAMP, ${toSqlNumeric(
       assignedLoginId
@@ -801,7 +786,6 @@ const update = async (model) => {
     submittedDate,
     submittedLoginId,
     approvedDate,
-    rejectedDate,
     reviewedLoginId,
     assignedDate,
     assignedLoginId,
@@ -887,9 +871,8 @@ const update = async (model) => {
     ${toSqlNumeric(loginId)}::INT, ${toSqlTimestamp(
     submittedDate
   )}::TIMESTAMPTZ, ${toSqlNumeric(submittedLoginId)}::INT,
-    ${toSqlTimestamp(approvedDate)}::TIMESTAMP, ${toSqlTimestamp(
-    rejectedDate
-  )}::TIMESTAMP, ${toSqlNumeric(reviewedLoginId)}::INT,
+    ${toSqlTimestamp(approvedDate)}::TIMESTAMP, 
+    ${toSqlNumeric(reviewedLoginId)}::INT,
     ${toSqlTimestamp(assignedDate)}::TIMESTAMP, ${toSqlNumeric(
     assignedLoginId
   )}::INT, ${toSqlTimestamp(claimedDate)}::TIMESTAMP,

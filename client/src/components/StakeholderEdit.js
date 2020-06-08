@@ -2057,7 +2057,6 @@ const StakeholderEdit = (props) => {
                           <PlainButton
                             type="button"
                             onClick={() => {
-                              setFieldValue("rejectedDate", moment());
                               setFieldValue(
                                 "reviewedUser",
                                 user.firstName + " " + user.lastName

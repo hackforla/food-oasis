@@ -93,7 +93,6 @@ const defaultCriteria = {
   isAssigned: "either",
   isSubmitted: "either",
   isApproved: "either",
-  isRejected: "either",
   isClaimed: "either",
   assignedLoginId: null,
   claimedLoginId: null,

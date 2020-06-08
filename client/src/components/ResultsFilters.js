@@ -146,7 +146,6 @@ const ResultsFilters = ({
         isAssigned: "either",
         isApproved: isVerifiedSelected ? "true" : "either",
         isSubmitted: "either",
-        isRejected: "either",
         isClaimed: "either",
         assignedLoginId: "",
         claimedLoginId: "",

@@ -38,6 +38,7 @@ const SearchCriteria = ({
   userLatitude,
   userLongitude,
   categories,
+  neighborhoods,
   criteria,
   setCriteria,
   search,
@@ -251,6 +252,37 @@ const SearchCriteria = ({
               id="stakeholderId"
               onChange={setCriterion}
             />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <FormControl variant="outlined" fullWidth>
+              <FormLabel
+                id="verification-status-id-label"
+                className={classes.formLabel}
+              >
+                Verification Status
+              </FormLabel>
+              <Select
+                labelId="neighborhood-id-label"
+                name="neighborhoodId"
+                variant="outlined"
+                size="small"
+                value={criteria.neighborhoodId}
+                onChange={setCriterion}
+              >
+                <MenuItem key={0} value={0}>
+                  (Any)
+                </MenuItem>
+                {neighborhoods
+                  ? neighborhoods.map((n) => {
+                      return (
+                        <MenuItem key={n.id} value={n.id}>
+                          {n.name}
+                        </MenuItem>
+                      );
+                    })
+                  : null}
+              </Select>
+            </FormControl>
           </Grid>
         </Grid>
         <Grid item xs={12} sm={6}>

@@ -9,6 +9,7 @@ import StakeholderGrid from "../StakeholderGrid";
 import { RotateLoader } from "react-spinners";
 import { useOrganizations } from "../../hooks/useOrganizations/useOrganizations";
 import { useCategories } from "../../hooks/useCategories/useCategories";
+import { useNeighborhoods } from "../../hooks/useNeighborhoods/useNeighborhoods";
 import { needsVerification, assign } from "../../services/stakeholder-service";
 import AssignDialog from "./AssignDialog";
 import NeedsVerificationDialog from "./MessageConfirmDialog";
@@ -97,6 +98,7 @@ const defaultCriteria = {
   assignedLoginId: null,
   claimedLoginId: null,
   verificationStatusId: 0,
+  neighborhoodId: null,
 };
 
 VerificationAdmin.propTypes = {
@@ -126,6 +128,12 @@ function VerificationAdmin(props) {
     loading: categoriesLoading,
     error: categoriesError,
   } = useCategories();
+
+  const {
+    data: neighborhoods,
+    loading: neighborhoodsLoading,
+    error: neighborhoodsError,
+  } = useNeighborhoods();
 
   const {
     data: stakeholders,
@@ -238,6 +246,7 @@ function VerificationAdmin(props) {
                 userLatitude={userCoordinates.latitude}
                 userLongitude={userCoordinates.longitude}
                 categories={categories && categories.filter((c) => !c.inactive)}
+                neighborhoods={neighborhoods}
                 criteria={criteria}
                 setCriteria={setCriteria}
                 search={() => {
@@ -248,9 +257,11 @@ function VerificationAdmin(props) {
               {/* <pre>{JSON.stringify(criteria, null, 2)}</pre> */}
             </div>
           ) : null}
-          {categoriesError || stakeholdersError ? (
+          {categoriesError || neighborhoodsError || stakeholdersError ? (
             <div> Uh Oh! Something went wrong!</div>
-          ) : categoriesLoading || stakeholdersLoading ? (
+          ) : categoriesLoading ||
+            neighborhoodsLoading ||
+            stakeholdersLoading ? (
             <div
               style={{
                 height: "200",

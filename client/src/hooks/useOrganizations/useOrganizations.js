@@ -76,6 +76,7 @@ export const useOrganizations = () => {
     verificationStatusId,
     isInactiveTemporary,
     stakeholderId,
+    neighborhoodId,
   }) => {
     //if (!categoryIds || categoryIds.length === 0) return;
     try {
@@ -97,6 +98,7 @@ export const useOrganizations = () => {
         verificationStatusId,
         isInactiveTemporary,
         stakeholderId,
+        neighborhoodId,
       });
       setState({ data: stakeholders, loading: false, error: false });
       return stakeholders;

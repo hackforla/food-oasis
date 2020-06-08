@@ -75,6 +75,7 @@ const search = async ({
     s.category_notes, s.eligibility_notes, s.food_types, s.languages,
     s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email,
     s.v_hours, s.verification_status_id, s.inactive_temporary,
+    s.neighborhood_id,
     ${usersClause}
     from stakeholder_set as s
     where 1 = 1 
@@ -200,6 +201,7 @@ const search = async ({
       confirmedHours: row.v_hours,
       verificationStatusId: row.verification_status_id,
       inactiveTemporary: row.inactive_temporary,
+      neighborhoodId: row.neighborhood_id,
     });
   });
 
@@ -246,6 +248,7 @@ const searchDashboard = async ({
   distance,
   isInactiveTemporary,
   stakeholderId,
+  neighborhoodId,
 }) => {
   const locationClause = buildLocationClause(latitude, longitude, distance);
   const categoryClause = buildCTEClause(categoryIds, name);
@@ -279,6 +282,7 @@ const searchDashboard = async ({
       s.requirements, s.admin_notes, s.inactive, s.email, s.covid_notes,
       s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email,
       s.v_hours, s.verification_status_id, s.inactive_temporary,
+      s.neighborhood_id,
       ${usersClause}
     from stakeholder_set as s
     where 1 = 1
@@ -295,6 +299,11 @@ const searchDashboard = async ({
     ${
       Number(verificationStatusId) > 0
         ? ` and s.verification_status_id = ${verificationStatusId} `
+        : ""
+    }
+    ${
+      Number(neighborhoodId) > 0
+        ? ` and s.neighborhood_id = ${neighborhoodId} `
         : ""
     }
     ${Number(stakeholderId) > 0 ? ` and s.id = ${stakeholderId} ` : " "}
@@ -368,6 +377,7 @@ const searchDashboard = async ({
       confirmedHours: row.v_hours,
       verificationStatusId: row.verification_status_id,
       inactiveTemporary: row.inactive_temporary,
+      neighborhoodId: row.neighborhood_id,
     });
   });
 
@@ -444,7 +454,8 @@ const selectById = async (id) => {
       s.donation_delivery_instructions, s.donation_notes, s.covid_notes,
       s.category_notes, s.eligibility_notes, s.food_types, s.languages,
       s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email,
-      s.v_hours, s.verification_status_id, s.inactive_temporary
+      s.v_hours, s.verification_status_id, s.inactive_temporary,
+      s.neighborhood_id
     from stakeholder s
     left join login L1 on s.created_login_id = L1.id
     left join login L2 on s.modified_login_id = L2.id
@@ -530,6 +541,7 @@ const selectById = async (id) => {
     confirmedHours: row.v_hours,
     verificationStatusId: row.verification_status_id,
     inactiveTemporary: row.inactive_temporary,
+    neighborhoodId: row.neighborhood_id,
   };
 
   // Don't have a distance, since we didn't specify origin
@@ -604,6 +616,7 @@ const insert = async (model) => {
     confirmedHours,
     verificationStatusId,
     inactiveTemporary,
+    neighborhoodId,
   } = model;
   try {
     let hoursSqlValues = hours.length
@@ -682,7 +695,8 @@ const insert = async (model) => {
       ${toSqlBoolean(confirmedHours)},
       ${toSqlNumeric(verificationStatusId)}::INT,
       ${toSqlBoolean(inactiveTemporary)},
-      ${categories}, ${formattedHours})`;
+      ${categories}, ${formattedHours},
+      ${toSqlNumeric(neighborhoodId)})`;
     const stakeholderResult = await pool.query(invokeSprocSql);
     return stakeholderResult;
   } catch (err) {
@@ -807,6 +821,7 @@ const update = async (model) => {
     confirmedHours,
     verificationStatusId,
     inactiveTemporary,
+    neighborhoodId,
   } = model;
 
   let hoursSqlValues = hours.length
@@ -894,7 +909,8 @@ const update = async (model) => {
     ${toSqlNumeric(verificationStatusId)}::INT, ${toSqlBoolean(
     inactiveTemporary
   )},
-    ${id}, ${categories}, ${formattedHours})`;
+    ${id}, ${categories}, ${formattedHours},
+    ${toSqlNumeric(neighborhoodId)})`;
 
   await pool.query(invokeSprocSql);
 };

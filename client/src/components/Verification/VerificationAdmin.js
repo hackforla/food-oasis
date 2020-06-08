@@ -99,6 +99,8 @@ const defaultCriteria = {
   claimedLoginId: null,
   verificationStatusId: 0,
   neighborhoodId: null,
+  minCompleteCriticalPercent: 0,
+  maxCompleteCriticalPercent: 100,
 };
 
 VerificationAdmin.propTypes = {

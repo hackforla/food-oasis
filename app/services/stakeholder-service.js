@@ -249,6 +249,8 @@ const searchDashboard = async ({
   isInactiveTemporary,
   stakeholderId,
   neighborhoodId,
+  minCompleteCriticalPercent,
+  maxCompleteCriticalPercent,
 }) => {
   const locationClause = buildLocationClause(latitude, longitude, distance);
   const categoryClause = buildCTEClause(categoryIds, name);
@@ -283,7 +285,8 @@ const searchDashboard = async ({
       s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email,
       s.v_hours, s.verification_status_id, s.inactive_temporary,
       s.neighborhood_id,
-      ${usersClause}
+      ${usersClause},
+      s.complete_critical_percent
     from stakeholder_set as s
     where 1 = 1
     ${locationClause}
@@ -307,6 +310,16 @@ const searchDashboard = async ({
         : ""
     }
     ${Number(stakeholderId) > 0 ? ` and s.id = ${stakeholderId} ` : " "}
+    ${
+      Number(minCompleteCriticalPercent) > 0
+        ? ` and s.complete_critical_percent >= ${minCompleteCriticalPercent} `
+        : ""
+    }
+    ${
+      Number(maxCompleteCriticalPercent) > 0
+        ? ` and s.complete_critical_percent <= ${maxCompleteCriticalPercent} `
+        : ""
+    }
     order by s.name
   `;
   // console.log(sql);
@@ -378,6 +391,7 @@ const searchDashboard = async ({
       verificationStatusId: row.verification_status_id,
       inactiveTemporary: row.inactive_temporary,
       neighborhoodId: row.neighborhood_id,
+      completeCriticalPercent: row.complete_critical_percent,
     });
   });
 

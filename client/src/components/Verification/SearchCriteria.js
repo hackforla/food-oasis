@@ -253,6 +253,40 @@ const SearchCriteria = ({
               onChange={setCriterion}
             />
           </Grid>
+          <Grid item xs={12} sm={4}>
+            <FormLabel className={classes.formLabel}>
+              Min % Critical Complete
+            </FormLabel>
+            <TextField
+              autoComplete="off"
+              type="number"
+              min="0"
+              max="100"
+              name="minCompleteCriticalPercent"
+              value={criteria.minCompleteCriticalPercent}
+              variant="outlined"
+              fullWidth
+              size="small"
+              onChange={setCriterion}
+            />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <FormLabel className={classes.formLabel}>
+              Max % Critical Complete
+            </FormLabel>
+            <TextField
+              autoComplete="off"
+              type="number"
+              min="0"
+              max="100"
+              name="maxCompleteCriticalPercent"
+              value={criteria.maxCompleteCriticalPercent}
+              variant="outlined"
+              fullWidth
+              size="small"
+              onChange={setCriterion}
+            />
+          </Grid>
           <Grid item xs={12} sm={6}>
             <FormControl variant="outlined" size="small" fullWidth>
               <FormLabel

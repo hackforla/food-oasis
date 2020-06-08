@@ -8,6 +8,7 @@ import { useMapboxGeocoder } from "hooks/useMapboxGeocoder";
 
 const useStyles = makeStyles(() => ({
   paper: {
+    width: "34.5em",
     position: "absolute",
     maxHeight: "150px",
     overflowY: "auto",

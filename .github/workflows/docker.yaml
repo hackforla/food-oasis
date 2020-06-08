@@ -1,0 +1,24 @@
+# build and push a docker image from the latest push to "develop" branch
+on:
+  push:
+    - master
+    - develop
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    name: build image
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: build-and-push-image
+        uses: docker/build-push-action@v1
+        with:
+          usernmae: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: foodoasisla/foodoasisla
+          tag_with_ref: true
+          tag_with_sha: true
+          add_git_labels: true
+          labels: description="Food Oasis LA",maintained="foodoasis+hub@hackforla.org"
+

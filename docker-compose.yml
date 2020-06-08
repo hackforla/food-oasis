@@ -26,7 +26,7 @@ services:
     volumes:
       - ./:/fola
       - /fola/node_modules
-    command: npx nodemon -w /fola/app -w /fola/middleware -L server.js
+    command: npx nodemon -w /fola/server.js -w /fola/app -w /fola/middleware -L server.js
 
   db:
     image: postgres:12

@@ -1,6 +1,6 @@
 import React from "react";
 
-const MapMarker = (color, isVerified, splitInactive) => {
+const MapMarker = (color, isVerified, splitInactive, onClick = null) => {
   if (splitInactive && !color)
     return (
       <svg
@@ -43,6 +43,7 @@ const MapMarker = (color, isVerified, splitInactive) => {
         viewBox="0 0 35 48"
         enable-background="new 0 0 35 48"
         xmlSpace="preserve"
+        onClick={onClick}
       >
         <path
           fill="#CC3333"
@@ -54,6 +55,7 @@ const MapMarker = (color, isVerified, splitInactive) => {
           d="M17.5,0.093v7.549c4.766,0,8.627,3.863,8.627,8.628s-3.861,8.628-8.627,8.628v23.007
    c0.011-0.013,17.256-21.029,17.256-30.556C34.756,7.818,27.029,0.094,17.5,0.093z"
         />
+        <circle cx="17.6361" cy="16.875" r="8.5" fill="white" />
       </svg>
     );
 
@@ -70,6 +72,7 @@ const MapMarker = (color, isVerified, splitInactive) => {
         viewBox="0 0 35 48"
         enable-background="new 0 0 35 48"
         xmlSpace="preserve"
+        onClick={onClick}
       >
         <path
           fill="#CC3333"

@@ -41,7 +41,6 @@ const search = async ({
 }) => {
   const locationClause = buildLocationClause(latitude, longitude, distance);
   const categoryClause = buildCTEClause(categoryIds, name);
-  const usersClause = buildUsersClause();
 
   const sql = `${categoryClause}
     select s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
@@ -73,9 +72,10 @@ const search = async ({
     s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email,
     s.v_hours, s.verification_status_id, s.inactive_temporary,
     s.neighborhood_id,
-    ${usersClause}
+    ${buildLoginSelectsClause()}
     from stakeholder_set as s
-    where 1 = 1 
+    ${buildLoginJoinsClause()}
+    where 1 = 1
     ${locationClause}
     ${trueFalseEitherClause("s.assigned_date", isAssigned)}
     ${trueFalseEitherClause("s.submitted_date", isSubmitted)}
@@ -248,7 +248,6 @@ const searchDashboard = async ({
 }) => {
   const locationClause = buildLocationClause(latitude, longitude, distance);
   const categoryClause = buildCTEClause(categoryIds, name);
-  const usersClause = buildUsersClause();
 
   const sql = `${categoryClause}
     select s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
@@ -276,10 +275,10 @@ const searchDashboard = async ({
       s.requirements, s.admin_notes, s.inactive, s.email, s.covid_notes,
       s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email,
       s.v_hours, s.verification_status_id, s.inactive_temporary,
-      s.neighborhood_id,
-      ${usersClause},
-      s.complete_critical_percent
+      s.neighborhood_id, s.complete_critical_percent,
+      ${buildLoginSelectsClause()}
     from stakeholder_set as s
+    ${buildLoginJoinsClause()}
     where 1 = 1
     ${locationClause}
     ${trueFalseEitherClause("s.assigned_date", isAssigned)}
@@ -966,15 +965,26 @@ const buildLocationClause = (latitude, longitude, distance) => {
   return locationClause;
 };
 
-const buildUsersClause = () => {
+const buildLoginJoinsClause = () => {
   return `
-    (select concat(first_name,' ',last_name) as created_user   from login where id=s.created_login_id),
-    (select concat(first_name,' ',last_name) as modified_user  from login where id=s.modified_login_id),
-    (select concat(first_name,' ',last_name) as submitted_user from login where id=s.submitted_login_id),
-    (select concat(first_name,' ',last_name) as reviewed_user  from login where id=s.reviewed_login_id),
-    (select concat(first_name,' ',last_name) as assigned_user  from login where id=s.assigned_login_id),
-    (select concat(first_name,' ',last_name) as claimed_user   from login where id=s.claimed_login_id)
-    `;
+    left join login L1 on s.created_login_id = L1.id
+    left join login L2 on s.modified_login_id = L2.id
+    left join login L3 on s.submitted_login_id = L3.id
+    left join login L4 on s.reviewed_login_id = L4.id
+    left join login L5 on s.assigned_login_id = L5.id
+    left join login L6 on s.claimed_login_id = L6.id
+  `;
+};
+
+const buildLoginSelectsClause = () => {
+  return `
+    concat(L1.first_name, ' ', L1.last_name) as created_user,
+    concat(L2.first_name, ' ', L1.last_name) as modified_user,
+    concat(L3.first_name, ' ', L1.last_name) as submitted_user,
+    concat(L4.first_name, ' ', L1.last_name) as reviewed_user,
+    concat(L5.first_name, ' ', L1.last_name) as assigned_user,
+    concat(L6.first_name, ' ', L1.last_name) as claimed_user
+  `;
 };
 
 module.exports = {

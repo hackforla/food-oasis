@@ -275,8 +275,7 @@ const searchDashboard = async ({
       s.requirements, s.admin_notes, s.inactive, s.email, s.covid_notes,
       s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email,
       s.v_hours, s.verification_status_id, s.inactive_temporary,
-      s.neighborhood_id,
-      s.complete_critical_percent
+      s.neighborhood_id, s.complete_critical_percent,
       ${buildLoginSelectsClause()}
     from stakeholder_set as s
     ${buildLoginJoinsClause()}

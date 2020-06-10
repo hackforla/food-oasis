@@ -40,7 +40,8 @@ const search = async ({
   verificationStatusId,
 }) => {
   const locationClause = buildLocationClause(latitude, longitude, distance);
-  const categoryClause = buildCTEClause(categoryIds, name);
+  const categoryClause = buildCTEClause(categoryIds, name, true); // true indicates we want to search
+  // stakeholder_best table, not stakeholder
 
   const sql = `${categoryClause}
     select s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
@@ -71,7 +72,7 @@ const search = async ({
     s.category_notes, s.eligibility_notes, s.food_types, s.languages,
     s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email,
     s.v_hours, s.verification_status_id, s.inactive_temporary,
-    s.neighborhood_id,
+    s.neighborhood_id, s.is_verified,
     ${buildLoginSelectsClause()}
     from stakeholder_set as s
     ${buildLoginJoinsClause()}
@@ -197,6 +198,7 @@ const search = async ({
       verificationStatusId: row.verification_status_id,
       inactiveTemporary: row.inactive_temporary,
       neighborhoodId: row.neighborhood_id,
+      is_verified: row.is_verified,
     });
   });
 
@@ -247,7 +249,9 @@ const searchDashboard = async ({
   maxCompleteCriticalPercent,
 }) => {
   const locationClause = buildLocationClause(latitude, longitude, distance);
-  const categoryClause = buildCTEClause(categoryIds, name);
+  const categoryClause = buildCTEClause(categoryIds, name, false);
+  // false means search stakeholder table, not stakeholder_best, since this is
+  // for the administrative dashboard
 
   const sql = `${categoryClause}
     select s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
@@ -438,12 +442,6 @@ const selectById = async (id) => {
       to_char(s.assigned_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')as assigned_date, s.assigned_login_id,
       to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as claimed_date, s.claimed_login_id,
       s.requirements::varchar, s.admin_notes, s.inactive,
-      L1.first_name || ' ' || L1.last_name as created_user,
-      L2.first_name || ' ' || L2.last_name as modified_user,
-      L3.first_name || ' ' || L3.last_name as submitted_user,
-      L4.first_name || ' ' || L4.last_name as reviewed_user,
-      L5.first_name || ' ' || L5.last_name as assigned_user,
-      L6.first_name || ' ' || L6.last_name as claimed_user,
       s.parent_organization, s.physical_access, s.email,
       s.items, s.services, s.facebook,
       s.twitter, s.pinterest, s.linkedin, s.description,
@@ -457,14 +455,10 @@ const selectById = async (id) => {
       s.category_notes, s.eligibility_notes, s.food_types, s.languages,
       s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email,
       s.v_hours, s.verification_status_id, s.inactive_temporary,
-      s.neighborhood_id
-    from stakeholder s
-    left join login L1 on s.created_login_id = L1.id
-    left join login L2 on s.modified_login_id = L2.id
-    left join login L3 on s.submitted_login_id = L3.id
-    left join login L4 on s.reviewed_login_id = L4.id
-    left join login L5 on s.assigned_login_id = L5.id
-    left join login L6 on s.claimed_login_id = L6.id
+      s.neighborhood_id, s.is_verified,
+      ${buildLoginSelectsClause()}
+    from stakeholder_best s
+    ${buildLoginJoinsClause()}
     where s.id = ${id}`;
   const result = await pool.query(sql);
   const row = result.rows[0];
@@ -543,6 +537,7 @@ const selectById = async (id) => {
     verificationStatusId: row.verification_status_id,
     inactiveTemporary: row.inactive_temporary,
     neighborhoodId: row.neighborhood_id,
+    is_verified: row.is_verified,
   };
 
   // Don't have a distance, since we didn't specify origin
@@ -657,7 +652,7 @@ const insert = async (model) => {
       ${toSqlTimestamp(submittedDate)}::TIMESTAMPTZ, ${toSqlNumeric(
       submittedLoginId
     )}::INT,
-      ${toSqlTimestamp(approvedDate)}::TIMESTAMP, 
+      ${toSqlTimestamp(approvedDate)}::TIMESTAMP,
       ${toSqlNumeric(reviewedLoginId)}::INT,
       ${toSqlTimestamp(assignedDate)}::TIMESTAMP, ${toSqlNumeric(
       assignedLoginId
@@ -870,7 +865,7 @@ const update = async (model) => {
     ${toSqlNumeric(loginId)}::INT, ${toSqlTimestamp(
     submittedDate
   )}::TIMESTAMPTZ, ${toSqlNumeric(submittedLoginId)}::INT,
-    ${toSqlTimestamp(approvedDate)}::TIMESTAMP, 
+    ${toSqlTimestamp(approvedDate)}::TIMESTAMP,
     ${toSqlNumeric(reviewedLoginId)}::INT,
     ${toSqlTimestamp(assignedDate)}::TIMESTAMP, ${toSqlNumeric(
     assignedLoginId
@@ -918,7 +913,9 @@ const remove = (id) => {
   });
 };
 
-const buildCTEClause = (categoryIds, name) => {
+// we can either search in the stakeholder or stakeholder_best
+// table, as indicated by useBest
+const buildCTEClause = (categoryIds, name, useBest) => {
   const categoryClause = categoryIds
     ? `stakeholder_category_set AS (
        select * from stakeholder_category
@@ -927,9 +924,9 @@ const buildCTEClause = (categoryIds, name) => {
   const nameClause = "'%" + name.replace(/'/g, "''") + "%'";
   const cteClause = `WITH ${categoryClause}
   stakeholder_set AS (
-    select * from stakeholder
-    where stakeholder.name ilike ${nameClause}
-    and stakeholder.id in (
+    select * from ${useBest ? `stakeholder_best` : `stakeholder`}
+    where name ilike ${nameClause}
+    and id in (
       select stakeholder_id from stakeholder_category_set
     )
   )`;

@@ -26,13 +26,16 @@ function Map({
   selectedLongitude,
   stakeholders,
   categoryIds,
+  doSelectStakeholder,
+  selectedPopUp,
+  setSelectedPopUp,
+  isPopupOpen,
+  setIsPopupOpen,
 }) {
   const categoryIdsOrDefault = categoryIds.length
     ? categoryIds
     : DEFAULT_CATEGORIES;
 
-  const [isPopupOpen, setIsPopupOpen] = React.useState(false);
-  const [selectedStakeholder, setSelectedStakeholder] = React.useState(null);
   const [viewport, setViewport] = React.useState({
     zoom: 10, // TODO: can we dynamically control zoom radius based on selectedDistance?
     latitude: selectedLatitude,
@@ -40,13 +43,14 @@ function Map({
   });
 
   const handleMarkerClick = (clickedStakeholder) => {
-    setSelectedStakeholder(clickedStakeholder);
+    setSelectedPopUp(clickedStakeholder);
     setIsPopupOpen(true);
+    doSelectStakeholder(clickedStakeholder);
   };
 
   const handleClose = () => {
     setIsPopupOpen(false);
-    setSelectedStakeholder(null);
+    setSelectedPopUp(null);
   };
 
   return (
@@ -95,8 +99,8 @@ function Map({
                 />
               );
             })}
-        {isPopupOpen && selectedStakeholder && (
-          <MarkerPopup entity={selectedStakeholder} handleClose={handleClose} />
+        {isPopupOpen && selectedPopUp && (
+          <MarkerPopup entity={selectedPopUp} handleClose={handleClose} />
         )}
       </ReactMapGL>
     </div>

@@ -60,6 +60,8 @@ export default function ResultsContainer(props) {
   const [origin, setOrigin] = React.useState(initialCoords);
   const [isVerifiedSelected, selectVerified] = React.useState(false);
   const [selectedStakeholder, doSelectStakeholder] = React.useState(null);
+  const [selectedPopUp, setSelectedPopUp] = React.useState(null);
+  const [isPopupOpen, setIsPopupOpen] = React.useState(false);
 
   const topLevelProps = {
     radius,
@@ -83,14 +85,21 @@ export default function ResultsContainer(props) {
             selectedStakeholder={selectedStakeholder}
             doSelectStakeholder={doSelectStakeholder}
             stakeholders={data}
+            setSelectedPopUp={setSelectedPopUp}
+            setIsPopupOpen={setIsPopupOpen}
           />
         </Grid>
         <Grid item xs={12} md={8} className={classes.map}>
           <ResultsMap
             stakeholders={data}
+            doSelectStakeholder={doSelectStakeholder}
             categoryIds={categoryIds}
             selectedLatitude={origin.latitude}
             selectedLongitude={origin.longitude}
+            selectedPopUp={selectedPopUp}
+            setSelectedPopUp={setSelectedPopUp}
+            isPopupOpen={isPopupOpen}
+            setIsPopupOpen={setIsPopupOpen}
           />
         </Grid>
       </Grid>

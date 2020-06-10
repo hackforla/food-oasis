@@ -1,13 +1,14 @@
 # build and push a docker image from the latest push to "develop" branch
 on:
   push:
-    - master
-    - develop
+    branches:
+      - master
+      - develop
 
 jobs:
   docker:
     runs-on: ubuntu-latest
-    name: build image
+    name: build & push image
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2

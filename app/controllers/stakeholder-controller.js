@@ -1,4 +1,6 @@
 const stakeholderService = require("../services/stakeholder-service");
+const { Readable } = require("stream");
+const stringify = require("csv-stringify");
 
 const search = (req, res) => {
   let categoryIds = req.query.categoryIds;
@@ -55,6 +57,44 @@ const getById = (req, res) => {
     .selectById(id)
     .then((resp) => {
       res.send(resp);
+    })
+    .catch((err) => {
+      res.status("500").json({ error: err.toString() });
+    });
+};
+
+const csv = (req, res) => {
+  const { ids } = req.body;
+  stakeholderService
+    .selectCsv(ids)
+    .then((resp) => {
+      Readable.from(resp)
+        .pipe(
+          stringify({
+            header: true,
+            columns: {
+              id: "ID",
+              name: "Name",
+              categories: "Category",
+              address_1: "Address",
+              address_2: "Address2ndLine",
+              city: "City",
+              state: "State",
+              zip: "Zip",
+              latitude: "Latitude",
+              longitude: "Longitude",
+              neighborhood_name: "Neighborhood",
+              hours: "Hours",
+              website: "Website",
+              facebook: "Facebook",
+              pinterest: "Pinterest",
+              twitter: "Twitter",
+              linkedin: "LinkedIn",
+              instagram: "instagram",
+            },
+          })
+        )
+        .pipe(res);
     })
     .catch((err) => {
       res.status("500").json({ error: err.toString() });
@@ -131,6 +171,7 @@ const claim = (req, res) => {
 module.exports = {
   search,
   searchDashboard,
+  csv,
   getById,
   post,
   put,

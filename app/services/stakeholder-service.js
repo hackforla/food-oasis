@@ -6,8 +6,6 @@ const {
   toSqlTimestamp,
 } = require("./postgres-utils");
 
-const milesPerLatitudeDegree = 69.097; // used for distance calculations
-
 const trueFalseEitherClause = (columnName, value) => {
   return value === "true"
     ? ` and ${columnName} is not null `
@@ -39,7 +37,7 @@ const search = async ({
   claimedLoginId,
   verificationStatusId,
 }) => {
-  const locationClause = buildLocationClause(latitude, longitude, distance);
+  const locationClause = buildLocationClause(latitude, longitude);
   const categoryClause = buildCTEClause(categoryIds, name);
 
   const sql = `${categoryClause}
@@ -72,11 +70,12 @@ const search = async ({
     s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email,
     s.v_hours, s.verification_status_id, s.inactive_temporary,
     s.neighborhood_id,
+    ${locationClause ? `${locationClause} AS distance,` : ""}
     ${buildLoginSelectsClause()}
     from stakeholder_set as s
     ${buildLoginJoinsClause()}
     where 1 = 1
-    ${locationClause}
+    ${locationClause ? `AND ${locationClause} < ${distance}` : ""}
     ${trueFalseEitherClause("s.assigned_date", isAssigned)}
     ${trueFalseEitherClause("s.submitted_date", isSubmitted)}
     ${trueFalseEitherClause("s.approved_date", isApproved)}
@@ -89,7 +88,7 @@ const search = async ({
         ? ` and s.verification_status_id = ${verificationStatusId} `
         : ""
     }
-    order by s.name
+    order by distance
   `;
   // console.log(sql);
   let stakeholders = [];
@@ -129,6 +128,7 @@ const search = async ({
       phone: row.phone || "",
       latitude: row.latitude ? Number(row.latitude) : null,
       longitude: row.longitude ? Number(row.longitude) : null,
+      distance: row.distance ? Number(row.distance) : null,
       website: row.website || "",
       notes: row.notes || "",
       createdDate: row.created_date,
@@ -200,29 +200,6 @@ const search = async ({
     });
   });
 
-  // Should move distance calc into stored proc
-  stakeholders.forEach((stakeholder) => {
-    if (stakeholder.latitude && stakeholder.longitude) {
-      stakeholder.distance =
-        Math.sqrt(
-          (Math.abs(stakeholder.longitude - longitude) *
-            Math.cos((latitude / 360) * 2 * Math.PI)) **
-            2 +
-            Math.abs(stakeholder.latitude - latitude) ** 2
-        ) * milesPerLatitudeDegree;
-    } else {
-      stakeholder.distance = 999;
-    }
-  });
-  // Should move sorting into stored proc
-  stakeholders.sort((a, b) => a.distance - b.distance);
-  // Should move distance filter into stored proc
-  if (distance > 0) {
-    stakeholders = stakeholders.filter(
-      (stakeholder) => stakeholder.distance <= distance
-    );
-  }
-
   return stakeholders;
 };
 
@@ -246,7 +223,7 @@ const searchDashboard = async ({
   minCompleteCriticalPercent,
   maxCompleteCriticalPercent,
 }) => {
-  const locationClause = buildLocationClause(latitude, longitude, distance);
+  const locationClause = buildLocationClause(latitude, longitude);
   const categoryClause = buildCTEClause(categoryIds, name);
 
   const sql = `${categoryClause}
@@ -283,7 +260,7 @@ const searchDashboard = async ({
     left outer join neighborhood n on s.neighborhood_id = n.id
     ${buildLoginJoinsClause()}    
     where 1 = 1
-    ${locationClause}
+    ${locationClause ? `AND ${locationClause} < ${distance}` : ""}
     ${trueFalseEitherClause("s.assigned_date", isAssigned)}
     ${trueFalseEitherClause("s.submitted_date", isSubmitted)}
     ${trueFalseEitherClause("s.approved_date", isApproved)}
@@ -313,7 +290,7 @@ const searchDashboard = async ({
         ? ` and s.complete_critical_percent <= ${maxCompleteCriticalPercent} `
         : ""
     }
-    order by s.name
+    order by ${locationClause ? "distance" : "s.name"}
   `;
   // console.log(sql);
   let stakeholders = [];
@@ -347,6 +324,7 @@ const searchDashboard = async ({
       phone: row.phone || "",
       latitude: row.latitude ? Number(row.latitude) : null,
       longitude: row.longitude ? Number(row.longitude) : null,
+      distance: row.distance ? Number(row.distance) : null,
       website: row.website || "",
       createdDate: row.created_date,
       createdLoginId: row.created_login_id,
@@ -387,31 +365,6 @@ const searchDashboard = async ({
       completeCriticalPercent: row.complete_critical_percent,
     });
   });
-
-  if (latitude && longitude && distance) {
-    // Should move distance calc into stored proc
-    stakeholders.forEach((stakeholder) => {
-      if (stakeholder.latitude && stakeholder.longitude) {
-        stakeholder.distance =
-          Math.sqrt(
-            (Math.abs(stakeholder.longitude - longitude) *
-              Math.cos((latitude / 360) * 2 * Math.PI)) **
-              2 +
-              Math.abs(stakeholder.latitude - latitude) ** 2
-          ) * milesPerLatitudeDegree;
-      } else {
-        stakeholder.distance = 999;
-      }
-    });
-    // Should move sorting into stored proc
-    stakeholders.sort((a, b) => a.distance - b.distance);
-    // Should move distance filter into stored proc
-    if (distance > 0) {
-      stakeholders = stakeholders.filter(
-        (stakeholder) => stakeholder.distance <= distance
-      );
-    }
-  }
 
   return stakeholders;
 };
@@ -795,7 +748,7 @@ const insert = async (model) => {
       ${toSqlTimestamp(submittedDate)}::TIMESTAMPTZ, ${toSqlNumeric(
       submittedLoginId
     )}::INT,
-      ${toSqlTimestamp(approvedDate)}::TIMESTAMP, 
+      ${toSqlTimestamp(approvedDate)}::TIMESTAMP,
       ${toSqlNumeric(reviewedLoginId)}::INT,
       ${toSqlTimestamp(assignedDate)}::TIMESTAMP, ${toSqlNumeric(
       assignedLoginId
@@ -1008,7 +961,7 @@ const update = async (model) => {
     ${toSqlNumeric(loginId)}::INT, ${toSqlTimestamp(
     submittedDate
   )}::TIMESTAMPTZ, ${toSqlNumeric(submittedLoginId)}::INT,
-    ${toSqlTimestamp(approvedDate)}::TIMESTAMP, 
+    ${toSqlTimestamp(approvedDate)}::TIMESTAMP,
     ${toSqlNumeric(reviewedLoginId)}::INT,
     ${toSqlTimestamp(assignedDate)}::TIMESTAMP, ${toSqlNumeric(
     assignedLoginId
@@ -1074,31 +1027,15 @@ const buildCTEClause = (categoryIds, name) => {
   return cteClause;
 };
 
-const buildLocationClause = (latitude, longitude, distance) => {
+const buildLocationClause = (latitude, longitude) => {
   var locationClause = "";
-  const radius = Number(distance || 0);
-  if (latitude && longitude && radius) {
-    // Calculate a bounding box to limit our search to only stakeholders
-    // that are within our search distance.
-    const degToRads = Math.PI / 180.0;
-    const radsToDegs = 180.0 / Math.PI;
-    const earthRadius = 3960.0; // since when it the earth a perfect sphere? Oh well.
-    // r: radius of a circle around the earth at the given latitude
-    const r = earthRadius * Math.cos(latitude * degToRads);
-    const latitude_min = Number(latitude) - radius / milesPerLatitudeDegree;
-    const latitude_max = Number(latitude) + radius / milesPerLatitudeDegree;
-    const longitude_min = Number(longitude) - (radius / r) * radsToDegs;
-    const longitude_max = Number(longitude) + (radius / r) * radsToDegs;
+  if (latitude && longitude) {
     locationClause =
-      "AND (s.latitude >= " +
-      latitude_min +
-      " AND s.latitude <= " +
-      latitude_max +
-      " AND s.longitude >= " +
-      longitude_min +
-      " AND s.longitude <= " +
-      longitude_max +
-      ")";
+      " point(" +
+      latitude +
+      ", " +
+      longitude +
+      ") <@> point(s.latitude, s.longitude) ";
   }
   return locationClause;
 };

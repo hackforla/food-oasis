@@ -89,8 +89,16 @@ const ResultsList = ({
   doSelectStakeholder,
   selectedStakeholder,
   stakeholders,
+  setSelectedPopUp,
+  setIsPopupOpen,
 }) => {
   const classes = useStyles();
+
+  const handleStakeholderClick = (stakeholder) => {
+    doSelectStakeholder(stakeholder);
+    setIsPopupOpen(true);
+    setSelectedPopUp(stakeholder);
+  };
 
   return (
     <div className={classes.stakeholderArrayHolder}>
@@ -104,7 +112,7 @@ const ResultsList = ({
           <div
             className={classes.stakeholderHolder}
             key={stakeholder.id}
-            onClick={() => doSelectStakeholder(stakeholder)}
+            onClick={() => handleStakeholderClick(stakeholder)}
           >
             <div className={classes.imgHolder}>
               <img

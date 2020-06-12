@@ -1,5 +1,6 @@
 import axios from "axios";
 import moment from "moment";
+import fileDownload from "js-file-download";
 
 const baseUrl = "/api/stakeholders";
 
@@ -80,6 +81,14 @@ export const getById = async (id) => {
 export const post = async (stakeholder) => {
   const response = await axios.post(baseUrl, stakeholder);
   return response.data;
+};
+
+export const exportCsv = async (ids) => {
+  const body = { ids };
+  const response = await axios.post(baseUrl + "/csv", body, {
+    responseType: "stream",
+  });
+  fileDownload(response.data, "fooloasis.csv");
 };
 
 export const put = async (stakeholder) => {

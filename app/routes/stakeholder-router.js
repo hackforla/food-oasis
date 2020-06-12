@@ -4,6 +4,7 @@ const stakeholderController = require("../controllers/stakeholder-controller");
 router.get("/", stakeholderController.search);
 router.get("/dashboard", stakeholderController.searchDashboard);
 router.get("/:id", stakeholderController.getById);
+router.post("/csv", stakeholderController.csv);
 router.post("/", stakeholderController.post);
 router.put("/:id", stakeholderController.put);
 router.delete("/:id", stakeholderController.remove);

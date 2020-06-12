@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import { CssBaseline, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { SearchButton } from "../Buttons";
-import StakeholderGrid from "../StakeholderGrid";
+import StakeholderGrid from "./VerificationAdminGrid";
 import { RotateLoader } from "react-spinners";
 import { useOrganizations } from "../../hooks/useOrganizations/useOrganizations";
 

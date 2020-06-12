@@ -5,12 +5,16 @@ import { Button, CssBaseline, Dialog, Typography } from "@material-ui/core";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import { makeStyles } from "@material-ui/core/styles";
 import { SearchButton } from "../Buttons";
-import StakeholderGrid from "../StakeholderGrid";
+import StakeholderGrid from "./VerificationAdminGrid";
 import { RotateLoader } from "react-spinners";
 import { useOrganizations } from "../../hooks/useOrganizations/useOrganizations";
 import { useCategories } from "../../hooks/useCategories/useCategories";
 import { useNeighborhoods } from "../../hooks/useNeighborhoods/useNeighborhoods";
-import { needsVerification, assign } from "../../services/stakeholder-service";
+import {
+  needsVerification,
+  assign,
+  exportCsv,
+} from "../../services/stakeholder-service";
 import AssignDialog from "./AssignDialog";
 import NeedsVerificationDialog from "./MessageConfirmDialog";
 import SearchCriteria from "./SearchCriteria";
@@ -163,6 +167,10 @@ function VerificationAdmin(props) {
   const search = async () => {
     await searchCallback(criteria);
     localStorage.setItem(CRITERIA_TOKEN, JSON.stringify(criteria));
+  };
+
+  const handleExport = async () => {
+    exportCsv(selectedStakeholderIds);
   };
 
   const handleAssignDialogOpen = async () => {
@@ -360,8 +368,18 @@ function VerificationAdmin(props) {
                     color="primary"
                     disabled={selectedStakeholderIds.length === 0}
                     onClick={handleAssignDialogOpen}
+                    style={{ marginRight: "0.2em" }}
                   >
                     Assign
+                  </Button>
+                  <Button
+                    variant="contained"
+                    title="Export selected Organizations to file"
+                    color="primary"
+                    disabled={selectedStakeholderIds.length === 0}
+                    onClick={handleExport}
+                  >
+                    Export
                   </Button>
                 </div>
                 <div>{`${stakeholders.length} rows`} </div>

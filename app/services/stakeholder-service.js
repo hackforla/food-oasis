@@ -275,10 +275,13 @@ const searchDashboard = async ({
       s.requirements, s.admin_notes, s.inactive, s.email, s.covid_notes,
       s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email,
       s.v_hours, s.verification_status_id, s.inactive_temporary,
-      s.neighborhood_id, s.complete_critical_percent,
-      ${buildLoginSelectsClause()}
+      s.neighborhood_id, n.name as neighborhood_name,
+      s.complete_critical_percent,
+      ${locationClause ? `${locationClause} AS distance,` : ""}
+    ${buildLoginSelectsClause()}
     from stakeholder_set as s
-    ${buildLoginJoinsClause()}
+    left outer join neighborhood n on s.neighborhood_id = n.id
+    ${buildLoginJoinsClause()}    
     where 1 = 1
     ${locationClause}
     ${trueFalseEitherClause("s.assigned_date", isAssigned)}
@@ -380,6 +383,7 @@ const searchDashboard = async ({
       verificationStatusId: row.verification_status_id,
       inactiveTemporary: row.inactive_temporary,
       neighborhoodId: row.neighborhood_id,
+      neighborhoodName: row.neighborhood_name,
       completeCriticalPercent: row.complete_critical_percent,
     });
   });
@@ -562,14 +566,11 @@ const selectCsv = async (ids) => {
     where stakeholder_id = s.id
   ) row
   )) as hours,
-  (select array(select row_to_json(category_row)
-    from (
-      select c.id, c.name
+  (select string_agg(c.name, ', ')
       from category c
         join stakeholder_category sc on c.id = sc.category_id
       where sc.stakeholder_id = s.id
-    ) category_row
-  )) as categories,
+  ) as categories,
   to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as created_date, s.created_login_id,
   to_char(s.modified_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as modified_date, s.modified_login_id,
   to_char(s.submitted_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as submitted_date, s.submitted_login_id,

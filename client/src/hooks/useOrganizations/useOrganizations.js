@@ -83,7 +83,7 @@ export const useOrganizations = () => {
         name,
         latitude,
         longitude,
-        radius,
+        distance: radius,
         categoryIds,
         isInactive,
         isAssigned,

@@ -75,7 +75,11 @@ const search = async ({
     from stakeholder_set as s
     ${buildLoginJoinsClause()}
     where 1 = 1
-    ${locationClause ? `AND ${locationClause} < ${distance}` : ""}
+    ${
+      Number(distance) && locationClause
+        ? `AND ${locationClause} < ${distance}`
+        : ""
+    }
     ${trueFalseEitherClause("s.assigned_date", isAssigned)}
     ${trueFalseEitherClause("s.submitted_date", isSubmitted)}
     ${trueFalseEitherClause("s.approved_date", isApproved)}
@@ -224,7 +228,7 @@ const searchDashboard = async ({
   maxCompleteCriticalPercent,
 }) => {
   const locationClause = buildLocationClause(latitude, longitude);
-  const categoryClause = buildCTEClause(categoryIds, name);
+  const categoryClause = buildCTEClause(categoryIds, name || "");
 
   const sql = `${categoryClause}
     select s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
@@ -260,7 +264,11 @@ const searchDashboard = async ({
     left outer join neighborhood n on s.neighborhood_id = n.id
     ${buildLoginJoinsClause()}    
     where 1 = 1
-    ${locationClause ? `AND ${locationClause} < ${distance}` : ""}
+    ${
+      Number(distance) && locationClause
+        ? `AND ${locationClause} < ${distance}`
+        : ""
+    }
     ${trueFalseEitherClause("s.assigned_date", isAssigned)}
     ${trueFalseEitherClause("s.submitted_date", isSubmitted)}
     ${trueFalseEitherClause("s.approved_date", isApproved)}

@@ -37,28 +37,44 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ResultsContainer(props) {
+  const storage = window.localStorage;
   const { userCoordinates, userSearch } = props;
   const { data, search } = useOrganizations();
   const classes = useStyles();
-  const { categoryIds, toggleCategory } = useCategoryIds([]);
+  const initialCategories = storage.categoryIds
+    ? JSON.parse(storage.categoryIds)
+    : [];
+  const { categoryIds, toggleCategory } = useCategoryIds(initialCategories);
 
   const initialCoords = {
-    locationName: userSearch ? userSearch.locationName : null,
+    locationName: userSearch
+      ? userSearch.locationName
+      : storage.origin
+      ? JSON.parse(storage.origin).locationName
+      : null,
     latitude: userSearch
       ? userSearch.latitude
+      : storage.origin
+      ? JSON.parse(storage.origin).latitude
       : userCoordinates
       ? userCoordinates.latitude
       : 34.07872,
     longitude: userSearch
       ? userSearch.longitude
+      : storage.origin
+      ? JSON.parse(storage.origin).longitude
       : userCoordinates
       ? userCoordinates.longitude
       : -118.243328,
   };
 
-  const [radius, setRadius] = React.useState(5);
+  const [radius, setRadius] = React.useState(
+    storage?.radius ? JSON.parse(storage.radius) : 5
+  );
   const [origin, setOrigin] = React.useState(initialCoords);
-  const [isVerifiedSelected, selectVerified] = React.useState(false);
+  const [isVerifiedSelected, selectVerified] = React.useState(
+    storage?.verified ? JSON.parse(storage.verified) : false
+  );
   const [selectedStakeholder, doSelectStakeholder] = React.useState(null);
   const [selectedPopUp, setSelectedPopUp] = React.useState(null);
   const [isPopupOpen, setIsPopupOpen] = React.useState(false);

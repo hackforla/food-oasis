@@ -36,10 +36,12 @@ function Map({
     ? categoryIds
     : DEFAULT_CATEGORIES;
 
+  const storage = window.localStorage;
+
   const [viewport, setViewport] = React.useState({
     zoom: 10, // TODO: can we dynamically control zoom radius based on selectedDistance?
-    latitude: selectedLatitude,
-    longitude: selectedLongitude,
+    latitude: selectedLatitude || JSON.parse(storage.origin).latitude,
+    longitude: selectedLongitude || JSON.parse(storage.origin).longitude,
   });
 
   const handleMarkerClick = (clickedStakeholder) => {

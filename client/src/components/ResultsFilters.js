@@ -136,10 +136,17 @@ const ResultsFilters = ({
       if (e) {
         e.preventDefault();
       }
+      const storage = window.localStorage;
       search({
         name: "",
-        latitude: origin.latitude || userCoordinates.latitude,
-        longitude: origin.longitude || userCoordinates.longitude,
+        latitude:
+          origin.latitude ||
+          userCoordinates.latitude ||
+          JSON.parse(storage.origin).latitude,
+        longitude:
+          origin.longitude ||
+          userCoordinates.longitude ||
+          JSON.parse(storage.origin).longitude,
         radius,
         categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
         isInactive: "false",
@@ -150,9 +157,20 @@ const ResultsFilters = ({
         assignedLoginId: "",
         claimedLoginId: "",
       });
+      console.log(storage);
+      if (origin.locationName && origin.latitude && origin.longitude)
+        storage.origin = JSON.stringify({
+          locationName: origin.locationName,
+          latitude: origin.latitude,
+          longitude: origin.longitude,
+        });
+      if (categoryIds.length) storage.categoryIds = JSON.stringify(categoryIds);
+      storage.radius = JSON.stringify(radius);
+      storage.verified = JSON.stringify(isVerifiedSelected);
     },
     [
       search,
+      origin.locationName,
       origin.latitude,
       origin.longitude,
       userCoordinates.latitude,

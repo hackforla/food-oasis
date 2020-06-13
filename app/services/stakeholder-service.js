@@ -1040,10 +1040,10 @@ const buildLocationClause = (latitude, longitude) => {
   if (latitude && longitude) {
     locationClause =
       " point(" +
-      latitude +
-      ", " +
       longitude +
-      ") <@> point(s.latitude, s.longitude) ";
+      ", " +
+      latitude +
+      ") <@> point(s.longitude, s.latitude) ";
   }
   return locationClause;
 };

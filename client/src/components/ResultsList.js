@@ -124,8 +124,8 @@ const ResultsList = ({
         />
       ) : stakeholders ? (
         stakeholders.map((stakeholder) => {
-          let currentDayOfWeek = moment().format("ddd");
-          let currentTime = moment().format("HH:mm:ss");
+          const currentDayOfWeek = moment().format("ddd");
+          const currentTime = moment().format("HH:mm:ss");
           let isAlmostClosed;
 
           const currentDaysHoursOfOperation = stakeholder.hours.filter(
@@ -139,13 +139,12 @@ const ResultsList = ({
             }
           );
 
-          if (currentDaysHoursOfOperation[0]) {
-            isAlmostClosed =
-              moment(currentDaysHoursOfOperation[0].close, "HH:mm:ss").diff(
-                moment(currentTime, "HH:mm:ss"),
-                "minutes"
-              ) <= 30;
-          }
+          isAlmostClosed =
+            currentDaysHoursOfOperation[0] &&
+            moment(currentDaysHoursOfOperation[0].close, "HH:mm:ss").diff(
+              moment(currentTime, "HH:mm:ss"),
+              "minutes"
+            ) <= 30;
 
           return (
             <div

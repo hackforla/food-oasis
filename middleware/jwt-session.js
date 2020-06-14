@@ -36,6 +36,7 @@ async function validateUser(req, res, next) {
 
   try {
     const payload = await verify(jwtString);
+    console.log("payload");
 
     if (payload.email) {
       req.user = payload;
@@ -44,7 +45,8 @@ async function validateUser(req, res, next) {
   } catch (err) {
     // 401 Unauthorize, indicating that user is not
     // authenticated.
-    res.status(401).send(err.message);
+    console.error("Authentication Error: ", err);
+    res.status(401).send({ status: "err", message: "Invalid Authentication" });
   }
 }
 

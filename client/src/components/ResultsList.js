@@ -72,6 +72,13 @@ const useStyles = makeStyles((theme) => ({
     padding: ".25em",
     borderRadius: "3px",
   },
+  closingSoonIndicatorLabel: {
+    color: "#fff",
+    alignSelf: "flex-start",
+    backgroundColor: "#800000",
+    padding: ".25em",
+    borderRadius: "3px",
+  },
 }));
 
 const iconReturn = (stakeholder) => {
@@ -119,6 +126,8 @@ const ResultsList = ({
         stakeholders.map((stakeholder) => {
           let currentDayOfWeek = moment().format("ddd");
           let currentTime = moment().format("HH:mm:ss");
+          let isAlmostClosed;
+
           const currentDaysHoursOfOperation = stakeholder.hours.filter(
             (day) => {
               return (
@@ -129,6 +138,14 @@ const ResultsList = ({
               );
             }
           );
+
+          if (currentDaysHoursOfOperation[0]) {
+            isAlmostClosed =
+              moment(currentDaysHoursOfOperation[0].close, "HH:mm:ss").diff(
+                moment(currentTime, "HH:mm:ss"),
+                "minutes"
+              ) <= 30;
+          }
 
           return (
             <div
@@ -192,6 +209,14 @@ const ResultsList = ({
                   {currentDaysHoursOfOperation.length > 0 &&
                   !(stakeholder.inactiveTemporary || stakeholder.inactive) ? (
                     <em className={classes.openIndicatorLabel}>OPEN</em>
+                  ) : null}
+
+                  {currentDaysHoursOfOperation.length > 0 &&
+                  !(stakeholder.inactiveTemporary || stakeholder.inactive) &&
+                  isAlmostClosed ? (
+                    <em className={classes.closingSoonIndicatorLabel}>
+                      Closing Soon
+                    </em>
                   ) : null}
                 </div>
               </div>

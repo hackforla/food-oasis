@@ -26,27 +26,33 @@ function Map({
   selectedLongitude,
   stakeholders,
   categoryIds,
+  doSelectStakeholder,
+  selectedPopUp,
+  setSelectedPopUp,
+  isPopupOpen,
+  setIsPopupOpen,
 }) {
   const categoryIdsOrDefault = categoryIds.length
     ? categoryIds
     : DEFAULT_CATEGORIES;
 
-  const [isPopupOpen, setIsPopupOpen] = React.useState(false);
-  const [selectedStakeholder, setSelectedStakeholder] = React.useState(null);
+  const storage = window.localStorage;
+
   const [viewport, setViewport] = React.useState({
     zoom: 10, // TODO: can we dynamically control zoom radius based on selectedDistance?
-    latitude: selectedLatitude,
-    longitude: selectedLongitude,
+    latitude: selectedLatitude || JSON.parse(storage.origin).latitude,
+    longitude: selectedLongitude || JSON.parse(storage.origin).longitude,
   });
 
   const handleMarkerClick = (clickedStakeholder) => {
-    setSelectedStakeholder(clickedStakeholder);
+    setSelectedPopUp(clickedStakeholder);
     setIsPopupOpen(true);
+    doSelectStakeholder(clickedStakeholder);
   };
 
   const handleClose = () => {
     setIsPopupOpen(false);
-    setSelectedStakeholder(null);
+    setSelectedPopUp(null);
   };
 
   return (
@@ -54,7 +60,7 @@ function Map({
       <ReactMapGL
         {...viewport}
         width="100%"
-        height="max(calc(100vh - 250px),47em)"
+        height="max(calc(100vh - 250px),55em)"
         onViewportChange={(newViewport) => setViewport(newViewport)}
         mapboxApiAccessToken={MAPBOX_TOKEN}
         mapStyle={MAPBOX_STYLE}
@@ -77,11 +83,12 @@ function Map({
 
               /* console.log(categories) */
 
-              const color = categories.find(
-                ({ id }) => id === MEAL_PROGRAM_CATEGORY_ID
-              )
-                ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
-                : ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID];
+              const color =
+                stakeholder.inactiveTemporary || stakeholder.inactive
+                  ? "#545454"
+                  : categories.find(({ id }) => id === MEAL_PROGRAM_CATEGORY_ID)
+                  ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
+                  : ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID];
               return (
                 <Marker
                   onClick={() => handleMarkerClick(stakeholder)}
@@ -90,11 +97,12 @@ function Map({
                   latitude={stakeholder.latitude}
                   isVerified={isVerified}
                   color={color}
+                  categories={stakeholder.categories}
                 />
               );
             })}
-        {isPopupOpen && selectedStakeholder && (
-          <MarkerPopup entity={selectedStakeholder} handleClose={handleClose} />
+        {isPopupOpen && selectedPopUp && (
+          <MarkerPopup entity={selectedPopUp} handleClose={handleClose} />
         )}
       </ReactMapGL>
     </div>

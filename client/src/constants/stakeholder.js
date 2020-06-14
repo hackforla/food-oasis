@@ -16,5 +16,5 @@ export const VERIFICATION_STATUS_NAMES = {
   1: "Needs Verification",
   2: "Assigned",
   3: "Submitted",
-  4: "Verified",
+  4: "Approved",
 };

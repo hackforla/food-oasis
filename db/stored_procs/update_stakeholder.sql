@@ -1,9 +1,4 @@
 
--- drop previous stored proc and stakeholder_hours datatype (to prevent errors if recreating this proc)
-drop type stakeholder_hours CASCADE;
-
--- handy struct to represent the various fields we'll need to set in the stakeholder hours table
-CREATE TYPE stakeholder_hours AS (week_of_month INT, day_of_week VARCHAR, open VARCHAR, close VARCHAR);
 
 CREATE OR REPLACE PROCEDURE update_stakeholder(
   s_name VARCHAR, s_address_1 VARCHAR, s_address_2 VARCHAR, s_city VARCHAR, s_state VARCHAR, s_zip VARCHAR,
@@ -96,7 +91,9 @@ BEGIN
       v_email = s_v_email,
       v_hours = s_v_hours,
       verification_status_id = s_verification_status_id,
-      inactive_temporary = s_inactive_temporary
+      inactive_temporary = s_inactive_temporary,
+      hours = hours_array,
+      category_ids = categories
     WHERE
       id=s_id;
 

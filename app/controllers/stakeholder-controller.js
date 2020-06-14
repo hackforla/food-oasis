@@ -1,4 +1,6 @@
 const stakeholderService = require("../services/stakeholder-service");
+const { Readable } = require("stream");
+const stringify = require("csv-stringify");
 
 const search = (req, res) => {
   let categoryIds = req.query.categoryIds;
@@ -55,6 +57,73 @@ const getById = (req, res) => {
     .selectById(id)
     .then((resp) => {
       res.send(resp);
+    })
+    .catch((err) => {
+      res.status("500").json({ error: err.toString() });
+    });
+};
+
+const csv = (req, res) => {
+  const { ids } = req.body;
+  res.setHeader("Content-Disposition", "attachment; filename=foodoasis.csv");
+  res.setHeader("Content-Type", "text/csv");
+  stakeholderService
+    .selectCsv(ids)
+    .then((resp) => {
+      Readable.from(resp)
+        .pipe(
+          stringify({
+            header: true,
+            columns: {
+              id: "ID",
+              name: "Name",
+              inactive: "Closed Permanently",
+              inactive_temporary: "Closed for COVID",
+              covidNotes: "Covid Notes",
+              categories: "Category",
+              parentOrganization: "Parent Organization",
+              description: "Description",
+              address1: "Address",
+              address2: "Address2ndLine",
+              city: "City",
+              state: "State",
+              zip: "Zip",
+              latitude: "Latitude",
+              longitude: "Longitude",
+              neighborhoodName: "Neighborhood",
+              email: "Email",
+              phone: "Phone",
+              hours: "Hours",
+              website: "Website",
+              facebook: "Facebook",
+              pinterest: "Pinterest",
+              twitter: "Twitter",
+              linkedin: "LinkedIn",
+              instagram: "Instagram",
+              requirements: "Eligibility Requirements",
+              languages: "Languages",
+              foodTypes: "Food Types",
+              items: "Non-food Items",
+              services: "Services",
+              notes: "Public Notes",
+              adminContactName: "Admin Contact",
+              adminContactPhone: "Admin Phone",
+              adminContactEmail: "Admin Email",
+              donationContactName: "Donation Contact",
+              donationContactPhone: "Donation Phone",
+              donationContactEmail: "Donation Email",
+              donationPickup: "Donation Pickup",
+              donationAcceptFrozen: "Accepts Frozen",
+              donationAcceptRefrigerated: "Accepts Refrigerated",
+              donationAcceptPerishable: "Accepts Perishable",
+              donationSchedule: "Donation Schedule",
+              donationDeliveryInstructions: "Donation Delivery Instructions",
+              donationNotes: "Donation Notes",
+              verificationStatusId: "Verification Status",
+            },
+          })
+        )
+        .pipe(res);
     })
     .catch((err) => {
       res.status("500").json({ error: err.toString() });
@@ -131,6 +200,7 @@ const claim = (req, res) => {
 module.exports = {
   search,
   searchDashboard,
+  csv,
   getById,
   post,
   put,

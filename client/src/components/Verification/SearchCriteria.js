@@ -38,6 +38,7 @@ const SearchCriteria = ({
   userLatitude,
   userLongitude,
   categories,
+  neighborhoods,
   criteria,
   setCriteria,
   search,
@@ -251,6 +252,69 @@ const SearchCriteria = ({
               id="stakeholderId"
               onChange={setCriterion}
             />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <FormLabel className={classes.formLabel}>
+              Min % Critical Complete
+            </FormLabel>
+            <TextField
+              autoComplete="off"
+              type="number"
+              min="0"
+              max="100"
+              name="minCompleteCriticalPercent"
+              value={criteria.minCompleteCriticalPercent}
+              variant="outlined"
+              fullWidth
+              size="small"
+              onChange={setCriterion}
+            />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <FormLabel className={classes.formLabel}>
+              Max % Critical Complete
+            </FormLabel>
+            <TextField
+              autoComplete="off"
+              type="number"
+              min="0"
+              max="100"
+              name="maxCompleteCriticalPercent"
+              value={criteria.maxCompleteCriticalPercent}
+              variant="outlined"
+              fullWidth
+              size="small"
+              onChange={setCriterion}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <FormControl variant="outlined" size="small" fullWidth>
+              <FormLabel
+                id="neighborhood-id-label"
+                className={classes.formLabel}
+              >
+                Neighborhood
+              </FormLabel>
+              <Select
+                labelId="neighborhood-id-label"
+                name="neighborhoodId"
+                value={criteria.neighborhoodId}
+                onChange={setCriterion}
+              >
+                <MenuItem key={0} value={0}>
+                  (Any)
+                </MenuItem>
+                {neighborhoods
+                  ? neighborhoods.map((n) => {
+                      return (
+                        <MenuItem key={n.id} value={n.id}>
+                          {n.name}
+                        </MenuItem>
+                      );
+                    })
+                  : null}
+              </Select>
+            </FormControl>
           </Grid>
         </Grid>
         <Grid item xs={12} sm={6}>

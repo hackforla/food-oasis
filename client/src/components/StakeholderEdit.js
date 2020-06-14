@@ -31,6 +31,7 @@ import {
 } from "@material-ui/core";
 import * as stakeholderService from "../services/stakeholder-service";
 import { useCategories } from "../hooks/useCategories/useCategories";
+import { useNeighborhoods } from "../hooks/useNeighborhoods/useNeighborhoods";
 import * as esriService from "../services/esri_service";
 import OpenTimeForm from "./OpenTimeForm";
 import { TabPanel, a11yProps } from "./TabPanel";
@@ -193,6 +194,7 @@ const emptyStakeholder = {
   confirmedHours: false,
   verificationStatusId: VERIFICATION_STATUS.NEEDS_VERIFICATION,
   inactiveTemporary: false,
+  neighborhoodId: "",
 };
 
 const StakeholderEdit = (props) => {
@@ -206,6 +208,7 @@ const StakeholderEdit = (props) => {
   const [originalData, setOriginalData] = useState(emptyStakeholder);
 
   const { data: categories } = useCategories();
+  const { data: neighborhoods } = useNeighborhoods();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -1006,6 +1009,41 @@ const StakeholderEdit = (props) => {
                           <div>No Results</div>
                         )}
                       </div>
+                    </Grid>
+
+                    <Grid item xs={12} sm={6}>
+                      <FormControl variant="outlined" fullWidth size="small">
+                        <InputLabel
+                          id="neighborhood-select"
+                          style={{
+                            backgroundColor: "white",
+                            paddingLeft: "0.5em",
+                            paddingRight: "0.5em",
+                          }}
+                        >
+                          Neighborhood
+                        </InputLabel>
+                        <Select
+                          labelId="neighborhood-select"
+                          name="neighborhoodId"
+                          value={values.neighborhoodId}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                        >
+                          <MenuItem key={0} value={0}>
+                            (n/a)
+                          </MenuItem>
+                          {neighborhoods
+                            ? neighborhoods.map((n) => {
+                                return (
+                                  <MenuItem key={n.id} value={n.id}>
+                                    {n.name}
+                                  </MenuItem>
+                                );
+                              })
+                            : null}
+                        </Select>
+                      </FormControl>
                     </Grid>
                   </Grid>
                 </Grid>
@@ -2019,7 +2057,6 @@ const StakeholderEdit = (props) => {
                           <PlainButton
                             type="button"
                             onClick={() => {
-                              setFieldValue("rejectedDate", moment());
                               setFieldValue(
                                 "reviewedUser",
                                 user.firstName + " " + user.lastName

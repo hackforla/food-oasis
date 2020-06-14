@@ -1,5 +1,6 @@
 import axios from "axios";
 import moment from "moment";
+import fileDownload from "js-file-download";
 
 const baseUrl = "/api/stakeholders";
 
@@ -17,7 +18,6 @@ const toLocalMoment = (ts) => {
         isAssigned - ("yes", "no", "either")
         isSubmitted - ("yes", "no", "either")
         isApproved - ("yes", "no", "either")
-        isRejected - ("yes", "no", "either")
         isClaimed - ("yes", "no", "either")
         assignedLoginId
         claimedLoginId
@@ -35,7 +35,6 @@ export const search = async (searchParams) => {
       assignedDate: toLocalMoment(s.assignedDate),
       submittedDate: toLocalMoment(s.submittedDate),
       approvedDate: toLocalMoment(s.approvedDate),
-      rejectedDate: toLocalMoment(s.rejectedDate),
       claimedDate: toLocalMoment(s.claimedDate),
     };
   });
@@ -57,7 +56,6 @@ export const searchDashboard = async (searchParams) => {
       assignedDate: toLocalMoment(s.assignedDate),
       submittedDate: toLocalMoment(s.submittedDate),
       approvedDate: toLocalMoment(s.approvedDate),
-      rejectedDate: toLocalMoment(s.rejectedDate),
       claimedDate: toLocalMoment(s.claimedDate),
     };
   });
@@ -76,7 +74,6 @@ export const getById = async (id) => {
     assignedDate: toLocalMoment(s.assignedDate),
     submittedDate: toLocalMoment(s.submittedDate),
     approvedDate: toLocalMoment(s.approvedDate),
-    rejectedDate: toLocalMoment(s.rejectedDate),
     claimedDate: toLocalMoment(s.claimedDate),
   };
 };
@@ -84,6 +81,14 @@ export const getById = async (id) => {
 export const post = async (stakeholder) => {
   const response = await axios.post(baseUrl, stakeholder);
   return response.data;
+};
+
+export const exportCsv = async (ids) => {
+  const body = { ids };
+  const response = await axios.post(baseUrl + "/csv", body, {
+    responseType: "stream",
+  });
+  fileDownload(response.data, "fooloasis.csv");
 };
 
 export const put = async (stakeholder) => {

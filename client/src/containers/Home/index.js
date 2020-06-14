@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     fontWeight: 600,
     marginTop: 10,
-    padding: "0 100px",
+    padding: "0 3vw",
     [theme.breakpoints.down("xs")]: {
       padding: 0,
     },
@@ -125,7 +125,9 @@ const Home = (props) => {
                 startIcon={
                   <SearchIcon fontSize="large" className={classes.searchIcon} />
                 }
-              />
+              >
+                {""}
+              </Button>
             </Box>
             <Typography className={classes.label}>
               Food Oasis has links to food pantries and meals in Los Angeles

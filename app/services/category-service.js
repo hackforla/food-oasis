@@ -2,9 +2,9 @@ const { pool } = require("./postgres-pool");
 
 const selectAll = () => {
   const sql = `
-    select w.id, w.name, w.inactive
-    from category w
-    order by w.name
+    select id, name, inactive
+    from category
+    order by name
   `;
   return pool.query(sql).then((res) => {
     return res.rows;
@@ -12,8 +12,8 @@ const selectAll = () => {
 };
 
 const selectById = (id) => {
-  const sql = `select w.id, w.name, w.inactive
-   from category w where w.id = ${id}`;
+  const sql = `select id, name, inactive
+   from category where id = ${id}`;
   return pool.query(sql).then((res) => {
     return res.rows[0];
   });

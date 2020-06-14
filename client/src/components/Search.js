@@ -8,6 +8,7 @@ import { useMapboxGeocoder } from "hooks/useMapboxGeocoder";
 
 const useStyles = makeStyles(() => ({
   paper: {
+    width: "34.5em",
     position: "absolute",
     maxHeight: "150px",
     overflowY: "auto",
@@ -59,11 +60,11 @@ export default function Search(props) {
 
   const { mapboxResults, fetchMapboxResults } = useMapboxGeocoder();
 
-  const initialWidth = window.innerWidth > 600 ? true : false;
-  const [isWindowSixHundredOrLess, switchAddressWidth] = useState(initialWidth);
+  const initialWidth = window.innerWidth > 960 ? true : false;
+  const [isWindow960orLess, switchAddressWidth] = useState(initialWidth);
   useEffect(() => {
     const changeAddressWidth = () => {
-      window.innerWidth > 600
+      window.innerWidth > 960
         ? switchAddressWidth(true)
         : switchAddressWidth(false);
     };
@@ -119,7 +120,7 @@ export default function Search(props) {
           },
           ...InputProps,
         }}
-        style={{ width: isWindowSixHundredOrLess ? "31em" : "82vw" }}
+        style={{ width: isWindow960orLess ? "27rem" : "100%" }}
       />
     );
   };

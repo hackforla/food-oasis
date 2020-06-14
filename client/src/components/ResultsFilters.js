@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Search from "../components/Search";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
@@ -51,7 +51,8 @@ const useStyles = makeStyles((theme) => ({
   controlPanel: {
     width: "100%",
     backgroundColor: "#336699",
-    height: "5em",
+    padding: "1rem 0",
+    display: "flex",
   },
   inputHolder: {
     display: "flex",
@@ -113,6 +114,20 @@ const ResultsFilters = ({
 }) => {
   const classes = useStyles();
 
+  const windowSize = window.innerWidth > 960 ? true : false;
+  const [isWindow960orLess, changeWindow] = useState(windowSize);
+
+  useEffect(() => {
+    const changeInputContainerWidth = () => {
+      window.innerWidth > 960 ? changeWindow(true) : changeWindow(false);
+    };
+
+    window.addEventListener("resize", changeInputContainerWidth);
+
+    return () =>
+      window.removeEventListener("resize", changeInputContainerWidth);
+  }, []);
+
   const isMealsSelected = categoryIds.indexOf(MEAL_PROGRAM_CATEGORY_ID) >= 0;
   const isPantrySelected = categoryIds.indexOf(FOOD_PANTRY_CATEGORY_ID) >= 0;
 
@@ -121,24 +136,41 @@ const ResultsFilters = ({
       if (e) {
         e.preventDefault();
       }
+      const storage = window.localStorage;
       search({
         name: "",
-        latitude: origin.latitude || userCoordinates.latitude,
-        longitude: origin.longitude || userCoordinates.longitude,
+        latitude:
+          origin.latitude ||
+          userCoordinates.latitude ||
+          JSON.parse(storage.origin).latitude,
+        longitude:
+          origin.longitude ||
+          userCoordinates.longitude ||
+          JSON.parse(storage.origin).longitude,
         radius,
         categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
         isInactive: "false",
         isAssigned: "either",
         isApproved: isVerifiedSelected ? "true" : "either",
         isSubmitted: "either",
-        isRejected: "either",
         isClaimed: "either",
         assignedLoginId: "",
         claimedLoginId: "",
       });
+      console.log(storage);
+      if (origin.locationName && origin.latitude && origin.longitude)
+        storage.origin = JSON.stringify({
+          locationName: origin.locationName,
+          latitude: origin.latitude,
+          longitude: origin.longitude,
+        });
+      if (categoryIds.length) storage.categoryIds = JSON.stringify(categoryIds);
+      storage.radius = JSON.stringify(radius);
+      storage.verified = JSON.stringify(isVerifiedSelected);
     },
     [
       search,
+      origin.locationName,
       origin.latitude,
       origin.longitude,
       userCoordinates.latitude,
@@ -169,7 +201,12 @@ const ResultsFilters = ({
   }, [radius, categoryIds, isVerifiedSelected, toggleCategory]);
 
   return (
-    <Grid container wrap="wrap-reverse" className={classes.controlPanel}>
+    <Grid
+      container
+      wrap="wrap-reverse"
+      className={classes.controlPanel}
+      style={{ justifyContent: isWindow960orLess ? null : "center" }}
+    >
       <Grid
         item
         xs={12}
@@ -250,7 +287,10 @@ const ResultsFilters = ({
           </Button>
         </Grid>
       </Grid>
-      <Box className={classes.inputContainer}>
+      <Box
+        className={classes.inputContainer}
+        style={{ width: isWindow960orLess ? "30rem" : "100%" }}
+      >
         <form
           noValidate
           onSubmit={(e) => doHandleSearch(e)}

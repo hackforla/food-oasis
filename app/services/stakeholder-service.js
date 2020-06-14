@@ -1040,10 +1040,10 @@ const buildLocationClause = (latitude, longitude) => {
   if (latitude && longitude) {
     locationClause =
       " point(" +
-      latitude +
-      ", " +
       longitude +
-      ") <@> point(s.latitude, s.longitude) ";
+      ", " +
+      latitude +
+      ") <@> point(s.longitude, s.latitude) ";
   }
   return locationClause;
 };
@@ -1062,11 +1062,11 @@ const buildLoginJoinsClause = () => {
 const buildLoginSelectsClause = () => {
   return `
     concat(L1.first_name, ' ', L1.last_name) as created_user,
-    concat(L2.first_name, ' ', L1.last_name) as modified_user,
-    concat(L3.first_name, ' ', L1.last_name) as submitted_user,
-    concat(L4.first_name, ' ', L1.last_name) as reviewed_user,
-    concat(L5.first_name, ' ', L1.last_name) as assigned_user,
-    concat(L6.first_name, ' ', L1.last_name) as claimed_user
+    concat(L2.first_name, ' ', L2.last_name) as modified_user,
+    concat(L3.first_name, ' ', L3.last_name) as submitted_user,
+    concat(L4.first_name, ' ', L4.last_name) as reviewed_user,
+    concat(L5.first_name, ' ', L5.last_name) as assigned_user,
+    concat(L6.first_name, ' ', L6.last_name) as claimed_user
   `;
 };
 

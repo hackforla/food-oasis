@@ -126,6 +126,7 @@ const ResultsList = ({
         stakeholders.map((stakeholder) => {
           const currentDayOfWeek = moment().format("ddd");
           const currentTime = moment().format("HH:mm:ss");
+          const minutesToCloseFlag = 30;
           let isAlmostClosed;
 
           const currentDaysHoursOfOperation = stakeholder.hours.filter(
@@ -144,7 +145,7 @@ const ResultsList = ({
             moment(currentDaysHoursOfOperation[0].close, "HH:mm:ss").diff(
               moment(currentTime, "HH:mm:ss"),
               "minutes"
-            ) <= 30;
+            ) <= minutesToCloseFlag;
 
           return (
             <div

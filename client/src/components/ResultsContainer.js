@@ -71,7 +71,7 @@ export default function ResultsContainer(props) {
       ? userSearch.locationName
       : storage.origin
       ? JSON.parse(storage.origin).locationName
-      : null,
+      : "",
     latitude: userSearch
       ? userSearch.latitude
       : storage.origin

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import ReactMapGL, { NavigationControl } from "react-map-gl";
 import MarkerPopup from "./MarkerPopup";
@@ -31,6 +31,8 @@ function Map({
   setSelectedPopUp,
   isPopupOpen,
   setIsPopupOpen,
+  isWindow960orLess,
+  isMobile,
 }) {
   const categoryIdsOrDefault = categoryIds.length
     ? categoryIds
@@ -38,7 +40,7 @@ function Map({
 
   const storage = window.localStorage;
 
-  const [viewport, setViewport] = React.useState({
+  const [viewport, setViewport] = useState({
     zoom: 10, // TODO: can we dynamically control zoom radius based on selectedDistance?
     latitude: selectedLatitude || JSON.parse(storage.origin).latitude,
     longitude: selectedLongitude || JSON.parse(storage.origin).longitude,
@@ -59,7 +61,7 @@ function Map({
     <div>
       <ReactMapGL
         {...viewport}
-        dragPan={false}
+        dragPan={isWindow960orLess && isMobile ? false : true}
         touchAction="pan-y"
         width="100%"
         height="max(calc(100vh - 250px),55em)"

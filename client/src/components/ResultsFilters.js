@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect } from "react";
 import Search from "../components/Search";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
@@ -111,22 +111,9 @@ const ResultsFilters = ({
   userCoordinates,
   categoryIds,
   toggleCategory,
+  isWindow960orLess,
 }) => {
   const classes = useStyles();
-
-  const windowSize = window.innerWidth > 960 ? true : false;
-  const [isWindow960orLess, changeWindow] = useState(windowSize);
-
-  useEffect(() => {
-    const changeInputContainerWidth = () => {
-      window.innerWidth > 960 ? changeWindow(true) : changeWindow(false);
-    };
-
-    window.addEventListener("resize", changeInputContainerWidth);
-
-    return () =>
-      window.removeEventListener("resize", changeInputContainerWidth);
-  }, []);
 
   const isMealsSelected = categoryIds.indexOf(MEAL_PROGRAM_CATEGORY_ID) >= 0;
   const isPantrySelected = categoryIds.indexOf(FOOD_PANTRY_CATEGORY_ID) >= 0;

@@ -53,6 +53,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#336699",
     padding: "1rem 0",
     display: "flex",
+    position: "relative",
   },
   inputHolder: {
     display: "flex",

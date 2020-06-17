@@ -25,18 +25,38 @@ const useStyles = makeStyles((theme) => ({
   list: {
     textAlign: "center",
     fontSize: "12px",
-    height: "55em",
     overflow: "scroll",
   },
   map: {
     textAlign: "center",
     fontSize: "12px",
-    maxWidth: "100%",
+    // maxWidth: "100%",
     flexGrow: 1,
   },
 }));
 
 export default function ResultsContainer(props) {
+  const windowSize = window.innerWidth > 960 ? true : false;
+  const [isWindow960orLess, changeWindow] = React.useState(windowSize);
+  const mobileTest = new RegExp("Mobi", "i");
+  const [isMobile, changeMobile] = React.useState(
+    mobileTest.test(navigator.userAgent) ? true : false
+  );
+
+  React.useEffect(() => {
+    const changeInputContainerWidth = () => {
+      window.innerWidth > 960 ? changeWindow(true) : changeWindow(false);
+      mobileTest.test(navigator.userAgent)
+        ? changeMobile(true)
+        : changeMobile(false);
+    };
+
+    window.addEventListener("resize", changeInputContainerWidth);
+
+    return () =>
+      window.removeEventListener("resize", changeInputContainerWidth);
+  }, [mobileTest]);
+
   const storage = window.localStorage;
   const { userCoordinates, userSearch } = props;
   const { data, search } = useOrganizations();
@@ -94,18 +114,37 @@ export default function ResultsContainer(props) {
 
   return (
     <div className={classes.container}>
-      <ResultsFilters {...topLevelProps} data={data} search={search} />
+      <ResultsFilters
+        {...topLevelProps}
+        data={data}
+        search={search}
+        isWindow960orLess={isWindow960orLess}
+      />
       <Grid container wrap="wrap-reverse">
-        <Grid item xs={12} md={4} className={classes.list}>
+        <Grid
+          item
+          xs={12}
+          md={4}
+          className={classes.list}
+          style={{ height: isWindow960orLess ? "55em" : "" }}
+        >
           <ResultsList
             selectedStakeholder={selectedStakeholder}
             doSelectStakeholder={doSelectStakeholder}
             stakeholders={data}
             setSelectedPopUp={setSelectedPopUp}
             setIsPopupOpen={setIsPopupOpen}
+            isWindow960orLess={isWindow960orLess}
           />
         </Grid>
-        <Grid item xs={12} md={8} className={classes.map}>
+        <Grid
+          item
+          xs={12}
+          md={8}
+          className={classes.map}
+          style={{ maxWidth: isMobile ? "100%" : "98%" }}
+        >
+          {/* above line stopgab for scrolling on smaller desktop devices */}
           <ResultsMap
             stakeholders={data}
             doSelectStakeholder={doSelectStakeholder}
@@ -116,6 +155,8 @@ export default function ResultsContainer(props) {
             setSelectedPopUp={setSelectedPopUp}
             isPopupOpen={isPopupOpen}
             setIsPopupOpen={setIsPopupOpen}
+            isWindow960orLess={isWindow960orLess}
+            isMobile={isMobile}
           />
         </Grid>
       </Grid>

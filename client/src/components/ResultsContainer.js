@@ -7,6 +7,8 @@ import ResultsList from "./ResultsList";
 import ResultsMap from "./ResultsMap";
 import useCategoryIds from "../hooks/useCategoryIds";
 
+//add 960px differences to results list scroll and to map swiping. probably just one top level one and drill it down
+
 const useStyles = makeStyles((theme) => ({
   filterButton: {
     margin: "0 .25rem",

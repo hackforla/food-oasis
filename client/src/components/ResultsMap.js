@@ -59,6 +59,8 @@ function Map({
     <div>
       <ReactMapGL
         {...viewport}
+        dragPan={false}
+        touchAction="pan-y"
         width="100%"
         height="max(calc(100vh - 250px),55em)"
         onViewportChange={(newViewport) => setViewport(newViewport)}

@@ -25,13 +25,12 @@ const useStyles = makeStyles((theme) => ({
   list: {
     textAlign: "center",
     fontSize: "12px",
-    height: "55em",
     overflow: "scroll",
   },
   map: {
     textAlign: "center",
     fontSize: "12px",
-    maxWidth: "100%",
+    // maxWidth: "100%",
     flexGrow: 1,
   },
 }));
@@ -122,16 +121,30 @@ export default function ResultsContainer(props) {
         isWindow960orLess={isWindow960orLess}
       />
       <Grid container wrap="wrap-reverse">
-        <Grid item xs={12} md={4} className={classes.list}>
+        <Grid
+          item
+          xs={12}
+          md={4}
+          className={classes.list}
+          style={{ height: isWindow960orLess ? "55em" : "" }}
+        >
           <ResultsList
             selectedStakeholder={selectedStakeholder}
             doSelectStakeholder={doSelectStakeholder}
             stakeholders={data}
             setSelectedPopUp={setSelectedPopUp}
             setIsPopupOpen={setIsPopupOpen}
+            isWindow960orLess={isWindow960orLess}
           />
         </Grid>
-        <Grid item xs={12} md={8} className={classes.map}>
+        <Grid
+          item
+          xs={12}
+          md={8}
+          className={classes.map}
+          style={{ maxWidth: isMobile ? "100%" : "98%" }}
+        >
+          {/* above line stopgab for scrolling on smaller desktop devices */}
           <ResultsMap
             stakeholders={data}
             doSelectStakeholder={doSelectStakeholder}

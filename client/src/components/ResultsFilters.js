@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect } from "react";
 import Search from "../components/Search";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
@@ -16,6 +16,7 @@ import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
   DEFAULT_CATEGORIES,
+  VERIFICATION_STATUS,
 } from "../constants/stakeholder";
 
 const useStyles = makeStyles((theme) => ({
@@ -111,22 +112,9 @@ const ResultsFilters = ({
   userCoordinates,
   categoryIds,
   toggleCategory,
+  isWindow960orLess,
 }) => {
   const classes = useStyles();
-
-  const windowSize = window.innerWidth > 960 ? true : false;
-  const [isWindow960orLess, changeWindow] = useState(windowSize);
-
-  useEffect(() => {
-    const changeInputContainerWidth = () => {
-      window.innerWidth > 960 ? changeWindow(true) : changeWindow(false);
-    };
-
-    window.addEventListener("resize", changeInputContainerWidth);
-
-    return () =>
-      window.removeEventListener("resize", changeInputContainerWidth);
-  }, []);
 
   const isMealsSelected = categoryIds.indexOf(MEAL_PROGRAM_CATEGORY_ID) >= 0;
   const isPantrySelected = categoryIds.indexOf(FOOD_PANTRY_CATEGORY_ID) >= 0;
@@ -138,7 +126,6 @@ const ResultsFilters = ({
       }
       const storage = window.localStorage;
       search({
-        name: "",
         latitude:
           origin.latitude ||
           userCoordinates.latitude ||
@@ -150,12 +137,9 @@ const ResultsFilters = ({
         radius,
         categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
         isInactive: "false",
-        isAssigned: "either",
-        isApproved: isVerifiedSelected ? "true" : "either",
-        isSubmitted: "either",
-        isClaimed: "either",
-        assignedLoginId: "",
-        claimedLoginId: "",
+        verificationStatusId: isVerifiedSelected
+          ? VERIFICATION_STATUS.VERIFIED
+          : 0,
       });
       console.log(storage);
       if (origin.locationName && origin.latitude && origin.longitude)

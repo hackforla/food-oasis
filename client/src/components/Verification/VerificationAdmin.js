@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
-import { withRouter } from "react-router-dom";
+import { withRouter, Redirect } from "react-router-dom";
 import { Button, CssBaseline, Dialog, Typography } from "@material-ui/core";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import { makeStyles } from "@material-ui/core/styles";
@@ -101,7 +101,7 @@ const defaultCriteria = {
   assignedLoginId: null,
   claimedLoginId: null,
   verificationStatusId: 0,
-  neighborhoodId: null,
+  neighborhoodId: 0,
   minCompleteCriticalPercent: 0,
   maxCompleteCriticalPercent: 100,
 };
@@ -127,6 +127,7 @@ function VerificationAdmin(props) {
   ] = useState(false);
   const [criteria, setCriteria] = useState(defaultCriteria);
   const [selectedStakeholderIds, setSelectedStakeholderIds] = useState([]);
+  const [unauthorized, setUnauthorized] = useState(false);
 
   const {
     data: categories,
@@ -150,27 +151,64 @@ function VerificationAdmin(props) {
   const searchCallback = useCallback(stakeholderSearch, []);
 
   useEffect(() => {
-    const criteriaString = localStorage.getItem(CRITERIA_TOKEN);
-    let initialCriteria = JSON.parse(criteriaString);
-    if (!initialCriteria) {
-      initialCriteria = {
-        ...defaultCriteria,
-        latitude: userCoordinates.latitude,
-        longitude: userCoordinates.longitude,
-        verificationStatusId: 0,
-      };
-    }
-    setCriteria(initialCriteria);
-    searchCallback(initialCriteria);
+    const execute = async () => {
+      const criteriaString = localStorage.getItem(CRITERIA_TOKEN);
+      let initialCriteria = JSON.parse(criteriaString);
+      if (!initialCriteria) {
+        initialCriteria = {
+          ...defaultCriteria,
+          latitude: userCoordinates.latitude,
+          longitude: userCoordinates.longitude,
+          verificationStatusId: 0,
+        };
+      } else {
+        initialCriteria = { ...defaultCriteria, ...initialCriteria };
+      }
+      setCriteria(initialCriteria);
+      try {
+        await searchCallback(initialCriteria);
+      } catch (err) {
+        // If we receive a 401 status code, the user needs
+        // to be logged in, will redirect to login page.
+        // Otherwise it's a real exception.
+        if (err.status !== 401) {
+          console.error(err);
+          return Promise.reject(err.message);
+        }
+      }
+    };
+    execute();
   }, [userCoordinates, searchCallback]);
 
   const search = async () => {
-    await searchCallback(criteria);
-    localStorage.setItem(CRITERIA_TOKEN, JSON.stringify(criteria));
+    try {
+      await searchCallback(criteria);
+      localStorage.setItem(CRITERIA_TOKEN, JSON.stringify(criteria));
+    } catch (err) {
+      // If we receive a 401 status code, the user needs
+      // to be logged in, will redirect to login page.
+      // Otherwise it's a real exception.
+      if (err.status !== 401) {
+        console.error(err);
+        return Promise.reject(err.message);
+      }
+    }
   };
 
   const handleExport = async () => {
-    exportCsv(selectedStakeholderIds);
+    try {
+      await exportCsv(selectedStakeholderIds);
+    } catch (err) {
+      // If we receive a 401 status code, the user needs
+      // to be logged in, will redirect to login page.
+      // Otherwise it's a real exception.
+      if (err.response && err.response.status === 401) {
+        setUnauthorized(true);
+      } else {
+        console.error(err);
+        return Promise.reject(err.message);
+      }
+    }
   };
 
   const handleAssignDialogOpen = async () => {
@@ -183,8 +221,20 @@ function VerificationAdmin(props) {
     // Dialog returns false if cancelled, null if
     // want to unassign, otherwisd a loginId > 0
     if (loginId === false) return;
-    for (let i = 0; i < selectedStakeholderIds.length; i++) {
-      await assign(selectedStakeholderIds[i], user.id, loginId);
+    try {
+      for (let i = 0; i < selectedStakeholderIds.length; i++) {
+        await assign(selectedStakeholderIds[i], user.id, loginId);
+      }
+    } catch (err) {
+      // If we receive a 401 status code, the user needs
+      // to be logged in, will redirect to login page.
+      // Otherwise it's a real exception.
+      if (err.response && err.response.status === 401) {
+        setUnauthorized(true);
+      } else {
+        console.error(err);
+        return Promise.reject(err.message);
+      }
     }
     search();
   };
@@ -198,8 +248,20 @@ function VerificationAdmin(props) {
     // Dialog returns false if cancelled, otherwise an optional
     // message to attach to stakeholder(s)
     if (message === false) return;
-    for (let i = 0; i < selectedStakeholderIds.length; i++) {
-      await needsVerification(selectedStakeholderIds[i], user.id, message);
+    try {
+      for (let i = 0; i < selectedStakeholderIds.length; i++) {
+        await needsVerification(selectedStakeholderIds[i], user.id, message);
+      }
+    } catch (err) {
+      // If we receive a 401 status code, the user needs
+      // to be logged in, will redirect to login page.
+      // Otherwise it's a real exception.
+      if (err.response && err.response.status === 401) {
+        setUnauthorized(true);
+      } else {
+        console.error(err);
+        return Promise.reject(err.message);
+      }
     }
     search();
   };
@@ -215,6 +277,11 @@ function VerificationAdmin(props) {
 
   return (
     <main className={classes.root}>
+      {stakeholdersError.status === 401 || unauthorized ? (
+        <Redirect
+          to={{ pathname: "/login", state: { from: props.location } }}
+        />
+      ) : null}
       <CssBaseline />
       <div
         style={{
@@ -263,7 +330,7 @@ function VerificationAdmin(props) {
                   setDialogOpen(false);
                 }}
               />
-              {/* <pre>{JSON.stringify(criteria, null, 2)}</pre> */}
+              <pre>{JSON.stringify(criteria, null, 2)}</pre>
             </div>
           ) : null}
           {categoriesError || neighborhoodsError || stakeholdersError ? (

@@ -138,7 +138,7 @@ const SearchCriteria = ({
                   Submitted
                 </MenuItem>
                 <MenuItem key={4} value={4}>
-                  Verified
+                  Approved
                 </MenuItem>
               </Select>
             </FormControl>

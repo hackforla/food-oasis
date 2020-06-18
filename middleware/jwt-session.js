@@ -23,7 +23,10 @@ module.exports = {
 // work with cookies).
 async function login(req, res) {
   const token = await sign({ email: req.user.email, id: req.user.id });
-  res.cookie("jwt", token, { httpOnly: true });
+  res.cookie("jwt", token, {
+    httpOnly: true,
+    expires: new Date(Date.now() + 1209600000), // 14 days
+  });
   const user = req.user;
   res.json({ isSuccess: true, token: token, user });
 }

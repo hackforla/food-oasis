@@ -102,8 +102,8 @@ export const useOrganizations = () => {
       setState({ data: stakeholders, loading: false, error: false });
       return stakeholders;
     } catch (err) {
-      setState({ data: null, loading: false, error: true });
-      console.log(err);
+      setState({ data: null, loading: false, error: err.response || true });
+      console.error(err);
       return Promise.reject(err);
     }
   };

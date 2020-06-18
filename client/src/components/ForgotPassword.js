@@ -75,7 +75,7 @@ const ForgotPassword = (props) => {
                   message:
                     "Please check your email for a 'Reset Password' link.",
                 });
-                history.push("/stakeholders");
+                history.push("/");
               } else if (
                 response.code === "FORGOT_PASSWORD_ACCOUNT_NOT_FOUND"
               ) {

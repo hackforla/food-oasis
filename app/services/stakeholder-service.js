@@ -23,7 +23,6 @@ const booleanEitherClause = (columnName, value) => {
 };
 
 const search = async ({
-  name,
   categoryIds,
   latitude,
   longitude,
@@ -32,7 +31,7 @@ const search = async ({
   verificationStatusId,
 }) => {
   const locationClause = buildLocationClause(latitude, longitude);
-  const categoryClause = buildCTEClause(categoryIds, name, true); // true indicates we want to search
+  const categoryClause = buildCTEClause(categoryIds, "", true); // true indicates we want to search
   // stakeholder_best table, not stakeholder
 
   const sql = `${categoryClause}

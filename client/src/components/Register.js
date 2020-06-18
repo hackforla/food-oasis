@@ -220,7 +220,7 @@ const Register = withFormik({
             props.setToast({
               message: `Registration successful. Please check your email for a confirmation link.`,
             });
-            props.history.push("/stakeholders");
+            props.history.push("/");
           } else if (result.code === "REG_DUPLICATE_EMAIL") {
             props.setToast({
               message: `The email ${email} is already registered. 

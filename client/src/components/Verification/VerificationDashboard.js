@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { withRouter } from "react-router-dom";
+import { withRouter, Redirect } from "react-router-dom";
 import { CssBaseline, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { SearchButton } from "../Buttons";
@@ -59,11 +59,15 @@ const defaultCriteria = {
   categoryIds: [],
   isInactive: "either",
   isAssigned: "either",
-  isVerified: "either",
+  isSubmitted: "either",
   isApproved: "either",
   isClaimed: "either",
   assignedLoginId: null,
   claimedLoginId: null,
+  verificationStatusId: 0,
+  neighborhoodId: 0,
+  minCompleteCriticalPercent: 0,
+  maxCompleteCriticalPercent: 100,
 };
 
 function VerificationDashboard(props) {
@@ -75,26 +79,46 @@ function VerificationDashboard(props) {
     data: stakeholders,
     loading: stakeholdersLoading,
     error: stakeholdersError,
-    search: stakeholderSearch,
+    searchDashboard: stakeholderSearch,
   } = useOrganizations();
 
   const searchCallback = useCallback(stakeholderSearch, []);
 
   useEffect(() => {
-    if (!user) return;
-    const initialCriteria = { ...defaultCriteria, assignedLoginId: user.id };
-    if (initialCriteria) {
-      setCriteria(initialCriteria);
-      searchCallback(initialCriteria);
-    }
+    const execute = async () => {
+      if (!user) return;
+      const initialCriteria = { ...defaultCriteria, assignedLoginId: user.id };
+      if (initialCriteria) {
+        setCriteria(initialCriteria);
+        try {
+          await searchCallback(initialCriteria);
+        } catch (err) {
+          if (err.status !== 401) {
+            console.error(err);
+          }
+        }
+      }
+    };
+    execute();
   }, [searchCallback, user]);
 
   const search = async () => {
-    await searchCallback(criteria);
+    try {
+      await searchCallback(criteria);
+    } catch (err) {
+      if (err.status !== 401) {
+        console.error(err);
+      }
+    }
   };
 
   return (
     <main className={classes.root}>
+      {stakeholdersError.status === 401 ? (
+        <Redirect
+          to={{ pathname: "/login", state: { from: props.location } }}
+        />
+      ) : null}
       <CssBaseline />
       <div
         style={{
@@ -111,7 +135,7 @@ function VerificationDashboard(props) {
             align="center"
             style={{ marginBottom: "0.5em" }}
           >
-            {`${user.firstName} ${user.lastName}'s Dashboard`}
+            {`${user && user.firstName} ${user && user.lastName}'s Dashboard`}
           </Typography>
           <SearchButton onClick={search} label="Refresh" />
         </header>
@@ -146,7 +170,7 @@ function VerificationDashboard(props) {
           ) : stakeholders && stakeholders.length === 0 ? (
             <div className={classes.bigMessage}>
               <Typography variant="h5" component="h5">
-                "No organizations have been assigned to you."
+                No organizations have been assigned to you.
               </Typography>
             </div>
           ) : stakeholders ? (

@@ -16,6 +16,7 @@ import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
   DEFAULT_CATEGORIES,
+  VERIFICATION_STATUS,
 } from "../constants/stakeholder";
 
 const useStyles = makeStyles((theme) => ({
@@ -139,7 +140,10 @@ const ResultsFilters = ({
         categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
         isInactive: "false",
         isAssigned: "either",
-        isApproved: isVerifiedSelected ? "true" : "either",
+        isApproved: "either",
+        verificationStatusId: isVerifiedSelected
+          ? VERIFICATION_STATUS.VERIFIED
+          : 0,
         isSubmitted: "either",
         isClaimed: "either",
         assignedLoginId: "",

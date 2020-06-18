@@ -22,6 +22,37 @@ const booleanEitherClause = (columnName, value) => {
     : "";
 };
 
+const history = async (id) => {
+  const sql = `
+    select sl.id, sl.version, sl.verification_status_id, vs.name as verification_status,
+    to_char(sl.modified_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
+      as modified_date, 
+      sl.modified_login_id, m.first_name, m.last_name
+    from stakeholder_log sl
+    left outer join verification_status vs on sl.verification_status_id = vs.id
+    left outer join login m on sl.modified_login_id = m.id
+    where sl.id = ${id}
+    order by sl.version desc
+    `;
+
+  try {
+    const result = await pool.query(sql);
+    const records = result.rows.map((record) => ({
+      id: record.id,
+      version: record.version,
+      verificationStatusId: record.verification_status_id,
+      verificationStatus: record.verification_status,
+      modifiedDate: record.modified_date,
+      modifiedLoginId: record.modified_login_id || null,
+      firstName: record.first_name || "",
+      lastName: record.last_name || "",
+    }));
+    return records;
+  } catch (err) {
+    return Promise.reject(err.message);
+  }
+};
+
 const search = async ({
   categoryIds,
   latitude,
@@ -1063,6 +1094,7 @@ module.exports = {
   search,
   searchDashboard,
   selectById,
+  history,
   selectCsv,
   insert,
   update,

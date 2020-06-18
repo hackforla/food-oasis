@@ -63,6 +63,18 @@ const getById = (req, res) => {
     });
 };
 
+const getHistoryById = (req, res) => {
+  const { id } = req.params;
+  stakeholderService
+    .history(id)
+    .then((resp) => {
+      res.send(resp);
+    })
+    .catch((err) => {
+      res.status("500").json({ error: err.toString() });
+    });
+};
+
 const csv = (req, res) => {
   const { ids } = req.body;
   res.setHeader("Content-Disposition", "attachment; filename=foodoasis.csv");
@@ -202,6 +214,7 @@ module.exports = {
   searchDashboard,
   csv,
   getById,
+  getHistoryById,
   post,
   put,
   remove,

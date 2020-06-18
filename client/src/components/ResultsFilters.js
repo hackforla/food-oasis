@@ -136,7 +136,7 @@ const ResultsFilters = ({
           JSON.parse(storage.origin).longitude,
         radius,
         categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
-        isInactive: "false",
+        isInactive: "either",
         verificationStatusId: isVerifiedSelected
           ? VERIFICATION_STATUS.VERIFIED
           : 0,

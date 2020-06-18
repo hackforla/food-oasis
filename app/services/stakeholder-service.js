@@ -29,12 +29,6 @@ const search = async ({
   longitude,
   distance,
   isInactive,
-  isAssigned,
-  isSubmitted,
-  isApproved,
-  isClaimed,
-  assignedLoginId,
-  claimedLoginId,
   verificationStatusId,
 }) => {
   const locationClause = buildLocationClause(latitude, longitude);
@@ -70,7 +64,7 @@ const search = async ({
     s.category_notes, s.eligibility_notes, s.food_types, s.languages,
     s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email,
     s.v_hours, s.verification_status_id, s.inactive_temporary,
-    s.hours, s.category_ids,
+    array_to_json(s.hours) as hours, s.category_ids,
     s.neighborhood_id, s.is_verified,
     ${locationClause ? `${locationClause} AS distance,` : ""}
     ${buildLoginSelectsClause()}
@@ -82,13 +76,7 @@ const search = async ({
         ? `AND ${locationClause} < ${distance}`
         : ""
     }
-    ${trueFalseEitherClause("s.assigned_date", isAssigned)}
-    ${trueFalseEitherClause("s.submitted_date", isSubmitted)}
-    ${trueFalseEitherClause("s.approved_date", isApproved)}
-    ${trueFalseEitherClause("s.claimed_date", isClaimed)}
     ${booleanEitherClause("s.inactive", isInactive)}
-    ${assignedLoginId ? ` and s.assigned_login_id = ${assignedLoginId} ` : ""}
-    ${claimedLoginId ? ` and s.claimed_login_id = ${claimedLoginId} ` : ""}
     ${
       Number(verificationStatusId) > 0
         ? ` and s.verification_status_id = ${verificationStatusId} `

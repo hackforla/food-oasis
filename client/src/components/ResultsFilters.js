@@ -127,7 +127,6 @@ const ResultsFilters = ({
       }
       const storage = window.localStorage;
       search({
-        name: "",
         latitude:
           origin.latitude ||
           userCoordinates.latitude ||
@@ -139,15 +138,9 @@ const ResultsFilters = ({
         radius,
         categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
         isInactive: "false",
-        isAssigned: "either",
-        isApproved: "either",
         verificationStatusId: isVerifiedSelected
           ? VERIFICATION_STATUS.VERIFIED
           : 0,
-        isSubmitted: "either",
-        isClaimed: "either",
-        assignedLoginId: "",
-        claimedLoginId: "",
       });
       console.log(storage);
       if (origin.locationName && origin.latitude && origin.longitude)

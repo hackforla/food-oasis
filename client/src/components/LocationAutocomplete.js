@@ -62,7 +62,6 @@ const LocationAutocomplete = (props) => {
               </Typography>
               <Typography>{`${result.attributes.Addr_type}`}</Typography>
             </Grid>
-            {/* <pre>{JSON.stringify(result, null, 2)}</pre> */}
           </div>
         ))
       ) : (

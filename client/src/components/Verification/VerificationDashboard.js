@@ -182,7 +182,6 @@ function VerificationDashboard(props) {
               </Typography>
             </div>
           )}
-          {/* <pre>{JSON.stringify(criteria, null, 2)}</pre> */}
         </>
       </div>
     </main>

@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   map: {
     textAlign: "center",
     fontSize: "12px",
-    // maxWidth: "100%",
+    maxWidth: "100%",
     flexGrow: 1,
   },
 }));
@@ -137,13 +137,7 @@ export default function ResultsContainer(props) {
             isWindow960orLess={isWindow960orLess}
           />
         </Grid>
-        <Grid
-          item
-          xs={12}
-          md={8}
-          className={classes.map}
-          style={{ maxWidth: isMobile ? "100%" : "98%" }}
-        >
+        <Grid item xs={12} md={8} className={classes.map}>
           {/* above line stopgab for scrolling on smaller desktop devices */}
           <ResultsMap
             stakeholders={data}

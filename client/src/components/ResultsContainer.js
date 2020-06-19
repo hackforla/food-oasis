@@ -18,10 +18,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "12px",
     border: "1px solid blue",
   },
-  container: {
-    display: "flex",
-    flexDirection: "column",
-  },
   list: {
     textAlign: "center",
     fontSize: "12px",
@@ -113,53 +109,57 @@ export default function ResultsContainer(props) {
   };
 
   return (
-    <div className={classes.container}>
-      <ResultsFilters
-        {...topLevelProps}
-        data={data}
-        search={search}
-        isWindow960orLess={isWindow960orLess}
-      />
-      <Grid container wrap="wrap-reverse">
-        <Grid
-          item
-          xs={12}
-          md={4}
-          className={classes.list}
-          style={{ height: isWindow960orLess ? "55em" : "" }}
-        >
-          <ResultsList
-            selectedStakeholder={selectedStakeholder}
-            doSelectStakeholder={doSelectStakeholder}
-            stakeholders={data}
-            setSelectedPopUp={setSelectedPopUp}
-            setIsPopupOpen={setIsPopupOpen}
-            isWindow960orLess={isWindow960orLess}
-          />
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          md={8}
-          className={classes.map}
-          style={{ maxWidth: isMobile ? "100%" : "98%" }}
-        >
-          {/* above line stopgab for scrolling on smaller desktop devices */}
-          <ResultsMap
-            stakeholders={data}
-            doSelectStakeholder={doSelectStakeholder}
-            categoryIds={categoryIds}
-            selectedLatitude={origin.latitude}
-            selectedLongitude={origin.longitude}
-            selectedPopUp={selectedPopUp}
-            setSelectedPopUp={setSelectedPopUp}
-            isPopupOpen={isPopupOpen}
-            setIsPopupOpen={setIsPopupOpen}
-            isWindow960orLess={isWindow960orLess}
-            isMobile={isMobile}
-          />
+    <Grid container direction="row">
+      <Grid item xs={12}>
+        <ResultsFilters
+          {...topLevelProps}
+          data={data}
+          search={search}
+          isWindow960orLess={isWindow960orLess}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <Grid container wrap="wrap-reverse">
+          <Grid
+            item
+            xs={12}
+            md={4}
+            className={classes.list}
+            style={{ height: isWindow960orLess ? "55em" : "" }}
+          >
+            <ResultsList
+              selectedStakeholder={selectedStakeholder}
+              doSelectStakeholder={doSelectStakeholder}
+              stakeholders={data}
+              setSelectedPopUp={setSelectedPopUp}
+              setIsPopupOpen={setIsPopupOpen}
+              isWindow960orLess={isWindow960orLess}
+            />
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            md={8}
+            className={classes.map}
+            style={{ maxWidth: isMobile ? "100%" : "98%" }}
+          >
+            {/* above line stopgab for scrolling on smaller desktop devices */}
+            <ResultsMap
+              stakeholders={data}
+              doSelectStakeholder={doSelectStakeholder}
+              categoryIds={categoryIds}
+              selectedLatitude={origin.latitude}
+              selectedLongitude={origin.longitude}
+              selectedPopUp={selectedPopUp}
+              setSelectedPopUp={setSelectedPopUp}
+              isPopupOpen={isPopupOpen}
+              setIsPopupOpen={setIsPopupOpen}
+              isWindow960orLess={isWindow960orLess}
+              isMobile={isMobile}
+            />
+          </Grid>
         </Grid>
       </Grid>
-    </div>
+    </Grid>
   );
 }

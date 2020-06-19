@@ -5,11 +5,15 @@ const jwt = require("jsonwebtoken");
 const jwtSecret = process.env.JWT_SECRET || "mark it zero";
 const jwtOpts = { algorithm: "HS256", expiresIn: "14d" };
 
+// access roles
+const ROLES = ["admin", "data-entry", "client"];
+
 module.exports = {
   //login: autoCatch(login),
   login,
   //ensureUser: autoCatch(ensureUser),
   validateUser,
+  validateUserWithRoles,
 };
 
 // This module manages the user's session using a JSON Web Token in the
@@ -51,6 +55,37 @@ async function validateUser(req, res, next) {
   }
 }
 
+/** validateUserWithRoles
+ * @param roles: an array of strings naming role required to
+ * validate on the JWT
+ * @returns function: the route handler function called by express
+ */
+function validateUserWithRoles(roles) {
+  if (!roles || roles.length < 1) {
+    roles = getRoles("default");
+  }
+  return async function validateUserJwt(req, res, next) {
+    const jwtString = req.headers.authorization || req.cookies.jwt;
+    try {
+      const payload = await verify(jwtString);
+
+      if (roles.some((role) => role === payload.role) === false) {
+        let msg = "Authentication error: insufficient role";
+        req.log.error(msg);
+        throw Error(msg);
+      }
+
+      if (payload.email) {
+        req.user = payload;
+        return next();
+      }
+    } catch (err) {
+      // 401 Unauthorize, indicating that user is not
+      // authenticated.
+      res.status(401).send(err.message);
+    }
+  };
+}
 // Helper function to create JWT token
 async function sign(payload) {
   const token = await jwt.sign(payload, jwtSecret, jwtOpts);
@@ -68,4 +103,12 @@ async function verify(jwtString = "") {
     err.statusCode = 401;
     throw err;
   }
+}
+
+/**
+ * helper for pulling a role from role name
+ */
+function getRoles(roleName) {
+  let _roleName = roleName || "default";
+  return ROLES[_roleName.toLowerCase()] || "client";
 }

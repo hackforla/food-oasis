@@ -101,7 +101,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Home = (props) => {
   const classes = useStyles();
-  const { origin, setOrigin } = props;
+  const { origin, setOrigin, userCoordinates } = props;
 
   return (
     <Container component="main" maxWidth="sm" className={classes.container}>
@@ -116,7 +116,11 @@ const Home = (props) => {
             onSubmit={() => props.history.push("/organizations")}
           >
             <Box className={classes.inputContainer}>
-              <Search setOrigin={setOrigin} origin={origin} />
+              <Search
+                userCoordinates={userCoordinates}
+                setOrigin={setOrigin}
+                origin={origin}
+              />
               <Button
                 type="submit"
                 disabled={!origin}

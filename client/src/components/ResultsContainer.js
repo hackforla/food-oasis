@@ -132,6 +132,8 @@ export default function ResultsContainer(props) {
           data={data}
           search={search}
           isWindow960orLess={isWindow960orLess}
+          viewport={viewport}
+          setViewport={setViewport}
         />
       </Grid>
       <Grid item xs={12}>

@@ -103,6 +103,16 @@ const useStyles = makeStyles((theme) => ({
 
 const distanceInfo = [1, 2, 3, 5, 10, 20, 50];
 
+const viewPortHash = {
+  1: 13.5,
+  2: 12.5,
+  3: 12,
+  5: 11,
+  10: 10,
+  20: 9,
+  50: 8,
+};
+
 const ResultsFilters = ({
   data,
   origin,
@@ -116,6 +126,8 @@ const ResultsFilters = ({
   categoryIds,
   toggleCategory,
   isWindow960orLess,
+  viewport,
+  setViewport,
 }) => {
   const classes = useStyles();
 
@@ -176,16 +188,18 @@ const ResultsFilters = ({
     toggleCategory(FOOD_PANTRY_CATEGORY_ID);
   }, [toggleCategory]);
 
-  // //loading search
-  // useEffect(() => {
-  //   doHandleSearch();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
   useEffect(() => {
     doHandleSearch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [radius, categoryIds, isVerifiedSelected, toggleCategory]);
+
+  const handleDistanceChange = (distance) => {
+    setRadius(distance);
+    setViewport({
+      ...viewport,
+      zoom: viewPortHash[distance],
+    });
+  };
 
   return (
     <Grid
@@ -209,7 +223,7 @@ const ResultsFilters = ({
               name="select-distance"
               disableUnderline
               value={radius}
-              onChange={(e) => setRadius(e.target.value)}
+              onChange={(e) => handleDistanceChange(e.target.value)}
               inputProps={{
                 name: "select-distance",
                 id: "select-distance",

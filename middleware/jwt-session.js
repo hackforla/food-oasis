@@ -5,15 +5,12 @@ const jwt = require("jsonwebtoken");
 const jwtSecret = process.env.JWT_SECRET || "mark it zero";
 const jwtOpts = { algorithm: "HS256", expiresIn: "14d" };
 
-// access roles
-const ROLES = ["admin", "data-entry", "client"];
-
 module.exports = {
   //login: autoCatch(login),
   login,
   //ensureUser: autoCatch(ensureUser),
   validateUser,
-  validateUserWithRoles,
+  validateUserHasRequiredRoles,
 };
 
 // This module manages the user's session using a JSON Web Token in the
@@ -26,7 +23,11 @@ module.exports = {
 // as as a JSON response body (for clients that may not be able to
 // work with cookies).
 async function login(req, res) {
-  const token = await sign({ email: req.user.email, id: req.user.id });
+  const token = await sign({
+    email: req.user.email,
+    id: req.user.id,
+    sub: `${req.user.role}/0` || "data_entry/0",
+  });
   res.cookie("jwt", token, {
     httpOnly: true,
     expires: new Date(Date.now() + 1209600000), // 14 days
@@ -55,22 +56,33 @@ async function validateUser(req, res, next) {
   }
 }
 
-/** validateUserWithRoles
- * @param roles: an array of strings naming role required to
+/** validateUserHasRequiredRoles
+ * @param permittedRoles: an array of strings naming role required to
  * validate on the JWT
  * @returns function: the route handler function called by express
+ * example:
+ *   // server.js
+ *   app.post(
+ *    "/accounts/protected",
+ *    jwtSession.validateUserHasRequiredRoles(["admin", "security_admin"]),
+ *    accountsController.performActionOnlyPermittedToAdminRole
+ *   );
  */
-function validateUserWithRoles(roles) {
-  if (!roles || roles.length < 1) {
-    roles = getRoles("default");
+function validateUserHasRequiredRoles(permittedRoles) {
+  if (!permittedRoles || permittedRoles.length < 1) {
+    permittedRoles = ["date_entry"];
   }
   return async function validateUserJwt(req, res, next) {
     const jwtString = req.headers.authorization || req.cookies.jwt;
     try {
       const payload = await verify(jwtString);
 
-      if (roles.some((role) => role === payload.role) === false) {
-        let msg = "Authentication error: insufficient role";
+      // check that JWT subject is encoded with one of the requiredRoles
+      let isJWTRoleInAllowedRoles = permittedRoles.some(
+        (role) => role === payload.sub.split("/")[0]
+      );
+      if (!isJWTRoleInAllowedRoles) {
+        let msg = "Authentication error: insufficient permissions";
         req.log.error(msg);
         throw Error(msg);
       }
@@ -103,12 +115,4 @@ async function verify(jwtString = "") {
     err.statusCode = 401;
     throw err;
   }
-}
-
-/**
- * helper for pulling a role from role name
- */
-function getRoles(roleName) {
-  let _roleName = roleName || "default";
-  return ROLES[_roleName.toLowerCase()] || "client";
 }

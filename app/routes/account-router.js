@@ -16,7 +16,7 @@ router.post("/forgotPassword", accountController.forgotPassword);
 router.post("/resetPassword", accountController.resetPassword);
 router.post(
   "/setPermissions",
-  jwtSession.validateUser,
+  jwtSession.validateUserHasRequiredRoles(["admin", "security_admin"]),
   accountController.setPermissions
 );
 

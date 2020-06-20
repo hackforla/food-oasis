@@ -4,10 +4,14 @@ const jwtSession = require("../../middleware/jwt-session");
 
 router.get(
   "/lapl-food-resources",
-  jwtSession.validateUser,
+  jwtSession.validateUserHasRequiredRoles(["admin"]),
   loadController.getLaplFoodResources
 );
 
-router.get("/load-211", jwtSession.validateUser, loadController.get211);
+router.get(
+  "/load-211",
+  jwtSession.validateUserHasRequiredRoles(["admin"]),
+  loadController.get211
+);
 
 module.exports = router;

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import MomentUtils from "@date-io/moment";
 import theme from "theme/materialUI";
 import { UserContext } from "components/user-context";
 import Toast from "components/Toast";
@@ -141,118 +143,120 @@ function App() {
   const classes = useStyles();
 
   return (
-    <UserContext.Provider value={user}>
-      <ThemeProvider theme={theme}>
-        <Router>
-          <div className={classes.app}>
-            <Grid item>
-              <Header user={user} setUser={onLogin} setToast={setToast} />
-            </Grid>
-            <Switch className={classes.mainContent}>
-              <Route exact path="/">
-                <div
-                  className={classes.homeWrapper}
-                  style={{ backgroundImage: bgImg }}
-                >
-                  <Home
-                    userCoordinates={userCoordinates}
-                    origin={origin}
-                    setOrigin={setOrigin}
-                  />
-                </div>
-              </Route>
-              <Route path="/organizations">
-                <Grid item>
-                  <ResultsContainer
-                    userCoordinates={userCoordinates}
-                    userSearch={origin}
-                  />
-                </Grid>
-              </Route>
-              <Route path="/stakeholders">
-                <StakeholdersContainer
-                  user={user}
-                  userCoordinates={userCoordinates}
-                />
-              </Route>
-              <Route path="/organizationedit/:id?">
-                <div className={classes.stakeholderEditWrapper}>
-                  <StakeholderEdit setToast={setToast} user={user} />
-                </div>
-              </Route>
-              <Route path="/verificationdashboard">
-                <div className={classes.verificationAdminWrapper}>
-                  <VerificationDashboard
+    <MuiPickersUtilsProvider utils={MomentUtils}>
+      <UserContext.Provider value={user}>
+        <ThemeProvider theme={theme}>
+          <Router>
+            <div className={classes.app}>
+              <Grid item>
+                <Header user={user} setUser={onLogin} setToast={setToast} />
+              </Grid>
+              <Switch className={classes.mainContent}>
+                <Route exact path="/">
+                  <div
+                    className={classes.homeWrapper}
+                    style={{ backgroundImage: bgImg }}
+                  >
+                    <Home
+                      userCoordinates={userCoordinates}
+                      origin={origin}
+                      setOrigin={setOrigin}
+                    />
+                  </div>
+                </Route>
+                <Route path="/organizations">
+                  <Grid item>
+                    <ResultsContainer
+                      userCoordinates={userCoordinates}
+                      userSearch={origin}
+                    />
+                  </Grid>
+                </Route>
+                <Route path="/stakeholders">
+                  <StakeholdersContainer
                     user={user}
                     userCoordinates={userCoordinates}
                   />
-                </div>
-              </Route>
-              <Route path="/verificationadmin">
-                <div className={classes.verificationAdminWrapper}>
-                  <VerificationAdmin
-                    user={user}
-                    userCoordinates={userCoordinates}
-                  />
-                </div>
-              </Route>
-              <Route path="/securityadmindashboard">
-                <div className={classes.verificationAdminWrapper}>
-                  <SecurityAdminDashboard
-                    user={user}
-                    userCoordinates={userCoordinates}
-                  />
-                </div>
-              </Route>
+                </Route>
+                <Route path="/organizationedit/:id?">
+                  <div className={classes.stakeholderEditWrapper}>
+                    <StakeholderEdit setToast={setToast} user={user} />
+                  </div>
+                </Route>
+                <Route path="/verificationdashboard">
+                  <div className={classes.verificationAdminWrapper}>
+                    <VerificationDashboard
+                      user={user}
+                      userCoordinates={userCoordinates}
+                    />
+                  </div>
+                </Route>
+                <Route path="/verificationadmin">
+                  <div className={classes.verificationAdminWrapper}>
+                    <VerificationAdmin
+                      user={user}
+                      userCoordinates={userCoordinates}
+                    />
+                  </div>
+                </Route>
+                <Route path="/securityadmindashboard">
+                  <div className={classes.verificationAdminWrapper}>
+                    <SecurityAdminDashboard
+                      user={user}
+                      userCoordinates={userCoordinates}
+                    />
+                  </div>
+                </Route>
 
-              <Route path="/donate">
-                <Donate />
-              </Route>
-              {/* <Route path="/news">
-                <News />
-              </Route> */}
-              <Route path="/resources">
-                <Resources />
-              </Route>
-              <Route path="/about">
-                <About />
-              </Route>
-              {/* <Route path="/team">
-                <Team />
-              </Route> */}
-              <Route exact path="/faqs">
-                <Faq />
-              </Route>
-              <Route path="/faqs/add">
-                <FaqAdd />
-              </Route>
-              <Route path="/faqs/:identifier">
-                <FaqEdit setToast={setToast} />
-              </Route>
-              <Route path="/register">
-                <Register setToast={setToast} />
-              </Route>
-              <Route path="/confirm/:token">
-                <ConfirmEmail setToast={setToast} />
-              </Route>
-              <Route path="/login/:email?">
-                <Login user={user} setUser={onLogin} setToast={setToast} />
-              </Route>
-              <Route path="/forgotpassword/:email?">
-                <ForgotPassword setToast={setToast} />
-              </Route>
-              <Route path="/resetPassword/:token">
-                <ResetPassword setToast={setToast} />
-              </Route>
-            </Switch>
-            <Grid item>
-              <Footer userCoordinates={userCoordinates} />
-            </Grid>
-            <Toast toast={toast} setToast={setToast} />
-          </div>
-        </Router>
-      </ThemeProvider>
-    </UserContext.Provider>
+                <Route path="/donate">
+                  <Donate />
+                </Route>
+                {/* <Route path="/news">
+              <News />
+            </Route> */}
+                <Route path="/resources">
+                  <Resources />
+                </Route>
+                <Route path="/about">
+                  <About />
+                </Route>
+                {/* <Route path="/team">
+              <Team />
+            </Route> */}
+                <Route exact path="/faqs">
+                  <Faq />
+                </Route>
+                <Route path="/faqs/add">
+                  <FaqAdd />
+                </Route>
+                <Route path="/faqs/:identifier">
+                  <FaqEdit setToast={setToast} />
+                </Route>
+                <Route path="/register">
+                  <Register setToast={setToast} />
+                </Route>
+                <Route path="/confirm/:token">
+                  <ConfirmEmail setToast={setToast} />
+                </Route>
+                <Route path="/login/:email?">
+                  <Login user={user} setUser={onLogin} setToast={setToast} />
+                </Route>
+                <Route path="/forgotpassword/:email?">
+                  <ForgotPassword setToast={setToast} />
+                </Route>
+                <Route path="/resetPassword/:token">
+                  <ResetPassword setToast={setToast} />
+                </Route>
+              </Switch>
+              <Grid item>
+                <Footer userCoordinates={userCoordinates} />
+              </Grid>
+              <Toast toast={toast} setToast={setToast} />
+            </div>
+          </Router>
+        </ThemeProvider>
+      </UserContext.Provider>
+    </MuiPickersUtilsProvider>
   );
 }
 

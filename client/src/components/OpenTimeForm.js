@@ -1,121 +1,111 @@
 import React, { useState, useEffect } from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import OpenTimeInputs from "./OpenTimeInput";
-import { AddButton } from "./Buttons";
-import { Card, CardContent, Typography } from "@material-ui/core";
+import OpenTimeList from "./OpenTimeList";
+import {
+  Card,
+  CardContent,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  Divider,
+} from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    border: "1px solid lightgray",
+    borderRadius: "4px",
+  },
+  listContainer: {
+    marginBottom: theme.spacing(3),
+  },
+  list: {
+    display: "flex",
+    justifyContent: "space-evenly",
+  },
+  text: {
+    textAlign: "center",
+    margin: "16px 0",
+  },
+}));
 
 function OpenTimeForm(props) {
+  const classes = useStyles();
   const { value, onChange } = props;
   const [hours, setHours] = useState(props.value);
-  const [errorMessages, setErrorMessages] = useState([]);
+  const defaultValues = {
+    weekOfMonth: null,
+    dayOfWeek: null,
+    open: null,
+    close: null,
+  };
 
   useEffect(() => {
     setHours(value);
   }, [value]);
 
-  const validate = (hours) => {
-    let messages = [];
-    for (let i = 0; i < hours.length; i++) {
-      const row = hours[i];
-      if (!row.weekOfMonth && row.weekOfMonth !== 0) {
-        messages.push(`Row ${i + 1}: Week of Month is required`);
-      }
-      if (!row.dayOfWeek) {
-        messages.push(`Row ${i + 1}: Day of Week is required`);
-      }
-      if (!row.open) {
-        messages.push(`Row ${i + 1}: Opening  Time is required`);
-      }
-      if (!row.close) {
-        messages.push(`Row ${i + 1}: Closing Time is required`);
-      }
-    }
-    return messages;
-  };
-
-  const handleChange = (newHours) => {
+  const handleRowSubmit = (row) => {
+    let newHours = [...hours, row];
     setHours(newHours);
-    setErrorMessages(validate(newHours));
     onChange({ target: { value: newHours, name: "hours" } });
-  };
-
-  const addHours = () => {
-    let newHours = [
-      ...hours,
-      { weekOfMonth: 0, dayOfWeek: "", open: "", close: "" },
-    ];
-    handleChange(newHours);
   };
 
   const removeHours = (e, index) => {
     let newHours = hours.filter((val, i) => i !== index);
-    handleChange(newHours);
+    setHours(newHours);
+    onChange({ target: { value: newHours, name: "hours" } });
   };
 
-  const copyHours = (e, index) => {
-    const newRange = { ...hours[index] };
-    let newHours = [...hours, newRange];
-    handleChange(newHours);
-  };
+  const renderHoursList = () => {
+    if (hours.length === 0) return null;
 
-  const stateChange = (e, rowIndex) => {
-    let newHours = [...hours];
-    const name = e.target.name;
-    const value = e.target.value;
-    if (name === "open" || name === "close") {
-      newHours[rowIndex][name] = handleTime(value);
-    } else {
-      newHours[rowIndex][name] = value;
-    }
-    handleChange(newHours);
-  };
-
-  const handleTime = (number) => {
-    //formats time input into HH:MM:SS format
-    let output = "";
-    number.replace(
-      /^\D*(\d{0,2})\D*(\d{0,2})\D*(\d{0,2})/,
-      (match, hh, mm, ss) => {
-        if (hh.length) {
-          output += hh;
-          if (mm.length) {
-            output += `:${mm}`;
-            if (ss.length) {
-              output += `:${ss}`;
-            }
-          }
-        }
-      }
-    );
-    return output;
-  };
-
-  const inputsMap = hours.map((val, rowIndex) => {
     return (
-      <div key={rowIndex}>
-        <OpenTimeInputs
-          values={val}
-          onChange={(e) => stateChange(e, rowIndex)}
-          removeInput={(e) => removeHours(e, rowIndex)}
-          copyInput={(e) => copyHours(e, rowIndex)}
-        />
+      <div className={classes.listContainer}>
+        <Typography className={classes.text} variant="h5" gutterBottom>
+          Hours
+        </Typography>
+        <List className={classes.list}>
+          <ListItem>
+            <ListItemText primary="Interval" />
+          </ListItem>
+          <ListItem>
+            <ListItemText primary="Days" />
+          </ListItem>
+          <ListItem>
+            <ListItemText primary="Open" />
+          </ListItem>
+          <ListItem>
+            <ListItemText primary="Closed" />
+          </ListItem>
+        </List>
+        <Divider />
+        {hours.map((val, rowIndex) => {
+          return (
+            <OpenTimeList
+              key={rowIndex}
+              values={val}
+              removeInput={(e) => removeHours(e, rowIndex)}
+            />
+          );
+        })}
       </div>
     );
-  });
+  };
 
   return (
-    <Card style={{ border: "1px solid lightgray", borderRadius: "4px" }}>
+    <Card className={classes.root}>
       <CardContent>
-        <Typography>Hours</Typography>
-        <div>{inputsMap}</div>
-        {errorMessages.length > 0
-          ? errorMessages.map((msg) => (
-              <div key={msg} style={{ color: "red" }}>
-                {msg}
-              </div>
-            ))
-          : null}
-        <AddButton onClick={addHours} label={"Add Hours"} />
+        {renderHoursList()}
+
+        <Typography className={classes.text} variant="h5" gutterBottom>
+          Add Hours
+        </Typography>
+        <OpenTimeInputs
+          values={defaultValues}
+          handleRowSubmit={handleRowSubmit}
+        />
       </CardContent>
     </Card>
   );

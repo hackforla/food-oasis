@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -8,32 +8,20 @@ import {
   IconButton,
   InputLabel,
   Select,
-  TextField,
 } from "@material-ui/core";
-import { CancelIconButton } from "./Buttons";
-import { WrapText } from "@material-ui/icons";
+import { TimePicker } from "@material-ui/pickers";
+import moment from "moment";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 
 const useStyles = makeStyles((theme) => ({
   row: {
     margin: theme.spacing(1),
+    justifyContent: "space-between",
   },
   formControl: {
-    // margin: theme.spacing(1),
-    // minWidth: 50,
-    // maxWidth: 200
+    marginRight: theme.spacing(1),
   },
 }));
-
-const days = [
-  { label: "(Select)", value: "" },
-  { label: "Sun", value: "Sun" },
-  { label: "Mon", value: "Mon" },
-  { label: "Tue", value: "Tue" },
-  { label: "Wed", value: "Wed" },
-  { label: "Thu", value: "Thu" },
-  { label: "Fri", value: "Fri" },
-  { label: "Sat", value: "Sat" },
-];
 
 const intervals = [
   { label: "Every", value: 0 },
@@ -44,26 +32,72 @@ const intervals = [
   { label: "Last", value: -1 },
 ];
 
+const days = [
+  { label: "Sun", value: "Sun" },
+  { label: "Mon", value: "Mon" },
+  { label: "Tue", value: "Tue" },
+  { label: "Wed", value: "Wed" },
+  { label: "Thu", value: "Thu" },
+  { label: "Fri", value: "Fri" },
+  { label: "Sat", value: "Sat" },
+];
+
 function OpenTimeInput(props) {
   const classes = useStyles();
-  const { values, onChange, removeInput, copyInput } = props;
+  const {
+    values: { weekOfMonth, dayOfWeek, open, close },
+    handleRowSubmit,
+  } = props;
+
+  const [isDayDisabled, setIsDayDisabled] = useState(dayOfWeek === null);
+  const [isOpenDisabled, setIsOpenDisabled] = useState(open === null);
+  const [isCloseDisabled, setIsCloseDisabled] = useState(close === null);
+  const [buttonsDisabled, setButtonsDisabled] = useState(close === null);
+
+  const [week, setWeek] = useState(weekOfMonth);
+  const [day, setDay] = useState(dayOfWeek);
+
+  const tempOpen = open !== null ? open : "09:00:00";
+  const tempClose = close !== null ? close : "17:00:00";
+  const [openHours, setOpenHours] = useState(moment(tempOpen, "hh:mm:ss a"));
+  const [closeHours, setCloseHours] = useState(moment(tempClose, "hh:mm:ss a"));
+
+  const saveRow = () => {
+    const row = {
+      weekOfMonth: week,
+      dayOfWeek: day,
+      open: moment(openHours).format("HH:mm:ss"),
+      close: moment(closeHours).format("HH:mm:ss"),
+    };
+
+    handleRowSubmit(row);
+
+    // Resets everything
+    setWeek(null);
+    setDay(null);
+    setIsDayDisabled(true);
+    setIsOpenDisabled(true);
+    setOpenHours(moment("09:00:00", "hh:mm:ss a"));
+    setIsCloseDisabled(true);
+    setCloseHours(moment("17:00:00", "hh:mm:ss a"));
+    setButtonsDisabled(true);
+  };
 
   return (
     <Grid container spacing={1} className={classes.row}>
       <Grid item xs={12} sm={2}>
-        <FormControl
-          variant="outlined"
-          fullWidth
-          className={classes.formControl}
-        >
-          <InputLabel>Interval</InputLabel>
+        <FormControl fullWidth className={classes.formControl}>
+          <InputLabel id="week-label">Interval</InputLabel>
           <Select
-            labelId="open-days-select-id"
+            labelId="week-label"
             id="open-days-select"
             name="weekOfMonth"
             labelWidth={75}
-            onChange={onChange}
-            value={values.weekOfMonth}
+            value={week}
+            onChange={(event) => {
+              setWeek(event.target.value);
+              setIsDayDisabled(false);
+            }}
           >
             {intervals.map((day) => (
               <MenuItem key={day.value} value={day.value}>
@@ -74,20 +108,19 @@ function OpenTimeInput(props) {
         </FormControl>
       </Grid>
       <Grid item xs={12} sm={2}>
-        <FormControl
-          variant="outlined"
-          fullWidth
-          className={classes.formControl}
-        >
-          <InputLabel>Days</InputLabel>
+        <FormControl fullWidth className={classes.formControl}>
+          <InputLabel id="day-label">Days</InputLabel>
           <Select
-            labelId="open-days-select-id"
+            labelId="day-label"
             id="open-days-select"
-            variant="outlined"
             name="dayOfWeek"
             labelWidth={75}
-            onChange={onChange}
-            value={values.dayOfWeek}
+            value={day}
+            disabled={isDayDisabled}
+            onChange={(event) => {
+              setDay(event.target.value);
+              setIsOpenDisabled(false);
+            }}
           >
             {days.map((day) => (
               <MenuItem key={day.value} label={day.label} value={day.value}>
@@ -98,15 +131,16 @@ function OpenTimeInput(props) {
         </FormControl>
       </Grid>
       <Grid item xs={12} sm={2}>
-        <TextField
-          type="time"
+        <TimePicker
           name="open"
-          onChange={onChange}
-          variant="outlined"
-          fullWidth
           label="Opening Time"
-          value={values.open}
-          inputProps={{ step: 300 }}
+          minutesStep={5}
+          value={openHours}
+          disabled={isOpenDisabled}
+          onChange={(time) => {
+            setOpenHours(moment(time, "hh:mm:ss a"));
+            setIsCloseDisabled(false);
+          }}
         />
       </Grid>
       <Grid
@@ -115,28 +149,27 @@ function OpenTimeInput(props) {
         sm={2}
         styles={{ display: "flex", flexDirection: "column" }}
       >
-        <TextField
+        <TimePicker
           name="close"
-          type="time"
-          inputProps={{ step: 300 }}
-          onChange={onChange}
-          variant="outlined"
-          fullWidth
           label="Closing Time"
-          value={values.close}
+          value={closeHours}
+          minutesStep={5}
+          disabled={isCloseDisabled}
+          onChange={(time) => {
+            setCloseHours(moment(time, "hh:mm:ss a"));
+            setButtonsDisabled(false);
+          }}
         />
-      </Grid>
-      <Grid item xs={2} sm={1}>
-        <CancelIconButton onClick={removeInput} />
       </Grid>
       <Grid item xs={2} sm={1}>
         <IconButton
           variant="contained"
           color="default"
-          aria-label="cancel"
-          onClick={copyInput}
+          aria-label="save"
+          onClick={saveRow}
+          disabled={buttonsDisabled}
         >
-          <WrapText />
+          <AddCircleIcon />
         </IconButton>
       </Grid>
     </Grid>

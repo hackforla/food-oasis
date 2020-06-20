@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
   filterGroupButton: {
     margin: "0 .25rem",
     fontSize: "max(.8vw,10px)",
+    whiteSpace: "nowrap",
     backgroundColor: "#fff",
     border: ".1em solid #000",
     color: "#000",
@@ -34,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
   filterButton: {
     margin: "0 .25rem",
     fontSize: "max(.8vw,10px)",
+    whiteSpace: "nowrap",
     backgroundColor: "#fff",
     border: ".1em solid #000",
     color: "#000",

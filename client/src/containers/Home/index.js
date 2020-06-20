@@ -134,7 +134,7 @@ const Home = (props) => {
               </Button>
             </Box>
             <Typography className={classes.label}>
-              Food Oasis has links to food pantries and meals in Los Angeles
+              Locate free food resources in Los Angeles
             </Typography>
           </form>
         </Box>

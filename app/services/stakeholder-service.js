@@ -23,22 +23,15 @@ const booleanEitherClause = (columnName, value) => {
 };
 
 const search = async ({
-  name,
   categoryIds,
   latitude,
   longitude,
   distance,
   isInactive,
-  isAssigned,
-  isSubmitted,
-  isApproved,
-  isClaimed,
-  assignedLoginId,
-  claimedLoginId,
   verificationStatusId,
 }) => {
   const locationClause = buildLocationClause(latitude, longitude);
-  const categoryClause = buildCTEClause(categoryIds, name, true); // true indicates we want to search
+  const categoryClause = buildCTEClause(categoryIds, "", true); // true indicates we want to search
   // stakeholder_best table, not stakeholder
 
   const sql = `${categoryClause}
@@ -70,6 +63,7 @@ const search = async ({
     s.category_notes, s.eligibility_notes, s.food_types, s.languages,
     s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email,
     s.v_hours, s.verification_status_id, s.inactive_temporary,
+    array_to_json(s.hours) as hours, s.category_ids,
     s.neighborhood_id, s.is_verified,
     ${locationClause ? `${locationClause} AS distance,` : ""}
     ${buildLoginSelectsClause()}
@@ -81,13 +75,7 @@ const search = async ({
         ? `AND ${locationClause} < ${distance}`
         : ""
     }
-    ${trueFalseEitherClause("s.assigned_date", isAssigned)}
-    ${trueFalseEitherClause("s.submitted_date", isSubmitted)}
-    ${trueFalseEitherClause("s.approved_date", isApproved)}
-    ${trueFalseEitherClause("s.claimed_date", isClaimed)}
     ${booleanEitherClause("s.inactive", isInactive)}
-    ${assignedLoginId ? ` and s.assigned_login_id = ${assignedLoginId} ` : ""}
-    ${claimedLoginId ? ` and s.claimed_login_id = ${claimedLoginId} ` : ""}
     ${
       Number(verificationStatusId) > 0
         ? ` and s.verification_status_id = ${verificationStatusId} `
@@ -97,7 +85,6 @@ const search = async ({
   `;
   // console.log(sql);
   let stakeholders = [];
-  let hoursResults = [];
   let categoriesResults = [];
   var stakeholderResult, stakeholder_ids;
   try {
@@ -105,12 +92,8 @@ const search = async ({
     stakeholder_ids = stakeholderResult.rows.map((a) => a.id);
 
     if (stakeholder_ids.length) {
-      // Hoover up all the stakeholder categories and hours
+      // Hoover up all the stakeholder categories
       // for all of our stakeholder row results.
-      const hoursSql = `select stakeholder_id, day_of_week, open, close, week_of_month
-            from stakeholder_schedule
-            where stakeholder_id in (${stakeholder_ids.join(",")})`;
-      hoursResults = await pool.query(hoursSql);
       const categoriesSql = `select sc.stakeholder_id, c.id, c.name
           from category c
           join stakeholder_category sc on c.id = sc.category_id
@@ -160,9 +143,7 @@ const search = async ({
       categories: categoriesResults.rows.filter(
         (cats) => cats.stakeholder_id == row.id
       ),
-      hours: hoursResults.rows.filter(
-        (hours) => hours.stakeholder_id == row.id
-      ),
+      hours: row.hours || [],
       parentOrganization: row.parent_organization || "",
       physicalAccess: row.physical_access || "",
       email: row.email || "",
@@ -1017,8 +998,12 @@ const remove = (id) => {
 const buildCTEClause = (categoryIds, name, useBest) => {
   const categoryClause = categoryIds
     ? `stakeholder_category_set AS (
-       select * from stakeholder_category
-       WHERE stakeholder_category.category_id in (${categoryIds.join(",")})),`
+       select * from ${
+         useBest ? "stakeholder_best_category" : "stakeholder_category"
+       }
+       WHERE ${
+         useBest ? "stakeholder_best_category" : "stakeholder_category"
+       }.category_id in (${categoryIds.join(",")})),`
     : "";
   const nameClause = "'%" + name.replace(/'/g, "''") + "%'";
   const cteClause = `WITH ${categoryClause}

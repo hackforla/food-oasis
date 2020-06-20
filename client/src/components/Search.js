@@ -49,14 +49,7 @@ export default function Search(props) {
   const { userCoordinates, setOrigin, origin } = props;
   const classes = useStyles();
   const [selectedPlace, setSelectedPlace] = useState("");
-
-  const [placeHolder, changePlaceholder] = useState(
-    "Enter an address, neighborhood, ZIP"
-  );
-
-  useEffect(() => {
-    if (origin?.locationName) changePlaceholder(origin.locationName);
-  }, [origin]);
+  const [newInputValue, updateNewInputValue] = useState(origin?.locationName);
 
   const { mapboxResults, fetchMapboxResults } = useMapboxGeocoder();
 
@@ -76,6 +69,7 @@ export default function Search(props) {
 
   const handleInputChange = (event) => {
     setSelectedPlace(event.target.value);
+    updateNewInputValue(event.target.value);
     if (!event.target.value) {
       return;
     }
@@ -110,7 +104,7 @@ export default function Search(props) {
         variant="outlined"
         margin="none"
         fullWidth
-        placeholder={placeHolder}
+        placeholder="Enter an address, neighborhood, ZIP"
         name="address"
         size="small"
         autoFocus
@@ -211,7 +205,10 @@ export default function Search(props) {
                 ...getInputProps({
                   onClick: () => toggleMenu(),
                   onChange: handleInputChange,
-                  value: inputValue || selectedPlace,
+                  value:
+                    newInputValue && !selectedPlace
+                      ? newInputValue
+                      : inputValue || selectedPlace,
                 }),
               },
             })}

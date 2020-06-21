@@ -330,7 +330,6 @@ function VerificationAdmin(props) {
                   setDialogOpen(false);
                 }}
               />
-              <pre>{JSON.stringify(criteria, null, 2)}</pre>
             </div>
           ) : null}
           {categoriesError || neighborhoodsError || stakeholdersError ? (
@@ -464,7 +463,6 @@ function VerificationAdmin(props) {
               </Typography>
             </div>
           )}
-          {/* <pre>{JSON.stringify(criteria, null, 2)}</pre> */}
         </>
       </div>
     </main>

@@ -157,7 +157,7 @@ const ResultsFilters = ({
           ? VERIFICATION_STATUS.VERIFIED
           : 0,
       });
-      console.log(storage);
+      // console.log(storage);
       if (origin.locationName && origin.latitude && origin.longitude)
         storage.origin = JSON.stringify({
           locationName: origin.locationName,
@@ -167,6 +167,11 @@ const ResultsFilters = ({
       if (categoryIds.length) storage.categoryIds = JSON.stringify(categoryIds);
       storage.radius = JSON.stringify(radius);
       storage.verified = JSON.stringify(isVerifiedSelected);
+      setViewport({
+        zoom: viewPortHash[radius],
+        latitude: origin.latitude,
+        longitude: origin.longitude,
+      });
     },
     [
       search,
@@ -178,6 +183,7 @@ const ResultsFilters = ({
       radius,
       categoryIds,
       isVerifiedSelected,
+      setViewport,
     ]
   );
 

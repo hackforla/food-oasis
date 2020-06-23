@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ThemeProvider } from "@material-ui/core/styles";
+import { Grid } from "@material-ui/core";
 import theme from "theme/materialUI";
 import { UserContext } from "components/user-context";
 import Toast from "components/Toast";
@@ -144,7 +145,9 @@ function App() {
       <ThemeProvider theme={theme}>
         <Router>
           <div className={classes.app}>
-            <Header user={user} setUser={onLogin} setToast={setToast} />
+            <Grid item>
+              <Header user={user} setUser={onLogin} setToast={setToast} />
+            </Grid>
             <Switch className={classes.mainContent}>
               <Route exact path="/">
                 <div
@@ -159,10 +162,12 @@ function App() {
                 </div>
               </Route>
               <Route path="/organizations">
-                <ResultsContainer
-                  userCoordinates={userCoordinates}
-                  userSearch={origin}
-                />
+                <Grid item>
+                  <ResultsContainer
+                    userCoordinates={userCoordinates}
+                    userSearch={origin}
+                  />
+                </Grid>
               </Route>
               <Route path="/stakeholders">
                 <StakeholdersContainer
@@ -240,7 +245,9 @@ function App() {
                 <ResetPassword setToast={setToast} />
               </Route>
             </Switch>
-            <Footer userCoordinates={userCoordinates} />
+            <Grid item>
+              <Footer userCoordinates={userCoordinates} />
+            </Grid>
             <Toast toast={toast} setToast={setToast} />
           </div>
         </Router>

@@ -14,7 +14,11 @@ router.post("/confirmRegister", accountController.confirmRegister);
 
 router.post("/forgotPassword", accountController.forgotPassword);
 router.post("/resetPassword", accountController.resetPassword);
-router.post("/setPermissions", accountController.setPermissions);
+router.post(
+  "/setPermissions",
+  jwtSession.validateUser,
+  accountController.setPermissions
+);
 
 router.post("/login/:email?", accountController.login, jwtSession.login);
 router.get("/logout", (req, res) => {

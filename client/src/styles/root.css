@@ -1,11 +1,9 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans|Reem+Kufi&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Open+Sans|Reem+Kufi&display=swap");
 
 body {
   margin: 0;
   font-size: 16px;
-  font-family: -apple-system, BlinkMacSystemFont, "Reem Kufi", "Segoe UI",
-    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
-    "Helvetica Neue", sans-serif;
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

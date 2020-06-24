@@ -1,7 +1,5 @@
 import React from "react";
 
-import "./css/styles.css";
-import "./css/custom.css";
 import aboutbg from "./assets/about-bg.png";
 import iconSpacer from "./assets/icon-spacer.svg";
 import iconSpacerBlue from "./assets/icon-spacer-blue.svg";
@@ -13,6 +11,9 @@ import foodBank from "./assets/food-bank.png";
 import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles(() => ({
+  outer: {
+    background: "#f0f0f0",
+  },
   main: {
     padding: "1.5rem 0;",
     maxWidth: "1200px",
@@ -32,23 +33,12 @@ const useStyles = makeStyles(() => ({
       color: "#336699",
     },
   },
+  figure: {
+    margin: 0,
+    padding: 0,
+  },
   icon: {
     flexBasis: "100%",
-  },
-  section: {
-    padding: "32px",
-    margin: "32px 0",
-    borderRadius: "24px",
-    backgroundColor: "yellow",
-    h2: {
-      flexBasis: "100",
-      textTransform: "uppercase;",
-      textAlign: "center",
-      fontWeight: "500",
-      fontSize: "32px",
-      marginTop: "10px",
-      marginBottom: "20px",
-    },
   },
   mission: {
     padding: "32px",
@@ -91,9 +81,12 @@ const useStyles = makeStyles(() => ({
     padding: "48px 32px",
     justifyContent: "space-between",
     alignItems: "center",
+    display: "flex",
+    flexWrap: "wrap",
     flexDirection: "column",
     "& $h2": {
       color: "#4d4d4d",
+      width: "100%",
       flexBasis: "100",
       textTransform: "uppercase;",
       textAlign: "center",
@@ -119,13 +112,13 @@ const About = () => {
   const classes = useStyles();
   // const { t } = useTranslation("about");
   return (
-    <>
+    <div className={classes.outer}>
       <h1 className={classes.title}>
         <span>About</span> Food Oasis / LA
       </h1>
       <div className={classes.main}>
-        <figure>
-          <img alt="About" src={aboutbg} />
+        <figure className={classes.figure}>
+          <img alt="About" src={aboutbg} style={{ width: "100%" }} />
         </figure>
         <div className={classes.mission}>
           <img
@@ -219,7 +212,7 @@ const About = () => {
           />
         </section>
       </div>
-    </>
+    </div>
   );
 };
 

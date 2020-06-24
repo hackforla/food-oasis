@@ -79,10 +79,11 @@ const useStyles = makeStyles((theme) => ({
     height: 22,
   },
   submit: {
-    height: "42px",
+    height: "40px",
     minWidth: "25px",
     backgroundColor: "#BCE76D",
-    borderRadius: "0 4px 4px 0",
+    marginLeft: "0.5em",
+    borderRadius: "0 6px 6px 0",
     boxShadow: "none",
     "& .MuiButton-startIcon": {
       marginRight: 0,
@@ -156,7 +157,7 @@ const ResultsFilters = ({
           ? VERIFICATION_STATUS.VERIFIED
           : 0,
       });
-      console.log(storage);
+      // console.log(storage);
       if (origin.locationName && origin.latitude && origin.longitude)
         storage.origin = JSON.stringify({
           locationName: origin.locationName,
@@ -166,6 +167,11 @@ const ResultsFilters = ({
       if (categoryIds.length) storage.categoryIds = JSON.stringify(categoryIds);
       storage.radius = JSON.stringify(radius);
       storage.verified = JSON.stringify(isVerifiedSelected);
+      setViewport({
+        zoom: viewPortHash[radius],
+        latitude: origin.latitude,
+        longitude: origin.longitude,
+      });
     },
     [
       search,
@@ -177,6 +183,7 @@ const ResultsFilters = ({
       radius,
       categoryIds,
       isVerifiedSelected,
+      setViewport,
     ]
   );
 

@@ -22,20 +22,26 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    borderRadius: "24px",
   },
   logoContainer: {
-    margin: "20px 0",
+    margin: "20px 0 10px 0",
+    textAlign: "center",
   },
   header: {
     marginBottom: theme.spacing(1),
   },
   subtitle: {
-    marginBottom: theme.spacing(3),
+    marginTop: theme.spacing(1),
+    fontWeight: "500",
+    fontSize: "20px",
+    marginBottom: ".25em",
+    color: "darygray",
   },
   label: {
     textAlign: "center",
-    fontWeight: 600,
     marginTop: 10,
+    marginBottom: "0.5em",
     padding: "0 3vw",
     [theme.breakpoints.down("xs")]: {
       padding: 0,
@@ -49,6 +55,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     backgroundColor: "#336699",
     padding: "10px 35px",
+    borderRadius: "24px",
     color: "#fff",
     [theme.breakpoints.down("xs")]: {
       padding: "15px",
@@ -58,6 +65,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "flex-start",
     justifyContent: "center",
+    marginBottom: "1em",
   },
   address: {
     marginTop: theme.spacing(1),
@@ -75,7 +83,8 @@ const useStyles = makeStyles((theme) => ({
     height: "42px",
     minWidth: "25px",
     backgroundColor: "#BCE76D",
-    borderRadius: "0 4px 4px 0",
+    borderRadius: "0 6px 6px 0",
+    marginLeft: ".5em",
     boxShadow: "none",
     "& .MuiButton-startIcon": {
       marginRight: 0,
@@ -92,10 +101,11 @@ const useStyles = makeStyles((theme) => ({
   logo: {
     width: 161,
     height: "auto",
+    textAlign: "center",
   },
   searchIcon: {
-    width: 22,
-    height: 22,
+    width: 32,
+    height: 32,
   },
 }));
 
@@ -109,12 +119,18 @@ const Home = (props) => {
       <Paper className={classes.paper}>
         <Box className={classes.logoContainer}>
           <img src={logo} alt="logo" className={classes.logo} />
+          <Typography className={classes.subtitle}>
+            Your free food directory in Los Angeles
+          </Typography>
         </Box>
         <Box className={classes.formContainer}>
           <form
             className={classes.form}
             onSubmit={() => props.history.push("/organizations")}
           >
+            <Typography variant={"h5"} className={classes.label}>
+              Locate free food resources in Los Angeles
+            </Typography>
             <Box className={classes.inputContainer}>
               <Search
                 userCoordinates={userCoordinates}
@@ -133,9 +149,6 @@ const Home = (props) => {
                 {""}
               </Button>
             </Box>
-            <Typography className={classes.label}>
-              Locate free food resources in Los Angeles
-            </Typography>
           </form>
         </Box>
       </Paper>

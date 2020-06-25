@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import ReactMapGL, { NavigationControl } from "react-map-gl";
 import MarkerPopup from "./MarkerPopup";
@@ -22,8 +22,6 @@ const styles = {
 };
 
 function Map({
-  selectedLatitude,
-  selectedLongitude,
   stakeholders,
   categoryIds,
   doSelectStakeholder,
@@ -33,23 +31,22 @@ function Map({
   setIsPopupOpen,
   isWindow960orLess,
   isMobile,
+  viewport,
+  setViewport,
 }) {
   const categoryIdsOrDefault = categoryIds.length
     ? categoryIds
     : DEFAULT_CATEGORIES;
 
-  const storage = window.localStorage;
-
-  const [viewport, setViewport] = useState({
-    zoom: 10, // TODO: can we dynamically control zoom radius based on selectedDistance?
-    latitude: selectedLatitude || JSON.parse(storage.origin).latitude,
-    longitude: selectedLongitude || JSON.parse(storage.origin).longitude,
-  });
-
   const handleMarkerClick = (clickedStakeholder) => {
     setSelectedPopUp(clickedStakeholder);
     setIsPopupOpen(true);
     doSelectStakeholder(clickedStakeholder);
+    setViewport({
+      ...viewport,
+      latitude: clickedStakeholder.latitude,
+      longitude: clickedStakeholder.longitude,
+    });
   };
 
   const handleClose = () => {
@@ -84,8 +81,6 @@ function Map({
               const categories = stakeholder.categories.filter(({ id }) => {
                 return categoryIdsOrDefault.includes(id);
               });
-
-              /* console.log(categories) */
 
               const color =
                 stakeholder.inactiveTemporary || stakeholder.inactive

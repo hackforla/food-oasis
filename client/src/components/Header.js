@@ -65,7 +65,9 @@ export default function Header(props) {
 
   const styles = isHomePage ? homePageStyles : defaultStyles;
   const classes = useStyles(styles);
-  const taglineText = isHomePage ? "" : "Hunger Free Los Angeles";
+  const taglineText = isHomePage
+    ? ""
+    : "Locate free food resources in Los Angeles";
 
   return (
     <>

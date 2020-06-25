@@ -22,7 +22,7 @@ const theme = createMuiTheme({
     },
   },
   typography: {
-    fontFamily: '"Verdana", "Helvetica Neue", Helvetica, sans-serif;',
+    fontFamily: '"Helvetica Neue", Helvetica, sans-serif;',
   },
   overrides: {
     MuiButton: {

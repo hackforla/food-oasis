@@ -21,7 +21,8 @@ const useStyles = makeStyles(() => ({
   },
   address: {
     backgroundColor: "#fff",
-    borderRadius: "4px 0 0 4px",
+    borderRadius: "6px",
+    cornerRadius: "6px",
     height: 41,
 
     "& .MuiOutlinedInput-root": {
@@ -104,7 +105,7 @@ export default function Search(props) {
         variant="outlined"
         margin="none"
         fullWidth
-        placeholder="Enter an address, neighborhood, ZIP"
+        placeholder="Search by address, neighborhood, or zip code"
         name="address"
         size="small"
         autoFocus

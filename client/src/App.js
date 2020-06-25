@@ -13,7 +13,7 @@ import SecurityAdminDashboard from "./components/SecurityAdminDashboard/Security
 import StakeholderEdit from "./components/StakeholderEdit";
 import Donate from "./components/Donate";
 import Resources from "./components/Resources";
-import About from "./components/About";
+import About from "./components/StaticPages/About";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import ForgotPassword from "./components/ForgotPassword";

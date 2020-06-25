@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Footer = (props) => {
-  const { userCoordinates } = props;
+  // const { userCoordinates } = props;
   const isHomePage = useLocationHook();
   const classes = useStyles();
 
@@ -23,11 +23,11 @@ const Footer = (props) => {
     <Box className={classes.footer}>
       <Copyright />
       <Typography variant="body2" color="textSecondary" align="center">
-        {userCoordinates && userCoordinates.latitude
+        {/* {userCoordinates && userCoordinates.latitude
           ? `My location - Lat: ${userCoordinates.latitude.toFixed(
               6
             )} Lon: ${userCoordinates.longitude.toFixed(6)}`
-          : "Enable location in your browser to use location-dependent features"}
+          : "Enable location in your browser to use location-dependent features"} */}
       </Typography>
     </Box>
   );

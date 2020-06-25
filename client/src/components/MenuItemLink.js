@@ -23,11 +23,11 @@ export default function MenuItemLink({ to, text, userSection, onClick }) {
   );
 
   return (
-    <li className={userSection && classes.background}>
+    <span className={userSection && classes.background}>
       <ListItem button component={renderLink} onClick={onClick}>
         <ListItemText primary={text} />
       </ListItem>
-    </li>
+    </span>
   );
 }
 

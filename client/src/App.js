@@ -246,9 +246,7 @@ function App() {
               </Route>
             </Switch>
             <Grid item>
-              <Footer
-              /* userCoordinates={userCoordinates} */
-              />
+              <Footer />
             </Grid>
             <Toast toast={toast} setToast={setToast} />
           </div>

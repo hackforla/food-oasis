@@ -71,13 +71,15 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#008000",
     padding: ".25em",
     borderRadius: "3px",
+    margin: ".25em 0",
   },
   closingSoonIndicatorLabel: {
     color: "#fff",
     alignSelf: "flex-start",
-    backgroundColor: "#800000",
+    backgroundColor: "#CC3333",
     padding: ".25em",
     borderRadius: "3px",
+    margin: ".25em 0",
   },
 }));
 
@@ -106,6 +108,8 @@ const ResultsList = ({
   stakeholders,
   setSelectedPopUp,
   setIsPopupOpen,
+  viewport,
+  setViewport,
 }) => {
   const classes = useStyles();
 
@@ -113,6 +117,11 @@ const ResultsList = ({
     doSelectStakeholder(stakeholder);
     setIsPopupOpen(true);
     setSelectedPopUp(stakeholder);
+    setViewport({
+      ...viewport,
+      latitude: stakeholder.latitude,
+      longitude: stakeholder.longitude,
+    });
   };
 
   return (

@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   map: {
     textAlign: "center",
     fontSize: "12px",
-    // maxWidth: "100%",
+    maxWidth: "100%",
     flexGrow: 1,
   },
 }));
@@ -67,7 +67,7 @@ export default function ResultsContainer(props) {
       ? userSearch.locationName
       : storage.origin
       ? JSON.parse(storage.origin).locationName
-      : null,
+      : "",
     latitude: userSearch
       ? userSearch.latitude
       : storage.origin
@@ -95,6 +95,22 @@ export default function ResultsContainer(props) {
   const [selectedPopUp, setSelectedPopUp] = React.useState(null);
   const [isPopupOpen, setIsPopupOpen] = React.useState(false);
 
+  const viewPortHash = {
+    1: 13.5,
+    2: 12.5,
+    3: 12,
+    5: 11,
+    10: 10,
+    20: 9,
+    50: 8,
+  };
+
+  const [viewport, setViewport] = React.useState({
+    zoom: viewPortHash[radius],
+    latitude: origin.latitude || JSON.parse(storage.origin).latitude,
+    longitude: origin.longitude || JSON.parse(storage.origin).longitude,
+  });
+
   const topLevelProps = {
     radius,
     setRadius,
@@ -116,6 +132,8 @@ export default function ResultsContainer(props) {
           data={data}
           search={search}
           isWindow960orLess={isWindow960orLess}
+          viewport={viewport}
+          setViewport={setViewport}
         />
       </Grid>
       <Grid item xs={12}>
@@ -134,22 +152,17 @@ export default function ResultsContainer(props) {
               setSelectedPopUp={setSelectedPopUp}
               setIsPopupOpen={setIsPopupOpen}
               isWindow960orLess={isWindow960orLess}
+              viewport={viewport}
+              setViewport={setViewport}
             />
           </Grid>
-          <Grid
-            item
-            xs={12}
-            md={8}
-            className={classes.map}
-            style={{ maxWidth: isMobile ? "100%" : "98%" }}
-          >
-            {/* above line stopgab for scrolling on smaller desktop devices */}
+          <Grid item xs={12} md={8} className={classes.map}>
             <ResultsMap
+              viewport={viewport}
+              setViewport={setViewport}
               stakeholders={data}
               doSelectStakeholder={doSelectStakeholder}
               categoryIds={categoryIds}
-              selectedLatitude={origin.latitude}
-              selectedLongitude={origin.longitude}
               selectedPopUp={selectedPopUp}
               setSelectedPopUp={setSelectedPopUp}
               isPopupOpen={isPopupOpen}

@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
   filterGroupButton: {
     margin: "0 .25rem",
     fontSize: "max(.8vw,10px)",
+    whiteSpace: "nowrap",
     backgroundColor: "#fff",
     border: ".1em solid #000",
     color: "#000",
@@ -34,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
   filterButton: {
     margin: "0 .25rem",
     fontSize: "max(.8vw,10px)",
+    whiteSpace: "nowrap",
     backgroundColor: "#fff",
     border: ".1em solid #000",
     color: "#000",
@@ -54,6 +56,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#336699",
     padding: "1rem 0",
     display: "flex",
+    position: "relative",
   },
   inputHolder: {
     display: "flex",
@@ -76,10 +79,11 @@ const useStyles = makeStyles((theme) => ({
     height: 22,
   },
   submit: {
-    height: "42px",
+    height: "40px",
     minWidth: "25px",
     backgroundColor: "#BCE76D",
-    borderRadius: "0 4px 4px 0",
+    marginLeft: "0.5em",
+    borderRadius: "0 6px 6px 0",
     boxShadow: "none",
     "& .MuiButton-startIcon": {
       marginRight: 0,
@@ -100,6 +104,16 @@ const useStyles = makeStyles((theme) => ({
 
 const distanceInfo = [1, 2, 3, 5, 10, 20, 50];
 
+const viewPortHash = {
+  1: 13.5,
+  2: 12.5,
+  3: 12,
+  5: 11,
+  10: 10,
+  20: 9,
+  50: 8,
+};
+
 const ResultsFilters = ({
   data,
   origin,
@@ -113,6 +127,8 @@ const ResultsFilters = ({
   categoryIds,
   toggleCategory,
   isWindow960orLess,
+  viewport,
+  setViewport,
 }) => {
   const classes = useStyles();
 
@@ -141,7 +157,7 @@ const ResultsFilters = ({
           ? VERIFICATION_STATUS.VERIFIED
           : 0,
       });
-      console.log(storage);
+      // console.log(storage);
       if (origin.locationName && origin.latitude && origin.longitude)
         storage.origin = JSON.stringify({
           locationName: origin.locationName,
@@ -151,6 +167,11 @@ const ResultsFilters = ({
       if (categoryIds.length) storage.categoryIds = JSON.stringify(categoryIds);
       storage.radius = JSON.stringify(radius);
       storage.verified = JSON.stringify(isVerifiedSelected);
+      setViewport({
+        zoom: viewPortHash[radius],
+        latitude: origin.latitude,
+        longitude: origin.longitude,
+      });
     },
     [
       search,
@@ -162,6 +183,7 @@ const ResultsFilters = ({
       radius,
       categoryIds,
       isVerifiedSelected,
+      setViewport,
     ]
   );
 
@@ -173,16 +195,18 @@ const ResultsFilters = ({
     toggleCategory(FOOD_PANTRY_CATEGORY_ID);
   }, [toggleCategory]);
 
-  // //loading search
-  // useEffect(() => {
-  //   doHandleSearch();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
   useEffect(() => {
     doHandleSearch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [radius, categoryIds, isVerifiedSelected, toggleCategory]);
+
+  const handleDistanceChange = (distance) => {
+    setRadius(distance);
+    setViewport({
+      ...viewport,
+      zoom: viewPortHash[distance],
+    });
+  };
 
   return (
     <Grid
@@ -206,7 +230,7 @@ const ResultsFilters = ({
               name="select-distance"
               disableUnderline
               value={radius}
-              onChange={(e) => setRadius(e.target.value)}
+              onChange={(e) => handleDistanceChange(e.target.value)}
               inputProps={{
                 name: "select-distance",
                 id: "select-distance",

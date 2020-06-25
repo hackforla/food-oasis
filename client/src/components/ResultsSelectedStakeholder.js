@@ -143,6 +143,37 @@ const SelectedStakeholderDisplay = ({
 }) => {
   const classes = useStyles();
 
+  const dayOfWeek = (dayOfWeekString) => {
+    switch (dayOfWeekString.toLowerCase()) {
+      case "sun":
+        return 1;
+      case "mon":
+        return 2;
+      case "tue":
+        return 3;
+      case "wed":
+        return 4;
+      case "thu":
+        return 5;
+      case "fri":
+        return 6;
+      default:
+        return 7;
+    }
+  };
+
+  const hoursSort = (h1, h2) => {
+    if (h1.week_of_month !== h2.week_of_month) {
+      return h1.week_of_month < h2.week_of_month ? -1 : 1;
+    }
+    const h1dow = dayOfWeek(h1.day_of_week);
+    const h2dow = dayOfWeek(h2.day_of_week);
+    if (h1dow !== h2dow) {
+      return h1dow < h2dow ? -1 : 1;
+    }
+    return h1.open < h2.open ? -1 : 1;
+  };
+
   const standardTime = (timeStr) => {
     if (timeStr) {
       if (parseInt(timeStr.substring(0, 2)) === 12) {
@@ -262,7 +293,8 @@ const SelectedStakeholderDisplay = ({
           )}
         </div>
       </div>
-      {selectedStakeholder.submittedDate ? (
+      {selectedStakeholder.verificationStatusId ===
+      VERIFICATION_STATUS.VERIFIED ? (
         <p
           style={{
             color:
@@ -274,8 +306,12 @@ const SelectedStakeholderDisplay = ({
                 : "#CC3333",
           }}
         >
-          Data Verified on{" "}
-          {selectedStakeholder.submittedDate.format("MMM Do, YYYY")}
+          Data updated on{" "}
+          {selectedStakeholder.approvedDate
+            ? selectedStakeholder.approvedDate.format("MMM Do, YYYY")
+            : selectedStakeholder.modifiedDate
+            ? selectedStakeholder.modifiedDate.format("MMM Do, YYYY")
+            : selectedStakeholder.createdDate.format("MMM Do, YYYY")}
         </p>
       ) : null}
       <a
@@ -304,20 +340,37 @@ const SelectedStakeholderDisplay = ({
           Directions
         </div>
       </a>
-      <h2 className={classes.title}>Hours</h2>
-      <div className={classes.hoursContainer}>
-        {selectedStakeholder.hours.map((hour) => (
-          <div
-            key={JSON.stringify(hour)}
-            className={classes.singleHourContainer}
-          >
-            <span>{hour.day_of_week}</span>
-            <span>
-              {standardTime(hour.open)}-{standardTime(hour.close)}
-            </span>
+      {selectedStakeholder.hours ? (
+        <>
+          <h2 className={classes.title}>Hours</h2>
+          <div className={classes.hoursContainer}>
+            {selectedStakeholder.hours.sort(hoursSort).map((hour) => (
+              <div
+                key={JSON.stringify(hour)}
+                className={classes.singleHourContainer}
+              >
+                <span>
+                  {hour.week_of_month === 5
+                    ? "Last " + hour.day_of_week
+                    : hour.week_of_month === 1
+                    ? "1st " + hour.day_of_week
+                    : hour.week_of_month === 2
+                    ? "2nd " + hour.day_of_week
+                    : hour.week_of_month === 3
+                    ? "3rd " + hour.day_of_week
+                    : hour.week_of_month === 3
+                    ? "4th " + hour.day_of_week
+                    : hour.day_of_week}
+                </span>
+                <span>
+                  {standardTime(hour.open)}-{standardTime(hour.close)}
+                </span>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </>
+      ) : null}
+
       <h2 className={classes.title}>Phone</h2>
       {selectedStakeholder.phone ? (
         <span className={classes.fontSize}>{selectedStakeholder.phone}</span>
@@ -339,28 +392,32 @@ const SelectedStakeholderDisplay = ({
       ) : (
         <span className={classes.fontSize}>No special requirements</span>
       )}
+
       <h2 className={classes.title}>Languages</h2>
-      {selectedStakeholder.requirements ? (
+      {selectedStakeholder.languages ? (
         <span className={classes.fontSize}>
           {selectedStakeholder.languages}
         </span>
       ) : (
         <span className={classes.fontSize}>No information on languages.</span>
       )}
+
       <h2 className={classes.title}>Notes</h2>
-      {selectedStakeholder.requirements ? (
+      {selectedStakeholder.notes ? (
         <span className={classes.fontSize}>{selectedStakeholder.notes}</span>
       ) : (
         <span className={classes.fontSize}>No notes to display.</span>
       )}
+
       <h2 className={classes.title}>Covid Notes</h2>
-      {selectedStakeholder.requirements ? (
+      {selectedStakeholder.covidNotes ? (
         <span className={classes.fontSize}>
           {selectedStakeholder.covidNotes}
         </span>
       ) : (
         <span className={classes.fontSize}>No covid notes to display.</span>
       )}
+
       {selectedStakeholder.website ? (
         <React.Fragment>
           <h2 className={classes.title}>Website</h2>
@@ -374,6 +431,7 @@ const SelectedStakeholderDisplay = ({
           </a>
         </React.Fragment>
       ) : null}
+
       {selectedStakeholder.services ? (
         <React.Fragment>
           <h2 className={classes.title}>Services</h2>
@@ -382,12 +440,14 @@ const SelectedStakeholderDisplay = ({
           </span>
         </React.Fragment>
       ) : null}
+
       {selectedStakeholder.items ? (
         <React.Fragment>
           <h2 className={classes.title}>Items Available</h2>
           <span className={classes.fontSize}>{selectedStakeholder.items}</span>
         </React.Fragment>
       ) : null}
+
       {selectedStakeholder.facebook || selectedStakeholder.instagram ? (
         <React.Fragment>
           <h2 className={classes.title}>Social Media</h2>

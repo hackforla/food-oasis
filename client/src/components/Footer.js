@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: "none",
     fontSize: "16px",
     textTransform: "uppercase",
-    margin: ".4em 0",
+    margin: ".4em 0 .4em 1.5em",
 
     "&:hover": {
       textDecoration: "underline",

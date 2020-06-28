@@ -55,13 +55,13 @@ function Map({
   };
 
   return (
-    <div>
+    <>
       <ReactMapGL
         {...viewport}
         dragPan={isWindow960orLess && isMobile ? false : true}
         touchAction="pan-y"
         width="100%"
-        height="max(calc(100vh - 250px),55em)"
+        height="100%"
         onViewportChange={(newViewport) => setViewport(newViewport)}
         mapboxApiAccessToken={MAPBOX_TOKEN}
         mapStyle={MAPBOX_STYLE}
@@ -104,7 +104,7 @@ function Map({
           <MarkerPopup entity={selectedPopUp} handleClose={handleClose} />
         )}
       </ReactMapGL>
-    </div>
+    </>
   );
 }
 

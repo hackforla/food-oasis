@@ -3,6 +3,7 @@ import SelectedStakeholderDisplay from "./ResultsSelectedStakeholder";
 import PropTypes from "prop-types";
 import moment from "moment";
 import mapMarker from "./mapMarker";
+import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import pantryIcon from "../images/pantryIcon.svg";
 import pantryIconGrey from "../images/pantryIconGrey.svg";
@@ -17,6 +18,17 @@ import {
 } from "../constants/stakeholder";
 
 const useStyles = makeStyles((theme) => ({
+  list: {
+    textAlign: "center",
+    fontSize: "12px",
+    [theme.breakpoints.up("md")]: {
+      overflow: "scroll",
+      height: "100%",
+    },
+    [theme.breakpoints.down("sm")]: {
+      order: 1,
+    },
+  },
   stakeholderArrayHolder: {
     width: "100%",
     display: "flex",
@@ -125,142 +137,147 @@ const ResultsList = ({
   };
 
   return (
-    <div className={classes.stakeholderArrayHolder}>
-      {stakeholders && selectedStakeholder && !selectedStakeholder.inactive ? (
-        <SelectedStakeholderDisplay
-          doSelectStakeholder={doSelectStakeholder}
-          selectedStakeholder={selectedStakeholder}
-        />
-      ) : stakeholders ? (
-        stakeholders.map((stakeholder) => {
-          const currentDayOfWeek = moment().format("ddd");
-          const currentTime = moment().format("HH:mm:ss");
-          let isAlmostClosed;
+    <Grid item xs={12} md={4} className={classes.list}>
+      <div className={classes.stakeholderArrayHolder}>
+        {stakeholders &&
+        selectedStakeholder &&
+        !selectedStakeholder.inactive ? (
+          <SelectedStakeholderDisplay
+            doSelectStakeholder={doSelectStakeholder}
+            selectedStakeholder={selectedStakeholder}
+          />
+        ) : stakeholders ? (
+          stakeholders.map((stakeholder) => {
+            const currentDayOfWeek = moment().format("ddd");
+            const currentTime = moment().format("HH:mm:ss");
+            let isAlmostClosed;
 
-          const currentDaysHoursOfOperation = stakeholder.hours.filter(
-            (day) => {
-              return (
-                currentDayOfWeek === day.day_of_week &&
-                currentTime >=
-                  moment(day.open, "HH:mm:ss").format("HH:mm:ss") &&
-                currentTime < moment(day.close, "HH:mm:ss").format("HH:mm:ss")
-              );
-            }
-          );
+            const currentDaysHoursOfOperation = stakeholder.hours.filter(
+              (day) => {
+                return (
+                  currentDayOfWeek === day.day_of_week &&
+                  currentTime >=
+                    moment(day.open, "HH:mm:ss").format("HH:mm:ss") &&
+                  currentTime < moment(day.close, "HH:mm:ss").format("HH:mm:ss")
+                );
+              }
+            );
 
-          isAlmostClosed =
-            currentDaysHoursOfOperation[0] &&
-            moment(currentDaysHoursOfOperation[0].close, "HH:mm:ss").diff(
-              moment(currentTime, "HH:mm:ss"),
-              "minutes"
-            ) <= 30;
+            isAlmostClosed =
+              currentDaysHoursOfOperation[0] &&
+              moment(currentDaysHoursOfOperation[0].close, "HH:mm:ss").diff(
+                moment(currentTime, "HH:mm:ss"),
+                "minutes"
+              ) <= 30;
 
-          return (
-            <div
-              className={classes.stakeholderHolder}
-              key={stakeholder.id}
-              onClick={() => handleStakeholderClick(stakeholder)}
-            >
-              <div className={classes.imgHolder}>
-                <img
-                  src={iconReturn(stakeholder)}
-                  alt={
-                    stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
-                      ? "Pantry Icon"
-                      : "Meal Icon"
-                  }
-                  className={classes.typeLogo}
-                />
-              </div>
-              <div className={classes.infoHolder}>
-                <span>{stakeholder.name}</span>
-                <span>{stakeholder.address1}</span>
-                <div>
-                  {stakeholder.city} {stakeholder.zip}
+            return (
+              <div
+                className={classes.stakeholderHolder}
+                key={stakeholder.id}
+                onClick={() => handleStakeholderClick(stakeholder)}
+              >
+                <div className={classes.imgHolder}>
+                  <img
+                    src={iconReturn(stakeholder)}
+                    alt={
+                      stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
+                        ? "Pantry Icon"
+                        : "Meal Icon"
+                    }
+                    className={classes.typeLogo}
+                  />
                 </div>
-                <em
-                  style={{
-                    color:
-                      stakeholder.inactiveTemporary || stakeholder.inactive
-                        ? "#545454"
-                        : stakeholder.categories[0].id ===
+                <div className={classes.infoHolder}>
+                  <span>{stakeholder.name}</span>
+                  <span>{stakeholder.address1}</span>
+                  <div>
+                    {stakeholder.city} {stakeholder.zip}
+                  </div>
+                  <em
+                    style={{
+                      color:
+                        stakeholder.inactiveTemporary || stakeholder.inactive
+                          ? "#545454"
+                          : stakeholder.categories[0].id ===
+                            MEAL_PROGRAM_CATEGORY_ID
+                          ? "#CC3333"
+                          : "#336699",
+                    }}
+                  >
+                    {stakeholder.categories[0].name}
+                  </em>
+                  <div className={classes.labelHolder}>
+                    {stakeholder.categories[1] ? (
+                      <em
+                        style={{
+                          alignSelf: "flex-start",
+                          color:
+                            stakeholder.categories[1].id ===
+                            FOOD_PANTRY_CATEGORY_ID
+                              ? "#336699"
+                              : "#CC3333",
+                        }}
+                      >
+                        {stakeholder.categories[1].name}
+                      </em>
+                    ) : null}
+                    {stakeholder.inactiveTemporary || stakeholder.inactive ? (
+                      <em className={classes.closedLabel}>
+                        {stakeholder.inactiveTemporary
+                          ? "Temporarily Closed"
+                          : "Closed"}
+                      </em>
+                    ) : null}
+
+                    {currentDaysHoursOfOperation.length > 0 &&
+                    !(stakeholder.inactiveTemporary || stakeholder.inactive) ? (
+                      <em className={classes.openIndicatorLabel}>OPEN</em>
+                    ) : null}
+
+                    {currentDaysHoursOfOperation.length > 0 &&
+                    !(stakeholder.inactiveTemporary || stakeholder.inactive) &&
+                    isAlmostClosed ? (
+                      <em className={classes.closingSoonIndicatorLabel}>
+                        Closing Soon
+                      </em>
+                    ) : null}
+                  </div>
+                </div>
+                <div className={classes.checkHolder}>
+                  {stakeholder.distance >= 10
+                    ? stakeholder.distance
+                        .toString()
+                        .substring(0, 3)
+                        .padEnd(4, "0")
+                    : stakeholder.distance.toString().substring(0, 3)}{" "}
+                  mi
+                  {mapMarker(
+                    stakeholder.inactiveTemporary || stakeholder.inactive
+                      ? "#545454"
+                      : stakeholder.categories[0].id ===
+                          FOOD_PANTRY_CATEGORY_ID &&
+                        stakeholder.categories[1] &&
+                        stakeholder.categories[1].id ===
                           MEAL_PROGRAM_CATEGORY_ID
-                        ? "#CC3333"
-                        : "#336699",
-                  }}
-                >
-                  {stakeholder.categories[0].name}
-                </em>
-                <div className={classes.labelHolder}>
-                  {stakeholder.categories[1] ? (
-                    <em
-                      style={{
-                        alignSelf: "flex-start",
-                        color:
-                          stakeholder.categories[1].id ===
-                          FOOD_PANTRY_CATEGORY_ID
-                            ? "#336699"
-                            : "#CC3333",
-                      }}
-                    >
-                      {stakeholder.categories[1].name}
-                    </em>
-                  ) : null}
-                  {stakeholder.inactiveTemporary || stakeholder.inactive ? (
-                    <em className={classes.closedLabel}>
-                      {stakeholder.inactiveTemporary
-                        ? "Temporarily Closed"
-                        : "Closed"}
-                    </em>
-                  ) : null}
-
-                  {currentDaysHoursOfOperation.length > 0 &&
-                  !(stakeholder.inactiveTemporary || stakeholder.inactive) ? (
-                    <em className={classes.openIndicatorLabel}>OPEN</em>
-                  ) : null}
-
-                  {currentDaysHoursOfOperation.length > 0 &&
-                  !(stakeholder.inactiveTemporary || stakeholder.inactive) &&
-                  isAlmostClosed ? (
-                    <em className={classes.closingSoonIndicatorLabel}>
-                      Closing Soon
-                    </em>
-                  ) : null}
+                      ? ""
+                      : stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
+                      ? "#336699"
+                      : "#CC3333",
+                    stakeholder.verificationStatusId ===
+                      VERIFICATION_STATUS.VERIFIED
+                      ? true
+                      : false,
+                    stakeholder.inactiveTemporary || stakeholder.inactive
+                      ? true
+                      : false
+                  )}
                 </div>
               </div>
-              <div className={classes.checkHolder}>
-                {stakeholder.distance >= 10
-                  ? stakeholder.distance
-                      .toString()
-                      .substring(0, 3)
-                      .padEnd(4, "0")
-                  : stakeholder.distance.toString().substring(0, 3)}{" "}
-                mi
-                {mapMarker(
-                  stakeholder.inactiveTemporary || stakeholder.inactive
-                    ? "#545454"
-                    : stakeholder.categories[0].id ===
-                        FOOD_PANTRY_CATEGORY_ID &&
-                      stakeholder.categories[1] &&
-                      stakeholder.categories[1].id === MEAL_PROGRAM_CATEGORY_ID
-                    ? ""
-                    : stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
-                    ? "#336699"
-                    : "#CC3333",
-                  stakeholder.verificationStatusId ===
-                    VERIFICATION_STATUS.VERIFIED
-                    ? true
-                    : false,
-                  stakeholder.inactiveTemporary || stakeholder.inactive
-                    ? true
-                    : false
-                )}
-              </div>
-            </div>
-          );
-        })
-      ) : null}
-    </div>
+            );
+          })
+        ) : null}
+      </div>
+    </Grid>
   );
 };
 

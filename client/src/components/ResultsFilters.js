@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   controlPanel: {
     backgroundColor: "#336699",
     padding: "1rem 0",
-    minHeight: "73px",
+    flex: "1 0 auto",
   },
   inputHolder: {
     display: "flex",

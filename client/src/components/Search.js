@@ -21,21 +21,21 @@ const useStyles = makeStyles(() => ({
   },
   address: {
     backgroundColor: "#fff",
-    borderRadius: "6px",
+    borderRadius: "4px 0 0 4px",
     cornerRadius: "6px",
-    height: 41,
+    height: 40,
 
-    "& .MuiOutlinedInput-root": {
-      borderRadius: "4px 0 0 4px",
-    },
-    "& .MuiOutlinedInput-input": {
-      padding: "11.5px 14px",
-    },
+    // "& .MuiOutlinedInput-root": {
+    //   borderRadius: "4px 0 0 4px",
+    // },
+    // "& .MuiOutlinedInput-input": {
+    //   padding: "11.5px 14px",
+    // },
     "& .MuiInputLabel-outlined": {
       transform: "translate(14px, 14px) scale(1)",
     },
     "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-      borderColor: "#63A4E5",
+      borderColor: "white",
       borderRight: "none",
     },
   },

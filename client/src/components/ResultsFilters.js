@@ -73,8 +73,8 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   searchIcon: {
-    width: 22,
-    height: 22,
+    width: 32,
+    height: 32,
   },
   submit: {
     height: "40px",
@@ -292,7 +292,7 @@ const ResultsFilters = ({
               selectVerified(!isVerifiedSelected);
             }}
           >
-            Verified Data
+            Updated Data
           </Button>
         </Grid>
       </Grid>

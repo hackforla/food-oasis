@@ -52,11 +52,9 @@ const useStyles = makeStyles((theme) => ({
     color: "#000",
   },
   controlPanel: {
-    width: "100%",
     backgroundColor: "#336699",
     padding: "1rem 0",
-    display: "flex",
-    position: "relative",
+    flex: "1 0 auto",
   },
   inputHolder: {
     display: "flex",
@@ -75,8 +73,8 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   searchIcon: {
-    width: 22,
-    height: 22,
+    width: 32,
+    height: 32,
   },
   submit: {
     height: "40px",
@@ -210,10 +208,13 @@ const ResultsFilters = ({
 
   return (
     <Grid
+      item
       container
       wrap="wrap-reverse"
       className={classes.controlPanel}
-      style={{ justifyContent: isWindow960orLess ? null : "center" }}
+      style={{
+        justifyContent: isWindow960orLess ? null : "center",
+      }}
     >
       <Grid
         item
@@ -291,7 +292,7 @@ const ResultsFilters = ({
               selectVerified(!isVerifiedSelected);
             }}
           >
-            Verified Data
+            Updated Data
           </Button>
         </Grid>
       </Grid>

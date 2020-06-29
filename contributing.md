@@ -37,7 +37,7 @@ Instructions to install a development environment on your machine:
    ```
    npm install
    ```
-1. Obtain the `.env` file from the Food-Oasis/Developers G-Drive folder and place it in this directory. It contains private info (i.e., the production database connection string) that we cannot put in this public GitHub repo.
+1. Obtain the `dotenv` file from the Food-Oasis/Developers G-Drive folder and place it in this directory. It contains private info (i.e., the production database connection string) that we cannot put in this public GitHub repo. _Rename this file on your hard drive to `.env` - be sure to include the period at the beginning or it won't be recognized._
 1. Change to the client directory:
    ```
    cd client

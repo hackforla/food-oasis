@@ -36,10 +36,6 @@ const useStyles = makeStyles({
   app: (props) => ({
     color: "black",
     margin: "0",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    alignItems: "stretch",
     height: "100%",
     overflowY: "scroll",
   }),
@@ -144,10 +140,17 @@ function App() {
     <UserContext.Provider value={user}>
       <ThemeProvider theme={theme}>
         <Router>
-          <div className={classes.app}>
-            <Grid item>
-              <Header user={user} setUser={onLogin} setToast={setToast} />
-            </Grid>
+          <Grid
+            container
+            direction="column"
+            wrap="nowrap"
+            justify="stretch"
+            spacing={0}
+            classes={{
+              container: classes.app,
+            }}
+          >
+            <Header user={user} setUser={onLogin} setToast={setToast} />
             <Switch className={classes.mainContent}>
               <Route exact path="/">
                 <div
@@ -162,12 +165,10 @@ function App() {
                 </div>
               </Route>
               <Route path="/organizations">
-                <Grid item>
-                  <ResultsContainer
-                    userCoordinates={userCoordinates}
-                    userSearch={origin}
-                  />
-                </Grid>
+                <ResultsContainer
+                  userCoordinates={userCoordinates}
+                  userSearch={origin}
+                />
               </Route>
               <Route path="/stakeholders">
                 <StakeholdersContainer
@@ -245,11 +246,9 @@ function App() {
                 <ResetPassword setToast={setToast} />
               </Route>
             </Switch>
-            <Grid item>
-              <Footer userCoordinates={userCoordinates} />
-            </Grid>
+            <Footer userCoordinates={userCoordinates} />
             <Toast toast={toast} setToast={setToast} />
-          </div>
+          </Grid>
         </Router>
       </ThemeProvider>
     </UserContext.Provider>

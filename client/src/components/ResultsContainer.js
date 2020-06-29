@@ -18,16 +18,14 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "12px",
     border: "1px solid blue",
   },
-  list: {
-    textAlign: "center",
-    fontSize: "12px",
-    overflow: "scroll",
-  },
-  map: {
-    textAlign: "center",
-    fontSize: "12px",
-    maxWidth: "100%",
-    flexGrow: 1,
+  listMapContainer: {
+    [theme.breakpoints.down("sm")]: {
+      overflow: "scroll",
+      height: "100%",
+    },
+    [theme.breakpoints.up("md")]: {
+      height: "79%",
+    },
   },
 }));
 
@@ -125,54 +123,40 @@ export default function ResultsContainer(props) {
   };
 
   return (
-    <Grid container direction="row">
-      <Grid item xs={12}>
-        <ResultsFilters
-          {...topLevelProps}
-          data={data}
-          search={search}
+    <>
+      <ResultsFilters
+        {...topLevelProps}
+        data={data}
+        search={search}
+        isWindow960orLess={isWindow960orLess}
+        viewport={viewport}
+        setViewport={setViewport}
+      />
+      <Grid item container spacing={0} className={classes.listMapContainer}>
+        <ResultsList
+          selectedStakeholder={selectedStakeholder}
+          doSelectStakeholder={doSelectStakeholder}
+          stakeholders={data}
+          setSelectedPopUp={setSelectedPopUp}
+          setIsPopupOpen={setIsPopupOpen}
           isWindow960orLess={isWindow960orLess}
           viewport={viewport}
           setViewport={setViewport}
         />
+        <ResultsMap
+          viewport={viewport}
+          setViewport={setViewport}
+          stakeholders={data}
+          doSelectStakeholder={doSelectStakeholder}
+          categoryIds={categoryIds}
+          selectedPopUp={selectedPopUp}
+          setSelectedPopUp={setSelectedPopUp}
+          isPopupOpen={isPopupOpen}
+          setIsPopupOpen={setIsPopupOpen}
+          isWindow960orLess={isWindow960orLess}
+          isMobile={isMobile}
+        />
       </Grid>
-      <Grid item xs={12}>
-        <Grid container wrap="wrap-reverse">
-          <Grid
-            item
-            xs={12}
-            md={4}
-            className={classes.list}
-            style={{ height: isWindow960orLess ? "55em" : "" }}
-          >
-            <ResultsList
-              selectedStakeholder={selectedStakeholder}
-              doSelectStakeholder={doSelectStakeholder}
-              stakeholders={data}
-              setSelectedPopUp={setSelectedPopUp}
-              setIsPopupOpen={setIsPopupOpen}
-              isWindow960orLess={isWindow960orLess}
-              viewport={viewport}
-              setViewport={setViewport}
-            />
-          </Grid>
-          <Grid item xs={12} md={8} className={classes.map}>
-            <ResultsMap
-              viewport={viewport}
-              setViewport={setViewport}
-              stakeholders={data}
-              doSelectStakeholder={doSelectStakeholder}
-              categoryIds={categoryIds}
-              selectedPopUp={selectedPopUp}
-              setSelectedPopUp={setSelectedPopUp}
-              isPopupOpen={isPopupOpen}
-              setIsPopupOpen={setIsPopupOpen}
-              isWindow960orLess={isWindow960orLess}
-              isMobile={isMobile}
-            />
-          </Grid>
-        </Grid>
-      </Grid>
-    </Grid>
+    </>
   );
 }

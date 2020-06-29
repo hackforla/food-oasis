@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import useLocationHook from "hooks/useLocationHook";
 import Menu from "./Menu";
 import logo from "images/fola.svg";
-import { AppBar, Toolbar, Typography } from "@material-ui/core";
+import { AppBar, Grid, Toolbar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import LogoutButton from "./Logout";
 
@@ -71,36 +71,38 @@ export default function Header(props) {
 
   return (
     <>
-      <AppBar position="sticky" className={classes.header}>
-        <Toolbar>
-          <Menu user={user} setUser={setUser} setToast={setToast} />
-          <div className={classes.content}>
-            {!isHomePage && (
-              <div className={classes.homeLink}>
-                <a href="/">
-                  <img src={logo} className={classes.logo} alt="logo" />{" "}
-                </a>
-              </div>
-            )}
-            {!isHomePage && user ? (
-              <div className={classes.userLoggedIn}>
-                <Typography
-                  variant="h6"
-                  component="h1"
-                  className={classes.username}
-                >
-                  {user.firstName}
+      <Grid item>
+        <AppBar position="sticky" className={classes.header}>
+          <Toolbar>
+            <Menu user={user} setUser={setUser} setToast={setToast} />
+            <div className={classes.content}>
+              {!isHomePage && (
+                <div className={classes.homeLink}>
+                  <a href="/">
+                    <img src={logo} className={classes.logo} alt="logo" />{" "}
+                  </a>
+                </div>
+              )}
+              {!isHomePage && user ? (
+                <div className={classes.userLoggedIn}>
+                  <Typography
+                    variant="h6"
+                    component="h1"
+                    className={classes.username}
+                  >
+                    {user.firstName}
+                  </Typography>
+                  <LogoutButton setUser={setUser} setToast={setToast} />
+                </div>
+              ) : (
+                <Typography variant="subtitle1" className={classes.tagline}>
+                  {taglineText}
                 </Typography>
-                <LogoutButton setUser={setUser} setToast={setToast} />
-              </div>
-            ) : (
-              <Typography variant="subtitle1" className={classes.tagline}>
-                {taglineText}
-              </Typography>
-            )}
-          </div>
-        </Toolbar>
-      </AppBar>
+              )}
+            </div>
+          </Toolbar>
+        </AppBar>
+      </Grid>
     </>
   );
 }

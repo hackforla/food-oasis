@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import useLocationHook from "hooks/useLocationHook";
 import Menu from "./Menu";
 import logo from "images/fola.svg";
-import { AppBar, Grid, Toolbar, Typography } from "@material-ui/core";
+import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import LogoutButton from "./Logout";
 
@@ -14,37 +14,45 @@ Header.propTypes = {
 };
 
 const useStyles = makeStyles({
-  header: {
+  headerHolder: {
     backgroundColor: (props) => props.headerColor,
     marginBottom: (props) => props.headerMargin,
     boxShadow: (props) => props.headerShadow,
   },
+  header: {
+    minHeight: "60px",
+    padding: "0 1.5em 0 0",
+  },
   content: {
     display: "flex",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
     alignItems: "center",
     width: "100%",
-  },
-  homeLink: {
-    flexGrow: 1,
   },
   logo: {
     width: "3.5rem",
     height: "2.5rem",
     margin: ".5rem .75rem",
+
+    "&:hover": {
+      filter: "brightness(1.2)",
+    },
   },
   userLoggedIn: {
     display: "flex",
     justifyContent: "space-between",
     flexGrow: "1",
-    minHewight: "3rem",
+    minHeight: "3rem",
   },
   username: {
     color: "black",
   },
   tagline: {
-    color: "#336699",
+    color: "#1b1b1b",
     fontStyle: "italic",
+    paddingLeft: "9px",
+    lineHeight: "1.5",
+    fontFamily: `"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans- serif`,
   },
 });
 
@@ -59,7 +67,7 @@ export default function Header(props) {
   };
 
   const defaultStyles = {
-    headerColor: "#F1F1F1",
+    headerColor: "#FFF",
     headerMargin: "0",
   };
 
@@ -67,42 +75,40 @@ export default function Header(props) {
   const classes = useStyles(styles);
   const taglineText = isHomePage
     ? ""
-    : "Locate free food resources in Los Angeles";
+    : "Your free food directory in Los Angeles";
 
   return (
     <>
-      <Grid item>
-        <AppBar position="sticky" className={classes.header}>
-          <Toolbar>
-            <Menu user={user} setUser={setUser} setToast={setToast} />
-            <div className={classes.content}>
-              {!isHomePage && (
-                <div className={classes.homeLink}>
-                  <a href="/">
-                    <img src={logo} className={classes.logo} alt="logo" />{" "}
-                  </a>
-                </div>
-              )}
-              {!isHomePage && user ? (
-                <div className={classes.userLoggedIn}>
-                  <Typography
-                    variant="h6"
-                    component="h1"
-                    className={classes.username}
-                  >
-                    {user.firstName}
-                  </Typography>
-                  <LogoutButton setUser={setUser} setToast={setToast} />
-                </div>
-              ) : (
-                <Typography variant="subtitle1" className={classes.tagline}>
-                  {taglineText}
+      <AppBar position="sticky" className={classes.headerHolder}>
+        <Toolbar className={classes.header}>
+          <div className={classes.content}>
+            {!isHomePage && (
+              <div>
+                <a href="/">
+                  <img src={logo} className={classes.logo} alt="logo" />{" "}
+                </a>
+              </div>
+            )}
+            {!isHomePage && user ? (
+              <div className={classes.userLoggedIn}>
+                <Typography
+                  variant="h6"
+                  component="h1"
+                  className={classes.username}
+                >
+                  {user.firstName}
                 </Typography>
-              )}
-            </div>
-          </Toolbar>
-        </AppBar>
-      </Grid>
+                <LogoutButton setUser={setUser} setToast={setToast} />
+              </div>
+            ) : (
+              <Typography variant="subtitle1" className={classes.tagline}>
+                {taglineText}
+              </Typography>
+            )}
+          </div>
+          <Menu user={user} setUser={setUser} setToast={setToast} />
+        </Toolbar>
+      </AppBar>
     </>
   );
 }

@@ -246,7 +246,9 @@ function App() {
                 <ResetPassword setToast={setToast} />
               </Route>
             </Switch>
-            <Footer userCoordinates={userCoordinates} />
+            <Grid item>
+              <Footer />
+            </Grid>
             <Toast toast={toast} setToast={setToast} />
           </Grid>
         </Router>

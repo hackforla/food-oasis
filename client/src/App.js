@@ -52,7 +52,7 @@ const useStyles = makeStyles({
   },
   homeWrapper: {
     backgroundSize: "cover",
-    height: "105vh",
+    minHeight: "max(105vh,20em)",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",

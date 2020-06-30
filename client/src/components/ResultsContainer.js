@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
   listMapContainer: {
     [theme.breakpoints.down("sm")]: {
-      overflow: "scroll",
+      // overflow: "scroll",
       height: "100%",
     },
     [theme.breakpoints.up("md")]: {

@@ -246,10 +246,10 @@ function App() {
                 <ResetPassword setToast={setToast} />
               </Route>
             </Switch>
-            <Grid item>
-              <Footer />
-            </Grid>
             <Toast toast={toast} setToast={setToast} />
+          </Grid>
+          <Grid item>
+            <Footer />
           </Grid>
         </Router>
       </ThemeProvider>

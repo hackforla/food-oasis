@@ -1,4 +1,4 @@
-# Releast and HotFix Procedures
+# Release and HotFix Procedures
 
 ## Creating a Release
 

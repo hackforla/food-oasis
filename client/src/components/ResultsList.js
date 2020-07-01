@@ -97,17 +97,23 @@ const useStyles = makeStyles((theme) => ({
 
 const iconReturn = (stakeholder) => {
   if (stakeholder.inactiveTemporary || stakeholder.inactive) {
-    return stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID &&
-      stakeholder.categories[1] &&
-      stakeholder.categories[1].id === MEAL_PROGRAM_CATEGORY_ID
+    return stakeholder.categories.some(
+      (category) => category.id === FOOD_PANTRY_CATEGORY_ID
+    ) &&
+      stakeholder.categories.some(
+        (category) => category.id === MEAL_PROGRAM_CATEGORY_ID
+      )
       ? splitPantryMealIconGrey
       : stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
       ? pantryIconGrey
       : mealIconGrey;
   }
-  return stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID &&
-    stakeholder.categories[1] &&
-    stakeholder.categories[1].id === MEAL_PROGRAM_CATEGORY_ID
+  return stakeholder.categories.some(
+    (category) => category.id === FOOD_PANTRY_CATEGORY_ID
+  ) &&
+    stakeholder.categories.some(
+      (category) => category.id === MEAL_PROGRAM_CATEGORY_ID
+    )
     ? splitPantryMealIcon
     : stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
     ? pantryIcon
@@ -193,34 +199,24 @@ const ResultsList = ({
                   <div>
                     {stakeholder.city} {stakeholder.zip}
                   </div>
-                  <em
-                    style={{
-                      color:
-                        stakeholder.inactiveTemporary || stakeholder.inactive
-                          ? "#545454"
-                          : stakeholder.categories[0].id ===
-                            MEAL_PROGRAM_CATEGORY_ID
-                          ? "#CC3333"
-                          : "#336699",
-                    }}
-                  >
-                    {stakeholder.categories[0].name}
-                  </em>
+                  {stakeholder.categories.map((category) => (
+                    <em
+                      style={{
+                        alignSelf: "flex-start",
+                        color:
+                          stakeholder.inactiveTemporary || stakeholder.inactive
+                            ? "#545454"
+                            : category.id === FOOD_PANTRY_CATEGORY_ID
+                            ? "#336699"
+                            : category.id === MEAL_PROGRAM_CATEGORY_ID
+                            ? "#CC3333"
+                            : "#000",
+                      }}
+                    >
+                      {category.name}
+                    </em>
+                  ))}
                   <div className={classes.labelHolder}>
-                    {stakeholder.categories[1] ? (
-                      <em
-                        style={{
-                          alignSelf: "flex-start",
-                          color:
-                            stakeholder.categories[1].id ===
-                            FOOD_PANTRY_CATEGORY_ID
-                              ? "#336699"
-                              : "#CC3333",
-                        }}
-                      >
-                        {stakeholder.categories[1].name}
-                      </em>
-                    ) : null}
                     {stakeholder.inactiveTemporary || stakeholder.inactive ? (
                       <em className={classes.closedLabel}>
                         {stakeholder.inactiveTemporary

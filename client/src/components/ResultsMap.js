@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import ReactMapGL, { NavigationControl } from "react-map-gl";
+import { Grid } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import MarkerPopup from "./MarkerPopup";
 import Marker from "./Marker";
 import { MAPBOX_TOKEN } from "../secrets";
@@ -21,6 +23,18 @@ const styles = {
   navigationControl: { position: "absolute", top: 0, right: 0, margin: 10 },
 };
 
+const useStyles = makeStyles((theme) => ({
+  map: {
+    textAlign: "center",
+    fontSize: "12px",
+    height: "100%",
+    [theme.breakpoints.down("sm")]: {
+      // paddingRight: "18px",
+      order: 0,
+    },
+  },
+}));
+
 function Map({
   stakeholders,
   categoryIds,
@@ -34,6 +48,7 @@ function Map({
   viewport,
   setViewport,
 }) {
+  const classes = useStyles();
   const categoryIdsOrDefault = categoryIds.length
     ? categoryIds
     : DEFAULT_CATEGORIES;
@@ -55,13 +70,13 @@ function Map({
   };
 
   return (
-    <div>
+    <Grid item xs={12} md={8} className={classes.map}>
       <ReactMapGL
         {...viewport}
         dragPan={isWindow960orLess && isMobile ? false : true}
         touchAction="pan-y"
         width="100%"
-        height="max(calc(100vh - 250px),55em)"
+        height="100%"
         onViewportChange={(newViewport) => setViewport(newViewport)}
         mapboxApiAccessToken={MAPBOX_TOKEN}
         mapStyle={MAPBOX_STYLE}
@@ -104,7 +119,7 @@ function Map({
           <MarkerPopup entity={selectedPopUp} handleClose={handleClose} />
         )}
       </ReactMapGL>
-    </div>
+    </Grid>
   );
 }
 

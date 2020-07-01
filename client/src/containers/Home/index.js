@@ -80,11 +80,11 @@ const useStyles = makeStyles((theme) => ({
     display: "none",
   },
   submit: {
-    height: "42px",
+    height: "40px",
     minWidth: "25px",
     backgroundColor: "#BCE76D",
     borderRadius: "0 6px 6px 0",
-    marginLeft: ".5em",
+    // marginLeft: ".5em",
     boxShadow: "none",
     "& .MuiButton-startIcon": {
       marginRight: 0,

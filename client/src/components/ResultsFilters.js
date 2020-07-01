@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   distanceControl: {
     margin: "0 .25rem",
     backgroundColor: "#fff",
-    padding: ".25em 0 .25em .7em",
+    padding: ".15em 0 .15em .7em",
     border: ".09em solid #000",
     outline: "none",
   },
@@ -52,11 +52,9 @@ const useStyles = makeStyles((theme) => ({
     color: "#000",
   },
   controlPanel: {
-    width: "100%",
     backgroundColor: "#336699",
     padding: "1rem 0",
-    display: "flex",
-    position: "relative",
+    flex: "1 0 auto",
   },
   inputHolder: {
     display: "flex",
@@ -75,14 +73,14 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   searchIcon: {
-    width: 22,
-    height: 22,
+    width: 32,
+    height: 32,
   },
   submit: {
     height: "40px",
     minWidth: "25px",
     backgroundColor: "#BCE76D",
-    marginLeft: "0.5em",
+    // marginLeft: "0.5em",
     borderRadius: "0 6px 6px 0",
     boxShadow: "none",
     "& .MuiButton-startIcon": {
@@ -129,6 +127,8 @@ const ResultsFilters = ({
   isWindow960orLess,
   viewport,
   setViewport,
+  setIsPopupOpen,
+  doSelectStakeholder,
 }) => {
   const classes = useStyles();
 
@@ -172,6 +172,8 @@ const ResultsFilters = ({
         latitude: origin.latitude,
         longitude: origin.longitude,
       });
+      setIsPopupOpen(false);
+      doSelectStakeholder(null);
     },
     [
       search,
@@ -184,6 +186,8 @@ const ResultsFilters = ({
       categoryIds,
       isVerifiedSelected,
       setViewport,
+      setIsPopupOpen,
+      doSelectStakeholder,
     ]
   );
 
@@ -210,10 +214,13 @@ const ResultsFilters = ({
 
   return (
     <Grid
+      item
       container
       wrap="wrap-reverse"
       className={classes.controlPanel}
-      style={{ justifyContent: isWindow960orLess ? null : "center" }}
+      style={{
+        justifyContent: isWindow960orLess ? null : "center",
+      }}
     >
       <Grid
         item
@@ -291,7 +298,7 @@ const ResultsFilters = ({
               selectVerified(!isVerifiedSelected);
             }}
           >
-            Verified Data
+            Updated Data
           </Button>
         </Grid>
       </Grid>

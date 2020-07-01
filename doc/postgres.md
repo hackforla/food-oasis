@@ -79,3 +79,33 @@ sudo psql --host localhost --username postgres --dbname foodoasis --file foodoas
 You should be prompted for the password for your local Postgres instance.
 
 There will be errors if using postgres versions other than 11.
+
+## Setting up an application user login with reduced permissions
+
+It is good practice to create a database user that has only the database permissions
+required to run the application, to somewhat limit the damage a user who has the
+credentials can do.
+
+Here are the steps to create a `readwrite` role and an `appuser` login with that role:
+
+```
+CREATE ROLE readwrite;
+
+GRANT CONNECT ON DATABASE foodoasisprod TO readwrite;
+
+GRANT USAGE, CREATE ON SCHEMA public TO readwrite;
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO readwrite;
+
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES to readwrite;
+
+GRANT USAGE ON ALL SEQUENCES IN SCHEMA public TO readwrite;
+
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT USAGE ON SEQUENCES TO readwrite;
+
+CREATE USER appuser WITH PASSWORD '<strongpassword>';
+
+GRANT readwrite to appuser;
+```
+
+where, of course, you want to replace `<strongpassword>` with a good password.

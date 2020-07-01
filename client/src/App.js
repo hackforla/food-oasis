@@ -52,7 +52,7 @@ const useStyles = makeStyles({
   },
   homeWrapper: {
     backgroundSize: "cover",
-    height: "100vh",
+    minHeight: "max(105vh,20em)",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
@@ -246,10 +246,10 @@ function App() {
                 <ResetPassword setToast={setToast} />
               </Route>
             </Switch>
-            <Grid item>
-              <Footer />
-            </Grid>
             <Toast toast={toast} setToast={setToast} />
+          </Grid>
+          <Grid item>
+            <Footer />
           </Grid>
         </Router>
       </ThemeProvider>

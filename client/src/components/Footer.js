@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Box } from "@material-ui/core";
-import Copyright from "./Copyright";
+// import Copyright from "./Copyright";
 import { makeStyles } from "@material-ui/core/styles";
 import useLocationHook from "hooks/useLocationHook";
 import { MENU_ITEMS } from "helpers/Constants";
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   logo: {
     position: "absolute",
     left: "1rem",
-    top: "1rem",
+    top: ".5rem",
     height: "60px",
 
     "&:hover": {
@@ -100,7 +100,7 @@ const Footer = () => {
       <div className={classes.textHolder} style={constantStyles}>
         {constantLinks}
       </div>
-      <Copyright />
+      {/* <Copyright /> */}
     </Box>
   );
 };

@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "12px",
     height: "100%",
     [theme.breakpoints.down("sm")]: {
-      paddingRight: "18px",
+      // paddingRight: "18px",
       order: 0,
     },
   },

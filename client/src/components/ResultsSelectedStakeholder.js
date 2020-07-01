@@ -223,34 +223,25 @@ const SelectedStakeholderDisplay = ({
           <div>
             {selectedStakeholder.city} {selectedStakeholder.zip}
           </div>
-          <em
-            style={{
-              color:
-                selectedStakeholder.inactiveTemporary ||
-                selectedStakeholder.inactive
-                  ? "#545454"
-                  : selectedStakeholder.categories[0].id ===
-                    MEAL_PROGRAM_CATEGORY_ID
-                  ? "#CC3333"
-                  : "#336699",
-            }}
-          >
-            {selectedStakeholder.categories[0].name}
-          </em>
+          {selectedStakeholder.categories.map((category) => (
+            <em
+              style={{
+                alignSelf: "flex-start",
+                color:
+                  selectedStakeholder.inactiveTemporary ||
+                  selectedStakeholder.inactive
+                    ? "#545454"
+                    : category.id === FOOD_PANTRY_CATEGORY_ID
+                    ? "#336699"
+                    : category.id === MEAL_PROGRAM_CATEGORY_ID
+                    ? "#CC3333"
+                    : "#000",
+              }}
+            >
+              {category.name}
+            </em>
+          ))}
           <div className={classes.labelHolder}>
-            {selectedStakeholder.categories[1] ? (
-              <em
-                style={{
-                  color:
-                    selectedStakeholder.categories[1].id ===
-                    FOOD_PANTRY_CATEGORY_ID
-                      ? "#336699"
-                      : "#CC3333",
-                }}
-              >
-                {selectedStakeholder.categories[1].name}
-              </em>
-            ) : null}
             {selectedStakeholder.inactiveTemporary ||
             selectedStakeholder.inactive ? (
               <em className={classes.closedLabel}>

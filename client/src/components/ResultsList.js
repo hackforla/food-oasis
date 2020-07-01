@@ -193,34 +193,24 @@ const ResultsList = ({
                   <div>
                     {stakeholder.city} {stakeholder.zip}
                   </div>
-                  <em
-                    style={{
-                      color:
-                        stakeholder.inactiveTemporary || stakeholder.inactive
-                          ? "#545454"
-                          : stakeholder.categories[0].id ===
-                            MEAL_PROGRAM_CATEGORY_ID
-                          ? "#CC3333"
-                          : "#336699",
-                    }}
-                  >
-                    {stakeholder.categories[0].name}
-                  </em>
+                  {stakeholder.categories.map((category) => (
+                    <em
+                      style={{
+                        alignSelf: "flex-start",
+                        color:
+                          stakeholder.inactiveTemporary || stakeholder.inactive
+                            ? "#545454"
+                            : category.id === FOOD_PANTRY_CATEGORY_ID
+                            ? "#336699"
+                            : category.id === MEAL_PROGRAM_CATEGORY_ID
+                            ? "#CC3333"
+                            : "#000",
+                      }}
+                    >
+                      {category.name}
+                    </em>
+                  ))}
                   <div className={classes.labelHolder}>
-                    {stakeholder.categories[1] ? (
-                      <em
-                        style={{
-                          alignSelf: "flex-start",
-                          color:
-                            stakeholder.categories[1].id ===
-                            FOOD_PANTRY_CATEGORY_ID
-                              ? "#336699"
-                              : "#CC3333",
-                        }}
-                      >
-                        {stakeholder.categories[1].name}
-                      </em>
-                    ) : null}
                     {stakeholder.inactiveTemporary || stakeholder.inactive ? (
                       <em className={classes.closedLabel}>
                         {stakeholder.inactiveTemporary

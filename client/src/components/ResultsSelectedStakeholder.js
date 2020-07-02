@@ -14,6 +14,7 @@ import {
   FOOD_PANTRY_CATEGORY_ID,
   VERIFICATION_STATUS,
 } from "../constants/stakeholder";
+import { ORGANIZATION_COLORS, CLOSED_COLOR } from "../constants/map";
 
 const useStyles = makeStyles((theme) => ({
   stakeholderHolder: {
@@ -229,11 +230,11 @@ const SelectedStakeholderDisplay = ({
                 color:
                   selectedStakeholder.inactiveTemporary ||
                   selectedStakeholder.inactive
-                    ? "#545454"
+                    ? CLOSED_COLOR
                     : category.id === FOOD_PANTRY_CATEGORY_ID
-                    ? "#336699"
+                    ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
                     : category.id === MEAL_PROGRAM_CATEGORY_ID
-                    ? "#CC3333"
+                    ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
                     : "#000",
               }}
             >
@@ -262,7 +263,7 @@ const SelectedStakeholderDisplay = ({
           {mapMarker(
             selectedStakeholder.inactiveTemporary ||
               selectedStakeholder.inactive
-              ? "#545454"
+              ? CLOSED_COLOR
               : selectedStakeholder.categories[0].id ===
                   FOOD_PANTRY_CATEGORY_ID &&
                 selectedStakeholder.categories[1] &&
@@ -270,8 +271,8 @@ const SelectedStakeholderDisplay = ({
                   MEAL_PROGRAM_CATEGORY_ID
               ? ""
               : selectedStakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
-              ? "#336699"
-              : "#CC3333",
+              ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
+              : ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID],
             selectedStakeholder.verificationStatusId ===
               VERIFICATION_STATUS.VERIFIED
               ? true
@@ -290,10 +291,10 @@ const SelectedStakeholderDisplay = ({
             color:
               selectedStakeholder.inactiveTemporary ||
               selectedStakeholder.inactive
-                ? "#545454"
+                ? CLOSED_COLOR
                 : selectedStakeholder.categories[0].id === 1
-                ? "#336699"
-                : "#CC3333",
+                ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
+                : ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID],
           }}
         >
           Data updated on{" "}
@@ -321,10 +322,10 @@ const SelectedStakeholderDisplay = ({
             backgroundColor:
               selectedStakeholder.inactiveTemporary ||
               selectedStakeholder.inactive
-                ? "#545454"
+                ? CLOSED_COLOR
                 : selectedStakeholder.categories[0].id === 1
-                ? "#336699"
-                : "#CC3333",
+                ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
+                : ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID],
           }}
         >
           Directions
@@ -481,10 +482,10 @@ const SelectedStakeholderDisplay = ({
           fill={
             selectedStakeholder.inactiveTemporary ||
             selectedStakeholder.inactive
-              ? "#545454"
+              ? CLOSED_COLOR
               : selectedStakeholder.categories[0].id === 1
-              ? "#336699"
-              : "#CC3333"
+              ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
+              : ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
           }
         />
         <path

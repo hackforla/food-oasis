@@ -16,6 +16,7 @@ import {
   FOOD_PANTRY_CATEGORY_ID,
   VERIFICATION_STATUS,
 } from "../constants/stakeholder";
+import { ORGANIZATION_COLORS, CLOSED_COLOR } from "../constants/map";
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -205,11 +206,11 @@ const ResultsList = ({
                         alignSelf: "flex-start",
                         color:
                           stakeholder.inactiveTemporary || stakeholder.inactive
-                            ? "#545454"
+                            ? CLOSED_COLOR
                             : category.id === FOOD_PANTRY_CATEGORY_ID
-                            ? "#336699"
+                            ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
                             : category.id === MEAL_PROGRAM_CATEGORY_ID
-                            ? "#CC3333"
+                            ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
                             : "#000",
                       }}
                     >
@@ -249,7 +250,7 @@ const ResultsList = ({
                   mi
                   {mapMarker(
                     stakeholder.inactiveTemporary || stakeholder.inactive
-                      ? "#545454"
+                      ? CLOSED_COLOR
                       : stakeholder.categories[0].id ===
                           FOOD_PANTRY_CATEGORY_ID &&
                         stakeholder.categories[1] &&
@@ -257,8 +258,8 @@ const ResultsList = ({
                           MEAL_PROGRAM_CATEGORY_ID
                       ? ""
                       : stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
-                      ? "#336699"
-                      : "#CC3333",
+                      ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
+                      : ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID],
                     stakeholder.verificationStatusId ===
                       VERIFICATION_STATUS.VERIFIED
                       ? true

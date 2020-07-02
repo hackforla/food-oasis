@@ -1,12 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import mapMarker from "./mapMarker";
-import pantryIcon from "../images/pantryIcon.svg";
-import pantryIconGrey from "../images/pantryIconGrey.svg";
-import mealIcon from "../images/mealIcon.svg";
-import mealIconGrey from "../images/mealIconGrey.svg";
-import splitPantryMealIcon from "../images/splitPantryMealIcon.svg";
-import splitPantryMealIconGrey from "../images/splitPantryMealIconGrey.svg";
+import mapMarker from "../images/mapMarker";
 import fbIcon from "../images/fbIcon.png";
 import instaIcon from "../images/instaIcon.png";
 import {
@@ -112,34 +106,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const iconReturn = (stakeholder) => {
-  if (stakeholder.inactiveTemporary || stakeholder.inactive) {
-    return stakeholder.categories.some(
-      (category) => category.id === FOOD_PANTRY_CATEGORY_ID
-    ) &&
-      stakeholder.categories.some(
-        (category) => category.id === MEAL_PROGRAM_CATEGORY_ID
-      )
-      ? splitPantryMealIconGrey
-      : stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
-      ? pantryIconGrey
-      : mealIconGrey;
-  }
-  return stakeholder.categories.some(
-    (category) => category.id === FOOD_PANTRY_CATEGORY_ID
-  ) &&
-    stakeholder.categories.some(
-      (category) => category.id === MEAL_PROGRAM_CATEGORY_ID
-    )
-    ? splitPantryMealIcon
-    : stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
-    ? pantryIcon
-    : mealIcon;
-};
-
 const SelectedStakeholderDisplay = ({
   doSelectStakeholder,
   selectedStakeholder,
+  iconReturn,
 }) => {
   const classes = useStyles();
 
@@ -211,11 +181,7 @@ const SelectedStakeholderDisplay = ({
     <div className={classes.stakeholderHolder}>
       <div className={classes.topInfoHolder}>
         <div className={classes.imgHolder}>
-          <img
-            src={iconReturn(selectedStakeholder)}
-            alt="Organization Category Icon"
-            className={classes.typeLogo}
-          />
+          {iconReturn(selectedStakeholder)}
         </div>
         <div className={classes.infoHolder}>
           <span>{selectedStakeholder.name}</span>

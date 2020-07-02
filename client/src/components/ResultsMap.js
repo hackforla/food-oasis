@@ -6,7 +6,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import MarkerPopup from "./MarkerPopup";
 import Marker from "./Marker";
 import { MAPBOX_TOKEN } from "../secrets";
-import { MAPBOX_STYLE, ORGANIZATION_COLORS } from "../constants/map";
+import {
+  MAPBOX_STYLE,
+  ORGANIZATION_COLORS,
+  CLOSED_COLOR,
+} from "../constants/map";
 import {
   DEFAULT_CATEGORIES,
   FOOD_PANTRY_CATEGORY_ID,
@@ -29,7 +33,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "12px",
     height: "100%",
     [theme.breakpoints.down("sm")]: {
-      // paddingRight: "18px",
       order: 0,
     },
   },
@@ -89,9 +92,6 @@ function Map({
             .filter((sh) => sh.latitude && sh.longitude)
             .map((stakeholder, index) => {
               const isVerified = stakeholder.verificationStatusId === 4;
-              /*todo
-               * implement condition based on api data
-               * */
 
               const categories = stakeholder.categories.filter(({ id }) => {
                 return categoryIdsOrDefault.includes(id);
@@ -99,7 +99,7 @@ function Map({
 
               const color =
                 stakeholder.inactiveTemporary || stakeholder.inactive
-                  ? "#545454"
+                  ? CLOSED_COLOR
                   : categories.find(({ id }) => id === MEAL_PROGRAM_CATEGORY_ID)
                   ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
                   : ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID];

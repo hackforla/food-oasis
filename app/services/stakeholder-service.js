@@ -94,10 +94,11 @@ const search = async ({
     if (stakeholder_ids.length) {
       // Hoover up all the stakeholder categories
       // for all of our stakeholder row results.
-      const categoriesSql = `select sc.stakeholder_id, c.id, c.name
+      const categoriesSql = `select sc.stakeholder_id, c.id, c.name, c.display_order
           from category c
           join stakeholder_category sc on c.id = sc.category_id
-          where sc.stakeholder_id in (${stakeholder_ids.join(",")})`;
+          where sc.stakeholder_id in (${stakeholder_ids.join(",")})
+          order by c.display_order, c.name`;
       categoriesResults = await pool.query(categoriesSql);
     }
   } catch (err) {
@@ -220,10 +221,11 @@ const searchDashboard = async ({
       s.phone, s.latitude, s.longitude, s.website,
       (select array(select row_to_json(category_row)
         from (
-          select c.id, c.name
+          select c.id, c.name, c.display_order
           from category c
             join stakeholder_category sc on c.id = sc.category_id
           where sc.stakeholder_id = s.id
+          order by c.display_order
         ) category_row
       )) as categories,
       to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
@@ -295,10 +297,11 @@ const searchDashboard = async ({
     if (stakeholder_ids.length) {
       // Hoover up all the stakeholder categories
       // for all of our stakeholder row results.
-      const categoriesSql = `select sc.stakeholder_id, c.id, c.name
+      const categoriesSql = `select sc.stakeholder_id, c.id, c.name, c.display_order
         from category c
         join stakeholder_category sc on c.id = sc.category_id
-        where sc.stakeholder_id in (${stakeholder_ids.join(",")})`;
+        where sc.stakeholder_id in (${stakeholder_ids.join(",")})
+        order by c.display_order`;
       categoriesResults = await pool.query(categoriesSql);
     }
   } catch (err) {
@@ -375,10 +378,11 @@ const selectById = async (id) => {
       )) as hours,
       (select array(select row_to_json(category_row)
         from (
-          select c.id, c.name
+          select c.id, c.name, c.display_order
           from category c
             join stakeholder_category sc on c.id = sc.category_id
           where sc.stakeholder_id = s.id
+          order by c.display_order
         ) category_row
       )) as categories,
       to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as created_date, s.created_login_id,
@@ -507,6 +511,7 @@ const selectCsv = async (ids) => {
       from category c
         join stakeholder_category sc on c.id = sc.category_id
       where sc.stakeholder_id = s.id
+      order by c.display_order
   ) as categories,
   to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as created_date, s.created_login_id,
   to_char(s.modified_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as modified_date, s.modified_login_id,

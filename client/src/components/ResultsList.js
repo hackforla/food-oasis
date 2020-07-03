@@ -114,7 +114,7 @@ const stakeholdersCurrentDaysHours = (stakeholder) => {
   const currentDayOfWeek = currentDay.format("ddd");
   const dayOccurrenceInMonth = Math.ceil(currentDay.date() / 7); // In tandum with currentDayOfWeek tells us which week the day falls
   const currentTime = currentDay.format("HH:mm:ss");
-  const currentDaysHoursOfOperation = stakeholder?.hours?.filter(
+  const currentDaysHoursOfOperation = stakeholder?.hours.filter(
     (todaysHours) => {
       const hasHoursToday = currentDayOfWeek === todaysHours.day_of_week;
       const stakeholderOpenTime = moment(todaysHours.open, "HH:mm:ss").format(

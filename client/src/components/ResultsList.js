@@ -152,7 +152,7 @@ const calculateMinutesToClosing = (hours) => {
 };
 
 const isAlmostClosed = (hours) => {
-  const minutesToCloseFlag = 30;
+  const minutesToCloseFlag = 60;
   const minutesToClosing = calculateMinutesToClosing(hours);
   return minutesToClosing <= minutesToCloseFlag;
 };

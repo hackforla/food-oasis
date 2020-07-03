@@ -263,7 +263,7 @@ const ResultsList = ({
                   !(stakeholder.inactiveTemporary || stakeholder.inactive) &&
                   isAlmostClosedFlag ? (
                     <em className={classes.closingSoonIndicatorLabel}>
-                      {`Closing for the day in ${minutesToClosing} minutes`}
+                      {`Closing in ${minutesToClosing} minutes`}
                     </em>
                   ) : null}
                 </div>

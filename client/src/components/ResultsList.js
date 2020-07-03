@@ -250,7 +250,7 @@ const ResultsList = ({
                     <em className={classes.closedLabel}>
                       {stakeholder.inactiveTemporary
                         ? "Temporarily Closed"
-                        : "Closed"}
+                        : "Permanently Closed"}
                     </em>
                   ) : null}
 

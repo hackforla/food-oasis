@@ -164,7 +164,8 @@ const ResultsFilters = ({
           latitude: origin.latitude,
           longitude: origin.longitude,
         });
-      if (categoryIds.length) storage.categoryIds = JSON.stringify(categoryIds);
+
+      storage.categoryIds = JSON.stringify(categoryIds);
       storage.radius = JSON.stringify(radius);
       storage.verified = JSON.stringify(isVerifiedSelected);
       setViewport({

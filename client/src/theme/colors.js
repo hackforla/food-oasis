@@ -8,6 +8,12 @@ const bodyTextColor = "#1B1B1B";
 const inactiveButtonColor = "#F0F0F0";
 const inactiveButtonTextColor = "#4D4D4D";
 
+//Icon and List Colors
+
+const foodPantry = "#336699"; //blue
+const mealProgram = "#CC3333"; //red
+const closed = "#545454"; //grey
+
 export {
   white,
   primaryColor,
@@ -18,4 +24,7 @@ export {
   bodyTextColor,
   inactiveButtonColor,
   inactiveButtonTextColor,
+  foodPantry,
+  mealProgram,
+  closed,
 };

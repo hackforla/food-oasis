@@ -2,7 +2,6 @@ import React, { useCallback, useEffect } from "react";
 import Search from "../components/Search";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
-
 import {
   Grid,
   Select,
@@ -82,7 +81,6 @@ const useStyles = makeStyles((theme) => ({
     height: "40px",
     minWidth: "25px",
     backgroundColor: "#BCE76D",
-    // marginLeft: "0.5em",
     borderRadius: "0 6px 6px 0",
     boxShadow: "none",
     "& .MuiButton-startIcon": {
@@ -104,33 +102,23 @@ const useStyles = makeStyles((theme) => ({
 
 const distanceInfo = [1, 2, 3, 5, 10, 20, 50];
 
-const viewPortHash = {
-  1: 13.5,
-  2: 12.5,
-  3: 12,
-  5: 11,
-  10: 10,
-  20: 9,
-  50: 8,
-};
-
 const ResultsFilters = ({
-  data,
+  search,
+  isWindow960orLess,
+  viewport,
+  setViewport,
+  setIsPopupOpen,
+  doSelectStakeholder,
   origin,
   setOrigin,
   radius,
   setRadius,
   isVerifiedSelected,
   selectVerified,
-  search,
   userCoordinates,
   categoryIds,
   toggleCategory,
-  isWindow960orLess,
-  viewport,
-  setViewport,
-  setIsPopupOpen,
-  doSelectStakeholder,
+  viewPortHash,
 }) => {
   const classes = useStyles();
 
@@ -190,6 +178,7 @@ const ResultsFilters = ({
       setViewport,
       setIsPopupOpen,
       doSelectStakeholder,
+      viewPortHash,
     ]
   );
 
@@ -334,11 +323,11 @@ const ResultsFilters = ({
 };
 
 ResultsFilters.propTypes = {
-  // distance: PropTypes.number,
-  // placeName: PropTypes.string,
-  // isPantryCategorySelected: PropTypes.bool,
-  // isMealCategorySelected: PropTypes.bool,
-  // isVerifiedFilterSelected: PropTypes.bool,
+  distance: PropTypes.number,
+  placeName: PropTypes.string,
+  isPantryCategorySelected: PropTypes.bool,
+  isMealCategorySelected: PropTypes.bool,
+  isVerifiedFilterSelected: PropTypes.bool,
   search: PropTypes.func,
 };
 

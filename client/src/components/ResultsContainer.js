@@ -20,7 +20,6 @@ const useStyles = makeStyles((theme) => ({
   },
   listMapContainer: {
     [theme.breakpoints.down("sm")]: {
-      // overflow: "scroll",
       height: "100%",
     },
     [theme.breakpoints.up("md")]: {
@@ -30,8 +29,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ResultsContainer(props) {
+  const storage = window.localStorage;
+  const { userCoordinates, userSearch } = props;
+  const { data, search } = useOrganizations();
+  const classes = useStyles();
+
   const windowSize = window.innerWidth > 960 ? true : false;
   const [isWindow960orLess, changeWindow] = React.useState(windowSize);
+
   const mobileTest = new RegExp("Mobi", "i");
   const [isMobile, changeMobile] = React.useState(
     mobileTest.test(navigator.userAgent) ? true : false
@@ -51,10 +56,6 @@ export default function ResultsContainer(props) {
       window.removeEventListener("resize", changeInputContainerWidth);
   }, [mobileTest]);
 
-  const storage = window.localStorage;
-  const { userCoordinates, userSearch } = props;
-  const { data, search } = useOrganizations();
-  const classes = useStyles();
   const initialCategories = storage.categoryIds
     ? JSON.parse(storage.categoryIds)
     : [];
@@ -109,30 +110,25 @@ export default function ResultsContainer(props) {
     longitude: origin.longitude || JSON.parse(storage.origin).longitude,
   });
 
-  const topLevelProps = {
-    radius,
-    setRadius,
-    origin,
-    setOrigin,
-    toggleCategory,
-    categoryIds,
-    isVerifiedSelected,
-    selectVerified,
-    userCoordinates,
-    userSearch,
-  };
-
   return (
     <>
       <ResultsFilters
-        {...topLevelProps}
-        data={data}
+        radius={radius}
+        setRadius={setRadius}
+        origin={origin}
+        setOrigin={setOrigin}
+        toggleCategory={toggleCategory}
+        categoryIds={categoryIds}
+        isVerifiedSelected={isVerifiedSelected}
+        selectVerified={selectVerified}
+        userCoordinates={userCoordinates}
         search={search}
         isWindow960orLess={isWindow960orLess}
         viewport={viewport}
         setViewport={setViewport}
         setIsPopupOpen={setIsPopupOpen}
         doSelectStakeholder={doSelectStakeholder}
+        viewPortHash={viewPortHash}
       />
       <Grid item container spacing={0} className={classes.listMapContainer}>
         <ResultsList

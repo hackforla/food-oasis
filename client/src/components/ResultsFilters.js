@@ -147,7 +147,6 @@ const ResultsFilters = ({
           ? VERIFICATION_STATUS.VERIFIED
           : 0,
       });
-      // console.log(storage);
       if (origin.locationName && origin.latitude && origin.longitude)
         storage.origin = JSON.stringify({
           locationName: origin.locationName,

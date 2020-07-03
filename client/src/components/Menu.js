@@ -32,11 +32,11 @@ const useStyles = makeStyles({
   },
   menuButton: {
     transform: "scale(1.6,1.5)",
-    backgroundColor: (props) => props.buttonColor,
+    backgroundColor: "#FFF",
     padding: "0.5rem",
     minWidth: "0",
     "&:hover": {
-      backgroundColor: (props) => props.buttonColor,
+      backgroundColor: "#FFF",
     },
   },
   blueMenu: {

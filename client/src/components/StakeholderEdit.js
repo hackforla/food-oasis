@@ -414,7 +414,7 @@ const StakeholderEdit = (props) => {
                     message: "Insert successful.",
                   });
                   setFieldValue("id", response.id);
-                  setOriginalData(values);
+                  setOriginalData({ ...values, id: response.id });
                   if (nextUrl) {
                     history.push(nextUrl);
                   }

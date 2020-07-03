@@ -716,6 +716,7 @@ const insert = async (model) => {
     // (ARRAY['(2,Wed,13:02,13:04)', '(3,Thu,07:00,08:00)'])::stakeholder_hours[]); --array of stakeholder_hours
     // objects, which are defined as a postgres type (see repo file for more detail on this type).
     const invokeSprocSql = `CALL create_stakeholder(
+      ${toSqlNumeric(0)}::INT,
       ${toSqlString(name)}::VARCHAR, ${toSqlString(
       address1
     )}::VARCHAR, ${toSqlString(address2)}::VARCHAR,
@@ -776,7 +777,8 @@ const insert = async (model) => {
       ${categories}, ${formattedHours},
       ${toSqlNumeric(neighborhoodId)})`;
     const stakeholderResult = await pool.query(invokeSprocSql);
-    return stakeholderResult;
+    const id = stakeholderResult.rows[0].s_id;
+    return { id };
   } catch (err) {
     return Promise.reject(err.message);
   }

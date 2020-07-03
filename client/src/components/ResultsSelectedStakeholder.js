@@ -147,14 +147,14 @@ const SelectedStakeholderDisplay = ({
   const standardTime = (timeStr) => {
     if (timeStr) {
       if (parseInt(timeStr.substring(0, 2)) === 12) {
-        return `12${timeStr.substring(2, 5)}PM`;
+        return `12${timeStr.substring(2, 5)} PM`;
       }
       return parseInt(timeStr.substring(0, 2)) > 12
         ? `${parseInt(timeStr.substring(0, 2)) - 12}${timeStr.substring(
             2,
             5
-          )}PM`
-        : `${timeStr.substring(0, 5)}AM`;
+          )} PM`
+        : `${timeStr.substring(0, 5)} AM`;
     }
   };
 

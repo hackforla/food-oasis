@@ -11,7 +11,7 @@ import VerificationAdmin from "./components/Verification/VerificationAdmin";
 import VerificationDashboard from "./components/Verification/VerificationDashboard";
 import SecurityAdminDashboard from "./components/SecurityAdminDashboard/SecurityAdminDashboard";
 import StakeholderEdit from "./components/StakeholderEdit";
-import Donate from "./components/Donate";
+import Donate from "./components/StaticPages/Donate";
 import Resources from "./components/Resources";
 import About from "./components/StaticPages/About";
 import Register from "./components/Register";
@@ -20,7 +20,7 @@ import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
 import Footer from "./components/Footer";
 import ConfirmEmail from "./components/ConfirmEmail";
-import Faq from "./components/Faq";
+import Faq from "./components/StaticPages/Faq";
 import FaqEdit from "./components/FaqEdit";
 import FaqAdd from "./components/FaqAdd";
 import Home from "./containers/Home";
@@ -36,10 +36,6 @@ const useStyles = makeStyles({
   app: (props) => ({
     color: "black",
     margin: "0",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    alignItems: "stretch",
     height: "100%",
     overflowY: "scroll",
   }),
@@ -56,7 +52,7 @@ const useStyles = makeStyles({
   },
   homeWrapper: {
     backgroundSize: "cover",
-    height: "100vh",
+    minHeight: "max(105vh,20em)",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
@@ -144,10 +140,17 @@ function App() {
     <UserContext.Provider value={user}>
       <ThemeProvider theme={theme}>
         <Router>
-          <div className={classes.app}>
-            <Grid item>
-              <Header user={user} setUser={onLogin} setToast={setToast} />
-            </Grid>
+          <Grid
+            container
+            direction="column"
+            wrap="nowrap"
+            justify="stretch"
+            spacing={0}
+            classes={{
+              container: classes.app,
+            }}
+          >
+            <Header user={user} setUser={onLogin} setToast={setToast} />
             <Switch className={classes.mainContent}>
               <Route exact path="/">
                 <div
@@ -162,12 +165,10 @@ function App() {
                 </div>
               </Route>
               <Route path="/organizations">
-                <Grid item>
-                  <ResultsContainer
-                    userCoordinates={userCoordinates}
-                    userSearch={origin}
-                  />
-                </Grid>
+                <ResultsContainer
+                  userCoordinates={userCoordinates}
+                  userSearch={origin}
+                />
               </Route>
               <Route path="/stakeholders">
                 <StakeholdersContainer
@@ -245,11 +246,11 @@ function App() {
                 <ResetPassword setToast={setToast} />
               </Route>
             </Switch>
-            <Grid item>
-              <Footer userCoordinates={userCoordinates} />
-            </Grid>
             <Toast toast={toast} setToast={setToast} />
-          </div>
+          </Grid>
+          <Grid item>
+            <Footer />
+          </Grid>
         </Router>
       </ThemeProvider>
     </UserContext.Provider>

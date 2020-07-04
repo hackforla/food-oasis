@@ -2,7 +2,6 @@ import React, { useCallback, useEffect } from "react";
 import Search from "../components/Search";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
-
 import {
   Grid,
   Select,
@@ -26,15 +25,17 @@ const useStyles = makeStyles((theme) => ({
   },
   filterGroupButton: {
     margin: "0 .25rem",
-    fontSize: "max(.8vw,10px)",
+    padding: ".5rem",
+    fontSize: "max(.8vw,12px)",
     whiteSpace: "nowrap",
     backgroundColor: "#fff",
     border: ".1em solid #000",
     color: "#000",
   },
   filterButton: {
-    margin: "0 .25rem",
-    fontSize: "max(.8vw,10px)",
+    margin: "0 0.25rem",
+    padding: ".5rem",
+    fontSize: "max(.8vw,12px)",
     whiteSpace: "nowrap",
     backgroundColor: "#fff",
     border: ".1em solid #000",
@@ -43,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   distanceControl: {
     margin: "0 .25rem",
     backgroundColor: "#fff",
-    padding: ".25em 0 .25em .7em",
+    padding: ".40em 0 .40em .7em",
     border: ".09em solid #000",
     outline: "none",
   },
@@ -52,11 +53,9 @@ const useStyles = makeStyles((theme) => ({
     color: "#000",
   },
   controlPanel: {
-    width: "100%",
     backgroundColor: "#336699",
     padding: "1rem 0",
-    display: "flex",
-    position: "relative",
+    flex: "1 0 auto",
   },
   inputHolder: {
     display: "flex",
@@ -75,14 +74,13 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   searchIcon: {
-    width: 22,
-    height: 22,
+    width: 32,
+    height: 32,
   },
   submit: {
     height: "40px",
     minWidth: "25px",
     backgroundColor: "#BCE76D",
-    marginLeft: "0.5em",
     borderRadius: "0 6px 6px 0",
     boxShadow: "none",
     "& .MuiButton-startIcon": {
@@ -104,31 +102,23 @@ const useStyles = makeStyles((theme) => ({
 
 const distanceInfo = [1, 2, 3, 5, 10, 20, 50];
 
-const viewPortHash = {
-  1: 13.5,
-  2: 12.5,
-  3: 12,
-  5: 11,
-  10: 10,
-  20: 9,
-  50: 8,
-};
-
 const ResultsFilters = ({
-  data,
+  search,
+  isWindow960orLess,
+  viewport,
+  setViewport,
+  setIsPopupOpen,
+  doSelectStakeholder,
   origin,
   setOrigin,
   radius,
   setRadius,
   isVerifiedSelected,
   selectVerified,
-  search,
   userCoordinates,
   categoryIds,
   toggleCategory,
-  isWindow960orLess,
-  viewport,
-  setViewport,
+  viewPortHash,
 }) => {
   const classes = useStyles();
 
@@ -164,7 +154,8 @@ const ResultsFilters = ({
           latitude: origin.latitude,
           longitude: origin.longitude,
         });
-      if (categoryIds.length) storage.categoryIds = JSON.stringify(categoryIds);
+
+      storage.categoryIds = JSON.stringify(categoryIds);
       storage.radius = JSON.stringify(radius);
       storage.verified = JSON.stringify(isVerifiedSelected);
       setViewport({
@@ -172,6 +163,8 @@ const ResultsFilters = ({
         latitude: origin.latitude,
         longitude: origin.longitude,
       });
+      setIsPopupOpen(false);
+      doSelectStakeholder(null);
     },
     [
       search,
@@ -184,6 +177,9 @@ const ResultsFilters = ({
       categoryIds,
       isVerifiedSelected,
       setViewport,
+      setIsPopupOpen,
+      doSelectStakeholder,
+      viewPortHash,
     ]
   );
 
@@ -210,10 +206,13 @@ const ResultsFilters = ({
 
   return (
     <Grid
+      item
       container
       wrap="wrap-reverse"
       className={classes.controlPanel}
-      style={{ justifyContent: isWindow960orLess ? null : "center" }}
+      style={{
+        justifyContent: isWindow960orLess ? null : "center",
+      }}
     >
       <Grid
         item
@@ -291,7 +290,7 @@ const ResultsFilters = ({
               selectVerified(!isVerifiedSelected);
             }}
           >
-            Verified Data
+            Updated Data
           </Button>
         </Grid>
       </Grid>
@@ -325,11 +324,11 @@ const ResultsFilters = ({
 };
 
 ResultsFilters.propTypes = {
-  // distance: PropTypes.number,
-  // placeName: PropTypes.string,
-  // isPantryCategorySelected: PropTypes.bool,
-  // isMealCategorySelected: PropTypes.bool,
-  // isVerifiedFilterSelected: PropTypes.bool,
+  distance: PropTypes.number,
+  placeName: PropTypes.string,
+  isPantryCategorySelected: PropTypes.bool,
+  isMealCategorySelected: PropTypes.bool,
+  isVerifiedFilterSelected: PropTypes.bool,
   search: PropTypes.func,
 };
 

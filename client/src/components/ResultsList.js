@@ -2,21 +2,31 @@ import React from "react";
 import SelectedStakeholderDisplay from "./ResultsSelectedStakeholder";
 import PropTypes from "prop-types";
 import moment from "moment";
-import mapMarker from "./mapMarker";
+import mapMarker from "../images/mapMarker";
+import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import pantryIcon from "../images/pantryIcon.svg";
-import pantryIconGrey from "../images/pantryIconGrey.svg";
-import mealIcon from "../images/mealIcon.svg";
-import mealIconGrey from "../images/mealIconGrey.svg";
-import splitPantryMealIcon from "../images/splitPantryMealIcon.svg";
-import splitPantryMealIconGrey from "../images/splitPantryMealIconGrey.svg";
+import pantryIcon from "../images/pantryIcon";
+import mealIcon from "../images/mealIcon";
+import splitPantryMealIcon from "../images/splitPantryMealIcon";
 import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
   VERIFICATION_STATUS,
 } from "../constants/stakeholder";
+import { ORGANIZATION_COLORS, CLOSED_COLOR } from "../constants/map";
 
 const useStyles = makeStyles((theme) => ({
+  list: {
+    textAlign: "center",
+    fontSize: "12px",
+    [theme.breakpoints.up("md")]: {
+      overflow: "scroll",
+      height: "100%",
+    },
+    [theme.breakpoints.down("sm")]: {
+      order: 1,
+    },
+  },
   stakeholderArrayHolder: {
     width: "100%",
     display: "flex",
@@ -35,9 +45,6 @@ const useStyles = makeStyles((theme) => ({
     display: "inherit",
     justifyContent: "center",
     alignItems: "center",
-  },
-  typeLogo: {
-    width: "72px",
   },
   infoHolder: {
     fontSize: "1.1em",
@@ -84,22 +91,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const iconReturn = (stakeholder) => {
-  if (stakeholder.inactiveTemporary || stakeholder.inactive) {
-    return stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID &&
-      stakeholder.categories[1] &&
-      stakeholder.categories[1].id === MEAL_PROGRAM_CATEGORY_ID
-      ? splitPantryMealIconGrey
-      : stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
-      ? pantryIconGrey
-      : mealIconGrey;
-  }
-  return stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID &&
-    stakeholder.categories[1] &&
-    stakeholder.categories[1].id === MEAL_PROGRAM_CATEGORY_ID
-    ? splitPantryMealIcon
+  let isClosed = false;
+  if (stakeholder.inactiveTemporary || stakeholder.inactive) isClosed = true;
+
+  return stakeholder.categories.some(
+    (category) => category.id === FOOD_PANTRY_CATEGORY_ID
+  ) &&
+    stakeholder.categories.some(
+      (category) => category.id === MEAL_PROGRAM_CATEGORY_ID
+    )
+    ? splitPantryMealIcon(isClosed)
     : stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
-    ? pantryIcon
-    : mealIcon;
+    ? pantryIcon(isClosed)
+    : mealIcon(isClosed);
 };
 
 const isLastOccurrenceInMonth = (currentDay) => {
@@ -180,127 +184,115 @@ const ResultsList = ({
   };
 
   return (
-    <div className={classes.stakeholderArrayHolder}>
-      {stakeholders && selectedStakeholder && !selectedStakeholder.inactive ? (
-        <SelectedStakeholderDisplay
-          doSelectStakeholder={doSelectStakeholder}
-          selectedStakeholder={selectedStakeholder}
-        />
-      ) : stakeholders ? (
-        stakeholders.map((stakeholder) => {
-          const stakeholderHours = stakeholdersCurrentDaysHours(stakeholder);
-          const isOpenFlag = !!stakeholderHours;
-          const isAlmostClosedFlag =
-            isOpenFlag && isAlmostClosed(stakeholderHours);
-          const minutesToClosing =
-            isAlmostClosedFlag && calculateMinutesToClosing(stakeholderHours);
+    <Grid item xs={12} md={4} className={classes.list}>
+      <div className={classes.stakeholderArrayHolder}>
+        {stakeholders &&
+        selectedStakeholder &&
+        !selectedStakeholder.inactive ? (
+          <SelectedStakeholderDisplay
+            doSelectStakeholder={doSelectStakeholder}
+            selectedStakeholder={selectedStakeholder}
+            iconReturn={iconReturn}
+          />
+        ) : stakeholders ? (
+          stakeholders.map((stakeholder) => {
+            const stakeholderHours = stakeholdersCurrentDaysHours(stakeholder);
+            const isOpenFlag = !!stakeholderHours;
+            const isAlmostClosedFlag =
+              isOpenFlag && isAlmostClosed(stakeholderHours);
+            const minutesToClosing =
+              isAlmostClosedFlag && calculateMinutesToClosing(stakeholderHours);
 
-          return (
-            <div
-              className={classes.stakeholderHolder}
-              key={stakeholder.id}
-              onClick={() => handleStakeholderClick(stakeholder)}
-            >
-              <div className={classes.imgHolder}>
-                <img
-                  src={iconReturn(stakeholder)}
-                  alt={
-                    stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
-                      ? "Pantry Icon"
-                      : "Meal Icon"
-                  }
-                  className={classes.typeLogo}
-                />
-              </div>
-              <div className={classes.infoHolder}>
-                <span>{stakeholder.name}</span>
-                <span>{stakeholder.address1}</span>
-                <div>
-                  {stakeholder.city} {stakeholder.zip}
+            return (
+              <div
+                className={classes.stakeholderHolder}
+                key={stakeholder.id}
+                onClick={() => handleStakeholderClick(stakeholder)}
+              >
+                <div className={classes.imgHolder}>
+                  {iconReturn(stakeholder)}
                 </div>
-                <em
-                  style={{
-                    color:
-                      stakeholder.inactiveTemporary || stakeholder.inactive
-                        ? "#545454"
-                        : stakeholder.categories[0].id ===
-                          MEAL_PROGRAM_CATEGORY_ID
-                        ? "#CC3333"
-                        : "#336699",
-                  }}
-                >
-                  {stakeholder.categories[0].name}
-                </em>
-                <div className={classes.labelHolder}>
-                  {stakeholder.categories[1] ? (
+                <div className={classes.infoHolder}>
+                  <span>{stakeholder.name}</span>
+                  <span>{stakeholder.address1}</span>
+                  <div>
+                    {stakeholder.city} {stakeholder.zip}
+                  </div>
+                  {stakeholder.categories.map((category) => (
                     <em
                       style={{
                         alignSelf: "flex-start",
                         color:
-                          stakeholder.categories[1].id ===
-                          FOOD_PANTRY_CATEGORY_ID
-                            ? "#336699"
-                            : "#CC3333",
+                          stakeholder.inactiveTemporary || stakeholder.inactive
+                            ? CLOSED_COLOR
+                            : category.id === FOOD_PANTRY_CATEGORY_ID
+                            ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
+                            : category.id === MEAL_PROGRAM_CATEGORY_ID
+                            ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
+                            : "#000",
                       }}
                     >
-                      {stakeholder.categories[1].name}
+                      {category.name}
                     </em>
-                  ) : null}
-                  {stakeholder.inactiveTemporary || stakeholder.inactive ? (
-                    <em className={classes.closedLabel}>
-                      {stakeholder.inactiveTemporary
-                        ? "Temporarily Closed"
-                        : "Permanently Closed"}
-                    </em>
-                  ) : null}
+                  ))}
+                  <div className={classes.labelHolder}>
+                    {stakeholder.inactiveTemporary || stakeholder.inactive ? (
+                      <em className={classes.closedLabel}>
+                        {stakeholder.inactiveTemporary
+                          ? "Temporarily Closed"
+                          : "Permanently Closed"}
+                      </em>
+                    ) : null}
 
-                  {isOpenFlag &&
-                  !(stakeholder.inactiveTemporary || stakeholder.inactive) ? (
-                    <em className={classes.openIndicatorLabel}>OPEN</em>
-                  ) : null}
+                    {isOpenFlag &&
+                    !(stakeholder.inactiveTemporary || stakeholder.inactive) ? (
+                      <em className={classes.openIndicatorLabel}>OPEN</em>
+                    ) : null}
 
-                  {isAlmostClosedFlag &&
-                  !(stakeholder.inactiveTemporary || stakeholder.inactive) &&
-                  isAlmostClosedFlag ? (
-                    <em className={classes.closingSoonIndicatorLabel}>
-                      {`Closing in ${minutesToClosing} minutes`}
-                    </em>
-                  ) : null}
+                    {isAlmostClosedFlag &&
+                    !(stakeholder.inactiveTemporary || stakeholder.inactive) &&
+                    isAlmostClosedFlag ? (
+                      <em className={classes.closingSoonIndicatorLabel}>
+                        {`Closing in ${minutesToClosing} minutes`}
+                      </em>
+                    ) : null}
+                  </div>
+                </div>
+                <div className={classes.checkHolder}>
+                  {stakeholder.distance >= 10
+                    ? stakeholder.distance
+                        .toString()
+                        .substring(0, 3)
+                        .padEnd(4, "0")
+                    : stakeholder.distance.toString().substring(0, 3)}{" "}
+                  mi
+                  {mapMarker(
+                    stakeholder.inactiveTemporary || stakeholder.inactive
+                      ? CLOSED_COLOR
+                      : stakeholder.categories[0].id ===
+                          FOOD_PANTRY_CATEGORY_ID &&
+                        stakeholder.categories[1] &&
+                        stakeholder.categories[1].id ===
+                          MEAL_PROGRAM_CATEGORY_ID
+                      ? ""
+                      : stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
+                      ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
+                      : ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID],
+                    stakeholder.verificationStatusId ===
+                      VERIFICATION_STATUS.VERIFIED
+                      ? true
+                      : false,
+                    stakeholder.inactiveTemporary || stakeholder.inactive
+                      ? true
+                      : false
+                  )}
                 </div>
               </div>
-              <div className={classes.checkHolder}>
-                {stakeholder.distance >= 10
-                  ? stakeholder.distance
-                      .toString()
-                      .substring(0, 3)
-                      .padEnd(4, "0")
-                  : stakeholder.distance.toString().substring(0, 3)}{" "}
-                mi
-                {mapMarker(
-                  stakeholder.inactiveTemporary || stakeholder.inactive
-                    ? "#545454"
-                    : stakeholder.categories[0].id ===
-                        FOOD_PANTRY_CATEGORY_ID &&
-                      stakeholder.categories[1] &&
-                      stakeholder.categories[1].id === MEAL_PROGRAM_CATEGORY_ID
-                    ? ""
-                    : stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
-                    ? "#336699"
-                    : "#CC3333",
-                  stakeholder.verificationStatusId ===
-                    VERIFICATION_STATUS.VERIFIED
-                    ? true
-                    : false,
-                  stakeholder.inactiveTemporary || stakeholder.inactive
-                    ? true
-                    : false
-                )}
-              </div>
-            </div>
-          );
-        })
-      ) : null}
-    </div>
+            );
+          })
+        ) : null}
+      </div>
+    </Grid>
   );
 };
 

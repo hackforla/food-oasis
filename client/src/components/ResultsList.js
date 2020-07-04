@@ -148,9 +148,9 @@ const stakeholdersCurrentDaysHours = (stakeholder) => {
 };
 
 const calculateMinutesToClosing = (hours) => {
-  const currentTime = moment().format("HH:mm:ss");
-  return moment(hours[0].close, "HH:mm:ss").diff(
-    moment(currentTime, "HH:mm:ss"),
+  const currentTime = moment().format("HH:mm");
+  return moment(hours[0].close, "HH:mm").diff(
+    moment(currentTime, "HH:mm"),
     "minutes"
   );
 };

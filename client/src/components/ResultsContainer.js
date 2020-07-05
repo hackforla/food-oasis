@@ -35,7 +35,7 @@ export default function ResultsContainer(props) {
   const classes = useStyles();
 
   const windowSize = window.innerWidth > 960 ? true : false;
-  const [isWindow960orLess, changeWindow] = React.useState(windowSize);
+  const [isWindowWide, changeWindow] = React.useState(windowSize);
 
   const mobileTest = new RegExp("Mobi", "i");
   const [isMobile, changeMobile] = React.useState(
@@ -123,7 +123,7 @@ export default function ResultsContainer(props) {
         selectVerified={selectVerified}
         userCoordinates={userCoordinates}
         search={search}
-        isWindow960orLess={isWindow960orLess}
+        isWindowWide={isWindowWide}
         viewport={viewport}
         setViewport={setViewport}
         setIsPopupOpen={setIsPopupOpen}
@@ -137,7 +137,7 @@ export default function ResultsContainer(props) {
           stakeholders={data}
           setSelectedPopUp={setSelectedPopUp}
           setIsPopupOpen={setIsPopupOpen}
-          isWindow960orLess={isWindow960orLess}
+          isWindowWide={isWindowWide}
           viewport={viewport}
           setViewport={setViewport}
         />
@@ -151,7 +151,7 @@ export default function ResultsContainer(props) {
           setSelectedPopUp={setSelectedPopUp}
           isPopupOpen={isPopupOpen}
           setIsPopupOpen={setIsPopupOpen}
-          isWindow960orLess={isWindow960orLess}
+          isWindowWide={isWindowWide}
           isMobile={isMobile}
         />
       </Grid>

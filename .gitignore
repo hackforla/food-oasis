@@ -238,6 +238,10 @@ node_modules
 # Start of project-specific exclusions
 
 .env
+# Just in case developer forgets "." at start of .env file name
+env  
+# Just in case developer forgets to rename file to .env
+dotenv 
 
 /.vscode
 

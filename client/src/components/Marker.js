@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Marker } from "react-map-gl";
-import splitMarker from "./mapMarker";
+import splitMarker from "../images/mapMarker";
 import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,

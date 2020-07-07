@@ -32,6 +32,11 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#fff",
     border: ".1em solid #000",
     color: "#000",
+    [theme.breakpoints.down("xs")]: {
+      padding: ".1rem .1rem",
+      margin: "0",
+      fontSize: "max(.8vw,11px)",
+    },
   },
   filterButton: {
     margin: "0 0.25rem",
@@ -41,6 +46,11 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#fff",
     border: ".1em solid #000",
     color: "#000",
+    [theme.breakpoints.down("xs")]: {
+      padding: ".1rem .1rem",
+      margin: "0",
+      fontSize: "max(.8vw,11px)",
+    },
   },
   distanceControl: {
     margin: "0 .25rem",
@@ -48,6 +58,10 @@ const useStyles = makeStyles((theme) => ({
     padding: ".40em 0 .40em .7em",
     border: ".09em solid #000",
     outline: "none",
+    [theme.breakpoints.down("xs")]: {
+      padding: "0 .3rem",
+      margin: "0",
+    },
   },
   menuItems: {
     fontSize: "max(.8vw,10px)",

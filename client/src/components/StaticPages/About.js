@@ -166,7 +166,7 @@ const About = () => {
             >
               Code for America
             </a>
-            . he goal was to create a site of free and subsidized food
+            . The goal was to create a site of free and subsidized food
             resources. The team gave the project to a nonprofit to manage its
             day-to-day operations. The upkeep turned out to be much more work
             than any single nonprofit could handle.

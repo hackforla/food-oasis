@@ -1,12 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import mapMarker from "./mapMarker";
-import pantryIcon from "../images/pantryIcon.svg";
-import pantryIconGrey from "../images/pantryIconGrey.svg";
-import mealIcon from "../images/mealIcon.svg";
-import mealIconGrey from "../images/mealIconGrey.svg";
-import splitPantryMealIcon from "../images/splitPantryMealIcon.svg";
-import splitPantryMealIconGrey from "../images/splitPantryMealIconGrey.svg";
+import mapMarker from "../images/mapMarker";
 import fbIcon from "../images/fbIcon.png";
 import instaIcon from "../images/instaIcon.png";
 import {
@@ -14,6 +8,7 @@ import {
   FOOD_PANTRY_CATEGORY_ID,
   VERIFICATION_STATUS,
 } from "../constants/stakeholder";
+import { ORGANIZATION_COLORS, CLOSED_COLOR } from "../constants/map";
 
 const useStyles = makeStyles((theme) => ({
   stakeholderHolder: {
@@ -111,35 +106,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-//name address phone number email hours category .email .covidNotes .languages .notes
-// (1) COVID notes
-// (2) Public notes
-// (3) Eligibility
-// (4) Languages
-
-const iconReturn = (stakeholder) => {
-  console.log(stakeholder);
-  if (stakeholder.inactiveTemporary || stakeholder.inactive) {
-    return stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID &&
-      stakeholder.categories[1] &&
-      stakeholder.categories[1].id === MEAL_PROGRAM_CATEGORY_ID
-      ? splitPantryMealIconGrey
-      : stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
-      ? pantryIconGrey
-      : mealIconGrey;
-  }
-  return stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID &&
-    stakeholder.categories[1] &&
-    stakeholder.categories[1].id === MEAL_PROGRAM_CATEGORY_ID
-    ? splitPantryMealIcon
-    : stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
-    ? pantryIcon
-    : mealIcon;
-};
-
 const SelectedStakeholderDisplay = ({
   doSelectStakeholder,
   selectedStakeholder,
+  iconReturn,
 }) => {
   const classes = useStyles();
 
@@ -177,14 +147,14 @@ const SelectedStakeholderDisplay = ({
   const standardTime = (timeStr) => {
     if (timeStr) {
       if (parseInt(timeStr.substring(0, 2)) === 12) {
-        return `12${timeStr.substring(2, 5)}PM`;
+        return `12${timeStr.substring(2, 5)} PM`;
       }
       return parseInt(timeStr.substring(0, 2)) > 12
         ? `${parseInt(timeStr.substring(0, 2)) - 12}${timeStr.substring(
             2,
             5
-          )}PM`
-        : `${timeStr.substring(0, 5)}AM`;
+          )} PM`
+        : `${timeStr.substring(0, 5)} AM`;
     }
   };
 
@@ -211,11 +181,7 @@ const SelectedStakeholderDisplay = ({
     <div className={classes.stakeholderHolder}>
       <div className={classes.topInfoHolder}>
         <div className={classes.imgHolder}>
-          <img
-            src={iconReturn(selectedStakeholder)}
-            alt="Organization Category Icon"
-            className={classes.typeLogo}
-          />
+          {iconReturn(selectedStakeholder)}
         </div>
         <div className={classes.infoHolder}>
           <span>{selectedStakeholder.name}</span>
@@ -223,34 +189,25 @@ const SelectedStakeholderDisplay = ({
           <div>
             {selectedStakeholder.city} {selectedStakeholder.zip}
           </div>
-          <em
-            style={{
-              color:
-                selectedStakeholder.inactiveTemporary ||
-                selectedStakeholder.inactive
-                  ? "#545454"
-                  : selectedStakeholder.categories[0].id ===
-                    MEAL_PROGRAM_CATEGORY_ID
-                  ? "#CC3333"
-                  : "#336699",
-            }}
-          >
-            {selectedStakeholder.categories[0].name}
-          </em>
+          {selectedStakeholder.categories.map((category) => (
+            <em
+              style={{
+                alignSelf: "flex-start",
+                color:
+                  selectedStakeholder.inactiveTemporary ||
+                  selectedStakeholder.inactive
+                    ? CLOSED_COLOR
+                    : category.id === FOOD_PANTRY_CATEGORY_ID
+                    ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
+                    : category.id === MEAL_PROGRAM_CATEGORY_ID
+                    ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
+                    : "#000",
+              }}
+            >
+              {category.name}
+            </em>
+          ))}
           <div className={classes.labelHolder}>
-            {selectedStakeholder.categories[1] ? (
-              <em
-                style={{
-                  color:
-                    selectedStakeholder.categories[1].id ===
-                    FOOD_PANTRY_CATEGORY_ID
-                      ? "#336699"
-                      : "#CC3333",
-                }}
-              >
-                {selectedStakeholder.categories[1].name}
-              </em>
-            ) : null}
             {selectedStakeholder.inactiveTemporary ||
             selectedStakeholder.inactive ? (
               <em className={classes.closedLabel}>
@@ -272,7 +229,7 @@ const SelectedStakeholderDisplay = ({
           {mapMarker(
             selectedStakeholder.inactiveTemporary ||
               selectedStakeholder.inactive
-              ? "#545454"
+              ? CLOSED_COLOR
               : selectedStakeholder.categories[0].id ===
                   FOOD_PANTRY_CATEGORY_ID &&
                 selectedStakeholder.categories[1] &&
@@ -280,8 +237,8 @@ const SelectedStakeholderDisplay = ({
                   MEAL_PROGRAM_CATEGORY_ID
               ? ""
               : selectedStakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
-              ? "#336699"
-              : "#CC3333",
+              ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
+              : ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID],
             selectedStakeholder.verificationStatusId ===
               VERIFICATION_STATUS.VERIFIED
               ? true
@@ -300,10 +257,10 @@ const SelectedStakeholderDisplay = ({
             color:
               selectedStakeholder.inactiveTemporary ||
               selectedStakeholder.inactive
-                ? "#545454"
+                ? CLOSED_COLOR
                 : selectedStakeholder.categories[0].id === 1
-                ? "#336699"
-                : "#CC3333",
+                ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
+                : ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID],
           }}
         >
           Data updated on{" "}
@@ -331,10 +288,10 @@ const SelectedStakeholderDisplay = ({
             backgroundColor:
               selectedStakeholder.inactiveTemporary ||
               selectedStakeholder.inactive
-                ? "#545454"
+                ? CLOSED_COLOR
                 : selectedStakeholder.categories[0].id === 1
-                ? "#336699"
-                : "#CC3333",
+                ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
+                : ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID],
           }}
         >
           Directions
@@ -491,10 +448,10 @@ const SelectedStakeholderDisplay = ({
           fill={
             selectedStakeholder.inactiveTemporary ||
             selectedStakeholder.inactive
-              ? "#545454"
+              ? CLOSED_COLOR
               : selectedStakeholder.categories[0].id === 1
-              ? "#336699"
-              : "#CC3333"
+              ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
+              : ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
           }
         />
         <path

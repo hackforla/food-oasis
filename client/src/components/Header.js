@@ -73,9 +73,7 @@ export default function Header(props) {
 
   const styles = isHomePage ? homePageStyles : defaultStyles;
   const classes = useStyles(styles);
-  const taglineText = isHomePage
-    ? ""
-    : "Your free food directory in Los Angeles";
+  const taglineText = isHomePage ? "" : "Your free food directory";
 
   return (
     <>

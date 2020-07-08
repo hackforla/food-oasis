@@ -120,7 +120,7 @@ const Home = (props) => {
         <Box className={classes.logoContainer}>
           <img src={logo} alt="logo" className={classes.logo} />
           <Typography className={classes.subtitle}>
-            Your free food directory in Los Angeles
+            Your free food directory
           </Typography>
         </Box>
         <Box className={classes.formContainer}>

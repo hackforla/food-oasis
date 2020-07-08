@@ -126,18 +126,7 @@ const Donate = () => {
   // const { t } = useTranslation("donate");
   return (
     <div className={classes.outer}>
-      <h1 className={classes.title}>
-        Donate
-        <br />
-        <a
-          href="//www.codeforamerica.org/donate"
-          target="_blank"
-          rel="noopener noreferrer"
-          className={classes.btnOrange}
-        >
-          Donate
-        </a>
-      </h1>
+      <h1 className={classes.title}>Donate</h1>
       <div className={classes.main}>
         <figure className={classes.figure}>
           <img alt="Donate" src={donatebg} style={{ width: "100%" }} />
@@ -181,7 +170,7 @@ const Donate = () => {
               rel="noopener noreferrer"
               className={classes.btnWhite}
             >
-              Signup
+              Subscribe
             </a>
           </aside>
           <aside className={classes.volunteer}>

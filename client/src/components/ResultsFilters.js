@@ -20,11 +20,11 @@ import {
 
 const useStyles = makeStyles((theme) => ({
   filterGroup: {
-    margin: "0 .25rem",
+    margin: 0,
     padding: 0,
   },
   filterGroupButton: {
-    margin: "0 .25rem",
+    margin: 0,
     padding: ".5rem",
     fontSize: "max(.8vw,12px)",
     whiteSpace: "nowrap",
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     color: "#000",
   },
   filterButton: {
-    margin: "0 0.25rem",
+    margin: 0,
     padding: ".5rem",
     fontSize: "max(.8vw,12px)",
     whiteSpace: "nowrap",
@@ -42,10 +42,10 @@ const useStyles = makeStyles((theme) => ({
     color: "#000",
   },
   distanceControl: {
-    margin: "0 .25rem",
+    margin: 0,
     backgroundColor: "#fff",
-    padding: ".40em 0 .40em .7em",
-    border: ".09em solid #000",
+    padding: "auto 0 auto .7em",
+    border: ".1em solid #000",
     outline: "none",
   },
   menuItems: {
@@ -104,7 +104,7 @@ const distanceInfo = [1, 2, 3, 5, 10, 20, 50];
 
 const ResultsFilters = ({
   search,
-  isWindow960orLess,
+  isWindowWide,
   viewport,
   setViewport,
   setIsPopupOpen,
@@ -210,7 +210,7 @@ const ResultsFilters = ({
       wrap="wrap-reverse"
       className={classes.controlPanel}
       style={{
-        justifyContent: isWindow960orLess ? null : "center",
+        justifyContent: isWindowWide ? null : "center",
       }}
     >
       <Grid
@@ -256,7 +256,7 @@ const ResultsFilters = ({
             style={{
               backgroundColor: isPantrySelected ? "#0A3865" : "#fff",
               color: isPantrySelected ? "#fff" : "#000",
-              marginRight: 0,
+              marginLeft: "0.25rem",
               borderRadius: "5px 0 0 5px",
             }}
             onClick={togglePantry}
@@ -270,7 +270,7 @@ const ResultsFilters = ({
             style={{
               backgroundColor: isMealsSelected ? "#0A3865" : "#fff",
               color: isMealsSelected ? "#fff" : "#000",
-              marginLeft: 0,
+              marginRight: "0.25rem",
               borderRadius: "0 5px 5px 0",
             }}
             onClick={toggleMeal}
@@ -295,7 +295,7 @@ const ResultsFilters = ({
       </Grid>
       <Box
         className={classes.inputContainer}
-        style={{ width: isWindow960orLess ? "30rem" : "100%" }}
+        style={{ width: isWindowWide ? "30rem" : "100%" }}
       >
         <form
           noValidate

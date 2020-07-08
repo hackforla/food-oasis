@@ -180,8 +180,14 @@ const About = () => {
           <dl className={classes.dl}>
             <dt>How can I sign up to volunteer?</dt>
             <dd>
-              <a href="">Attend a training session</a> to get an assignment, or
-              reach out to{" "}
+              <a
+                href="//us02web.zoom.us/meeting/register/tZEld-usrj4qEtJ7ICuM_0KODTSY4ubLukVZ"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Attend a training session
+              </a>{" "}
+              to get an assignment, or reach out to{" "}
               <a href="mailto:jenny@foodoasis.la">jenny@foodoasis.la</a>.
             </dd>
             <dt>When can I volunteer?</dt>
@@ -192,10 +198,9 @@ const About = () => {
             </dd>
             <dt>How do I set up an account to start my assignment?</dt>
             <dd>
-              <a href="">Enter your info here</a>, and look out for a
-              confirmation email from{" "}
-              <a href="mailto:darragh@entrotech.net">darragh@entrotech.net</a>.
-              Follow the instructions in the email.
+              <a href="/register">Enter your info here</a>, and look out for a
+              confirmation email from foodoasis+app@hackforla.org. Follow the
+              instructions in the email.
             </dd>
           </dl>
         </section>

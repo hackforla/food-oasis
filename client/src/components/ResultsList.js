@@ -106,6 +106,61 @@ const iconReturn = (stakeholder) => {
     : mealIcon(isClosed);
 };
 
+const isLastOccurrenceInMonth = (currentDay) => {
+  const currentMonth = currentDay.month();
+  if (currentDay.add(7, "days").month() !== currentMonth) {
+    return true;
+  }
+};
+
+const stakeholdersCurrentDaysHours = (stakeholder) => {
+  const currentDay = moment();
+  const currentDayOfWeek = currentDay.format("ddd");
+  const dayOccurrenceInMonth = Math.ceil(currentDay.date() / 7); // In tandum with currentDayOfWeek tells us which week the day falls
+  const currentTime = currentDay.format("HH:mm:ss");
+  const currentDaysHoursOfOperation = stakeholder?.hours.filter(
+    (todaysHours) => {
+      const hasHoursToday = currentDayOfWeek === todaysHours.day_of_week;
+      const stakeholderOpenTime = moment(todaysHours.open, "HH:mm:ss").format(
+        "HH:mm:ss"
+      );
+      const stakeholderClosingTime = moment(
+        todaysHours.close,
+        "HH:mm:ss"
+      ).format("HH:mm:ss");
+      const isOnlyOpenOnLastWeekOfMonth =
+        hasHoursToday &&
+        isLastOccurrenceInMonth(currentDay) &&
+        todaysHours.week_of_month === 5;
+      return (
+        hasHoursToday &&
+        currentTime >= stakeholderOpenTime &&
+        currentTime < stakeholderClosingTime &&
+        (todaysHours.week_of_month === 0 ||
+          dayOccurrenceInMonth === todaysHours.week_of_month ||
+          isOnlyOpenOnLastWeekOfMonth)
+      );
+    }
+  );
+  if (currentDaysHoursOfOperation?.length > 0) {
+    return currentDaysHoursOfOperation;
+  }
+};
+
+const calculateMinutesToClosing = (hours) => {
+  const currentTime = moment().format("HH:mm");
+  return moment(hours[0].close, "HH:mm").diff(
+    moment(currentTime, "HH:mm"),
+    "minutes"
+  );
+};
+
+const isAlmostClosed = (hours) => {
+  const minutesToCloseFlag = 60;
+  const minutesToClosing = calculateMinutesToClosing(hours);
+  return minutesToClosing <= minutesToCloseFlag;
+};
+
 const ResultsList = ({
   doSelectStakeholder,
   selectedStakeholder,
@@ -141,27 +196,12 @@ const ResultsList = ({
           />
         ) : stakeholders ? (
           stakeholders.map((stakeholder) => {
-            const currentDayOfWeek = moment().format("ddd");
-            const currentTime = moment().format("HH:mm:ss");
-            let isAlmostClosed;
-
-            const currentDaysHoursOfOperation = stakeholder.hours.filter(
-              (day) => {
-                return (
-                  currentDayOfWeek === day.day_of_week &&
-                  currentTime >=
-                    moment(day.open, "HH:mm:ss").format("HH:mm:ss") &&
-                  currentTime < moment(day.close, "HH:mm:ss").format("HH:mm:ss")
-                );
-              }
-            );
-
-            isAlmostClosed =
-              currentDaysHoursOfOperation[0] &&
-              moment(currentDaysHoursOfOperation[0].close, "HH:mm:ss").diff(
-                moment(currentTime, "HH:mm:ss"),
-                "minutes"
-              ) <= 30;
+            const stakeholderHours = stakeholdersCurrentDaysHours(stakeholder);
+            const isOpenFlag = !!stakeholderHours;
+            const isAlmostClosedFlag =
+              isOpenFlag && isAlmostClosed(stakeholderHours);
+            const minutesToClosing =
+              isAlmostClosedFlag && calculateMinutesToClosing(stakeholderHours);
 
             return (
               <div
@@ -200,20 +240,20 @@ const ResultsList = ({
                       <em className={classes.closedLabel}>
                         {stakeholder.inactiveTemporary
                           ? "Temporarily Closed"
-                          : "Closed"}
+                          : "Permanently Closed"}
                       </em>
                     ) : null}
 
-                    {currentDaysHoursOfOperation.length > 0 &&
+                    {isOpenFlag &&
                     !(stakeholder.inactiveTemporary || stakeholder.inactive) ? (
                       <em className={classes.openIndicatorLabel}>OPEN</em>
                     ) : null}
 
-                    {currentDaysHoursOfOperation.length > 0 &&
+                    {isAlmostClosedFlag &&
                     !(stakeholder.inactiveTemporary || stakeholder.inactive) &&
-                    isAlmostClosed ? (
+                    isAlmostClosedFlag ? (
                       <em className={classes.closingSoonIndicatorLabel}>
-                        Closing Soon
+                        {`Closing in ${minutesToClosing} minutes`}
                       </em>
                     ) : null}
                   </div>

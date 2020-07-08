@@ -155,12 +155,21 @@ const About = () => {
           <h2>Our Team</h2>
           <p>
             Food Oasis started in 2015 under{" "}
-            <a href="//hackforla.org">Hack for LA</a>, a brigade under the
-            non-profit <a href="//codeforamerica.org">Code for America</a>. he
-            goal was to create a site of free and subsidized food resources. The
-            team gave the project to a nonprofit to manage its day-to-day
-            operations. The upkeep turned out to be much more work than any
-            single nonprofit could handle.
+            <a href="//hackforla.org" target="_blank" rel="noopener noreferrer">
+              Hack for LA
+            </a>
+            , a brigade under the non-profit{" "}
+            <a
+              href="//codeforamerica.org"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Code for America
+            </a>
+            . he goal was to create a site of free and subsidized food
+            resources. The team gave the project to a nonprofit to manage its
+            day-to-day operations. The upkeep turned out to be much more work
+            than any single nonprofit could handle.
           </p>
           <p>
             In 2020, our current Hack for LA team assembled to build new digital

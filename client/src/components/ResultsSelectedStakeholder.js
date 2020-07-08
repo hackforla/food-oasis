@@ -301,29 +301,34 @@ const SelectedStakeholderDisplay = ({
         <>
           <h2 className={classes.title}>Hours</h2>
           <div className={classes.hoursContainer}>
-            {selectedStakeholder.hours.sort(hoursSort).map((hour) => (
-              <div
-                key={JSON.stringify(hour)}
-                className={classes.singleHourContainer}
-              >
-                <span>
-                  {hour.week_of_month === 5
-                    ? "Last " + hour.day_of_week
-                    : hour.week_of_month === 1
-                    ? "1st " + hour.day_of_week
-                    : hour.week_of_month === 2
-                    ? "2nd " + hour.day_of_week
-                    : hour.week_of_month === 3
-                    ? "3rd " + hour.day_of_week
-                    : hour.week_of_month === 3
-                    ? "4th " + hour.day_of_week
-                    : hour.day_of_week}
-                </span>
-                <span>
-                  {standardTime(hour.open)}-{standardTime(hour.close)}
-                </span>
-              </div>
-            ))}
+            {selectedStakeholder.hours &&
+            selectedStakeholder.hours.length > 0 ? (
+              selectedStakeholder.hours.sort(hoursSort).map((hour) => (
+                <div
+                  key={JSON.stringify(hour)}
+                  className={classes.singleHourContainer}
+                >
+                  <span>
+                    {hour.week_of_month === 5
+                      ? "Last " + hour.day_of_week
+                      : hour.week_of_month === 1
+                      ? "1st " + hour.day_of_week
+                      : hour.week_of_month === 2
+                      ? "2nd " + hour.day_of_week
+                      : hour.week_of_month === 3
+                      ? "3rd " + hour.day_of_week
+                      : hour.week_of_month === 3
+                      ? "4th " + hour.day_of_week
+                      : hour.day_of_week}
+                  </span>
+                  <span>
+                    {standardTime(hour.open)}-{standardTime(hour.close)}
+                  </span>
+                </div>
+              ))
+            ) : (
+              <span className={classes.fontSize}>No hours on record</span>
+            )}
           </div>
         </>
       ) : null}
@@ -332,13 +337,13 @@ const SelectedStakeholderDisplay = ({
       {selectedStakeholder.phone ? (
         <span className={classes.fontSize}>{selectedStakeholder.phone}</span>
       ) : (
-        <span className={classes.fontSize}>No Phone Number on Record</span>
+        <span className={classes.fontSize}>No Phone Number on record</span>
       )}
       <h2 className={classes.title}>E-Mail</h2>
       {selectedStakeholder.email ? (
         <span className={classes.fontSize}>{selectedStakeholder.email}</span>
       ) : (
-        <span className={classes.fontSize}>No E-Mail Address on Record</span>
+        <span className={classes.fontSize}>No E-Mail Address on record</span>
       )}
 
       <h2 className={classes.title}>Eligibility/Requirements</h2>

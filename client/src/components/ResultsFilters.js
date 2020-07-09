@@ -15,7 +15,6 @@ import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
   DEFAULT_CATEGORIES,
-  VERIFICATION_STATUS,
 } from "../constants/stakeholder";
 
 const useStyles = makeStyles((theme) => ({
@@ -143,9 +142,7 @@ const ResultsFilters = ({
         radius,
         categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
         isInactive: "either",
-        verificationStatusId: isVerifiedSelected
-          ? VERIFICATION_STATUS.VERIFIED
-          : 0,
+        verificationStatusId: 0,
       });
       // console.log(storage);
       if (origin.locationName && origin.latitude && origin.longitude)

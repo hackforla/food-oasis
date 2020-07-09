@@ -87,7 +87,6 @@ const Footer = () => {
 
   const constantLinks = MENU_ITEMS.map((item, index) => {
     const { text, link } = item;
-    console.log(link);
     return (
       <Link className={classes.linkStyle} key={index} to={link}>
         {text}

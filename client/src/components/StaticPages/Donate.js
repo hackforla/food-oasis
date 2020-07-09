@@ -126,13 +126,7 @@ const Donate = () => {
   // const { t } = useTranslation("donate");
   return (
     <div className={classes.outer}>
-      <h1 className={classes.title}>
-        Donate
-        <br />
-        <a href="/" className={classes.btnOrange}>
-          Donate
-        </a>
-      </h1>
+      <h1 className={classes.title}>Donate</h1>
       <div className={classes.main}>
         <figure className={classes.figure}>
           <img alt="Donate" src={donatebg} style={{ width: "100%" }} />
@@ -158,20 +152,35 @@ const Donate = () => {
             menu and your donation will get earmarked exclusively for Food Oasis
             Los Angeles.
           </p>
-          <a href="/" className={classes.btnOutline}>
+          <a
+            href="//www.codeforamerica.org/donate"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={classes.btnOutline}
+          >
             Donate
           </a>
         </section>
         <section className={classes.cards}>
           <aside className={classes.signup}>
             <h3>Get monthly updates on what we're doing</h3>
-            <a href="" className={classes.btnWhite}>
-              Signup
+            <a
+              href="//foodoasis.us18.list-manage.com/subscribe?u=40d31892cbbe01312937f7de6&id=42235bb7ce"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={classes.btnWhite}
+            >
+              Subscribe
             </a>
           </aside>
           <aside className={classes.volunteer}>
             <h3>Want to give your time instead?</h3>
-            <a href="" className={classes.btnWhite}>
+            <a
+              href="//us02web.zoom.us/meeting/register/tZEld-usrj4qEtJ7ICuM_0KODTSY4ubLukVZ"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={classes.btnWhite}
+            >
               Volunteer
             </a>
           </aside>

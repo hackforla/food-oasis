@@ -73,7 +73,6 @@ export default function Menu(props) {
   const unAuthLinks = (
     <>
       <Divider />
-      <MenuItemLink key="Register" to="/register" text="Volunteer Register" />
       <MenuItemLink key="login" to="/login" text="Volunteer Login">
         Login
       </MenuItemLink>

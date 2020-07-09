@@ -43,8 +43,11 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 10,
     marginBottom: "0.5em",
     padding: "0 5vw",
-    [theme.breakpoints.down("xs")]: {
-      padding: 0,
+    [theme.breakpoints.down("sm")]: {
+      padding: "0 5vw",
+    },
+    [theme.breakpoints.down("md")]: {
+      padding: "0 8.5vw",
     },
   },
   form: {
@@ -120,7 +123,7 @@ const Home = (props) => {
         <Box className={classes.logoContainer}>
           <img src={logo} alt="logo" className={classes.logo} />
           <Typography className={classes.subtitle}>
-            Your free food directory in Los Angeles
+            Your free food directory
           </Typography>
         </Box>
         <Box className={classes.formContainer}>

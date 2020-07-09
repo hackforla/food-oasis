@@ -46,24 +46,28 @@ const useStyles = makeStyles((theme) => ({
     border: ".1em solid #000",
     color: "#000",
     [theme.breakpoints.down("xs")]: {
-      padding: ".1rem .1rem",
-      margin: "0",
-      fontSize: "max(.8vw,11px)",
+      padding: ".6rem .6rem",
+      margin: ".3rem",
+      marginTop: "1rem",
+      fontSize: "max(.8vw,12px)",
+      borderRadius: "5px !important",
     },
   },
   distanceControl: {
-    margin: 0,
+    margin: ".3rem",
     backgroundColor: "#fff",
-    padding: "auto 0 auto .7em",
+    // padding: "auto 0 auto .7em",
+    padding: ".3rem",
     border: ".1em solid #000",
     outline: "none",
     [theme.breakpoints.down("xs")]: {
-      padding: "0 .3rem",
-      margin: "0",
+      padding: ".4rem",
+      margin: ".3rem",
+      marginTop: "1rem",
     },
   },
   menuItems: {
-    fontSize: "max(.8vw,10px)",
+    fontSize: "max(.8vw,12px)",
     color: "#000",
   },
   controlPanel: {
@@ -107,6 +111,9 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: "#C7F573",
       boxShadow: "none",
+    },
+    [theme.breakpoints.down("xs")]: {
+      marginRight: ".5rem",
     },
   },
   buttonHolder: {
@@ -293,7 +300,7 @@ const ResultsFilters = ({
           </Button>
         </Grid>
         <Grid item>
-          <Button
+          {/* <Button
             className={classes.filterGroupButton}
             style={{
               backgroundColor: isVerifiedSelected ? "#0A3865" : "#fff",
@@ -304,7 +311,7 @@ const ResultsFilters = ({
             }}
           >
             Updated Data
-          </Button>
+          </Button> */}
         </Grid>
       </Grid>
       <Box

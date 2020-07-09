@@ -172,7 +172,7 @@ export default function Menu(props) {
         <MenuIcon className={classes.blueMenu} />
       </Button>
 
-      <Drawer open={isOpen} onClose={toggleDrawer}>
+      <Drawer anchor={"right"} open={isOpen} onClose={toggleDrawer}>
         {sideList()}
       </Drawer>
     </div>

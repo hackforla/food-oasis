@@ -85,7 +85,7 @@ function Map({
         mapStyle={MAPBOX_STYLE}
       >
         <div style={styles.navigationControl}>
-          <NavigationControl />
+          <NavigationControl showCompass={false} />
         </div>
         {stakeholders &&
           stakeholders

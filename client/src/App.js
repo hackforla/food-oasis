@@ -79,7 +79,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const storedJson = localStorage.getItem("user");
+    const storedJson = sessionStorage.getItem("user");
     const userJson = JSON.stringify(user);
     if (!userJson && !storedJson) {
       return;
@@ -96,9 +96,9 @@ function App() {
 
   const onLogin = (user) => {
     if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
+      sessionStorage.setItem("user", JSON.stringify(user));
     } else {
-      localStorage.removeItem("user");
+      sessionStorage.removeItem("user");
     }
     setUser(user);
   };

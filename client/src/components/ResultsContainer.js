@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ResultsContainer(props) {
-  const storage = window.localStorage;
+  const storage = window.sessionStorage;
   const { userCoordinates, userSearch } = props;
   const { data, search } = useOrganizations();
   const classes = useStyles();

@@ -112,6 +112,9 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "#C7F573",
       boxShadow: "none",
     },
+    [theme.breakpoints.down("xs")]: {
+      marginRight: ".5rem",
+    },
   },
   buttonHolder: {
     display: "flex",

@@ -6,7 +6,7 @@ import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { makeStyles } from "@material-ui/core/styles";
 import { useMapboxGeocoder } from "hooks/useMapboxGeocoder";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
     width: "34.5em",
     position: "absolute",
@@ -18,6 +18,9 @@ const useStyles = makeStyles(() => ({
   },
   container: {
     width: "100%",
+    [theme.breakpoints.down("xs")]: {
+      marginLeft: ".5rem",
+    },
   },
   address: {
     backgroundColor: "#fff",

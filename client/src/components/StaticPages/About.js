@@ -38,7 +38,7 @@ const useStyles = makeStyles(() => ({
     padding: 0,
   },
   icon: {
-    flexBasis: "100%",
+    margin: "auto",
   },
   mission: {
     padding: "32px",
@@ -60,7 +60,7 @@ const useStyles = makeStyles(() => ({
   },
   team: {
     padding: "32px",
-    margin: "32px 0",
+    margin: "32px 0 0 0",
     borderRadius: "24px",
     color: "#4d4d4d",
     display: "flex",
@@ -75,10 +75,36 @@ const useStyles = makeStyles(() => ({
       marginTop: "10px",
       marginBottom: "20px",
     },
+    "& $a": {
+      color: "#4d4d4d",
+    },
+  },
+  contact: {
+    padding: "32px",
+    margin: "0px 0 32px 0",
+    borderRadius: "24px",
+    color: "#4d4d4d",
+    display: "flex",
+    flexDirection: "column",
+    textAlign: "center",
+    "& $h2": {
+      color: "#336699",
+      flexBasis: "100",
+      textTransform: "uppercase;",
+      textAlign: "center",
+      fontWeight: "500",
+      fontSize: "32px",
+      marginTop: "10px",
+      marginBottom: "20px",
+    },
+    "& $a": {
+      color: "#4d4d4d",
+    },
   },
   partners: {
     background: "#fff",
     padding: "48px 32px",
+    borderRadius: "24px",
     justifyContent: "space-between",
     alignItems: "center",
     display: "flex",
@@ -129,20 +155,46 @@ const About = () => {
           />
           <h2>Our Mission</h2>
           <p>
-            Access to enough food should be a basic right, but it’s not a
-            reality for over 1.1 million people in Los Angeles County. Los
-            Angeles is home to the greatest number of food-insecure adults and
-            children in the nation. Due to COVID, there are ___ more people who
-            are struggling to find enough food. These are not only people who
-            are experiencing homelessness. This includes everyone.
+            Access to enough food should be a basic right. Unfortunately, this
+            is not the reality for millions of people in Los Angeles County.
+            Before the Covid-19 pandemic, up to 1.4 million people in Los
+            Angeles County faced food insecurity. Food insecurity is
+            inconsistent with access to cheap and nutritious food. Los Angeles
+            has the highest percentage of food insecurity in the nation.
           </p>
           <p>
-            No one organization can solve this. It takes a group effort—and
-            that’s where Food Oasis comes in. Food Oasis built a directory to
-            connect anyone with hundreds of free food resources. We also took
-            the extra steps to update the data we have in our directory. Los
-            Angeles now has an updated directory that we will share with our
-            community and partners.
+            Since COVID, 1.3 million people lost their jobs in Los Angeles
+            County alone. This created a brand new vulnerable population. These
+            are people who need food assistance for the first time. According to
+            a study done by Feeding America in May 2020, over 500,000 Angelinos
+            are newly food insecure.
+          </p>
+          <p>
+            Food pantries in the area are experiencing unprecedented demand. The
+            demand for food assistance has almost doubled since the beginning of
+            2020. To compound matters, it is the hard work of volunteers that
+            keeps pantries and meal programs open. The number of volunteers
+            available to distribute food has diminished.
+          </p>
+          <p>
+            Food Oasis has 773 organizations in our database. Our team of
+            volunteers updated the information for 333 organizations. Out of 333
+            organizations, 46 closed their doors and 66 closed for COVID. 37% of
+            the organizations have closed their doors.
+          </p>
+          <p>
+            The primary goal of Food Oasis is to provide up-to-date information
+            to Angelinos. We built a directory that connects anyone with
+            hundreds of free food resources. Food Oasis presents reliable
+            information on a user-friendly platform. This will reduce stress and
+            uncertainty for food seekers. It will also demonstrate to our
+            community the growing need of food donations in Los Angeles.
+          </p>
+          <p>
+            Food Oasis is creating a directory of updated food resources. There
+            are countless groups helping to feed hungry Angelenos. But it’s
+            difficult for those in need to find them because there’s no one
+            source of updated info. We’re working to change that.
           </p>
         </div>
         <section className={classes.team}>
@@ -172,23 +224,45 @@ const About = () => {
             than any single nonprofit could handle.
           </p>
           <p>
-            In 2020, our current Hack for LA team assembled to build new digital
-            pieces of this puzzle. One goal was to relaunch the site with
-            hundreds of new food resources. We learned from the past how
+            In August 2019, our current Hack for LA team assembled to build new
+            digital pieces of this puzzle. One goal was to relaunch the site
+            with hundreds of new food resources. We learned from the past how
             difficult it is to keep resources updated. Now, we are training
             volunteers to update the resources in the directory. The final piece
-            we added is a new database that connects pantry directors with food
-            donors.
+            we added is a new second database that connects pantry directors
+            with food donation organizations.
           </p>
           <p>
             Our web-based solution is sparking collaboration, community
-            building, and team building. The result of this community building
-            is the food seeker will have updated data to find the food they
-            need.
+            building, and team building. The result of this community-building
+            gives the food seeker updated information to find the free food
+            resources they need.
           </p>
           <p>
             We are 100% volunteer-run project. We look forward to sharing our
             updated directory with Los Angeles.
+          </p>
+        </section>
+        <section className={classes.contact}>
+          <img
+            alt="Contact Us"
+            src={iconSpacerBlue}
+            className={classes.icon}
+            height="40"
+          />
+          <h2>Contact Us</h2>
+          <p>
+            Questions about our project?
+            <br />
+            Updates to the listings?
+            <br />
+            General inquiries?
+            <br />
+          </p>
+          <p>
+            Please contact our Product Owner, Jenny Mikesell
+            <br />
+            <a href="mailto:jenny@foodoasis.la">jenny@foodoasis.la</a>
           </p>
         </section>
         <section className={classes.partners}>

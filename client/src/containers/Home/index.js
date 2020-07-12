@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "20px",
     marginBottom: ".25em",
     color: "darygray",
+    textAlign: "center",
   },
   label: {
     textAlign: "center",
@@ -122,9 +123,6 @@ const Home = (props) => {
       <Paper className={classes.paper}>
         <Box className={classes.logoContainer}>
           <img src={logo} alt="logo" className={classes.logo} />
-          <Typography className={classes.subtitle}>
-            Your free food directory
-          </Typography>
         </Box>
         <Box className={classes.formContainer}>
           <form
@@ -152,6 +150,9 @@ const Home = (props) => {
                 {""}
               </Button>
             </Box>
+            <Typography className={classes.subtitle}>
+              Your free food directory.
+            </Typography>
           </form>
         </Box>
       </Paper>

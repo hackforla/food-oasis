@@ -73,7 +73,6 @@ export default function Menu(props) {
   const unAuthLinks = (
     <>
       <Divider />
-      <MenuItemLink key="Register" to="/register" text="Volunteer Register" />
       <MenuItemLink key="login" to="/login" text="Volunteer Login">
         Login
       </MenuItemLink>
@@ -173,7 +172,7 @@ export default function Menu(props) {
         <MenuIcon className={classes.blueMenu} />
       </Button>
 
-      <Drawer open={isOpen} onClose={toggleDrawer}>
+      <Drawer anchor={"right"} open={isOpen} onClose={toggleDrawer}>
         {sideList()}
       </Drawer>
     </div>

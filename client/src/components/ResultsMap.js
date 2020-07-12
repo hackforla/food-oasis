@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   map: {
     textAlign: "center",
     fontSize: "12px",
-    height: "100%",
+    // height: "100%",
     [theme.breakpoints.down("sm")]: {
       order: 0,
     },
@@ -46,7 +46,7 @@ function Map({
   setSelectedPopUp,
   isPopupOpen,
   setIsPopupOpen,
-  isWindow960orLess,
+  isWindowWide,
   isMobile,
   viewport,
   setViewport,
@@ -73,10 +73,16 @@ function Map({
   };
 
   return (
-    <Grid item xs={12} md={8} className={classes.map}>
+    <Grid
+      item
+      xs={12}
+      md={8}
+      className={classes.map}
+      style={{ height: isWindowWide ? "100%" : "50%" }}
+    >
       <ReactMapGL
         {...viewport}
-        dragPan={isWindow960orLess && isMobile ? false : true}
+        dragPan={isWindowWide && isMobile ? false : true}
         touchAction="pan-y"
         width="100%"
         height="100%"
@@ -85,7 +91,7 @@ function Map({
         mapStyle={MAPBOX_STYLE}
       >
         <div style={styles.navigationControl}>
-          <NavigationControl />
+          <NavigationControl showCompass={false} />
         </div>
         {stakeholders &&
           stakeholders

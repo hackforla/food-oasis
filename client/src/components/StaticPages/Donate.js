@@ -1,6 +1,7 @@
 import React from "react";
 
 import donatebg from "./assets/donate-bg.png";
+import iconSpacer from "./assets/icon-spacer.svg";
 import iconSpacerBlue from "./assets/icon-spacer-blue.svg";
 import { makeStyles } from "@material-ui/core";
 
@@ -36,9 +37,9 @@ const useStyles = makeStyles(() => ({
     textTransform: "uppercase",
   },
   btnOutline: {
-    color: "#336699",
-    fontSize: "14px",
+    color: "#fff",
     border: "1px solid #336699",
+    background: "#336699",
     borderRadius: "6px",
     padding: "8px 16px",
     textDecoration: "none",
@@ -57,7 +58,7 @@ const useStyles = makeStyles(() => ({
     padding: 0,
   },
   icon: {
-    flexBasis: "100%",
+    margin: "auto",
   },
   donate: {
     padding: "32px",
@@ -77,7 +78,29 @@ const useStyles = makeStyles(() => ({
       marginBottom: "20px",
     },
     "& $btnOutline": {
-      margin: "20px auto",
+      margin: "20px auto 0 auto",
+    },
+  },
+  volunteerSection: {
+    padding: "32px",
+    margin: "32px 0 0 0",
+    borderRadius: "24px",
+    color: "#fff",
+    background: "#336699",
+    display: "flex",
+    flexWrap: "wrap",
+    "& $h2": {
+      color: "#fff",
+      flexBasis: "100%",
+      textTransform: "uppercase;",
+      textAlign: "center",
+      fontWeight: "500",
+      fontSize: "32px",
+      marginTop: "10px",
+      marginBottom: "20px",
+    },
+    "& $btnWhite": {
+      margin: "20px auto 0 auto",
     },
   },
   cards: {
@@ -126,13 +149,7 @@ const Donate = () => {
   // const { t } = useTranslation("donate");
   return (
     <div className={classes.outer}>
-      <h1 className={classes.title}>
-        Donate
-        <br />
-        <a href="/" className={classes.btnOrange}>
-          Donate
-        </a>
-      </h1>
+      <h1 className={classes.title}>Donate</h1>
       <div className={classes.main}>
         <figure className={classes.figure}>
           <img alt="Donate" src={donatebg} style={{ width: "100%" }} />
@@ -147,31 +164,71 @@ const Donate = () => {
           <h2>Why Donate?</h2>
           <p>
             We’ve done so much already as a 100% volunteer-run organization—but
-            we need your help to finish what we set out to do. There are
-            numerous admin costs that come with expanding and updating our free
-            food directory to include over 1,500 organizations. Your
-            tax-deductible donation would help us offset some of those costs
+            we need your help to finish what we set out to do. The admin,
+            development, and marketing costs to expand our directory are
+            extensive. We have a directory of over 1,300 organizations to
+            update. Your tax-deductible donation would help us offset some of
+            those costs.
           </p>
           <p>
             Please make donations to our parent organization (Code for America).
-            When asked to select a brigade, choose “Hack for LA” in the dropdown
-            menu and your donation will get earmarked exclusively for Food Oasis
-            Los Angeles.
+            At the Code for America donation page you will see a text box: “What
+            inspired you to donate today”? Please write Food Oasis and Hack for
+            LA in that box. Your donation will get earmarked for Food Oasis Los
+            Angeles.
           </p>
-          <a href="/" className={classes.btnOutline}>
+          <a
+            href="//www.codeforamerica.org/donate"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={classes.btnOutline}
+          >
             Donate
           </a>
         </section>
+        <div className={classes.volunteerSection}>
+          <img
+            alt="Volunteer"
+            src={iconSpacer}
+            className={classes.icon}
+            height="40"
+          />
+          <h2>Volunteer</h2>
+          <p>
+            We’re run 100% by remote volunteers who do critical work by updating
+            our food directory weekly. The work you do impact those who don’t
+            have enough to eat. Your help to update our directory makes it
+            easier for anyone to get in touch with groups that fit their needs.
+          </p>
+          <a
+            href="//us02web.zoom.us/meeting/register/tZEld-usrj4qEtJ7ICuM_0KODTSY4ubLukVZ"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={classes.btnWhite}
+          >
+            Become a Volunteer
+          </a>
+        </div>
         <section className={classes.cards}>
           <aside className={classes.signup}>
             <h3>Get monthly updates on what we're doing</h3>
-            <a href="" className={classes.btnWhite}>
-              Signup
+            <a
+              href="//foodoasis.us18.list-manage.com/subscribe?u=40d31892cbbe01312937f7de6&id=42235bb7ce"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={classes.btnWhite}
+            >
+              Subscribe
             </a>
           </aside>
           <aside className={classes.volunteer}>
             <h3>Want to give your time instead?</h3>
-            <a href="" className={classes.btnWhite}>
+            <a
+              href="//us02web.zoom.us/meeting/register/tZEld-usrj4qEtJ7ICuM_0KODTSY4ubLukVZ"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={classes.btnWhite}
+            >
               Volunteer
             </a>
           </aside>

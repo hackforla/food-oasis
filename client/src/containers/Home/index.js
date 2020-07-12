@@ -37,14 +37,18 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "20px",
     marginBottom: ".25em",
     color: "darygray",
+    textAlign: "center",
   },
   label: {
     textAlign: "center",
     marginTop: 10,
     marginBottom: "0.5em",
     padding: "0 5vw",
-    [theme.breakpoints.down("xs")]: {
-      padding: 0,
+    [theme.breakpoints.down("sm")]: {
+      padding: "0 5vw",
+    },
+    [theme.breakpoints.down("md")]: {
+      padding: "0 8.5vw",
     },
   },
   form: {
@@ -119,9 +123,6 @@ const Home = (props) => {
       <Paper className={classes.paper}>
         <Box className={classes.logoContainer}>
           <img src={logo} alt="logo" className={classes.logo} />
-          <Typography className={classes.subtitle}>
-            Your free food directory in Los Angeles
-          </Typography>
         </Box>
         <Box className={classes.formContainer}>
           <form
@@ -149,6 +150,9 @@ const Home = (props) => {
                 {""}
               </Button>
             </Box>
+            <Typography className={classes.subtitle}>
+              Your free food directory.
+            </Typography>
           </form>
         </Box>
       </Paper>

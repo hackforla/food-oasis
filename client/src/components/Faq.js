@@ -31,8 +31,8 @@ const Faq = () => {
   const [reorder, setReorder] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem("faqs")) {
-      setFaqs(JSON.parse(localStorage.getItem("faqs")));
+    if (sessionStorage.getItem("faqs")) {
+      setFaqs(JSON.parse(sessionStorage.getItem("faqs")));
     }
   }, []);
 
@@ -53,7 +53,7 @@ const Faq = () => {
             );
           }
           setFaqs(sorted);
-          localStorage.setItem("faqs", JSON.stringify(fetchedFaqs));
+          sessionStorage.setItem("faqs", JSON.stringify(fetchedFaqs));
         } else {
           setMessage("There are currently no FAQs.");
         }

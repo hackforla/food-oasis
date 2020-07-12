@@ -26,7 +26,7 @@ async function login(req, res) {
   const token = await sign({
     email: req.user.email,
     id: req.user.id,
-    sub: `${req.user.role}/0` || "data_entry/0",
+    sub: `${req.user.role}` || "data_entry",
   });
   res.cookie("jwt", token, {
     httpOnly: true,
@@ -75,12 +75,14 @@ function validateUserHasRequiredRoles(permittedRoles) {
   return async function validateUserJwt(req, res, next) {
     const jwtString = req.headers.authorization || req.cookies.jwt;
     try {
+      // the payload object encoded on the JWT
       const payload = await verify(jwtString);
 
-      // check that JWT subject is encoded with one of the requiredRoles
-      let isJWTRoleInAllowedRoles = permittedRoles.some(
-        (role) => role === payload.sub.split("/")[0]
-      );
+      // check that JWT subject is encoded with at least one of the requiredRoles
+      let isJWTRoleInAllowedRoles = permittedRoles.some((permittedRole) => {
+        let regex = new RegExp(permittedRole);
+        return regex.test(payload.sub);
+      });
       if (!isJWTRoleInAllowedRoles) {
         let msg = "Authentication error: insufficient permissions";
         req.log.error(msg);

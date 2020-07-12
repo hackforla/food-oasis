@@ -310,11 +310,14 @@ const authenticate = async (email, password) => {
     let role = [];
     if (user.isAdmin) {
       role.push("admin");
-    } else if (user.isSecurityAdmin) {
+    }
+    if (user.isSecurityAdmin) {
       role.push("security_admin");
-    } else if (user.isCoordinator) {
+    }
+    if (user.isCoordinator) {
       role.push("coordinator");
-    } else if (user.isDataEntry) {
+    }
+    if (user.isDataEntry) {
       role.push("data_entry");
     } else {
       role.push("data_entry");

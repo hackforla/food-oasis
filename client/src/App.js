@@ -70,7 +70,10 @@ function App() {
   const [userCoordinates, setUserCoordinates] = useState({});
   const [toast, setToast] = useState({ message: "" });
   const [bgImg, setBgImg] = useState("");
-  const [origin, setOrigin] = useState(null);
+  const [origin, setOrigin] = useState({
+    latitude: 34.0522,
+    longitude: -118.2437,
+  });
 
   useEffect(() => {
     const imgNum = Math.floor(Math.random() * (21 - 1)) + 1;

@@ -1,6 +1,5 @@
 const express = require("express");
 const dotenv = require("dotenv");
-// const massive = require("massive");
 
 dotenv.config();
 
@@ -36,27 +35,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// Connect to DB using massive
-// massive(
-//   process.env.DATABASE_URL || {
-//     poolSize: 10,
-//     user: process.env.POSTGRES_USERNAME,
-//     host: process.env.POSTGRES_HOST,
-//     database: process.env.POSTGRES_DATABASE,
-//     password: process.env.POSTGRES_PASSWORD,
-//     port: Number(process.env.POSTGRES_PORT),
-//     ssl: { rejectUnauthorized: false },
-//     // ssl: process.env.POSTGRES_SSL === "true",
-//   }
-// )
-//   .then((database) => {
-//     app.set("db", database);
-//     console.log("database connected!");
-//   })
-//   .catch((err) => {
-//     console.log(err);
-//   });
-
 app.use(router);
 
 // The following three routes are for testing purposes, and may be deleted later.
@@ -73,11 +51,15 @@ app.get("/health", (req, res) => {
   res.status(200).json({ status: "OK" });
 });
 
-// The "catchall" handler: for any request that doesn't
-// match one above, send back React's index.html file.
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname + "/client/build/index.html"));
-});
+// In a production environment, the client code is served
+// as static files associated with the /client/build/index.html
+// page, so requests that don't match any of the above are
+// assumed to be for react pages.
+if (process.env.NODE_ENV === "production") {
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname + "/client/build/index.html"));
+  });
+}
 
 app.use(middleware.notFound);
 app.use(middleware.handleError);

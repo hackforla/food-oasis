@@ -152,7 +152,7 @@ function VerificationAdmin(props) {
 
   useEffect(() => {
     const execute = async () => {
-      const criteriaString = localStorage.getItem(CRITERIA_TOKEN);
+      const criteriaString = sessionStorage.getItem(CRITERIA_TOKEN);
       let initialCriteria = JSON.parse(criteriaString);
       if (!initialCriteria) {
         initialCriteria = {
@@ -183,7 +183,7 @@ function VerificationAdmin(props) {
   const search = async () => {
     try {
       await searchCallback(criteria);
-      localStorage.setItem(CRITERIA_TOKEN, JSON.stringify(criteria));
+      sessionStorage.setItem(CRITERIA_TOKEN, JSON.stringify(criteria));
     } catch (err) {
       // If we receive a 401 status code, the user needs
       // to be logged in, will redirect to login page.

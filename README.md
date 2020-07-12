@@ -1,23 +1,27 @@
 # Food Oasis
 
-This is a re-vamped version of the Food Oasis application, with a
-Postgres database, node/express Web API server, and React client.
+Food Oasis is a web application that provides information about food pantries and meal programs to food seekers in Los Angeles County. It is currently deployed to http://food-oasis.herokuapp.com, but will eventually replace the legacy site at http://foodoasis.la.
 
-## Prerequisites
+It is a project of Hack for LA, which, in turn, is a brigade of Code for America.
 
-1. Git for working with Github source code
-2. Node and npm for running the web app
+### Technology Used
 
-## Contributing
+- React/HTML/CSS/Javascript client using Material-UI Design Framework.
+- Node/Express Web API server
+- Postgres Relational Database
+- Docker
+- AWS
 
-- [Contributing to Food Oasis](/contributing.md)
-- [Working with Postgres](/postgres.md)
-- [Load Testing](/loadtest.md)
-- [Database Migrations](/migrations.md)
-- [Docker](/docker.md)
+# How to contribute
 
-## Features
+- Join the team - check out hackforla.org
+- Volunteer to help validate and maintain pantry and meal program information.
+- Provide UX/UI design support.
+- Help us with usability testing.
+- To contribute as a developer, refer to our [Developer Instructions](/doc/developers.md)
 
-[Registration and Login](/register.md)
+## Application Features
 
-[Forgot Password](/forgot-password.md)
+[Registration and Login](/doc/register.md)
+
+[Forgot Password](/doc/forgot-password.md)

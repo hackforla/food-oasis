@@ -2,7 +2,6 @@ import React, { useCallback, useEffect } from "react";
 import Search from "../components/Search";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
-
 import {
   Grid,
   Select,
@@ -16,44 +15,64 @@ import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
   DEFAULT_CATEGORIES,
-  VERIFICATION_STATUS,
 } from "../constants/stakeholder";
 
 const useStyles = makeStyles((theme) => ({
   filterGroup: {
-    margin: "0 .25rem",
+    margin: 0,
     padding: 0,
   },
   filterGroupButton: {
-    margin: "0 .25rem",
-    fontSize: "max(.8vw,10px)",
+    margin: 0,
+    padding: ".5rem",
+    fontSize: "max(.8vw,12px)",
+    whiteSpace: "nowrap",
     backgroundColor: "#fff",
     border: ".1em solid #000",
     color: "#000",
+    [theme.breakpoints.down("xs")]: {
+      padding: ".1rem .1rem",
+      margin: "0",
+      fontSize: "max(.8vw,11px)",
+    },
   },
   filterButton: {
-    margin: "0 .25rem",
-    fontSize: "max(.8vw,10px)",
+    margin: 0,
+    padding: ".5rem",
+    fontSize: "max(.8vw,12px)",
+    whiteSpace: "nowrap",
     backgroundColor: "#fff",
     border: ".1em solid #000",
     color: "#000",
+    [theme.breakpoints.down("xs")]: {
+      padding: ".6rem .6rem",
+      margin: ".3rem",
+      marginTop: "1rem",
+      fontSize: "max(.8vw,12px)",
+      borderRadius: "5px !important",
+    },
   },
   distanceControl: {
-    margin: "0 .25rem",
+    margin: ".3rem",
     backgroundColor: "#fff",
-    padding: ".25em 0 .25em .7em",
-    border: ".09em solid #000",
+    // padding: "auto 0 auto .7em",
+    padding: ".3rem",
+    border: ".1em solid #000",
     outline: "none",
+    [theme.breakpoints.down("xs")]: {
+      padding: ".4rem",
+      margin: ".3rem",
+      marginTop: "1rem",
+    },
   },
   menuItems: {
-    fontSize: "max(.8vw,10px)",
+    fontSize: "max(.8vw,12px)",
     color: "#000",
   },
   controlPanel: {
-    width: "100%",
     backgroundColor: "#336699",
     padding: "1rem 0",
-    display: "flex",
+    flex: "1 0 auto",
   },
   inputHolder: {
     display: "flex",
@@ -72,14 +91,14 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   searchIcon: {
-    width: 22,
-    height: 22,
+    width: 32,
+    height: 32,
   },
   submit: {
-    height: "42px",
+    height: "40px",
     minWidth: "25px",
     backgroundColor: "#BCE76D",
-    borderRadius: "0 4px 4px 0",
+    borderRadius: "0 6px 6px 0",
     boxShadow: "none",
     "& .MuiButton-startIcon": {
       marginRight: 0,
@@ -92,6 +111,9 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "#C7F573",
       boxShadow: "none",
     },
+    [theme.breakpoints.down("xs")]: {
+      marginRight: ".5rem",
+    },
   },
   buttonHolder: {
     display: "flex",
@@ -101,18 +123,22 @@ const useStyles = makeStyles((theme) => ({
 const distanceInfo = [1, 2, 3, 5, 10, 20, 50];
 
 const ResultsFilters = ({
-  data,
+  search,
+  isWindowWide,
+  viewport,
+  setViewport,
+  setIsPopupOpen,
+  doSelectStakeholder,
   origin,
   setOrigin,
   radius,
   setRadius,
   isVerifiedSelected,
   selectVerified,
-  search,
   userCoordinates,
   categoryIds,
   toggleCategory,
-  isWindow960orLess,
+  viewPortHash,
 }) => {
   const classes = useStyles();
 
@@ -124,7 +150,7 @@ const ResultsFilters = ({
       if (e) {
         e.preventDefault();
       }
-      const storage = window.localStorage;
+      const storage = window.sessionStorage;
       search({
         latitude:
           origin.latitude ||
@@ -137,20 +163,25 @@ const ResultsFilters = ({
         radius,
         categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
         isInactive: "either",
-        verificationStatusId: isVerifiedSelected
-          ? VERIFICATION_STATUS.VERIFIED
-          : 0,
+        verificationStatusId: 0,
       });
-      console.log(storage);
       if (origin.locationName && origin.latitude && origin.longitude)
         storage.origin = JSON.stringify({
           locationName: origin.locationName,
           latitude: origin.latitude,
           longitude: origin.longitude,
         });
-      if (categoryIds.length) storage.categoryIds = JSON.stringify(categoryIds);
+
+      storage.categoryIds = JSON.stringify(categoryIds);
       storage.radius = JSON.stringify(radius);
       storage.verified = JSON.stringify(isVerifiedSelected);
+      setViewport({
+        zoom: viewPortHash[radius],
+        latitude: origin.latitude,
+        longitude: origin.longitude,
+      });
+      setIsPopupOpen(false);
+      doSelectStakeholder(null);
     },
     [
       search,
@@ -162,6 +193,10 @@ const ResultsFilters = ({
       radius,
       categoryIds,
       isVerifiedSelected,
+      setViewport,
+      setIsPopupOpen,
+      doSelectStakeholder,
+      viewPortHash,
     ]
   );
 
@@ -173,23 +208,28 @@ const ResultsFilters = ({
     toggleCategory(FOOD_PANTRY_CATEGORY_ID);
   }, [toggleCategory]);
 
-  // //loading search
-  // useEffect(() => {
-  //   doHandleSearch();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
   useEffect(() => {
     doHandleSearch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [radius, categoryIds, isVerifiedSelected, toggleCategory]);
 
+  const handleDistanceChange = (distance) => {
+    setRadius(distance);
+    setViewport({
+      ...viewport,
+      zoom: viewPortHash[distance],
+    });
+  };
+
   return (
     <Grid
+      item
       container
       wrap="wrap-reverse"
       className={classes.controlPanel}
-      style={{ justifyContent: isWindow960orLess ? null : "center" }}
+      style={{
+        justifyContent: isWindowWide ? null : "center",
+      }}
     >
       <Grid
         item
@@ -206,7 +246,7 @@ const ResultsFilters = ({
               name="select-distance"
               disableUnderline
               value={radius}
-              onChange={(e) => setRadius(e.target.value)}
+              onChange={(e) => handleDistanceChange(e.target.value)}
               inputProps={{
                 name: "select-distance",
                 id: "select-distance",
@@ -234,7 +274,7 @@ const ResultsFilters = ({
             style={{
               backgroundColor: isPantrySelected ? "#0A3865" : "#fff",
               color: isPantrySelected ? "#fff" : "#000",
-              marginRight: 0,
+              marginLeft: "0.25rem",
               borderRadius: "5px 0 0 5px",
             }}
             onClick={togglePantry}
@@ -248,7 +288,7 @@ const ResultsFilters = ({
             style={{
               backgroundColor: isMealsSelected ? "#0A3865" : "#fff",
               color: isMealsSelected ? "#fff" : "#000",
-              marginLeft: 0,
+              marginRight: "0.25rem",
               borderRadius: "0 5px 5px 0",
             }}
             onClick={toggleMeal}
@@ -257,7 +297,7 @@ const ResultsFilters = ({
           </Button>
         </Grid>
         <Grid item>
-          <Button
+          {/* <Button
             className={classes.filterGroupButton}
             style={{
               backgroundColor: isVerifiedSelected ? "#0A3865" : "#fff",
@@ -267,13 +307,13 @@ const ResultsFilters = ({
               selectVerified(!isVerifiedSelected);
             }}
           >
-            Verified Data
-          </Button>
+            Updated Data
+          </Button> */}
         </Grid>
       </Grid>
       <Box
         className={classes.inputContainer}
-        style={{ width: isWindow960orLess ? "30rem" : "100%" }}
+        style={{ width: isWindowWide ? "30rem" : "100%" }}
       >
         <form
           noValidate
@@ -301,11 +341,11 @@ const ResultsFilters = ({
 };
 
 ResultsFilters.propTypes = {
-  // distance: PropTypes.number,
-  // placeName: PropTypes.string,
-  // isPantryCategorySelected: PropTypes.bool,
-  // isMealCategorySelected: PropTypes.bool,
-  // isVerifiedFilterSelected: PropTypes.bool,
+  distance: PropTypes.number,
+  placeName: PropTypes.string,
+  isPantryCategorySelected: PropTypes.bool,
+  isMealCategorySelected: PropTypes.bool,
+  isVerifiedFilterSelected: PropTypes.bool,
   search: PropTypes.func,
 };
 

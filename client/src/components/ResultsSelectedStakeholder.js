@@ -1,12 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import mapMarker from "./mapMarker";
-import pantryIcon from "../images/pantryIcon.svg";
-import pantryIconGrey from "../images/pantryIconGrey.svg";
-import mealIcon from "../images/mealIcon.svg";
-import mealIconGrey from "../images/mealIconGrey.svg";
-import splitPantryMealIcon from "../images/splitPantryMealIcon.svg";
-import splitPantryMealIconGrey from "../images/splitPantryMealIconGrey.svg";
+import mapMarker from "../images/mapMarker";
 import fbIcon from "../images/fbIcon.png";
 import instaIcon from "../images/instaIcon.png";
 import {
@@ -14,6 +8,7 @@ import {
   FOOD_PANTRY_CATEGORY_ID,
   VERIFICATION_STATUS,
 } from "../constants/stakeholder";
+import { ORGANIZATION_COLORS, CLOSED_COLOR } from "../constants/map";
 
 const useStyles = makeStyles((theme) => ({
   stakeholderHolder: {
@@ -111,49 +106,55 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-//name address phone number email hours category .email .covidNotes .languages .notes
-// (1) COVID notes
-// (2) Public notes
-// (3) Eligibility
-// (4) Languages
-
-const iconReturn = (stakeholder) => {
-  console.log(stakeholder);
-  if (stakeholder.inactiveTemporary || stakeholder.inactive) {
-    return stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID &&
-      stakeholder.categories[1] &&
-      stakeholder.categories[1].id === MEAL_PROGRAM_CATEGORY_ID
-      ? splitPantryMealIconGrey
-      : stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
-      ? pantryIconGrey
-      : mealIconGrey;
-  }
-  return stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID &&
-    stakeholder.categories[1] &&
-    stakeholder.categories[1].id === MEAL_PROGRAM_CATEGORY_ID
-    ? splitPantryMealIcon
-    : stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
-    ? pantryIcon
-    : mealIcon;
-};
-
 const SelectedStakeholderDisplay = ({
   doSelectStakeholder,
   selectedStakeholder,
+  iconReturn,
 }) => {
   const classes = useStyles();
+
+  const dayOfWeek = (dayOfWeekString) => {
+    switch (dayOfWeekString.toLowerCase()) {
+      case "sun":
+        return 1;
+      case "mon":
+        return 2;
+      case "tue":
+        return 3;
+      case "wed":
+        return 4;
+      case "thu":
+        return 5;
+      case "fri":
+        return 6;
+      default:
+        return 7;
+    }
+  };
+
+  const hoursSort = (h1, h2) => {
+    if (h1.week_of_month !== h2.week_of_month) {
+      return h1.week_of_month < h2.week_of_month ? -1 : 1;
+    }
+    const h1dow = dayOfWeek(h1.day_of_week);
+    const h2dow = dayOfWeek(h2.day_of_week);
+    if (h1dow !== h2dow) {
+      return h1dow < h2dow ? -1 : 1;
+    }
+    return h1.open < h2.open ? -1 : 1;
+  };
 
   const standardTime = (timeStr) => {
     if (timeStr) {
       if (parseInt(timeStr.substring(0, 2)) === 12) {
-        return `12${timeStr.substring(2, 5)}PM`;
+        return `12${timeStr.substring(2, 5)} PM`;
       }
       return parseInt(timeStr.substring(0, 2)) > 12
         ? `${parseInt(timeStr.substring(0, 2)) - 12}${timeStr.substring(
             2,
             5
-          )}PM`
-        : `${timeStr.substring(0, 5)}AM`;
+          )} PM`
+        : `${timeStr.substring(0, 5)} AM`;
     }
   };
 
@@ -180,11 +181,7 @@ const SelectedStakeholderDisplay = ({
     <div className={classes.stakeholderHolder}>
       <div className={classes.topInfoHolder}>
         <div className={classes.imgHolder}>
-          <img
-            src={iconReturn(selectedStakeholder)}
-            alt="Organization Category Icon"
-            className={classes.typeLogo}
-          />
+          {iconReturn(selectedStakeholder)}
         </div>
         <div className={classes.infoHolder}>
           <span>{selectedStakeholder.name}</span>
@@ -192,34 +189,25 @@ const SelectedStakeholderDisplay = ({
           <div>
             {selectedStakeholder.city} {selectedStakeholder.zip}
           </div>
-          <em
-            style={{
-              color:
-                selectedStakeholder.inactiveTemporary ||
-                selectedStakeholder.inactive
-                  ? "#545454"
-                  : selectedStakeholder.categories[0].id ===
-                    MEAL_PROGRAM_CATEGORY_ID
-                  ? "#CC3333"
-                  : "#336699",
-            }}
-          >
-            {selectedStakeholder.categories[0].name}
-          </em>
+          {selectedStakeholder.categories.map((category) => (
+            <em
+              style={{
+                alignSelf: "flex-start",
+                color:
+                  selectedStakeholder.inactiveTemporary ||
+                  selectedStakeholder.inactive
+                    ? CLOSED_COLOR
+                    : category.id === FOOD_PANTRY_CATEGORY_ID
+                    ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
+                    : category.id === MEAL_PROGRAM_CATEGORY_ID
+                    ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
+                    : "#000",
+              }}
+            >
+              {category.name}
+            </em>
+          ))}
           <div className={classes.labelHolder}>
-            {selectedStakeholder.categories[1] ? (
-              <em
-                style={{
-                  color:
-                    selectedStakeholder.categories[1].id ===
-                    FOOD_PANTRY_CATEGORY_ID
-                      ? "#336699"
-                      : "#CC3333",
-                }}
-              >
-                {selectedStakeholder.categories[1].name}
-              </em>
-            ) : null}
             {selectedStakeholder.inactiveTemporary ||
             selectedStakeholder.inactive ? (
               <em className={classes.closedLabel}>
@@ -241,7 +229,7 @@ const SelectedStakeholderDisplay = ({
           {mapMarker(
             selectedStakeholder.inactiveTemporary ||
               selectedStakeholder.inactive
-              ? "#545454"
+              ? CLOSED_COLOR
               : selectedStakeholder.categories[0].id ===
                   FOOD_PANTRY_CATEGORY_ID &&
                 selectedStakeholder.categories[1] &&
@@ -249,8 +237,8 @@ const SelectedStakeholderDisplay = ({
                   MEAL_PROGRAM_CATEGORY_ID
               ? ""
               : selectedStakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
-              ? "#336699"
-              : "#CC3333",
+              ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
+              : ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID],
             selectedStakeholder.verificationStatusId ===
               VERIFICATION_STATUS.VERIFIED
               ? true
@@ -262,20 +250,25 @@ const SelectedStakeholderDisplay = ({
           )}
         </div>
       </div>
-      {selectedStakeholder.submittedDate ? (
+      {selectedStakeholder.verificationStatusId ===
+      VERIFICATION_STATUS.VERIFIED ? (
         <p
           style={{
             color:
               selectedStakeholder.inactiveTemporary ||
               selectedStakeholder.inactive
-                ? "#545454"
+                ? CLOSED_COLOR
                 : selectedStakeholder.categories[0].id === 1
-                ? "#336699"
-                : "#CC3333",
+                ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
+                : ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID],
           }}
         >
-          Data Verified on{" "}
-          {selectedStakeholder.submittedDate.format("MMM Do, YYYY")}
+          Data updated on{" "}
+          {selectedStakeholder.approvedDate
+            ? selectedStakeholder.approvedDate.format("MMM Do, YYYY")
+            : selectedStakeholder.modifiedDate
+            ? selectedStakeholder.modifiedDate.format("MMM Do, YYYY")
+            : selectedStakeholder.createdDate.format("MMM Do, YYYY")}
         </p>
       ) : null}
       <a
@@ -295,40 +288,62 @@ const SelectedStakeholderDisplay = ({
             backgroundColor:
               selectedStakeholder.inactiveTemporary ||
               selectedStakeholder.inactive
-                ? "#545454"
+                ? CLOSED_COLOR
                 : selectedStakeholder.categories[0].id === 1
-                ? "#336699"
-                : "#CC3333",
+                ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
+                : ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID],
           }}
         >
           Directions
         </div>
       </a>
-      <h2 className={classes.title}>Hours</h2>
-      <div className={classes.hoursContainer}>
-        {selectedStakeholder.hours.map((hour) => (
-          <div
-            key={JSON.stringify(hour)}
-            className={classes.singleHourContainer}
-          >
-            <span>{hour.day_of_week}</span>
-            <span>
-              {standardTime(hour.open)}-{standardTime(hour.close)}
-            </span>
+      {selectedStakeholder.hours ? (
+        <>
+          <h2 className={classes.title}>Hours</h2>
+          <div className={classes.hoursContainer}>
+            {selectedStakeholder.hours &&
+            selectedStakeholder.hours.length > 0 ? (
+              selectedStakeholder.hours.sort(hoursSort).map((hour) => (
+                <div
+                  key={JSON.stringify(hour)}
+                  className={classes.singleHourContainer}
+                >
+                  <span>
+                    {hour.week_of_month === 5
+                      ? "Last " + hour.day_of_week
+                      : hour.week_of_month === 1
+                      ? "1st " + hour.day_of_week
+                      : hour.week_of_month === 2
+                      ? "2nd " + hour.day_of_week
+                      : hour.week_of_month === 3
+                      ? "3rd " + hour.day_of_week
+                      : hour.week_of_month === 3
+                      ? "4th " + hour.day_of_week
+                      : hour.day_of_week}
+                  </span>
+                  <span>
+                    {standardTime(hour.open)}-{standardTime(hour.close)}
+                  </span>
+                </div>
+              ))
+            ) : (
+              <span className={classes.fontSize}>No hours on record</span>
+            )}
           </div>
-        ))}
-      </div>
+        </>
+      ) : null}
+
       <h2 className={classes.title}>Phone</h2>
       {selectedStakeholder.phone ? (
         <span className={classes.fontSize}>{selectedStakeholder.phone}</span>
       ) : (
-        <span className={classes.fontSize}>No Phone Number on Record</span>
+        <span className={classes.fontSize}>No Phone Number on record</span>
       )}
       <h2 className={classes.title}>E-Mail</h2>
       {selectedStakeholder.email ? (
         <span className={classes.fontSize}>{selectedStakeholder.email}</span>
       ) : (
-        <span className={classes.fontSize}>No E-Mail Address on Record</span>
+        <span className={classes.fontSize}>No E-Mail Address on record</span>
       )}
 
       <h2 className={classes.title}>Eligibility/Requirements</h2>
@@ -339,28 +354,32 @@ const SelectedStakeholderDisplay = ({
       ) : (
         <span className={classes.fontSize}>No special requirements</span>
       )}
+
       <h2 className={classes.title}>Languages</h2>
-      {selectedStakeholder.requirements ? (
+      {selectedStakeholder.languages ? (
         <span className={classes.fontSize}>
           {selectedStakeholder.languages}
         </span>
       ) : (
         <span className={classes.fontSize}>No information on languages.</span>
       )}
+
       <h2 className={classes.title}>Notes</h2>
-      {selectedStakeholder.requirements ? (
+      {selectedStakeholder.notes ? (
         <span className={classes.fontSize}>{selectedStakeholder.notes}</span>
       ) : (
         <span className={classes.fontSize}>No notes to display.</span>
       )}
+
       <h2 className={classes.title}>Covid Notes</h2>
-      {selectedStakeholder.requirements ? (
+      {selectedStakeholder.covidNotes ? (
         <span className={classes.fontSize}>
           {selectedStakeholder.covidNotes}
         </span>
       ) : (
         <span className={classes.fontSize}>No covid notes to display.</span>
       )}
+
       {selectedStakeholder.website ? (
         <React.Fragment>
           <h2 className={classes.title}>Website</h2>
@@ -374,6 +393,7 @@ const SelectedStakeholderDisplay = ({
           </a>
         </React.Fragment>
       ) : null}
+
       {selectedStakeholder.services ? (
         <React.Fragment>
           <h2 className={classes.title}>Services</h2>
@@ -382,12 +402,14 @@ const SelectedStakeholderDisplay = ({
           </span>
         </React.Fragment>
       ) : null}
+
       {selectedStakeholder.items ? (
         <React.Fragment>
           <h2 className={classes.title}>Items Available</h2>
           <span className={classes.fontSize}>{selectedStakeholder.items}</span>
         </React.Fragment>
       ) : null}
+
       {selectedStakeholder.facebook || selectedStakeholder.instagram ? (
         <React.Fragment>
           <h2 className={classes.title}>Social Media</h2>
@@ -431,10 +453,10 @@ const SelectedStakeholderDisplay = ({
           fill={
             selectedStakeholder.inactiveTemporary ||
             selectedStakeholder.inactive
-              ? "#545454"
+              ? CLOSED_COLOR
               : selectedStakeholder.categories[0].id === 1
-              ? "#336699"
-              : "#CC3333"
+              ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
+              : ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
           }
         />
         <path

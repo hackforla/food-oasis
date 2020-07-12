@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import useLocationHook from "hooks/useLocationHook";
 import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "./user-context";
@@ -17,7 +18,6 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import MenuIcon from "@material-ui/icons/Menu";
 import { MENU_ITEMS } from "helpers/Constants";
 import MenuItemLink from "./MenuItemLink";
-// import LanguageChooser from './LanguageChooser'
 import { logout } from "./Logout";
 
 Menu.propTypes = {
@@ -31,21 +31,31 @@ const useStyles = makeStyles({
     width: 250,
   },
   menuButton: {
-    backgroundColor: "#F1F1F1",
+    transform: "scale(1.6,1.5)",
+    backgroundColor: "#FFF",
     padding: "0.5rem",
     minWidth: "0",
     "&:hover": {
-      backgroundColor: "#F1F1F1",
+      backgroundColor: "#FFF",
     },
   },
   blueMenu: {
-    fill: "#336699",
+    fill: "#19334D",
   },
 });
 
 export default function Menu(props) {
+  const isHomePage = useLocationHook();
+  const homePageStyles = {
+    buttonColor: "#F1F1F1",
+  };
+
+  const defaultStyles = {
+    headerColor: "#FFF",
+  };
+  const styles = isHomePage ? homePageStyles : defaultStyles;
+  const classes = useStyles(styles);
   const { user, setUser, setToast } = props;
-  const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
   const history = useHistory();
 
@@ -63,7 +73,6 @@ export default function Menu(props) {
   const unAuthLinks = (
     <>
       <Divider />
-      <MenuItemLink key="Register" to="/register" text="Volunteer Register" />
       <MenuItemLink key="login" to="/login" text="Volunteer Login">
         Login
       </MenuItemLink>
@@ -163,7 +172,7 @@ export default function Menu(props) {
         <MenuIcon className={classes.blueMenu} />
       </Button>
 
-      <Drawer open={isOpen} onClose={toggleDrawer}>
+      <Drawer anchor={"right"} open={isOpen} onClose={toggleDrawer}>
         {sideList()}
       </Drawer>
     </div>

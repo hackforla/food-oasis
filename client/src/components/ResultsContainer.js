@@ -18,22 +18,25 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "12px",
     border: "1px solid blue",
   },
-  list: {
-    textAlign: "center",
-    fontSize: "12px",
-    overflow: "scroll",
-  },
-  map: {
-    textAlign: "center",
-    fontSize: "12px",
-    // maxWidth: "100%",
-    flexGrow: 1,
+  listMapContainer: {
+    [theme.breakpoints.down("sm")]: {
+      height: "100%",
+    },
+    [theme.breakpoints.up("md")]: {
+      height: "79%",
+    },
   },
 }));
 
 export default function ResultsContainer(props) {
+  const storage = window.sessionStorage;
+  const { userCoordinates, userSearch } = props;
+  const { data, search } = useOrganizations();
+  const classes = useStyles();
+
   const windowSize = window.innerWidth > 960 ? true : false;
-  const [isWindow960orLess, changeWindow] = React.useState(windowSize);
+  const [isWindowWide, changeWindow] = React.useState(windowSize);
+
   const mobileTest = new RegExp("Mobi", "i");
   const [isMobile, changeMobile] = React.useState(
     mobileTest.test(navigator.userAgent) ? true : false
@@ -53,10 +56,6 @@ export default function ResultsContainer(props) {
       window.removeEventListener("resize", changeInputContainerWidth);
   }, [mobileTest]);
 
-  const storage = window.localStorage;
-  const { userCoordinates, userSearch } = props;
-  const { data, search } = useOrganizations();
-  const classes = useStyles();
   const initialCategories = storage.categoryIds
     ? JSON.parse(storage.categoryIds)
     : [];
@@ -67,7 +66,7 @@ export default function ResultsContainer(props) {
       ? userSearch.locationName
       : storage.origin
       ? JSON.parse(storage.origin).locationName
-      : null,
+      : "",
     latitude: userSearch
       ? userSearch.latitude
       : storage.origin
@@ -95,71 +94,67 @@ export default function ResultsContainer(props) {
   const [selectedPopUp, setSelectedPopUp] = React.useState(null);
   const [isPopupOpen, setIsPopupOpen] = React.useState(false);
 
-  const topLevelProps = {
-    radius,
-    setRadius,
-    origin,
-    setOrigin,
-    toggleCategory,
-    categoryIds,
-    isVerifiedSelected,
-    selectVerified,
-    userCoordinates,
-    userSearch,
+  const viewPortHash = {
+    1: 13.5,
+    2: 12.5,
+    3: 12,
+    5: 11,
+    10: 10,
+    20: 9,
+    50: 8,
   };
 
+  const [viewport, setViewport] = React.useState({
+    zoom: viewPortHash[radius],
+    latitude: origin.latitude || JSON.parse(storage.origin).latitude,
+    longitude: origin.longitude || JSON.parse(storage.origin).longitude,
+  });
+
   return (
-    <Grid container direction="row">
-      <Grid item xs={12}>
-        <ResultsFilters
-          {...topLevelProps}
-          data={data}
-          search={search}
-          isWindow960orLess={isWindow960orLess}
+    <>
+      <ResultsFilters
+        radius={radius}
+        setRadius={setRadius}
+        origin={origin}
+        setOrigin={setOrigin}
+        toggleCategory={toggleCategory}
+        categoryIds={categoryIds}
+        isVerifiedSelected={isVerifiedSelected}
+        selectVerified={selectVerified}
+        userCoordinates={userCoordinates}
+        search={search}
+        isWindowWide={isWindowWide}
+        viewport={viewport}
+        setViewport={setViewport}
+        setIsPopupOpen={setIsPopupOpen}
+        doSelectStakeholder={doSelectStakeholder}
+        viewPortHash={viewPortHash}
+      />
+      <Grid item container spacing={0} className={classes.listMapContainer}>
+        <ResultsList
+          selectedStakeholder={selectedStakeholder}
+          doSelectStakeholder={doSelectStakeholder}
+          stakeholders={data}
+          setSelectedPopUp={setSelectedPopUp}
+          setIsPopupOpen={setIsPopupOpen}
+          isWindowWide={isWindowWide}
+          viewport={viewport}
+          setViewport={setViewport}
+        />
+        <ResultsMap
+          viewport={viewport}
+          setViewport={setViewport}
+          stakeholders={data}
+          doSelectStakeholder={doSelectStakeholder}
+          categoryIds={categoryIds}
+          selectedPopUp={selectedPopUp}
+          setSelectedPopUp={setSelectedPopUp}
+          isPopupOpen={isPopupOpen}
+          setIsPopupOpen={setIsPopupOpen}
+          isWindowWide={isWindowWide}
+          isMobile={isMobile}
         />
       </Grid>
-      <Grid item xs={12}>
-        <Grid container wrap="wrap-reverse">
-          <Grid
-            item
-            xs={12}
-            md={4}
-            className={classes.list}
-            style={{ height: isWindow960orLess ? "55em" : "" }}
-          >
-            <ResultsList
-              selectedStakeholder={selectedStakeholder}
-              doSelectStakeholder={doSelectStakeholder}
-              stakeholders={data}
-              setSelectedPopUp={setSelectedPopUp}
-              setIsPopupOpen={setIsPopupOpen}
-              isWindow960orLess={isWindow960orLess}
-            />
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            md={8}
-            className={classes.map}
-            style={{ maxWidth: isMobile ? "100%" : "98%" }}
-          >
-            {/* above line stopgab for scrolling on smaller desktop devices */}
-            <ResultsMap
-              stakeholders={data}
-              doSelectStakeholder={doSelectStakeholder}
-              categoryIds={categoryIds}
-              selectedLatitude={origin.latitude}
-              selectedLongitude={origin.longitude}
-              selectedPopUp={selectedPopUp}
-              setSelectedPopUp={setSelectedPopUp}
-              isPopupOpen={isPopupOpen}
-              setIsPopupOpen={setIsPopupOpen}
-              isWindow960orLess={isWindow960orLess}
-              isMobile={isMobile}
-            />
-          </Grid>
-        </Grid>
-      </Grid>
-    </Grid>
+    </>
   );
 }

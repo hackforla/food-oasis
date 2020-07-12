@@ -11,16 +11,16 @@ import VerificationAdmin from "./components/Verification/VerificationAdmin";
 import VerificationDashboard from "./components/Verification/VerificationDashboard";
 import SecurityAdminDashboard from "./components/SecurityAdminDashboard/SecurityAdminDashboard";
 import StakeholderEdit from "./components/StakeholderEdit";
-import Donate from "./components/Donate";
+import Donate from "./components/StaticPages/Donate";
 import Resources from "./components/Resources";
-import About from "./components/About";
+import About from "./components/StaticPages/About";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
 import Footer from "./components/Footer";
 import ConfirmEmail from "./components/ConfirmEmail";
-import Faq from "./components/Faq";
+import Faq from "./components/StaticPages/Faq";
 import FaqEdit from "./components/FaqEdit";
 import FaqAdd from "./components/FaqAdd";
 import Home from "./containers/Home";
@@ -36,10 +36,6 @@ const useStyles = makeStyles({
   app: (props) => ({
     color: "black",
     margin: "0",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    alignItems: "stretch",
     height: "100%",
     overflowY: "scroll",
   }),
@@ -56,7 +52,7 @@ const useStyles = makeStyles({
   },
   homeWrapper: {
     backgroundSize: "cover",
-    height: "100vh",
+    minHeight: "max(105vh,20em)",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
@@ -74,7 +70,10 @@ function App() {
   const [userCoordinates, setUserCoordinates] = useState({});
   const [toast, setToast] = useState({ message: "" });
   const [bgImg, setBgImg] = useState("");
-  const [origin, setOrigin] = useState(null);
+  const [origin, setOrigin] = useState({
+    latitude: 34.0522,
+    longitude: -118.2437,
+  });
 
   useEffect(() => {
     const imgNum = Math.floor(Math.random() * (21 - 1)) + 1;
@@ -83,7 +82,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const storedJson = localStorage.getItem("user");
+    const storedJson = sessionStorage.getItem("user");
     const userJson = JSON.stringify(user);
     if (!userJson && !storedJson) {
       return;
@@ -100,9 +99,9 @@ function App() {
 
   const onLogin = (user) => {
     if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
+      sessionStorage.setItem("user", JSON.stringify(user));
     } else {
-      localStorage.removeItem("user");
+      sessionStorage.removeItem("user");
     }
     setUser(user);
   };
@@ -144,10 +143,17 @@ function App() {
     <UserContext.Provider value={user}>
       <ThemeProvider theme={theme}>
         <Router>
-          <div className={classes.app}>
-            <Grid item>
-              <Header user={user} setUser={onLogin} setToast={setToast} />
-            </Grid>
+          <Grid
+            container
+            direction="column"
+            wrap="nowrap"
+            justify="stretch"
+            spacing={0}
+            classes={{
+              container: classes.app,
+            }}
+          >
+            <Header user={user} setUser={onLogin} setToast={setToast} />
             <Switch className={classes.mainContent}>
               <Route exact path="/">
                 <div
@@ -162,12 +168,10 @@ function App() {
                 </div>
               </Route>
               <Route path="/organizations">
-                <Grid item>
-                  <ResultsContainer
-                    userCoordinates={userCoordinates}
-                    userSearch={origin}
-                  />
-                </Grid>
+                <ResultsContainer
+                  userCoordinates={userCoordinates}
+                  userSearch={origin}
+                />
               </Route>
               <Route path="/stakeholders">
                 <StakeholdersContainer
@@ -245,11 +249,11 @@ function App() {
                 <ResetPassword setToast={setToast} />
               </Route>
             </Switch>
-            <Grid item>
-              <Footer userCoordinates={userCoordinates} />
-            </Grid>
             <Toast toast={toast} setToast={setToast} />
-          </div>
+          </Grid>
+          <Grid item>
+            <Footer />
+          </Grid>
         </Router>
       </ThemeProvider>
     </UserContext.Provider>

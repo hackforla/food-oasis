@@ -6,7 +6,7 @@ import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { makeStyles } from "@material-ui/core/styles";
 import { useMapboxGeocoder } from "hooks/useMapboxGeocoder";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
     width: "34.5em",
     position: "absolute",
@@ -18,23 +18,27 @@ const useStyles = makeStyles(() => ({
   },
   container: {
     width: "100%",
+    [theme.breakpoints.down("xs")]: {
+      marginLeft: ".5rem",
+    },
   },
   address: {
     backgroundColor: "#fff",
     borderRadius: "4px 0 0 4px",
-    height: 41,
+    cornerRadius: "6px",
+    height: 40,
 
-    "& .MuiOutlinedInput-root": {
-      borderRadius: "4px 0 0 4px",
-    },
-    "& .MuiOutlinedInput-input": {
-      padding: "11.5px 14px",
-    },
+    // "& .MuiOutlinedInput-root": {
+    //   borderRadius: "4px 0 0 4px",
+    // },
+    // "& .MuiOutlinedInput-input": {
+    //   padding: "11.5px 14px",
+    // },
     "& .MuiInputLabel-outlined": {
       transform: "translate(14px, 14px) scale(1)",
     },
     "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-      borderColor: "#63A4E5",
+      borderColor: "white",
       borderRight: "none",
     },
   },
@@ -104,7 +108,7 @@ export default function Search(props) {
         variant="outlined"
         margin="none"
         fullWidth
-        placeholder="Enter an address, neighborhood, ZIP"
+        placeholder="Search by address, neighborhood, or zip code"
         name="address"
         size="small"
         autoFocus

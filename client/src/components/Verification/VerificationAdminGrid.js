@@ -334,7 +334,7 @@ const StakeholderGrid = (props) => {
   });
 
   React.useEffect(() => {
-    const storedSettings = localStorage.getItem(
+    const storedSettings = sessionStorage.getItem(
       mode === "admin" ? "stakeholderGridSettings" : "dataEntryGridSettings"
     );
     if (storedSettings) {
@@ -383,7 +383,7 @@ const StakeholderGrid = (props) => {
           sortColumn={sortCol}
           sortDirection={sortDir}
           onGridSort={(sortColumn, sortDirection) => {
-            localStorage.setItem(
+            sessionStorage.setItem(
               mode === "admin"
                 ? "stakeholderGridSettings"
                 : "dataEntryGridSettings",

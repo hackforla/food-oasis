@@ -70,7 +70,10 @@ function App() {
   const [userCoordinates, setUserCoordinates] = useState({});
   const [toast, setToast] = useState({ message: "" });
   const [bgImg, setBgImg] = useState("");
-  const [origin, setOrigin] = useState(null);
+  const [origin, setOrigin] = useState({
+    latitude: 34.0522,
+    longitude: -118.2437,
+  });
 
   useEffect(() => {
     const imgNum = Math.floor(Math.random() * (21 - 1)) + 1;
@@ -79,7 +82,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const storedJson = localStorage.getItem("user");
+    const storedJson = sessionStorage.getItem("user");
     const userJson = JSON.stringify(user);
     if (!userJson && !storedJson) {
       return;
@@ -96,9 +99,9 @@ function App() {
 
   const onLogin = (user) => {
     if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
+      sessionStorage.setItem("user", JSON.stringify(user));
     } else {
-      localStorage.removeItem("user");
+      sessionStorage.removeItem("user");
     }
     setUser(user);
   };

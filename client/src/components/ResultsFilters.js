@@ -150,7 +150,7 @@ const ResultsFilters = ({
       if (e) {
         e.preventDefault();
       }
-      const storage = window.localStorage;
+      const storage = window.sessionStorage;
       search({
         latitude:
           origin.latitude ||

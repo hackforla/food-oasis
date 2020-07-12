@@ -34,7 +34,7 @@ const FaqEditForm = ({ faq, notAdded, history }) => {
         ...faq,
         question,
         answer,
-        identifier: `${JSON.parse(localStorage.getItem("faqs")).length + 1}:${
+        identifier: `${JSON.parse(sessionStorage.getItem("faqs")).length + 1}:${
           faq.identifier
         }`,
       });

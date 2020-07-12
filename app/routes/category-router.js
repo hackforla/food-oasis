@@ -5,8 +5,21 @@ const jwtSession = require("../../middleware/jwt-session");
 
 router.get("/", categoryController.getAll);
 router.get("/:id", categoryController.getById);
-router.post("/", jwtSession.validateUser, categoryController.post);
-router.put("/:id", jwtSession.validateUser, categoryController.put);
-router.delete("/:id", jwtSession.validateUser, categoryController.remove);
+router.post(
+  "/",
+  jwtSession.validateUserHasRequiredRoles(["admin"]),
+  categoryController.post
+);
+router.put(
+  "/:id",
+  jwtSession.validateUserHasRequiredRoles(["admin"]),
+  categoryController.put
+);
+
+router.delete(
+  "/:id",
+  jwtSession.validateUserHasRequiredRoles(["admin"]),
+  categoryController.remove
+);
 
 module.exports = router;

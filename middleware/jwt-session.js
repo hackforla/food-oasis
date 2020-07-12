@@ -84,9 +84,7 @@ function validateUserHasRequiredRoles(permittedRoles) {
         return regex.test(payload.sub);
       });
       if (!isJWTRoleInAllowedRoles) {
-        let msg = "Authentication error: insufficient permissions";
-        req.log.error(msg);
-        throw Error(msg);
+        throw Error("Authentication error: insufficient permissions");
       }
 
       if (payload.email) {

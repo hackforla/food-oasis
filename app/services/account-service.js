@@ -306,6 +306,20 @@ const authenticate = async (email, password) => {
   }
   const isUser = await bcrypt.compare(password, user.passwordHash);
   if (isUser) {
+    // assign role on JWT; default to least privilege
+    let role = [];
+    if (user.isAdmin) {
+      role.push("admin");
+    }
+    if (user.isSecurityAdmin) {
+      role.push("security_admin");
+    }
+    if (user.isCoordinator) {
+      role.push("coordinator");
+    }
+    if (user.isDataEntry) {
+      role.push("data_entry");
+    }
     return {
       isSuccess: true,
       code: "AUTH_SUCCESS",
@@ -319,6 +333,7 @@ const authenticate = async (email, password) => {
         isSecurityAdmin: user.isSecurityAdmin,
         isDataEntry: user.isDataEntry,
         emailConfirmed: user.emailConfirmed,
+        role: role.join(","), // join list of roles to string
       },
     };
   }

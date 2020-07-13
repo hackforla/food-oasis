@@ -5,7 +5,6 @@ import Menu from "./Menu";
 import logo from "images/fola.svg";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import LogoutButton from "./Logout";
 
 Header.propTypes = {
   user: PropTypes.object,
@@ -37,15 +36,6 @@ const useStyles = makeStyles({
     "&:hover": {
       filter: "brightness(1.2)",
     },
-  },
-  userLoggedIn: {
-    display: "flex",
-    justifyContent: "space-between",
-    flexGrow: "1",
-    minHeight: "3rem",
-  },
-  username: {
-    color: "black",
   },
   tagline: {
     color: "#1b1b1b",
@@ -88,16 +78,9 @@ export default function Header(props) {
               </div>
             )}
             {!isHomePage && user ? (
-              <div className={classes.userLoggedIn}>
-                <Typography
-                  variant="h6"
-                  component="h1"
-                  className={classes.username}
-                >
-                  {user.firstName}
-                </Typography>
-                <LogoutButton setUser={setUser} setToast={setToast} />
-              </div>
+              <Typography variant="subtitle1" className={classes.tagline}>
+                {user.firstName}
+              </Typography>
             ) : (
               <Typography variant="subtitle1" className={classes.tagline}>
                 {taglineText}

@@ -6,8 +6,22 @@ router.get("/", faqController.getAll);
 router.get("/language/:language", faqController.getAllByLanguage);
 router.get("/faq/:id", faqController.getById);
 router.get("/identifier/:identifier", faqController.getByIdentifier);
-router.post("/", jwtSession.validateUser, faqController.post);
-router.put("/faq/:id", jwtSession.validateUser, faqController.put);
-router.delete("/", jwtSession.validateUser, faqController.remove);
+router.post(
+  "/",
+  jwtSession.validateUserHasRequiredRoles(["admin"]),
+  faqController.post
+);
+
+router.put(
+  "/faq/:id",
+  jwtSession.validateUserHasRequiredRoles(["admin"]),
+  faqController.put
+);
+
+router.delete(
+  "/",
+  jwtSession.validateUserHasRequiredRoles(["admin"]),
+  faqController.remove
+);
 
 module.exports = router;

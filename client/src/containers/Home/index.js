@@ -116,6 +116,13 @@ const useStyles = makeStyles((theme) => ({
 const Home = (props) => {
   const classes = useStyles();
   const { origin, setOrigin, userCoordinates } = props;
+  const isDefaultOrigin = !origin?.hasOwnProperty("locationName");
+
+  React.useEffect(() => {
+    if (props.match.path === "/") {
+      sessionStorage.clear();
+    }
+  }, [props.match.path]);
 
   return (
     <Container component="main" maxWidth="sm" className={classes.container}>
@@ -140,7 +147,7 @@ const Home = (props) => {
               />
               <Button
                 type="submit"
-                disabled={!origin}
+                disabled={isDefaultOrigin}
                 variant="contained"
                 className={classes.submit}
                 startIcon={

@@ -3,13 +3,14 @@ const jwt = require("jsonwebtoken");
 // const autoCatch = require("./lib/auto-catch");
 
 const jwtSecret = process.env.JWT_SECRET || "mark it zero";
-const jwtOpts = { algorithm: "HS256", expiresIn: "14d" };
+const jwtOpts = { algorithm: "HS256", expiresIn: "1d" };
 
 module.exports = {
   //login: autoCatch(login),
   login,
   //ensureUser: autoCatch(ensureUser),
   validateUser,
+  validateUserHasRequiredRoles,
 };
 
 // This module manages the user's session using a JSON Web Token in the
@@ -22,10 +23,14 @@ module.exports = {
 // as as a JSON response body (for clients that may not be able to
 // work with cookies).
 async function login(req, res) {
-  const token = await sign({ email: req.user.email, id: req.user.id });
+  const token = await sign({
+    email: req.user.email,
+    id: req.user.id,
+    sub: `${req.user.role}` || "",
+  });
   res.cookie("jwt", token, {
     httpOnly: true,
-    expires: new Date(Date.now() + 1209600000), // 14 days
+    expires: new Date(Date.now() + 86400000), // 1 day
   });
   const user = req.user;
   res.json({ isSuccess: true, token: token, user });
@@ -51,6 +56,48 @@ async function validateUser(req, res, next) {
   }
 }
 
+/** validateUserHasRequiredRoles
+ * @param permittedRoles: an array of strings naming role required to
+ * validate on the JWT
+ * @returns function: the route handler function called by express
+ * example:
+ *   // server.js
+ *   app.post(
+ *    "/accounts/protected",
+ *    jwtSession.validateUserHasRequiredRoles(["admin", "security_admin"]),
+ *    accountsController.performActionOnlyPermittedToAdminRole
+ *   );
+ */
+function validateUserHasRequiredRoles(permittedRoles) {
+  if (!permittedRoles || permittedRoles.length < 1) {
+    throw Error("Authenication error: insufficient permissions");
+  }
+  return async function validateUserJwt(req, res, next) {
+    const jwtString = req.headers.authorization || req.cookies.jwt;
+    try {
+      // the payload object encoded on the JWT
+      const payload = await verify(jwtString);
+
+      // check that JWT subject is encoded with at least one of the requiredRoles
+      let isJWTRoleInAllowedRoles = permittedRoles.some((permittedRole) => {
+        let regex = new RegExp(permittedRole);
+        return regex.test(payload.sub);
+      });
+      if (!isJWTRoleInAllowedRoles) {
+        throw Error("Authentication error: insufficient permissions");
+      }
+
+      if (payload.email) {
+        req.user = payload;
+        return next();
+      }
+    } catch (err) {
+      // 401 Unauthorize, indicating that user is not
+      // authenticated.
+      res.status(401).send(err.message);
+    }
+  };
+}
 // Helper function to create JWT token
 async function sign(payload) {
   const token = await jwt.sign(payload, jwtSecret, jwtOpts);

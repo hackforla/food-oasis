@@ -5,24 +5,70 @@ const jwtSession = require("../../middleware/jwt-session");
 router.get("/", stakeholderController.search);
 router.get(
   "/dashboard",
-  jwtSession.validateUser,
+  jwtSession.validateUserHasRequiredRoles([
+    "admin",
+    "data_entry",
+    "coordinator",
+  ]),
   stakeholderController.searchDashboard
 );
-router.get("/:id", jwtSession.validateUser, stakeholderController.getById);
-router.post("/csv", jwtSession.validateUser, stakeholderController.csv);
-router.post("/", jwtSession.validateUser, stakeholderController.post);
-router.put("/:id", jwtSession.validateUser, stakeholderController.put);
-router.delete("/:id", jwtSession.validateUser, stakeholderController.remove);
+router.get(
+  "/:id",
+  jwtSession.validateUserHasRequiredRoles([
+    "admin",
+    "data_entry",
+    "coordinator",
+  ]),
+  stakeholderController.getById
+);
+
+router.post(
+  "/csv",
+  jwtSession.validateUserHasRequiredRoles([
+    "admin",
+    "data_entry",
+    "coordinator",
+  ]),
+  stakeholderController.csv
+);
+
+router.post(
+  "/",
+  jwtSession.validateUserHasRequiredRoles(["admin", "coordinator"]),
+  stakeholderController.post
+);
+
+router.put(
+  "/:id",
+  jwtSession.validateUserHasRequiredRoles([
+    "admin",
+    "data_entry",
+    "coordinator",
+  ]),
+  stakeholderController.put
+);
+
 router.put(
   "/:id/needsVerification",
-  jwtSession.validateUser,
+  jwtSession.validateUserHasRequiredRoles(["admin", "coordinator"]),
   stakeholderController.needsVerification
 );
 router.put(
   "/:id/assign",
-  jwtSession.validateUser,
+  jwtSession.validateUserHasRequiredRoles(["admin", "coordinator"]),
   stakeholderController.assign
 );
-router.put("/:id/claim", jwtSession.validateUser, stakeholderController.claim);
+
+router.put(
+  "/:id/claim",
+  jwtSession.validateUserHasRequiredRoles(["admin"]),
+  stakeholderController.claim
+);
+
+router.delete(
+  "/:id",
+  jwtSession.validateUserHasRequiredRoles(["admin"]),
+  stakeholderController.remove
+);
 
 module.exports = router;

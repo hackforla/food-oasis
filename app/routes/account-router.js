@@ -16,14 +16,18 @@ router.post("/forgotPassword", accountController.forgotPassword);
 router.post("/resetPassword", accountController.resetPassword);
 router.post(
   "/setPermissions",
-  jwtSession.validateUser,
+  jwtSession.validateUserHasRequiredRoles(["admin", "security_admin"]),
   accountController.setPermissions
 );
 
 router.post("/login/:email?", accountController.login, jwtSession.login);
 router.get("/logout", (req, res) => {
   console.log("logging out");
-  req.logout();
+  // "Delete" cookie by expiring it immediately
+  res.cookie("jwt", "", {
+    httpOnly: true,
+    expires: new Date(Date.now()), // 1 day
+  });
   res.sendStatus(200);
 });
 

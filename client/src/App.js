@@ -25,11 +25,7 @@ import FaqEdit from "./components/FaqEdit";
 import FaqAdd from "./components/FaqAdd";
 import Home from "./containers/Home";
 import ResultsContainer from "components/ResultsContainer";
-// Temporarily unused components
-// import Main from 'components/Main';
-// import News from "components/News";
-// import Team from "components/Team";
-// import Organizations from "components/Organizations";
+import { logout } from "./services/account-service";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
@@ -102,6 +98,7 @@ function App() {
       sessionStorage.setItem("user", JSON.stringify(user));
     } else {
       sessionStorage.removeItem("user");
+      logout();
     }
     setUser(user);
   };

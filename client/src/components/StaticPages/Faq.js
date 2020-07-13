@@ -27,6 +27,9 @@ const useStyles = makeStyles(() => ({
     padding: "32px 0",
     "& $span": {
       color: "#336699",
+      "& $span": {
+        textTransform: "none",
+      },
     },
   },
   figure: {
@@ -34,7 +37,7 @@ const useStyles = makeStyles(() => ({
     padding: 0,
   },
   icon: {
-    flexBasis: "100%",
+    margin: "auto",
   },
   glossary: {
     padding: "32px",
@@ -115,7 +118,9 @@ const About = () => {
   return (
     <div className={classes.outer}>
       <h1 className={classes.title}>
-        <span>FAQ</span>
+        <span>
+          FAQ<span>s</span>
+        </span>
       </h1>
       <div className={classes.main}>
         <figure className={classes.figure}>
@@ -132,30 +137,20 @@ const About = () => {
           <dl className={classes.dl}>
             <dt>Food Seeker</dt>
             <dd>A person in need of free groceries or meals.</dd>
-            <dt>Updated Data</dt>
-            <dd>
-              Our volunteers triple-check details about each resource. They
-              concentrate on updating: name, address, phone, email, operating
-              hours, and food details. When you see the “updated” tag, that
-              means our team recently updated those six critical details. But,
-              it’s not a bad thing if a resource is missing an “updated” tag. It
-              means we haven’t had a chance to call yet. We encourage you to
-              email or call before you pay them a visit.
-            </dd>
             <dt>Food Pantry</dt>
             <dd>
               A place that gives away free groceries—not cooked meals—to the
               community.
             </dd>
-            <dt>Meal Program or Soup Kitchen</dt>
-            <dd>
-              A place that gives away free cooked meals—not grocery and pantry
-              items—to the community.
-            </dd>
             <dt>Food Bank</dt>
             <dd>
               A nonprofit that collects donated food and distributes it to food
               pantries.
+            </dd>
+            <dt>Meal Program or Soup Kitchen</dt>
+            <dd>
+              A place that gives away free cooked meals—not grocery and pantry
+              items—to the community.
             </dd>
             <dt>Food Donation</dt>
             <dd>
@@ -199,8 +194,9 @@ const About = () => {
             <dt>How do I set up an account to start my assignment?</dt>
             <dd>
               <a href="/register">Enter your info here</a>, and look out for a
-              confirmation email from foodoasis+app@hackforla.org. Follow the
-              instructions in the email.
+              confirmation email from{" "}
+              <a href="mailto:darragh@entrotech.net">darragh@entrotech.net</a>.
+              Follow the instructions on the email.
             </dd>
           </dl>
         </section>
@@ -215,10 +211,10 @@ const About = () => {
           <dl className={classes.dl}>
             <dt>What is food insecurity?</dt>
             <dd>
-              A state when someone is unable to consistently access or afford
-              adequate food.
+              Unable to consistently access or afford adequate food to live a
+              healthy life.
             </dd>
-            <dt>How is Food Oasis helping to fix food insecurity?</dt>
+            <dt>How is Food Oasis helping to diminish food insecurity?</dt>
             <dd>
               Food Oasis is creating a directory of updated food resources.
               There are countless groups helping to feed hungry Angelenos. But
@@ -230,8 +226,6 @@ const About = () => {
               Your donations help us the human costs required to update the food
               resources in Los Angeles.
             </dd>
-            <dt>Will my donations be tax-deductible?</dt>
-            <dd>Yes.</dd>
           </dl>
         </section>
       </div>

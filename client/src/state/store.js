@@ -1,7 +1,7 @@
 import React, { createContext, useReducer } from "react";
 import { SET_USER, SET_COORDINATES } from "./types";
 
-const user = sessionStorage.getItem("user");
+const user = localStorage.getItem("user");
 const coordinates = sessionStorage.getItem("coordinates");
 const initialState = {
   user: JSON.parse(user),

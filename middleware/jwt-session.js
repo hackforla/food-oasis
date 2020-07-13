@@ -26,7 +26,7 @@ async function login(req, res) {
   const token = await sign({
     email: req.user.email,
     id: req.user.id,
-    sub: `${req.user.role}` || "data_entry",
+    sub: `${req.user.role}` || "",
   });
   res.cookie("jwt", token, {
     httpOnly: true,
@@ -70,7 +70,7 @@ async function validateUser(req, res, next) {
  */
 function validateUserHasRequiredRoles(permittedRoles) {
   if (!permittedRoles || permittedRoles.length < 1) {
-    permittedRoles = ["date_entry"];
+    throw Error("Authenication error: insufficient permissions");
   }
   return async function validateUserJwt(req, res, next) {
     const jwtString = req.headers.authorization || req.cookies.jwt;

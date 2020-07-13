@@ -89,7 +89,7 @@ const LoginForm = (props) => {
                   } else if (response.user.isDataEntry) {
                     history.push("/verificationdashboard");
                   } else {
-                    history.push("/home");
+                    history.push("/");
                   }
                 } else if (response.code === "AUTH_NOT_CONFIRMED") {
                   try {

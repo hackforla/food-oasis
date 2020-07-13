@@ -56,6 +56,12 @@ export default function ResultsContainer(props) {
       window.removeEventListener("resize", changeInputContainerWidth);
   }, [mobileTest]);
 
+  React.useEffect(() => {
+    return () => {
+      sessionStorage.clear();
+    };
+  }, []);
+
   const initialCategories = storage.categoryIds
     ? JSON.parse(storage.categoryIds)
     : [];

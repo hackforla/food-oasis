@@ -319,8 +319,6 @@ const authenticate = async (email, password) => {
     }
     if (user.isDataEntry) {
       role.push("data_entry");
-    } else {
-      role.push("data_entry");
     }
     return {
       isSuccess: true,

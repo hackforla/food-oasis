@@ -19,12 +19,13 @@ const useStyles = makeStyles((theme) => ({
   list: {
     textAlign: "center",
     fontSize: "12px",
+    overflow: "scroll",
     [theme.breakpoints.up("md")]: {
-      overflow: "scroll",
       height: "100%",
     },
     [theme.breakpoints.down("sm")]: {
       order: 1,
+      height: "30em",
     },
   },
   stakeholderArrayHolder: {

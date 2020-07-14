@@ -3,12 +3,11 @@ import React from "react";
 import faqbg from "./assets/faq-bg.png";
 import iconSpacer from "./assets/icon-spacer.svg";
 import iconSpacerBlue from "./assets/icon-spacer-blue.svg";
-import iconSpacerGray from "./assets/icon-spacer-gray.svg";
 import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles(() => ({
   outer: {
-    background: "#f0f0f0",
+    background: "#fff",
   },
   main: {
     padding: "1.5rem 0;",
@@ -87,7 +86,7 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     flexDirection: "column",
     "& $h2": {
-      color: "#4d4d4d",
+      color: "#336699",
       flexBasis: "100%",
       textTransform: "uppercase;",
       textAlign: "center",
@@ -203,7 +202,7 @@ const About = () => {
         <section className={classes.forDonors}>
           <img
             alt="For Donors"
-            src={iconSpacerGray}
+            src={iconSpacerBlue}
             className={classes.icon}
             height="40"
           />

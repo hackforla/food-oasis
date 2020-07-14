@@ -11,7 +11,7 @@ const inactiveButtonTextColor = "#4D4D4D";
 //Icon and List Colors
 
 const foodPantry = "#336699"; //blue
-const mealProgram = "#CC3333"; //red
+const mealProgram = "#E57109"; //orange | formerly red #CC3333
 const closed = "#545454"; //grey
 
 export {

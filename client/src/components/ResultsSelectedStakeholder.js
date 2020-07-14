@@ -317,7 +317,7 @@ const SelectedStakeholderDisplay = ({
                       ? "2nd " + hour.day_of_week
                       : hour.week_of_month === 3
                       ? "3rd " + hour.day_of_week
-                      : hour.week_of_month === 3
+                      : hour.week_of_month === 4
                       ? "4th " + hour.day_of_week
                       : hour.day_of_week}
                   </span>

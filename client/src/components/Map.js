@@ -75,6 +75,9 @@ function Map({ selectedLatitude, selectedLongitude, stakeholders }) {
                 key={`marker-${index}`}
                 longitude={stakeholder.longitude}
                 latitude={stakeholder.latitude}
+                inactive={stakeholder.inactive}
+                inactiveTemporary={stakeholder.inactiveTemporary}
+                categories={stakeholder.categories}
               />
             ))}
         {isPopupOpen && selectedStakeholder && (

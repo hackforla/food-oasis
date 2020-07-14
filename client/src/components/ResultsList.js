@@ -11,7 +11,6 @@ import splitPantryMealIcon from "../images/splitPantryMealIcon";
 import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
-  VERIFICATION_STATUS,
 } from "../constants/stakeholder";
 import { ORGANIZATION_COLORS, CLOSED_COLOR } from "../constants/map";
 
@@ -268,21 +267,13 @@ const ResultsList = ({
                     : stakeholder.distance.toString().substring(0, 3)}{" "}
                   mi
                   {mapMarker(
-                    stakeholder.inactiveTemporary || stakeholder.inactive
-                      ? CLOSED_COLOR
-                      : stakeholder.categories[0].id ===
-                          FOOD_PANTRY_CATEGORY_ID &&
-                        stakeholder.categories[1] &&
-                        stakeholder.categories[1].id ===
-                          MEAL_PROGRAM_CATEGORY_ID
-                      ? ""
+                    stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID &&
+                      stakeholder.categories[1] &&
+                      stakeholder.categories[1].id === MEAL_PROGRAM_CATEGORY_ID
+                      ? -1
                       : stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
-                      ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
-                      : ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID],
-                    stakeholder.verificationStatusId ===
-                      VERIFICATION_STATUS.VERIFIED
-                      ? true
-                      : false,
+                      ? 0
+                      : 1,
                     stakeholder.inactiveTemporary || stakeholder.inactive
                       ? true
                       : false

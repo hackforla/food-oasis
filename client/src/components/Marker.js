@@ -7,6 +7,7 @@ import {
   FOOD_PANTRY_CATEGORY_ID,
 } from "../constants/stakeholder";
 
+//TODO, get map svgs out of here and into function in images folder
 const style = {
   svg: {
     height: "100%",
@@ -16,7 +17,7 @@ const style = {
     fill: color,
   }),
   check: ({ isVerified }) => ({
-    opacity: isVerified ? 1 : 0,
+    opacity: isVerified ? 0 : 0,
     fill: "transparent",
     strokeWidth: 6,
     strokeLinecap: "round",
@@ -25,7 +26,7 @@ const style = {
     stroke: "#ffffff",
   }),
   circle: ({ isVerified }) => ({
-    opacity: isVerified ? 0 : 1,
+    opacity: isVerified ? 1 : 1,
   }),
   container: {
     height: 48,

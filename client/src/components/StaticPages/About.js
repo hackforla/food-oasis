@@ -3,7 +3,6 @@ import React from "react";
 import aboutbg from "./assets/about-bg.png";
 import iconSpacer from "./assets/icon-spacer.svg";
 import iconSpacerBlue from "./assets/icon-spacer-blue.svg";
-import iconSpacerGray from "./assets/icon-spacer-gray.svg";
 import foodCycle from "./assets/food-cycle.png";
 import foodForward from "./assets/food-forward.png";
 import farmPeople from "./assets/farm-people.png";
@@ -12,7 +11,7 @@ import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles(() => ({
   outer: {
-    background: "#f0f0f0",
+    background: "#fff",
   },
   main: {
     padding: "1.5rem 0;",
@@ -44,11 +43,12 @@ const useStyles = makeStyles(() => ({
     padding: "32px",
     margin: "32px 0",
     borderRadius: "24px",
-    color: "#fff",
-    background: "#336699",
+    color: "#4d4d4d",
+    background: "#f0f0f0",
     display: "flex",
     flexDirection: "column",
     "& $h2": {
+      color: "#336699",
       flexBasis: "100",
       textTransform: "uppercase;",
       textAlign: "center",
@@ -62,11 +62,11 @@ const useStyles = makeStyles(() => ({
     padding: "32px",
     margin: "32px 0 0 0",
     borderRadius: "24px",
-    color: "#4d4d4d",
+    color: "#fff",
+    background: "#336699",
     display: "flex",
     flexDirection: "column",
     "& $h2": {
-      color: "#336699",
       flexBasis: "100",
       textTransform: "uppercase;",
       textAlign: "center",
@@ -76,14 +76,15 @@ const useStyles = makeStyles(() => ({
       marginBottom: "20px",
     },
     "& $a": {
-      color: "#4d4d4d",
+      color: "#fff",
     },
   },
   contact: {
     padding: "32px",
-    margin: "0px 0 32px 0",
+    margin: "32px 0 0 0",
     borderRadius: "24px",
     color: "#4d4d4d",
+    background: "#f0f0f0",
     display: "flex",
     flexDirection: "column",
     textAlign: "center",
@@ -111,7 +112,7 @@ const useStyles = makeStyles(() => ({
     flexWrap: "wrap",
     flexDirection: "column",
     "& $h2": {
-      color: "#4d4d4d",
+      color: "#336699",
       width: "100%",
       flexBasis: "100",
       textTransform: "uppercase;",
@@ -149,7 +150,7 @@ const About = () => {
         <div className={classes.mission}>
           <img
             alt="Our Mission"
-            src={iconSpacer}
+            src={iconSpacerBlue}
             className={classes.icon}
             height="40"
           />
@@ -200,7 +201,7 @@ const About = () => {
         <section className={classes.team}>
           <img
             alt="Our Team"
-            src={iconSpacerBlue}
+            src={iconSpacer}
             className={classes.icon}
             height="40"
           />
@@ -268,7 +269,7 @@ const About = () => {
         <section className={classes.partners}>
           <img
             alt="Our Team"
-            src={iconSpacerGray}
+            src={iconSpacerBlue}
             className={classes.icon}
             height="40"
           />

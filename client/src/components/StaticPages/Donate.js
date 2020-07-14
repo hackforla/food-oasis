@@ -7,7 +7,7 @@ import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles(() => ({
   outer: {
-    background: "#f0f0f0",
+    background: "#fff",
   },
   main: {
     padding: "1.5rem 0;",
@@ -65,6 +65,7 @@ const useStyles = makeStyles(() => ({
     margin: "32px 0 0 0",
     borderRadius: "24px",
     color: "#4d4d4d",
+    background: "#f0f0f0",
     display: "flex",
     flexWrap: "wrap",
     "& $h2": {
@@ -135,13 +136,10 @@ const useStyles = makeStyles(() => ({
     },
   },
   signup: {
-    background: "#336699",
+    background: "rgba(229, 113, 9, .7)",
   },
   volunteer: {
     background: "#e57109",
-    "& $btnWhite": {
-      color: "#e57109",
-    },
   },
 }));
 const Donate = () => {
@@ -218,7 +216,7 @@ const Donate = () => {
               rel="noopener noreferrer"
               className={classes.btnWhite}
             >
-              Subscribe
+              Signup
             </a>
           </aside>
           <aside className={classes.volunteer}>

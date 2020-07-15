@@ -8,8 +8,13 @@ import { useMapboxGeocoder } from "hooks/useMapboxGeocoder";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    width: "34.5em",
+    // width: "34.5em",
     position: "absolute",
+    top: "35px",
+    left: 0,
+    right: 0,
+    width: "auto",
+    height: "auto",
     maxHeight: "150px",
     overflowY: "auto",
     marginTop: 0,
@@ -21,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("xs")]: {
       marginLeft: ".5rem",
     },
+    position: "relative",
   },
   address: {
     backgroundColor: "#fff",

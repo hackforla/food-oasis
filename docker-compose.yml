@@ -29,13 +29,13 @@ services:
     command: npx nodemon -w /fola/server.js -w /fola/app -w /fola/middleware -L server.js
 
   db:
-    image: postgres:12
+    image: postgres:11
     restart: always
     ports:
       # exposed on localhost 5433
       - "5433:5432"
     environment:
-      POSTGRES_USER: fola
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: pgpass
       POSTGRES_DB: food
     networks:

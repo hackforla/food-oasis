@@ -32,6 +32,7 @@ export default function ResultsContainer(props) {
   const storage = window.sessionStorage;
   const { userCoordinates, userSearch } = props;
   const { data, search } = useOrganizations();
+  const [sortedData, setSortedData] = React.useState([]);
   const classes = useStyles();
 
   const windowSize = window.innerWidth > 960 ? true : false;
@@ -41,6 +42,30 @@ export default function ResultsContainer(props) {
   const [isMobile, changeMobile] = React.useState(
     mobileTest.test(navigator.userAgent) ? true : false
   );
+
+  React.useEffect(() => {
+    const sortOrganizations = (a, b) => {
+      if (
+        (a.inactive || a.inactiveTemporary) &&
+        !b.inactive &&
+        !b.inactiveTemporary
+      ) {
+        return 1;
+      } else if (
+        !a.inactive &&
+        !a.inactiveTemporary &&
+        (b.inactive || b.inactiveTemporary)
+      ) {
+        return -1;
+      } else {
+        return a.distance < b.distance ? -1 : a.distance > b.distance ? 1 : 0;
+      }
+    };
+    if (!data) {
+      return;
+    }
+    setSortedData(data.sort(sortOrganizations));
+  }, [data]);
 
   React.useEffect(() => {
     const changeInputContainerWidth = () => {
@@ -140,7 +165,7 @@ export default function ResultsContainer(props) {
         <ResultsList
           selectedStakeholder={selectedStakeholder}
           doSelectStakeholder={doSelectStakeholder}
-          stakeholders={data}
+          stakeholders={sortedData}
           setSelectedPopUp={setSelectedPopUp}
           setIsPopupOpen={setIsPopupOpen}
           isWindowWide={isWindowWide}

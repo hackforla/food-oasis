@@ -227,22 +227,13 @@ const SelectedStakeholderDisplay = ({
             : selectedStakeholder.distance.toString().substring(0, 3)}{" "}
           mi
           {mapMarker(
-            selectedStakeholder.inactiveTemporary ||
-              selectedStakeholder.inactive
-              ? CLOSED_COLOR
-              : selectedStakeholder.categories[0].id ===
-                  FOOD_PANTRY_CATEGORY_ID &&
-                selectedStakeholder.categories[1] &&
-                selectedStakeholder.categories[1].id ===
-                  MEAL_PROGRAM_CATEGORY_ID
-              ? ""
+            selectedStakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID &&
+              selectedStakeholder.categories[1] &&
+              selectedStakeholder.categories[1].id === MEAL_PROGRAM_CATEGORY_ID
+              ? -1
               : selectedStakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
-              ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
-              : ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID],
-            selectedStakeholder.verificationStatusId ===
-              VERIFICATION_STATUS.VERIFIED
-              ? true
-              : false,
+              ? 0
+              : 1,
             selectedStakeholder.inactiveTemporary ||
               selectedStakeholder.inactive
               ? true
@@ -317,7 +308,7 @@ const SelectedStakeholderDisplay = ({
                       ? "2nd " + hour.day_of_week
                       : hour.week_of_month === 3
                       ? "3rd " + hour.day_of_week
-                      : hour.week_of_month === 3
+                      : hour.week_of_month === 4
                       ? "4th " + hour.day_of_week
                       : hour.day_of_week}
                   </span>

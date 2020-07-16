@@ -82,7 +82,7 @@ function Map({
     >
       <ReactMapGL
         {...viewport}
-        dragPan={isWindowWide && isMobile ? false : true}
+        /* dragPan={isWindowWide && isMobile ? false : true} */
         touchAction="pan-y pinch-zoom"
         width="100%"
         height="100%"

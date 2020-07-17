@@ -1,7 +1,7 @@
 import React from "react";
 import { foodPantry, mealProgram, closed } from "../theme/colors";
 
-const MapMarker = (category, inactive, onClick) => {
+const MapMarker = (category, inactive, onClick = null) => {
   if (category === -1)
     return (
       <svg
@@ -10,8 +10,10 @@ const MapMarker = (category, inactive, onClick) => {
         viewBox="0 0 30 40"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        onClick={onClick}
+        transform={onClick ? "translate(-20,-20)" : null}
       >
-        <g clip-path="url(#clip0)" onClick={onClick}>
+        <g>
           <path
             d="M15.0005 39.8626C19.7997 34.5676 28.5612 22.5925 29.925 15.856C30.1351 13.8533 29.9053 11.8299 29.251 9.91747C28.5968 8.00505 27.5324 6.24525 26.1264 4.75134C24.7204 3.2578 23.004 2.06318 21.0877 1.24474C19.1713 0.426302 17.0979 0.0025994 15.0005 0V6.36445V20.6983V39.8626Z"
             fill={inactive ? closed : foodPantry}
@@ -49,6 +51,7 @@ const MapMarker = (category, inactive, onClick) => {
         viewBox="0 0 30 40"
         xmlSpace="preserve"
         onClick={onClick}
+        transform={onClick ? "translate(-20,-20)" : null}
       >
         <path
           class="st0"
@@ -85,6 +88,7 @@ const MapMarker = (category, inactive, onClick) => {
         viewBox="0 0 30 40"
         xmlSpace="preserve"
         onClick={onClick}
+        transform={onClick ? "translate(-20,-20)" : null}
       >
         <path
           class="st0"

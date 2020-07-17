@@ -246,7 +246,7 @@ const ResultsList = ({
 
                     {isOpenFlag &&
                     !(stakeholder.inactiveTemporary || stakeholder.inactive) ? (
-                      <em className={classes.openIndicatorLabel}>OPEN</em>
+                      <em className={classes.openIndicatorLabel}>OPEN NOW</em>
                     ) : null}
 
                     {isAlmostClosedFlag &&

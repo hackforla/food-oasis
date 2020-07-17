@@ -118,6 +118,8 @@ function Map({
                   isVerified={isVerified}
                   color={color}
                   categories={stakeholder.categories}
+                  inactive={stakeholder.inactive}
+                  inactiveTemporary={stakeholder.inactiveTemporary}
                 />
               );
             })}

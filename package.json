@@ -5,7 +5,7 @@
   "description": "Web API Server for Food Oasis",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "start": "nodemon server.js -ignore './client' ",
     "heroku-postbuild": "cd client && npm i && npm run build",
     "server": "nodemon server.js",
@@ -48,6 +48,7 @@
     "json-2-csv": "^3.5.7",
     "jsonwebtoken": "^8.5.1",
     "massive": "^6.1.1",
+    "mocha": "^8.0.1",
     "moment": "2.24.0",
     "node-pg-migrate": "^5.0.0",
     "nodemailer": "^6.3.1",

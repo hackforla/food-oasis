@@ -33,7 +33,7 @@
       "eslint -c .eslintrc.js --ignore-path .eslintignore --fix"
     ]
   },
-  "license": "MIT",
+  "license": "GPL-2.0",
   "dependencies": {
     "@sendgrid/mail": "^6.4.0",
     "axios": "^0.19.0",

@@ -3,7 +3,7 @@
   "description": "React Client for Food Oasis",
   "version": "1.0.13",
   "author": "Hack for LA",
-  "license": "MIT",
+  "license": "GPL-2.0",
   "private": true,
   "proxy": "http://localhost:5000",
   "scripts": {

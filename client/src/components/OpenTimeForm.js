@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import OpenTimeInputs from "./OpenTimeInput";
 import { AddButton } from "./Buttons";
 import { Card, CardContent, Typography } from "@material-ui/core";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import MomentUtils from "@date-io/moment";
 
 function OpenTimeForm(props) {
   const { value, onChange } = props;
@@ -104,20 +106,22 @@ function OpenTimeForm(props) {
   });
 
   return (
-    <Card style={{ border: "1px solid lightgray", borderRadius: "4px" }}>
-      <CardContent>
-        <Typography>Hours</Typography>
-        <div>{inputsMap}</div>
-        {errorMessages.length > 0
-          ? errorMessages.map((msg) => (
-              <div key={msg} style={{ color: "red" }}>
-                {msg}
-              </div>
-            ))
-          : null}
-        <AddButton onClick={addHours} label={"Add Hours"} />
-      </CardContent>
-    </Card>
+    <MuiPickersUtilsProvider utils={MomentUtils}>
+      <Card style={{ border: "1px solid lightgray", borderRadius: "4px" }}>
+        <CardContent>
+          <Typography>Hours</Typography>
+          <div>{inputsMap}</div>
+          {errorMessages.length > 0
+            ? errorMessages.map((msg) => (
+                <div key={msg} style={{ color: "red" }}>
+                  {msg}
+                </div>
+              ))
+            : null}
+          <AddButton onClick={addHours} label={"Add Hours"} />
+        </CardContent>
+      </Card>
+    </MuiPickersUtilsProvider>
   );
 }
 

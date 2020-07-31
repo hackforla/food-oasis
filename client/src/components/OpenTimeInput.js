@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import moment from "moment";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Grid,
@@ -8,8 +9,8 @@ import {
   IconButton,
   InputLabel,
   Select,
-  TextField,
 } from "@material-ui/core";
+import { TimePicker } from "@material-ui/pickers";
 import { CancelIconButton } from "./Buttons";
 import { WrapText } from "@material-ui/icons";
 
@@ -47,6 +48,57 @@ const intervals = [
 function OpenTimeInput(props) {
   const classes = useStyles();
   const { values, onChange, removeInput, copyInput } = props;
+  let openingTimeCode, closingTimeCode;
+
+  openingTimeCode = values.open.split(":");
+  closingTimeCode = values.close.split(":");
+
+  const [openingTime, setOpeningTime] = useState(
+    new Date(
+      null,
+      null,
+      null,
+      openingTimeCode[0],
+      openingTimeCode[1],
+      openingTimeCode[2],
+      0
+    )
+  );
+  const [closingTime, setClosingTime] = useState(
+    new Date(
+      null,
+      null,
+      null,
+      closingTimeCode[0],
+      closingTimeCode[1],
+      closingTimeCode[2],
+      0
+    )
+  );
+
+  useEffect(() => {
+    console.log("Updated Opening Time... ", openingTime);
+    console.log(
+      "New Opening Time to send to Formik... ",
+      formatToHHmmss(openingTime)
+    );
+  }, [openingTime]);
+
+  useEffect(() => {
+    console.log("Updated Closing Time... ", closingTime);
+    console.log(
+      "New Closing Time to send to Formik... ",
+      formatToHHmmss(closingTime)
+    );
+  }, [closingTime]);
+
+  /**
+   * inputs a time from MaterialUI's TimePicker component and outputs
+   * to HH:mm:ss format we send to Formik
+   */
+  const formatToHHmmss = (dateToFormat) => {
+    return moment(dateToFormat).format("HH:mm:ss");
+  };
 
   return (
     <Grid container spacing={1} className={classes.row}>
@@ -98,15 +150,11 @@ function OpenTimeInput(props) {
         </FormControl>
       </Grid>
       <Grid item xs={12} sm={2}>
-        <TextField
-          type="time"
-          name="open"
-          onChange={onChange}
-          variant="outlined"
-          fullWidth
+        <TimePicker
+          autoOk
           label="Opening Time"
-          value={values.open}
-          inputProps={{ step: 300 }}
+          value={openingTime}
+          onChange={setOpeningTime}
         />
       </Grid>
       <Grid
@@ -115,15 +163,11 @@ function OpenTimeInput(props) {
         sm={2}
         styles={{ display: "flex", flexDirection: "column" }}
       >
-        <TextField
-          name="close"
-          type="time"
-          inputProps={{ step: 300 }}
-          onChange={onChange}
-          variant="outlined"
-          fullWidth
+        <TimePicker
+          autoOk
           label="Closing Time"
-          value={values.close}
+          value={closingTime}
+          onChange={setClosingTime}
         />
       </Grid>
       <Grid item xs={2} sm={1}>

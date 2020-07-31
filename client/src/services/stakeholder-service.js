@@ -88,7 +88,7 @@ export const exportCsv = async (ids) => {
   const response = await axios.post(baseUrl + "/csv", body, {
     responseType: "stream",
   });
-  fileDownload(response.data, "fooloasis.csv");
+  fileDownload(response.data, "foodoasis.csv");
 };
 
 export const put = async (stakeholder) => {

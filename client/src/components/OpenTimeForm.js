@@ -97,6 +97,7 @@ function OpenTimeForm(props) {
       <div key={rowIndex}>
         <OpenTimeInputs
           values={val}
+          rowIndex={rowIndex}
           onChange={(e) => stateChange(e, rowIndex)}
           removeInput={(e) => removeHours(e, rowIndex)}
           copyInput={(e) => copyHours(e, rowIndex)}

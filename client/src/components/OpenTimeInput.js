@@ -47,8 +47,18 @@ const intervals = [
 
 function OpenTimeInput(props) {
   const classes = useStyles();
-  const { values, onChange, removeInput, copyInput } = props;
+  const { values, rowIndex, onChange, removeInput, copyInput } = props;
   let openingTimeCode, closingTimeCode;
+
+  // set default 'open' value for new rows
+  if (!values.open) {
+    values.open = "09:00:00";
+  }
+
+  // set default 'close' value for new rows
+  if (!values.closed) {
+    values.close = "12:00:00";
+  }
 
   openingTimeCode = values.open.split(":");
   closingTimeCode = values.close.split(":");
@@ -77,20 +87,28 @@ function OpenTimeInput(props) {
   );
 
   useEffect(() => {
-    console.log("Updated Opening Time... ", openingTime);
-    console.log(
-      "New Opening Time to send to Formik... ",
-      formatToHHmmss(openingTime)
+    onChange(
+      {
+        target: {
+          name: "open",
+          value: formatToHHmmss(openingTime),
+        },
+      },
+      rowIndex
     );
-  }, [openingTime]);
+  }, [onChange, openingTime, rowIndex]);
 
   useEffect(() => {
-    console.log("Updated Closing Time... ", closingTime);
-    console.log(
-      "New Closing Time to send to Formik... ",
-      formatToHHmmss(closingTime)
+    onChange(
+      {
+        target: {
+          name: "close",
+          value: formatToHHmmss(closingTime),
+        },
+      },
+      rowIndex
     );
-  }, [closingTime]);
+  }, [closingTime, onChange, rowIndex]);
 
   /**
    * inputs a time from MaterialUI's TimePicker component and outputs
@@ -189,6 +207,7 @@ function OpenTimeInput(props) {
 
 OpenTimeInput.propTypes = {
   values: PropTypes.object,
+  rowIndex: PropTypes.number,
   onChange: PropTypes.func,
   removeInput: PropTypes.func,
   copyInput: PropTypes.func,

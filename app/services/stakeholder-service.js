@@ -507,11 +507,13 @@ const selectCsv = async (ids) => {
     where stakeholder_id = s.id
   ) row
   )) as hours,
-  (select string_agg(c.name, ', ')
-      from category c
+  (select string_agg(cc.name, ', ')
+      from (
+        select name from category c
         join stakeholder_category sc on c.id = sc.category_id
-      where sc.stakeholder_id = s.id
-      order by c.display_order
+        where sc.stakeholder_id = s.id
+        order by c.display_order
+      ) as cc
   ) as categories,
   to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as created_date, s.created_login_id,
   to_char(s.modified_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as modified_date, s.modified_login_id,
@@ -696,7 +698,6 @@ const insert = async (model) => {
     confirmedHours,
     verificationStatusId,
     inactiveTemporary,
-    neighborhoodId,
   } = model;
   try {
     let hoursSqlValues = hours.length
@@ -774,8 +775,7 @@ const insert = async (model) => {
       ${toSqlBoolean(confirmedHours)},
       ${toSqlNumeric(verificationStatusId)}::INT,
       ${toSqlBoolean(inactiveTemporary)},
-      ${categories}, ${formattedHours},
-      ${toSqlNumeric(neighborhoodId)})`;
+      ${categories}, ${formattedHours})`;
     const stakeholderResult = await pool.query(invokeSprocSql);
     const id = stakeholderResult.rows[0].s_id;
     return { id };
@@ -797,7 +797,12 @@ const assign = async (model) => {
                 reviewed_login_id = null,
                 verification_status_id = 2
               where id = ${id}`;
-  await pool.query(sql);
+  try {
+    await pool.query(sql);
+  } catch (err) {
+    console.log(err);
+    return Promise.reject(err.message);
+  }
 };
 
 const needsVerification = async (model) => {
@@ -818,7 +823,12 @@ const needsVerification = async (model) => {
                     : ""
                 } ELSE ${toSqlString(message)} END
               where id = ${id}`;
-  await pool.query(sql);
+  try {
+    await pool.query(sql);
+  } catch (err) {
+    console.log(err);
+    return Promise.reject(err.message);
+  }
 };
 
 const claim = async (model) => {
@@ -831,7 +841,12 @@ const claim = async (model) => {
                 modified_login_id = ${toSqlNumeric(userLoginId)},
                 modified_date = CURRENT_TIMESTAMP,
               where id = ${id}`;
-  await pool.query(sql);
+  try {
+    await pool.query(sql);
+  } catch (err) {
+    console.log(err);
+    return Promise.reject(err.message);
+  }
 };
 
 const update = async (model) => {
@@ -900,7 +915,6 @@ const update = async (model) => {
     confirmedHours,
     verificationStatusId,
     inactiveTemporary,
-    neighborhoodId,
   } = model;
 
   let hoursSqlValues = hours.length
@@ -987,10 +1001,14 @@ const update = async (model) => {
     ${toSqlNumeric(verificationStatusId)}::INT, ${toSqlBoolean(
     inactiveTemporary
   )},
-    ${id}, ${categories}, ${formattedHours},
-    ${toSqlNumeric(neighborhoodId)})`;
+    ${id}, ${categories}, ${formattedHours})`;
 
-  await pool.query(invokeSprocSql);
+  try {
+    await pool.query(invokeSprocSql);
+  } catch (err) {
+    console.log(err);
+    return Promise.reject(err.message);
+  }
 };
 
 const remove = (id) => {

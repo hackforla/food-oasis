@@ -38,12 +38,12 @@ The following command will run if docker is set up and ready to go:
 docker version
 ```
 
-Then you can download the official Postgres 11 image from Docker Hub and create a local container named `foodoasisdb` by running:
+Then you can download the official postgis-enabled Postgres image from Docker Hub and create a local container named `foodoasisdb` by running:
 
 ```
 docker run --name foodoasisdb \
 -e POSTGRES_PASSWORD=pgpass \
--d -p 5433:5432  postgres:11
+-d -p 5433:5432  postgis/postgis
 ```
 
 (Omit `sudo` on Windows)
@@ -66,7 +66,7 @@ POSTGRES_USERNAME=postgres
 POSTGRES_PASSWORD=pgpass
 ```
 
-When creating the container, I specified mappging port 5433 to avoid conflicts with an existing default Postgres installation, which would be using the default port of 5432.
+When creating the container, I specified mapping port 5433 to avoid conflicts with an existing default Postgres installation, which would be using the default port of 5432.
 
 ### Running Postgres on your native platform
 

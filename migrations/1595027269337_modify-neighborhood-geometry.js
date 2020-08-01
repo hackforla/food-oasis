@@ -5,9 +5,7 @@ exports.shorthands = undefined;
 exports.up = (pgm) => {
   // Enable postgis extension
   pgm.createExtension("postgis", {
-    options: {
-      ifNotExists: true,
-    },
+    ifNotExists: true,
   });
 
   // Rename current geometry column
@@ -40,8 +38,6 @@ exports.down = (pgm) => {
 
   // Disable extension
   pgm.dropExtension("postgis", {
-    drop_options: {
-      ifExists: true,
-    },
+    ifExists: true,
   });
 };

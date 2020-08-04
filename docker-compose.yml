@@ -35,7 +35,7 @@ services:
       # exposed on localhost 5433
       - "5433:5432"
     environment:
-      POSTGRES_USER: postgres
+      POSTGRES_USER: fola
       POSTGRES_PASSWORD: pgpass
       POSTGRES_DB: food
     networks:

@@ -139,6 +139,7 @@ export default function ResultsContainer(props) {
     zoom: viewPortHash[radius],
     latitude: origin.latitude || JSON.parse(storage.origin).latitude,
     longitude: origin.longitude || JSON.parse(storage.origin).longitude,
+    logoPosition: "top-left",
   });
 
   return (

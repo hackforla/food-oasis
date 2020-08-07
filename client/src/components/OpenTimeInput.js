@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { makeStyles } from "@material-ui/core/styles";
@@ -56,7 +56,7 @@ function OpenTimeInput(props) {
   }
 
   // set default 'close' value for new rows
-  if (!values.closed) {
+  if (!values.close) {
     values.close = "12:00:00";
   }
 
@@ -74,6 +74,7 @@ function OpenTimeInput(props) {
       0
     )
   );
+
   const [closingTime, setClosingTime] = useState(
     new Date(
       null,
@@ -86,29 +87,30 @@ function OpenTimeInput(props) {
     )
   );
 
-  useEffect(() => {
-    onChange(
-      {
-        target: {
-          name: "open",
-          value: formatToHHmmss(openingTime),
-        },
-      },
-      rowIndex
-    );
-  }, [onChange, openingTime, rowIndex]);
+  const handleTimeUpdate = (e, type) => {
+    if (
+      (type === "close" && e._d === closingTime) ||
+      (type === "open" && e._d === openingTime)
+    ) {
+      return;
+    }
 
-  useEffect(() => {
     onChange(
       {
         target: {
-          name: "close",
-          value: formatToHHmmss(closingTime),
+          name: type,
+          value: formatToHHmmss(e._d),
         },
       },
       rowIndex
     );
-  }, [closingTime, onChange, rowIndex]);
+
+    if (type === "close") {
+      setClosingTime(e._d);
+    } else {
+      setOpeningTime(e._d);
+    }
+  };
 
   /**
    * inputs a time from MaterialUI's TimePicker component and outputs
@@ -172,7 +174,9 @@ function OpenTimeInput(props) {
           autoOk
           label="Opening Time"
           value={openingTime}
-          onChange={setOpeningTime}
+          onChange={(e) => {
+            handleTimeUpdate(e, "open");
+          }}
         />
       </Grid>
       <Grid
@@ -185,7 +189,9 @@ function OpenTimeInput(props) {
           autoOk
           label="Closing Time"
           value={closingTime}
-          onChange={setClosingTime}
+          onChange={(e) => {
+            handleTimeUpdate(e, "close");
+          }}
         />
       </Grid>
       <Grid item xs={2} sm={1}>

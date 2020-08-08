@@ -37,7 +37,7 @@ const sendRegistrationConfirmation = async (
     from: emailUser,
     subject: `Verify your account`,
     text: `Verify your account`,
-    html: `${emailTemplate.applyEmailTemplate(emailBody)}`,
+    html: `${emailTemplate(emailBody, clientUrl)}`,
   };
   return sgMail.send(msg, false, (err) => {
     if (err) {
@@ -76,7 +76,7 @@ const sendResetPasswordConfirmation = async (
     from: emailUser,
     subject: `Confirm Password Reset for Food Oasis`,
     text: `Confirm Password Reset for Food Oasis`,
-    html: `${emailTemplate.applyEmailTemplate(emailBody)}`,
+    html: `${emailTemplate(emailBody, clientUrl)}`,
   };
   return sgMail.send(msg, false, (err) => {
     if (err) {

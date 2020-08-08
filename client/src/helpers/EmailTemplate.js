@@ -1,9 +1,5 @@
-//logo = require('../images/fola.svg');
-//iconSpacer = require('../components/StaticPages/assets/icon-spacer.svg');
-
-module.exports = {
-  applyEmailTemplate: function (emailBody) {
-    return ` 
+module.exports = function applyEmailTemplate(emailBody, baseUrl) {
+  return ` 
         <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
         <html xmlns="http://www.w3.org/1999/xhtml">
         <head>
@@ -26,7 +22,7 @@ module.exports = {
                         <tr>
                         <td style="padding:0;padding:10px;text-align:center;">
                             <a href="https://foodoasis.la/">
-                            <img src="#" alt="Food Oasis Logo" title="Food Oasis Logo" height="55" style="border:0;">
+                            <img src="${baseUrl}/FoodOasisLogo.png" alt="Food Oasis Logo" title="Food Oasis Logo" height="55" style="border:0;">
                             </a>
                             <p class="header" style="font-size:20px;line-height:23px;text-align:center;Margin-top:8px !important;Margin-bottom:.25em !important;">Your free food directory</p>
                         </td>
@@ -51,7 +47,7 @@ module.exports = {
                     <table width="100%" style="border-spacing:0;border-spacing: 0;">
                         <tr>
                         <td style="padding:0;padding:10px;text-align:center;">
-                            <a href="#"><img src="#" alt="Icon Spacer" height="24" style="border:0;"></a>
+                            <a href="#"><img src="${baseUrl}/icon-spacer-blue.png" alt="Icon Spacer" height="24" style="border:0;"></a>
                             <p style="color:#336699;font-size:16px;font-style:normal;font-weight:500;line-height:24px;Margin:0;padding-top:10px;">Contact Us</p>
                         </td>
                         </tr>
@@ -84,5 +80,4 @@ module.exports = {
         </body>
         </html>
         `;
-  },
 };

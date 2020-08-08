@@ -60,11 +60,11 @@ function Map({
     setSelectedPopUp(clickedStakeholder);
     setIsPopupOpen(true);
     doSelectStakeholder(clickedStakeholder);
-    setViewport({
-      ...viewport,
-      latitude: clickedStakeholder.latitude,
-      longitude: clickedStakeholder.longitude,
-    });
+    // setViewport({
+    //   ...viewport,
+    //   latitude: clickedStakeholder.latitude,
+    //   longitude: clickedStakeholder.longitude,
+    // });
   };
 
   const handleClose = () => {

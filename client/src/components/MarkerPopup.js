@@ -43,8 +43,7 @@ function MarkerPopup({ entity, handleClose }) {
       closeOnClick={false}
       onClose={() => handleClose(false)}
       dynamicPosition={true}
-      anchor="bottom"
-      offsetTop={-20}
+      anchor="top"
     >
       <div>
         <h3>{name}</h3>

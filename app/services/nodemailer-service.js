@@ -1,3 +1,4 @@
+const applyEmailTemplate = require("../../client/src/helpers/EmailTemplate");
 const nodemailer = require("nodemailer");
 const serverUrl = process.env.SERVER_URL;
 const clientUrl = process.env.CLIENT_URL;
@@ -11,17 +12,37 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const sendRegistrationConfirmation = async (email, token) => {
+const sendRegistrationConfirmation = async (
+  email,
+  token,
+  emailTemplate = applyEmailTemplate
+) => {
+  const emailBody = `
+    <p style="font-weight: bold;">
+      Hello,
+    </p>
+    <p>
+      Thank you for registering with Food Oasis! 
+      Please take a moment to verify your account by clicking the link bellow.
+    <br>
+    </p>
+    <table border="0" cellpadding="0" cellspacing="0" style="border-spacing:0;background-color: #336699;border:1px solid #353535; border-radius: 5px;margin-left: auto;margin-right: auto;">
+      <tr>
+      <td class="button" style="padding:0;font-size:14px;line-height:16px;letter-spacing:0.04em;text-transform:uppercase;color:#C4C4C4;border: none;border-radius: 3px;color: #ffffff;padding: 10px 14px;">
+        <a href="${serverUrl}/accounts/confirm/${token}" style="text-decoration: none;line-height: 100%;background: #336699;color: #ffffff;">Verify Email</a>
+      </td>
+      </tr>
+    </table>
+    <br>
+    Thanks,
+    <br>
+    Food Oasis Team
+  `;
   const options = {
     to: `${email}`,
     from: emailUser,
     subject: `Verify your account`,
-    html: `<p>Hello, please click the following link to verify your account.</p>
-            <br>
-            <p><a href="${serverUrl}/accounts/confirm/${token}">Verify Me</a></p>
-            <br>
-            <p>Thanks,</p>
-            <p>Food Oasis</p>`,
+    html: `${emailTemplate.applyEmailTemplate(emailBody)}`,
   };
   transporter.sendMail(options, function (err, result) {
     if (err) {
@@ -32,18 +53,35 @@ const sendRegistrationConfirmation = async (email, token) => {
   });
 };
 
-const sendResetPasswordConfirmation = async (email, token) => {
+const sendResetPasswordConfirmation = async (
+  email,
+  token,
+  emailTemplate = applyEmailTemplate
+) => {
+  const emailBody = `
+    <p style="font-weight: bold;">
+      Hello,
+    </p>
+    <p>
+      Your Food Oasis password can be reset by clicking the link bellow.
+    </p>
+    <table border="0" cellpadding="0" cellspacing="0" style="border-spacing:0;background-color: #336699;border:1px solid #353535; border-radius: 5px;margin-left: auto;margin-right: auto;">
+      <tr>
+      <td class="button" style="padding:0;font-size:14px;line-height:16px;letter-spacing:0.04em;text-transform:uppercase;color:#C4C4C4;border: none;border-radius: 3px;color: #ffffff;padding: 10px 14px;">
+        <a href="${clientUrl}/accounts/reset/${token}" style="text-decoration: none;line-height: 100%;background: #336699;color: #ffffff;">Reset Password</a>
+      </td>
+      </tr>
+    </table>
+    <br>
+    Regards,
+    <br>
+    Food Oasis Team
+  `;
   const options = {
     to: `${email}`,
     from: "dnr.jobsforhope@gmail.com",
     subject: `Password Reset`,
-    html: `
-                <p>Please click the following link to reset your password.</p>
-                <br>
-                <p><a href='${clientUrl}/accounts/reset/${token}'>Reset</a></p>
-                <br>
-                <p>Thanks,</p>
-                <p>Food Oasis</p>`,
+    html: `${emailTemplate.applyEmailTemplate(emailBody)}`,
   };
   transporter.sendMail(options, function (err, result) {
     if (err) {

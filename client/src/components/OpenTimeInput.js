@@ -10,18 +10,13 @@ import {
   InputLabel,
   Select,
 } from "@material-ui/core";
-import { TimePicker } from "@material-ui/pickers";
+import { KeyboardTimePicker } from "@material-ui/pickers";
 import { CancelIconButton } from "./Buttons";
 import { WrapText } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   row: {
     margin: theme.spacing(1),
-  },
-  formControl: {
-    // margin: theme.spacing(1),
-    // minWidth: 50,
-    // maxWidth: 200
   },
 }));
 
@@ -48,77 +43,15 @@ const intervals = [
 function OpenTimeInput(props) {
   const classes = useStyles();
   const { values, rowIndex, onChange, removeInput, copyInput } = props;
-  let openingTimeCode, closingTimeCode;
 
-  // set default 'open' value for new rows
-  if (!values.open) {
-    values.open = "09:00:00";
-  }
-
-  // set default 'close' value for new rows
-  if (!values.close) {
-    values.close = "12:00:00";
-  }
-
-  openingTimeCode = values.open.split(":");
-  closingTimeCode = values.close.split(":");
-
+  // Use state variables containing moment objects for
+  // the Material-UI TimePickers to interact with.
   const [openingTime, setOpeningTime] = useState(
-    new Date(
-      null,
-      null,
-      null,
-      openingTimeCode[0],
-      openingTimeCode[1],
-      openingTimeCode[2],
-      0
-    )
+    values.open ? moment(values.open, "HH:mm:ss") : null
   );
-
   const [closingTime, setClosingTime] = useState(
-    new Date(
-      null,
-      null,
-      null,
-      closingTimeCode[0],
-      closingTimeCode[1],
-      closingTimeCode[2],
-      0
-    )
+    values.close ? moment(values.close, "HH:mm:ss") : null
   );
-
-  const handleTimeUpdate = (e, type) => {
-    if (
-      (type === "close" && e._d === closingTime) ||
-      (type === "open" && e._d === openingTime)
-    ) {
-      return;
-    }
-
-    onChange(
-      {
-        target: {
-          name: type,
-          value: formatToHHmmss(e._d),
-        },
-      },
-      rowIndex
-    );
-
-    if (type === "close") {
-      setClosingTime(e._d);
-    } else {
-      setOpeningTime(e._d);
-    }
-  };
-
-  /**
-   * inputs a time from MaterialUI's TimePicker component and outputs
-   * to HH:mm:ss format we send to Formik
-   */
-  const formatToHHmmss = (dateToFormat) => {
-    return moment(dateToFormat).format("HH:mm:ss");
-  };
 
   return (
     <Grid container spacing={1} className={classes.row}>
@@ -169,28 +102,54 @@ function OpenTimeInput(props) {
           </Select>
         </FormControl>
       </Grid>
-      <Grid item xs={12} sm={2}>
-        <TimePicker
+      <Grid item xs={12} sm={3}>
+        <KeyboardTimePicker
           autoOk
           label="Opening Time"
+          inputVariant="outlined"
+          mask="__:__ _M"
           value={openingTime}
-          onChange={(e) => {
-            handleTimeUpdate(e, "open");
+          onChange={(dt) => {
+            setOpeningTime(dt);
+            // Pass dt to parent component as null, unless it's a valid
+            // moment date, in which case we trnslate to HH:mm:ss format
+            onChange(
+              {
+                target: {
+                  name: "open",
+                  value: dt && dt.isValid() ? dt.format("HH:mm:ss") : null,
+                },
+              },
+              rowIndex
+            );
           }}
         />
       </Grid>
       <Grid
         item
-        xs={10}
-        sm={2}
+        xs={12}
+        sm={3}
         styles={{ display: "flex", flexDirection: "column" }}
       >
-        <TimePicker
+        <KeyboardTimePicker
           autoOk
           label="Closing Time"
+          inputVariant="outlined"
+          mask="__:__ _M"
           value={closingTime}
-          onChange={(e) => {
-            handleTimeUpdate(e, "close");
+          onChange={(dt) => {
+            setClosingTime(dt);
+            // Pass dt to parent component as null, unless it's a valid
+            // moment date, in which case we trnslate to HH:mm:ss format
+            onChange(
+              {
+                target: {
+                  name: "close",
+                  value: dt && dt.isValid() ? dt.format("HH:mm:ss") : null,
+                },
+              },
+              rowIndex
+            );
           }}
         />
       </Grid>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import OpenTimeInputs from "./OpenTimeInput";
 import { AddButton } from "./Buttons";
@@ -7,13 +7,8 @@ import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import MomentUtils from "@date-io/moment";
 
 function OpenTimeForm(props) {
-  const { value, onChange } = props;
-  const [hours, setHours] = useState(props.value);
+  const { value: hours, onChange } = props;
   const [errorMessages, setErrorMessages] = useState([]);
-
-  useEffect(() => {
-    setHours(value);
-  }, [value]);
 
   const validate = (hours) => {
     let messages = [];
@@ -36,7 +31,7 @@ function OpenTimeForm(props) {
   };
 
   const handleChange = (newHours) => {
-    setHours(newHours);
+    //   setHours(newHours);
     setErrorMessages(validate(newHours));
     onChange({ target: { value: newHours, name: "hours" } });
   };
@@ -65,32 +60,32 @@ function OpenTimeForm(props) {
     const name = e.target.name;
     const value = e.target.value;
     if (name === "open" || name === "close") {
-      newHours[rowIndex][name] = handleTime(value);
+      newHours[rowIndex][name] = value;
     } else {
       newHours[rowIndex][name] = value;
     }
     handleChange(newHours);
   };
 
-  const handleTime = (number) => {
-    //formats time input into HH:MM:SS format
-    let output = "";
-    number.replace(
-      /^\D*(\d{0,2})\D*(\d{0,2})\D*(\d{0,2})/,
-      (match, hh, mm, ss) => {
-        if (hh.length) {
-          output += hh;
-          if (mm.length) {
-            output += `:${mm}`;
-            if (ss.length) {
-              output += `:${ss}`;
-            }
-          }
-        }
-      }
-    );
-    return output;
-  };
+  // const handleTime = (number) => {
+  //   //formats time input into HH:MM:SS format
+  //   let output = "";
+  //   number.replace(
+  //     /^\D*(\d{0,2})\D*(\d{0,2})\D*(\d{0,2})/,
+  //     (match, hh, mm, ss) => {
+  //       if (hh.length) {
+  //         output += hh;
+  //         if (mm.length) {
+  //           output += `:${mm}`;
+  //           if (ss.length) {
+  //             output += `:${ss}`;
+  //           }
+  //         }
+  //       }
+  //     }
+  //   );
+  //   return output;
+  // };
 
   const inputsMap = hours.map((val, rowIndex) => {
     return (

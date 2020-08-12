@@ -37,10 +37,8 @@ function OpenTimeForm(props) {
   };
 
   const addHours = () => {
-    let newHours = [
-      ...hours,
-      { weekOfMonth: 0, dayOfWeek: "", open: "", close: "" },
-    ];
+    let newHours = JSON.parse(JSON.stringify(hours));
+    newHours.push({ weekOfMonth: 0, dayOfWeek: "", open: "", close: "" });
     handleChange(newHours);
   };
 
@@ -50,42 +48,17 @@ function OpenTimeForm(props) {
   };
 
   const copyHours = (e, index) => {
+    let newHours = JSON.parse(JSON.stringify(hours));
     const newRange = { ...hours[index] };
-    let newHours = [...hours, newRange];
+    newHours.push(newRange);
     handleChange(newHours);
   };
 
   const stateChange = (e, rowIndex) => {
-    let newHours = [...hours];
-    const name = e.target.name;
-    const value = e.target.value;
-    if (name === "open" || name === "close") {
-      newHours[rowIndex][name] = value;
-    } else {
-      newHours[rowIndex][name] = value;
-    }
+    let newHours = JSON.parse(JSON.stringify(hours));
+    newHours[rowIndex][e.target.name] = e.target.value;
     handleChange(newHours);
   };
-
-  // const handleTime = (number) => {
-  //   //formats time input into HH:MM:SS format
-  //   let output = "";
-  //   number.replace(
-  //     /^\D*(\d{0,2})\D*(\d{0,2})\D*(\d{0,2})/,
-  //     (match, hh, mm, ss) => {
-  //       if (hh.length) {
-  //         output += hh;
-  //         if (mm.length) {
-  //           output += `:${mm}`;
-  //           if (ss.length) {
-  //             output += `:${ss}`;
-  //           }
-  //         }
-  //       }
-  //     }
-  //   );
-  //   return output;
-  // };
 
   const inputsMap = hours.map((val, rowIndex) => {
     return (

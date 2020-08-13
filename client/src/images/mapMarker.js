@@ -11,7 +11,7 @@ const MapMarker = (category, inactive, onClick = null) => {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         onClick={onClick}
-        transform={onClick ? "translate(-20,-20)" : null}
+        transform="translate(-19, -54)"
       >
         <g>
           <path
@@ -51,7 +51,7 @@ const MapMarker = (category, inactive, onClick = null) => {
         viewBox="0 0 30 40"
         xmlSpace="preserve"
         onClick={onClick}
-        transform={onClick ? "translate(-20,-20)" : null}
+        transform="translate(-19, -54)"
       >
         <path
           class="st0"
@@ -88,7 +88,7 @@ const MapMarker = (category, inactive, onClick = null) => {
         viewBox="0 0 30 40"
         xmlSpace="preserve"
         onClick={onClick}
-        transform={onClick ? "translate(-20,-20)" : null}
+        transform="translate(-19, -54)"
       >
         <path
           class="st0"

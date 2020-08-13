@@ -5,13 +5,13 @@ const MapMarker = (category, inactive, onClick = null) => {
   if (category === -1)
     return (
       <svg
-        width="38px"
-        height="54px"
+        width="30px"
+        height="40px"
         viewBox="0 0 30 40"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         onClick={onClick}
-        transform="translate(-19, -54)"
+        transform={onClick ? "translate(-15, -40)" : null}
       >
         <g>
           <path
@@ -44,14 +44,14 @@ const MapMarker = (category, inactive, onClick = null) => {
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
-        width="38px"
-        height="54px"
+        width="30px"
+        height="40px"
         x="0px"
         y="0px"
         viewBox="0 0 30 40"
         xmlSpace="preserve"
         onClick={onClick}
-        transform="translate(-19, -54)"
+        transform={onClick ? "translate(-15, -40)" : null}
       >
         <path
           class="st0"
@@ -81,14 +81,14 @@ const MapMarker = (category, inactive, onClick = null) => {
         id="Layer_1"
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
-        width="38px"
-        height="54px"
+        width="30px"
+        height="40px"
         x="0px"
         y="0px"
         viewBox="0 0 30 40"
         xmlSpace="preserve"
         onClick={onClick}
-        transform="translate(-19, -54)"
+        transform={onClick ? "translate(-15, -40)" : null}
       >
         <path
           class="st0"

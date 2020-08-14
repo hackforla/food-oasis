@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
+import moment from "moment";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Grid,
@@ -8,19 +9,14 @@ import {
   IconButton,
   InputLabel,
   Select,
-  TextField,
 } from "@material-ui/core";
+import { KeyboardTimePicker } from "@material-ui/pickers";
 import { CancelIconButton } from "./Buttons";
 import { WrapText } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   row: {
     margin: theme.spacing(1),
-  },
-  formControl: {
-    // margin: theme.spacing(1),
-    // minWidth: 50,
-    // maxWidth: 200
   },
 }));
 
@@ -46,7 +42,16 @@ const intervals = [
 
 function OpenTimeInput(props) {
   const classes = useStyles();
-  const { values, onChange, removeInput, copyInput } = props;
+  const { values, rowIndex, onChange, removeInput, copyInput } = props;
+
+  // Use state variables containing moment objects for
+  // the Material-UI TimePickers to interact with.
+  const [openingTime, setOpeningTime] = useState(
+    values.open ? moment(values.open, "HH:mm:ss") : null
+  );
+  const [closingTime, setClosingTime] = useState(
+    values.close ? moment(values.close, "HH:mm:ss") : null
+  );
 
   return (
     <Grid container spacing={1} className={classes.row}>
@@ -97,33 +102,55 @@ function OpenTimeInput(props) {
           </Select>
         </FormControl>
       </Grid>
-      <Grid item xs={12} sm={2}>
-        <TextField
-          type="time"
-          name="open"
-          onChange={onChange}
-          variant="outlined"
-          fullWidth
+      <Grid item xs={12} sm={3}>
+        <KeyboardTimePicker
+          autoOk
           label="Opening Time"
-          value={values.open}
-          inputProps={{ step: 300 }}
+          inputVariant="outlined"
+          mask="__:__ _M"
+          value={openingTime}
+          onChange={(dt) => {
+            setOpeningTime(dt);
+            // Pass dt to parent component as null, unless it's a valid
+            // moment date, in which case we trnslate to HH:mm:ss format
+            onChange(
+              {
+                target: {
+                  name: "open",
+                  value: dt && dt.isValid() ? dt.format("HH:mm:ss") : null,
+                },
+              },
+              rowIndex
+            );
+          }}
         />
       </Grid>
       <Grid
         item
-        xs={10}
-        sm={2}
+        xs={12}
+        sm={3}
         styles={{ display: "flex", flexDirection: "column" }}
       >
-        <TextField
-          name="close"
-          type="time"
-          inputProps={{ step: 300 }}
-          onChange={onChange}
-          variant="outlined"
-          fullWidth
+        <KeyboardTimePicker
+          autoOk
           label="Closing Time"
-          value={values.close}
+          inputVariant="outlined"
+          mask="__:__ _M"
+          value={closingTime}
+          onChange={(dt) => {
+            setClosingTime(dt);
+            // Pass dt to parent component as null, unless it's a valid
+            // moment date, in which case we trnslate to HH:mm:ss format
+            onChange(
+              {
+                target: {
+                  name: "close",
+                  value: dt && dt.isValid() ? dt.format("HH:mm:ss") : null,
+                },
+              },
+              rowIndex
+            );
+          }}
         />
       </Grid>
       <Grid item xs={2} sm={1}>
@@ -145,6 +172,7 @@ function OpenTimeInput(props) {
 
 OpenTimeInput.propTypes = {
   values: PropTypes.object,
+  rowIndex: PropTypes.number,
   onChange: PropTypes.func,
   removeInput: PropTypes.func,
   copyInput: PropTypes.func,

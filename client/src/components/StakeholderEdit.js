@@ -378,7 +378,10 @@ const StakeholderEdit = (props) => {
           onClose={handleAssignDialogClose}
         />
         <Formik
-          initialValues={originalData}
+          // Use deep copy of originalData to initialize form, so
+          // we can't accidentally mutate originalData in form.
+          // This assures isUnchanged function works properly.
+          initialValues={JSON.parse(JSON.stringify(originalData))}
           enableReinitialize
           validationSchema={validationSchema}
           onSubmit={(values, { setSubmitting, setFieldValue }) => {
@@ -1043,7 +1046,7 @@ const StakeholderEdit = (props) => {
                     </div>
                     <OpenTimeForm
                       name="hours"
-                      onChange={handleChange}
+                      onChange={(e) => setFieldValue("hours", e.target.value)}
                       value={values.hours}
                     />
                   </Grid>

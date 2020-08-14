@@ -175,7 +175,7 @@ const About = () => {
             <dt>How can I sign up to volunteer?</dt>
             <dd>
               <a
-                href="//us02web.zoom.us/meeting/register/tZEld-usrj4qEtJ7ICuM_0KODTSY4ubLukVZ"
+                href="//laworks.com/opportunity/a0C3l00000iCS6GEAW"
                 target="_blank"
                 rel="noopener noreferrer"
               >

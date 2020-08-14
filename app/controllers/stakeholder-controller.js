@@ -11,7 +11,7 @@ const search = (req, res) => {
   }
   if (!categoryIds) {
     // If no filter, just use active categories.
-    categoryIds = ["1", "3", "8", "9", "10", "11"];
+    categoryIds = ["1", "3", "8", "9", "10", "11", "12"];
   } else if (typeof categoryIds == "string") {
     categoryIds = [categoryIds];
   }
@@ -36,7 +36,7 @@ const searchDashboard = (req, res) => {
   let categoryIds = req.query.categoryIds;
   if (!categoryIds) {
     // If no filter, just use active categories.
-    categoryIds = ["1", "3", "8", "9", "10", "11"];
+    categoryIds = ["1", "3", "8", "9", "10", "11", "12"];
   } else if (typeof categoryIds == "string") {
     categoryIds = [categoryIds];
   }

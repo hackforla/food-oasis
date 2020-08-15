@@ -174,6 +174,8 @@ export default function ResultsContainer(props) {
           setViewport={setViewport}
         />
         <ResultsMap
+          selectedLatitude={initialCoords.latitude}
+          selectedLongitude={initialCoords.longitude}
           viewport={viewport}
           setViewport={setViewport}
           stakeholders={data}

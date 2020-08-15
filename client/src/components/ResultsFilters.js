@@ -233,6 +233,7 @@ const ResultsFilters = ({
     >
       <Grid
         item
+        container
         xs={12}
         sm={6}
         md={4}

@@ -144,7 +144,8 @@ function App() {
             container
             direction="column"
             wrap="nowrap"
-            justify="stretch"
+            alignContent="stretch"
+            //justify="stretch"
             spacing={0}
             classes={{
               container: classes.app,
@@ -247,9 +248,9 @@ function App() {
               </Route>
             </Switch>
             <Toast toast={toast} setToast={setToast} />
-          </Grid>
-          <Grid item>
-            <Footer />
+            <Grid item>
+              <Footer />
+            </Grid>
           </Grid>
         </Router>
       </ThemeProvider>

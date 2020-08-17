@@ -33,7 +33,7 @@ const useStyles = makeStyles({
     color: "black",
     margin: "0",
     height: "100%",
-    overflowY: "scroll",
+    //overflowY: "scroll",
   }),
   mainContent: {
     margin: "0",

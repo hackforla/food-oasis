@@ -460,7 +460,7 @@ const SelectedStakeholderDisplay = ({
           x2="31.5386"
           y2="18.8076"
           stroke="white"
-          stroke-width="7"
+          strokeWidth="7"
         />
       </svg>
     </div>

@@ -326,13 +326,31 @@ const SelectedStakeholderDisplay = ({
 
       <h2 className={classes.title}>Phone</h2>
       {selectedStakeholder.phone ? (
-        <span className={classes.fontSize}>{selectedStakeholder.phone}</span>
+        <React.Fragment>
+          <a
+            className={classes.fontSize}
+            href={"tel:" + selectedStakeholder.phone}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {selectedStakeholder.phone}
+          </a>
+        </React.Fragment>
       ) : (
         <span className={classes.fontSize}>No Phone Number on record</span>
       )}
       <h2 className={classes.title}>E-Mail</h2>
       {selectedStakeholder.email ? (
-        <span className={classes.fontSize}>{selectedStakeholder.email}</span>
+        <React.Fragment>
+          <a
+            className={classes.fontSize}
+            href={"mailto:" + selectedStakeholder.email}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {selectedStakeholder.email}
+          </a>
+        </React.Fragment>
       ) : (
         <span className={classes.fontSize}>No E-Mail Address on record</span>
       )}

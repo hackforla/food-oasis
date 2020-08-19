@@ -10,7 +10,7 @@ const splitPantryMealIcon = (isClosed) => (
     width="72px"
     height="72px"
     viewBox="0 0 53 53"
-    enable-background="new 0 0 48 48"
+    enableBackground="new 0 0 48 48"
     xmlSpace="preserve"
   >
     <g>

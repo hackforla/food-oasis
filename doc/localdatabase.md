@@ -43,7 +43,7 @@ Then you can download the official postgis-enabled Postgres image from Docker Hu
 ```
 docker run --name foodoasisdb \
 -e POSTGRES_PASSWORD=pgpass \
--d -p 5433:5432  postgis/postgis
+-d -p 5433:5432  postgis/postgis:11-2.5
 ```
 
 (Omit `sudo` on Windows)
@@ -88,7 +88,7 @@ though we will install a database named _food_ below.
 If you followed the above instructions for installing natively, then you can connect via the psql utility and create a new database named foodoasis like this:
 
 ```
-$ psql --host localhost --port 5433 --username postgres
+$ psql --host localhost --port 5433 --username postgres --dbname postgres --password
 psql (12.3)
 WARNING: Console code page (437) differs from Windows code page (1252)
          8-bit characters might not work correctly. See psql reference

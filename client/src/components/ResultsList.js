@@ -220,6 +220,7 @@ const ResultsList = ({
                   </div>
                   {stakeholder.categories.map((category) => (
                     <em
+                      key={stakeholder.id + category.id}
                       style={{
                         alignSelf: "flex-start",
                         color:

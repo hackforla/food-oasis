@@ -199,7 +199,7 @@ const Donate = () => {
             easier for anyone to get in touch with groups that fit their needs.
           </p>
           <a
-            href="//us02web.zoom.us/meeting/register/tZEld-usrj4qEtJ7ICuM_0KODTSY4ubLukVZ"
+            href="//laworks.com/opportunity/a0C3l00000iCS6GEAW"
             target="_blank"
             rel="noopener noreferrer"
             className={classes.btnWhite}
@@ -222,7 +222,7 @@ const Donate = () => {
           <aside className={classes.volunteer}>
             <h3>Want to give your time instead?</h3>
             <a
-              href="//us02web.zoom.us/meeting/register/tZEld-usrj4qEtJ7ICuM_0KODTSY4ubLukVZ"
+              href="//laworks.com/opportunity/a0C3l00000iCS6GEAW"
               target="_blank"
               rel="noopener noreferrer"
               className={classes.btnWhite}

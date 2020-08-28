@@ -13,7 +13,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#FFF",
     padding: "1.5rem 1rem",
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "row",
+    justifyContent: "center",
     color: "#1b1b1b",
     fontFamily: `"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans- serif`,
   },
@@ -29,6 +30,8 @@ const useStyles = makeStyles((theme) => ({
   },
   textHolder: {
     display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
     width: "100%",
   },
   linkStyle: {

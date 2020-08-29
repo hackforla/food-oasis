@@ -11,7 +11,7 @@ import Box from "@material-ui/core/Box";
 import Search from "components/Search";
 import logo from "images/fola.svg";
 import logoCA from "images/hackforla.svg";
-import { TenantContext } from "../../components/tenant-context";
+import { getTenantId } from "../../helpers/Configuration";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -132,15 +132,11 @@ const Home = (props) => {
       <CssBaseline />
       <Paper className={classes.paper}>
         <Box className={classes.logoContainer}>
-          <TenantContext>
-            {(tenantId) =>
-              tenantId === 2 ? (
-                <img src={logoCA} alt="logo" className={classes.logo} />
-              ) : (
-                <img src={logo} alt="logo" className={classes.logo} />
-              )
-            }
-          </TenantContext>
+          {getTenantId() === 2 ? (
+            <img src={logoCA} alt="logo" className={classes.logo} />
+          ) : (
+            <img src={logo} alt="logo" className={classes.logo} />
+          )}
 
           <Typography className={classes.subtitle}>
             Your free food directory

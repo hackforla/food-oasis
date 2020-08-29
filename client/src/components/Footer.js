@@ -6,7 +6,7 @@ import { MENU_ITEMS } from "helpers/Constants";
 import { Link } from "react-router-dom";
 import logo from "images/fola.svg";
 import logoCA from "images/hackforla.svg";
-import { TenantContext } from "./tenant-context";
+import { getTenantId } from "../helpers/Configuration";
 
 const useStyles = makeStyles((theme) => ({
   footer: {
@@ -100,15 +100,11 @@ const Footer = () => {
 
   return (
     <Box className={classes.footer} style={holderStyle}>
-      <TenantContext.Consumer>
-        {(tenantId) =>
-          tenantId === 2 ? (
-            <img src={logoCA} className={classes.logo} alt="logo" />
-          ) : (
-            <img src={logo} className={classes.logo} alt="logo" />
-          )
-        }
-      </TenantContext.Consumer>
+      {getTenantId() === 2 ? (
+        <img src={logoCA} className={classes.logo} alt="logo" />
+      ) : (
+        <img src={logo} className={classes.logo} alt="logo" />
+      )}
 
       <div className={classes.textHolder} style={constantStyles}>
         {constantLinks}

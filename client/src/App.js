@@ -4,7 +4,7 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 import theme from "theme/materialUI";
 import { UserContext } from "components/user-context";
-import { TenantContext } from "components/tenant-context";
+import { getTenantId } from "./helpers/Configuration";
 import Toast from "components/Toast";
 import Header from "components/Header";
 import StakeholdersContainer from "components/StakeholdersContainer";
@@ -23,7 +23,6 @@ import Register from "./components/Register";
 import Login from "./components/Login";
 import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
-// import Footer from "./components/Footer";
 import ConfirmEmail from "./components/ConfirmEmail";
 import FaqEdit from "./components/FaqEdit";
 import FaqAdd from "./components/FaqAdd";
@@ -66,9 +65,7 @@ const useStyles = makeStyles({
 });
 
 function App() {
-  const hostname = window.location.hostname;
-  const envTenantId = Number(process.env.REACT_APP_TENANT_ID || "1");
-  const tenantId = hostname.toLowerCase().includes("ca") ? 2 : envTenantId;
+  const tenantId = getTenantId();
   const [user, setUser] = useState(null);
   const [userCoordinates, setUserCoordinates] = useState({});
   const [toast, setToast] = useState({ message: "" });
@@ -145,135 +142,133 @@ function App() {
 
   return (
     <UserContext.Provider value={user}>
-      <TenantContext.Provider value={tenantId}>
-        <ThemeProvider theme={theme}>
-          <Router>
-            <Grid
-              container
-              direction="column"
-              wrap="nowrap"
-              alignContent="stretch"
-              //justify="stretch"
-              spacing={0}
-              classes={{
-                container: classes.app,
-              }}
-            >
-              <Header user={user} setUser={onLogin} setToast={setToast} />
-              <Switch className={classes.mainContent}>
-                <Route exact path="/">
-                  <div
-                    className={classes.homeWrapper}
-                    style={{ backgroundImage: bgImg }}
-                  >
-                    <Home
-                      userCoordinates={userCoordinates}
-                      origin={origin}
-                      setOrigin={setOrigin}
-                    />
-                  </div>
-                </Route>
-                <Route path="/organizations">
-                  <ResultsContainer
+      <ThemeProvider theme={theme}>
+        <Router>
+          <Grid
+            container
+            direction="column"
+            wrap="nowrap"
+            alignContent="stretch"
+            //justify="stretch"
+            spacing={0}
+            classes={{
+              container: classes.app,
+            }}
+          >
+            <Header user={user} setUser={onLogin} setToast={setToast} />
+            <Switch className={classes.mainContent}>
+              <Route exact path="/">
+                <div
+                  className={classes.homeWrapper}
+                  style={{ backgroundImage: bgImg }}
+                >
+                  <Home
                     userCoordinates={userCoordinates}
-                    userSearch={origin}
+                    origin={origin}
+                    setOrigin={setOrigin}
                   />
-                </Route>
-                <Route path="/stakeholders">
-                  <StakeholdersContainer
+                </div>
+              </Route>
+              <Route path="/organizations">
+                <ResultsContainer
+                  userCoordinates={userCoordinates}
+                  userSearch={origin}
+                />
+              </Route>
+              <Route path="/stakeholders">
+                <StakeholdersContainer
+                  user={user}
+                  userCoordinates={userCoordinates}
+                />
+              </Route>
+              <Route path="/organizationedit/:id?">
+                <div className={classes.stakeholderEditWrapper}>
+                  <StakeholderEdit setToast={setToast} user={user} />
+                </div>
+              </Route>
+              <Route path="/verificationdashboard">
+                <div className={classes.verificationAdminWrapper}>
+                  <VerificationDashboard
                     user={user}
                     userCoordinates={userCoordinates}
                   />
-                </Route>
-                <Route path="/organizationedit/:id?">
-                  <div className={classes.stakeholderEditWrapper}>
-                    <StakeholderEdit setToast={setToast} user={user} />
-                  </div>
-                </Route>
-                <Route path="/verificationdashboard">
-                  <div className={classes.verificationAdminWrapper}>
-                    <VerificationDashboard
-                      user={user}
-                      userCoordinates={userCoordinates}
-                    />
-                  </div>
-                </Route>
-                <Route path="/verificationadmin">
-                  <div className={classes.verificationAdminWrapper}>
-                    <VerificationAdmin
-                      user={user}
-                      userCoordinates={userCoordinates}
-                    />
-                  </div>
-                </Route>
-                <Route path="/securityadmindashboard">
-                  <div className={classes.verificationAdminWrapper}>
-                    <SecurityAdminDashboard
-                      user={user}
-                      userCoordinates={userCoordinates}
-                    />
-                  </div>
-                </Route>
-                {tenantId === 2 ? (
-                  <>
-                    <Route path="/donate">
-                      <DonateCA />
-                    </Route>
+                </div>
+              </Route>
+              <Route path="/verificationadmin">
+                <div className={classes.verificationAdminWrapper}>
+                  <VerificationAdmin
+                    user={user}
+                    userCoordinates={userCoordinates}
+                  />
+                </div>
+              </Route>
+              <Route path="/securityadmindashboard">
+                <div className={classes.verificationAdminWrapper}>
+                  <SecurityAdminDashboard
+                    user={user}
+                    userCoordinates={userCoordinates}
+                  />
+                </div>
+              </Route>
+              {tenantId === 2 ? (
+                <>
+                  <Route path="/donate">
+                    <DonateCA />
+                  </Route>
 
-                    <Route path="/about">
-                      <AboutCA />
-                    </Route>
-                    <Route exact path="/faqs">
-                      <FaqCA />
-                    </Route>
-                  </>
-                ) : (
-                  <>
-                    <Route path="/donate">
-                      <Donate />
-                    </Route>
+                  <Route path="/about">
+                    <AboutCA />
+                  </Route>
+                  <Route exact path="/faqs">
+                    <FaqCA />
+                  </Route>
+                </>
+              ) : (
+                <>
+                  <Route path="/donate">
+                    <Donate />
+                  </Route>
 
-                    <Route path="/about">
-                      <About />
-                    </Route>
-                    <Route exact path="/faqs">
-                      <Faq />
-                    </Route>
-                  </>
-                )}
+                  <Route path="/about">
+                    <About />
+                  </Route>
+                  <Route exact path="/faqs">
+                    <Faq />
+                  </Route>
+                </>
+              )}
 
-                <Route path="/faqs/add">
-                  <FaqAdd />
-                </Route>
-                <Route path="/faqs/:identifier">
-                  <FaqEdit setToast={setToast} />
-                </Route>
+              <Route path="/faqs/add">
+                <FaqAdd />
+              </Route>
+              <Route path="/faqs/:identifier">
+                <FaqEdit setToast={setToast} />
+              </Route>
 
-                <Route path="/resources">
-                  <Resources />
-                </Route>
-                <Route path="/register">
-                  <Register setToast={setToast} />
-                </Route>
-                <Route path="/confirm/:token">
-                  <ConfirmEmail setToast={setToast} />
-                </Route>
-                <Route path="/login/:email?">
-                  <Login user={user} setUser={onLogin} setToast={setToast} />
-                </Route>
-                <Route path="/forgotpassword/:email?">
-                  <ForgotPassword setToast={setToast} />
-                </Route>
-                <Route path="/resetPassword/:token">
-                  <ResetPassword setToast={setToast} />
-                </Route>
-              </Switch>
-              <Toast toast={toast} setToast={setToast} />
-              <Grid item>{/* <Footer /> */}</Grid>
-            </Grid>
-          </Router>
-        </ThemeProvider>
-      </TenantContext.Provider>
+              <Route path="/resources">
+                <Resources />
+              </Route>
+              <Route path="/register">
+                <Register setToast={setToast} />
+              </Route>
+              <Route path="/confirm/:token">
+                <ConfirmEmail setToast={setToast} />
+              </Route>
+              <Route path="/login/:email?">
+                <Login user={user} setUser={onLogin} setToast={setToast} />
+              </Route>
+              <Route path="/forgotpassword/:email?">
+                <ForgotPassword setToast={setToast} />
+              </Route>
+              <Route path="/resetPassword/:token">
+                <ResetPassword setToast={setToast} />
+              </Route>
+            </Switch>
+            <Toast toast={toast} setToast={setToast} />
+            <Grid item>{/* <Footer /> */}</Grid>
+          </Grid>
+        </Router>
+      </ThemeProvider>
     </UserContext.Provider>
   );
 }

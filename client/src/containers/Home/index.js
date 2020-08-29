@@ -10,6 +10,8 @@ import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Search from "components/Search";
 import logo from "images/fola.svg";
+import logoCA from "images/hackforla.svg";
+import { TenantContext } from "../../components/tenant-context";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -116,7 +118,8 @@ const useStyles = makeStyles((theme) => ({
 const Home = (props) => {
   const classes = useStyles();
   const { origin, setOrigin, userCoordinates } = props;
-  const isDefaultOrigin = !origin?.hasOwnProperty("locationName");
+  //const isDefaultOrigin = !origin?.hasOwnProperty("locationName");
+  const isDefaultOrigin = !origin?.locationName;
 
   React.useEffect(() => {
     if (props.match.path === "/") {
@@ -129,7 +132,16 @@ const Home = (props) => {
       <CssBaseline />
       <Paper className={classes.paper}>
         <Box className={classes.logoContainer}>
-          <img src={logo} alt="logo" className={classes.logo} />
+          <TenantContext>
+            {(tenantId) =>
+              tenantId === 2 ? (
+                <img src={logoCA} alt="logo" className={classes.logo} />
+              ) : (
+                <img src={logo} alt="logo" className={classes.logo} />
+              )
+            }
+          </TenantContext>
+
           <Typography className={classes.subtitle}>
             Your free food directory
           </Typography>

@@ -3,8 +3,10 @@ import PropTypes from "prop-types";
 import useLocationHook from "hooks/useLocationHook";
 import Menu from "./Menu";
 import logo from "images/fola.svg";
+import logoCA from "images/hackforla.svg";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { TenantContext } from "./tenant-context";
 
 Header.propTypes = {
   user: PropTypes.object,
@@ -71,11 +73,23 @@ export default function Header(props) {
         <Toolbar className={classes.header}>
           <div className={classes.content}>
             {!isHomePage && (
-              <div>
-                <a href="/">
-                  <img src={logo} className={classes.logo} alt="logo" />{" "}
-                </a>
-              </div>
+              <TenantContext.Consumer>
+                {(tenantId) =>
+                  tenantId === 1 ? (
+                    <div>
+                      <a href="/">
+                        <img src={logo} className={classes.logo} alt="logo" />{" "}
+                      </a>
+                    </div>
+                  ) : (
+                    <div>
+                      <a href="/">
+                        <img src={logoCA} className={classes.logo} alt="logo" />{" "}
+                      </a>
+                    </div>
+                  )
+                }
+              </TenantContext.Consumer>
             )}
             {!isHomePage && user ? (
               <Typography variant="subtitle1" className={classes.tagline}>

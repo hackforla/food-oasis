@@ -46,6 +46,7 @@ export const useOrganizations = () => {
   };
 
   const searchDashboard = async ({
+    tenantId,
     name,
     latitude,
     longitude,
@@ -68,6 +69,7 @@ export const useOrganizations = () => {
     try {
       setState({ data: null, loading: true, error: false });
       const stakeholders = await stakeholderService.searchDashboard({
+        tenantId,
         name,
         latitude,
         longitude,

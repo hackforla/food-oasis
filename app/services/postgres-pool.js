@@ -8,6 +8,14 @@ const { Pool } = require("pg");
 // connection parameters from the .env file.
 const poolConfig = process.env.DATABASE_URL
   ? { connectionString: process.env.DATABASE_URL }
+  : process.env.POSTGRES_SSL === "false"
+  ? {
+      user: process.env.POSTGRES_USERNAME,
+      host: process.env.POSTGRES_HOST,
+      database: process.env.POSTGRES_DATABASE,
+      password: process.env.POSTGRES_PASSWORD,
+      port: Number(process.env.POSTGRES_PORT),
+    }
   : {
       user: process.env.POSTGRES_USERNAME,
       host: process.env.POSTGRES_HOST,

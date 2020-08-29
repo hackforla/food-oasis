@@ -29,6 +29,7 @@ const search = async ({
   distance,
   isInactive,
   verificationStatusId,
+  tenantId,
 }) => {
   const locationClause = buildLocationClause(latitude, longitude);
   const categoryClause = buildCTEClause(categoryIds, "", true); // true indicates we want to search
@@ -69,7 +70,7 @@ const search = async ({
     ${buildLoginSelectsClause()}
     from stakeholder_set as s
     ${buildLoginJoinsClause()}
-    where 1 = 1
+    where s.tenant_id = ${tenantId} 
     ${
       Number(distance) && locationClause
         ? `AND ${locationClause} < ${distance}`
@@ -192,6 +193,7 @@ const search = async ({
 };
 
 const searchDashboard = async ({
+  tenantId,
   name,
   categoryIds,
   isInactive,
@@ -251,6 +253,7 @@ const searchDashboard = async ({
     left outer join neighborhood n on s.neighborhood_id = n.id
     ${buildLoginJoinsClause()}
     where 1 = 1
+    ${buildTenantWhereClause(tenantId)}
     ${
       Number(distance) && locationClause
         ? `AND ${locationClause} < ${distance}`
@@ -635,6 +638,7 @@ where s.id in (${ids.join(", ")})`;
 
 const insert = async (model) => {
   const {
+    tenantId,
     name,
     address1,
     address2,
@@ -718,6 +722,7 @@ const insert = async (model) => {
     // objects, which are defined as a postgres type (see repo file for more detail on this type).
     const invokeSprocSql = `CALL create_stakeholder(
       ${toSqlNumeric(0)}::INT,
+      ${toSqlNumeric(tenantId)}::INT,
       ${toSqlString(name)}::VARCHAR, ${toSqlString(
       address1
     )}::VARCHAR, ${toSqlString(address2)}::VARCHAR,
@@ -1053,6 +1058,10 @@ const buildLocationClause = (latitude, longitude) => {
       ") <@> point(s.longitude, s.latitude) ";
   }
   return locationClause;
+};
+
+const buildTenantWhereClause = (tenantId) => {
+  return !tenantId || tenantId === "0" ? "" : ` AND s.tenant_id = ${tenantId}`;
 };
 
 const buildLoginJoinsClause = () => {

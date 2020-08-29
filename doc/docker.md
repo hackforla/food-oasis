@@ -49,3 +49,22 @@ debugging an application running in docker.
 NodeJS [official guide to
 debugging](https://nodejs.org/en/docs/guides/debugging-getting-started/#command-line-options)
 describes how to use `node inspector`.
+
+# Deployment
+
+To build a deployable fullstack container:
+
+```
+docker build -t fola -f Dockerfile-fullstack .
+```
+
+To test, you can run this container locally against a localhost
+db (this will
+use the .env settings from your .env file, except that the
+POSTGRES_HOST has a special syntax for accessing localhost
+from within a docker container):
+
+```
+docker run -p 5001:5000 \
+ --env-file .env -e "POSTGRES_HOST=host.docker.internal" fola
+```

@@ -25,7 +25,10 @@ const toLocalMoment = (ts) => {
 export const search = async (searchParams) => {
   searchParams = searchParams || {};
   const response = await axios.get(baseUrl, {
-    params: searchParams,
+    params: {
+      ...searchParams,
+      tenantId: Number(process.env.REACT_APP_TENANT_ID || "1"),
+    },
   });
   let stakeholders = response.data.map((s) => {
     return {
@@ -79,7 +82,10 @@ export const getById = async (id) => {
 };
 
 export const post = async (stakeholder) => {
-  const response = await axios.post(baseUrl, stakeholder);
+  const response = await axios.post(baseUrl, {
+    ...stakeholder,
+    tenantId: Number(process.env.REACT_APP_TENANT_ID || "1"),
+  });
   return response.data;
 };
 

@@ -23,7 +23,7 @@ import Register from "./components/Register";
 import Login from "./components/Login";
 import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
-import Footer from "./components/Footer";
+// import Footer from "./components/Footer";
 import ConfirmEmail from "./components/ConfirmEmail";
 import FaqEdit from "./components/FaqEdit";
 import FaqAdd from "./components/FaqAdd";
@@ -269,9 +269,7 @@ function App() {
                 </Route>
               </Switch>
               <Toast toast={toast} setToast={setToast} />
-              <Grid item>
-                <Footer />
-              </Grid>
+              <Grid item>{/* <Footer /> */}</Grid>
             </Grid>
           </Router>
         </ThemeProvider>

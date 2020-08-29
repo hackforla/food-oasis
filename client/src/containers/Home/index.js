@@ -147,9 +147,16 @@ const Home = (props) => {
             className={classes.form}
             onSubmit={() => props.history.push("/organizations")}
           >
-            <Typography variant={"h5"} className={classes.label}>
-              Locate free food resources in Los Angeles
-            </Typography>
+            {getTenantId() === 2 ? (
+              <Typography variant={"h5"} className={classes.label}>
+                Locate free food resources in California
+              </Typography>
+            ) : (
+              <Typography variant={"h5"} className={classes.label}>
+                Locate free food resources in Los Angeles
+              </Typography>
+            )}
+
             <Box className={classes.inputContainer}>
               <Search
                 userCoordinates={userCoordinates}

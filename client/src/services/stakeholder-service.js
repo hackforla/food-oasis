@@ -1,6 +1,7 @@
 import axios from "axios";
 import moment from "moment";
 import fileDownload from "js-file-download";
+import { getTenantId } from "helpers/Configuration";
 
 const baseUrl = "/api/stakeholders";
 
@@ -27,7 +28,7 @@ export const search = async (searchParams) => {
   const response = await axios.get(baseUrl, {
     params: {
       ...searchParams,
-      tenantId: Number(process.env.REACT_APP_TENANT_ID || "1"),
+      tenantId: getTenantId(),
     },
   });
   let stakeholders = response.data.map((s) => {
@@ -84,7 +85,7 @@ export const getById = async (id) => {
 export const post = async (stakeholder) => {
   const response = await axios.post(baseUrl, {
     ...stakeholder,
-    tenantId: Number(process.env.REACT_APP_TENANT_ID || "1"),
+    tenantId: getTenantId(),
   });
   return response.data;
 };

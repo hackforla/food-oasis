@@ -1,4 +1,7 @@
 const { pool } = require("./postgres-pool");
+
+const esriService = require("./esri-service.js");
+
 const {
   toSqlString,
   toSqlNumeric,
@@ -642,8 +645,6 @@ const insert = async (model) => {
     state,
     zip,
     phone,
-    latitude,
-    longitude,
     website,
     inactive,
     notes,
@@ -710,6 +711,19 @@ const insert = async (model) => {
     const categories = "ARRAY[" + selectedCategoryIds.join(",") + "]::int[]";
     const formattedHours = "ARRAY[" + hoursSqlValues + "]::stakeholder_hours[]";
 
+    var coords = { latitude: 0, longitude: 0 };
+    let addressString = `${address1 || ""} ${address2 || ""} ${city || ""}, ${
+      state || ""
+    } ${zip || ""}`;
+
+    try {
+      let result = await esriService.geocode(addressString);
+      coords.latitude = result[0].location.y;
+      coords.longitude = result[0].location.x;
+    } catch (err) {
+      console.log("Geocoding error: could not find location coordinates");
+      return Promise.reject(err.message);
+    }
     // create_stakeholder is a postgres stored procedure. Source of this stored
     // procedure is in the repo at db/stored_procs/create_stakeholder.sql.
     // We pass in category_ids and stakeholder hours like this:
@@ -725,7 +739,9 @@ const insert = async (model) => {
       state
     )}::VARCHAR, ${toSqlString(zip)}::VARCHAR,
       ${toSqlString(phone)}::VARCHAR,
-      ${toSqlNumeric(latitude)}::NUMERIC, ${toSqlNumeric(longitude)}::NUMERIC,
+      ${toSqlNumeric(coords.latitude)}::NUMERIC, ${toSqlNumeric(
+      coords.longitude
+    )}::NUMERIC,
       ${toSqlString(website)}::VARCHAR, ${toSqlBoolean(inactive)},
       ${toSqlString(notes)}::VARCHAR, ${toSqlString(requirements)}::VARCHAR,
       ${toSqlString(adminNotes)}::VARCHAR, ${toSqlNumeric(loginId)}::INT,
@@ -859,8 +875,6 @@ const update = async (model) => {
     state,
     zip,
     phone,
-    latitude,
-    longitude,
     website,
     inactive,
     notes,
@@ -927,6 +941,20 @@ const update = async (model) => {
   const categories = "ARRAY[" + selectedCategoryIds.join(",") + "]::int[]";
   const formattedHours = "ARRAY[" + hoursSqlValues + "]::stakeholder_hours[]";
 
+  var coords = { latitude: 0, longitude: 0 };
+  let addressString = `${address1 || ""} ${address2 || ""} ${city || ""}, ${
+    state || ""
+  } ${zip || ""}`;
+
+  try {
+    let result = await esriService.geocode(addressString);
+    coords.latitude = result[0].location.y;
+    coords.longitude = result[0].location.x;
+  } catch (err) {
+    console.log("Geocoding error: could not find location coordinates");
+    return Promise.reject(err.message);
+  }
+
   // update_stakeholder is a postgres stored procedure. Source of this stored
   // procedure is in the repo at db/stored_procs/update_stakeholder.sql.
   //
@@ -944,8 +972,8 @@ const update = async (model) => {
     ${toSqlString(city)}::VARCHAR, ${toSqlString(
     state
   )}::VARCHAR, ${toSqlString(zip)}::VARCHAR, ${toSqlString(phone)}::VARCHAR,
-    ${toSqlNumeric(latitude)}::NUMERIC, ${toSqlNumeric(
-    longitude
+    ${toSqlNumeric(coords.latitude)}::NUMERIC, ${toSqlNumeric(
+    coords.longitude
   )}::NUMERIC, ${toSqlString(website)}::VARCHAR,
     ${toSqlBoolean(inactive)}, ${toSqlString(notes)}::VARCHAR, ${toSqlString(
     requirements

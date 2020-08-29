@@ -31,10 +31,9 @@ import {
 } from "@material-ui/core";
 import * as stakeholderService from "../services/stakeholder-service";
 import { useCategories } from "../hooks/useCategories/useCategories";
-import * as esriService from "../services/esri_service";
 import OpenTimeForm from "./OpenTimeForm";
 import { TabPanel, a11yProps } from "./TabPanel";
-import { PlainButton, SearchButton, VerifyButton } from "./Buttons";
+import { PlainButton } from "./Buttons";
 import AssignDialog from "./Verification/AssignDialog";
 import {
   VERIFICATION_STATUS,
@@ -120,8 +119,6 @@ const validationSchema = Yup.object().shape({
   city: Yup.string().required("City is required"),
   state: Yup.string().required("State is required"),
   zip: Yup.string().required("Zip code is required"),
-  latitude: Yup.number().required("Latitude is required").min(-90).max(90),
-  longitude: Yup.number().required("Longitude is required").min(-180).max(180),
   email: Yup.string().email("Invalid email address format"),
   selectedCategoryIds: Yup.array().min(
     1,
@@ -141,8 +138,6 @@ const emptyStakeholder = {
   zip: "",
   phone: "",
   email: "",
-  latitude: "",
-  longitude: "",
   physicalAccess: "",
   items: "",
   services: "",
@@ -200,7 +195,6 @@ const StakeholderEdit = (props) => {
   const [assignDialogOpen, setAssignDialogOpen] = useState(false);
   const [assignDialogCallback, setAssignDialogCallback] = useState({});
   const [tabPage, setTabPage] = useState(0);
-  const [geocodeResults, setGeocodeResults] = useState([]);
   const [nextUrl, setNextUrl] = useState(null);
   const [originalData, setOriginalData] = useState(emptyStakeholder);
 
@@ -245,17 +239,6 @@ const StakeholderEdit = (props) => {
     }
   };
 
-  function formatMapAddress(formData) {
-    return `${formData.address1 || ""} ${formData.address2 || ""} ${
-      formData.city || ""
-    }, ${formData.state || ""} ${formData.zip || ""}`;
-  }
-
-  const geocode = async (formData) => {
-    const result = await esriService.geocode(formatMapAddress(formData));
-    setGeocodeResults(result);
-  };
-
   const handleChangeTabPage = (event, newValue) => {
     setTabPage(newValue);
   };
@@ -270,9 +253,7 @@ const StakeholderEdit = (props) => {
         values.address1 &&
         values.city &&
         values.state &&
-        values.zip &&
-        values.latitude &&
-        values.longitude
+        values.zip
       );
     }
     return (
@@ -286,9 +267,7 @@ const StakeholderEdit = (props) => {
       values.address1 &&
       values.city &&
       values.state &&
-      values.zip &&
-      values.latitude &&
-      values.longitude
+      values.zip
     );
   };
 
@@ -885,38 +864,6 @@ const StakeholderEdit = (props) => {
                       />
                     </Grid>
 
-                    <Grid item xs={6} md={3}>
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        name="latitude"
-                        label="Latitude *"
-                        type="text"
-                        size="small"
-                        value={values.latitude}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        helperText={touched.latitude ? errors.latitude : ""}
-                        error={touched.latitude && Boolean(errors.latitude)}
-                      />
-                    </Grid>
-                    <Grid item xs={6} md={3}>
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        name="longitude"
-                        label="Longitude *"
-                        type="text"
-                        size="small"
-                        value={values.longitude}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        helperText={touched.longitude ? errors.longitude : ""}
-                        error={touched.longitude && Boolean(errors.longitude)}
-                      />
-                    </Grid>
                     <Grid item xs={12} md={6}>
                       <Grid container>
                         <Grid
@@ -928,23 +875,6 @@ const StakeholderEdit = (props) => {
                             justifyContent: "space-between",
                           }}
                         >
-                          <BigTooltip title="Click to get latitude / longitude for address">
-                            <Grid item>
-                              <SearchButton
-                                onClick={() => {
-                                  (geocodeResults && geocodeResults.length) < 1
-                                    ? geocode(values)
-                                    : setGeocodeResults([]);
-                                }}
-                                label={
-                                  (geocodeResults && geocodeResults.length) < 1
-                                    ? "Get Coordinates"
-                                    : "Close"
-                                }
-                                style={{ marginTop: "1.2em" }}
-                              />
-                            </Grid>
-                          </BigTooltip>
                           <div className={classes.confirmCheckboxWrapper}>
                             <FormControlLabel
                               control={
@@ -967,47 +897,6 @@ const StakeholderEdit = (props) => {
                           </div>
                         </Grid>
                       </Grid>
-                      <div style={{ padding: "0.5em 0" }}>
-                        {geocodeResults ? (
-                          geocodeResults.map((result, index) => (
-                            <div
-                              style={{
-                                border: "1px solid black",
-                                backgroundColor: "#EEE",
-                                margin: "0.1em",
-                                padding: "0.5em",
-                              }}
-                              key={index}
-                            >
-                              <Grid container>
-                                <Grid item xs={10}>
-                                  <Typography>{`(${result.location.y}, ${result.location.x})`}</Typography>
-                                  <Typography>{`${result.attributes.Match_addr}`}</Typography>
-                                  <Typography>{`${result.attributes.Addr_type}`}</Typography>
-                                </Grid>
-                                <Grid item xs={2}>
-                                  <VerifyButton
-                                    label=""
-                                    onClick={() => {
-                                      setFieldValue(
-                                        "latitude",
-                                        result.location.y
-                                      );
-                                      setFieldValue(
-                                        "longitude",
-                                        result.location.x
-                                      );
-                                      setGeocodeResults([]);
-                                    }}
-                                  />
-                                </Grid>
-                              </Grid>
-                            </div>
-                          ))
-                        ) : (
-                          <div>No Results</div>
-                        )}
-                      </div>
                     </Grid>
                   </Grid>
                 </Grid>

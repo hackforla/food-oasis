@@ -210,41 +210,12 @@ function App() {
                   />
                 </div>
               </Route>
-              {tenantId === 2 ? (
-                <>
-                  <Route path="/donate">
-                    <DonateCA />
-                  </Route>
-
-                  <Route path="/about">
-                    <AboutCA />
-                  </Route>
-                  <Route exact path="/faqs">
-                    <FaqCA />
-                  </Route>
-                </>
-              ) : (
-                <>
-                  <Route path="/donate">
-                    <Donate />
-                  </Route>
-
-                  <Route path="/about">
-                    <About />
-                  </Route>
-                  <Route exact path="/faqs">
-                    <Faq />
-                  </Route>
-                </>
-              )}
-
               <Route path="/faqs/add">
                 <FaqAdd />
               </Route>
               <Route path="/faqs/:identifier">
                 <FaqEdit setToast={setToast} />
               </Route>
-
               <Route path="/resources">
                 <Resources />
               </Route>
@@ -262,6 +233,15 @@ function App() {
               </Route>
               <Route path="/resetPassword/:token">
                 <ResetPassword setToast={setToast} />
+              </Route>
+              <Route path="/donate">
+                {tenantId === 2 ? <DonateCA /> : <Donate />}
+              </Route>
+              <Route path="/about">
+                {tenantId === 2 ? <AboutCA /> : <About />}
+              </Route>
+              <Route exact path="/faqs">
+                {tenantId === 2 ? <FaqCA /> : <Faq />}
               </Route>
             </Switch>
             <Toast toast={toast} setToast={setToast} />

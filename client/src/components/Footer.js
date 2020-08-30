@@ -5,7 +5,7 @@ import useLocationHook from "hooks/useLocationHook";
 import { MENU_ITEMS } from "helpers/Constants";
 import { Link } from "react-router-dom";
 import logo from "images/fola.svg";
-import logoCA from "images/hackforla.svg";
+import logoCA from "images/foodoasisca.svg";
 import { getTenantId } from "../helpers/Configuration";
 
 const useStyles = makeStyles((theme) => ({

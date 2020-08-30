@@ -10,7 +10,7 @@ import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Search from "components/Search";
 import logo from "images/fola.svg";
-import logoCA from "images/hackforla.svg";
+import logoCA from "images/foodoasisca.svg";
 import { getTenantId } from "../../helpers/Configuration";
 
 const useStyles = makeStyles((theme) => ({

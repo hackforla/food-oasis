@@ -4,6 +4,7 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 import theme from "theme/materialUI";
 import { UserContext } from "components/user-context";
+import { getTenantId } from "./helpers/Configuration";
 import Toast from "components/Toast";
 import Header from "components/Header";
 import StakeholdersContainer from "components/StakeholdersContainer";
@@ -12,15 +13,17 @@ import VerificationDashboard from "./components/Verification/VerificationDashboa
 import SecurityAdminDashboard from "./components/SecurityAdminDashboard/SecurityAdminDashboard";
 import StakeholderEdit from "./components/StakeholderEdit";
 import Donate from "./components/StaticPages/Donate";
-import Resources from "./components/Resources";
 import About from "./components/StaticPages/About";
+import Faq from "./components/StaticPages/Faq";
+import DonateCA from "./components/StaticPagesCA/Donate";
+import AboutCA from "./components/StaticPagesCA/About";
+import FaqCA from "./components/StaticPagesCA/Faq";
+import Resources from "./components/Resources";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
-import Footer from "./components/Footer";
 import ConfirmEmail from "./components/ConfirmEmail";
-import Faq from "./components/StaticPages/Faq";
 import FaqEdit from "./components/FaqEdit";
 import FaqAdd from "./components/FaqAdd";
 import Home from "./containers/Home";
@@ -62,6 +65,7 @@ const useStyles = makeStyles({
 });
 
 function App() {
+  const tenantId = getTenantId();
   const [user, setUser] = useState(null);
   const [userCoordinates, setUserCoordinates] = useState({});
   const [toast, setToast] = useState({ message: "" });
@@ -206,30 +210,14 @@ function App() {
                   />
                 </div>
               </Route>
-
-              <Route path="/donate">
-                <Donate />
-              </Route>
-              {/* <Route path="/news">
-                <News />
-              </Route> */}
-              <Route path="/resources">
-                <Resources />
-              </Route>
-              <Route path="/about">
-                <About />
-              </Route>
-              {/* <Route path="/team">
-                <Team />
-              </Route> */}
-              <Route exact path="/faqs">
-                <Faq />
-              </Route>
               <Route path="/faqs/add">
                 <FaqAdd />
               </Route>
               <Route path="/faqs/:identifier">
                 <FaqEdit setToast={setToast} />
+              </Route>
+              <Route path="/resources">
+                <Resources />
               </Route>
               <Route path="/register">
                 <Register setToast={setToast} />
@@ -246,11 +234,18 @@ function App() {
               <Route path="/resetPassword/:token">
                 <ResetPassword setToast={setToast} />
               </Route>
+              <Route path="/donate">
+                {tenantId === 2 ? <DonateCA /> : <Donate />}
+              </Route>
+              <Route path="/about">
+                {tenantId === 2 ? <AboutCA /> : <About />}
+              </Route>
+              <Route exact path="/faqs">
+                {tenantId === 2 ? <FaqCA /> : <Faq />}
+              </Route>
             </Switch>
             <Toast toast={toast} setToast={setToast} />
-            <Grid item>
-              <Footer />
-            </Grid>
+            <Grid item>{/* <Footer /> */}</Grid>
           </Grid>
         </Router>
       </ThemeProvider>

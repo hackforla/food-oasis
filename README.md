@@ -1,6 +1,6 @@
 # Food Oasis
 
-Food Oasis is a web application that provides information about food pantries and meal programs to food seekers in Los Angeles County. It is currently deployed to http://food-oasis.herokuapp.com, but will eventually replace the legacy site at http://foodoasis.la.
+Food Oasis is a web application that provides information about food pantries and meal programs to food seekers in Los Angeles County. It is currently deployed to http://foodoasis.la.
 
 It is a project of Hack for LA, which, in turn, is a brigade of Code for America.
 

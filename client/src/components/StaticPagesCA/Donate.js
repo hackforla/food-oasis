@@ -4,7 +4,6 @@ import donatebg from "./assets/donate-bg.png";
 import iconSpacer from "./assets/icon-spacer.svg";
 import iconSpacerBlue from "./assets/icon-spacer-blue.svg";
 import { makeStyles } from "@material-ui/core";
-import Footer from "../../components/Footer";
 
 const useStyles = makeStyles(() => ({
   outer: {
@@ -165,9 +164,9 @@ const Donate = () => {
             We’ve done so much already as a 100% volunteer-run organization—but
             we need your help to finish what we set out to do. The admin,
             development, and marketing costs to expand our directory are
-            extensive. We have a directory of over 1,300 organizations to
-            update. Your tax-deductible donation would help us offset some of
-            those costs.
+            extensive. We have a directory of over ____ organizations to update.
+            Your tax-deductible donation would help us offset some of those
+            costs.
           </p>
           <p>
             Please make donations to our parent organization (Code for America).
@@ -232,7 +231,6 @@ const Donate = () => {
             </a>
           </aside>
         </section>
-        <Footer />
       </div>
     </div>
   );

@@ -8,7 +8,6 @@ import foodForward from "./assets/food-forward.png";
 import farmPeople from "./assets/farm-people.png";
 import foodBank from "./assets/food-bank.png";
 import { makeStyles } from "@material-ui/core";
-import Footer from "../../components/Footer";
 
 const useStyles = makeStyles(() => ({
   outer: {
@@ -142,7 +141,7 @@ const About = () => {
   return (
     <div className={classes.outer}>
       <h1 className={classes.title}>
-        <span>About</span> Food Oasis / LA
+        <span>About</span> California Food Oasis
       </h1>
       <div className={classes.main}>
         <figure className={classes.figure}>
@@ -156,21 +155,8 @@ const About = () => {
             height="40"
           />
           <h2>Our Mission</h2>
-          <p>
-            Access to enough food should be a basic right. Unfortunately, this
-            is not the reality for millions of people in Los Angeles County.
-            Before the Covid-19 pandemic, up to 1.4 million people in Los
-            Angeles County faced food insecurity. Food insecurity is
-            inconsistent with access to cheap and nutritious food. Los Angeles
-            has the highest percentage of food insecurity in the nation.
-          </p>
-          <p>
-            Since COVID, 1.3 million people lost their jobs in Los Angeles
-            County alone. This created a brand new vulnerable population. These
-            are people who need food assistance for the first time. According to
-            a study done by Feeding America in May 2020, over 500,000 Angelinos
-            are newly food insecure.
-          </p>
+          <p>TBD</p>
+          <p>TBD</p>
           <p>
             Food pantries in the area are experiencing unprecedented demand. The
             demand for food assistance has almost doubled since the beginning of
@@ -179,22 +165,22 @@ const About = () => {
             available to distribute food has diminished.
           </p>
           <p>
-            Food Oasis has 773 organizations in our database. Our team of
-            volunteers updated the information for 333 organizations. Out of 333
-            organizations, 46 closed their doors and 66 closed for COVID. 37% of
-            the organizations have closed their doors.
+            California Food Oasis has ___ organizations in our database. Our
+            team of volunteers updated the information for ___ organizations.
+            Out of ___ organizations, __ closed their doors and __ closed for
+            COVID. __% of the organizations have closed their doors.
           </p>
           <p>
             The primary goal of Food Oasis is to provide up-to-date information
-            to Angelinos. We built a directory that connects anyone with
+            to Californians. We built a directory that connects anyone with
             hundreds of free food resources. Food Oasis presents reliable
             information on a user-friendly platform. This will reduce stress and
             uncertainty for food seekers. It will also demonstrate to our
-            community the growing need of food donations in Los Angeles.
+            community the growing need of food donations in California.
           </p>
           <p>
             Food Oasis is creating a directory of updated food resources. There
-            are countless groups helping to feed hungry Angelenos. But it’s
+            are countless groups helping to feed hungry Californians. But it’s
             difficult for those in need to find them because there’s no one
             source of updated info. We’re working to change that.
           </p>
@@ -296,7 +282,6 @@ const About = () => {
             className={classes.partnersLogo}
           />
         </section>
-        <Footer />
       </div>
     </div>
   );

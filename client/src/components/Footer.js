@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Box } from "@material-ui/core";
-// import Copyright from "./Copyright";
 import { makeStyles } from "@material-ui/core/styles";
 import useLocationHook from "hooks/useLocationHook";
 import { MENU_ITEMS } from "helpers/Constants";
 import { Link } from "react-router-dom";
 import logo from "images/fola.svg";
+import logoCA from "images/foodoasisca.svg";
+import { getTenantId } from "../helpers/Configuration";
 
 const useStyles = makeStyles((theme) => ({
   footer: {
@@ -13,7 +14,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#FFF",
     padding: "1.5rem 1rem",
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "row",
+    justifyContent: "center",
     color: "#1b1b1b",
     fontFamily: `"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans- serif`,
   },
@@ -29,6 +31,8 @@ const useStyles = makeStyles((theme) => ({
   },
   textHolder: {
     display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
     width: "100%",
   },
   linkStyle: {
@@ -96,7 +100,12 @@ const Footer = () => {
 
   return (
     <Box className={classes.footer} style={holderStyle}>
-      <img src={logo} className={classes.logo} alt="logo" />
+      {getTenantId() === 2 ? (
+        <img src={logoCA} className={classes.logo} alt="logo" />
+      ) : (
+        <img src={logo} className={classes.logo} alt="logo" />
+      )}
+
       <div className={classes.textHolder} style={constantStyles}>
         {constantLinks}
       </div>

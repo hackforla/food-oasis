@@ -1,6 +1,18 @@
 import React from "react";
 import { Popup } from "react-map-gl";
+import { makeStyles } from "@material-ui/core/styles";
 // import { Link } from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  popUp: {
+    margin: "4px 0 0 0",
+    padding: "auto",
+    [theme.breakpoints.down("xs")]: {
+      margin: "1px 0 0 0",
+      padding: "auto",
+    },
+  },
+}));
 
 function MarkerPopup({ entity, handleClose }) {
   const {
@@ -15,6 +27,8 @@ function MarkerPopup({ entity, handleClose }) {
     // phone,
     // website,
   } = entity;
+
+  const classes = useStyles();
 
   // const getGoogleMapsUrl = () => {
   //   const baseUrl = `https://google.com/maps/place/`;
@@ -46,7 +60,7 @@ function MarkerPopup({ entity, handleClose }) {
       anchor="top-left"
     >
       <div style={{ margin: "0", padding: "0" }}>
-        <h4 style={{ margin: "4px 0 0 0", padding: "auto" }}>{name}</h4>
+        <h4 className={classes.popUp}>{name}</h4>
         {/* <h4>{name}</h4> 
         <div
           style={{

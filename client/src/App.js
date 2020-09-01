@@ -250,7 +250,6 @@ function App() {
               </Route>
             </Switch>
             <Toast toast={toast} setToast={setToast} />
-            <Grid item>{/* <Footer /> */}</Grid>
           </Grid>
         </Router>
       </ThemeProvider>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import mapMarker from "../images/mapMarker";
 import fbIcon from "../images/fbIcon.png";
@@ -9,6 +9,8 @@ import {
   VERIFICATION_STATUS,
 } from "../constants/stakeholder";
 import { ORGANIZATION_COLORS, CLOSED_COLOR } from "../constants/map";
+import SuggestionDialog from "./SuggestionDialog";
+import { PlainButton } from "./Buttons";
 
 const useStyles = makeStyles((theme) => ({
   stakeholderHolder: {
@@ -110,8 +112,18 @@ const SelectedStakeholderDisplay = ({
   doSelectStakeholder,
   selectedStakeholder,
   iconReturn,
+  setToast,
 }) => {
   const classes = useStyles();
+  const [SuggestionDialogOpen, setSuggestionDialogOpen] = useState(false);
+
+  const handleSuggestionDialogOpen = async () => {
+    setSuggestionDialogOpen(true);
+  };
+
+  const handleSuggestionDialogClose = async (loginId) => {
+    setSuggestionDialogOpen(false);
+  };
 
   const dayOfWeek = (dayOfWeekString) => {
     switch (dayOfWeekString.toLowerCase()) {
@@ -179,6 +191,14 @@ const SelectedStakeholderDisplay = ({
 
   return (
     <div className={classes.stakeholderHolder}>
+      <SuggestionDialog
+        id="assign-dialog"
+        keepMounted
+        open={SuggestionDialogOpen}
+        onClose={handleSuggestionDialogClose}
+        stakeholder={selectedStakeholder}
+        setToast={setToast}
+      />
       <div className={classes.topInfoHolder}>
         <div className={classes.imgHolder}>
           {iconReturn(selectedStakeholder)}
@@ -191,6 +211,7 @@ const SelectedStakeholderDisplay = ({
           </div>
           {selectedStakeholder.categories.map((category) => (
             <em
+              key={category.id}
               style={{
                 alignSelf: "flex-start",
                 color:
@@ -262,32 +283,43 @@ const SelectedStakeholderDisplay = ({
             : selectedStakeholder.createdDate.format("MMM Do, YYYY")}
         </p>
       ) : null}
-      <a
-        className={classes.link}
-        href={getGoogleMapsUrl(
-          selectedStakeholder.zip,
-          selectedStakeholder.address1,
-          selectedStakeholder.address2 || null
-        )}
-        underline="hover"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <div
-          className={classes.directions}
-          style={{
-            backgroundColor:
-              selectedStakeholder.inactiveTemporary ||
-              selectedStakeholder.inactive
-                ? CLOSED_COLOR
-                : selectedStakeholder.categories[0].id === 1
-                ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
-                : ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID],
-          }}
+      <div>
+        <a
+          className={classes.link}
+          href={getGoogleMapsUrl(
+            selectedStakeholder.zip,
+            selectedStakeholder.address1,
+            selectedStakeholder.address2 || null
+          )}
+          underline="hover"
+          target="_blank"
+          rel="noopener noreferrer"
         >
-          Directions
-        </div>
-      </a>
+          <span
+            className={classes.directions}
+            style={{
+              backgroundColor:
+                selectedStakeholder.inactiveTemporary ||
+                selectedStakeholder.inactive
+                  ? CLOSED_COLOR
+                  : selectedStakeholder.categories[0].id === 1
+                  ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
+                  : ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID],
+            }}
+          >
+            Directions
+          </span>
+        </a>
+        <PlainButton
+          type="button"
+          style={{ textTransform: "none" }}
+          className={classes.directions}
+          onClick={handleSuggestionDialogOpen}
+          label="Send a Correction"
+        >
+          Send Correction
+        </PlainButton>
+      </div>
       {selectedStakeholder.hours ? (
         <>
           <h2 className={classes.title}>Hours</h2>

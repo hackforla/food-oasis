@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ResultsContainer(props) {
   const storage = window.sessionStorage;
-  const { userCoordinates, userSearch } = props;
+  const { userCoordinates, userSearch, setToast } = props;
   const { data, search } = useOrganizations();
   const [sortedData, setSortedData] = React.useState([]);
   const classes = useStyles();
@@ -172,6 +172,7 @@ export default function ResultsContainer(props) {
           isWindowWide={isWindowWide}
           viewport={viewport}
           setViewport={setViewport}
+          setToast={setToast}
         />
         <ResultsMap
           selectedLatitude={initialCoords.latitude}

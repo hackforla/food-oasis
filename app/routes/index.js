@@ -4,6 +4,7 @@ const tenantRouter = require("./tenant-router");
 const accountRouter = require("./account-router");
 const categoryRouter = require("./category-router");
 const neighborhoodRouter = require("./neighborhood-router");
+const suggestionRouter = require("./suggestion-router");
 
 const faqRouter = require("./faq-router");
 const stakeholderRouter = require("./stakeholder-router");
@@ -18,6 +19,7 @@ router.use("/api/tenants", tenantRouter);
 router.use("/api/accounts", accountRouter);
 router.use("/api/categories", categoryRouter);
 router.use("/api/neighborhoods", neighborhoodRouter);
+router.use("/api/suggestions", suggestionRouter);
 router.use("/api/faqs", faqRouter);
 router.use("/api/imports", importRouter);
 router.use("/api/loads", loadRouter);

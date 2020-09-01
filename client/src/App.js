@@ -27,7 +27,8 @@ import ConfirmEmail from "./components/ConfirmEmail";
 import FaqEdit from "./components/FaqEdit";
 import FaqAdd from "./components/FaqAdd";
 import Home from "./containers/Home";
-import ResultsContainer from "components/ResultsContainer";
+import ResultsContainer from "./components/ResultsContainer";
+import Suggestion from "./components/Suggestion";
 import { logout } from "./services/account-service";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -173,7 +174,11 @@ function App() {
                 <ResultsContainer
                   userCoordinates={userCoordinates}
                   userSearch={origin}
+                  setToast={setToast}
                 />
+              </Route>
+              <Route path="/suggestion">
+                <Suggestion setToast={setToast} />
               </Route>
               <Route path="/stakeholders">
                 <StakeholdersContainer

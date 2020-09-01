@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "/api/categories";
+const baseUrl = "/api/suggestions";
 
 export const getAll = async (searchParams) => {
   searchParams = searchParams || {};
@@ -19,24 +19,17 @@ export const getById = async (id) => {
   return response.data;
 };
 
-export const post = async (category) => {
+export const post = async (correction) => {
   const response = await axios.post(baseUrl, {
-    category,
+    correction,
   });
   return response.data;
 };
 
-export const put = async (category, id) => {
-  const response = await axios.put(`${baseUrl}/${id}`, {
-    category,
-    id,
-  });
-  return response.data;
-};
-
-export const remove = async (id) => {
-  const response = await axios.post(`${baseUrl}/${id}`, {
-    id,
-  });
-  return response.data;
-};
+//export const put = async (category, id) => {
+//   const response = await axios.put(`${baseUrl}/${id}`, {
+//     category,
+//     id,
+//   });
+//   return response.data;
+// };

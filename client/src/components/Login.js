@@ -41,6 +41,14 @@ const styles = (theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  body: {
+    display: "flex",
+    height: "97.8%",
+    flexDirection: "column",
+  },
+  container: {
+    flex: 1,
+  },
 });
 
 const validationSchema = Yup.object().shape({
@@ -56,8 +64,8 @@ const LoginForm = (props) => {
   const { classes, setToast, setUser, history, match } = props;
 
   return (
-    <div>
-      <Container component="main" maxWidth="xs">
+    <div className={classes.body}>
+      <Container component="main" maxWidth="xs" className={classes.container}>
         <CssBaseline />
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>

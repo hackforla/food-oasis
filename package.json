@@ -1,6 +1,6 @@
 {
   "name": "foodoasis",
-  "version": "1.0.17",
+  "version": "1.0.19",
   "author": "Hack for LA",
   "description": "Web API Server for Food Oasis",
   "main": "server.js",
@@ -37,7 +37,7 @@
   "dependencies": {
     "@sendgrid/mail": "^6.4.0",
     "axios": "^0.19.0",
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "cheerio": "^1.0.0-rc.3",
     "cookie-parser": "^1.4.4",
@@ -48,7 +48,7 @@
     "json-2-csv": "^3.5.7",
     "jsonwebtoken": "^8.5.1",
     "massive": "^6.6.0",
-    "mocha": "^8.0.1",
+    "mocha": "^8.1.3",
     "moment": "2.24.0",
     "node-pg-migrate": "^5.0.0",
     "nodemailer": "^6.3.1",

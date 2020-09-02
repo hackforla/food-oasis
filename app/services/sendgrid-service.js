@@ -1,5 +1,5 @@
 const sgMail = require("@sendgrid/mail");
-const applyEmailTemplate = require("../../client/src/helpers/EmailTemplate");
+const applyEmailTemplate = require("./EmailTemplate");
 const clientUrl = process.env.CLIENT_URL;
 const emailUser = process.env.EMAIL_USER;
 const sendgridKey = process.env.SENDGRID_API_KEY;

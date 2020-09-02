@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Box } from "@material-ui/core";
-// import Copyright from "./Copyright";
 import { makeStyles } from "@material-ui/core/styles";
 import useLocationHook from "hooks/useLocationHook";
 import { MENU_ITEMS } from "helpers/Constants";
 import { Link } from "react-router-dom";
 import logo from "images/fola.svg";
+import logoCA from "images/foodoasisca.svg";
+import { getTenantId } from "../helpers/Configuration";
 
 const useStyles = makeStyles((theme) => ({
   footer: {
@@ -99,7 +100,12 @@ const Footer = () => {
 
   return (
     <Box className={classes.footer} style={holderStyle}>
-      <img src={logo} className={classes.logo} alt="logo" />
+      {getTenantId() === 2 ? (
+        <img src={logoCA} className={classes.logo} alt="logo" />
+      ) : (
+        <img src={logo} className={classes.logo} alt="logo" />
+      )}
+
       <div className={classes.textHolder} style={constantStyles}>
         {constantLinks}
       </div>

@@ -41,6 +41,14 @@ const styles = (theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  body: {
+    display: "flex",
+    height: "97.8%",
+    flexDirection: "column",
+  },
+  container: {
+    flex: 1,
+  },
 });
 
 const validationSchema = Yup.object().shape({

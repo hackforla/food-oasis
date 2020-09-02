@@ -26,7 +26,6 @@ export const post = async (category) => {
   return response.data;
 };
 
-// edit user-created job
 export const put = async (category, id) => {
   const response = await axios.put(`${baseUrl}/${id}`, {
     category,
@@ -35,7 +34,6 @@ export const put = async (category, id) => {
   return response.data;
 };
 
-// delete user-created job
 export const remove = async (id) => {
   const response = await axios.post(`${baseUrl}/${id}`, {
     id,

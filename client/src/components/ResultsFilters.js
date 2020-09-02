@@ -120,7 +120,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const distanceInfo = [1, 2, 3, 5, 10, 20, 50];
+const distanceInfo = [0, 1, 2, 3, 5, 10, 20, 50, 100, 500];
 
 const ResultsFilters = ({
   search,
@@ -263,7 +263,9 @@ const ResultsFilters = ({
                   value={distance}
                   className={classes.menuItems}
                 >
-                  {`${distance} MILE${distance > 1 ? "S" : ""}`}
+                  {distance === 0
+                    ? "(Any)"
+                    : `${distance} MILE${distance > 1 ? "S" : ""}`}
                 </MenuItem>
               ))}
             </Select>

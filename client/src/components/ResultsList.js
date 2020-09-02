@@ -169,6 +169,7 @@ const ResultsList = ({
   setIsPopupOpen,
   viewport,
   setViewport,
+  setToast,
 }) => {
   const classes = useStyles();
 
@@ -193,6 +194,7 @@ const ResultsList = ({
             doSelectStakeholder={doSelectStakeholder}
             selectedStakeholder={selectedStakeholder}
             iconReturn={iconReturn}
+            setToast={setToast}
           />
         ) : stakeholders ? (
           stakeholders.map((stakeholder) => {
@@ -292,6 +294,7 @@ const ResultsList = ({
 ResultsList.propTypes = {
   selectedStakeholder: PropTypes.object,
   stakeholders: PropTypes.arrayOf(PropTypes.object),
+  setToast: PropTypes.func,
 };
 
 export default ResultsList;

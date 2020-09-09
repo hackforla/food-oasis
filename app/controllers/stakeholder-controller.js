@@ -164,6 +164,17 @@ const remove = (req, res) => {
     });
 };
 
+const requestAssignment = (req, res) => {
+  stakeholderService
+    .requestAssignment(req.body)
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      res.status("500").json({ error: err.toString() });
+    });
+};
+
 const assign = (req, res) => {
   stakeholderService
     .assign(req.body)
@@ -208,4 +219,5 @@ module.exports = {
   needsVerification,
   assign,
   claim,
+  requestAssignment,
 };

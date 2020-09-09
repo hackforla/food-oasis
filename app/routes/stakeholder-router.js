@@ -59,6 +59,12 @@ router.put(
   stakeholderController.assign
 );
 
+router.post(
+  "/requestAssignment",
+  jwtSession.validateUserHasRequiredRoles(["data_entry"]),
+  stakeholderController.requestAssignment
+);
+
 router.put(
   "/:id/claim",
   jwtSession.validateUserHasRequiredRoles(["admin"]),

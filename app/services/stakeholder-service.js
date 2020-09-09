@@ -789,6 +789,33 @@ const insert = async (model) => {
   }
 };
 
+const requestAssignment = async (model) => {
+  const { loginId } = model;
+  const sql = `with selected_stakeholder as (
+    select distinct sh.id, sh.modified_date
+    from stakeholder sh join stakeholder_category sc 
+      on sh.id = sc.stakeholder_id
+    join category c on sc.category_id = c.id
+    where sh.verification_status_id = 1
+    and c.inactive = false
+    order by sh.modified_date
+    limit 1
+  )
+  update stakeholder set
+    verification_status_id = 2,
+    assigned_login_id = ${toSqlNumeric(loginId)},
+    assigned_date = current_timestamp,
+    modified_date = current_timestamp,
+    modified_login_id = ${toSqlNumeric(loginId)}
+  where stakeholder.id in (select id from selected_stakeholder)`;
+  try {
+    await pool.query(sql);
+  } catch (err) {
+    console.log(err);
+    return Promise.reject(err.message);
+  }
+};
+
 const assign = async (model) => {
   const { id, userLoginId, loginId } = model;
   const sql = `update stakeholder set
@@ -804,6 +831,7 @@ const assign = async (model) => {
               where id = ${id}`;
   try {
     await pool.query(sql);
+    return true;
   } catch (err) {
     console.log(err);
     return Promise.reject(err.message);
@@ -1097,4 +1125,5 @@ module.exports = {
   needsVerification,
   assign,
   claim,
+  requestAssignment,
 };

@@ -9,7 +9,7 @@ import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Search from "components/Search";
-import logo from "images/fola.svg";
+import logo from "images/foodoasisla.svg";
 import logoCA from "images/foodoasisca.svg";
 import { getTenantId } from "../../helpers/Configuration";
 

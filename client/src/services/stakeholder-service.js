@@ -103,6 +103,13 @@ export const put = async (stakeholder) => {
   return response.data;
 };
 
+export const requestAssignment = async (loginId) => {
+  const response = await axios.post(`${baseUrl}/requestAssignment`, {
+    loginId,
+  });
+  return response.data;
+};
+
 // id = stakeholderId
 // userLoginId is the id of the user doing the assigning
 // loginId is user.id of user being assigned to stakeholder

@@ -2,10 +2,11 @@ import React, { useState, useEffect, useCallback } from "react";
 import { withRouter, Redirect } from "react-router-dom";
 import { CssBaseline, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { SearchButton } from "../Buttons";
+import { SearchButton, PlainButton } from "../Buttons";
 import StakeholderGrid from "./VerificationAdminGrid";
 import { RotateLoader } from "react-spinners";
 import { useOrganizations } from "../../hooks/useOrganizations/useOrganizations";
+import * as stakeholderService from "../../services/stakeholder-service";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -112,6 +113,26 @@ function VerificationDashboard(props) {
     }
   };
 
+  const requestAssignment = async () => {
+    try {
+      await stakeholderService.requestAssignment(user.id);
+      search();
+    } catch (err) {
+      if (err.status !== 401) {
+        console.error(err);
+      }
+    }
+  };
+
+  const disableRequestAssignment = () => {
+    console.log(stakeholders);
+    if (!stakeholders) return false;
+    const stakeholdersAssigned = stakeholders.filter(
+      (stakeholder) => stakeholder.verificationStatusId === 2
+    );
+    return stakeholdersAssigned.length > 4 ? true : false;
+  };
+
   return (
     <main className={classes.root}>
       {stakeholdersError.status === 401 ? (
@@ -137,7 +158,15 @@ function VerificationDashboard(props) {
           >
             {`${user && user.firstName} ${user && user.lastName}'s Dashboard`}
           </Typography>
-          <SearchButton onClick={search} label="Refresh" />
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            <PlainButton
+              onClick={requestAssignment}
+              label="Request Assignment"
+              style={{ marginRight: "0.2em" }}
+              disabled={disableRequestAssignment()}
+            />
+            <SearchButton onClick={search} label="Refresh" />
+          </div>
         </header>
       </div>
       <div className={classes.mainContent}>

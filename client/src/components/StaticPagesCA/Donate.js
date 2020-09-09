@@ -164,16 +164,19 @@ const Donate = () => {
             We’ve done so much already as a 100% volunteer-run organization—but
             we need your help to finish what we set out to do. The admin,
             development, and marketing costs to expand our directory are
-            extensive. We have a directory of over ____ organizations to update.
-            Your tax-deductible donation would help us offset some of those
-            costs.
+            extensive. Your tax-deductible donation would help us offset some of
+            those costs.
           </p>
           <p>
             Please make donations to our parent organization (Code for America).
             At the Code for America donation page you will see a text box: “What
-            inspired you to donate today”? Please write Food Oasis and Hack for
-            LA in that box. Your donation will get earmarked for Food Oasis Los
-            Angeles.
+            inspired you to donate today”?{" "}
+            <b>
+              <strong>
+                Please write Food Oasis and Hack for LA in that box.
+              </strong>
+            </b>{" "}
+            Your donation will get earmarked for Food Oasis.
           </p>
           <a
             href="//www.codeforamerica.org/donate"
@@ -193,10 +196,14 @@ const Donate = () => {
           />
           <h2>Volunteer</h2>
           <p>
-            We’re run 100% by remote volunteers who do critical work by updating
-            our food directory weekly. The work you do impact those who don’t
-            have enough to eat. Your help to update our directory makes it
-            easier for anyone to get in touch with groups that fit their needs.
+            Virtual volunteer opportunity! Help us validate our database.
+            Correct, up-to-date information is vital for someone seeking food.
+          </p>
+          <p>
+            To volunteer as a data validator, please join us on Zoom for online
+            training. We meet{" "}
+            <strong>Saturday mornings from 10 AM - 12 PM PST.</strong> Sign up
+            at this address:
           </p>
           <a
             href="//laworks.com/opportunity/a0C3l00000iCS6GEAW"
@@ -206,6 +213,12 @@ const Donate = () => {
           >
             Become a Volunteer
           </a>
+          <p>
+            Developers, designers, data specialists, or researchers - If you
+            have tech skills, please inquire about joining our team as a
+            developer, designer, or data specialist via email,{" "}
+            <a href="mailto:jenny@foodoasis.la">jenny@foodoasis.la</a>.
+          </p>
         </div>
         <section className={classes.cards}>
           <aside className={classes.signup}>

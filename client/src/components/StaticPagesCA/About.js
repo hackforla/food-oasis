@@ -155,34 +155,60 @@ const About = () => {
             height="40"
           />
           <h2>Our Mission</h2>
-          <p>TBD</p>
-          <p>TBD</p>
           <p>
-            Food pantries in the area are experiencing unprecedented demand. The
-            demand for food assistance has almost doubled since the beginning of
-            2020. To compound matters, it is the hard work of volunteers that
-            keeps pantries and meal programs open. The number of volunteers
-            available to distribute food has diminished.
+            California Food Oasis is a brand new project spun out of Food Oasis
+            Los Angeles. We are gathering resources and databases from the
+            community as quickly as we can.
           </p>
           <p>
-            California Food Oasis has ___ organizations in our database. Our
-            team of volunteers updated the information for ___ organizations.
-            Out of ___ organizations, __ closed their doors and __ closed for
-            COVID. __% of the organizations have closed their doors.
+            Our project just expanded beyond Los Angeles to areas in California
+            where people have been severely affected by the recent fires:
+          </p>
+          <ul>
+            <li>Santa Rosa</li>
+            <li>Sonoma</li>
+            <li>Napa</li>
+            <li>San Jose</li>
+            <li>Oakland</li>
+            <li>Santa Cruz</li>
+            <li>Mendocino</li>
+          </ul>
+          <p>
+            <b>
+              The primary goal of Food Oasis is to provide up-to-date
+              information to Californians who are seeking free food resources.
+            </b>
           </p>
           <p>
-            The primary goal of Food Oasis is to provide up-to-date information
-            to Californians. We built a directory that connects anyone with
-            hundreds of free food resources. Food Oasis presents reliable
-            information on a user-friendly platform. This will reduce stress and
-            uncertainty for food seekers. It will also demonstrate to our
-            community the growing need of food donations in California.
+            We built a directory that connects anyone with hundreds of free food
+            resources. Food Oasis presents reliable information on a
+            user-friendly platform.
           </p>
           <p>
-            Food Oasis is creating a directory of updated food resources. There
-            are countless groups helping to feed hungry Californians. But it’s
-            difficult for those in need to find them because there’s no one
-            source of updated info. We’re working to change that.
+            The demand for food assistance has almost doubled since the
+            beginning of 2020. To compound matters, it is the hard work of
+            volunteers that keeps pantries and meal programs open. The number of
+            volunteers available to run these organizations has diminished due
+            to COVID.
+          </p>
+          <p>
+            Food Oasis is creating an open source directory of validated food
+            resources.
+          </p>
+          <p>
+            There are countless groups helping to feed hungry Californians. But
+            it’s difficult for those in need to find them because there’s no one
+            source of updated information. We’re working to change that. Our
+            project is open source.
+          </p>
+          <p>
+            Our goal is share the data with other organizations in order to
+            facilitate collaboration.
+          </p>
+          <p>
+            Help us keep this information updated. Click on the Suggest New
+            Listing link under the hamburger menu and reach out. Help us connect
+            the dots.
           </p>
         </div>
         <section className={classes.team}>
@@ -227,7 +253,7 @@ const About = () => {
             resources they need.
           </p>
           <p>
-            We are 100% volunteer-run project. We look forward to sharing our
+            We are a 100% volunteer-run project. We look forward to sharing our
             updated directory with Los Angeles.
           </p>
         </section>

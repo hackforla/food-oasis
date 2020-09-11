@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import useLocationHook from "hooks/useLocationHook";
 import { MENU_ITEMS } from "helpers/Constants";
 import { Link } from "react-router-dom";
-import logo from "images/fola.svg";
+import logo from "images/foodoasisla.svg";
 import logoCA from "images/foodoasisca.svg";
 import { getTenantId } from "../helpers/Configuration";
 

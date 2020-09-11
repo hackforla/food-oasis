@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import useLocationHook from "hooks/useLocationHook";
 import Menu from "./Menu";
-import logo from "images/fola.svg";
+import logo from "images/foodoasisla.svg";
 import logoCA from "images/foodoasisca.svg";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";

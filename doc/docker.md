@@ -23,10 +23,10 @@ $ docker-compose up db
    For example, with `psql` do:
 
 ```bash
-$ psql -U fola -d food -h localhost -p 5433 -W -f db/demo-db/foodoasis.sql
+$ psql -U postgres -d food -h localhost -p 5433 -W -f db/demo-db/foodoasis.sql
 ```
 
-You should be prompted for a password. Use `pgpass`.
+You should be prompted for a password. Use `postgres`.
 
 This should result in a successful import of the initial data and schema that
 are not tracked in the [migrations](./migrations) folder.

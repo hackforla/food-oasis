@@ -14,6 +14,8 @@ import {
 } from "../constants/stakeholder";
 import { ORGANIZATION_COLORS, CLOSED_COLOR } from "../constants/map";
 
+const { useRef } = React;
+
 const useStyles = makeStyles((theme) => ({
   list: {
     textAlign: "center",
@@ -184,9 +186,12 @@ const ResultsList = ({
     });
   };
 
+  const displayStakeHolderRef = useRef();
+
   return (
     <Grid item xs={12} md={4} className={classes.list}>
       <div className={classes.stakeholderArrayHolder}>
+        <div ref={displayStakeHolderRef}></div>
         {stakeholders &&
         selectedStakeholder &&
         !selectedStakeholder.inactive ? (
@@ -209,7 +214,10 @@ const ResultsList = ({
               <div
                 className={classes.stakeholderHolder}
                 key={stakeholder.id}
-                onClick={() => handleStakeholderClick(stakeholder)}
+                onClick={() => {
+                  handleStakeholderClick(stakeholder);
+                  displayStakeHolderRef.current.scrollIntoView();
+                }}
               >
                 <div className={classes.imgHolder}>
                   {iconReturn(stakeholder)}

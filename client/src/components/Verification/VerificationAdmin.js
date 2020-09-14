@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { withRouter, Redirect } from "react-router-dom";
 import { Button, CssBaseline, Dialog, Typography } from "@material-ui/core";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
+import Chip from "@material-ui/core/Chip";
 import { makeStyles } from "@material-ui/core/styles";
 import { SearchButton } from "../Buttons";
 import StakeholderGrid from "./VerificationAdminGrid";
@@ -11,6 +12,7 @@ import { useOrganizations } from "../../hooks/useOrganizations/useOrganizations"
 import { useCategories } from "../../hooks/useCategories/useCategories";
 import { useTenants } from "../../hooks/useTenants/useTenants";
 import { useNeighborhoods } from "../../hooks/useNeighborhoods/useNeighborhoods";
+import { useAccounts } from "../../hooks/useAccounts/useAccounts";
 import {
   needsVerification,
   assign,
@@ -106,6 +108,8 @@ const defaultCriteria = {
   neighborhoodId: 0,
   minCompleteCriticalPercent: 0,
   maxCompleteCriticalPercent: 100,
+  stakeholderId: "",
+  isInactiveTemporary: "either",
 };
 
 VerificationAdmin.propTypes = {
@@ -151,6 +155,9 @@ function VerificationAdmin(props) {
     error: stakeholdersError,
     searchDashboard: stakeholderSearch,
   } = useOrganizations();
+
+  const { data: accounts } = useAccounts();
+  console.log("accounts: ", accounts);
 
   const searchCallback = useCallback(stakeholderSearch, []);
 
@@ -279,6 +286,162 @@ function VerificationAdmin(props) {
     setDialogOpen(false);
   };
 
+  const checkForSearchCriteriaPresent = () => {
+    // using != rather than !== because maxCompleteCriticalPercent is both a string and int
+    let criteriaPresent = false;
+    let criterias = [];
+
+    if (criteria.tenantId != defaultCriteria.tenantId) {
+      let tenantName = "";
+
+      tenants.forEach((tenant) => {
+        if (tenant.id === criteria.tenantId) {
+          tenantName = tenant.name;
+        }
+      });
+
+      criterias.push(<Chip label={`Region : ${tenantName}`} />);
+      criteriaPresent = true;
+    }
+    if (criteria.name != defaultCriteria.name) {
+      criterias.push(<Chip label={`Name: ${criteria.name}`} />);
+      criteriaPresent = true;
+    }
+    if (criteria.latitude != defaultCriteria.latitude) {
+      // not including for now because of bug
+      // criteriaPresent = true;
+    }
+    if (criteria.longitude != defaultCriteria.longitude) {
+      // not including for now because of bug
+      // criteriaPresent = true;
+    }
+    if (criteria.placeName != defaultCriteria.placeName) {
+      criteriaPresent = true;
+    }
+    if (criteria.radius != defaultCriteria.radius) {
+      criterias.push(<Chip label={`Radius : ${criteria.radius}`} />);
+      criteriaPresent = true;
+    }
+    if (criteria.categoryIds.length > 0) {
+      criteriaPresent = true;
+    }
+    if (criteria.isInactive != defaultCriteria.isInactive) {
+      let inactiveLabel = "";
+
+      switch (criteria.isInactive) {
+        case "true":
+          inactiveLabel = "Yes";
+          break;
+        case "false":
+          inactiveLabel = "No";
+          break;
+        case "either":
+          inactiveLabel = "Either";
+          break;
+      }
+
+      criterias.push(<Chip label={`Permanently Closed: ${inactiveLabel}`} />);
+      criteriaPresent = true;
+    }
+    if (criteria.isAssigned != defaultCriteria.isAssigned) {
+      criteriaPresent = true;
+    }
+    if (criteria.isSubmitted != defaultCriteria.isSubmitted) {
+      criteriaPresent = true;
+    }
+    if (criteria.isApproved != defaultCriteria.isApproved) {
+      criteriaPresent = true;
+    }
+    if (criteria.isClaimed != defaultCriteria.isClaimed) {
+      criteriaPresent = true;
+    }
+    if (criteria.assignedLoginId != defaultCriteria.assignedLoginId) {
+      let assignedToLabel = "";
+
+      accounts.forEach((account) => {
+        if (account.id === criteria.assignedLoginId) {
+          assignedToLabel = `${account.firstName}, ${account.lastName} (${account.email})`;
+        }
+      });
+      criterias.push(<Chip label={`Assigned To: ${assignedToLabel}`} />);
+      criteriaPresent = true;
+    }
+    if (criteria.claimedLoginId != defaultCriteria.claimedLoginId) {
+      criteriaPresent = true;
+    }
+    if (criteria.verificationStatusId != defaultCriteria.verificationStatusId) {
+      let verificationStatus = "";
+
+      switch (criteria.verificationStatusId) {
+        case 0:
+          verificationStatus = "(Any)";
+          break;
+        case 1:
+          verificationStatus = "Needs Verification";
+          break;
+        case 2:
+          verificationStatus = "Assigned";
+          break;
+        case 3:
+          verificationStatus = "Submitted";
+          break;
+        case 4:
+          verificationStatus = "Submitted";
+          break;
+      }
+      criterias.push(
+        <Chip label={`Verification Status: ${verificationStatus}`} />
+      );
+      criteriaPresent = true;
+    }
+    if (criteria.neighborhoodId != defaultCriteria.neighborhoodId) {
+      criteriaPresent = true;
+    }
+    if (
+      criteria.minCompleteCriticalPercent !=
+      defaultCriteria.minCompleteCriticalPercent
+    ) {
+      criteriaPresent = true;
+    }
+    if (
+      criteria.maxCompleteCriticalPercent !=
+      defaultCriteria.maxCompleteCriticalPercent
+    ) {
+      criteriaPresent = true;
+    }
+    if (criteria.isInactiveTemporary != defaultCriteria.isInactiveTemporary) {
+      let inactiveTemporaryLabel = "";
+
+      switch (criteria.isInactiveTemporary) {
+        case "true":
+          inactiveTemporaryLabel = "Yes";
+          break;
+        case "false":
+          inactiveTemporaryLabel = "No";
+          break;
+        case "either":
+          inactiveTemporaryLabel = "Either";
+          break;
+      }
+
+      criterias.push(
+        <Chip label={`Closed for COVID: ${inactiveTemporaryLabel}`} />
+      );
+      criteriaPresent = true;
+    }
+    if (criteria.stakeholderId != defaultCriteria.stakeholderId) {
+      criterias.push(
+        <Chip label={`Organization ID: ${criteria.stakeholderId}`} />
+      );
+      criteriaPresent = true;
+    }
+
+    return {
+      criteriaPresent,
+      criterias,
+    };
+  };
+
   return (
     <main className={classes.root}>
       {stakeholdersError.status === 401 || unauthorized ? (
@@ -305,6 +468,9 @@ function VerificationAdmin(props) {
             Verification Administration
           </Typography>
           <SearchButton onClick={handleDialogOpen} label="Criteria..." />
+          {checkForSearchCriteriaPresent().criteriaPresent === true
+            ? checkForSearchCriteriaPresent().criterias.map((item) => item)
+            : null}
         </header>
       </div>
       <div className={classes.mainContent}>
@@ -315,7 +481,6 @@ function VerificationAdmin(props) {
           maxWidth="lg"
         >
           <DialogTitle onClose={handleDialogClose}>Search Criteria</DialogTitle>
-
           {criteria ? (
             <div style={{ overflowY: "scroll" }}>
               <SearchCriteria

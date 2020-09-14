@@ -106,6 +106,8 @@ const SearchCriteria = ({
     setUseMyLocation("custom");
   };
 
+  console.log("criteria.stakeholderId: ", criteria.stakeholderId);
+
   return (
     <Card className={classes.card}>
       <CardContent>

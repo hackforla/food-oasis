@@ -72,8 +72,8 @@ function App() {
   const [toast, setToast] = useState({ message: "" });
   const [bgImg, setBgImg] = useState("");
   const [origin, setOrigin] = useState({
-    latitude: 34.0522,
-    longitude: -118.2437,
+    latitude: 21.33629,
+    longitude: -157.89435,
   });
 
   useEffect(() => {
@@ -124,8 +124,8 @@ function App() {
         (error) => {
           console.log(`Getting browser location failed: ${error.message}`);
           const userCoordinates = {
-            latitude: 34.0522,
-            longitude: -118.2437,
+            latitude: 21.33629,
+            longitude: -157.89435,
           };
           setUserCoordinates(userCoordinates);
         }

@@ -7,7 +7,10 @@ const { Pool } = require("pg");
 // In a DEV environment, we get the database
 // connection parameters from the .env file.
 const poolConfig = process.env.DATABASE_URL
-  ? { connectionString: process.env.DATABASE_URL }
+  ? {
+      connectionString: process.env.DATABASE_URL,
+      ssl: { rejectUnauthorized: false },
+    }
   : process.env.POSTGRES_SSL === "false"
   ? {
       user: process.env.POSTGRES_USERNAME,

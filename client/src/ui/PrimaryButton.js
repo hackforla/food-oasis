@@ -62,8 +62,9 @@ const useStyles = makeStyles((theme) => ({
   bigButtonStyles: theme.typography.overline,
 }));
 
-const CustomButton = (props) => {
+const PrimaryButton = (props) => {
   let { children, color, variant, size, disabled } = props;
+
   let showBigText = false;
 
   const classes = useStyles();
@@ -92,13 +93,14 @@ const CustomButton = (props) => {
       color={color ? "default" : color}
       size={size}
       disabled={disabled}
+      {...props}
     >
       {children}
     </Button>
   );
 };
 
-CustomButton.propTypes = {
+PrimaryButton.propTypes = {
   children: PropTypes.node,
   variant: PropTypes.string,
   color: PropTypes.string,
@@ -106,4 +108,4 @@ CustomButton.propTypes = {
   disabled: PropTypes.bool,
 };
 
-export default CustomButton;
+export default PrimaryButton;

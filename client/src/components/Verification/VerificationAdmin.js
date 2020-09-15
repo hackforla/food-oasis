@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import { withRouter, Redirect } from "react-router-dom";
-import { Button, CssBaseline, Dialog, Typography } from "@material-ui/core";
+import { CssBaseline, Dialog, Typography } from "@material-ui/core";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
+import { Search } from "@material-ui/icons";
 import { SearchButton } from "../Buttons";
+import { PrimaryButton } from "../../ui";
+import newTheme from "../../theme/newTheme";
 import StakeholderGrid from "./VerificationAdminGrid";
 import { RotateLoader } from "react-spinners";
 import { useOrganizations } from "../../hooks/useOrganizations/useOrganizations";
@@ -280,197 +283,201 @@ function VerificationAdmin(props) {
   };
 
   return (
-    <main className={classes.root}>
-      {stakeholdersError.status === 401 || unauthorized ? (
-        <Redirect
-          to={{ pathname: "/login", state: { from: props.location } }}
-        />
-      ) : null}
-      <CssBaseline />
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          margin: "10px",
-        }}
-      >
-        <header className={classes.header}>
-          <Typography
-            variant="h4"
-            component="h4"
-            align="center"
-            style={{ marginBottom: "0.5em" }}
-          >
-            Verification Administration
-          </Typography>
-          <SearchButton onClick={handleDialogOpen} label="Criteria..." />
-        </header>
-      </div>
-      <div className={classes.mainContent}>
-        <Dialog
-          open={dialogOpen}
-          onClose={handleDialogClose}
-          fullWidth
-          maxWidth="lg"
+    <ThemeProvider theme={newTheme}>
+      <main className={classes.root}>
+        {stakeholdersError.status === 401 || unauthorized ? (
+          <Redirect
+            to={{ pathname: "/login", state: { from: props.location } }}
+          />
+        ) : null}
+        <CssBaseline />
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            margin: "10px",
+          }}
         >
-          <DialogTitle onClose={handleDialogClose}>Search Criteria</DialogTitle>
+          <header className={classes.header}>
+            <Typography
+              variant="h4"
+              component="h4"
+              align="center"
+              style={{ marginBottom: "0.5em" }}
+            >
+              Verification Administration
+            </Typography>
+            <PrimaryButton onClick={handleDialogOpen}>
+              <Search fontSize="small" /> Criteria...
+            </PrimaryButton>
+          </header>
+        </div>
+        <div className={classes.mainContent}>
+          <Dialog
+            open={dialogOpen}
+            onClose={handleDialogClose}
+            fullWidth
+            maxWidth="lg"
+          >
+            <DialogTitle onClose={handleDialogClose}>
+              Search Criteria
+            </DialogTitle>
 
-          {criteria ? (
-            <div style={{ overflowY: "scroll" }}>
-              <SearchCriteria
-                key={JSON.stringify({
-                  userLatitude: userCoordinates.latitude,
-                  categories,
-                })}
-                userLatitude={userCoordinates.latitude}
-                userLongitude={userCoordinates.longitude}
-                categories={categories && categories.filter((c) => !c.inactive)}
-                tenants={tenants}
-                neighborhoods={neighborhoods}
-                criteria={criteria}
-                setCriteria={setCriteria}
-                search={() => {
-                  search();
-                  setDialogOpen(false);
-                }}
-              />
-            </div>
-          ) : null}
-          {categoriesError || neighborhoodsError || stakeholdersError ? (
-            <div> Uh Oh! Something went wrong!</div>
-          ) : categoriesLoading ||
-            neighborhoodsLoading ||
-            stakeholdersLoading ? (
-            <div
-              style={{
-                height: "200",
-                width: "100%",
-                margin: "100px auto",
-                display: "flex",
-                justifyContent: "space-around",
-              }}
-              aria-label="Loading spinner"
-            >
-              <RotateLoader
-                // css={}
-                sizeUnit="px"
-                size={15}
-                color="#FAEBD7"
-                loading
-              />
-            </div>
-          ) : null}
-        </Dialog>
-        <AssignDialog
-          id="assign-dialog"
-          keepMounted
-          open={assignDialogOpen}
-          onClose={handleAssignDialogClose}
-        />
-        <NeedsVerificationDialog
-          id="needs-verification-dialog"
-          keepMounted
-          message={""}
-          open={needsVerificationDialogOpen}
-          onClose={handleNeedsVerificationDialogClose}
-        />
-        <>
-          {categoriesError || stakeholdersError ? (
-            <div className={classes.bigMessage}>
-              <Typography variant="h5" component="h5" style={{ color: "red" }}>
-                Uh Oh! Something went wrong!
-              </Typography>
-            </div>
-          ) : categoriesLoading || stakeholdersLoading ? (
-            <div
-              style={{
-                flexGrow: 1,
-                width: "100%",
-                margin: "100px auto",
-                display: "flex",
-                justifyContent: "space-around",
-              }}
-              aria-label="Loading spinner"
-            >
-              <RotateLoader
-                // css={}
-                sizeUnit="px"
-                size={15}
-                color="green"
-                loading
-              />
-            </div>
-          ) : stakeholders && stakeholders.length === 0 ? (
-            <div className={classes.bigMessage}>
-              <Typography variant="h5" component="h5">
-                No matches found, please try different criteria
-              </Typography>
-            </div>
-          ) : stakeholders ? (
-            <>
+            {criteria ? (
+              <div style={{ overflowY: "scroll" }}>
+                <SearchCriteria
+                  key={JSON.stringify({
+                    userLatitude: userCoordinates.latitude,
+                    categories,
+                  })}
+                  userLatitude={userCoordinates.latitude}
+                  userLongitude={userCoordinates.longitude}
+                  categories={
+                    categories && categories.filter((c) => !c.inactive)
+                  }
+                  tenants={tenants}
+                  neighborhoods={neighborhoods}
+                  criteria={criteria}
+                  setCriteria={setCriteria}
+                  search={() => {
+                    search();
+                    setDialogOpen(false);
+                  }}
+                />
+              </div>
+            ) : null}
+            {categoriesError || neighborhoodsError || stakeholdersError ? (
+              <div> Uh Oh! Something went wrong!</div>
+            ) : categoriesLoading ||
+              neighborhoodsLoading ||
+              stakeholdersLoading ? (
               <div
                 style={{
+                  height: "200",
+                  width: "100%",
+                  margin: "100px auto",
                   display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
+                  justifyContent: "space-around",
                 }}
+                aria-label="Loading spinner"
               >
+                <RotateLoader
+                  // css={}
+                  sizeUnit="px"
+                  size={15}
+                  color="#FAEBD7"
+                  loading
+                />
+              </div>
+            ) : null}
+          </Dialog>
+          <AssignDialog
+            id="assign-dialog"
+            keepMounted
+            open={assignDialogOpen}
+            onClose={handleAssignDialogClose}
+          />
+          <NeedsVerificationDialog
+            id="needs-verification-dialog"
+            keepMounted
+            message={""}
+            open={needsVerificationDialogOpen}
+            onClose={handleNeedsVerificationDialogClose}
+          />
+          <>
+            {categoriesError || stakeholdersError ? (
+              <div className={classes.bigMessage}>
+                <Typography
+                  variant="h5"
+                  component="h5"
+                  style={{ color: "red" }}
+                >
+                  Uh Oh! Something went wrong!
+                </Typography>
+              </div>
+            ) : categoriesLoading || stakeholdersLoading ? (
+              <div
+                style={{
+                  flexGrow: 1,
+                  width: "100%",
+                  margin: "100px auto",
+                  display: "flex",
+                  justifyContent: "space-around",
+                }}
+                aria-label="Loading spinner"
+              >
+                <RotateLoader
+                  // css={}
+                  sizeUnit="px"
+                  size={15}
+                  color="green"
+                  loading
+                />
+              </div>
+            ) : stakeholders && stakeholders.length === 0 ? (
+              <div className={classes.bigMessage}>
+                <Typography variant="h5" component="h5">
+                  No matches found, please try different criteria
+                </Typography>
+              </div>
+            ) : stakeholders ? (
+              <>
                 <div
                   style={{
                     display: "flex",
                     flexDirection: "row",
-                    justifyContent: "flex-start",
+                    justifyContent: "space-between",
                   }}
                 >
-                  <Button
-                    variant="contained"
-                    title="Mark for verification"
-                    color="primary"
-                    disabled={selectedStakeholderIds.length === 0}
-                    onClick={handleNeedsVerificationDialogOpen}
-                    style={{ marginRight: "0.2em" }}
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "flex-start",
+                    }}
                   >
-                    Needs Verification
-                  </Button>
-                  <Button
-                    variant="contained"
-                    title="Assign selected Organizations to User for Verification"
-                    color="primary"
-                    disabled={selectedStakeholderIds.length === 0}
-                    onClick={handleAssignDialogOpen}
-                    style={{ marginRight: "0.2em" }}
-                  >
-                    Assign
-                  </Button>
-                  <Button
-                    variant="contained"
-                    title="Export selected Organizations to file"
-                    color="primary"
-                    disabled={selectedStakeholderIds.length === 0}
-                    onClick={handleExport}
-                  >
-                    Export
-                  </Button>
+                    <PrimaryButton
+                      title="Mark for verification"
+                      disabled={selectedStakeholderIds.length === 0}
+                      onClick={handleNeedsVerificationDialogOpen}
+                    >
+                      Needs Verification
+                    </PrimaryButton>
+                    <PrimaryButton
+                      title="Assign selected Organizations to User for Verification"
+                      disabled={selectedStakeholderIds.length === 0}
+                      onClick={handleAssignDialogOpen}
+                    >
+                      Assign
+                    </PrimaryButton>
+                    <PrimaryButton
+                      title="Export selected Organizations to file"
+                      disabled={selectedStakeholderIds.length === 0}
+                      onClick={handleExport}
+                    >
+                      Export
+                    </PrimaryButton>
+                  </div>
+                  <div>{`${stakeholders.length} rows`} </div>
                 </div>
-                <div>{`${stakeholders.length} rows`} </div>
+                <StakeholderGrid
+                  mode={"admin"}
+                  stakeholders={stakeholders}
+                  setSelectedStakeholderIds={setSelectedStakeholderIds}
+                />
+              </>
+            ) : (
+              <div className={classes.bigMessage}>
+                <Typography variant="h5" component="h5">
+                  Please enter search criteria and execute a search
+                </Typography>
               </div>
-              <StakeholderGrid
-                mode={"admin"}
-                stakeholders={stakeholders}
-                setSelectedStakeholderIds={setSelectedStakeholderIds}
-              />
-            </>
-          ) : (
-            <div className={classes.bigMessage}>
-              <Typography variant="h5" component="h5">
-                Please enter search criteria and execute a search
-              </Typography>
-            </div>
-          )}
-        </>
-      </div>
-    </main>
+            )}
+          </>
+        </div>
+      </main>
+    </ThemeProvider>
   );
 }
 

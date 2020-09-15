@@ -111,6 +111,12 @@ const customTheme = createMuiTheme({
         color: bodyTextColor,
       },
     },
+    MuiSvgIcon: {
+      fontSizeSmall: {
+        fontSize: "15px",
+        marginRight: "5px",
+      },
+    },
   },
   props: {
     MuiButton: {

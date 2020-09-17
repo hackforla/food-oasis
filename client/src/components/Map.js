@@ -2,8 +2,9 @@ import React from "react";
 import ReactMapGL, { NavigationControl } from "react-map-gl";
 import MarkerPopup from "./MarkerPopup";
 import Marker from "./Marker";
-import { MAPBOX_TOKEN } from "../secrets";
 import { MAPBOX_STYLE } from "../constants/map";
+
+const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 
 const styles = {
   geolocate: {

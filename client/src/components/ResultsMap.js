@@ -5,7 +5,6 @@ import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import MarkerPopup from "./MarkerPopup";
 import Marker from "./Marker";
-import { MAPBOX_TOKEN } from "../secrets";
 import {
   MAPBOX_STYLE,
   ORGANIZATION_COLORS,
@@ -16,6 +15,8 @@ import {
   FOOD_PANTRY_CATEGORY_ID,
   MEAL_PROGRAM_CATEGORY_ID,
 } from "../constants/stakeholder";
+
+const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 
 const styles = {
   geolocate: {

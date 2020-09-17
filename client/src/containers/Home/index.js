@@ -149,11 +149,11 @@ const Home = (props) => {
           >
             {getTenantId() === 2 ? (
               <Typography variant={"h5"} className={classes.label}>
-                Locate free food resources in California
+                Locate free food resources in Hawaii
               </Typography>
             ) : (
               <Typography variant={"h5"} className={classes.label}>
-                Locate free food resources in Los Angeles
+                Locate free food resources in Hawaii
               </Typography>
             )}
 

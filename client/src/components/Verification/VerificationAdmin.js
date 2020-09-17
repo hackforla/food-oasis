@@ -140,7 +140,7 @@ function VerificationAdmin(props) {
     error: categoriesError,
   } = useCategories();
 
-  const { data: tenants } = useTenants();
+  const { data: tenants, loading: tenantsLoading } = useTenants();
 
   const {
     data: neighborhoods,
@@ -315,6 +315,8 @@ function VerificationAdmin(props) {
         criteria={criteria}
         neighborhoods={neighborhoods}
         tenants={tenants}
+        categories={categories}
+        isLoading={neighborhoodsLoading || categoriesLoading || tenantsLoading}
       />
       <div className={classes.mainContent}>
         <Dialog

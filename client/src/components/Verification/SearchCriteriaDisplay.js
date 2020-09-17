@@ -34,9 +34,11 @@ function SearchCriteriaDisplay({
   criteria,
   neighborhoods,
   tenants,
+  categories,
+  isLoading,
 }) {
   const classes = useStyles();
-  const { data: accounts } = useAccounts();
+  const { data: accounts, loading: accountsLoading } = useAccounts();
 
   const checkForCriteriaPresent = () => {
     if (
@@ -63,6 +65,16 @@ function SearchCriteriaDisplay({
     }
 
     return false;
+  };
+
+  const getCategoryMap = () => {
+    const categoryMap = {};
+
+    categories.forEach((category) => {
+      categoryMap[category.id] = category;
+    });
+
+    return categoryMap;
   };
 
   const getCriteriaToDisplay = () => {
@@ -108,7 +120,22 @@ function SearchCriteriaDisplay({
     }
 
     if (criteria.categoryIds.length > 0) {
-      // IN PROGRESS
+      const categoryMap = getCategoryMap();
+      const selectedCategories = [];
+
+      criteria.categoryIds.forEach((categoryId) => {
+        if (categoryMap[categoryId]) {
+          selectedCategories.push(categoryMap[categoryId].name);
+        }
+      });
+
+      criterias.push(
+        <CriteriaChip
+          key={"CriteriaChip_Categories"}
+          value={selectedCategories.join(", ")}
+          label={criteria.categoryIds.length === 1 ? "Category" : "Categories"}
+        />
+      );
     }
 
     if (criteria.isInactive != defaultCriteria.isInactive) {
@@ -288,7 +315,7 @@ function SearchCriteriaDisplay({
     */
   };
 
-  if (!neighborhoods || !tenants || !accounts) {
+  if (accountsLoading || isLoading) {
     return <></>;
   }
 

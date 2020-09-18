@@ -121,12 +121,6 @@ const Home = (props) => {
   //const isDefaultOrigin = !origin?.hasOwnProperty("locationName");
   const isDefaultOrigin = !origin?.locationName;
 
-  React.useEffect(() => {
-    if (props.match.path === "/") {
-      sessionStorage.clear();
-    }
-  }, [props.match.path]);
-
   return (
     <Container component="main" maxWidth="sm" className={classes.container}>
       <CssBaseline />

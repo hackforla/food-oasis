@@ -22,8 +22,8 @@ const sendRegistrationConfirmation = async (
       Hello,
     </p>
     <p>
-      Thank you for registering with Food Oasis! 
-      Please take a moment to verify your account by clicking the link bellow.
+      Thank you for registering with Food Oasis HI! 
+      Please take a moment to verify your account by clicking the link below.
     <br>
     </p>
     <table border="0" cellpadding="0" cellspacing="0" style="border-spacing:0;background-color: #336699;border:1px solid #353535; border-radius: 5px;margin-left: auto;margin-right: auto;">
@@ -63,7 +63,7 @@ const sendResetPasswordConfirmation = async (
       Hello,
     </p>
     <p>
-      Your Food Oasis password can be reset by clicking the link bellow.
+      Your Food Oasis HI password can be reset by clicking the link below.
     </p>
     <table border="0" cellpadding="0" cellspacing="0" style="border-spacing:0;background-color: #336699;border:1px solid #353535; border-radius: 5px;margin-left: auto;margin-right: auto;">
       <tr>
@@ -75,11 +75,11 @@ const sendResetPasswordConfirmation = async (
     <br>
     Regards,
     <br>
-    Food Oasis Team
+    Food Oasis HI Team
   `;
   const options = {
     to: `${email}`,
-    from: "dnr.jobsforhope@gmail.com",
+    from: emailUser,
     subject: `Password Reset`,
     html: `${emailTemplate.applyEmailTemplate(emailBody)}`,
   };

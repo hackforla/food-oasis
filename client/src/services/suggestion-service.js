@@ -20,9 +20,7 @@ export const getById = async (id) => {
 };
 
 export const post = async (correction) => {
-  const response = await axios.post(baseUrl, {
-    correction,
-  });
+  const response = await axios.post(baseUrl, correction);
   return response.data;
 };
 

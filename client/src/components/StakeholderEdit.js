@@ -36,6 +36,7 @@ import OpenTimeForm from "./OpenTimeForm";
 import { TabPanel, a11yProps } from "./TabPanel";
 import { PlainButton, SearchButton, VerifyButton } from "./Buttons";
 import AssignDialog from "./Verification/AssignDialog";
+import ConfirmDialog from "./ConfirmDialog";
 import {
   VERIFICATION_STATUS,
   VERIFICATION_STATUS_NAMES,
@@ -199,6 +200,8 @@ const StakeholderEdit = (props) => {
   const editId = match.params.id;
   const [assignDialogOpen, setAssignDialogOpen] = useState(false);
   const [assignDialogCallback, setAssignDialogCallback] = useState({});
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [confirmDialogCallback, setConfirmDialogCallback] = useState({});
   const [tabPage, setTabPage] = useState(0);
   const [geocodeResults, setGeocodeResults] = useState([]);
   const [nextUrl, setNextUrl] = useState(null);
@@ -238,10 +241,25 @@ const StakeholderEdit = (props) => {
   const handleAssignDialogClose = async (loginId) => {
     setAssignDialogOpen(false);
     // Dialog returns false if cancelled, null if
-    // want to unassign, otherwisd a loginId > 0
+    // want to unassign, otherwise a loginId > 0
     if (loginId === false) return;
     if (assignDialogCallback && assignDialogCallback.callback) {
       assignDialogCallback.callback(loginId);
+    }
+  };
+
+  const handleConfirmDialogOpen = async (callbackObject) => {
+    setConfirmDialogOpen(true);
+    setConfirmDialogCallback(callbackObject);
+  };
+
+  const handleConfirmDialogClose = async (result) => {
+    setConfirmDialogOpen(false);
+    // Dialog returns false if cancelled, true to
+    // confirm delete
+    if (!result) return;
+    if (confirmDialogCallback && confirmDialogCallback.callback) {
+      confirmDialogCallback.callback();
     }
   };
 
@@ -376,6 +394,14 @@ const StakeholderEdit = (props) => {
           keepMounted
           open={assignDialogOpen}
           onClose={handleAssignDialogClose}
+        />
+        <ConfirmDialog
+          id="confirm-dialog"
+          keepMounted
+          open={confirmDialogOpen}
+          onClose={handleConfirmDialogClose}
+          title="Permanently Delete Organization"
+          message={`Are you sure you want to delete the organization ${originalData.name}?`}
         />
         <Formik
           // Use deep copy of originalData to initialize form, so
@@ -2080,6 +2106,33 @@ const StakeholderEdit = (props) => {
                               !criticalFieldsValidate(values) ||
                               (user.isCoordinator && !user.isAdmin)
                             }
+                            style={{ margin: "auto 0.5em" }}
+                          />
+                        </div>
+                      </BigTooltip>
+                      <BigTooltip title="Delete Organization from Database Permanently">
+                        <div
+                          style={{
+                            margin: 0,
+                            paddingLeft: "0.2em",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <PlainButton
+                            type="button"
+                            onClick={() => {
+                              handleConfirmDialogOpen({
+                                callback: () => {
+                                  stakeholderService.remove(values.id);
+                                  setNextUrl("/verificationadmin");
+                                  handleSubmit();
+                                },
+                              });
+                            }}
+                            label="Delete"
+                            disabled={!user.isAdmin || !values.id}
                             style={{ margin: "auto 0.5em" }}
                           />
                         </div>

@@ -147,7 +147,7 @@ export const claim = async (id, userLoginId, setClaimed, loginId) => {
 
 // delete user-created job
 export const remove = async (id) => {
-  const response = await axios.post(`${baseUrl}/${id}`, {
+  const response = await axios.delete(`${baseUrl}/${id}`, {
     id,
   });
   return response.data;

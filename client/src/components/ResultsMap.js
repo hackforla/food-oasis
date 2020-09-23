@@ -78,7 +78,7 @@ function Map({
       xs={12}
       md={8}
       className={classes.map}
-      style={{ height: isWindowWide ? "100%" : "50%" }}
+      style={{ height: isWindowWide || isMobile ? "100%" : "50%" }}
     >
       <ReactMapGL
         {...viewport}
@@ -136,6 +136,7 @@ Map.propTypes = {
   categoryIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   selectedLatitude: PropTypes.number.isRequired,
   selectedLongitude: PropTypes.number.isRequired,
+  isMobile: PropTypes.bool,
 };
 
 export default Map;

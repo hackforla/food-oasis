@@ -16,6 +16,7 @@ import {
   FOOD_PANTRY_CATEGORY_ID,
   DEFAULT_CATEGORIES,
 } from "../constants/stakeholder";
+import SwitchViewsButton from "./SwitchViewsButton";
 
 const useStyles = makeStyles((theme) => ({
   filterGroup: {
@@ -47,7 +48,6 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("xs")]: {
       padding: ".6rem .6rem",
       margin: ".3rem",
-      marginTop: "1rem",
       fontSize: "max(.8vw,12px)",
       borderRadius: "5px !important",
     },
@@ -62,7 +62,6 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("xs")]: {
       padding: ".4rem",
       margin: ".3rem",
-      marginTop: "1rem",
     },
   },
   menuItems: {
@@ -117,6 +116,9 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonHolder: {
     display: "flex",
+    [theme.breakpoints.down("xs")]: {
+      marginTop: "1rem",
+    },
   },
 }));
 
@@ -139,6 +141,9 @@ const ResultsFilters = ({
   categoryIds,
   toggleCategory,
   viewPortHash,
+  isMobile,
+  isMapView,
+  switchResultsView,
 }) => {
   const classes = useStyles();
 
@@ -329,6 +334,13 @@ const ResultsFilters = ({
           </Button>
         </Grid>
         <Grid item>
+          {isMobile && (
+            <SwitchViewsButton
+              isMapView={isMapView}
+              onClick={switchResultsView}
+              color="white"
+            />
+          )}
           {/* <Button
             className={classes.filterGroupButton}
             style={{

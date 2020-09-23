@@ -1044,11 +1044,29 @@ const update = async (model) => {
   }
 };
 
-const remove = (id) => {
-  const sql = `delete from stakeholder where id = ${id}`;
-  return pool.query(sql).then((res) => {
-    return res;
-  });
+const remove = async (id) => {
+  // TODO: Could move this to a stored procedure
+  try {
+    await pool.query("BEGIN");
+    await pool.query(
+      "delete from stakeholder_schedule where stakeholder_id = $1",
+      [Number(id)]
+    );
+    await pool.query(
+      "delete from stakeholder_category where stakeholder_id = $1",
+      [Number(id)]
+    );
+    await pool.query("delete from stakeholder where id = $1", [Number(id)]);
+    await pool.query("delete from stakeholder_log where id = $1", [Number(id)]);
+    await pool.query("delete from stakeholder_best where id = $1", [
+      Number(id),
+    ]);
+    await pool.query("COMMIT");
+    return true;
+  } catch (e) {
+    await pool.query("ROLLBACK");
+    throw e;
+  }
 };
 
 // we can either search in the stakeholder or stakeholder_best

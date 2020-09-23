@@ -1,23 +1,34 @@
 # How to work with Postgres
 
-Several cloud hosts have free Postgres hosting. We are currently using a free
-Postgres instance on Heroku.
+Several cloud hosts have free Postgres hosting. We are currently hosting our
+_production_ and _shared development_ databases on Amazon Web Services (AWS).
 
-To just run the application, you will not need to install any postgres applications on your machine.
-
-The application does, however, need connection information to connect to the cloud
-database, and the connection information should not be kept in a public GitHub repo.
+To just run the application, you will not need to install any postgres-related
+software on your machine, but you will need connection information to connect to the cloud
+database, and the connection information cannot be kept in a public GitHub repo.
 The standard way to do this for a node app is to have a file called .env that
 belongs in the same folder as the node server file (server.js), but is listed
 in the .gitignore file, so that it is not in the public repo. We need to
 distribute this file to each member of the team via a more secure channel.
+
+You will need to contact one of the developers to get access to the .env
+file with the database connection information. In the two cloud databases, the application should always use the Postgres user _appuser_ to connect to the
+database, as it has the permissions needed to run the application. The _postgres_ user has root-level permissions, which may be required to perform database migrations, etc.
+If you need to connect with database development and adminstration tools such as pgAdmin or DBeaver, you can use
+these login credentials with care. Only developers involved
+in database administration and production support will need
+the production credentials.
+
+If you are working on issues that require modification of the
+datbase schema or data, you should do your development with
+a _local development database_ as described next.
 
 ## Installing Postgres locally and/or installing Postgres utilities
 
 You can install Postgres by installing the package from here:
 https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
 
-This will install pgAdmin, a good administration tool which allows you to connect
+This will install the database engine itself, as well as _pgAdmin_, a good administration tool which allows you to connect
 to Postgres databases, view data, etc.
 
 To use these utilities from your terminal, you will need to add the appropriate folder to
@@ -42,6 +53,25 @@ C:\Program Files\PostgreSQL\12\lib
 ```
 
 to your path.
+
+## Connecting to Postgres from psql
+
+To establish a connection to a PostgreSQL database named `food` on the local database instance `localhost` on the default port `5432` as user `postgres` with password `pgpass` using the command-line utility _psql_:
+
+```
+psql --host localhost --port 5432 -U postgres --d food --password
+```
+
+which should prompt you for the password. Using the
+more concise single-character command line options, the above command would be
+
+```
+psql -h localhost -p 5432 -U postgres -d food -W
+```
+
+If you omit any of the connection parameters, the command will look for environment variables for the missing parts. On Windows running a Git Bash terminal, you can set the environment variables PGHOST, PGDATABASE, PGPORT, PGUSERNAME and PGPASSWORD to the appropriate values, restart VSCode and/or your Git Bash shell, and simply type `psql` to login to your database. (You could set these in your ~/.bash_profile file instead, but by setting them in Windows, you can also use psql from a Windows command line as well as the bash shell.)
+
+If you ever work with more than one set of database credentials, then the problem with environment variables is that there is only one set of them, so we need a way to conveniently store multiple sets of database credentials securely - this is what .pgpass is for.
 
 ## Moving a Postgres Database
 

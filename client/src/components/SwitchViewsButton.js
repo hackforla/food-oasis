@@ -3,9 +3,17 @@ import { Button } from "@material-ui/core";
 import MapIcon from "@material-ui/icons/Map";
 import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
 
-export default function SwitchViewsButton({ isMapView, onClick }) {
+export default function SwitchViewsButton({
+  isMapView,
+  onClick,
+  color = "primary",
+}) {
   return (
-    <Button onClick={onClick} title={`Go to ${isMapView ? "List" : "Map"}`}>
+    <Button
+      onClick={onClick}
+      title={`Go to ${isMapView ? "List" : "Map"}`}
+      style={{ color }}
+    >
       {isMapView && (
         <>
           <span style={{ fontSize: "1rem", marginRight: ".5rem" }}>List</span>

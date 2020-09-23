@@ -42,6 +42,9 @@ export default function ResultsContainer(props) {
   const [isMobile, changeMobile] = React.useState(
     mobileTest.test(navigator.userAgent) ? true : false
   );
+  const [isMapView, setIsMapView] = React.useState(true);
+
+  const switchResultsView = () => setIsMapView(!isMapView);
 
   React.useEffect(() => {
     const sortOrganizations = (a, b) => {
@@ -161,34 +164,41 @@ export default function ResultsContainer(props) {
         setIsPopupOpen={setIsPopupOpen}
         doSelectStakeholder={doSelectStakeholder}
         viewPortHash={viewPortHash}
+        isMobile={isMobile}
+        isMapView={isMapView}
+        switchResultsView={switchResultsView}
       />
       <Grid item container spacing={0} className={classes.listMapContainer}>
-        <ResultsList
-          selectedStakeholder={selectedStakeholder}
-          doSelectStakeholder={doSelectStakeholder}
-          stakeholders={sortedData}
-          setSelectedPopUp={setSelectedPopUp}
-          setIsPopupOpen={setIsPopupOpen}
-          isWindowWide={isWindowWide}
-          viewport={viewport}
-          setViewport={setViewport}
-          setToast={setToast}
-        />
-        <ResultsMap
-          selectedLatitude={initialCoords.latitude}
-          selectedLongitude={initialCoords.longitude}
-          viewport={viewport}
-          setViewport={setViewport}
-          stakeholders={data}
-          doSelectStakeholder={doSelectStakeholder}
-          categoryIds={categoryIds}
-          selectedPopUp={selectedPopUp}
-          setSelectedPopUp={setSelectedPopUp}
-          isPopupOpen={isPopupOpen}
-          setIsPopupOpen={setIsPopupOpen}
-          isWindowWide={isWindowWide}
-          isMobile={isMobile}
-        />
+        {(!isMobile || (isMobile && !isMapView)) && (
+          <ResultsList
+            selectedStakeholder={selectedStakeholder}
+            doSelectStakeholder={doSelectStakeholder}
+            stakeholders={sortedData}
+            setSelectedPopUp={setSelectedPopUp}
+            setIsPopupOpen={setIsPopupOpen}
+            viewport={viewport}
+            setViewport={setViewport}
+            setToast={setToast}
+            isMobile={isMobile}
+          />
+        )}
+        {(!isMobile || (isMobile && isMapView)) && (
+          <ResultsMap
+            selectedLatitude={initialCoords.latitude}
+            selectedLongitude={initialCoords.longitude}
+            viewport={viewport}
+            setViewport={setViewport}
+            stakeholders={data}
+            doSelectStakeholder={doSelectStakeholder}
+            categoryIds={categoryIds}
+            selectedPopUp={selectedPopUp}
+            setSelectedPopUp={setSelectedPopUp}
+            isPopupOpen={isPopupOpen}
+            setIsPopupOpen={setIsPopupOpen}
+            isWindowWide={isWindowWide}
+            isMobile={isMobile}
+          />
+        )}
       </Grid>
     </>
   );

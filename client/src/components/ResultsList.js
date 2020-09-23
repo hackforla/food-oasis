@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import SelectedStakeholderDisplay from "./ResultsSelectedStakeholder";
 import PropTypes from "prop-types";
 import moment from "moment";
@@ -14,9 +14,7 @@ import {
 } from "../constants/stakeholder";
 import { ORGANIZATION_COLORS, CLOSED_COLOR } from "../constants/map";
 
-const { useRef } = React;
-
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme, props) => ({
   list: {
     textAlign: "center",
     fontSize: "12px",
@@ -26,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.down("sm")]: {
       order: 1,
-      height: "30em",
+      height: (props) => (props.isMobile ? "100%" : "30em"),
     },
   },
   stakeholderArrayHolder: {
@@ -172,8 +170,9 @@ const ResultsList = ({
   viewport,
   setViewport,
   setToast,
+  isMobile,
 }) => {
-  const classes = useStyles();
+  const classes = useStyles({ isMobile });
 
   const handleStakeholderClick = (stakeholder) => {
     doSelectStakeholder(stakeholder);
@@ -303,6 +302,7 @@ ResultsList.propTypes = {
   selectedStakeholder: PropTypes.object,
   stakeholders: PropTypes.arrayOf(PropTypes.object),
   setToast: PropTypes.func,
+  isMobile: PropTypes.bool,
 };
 
 export default ResultsList;

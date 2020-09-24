@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
+import { Close, Search } from "@material-ui/icons";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import {
@@ -11,6 +12,18 @@ import {
   inactiveButtonColor,
   inactiveButtonTextColor,
 } from "../theme/colors";
+
+/**
+ * Mapping for logo params to components.
+ * Values equal Material UI Icon names:
+ * https://material-ui.com/components/material-icons/
+ *
+ * Consider moving to external file, if this list grows.
+ */
+const LogoParamMap = {
+  close: Close,
+  search: Search,
+};
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -63,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const PrimaryButton = (props) => {
-  let { children, color, variant, size, disabled } = props;
+  let { children, color, disabled, logo, size, variant } = props;
 
   let showBigText = false;
 
@@ -71,11 +84,21 @@ const PrimaryButton = (props) => {
 
   // default size to medium
   size = !size || typeof size === "undefined" ? "medium" : size;
+  // set logo size based on button size
+  let logoSize = size === "medium" ? "small" : "default";
 
   // condition for when button text should be set to big
   if ((size === "large" || size === "medium") && variant === "text") {
     showBigText = true;
   }
+
+  const renderLogo = () => {
+    if (Object.prototype.hasOwnProperty.call(LogoParamMap, logo)) {
+      const Logo = LogoParamMap[logo];
+      return <Logo fontSize={logoSize} />;
+    }
+    return null;
+  };
 
   return (
     <Button
@@ -95,6 +118,7 @@ const PrimaryButton = (props) => {
       disabled={disabled}
       {...props}
     >
+      {logo && renderLogo()}
       {children}
     </Button>
   );

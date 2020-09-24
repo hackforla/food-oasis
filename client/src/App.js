@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { ThemeProvider } from "@material-ui/core/styles";
+import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 import theme from "theme/materialUI";
 import { UserContext } from "components/user-context";
@@ -30,7 +30,7 @@ import Home from "./containers/Home";
 import ResultsContainer from "./components/ResultsContainer";
 import Suggestion from "./components/Suggestion";
 import { logout } from "./services/account-service";
-import { makeStyles } from "@material-ui/core/styles";
+import newTheme from "./theme/newTheme";
 
 const useStyles = makeStyles({
   app: (props) => ({
@@ -187,9 +187,11 @@ function App() {
                 />
               </Route>
               <Route path="/organizationedit/:id?">
-                <div className={classes.stakeholderEditWrapper}>
-                  <StakeholderEdit setToast={setToast} user={user} />
-                </div>
+                <ThemeProvider theme={newTheme}>
+                  <div className={classes.stakeholderEditWrapper}>
+                    <StakeholderEdit setToast={setToast} user={user} />
+                  </div>
+                </ThemeProvider>
               </Route>
               <Route path="/verificationdashboard">
                 <div className={classes.verificationAdminWrapper}>
@@ -200,12 +202,14 @@ function App() {
                 </div>
               </Route>
               <Route path="/verificationadmin">
-                <div className={classes.verificationAdminWrapper}>
-                  <VerificationAdmin
-                    user={user}
-                    userCoordinates={userCoordinates}
-                  />
-                </div>
+                <ThemeProvider theme={newTheme}>
+                  <div className={classes.verificationAdminWrapper}>
+                    <VerificationAdmin
+                      user={user}
+                      userCoordinates={userCoordinates}
+                    />
+                  </div>
+                </ThemeProvider>
               </Route>
               <Route path="/securityadmindashboard">
                 <div className={classes.verificationAdminWrapper}>

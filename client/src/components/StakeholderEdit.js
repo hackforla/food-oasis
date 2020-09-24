@@ -33,14 +33,14 @@ import { useCategories } from "../hooks/useCategories/useCategories";
 import * as esriService from "../services/esri_service";
 import OpenTimeForm from "./OpenTimeForm";
 import { TabPanel, a11yProps } from "./TabPanel";
-import { PlainButton, SearchButton, VerifyButton } from "./Buttons";
+import { PlainButton, VerifyButton } from "./Buttons";
 import AssignDialog from "./Verification/AssignDialog";
 import ConfirmDialog from "./ConfirmDialog";
 import {
   VERIFICATION_STATUS,
   VERIFICATION_STATUS_NAMES,
 } from "../constants/stakeholder";
-import { TextInput } from "../ui/index";
+import { PrimaryButton, TextInput } from "../ui/index";
 
 import moment from "moment";
 
@@ -874,19 +874,22 @@ const StakeholderEdit = (props) => {
                         >
                           <BigTooltip title="Click to get latitude / longitude for address">
                             <Grid item>
-                              <SearchButton
+                              <PrimaryButton
                                 onClick={() => {
                                   (geocodeResults && geocodeResults.length) < 1
                                     ? geocode(values)
                                     : setGeocodeResults([]);
                                 }}
-                                label={
-                                  (geocodeResults && geocodeResults.length) < 1
-                                    ? "Get Coordinates"
-                                    : "Close"
-                                }
+                                logo="search"
                                 style={{ marginTop: "1.2em" }}
-                              />
+                              >
+                                {(geocodeResults && geocodeResults.length) <
+                                1 ? (
+                                  <>Get Coordinates</>
+                                ) : (
+                                  <>Close</>
+                                )}
+                              </PrimaryButton>
                             </Grid>
                           </BigTooltip>
                           <div className={classes.confirmCheckboxWrapper}>
@@ -1714,13 +1717,14 @@ const StakeholderEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <PlainButton
+                          <PrimaryButton
                             type="submit"
-                            label="Save Progress"
                             className={classes.submit}
                             disabled={isSubmitting || isUnchanged(values)}
                             style={{ margin: "auto 0.5em" }}
-                          />
+                          >
+                            Save Progress
+                          </PrimaryButton>
                         </div>
                       </BigTooltip>
                       <BigTooltip title="Mark for re-verification">
@@ -1733,7 +1737,7 @@ const StakeholderEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <PlainButton
+                          <PrimaryButton
                             type="button"
                             onClick={() => {
                               setFieldValue("reviewedLoginId", "");
@@ -1753,14 +1757,15 @@ const StakeholderEdit = (props) => {
                               setNextUrl("/verificationadmin");
                               handleSubmit();
                             }}
-                            label="Needs Verification"
                             disabled={
                               isSubmitting ||
                               values.verifivation_status_id ===
                                 VERIFICATION_STATUS.NEEDS_VERIFICATION
                             }
                             style={{ margin: "auto 0.5em" }}
-                          />
+                          >
+                            Needs Verification
+                          </PrimaryButton>
                         </div>
                       </BigTooltip>
                       <BigTooltip title="Assign for Verification">
@@ -1773,7 +1778,7 @@ const StakeholderEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <PlainButton
+                          <PrimaryButton
                             type="button"
                             onClick={() => {
                               handleAssignDialogOpen({
@@ -1792,14 +1797,15 @@ const StakeholderEdit = (props) => {
                                 },
                               });
                             }}
-                            label="(Re-)Assign"
                             disabled={
                               isSubmitting ||
                               values.verification_status_id ===
                                 VERIFICATION_STATUS.SUBMITTED
                             }
                             style={{ margin: "auto 0.5em" }}
-                          />
+                          >
+                            (Re-)Assign
+                          </PrimaryButton>
                         </div>
                       </BigTooltip>
                       <BigTooltip
@@ -1814,7 +1820,7 @@ const StakeholderEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <PlainButton
+                          <PrimaryButton
                             type="button"
                             onClick={() => {
                               setFieldValue(
@@ -1834,14 +1840,15 @@ const StakeholderEdit = (props) => {
                               setNextUrl("/verificationadmin");
                               handleSubmit();
                             }}
-                            label="Request Changes"
                             disabled={
                               isSubmitting ||
                               !values.submittedDate ||
                               values.verificationStatusId !== 3
                             }
                             style={{ margin: "auto 0.5em" }}
-                          />
+                          >
+                            Request Changes
+                          </PrimaryButton>
                         </div>
                       </BigTooltip>
                       <BigTooltip title="Approve as Verified">
@@ -1854,7 +1861,7 @@ const StakeholderEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <PlainButton
+                          <PrimaryButton
                             type="button"
                             onClick={() => {
                               setFieldValue("approvedDate", moment());
@@ -1870,14 +1877,15 @@ const StakeholderEdit = (props) => {
                               setNextUrl("/verificationadmin");
                               handleSubmit();
                             }}
-                            label="Approve"
                             disabled={
                               isSubmitting ||
                               !criticalFieldsValidate(values) ||
                               (user.isCoordinator && !user.isAdmin)
                             }
                             style={{ margin: "auto 0.5em" }}
-                          />
+                          >
+                            Approve
+                          </PrimaryButton>
                         </div>
                       </BigTooltip>
                       <BigTooltip title="Delete Organization from Database Permanently">

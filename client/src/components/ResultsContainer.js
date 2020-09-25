@@ -204,6 +204,7 @@ export default function ResultsContainer(props) {
             categoryIds={categoryIds}
             isWindowWide={isWindowWide}
             isMobile={isMobile}
+            setToast={setToast}
           />
         )}
       </Grid>

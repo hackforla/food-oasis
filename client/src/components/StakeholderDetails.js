@@ -13,21 +13,21 @@ import SuggestionDialog from "./SuggestionDialog";
 import { PlainButton } from "./Buttons";
 import getIcon from "../helpers/getIcon";
 
-const useStyles = makeStyles((theme) => ({
-  stakeholderHolder: {
-    width: "80%",
-    display: "inherit",
-    flexDirection: "inherit",
+const useStyles = makeStyles((theme, props) => ({
+  stakeholder: {
+    width: (props) => (props.inList ? "80%" : "100%"),
+    display: "flex",
+    flexDirection: "column",
     justifyContent: "space-between",
-    padding: "1em 0",
+    padding: (props) => (props.inList ? "1em 0" : "1em"),
     alignItems: "center",
   },
-  topInfoHolder: {
+  topInfo: {
     width: "100%",
     display: "inherit",
     justifyContent: "inherit",
   },
-  imgHolder: {
+  img: {
     display: "inherit",
     justifyContent: "center",
     alignItems: "center",
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   typeLogo: {
     width: "72px",
   },
-  infoHolder: {
+  info: {
     fontSize: "1.1em",
     textAlign: "left",
     width: "60%",
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "space-between",
   },
-  checkHolder: {
+  check: {
     width: "10%",
     display: "flex",
     flexDirection: "column",
@@ -83,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: "flex-start",
     textAlign: "left",
   },
-  iconHolder: {
+  icon: {
     display: "flex",
     alignSelf: "flex-start",
   },
@@ -95,7 +95,7 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: "flex-start",
     margin: "1em 0 0 0",
   },
-  labelHolder: {
+  label: {
     width: "100%",
     display: "flex",
     flexDirection: "column",
@@ -113,8 +113,9 @@ const StakeholderDetails = ({
   doSelectStakeholder,
   selectedStakeholder,
   setToast,
+  inList = false,
 }) => {
-  const classes = useStyles();
+  const classes = useStyles({ inList });
   const [SuggestionDialogOpen, setSuggestionDialogOpen] = useState(false);
 
   const handleSuggestionDialogOpen = async () => {
@@ -190,7 +191,7 @@ const StakeholderDetails = ({
   };
 
   return (
-    <div className={classes.stakeholderHolder}>
+    <div className={classes.stakeholder}>
       <SuggestionDialog
         id="assign-dialog"
         keepMounted
@@ -199,9 +200,9 @@ const StakeholderDetails = ({
         stakeholder={selectedStakeholder}
         setToast={setToast}
       />
-      <div className={classes.topInfoHolder}>
-        <div className={classes.imgHolder}>{getIcon(selectedStakeholder)}</div>
-        <div className={classes.infoHolder}>
+      <div className={classes.topInfo}>
+        <div className={classes.img}>{getIcon(selectedStakeholder)}</div>
+        <div className={classes.info}>
           <span>{selectedStakeholder.name}</span>
           <span>{selectedStakeholder.address1}</span>
           <div>
@@ -226,7 +227,7 @@ const StakeholderDetails = ({
               {category.name}
             </em>
           ))}
-          <div className={classes.labelHolder}>
+          <div className={classes.label}>
             {selectedStakeholder.inactiveTemporary ||
             selectedStakeholder.inactive ? (
               <em className={classes.closedLabel}>
@@ -237,7 +238,7 @@ const StakeholderDetails = ({
             ) : null}
           </div>
         </div>
-        <div className={classes.checkHolder}>
+        <div className={classes.check}>
           {selectedStakeholder.distance >= 10
             ? selectedStakeholder.distance
                 .toString()
@@ -452,7 +453,7 @@ const StakeholderDetails = ({
       {selectedStakeholder.facebook || selectedStakeholder.instagram ? (
         <React.Fragment>
           <h2 className={classes.title}>Social Media</h2>
-          <div className={classes.iconHolder}>
+          <div className={classes.icon}>
             {selectedStakeholder.facebook ? (
               <a
                 className={classes.icons}

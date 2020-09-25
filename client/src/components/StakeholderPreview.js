@@ -14,7 +14,7 @@ const useStyles = makeStyles((props) => ({
   stakeholder: {
     width: (props) => (props.inList ? "80%" : "100%"),
     minHeight: "6em",
-    display: (props) => (props.inList ? "inherit" : "flex"),
+    display: "flex",
     justifyContent: "space-between",
     alignItems: (props) => (props.inList ? "center" : "flex-start"),
     padding: "1em 0",

@@ -45,6 +45,7 @@ const ResultsList = ({
       <div ref={listRef}></div>
       {stakeholders && selectedStakeholder && !selectedStakeholder.inactive ? (
         <StakeholderDetails
+          inList
           doSelectStakeholder={doSelectStakeholder}
           selectedStakeholder={selectedStakeholder}
           setToast={setToast}

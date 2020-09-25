@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import ReactMapGL, { NavigationControl } from "react-map-gl";
 import { Grid } from "@material-ui/core";
@@ -17,6 +17,7 @@ import {
   MEAL_PROGRAM_CATEGORY_ID,
 } from "../constants/stakeholder";
 import StakeholderPreview from "./StakeholderPreview";
+import StakeholderDetails from "./StakeholderDetails";
 
 const styles = {
   geolocate: {
@@ -56,20 +57,29 @@ function Map({
   isMobile,
   viewport,
   setViewport,
+  setToast,
 }) {
   const classes = useStyles();
   const categoryIdsOrDefault = categoryIds.length
     ? categoryIds
     : DEFAULT_CATEGORIES;
 
-  const handleMarkerClick = (clickedStakeholder) => {
-    doSelectStakeholder(clickedStakeholder);
-    // setViewport({
-    //   ...viewport,
-    //   latitude: clickedStakeholder.latitude,
-    //   longitude: clickedStakeholder.longitude,
-    // });
+  const [showDetails, setShowDetails] = useState(false);
+
+  const unselectStakeholder = () => {
+    setShowDetails(false);
+    doSelectStakeholder(null);
   };
+
+  if (showDetails && isMobile && selectedStakeholder) {
+    return (
+      <StakeholderDetails
+        doSelectStakeholder={unselectStakeholder}
+        selectedStakeholder={selectedStakeholder}
+        setToast={setToast}
+      />
+    );
+  }
 
   return (
     <>
@@ -120,7 +130,7 @@ function Map({
                     : ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID];
                 return (
                   <Marker
-                    onClick={() => handleMarkerClick(stakeholder)}
+                    onClick={() => doSelectStakeholder(stakeholder)}
                     key={`marker-${index}`}
                     longitude={stakeholder.longitude}
                     latitude={stakeholder.latitude}
@@ -141,7 +151,13 @@ function Map({
         </ReactMapGL>
       </Grid>
       {!!selectedStakeholder && isMobile && (
-        <Grid item xs={12} md={8} className={classes.preview}>
+        <Grid
+          item
+          xs={12}
+          md={8}
+          className={classes.preview}
+          onClick={() => setShowDetails(true)}
+        >
           <StakeholderPreview
             doSelectStakeholder={doSelectStakeholder}
             stakeholder={selectedStakeholder}

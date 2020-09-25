@@ -16,6 +16,7 @@ import {
   FOOD_PANTRY_CATEGORY_ID,
   MEAL_PROGRAM_CATEGORY_ID,
 } from "../constants/stakeholder";
+import StakeholderPreview from "./StakeholderPreview";
 
 const styles = {
   geolocate: {
@@ -40,6 +41,9 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       order: 0,
     },
+  },
+  preview: {
+    margin: "0 1em",
   },
 }));
 
@@ -68,64 +72,83 @@ function Map({
   };
 
   return (
-    <Grid
-      item
-      xs={12}
-      md={8}
-      className={classes.map}
-      style={{ height: isWindowWide || isMobile ? "100%" : "50%" }}
-    >
-      <ReactMapGL
-        {...viewport}
-        /* dragPan={isWindowWide && isMobile ? false : true} */
-        // touchAction="pan-y pinch-zoom"
-        width="100%"
-        height="100%"
-        onViewportChange={(newViewport) => setViewport(newViewport)}
-        mapboxApiAccessToken={MAPBOX_TOKEN}
-        mapStyle={MAPBOX_STYLE}
+    <>
+      <Grid
+        item
+        xs={12}
+        md={8}
+        className={classes.map}
+        style={{
+          height:
+            isWindowWide || isMobile
+              ? isMobile && !!selectedStakeholder
+                ? `calc(100% - 130px)`
+                : "100%"
+              : "50%",
+        }}
       >
-        <div style={styles.navigationControl}>
-          <NavigationControl showCompass={false} />
-        </div>
-        {stakeholders &&
-          stakeholders
-            .filter((sh) => sh.latitude && sh.longitude)
-            .map((stakeholder, index) => {
-              const isVerified = stakeholder.verificationStatusId === 4;
+        <ReactMapGL
+          {...viewport}
+          /* dragPan={isWindowWide && isMobile ? false : true} */
+          // touchAction="pan-y pinch-zoom"
+          width="100%"
+          height="100%"
+          onViewportChange={(newViewport) => setViewport(newViewport)}
+          mapboxApiAccessToken={MAPBOX_TOKEN}
+          mapStyle={MAPBOX_STYLE}
+        >
+          <div style={styles.navigationControl}>
+            <NavigationControl showCompass={false} />
+          </div>
+          {stakeholders &&
+            stakeholders
+              .filter((sh) => sh.latitude && sh.longitude)
+              .map((stakeholder, index) => {
+                const isVerified = stakeholder.verificationStatusId === 4;
 
-              const categories = stakeholder.categories.filter(({ id }) => {
-                return categoryIdsOrDefault.includes(id);
-              });
+                const categories = stakeholder.categories.filter(({ id }) => {
+                  return categoryIdsOrDefault.includes(id);
+                });
 
-              const color =
-                stakeholder.inactiveTemporary || stakeholder.inactive
-                  ? CLOSED_COLOR
-                  : categories.find(({ id }) => id === MEAL_PROGRAM_CATEGORY_ID)
-                  ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
-                  : ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID];
-              return (
-                <Marker
-                  onClick={() => handleMarkerClick(stakeholder)}
-                  key={`marker-${index}`}
-                  longitude={stakeholder.longitude}
-                  latitude={stakeholder.latitude}
-                  isVerified={isVerified}
-                  color={color}
-                  categories={stakeholder.categories}
-                  inactive={stakeholder.inactive}
-                  inactiveTemporary={stakeholder.inactiveTemporary}
-                />
-              );
-            })}
-        {!!selectedStakeholder && (
-          <MarkerPopup
-            entity={selectedStakeholder}
-            handleClose={doSelectStakeholder}
+                const color =
+                  stakeholder.inactiveTemporary || stakeholder.inactive
+                    ? CLOSED_COLOR
+                    : categories.find(
+                        ({ id }) => id === MEAL_PROGRAM_CATEGORY_ID
+                      )
+                    ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
+                    : ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID];
+                return (
+                  <Marker
+                    onClick={() => handleMarkerClick(stakeholder)}
+                    key={`marker-${index}`}
+                    longitude={stakeholder.longitude}
+                    latitude={stakeholder.latitude}
+                    isVerified={isVerified}
+                    color={color}
+                    categories={stakeholder.categories}
+                    inactive={stakeholder.inactive}
+                    inactiveTemporary={stakeholder.inactiveTemporary}
+                  />
+                );
+              })}
+          {!!selectedStakeholder && (
+            <MarkerPopup
+              entity={selectedStakeholder}
+              handleClose={doSelectStakeholder}
+            />
+          )}
+        </ReactMapGL>
+      </Grid>
+      {!!selectedStakeholder && isMobile && (
+        <Grid item xs={12} md={8} className={classes.preview}>
+          <StakeholderPreview
+            doSelectStakeholder={doSelectStakeholder}
+            stakeholder={selectedStakeholder}
           />
-        )}
-      </ReactMapGL>
-    </Grid>
+        </Grid>
+      )}
+    </>
   );
 }
 

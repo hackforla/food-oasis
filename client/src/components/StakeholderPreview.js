@@ -8,15 +8,17 @@ import {
   FOOD_PANTRY_CATEGORY_ID,
 } from "../constants/stakeholder";
 import { ORGANIZATION_COLORS, CLOSED_COLOR } from "../constants/map";
+import getIcon from "../helpers/getIcon";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((props) => ({
   stakeholder: {
-    width: "80%",
+    width: (props) => (props.inList ? "80%" : "100%"),
     minHeight: "6em",
-    display: "inherit",
+    display: (props) => (props.inList ? "inherit" : "flex"),
     justifyContent: "space-between",
+    alignItems: (props) => (props.inList ? "center" : "flex-start"),
     padding: "1em 0",
-    borderBottom: " .2em solid #f1f1f1",
+    borderBottom: (props) => (props.inList ? " .2em solid #f1f1f1" : "none"),
   },
   img: {
     display: "inherit",
@@ -24,7 +26,7 @@ const useStyles = makeStyles(() => ({
     alignItems: "center",
   },
   info: {
-    fontSize: "1.1em",
+    fontSize: "1em",
     textAlign: "left",
     width: "60%",
     display: "inherit",
@@ -125,9 +127,9 @@ const isAlmostClosed = (hours) => {
 const StakeholderPreview = ({
   stakeholder,
   doSelectStakeholder,
-  iconReturn,
+  inList = false,
 }) => {
-  const classes = useStyles();
+  const classes = useStyles({ inList });
 
   const stakeholderHours = stakeholdersCurrentDaysHours(stakeholder);
   const isOpenFlag = !!stakeholderHours;
@@ -141,7 +143,7 @@ const StakeholderPreview = ({
       key={stakeholder.id}
       onClick={() => doSelectStakeholder(stakeholder)}
     >
-      <div className={classes.img}>{iconReturn(stakeholder)}</div>
+      <div className={classes.img}>{getIcon(stakeholder)}</div>
       <div className={classes.info}>
         <span>{stakeholder.name}</span>
         <span>{stakeholder.address1}</span>
@@ -212,7 +214,7 @@ const StakeholderPreview = ({
 StakeholderPreview.propTypes = {
   stakeholder: PropTypes.object.isRequired,
   doSelectStakeholder: PropTypes.func.isRequired,
-  iconReturn: PropTypes.func.isRequired,
+  inList: PropTypes.bool,
 };
 
 export default StakeholderPreview;

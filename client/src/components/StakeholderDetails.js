@@ -11,6 +11,7 @@ import {
 import { ORGANIZATION_COLORS, CLOSED_COLOR } from "../constants/map";
 import SuggestionDialog from "./SuggestionDialog";
 import { PlainButton } from "./Buttons";
+import getIcon from "../helpers/getIcon";
 
 const useStyles = makeStyles((theme) => ({
   stakeholderHolder: {
@@ -111,7 +112,6 @@ const useStyles = makeStyles((theme) => ({
 const StakeholderDetails = ({
   doSelectStakeholder,
   selectedStakeholder,
-  iconReturn,
   setToast,
 }) => {
   const classes = useStyles();
@@ -200,9 +200,7 @@ const StakeholderDetails = ({
         setToast={setToast}
       />
       <div className={classes.topInfoHolder}>
-        <div className={classes.imgHolder}>
-          {iconReturn(selectedStakeholder)}
-        </div>
+        <div className={classes.imgHolder}>{getIcon(selectedStakeholder)}</div>
         <div className={classes.infoHolder}>
           <span>{selectedStakeholder.name}</span>
           <span>{selectedStakeholder.address1}</span>

@@ -24,14 +24,19 @@ const styles = {
     left: 0,
     margin: 10,
   },
-  navigationControl: { position: "absolute", top: 0, right: 0, margin: 10 },
+  navigationControl: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    margin: 10,
+    zIndex: 5,
+  },
 };
 
 const useStyles = makeStyles((theme) => ({
   map: {
     textAlign: "center",
     fontSize: "12px",
-    // height: "100%",
     [theme.breakpoints.down("sm")]: {
       order: 0,
     },
@@ -42,10 +47,7 @@ function Map({
   stakeholders,
   categoryIds,
   doSelectStakeholder,
-  selectedPopUp,
-  setSelectedPopUp,
-  isPopupOpen,
-  setIsPopupOpen,
+  selectedStakeholder,
   isWindowWide,
   isMobile,
   viewport,
@@ -57,19 +59,12 @@ function Map({
     : DEFAULT_CATEGORIES;
 
   const handleMarkerClick = (clickedStakeholder) => {
-    setSelectedPopUp(clickedStakeholder);
-    setIsPopupOpen(true);
     doSelectStakeholder(clickedStakeholder);
     // setViewport({
     //   ...viewport,
     //   latitude: clickedStakeholder.latitude,
     //   longitude: clickedStakeholder.longitude,
     // });
-  };
-
-  const handleClose = () => {
-    setIsPopupOpen(false);
-    setSelectedPopUp(null);
   };
 
   return (
@@ -123,8 +118,11 @@ function Map({
                 />
               );
             })}
-        {isPopupOpen && selectedPopUp && (
-          <MarkerPopup entity={selectedPopUp} handleClose={handleClose} />
+        {!!selectedStakeholder && (
+          <MarkerPopup
+            entity={selectedStakeholder}
+            handleClose={doSelectStakeholder}
+          />
         )}
       </ReactMapGL>
     </Grid>

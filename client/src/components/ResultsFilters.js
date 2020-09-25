@@ -129,7 +129,6 @@ const ResultsFilters = ({
   isWindowWide,
   viewport,
   setViewport,
-  setIsPopupOpen,
   doSelectStakeholder,
   origin,
   setOrigin,
@@ -185,7 +184,6 @@ const ResultsFilters = ({
         latitude: origin.latitude,
         longitude: origin.longitude,
       });
-      setIsPopupOpen(false);
       doSelectStakeholder(null);
     },
     [
@@ -199,7 +197,6 @@ const ResultsFilters = ({
       categoryIds,
       isVerifiedSelected,
       setViewport,
-      setIsPopupOpen,
       doSelectStakeholder,
       viewPortHash,
     ]

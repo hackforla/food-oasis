@@ -108,7 +108,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SelectedStakeholderDisplay = ({
+const StakeholderDetails = ({
   doSelectStakeholder,
   selectedStakeholder,
   iconReturn,
@@ -517,4 +517,4 @@ const SelectedStakeholderDisplay = ({
   );
 };
 
-export default SelectedStakeholderDisplay;
+export default StakeholderDetails;

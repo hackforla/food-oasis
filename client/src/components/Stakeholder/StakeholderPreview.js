@@ -1,12 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
-import mapMarker from "images/mapMarker";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
 } from "constants/stakeholder";
+
 import { ORGANIZATION_COLORS, CLOSED_COLOR } from "constants/map";
 import getIcon from "helpers/getIcon";
 
@@ -193,16 +193,6 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
           ? stakeholder.distance.toString().substring(0, 3).padEnd(4, "0")
           : stakeholder.distance.toString().substring(0, 3)}{" "}
         mi
-        {mapMarker(
-          stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID &&
-            stakeholder.categories[1] &&
-            stakeholder.categories[1].id === MEAL_PROGRAM_CATEGORY_ID
-            ? -1
-            : stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
-            ? 0
-            : 1,
-          stakeholder.inactiveTemporary || stakeholder.inactive ? true : false
-        )}
       </div>
     </div>
   );

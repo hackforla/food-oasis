@@ -90,7 +90,7 @@ function Map({
           height:
             isWindowWide || isMobile
               ? isMobile && !!selectedStakeholder
-                ? `calc(100% - 130px)`
+                ? `calc(100% - 120px)`
                 : "100%"
               : "50%",
         }}

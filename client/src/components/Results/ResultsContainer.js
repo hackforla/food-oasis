@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
-import { useOrganizations } from "../hooks/useOrganizations/useOrganizations";
-import ResultsFilters from "./ResultsFilters";
-import ResultsList from "./ResultsList";
-import ResultsMap from "./ResultsMap";
-import useCategoryIds from "../hooks/useCategoryIds";
+
+import { useOrganizations } from "hooks/useOrganizations/useOrganizations";
+import useCategoryIds from "hooks/useCategoryIds";
+import isMobile from "helpers/isMobile";
+
+import Filters from "./ResultsFilters";
+import List from "./ResultsList";
+import Map from "./ResultsMap";
 
 const useStyles = makeStyles((theme) => ({
   filterButton: {
@@ -39,15 +42,11 @@ export default function ResultsContainer(props) {
   const windowSize = window.innerWidth > 960 ? true : false;
   const [isWindowWide, changeWindow] = useState(windowSize);
 
-  const mobileTest = new RegExp("Mobi", "i");
-  const [isMobile, changeMobile] = useState(
-    mobileTest.test(navigator.userAgent) ? true : false
-  );
   const [selectedStakeholder, onSelectStakeholder] = useState(null);
   const [isMapView, setIsMapView] = useState(true);
 
   const doSelectStakeholder = (stakeholder) => {
-    if (stakeholder) {
+    if (stakeholder && !isMobile) {
       setViewport({
         ...viewport,
         latitude: stakeholder.latitude,
@@ -143,16 +142,13 @@ export default function ResultsContainer(props) {
   useEffect(() => {
     const changeInputContainerWidth = () => {
       window.innerWidth > 960 ? changeWindow(true) : changeWindow(false);
-      mobileTest.test(navigator.userAgent)
-        ? changeMobile(true)
-        : changeMobile(false);
     };
 
     window.addEventListener("resize", changeInputContainerWidth);
 
     return () =>
       window.removeEventListener("resize", changeInputContainerWidth);
-  }, [mobileTest]);
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -162,7 +158,7 @@ export default function ResultsContainer(props) {
 
   return (
     <>
-      <ResultsFilters
+      <Filters
         radius={radius}
         setRadius={setRadius}
         origin={origin}
@@ -178,22 +174,20 @@ export default function ResultsContainer(props) {
         setViewport={setViewport}
         doSelectStakeholder={doSelectStakeholder}
         viewPortHash={viewPortHash}
-        isMobile={isMobile}
         isMapView={isMapView}
         switchResultsView={switchResultsView}
       />
       <Grid item container spacing={0} className={classes.listMapContainer}>
         {(!isMobile || (isMobile && !isMapView)) && (
-          <ResultsList
+          <List
             selectedStakeholder={selectedStakeholder}
             doSelectStakeholder={doSelectStakeholder}
             stakeholders={sortedData}
             setToast={setToast}
-            isMobile={isMobile}
           />
         )}
         {(!isMobile || (isMobile && isMapView)) && (
-          <ResultsMap
+          <Map
             selectedLatitude={initialCoords.latitude}
             selectedLongitude={initialCoords.longitude}
             viewport={viewport}
@@ -203,7 +197,6 @@ export default function ResultsContainer(props) {
             selectedStakeholder={selectedStakeholder}
             categoryIds={categoryIds}
             isWindowWide={isWindowWide}
-            isMobile={isMobile}
             setToast={setToast}
           />
         )}

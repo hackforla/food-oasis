@@ -3,21 +3,20 @@ import PropTypes from "prop-types";
 import ReactMapGL, { NavigationControl } from "react-map-gl";
 import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import MarkerPopup from "./MarkerPopup";
-import Marker from "./Marker";
-import { MAPBOX_TOKEN } from "../secrets";
-import {
-  MAPBOX_STYLE,
-  ORGANIZATION_COLORS,
-  CLOSED_COLOR,
-} from "../constants/map";
+
+import { MAPBOX_TOKEN } from "secrets";
+import { MAPBOX_STYLE, ORGANIZATION_COLORS, CLOSED_COLOR } from "constants/map";
 import {
   DEFAULT_CATEGORIES,
   FOOD_PANTRY_CATEGORY_ID,
   MEAL_PROGRAM_CATEGORY_ID,
-} from "../constants/stakeholder";
-import StakeholderPreview from "./StakeholderPreview";
-import StakeholderDetails from "./StakeholderDetails";
+} from "constants/stakeholder";
+import isMobile from "helpers/isMobile";
+
+import StakeholderPreview from "components/Stakeholder/StakeholderPreview";
+import StakeholderDetails from "components/Stakeholder/StakeholderDetails";
+import MarkerPopup from "components/MarkerPopup";
+import Marker from "components/Marker";
 
 const styles = {
   geolocate: {
@@ -54,7 +53,6 @@ function Map({
   doSelectStakeholder,
   selectedStakeholder,
   isWindowWide,
-  isMobile,
   viewport,
   setViewport,
   setToast,
@@ -173,7 +171,6 @@ Map.propTypes = {
   categoryIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   selectedLatitude: PropTypes.number.isRequired,
   selectedLongitude: PropTypes.number.isRequired,
-  isMobile: PropTypes.bool,
 };
 
 export default Map;

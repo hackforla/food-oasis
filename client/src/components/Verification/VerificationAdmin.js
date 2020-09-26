@@ -7,15 +7,15 @@ import { makeStyles } from "@material-ui/core/styles";
 import { SearchButton } from "../Buttons";
 import StakeholderGrid from "./VerificationAdminGrid";
 import { RotateLoader } from "react-spinners";
-import { useOrganizations } from "../../hooks/useOrganizations/useOrganizations";
-import { useCategories } from "../../hooks/useCategories/useCategories";
-import { useTenants } from "../../hooks/useTenants/useTenants";
-import { useNeighborhoods } from "../../hooks/useNeighborhoods/useNeighborhoods";
+import { useOrganizations } from "hooks/useOrganizations/useOrganizations";
+import { useCategories } from "hooks/useCategories/useCategories";
+import { useTenants } from "hooks/useTenants/useTenants";
+import { useNeighborhoods } from "hooks/useNeighborhoods/useNeighborhoods";
 import {
   needsVerification,
   assign,
   exportCsv,
-} from "../../services/stakeholder-service";
+} from "services/stakeholder-service";
 import AssignDialog from "./AssignDialog";
 import NeedsVerificationDialog from "./MessageConfirmDialog";
 import SearchCriteria from "./SearchCriteria";

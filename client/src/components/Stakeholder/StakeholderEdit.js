@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
-import { UserContext } from "./user-context";
+import { UserContext } from "components/user-context";
 import { Formik } from "formik";
-import AccountAutocomplete from "./AccountAutocomplete";
+import AccountAutocomplete from "components/AccountAutocomplete";
 import * as Yup from "yup";
 import {
   AppBar,
@@ -29,18 +29,18 @@ import {
   Tooltip,
   Typography,
 } from "@material-ui/core";
-import * as stakeholderService from "../services/stakeholder-service";
-import { useCategories } from "../hooks/useCategories/useCategories";
-import * as esriService from "../services/esri_service";
-import OpenTimeForm from "./OpenTimeForm";
-import { TabPanel, a11yProps } from "./TabPanel";
-import { PlainButton, SearchButton, VerifyButton } from "./Buttons";
-import AssignDialog from "./Verification/AssignDialog";
-import ConfirmDialog from "./ConfirmDialog";
+import * as stakeholderService from "services/stakeholder-service";
+import { useCategories } from "hooks/useCategories/useCategories";
+import * as esriService from "services/esri_service";
+import OpenTimeForm from "components/OpenTimeForm";
+import { TabPanel, a11yProps } from "components/TabPanel";
+import { PlainButton, SearchButton, VerifyButton } from "components/Buttons";
+import AssignDialog from "components/Verification/AssignDialog";
+import ConfirmDialog from "components/ConfirmDialog";
 import {
   VERIFICATION_STATUS,
   VERIFICATION_STATUS_NAMES,
-} from "../constants/stakeholder";
+} from "constants/stakeholder";
 
 import moment from "moment";
 

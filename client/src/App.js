@@ -3,34 +3,37 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 import theme from "theme/materialUI";
+import { makeStyles } from "@material-ui/core/styles";
+
+import { logout } from "services/account-service";
+import { getTenantId } from "helpers/Configuration";
+
+// Comoponents
 import { UserContext } from "components/user-context";
-import { getTenantId } from "./helpers/Configuration";
 import Toast from "components/Toast";
 import Header from "components/Header";
-import StakeholdersContainer from "components/StakeholdersContainer";
-import VerificationAdmin from "./components/Verification/VerificationAdmin";
-import VerificationDashboard from "./components/Verification/VerificationDashboard";
-import SecurityAdminDashboard from "./components/SecurityAdminDashboard/SecurityAdminDashboard";
-import StakeholderEdit from "./components/StakeholderEdit";
-import Donate from "./components/StaticPages/Donate";
-import About from "./components/StaticPages/About";
-import Faq from "./components/StaticPages/Faq";
-import DonateCA from "./components/StaticPagesCA/Donate";
-import AboutCA from "./components/StaticPagesCA/About";
-import FaqCA from "./components/StaticPagesCA/Faq";
-import Resources from "./components/Resources";
-import Register from "./components/Register";
-import Login from "./components/Login";
-import ForgotPassword from "./components/ForgotPassword";
-import ResetPassword from "./components/ResetPassword";
-import ConfirmEmail from "./components/ConfirmEmail";
-import FaqEdit from "./components/FaqEdit";
-import FaqAdd from "./components/FaqAdd";
-import Home from "./containers/Home";
-import ResultsContainer from "./components/ResultsContainer";
-import Suggestion from "./components/Suggestion";
-import { logout } from "./services/account-service";
-import { makeStyles } from "@material-ui/core/styles";
+import StakeholdersContainer from "components/Stakeholder/StakeholdersContainer";
+import VerificationAdmin from "components/Verification/VerificationAdmin";
+import VerificationDashboard from "components/Verification/VerificationDashboard";
+import SecurityAdminDashboard from "components/SecurityAdminDashboard/SecurityAdminDashboard";
+import StakeholderEdit from "components/Stakeholder/StakeholderEdit";
+import Donate from "components/StaticPages/Donate";
+import About from "components/StaticPages/About";
+import Faq from "components/StaticPages/Faq";
+import DonateCA from "components/StaticPagesCA/Donate";
+import AboutCA from "components/StaticPagesCA/About";
+import FaqCA from "components/StaticPagesCA/Faq";
+import Resources from "components/Resources";
+import Register from "components/Register";
+import Login from "components/Login";
+import ForgotPassword from "components/ForgotPassword";
+import ResetPassword from "components/ResetPassword";
+import ConfirmEmail from "components/ConfirmEmail";
+import FaqEdit from "components/FaqEdit";
+import FaqAdd from "components/FaqAdd";
+import Home from "containers/Home";
+import Results from "components/Results/ResultsContainer";
+import Suggestion from "components/Suggestion";
 
 const useStyles = makeStyles({
   app: (props) => ({
@@ -171,7 +174,7 @@ function App() {
                 </div>
               </Route>
               <Route path="/organizations">
-                <ResultsContainer
+                <Results
                   userCoordinates={userCoordinates}
                   userSearch={origin}
                   setToast={setToast}

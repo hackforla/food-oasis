@@ -31,9 +31,9 @@ const useStyles = makeStyles({
     width: "100%",
   },
   logo: {
-    width: "3.5rem",
-    height: "2.5rem",
-    margin: ".5rem .75rem",
+    width: "90px",
+    height: "60px",
+    margin: "0 .5rem",
 
     "&:hover": {
       filter: "brightness(1.2)",

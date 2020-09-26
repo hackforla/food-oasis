@@ -1,7 +1,7 @@
 import React from "react";
 import { foodPantry, mealProgram, closed } from "../theme/colors";
 
-const MapMarker = (category, inactive, onClick = null) => {
+const MapMarker = (category, inactive, onClick = null, selected = false) => {
   if (category === -1)
     return (
       <svg
@@ -12,15 +12,18 @@ const MapMarker = (category, inactive, onClick = null) => {
         xmlns="http://www.w3.org/2000/svg"
         onClick={onClick}
         transform={onClick ? "translate(-15, -40)" : null}
+        style={{
+          opacity: inactive ? 0.3 : 1,
+        }}
       >
         <g>
           <path
             d="M15.0005 39.8626C19.7997 34.5676 28.5612 22.5925 29.925 15.856C30.1351 13.8533 29.9053 11.8299 29.251 9.91747C28.5968 8.00505 27.5324 6.24525 26.1264 4.75134C24.7204 3.2578 23.004 2.06318 21.0877 1.24474C19.1713 0.426302 17.0979 0.0025994 15.0005 0V6.36445V20.6983V39.8626Z"
-            fill={inactive ? closed : foodPantry}
+            fill={selected ? "red" : inactive ? closed : foodPantry}
           />
           <path
             d="M15 39.8626C10.2008 34.5676 1.43929 22.5925 0.0754433 15.856C-0.13426 13.8533 0.0951757 11.8303 0.749435 9.91747C1.4037 8.00505 2.46808 6.24525 3.8741 4.75134C5.28012 3.2578 6.99644 2.06318 8.91279 1.24474C10.8291 0.426302 12.9026 0.0025994 15 0V6.36445V20.6983V39.8626Z"
-            fill={inactive ? closed : mealProgram}
+            fill={selected ? "red" : inactive ? closed : mealProgram}
           />
           <path
             d="M21.481 18.5746C21.2361 18.847 20.758 19 20.3472 19C18.9348 19 17 16.4935 17 14.2606C17 12.0276 17.9192 10.4443 19.3316 10.4443C20.0978 10.4443 20.716 10.5373 21.0461 10.9291L21.0399 10.9044C21.0399 10.9044 20.7849 9.81317 20.3679 9.58393C20.5983 9.46062 21.0248 9.11481 21.0248 9.11481C21.0248 9.11481 21.6817 10.0088 21.6817 10.9055V10.9291C22.1671 10.5014 22.7472 10.2369 23.6299 10.2369C25.0423 10.2369 25.9621 12.0276 25.9621 14.2606C25.9621 16.4935 23.9584 19 22.546 19C22.1318 19 21.7271 18.852 21.481 18.5746Z"
@@ -52,11 +55,14 @@ const MapMarker = (category, inactive, onClick = null) => {
         xmlSpace="preserve"
         onClick={onClick}
         transform={onClick ? "translate(-15, -40)" : null}
+        style={{
+          opacity: inactive ? 0.3 : 1,
+        }}
       >
         <path
           className="st0"
           d="M0,14.44C0,22.41,15,40,15,40s15-17.59,15-25.56C30,6.46,23.28,0,15,0C6.72,0,0,6.46,0,14.44z"
-          fill={inactive ? closed : foodPantry}
+          fill={selected ? "red" : inactive ? closed : foodPantry}
         />
         <path
           className="st1"
@@ -89,11 +95,14 @@ const MapMarker = (category, inactive, onClick = null) => {
         xmlSpace="preserve"
         onClick={onClick}
         transform={onClick ? "translate(-15, -40)" : null}
+        style={{
+          opacity: inactive ? 0.3 : 1,
+        }}
       >
         <path
           className="st0"
           d="M15,40c0,0-15-17.59-15-25.56C0,6.46,6.72,0,15,0c8.28,0,15,6.46,15,14.44C30,22.41,15,40,15,40z"
-          fill={inactive ? closed : mealProgram}
+          fill={selected ? "red" : inactive ? closed : mealProgram}
         />
         <path
           className="st1"

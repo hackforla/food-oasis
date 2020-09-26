@@ -5,17 +5,12 @@ import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { MAPBOX_TOKEN } from "secrets";
-import { MAPBOX_STYLE, ORGANIZATION_COLORS, CLOSED_COLOR } from "constants/map";
-import {
-  DEFAULT_CATEGORIES,
-  FOOD_PANTRY_CATEGORY_ID,
-  MEAL_PROGRAM_CATEGORY_ID,
-} from "constants/stakeholder";
+import { MAPBOX_STYLE } from "constants/map";
+import { DEFAULT_CATEGORIES } from "constants/stakeholder";
 import isMobile from "helpers/isMobile";
 
 import StakeholderPreview from "components/Stakeholder/StakeholderPreview";
 import StakeholderDetails from "components/Stakeholder/StakeholderDetails";
-import MarkerPopup from "components/MarkerPopup";
 import Marker from "components/Marker";
 
 const styles = {
@@ -111,41 +106,23 @@ function Map({
           {stakeholders &&
             stakeholders
               .filter((sh) => sh.latitude && sh.longitude)
-              .map((stakeholder, index) => {
-                const isVerified = stakeholder.verificationStatusId === 4;
-
+              .map((stakeholder) => {
                 const categories = stakeholder.categories.filter(({ id }) => {
                   return categoryIdsOrDefault.includes(id);
                 });
 
-                const color =
-                  stakeholder.inactiveTemporary || stakeholder.inactive
-                    ? CLOSED_COLOR
-                    : categories.find(
-                        ({ id }) => id === MEAL_PROGRAM_CATEGORY_ID
-                      )
-                    ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
-                    : ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID];
                 return (
                   <Marker
                     onClick={() => doSelectStakeholder(stakeholder)}
-                    key={`marker-${index}`}
-                    longitude={stakeholder.longitude}
-                    latitude={stakeholder.latitude}
-                    isVerified={isVerified}
-                    color={color}
-                    categories={stakeholder.categories}
-                    inactive={stakeholder.inactive}
-                    inactiveTemporary={stakeholder.inactiveTemporary}
+                    key={stakeholder.id}
+                    selectedStakeholder={selectedStakeholder}
+                    stakeholder={{
+                      ...stakeholder,
+                      categories,
+                    }}
                   />
                 );
               })}
-          {!!selectedStakeholder && (
-            <MarkerPopup
-              entity={selectedStakeholder}
-              handleClose={doSelectStakeholder}
-            />
-          )}
         </ReactMapGL>
       </Grid>
       {!!selectedStakeholder && isMobile && (

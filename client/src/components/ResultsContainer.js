@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 import { useOrganizations } from "../hooks/useOrganizations/useOrganizations";
@@ -29,66 +29,38 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ResultsContainer(props) {
+  // Component state
   const storage = window.sessionStorage;
   const { userCoordinates, userSearch, setToast } = props;
   const { data, search } = useOrganizations();
-  const [sortedData, setSortedData] = React.useState([]);
+  const [sortedData, setSortedData] = useState([]);
   const classes = useStyles();
 
   const windowSize = window.innerWidth > 960 ? true : false;
-  const [isWindowWide, changeWindow] = React.useState(windowSize);
+  const [isWindowWide, changeWindow] = useState(windowSize);
 
   const mobileTest = new RegExp("Mobi", "i");
-  const [isMobile, changeMobile] = React.useState(
+  const [isMobile, changeMobile] = useState(
     mobileTest.test(navigator.userAgent) ? true : false
   );
-  const [isMapView, setIsMapView] = React.useState(true);
+  const [selectedStakeholder, onSelectStakeholder] = useState(null);
+  const [isMapView, setIsMapView] = useState(true);
 
-  const switchResultsView = () => setIsMapView(!isMapView);
-
-  React.useEffect(() => {
-    const sortOrganizations = (a, b) => {
-      if (
-        (a.inactive || a.inactiveTemporary) &&
-        !b.inactive &&
-        !b.inactiveTemporary
-      ) {
-        return 1;
-      } else if (
-        !a.inactive &&
-        !a.inactiveTemporary &&
-        (b.inactive || b.inactiveTemporary)
-      ) {
-        return -1;
-      } else {
-        return a.distance < b.distance ? -1 : a.distance > b.distance ? 1 : 0;
-      }
-    };
-    if (!data) {
-      return;
+  const doSelectStakeholder = (stakeholder) => {
+    if (stakeholder) {
+      setViewport({
+        ...viewport,
+        latitude: stakeholder.latitude,
+        longitude: stakeholder.longitude,
+      });
     }
-    setSortedData(data.sort(sortOrganizations));
-  }, [data]);
+    onSelectStakeholder(stakeholder);
+  };
 
-  React.useEffect(() => {
-    const changeInputContainerWidth = () => {
-      window.innerWidth > 960 ? changeWindow(true) : changeWindow(false);
-      mobileTest.test(navigator.userAgent)
-        ? changeMobile(true)
-        : changeMobile(false);
-    };
-
-    window.addEventListener("resize", changeInputContainerWidth);
-
-    return () =>
-      window.removeEventListener("resize", changeInputContainerWidth);
-  }, [mobileTest]);
-
-  React.useEffect(() => {
-    return () => {
-      sessionStorage.clear();
-    };
-  }, []);
+  const switchResultsView = () => {
+    doSelectStakeholder();
+    setIsMapView(!isMapView);
+  };
 
   const initialCategories = storage.categoryIds
     ? JSON.parse(storage.categoryIds)
@@ -117,16 +89,13 @@ export default function ResultsContainer(props) {
       : -118.243328,
   };
 
-  const [radius, setRadius] = React.useState(
+  const [radius, setRadius] = useState(
     storage?.radius ? JSON.parse(storage.radius) : 5
   );
-  const [origin, setOrigin] = React.useState(initialCoords);
-  const [isVerifiedSelected, selectVerified] = React.useState(
+  const [origin, setOrigin] = useState(initialCoords);
+  const [isVerifiedSelected, selectVerified] = useState(
     storage?.verified ? JSON.parse(storage.verified) : false
   );
-  const [selectedStakeholder, doSelectStakeholder] = React.useState(null);
-  const [selectedPopUp, setSelectedPopUp] = React.useState(null);
-  const [isPopupOpen, setIsPopupOpen] = React.useState(false);
 
   const viewPortHash = {
     1: 13.5,
@@ -138,12 +107,58 @@ export default function ResultsContainer(props) {
     50: 8,
   };
 
-  const [viewport, setViewport] = React.useState({
+  const [viewport, setViewport] = useState({
     zoom: viewPortHash[radius],
     latitude: origin.latitude || JSON.parse(storage.origin).latitude,
     longitude: origin.longitude || JSON.parse(storage.origin).longitude,
     logoPosition: "top-left",
   });
+
+  // Component effects
+
+  useEffect(() => {
+    const sortOrganizations = (a, b) => {
+      if (
+        (a.inactive || a.inactiveTemporary) &&
+        !b.inactive &&
+        !b.inactiveTemporary
+      ) {
+        return 1;
+      } else if (
+        !a.inactive &&
+        !a.inactiveTemporary &&
+        (b.inactive || b.inactiveTemporary)
+      ) {
+        return -1;
+      } else {
+        return a.distance < b.distance ? -1 : a.distance > b.distance ? 1 : 0;
+      }
+    };
+    if (!data) {
+      return;
+    }
+    setSortedData(data.sort(sortOrganizations));
+  }, [data]);
+
+  useEffect(() => {
+    const changeInputContainerWidth = () => {
+      window.innerWidth > 960 ? changeWindow(true) : changeWindow(false);
+      mobileTest.test(navigator.userAgent)
+        ? changeMobile(true)
+        : changeMobile(false);
+    };
+
+    window.addEventListener("resize", changeInputContainerWidth);
+
+    return () =>
+      window.removeEventListener("resize", changeInputContainerWidth);
+  }, [mobileTest]);
+
+  useEffect(() => {
+    return () => {
+      sessionStorage.clear();
+    };
+  }, []);
 
   return (
     <>
@@ -161,7 +176,6 @@ export default function ResultsContainer(props) {
         isWindowWide={isWindowWide}
         viewport={viewport}
         setViewport={setViewport}
-        setIsPopupOpen={setIsPopupOpen}
         doSelectStakeholder={doSelectStakeholder}
         viewPortHash={viewPortHash}
         isMobile={isMobile}
@@ -174,10 +188,6 @@ export default function ResultsContainer(props) {
             selectedStakeholder={selectedStakeholder}
             doSelectStakeholder={doSelectStakeholder}
             stakeholders={sortedData}
-            setSelectedPopUp={setSelectedPopUp}
-            setIsPopupOpen={setIsPopupOpen}
-            viewport={viewport}
-            setViewport={setViewport}
             setToast={setToast}
             isMobile={isMobile}
           />
@@ -190,13 +200,11 @@ export default function ResultsContainer(props) {
             setViewport={setViewport}
             stakeholders={data}
             doSelectStakeholder={doSelectStakeholder}
+            selectedStakeholder={selectedStakeholder}
             categoryIds={categoryIds}
-            selectedPopUp={selectedPopUp}
-            setSelectedPopUp={setSelectedPopUp}
-            isPopupOpen={isPopupOpen}
-            setIsPopupOpen={setIsPopupOpen}
             isWindowWide={isWindowWide}
             isMobile={isMobile}
+            setToast={setToast}
           />
         )}
       </Grid>

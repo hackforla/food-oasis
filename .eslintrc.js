@@ -14,6 +14,12 @@ module.exports = {
     },
   },
   rules: {
-    "prettier/prettier": "error",
+		"prettier/prettier": "error",
+		"no-tabs": [
+			"error",
+			{
+				"allowIndentationTabs": true
+			}
+		]
   },
 };

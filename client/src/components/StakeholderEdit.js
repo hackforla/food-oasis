@@ -1055,7 +1055,7 @@ const StakeholderEdit = (props) => {
               <TabPanel value={tabPage} index={2} className={classes.tabPanel}>
                 <Grid container spacing={1}>
                   <Grid item xs={12}>
-                    <BigTooltip title="The organization's web address">
+                    <BigTooltip title="Organization's website starting with http:// or https://">
                       <TextField
                         variant="outlined"
                         margin="normal"

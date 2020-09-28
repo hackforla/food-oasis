@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import { withRouter, Redirect } from "react-router-dom";
-import { Button, CssBaseline, Dialog, Typography } from "@material-ui/core";
+import { CssBaseline, Dialog, Typography } from "@material-ui/core";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import { makeStyles } from "@material-ui/core/styles";
 import { SearchButton } from "../Buttons";
+import { PrimaryButton } from "../../ui";
 import StakeholderGrid from "./VerificationAdminGrid";
 import { RotateLoader } from "react-spinners";
 import { useOrganizations } from "../../hooks/useOrganizations/useOrganizations";
@@ -307,7 +308,9 @@ function VerificationAdmin(props) {
           >
             Verification Administration
           </Typography>
-          <SearchButton onClick={handleDialogOpen} label="Criteria..." />
+          <PrimaryButton onClick={handleDialogOpen} logo="search">
+            Criteria...
+          </PrimaryButton>
         </header>
       </div>
       <SearchCriteriaDisplay
@@ -433,35 +436,27 @@ function VerificationAdmin(props) {
                     justifyContent: "flex-start",
                   }}
                 >
-                  <Button
-                    variant="contained"
+                  <PrimaryButton
                     title="Mark for verification"
-                    color="primary"
                     disabled={selectedStakeholderIds.length === 0}
                     onClick={handleNeedsVerificationDialogOpen}
-                    style={{ marginRight: "0.2em" }}
                   >
                     Needs Verification
-                  </Button>
-                  <Button
-                    variant="contained"
+                  </PrimaryButton>
+                  <PrimaryButton
                     title="Assign selected Organizations to User for Verification"
-                    color="primary"
                     disabled={selectedStakeholderIds.length === 0}
                     onClick={handleAssignDialogOpen}
-                    style={{ marginRight: "0.2em" }}
                   >
                     Assign
-                  </Button>
-                  <Button
-                    variant="contained"
+                  </PrimaryButton>
+                  <PrimaryButton
                     title="Export selected Organizations to file"
-                    color="primary"
                     disabled={selectedStakeholderIds.length === 0}
                     onClick={handleExport}
                   >
                     Export
-                  </Button>
+                  </PrimaryButton>
                 </div>
                 <div>{`${stakeholders.length} rows`} </div>
               </div>

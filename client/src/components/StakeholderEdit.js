@@ -25,7 +25,6 @@ import {
   Select,
   Tab,
   Tabs,
-  TextField,
   Tooltip,
   Typography,
 } from "@material-ui/core";
@@ -34,13 +33,14 @@ import { useCategories } from "../hooks/useCategories/useCategories";
 import * as esriService from "../services/esri_service";
 import OpenTimeForm from "./OpenTimeForm";
 import { TabPanel, a11yProps } from "./TabPanel";
-import { PlainButton, SearchButton, VerifyButton } from "./Buttons";
+import { PlainButton, VerifyButton } from "./Buttons";
 import AssignDialog from "./Verification/AssignDialog";
 import ConfirmDialog from "./ConfirmDialog";
 import {
   VERIFICATION_STATUS,
   VERIFICATION_STATUS_NAMES,
 } from "../constants/stakeholder";
+import { PrimaryButton, TextInput } from "../ui/index";
 
 import moment from "moment";
 
@@ -502,22 +502,15 @@ const StakeholderEdit = (props) => {
                     xs={12}
                     className={classes.confirmableGroupWrapper}
                   >
-                    <TextField
-                      type="text"
-                      size="small"
-                      label="Name *"
+                    <TextInput
                       name="name"
-                      variant="outlined"
-                      margin="normal"
-                      fullWidth
-                      autoFocus
+                      label="Name *"
                       value={values.name}
                       onChange={handleChange}
                       onBlur={handleBlur}
                       helperText={touched.name ? errors.name : ""}
                       error={touched.name && Boolean(errors.name)}
                     />
-
                     <FormControlLabel
                       control={
                         <Checkbox
@@ -537,22 +530,16 @@ const StakeholderEdit = (props) => {
                   </Grid>
                   <Grid item sm={6} xs={12}>
                     <div className={classes.confirmableGroupWrapper}>
-                      <BigTooltip title="Phone number for clients to use">
-                        <TextField
-                          variant="outlined"
-                          margin="normal"
-                          fullWidth
-                          name="phone"
-                          label="Phone *"
-                          type="text"
-                          size="small"
-                          value={values.phone}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          helperText={touched.phone ? errors.phone : ""}
-                          error={touched.phone && Boolean(errors.phone)}
-                        />
-                      </BigTooltip>
+                      <TextInput
+                        tooltip="Phone number for clients to use"
+                        name="phone"
+                        label="Phone *"
+                        value={values.phone}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        helperText={touched.phone ? errors.phone : ""}
+                        error={touched.phone && Boolean(errors.phone)}
+                      />
                       <FormControlLabel
                         control={
                           <Checkbox
@@ -575,22 +562,16 @@ const StakeholderEdit = (props) => {
                   </Grid>
                   <Grid item sm={6} xs={12}>
                     <div className={classes.confirmableGroupWrapper}>
-                      <BigTooltip title="Email for clients to use">
-                        <TextField
-                          variant="outlined"
-                          margin="normal"
-                          fullWidth
-                          name="email"
-                          label="Email *"
-                          type="text"
-                          size="small"
-                          value={values.email}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          helperText={touched.email ? errors.email : ""}
-                          error={touched.email && Boolean(errors.email)}
-                        />
-                      </BigTooltip>
+                      <TextInput
+                        tooltip="Email for clients to use"
+                        name="email"
+                        label="Email *"
+                        value={values.email}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        helperText={touched.email ? errors.email : ""}
+                        error={touched.email && Boolean(errors.email)}
+                      />
                       <FormControlLabel
                         control={
                           <Checkbox
@@ -689,29 +670,23 @@ const StakeholderEdit = (props) => {
                     </div>
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <BigTooltip title="Notes about identifying organization category">
-                      <TextField
-                        type="text"
-                        size="small"
-                        label="Category Notes"
-                        name="categoryNotes"
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        multiline
-                        rows={2}
-                        rowsMax={12}
-                        value={values.categoryNotes}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        helperText={
-                          touched.categoryNotes ? errors.categoryNotes : ""
-                        }
-                        error={
-                          touched.categoryNotes && Boolean(errors.categoryNotes)
-                        }
-                      />
-                    </BigTooltip>
+                    <TextInput
+                      tooltip="Notes about identifying organization category"
+                      name="categoryNotes"
+                      label="Category Notes"
+                      multiline
+                      rows={2}
+                      rowsMax={12}
+                      value={values.categoryNotes}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      helperText={
+                        touched.categoryNotes ? errors.categoryNotes : ""
+                      }
+                      error={
+                        touched.categoryNotes && Boolean(errors.categoryNotes)
+                      }
+                    />
                   </Grid>
                   <Grid item xs={6} sm={3}>
                     <BigTooltip title="Check if they are permanently closed.">
@@ -757,88 +732,61 @@ const StakeholderEdit = (props) => {
                     </BigTooltip>
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <BigTooltip title="COVID-related conditions">
-                      <TextField
-                        type="text"
-                        size="small"
-                        label="COVID Notes"
-                        name="covidNotes"
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        multiline
-                        rows={2}
-                        rowsMax={12}
-                        value={values.covidNotes}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        helperText={touched.covidNotes ? errors.covidNotes : ""}
-                        error={touched.covidNotes && Boolean(errors.covidNotes)}
-                      />
-                    </BigTooltip>
+                    <TextInput
+                      tooltip="COVID-related conditions"
+                      name="covidNotes"
+                      label="COVID Notes"
+                      multiline
+                      rows={2}
+                      rowsMax={12}
+                      value={values.covidNotes}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      helperText={touched.covidNotes ? errors.covidNotes : ""}
+                      error={touched.covidNotes && Boolean(errors.covidNotes)}
+                    />
                   </Grid>
 
                   <Grid item xs={12}>
-                    <BigTooltip title="The mission statement or other description.">
-                      <TextField
-                        type="text"
-                        size="small"
-                        label="Description"
-                        name="description"
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        multiline
-                        rows={2}
-                        rowsMax={12}
-                        value={values.description}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        helperText={
-                          touched.description ? errors.description : ""
-                        }
-                        error={
-                          touched.description && Boolean(errors.description)
-                        }
-                      />
-                    </BigTooltip>
+                    <TextInput
+                      tooltip="The mission statement or other description."
+                      name="description"
+                      label="Description"
+                      multiline
+                      rows={2}
+                      rowsMax={12}
+                      value={values.description}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      helperText={touched.description ? errors.description : ""}
+                      error={touched.description && Boolean(errors.description)}
+                    />
                   </Grid>
 
                   <Grid item xs={12}>
-                    <BigTooltip title="If part of a larger organization, the parent name">
-                      <TextField
-                        type="text"
-                        size="small"
-                        label="Parent Organization"
-                        name="parentOrganization"
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        value={values.parentOrganization}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        helperText={
-                          touched.parentOrganization
-                            ? errors.parentOrganization
-                            : ""
-                        }
-                        error={
-                          touched.parentOrganization &&
-                          Boolean(errors.parentOrganization)
-                        }
-                      />
-                    </BigTooltip>
+                    <TextInput
+                      tooltip="If part of a larger organization, the parent name"
+                      name="parentOrganization"
+                      label="Parent Organization"
+                      value={values.parentOrganization}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      helperText={
+                        touched.parentOrganization
+                          ? errors.parentOrganization
+                          : ""
+                      }
+                      error={
+                        touched.parentOrganization &&
+                        Boolean(errors.parentOrganization)
+                      }
+                    />
                   </Grid>
                   <Grid container spacing={1}>
                     <Grid item xs={12}>
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
+                      <TextInput
                         name="address1"
                         label="Address Line 1 *"
-                        type="text"
-                        size="small"
                         value={values.address1}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -847,14 +795,9 @@ const StakeholderEdit = (props) => {
                       />
                     </Grid>
                     <Grid item xs={12}>
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
+                      <TextInput
                         name="address2"
                         label="Address Line 2"
-                        type="text"
-                        size="small"
                         value={values.address2}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -863,14 +806,9 @@ const StakeholderEdit = (props) => {
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
+                      <TextInput
                         name="city"
                         label="City *"
-                        type="text"
-                        size="small"
                         value={values.city}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -879,14 +817,9 @@ const StakeholderEdit = (props) => {
                       />
                     </Grid>
                     <Grid item xs={12} sm={3}>
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
+                      <TextInput
                         name="state"
                         label="State *"
-                        type="text"
-                        size="small"
                         value={values.state}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -895,14 +828,9 @@ const StakeholderEdit = (props) => {
                       />
                     </Grid>
                     <Grid item xs={12} sm={3}>
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
+                      <TextInput
                         name="zip"
                         label="Zip Code *"
-                        type="text"
-                        size="small"
                         value={values.zip}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -912,14 +840,9 @@ const StakeholderEdit = (props) => {
                     </Grid>
 
                     <Grid item xs={6} md={3}>
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
+                      <TextInput
                         name="latitude"
                         label="Latitude *"
-                        type="text"
-                        size="small"
                         value={values.latitude}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -928,14 +851,9 @@ const StakeholderEdit = (props) => {
                       />
                     </Grid>
                     <Grid item xs={6} md={3}>
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
+                      <TextInput
                         name="longitude"
                         label="Longitude *"
-                        type="text"
-                        size="small"
                         value={values.longitude}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -956,19 +874,22 @@ const StakeholderEdit = (props) => {
                         >
                           <BigTooltip title="Click to get latitude / longitude for address">
                             <Grid item>
-                              <SearchButton
+                              <PrimaryButton
                                 onClick={() => {
                                   (geocodeResults && geocodeResults.length) < 1
                                     ? geocode(values)
                                     : setGeocodeResults([]);
                                 }}
-                                label={
-                                  (geocodeResults && geocodeResults.length) < 1
-                                    ? "Get Coordinates"
-                                    : "Close"
-                                }
+                                logo="search"
                                 style={{ marginTop: "1.2em" }}
-                              />
+                              >
+                                {(geocodeResults && geocodeResults.length) <
+                                1 ? (
+                                  <>Get Coordinates</>
+                                ) : (
+                                  <>Close</>
+                                )}
+                              </PrimaryButton>
                             </Grid>
                           </BigTooltip>
                           <div className={classes.confirmCheckboxWrapper}>
@@ -1081,32 +1002,21 @@ const StakeholderEdit = (props) => {
               <TabPanel value={tabPage} index={2} className={classes.tabPanel}>
                 <Grid container spacing={1}>
                   <Grid item xs={12}>
-                    <BigTooltip title="The organization's web address">
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        name="website"
-                        label="Web Site"
-                        type="text"
-                        size="small"
-                        value={values.website}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        helperText={touched.website ? errors.website : ""}
-                        error={touched.website && Boolean(errors.website)}
-                      />
-                    </BigTooltip>
+                    <TextInput
+                      tooltip="The organization's web address"
+                      name="website"
+                      label="Web Site"
+                      value={values.website}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      helperText={touched.website ? errors.website : ""}
+                      error={touched.website && Boolean(errors.website)}
+                    />
                   </Grid>
                   <Grid item sm={6} xs={12}>
-                    <TextField
-                      variant="outlined"
-                      margin="normal"
-                      fullWidth
+                    <TextInput
                       name="instagram"
                       label="Instagram"
-                      type="text"
-                      size="small"
                       value={values.instagram}
                       onChange={handleChange}
                       onBlur={handleBlur}
@@ -1115,14 +1025,9 @@ const StakeholderEdit = (props) => {
                     />
                   </Grid>
                   <Grid item sm={6} xs={12}>
-                    <TextField
-                      variant="outlined"
-                      margin="normal"
-                      fullWidth
+                    <TextInput
                       name="facebook"
                       label="Facebook"
-                      type="text"
-                      size="small"
                       value={values.facebook}
                       onChange={handleChange}
                       onBlur={handleBlur}
@@ -1131,14 +1036,9 @@ const StakeholderEdit = (props) => {
                     />
                   </Grid>
                   <Grid item sm={6} xs={12}>
-                    <TextField
-                      variant="outlined"
-                      margin="normal"
-                      fullWidth
+                    <TextInput
                       name="twitter"
                       label="Twitter"
-                      type="text"
-                      size="small"
                       value={values.twitter}
                       onChange={handleChange}
                       onBlur={handleBlur}
@@ -1147,14 +1047,9 @@ const StakeholderEdit = (props) => {
                     />
                   </Grid>
                   <Grid item sm={6} xs={12}>
-                    <TextField
-                      variant="outlined"
-                      margin="normal"
-                      fullWidth
+                    <TextInput
                       name="pinterest"
                       label="Pinterest"
-                      type="text"
-                      size="small"
                       value={values.pinterest}
                       onChange={handleChange}
                       onBlur={handleBlur}
@@ -1163,14 +1058,9 @@ const StakeholderEdit = (props) => {
                     />
                   </Grid>
                   <Grid item sm={6} xs={12}>
-                    <TextField
-                      variant="outlined"
-                      margin="normal"
-                      fullWidth
+                    <TextInput
                       name="linkedin"
                       label="LinkedIn"
-                      type="text"
-                      size="small"
                       value={values.linkedin}
                       onChange={handleChange}
                       onBlur={handleBlur}
@@ -1186,14 +1076,9 @@ const StakeholderEdit = (props) => {
                     <Typography>Details for Food Seekers to See</Typography>
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField
-                      variant="outlined"
-                      margin="normal"
-                      fullWidth
+                    <TextInput
                       name="foodTypes"
                       label="Food Types"
-                      type="text"
-                      size="small"
                       multiline
                       rows={2}
                       rowsMax={12}
@@ -1205,103 +1090,72 @@ const StakeholderEdit = (props) => {
                     />
                   </Grid>
                   <Grid item xs={12}>
-                    <BigTooltip title="(Items besides food, i.e. dog food, cat food, hygiene products, diapers, female hygiene products)">
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        name="items"
-                        label="Non-Food Items"
-                        type="text"
-                        size="small"
-                        value={values.items}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        helperText={touched.items ? errors.items : ""}
-                        error={touched.items && Boolean(errors.items)}
-                      />
-                    </BigTooltip>
+                    <TextInput
+                      tooltip="(Items besides food, i.e. dog food, cat food, hygiene products, diapers, female hygiene products)"
+                      name="items"
+                      label="Non-Food Items"
+                      value={values.items}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      helperText={touched.items ? errors.items : ""}
+                      error={touched.items && Boolean(errors.items)}
+                    />
                   </Grid>
                   <Grid item xs={12}>
-                    <BigTooltip title="(Besides feeding ppl, i.e., family counseling, career counseling, drop in for women or homeless, etc.)">
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        name="services"
-                        label="Services (separated by commas)"
-                        type="text"
-                        size="small"
-                        value={values.services}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        helperText={touched.services ? errors.services : ""}
-                        error={touched.services && Boolean(errors.services)}
-                      />
-                    </BigTooltip>
+                    <TextInput
+                      tooltip="(Besides feeding ppl, i.e., family counseling, career counseling, drop in for women or homeless, etc.)"
+                      name="services"
+                      label="Services (separated by commas)"
+                      value={values.services}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      helperText={touched.services ? errors.services : ""}
+                      error={touched.services && Boolean(errors.services)}
+                    />
                   </Grid>
                   <Grid item xs={12}>
-                    <BigTooltip title="(Must go to chapel service, must be < 18, must show citizenship, etc.)">
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        name="requirements"
-                        label="Eligibility / Requirements"
-                        type="text"
-                        size="small"
-                        multiline
-                        rows={2}
-                        rowsMax={12}
-                        value={values.requirements}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        helperText={
-                          touched.requirements ? errors.requirements : ""
-                        }
-                        error={
-                          touched.requirements && Boolean(errors.requirements)
-                        }
-                      />
-                    </BigTooltip>
+                    <TextInput
+                      tooltip="(Must go to chapel service, must be < 18, must show citizenship, etc.)"
+                      name="requirements"
+                      label="Eligibility / Requirements"
+                      multiline
+                      rows={2}
+                      rowsMax={12}
+                      value={values.requirements}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      helperText={
+                        touched.requirements ? errors.requirements : ""
+                      }
+                      error={
+                        touched.requirements && Boolean(errors.requirements)
+                      }
+                    />
                   </Grid>
                   <Grid item xs={12}>
-                    <BigTooltip title="Other notes about eligibility requirements">
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        name="eligibilityNotes"
-                        label="Eligibility Notes"
-                        type="text"
-                        size="small"
-                        multiline
-                        rows={2}
-                        rowsMax={12}
-                        value={values.eligibilityNotes}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        helperText={
-                          touched.eligibilityNotes
-                            ? errors.eligibilityNotes
-                            : ""
-                        }
-                        error={
-                          touched.eligibilityNotes &&
-                          Boolean(errors.eligibilityNotes)
-                        }
-                      />
-                    </BigTooltip>
+                    <TextInput
+                      tooltip="Other notes about eligibility requirements"
+                      name="eligibilityNotes"
+                      label="Eligibility Notes"
+                      multiline
+                      rows={2}
+                      rowsMax={12}
+                      value={values.eligibilityNotes}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      helperText={
+                        touched.eligibilityNotes ? errors.eligibilityNotes : ""
+                      }
+                      error={
+                        touched.eligibilityNotes &&
+                        Boolean(errors.eligibilityNotes)
+                      }
+                    />
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField
-                      variant="outlined"
-                      margin="normal"
-                      fullWidth
+                    <TextInput
                       name="languages"
                       label="Languages"
-                      type="text"
-                      size="small"
                       multiline
                       rows={2}
                       rowsMax={12}
@@ -1313,129 +1167,97 @@ const StakeholderEdit = (props) => {
                     />
                   </Grid>
                   <Grid item xs={12}>
-                    <BigTooltip title={noteTooltip}>
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        name="notes"
-                        label="Notes for the Public"
-                        type="text"
-                        size="small"
-                        multiline
-                        rows={2}
-                        rowsMax={12}
-                        value={values.notes}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        helperText={touched.notes ? errors.notes : ""}
-                        error={touched.notes && Boolean(errors.notes)}
-                      />
-                    </BigTooltip>
+                    <TextInput
+                      tooltip={noteTooltip}
+                      name="notes"
+                      label="Notes for the Public"
+                      multiline
+                      rows={2}
+                      rowsMax={12}
+                      value={values.notes}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      helperText={touched.notes ? errors.notes : ""}
+                      error={touched.notes && Boolean(errors.notes)}
+                    />
                   </Grid>
                 </Grid>
               </TabPanel>
               <TabPanel value={tabPage} index={4} className={classes.tabPanel}>
                 <Grid container spacing={1}>
                   <Grid item xs={12} sm={6}>
-                    <BigTooltip title="Name of person(s) to contact for donations">
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        name="donationContactName"
-                        label="Donation Contact Name"
-                        type="text"
-                        size="small"
-                        value={values.donationContactName}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        helperText={
-                          touched.donationContactName
-                            ? errors.donationContactName
-                            : ""
-                        }
-                        error={
-                          touched.donationContactName &&
-                          Boolean(errors.donationContactName)
-                        }
-                      />
-                    </BigTooltip>
+                    <TextInput
+                      tooltip="Name of person(s) to contact for donations"
+                      name="donationContactName"
+                      label="Donation Contact Name"
+                      value={values.donationContactName}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      helperText={
+                        touched.donationContactName
+                          ? errors.donationContactName
+                          : ""
+                      }
+                      error={
+                        touched.donationContactName &&
+                        Boolean(errors.donationContactName)
+                      }
+                    />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <BigTooltip title="Phone for donations">
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        name="donationContactPhone"
-                        label="Donation Phone"
-                        type="phone"
-                        size="small"
-                        value={values.donationContactPhone}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        helperText={
-                          touched.donationContactPhone
-                            ? errors.donationContactPhone
-                            : ""
-                        }
-                        error={
-                          touched.donationContactPhone &&
-                          Boolean(errors.donationContactPhone)
-                        }
-                      />
-                    </BigTooltip>
+                    <TextInput
+                      tooltip="Phone for donations"
+                      name="donationContactPhone"
+                      label="Donation Phone"
+                      value={values.donationContactPhone}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      helperText={
+                        touched.donationContactPhone
+                          ? errors.donationContactPhone
+                          : ""
+                      }
+                      error={
+                        touched.donationContactPhone &&
+                        Boolean(errors.donationContactPhone)
+                      }
+                    />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <BigTooltip title="Email for donations">
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        name="donationContactEmail"
-                        label="Donation Email"
-                        type="email"
-                        size="small"
-                        value={values.donationContactEmail}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        helperText={
-                          touched.donationContactEmail
-                            ? errors.donationContactEmail
-                            : ""
-                        }
-                        error={
-                          touched.donationContactEmail &&
-                          Boolean(errors.donationContactEmail)
-                        }
-                      />
-                    </BigTooltip>
+                    <TextInput
+                      tooltip="Email for donations"
+                      name="donationContactEmail"
+                      label="Donation Email"
+                      value={values.donationContactEmail}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      helperText={
+                        touched.donationContactEmail
+                          ? errors.donationContactEmail
+                          : ""
+                      }
+                      error={
+                        touched.donationContactEmail &&
+                        Boolean(errors.donationContactEmail)
+                      }
+                    />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <BigTooltip title="When can organization receive or pickup donations">
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        name="donationSchedule"
-                        label="Donation Schedule"
-                        type="text"
-                        size="small"
-                        value={values.donationSchedule}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        helperText={
-                          touched.donationSchedule
-                            ? errors.donationSchedule
-                            : ""
-                        }
-                        error={
-                          touched.donationSchedule &&
-                          Boolean(errors.donationSchedule)
-                        }
-                      />
-                    </BigTooltip>
+                    <TextInput
+                      tooltip="When can organization receive or pickup donations"
+                      name="donationSchedule"
+                      label="Donation Schedule"
+                      value={values.donationSchedule}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      helperText={
+                        touched.donationSchedule ? errors.donationSchedule : ""
+                      }
+                      error={
+                        touched.donationSchedule &&
+                        Boolean(errors.donationSchedule)
+                      }
+                    />
                   </Grid>
                   <Grid item xs={12}>
                     <BigTooltip title="Check if organization can pick up food from source">
@@ -1531,130 +1353,98 @@ const StakeholderEdit = (props) => {
                   </Grid>
 
                   <Grid item xs={12} sm={6}>
-                    <BigTooltip title="Delivery Instructions">
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        name="donationDeliveryInstructions"
-                        label="Donation Delivery or Pickup Instructions"
-                        type="text"
-                        size="small"
-                        value={values.donationDeliveryInstructions}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        helperText={
-                          touched.donationDeliveryInstructions
-                            ? errors.donationDeliveryInstructions
-                            : ""
-                        }
-                        error={
-                          touched.donationDeliveryInstructions &&
-                          Boolean(errors.donationDeliveryInstructions)
-                        }
-                      />
-                    </BigTooltip>
+                    <TextInput
+                      tooltip="Delivery Instructions"
+                      name="donationDeliveryInstructions"
+                      label="Donation Delivery or Pickup Instructions"
+                      value={values.donationDeliveryInstructions}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      helperText={
+                        touched.donationDeliveryInstructions
+                          ? errors.donationDeliveryInstructions
+                          : ""
+                      }
+                      error={
+                        touched.donationDeliveryInstructions &&
+                        Boolean(errors.donationDeliveryInstructions)
+                      }
+                    />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <BigTooltip title="Other donation notes">
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        name="donationNotes"
-                        label="Donation Notes"
-                        type="text"
-                        size="small"
-                        value={values.donationNotes}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        helperText={
-                          touched.donationNotes ? errors.donationNotes : ""
-                        }
-                        error={
-                          touched.donationNotes && Boolean(errors.donationNotes)
-                        }
-                      />
-                    </BigTooltip>
+                    <TextInput
+                      tooltip="Other donation notes"
+                      name="donationNotes"
+                      label="Donation Notes"
+                      value={values.donationNotes}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      helperText={
+                        touched.donationNotes ? errors.donationNotes : ""
+                      }
+                      error={
+                        touched.donationNotes && Boolean(errors.donationNotes)
+                      }
+                    />
                   </Grid>
                 </Grid>
               </TabPanel>
               <TabPanel value={tabPage} index={5} className={classes.tabPanel}>
                 <Grid container spacing={1}>
                   <Grid item xs={12} sm={6}>
-                    <BigTooltip title="Name of person(s) to contact for organization information">
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        name="adminContactName"
-                        label="Verification Contact Name"
-                        type="text"
-                        size="small"
-                        value={values.adminContactName}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        helperText={
-                          touched.adminContactName
-                            ? errors.adminContactName
-                            : ""
-                        }
-                        error={
-                          touched.adminContactName &&
-                          Boolean(errors.adminContactName)
-                        }
-                      />
-                    </BigTooltip>
+                    <TextInput
+                      tooltip="Name of person(s) to contact for organization information"
+                      name="adminContactName"
+                      label="Verification Contact Name"
+                      value={values.adminContactName}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      helperText={
+                        touched.adminContactName ? errors.adminContactName : ""
+                      }
+                      error={
+                        touched.adminContactName &&
+                        Boolean(errors.adminContactName)
+                      }
+                    />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <BigTooltip title="Phone number for administrative information">
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        name="adminContactPhone"
-                        label="Verification Phone"
-                        type="phone"
-                        size="small"
-                        value={values.adminContactPhone}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        helperText={
-                          touched.adminContactPhone
-                            ? errors.adminContactPhone
-                            : ""
-                        }
-                        error={
-                          touched.adminContactPhone &&
-                          Boolean(errors.adminContactPhone)
-                        }
-                      />
-                    </BigTooltip>
+                    <TextInput
+                      tooltip="Phone number for administrative information"
+                      name="adminContactPhone"
+                      label="Verification Phone"
+                      value={values.adminContactPhone}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      helperText={
+                        touched.adminContactPhone
+                          ? errors.adminContactPhone
+                          : ""
+                      }
+                      error={
+                        touched.adminContactPhone &&
+                        Boolean(errors.adminContactPhone)
+                      }
+                    />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <BigTooltip title="Email for administrative information">
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        name="adminContactEmail"
-                        label="Verification Email"
-                        type="email"
-                        size="small"
-                        value={values.adminContactEmail}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        helperText={
-                          touched.adminContactEmail
-                            ? errors.adminContactEmail
-                            : ""
-                        }
-                        error={
-                          touched.adminContactEmail &&
-                          Boolean(errors.adminContactEmail)
-                        }
-                      />
-                    </BigTooltip>
+                    <TextInput
+                      tooltip="Email for administrative information"
+                      name="adminContactEmail"
+                      label="Verification Email"
+                      value={values.adminContactEmail}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      helperText={
+                        touched.adminContactEmail
+                          ? errors.adminContactEmail
+                          : ""
+                      }
+                      error={
+                        touched.adminContactEmail &&
+                        Boolean(errors.adminContactEmail)
+                      }
+                    />
                   </Grid>
                   <Grid
                     item
@@ -1873,54 +1663,37 @@ const StakeholderEdit = (props) => {
                     </div>
                   </Grid>
                   <Grid item xs={12}>
-                    <BigTooltip title="Verification review comments and instructions">
-                      <TextField
-                        type="text"
-                        size="small"
-                        label="Reviewer Notes"
-                        name="reviewNotes"
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        multiline
-                        rows={2}
-                        rowsMax={12}
-                        value={values.reviewNotes}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        disabled={!user || !user.isAdmin}
-                        helperText={
-                          touched.reviewNotes ? errors.reviewNotes : ""
-                        }
-                        error={
-                          touched.reviewNotes && Boolean(errors.reviewNotes)
-                        }
-                      />
-                    </BigTooltip>
+                    <TextInput
+                      tooltip="Verification review comments and instructions"
+                      name="reviewNotes"
+                      label="Reviewer Notes"
+                      multiline
+                      rows={2}
+                      rowsMax={12}
+                      value={values.reviewNotes}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      helperText={touched.reviewNotes ? errors.reviewNotes : ""}
+                      error={touched.reviewNotes && Boolean(errors.reviewNotes)}
+                    />
                   </Grid>
                 </Grid>
               </TabPanel>
               <div style={{ display: "flex" }}>
                 <div style={{ flexBasis: "20%", flexGrow: 1 }}>
-                  <BigTooltip title={adminNoteTooltip} placement="right-end">
-                    <TextField
-                      variant="outlined"
-                      margin="normal"
-                      fullWidth
-                      name="adminNotes"
-                      label="Verification Notes"
-                      type="text"
-                      size="small"
-                      multiline
-                      rows={2}
-                      rowsMax={12}
-                      value={values.adminNotes}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      helperText={touched.adminNotes ? errors.adminNotes : ""}
-                      error={touched.adminNotes && Boolean(errors.adminNotes)}
-                    />
-                  </BigTooltip>
+                  <TextInput
+                    tooltip={adminNoteTooltip}
+                    name="adminNotes"
+                    label="Verification Notes"
+                    multiline
+                    rows={2}
+                    rowsMax={12}
+                    value={values.adminNotes}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={touched.adminNotes ? errors.adminNotes : ""}
+                    error={touched.adminNotes && Boolean(errors.adminNotes)}
+                  />
                 </div>
 
                 <div
@@ -1944,13 +1717,14 @@ const StakeholderEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <PlainButton
+                          <PrimaryButton
                             type="submit"
-                            label="Save Progress"
                             className={classes.submit}
                             disabled={isSubmitting || isUnchanged(values)}
                             style={{ margin: "auto 0.5em" }}
-                          />
+                          >
+                            Save Progress
+                          </PrimaryButton>
                         </div>
                       </BigTooltip>
                       <BigTooltip title="Mark for re-verification">
@@ -1963,7 +1737,7 @@ const StakeholderEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <PlainButton
+                          <PrimaryButton
                             type="button"
                             onClick={() => {
                               setFieldValue("reviewedLoginId", "");
@@ -1983,14 +1757,15 @@ const StakeholderEdit = (props) => {
                               setNextUrl("/verificationadmin");
                               handleSubmit();
                             }}
-                            label="Needs Verification"
                             disabled={
                               isSubmitting ||
                               values.verifivation_status_id ===
                                 VERIFICATION_STATUS.NEEDS_VERIFICATION
                             }
                             style={{ margin: "auto 0.5em" }}
-                          />
+                          >
+                            Needs Verification
+                          </PrimaryButton>
                         </div>
                       </BigTooltip>
                       <BigTooltip title="Assign for Verification">
@@ -2003,7 +1778,7 @@ const StakeholderEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <PlainButton
+                          <PrimaryButton
                             type="button"
                             onClick={() => {
                               handleAssignDialogOpen({
@@ -2022,14 +1797,15 @@ const StakeholderEdit = (props) => {
                                 },
                               });
                             }}
-                            label="(Re-)Assign"
                             disabled={
                               isSubmitting ||
                               values.verification_status_id ===
                                 VERIFICATION_STATUS.SUBMITTED
                             }
                             style={{ margin: "auto 0.5em" }}
-                          />
+                          >
+                            (Re-)Assign
+                          </PrimaryButton>
                         </div>
                       </BigTooltip>
                       <BigTooltip
@@ -2044,7 +1820,7 @@ const StakeholderEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <PlainButton
+                          <PrimaryButton
                             type="button"
                             onClick={() => {
                               setFieldValue(
@@ -2064,14 +1840,15 @@ const StakeholderEdit = (props) => {
                               setNextUrl("/verificationadmin");
                               handleSubmit();
                             }}
-                            label="Request Changes"
                             disabled={
                               isSubmitting ||
                               !values.submittedDate ||
                               values.verificationStatusId !== 3
                             }
                             style={{ margin: "auto 0.5em" }}
-                          />
+                          >
+                            Request Changes
+                          </PrimaryButton>
                         </div>
                       </BigTooltip>
                       <BigTooltip title="Approve as Verified">
@@ -2084,7 +1861,7 @@ const StakeholderEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <PlainButton
+                          <PrimaryButton
                             type="button"
                             onClick={() => {
                               setFieldValue("approvedDate", moment());
@@ -2100,14 +1877,15 @@ const StakeholderEdit = (props) => {
                               setNextUrl("/verificationadmin");
                               handleSubmit();
                             }}
-                            label="Approve"
                             disabled={
                               isSubmitting ||
                               !criticalFieldsValidate(values) ||
                               (user.isCoordinator && !user.isAdmin)
                             }
                             style={{ margin: "auto 0.5em" }}
-                          />
+                          >
+                            Approve
+                          </PrimaryButton>
                         </div>
                       </BigTooltip>
                       <BigTooltip title="Delete Organization from Database Permanently">

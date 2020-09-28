@@ -1,5 +1,4 @@
-import { PrimaryButton } from "./PrimaryButton";
+import PrimaryButton from "./PrimaryButton";
+import TextInput from "./admin/TextInput";
 
-export default {
-  PrimaryButton,
-};
+export { PrimaryButton, TextInput };

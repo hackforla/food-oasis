@@ -42,24 +42,29 @@ function SearchCriteriaDisplay({
 
   const checkForCriteriaPresent = () => {
     if (
-      criteria.tenantId != defaultCriteria.tenantId ||
-      criteria.name != defaultCriteria.name ||
+      criteria.tenantId !== defaultCriteria.tenantId ||
+      criteria.name !== defaultCriteria.name ||
+      criteria.placeName !== defaultCriteria.placeName ||
+      criteria.radius !== defaultCriteria.radius ||
+      criteria.categoryIds.length > 0 ||
+      criteria.isInactive !== defaultCriteria.isInactive ||
+      criteria.isAssigned !== defaultCriteria.isAssigned ||
+      criteria.isSubmitted !== defaultCriteria.isSubmitted ||
+      criteria.isApproved !== defaultCriteria.isApproved ||
+      criteria.isClaimed !== defaultCriteria.isClaimed ||
+      criteria.assignedLoginId !== defaultCriteria.assignedLoginId ||
+      criteria.claimedLoginId !== defaultCriteria.claimedLoginId ||
+      criteria.verificationStatusId !== defaultCriteria.verificationStatusId ||
+      criteria.neighborhoodId !== defaultCriteria.neighborhoodId ||
+      criteria.isInactiveTemporary !== defaultCriteria.isInactiveTemporary ||
+      criteria.stakeholderId !== defaultCriteria.stakeholderId ||
+      criteria.minCompleteCriticalPercent !==
+        defaultCriteria.minCompleteCriticalPercent ||
+      criteria.maxCompleteCriticalPercent !==
+        defaultCriteria.maxCompleteCriticalPercent
+      // TODO: latituted and longitude are omitted because they are buggy
       // criteria.latitude != defaultCriteria.latitude ||
       // criteria.longitude != defaultCriteria.longitude ||
-      criteria.placeName != defaultCriteria.placeName ||
-      criteria.radius != defaultCriteria.radius ||
-      criteria.categoryIds.length > 0 ||
-      criteria.isInactive != defaultCriteria.isInactive ||
-      criteria.isAssigned != defaultCriteria.isAssigned ||
-      criteria.isSubmitted != defaultCriteria.isSubmitted ||
-      criteria.isApproved != defaultCriteria.isApproved ||
-      criteria.isClaimed != defaultCriteria.isClaimed ||
-      criteria.assignedLoginId != defaultCriteria.assignedLoginId ||
-      criteria.claimedLoginId != defaultCriteria.claimedLoginId ||
-      criteria.verificationStatusId != defaultCriteria.verificationStatusId ||
-      criteria.neighborhoodId != defaultCriteria.neighborhoodId ||
-      criteria.isInactiveTemporary != defaultCriteria.isInactiveTemporary ||
-      criteria.stakeholderId != defaultCriteria.stakeholderId
     ) {
       return true;
     }
@@ -78,10 +83,9 @@ function SearchCriteriaDisplay({
   };
 
   const getCriteriaToDisplay = () => {
-    // using != rather than !== because maxCompleteCriticalPercent is both a string and int
     let criterias = [];
 
-    if (criteria.tenantId != defaultCriteria.tenantId) {
+    if (criteria.tenantId !== defaultCriteria.tenantId) {
       let tenantName = "";
 
       tenants.forEach((tenant) => {
@@ -99,7 +103,7 @@ function SearchCriteriaDisplay({
       );
     }
 
-    if (criteria.name != defaultCriteria.name) {
+    if (criteria.name !== defaultCriteria.name) {
       criterias.push(
         <CriteriaChip
           key={"CriteriaChip_Name"}
@@ -109,7 +113,7 @@ function SearchCriteriaDisplay({
       );
     }
 
-    if (criteria.radius != defaultCriteria.radius) {
+    if (criteria.radius !== defaultCriteria.radius) {
       criterias.push(
         <CriteriaChip
           key={"CriteriaChip_Radius"}
@@ -138,7 +142,7 @@ function SearchCriteriaDisplay({
       );
     }
 
-    if (criteria.isInactive != defaultCriteria.isInactive) {
+    if (criteria.isInactive !== defaultCriteria.isInactive) {
       let inactiveLabel = "";
 
       switch (criteria.isInactive) {
@@ -151,6 +155,8 @@ function SearchCriteriaDisplay({
         case "either":
           inactiveLabel = "Either";
           break;
+        default:
+          inactiveLabel = "Yes";
       }
 
       criterias.push(
@@ -162,7 +168,7 @@ function SearchCriteriaDisplay({
       );
     }
 
-    if (criteria.assignedLoginId != defaultCriteria.assignedLoginId) {
+    if (criteria.assignedLoginId !== defaultCriteria.assignedLoginId) {
       let assignedToLabel = "";
 
       accounts.forEach((account) => {
@@ -180,7 +186,9 @@ function SearchCriteriaDisplay({
       );
     }
 
-    if (criteria.verificationStatusId != defaultCriteria.verificationStatusId) {
+    if (
+      criteria.verificationStatusId !== defaultCriteria.verificationStatusId
+    ) {
       let verificationStatus = "";
 
       switch (criteria.verificationStatusId) {
@@ -199,6 +207,8 @@ function SearchCriteriaDisplay({
         case 4:
           verificationStatus = "Submitted";
           break;
+        default:
+          verificationStatus = "(Any)";
       }
 
       criterias.push(
@@ -210,7 +220,7 @@ function SearchCriteriaDisplay({
       );
     }
 
-    if (criteria.neighborhoodId != defaultCriteria.neighborhoodId) {
+    if (criteria.neighborhoodId !== defaultCriteria.neighborhoodId) {
       let neighborhoodName = "";
 
       neighborhoods.forEach((neighborhood) => {
@@ -229,32 +239,46 @@ function SearchCriteriaDisplay({
     }
 
     if (
-      criteria.minCompleteCriticalPercent !=
+      criteria.minCompleteCriticalPercent !==
       defaultCriteria.minCompleteCriticalPercent
     ) {
-      criterias.push(
-        <CriteriaChip
-          key={"CriteriaChip_Min%Critical"}
-          value={criteria.minCompleteCriticalPercent}
-          label="Min % Critical"
-        />
-      );
+      if (
+        criteria.minCompleteCriticalPercent === "0" ||
+        criteria.minCompleteCriticalPercent === ""
+      ) {
+        // do nothing, handling type mismatch
+      } else {
+        criterias.push(
+          <CriteriaChip
+            key={"CriteriaChip_Min%Critical"}
+            value={criteria.minCompleteCriticalPercent}
+            label="Min % Critical"
+          />
+        );
+      }
     }
 
     if (
-      criteria.maxCompleteCriticalPercent !=
+      criteria.maxCompleteCriticalPercent !==
       defaultCriteria.maxCompleteCriticalPercent
     ) {
-      criterias.push(
-        <CriteriaChip
-          key={"CriteriaChip_Max%Critical"}
-          value={criteria.maxCompleteCriticalPercent}
-          label="Max % Critical"
-        />
-      );
+      if (
+        criteria.maxCompleteCriticalPercent === "100" ||
+        criteria.maxCompleteCriticalPercent === ""
+      ) {
+        // do nothing, handling type mismatch
+      } else {
+        criterias.push(
+          <CriteriaChip
+            key={"CriteriaChip_Max%Critical"}
+            value={criteria.maxCompleteCriticalPercent}
+            label="Max % Critical"
+          />
+        );
+      }
     }
 
-    if (criteria.isInactiveTemporary != defaultCriteria.isInactiveTemporary) {
+    if (criteria.isInactiveTemporary !== defaultCriteria.isInactiveTemporary) {
       let inactiveTemporaryLabel = "";
 
       switch (criteria.isInactiveTemporary) {
@@ -267,6 +291,8 @@ function SearchCriteriaDisplay({
         case "either":
           inactiveTemporaryLabel = "Either";
           break;
+        default:
+          inactiveTemporaryLabel = "Either";
       }
 
       criterias.push(
@@ -278,7 +304,7 @@ function SearchCriteriaDisplay({
       );
     }
 
-    if (criteria.stakeholderId != defaultCriteria.stakeholderId) {
+    if (criteria.stakeholderId !== defaultCriteria.stakeholderId) {
       criterias.push(
         <CriteriaChip
           key={"CriteriaChip_OrganizationID"}
@@ -290,9 +316,10 @@ function SearchCriteriaDisplay({
 
     return criterias;
 
-    /** 
-      * Todo: The following values appear in defaultCriteria but are not used in SearchCriteria.js
-      * how should this be handeld?
+    /**
+
+      TODO: The following values appear in defaultCriteria but are not used in SearchCriteria.js
+      how should this be handeld?
 
       if (criteria.isAssigned != defaultCriteria.isAssigned) {
       }
@@ -304,13 +331,16 @@ function SearchCriteriaDisplay({
       }
       if (criteria.claimedLoginId != defaultCriteria.claimedLoginId) {
       }
+      if (criteria.placeName != defaultCriteria.placeName) {
+      }
+
+      TODO: latituted and longitude are omitted because they are buggy
+
       if (criteria.latitude != defaultCriteria.latitude) {
         // not including for now because of bug
       }
       if (criteria.longitude != defaultCriteria.longitude) {
         // not including for now because of bug
-      }
-      if (criteria.placeName != defaultCriteria.placeName) {
       }
     */
   };

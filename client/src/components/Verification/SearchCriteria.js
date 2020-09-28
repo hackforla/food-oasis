@@ -68,6 +68,27 @@ const SearchCriteria = ({
 
   // handler to set one criteria at a time
   const setCriterion = (evt) => {
+    const {
+      target: { name, value },
+    } = evt;
+
+    // max and min props on number inputs don't stop user from entering invalid values
+    // implementing guard logic to prevent those values being entered
+    if (
+      name === "minCompleteCriticalPercent" ||
+      name === "maxCompleteCriticalPercent"
+    ) {
+      if (value < 0) {
+        setCriteria({ ...criteria, [evt.target.name]: "" });
+        return;
+      }
+
+      if (value > 100) {
+        setCriteria({ ...criteria, [evt.target.name]: 100 });
+        return;
+      }
+    }
+
     setCriteria({ ...criteria, [evt.target.name]: evt.target.value });
   };
 
@@ -105,8 +126,6 @@ const SearchCriteria = ({
     });
     setUseMyLocation("custom");
   };
-
-  console.log("criteria.stakeholderId: ", criteria.stakeholderId);
 
   return (
     <Card className={classes.card}>

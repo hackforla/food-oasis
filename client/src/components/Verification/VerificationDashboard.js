@@ -5,8 +5,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { SearchButton, PlainButton } from "../Buttons";
 import StakeholderGrid from "./VerificationAdminGrid";
 import { RotateLoader } from "react-spinners";
-import { useOrganizations } from "../../hooks/useOrganizations/useOrganizations";
-import * as stakeholderService from "../../services/stakeholder-service";
+import { useOrganizations } from "hooks/useOrganizations/useOrganizations";
+import * as stakeholderService from "services/stakeholder-service";
 
 const useStyles = makeStyles((theme) => ({
   root: {

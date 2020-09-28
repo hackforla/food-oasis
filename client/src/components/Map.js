@@ -1,9 +1,11 @@
 import React from "react";
 import ReactMapGL, { NavigationControl } from "react-map-gl";
+
+import { MAPBOX_TOKEN } from "secrets";
+import { MAPBOX_STYLE } from "constants/map";
+
 import MarkerPopup from "./MarkerPopup";
 import Marker from "./Marker";
-import { MAPBOX_TOKEN } from "../secrets";
-import { MAPBOX_STYLE } from "../constants/map";
 
 const styles = {
   geolocate: {
@@ -69,15 +71,11 @@ function Map({ selectedLatitude, selectedLongitude, stakeholders }) {
         {stakeholders &&
           stakeholders
             .filter((sh) => sh.latitude && sh.longitude)
-            .map((stakeholder, index) => (
+            .map((stakeholder) => (
               <Marker
+                key={stakeholder.id}
                 onClick={() => handleMarkerClick(stakeholder)}
-                key={`marker-${index}`}
-                longitude={stakeholder.longitude}
-                latitude={stakeholder.latitude}
-                inactive={stakeholder.inactive}
-                inactiveTemporary={stakeholder.inactiveTemporary}
-                categories={stakeholder.categories}
+                stakeholder={stakeholder}
               />
             ))}
         {isPopupOpen && selectedStakeholder && (

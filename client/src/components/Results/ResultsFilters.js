@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect } from "react";
-import Search from "../components/Search";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -11,12 +10,16 @@ import {
   Box,
 } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
+
 import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
   DEFAULT_CATEGORIES,
-} from "../constants/stakeholder";
-import SwitchViewsButton from "./SwitchViewsButton";
+} from "constants/stakeholder";
+import isMobile from "helpers/isMobile";
+
+import SwitchViewsButton from "components/SwitchViewsButton";
+import Search from "components/Search";
 
 const useStyles = makeStyles((theme) => ({
   filterGroup: {
@@ -135,12 +138,10 @@ const ResultsFilters = ({
   radius,
   setRadius,
   isVerifiedSelected,
-  selectVerified,
   userCoordinates,
   categoryIds,
   toggleCategory,
   viewPortHash,
-  isMobile,
   isMapView,
   switchResultsView,
 }) => {

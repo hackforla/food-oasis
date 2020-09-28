@@ -17,9 +17,9 @@ import {
   RadioGroup,
   Radio,
 } from "@material-ui/core";
-import { SearchButton } from "./Buttons";
-import SwitchViewsButton from "./SwitchViewsButton";
-import LocationAutocomplete from "./LocationAutocomplete";
+import { SearchButton } from "components/Buttons";
+import SwitchViewsButton from "components/SwitchViewsButton";
+import LocationAutocomplete from "components/LocationAutocomplete";
 
 const useStyles = makeStyles((theme) => ({
   card: {

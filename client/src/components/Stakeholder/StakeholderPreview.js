@@ -1,37 +1,38 @@
 import React from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
-import mapMarker from "../images/mapMarker";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
-} from "../constants/stakeholder";
-import { ORGANIZATION_COLORS, CLOSED_COLOR } from "../constants/map";
-import getIcon from "../helpers/getIcon";
+} from "constants/stakeholder";
 
-const useStyles = makeStyles((props) => ({
+import { ORGANIZATION_COLORS, CLOSED_COLOR } from "constants/map";
+import getIcon from "helpers/getIcon";
+
+const useStyles = makeStyles(() => ({
   stakeholder: {
-    width: (props) => (props.inList ? "80%" : "100%"),
+    width: "100%",
     minHeight: "6em",
     display: "flex",
     justifyContent: "space-between",
-    alignItems: (props) => (props.inList ? "center" : "flex-start"),
+    alignItems: "center",
     padding: "1em 0",
-    borderBottom: (props) => (props.inList ? " .2em solid #f1f1f1" : "none"),
   },
   img: {
-    display: "inherit",
-    justifyContent: "center",
-    alignItems: "center",
+    display: "flex",
+    marginRight: "1em",
+    width: "50px",
   },
   info: {
     fontSize: "1em",
     textAlign: "left",
-    width: "60%",
-    display: "inherit",
+    width: "100%",
     flexDirection: "column",
     justifyContent: "space-between",
+    "& p": {
+      margin: 0,
+    },
   },
   check: {
     width: "10%",
@@ -124,12 +125,8 @@ const isAlmostClosed = (hours) => {
   return minutesToClosing <= minutesToCloseFlag;
 };
 
-const StakeholderPreview = ({
-  stakeholder,
-  doSelectStakeholder,
-  inList = false,
-}) => {
-  const classes = useStyles({ inList });
+const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
+  const classes = useStyles();
 
   const stakeholderHours = stakeholdersCurrentDaysHours(stakeholder);
   const isOpenFlag = !!stakeholderHours;
@@ -145,11 +142,11 @@ const StakeholderPreview = ({
     >
       <div className={classes.img}>{getIcon(stakeholder)}</div>
       <div className={classes.info}>
-        <span>{stakeholder.name}</span>
-        <span>{stakeholder.address1}</span>
-        <div>
+        <p>{stakeholder.name}</p>
+        <p>{stakeholder.address1}</p>
+        <p>
           {stakeholder.city} {stakeholder.zip}
-        </div>
+        </p>
         {stakeholder.categories.map((category) => (
           <em
             key={stakeholder.id + category.id}
@@ -196,16 +193,6 @@ const StakeholderPreview = ({
           ? stakeholder.distance.toString().substring(0, 3).padEnd(4, "0")
           : stakeholder.distance.toString().substring(0, 3)}{" "}
         mi
-        {mapMarker(
-          stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID &&
-            stakeholder.categories[1] &&
-            stakeholder.categories[1].id === MEAL_PROGRAM_CATEGORY_ID
-            ? -1
-            : stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
-            ? 0
-            : 1,
-          stakeholder.inactiveTemporary || stakeholder.inactive ? true : false
-        )}
       </div>
     </div>
   );
@@ -214,7 +201,6 @@ const StakeholderPreview = ({
 StakeholderPreview.propTypes = {
   stakeholder: PropTypes.object.isRequired,
   doSelectStakeholder: PropTypes.func.isRequired,
-  inList: PropTypes.bool,
 };
 
 export default StakeholderPreview;

@@ -1,26 +1,27 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import mapMarker from "../images/mapMarker";
-import fbIcon from "../images/fbIcon.png";
-import instaIcon from "../images/instaIcon.png";
+import mapMarker from "images/mapMarker";
+import fbIcon from "images/fbIcon.png";
+import instaIcon from "images/instaIcon.png";
 import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
   VERIFICATION_STATUS,
-} from "../constants/stakeholder";
-import { ORGANIZATION_COLORS, CLOSED_COLOR } from "../constants/map";
-import SuggestionDialog from "./SuggestionDialog";
-import { PlainButton } from "./Buttons";
-import getIcon from "../helpers/getIcon";
+} from "constants/stakeholder";
+import { ORGANIZATION_COLORS, CLOSED_COLOR } from "constants/map";
+import SuggestionDialog from "components/SuggestionDialog";
+import { PlainButton } from "components/Buttons";
+import getIcon from "helpers/getIcon";
 
 const useStyles = makeStyles((theme, props) => ({
   stakeholder: {
-    width: (props) => (props.inList ? "80%" : "100%"),
+    width: "100%",
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
-    padding: (props) => (props.inList ? "1em 0" : "1em"),
+    padding: "1em",
     alignItems: "center",
+    paddingBottom: "5em",
   },
   topInfo: {
     width: "100%",
@@ -92,6 +93,9 @@ const useStyles = makeStyles((theme, props) => ({
     margin: "0 1em 0 0",
   },
   arrow: {
+    position: "fixed",
+    bottom: "1em",
+    left: "1em",
     alignSelf: "flex-start",
     margin: "1em 0 0 0",
   },
@@ -113,9 +117,8 @@ const StakeholderDetails = ({
   doSelectStakeholder,
   selectedStakeholder,
   setToast,
-  inList = false,
 }) => {
-  const classes = useStyles({ inList });
+  const classes = useStyles();
   const [SuggestionDialogOpen, setSuggestionDialogOpen] = useState(false);
 
   const handleSuggestionDialogOpen = async () => {

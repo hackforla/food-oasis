@@ -19,6 +19,7 @@ import {
 import AssignDialog from "./AssignDialog";
 import NeedsVerificationDialog from "./MessageConfirmDialog";
 import SearchCriteria from "./SearchCriteria";
+import SearchCriteriaDisplay from "./SearchCriteriaDisplay";
 
 const CRITERIA_TOKEN = "verificationAdminCriteria";
 
@@ -106,6 +107,8 @@ const defaultCriteria = {
   neighborhoodId: 0,
   minCompleteCriticalPercent: 0,
   maxCompleteCriticalPercent: 100,
+  stakeholderId: "",
+  isInactiveTemporary: "either",
 };
 
 VerificationAdmin.propTypes = {
@@ -137,7 +140,7 @@ function VerificationAdmin(props) {
     error: categoriesError,
   } = useCategories();
 
-  const { data: tenants } = useTenants();
+  const { data: tenants, loading: tenantsLoading } = useTenants();
 
   const {
     data: neighborhoods,
@@ -307,6 +310,14 @@ function VerificationAdmin(props) {
           <SearchButton onClick={handleDialogOpen} label="Criteria..." />
         </header>
       </div>
+      <SearchCriteriaDisplay
+        defaultCriteria={defaultCriteria}
+        criteria={criteria}
+        neighborhoods={neighborhoods}
+        tenants={tenants}
+        categories={categories}
+        isLoading={neighborhoodsLoading || categoriesLoading || tenantsLoading}
+      />
       <div className={classes.mainContent}>
         <Dialog
           open={dialogOpen}
@@ -315,7 +326,6 @@ function VerificationAdmin(props) {
           maxWidth="lg"
         >
           <DialogTitle onClose={handleDialogClose}>Search Criteria</DialogTitle>
-
           {criteria ? (
             <div style={{ overflowY: "scroll" }}>
               <SearchCriteria

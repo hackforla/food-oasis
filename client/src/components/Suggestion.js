@@ -54,6 +54,7 @@ function Suggestion(props) {
     tipsterName: "",
     tipsterPhone: "",
     tipsterEmail: "",
+    category: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 

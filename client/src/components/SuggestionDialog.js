@@ -14,7 +14,7 @@ import * as suggestionService from "../services/suggestion-service";
 
 function SuggestionDialog(props) {
   const { onClose, open, setToast, stakeholder: sh, ...other } = props;
-  const [stakeholder, setStakeholder] = useState(
+  const [stakeholder] = useState(
     sh
       ? {
           id: sh.id,
@@ -31,6 +31,7 @@ function SuggestionDialog(props) {
           tipsterName: "",
           tipsterPhone: "",
           tipsterEmail: "",
+          category: "",
         }
       : {
           id: 0,
@@ -47,6 +48,44 @@ function SuggestionDialog(props) {
           tipsterName: "",
           tipsterPhone: "",
           tipsterEmail: "",
+          category: "",
+        }
+  );
+  const [corrections, setCorrections] = useState(
+    sh
+      ? {
+          id: sh.id,
+          name: sh.name,
+          address1: "",
+          address2: "",
+          city: "",
+          state: "",
+          zip: "",
+          phone: "",
+          email: "",
+          notes: "",
+          hours: "",
+          tipsterName: "",
+          tipsterPhone: "",
+          tipsterEmail: "",
+          category: "",
+        }
+      : {
+          id: 0,
+          name: "",
+          address1: "",
+          address2: "",
+          city: "",
+          state: "",
+          zip: "",
+          phone: "",
+          email: "",
+          notes: "",
+          hours: "",
+          tipsterName: "",
+          tipsterPhone: "",
+          tipsterEmail: "",
+          category: "",
         }
   );
 
@@ -55,15 +94,15 @@ function SuggestionDialog(props) {
   };
 
   const handleChange = (e) => {
-    setStakeholder({ ...stakeholder, [e.target.name]: e.target.value });
+    setCorrections({ ...corrections, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = () => {
     return suggestionService
-      .post(stakeholder)
+      .post(corrections)
       .then((response) => {
         setToast({
-          message: "Thank you for your help!",
+          message: "Mahalo for your help!",
         });
         onClose(true);
       })
@@ -89,24 +128,32 @@ function SuggestionDialog(props) {
       <DialogContent dividers>
         <Grid container spacing={1}>
           <Grid item xs={12}>
-            <Typography>
+            {/* <Typography>
               Please help us improve our data by letting us know when our
               information is incorrect. All fields are optional, but filling in
               as many as you can helps our volunteers to validate efficiently.
               Thanks!
+            </Typography> */}
+            <Typography variant="h5">
+              Organization: {stakeholder.name}
+            </Typography>
+            <Typography>
+              Please help us improve our data by letting us know when our
+              information is incorrect. Please fill corrections into any of the
+              fields below. Mahalo!
             </Typography>
           </Grid>
           <Grid item xs={12}>
             <TextField
               type="text"
               size="small"
-              label="Organization Name"
+              label={`Current name: ${stakeholder.name}`}
               name="name"
               variant="outlined"
               margin="normal"
               fullWidth
               autoFocus
-              value={stakeholder.name}
+              value={corrections.name}
               onChange={handleChange}
             />
           </Grid>
@@ -114,13 +161,13 @@ function SuggestionDialog(props) {
             <TextField
               type="text"
               size="small"
-              label="Address Line 1"
+              label={`Current address 1: ${stakeholder.address1}`}
               name="address1"
               variant="outlined"
               margin="normal"
               fullWidth
               autoFocus
-              value={stakeholder.address1}
+              value={corrections.address1}
               onChange={handleChange}
             />
           </Grid>
@@ -128,13 +175,13 @@ function SuggestionDialog(props) {
             <TextField
               type="text"
               size="small"
-              label="Address Line 2"
+              label={`Current address 2: ${stakeholder.address2}`}
               name="address2"
               variant="outlined"
               margin="normal"
               fullWidth
               autoFocus
-              value={stakeholder.address2}
+              value={corrections.address2}
               onChange={handleChange}
             />
           </Grid>
@@ -142,13 +189,13 @@ function SuggestionDialog(props) {
             <TextField
               type="text"
               size="small"
-              label="City"
+              label={`Current city: ${stakeholder.city}`}
               name="city"
               variant="outlined"
               margin="normal"
               fullWidth
               autoFocus
-              value={stakeholder.city}
+              value={corrections.city}
               onChange={handleChange}
             />
           </Grid>
@@ -156,13 +203,13 @@ function SuggestionDialog(props) {
             <TextField
               type="text"
               size="small"
-              label="State"
+              label={`Current state: ${stakeholder.state}`}
               name="state"
               variant="outlined"
               margin="normal"
               fullWidth
               autoFocus
-              value={stakeholder.state}
+              value={corrections.state}
               onChange={handleChange}
             />
           </Grid>
@@ -170,13 +217,13 @@ function SuggestionDialog(props) {
             <TextField
               type="text"
               size="small"
-              label="Zip Code"
+              label={`Current zip code: ${stakeholder.zip}`}
               name="zip"
               variant="outlined"
               margin="normal"
               fullWidth
               autoFocus
-              value={stakeholder.zip}
+              value={corrections.zip}
               onChange={handleChange}
             />
           </Grid>
@@ -184,13 +231,13 @@ function SuggestionDialog(props) {
             <TextField
               type="text"
               size="small"
-              label="Phone"
+              label={`Current phone: ${stakeholder.phone}`}
               name="phone"
               variant="outlined"
               margin="normal"
               fullWidth
               autoFocus
-              value={stakeholder.phone}
+              value={corrections.phone}
               onChange={handleChange}
             />
           </Grid>
@@ -198,13 +245,13 @@ function SuggestionDialog(props) {
             <TextField
               type="text"
               size="small"
-              label="Email"
+              label={`Current email: ${stakeholder.email}`}
               name="email"
               variant="outlined"
               margin="normal"
               fullWidth
               autoFocus
-              value={stakeholder.email}
+              value={corrections.email}
               onChange={handleChange}
             />
           </Grid>
@@ -221,7 +268,7 @@ function SuggestionDialog(props) {
               margin="normal"
               fullWidth
               autoFocus
-              value={stakeholder.hours}
+              value={corrections.hours}
               onChange={handleChange}
             />
           </Grid>
@@ -238,7 +285,7 @@ function SuggestionDialog(props) {
               margin="normal"
               fullWidth
               autoFocus
-              value={stakeholder.notes}
+              value={corrections.notes}
               onChange={handleChange}
             />
           </Grid>
@@ -255,7 +302,7 @@ function SuggestionDialog(props) {
               margin="normal"
               fullWidth
               autoFocus
-              value={stakeholder.tipsterName}
+              value={corrections.tipsterName}
               onChange={handleChange}
             />
           </Grid>
@@ -272,7 +319,7 @@ function SuggestionDialog(props) {
               margin="normal"
               fullWidth
               autoFocus
-              value={stakeholder.tipsterPhone}
+              value={corrections.tipsterPhone}
               onChange={handleChange}
             />
           </Grid>
@@ -289,7 +336,7 @@ function SuggestionDialog(props) {
               margin="normal"
               fullWidth
               autoFocus
-              value={stakeholder.tipsterEmail}
+              value={corrections.tipsterEmail}
               onChange={handleChange}
             />
           </Grid>

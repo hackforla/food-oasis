@@ -11,7 +11,22 @@ const router = require("./app/routes/index");
 const helmet = require("helmet");
 
 const app = express();
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "https://foodoasishi-test.herokuapp.com/"],
+        imgSrc: ["'self'"],
+        styleSrc: ["'self'"],
+        https: ["unsafe-inline"],
+        upgradeInsecureRequests: [],
+      },
+    },
+  })
+);
+
+// app.use(helmet());
 
 // Redirect HTTP requests to HTTPS
 if (process.env.NODE_ENV === "production") {

@@ -7,7 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { MAPBOX_TOKEN } from "secrets";
 import { MAPBOX_STYLE } from "constants/map";
 import { DEFAULT_CATEGORIES } from "constants/stakeholder";
-import isMobile from "helpers/isMobile";
+import { isMobile } from "helpers";
 
 import StakeholderPreview from "components/Stakeholder/StakeholderPreview";
 import StakeholderDetails from "components/Stakeholder/StakeholderDetails";

@@ -1,10 +1,10 @@
 import React from "react";
-import { foodPantry, closed } from "../theme/colors";
+import { foodPantry, closed } from "theme/colors";
 
-const pantryIcon = (isClosed) => (
+const PantryIcon = ({ isClosed, height = "72px", width = "72px" }) => (
   <svg
-    width="72px"
-    height="72px"
+    width={width}
+    height={height}
     viewBox="0 0 53 53"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -24,4 +24,4 @@ const pantryIcon = (isClosed) => (
   </svg>
 );
 
-export default pantryIcon;
+export default PantryIcon;

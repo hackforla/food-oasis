@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+
 import mapMarker from "images/mapMarker";
 import fbIcon from "images/fbIcon.png";
 import instaIcon from "images/instaIcon.png";
@@ -9,9 +10,11 @@ import {
   VERIFICATION_STATUS,
 } from "constants/stakeholder";
 import { ORGANIZATION_COLORS, CLOSED_COLOR } from "constants/map";
+import { extractNumbers, getGoogleMapsUrl } from "helpers";
+
+import Icon from "components/Icon";
 import SuggestionDialog from "components/SuggestionDialog";
 import { PlainButton } from "components/Buttons";
-import getIcon from "helpers/getIcon";
 
 const useStyles = makeStyles((theme, props) => ({
   stakeholder: {
@@ -52,20 +55,6 @@ const useStyles = makeStyles((theme, props) => ({
   },
   title: {
     alignSelf: "flex-start",
-  },
-  link: { textDecoration: "none" },
-  directions: {
-    alignSelf: "center",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    color: "white",
-    width: "15em",
-    height: "3em",
-    fontSize: "14px",
-    fontWeight: "bold",
-    borderRadius: "10px",
-    margin: "1em 0 0 0",
   },
   hoursContainer: {
     width: "100%",
@@ -110,6 +99,16 @@ const useStyles = makeStyles((theme, props) => ({
     backgroundColor: "#E0E0E0",
     padding: ".25em .5em",
     borderRadius: "3px",
+  },
+  buttons: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  numbers: {
+    display: "inline",
+    alignSelf: "flex-start",
   },
 }));
 
@@ -174,24 +173,23 @@ const StakeholderDetails = ({
     }
   };
 
-  const getGoogleMapsUrl = (zip, address1, address2) => {
-    const baseUrl = `https://google.com/maps/place/`;
-
-    const address1urlArray = address1.split(" ");
-    const address1url = address1urlArray.reduce(
-      (acc, currentWord) => `${acc}+${currentWord}`
-    );
-
-    if (address2) {
-      const address2urlArray = address2.split(" ");
-      const address2url = address2urlArray.reduce(
-        (acc, currentWord) => `${acc}+${currentWord}`
+  const numbers = extractNumbers(selectedStakeholder.phone).map((n) => {
+    if (n.number) {
+      return (
+        <a
+          key={n.value}
+          className={classes.fontSize}
+          href={"tel:" + n.value}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {n.value}
+        </a>
       );
-      return `${baseUrl}${address1url},+${address2url},+${zip}`;
+    } else {
+      return <span key={n.value}> {n.value} </span>;
     }
-
-    return `${baseUrl}${address1url},+${zip}`;
-  };
+  });
 
   return (
     <div className={classes.stakeholder}>
@@ -204,7 +202,7 @@ const StakeholderDetails = ({
         setToast={setToast}
       />
       <div className={classes.topInfo}>
-        <div className={classes.img}>{getIcon(selectedStakeholder)}</div>
+        <Icon stakeholder={selectedStakeholder} />
         <div className={classes.info}>
           <span>{selectedStakeholder.name}</span>
           <span>{selectedStakeholder.address1}</span>
@@ -285,36 +283,21 @@ const StakeholderDetails = ({
             : selectedStakeholder.createdDate.format("MMM Do, YYYY")}
         </p>
       ) : null}
-      <div>
-        <a
-          className={classes.link}
-          href={getGoogleMapsUrl(
-            selectedStakeholder.zip,
-            selectedStakeholder.address1,
-            selectedStakeholder.address2 || null
-          )}
-          underline="hover"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <span
-            className={classes.directions}
-            style={{
-              backgroundColor:
-                selectedStakeholder.inactiveTemporary ||
-                selectedStakeholder.inactive
-                  ? CLOSED_COLOR
-                  : selectedStakeholder.categories[0].id === 1
-                  ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
-                  : ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID],
-            }}
-          >
-            Directions
-          </span>
-        </a>
+      <div className={classes.buttons}>
         <PlainButton
-          type="button"
-          style={{ textTransform: "none" }}
+          stakeholder={selectedStakeholder}
+          label="Directions"
+          onClick={() =>
+            window.open(
+              getGoogleMapsUrl(
+                selectedStakeholder.zip,
+                selectedStakeholder.address1,
+                selectedStakeholder.address2 || null
+              )
+            )
+          }
+        />
+        <PlainButton
           className={classes.directions}
           onClick={handleSuggestionDialogOpen}
           label="Send a Correction"
@@ -359,17 +342,8 @@ const StakeholderDetails = ({
       ) : null}
 
       <h2 className={classes.title}>Phone</h2>
-      {selectedStakeholder.phone ? (
-        <React.Fragment>
-          <a
-            className={classes.fontSize}
-            href={"tel:" + selectedStakeholder.phone}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {selectedStakeholder.phone}
-          </a>
-        </React.Fragment>
+      {numbers.length ? (
+        <div className={classes.numbers}>{numbers}</div>
       ) : (
         <span className={classes.fontSize}>No Phone Number on record</span>
       )}

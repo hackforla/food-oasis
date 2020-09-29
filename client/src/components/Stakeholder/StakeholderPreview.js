@@ -2,13 +2,16 @@ import React from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { makeStyles } from "@material-ui/core/styles";
+
 import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
 } from "constants/stakeholder";
-
 import { ORGANIZATION_COLORS, CLOSED_COLOR } from "constants/map";
-import getIcon from "helpers/getIcon";
+import { getGoogleMapsUrl, extractNumbers } from "helpers";
+
+import Icon from "components/Icon";
+import { DetailsButton, PlainButton } from "components/Buttons";
 
 const useStyles = makeStyles(() => ({
   stakeholder: {
@@ -19,31 +22,20 @@ const useStyles = makeStyles(() => ({
     alignItems: "center",
     padding: "1em 0",
   },
-  img: {
-    display: "flex",
-    marginRight: "1em",
-    width: "50px",
-  },
   info: {
     fontSize: "1em",
     textAlign: "left",
     width: "100%",
+    display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
     "& p": {
       margin: 0,
     },
   },
-  check: {
-    width: "10%",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-  },
   label: {
     width: "100%",
     display: "flex",
-    flexDirection: "column",
   },
   closedLabel: {
     color: "#545454",
@@ -51,6 +43,7 @@ const useStyles = makeStyles(() => ({
     backgroundColor: "#E0E0E0",
     padding: ".25em .5em",
     borderRadius: "3px",
+    margin: ".25em 0",
   },
   openLabel: {
     color: "#fff",
@@ -59,6 +52,7 @@ const useStyles = makeStyles(() => ({
     padding: ".25em",
     borderRadius: "3px",
     margin: ".25em 0",
+    marginRight: "0.25em",
   },
   closingSoonLabel: {
     color: "#fff",
@@ -67,6 +61,22 @@ const useStyles = makeStyles(() => ({
     padding: ".25em",
     borderRadius: "3px",
     margin: ".25em 0",
+  },
+  buttons: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  leftInfo: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginRight: "1em",
+  },
+  name: {
+    fontSize: "16px",
   },
 }));
 
@@ -128,6 +138,8 @@ const isAlmostClosed = (hours) => {
 const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
   const classes = useStyles();
 
+  const mainNumber = extractNumbers(stakeholder.phone).find((n) => n.number);
+
   const stakeholderHours = stakeholdersCurrentDaysHours(stakeholder);
   const isOpenFlag = !!stakeholderHours;
   const isAlmostClosedFlag = isOpenFlag && isAlmostClosed(stakeholderHours);
@@ -140,31 +152,39 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
       key={stakeholder.id}
       onClick={() => doSelectStakeholder(stakeholder)}
     >
-      <div className={classes.img}>{getIcon(stakeholder)}</div>
+      <div className={classes.leftInfo}>
+        <Icon stakeholder={stakeholder} height="50px" width="50px" />
+        <div>
+          {stakeholder.distance >= 10
+            ? stakeholder.distance.toString().substring(0, 3).padEnd(4, "0")
+            : stakeholder.distance.toString().substring(0, 3)}{" "}
+          mi
+        </div>
+      </div>
       <div className={classes.info}>
-        <p>{stakeholder.name}</p>
-        <p>{stakeholder.address1}</p>
-        <p>
-          {stakeholder.city} {stakeholder.zip}
-        </p>
-        {stakeholder.categories.map((category) => (
-          <em
-            key={stakeholder.id + category.id}
-            style={{
-              alignSelf: "flex-start",
-              color:
-                stakeholder.inactiveTemporary || stakeholder.inactive
-                  ? CLOSED_COLOR
-                  : category.id === FOOD_PANTRY_CATEGORY_ID
-                  ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
-                  : category.id === MEAL_PROGRAM_CATEGORY_ID
-                  ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
-                  : "#000",
-            }}
-          >
-            {category.name}
-          </em>
-        ))}
+        <p className={classes.name}>{stakeholder.name}</p>
+        <div className={classes.label}>
+          {stakeholder.categories.map((category) => (
+            <em
+              key={stakeholder.id + category.id}
+              style={{
+                alignSelf: "flex-start",
+                margin: "0.25em 0",
+                marginRight: "0.25em",
+                color:
+                  stakeholder.inactiveTemporary || stakeholder.inactive
+                    ? CLOSED_COLOR
+                    : category.id === FOOD_PANTRY_CATEGORY_ID
+                    ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
+                    : category.id === MEAL_PROGRAM_CATEGORY_ID
+                    ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
+                    : "#000",
+              }}
+            >
+              {category.name}
+            </em>
+          ))}
+        </div>
         <div className={classes.label}>
           {stakeholder.inactiveTemporary || stakeholder.inactive ? (
             <em className={classes.closedLabel}>
@@ -187,12 +207,29 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
             </em>
           ) : null}
         </div>
-      </div>
-      <div className={classes.check}>
-        {stakeholder.distance >= 10
-          ? stakeholder.distance.toString().substring(0, 3).padEnd(4, "0")
-          : stakeholder.distance.toString().substring(0, 3)}{" "}
-        mi
+        <div className={classes.buttons}>
+          <PlainButton
+            label="Directions"
+            onClick={() =>
+              window.open(
+                getGoogleMapsUrl(
+                  stakeholder.zip,
+                  stakeholder.address1,
+                  stakeholder.address2 || null
+                )
+              )
+            }
+            size="small"
+          />
+          {mainNumber && (
+            <PlainButton
+              label="Call"
+              size="small"
+              onClick={() => window.open(`tel:${mainNumber.value}`)}
+            />
+          )}
+          <DetailsButton size="small" />
+        </div>
       </div>
     </div>
   );

@@ -125,6 +125,11 @@ export default function Menu(props) {
                     text="Add New Organization"
                   />
                   <MenuItemLink
+                    key="organizationimport"
+                    to="/organizationimport"
+                    text="Import CSV"
+                  />
+                  <MenuItemLink
                     key="verificationadmin"
                     to="/verificationadmin"
                     text="Verification Admin"

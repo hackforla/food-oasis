@@ -7,6 +7,9 @@ import StakeholderGrid from "./VerificationAdminGrid";
 import { RotateLoader } from "react-spinners";
 import { useOrganizations } from "../../hooks/useOrganizations/useOrganizations";
 import * as stakeholderService from "../../services/stakeholder-service";
+import * as suggestionService from "../../services/suggestion-service";
+
+import SuggestionList from "../SuggestionList";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -75,6 +78,7 @@ function VerificationDashboard(props) {
   const { user } = props;
   const classes = useStyles();
   const [criteria, setCriteria] = useState(defaultCriteria);
+  const [suggestions, setSuggestions] = useState(null);
 
   const {
     data: stakeholders,
@@ -132,6 +136,19 @@ function VerificationDashboard(props) {
     );
     return stakeholdersAssigned.length > 4 ? true : false;
   };
+
+  useEffect(() => {
+    const fetchSuggestions = async () => {
+      if (!user) return;
+      try {
+        const data = await suggestionService.getAllByAssignedUser(user.id);
+        setSuggestions(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchSuggestions();
+  }, [user]);
 
   return (
     <main className={classes.root}>
@@ -210,6 +227,13 @@ function VerificationDashboard(props) {
                 Please enter search criteria and execute a search
               </Typography>
             </div>
+          )}
+          {suggestions && (
+            <SuggestionList
+              user={user}
+              suggestions={suggestions}
+              setSuggestions={setSuggestions}
+            />
           )}
         </>
       </div>

@@ -20,6 +20,9 @@ import AssignDialog from "./AssignDialog";
 import NeedsVerificationDialog from "./MessageConfirmDialog";
 import SearchCriteria from "./SearchCriteria";
 
+import * as suggestionService from "../../services/suggestion-service";
+import SuggestionList from "../SuggestionList";
+
 const CRITERIA_TOKEN = "verificationAdminCriteria";
 
 const useStyles = makeStyles((theme) => ({
@@ -130,6 +133,7 @@ function VerificationAdmin(props) {
   const [criteria, setCriteria] = useState(defaultCriteria);
   const [selectedStakeholderIds, setSelectedStakeholderIds] = useState([]);
   const [unauthorized, setUnauthorized] = useState(false);
+  const [suggestions, setSuggestions] = useState(null);
 
   const {
     data: categories,
@@ -153,6 +157,11 @@ function VerificationAdmin(props) {
   } = useOrganizations();
 
   const searchCallback = useCallback(stakeholderSearch, []);
+
+  const fetchSuggestions = async () => {
+    const data = await suggestionService.getAll();
+    setSuggestions(data);
+  };
 
   useEffect(() => {
     const execute = async () => {
@@ -278,6 +287,10 @@ function VerificationAdmin(props) {
     search();
     setDialogOpen(false);
   };
+
+  useEffect(() => {
+    fetchSuggestions();
+  }, []);
 
   return (
     <main className={classes.root}>
@@ -459,6 +472,11 @@ function VerificationAdmin(props) {
                 mode={"admin"}
                 stakeholders={stakeholders}
                 setSelectedStakeholderIds={setSelectedStakeholderIds}
+              />
+              <SuggestionList
+                user={user}
+                suggestions={suggestions}
+                setSuggestions={setSuggestions}
               />
             </>
           ) : (

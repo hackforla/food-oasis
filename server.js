@@ -8,8 +8,10 @@ const cookieParser = require("cookie-parser");
 const path = require("path");
 const middleware = require("./middleware/middleware");
 const router = require("./app/routes/index");
+const helmet = require("helmet");
 
 const app = express();
+app.use(helmet());
 
 // Redirect HTTP requests to HTTPS
 if (process.env.NODE_ENV === "production") {

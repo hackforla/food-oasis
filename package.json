@@ -1,8 +1,8 @@
 {
   "name": "foodoasis",
   "version": "1.0.20",
-  "author": "Hack for LA",
-  "description": "Web API Server for Food Oasis",
+  "author": "Code for Hawaii",
+  "description": "Web API Server for Food Oasis HI",
   "main": "server.js",
   "scripts": {
     "test": "mocha",

@@ -16,17 +16,23 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "https://foodoasishi-test.herokuapp.com/"],
+        scriptSrc: [
+          "'self'",
+          "https://api.tiles.mapbox.com/",
+          "https://api.mapbox.com",
+          "https://events.mapbox.com",
+        ],
         imgSrc: ["'self'"],
-        styleSrc: ["'self'"],
-        https: ["unsafe-inline"],
+        styleSrc: [
+          "'self'",
+          "https://fonts.googleapis.com/",
+          "https://api.tiles.mapbox.com/",
+        ],
         upgradeInsecureRequests: [],
       },
     },
   })
 );
-
-// app.use(helmet());
 
 // Redirect HTTP requests to HTTPS
 if (process.env.NODE_ENV === "production") {

@@ -12,25 +12,25 @@ const helmet = require("helmet");
 const crypto = require("crypto");
 
 const app = express();
+
 app.use((req, res, next) => {
   res.locals.cspNonce = crypto.randomBytes(16).toString("hex");
   next();
 });
+
 app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
-        baseUri: ["none"],
+        baseUri: ["'self'"],
         defaultSrc: ["'self'"],
-        scriptSrc: [
-          "'self'",
-          "*.mapbox.com",
-          (req, res) => `'nonce-${res.locals.cspNonce}'`,
-        ],
-        imgSrc: ["'self'"],
-        objectSrc: ["none"],
-        fontSrc: ["'self'", "*.googleapis.com", "fonts.gstatic.com"],
-        styleSrc: ["'self'", "*.googleapis.com", "*.mapbox.com"],
+        // scriptSrc: [
+        //   "'self'",
+        //   "*.mapbox.com",
+        //   (req, res) => `'nonce-${res.locals.cspNonce}'`,
+        // ],
+        objectSrc: ["'none'"],
+        fontSrc: ["'self'", "https://fonts.gstatic.com"],
         upgradeInsecureRequests: [],
       },
       reportOnly: true,

@@ -17,28 +17,19 @@ const MapMarker = ({ onClick, stakeholder, selectedStakeholder }) => {
     inactiveTemporary,
   } = stakeholder;
   return (
-    <div
-      style={{
-        opacity:
-          !!selectedStakeholder && selectedStakeholder.id !== stakeholder.id
-            ? 0.6
-            : 1,
-      }}
-    >
-      <Marker longitude={longitude} latitude={latitude}>
-        {mapMarker(
-          categories[0]?.id === FOOD_PANTRY_CATEGORY_ID &&
-            categories[1]?.id === MEAL_PROGRAM_CATEGORY_ID
-            ? -1
-            : categories[0]?.id === FOOD_PANTRY_CATEGORY_ID
-            ? 0
-            : 1,
-          inactiveTemporary || inactive ? true : false,
-          onClick,
-          selectedStakeholder && selectedStakeholder.id === stakeholder.id
-        )}
-      </Marker>
-    </div>
+    <Marker longitude={longitude} latitude={latitude}>
+      {mapMarker(
+        categories[0]?.id === FOOD_PANTRY_CATEGORY_ID &&
+          categories[1]?.id === MEAL_PROGRAM_CATEGORY_ID
+          ? -1
+          : categories[0]?.id === FOOD_PANTRY_CATEGORY_ID
+          ? 0
+          : 1,
+        inactiveTemporary || inactive,
+        onClick,
+        selectedStakeholder && selectedStakeholder.id === stakeholder.id
+      )}
+    </Marker>
   );
 };
 

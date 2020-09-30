@@ -105,7 +105,12 @@ function Map({
           </div>
           {stakeholders &&
             stakeholders
-              .filter((sh) => sh.latitude && sh.longitude)
+              .filter(
+                (sh) =>
+                  sh.latitude &&
+                  sh.longitude &&
+                  !(sh.inactive || sh.inactiveTemporary)
+              )
               .map((stakeholder) => {
                 const categories = stakeholder.categories.filter(({ id }) => {
                   return categoryIdsOrDefault.includes(id);

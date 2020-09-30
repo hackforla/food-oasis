@@ -9,27 +9,31 @@ const path = require("path");
 const middleware = require("./middleware/middleware");
 const router = require("./app/routes/index");
 const helmet = require("helmet");
+const crypto = require("crypto");
 
 const app = express();
+app.use((req, res, next) => {
+  res.locals.cspNonce = crypto.randomBytes(16).toString("hex");
+  next();
+});
 app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
+        baseUri: ["none"],
         defaultSrc: ["'self'"],
         scriptSrc: [
           "'self'",
-          "https://api.tiles.mapbox.com/",
-          "https://api.mapbox.com",
-          "https://events.mapbox.com",
+          "*.mapbox.com",
+          (req, res) => `'nonce-${res.locals.cspNonce}'`,
         ],
         imgSrc: ["'self'"],
-        styleSrc: [
-          "'self'",
-          "https://fonts.googleapis.com/",
-          "https://api.tiles.mapbox.com/",
-        ],
+        objectSrc: ["none"],
+        fontSrc: ["'self'", "*.googleapis.com", "fonts.gstatic.com"],
+        styleSrc: ["'self'", "*.googleapis.com", "*.mapbox.com"],
         upgradeInsecureRequests: [],
       },
+      reportOnly: true,
     },
   })
 );

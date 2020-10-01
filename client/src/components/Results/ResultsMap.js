@@ -99,6 +99,7 @@ function Map({
           onViewportChange={(newViewport) => setViewport(newViewport)}
           mapboxApiAccessToken={MAPBOX_TOKEN}
           mapStyle={MAPBOX_STYLE}
+          onClick={() => doSelectStakeholder(null)}
         >
           <div style={styles.navigationControl}>
             <NavigationControl showCompass={false} />

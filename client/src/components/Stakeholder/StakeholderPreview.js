@@ -11,7 +11,7 @@ import { ORGANIZATION_COLORS, CLOSED_COLOR } from "constants/map";
 import { getGoogleMapsUrl, extractNumbers } from "helpers";
 
 import Icon from "components/Icon";
-import { DetailsButton, PlainButton } from "components/Buttons";
+import { PlainButton } from "components/Buttons";
 
 const useStyles = makeStyles(() => ({
   stakeholder: {
@@ -228,7 +228,7 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
               onClick={() => window.open(`tel:${mainNumber.value}`)}
             />
           )}
-          <DetailsButton size="small" />
+          <PlainButton label="Details" />
         </div>
       </div>
     </div>

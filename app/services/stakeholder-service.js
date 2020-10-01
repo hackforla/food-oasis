@@ -790,7 +790,6 @@ const insert = async (model) => {
 };
 
 const insertBulkStakeholders = async (stakeholderArray) => {
-  let count = 0;
   for (let i = 0; i < stakeholderArray.length; i++) {
     const model = stakeholderArray[i];
     const {
@@ -941,12 +940,10 @@ const insertBulkStakeholders = async (stakeholderArray) => {
 				${categories},
 				${formattedHours})`;
       await pool.query(invokeSprocSql);
-      count++;
     } catch (err) {
       return Promise.reject(err.message);
     }
   }
-  console.log(`Successfully inserted ${count} stakeholder records`);
 };
 
 const requestAssignment = async (model) => {

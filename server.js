@@ -8,34 +8,34 @@ const cookieParser = require("cookie-parser");
 const path = require("path");
 const middleware = require("./middleware/middleware");
 const router = require("./app/routes/index");
-const helmet = require("helmet");
+// const helmet = require("helmet");
 
 const app = express();
 
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        baseUri: ["'self'"],
-        connectSrc: ["'self'", "https://api.mapbox.com"],
-        defaultSrc: ["'self'"],
-        fontSrc: ["'self'", "https://fonts.gstatic.com"],
-        imgSrc: ["'self'", "data:"],
-        objectSrc: ["'none'"],
-        scriptSrc: ["'self'", "*.mapbox.com", "'unsafe-eval'"],
-        styleSrc: [
-          "'self'",
-          "https://fonts.googleapis.com",
-          "https://api.tiles.mapbox.com",
-          "'unsafe-inline'",
-        ],
-        workerSrc: ["'self'", "blob:"],
-        upgradeInsecureRequests: [],
-      },
-      reportOnly: true,
-    },
-  })
-);
+// app.use(
+//   helmet({
+//     contentSecurityPolicy: {
+//       directives: {
+//         baseUri: ["'self'"],
+//         connectSrc: ["'self'", "https://*.mapbox.com", "*.arcgis.com"],
+//         defaultSrc: ["'self'"],
+//         fontSrc: ["'self'", "https://fonts.gstatic.com"],
+//         imgSrc: ["'self'", "data:"],
+//         objectSrc: ["'none'"],
+//         scriptSrc: ["'self'", "*.mapbox.com", "'unsafe-eval'"],
+//         styleSrc: [
+//           "'self'",
+//           "https://fonts.googleapis.com",
+//           "https://api.tiles.mapbox.com",
+//           "'unsafe-inline'",
+//         ],
+//         workerSrc: ["'self'", "blob:"],
+//         upgradeInsecureRequests: [],
+//       },
+//       reportOnly: true,
+//     },
+//   })
+// );
 
 // Redirect HTTP requests to HTTPS
 if (process.env.NODE_ENV === "production") {

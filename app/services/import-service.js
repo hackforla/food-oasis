@@ -1,6 +1,6 @@
 const fs = require("fs");
 const parse = require("csv-parse");
-const esriService = require("../services/esri-service");
+const esriService = require("./esri-service");
 
 function formatMapAddress(formData) {
   return `${formData.address_1 || ""} ${formData.address_2 || ""} ${

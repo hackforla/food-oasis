@@ -25,11 +25,16 @@ const ImportFile = ({ user }) => {
     setFile(uploadedFile);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = () => {
     const formData = new FormData();
     formData.append("name", file.name);
     formData.append("file", file);
-    importCsv(formData).then((res) => console.log(res));
+    importCsv(formData)
+      .then((res) => {
+        console.log(res);
+        setFile(null);
+      })
+      .catch((err) => console.error(err));
   };
 
   return (

@@ -1,6 +1,6 @@
 const scraperLaplFoodResourcesService = require("../import/lapl-food-resources-scrape");
 const svc = require("../services/load-lapl-food-resources-service");
-const importService = require("../import/import-csv");
+const importService = require("../services/import-service");
 const stakeholderService = require("../services/stakeholder-service");
 
 // LA Public Library Food Resources Listing - Scraped
@@ -20,7 +20,7 @@ const getLaplFoodResources = async (req, res) => {
 const loadStakeholderCsv = async (req, res) => {
   const { file } = req;
   try {
-    const response = await importService.importCsv(file.filename);
+    const response = await importService.importCsv(file);
     await stakeholderService.insertBulkStakeholders(response);
     res.send(response);
   } catch (err) {

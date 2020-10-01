@@ -17,7 +17,11 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         baseUri: ["'self'"],
+        connectSrc: ["'self'", "https://api.mapbox.com"],
         defaultSrc: ["'self'"],
+        fontSrc: ["'self'", "https://fonts.gstatic.com"],
+        imgSrc: ["'self'", "data:"],
+        objectSrc: ["'none'"],
         scriptSrc: ["'self'", "*.mapbox.com", "'unsafe-eval'"],
         styleSrc: [
           "'self'",
@@ -25,9 +29,7 @@ app.use(
           "https://api.tiles.mapbox.com",
           "'unsafe-inline'",
         ],
-        imgSrc: ["'self'", "data:"],
-        objectSrc: ["'none'"],
-        fontSrc: ["'self'", "https://fonts.gstatic.com"],
+        workerSrc: ["'self'", "blob:"],
         upgradeInsecureRequests: [],
       },
       reportOnly: true,

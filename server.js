@@ -24,11 +24,13 @@ app.use(
       directives: {
         baseUri: ["'self'"],
         defaultSrc: ["'self'"],
-        // scriptSrc: [
-        //   "'self'",
-        //   "*.mapbox.com",
-        //   (req, res) => `'nonce-${res.locals.cspNonce}'`,
-        // ],
+        scriptSrc: [
+          "'self'",
+          "*.mapbox.com",
+          (req, res) => `'nonce-${res.locals.cspNonce}'`,
+        ],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", "data:"],
         objectSrc: ["'none'"],
         fontSrc: ["'self'", "https://fonts.gstatic.com"],
         upgradeInsecureRequests: [],

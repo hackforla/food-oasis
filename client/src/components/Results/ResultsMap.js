@@ -99,13 +99,19 @@ function Map({
           onViewportChange={(newViewport) => setViewport(newViewport)}
           mapboxApiAccessToken={MAPBOX_TOKEN}
           mapStyle={MAPBOX_STYLE}
+          onClick={() => doSelectStakeholder(null)}
         >
           <div style={styles.navigationControl}>
             <NavigationControl showCompass={false} />
           </div>
           {stakeholders &&
             stakeholders
-              .filter((sh) => sh.latitude && sh.longitude)
+              .filter(
+                (sh) =>
+                  sh.latitude &&
+                  sh.longitude &&
+                  !(sh.inactive || sh.inactiveTemporary)
+              )
               .map((stakeholder) => {
                 const categories = stakeholder.categories.filter(({ id }) => {
                   return categoryIdsOrDefault.includes(id);

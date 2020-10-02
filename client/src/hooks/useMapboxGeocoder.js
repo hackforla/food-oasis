@@ -8,8 +8,7 @@ const baseUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places`;
 const losAngelesCountyLatLong = "-118.9517,33.6988,-117.6462,34.8233";
 const californiaLatLong = "-124.389, 32.4796, -114.1723, 42.072";
 
-const MAPBOX_TOKEN =
-  "pk.eyJ1IjoibHVjYXNob21lciIsImEiOiJjazFqcnRjcm0wNmZ1M2JwZXg2eDFzMXd3In0.yYpkKLrFCxF-qyBfZH1a8w";
+const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 
 const initialState = {
   isLoading: false,

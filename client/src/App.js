@@ -10,11 +10,10 @@ import { getTenantId } from "helpers/Configuration";
 import { UserContext } from "components/user-context";
 import Toast from "components/Toast";
 import Header from "components/Header";
-import StakeholdersContainer from "components/Stakeholder/StakeholdersContainer";
 import VerificationAdmin from "components/Verification/VerificationAdmin";
 import VerificationDashboard from "components/Verification/VerificationDashboard";
 import SecurityAdminDashboard from "components/SecurityAdminDashboard/SecurityAdminDashboard";
-import StakeholderEdit from "components/Stakeholder/StakeholderEdit";
+import OrganizationEdit from "components/Verification/OrganizationEdit";
 import Donate from "components/StaticPages/Donate";
 import About from "components/StaticPages/About";
 import Faq from "components/StaticPages/Faq";
@@ -47,7 +46,7 @@ const useStyles = makeStyles({
     overflowY: "scroll",
     flexGrow: 1,
   },
-  stakeholderEditWrapper: {
+  OrganizationEditWrapper: {
     flexBasis: "90%",
     paddingTop: "1em",
     paddingBottom: "1em",
@@ -182,16 +181,10 @@ function App() {
               <Route path="/suggestion">
                 <Suggestion setToast={setToast} />
               </Route>
-              <Route path="/stakeholders">
-                <StakeholdersContainer
-                  user={user}
-                  userCoordinates={userCoordinates}
-                />
-              </Route>
               <Route path="/organizationedit/:id?">
                 <ThemeProvider theme={newTheme}>
-                  <div className={classes.stakeholderEditWrapper}>
-                    <StakeholderEdit setToast={setToast} user={user} />
+                  <div className={classes.OrganizationEditWrapper}>
+                    <OrganizationEdit setToast={setToast} user={user} />
                   </div>
                 </ThemeProvider>
               </Route>

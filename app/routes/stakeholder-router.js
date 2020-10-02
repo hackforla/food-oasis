@@ -73,7 +73,7 @@ router.put(
 
 router.delete(
   "/:id",
-  jwtSession.validateUserHasRequiredRoles(["admin"]),
+  //jwtSession.validateUserHasRequiredRoles(["admin"]),
   stakeholderController.remove
 );
 

@@ -1,32 +1,34 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import mapMarker from "../images/mapMarker";
-import fbIcon from "../images/fbIcon.png";
-import instaIcon from "../images/instaIcon.png";
+import mapMarker from "images/mapMarker";
+import fbIcon from "images/fbIcon.png";
+import instaIcon from "images/instaIcon.png";
 import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
   VERIFICATION_STATUS,
-} from "../constants/stakeholder";
-import { ORGANIZATION_COLORS, CLOSED_COLOR } from "../constants/map";
-import SuggestionDialog from "./SuggestionDialog";
-import { PlainButton } from "./Buttons";
+} from "constants/stakeholder";
+import { ORGANIZATION_COLORS, CLOSED_COLOR } from "constants/map";
+import SuggestionDialog from "components/SuggestionDialog";
+import { PlainButton } from "components/Buttons";
+import getIcon from "helpers/getIcon";
 
-const useStyles = makeStyles((theme) => ({
-  stakeholderHolder: {
-    width: "80%",
-    display: "inherit",
-    flexDirection: "inherit",
+const useStyles = makeStyles((theme, props) => ({
+  stakeholder: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
     justifyContent: "space-between",
-    padding: "1em 0",
+    padding: "1em",
     alignItems: "center",
+    paddingBottom: "5em",
   },
-  topInfoHolder: {
+  topInfo: {
     width: "100%",
     display: "inherit",
     justifyContent: "inherit",
   },
-  imgHolder: {
+  img: {
     display: "inherit",
     justifyContent: "center",
     alignItems: "center",
@@ -34,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   typeLogo: {
     width: "72px",
   },
-  infoHolder: {
+  info: {
     fontSize: "1.1em",
     textAlign: "left",
     width: "60%",
@@ -42,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "space-between",
   },
-  checkHolder: {
+  check: {
     width: "10%",
     display: "flex",
     flexDirection: "column",
@@ -82,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: "flex-start",
     textAlign: "left",
   },
-  iconHolder: {
+  icon: {
     display: "flex",
     alignSelf: "flex-start",
   },
@@ -91,10 +93,13 @@ const useStyles = makeStyles((theme) => ({
     margin: "0 1em 0 0",
   },
   arrow: {
+    position: "fixed",
+    bottom: "1em",
+    left: "1em",
     alignSelf: "flex-start",
     margin: "1em 0 0 0",
   },
-  labelHolder: {
+  label: {
     width: "100%",
     display: "flex",
     flexDirection: "column",
@@ -108,10 +113,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SelectedStakeholderDisplay = ({
+const StakeholderDetails = ({
   doSelectStakeholder,
   selectedStakeholder,
-  iconReturn,
   setToast,
 }) => {
   const classes = useStyles();
@@ -190,7 +194,7 @@ const SelectedStakeholderDisplay = ({
   };
 
   return (
-    <div className={classes.stakeholderHolder}>
+    <div className={classes.stakeholder}>
       <SuggestionDialog
         id="assign-dialog"
         keepMounted
@@ -199,11 +203,9 @@ const SelectedStakeholderDisplay = ({
         stakeholder={selectedStakeholder}
         setToast={setToast}
       />
-      <div className={classes.topInfoHolder}>
-        <div className={classes.imgHolder}>
-          {iconReturn(selectedStakeholder)}
-        </div>
-        <div className={classes.infoHolder}>
+      <div className={classes.topInfo}>
+        <div className={classes.img}>{getIcon(selectedStakeholder)}</div>
+        <div className={classes.info}>
           <span>{selectedStakeholder.name}</span>
           <span>{selectedStakeholder.address1}</span>
           <div>
@@ -228,7 +230,7 @@ const SelectedStakeholderDisplay = ({
               {category.name}
             </em>
           ))}
-          <div className={classes.labelHolder}>
+          <div className={classes.label}>
             {selectedStakeholder.inactiveTemporary ||
             selectedStakeholder.inactive ? (
               <em className={classes.closedLabel}>
@@ -239,7 +241,7 @@ const SelectedStakeholderDisplay = ({
             ) : null}
           </div>
         </div>
-        <div className={classes.checkHolder}>
+        <div className={classes.check}>
           {selectedStakeholder.distance >= 10
             ? selectedStakeholder.distance
                 .toString()
@@ -454,7 +456,7 @@ const SelectedStakeholderDisplay = ({
       {selectedStakeholder.facebook || selectedStakeholder.instagram ? (
         <React.Fragment>
           <h2 className={classes.title}>Social Media</h2>
-          <div className={classes.iconHolder}>
+          <div className={classes.icon}>
             {selectedStakeholder.facebook ? (
               <a
                 className={classes.icons}
@@ -517,4 +519,4 @@ const SelectedStakeholderDisplay = ({
   );
 };
 
-export default SelectedStakeholderDisplay;
+export default StakeholderDetails;

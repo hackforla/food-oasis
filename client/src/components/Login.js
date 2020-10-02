@@ -64,8 +64,8 @@ const LoginForm = (props) => {
   const { classes, setToast, setUser, history, match } = props;
 
   return (
-    <div>
-      <Container component="main" maxWidth="xs">
+    <div className={classes.body}>
+      <Container component="main" maxWidth="xs" className={classes.container}>
         <CssBaseline />
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>

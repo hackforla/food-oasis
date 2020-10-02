@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect } from "react";
-import Search from "../components/Search";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -11,11 +10,16 @@ import {
   Box,
 } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
+
 import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
   DEFAULT_CATEGORIES,
-} from "../constants/stakeholder";
+} from "constants/stakeholder";
+import isMobile from "helpers/isMobile";
+
+import SwitchViewsButton from "components/SwitchViewsButton";
+import Search from "components/Search";
 
 const useStyles = makeStyles((theme) => ({
   filterGroup: {
@@ -47,7 +51,6 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("xs")]: {
       padding: ".6rem .6rem",
       margin: ".3rem",
-      marginTop: "1rem",
       fontSize: "max(.8vw,12px)",
       borderRadius: "5px !important",
     },
@@ -62,7 +65,6 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("xs")]: {
       padding: ".4rem",
       margin: ".3rem",
-      marginTop: "1rem",
     },
   },
   menuItems: {
@@ -117,6 +119,9 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonHolder: {
     display: "flex",
+    [theme.breakpoints.down("xs")]: {
+      marginTop: "1rem",
+    },
   },
 }));
 
@@ -127,18 +132,18 @@ const ResultsFilters = ({
   isWindowWide,
   viewport,
   setViewport,
-  setIsPopupOpen,
   doSelectStakeholder,
   origin,
   setOrigin,
   radius,
   setRadius,
   isVerifiedSelected,
-  selectVerified,
   userCoordinates,
   categoryIds,
   toggleCategory,
   viewPortHash,
+  isMapView,
+  switchResultsView,
 }) => {
   const classes = useStyles();
 
@@ -180,7 +185,6 @@ const ResultsFilters = ({
         latitude: origin.latitude,
         longitude: origin.longitude,
       });
-      setIsPopupOpen(false);
       doSelectStakeholder(null);
     },
     [
@@ -194,7 +198,6 @@ const ResultsFilters = ({
       categoryIds,
       isVerifiedSelected,
       setViewport,
-      setIsPopupOpen,
       doSelectStakeholder,
       viewPortHash,
     ]
@@ -329,6 +332,13 @@ const ResultsFilters = ({
           </Button>
         </Grid>
         <Grid item>
+          {isMobile && (
+            <SwitchViewsButton
+              isMapView={isMapView}
+              onClick={switchResultsView}
+              color="white"
+            />
+          )}
           {/* <Button
             className={classes.filterGroupButton}
             style={{

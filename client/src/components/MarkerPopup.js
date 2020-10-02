@@ -55,7 +55,7 @@ function MarkerPopup({ entity, handleClose }) {
       longitude={longitude}
       closeButton={true}
       closeOnClick={false}
-      onClose={() => handleClose(false)}
+      onClose={handleClose}
       dynamicPosition={true}
       anchor="top-left"
     >

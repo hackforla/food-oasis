@@ -1,24 +1,26 @@
 import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import { withRouter, Redirect } from "react-router-dom";
-import { Button, CssBaseline, Dialog, Typography } from "@material-ui/core";
+import { CssBaseline, Dialog, Typography } from "@material-ui/core";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import { makeStyles } from "@material-ui/core/styles";
 import { SearchButton } from "../Buttons";
+import { PrimaryButton } from "../../ui";
 import StakeholderGrid from "./VerificationAdminGrid";
 import { RotateLoader } from "react-spinners";
-import { useOrganizations } from "../../hooks/useOrganizations/useOrganizations";
-import { useCategories } from "../../hooks/useCategories/useCategories";
-import { useTenants } from "../../hooks/useTenants/useTenants";
-import { useNeighborhoods } from "../../hooks/useNeighborhoods/useNeighborhoods";
+import { useOrganizations } from "hooks/useOrganizations/useOrganizations";
+import { useCategories } from "hooks/useCategories/useCategories";
+import { useTenants } from "hooks/useTenants/useTenants";
+import { useNeighborhoods } from "hooks/useNeighborhoods/useNeighborhoods";
 import {
   needsVerification,
   assign,
   exportCsv,
-} from "../../services/stakeholder-service";
+} from "services/stakeholder-service";
 import AssignDialog from "./AssignDialog";
 import NeedsVerificationDialog from "./MessageConfirmDialog";
 import SearchCriteria from "./SearchCriteria";
+import SearchCriteriaDisplay from "./SearchCriteriaDisplay";
 
 const CRITERIA_TOKEN = "verificationAdminCriteria";
 
@@ -106,6 +108,8 @@ const defaultCriteria = {
   neighborhoodId: 0,
   minCompleteCriticalPercent: 0,
   maxCompleteCriticalPercent: 100,
+  stakeholderId: "",
+  isInactiveTemporary: "either",
 };
 
 VerificationAdmin.propTypes = {
@@ -137,7 +141,7 @@ function VerificationAdmin(props) {
     error: categoriesError,
   } = useCategories();
 
-  const { data: tenants } = useTenants();
+  const { data: tenants, loading: tenantsLoading } = useTenants();
 
   const {
     data: neighborhoods,
@@ -304,9 +308,19 @@ function VerificationAdmin(props) {
           >
             Verification Administration
           </Typography>
-          <SearchButton onClick={handleDialogOpen} label="Criteria..." />
+          <PrimaryButton onClick={handleDialogOpen} logo="search">
+            Criteria...
+          </PrimaryButton>
         </header>
       </div>
+      <SearchCriteriaDisplay
+        defaultCriteria={defaultCriteria}
+        criteria={criteria}
+        neighborhoods={neighborhoods}
+        tenants={tenants}
+        categories={categories}
+        isLoading={neighborhoodsLoading || categoriesLoading || tenantsLoading}
+      />
       <div className={classes.mainContent}>
         <Dialog
           open={dialogOpen}
@@ -315,7 +329,6 @@ function VerificationAdmin(props) {
           maxWidth="lg"
         >
           <DialogTitle onClose={handleDialogClose}>Search Criteria</DialogTitle>
-
           {criteria ? (
             <div style={{ overflowY: "scroll" }}>
               <SearchCriteria
@@ -423,35 +436,27 @@ function VerificationAdmin(props) {
                     justifyContent: "flex-start",
                   }}
                 >
-                  <Button
-                    variant="contained"
+                  <PrimaryButton
                     title="Mark for verification"
-                    color="primary"
                     disabled={selectedStakeholderIds.length === 0}
                     onClick={handleNeedsVerificationDialogOpen}
-                    style={{ marginRight: "0.2em" }}
                   >
                     Needs Verification
-                  </Button>
-                  <Button
-                    variant="contained"
+                  </PrimaryButton>
+                  <PrimaryButton
                     title="Assign selected Organizations to User for Verification"
-                    color="primary"
                     disabled={selectedStakeholderIds.length === 0}
                     onClick={handleAssignDialogOpen}
-                    style={{ marginRight: "0.2em" }}
                   >
                     Assign
-                  </Button>
-                  <Button
-                    variant="contained"
+                  </PrimaryButton>
+                  <PrimaryButton
                     title="Export selected Organizations to file"
-                    color="primary"
                     disabled={selectedStakeholderIds.length === 0}
                     onClick={handleExport}
                   >
                     Export
-                  </Button>
+                  </PrimaryButton>
                 </div>
                 <div>{`${stakeholders.length} rows`} </div>
               </div>

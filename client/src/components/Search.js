@@ -117,7 +117,7 @@ export default function Search(props) {
         placeholder="Search by address, neighborhood, or zip code"
         name="address"
         size="small"
-        autoFocus
+        autoFocus={false}
         InputProps={{
           classes: {
             input: classes.input,

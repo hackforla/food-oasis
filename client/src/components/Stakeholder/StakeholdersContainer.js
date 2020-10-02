@@ -4,9 +4,9 @@ import { Typography } from "@material-ui/core";
 import StakeholderSearch from "./StakeholderSearch";
 import StakeholderCriteria from "./StakeholderCriteria";
 import StakeholderList from "./StakeholderList";
-import Map from "./Map";
+import Map from "components/Map";
 import { RotateLoader } from "react-spinners";
-import { useStakeholders } from "../hooks/useStakeholders/useStakeholders";
+import { useStakeholders } from "hooks/useStakeholders/useStakeholders";
 
 const styles = {
   container: {

@@ -860,11 +860,7 @@ const insertBulkStakeholders = async (stakeholderArray) => {
     } = model;
     try {
       let hoursSqlValues = hours.length
-        ? hours
-            .reduce((acc, cur) => {
-              return (acc += `'(${cur.weekOfMonth},${cur.dayOfWeek},${cur.open},${cur.close})', `);
-            }, "")
-            .slice(0, -2)
+        ? hours.replace(/[(]/g, "'(").replace(/[)]/g, ")'")
         : "";
       const categories = "ARRAY[" + category_ids + "]::int[]";
       const formattedHours =

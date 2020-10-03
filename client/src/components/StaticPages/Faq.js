@@ -183,7 +183,7 @@ const About = () => {
                 Attend a training session
               </a>{" "}
               to get an assignment, or reach out to{" "}
-              <a href="mailto:jenny@foodoasis.la">jenny@foodoasis.la</a>.
+              <a href="mailto:foodoasishi@gmail.com">foodoasishi@gmail.com</a>.
             </dd>
             <dt>When can I volunteer?</dt>
             <dd>

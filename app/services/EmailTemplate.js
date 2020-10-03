@@ -62,9 +62,9 @@ module.exports = function applyEmailTemplate(emailBody, baseUrl) {
                                                 <br>
                             </p>
                             <p style="margin-bottom: 0;">
-                            Please contact our Product Owner, Jenny Mikesell
+                            Please contact us
                                                 <br>
-                            <a href="mailto:jenny@foodoasis.la">jenny@foodoasis.la</a>
+                            <a href="mailto:foodoasishi@gmail.com">foodoasishi@gmail.com</a>
                             </p>
                         </td>
                         </tr>

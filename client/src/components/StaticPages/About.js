@@ -262,9 +262,9 @@ const About = () => {
             <br />
           </p>
           <p>
-            Please contact our Product Owner, Jenny Mikesell
+            Please contact us
             <br />
-            <a href="mailto:jenny@foodoasis.la">jenny@foodoasis.la</a>
+            <a href="mailto:foodoasishi@gmail.com">foodoasishi@gmail.com</a>
           </p>
         </section>
         <section className={classes.partners}>

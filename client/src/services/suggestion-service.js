@@ -19,11 +19,27 @@ export const getById = async (id) => {
   return response.data;
 };
 
+export const getAllByAssignedUser = async (userId) => {
+  try {
+    const response = await axios.get(`${baseUrl}/assigned/${userId}`);
+    return response.data;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
 export const post = async (correction) => {
-  const response = await axios.post(baseUrl, {
-    correction,
-  });
+  const response = await axios.post(baseUrl, correction);
   return response.data;
+};
+
+export const remove = async (id) => {
+  try {
+    const response = await axios.delete(`${baseUrl}/${id}`);
+    return response.data;
+  } catch (err) {
+    throw new Error(err.message);
+  }
 };
 
 //export const put = async (category, id) => {

@@ -27,7 +27,6 @@ const buildGeocodeUrl = (address) =>
 
 const geocode = async (address) => {
   const searchString = encodeURI(address);
-
   if (esriToken === "") {
     console.log("Generating initial ESRI token...");
     await generateToken();

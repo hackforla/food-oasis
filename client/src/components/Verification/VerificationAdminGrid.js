@@ -371,6 +371,7 @@ const StakeholderGrid = (props) => {
         flexGrow: 1,
         display: "flex",
         flexDirection: "column",
+        minHeight: "275px",
       }}
     >
       {stakeholders && stakeholders.length > 0 && dimensions ? (

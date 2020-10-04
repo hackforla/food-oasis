@@ -29,6 +29,7 @@ import FaqAdd from "./components/FaqAdd";
 import Home from "./containers/Home";
 import ResultsContainer from "./components/ResultsContainer";
 import Suggestion from "./components/Suggestion";
+import ImportFile from "./components/ImportFile";
 import { logout } from "./services/account-service";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -72,8 +73,8 @@ function App() {
   const [toast, setToast] = useState({ message: "" });
   const [bgImg, setBgImg] = useState("");
   const [origin, setOrigin] = useState({
-    latitude: 34.0522,
-    longitude: -118.2437,
+    latitude: 21.33629,
+    longitude: -157.89435,
   });
 
   useEffect(() => {
@@ -124,8 +125,8 @@ function App() {
         (error) => {
           console.log(`Getting browser location failed: ${error.message}`);
           const userCoordinates = {
-            latitude: 34.0522,
-            longitude: -118.2437,
+            latitude: 21.33629,
+            longitude: -157.89435,
           };
           setUserCoordinates(userCoordinates);
         }
@@ -189,6 +190,11 @@ function App() {
               <Route path="/organizationedit/:id?">
                 <div className={classes.stakeholderEditWrapper}>
                   <StakeholderEdit setToast={setToast} user={user} />
+                </div>
+              </Route>
+              <Route path="/organizationimport">
+                <div>
+                  <ImportFile user={user} />
                 </div>
               </Route>
               <Route path="/verificationdashboard">

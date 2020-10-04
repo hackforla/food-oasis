@@ -217,7 +217,7 @@ const Donate = () => {
             Developers, designers, data specialists, or researchers - If you
             have tech skills, please inquire about joining our team as a
             developer, designer, or data specialist via email,{" "}
-            <a href="mailto:jenny@foodoasis.la">jenny@foodoasis.la</a>.
+            <a href="mailto:foodoasishi@gmail.com">foodoasishi@gmail.com</a>.
           </p>
         </div>
         <section className={classes.cards}>

@@ -14,56 +14,42 @@ import * as suggestionService from "../services/suggestion-service";
 
 function SuggestionDialog(props) {
   const { onClose, open, setToast, stakeholder: sh, ...other } = props;
-  const [stakeholder, setStakeholder] = useState(
-    sh
-      ? {
-          id: sh.id,
-          name: sh.name,
-          address1: sh.address1,
-          address2: sh.address2,
-          city: sh.city,
-          state: sh.state,
-          zip: sh.zip,
-          phone: sh.phone,
-          email: sh.email,
-          notes: "",
-          hours: "",
-          tipsterName: "",
-          tipsterPhone: "",
-          tipsterEmail: "",
-        }
-      : {
-          id: 0,
-          name: "",
-          address1: "",
-          address2: "",
-          city: "",
-          state: "",
-          zip: "",
-          phone: "",
-          email: "",
-          notes: "",
-          hours: "",
-          tipsterName: "",
-          tipsterPhone: "",
-          tipsterEmail: "",
-        }
-  );
+
+  const [corrections, setCorrections] = useState({
+    name: "",
+    address1: "",
+    address2: "",
+    city: "",
+    state: "",
+    zip: "",
+    phone: "",
+    email: "",
+    notes: "",
+    hours: "",
+    tipsterName: "",
+    tipsterPhone: "",
+    tipsterEmail: "",
+    category: "",
+  });
 
   const handleCancel = () => {
     onClose(false);
   };
 
   const handleChange = (e) => {
-    setStakeholder({ ...stakeholder, [e.target.name]: e.target.value });
+    setCorrections({
+      ...corrections,
+      id: sh ? sh.id : 0,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleSubmit = () => {
     return suggestionService
-      .post(stakeholder)
+      .post(corrections)
       .then((response) => {
         setToast({
-          message: "Thank you for your help!",
+          message: "Mahalo for your help!",
         });
         onClose(true);
       })
@@ -77,36 +63,36 @@ function SuggestionDialog(props) {
 
   return (
     <Dialog
-      disableBackdropClick
       disableEscapeKeyDown
       fullWidth
       maxWidth="sm"
       aria-labelledby="confirmation-dialog-title"
       open={open}
+      onClose={handleCancel}
       {...other}
     >
       <DialogTitle id="confirmation-dialog-title">Send Correction</DialogTitle>
       <DialogContent dividers>
         <Grid container spacing={1}>
           <Grid item xs={12}>
+            <Typography variant="h5">Organization: {sh.name}</Typography>
             <Typography>
               Please help us improve our data by letting us know when our
-              information is incorrect. All fields are optional, but filling in
-              as many as you can helps our volunteers to validate efficiently.
-              Thanks!
+              information is incorrect. Please fill corrections into any of the
+              fields below. Mahalo!
             </Typography>
           </Grid>
           <Grid item xs={12}>
             <TextField
               type="text"
               size="small"
-              label="Organization Name"
+              label={`Current name: ${sh.name}`}
               name="name"
               variant="outlined"
               margin="normal"
               fullWidth
               autoFocus
-              value={stakeholder.name}
+              value={corrections.name}
               onChange={handleChange}
             />
           </Grid>
@@ -114,13 +100,13 @@ function SuggestionDialog(props) {
             <TextField
               type="text"
               size="small"
-              label="Address Line 1"
+              label={`Current address 1: ${sh.address1}`}
               name="address1"
               variant="outlined"
               margin="normal"
               fullWidth
               autoFocus
-              value={stakeholder.address1}
+              value={corrections.address1}
               onChange={handleChange}
             />
           </Grid>
@@ -128,13 +114,13 @@ function SuggestionDialog(props) {
             <TextField
               type="text"
               size="small"
-              label="Address Line 2"
+              label={`Current address 2: ${sh.address2}`}
               name="address2"
               variant="outlined"
               margin="normal"
               fullWidth
               autoFocus
-              value={stakeholder.address2}
+              value={corrections.address2}
               onChange={handleChange}
             />
           </Grid>
@@ -142,13 +128,13 @@ function SuggestionDialog(props) {
             <TextField
               type="text"
               size="small"
-              label="City"
+              label={`Current city: ${sh.city}`}
               name="city"
               variant="outlined"
               margin="normal"
               fullWidth
               autoFocus
-              value={stakeholder.city}
+              value={corrections.city}
               onChange={handleChange}
             />
           </Grid>
@@ -156,13 +142,13 @@ function SuggestionDialog(props) {
             <TextField
               type="text"
               size="small"
-              label="State"
+              label={`Current state: ${sh.state}`}
               name="state"
               variant="outlined"
               margin="normal"
               fullWidth
               autoFocus
-              value={stakeholder.state}
+              value={corrections.state}
               onChange={handleChange}
             />
           </Grid>
@@ -170,13 +156,13 @@ function SuggestionDialog(props) {
             <TextField
               type="text"
               size="small"
-              label="Zip Code"
+              label={`Current zip code: ${sh.zip}`}
               name="zip"
               variant="outlined"
               margin="normal"
               fullWidth
               autoFocus
-              value={stakeholder.zip}
+              value={corrections.zip}
               onChange={handleChange}
             />
           </Grid>
@@ -184,13 +170,13 @@ function SuggestionDialog(props) {
             <TextField
               type="text"
               size="small"
-              label="Phone"
+              label={`Current phone: ${sh.phone}`}
               name="phone"
               variant="outlined"
               margin="normal"
               fullWidth
               autoFocus
-              value={stakeholder.phone}
+              value={corrections.phone}
               onChange={handleChange}
             />
           </Grid>
@@ -198,13 +184,13 @@ function SuggestionDialog(props) {
             <TextField
               type="text"
               size="small"
-              label="Email"
+              label={`Current email: ${sh.email}`}
               name="email"
               variant="outlined"
               margin="normal"
               fullWidth
               autoFocus
-              value={stakeholder.email}
+              value={corrections.email}
               onChange={handleChange}
             />
           </Grid>
@@ -221,7 +207,7 @@ function SuggestionDialog(props) {
               margin="normal"
               fullWidth
               autoFocus
-              value={stakeholder.hours}
+              value={corrections.hours}
               onChange={handleChange}
             />
           </Grid>
@@ -238,7 +224,7 @@ function SuggestionDialog(props) {
               margin="normal"
               fullWidth
               autoFocus
-              value={stakeholder.notes}
+              value={corrections.notes}
               onChange={handleChange}
             />
           </Grid>
@@ -255,7 +241,7 @@ function SuggestionDialog(props) {
               margin="normal"
               fullWidth
               autoFocus
-              value={stakeholder.tipsterName}
+              value={corrections.tipsterName}
               onChange={handleChange}
             />
           </Grid>
@@ -272,7 +258,7 @@ function SuggestionDialog(props) {
               margin="normal"
               fullWidth
               autoFocus
-              value={stakeholder.tipsterPhone}
+              value={corrections.tipsterPhone}
               onChange={handleChange}
             />
           </Grid>
@@ -289,7 +275,7 @@ function SuggestionDialog(props) {
               margin="normal"
               fullWidth
               autoFocus
-              value={stakeholder.tipsterEmail}
+              value={corrections.tipsterEmail}
               onChange={handleChange}
             />
           </Grid>

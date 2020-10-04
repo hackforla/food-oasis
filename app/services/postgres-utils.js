@@ -22,7 +22,8 @@ const toSqlTimestamp = (originalDatetime) => {
   return `'${originalDatetime.toString()}'`;
 };
 
-const toSqlBoolean = (originalBoolean) => (originalBoolean ? "true" : "false");
+const toSqlBoolean = (originalBoolean) =>
+  !originalBoolean || originalBoolean === "f" ? "false" : "true";
 
 module.exports = {
   toSqlString,

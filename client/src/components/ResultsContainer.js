@@ -104,14 +104,14 @@ export default function ResultsContainer(props) {
       ? JSON.parse(storage.origin).latitude
       : userCoordinates
       ? userCoordinates.latitude
-      : 34.07872,
+      : 21.33629,
     longitude: userSearch
       ? userSearch.longitude
       : storage.origin
       ? JSON.parse(storage.origin).longitude
       : userCoordinates
       ? userCoordinates.longitude
-      : -118.243328,
+      : -157.89435,
   };
 
   const [radius, setRadius] = React.useState(

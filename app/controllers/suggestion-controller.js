@@ -23,11 +23,35 @@ const getById = (req, res) => {
     });
 };
 
+const getAllByAssignedUser = (req, res) => {
+  const { userId } = req.params;
+  suggestionService
+    .selectByAssignedUser(userId)
+    .then((resp) => {
+      res.send(resp);
+    })
+    .catch((err) => {
+      res.status("500").json({ error: err.toString() });
+    });
+};
+
 const post = (req, res) => {
   suggestionService
     .insert(req.body)
     .then((resp) => {
       res.json(resp);
+    })
+    .catch((err) => {
+      res.status("500").json({ error: err.toString() });
+    });
+};
+
+const remove = (req, res) => {
+  const { id } = req.params;
+  suggestionService
+    .remove(id)
+    .then((resp) => {
+      res.send(resp);
     })
     .catch((err) => {
       res.status("500").json({ error: err.toString() });
@@ -48,6 +72,8 @@ const post = (req, res) => {
 module.exports = {
   getAll,
   getById,
+  getAllByAssignedUser,
   post,
+  remove,
   // put,
 };

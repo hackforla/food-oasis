@@ -83,6 +83,7 @@ export default function Menu(props) {
     <>
       <Divider />
       <MenuItemLink
+        to="/"
         key="logout"
         text="Logout"
         onClick={() => logout(setUser, setToast, history)}
@@ -122,6 +123,11 @@ export default function Menu(props) {
                     key="organizationedit"
                     to="/organizationedit"
                     text="Add New Organization"
+                  />
+                  <MenuItemLink
+                    key="organizationimport"
+                    to="/organizationimport"
+                    text="Import CSV"
                   />
                   <MenuItemLink
                     key="verificationadmin"

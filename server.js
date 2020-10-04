@@ -40,7 +40,7 @@ app.use(
         workerSrc: ["'self'", "blob:"],
         upgradeInsecureRequests: [],
       },
-      reportOnly: true,
+      // reportOnly: true,
     },
   })
 );

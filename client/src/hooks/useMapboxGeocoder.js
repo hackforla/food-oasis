@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import debounce from "debounce-fn";
-import { getTenantId } from "../helpers/Configuration";
+import { getTenantId } from "helpers/Configuration";
 
 const baseUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places`;
 

@@ -16,7 +16,7 @@ import {
   FOOD_PANTRY_CATEGORY_ID,
   DEFAULT_CATEGORIES,
 } from "constants/stakeholder";
-import isMobile from "helpers/isMobile";
+import { isMobile } from "helpers";
 
 import SwitchViewsButton from "components/SwitchViewsButton";
 import Search from "components/Search";

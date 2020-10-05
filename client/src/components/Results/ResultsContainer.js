@@ -4,7 +4,7 @@ import { Grid } from "@material-ui/core";
 
 import { useOrganizations } from "hooks/useOrganizations/useOrganizations";
 import useCategoryIds from "hooks/useCategoryIds";
-import isMobile from "helpers/isMobile";
+import { isMobile } from "helpers";
 
 import Filters from "./ResultsFilters";
 import List from "./ResultsList";

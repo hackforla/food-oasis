@@ -1,10 +1,10 @@
 import React from "react";
-import { mealProgram, closed } from "../theme/colors";
+import { mealProgram, closed } from "theme/colors";
 
-const mealIcon = (isClosed) => (
+const MealIcon = ({ isClosed, height = "72px", width = "72px" }) => (
   <svg
-    width="72px"
-    height="72px"
+    width={width}
+    height={height}
     viewBox="0 0 53 53"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -20,4 +20,4 @@ const mealIcon = (isClosed) => (
   </svg>
 );
 
-export default mealIcon;
+export default MealIcon;

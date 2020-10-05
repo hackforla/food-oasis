@@ -152,9 +152,7 @@ const ResultsFilters = ({
 
   const doHandleSearch = useCallback(
     (e) => {
-      if (e) {
-        e.preventDefault();
-      }
+      if (e) e.preventDefault();
       const storage = window.sessionStorage;
       search({
         latitude:
@@ -214,7 +212,7 @@ const ResultsFilters = ({
   useEffect(() => {
     doHandleSearch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [radius, categoryIds, isVerifiedSelected, toggleCategory]);
+  }, [origin, radius, categoryIds, isVerifiedSelected, toggleCategory]);
 
   const handleDistanceChange = (distance) => {
     setRadius(distance);

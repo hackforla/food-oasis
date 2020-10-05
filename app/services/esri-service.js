@@ -1,7 +1,7 @@
 const axios = require("axios");
 
-const getTokenUrl = `http://www.arcgis.com/sharing/oauth2/token`;
-const findAddressCandidateUrl = `http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates`;
+const getTokenUrl = `https://www.arcgis.com/sharing/oauth2/token`;
+const findAddressCandidateUrl = `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates`;
 
 let esriToken = "";
 

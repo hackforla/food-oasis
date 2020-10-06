@@ -910,23 +910,16 @@ const remove = async (id) => {
   }
 };
 
-// we can either search in the stakeholder or stakeholder_best
-// table, as indicated by useBest
-const buildCTEClause = (categoryIds, name, useBest) => {
+const buildCTEClause = (categoryIds, name) => {
   const categoryClause = categoryIds
     ? `stakeholder_category_set AS (
-       select * from ${
-         useBest ? "stakeholder_best_category" : "stakeholder_category"
-       }
-       WHERE ${
-         useBest ? "stakeholder_best_category" : "stakeholder_category"
-       }.category_id in (${categoryIds.join(",")})),`
+       select * from stakeholder_category
+       WHERE stakeholder_category.category_id in (${categoryIds.join(",")})),`
     : "";
   const nameClause = "'%" + name.replace(/'/g, "''") + "%'";
   const cteClause = `WITH ${categoryClause}
   stakeholder_set AS (
-    select * from ${useBest ? `stakeholder_best` : `stakeholder`}
-    where name ilike ${nameClause}
+    select * from stakeholder where name ilike ${nameClause}
     and id in (
       select stakeholder_id from stakeholder_category_set
     )

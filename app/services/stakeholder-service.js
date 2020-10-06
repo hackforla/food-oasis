@@ -6,6 +6,18 @@ const {
   toSqlTimestamp,
 } = require("./postgres-utils");
 
+/* 
+
+This service is for getting data from the stakeholder table, which
+is what we want for the administration UI. It represents the most recent
+draft version of each stakeholder for data entry and administrators
+to work with.
+
+If you make changes to the database structure, be sure to update these
+methods as well as the corresponding methods in the stakeholder-best-service.js.
+
+*/
+
 const trueFalseEitherClause = (columnName, value) => {
   return value === "true"
     ? ` and ${columnName} is not null `
@@ -23,176 +35,6 @@ const booleanEitherClause = (columnName, value) => {
 };
 
 const search = async ({
-  categoryIds,
-  latitude,
-  longitude,
-  distance,
-  isInactive,
-  verificationStatusId,
-  tenantId,
-}) => {
-  const locationClause = buildLocationClause(latitude, longitude);
-  const categoryClause = buildCTEClause(categoryIds, "", true); // true indicates we want to search
-  // stakeholder_best table, not stakeholder
-
-  const sql = `${categoryClause}
-    select s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
-    s.phone, s.latitude, s.longitude, s.website,  s.notes,
-    to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
-      as created_date, s.created_login_id,
-    to_char(s.modified_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
-      as modified_date, s.modified_login_id,
-    to_char(s.submitted_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
-      as submitted_date, s.submitted_login_id,
-    to_char(s.approved_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
-      as approved_date, s.reviewed_login_id,
-    to_char(s.assigned_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
-      as assigned_date, s.assigned_login_id,
-    to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
-      as claimed_date, s.claimed_login_id,
-    s.requirements, s.admin_notes, s.inactive,
-    s.parent_organization, s.physical_access, s.email,
-    s.items, s.services, s.facebook,
-    s.twitter, s.pinterest, s.linkedin, s.description,
-    s.review_notes, s.instagram, s.admin_contact_name,
-    s.admin_contact_phone, s.admin_contact_email,
-    s.donation_contact_name, s.donation_contact_phone,
-    s.donation_contact_email, s.donation_pickup,
-    s.donation_accept_frozen, s.donation_accept_refrigerated,
-    s.donation_accept_perishable, s.donation_schedule,
-    s.donation_delivery_instructions, s.donation_notes, s.covid_notes,
-    s.category_notes, s.eligibility_notes, s.food_types, s.languages,
-    s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email,
-    s.v_hours, s.verification_status_id, s.inactive_temporary,
-    array_to_json(s.hours) as hours, s.category_ids,
-    s.neighborhood_id, s.is_verified,
-    ${locationClause ? `${locationClause} AS distance,` : ""}
-    ${buildLoginSelectsClause()}
-    from stakeholder_set as s
-    ${buildLoginJoinsClause()}
-    where s.tenant_id = ${tenantId} 
-    ${
-      Number(distance) && locationClause
-        ? `AND ${locationClause} < ${distance}`
-        : ""
-    }
-    ${booleanEitherClause("s.inactive", isInactive)}
-    ${
-      Number(verificationStatusId) > 0
-        ? ` and s.verification_status_id = ${verificationStatusId} `
-        : ""
-    }
-    order by distance
-  `;
-  // console.log(sql);
-  let stakeholders = [];
-  let categoriesResults = [];
-  var stakeholderResult, stakeholder_ids;
-  try {
-    stakeholderResult = await pool.query(sql);
-    stakeholder_ids = stakeholderResult.rows.map((a) => a.id);
-
-    if (stakeholder_ids.length) {
-      // Hoover up all the stakeholder categories
-      // for all of our stakeholder row results.
-      const categoriesSql = `select sc.stakeholder_id, c.id, c.name, c.display_order
-          from category c
-          join stakeholder_category sc on c.id = sc.category_id
-          where sc.stakeholder_id in (${stakeholder_ids.join(",")})
-          order by c.display_order, c.name`;
-      categoriesResults = await pool.query(categoriesSql);
-    }
-  } catch (err) {
-    return Promise.reject(err.message);
-  }
-
-  stakeholderResult.rows.forEach((row) => {
-    stakeholders.push({
-      id: row.id,
-      name: row.name || "",
-      address1: row.address_1 || "",
-      address2: row.address_2 || "",
-      city: row.city || "",
-      state: row.state || "",
-      zip: row.zip || "",
-      phone: row.phone || "",
-      latitude: row.latitude ? Number(row.latitude) : null,
-      longitude: row.longitude ? Number(row.longitude) : null,
-      distance: row.distance ? Number(row.distance) : null,
-      website: row.website || "",
-      notes: row.notes || "",
-      createdDate: row.created_date,
-      createdLoginId: row.created_login_id,
-      modifiedDate: row.modified_date,
-      modifiedLoginId: row.modified_login_id,
-      submittedDate: row.submitted_date,
-      submittedLoginId: row.submitted_login_id,
-      assignedDate: row.assigned_date,
-      assignedLoginId: row.assigned_login_id,
-      approvedDate: row.approved_date,
-      reviewedLoginId: row.reviewed_login_id,
-      claimedDate: row.claimed_date,
-      claimedLoginId: row.claimed_login_id,
-      requirements: row.requirements || "",
-      adminNotes: row.admin_notes || "",
-      inactive: row.inactive,
-      createdUser: row.created_user || "",
-      modifiedUser: row.modified_user || "",
-      submittedUser: row.submitted_user || "",
-      reviewedUser: row.reviewed_user || "",
-      assignedUser: row.assigned_user || "",
-      claimedUser: row.claimed_user || "",
-      categories: categoriesResults.rows.filter(
-        (cats) => cats.stakeholder_id == row.id
-      ),
-      hours: row.hours || [],
-      parentOrganization: row.parent_organization || "",
-      physicalAccess: row.physical_access || "",
-      email: row.email || "",
-      items: row.items || "",
-      services: row.services || "",
-      facebook: row.facebook || "",
-      twitter: row.twitter || "",
-      pinterest: row.pinterest || "",
-      linkedin: row.linkedin || "",
-      description: row.description,
-      reviewNotes: row.review_notes,
-      instagram: row.instagram || "",
-      adminContactName: row.admin_contact_name || "",
-      adminContactPhone: row.admin_contact_phone || "",
-      adminContactEmail: row.admin_contact_email || "",
-      donationContactName: row.donation_contact_name || "",
-      donationContactPhone: row.donation_contact_phone || "",
-      donationContactEmail: row.donation_contact_email || "",
-      donationPickup: row.donation_pickup || false,
-      donationAcceptFrozen: row.donation_accept_frozen || false,
-      donationAcceptRefrigerated: row.donation_accept_refrigerated || false,
-      donationAcceptPerishable: row.donation_accept_perishable || false,
-      donationSchedule: row.donation_schedule || "",
-      donationDeliveryInstructions: row.donation_delivery_instructions || "",
-      donationNotes: row.donation_notes || "",
-      covidNotes: row.covid_notes || "",
-      categoryNotes: row.category_notes || "",
-      eligibilityNotes: row.eligibility_notes || "",
-      foodTypes: row.food_types || "",
-      languages: row.languages || "",
-      confirmedName: row.v_name,
-      confirmedCategories: row.v_categories,
-      confirmedAddress: row.v_address,
-      confirmedPhone: row.v_phone,
-      confirmedEmail: row.v_email,
-      confirmedHours: row.v_hours,
-      verificationStatusId: row.verification_status_id,
-      inactiveTemporary: row.inactive_temporary,
-      neighborhoodId: row.neighborhood_id,
-      is_verified: row.is_verified,
-    });
-  });
-
-  return stakeholders;
-};
-
-const searchDashboard = async ({
   tenantId,
   name,
   categoryIds,
@@ -408,9 +250,9 @@ const selectById = async (id) => {
       s.category_notes, s.eligibility_notes, s.food_types, s.languages,
       s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email,
       s.v_hours, s.verification_status_id, s.inactive_temporary,
-      s.neighborhood_id, s.is_verified,
+      s.neighborhood_id, 
       ${buildLoginSelectsClause()}
-    from stakeholder_best s
+    from stakeholder s
     ${buildLoginJoinsClause()}
     where s.id = ${id}`;
   const result = await pool.query(sql);
@@ -490,7 +332,6 @@ const selectById = async (id) => {
     verificationStatusId: row.verification_status_id,
     inactiveTemporary: row.inactive_temporary,
     neighborhoodId: row.neighborhood_id,
-    is_verified: row.is_verified,
   };
 
   // Don't have a distance, since we didn't specify origin
@@ -1134,7 +975,6 @@ const buildLoginSelectsClause = () => {
 
 module.exports = {
   search,
-  searchDashboard,
   selectById,
   selectCsv,
   insert,

@@ -8,7 +8,7 @@ import { SearchButton } from "../Buttons";
 import { PrimaryButton } from "../../ui";
 import StakeholderGrid from "./VerificationAdminGrid";
 import { RotateLoader } from "react-spinners";
-import { useOrganizations } from "hooks/useOrganizations/useOrganizations";
+import { useOrganizations } from "hooks/useOrganizations";
 import { useCategories } from "hooks/useCategories/useCategories";
 import { useTenants } from "hooks/useTenants/useTenants";
 import { useNeighborhoods } from "hooks/useNeighborhoods/useNeighborhoods";
@@ -153,7 +153,7 @@ function VerificationAdmin(props) {
     data: stakeholders,
     loading: stakeholdersLoading,
     error: stakeholdersError,
-    searchDashboard: stakeholderSearch,
+    search: stakeholderSearch,
   } = useOrganizations();
 
   const searchCallback = useCallback(stakeholderSearch, []);

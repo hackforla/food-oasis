@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { SearchButton, PlainButton } from "../Buttons";
 import StakeholderGrid from "./VerificationAdminGrid";
 import { RotateLoader } from "react-spinners";
-import { useOrganizations } from "hooks/useOrganizations/useOrganizations";
+import { useOrganizations } from "hooks/useOrganizations";
 import * as stakeholderService from "services/stakeholder-service";
 
 const useStyles = makeStyles((theme) => ({
@@ -80,7 +80,7 @@ function VerificationDashboard(props) {
     data: stakeholders,
     loading: stakeholdersLoading,
     error: stakeholdersError,
-    searchDashboard: stakeholderSearch,
+    search: stakeholderSearch,
   } = useOrganizations();
 
   const searchCallback = useCallback(stakeholderSearch, []);

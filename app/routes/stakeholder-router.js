@@ -2,15 +2,14 @@ const router = require("express").Router();
 const stakeholderController = require("../controllers/stakeholder-controller");
 const jwtSession = require("../../middleware/jwt-session");
 
-router.get("/", stakeholderController.search);
 router.get(
-  "/dashboard",
+  "/",
   jwtSession.validateUserHasRequiredRoles([
     "admin",
     "data_entry",
     "coordinator",
   ]),
-  stakeholderController.searchDashboard
+  stakeholderController.search
 );
 router.get(
   "/:id",

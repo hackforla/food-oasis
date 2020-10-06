@@ -1,14 +1,14 @@
 import React from "react";
-import { foodPantry, mealProgram, closed } from "../theme/colors";
+import { foodPantry, mealProgram, closed } from "theme/colors";
 
-const splitPantryMealIcon = (isClosed) => (
+const SplitPantryMealIcon = ({ isClosed, height = "72px", width = "72px" }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
     x="0px"
     y="0px"
-    width="72px"
-    height="72px"
+    width={width}
+    height={height}
     viewBox="0 0 53 53"
     enableBackground="new 0 0 48 48"
     xmlSpace="preserve"
@@ -61,4 +61,4 @@ const splitPantryMealIcon = (isClosed) => (
   </svg>
 );
 
-export default splitPantryMealIcon;
+export default SplitPantryMealIcon;

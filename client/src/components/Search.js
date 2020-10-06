@@ -55,8 +55,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Search(props) {
-  const { userCoordinates, setOrigin, origin } = props;
+export default function Search({ userCoordinates, setOrigin, origin }) {
   const classes = useStyles();
   const [selectedPlace, setSelectedPlace] = useState("");
   const [newInputValue, updateNewInputValue] = useState(origin?.locationName);
@@ -78,11 +77,9 @@ export default function Search(props) {
   });
 
   const handleInputChange = (event) => {
+    if (!event.target.value) return;
     setSelectedPlace(event.target.value);
     updateNewInputValue(event.target.value);
-    if (!event.target.value) {
-      return;
-    }
     fetchMapboxResults(event.target.value);
   };
 
@@ -105,9 +102,7 @@ export default function Search(props) {
     }
   };
 
-  const renderInput = (inputProps) => {
-    const { InputProps, classes } = inputProps;
-
+  const renderInput = ({ InputProps, classes }) => {
     return (
       <TextField
         className={classes.address}
@@ -149,15 +144,13 @@ export default function Search(props) {
     );
   };
 
-  const renderResults = (params) => {
-    const {
-      highlightedIndex,
-      selectedItem,
-      inputValue,
-      mapboxResults,
-      getItemProps,
-    } = params;
-
+  const renderResults = ({
+    highlightedIndex,
+    selectedItem,
+    inputValue,
+    mapboxResults,
+    getItemProps,
+  }) => {
     if (!inputValue && userCoordinates && userCoordinates.latitude) {
       return (
         <MenuItem
@@ -209,11 +202,13 @@ export default function Search(props) {
           <div className={classes.container}>
             {renderInput({
               classes,
-              selectedItem,
-              availableItems: mapboxResults,
               InputProps: {
                 ...getInputProps({
-                  onClick: () => toggleMenu(),
+                  onClick: () => {
+                    setSelectedPlace("");
+                    updateNewInputValue("");
+                    toggleMenu();
+                  },
                   onChange: handleInputChange,
                   value:
                     newInputValue && !selectedPlace

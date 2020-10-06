@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import StakeholderPreview from "components/Stakeholder/StakeholderPreview";
-import isMobile from "helpers/isMobile";
+import { isMobile } from "helpers";
 
 const useStyles = makeStyles((theme, props) => ({
   list: {
@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme, props) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    padding: "0 2em",
+    padding: "0 1em",
     [theme.breakpoints.up("md")]: {
       height: "100%",
     },

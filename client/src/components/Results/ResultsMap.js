@@ -4,10 +4,9 @@ import ReactMapGL, { NavigationControl } from "react-map-gl";
 import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { MAPBOX_TOKEN } from "secrets";
 import { MAPBOX_STYLE } from "constants/map";
 import { DEFAULT_CATEGORIES } from "constants/stakeholder";
-import isMobile from "helpers/isMobile";
+import { isMobile } from "helpers";
 
 import StakeholderPreview from "components/Stakeholder/StakeholderPreview";
 import StakeholderDetails from "components/Stakeholder/StakeholderDetails";
@@ -97,7 +96,7 @@ function Map({
           width="100%"
           height="100%"
           onViewportChange={(newViewport) => setViewport(newViewport)}
-          mapboxApiAccessToken={MAPBOX_TOKEN}
+          mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
           mapStyle={MAPBOX_STYLE}
           onClick={() => doSelectStakeholder(null)}
         >

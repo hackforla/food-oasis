@@ -129,7 +129,7 @@ const validationSchema = Yup.object().shape({
   ),
 });
 
-const emptyStakeholder = {
+const emptyOrganization = {
   id: 0,
   name: "",
   description: "",
@@ -194,7 +194,7 @@ const emptyStakeholder = {
   inactiveTemporary: false,
 };
 
-const StakeholderEdit = (props) => {
+const OrganizationEdit = (props) => {
   const { classes, setToast, match, user, history } = props;
   const editId = match.params.id;
   const [assignDialogOpen, setAssignDialogOpen] = useState(false);
@@ -204,7 +204,7 @@ const StakeholderEdit = (props) => {
   const [tabPage, setTabPage] = useState(0);
   const [geocodeResults, setGeocodeResults] = useState([]);
   const [nextUrl, setNextUrl] = useState(null);
-  const [originalData, setOriginalData] = useState(emptyStakeholder);
+  const [originalData, setOriginalData] = useState(emptyOrganization);
 
   const { data: categories } = useCategories();
 
@@ -223,7 +223,7 @@ const StakeholderEdit = (props) => {
 
           setOriginalData(stakeholder);
         } else {
-          setOriginalData(emptyStakeholder);
+          setOriginalData(emptyOrganization);
         }
       } catch (err) {
         console.log(err);
@@ -2017,7 +2017,7 @@ const StakeholderEdit = (props) => {
   );
 };
 
-StakeholderEdit.propTypes = {
+OrganizationEdit.propTypes = {
   classes: PropTypes.object,
   setToast: PropTypes.func,
   match: PropTypes.object,
@@ -2025,4 +2025,4 @@ StakeholderEdit.propTypes = {
   history: PropTypes.object,
 };
 
-export default withStyles(styles)(withRouter(StakeholderEdit));
+export default withStyles(styles)(withRouter(OrganizationEdit));

@@ -9,47 +9,9 @@ const toLocalMoment = (ts) => {
   return !ts ? null : moment.utc(ts).local();
 };
 
-/* 
-    searchParams is an object with any/all of the following properties:
-        name - look for this string as substring of the stakeholder's name
-        categoryIds - array of integers corresponding to the desired categories
-        latitude
-        longitude
-        distance - radius around latitude and longitude
-        isAssigned - ("yes", "no", "either")
-        isSubmitted - ("yes", "no", "either")
-        isApproved - ("yes", "no", "either")
-        isClaimed - ("yes", "no", "either")
-        assignedLoginId
-        claimedLoginId
-*/
 export const search = async (searchParams) => {
   searchParams = searchParams || {};
-  const response = await axios.get(baseUrl, {
-    params: {
-      ...searchParams,
-      tenantId: getTenantId(),
-    },
-  });
-  let stakeholders = response.data.map((s) => {
-    return {
-      ...s,
-      createdDate: toLocalMoment(s.createdDate),
-      modifiedDate: toLocalMoment(s.modifiedDate),
-      assignedDate: toLocalMoment(s.assignedDate),
-      submittedDate: toLocalMoment(s.submittedDate),
-      approvedDate: toLocalMoment(s.approvedDate),
-      claimedDate: toLocalMoment(s.claimedDate),
-    };
-  });
-
-  // console.log("stakeholders", stakeholders);
-  return stakeholders;
-};
-
-export const searchDashboard = async (searchParams) => {
-  searchParams = searchParams || {};
-  const response = await axios.get(`${baseUrl}/dashboard`, {
+  const response = await axios.get(`${baseUrl}`, {
     params: searchParams,
   });
   let stakeholders = response.data.map((s) => {

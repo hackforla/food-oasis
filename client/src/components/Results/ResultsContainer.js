@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 
-import { useOrganizations } from "hooks/useOrganizations/useOrganizations";
+import { useOrganizationBests } from "hooks/useOrganizationBests";
 import useCategoryIds from "hooks/useCategoryIds";
-import isMobile from "helpers/isMobile";
+import { isMobile } from "helpers";
 
 import Filters from "./ResultsFilters";
 import List from "./ResultsList";
@@ -35,7 +35,7 @@ export default function ResultsContainer(props) {
   // Component state
   const storage = window.sessionStorage;
   const { userCoordinates, userSearch, setToast } = props;
-  const { data, search } = useOrganizations();
+  const { data, search } = useOrganizationBests();
   const [sortedData, setSortedData] = useState([]);
   const classes = useStyles();
 

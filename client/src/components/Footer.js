@@ -16,15 +16,14 @@ const useStyles = makeStyles((theme) => ({
     padding: "1.5rem 1rem",
     display: "flex",
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "space-between",
     color: "#1b1b1b",
     fontFamily: `"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans- serif`,
   },
   logo: {
-    position: "absolute",
-    left: "1rem",
-    top: ".5rem",
-    height: "60px",
+    marginTop: "0",
+    marginBottom: "auto",
+    height: "20px",
 
     "&:hover": {
       filter: "brightness(1.2)",

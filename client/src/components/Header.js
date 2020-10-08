@@ -2,8 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import useLocationHook from "hooks/useLocationHook";
 import Menu from "./Menu";
-import logo from "images/foodoasisla.svg";
-import logoCA from "images/foodoasisca.svg";
+// The two tenant logos happen to be the same at this moment
+import logo from "images/foodoasis.svg";
+import logoCA from "images/foodoasis.svg";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { getTenantId } from "../helpers/Configuration";

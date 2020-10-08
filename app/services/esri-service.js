@@ -1,6 +1,5 @@
 const axios = require("axios");
 
-// use protocol-relative urls
 const getTokenUrl = `https://www.arcgis.com/sharing/oauth2/token`;
 const findAddressCandidateUrl = `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates`;
 

@@ -1,5 +1,6 @@
 const axios = require("axios");
 
+// use protocol-relative urls
 const getTokenUrl = `https://www.arcgis.com/sharing/oauth2/token`;
 const findAddressCandidateUrl = `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates`;
 
@@ -14,8 +15,9 @@ const generateToken = async () => {
     const result = await axios.get(url);
     if (result.data.access_token) {
       esriToken = result.data.access_token;
+      return esriToken;
     }
-    return esriToken;
+    return Promise.reject(result.data.error.message);
   } catch (err) {
     throw new Error("Unable to get access token!");
   }
@@ -27,12 +29,13 @@ const buildGeocodeUrl = (address) =>
 
 const geocode = async (address) => {
   const searchString = encodeURI(address);
-
   if (esriToken === "") {
     console.log("Generating initial ESRI token...");
     await generateToken();
+  } else {
+    console.log("Trying geocoding with existing token...");
   }
-  console.log("Trying geocoding with existing token...");
+
   let addressResult = await axios.get(buildGeocodeUrl(searchString));
   if (addressResult.error && addressResult.error.code === 498) {
     // Invalid token - need to generate a new token

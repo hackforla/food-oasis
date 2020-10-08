@@ -21,7 +21,7 @@ export const getById = async (id) => {
 
 export const post = async (correction) => {
   const response = await axios.post(baseUrl, {
-    correction,
+    ...correction,
   });
   return response.data;
 };

@@ -4,8 +4,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import useLocationHook from "hooks/useLocationHook";
 import { MENU_ITEMS } from "helpers/Constants";
 import { Link } from "react-router-dom";
-import logo from "images/foodoasisla.svg";
-import logoCA from "images/foodoasisca.svg";
+// The two tenant logos happen to be the same at this moment
+import logo from "images/foodoasis.svg";
+import logoCA from "images/foodoasis.svg";
 import { getTenantId } from "../helpers/Configuration";
 
 const useStyles = makeStyles((theme) => ({
@@ -15,15 +16,14 @@ const useStyles = makeStyles((theme) => ({
     padding: "1.5rem 1rem",
     display: "flex",
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "space-between",
     color: "#1b1b1b",
     fontFamily: `"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans- serif`,
   },
   logo: {
-    position: "absolute",
-    left: "1rem",
-    top: ".5rem",
-    height: "60px",
+    marginTop: "0",
+    marginBottom: "auto",
+    height: "20px",
 
     "&:hover": {
       filter: "brightness(1.2)",

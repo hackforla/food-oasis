@@ -9,8 +9,9 @@ import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Search from "components/Search";
-import logo from "images/foodoasisla.svg";
-import logoCA from "images/foodoasisca.svg";
+// The two tenant logos happen to be the same at the moment
+import logo from "images/foodoasis.svg";
+import logoCA from "images/foodoasis.svg";
 import { getTenantId } from "helpers/Configuration";
 
 const useStyles = makeStyles((theme) => ({

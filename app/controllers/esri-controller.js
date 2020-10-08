@@ -6,7 +6,10 @@ const geocode = async (req, res) => {
     const response = await esriService.geocode(address);
     res.send(response);
   } catch (err) {
-    res.status("500").json({ error: err.toString() });
+    // In order to surface the error at the client, we need to
+    // return it as a successful web api request, then detect that
+    // it's an error at the client.
+    res.json(err);
   }
 };
 

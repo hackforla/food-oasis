@@ -269,8 +269,25 @@ const OrganizationEdit = (props) => {
   }
 
   const geocode = async (formData) => {
-    const result = await esriService.geocode(formatMapAddress(formData));
-    setGeocodeResults(result);
+    try {
+      const result = await esriService.geocode(formatMapAddress(formData));
+      if (Array.isArray(result)) {
+        setGeocodeResults(result);
+      } else {
+        setToast({
+          message:
+            `Geocoder request failed: ${result} ` +
+            `Please try again and/or contact support.`,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      setToast({
+        message:
+          `Geocoder request failed: ${err} ` +
+          `Please try again and/or contact support.`,
+      });
+    }
   };
 
   const handleChangeTabPage = (event, newValue) => {

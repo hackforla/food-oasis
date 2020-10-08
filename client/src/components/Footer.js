@@ -4,8 +4,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import useLocationHook from "hooks/useLocationHook";
 import { MENU_ITEMS } from "helpers/Constants";
 import { Link } from "react-router-dom";
-import logo from "images/foodoasisla.svg";
-import logoCA from "images/foodoasisca.svg";
+// The two tenant logos happen to be the same at this moment
+import logo from "images/foodoasis.svg";
+import logoCA from "images/foodoasis.svg";
 import { getTenantId } from "../helpers/Configuration";
 
 const useStyles = makeStyles((theme) => ({

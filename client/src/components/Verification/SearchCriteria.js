@@ -20,6 +20,7 @@ import {
 import RadioTrueFalseEither from "../RadioTrueFalseEither";
 import LocationAutocomplete from "../LocationAutocomplete";
 import AccountAutocomplete from "../AccountAutocomplete";
+import { defaultCoordinates } from "../../helpers/Configuration";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -57,8 +58,10 @@ const SearchCriteria = ({
       : "custom"
   );
 
-  const [customLatitude, setCustomLatitude] = useState(34);
-  const [customLongitude, setCustomLongitude] = useState(-118);
+  const [customLatitude, setCustomLatitude] = useState(defaultCoordinates.lat);
+  const [customLongitude, setCustomLongitude] = useState(
+    defaultCoordinates.LocationAutocomplete
+  );
   const [customPlaceName, setCustomPlaceName] = useState("");
 
   useEffect(() => {

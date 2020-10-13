@@ -20,6 +20,9 @@ import Faq from "components/StaticPages/Faq";
 import DonateCA from "components/StaticPagesCA/Donate";
 import AboutCA from "components/StaticPagesCA/About";
 import FaqCA from "components/StaticPagesCA/Faq";
+import DonateHI from "components/StaticPagesHI/Donate";
+import AboutHI from "components/StaticPagesHI/About";
+import FaqHI from "components/StaticPagesHI/Faq";
 import Resources from "components/Resources";
 import Register from "components/Register";
 import Login from "components/Login";
@@ -32,6 +35,7 @@ import Home from "containers/Home";
 import Results from "components/Results/ResultsContainer";
 import Suggestion from "components/Suggestion";
 import newTheme from "./theme/newTheme";
+import { defaultCoordinates } from "./helpers/Configuration";
 
 const useStyles = makeStyles({
   app: (props) => ({
@@ -73,8 +77,8 @@ function App() {
   const [toast, setToast] = useState({ message: "" });
   const [bgImg, setBgImg] = useState("");
   const [origin, setOrigin] = useState({
-    latitude: 34.0522,
-    longitude: -118.2437,
+    latitude: defaultCoordinates.lat,
+    longitude: defaultCoordinates.lon,
   });
 
   useEffect(() => {
@@ -125,8 +129,8 @@ function App() {
         (error) => {
           console.log(`Getting browser location failed: ${error.message}`);
           const userCoordinates = {
-            latitude: 34.0522,
-            longitude: -118.2437,
+            latitude: defaultCoordinates.lat,
+            longitude: defaultCoordinates.lon,
           };
           setUserCoordinates(userCoordinates);
         }
@@ -239,13 +243,31 @@ function App() {
                 <ResetPassword setToast={setToast} />
               </Route>
               <Route path="/donate">
-                {tenantId === 2 ? <DonateCA /> : <Donate />}
+                {tenantId === 3 ? (
+                  <DonateHI />
+                ) : tenantId === 2 ? (
+                  <DonateCA />
+                ) : (
+                  <Donate />
+                )}
               </Route>
               <Route path="/about">
-                {tenantId === 2 ? <AboutCA /> : <About />}
+                {tenantId === 3 ? (
+                  <AboutHI />
+                ) : tenantId === 2 ? (
+                  <AboutCA />
+                ) : (
+                  <About />
+                )}
               </Route>
               <Route exact path="/faqs">
-                {tenantId === 2 ? <FaqCA /> : <Faq />}
+                {tenantId === 3 ? (
+                  <FaqHI />
+                ) : tenantId === 2 ? (
+                  <FaqCA />
+                ) : (
+                  <Faq />
+                )}
               </Route>
             </Switch>
             <Toast toast={toast} setToast={setToast} />

@@ -9,9 +9,10 @@ import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Search from "components/Search";
-// The two tenant logos happen to be the same at the moment
+// The three tenant logos happen to be the same at the moment
 import logo from "images/foodoasis.svg";
 import logoCA from "images/foodoasis.svg";
+import logoHI from "images/foodoasis.svg";
 import { getTenantId } from "helpers/Configuration";
 
 const useStyles = makeStyles((theme) => ({
@@ -133,7 +134,9 @@ const Home = (props) => {
       <CssBaseline />
       <Paper className={classes.paper}>
         <Box className={classes.logoContainer}>
-          {getTenantId() === 2 ? (
+          {getTenantId() === 3 ? (
+            <img src={logoHI} alt="logo" className={classes.logo} />
+          ) : getTenantId() === 2 ? (
             <img src={logoCA} alt="logo" className={classes.logo} />
           ) : (
             <img src={logo} alt="logo" className={classes.logo} />
@@ -148,7 +151,11 @@ const Home = (props) => {
             className={classes.form}
             onSubmit={() => props.history.push("/organizations")}
           >
-            {getTenantId() === 2 ? (
+            {getTenantId() === 3 ? (
+              <Typography variant={"h5"} className={classes.label}>
+                Locate free food resources in Hawaii
+              </Typography>
+            ) : getTenantId() === 2 ? (
               <Typography variant={"h5"} className={classes.label}>
                 Locate free food resources in California
               </Typography>

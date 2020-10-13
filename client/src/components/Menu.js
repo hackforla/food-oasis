@@ -83,6 +83,7 @@ export default function Menu(props) {
     <>
       <Divider />
       <MenuItemLink
+        to="/"
         key="logout"
         text="Logout"
         onClick={() => logout(setUser, setToast, history)}

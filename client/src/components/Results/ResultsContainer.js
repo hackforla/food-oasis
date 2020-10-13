@@ -5,6 +5,7 @@ import { Grid } from "@material-ui/core";
 import { useOrganizationBests } from "hooks/useOrganizationBests";
 import useCategoryIds from "hooks/useCategoryIds";
 import { isMobile } from "helpers";
+import { defaultCoordinates } from "../../helpers/Configuration";
 
 import Filters from "./ResultsFilters";
 import List from "./ResultsList";
@@ -78,14 +79,14 @@ export default function ResultsContainer(props) {
       ? JSON.parse(storage.origin).latitude
       : userCoordinates
       ? userCoordinates.latitude
-      : 34.07872,
+      : defaultCoordinates.lat,
     longitude: userSearch
       ? userSearch.longitude
       : storage.origin
       ? JSON.parse(storage.origin).longitude
       : userCoordinates
       ? userCoordinates.longitude
-      : -118.243328,
+      : defaultCoordinates.lon,
   };
 
   const [radius, setRadius] = useState(

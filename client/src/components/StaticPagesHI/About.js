@@ -142,7 +142,7 @@ const About = () => {
   return (
     <div className={classes.outer}>
       <h1 className={classes.title}>
-        <span>About</span> Food Oasis / LA
+        <span>About</span> Food Oasis Hawaii
       </h1>
       <div className={classes.main}>
         <figure className={classes.figure}>
@@ -158,19 +158,10 @@ const About = () => {
           <h2>Our Mission</h2>
           <p>
             Access to enough food should be a basic right. Unfortunately, this
-            is not the reality for millions of people in Los Angeles County.
-            Before the Covid-19 pandemic, up to 1.4 million people in Los
-            Angeles County faced food insecurity. Food insecurity is
-            inconsistent with access to cheap and nutritious food. Los Angeles
-            has the highest percentage of food insecurity in the nation.
+            is not the reality for millions of people in Hawaii. Food insecurity
+            is inconsistent with access to cheap and nutritious food.
           </p>
-          <p>
-            Since COVID, 1.3 million people lost their jobs in Los Angeles
-            County alone. This created a brand new vulnerable population. These
-            are people who need food assistance for the first time. According to
-            a study done by Feeding America in May 2020, over 500,000 Angelinos
-            are newly food insecure.
-          </p>
+          <p>(TBD)</p>
           <p>
             Food pantries in the area are experiencing unprecedented demand. The
             demand for food assistance has almost doubled since the beginning of
@@ -179,22 +170,16 @@ const About = () => {
             available to distribute food has diminished.
           </p>
           <p>
-            Food Oasis has 773 organizations in our database. Our team of
-            volunteers updated the information for 333 organizations. Out of 333
-            organizations, 46 closed their doors and 66 closed for COVID. 37% of
-            the organizations have closed their doors.
-          </p>
-          <p>
             The primary goal of Food Oasis is to provide up-to-date information
-            to Angelinos. We built a directory that connects anyone with
+            to Hawaiians. We built a directory that connects anyone with
             hundreds of free food resources. Food Oasis presents reliable
             information on a user-friendly platform. This will reduce stress and
             uncertainty for food seekers. It will also demonstrate to our
-            community the growing need of food donations in Los Angeles.
+            community the growing need of food donations on the islands.
           </p>
           <p>
             Food Oasis is creating a directory of updated food resources. There
-            are countless groups helping to feed hungry Angelenos. But it’s
+            are countless groups helping to feed hungry Hawaiians. But it’s
             difficult for those in need to find them because there’s no one
             source of updated info. We’re working to change that.
           </p>
@@ -225,15 +210,7 @@ const About = () => {
             day-to-day operations. The upkeep turned out to be much more work
             than any single nonprofit could handle.
           </p>
-          <p>
-            In August 2019, our current Hack for LA team assembled to build new
-            digital pieces of this puzzle. One goal was to relaunch the site
-            with hundreds of new food resources. We learned from the past how
-            difficult it is to keep resources updated. Now, we are training
-            volunteers to update the resources in the directory. The final piece
-            we added is a new second database that connects pantry directors
-            with food donation organizations.
-          </p>
+
           <p>
             Our web-based solution is sparking collaboration, community
             building, and team building. The result of this community-building
@@ -242,7 +219,7 @@ const About = () => {
           </p>
           <p>
             We are 100% volunteer-run project. We look forward to sharing our
-            updated directory with Los Angeles.
+            updated directory with Hawaii.
           </p>
         </section>
         <section className={classes.contact}>

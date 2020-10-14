@@ -1,6 +1,6 @@
 import axios from "axios";
 import moment from "moment";
-import { getTenantId } from "helpers/Configuration";
+import { tenantId } from "helpers/Configuration";
 
 const baseUrl = "/api/stakeholderbests";
 
@@ -27,7 +27,7 @@ export const search = async (searchParams) => {
   const response = await axios.get(baseUrl, {
     params: {
       ...searchParams,
-      tenantId: getTenantId(),
+      tenantId,
     },
   });
   let stakeholders = response.data.map((s) => {

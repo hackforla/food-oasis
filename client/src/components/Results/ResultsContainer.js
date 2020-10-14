@@ -5,23 +5,13 @@ import { Grid } from "@material-ui/core";
 import { useOrganizationBests } from "hooks/useOrganizationBests";
 import useCategoryIds from "hooks/useCategoryIds";
 import { isMobile } from "helpers";
-import { defaultCoordinates } from "../../helpers/Configuration";
+import { originCoordinates } from "../../helpers/Configuration";
 
 import Filters from "./ResultsFilters";
 import List from "./ResultsList";
 import Map from "./ResultsMap";
 
 const useStyles = makeStyles((theme) => ({
-  filterButton: {
-    margin: "0 .25rem",
-    padding: "0 0.5rem",
-    fontSize: "12px",
-  },
-  div: {
-    textAlign: "center",
-    fontSize: "12px",
-    border: "1px solid blue",
-  },
   listMapContainer: {
     [theme.breakpoints.down("sm")]: {
       height: "100%",
@@ -79,14 +69,14 @@ export default function ResultsContainer(props) {
       ? JSON.parse(storage.origin).latitude
       : userCoordinates
       ? userCoordinates.latitude
-      : defaultCoordinates.lat,
+      : originCoordinates.lat,
     longitude: userSearch
       ? userSearch.longitude
       : storage.origin
       ? JSON.parse(storage.origin).longitude
       : userCoordinates
       ? userCoordinates.longitude
-      : defaultCoordinates.lon,
+      : originCoordinates.lon,
   };
 
   const [radius, setRadius] = useState(

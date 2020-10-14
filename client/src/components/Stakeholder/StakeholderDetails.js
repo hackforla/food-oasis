@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { Button } from "@material-ui/core";
 
 import mapMarker from "images/mapMarker";
 import fbIcon from "images/fbIcon.png";
@@ -14,7 +15,6 @@ import { extractNumbers, getGoogleMapsUrl } from "helpers";
 
 import Icon from "components/Icon";
 import SuggestionDialog from "components/SuggestionDialog";
-import { PlainButton } from "components/Buttons";
 
 const useStyles = makeStyles((theme, props) => ({
   stakeholder: {
@@ -30,14 +30,6 @@ const useStyles = makeStyles((theme, props) => ({
     width: "100%",
     display: "inherit",
     justifyContent: "inherit",
-  },
-  img: {
-    display: "inherit",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  typeLogo: {
-    width: "72px",
   },
   info: {
     fontSize: "1.1em",
@@ -87,6 +79,7 @@ const useStyles = makeStyles((theme, props) => ({
     left: "1em",
     alignSelf: "flex-start",
     margin: "1em 0 0 0",
+    cursor: "pointer",
   },
   label: {
     width: "100%",
@@ -105,6 +98,7 @@ const useStyles = makeStyles((theme, props) => ({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
+    marginTop: "10px",
   },
   numbers: {
     display: "inline",
@@ -284,9 +278,8 @@ const StakeholderDetails = ({
         </p>
       ) : null}
       <div className={classes.buttons}>
-        <PlainButton
-          stakeholder={selectedStakeholder}
-          label="Directions"
+        <Button
+          variant="outlined"
           onClick={() =>
             window.open(
               getGoogleMapsUrl(
@@ -296,14 +289,12 @@ const StakeholderDetails = ({
               )
             )
           }
-        />
-        <PlainButton
-          className={classes.directions}
-          onClick={handleSuggestionDialogOpen}
-          label="Send a Correction"
         >
+          Directions
+        </Button>
+        <Button variant="outlined" onClick={handleSuggestionDialogOpen}>
           Send Correction
-        </PlainButton>
+        </Button>
       </div>
       {selectedStakeholder.hours ? (
         <>

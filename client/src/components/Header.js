@@ -7,7 +7,7 @@ import logo from "images/foodoasis.svg";
 import logoCA from "images/foodoasis.svg";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { getTenantId } from "../helpers/Configuration";
+import { tenantId } from "../helpers/Configuration";
 
 Header.propTypes = {
   user: PropTypes.object,
@@ -15,7 +15,7 @@ Header.propTypes = {
   setToast: PropTypes.func,
 };
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   headerHolder: {
     backgroundColor: (props) => props.headerColor,
     marginBottom: (props) => props.headerMargin,
@@ -24,6 +24,10 @@ const useStyles = makeStyles({
   header: {
     minHeight: "60px",
     padding: "0 1.5em 0 0",
+    [theme.breakpoints.down("xs")]: {
+      padding: "0 0.5em 0 0",
+      minHeight: "45px",
+    },
   },
   content: {
     display: "flex",
@@ -35,9 +39,11 @@ const useStyles = makeStyles({
     width: "90px",
     height: "60px",
     margin: "0 .5rem",
-
     "&:hover": {
       filter: "brightness(1.2)",
+    },
+    [theme.breakpoints.down("xs")]: {
+      height: "45px",
     },
   },
   tagline: {
@@ -47,7 +53,7 @@ const useStyles = makeStyles({
     lineHeight: "1.5",
     fontFamily: `"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans- serif`,
   },
-});
+}));
 
 export default function Header(props) {
   const { user, setUser, setToast } = props;
@@ -66,7 +72,7 @@ export default function Header(props) {
 
   const styles = isHomePage ? homePageStyles : defaultStyles;
   const classes = useStyles(styles);
-  const taglineText = isHomePage ? "" : "Your free food directory";
+  const taglineText = ""; // isHomePage ? "" : "Your free food directory";
 
   return (
     <>
@@ -74,7 +80,7 @@ export default function Header(props) {
         <Toolbar className={classes.header}>
           <div className={classes.content}>
             {!isHomePage &&
-              (getTenantId() === 1 ? (
+              (tenantId === 1 ? (
                 <div>
                   <a href="/">
                     <img src={logo} className={classes.logo} alt="logo" />{" "}

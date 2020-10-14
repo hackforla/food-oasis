@@ -1,14 +1,7 @@
 import React, { useCallback, useEffect } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  Grid,
-  Select,
-  MenuItem,
-  FormControl,
-  Button,
-  Box,
-} from "@material-ui/core";
+import { Grid, Select, MenuItem, Button, Box } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 
 import {
@@ -18,75 +11,22 @@ import {
 } from "constants/stakeholder";
 import { isMobile } from "helpers";
 
+import theme from "theme/materialUI";
 import SwitchViewsButton from "components/SwitchViewsButton";
 import Search from "components/Search";
 
 const useStyles = makeStyles((theme) => ({
-  filterGroup: {
-    margin: 0,
-    padding: 0,
-  },
-  filterGroupButton: {
-    margin: 0,
-    padding: ".5rem",
-    fontSize: "max(.8vw,12px)",
-    whiteSpace: "nowrap",
-    backgroundColor: "#fff",
-    border: ".1em solid #000",
-    color: "#000",
-    [theme.breakpoints.down("xs")]: {
-      padding: ".1rem .1rem",
-      margin: "0",
-      fontSize: "max(.8vw,11px)",
-    },
-  },
-  filterButton: {
-    margin: 0,
-    padding: ".5rem",
-    fontSize: "max(.8vw,12px)",
-    whiteSpace: "nowrap",
-    backgroundColor: "#fff",
-    border: ".1em solid #000",
-    color: "#000",
-    [theme.breakpoints.down("xs")]: {
-      padding: ".6rem .6rem",
-      margin: ".3rem",
-      fontSize: "max(.8vw,12px)",
-      borderRadius: "5px !important",
-    },
-  },
-  distanceControl: {
-    margin: ".3rem",
-    backgroundColor: "#fff",
-    // padding: "auto 0 auto .7em",
-    padding: ".3rem",
-    border: ".1em solid #000",
-    outline: "none",
-    [theme.breakpoints.down("xs")]: {
-      padding: ".4rem",
-      margin: ".3rem",
-    },
+  select: {
+    color: "white",
   },
   menuItems: {
     fontSize: "max(.8vw,12px)",
     color: "#000",
   },
   controlPanel: {
-    backgroundColor: "#336699",
+    backgroundColor: theme.palette.primary.main,
     padding: "1rem 0",
     flex: "1 0 auto",
-  },
-  inputHolder: {
-    display: "flex",
-    justifyContent: "flex-start",
-    alignItems: "center",
-  },
-  input: {
-    fontSize: "12px",
-    width: "25em",
-    height: "2em",
-    outline: "none",
-    padding: ".25em",
   },
   inputContainer: {
     display: "flex",
@@ -120,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
   buttonHolder: {
     display: "flex",
     [theme.breakpoints.down("xs")]: {
-      marginTop: "1rem",
+      marginTop: "0.5rem",
     },
   },
 }));
@@ -146,7 +86,6 @@ const ResultsFilters = ({
   switchResultsView,
 }) => {
   const classes = useStyles();
-
   const isMealsSelected = categoryIds.indexOf(MEAL_PROGRAM_CATEGORY_ID) >= 0;
   const isPantrySelected = categoryIds.indexOf(FOOD_PANTRY_CATEGORY_ID) >= 0;
 
@@ -243,43 +182,40 @@ const ResultsFilters = ({
         className={classes.buttonHolder}
       >
         <Grid item>
-          <Button as={FormControl} className={classes.distanceControl}>
-            <Select
-              name="select-distance"
-              disableUnderline
-              value={radius}
-              onChange={(e) => handleDistanceChange(e.target.value)}
-              inputProps={{
-                name: "select-distance",
-                id: "select-distance",
-              }}
-              className={classes.menuItems}
-            >
-              <MenuItem key={0} value={0} className={classes.menuItems}>
-                DISTANCE
+          <Select
+            disableUnderline
+            value={radius}
+            onChange={(e) => handleDistanceChange(e.target.value)}
+            inputProps={{
+              classes: {
+                icon: classes.select,
+              },
+            }}
+            className={classes.select}
+          >
+            <MenuItem key={0} value={0} className={classes.menuItems}>
+              DISTANCE
+            </MenuItem>
+            {distanceInfo.map((distance) => (
+              <MenuItem
+                key={distance}
+                value={distance}
+                className={classes.menuItems}
+              >
+                {distance === 0
+                  ? "(Any)"
+                  : `${distance} MILE${distance > 1 ? "S" : ""}`}
               </MenuItem>
-              {distanceInfo.map((distance) => (
-                <MenuItem
-                  key={distance}
-                  value={distance}
-                  className={classes.menuItems}
-                >
-                  {distance === 0
-                    ? "(Any)"
-                    : `${distance} MILE${distance > 1 ? "S" : ""}`}
-                </MenuItem>
-              ))}
-            </Select>
-          </Button>
+            ))}
+          </Select>
         </Grid>
         <Grid item>
           <Button
-            className={classes.filterButton}
             style={{
-              backgroundColor: isPantrySelected ? "#0A3865" : "#fff",
+              backgroundColor: isPantrySelected
+                ? theme.palette.primary.dark
+                : "#fff",
               color: isPantrySelected ? "#fff" : "#000",
-              marginLeft: "0.25rem",
-              borderRadius: "5px 0 0 5px",
             }}
             onClick={togglePantry}
           >
@@ -304,12 +240,12 @@ const ResultsFilters = ({
         </Grid>
         <Grid item>
           <Button
-            className={classes.filterButton}
             style={{
-              backgroundColor: isMealsSelected ? "#0A3865" : "#fff",
+              backgroundColor: isMealsSelected
+                ? theme.palette.primary.dark
+                : "#fff",
               color: isMealsSelected ? "#fff" : "#000",
-              marginRight: "0.25rem",
-              borderRadius: "0 5px 5px 0",
+              marginLeft: "5px",
             }}
             onClick={toggleMeal}
           >
@@ -337,18 +273,6 @@ const ResultsFilters = ({
               color="white"
             />
           )}
-          {/* <Button
-            className={classes.filterGroupButton}
-            style={{
-              backgroundColor: isVerifiedSelected ? "#0A3865" : "#fff",
-              color: isVerifiedSelected ? "#fff" : "#000",
-            }}
-            onClick={() => {
-              selectVerified(!isVerifiedSelected);
-            }}
-          >
-            Updated Data
-          </Button> */}
         </Grid>
       </Grid>
       <Box

@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 // The two tenant logos happen to be the same at this moment
 import logo from "images/foodoasis.svg";
 import logoCA from "images/foodoasis.svg";
-import { getTenantId } from "../helpers/Configuration";
+import { tenantId } from "../helpers/Configuration";
 
 const useStyles = makeStyles((theme) => ({
   footer: {
@@ -100,7 +100,7 @@ const Footer = () => {
 
   return (
     <Box className={classes.footer} style={holderStyle}>
-      {getTenantId() === 2 ? (
+      {tenantId === 2 ? (
         <img src={logoCA} className={classes.logo} alt="logo" />
       ) : (
         <img src={logo} className={classes.logo} alt="logo" />

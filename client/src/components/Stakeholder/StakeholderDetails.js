@@ -31,14 +31,6 @@ const useStyles = makeStyles((theme, props) => ({
     display: "inherit",
     justifyContent: "inherit",
   },
-  img: {
-    display: "inherit",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  typeLogo: {
-    width: "72px",
-  },
   info: {
     fontSize: "1.1em",
     textAlign: "left",

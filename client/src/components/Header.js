@@ -7,7 +7,7 @@ import logo from "images/foodoasis.svg";
 import logoCA from "images/foodoasis.svg";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { getTenantId } from "../helpers/Configuration";
+import { tenantId } from "../helpers/Configuration";
 
 Header.propTypes = {
   user: PropTypes.object,
@@ -72,7 +72,7 @@ export default function Header(props) {
 
   const styles = isHomePage ? homePageStyles : defaultStyles;
   const classes = useStyles(styles);
-  const taglineText = isHomePage ? "" : "Your free food directory";
+  const taglineText = ""; // isHomePage ? "" : "Your free food directory";
 
   return (
     <>
@@ -80,7 +80,7 @@ export default function Header(props) {
         <Toolbar className={classes.header}>
           <div className={classes.content}>
             {!isHomePage &&
-              (getTenantId() === 1 ? (
+              (tenantId === 1 ? (
                 <div>
                   <a href="/">
                     <img src={logo} className={classes.logo} alt="logo" />{" "}

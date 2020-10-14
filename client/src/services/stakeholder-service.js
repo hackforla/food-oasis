@@ -1,7 +1,7 @@
 import axios from "axios";
 import moment from "moment";
 import fileDownload from "js-file-download";
-import { getTenantId } from "helpers/Configuration";
+import { tenantId } from "helpers/Configuration";
 
 const baseUrl = "/api/stakeholders";
 
@@ -47,7 +47,7 @@ export const getById = async (id) => {
 export const post = async (stakeholder) => {
   const response = await axios.post(baseUrl, {
     ...stakeholder,
-    tenantId: getTenantId(),
+    tenantId,
   });
   return response.data;
 };

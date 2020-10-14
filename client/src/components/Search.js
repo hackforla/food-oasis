@@ -109,7 +109,7 @@ export default function Search({ userCoordinates, setOrigin, origin }) {
         variant="outlined"
         margin="none"
         fullWidth
-        placeholder="Search by address, neighborhood, or zip code"
+        placeholder="Search by address or zip code"
         name="address"
         size="small"
         autoFocus={false}

@@ -4,7 +4,7 @@ import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 import theme from "theme/materialUI";
 import { logout } from "services/account-service";
-import { getTenantId } from "helpers/Configuration";
+import { tenantId, originCoordinates } from "helpers/Configuration";
 
 // Components
 import { UserContext } from "components/user-context";
@@ -35,7 +35,6 @@ import Home from "containers/Home";
 import Results from "components/Results/ResultsContainer";
 import Suggestion from "components/Suggestion";
 import newTheme from "./theme/newTheme";
-import { defaultCoordinates } from "./helpers/Configuration";
 
 const useStyles = makeStyles({
   app: (props) => ({
@@ -71,14 +70,13 @@ const useStyles = makeStyles({
 });
 
 function App() {
-  const tenantId = getTenantId();
   const [user, setUser] = useState(null);
   const [userCoordinates, setUserCoordinates] = useState({});
   const [toast, setToast] = useState({ message: "" });
   const [bgImg, setBgImg] = useState("");
   const [origin, setOrigin] = useState({
-    latitude: defaultCoordinates.lat,
-    longitude: defaultCoordinates.lon,
+    latitude: originCoordinates.lat,
+    longitude: originCoordinates.lon,
   });
 
   useEffect(() => {
@@ -129,8 +127,8 @@ function App() {
         (error) => {
           console.log(`Getting browser location failed: ${error.message}`);
           const userCoordinates = {
-            latitude: defaultCoordinates.lat,
-            longitude: defaultCoordinates.lon,
+            latitude: originCoordinates.lat,
+            longitude: originCoordinates.lon,
           };
           setUserCoordinates(userCoordinates);
         }

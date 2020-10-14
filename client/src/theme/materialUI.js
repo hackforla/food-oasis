@@ -3,18 +3,19 @@ import { createMuiTheme } from "@material-ui/core/styles";
 const theme = createMuiTheme({
   palette: {
     primary: {
-      // purple
-      // main: "#772f7a",
+      // blue
+      light: "#1976d2",
       main: "#336699",
       contrastText: "#ffffff",
     },
     secondary: {
       // orange
-      main: "rgb(249, 192, 88)",
+      main: "#f9c058",
       contrastText: "#000000",
     },
     error: {
-      main: "rgb(249, 64, 64)",
+      // red
+      main: "#f94040",
       contrastText: "#000000",
     },
     text: {
@@ -24,38 +25,40 @@ const theme = createMuiTheme({
   typography: {
     fontFamily: '"Helvetica Neue", Helvetica, sans-serif;',
   },
-  overrides: {
-    MuiButton: {
-      outlined: {
-        margin: "10px",
-        border: "2px solid #772f7a",
-        color: "#772f7a",
-        "&:hover": {
-          color: "hsl(298, 44%, 96%)",
-          backgroundColor: "#772f7a",
-        },
-      },
-    },
-    MuiLink: {
-      root: {
-        color: "#1976d2",
-        "&:visited": {
-          color: "#772f7a",
-        },
-      },
-      underlineHover: {
-        textDecoration: "none",
-        "&:hover": {
-          textDecoration: "underline",
-        },
-      },
-    },
-    MuiAppBar: {
-      root: {
-        backgroundColor: "rgb(241, 241, 241)",
+});
+
+const { primary } = theme.palette;
+
+theme.overrides = {
+  MuiButton: {
+    outlined: {
+      border: `2px solid ${primary.main}`,
+      color: primary.main,
+      "&:hover": {
+        color: primary.contrastText,
+        backgroundColor: primary.main,
       },
     },
   },
-});
+  MuiLink: {
+    root: {
+      color: primary.light,
+      "&:visited": {
+        color: primary.main,
+      },
+    },
+    underlineHover: {
+      textDecoration: "none",
+      "&:hover": {
+        textDecoration: "underline",
+      },
+    },
+  },
+  MuiAppBar: {
+    root: {
+      backgroundColor: "#f1f1f1",
+    },
+  },
+};
 
 export default theme;

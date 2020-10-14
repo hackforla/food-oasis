@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { makeStyles } from "@material-ui/core/styles";
+import { Button } from "@material-ui/core";
 
 import {
   MEAL_PROGRAM_CATEGORY_ID,
@@ -11,7 +12,6 @@ import { ORGANIZATION_COLORS, CLOSED_COLOR } from "constants/map";
 import { getGoogleMapsUrl, extractNumbers } from "helpers";
 
 import Icon from "components/Icon";
-import { PlainButton } from "components/Buttons";
 
 const useStyles = makeStyles(() => ({
   stakeholder: {
@@ -208,8 +208,9 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
           ) : null}
         </div>
         <div className={classes.buttons}>
-          <PlainButton
-            label="Directions"
+          <Button
+            variant="outlined"
+            size="small"
             onClick={() =>
               window.open(
                 getGoogleMapsUrl(
@@ -219,16 +220,21 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
                 )
               )
             }
-            size="small"
-          />
+          >
+            Directions
+          </Button>
           {mainNumber && (
-            <PlainButton
-              label="Call"
+            <Button
+              variant="outlined"
               size="small"
               onClick={() => window.open(`tel:${mainNumber.value}`)}
-            />
+            >
+              Call
+            </Button>
           )}
-          <PlainButton label="Details" />
+          <Button variant="outlined" size="small">
+            Details
+          </Button>
         </div>
       </div>
     </div>

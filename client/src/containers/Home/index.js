@@ -13,7 +13,7 @@ import Search from "components/Search";
 import logo from "images/foodoasis.svg";
 import logoCA from "images/foodoasis.svg";
 import logoHI from "images/foodoasis.svg";
-import { getTenantId } from "helpers/Configuration";
+import { tenantId } from "helpers/Configuration";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -134,28 +134,24 @@ const Home = (props) => {
       <CssBaseline />
       <Paper className={classes.paper}>
         <Box className={classes.logoContainer}>
-          {getTenantId() === 3 ? (
+          {tenantId === 3 ? (
             <img src={logoHI} alt="logo" className={classes.logo} />
-          ) : getTenantId() === 2 ? (
+          ) : tenantId === 2 ? (
             <img src={logoCA} alt="logo" className={classes.logo} />
           ) : (
             <img src={logo} alt="logo" className={classes.logo} />
           )}
-
-          <Typography className={classes.subtitle}>
-            Your free food directory
-          </Typography>
         </Box>
         <Box className={classes.formContainer}>
           <form
             className={classes.form}
             onSubmit={() => props.history.push("/organizations")}
           >
-            {getTenantId() === 3 ? (
+            {tenantId === 3 ? (
               <Typography variant={"h5"} className={classes.label}>
                 Locate free food resources in Hawaii
               </Typography>
-            ) : getTenantId() === 2 ? (
+            ) : tenantId === 2 ? (
               <Typography variant={"h5"} className={classes.label}>
                 Locate free food resources in California
               </Typography>

@@ -12,16 +12,6 @@ import List from "./ResultsList";
 import Map from "./ResultsMap";
 
 const useStyles = makeStyles((theme) => ({
-  filterButton: {
-    margin: "0 .25rem",
-    padding: "0 0.5rem",
-    fontSize: "12px",
-  },
-  div: {
-    textAlign: "center",
-    fontSize: "12px",
-    border: "1px solid blue",
-  },
   listMapContainer: {
     [theme.breakpoints.down("sm")]: {
       height: "100%",

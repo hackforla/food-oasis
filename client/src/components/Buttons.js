@@ -86,12 +86,7 @@ const DeleteButton = (props) => {
 
 const DeleteIconButton = (props) => {
   return (
-    <IconButton
-      variant="contained"
-      color="default"
-      aria-label="delete"
-      {...props}
-    >
+    <IconButton variant="contained" aria-label="delete" {...props}>
       <Delete />
     </IconButton>
   );

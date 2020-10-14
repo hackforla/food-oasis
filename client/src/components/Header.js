@@ -15,7 +15,7 @@ Header.propTypes = {
   setToast: PropTypes.func,
 };
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   headerHolder: {
     backgroundColor: (props) => props.headerColor,
     marginBottom: (props) => props.headerMargin,
@@ -24,6 +24,10 @@ const useStyles = makeStyles({
   header: {
     minHeight: "60px",
     padding: "0 1.5em 0 0",
+    [theme.breakpoints.down("xs")]: {
+      padding: "0 0.5em 0 0",
+      minHeight: "45px",
+    },
   },
   content: {
     display: "flex",
@@ -35,9 +39,11 @@ const useStyles = makeStyles({
     width: "90px",
     height: "60px",
     margin: "0 .5rem",
-
     "&:hover": {
       filter: "brightness(1.2)",
+    },
+    [theme.breakpoints.down("xs")]: {
+      height: "45px",
     },
   },
   tagline: {
@@ -47,7 +53,7 @@ const useStyles = makeStyles({
     lineHeight: "1.5",
     fontFamily: `"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans- serif`,
   },
-});
+}));
 
 export default function Header(props) {
   const { user, setUser, setToast } = props;

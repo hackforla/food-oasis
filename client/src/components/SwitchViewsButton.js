@@ -9,21 +9,17 @@ export default function SwitchViewsButton({
   color = "primary",
 }) {
   return (
-    <Button
-      onClick={onClick}
-      title={`Go to ${isMapView ? "List" : "Map"}`}
-      style={{ color }}
-    >
+    <Button onClick={onClick} style={{ color }}>
       {isMapView && (
         <>
-          <span style={{ fontSize: "1rem", marginRight: ".5rem" }}>List</span>
           <FormatListBulletedIcon />
+          <span style={{ fontSize: "1rem", marginRight: ".5rem" }}>List</span>
         </>
       )}
       {!isMapView && (
         <>
+          <MapIcon />
           <span style={{ fontSize: "1rem", marginRight: ".5rem" }}>Map</span>
-          <MapIcon style={{ color: "#90C146" }} />
         </>
       )}
     </Button>

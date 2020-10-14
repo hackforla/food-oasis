@@ -13,12 +13,6 @@ import StakeholderDetails from "components/Stakeholder/StakeholderDetails";
 import Marker from "components/Marker";
 
 const styles = {
-  geolocate: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    margin: 10,
-  },
   navigationControl: {
     position: "absolute",
     top: 0,

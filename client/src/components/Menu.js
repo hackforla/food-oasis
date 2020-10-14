@@ -26,23 +26,24 @@ Menu.propTypes = {
   setToast: PropTypes.func,
 };
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   list: {
     width: 250,
   },
   menuButton: {
     transform: "scale(1.6,1.5)",
-    backgroundColor: "#FFF",
-    padding: "0.5rem",
     minWidth: "0",
     "&:hover": {
       backgroundColor: "#FFF",
+    },
+    [theme.breakpoints.down("xs")]: {
+      transform: "scale(1.2, 1.2)",
     },
   },
   blueMenu: {
     fill: "#19334D",
   },
-});
+}));
 
 export default function Menu(props) {
   const isHomePage = useLocationHook();

@@ -216,8 +216,6 @@ const ResultsFilters = ({
                 ? theme.palette.primary.dark
                 : "#fff",
               color: isPantrySelected ? "#fff" : "#000",
-              borderTopRightRadius: 0,
-              borderBottomRightRadius: 0,
             }}
             onClick={togglePantry}
           >
@@ -247,8 +245,7 @@ const ResultsFilters = ({
                 ? theme.palette.primary.dark
                 : "#fff",
               color: isMealsSelected ? "#fff" : "#000",
-              borderTopLeftRadius: 0,
-              borderBottomLeftRadius: 0,
+              marginLeft: "5px",
             }}
             onClick={toggleMeal}
           >

@@ -154,11 +154,6 @@ export default function ResultsContainer({
   const handleSearch = useCallback(
     (e, center) => {
       if (e) e.preventDefault();
-      if (center)
-        setOrigin({
-          latitude: center.lat,
-          longitude: center.lng,
-        });
       search({
         latitude:
           (center && center.lat) ||
@@ -185,11 +180,12 @@ export default function ResultsContainer({
       storage.categoryIds = JSON.stringify(categoryIds);
       storage.radius = JSON.stringify(radius);
       storage.verified = JSON.stringify(isVerifiedSelected);
-      setViewport({
-        zoom: viewPortHash[radius],
-        latitude: origin.latitude,
-        longitude: origin.longitude,
-      });
+      if (!center)
+        setViewport({
+          zoom: viewPortHash[radius],
+          latitude: origin.latitude,
+          longitude: origin.longitude,
+        });
       doSelectStakeholder(null);
     },
     [

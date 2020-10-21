@@ -53,13 +53,13 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "#C7F573",
       boxShadow: "none",
     },
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       marginRight: ".5rem",
     },
   },
   buttonHolder: {
     display: "flex",
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       marginTop: "0.5rem",
     },
   },

@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     width: "100%",
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       marginLeft: ".5rem",
     },
     position: "relative",

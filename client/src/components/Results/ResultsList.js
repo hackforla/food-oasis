@@ -10,7 +10,6 @@ const useStyles = makeStyles((theme, props) => ({
   list: {
     textAlign: "center",
     fontSize: "12px",
-    overflow: "scroll",
     width: "100%",
     display: "flex",
     flexDirection: "column",

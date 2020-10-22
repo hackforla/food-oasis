@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme, props) => ({
     padding: "1em",
     alignItems: "center",
     paddingBottom: "5em",
+    flexShrink: 0,
   },
   topInfo: {
     width: "100%",

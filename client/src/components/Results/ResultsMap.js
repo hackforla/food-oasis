@@ -22,12 +22,20 @@ const styles = {
   },
 };
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme, props) => ({
   map: {
     textAlign: "center",
     fontSize: "12px",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.up("md")]: {
+      height: "100%",
+    },
+    [theme.breakpoints.down("xs")]: {
+      height: (props) =>
+        props.selectedStakeholder ? "calc(100% - 120px)" : "100%",
+    },
+    [theme.breakpoints.only("sm")]: {
       order: 0,
+      height: "50%",
     },
   },
   preview: {
@@ -40,12 +48,11 @@ function Map({
   categoryIds,
   doSelectStakeholder,
   selectedStakeholder,
-  isWindowWide,
   viewport,
   setViewport,
   setToast,
 }) {
-  const classes = useStyles();
+  const classes = useStyles({ selectedStakeholder });
   const categoryIdsOrDefault = categoryIds.length
     ? categoryIds
     : DEFAULT_CATEGORIES;
@@ -57,7 +64,9 @@ function Map({
     doSelectStakeholder(null);
   };
 
-  if (showDetails && isMobile && selectedStakeholder) {
+  const mobileView = isMobile();
+
+  if (showDetails && mobileView && selectedStakeholder) {
     return (
       <StakeholderDetails
         doSelectStakeholder={unselectStakeholder}
@@ -69,24 +78,9 @@ function Map({
 
   return (
     <>
-      <Grid
-        item
-        xs={12}
-        md={8}
-        className={classes.map}
-        style={{
-          height:
-            isWindowWide || isMobile
-              ? isMobile && !!selectedStakeholder
-                ? `calc(100% - 120px)`
-                : "100%"
-              : "50%",
-        }}
-      >
+      <Grid item xs={12} md={8} className={classes.map}>
         <ReactMapGL
           {...viewport}
-          /* dragPan={isWindowWide && isMobile ? false : true} */
-          // touchAction="pan-y pinch-zoom"
           width="100%"
           height="100%"
           onViewportChange={(newViewport) => setViewport(newViewport)}
@@ -124,7 +118,7 @@ function Map({
               })}
         </ReactMapGL>
       </Grid>
-      {!!selectedStakeholder && isMobile && (
+      {!!selectedStakeholder && mobileView && (
         <Grid
           item
           xs={12}

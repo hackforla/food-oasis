@@ -27,10 +27,17 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.main,
     padding: "1rem 0",
     flex: "1 0 auto",
+    [theme.breakpoints.up("md")]: {
+      justifyContent: "center",
+    },
   },
   inputContainer: {
     display: "flex",
     alignItems: "center",
+    width: "100%",
+    [theme.breakpoints.up("md")]: {
+      width: "30rem",
+    },
   },
   searchIcon: {
     width: 32,
@@ -69,7 +76,6 @@ const distanceInfo = [0, 1, 2, 3, 5, 10, 20, 50, 100, 500];
 
 const ResultsFilters = ({
   search,
-  isWindowWide,
   viewport,
   setViewport,
   doSelectStakeholder,
@@ -161,16 +167,10 @@ const ResultsFilters = ({
     });
   };
 
+  const mobileView = isMobile();
+
   return (
-    <Grid
-      item
-      container
-      wrap="wrap-reverse"
-      className={classes.controlPanel}
-      style={{
-        justifyContent: isWindowWide ? null : "center",
-      }}
-    >
+    <Grid item container wrap="wrap-reverse" className={classes.controlPanel}>
       <Grid
         item
         container
@@ -266,7 +266,7 @@ const ResultsFilters = ({
           </Button>
         </Grid>
         <Grid item>
-          {isMobile && (
+          {mobileView && (
             <SwitchViewsButton
               isMapView={isMapView}
               onClick={switchResultsView}
@@ -275,10 +275,7 @@ const ResultsFilters = ({
           )}
         </Grid>
       </Grid>
-      <Box
-        className={classes.inputContainer}
-        style={{ width: isWindowWide ? "30rem" : "100%" }}
-      >
+      <Box className={classes.inputContainer}>
         <form
           noValidate
           onSubmit={(e) => doHandleSearch(e)}

@@ -232,7 +232,11 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
               Call
             </Button>
           )}
-          <Button variant="outlined" size="small">
+          <Button
+            variant="outlined"
+            size="small"
+            disabled={stakeholder.inactive}
+          >
             Details
           </Button>
         </div>

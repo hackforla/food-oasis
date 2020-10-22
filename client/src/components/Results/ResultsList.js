@@ -18,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("md")]: {
       height: "100%",
     },
+    [theme.breakpoints.up("sm")]: {
+      overflowY: "scroll",
+    },
     [theme.breakpoints.only("sm")]: {
       order: 1,
       height: "30em",

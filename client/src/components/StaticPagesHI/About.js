@@ -3,10 +3,7 @@ import React from "react";
 import aboutbg from "./assets/about-bg.png";
 import iconSpacer from "./assets/icon-spacer.svg";
 import iconSpacerBlue from "./assets/icon-spacer-blue.svg";
-import foodCycle from "./assets/food-cycle.png";
-import foodForward from "./assets/food-forward.png";
-import farmPeople from "./assets/farm-people.png";
-import foodBank from "./assets/food-bank.png";
+import foodBank from "./assets/aloha-harvest.png";
 import { makeStyles } from "@material-ui/core";
 import Footer from "../Footer";
 
@@ -130,10 +127,13 @@ const useStyles = makeStyles(() => ({
   partnersLogo: {
     maxWidth: "100%",
     height: "100%",
+    backgroundColor: "blue",
     marginBottom: "40px",
     "@media only screen and (min-width: 64em) ": {
       marginBottom: 0,
     },
+    marginLeft: "auto",
+    marginRight: "auto",
   },
 }));
 const About = () => {
@@ -253,22 +253,7 @@ const About = () => {
           />
           <h2>Our Partners</h2>
           <img
-            alt="Food Cycle LA"
-            src={foodCycle}
-            className={classes.partnersLogo}
-          />
-          <img
-            alt="Food Forward"
-            src={foodForward}
-            className={classes.partnersLogo}
-          />
-          <img
-            alt="Farm People"
-            src={farmPeople}
-            className={classes.partnersLogo}
-          />
-          <img
-            alt="Food Bank"
+            alt="Aloha Harvest"
             src={foodBank}
             className={classes.partnersLogo}
           />

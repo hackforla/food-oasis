@@ -41,6 +41,14 @@ const useStyles = makeStyles((theme, props) => ({
   preview: {
     margin: "0 1em",
   },
+  details: {
+    textAlign: "center",
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    padding: "0 1em",
+  },
 }));
 
 function Map({
@@ -68,11 +76,13 @@ function Map({
 
   if (showDetails && mobileView && selectedStakeholder) {
     return (
-      <StakeholderDetails
-        doSelectStakeholder={unselectStakeholder}
-        selectedStakeholder={selectedStakeholder}
-        setToast={setToast}
-      />
+      <Grid item xs={12} md={4} className={classes.details}>
+        <StakeholderDetails
+          doSelectStakeholder={unselectStakeholder}
+          selectedStakeholder={selectedStakeholder}
+          setToast={setToast}
+        />
+      </Grid>
     );
   }
 

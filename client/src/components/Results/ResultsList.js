@@ -9,7 +9,6 @@ import { isMobile } from "helpers";
 const useStyles = makeStyles((theme) => ({
   list: {
     textAlign: "center",
-    fontSize: "12px",
     width: "100%",
     display: "flex",
     flexDirection: "column",
@@ -27,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.down("xs")]: {
       height: "100%",
+      fontSize: "12px",
     },
   },
   preview: {

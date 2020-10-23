@@ -27,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.main,
     padding: "1rem 0",
     flex: "1 0 auto",
+    position: "sticky",
+    top: "48px",
+    zIndex: 1,
     [theme.breakpoints.up("md")]: {
       justifyContent: "center",
     },

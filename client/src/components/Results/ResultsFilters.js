@@ -7,7 +7,6 @@ import SearchIcon from "@material-ui/icons/Search";
 import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
-  DEFAULT_CATEGORIES,
 } from "constants/stakeholder";
 import { isMobile } from "helpers";
 
@@ -68,11 +67,10 @@ const useStyles = makeStyles((theme) => ({
 const distanceInfo = [0, 1, 2, 3, 5, 10, 20, 50, 100, 500];
 
 const ResultsFilters = ({
-  search,
+  handleSearch,
   isWindowWide,
   viewport,
   setViewport,
-  doSelectStakeholder,
   origin,
   setOrigin,
   radius,
@@ -89,57 +87,6 @@ const ResultsFilters = ({
   const isMealsSelected = categoryIds.indexOf(MEAL_PROGRAM_CATEGORY_ID) >= 0;
   const isPantrySelected = categoryIds.indexOf(FOOD_PANTRY_CATEGORY_ID) >= 0;
 
-  const doHandleSearch = useCallback(
-    (e) => {
-      if (e) e.preventDefault();
-      const storage = window.sessionStorage;
-      search({
-        latitude:
-          origin.latitude ||
-          userCoordinates.latitude ||
-          JSON.parse(storage.origin).latitude,
-        longitude:
-          origin.longitude ||
-          userCoordinates.longitude ||
-          JSON.parse(storage.origin).longitude,
-        radius,
-        categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
-        isInactive: "either",
-        verificationStatusId: 0,
-      });
-      if (origin.locationName && origin.latitude && origin.longitude)
-        storage.origin = JSON.stringify({
-          locationName: origin.locationName,
-          latitude: origin.latitude,
-          longitude: origin.longitude,
-        });
-
-      storage.categoryIds = JSON.stringify(categoryIds);
-      storage.radius = JSON.stringify(radius);
-      storage.verified = JSON.stringify(isVerifiedSelected);
-      setViewport({
-        zoom: viewPortHash[radius],
-        latitude: origin.latitude,
-        longitude: origin.longitude,
-      });
-      doSelectStakeholder(null);
-    },
-    [
-      search,
-      origin.locationName,
-      origin.latitude,
-      origin.longitude,
-      userCoordinates.latitude,
-      userCoordinates.longitude,
-      radius,
-      categoryIds,
-      isVerifiedSelected,
-      setViewport,
-      doSelectStakeholder,
-      viewPortHash,
-    ]
-  );
-
   const toggleMeal = useCallback(() => {
     toggleCategory(MEAL_PROGRAM_CATEGORY_ID);
   }, [toggleCategory]);
@@ -149,7 +96,7 @@ const ResultsFilters = ({
   }, [toggleCategory]);
 
   useEffect(() => {
-    doHandleSearch();
+    handleSearch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [origin, radius, categoryIds, isVerifiedSelected, toggleCategory]);
 
@@ -281,7 +228,7 @@ const ResultsFilters = ({
       >
         <form
           noValidate
-          onSubmit={(e) => doHandleSearch(e)}
+          onSubmit={(e) => handleSearch(e)}
           style={{ all: "inherit" }}
         >
           <Search

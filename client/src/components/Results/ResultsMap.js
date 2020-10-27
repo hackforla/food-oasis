@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import PropTypes from "prop-types";
 import ReactMapGL, { NavigationControl } from "react-map-gl";
-import { Grid } from "@material-ui/core";
+import { Grid, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { MAPBOX_STYLE } from "constants/map";
@@ -33,9 +33,19 @@ const useStyles = makeStyles((theme) => ({
   preview: {
     margin: "0 1em",
   },
+  searchButton: {
+    position: "absolute",
+    top: "5px",
+    left: 0,
+    right: 0,
+    margin: "auto",
+    backgroundColor: "white",
+    zIndex: 2,
+  },
 }));
 
 function Map({
+  handleSearch,
   stakeholders,
   categoryIds,
   doSelectStakeholder,
@@ -46,11 +56,34 @@ function Map({
   setToast,
 }) {
   const classes = useStyles();
+  const mapRef = useRef();
   const categoryIdsOrDefault = categoryIds.length
     ? categoryIds
     : DEFAULT_CATEGORIES;
 
   const [showDetails, setShowDetails] = useState(false);
+  const [showSearchArea, setShowSearchArea] = useState(false);
+
+  const onInteractionStateChange = (s) => {
+    // don't do anything if the mapview is moving
+    if (
+      s.isDragging ||
+      s.inTransition ||
+      s.isRotating ||
+      s.isZooming ||
+      s.isHovering ||
+      s.isPanning
+    )
+      return;
+    // make sure map has already loaded
+    if (mapRef && mapRef.current && mapRef.current) setShowSearchArea(true);
+  };
+
+  const searchArea = () => {
+    setShowSearchArea(false);
+    const center = mapRef.current.getMap().getCenter();
+    handleSearch(null, center);
+  };
 
   const unselectStakeholder = () => {
     setShowDetails(false);
@@ -87,16 +120,28 @@ function Map({
           {...viewport}
           /* dragPan={isWindowWide && isMobile ? false : true} */
           // touchAction="pan-y pinch-zoom"
+          ref={mapRef}
           width="100%"
           height="100%"
           onViewportChange={(newViewport) => setViewport(newViewport)}
           mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
           mapStyle={MAPBOX_STYLE}
           onClick={() => doSelectStakeholder(null)}
+          onInteractionStateChange={onInteractionStateChange}
         >
           <div style={styles.navigationControl}>
             <NavigationControl showCompass={false} />
           </div>
+          {showSearchArea && (
+            <Button
+              onClick={searchArea}
+              variant="outlined"
+              size="small"
+              className={classes.searchButton}
+            >
+              Search this area
+            </Button>
+          )}
           {stakeholders &&
             stakeholders
               .filter(
@@ -106,9 +151,9 @@ function Map({
                   !(sh.inactive || sh.inactiveTemporary)
               )
               .map((stakeholder) => {
-                const categories = stakeholder.categories.filter(({ id }) => {
-                  return categoryIdsOrDefault.includes(id);
-                });
+                const categories = stakeholder.categories.filter(({ id }) =>
+                  categoryIdsOrDefault.includes(id)
+                );
 
                 return (
                   <Marker

@@ -92,6 +92,7 @@ export default function ResultsContainer({
   );
 
   const viewPortHash = {
+    0: 4,
     1: 13.5,
     2: 12.5,
     3: 12,
@@ -99,10 +100,12 @@ export default function ResultsContainer({
     10: 10,
     20: 9,
     50: 8,
+    100: 7,
+    500: 4.5,
   };
 
   const [viewport, setViewport] = useState({
-    zoom: viewPortHash[radius],
+    zoom: viewPortHash[radius || 0],
     latitude: origin.latitude || JSON.parse(storage.origin).latitude,
     longitude: origin.longitude || JSON.parse(storage.origin).longitude,
     logoPosition: "top-left",
@@ -182,7 +185,7 @@ export default function ResultsContainer({
       storage.verified = JSON.stringify(isVerifiedSelected);
       if (!center)
         setViewport({
-          zoom: viewPortHash[radius],
+          zoom: viewPortHash[radius || 0],
           latitude: origin.latitude,
           longitude: origin.longitude,
         });

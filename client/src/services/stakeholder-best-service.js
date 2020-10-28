@@ -14,6 +14,10 @@ const toLocalMoment = (ts) => {
         categoryIds - array of integers corresponding to the desired categories
         latitude
         longitude
+        maxLat - optional
+        maxLng - optional
+        minLat - optional
+        minLng - optional
         distance - radius around latitude and longitude
         isAssigned - ("yes", "no", "either")
         isSubmitted - ("yes", "no", "either")

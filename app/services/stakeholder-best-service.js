@@ -12,6 +12,9 @@ record has been approved, it will be the most recent version (i.e., have
 If you make changes to the database structure, be sure to update these
 methods as well as the corresponding methods in the stakeholder-service.js.
 
+You can search by max/min lat, lng bounds or by a center and radius(distance),
+with bounds taking precedence.
+
 */
 
 const booleanEitherClause = (columnName, value) => {
@@ -27,13 +30,16 @@ const search = async ({
   latitude,
   longitude,
   distance,
+  maxLat,
+  maxLng,
+  minLat,
+  minLng,
   isInactive,
   verificationStatusId,
   tenantId,
 }) => {
   const locationClause = buildLocationClause(latitude, longitude);
   const categoryClause = buildCTEClause(categoryIds, "");
-
   const sql = `${categoryClause}
     select s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
     s.phone, s.latitude, s.longitude, s.website,  s.notes,
@@ -69,9 +75,11 @@ const search = async ({
     ${buildLoginSelectsClause()}
     from stakeholder_set as s
     ${buildLoginJoinsClause()}
-    where s.tenant_id = ${tenantId} 
+    where s.tenant_id = ${tenantId}
     ${
-      Number(distance) && locationClause
+      maxLat && maxLng && minLat && minLng
+        ? buildBounds({ maxLat, maxLng, minLat, minLng })
+        : Number(distance) && locationClause
         ? `AND ${locationClause} < ${distance}`
         : ""
     }
@@ -83,7 +91,6 @@ const search = async ({
     }
     order by distance
   `;
-  // console.log(sql);
   let stakeholders = [];
   let categoriesResults = [];
   var stakeholderResult, stakeholder_ids;
@@ -347,6 +354,13 @@ const buildLocationClause = (latitude, longitude) => {
       ") <@> point(s.longitude, s.latitude) ";
   }
   return locationClause;
+};
+
+const buildBounds = ({ maxLat, maxLng, minLat, minLng }) => {
+  return `
+    AND s.latitude BETWEEN ${minLat} AND ${maxLat}
+    AND s.longitude BETWEEN ${minLng} AND ${maxLng}
+  `;
 };
 
 const buildLoginJoinsClause = () => {

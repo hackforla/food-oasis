@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Select, MenuItem, Button, Box } from "@material-ui/core";
+import { Grid, Button, Box } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 
 import {
@@ -64,22 +64,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const distanceInfo = [0, 1, 2, 3, 5, 10, 20, 50, 100, 500];
-
 const ResultsFilters = ({
   handleSearch,
   isWindowWide,
-  viewport,
-  setViewport,
   origin,
   setOrigin,
-  radius,
-  setRadius,
   isVerifiedSelected,
   userCoordinates,
   categoryIds,
   toggleCategory,
-  viewPortHash,
   isMapView,
   switchResultsView,
 }) => {
@@ -98,15 +91,7 @@ const ResultsFilters = ({
   useEffect(() => {
     handleSearch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [origin, radius, categoryIds, isVerifiedSelected, toggleCategory]);
-
-  const handleDistanceChange = (distance) => {
-    setRadius(distance);
-    setViewport({
-      ...viewport,
-      zoom: viewPortHash[distance],
-    });
-  };
+  }, [origin, categoryIds, isVerifiedSelected, toggleCategory]);
 
   return (
     <Grid
@@ -128,34 +113,6 @@ const ResultsFilters = ({
         alignItems="center"
         className={classes.buttonHolder}
       >
-        <Grid item>
-          <Select
-            disableUnderline
-            value={radius}
-            onChange={(e) => handleDistanceChange(e.target.value)}
-            inputProps={{
-              classes: {
-                icon: classes.select,
-              },
-            }}
-            className={classes.select}
-          >
-            <MenuItem key={0} value={0} className={classes.menuItems}>
-              DISTANCE
-            </MenuItem>
-            {distanceInfo.map((distance) => (
-              <MenuItem
-                key={distance}
-                value={distance}
-                className={classes.menuItems}
-              >
-                {distance === 0
-                  ? "(Any)"
-                  : `${distance} MILE${distance > 1 ? "S" : ""}`}
-              </MenuItem>
-            ))}
-          </Select>
-        </Grid>
         <Grid item>
           <Button
             style={{

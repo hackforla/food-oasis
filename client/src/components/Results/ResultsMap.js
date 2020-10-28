@@ -81,8 +81,16 @@ function Map({
 
   const searchArea = () => {
     setShowSearchArea(false);
-    const center = mapRef.current.getMap().getCenter();
-    handleSearch(null, center);
+    const map = mapRef.current.getMap();
+    const center = map.getCenter();
+    const mapBounds = map.getBounds();
+    const bounds = {
+      maxLat: mapBounds._ne.lat,
+      minLat: mapBounds._sw.lat,
+      maxLng: mapBounds._ne.lng,
+      minLng: mapBounds._sw.lng,
+    };
+    handleSearch(null, center, bounds);
   };
 
   const unselectStakeholder = () => {
@@ -118,8 +126,6 @@ function Map({
       >
         <ReactMapGL
           {...viewport}
-          /* dragPan={isWindowWide && isMobile ? false : true} */
-          // touchAction="pan-y pinch-zoom"
           ref={mapRef}
           width="100%"
           height="100%"

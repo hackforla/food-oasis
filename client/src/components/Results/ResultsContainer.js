@@ -40,27 +40,6 @@ export default function ResultsContainer({
   const [selectedStakeholder, onSelectStakeholder] = useState(null);
   const [isMapView, setIsMapView] = useState(true);
 
-  const doSelectStakeholder = useCallback((stakeholder) => {
-    if (stakeholder && !isMobile) {
-      setViewport({
-        ...viewport,
-        latitude: stakeholder.latitude,
-        longitude: stakeholder.longitude,
-      });
-    }
-    onSelectStakeholder(stakeholder);
-  });
-
-  const switchResultsView = () => {
-    doSelectStakeholder();
-    setIsMapView(!isMapView);
-  };
-
-  const initialCategories = storage.categoryIds
-    ? JSON.parse(storage.categoryIds)
-    : [];
-  const { categoryIds, toggleCategory } = useCategoryIds(initialCategories);
-
   const initialCoords = {
     locationName: userSearch
       ? userSearch.locationName
@@ -83,33 +62,40 @@ export default function ResultsContainer({
       : originCoordinates.lon,
   };
 
-  const [radius, setRadius] = useState(
-    storage?.radius ? JSON.parse(storage.radius) : 5
-  );
   const [origin, setOrigin] = useState(initialCoords);
   const [isVerifiedSelected, selectVerified] = useState(
     storage?.verified ? JSON.parse(storage.verified) : false
   );
-
-  const viewPortHash = {
-    0: 4,
-    1: 13.5,
-    2: 12.5,
-    3: 12,
-    5: 11,
-    10: 10,
-    20: 9,
-    50: 8,
-    100: 7,
-    500: 4.5,
-  };
-
   const [viewport, setViewport] = useState({
-    zoom: viewPortHash[radius || 0],
+    zoom: originCoordinates.zoom,
     latitude: origin.latitude || JSON.parse(storage.origin).latitude,
     longitude: origin.longitude || JSON.parse(storage.origin).longitude,
     logoPosition: "top-left",
   });
+
+  const initialCategories = storage.categoryIds
+    ? JSON.parse(storage.categoryIds)
+    : [];
+  const { categoryIds, toggleCategory } = useCategoryIds(initialCategories);
+
+  const doSelectStakeholder = useCallback(
+    (stakeholder) => {
+      if (stakeholder && !isMobile) {
+        setViewport({
+          ...viewport,
+          latitude: stakeholder.latitude,
+          longitude: stakeholder.longitude,
+        });
+      }
+      onSelectStakeholder(stakeholder);
+    },
+    [viewport, setViewport]
+  );
+
+  const switchResultsView = () => {
+    doSelectStakeholder();
+    setIsMapView(!isMapView);
+  };
 
   // Component effects
 
@@ -155,7 +141,7 @@ export default function ResultsContainer({
   }, []);
 
   const handleSearch = useCallback(
-    (e, center) => {
+    (e, center, bounds) => {
       if (e) e.preventDefault();
       search({
         latitude:
@@ -168,11 +154,13 @@ export default function ResultsContainer({
           origin.longitude ||
           userCoordinates.longitude ||
           JSON.parse(storage.origin).longitude,
-        radius,
         categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
         isInactive: "either",
         verificationStatusId: 0,
+        bounds,
+        radius: originCoordinates.radius,
       });
+
       if (origin.locationName && origin.latitude && origin.longitude)
         storage.origin = JSON.stringify({
           locationName: origin.locationName,
@@ -181,11 +169,10 @@ export default function ResultsContainer({
         });
 
       storage.categoryIds = JSON.stringify(categoryIds);
-      storage.radius = JSON.stringify(radius);
       storage.verified = JSON.stringify(isVerifiedSelected);
       if (!center)
         setViewport({
-          zoom: viewPortHash[radius || 0],
+          zoom: originCoordinates.zoom,
           latitude: origin.latitude,
           longitude: origin.longitude,
         });
@@ -198,14 +185,11 @@ export default function ResultsContainer({
       origin.longitude,
       userCoordinates.latitude,
       userCoordinates.longitude,
-      radius,
       categoryIds,
       isVerifiedSelected,
       setViewport,
       doSelectStakeholder,
-      viewPortHash,
       storage.categoryIds,
-      storage.radius,
       storage.verified,
       storage.origin,
     ]
@@ -214,8 +198,6 @@ export default function ResultsContainer({
   return (
     <>
       <Filters
-        radius={radius}
-        setRadius={setRadius}
         origin={origin}
         setOrigin={setOrigin}
         toggleCategory={toggleCategory}
@@ -225,9 +207,6 @@ export default function ResultsContainer({
         userCoordinates={userCoordinates}
         handleSearch={handleSearch}
         isWindowWide={isWindowWide}
-        viewport={viewport}
-        setViewport={setViewport}
-        viewPortHash={viewPortHash}
         isMapView={isMapView}
         switchResultsView={switchResultsView}
       />

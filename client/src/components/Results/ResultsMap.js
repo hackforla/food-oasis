@@ -196,8 +196,6 @@ function Map({
 Map.propTypes = {
   stakeholders: PropTypes.array,
   categoryIds: PropTypes.arrayOf(PropTypes.number).isRequired,
-  selectedLatitude: PropTypes.number.isRequired,
-  selectedLongitude: PropTypes.number.isRequired,
 };
 
 export default Map;

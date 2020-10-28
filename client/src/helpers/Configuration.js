@@ -9,7 +9,7 @@ export const tenantId = (() =>
     ? 2
     : 1)();
 
-export const originCoordinates = (() => {
+export const defaultCoordinates = (() => {
   switch (tenantId) {
     case 3:
       return { lat: 21.3101548, lon: -157.8428712, zoom: 12, radius: 5 };

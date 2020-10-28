@@ -5,7 +5,7 @@ import { Grid } from "@material-ui/core";
 import { useOrganizationBests } from "hooks/useOrganizationBests";
 import useCategoryIds from "hooks/useCategoryIds";
 import { isMobile } from "helpers";
-import { originCoordinates } from "helpers/Configuration";
+import { defaultCoordinates } from "helpers/Configuration";
 import { DEFAULT_CATEGORIES } from "constants/stakeholder";
 
 import Filters from "./ResultsFilters";
@@ -25,11 +25,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ResultsContainer({
   userCoordinates,
-  userSearch,
+  origin,
+  setOrigin,
   setToast,
 }) {
   // Component state
-  const storage = window.sessionStorage;
   const { data, search } = useOrganizationBests();
   const [sortedData, setSortedData] = useState([]);
   const classes = useStyles();
@@ -40,43 +40,15 @@ export default function ResultsContainer({
   const [selectedStakeholder, onSelectStakeholder] = useState(null);
   const [isMapView, setIsMapView] = useState(true);
 
-  const initialCoords = {
-    locationName: userSearch
-      ? userSearch.locationName
-      : storage.origin
-      ? JSON.parse(storage.origin).locationName
-      : "",
-    latitude: userSearch
-      ? userSearch.latitude
-      : storage.origin
-      ? JSON.parse(storage.origin).latitude
-      : userCoordinates
-      ? userCoordinates.latitude
-      : originCoordinates.lat,
-    longitude: userSearch
-      ? userSearch.longitude
-      : storage.origin
-      ? JSON.parse(storage.origin).longitude
-      : userCoordinates
-      ? userCoordinates.longitude
-      : originCoordinates.lon,
-  };
-
-  const [origin, setOrigin] = useState(initialCoords);
-  const [isVerifiedSelected, selectVerified] = useState(
-    storage?.verified ? JSON.parse(storage.verified) : false
-  );
+  const [isVerifiedSelected, selectVerified] = useState(false);
   const [viewport, setViewport] = useState({
-    zoom: originCoordinates.zoom,
-    latitude: origin.latitude || JSON.parse(storage.origin).latitude,
-    longitude: origin.longitude || JSON.parse(storage.origin).longitude,
+    zoom: defaultCoordinates.zoom,
+    latitude: origin.latitude,
+    longitude: origin.longitude,
     logoPosition: "top-left",
   });
 
-  const initialCategories = storage.categoryIds
-    ? JSON.parse(storage.categoryIds)
-    : [];
-  const { categoryIds, toggleCategory } = useCategoryIds(initialCategories);
+  const { categoryIds, toggleCategory } = useCategoryIds([]);
 
   const doSelectStakeholder = useCallback(
     (stakeholder) => {
@@ -134,45 +106,26 @@ export default function ResultsContainer({
       window.removeEventListener("resize", changeInputContainerWidth);
   }, []);
 
-  useEffect(() => {
-    return () => {
-      sessionStorage.clear();
-    };
-  }, []);
-
   const handleSearch = useCallback(
     (e, center, bounds) => {
       if (e) e.preventDefault();
       search({
         latitude:
-          (center && center.lat) ||
-          origin.latitude ||
-          userCoordinates.latitude ||
-          JSON.parse(storage.origin).latitude,
+          (center && center.lat) || origin.latitude || userCoordinates.latitude,
         longitude:
           (center && center.lng) ||
           origin.longitude ||
-          userCoordinates.longitude ||
-          JSON.parse(storage.origin).longitude,
+          userCoordinates.longitude,
         categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
         isInactive: "either",
         verificationStatusId: 0,
         bounds,
-        radius: originCoordinates.radius,
+        radius: defaultCoordinates.radius,
       });
 
-      if (origin.locationName && origin.latitude && origin.longitude)
-        storage.origin = JSON.stringify({
-          locationName: origin.locationName,
-          latitude: origin.latitude,
-          longitude: origin.longitude,
-        });
-
-      storage.categoryIds = JSON.stringify(categoryIds);
-      storage.verified = JSON.stringify(isVerifiedSelected);
       if (!center)
         setViewport({
-          zoom: originCoordinates.zoom,
+          zoom: defaultCoordinates.zoom,
           latitude: origin.latitude,
           longitude: origin.longitude,
         });
@@ -180,18 +133,13 @@ export default function ResultsContainer({
     },
     [
       search,
-      origin.locationName,
       origin.latitude,
       origin.longitude,
       userCoordinates.latitude,
       userCoordinates.longitude,
       categoryIds,
-      isVerifiedSelected,
       setViewport,
       doSelectStakeholder,
-      storage.categoryIds,
-      storage.verified,
-      storage.origin,
     ]
   );
 
@@ -222,8 +170,6 @@ export default function ResultsContainer({
         {(!isMobile || (isMobile && isMapView)) && (
           <Map
             handleSearch={handleSearch}
-            selectedLatitude={initialCoords.latitude}
-            selectedLongitude={initialCoords.longitude}
             viewport={viewport}
             setViewport={setViewport}
             stakeholders={data}
@@ -232,7 +178,6 @@ export default function ResultsContainer({
             categoryIds={categoryIds}
             isWindowWide={isWindowWide}
             setToast={setToast}
-            search={search}
           />
         )}
       </Grid>

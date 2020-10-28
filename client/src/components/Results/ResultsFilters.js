@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Button, Box } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
+import LocationSearchingIcon from "@material-ui/icons/LocationSearching";
 
 import {
   MEAL_PROGRAM_CATEGORY_ID,
@@ -31,9 +32,35 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
   },
+  form: {
+    all: "inherit",
+    backgroundColor: "white",
+    borderRadius: "6px",
+  },
   searchIcon: {
     width: 32,
     height: 32,
+  },
+  nearbyIcon: {
+    maxWidth: "25px",
+    padding: 0,
+  },
+  nearbySearch: {
+    height: "40px",
+    minWidth: "25px",
+    borderRadius: 0,
+    backgroundColor: "white",
+    boxShadow: "none",
+    "& .MuiButton-startIcon": {
+      margin: 0,
+    },
+    "&.Mui-disabled": {
+      opacity: 0.8,
+      backgroundColor: "white",
+    },
+    "&:hover": {
+      boxShadow: "none",
+    },
   },
   submit: {
     height: "40px",
@@ -43,6 +70,7 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "none",
     "& .MuiButton-startIcon": {
       marginRight: 0,
+      marginLeft: "3px",
     },
     "&.Mui-disabled": {
       backgroundColor: "#BCE76D",
@@ -186,12 +214,19 @@ const ResultsFilters = ({
         <form
           noValidate
           onSubmit={(e) => handleSearch(e)}
-          style={{ all: "inherit" }}
+          className={classes.form}
         >
           <Search
             userCoordinates={userCoordinates}
             setOrigin={setOrigin}
             origin={origin}
+          />
+          <Button
+            onClick={() => setOrigin(userCoordinates)}
+            disabled={!userCoordinates.latitude || !userCoordinates.longitude}
+            variant="contained"
+            className={classes.nearbySearch}
+            startIcon={<LocationSearchingIcon className={classes.nearbyIcon} />}
           />
           <Button
             type="submit"

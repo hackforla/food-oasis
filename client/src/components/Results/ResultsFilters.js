@@ -72,7 +72,6 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     height: "40px",
-    // minWidth: "25px",
     backgroundColor: "#BCE76D",
     borderRadius: "0 6px 6px 0",
     boxShadow: "none",

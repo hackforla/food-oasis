@@ -30,14 +30,13 @@ const useStyles = makeStyles((theme) => ({
     position: "sticky",
     top: "48px",
     zIndex: 1,
-    [theme.breakpoints.up("md")]: {
-      justifyContent: "center",
-    },
+    justifyContent: "center",
   },
   inputContainer: {
     display: "flex",
     alignItems: "center",
     width: "100%",
+    maxWidth: "30rem",
     margin: "0 0.5rem",
   },
   form: {
@@ -73,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     height: "40px",
-    minWidth: "25px",
+    // minWidth: "25px",
     backgroundColor: "#BCE76D",
     borderRadius: "0 6px 6px 0",
     boxShadow: "none",

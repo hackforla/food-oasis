@@ -1,3 +1,5 @@
+import theme from "theme/materialUI";
+
 export const getGoogleMapsUrl = (zip, address1, address2) => {
   const baseUrl = `https://google.com/maps/place/`;
 
@@ -17,9 +19,7 @@ export const getGoogleMapsUrl = (zip, address1, address2) => {
   return `${baseUrl}${address1url},+${zip}`;
 };
 
-export const isMobile = new RegExp("Mobi", "i").test(navigator.userAgent)
-  ? true
-  : false;
+export const isMobile = () => window.innerWidth < theme.breakpoints.values.sm;
 
 export const extractNumbers = (numbers) =>
   numbers.split(/(and)|,|&+/).map((n) => {

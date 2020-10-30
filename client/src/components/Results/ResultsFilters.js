@@ -27,10 +27,18 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.main,
     padding: "1rem 0",
     flex: "1 0 auto",
+    position: "sticky",
+    top: "48px",
+    zIndex: 1,
+    [theme.breakpoints.up("md")]: {
+      justifyContent: "center",
+    },
   },
   inputContainer: {
     display: "flex",
     alignItems: "center",
+    width: "100%",
+    margin: "0 0.5rem",
   },
   form: {
     all: "inherit",
@@ -42,12 +50,13 @@ const useStyles = makeStyles((theme) => ({
     height: 32,
   },
   nearbyIcon: {
-    maxWidth: "25px",
-    padding: 0,
+    maxWidth: "30px",
   },
   nearbySearch: {
     height: "40px",
     minWidth: "25px",
+    padding: 0,
+    marginLeft: "5px",
     borderRadius: 0,
     backgroundColor: "white",
     boxShadow: "none",
@@ -80,13 +89,10 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "#C7F573",
       boxShadow: "none",
     },
-    [theme.breakpoints.down("xs")]: {
-      marginRight: ".5rem",
-    },
   },
   buttonHolder: {
     display: "flex",
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       marginTop: "0.5rem",
     },
   },
@@ -94,7 +100,6 @@ const useStyles = makeStyles((theme) => ({
 
 const ResultsFilters = ({
   handleSearch,
-  isWindowWide,
   origin,
   setOrigin,
   isVerifiedSelected,
@@ -121,16 +126,10 @@ const ResultsFilters = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [origin, categoryIds, isVerifiedSelected, toggleCategory]);
 
+  const mobileView = isMobile();
+
   return (
-    <Grid
-      item
-      container
-      wrap="wrap-reverse"
-      className={classes.controlPanel}
-      style={{
-        justifyContent: isWindowWide ? null : "center",
-      }}
-    >
+    <Grid item container wrap="wrap-reverse" className={classes.controlPanel}>
       <Grid
         item
         container
@@ -198,7 +197,7 @@ const ResultsFilters = ({
           </Button>
         </Grid>
         <Grid item>
-          {isMobile && (
+          {mobileView && (
             <SwitchViewsButton
               isMapView={isMapView}
               onClick={switchResultsView}
@@ -207,10 +206,7 @@ const ResultsFilters = ({
           )}
         </Grid>
       </Grid>
-      <Box
-        className={classes.inputContainer}
-        style={{ width: isWindowWide ? "30rem" : "100%" }}
-      >
+      <Box className={classes.inputContainer}>
         <form
           noValidate
           onSubmit={(e) => handleSearch(e)}

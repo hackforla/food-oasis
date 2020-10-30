@@ -34,12 +34,11 @@ export default function ResultsContainer({
   const [sortedData, setSortedData] = useState([]);
   const classes = useStyles();
 
-  const windowSize = window.innerWidth > 960 ? true : false;
-  const [isWindowWide, changeWindow] = useState(windowSize);
-
   const [selectedStakeholder, onSelectStakeholder] = useState(null);
   const [isMapView, setIsMapView] = useState(true);
+  const mobileView = isMobile();
 
+  const { categoryIds, toggleCategory } = useCategoryIds([]);
   const [isVerifiedSelected, selectVerified] = useState(false);
   const [viewport, setViewport] = useState({
     zoom: defaultCoordinates.zoom,
@@ -47,8 +46,6 @@ export default function ResultsContainer({
     longitude: origin.longitude,
     logoPosition: "top-left",
   });
-
-  const { categoryIds, toggleCategory } = useCategoryIds([]);
 
   const doSelectStakeholder = useCallback(
     (stakeholder) => {
@@ -94,17 +91,6 @@ export default function ResultsContainer({
     }
     setSortedData(data.sort(sortOrganizations));
   }, [data]);
-
-  useEffect(() => {
-    const changeInputContainerWidth = () => {
-      window.innerWidth > 960 ? changeWindow(true) : changeWindow(false);
-    };
-
-    window.addEventListener("resize", changeInputContainerWidth);
-
-    return () =>
-      window.removeEventListener("resize", changeInputContainerWidth);
-  }, []);
 
   const handleSearch = useCallback(
     (e, center, bounds) => {
@@ -154,12 +140,11 @@ export default function ResultsContainer({
         selectVerified={selectVerified}
         userCoordinates={userCoordinates}
         handleSearch={handleSearch}
-        isWindowWide={isWindowWide}
         isMapView={isMapView}
         switchResultsView={switchResultsView}
       />
       <Grid item container spacing={0} className={classes.listMapContainer}>
-        {(!isMobile || (isMobile && !isMapView)) && (
+        {(!mobileView || (mobileView && !isMapView)) && (
           <List
             selectedStakeholder={selectedStakeholder}
             doSelectStakeholder={doSelectStakeholder}
@@ -167,7 +152,7 @@ export default function ResultsContainer({
             setToast={setToast}
           />
         )}
-        {(!isMobile || (isMobile && isMapView)) && (
+        {(!mobileView || (mobileView && isMapView)) && (
           <Map
             handleSearch={handleSearch}
             viewport={viewport}
@@ -176,7 +161,6 @@ export default function ResultsContainer({
             doSelectStakeholder={doSelectStakeholder}
             selectedStakeholder={selectedStakeholder}
             categoryIds={categoryIds}
-            isWindowWide={isWindowWide}
             setToast={setToast}
           />
         )}

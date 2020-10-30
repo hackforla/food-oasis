@@ -21,10 +21,14 @@ const useStyles = makeStyles((theme, props) => ({
     width: "100%",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-between",
+    textAlign: "center",
     padding: "1em",
     alignItems: "center",
     paddingBottom: "5em",
+    flexShrink: 0,
+    [theme.breakpoints.down("xs")]: {
+      fontSize: "12px",
+    },
   },
   topInfo: {
     width: "100%",

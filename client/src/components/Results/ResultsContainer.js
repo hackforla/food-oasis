@@ -34,14 +34,12 @@ export default function ResultsContainer({
   const [sortedData, setSortedData] = useState([]);
   const classes = useStyles();
 
-  const windowSize = window.innerWidth > 960 ? true : false;
-  const [isWindowWide, changeWindow] = useState(windowSize);
-
   const [selectedStakeholder, onSelectStakeholder] = useState(null);
   const [isMapView, setIsMapView] = useState(true);
+  const mobileView = isMobile();
 
   const doSelectStakeholder = useCallback((stakeholder) => {
-    if (stakeholder && !isMobile) {
+    if (stakeholder && !mobileView) {
       setViewport({
         ...viewport,
         latitude: stakeholder.latitude,
@@ -138,17 +136,6 @@ export default function ResultsContainer({
   }, [data]);
 
   useEffect(() => {
-    const changeInputContainerWidth = () => {
-      window.innerWidth > 960 ? changeWindow(true) : changeWindow(false);
-    };
-
-    window.addEventListener("resize", changeInputContainerWidth);
-
-    return () =>
-      window.removeEventListener("resize", changeInputContainerWidth);
-  }, []);
-
-  useEffect(() => {
     return () => {
       sessionStorage.clear();
     };
@@ -224,7 +211,6 @@ export default function ResultsContainer({
         selectVerified={selectVerified}
         userCoordinates={userCoordinates}
         handleSearch={handleSearch}
-        isWindowWide={isWindowWide}
         viewport={viewport}
         setViewport={setViewport}
         viewPortHash={viewPortHash}
@@ -232,7 +218,7 @@ export default function ResultsContainer({
         switchResultsView={switchResultsView}
       />
       <Grid item container spacing={0} className={classes.listMapContainer}>
-        {(!isMobile || (isMobile && !isMapView)) && (
+        {(!mobileView || (mobileView && !isMapView)) && (
           <List
             selectedStakeholder={selectedStakeholder}
             doSelectStakeholder={doSelectStakeholder}
@@ -240,7 +226,7 @@ export default function ResultsContainer({
             setToast={setToast}
           />
         )}
-        {(!isMobile || (isMobile && isMapView)) && (
+        {(!mobileView || (mobileView && isMapView)) && (
           <Map
             handleSearch={handleSearch}
             selectedLatitude={initialCoords.latitude}
@@ -251,7 +237,6 @@ export default function ResultsContainer({
             doSelectStakeholder={doSelectStakeholder}
             selectedStakeholder={selectedStakeholder}
             categoryIds={categoryIds}
-            isWindowWide={isWindowWide}
             setToast={setToast}
             search={search}
           />

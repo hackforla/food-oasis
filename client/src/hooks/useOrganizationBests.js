@@ -13,6 +13,7 @@ export const useOrganizationBests = () => {
     latitude,
     longitude,
     radius,
+    bounds,
     categoryIds,
     isInactive,
     verificationStatusId,
@@ -27,7 +28,7 @@ export const useOrganizationBests = () => {
     //if (!categoryIds || categoryIds.length === 0) return;
     try {
       setState({ data: null, loading: true, error: false });
-      const stakeholders = await stakeholderService.search({
+      let params = {
         name,
         categoryIds,
         latitude,
@@ -35,7 +36,18 @@ export const useOrganizationBests = () => {
         distance: radius,
         isInactive,
         verificationStatusId,
-      });
+      };
+      if (bounds) {
+        const { maxLat, maxLng, minLat, minLng } = bounds;
+        params = {
+          ...params,
+          maxLng,
+          maxLat,
+          minLng,
+          minLat,
+        };
+      }
+      const stakeholders = await stakeholderService.search(params);
       setState({ data: stakeholders, loading: false, error: false });
       return stakeholders;
     } catch (err) {

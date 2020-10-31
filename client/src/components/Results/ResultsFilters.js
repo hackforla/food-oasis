@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Select, MenuItem, Button, Box } from "@material-ui/core";
+import { Grid, Button, Box } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
+import LocationSearchingIcon from "@material-ui/icons/LocationSearching";
 
 import {
   MEAL_PROGRAM_CATEGORY_ID,
@@ -29,30 +30,54 @@ const useStyles = makeStyles((theme) => ({
     position: "sticky",
     top: "48px",
     zIndex: 1,
-    [theme.breakpoints.up("md")]: {
-      justifyContent: "center",
-    },
+    justifyContent: "center",
   },
   inputContainer: {
     display: "flex",
     alignItems: "center",
     width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "30rem",
-    },
+    maxWidth: "30rem",
+    margin: "0 0.5rem",
+  },
+  form: {
+    all: "inherit",
+    backgroundColor: "white",
+    borderRadius: "6px",
   },
   searchIcon: {
     width: 32,
     height: 32,
   },
-  submit: {
+  nearbyIcon: {
+    maxWidth: "30px",
+  },
+  nearbySearch: {
     height: "40px",
     minWidth: "25px",
+    padding: 0,
+    marginLeft: "5px",
+    borderRadius: 0,
+    backgroundColor: "white",
+    boxShadow: "none",
+    "& .MuiButton-startIcon": {
+      margin: 0,
+    },
+    "&.Mui-disabled": {
+      opacity: 0.8,
+      backgroundColor: "white",
+    },
+    "&:hover": {
+      boxShadow: "none",
+    },
+  },
+  submit: {
+    height: "40px",
     backgroundColor: "#BCE76D",
     borderRadius: "0 6px 6px 0",
     boxShadow: "none",
     "& .MuiButton-startIcon": {
       marginRight: 0,
+      marginLeft: "3px",
     },
     "&.Mui-disabled": {
       backgroundColor: "#BCE76D",
@@ -61,9 +86,6 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: "#C7F573",
       boxShadow: "none",
-    },
-    [theme.breakpoints.down("sm")]: {
-      marginRight: ".5rem",
     },
   },
   buttonHolder: {
@@ -74,21 +96,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const distanceInfo = [0, 1, 2, 3, 5, 10, 20, 50, 100, 500];
-
 const ResultsFilters = ({
   handleSearch,
-  viewport,
-  setViewport,
   origin,
   setOrigin,
-  radius,
-  setRadius,
   isVerifiedSelected,
   userCoordinates,
   categoryIds,
   toggleCategory,
-  viewPortHash,
   isMapView,
   switchResultsView,
 }) => {
@@ -107,15 +122,7 @@ const ResultsFilters = ({
   useEffect(() => {
     handleSearch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [origin, radius, categoryIds, isVerifiedSelected, toggleCategory]);
-
-  const handleDistanceChange = (distance) => {
-    setRadius(distance);
-    setViewport({
-      ...viewport,
-      zoom: viewPortHash[distance],
-    });
-  };
+  }, [origin, categoryIds, isVerifiedSelected, toggleCategory]);
 
   const mobileView = isMobile();
 
@@ -131,34 +138,6 @@ const ResultsFilters = ({
         alignItems="center"
         className={classes.buttonHolder}
       >
-        <Grid item>
-          <Select
-            disableUnderline
-            value={radius}
-            onChange={(e) => handleDistanceChange(e.target.value)}
-            inputProps={{
-              classes: {
-                icon: classes.select,
-              },
-            }}
-            className={classes.select}
-          >
-            <MenuItem key={0} value={0} className={classes.menuItems}>
-              DISTANCE
-            </MenuItem>
-            {distanceInfo.map((distance) => (
-              <MenuItem
-                key={distance}
-                value={distance}
-                className={classes.menuItems}
-              >
-                {distance === 0
-                  ? "(Any)"
-                  : `${distance} MILE${distance > 1 ? "S" : ""}`}
-              </MenuItem>
-            ))}
-          </Select>
-        </Grid>
         <Grid item>
           <Button
             style={{
@@ -229,12 +208,19 @@ const ResultsFilters = ({
         <form
           noValidate
           onSubmit={(e) => handleSearch(e)}
-          style={{ all: "inherit" }}
+          className={classes.form}
         >
           <Search
             userCoordinates={userCoordinates}
             setOrigin={setOrigin}
             origin={origin}
+          />
+          <Button
+            onClick={() => setOrigin(userCoordinates)}
+            disabled={!userCoordinates.latitude || !userCoordinates.longitude}
+            variant="contained"
+            className={classes.nearbySearch}
+            startIcon={<LocationSearchingIcon className={classes.nearbyIcon} />}
           />
           <Button
             type="submit"

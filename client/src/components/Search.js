@@ -77,8 +77,6 @@ export default function Search({ userCoordinates, setOrigin, origin }) {
   });
 
   const handleInputChange = (event) => {
-    console.log(event);
-    // if (!event.target.value) return;
     setSelectedPlace(event.target.value);
     updateNewInputValue(event.target.value);
     fetchMapboxResults(event.target.value);

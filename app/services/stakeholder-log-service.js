@@ -31,8 +31,10 @@ const selectById = async (id) => {
       s.donation_delivery_instructions, s.donation_notes, s.covid_notes,
       s.category_notes, s.eligibility_notes, s.food_types, s.languages,
       s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email,
-      s.v_hours, s.verification_status_id, s.inactive_temporary,
+      s.v_hours, s.v_food_types, s.verification_status_id, s.inactive_temporary,
       s.neighborhood_id, 
+      s.food_bakery, s.food_dry_goods, s.food_produce,
+      s.food_dairy, s.food_prepared, s.food_meat,
       ${buildLoginSelectsClause()}
     from stakeholder_log s
     ${buildLoginJoinsClause()}
@@ -107,11 +109,18 @@ const selectById = async (id) => {
       confirmedPhone: row.v_phone,
       confirmedEmail: row.v_email,
       confirmedHours: row.v_hours,
+      confirmedFoodTypes: row.v_food_types,
       verificationStatusId: row.verification_status_id,
       inactiveTemporary: row.inactive_temporary,
       neighborhoodId: row.neighborhood_id,
       neighborhoodName: row.neighborhood_name,
       completeCriticalPercent: row.complete_critical_percent,
+      foodBakery: row.food_bakery,
+      foodDryGoods: row.food_dry_goods,
+      foodProduce: row.food_produce,
+      foodDairy: row.food_dairy,
+      foodPrepared: row.food_prepared,
+      foodMeat: row.food_meat,
     });
   });
 

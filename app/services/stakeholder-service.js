@@ -86,10 +86,12 @@ const search = async ({
         as claimed_date, s.claimed_login_id,
       s.requirements, s.admin_notes, s.inactive, s.email, s.covid_notes,
       s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email,
-      s.v_hours, s.verification_status_id, s.inactive_temporary,
+      s.v_hours, s.v_food_types, s.verification_status_id, s.inactive_temporary,
       s.neighborhood_id, n.name as neighborhood_name,
       s.complete_critical_percent,
       ${locationClause ? `${locationClause} AS distance,` : ""}
+      s.food_bakery, s.food_dry_goods, s.food_produce,
+      s.food_dairy, s.food_prepared, s.food_meat,
     ${buildLoginSelectsClause()}
     from stakeholder_set as s
     left outer join neighborhood n on s.neighborhood_id = n.id
@@ -199,11 +201,18 @@ const search = async ({
       confirmedPhone: row.v_phone,
       confirmedEmail: row.v_email,
       confirmedHours: row.v_hours,
+      confirmedFoodTypes: row.v_food_types,
       verificationStatusId: row.verification_status_id,
       inactiveTemporary: row.inactive_temporary,
       neighborhoodId: row.neighborhood_id,
       neighborhoodName: row.neighborhood_name,
       completeCriticalPercent: row.complete_critical_percent,
+      foodBakery: row.food_bakery,
+      foodDryGoods: row.food_dry_goods,
+      foodProduce: row.food_produce,
+      foodDairy: row.food_dairy,
+      foodPrepared: row.food_prepared,
+      foodMeat: row.food_meat,
     });
   });
 
@@ -249,8 +258,10 @@ const selectById = async (id) => {
       s.donation_delivery_instructions, s.donation_notes, s.covid_notes,
       s.category_notes, s.eligibility_notes, s.food_types, s.languages,
       s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email,
-      s.v_hours, s.verification_status_id, s.inactive_temporary,
+      s.v_hours, s.v_food_types, s.verification_status_id, s.inactive_temporary,
       s.neighborhood_id, 
+      s.food_bakery, s.food_dry_goods, s.food_produce,
+      s.food_dairy, s.food_prepared, s.food_meat,
       ${buildLoginSelectsClause()}
     from stakeholder s
     ${buildLoginJoinsClause()}
@@ -329,9 +340,16 @@ const selectById = async (id) => {
     confirmedPhone: row.v_phone,
     confirmedEmail: row.v_email,
     confirmedHours: row.v_hours,
+    confirmedFoodTypes: row.v_food_types,
     verificationStatusId: row.verification_status_id,
     inactiveTemporary: row.inactive_temporary,
     neighborhoodId: row.neighborhood_id,
+    foodBakery: row.food_bakery,
+    foodDryGoods: row.food_dry_goods,
+    foodProduce: row.food_produce,
+    foodDairy: row.food_dairy,
+    foodPrepared: row.food_prepared,
+    foodMeat: row.food_meat,
   };
 
   // Don't have a distance, since we didn't specify origin
@@ -541,8 +559,15 @@ const insert = async (model) => {
     confirmedPhone,
     confirmedEmail,
     confirmedHours,
+    confirmedFoodTypes,
     verificationStatusId,
     inactiveTemporary,
+    foodBakery,
+    foodDryGoods,
+    foodProduce,
+    foodDairy,
+    foodPrepared,
+    foodMeat,
   } = model;
   try {
     let hoursSqlValues = hours.length
@@ -562,66 +587,71 @@ const insert = async (model) => {
     // (ARRAY['(2,Wed,13:02,13:04)', '(3,Thu,07:00,08:00)'])::stakeholder_hours[]); --array of stakeholder_hours
     // objects, which are defined as a postgres type (see repo file for more detail on this type).
     const invokeSprocSql = `CALL create_stakeholder(
-      ${toSqlNumeric(0)}::INT,
-      ${toSqlNumeric(tenantId)}::INT,
-      ${toSqlString(name)}::VARCHAR, ${toSqlString(
-      address1
-    )}::VARCHAR, ${toSqlString(address2)}::VARCHAR,
-      ${toSqlString(city)}::VARCHAR, ${toSqlString(
-      state
-    )}::VARCHAR, ${toSqlString(zip)}::VARCHAR,
-      ${toSqlString(phone)}::VARCHAR,
-      ${toSqlNumeric(latitude)}::NUMERIC, ${toSqlNumeric(longitude)}::NUMERIC,
-      ${toSqlString(website)}::VARCHAR, ${toSqlBoolean(inactive)},
-      ${toSqlString(notes)}::VARCHAR, ${toSqlString(requirements)}::VARCHAR,
-      ${toSqlString(adminNotes)}::VARCHAR, ${toSqlNumeric(loginId)}::INT,
-      ${toSqlString(parentOrganization)}::VARCHAR, ${toSqlString(
-      physicalAccess
-    )}::VARCHAR,
-      ${toSqlString(email)}::VARCHAR, ${toSqlString(items)}::VARCHAR,
-      ${toSqlString(services)}::VARCHAR, ${toSqlString(facebook)}::VARCHAR,
-      ${toSqlString(twitter)}::VARCHAR, ${toSqlString(pinterest)}::VARCHAR,
-      ${toSqlString(linkedin)}::VARCHAR, ${toSqlString(description)}::VARCHAR,
-      ${toSqlTimestamp(submittedDate)}::TIMESTAMPTZ, ${toSqlNumeric(
-      submittedLoginId
-    )}::INT,
-      ${toSqlTimestamp(approvedDate)}::TIMESTAMP,
-      ${toSqlNumeric(reviewedLoginId)}::INT,
-      ${toSqlTimestamp(assignedDate)}::TIMESTAMP, ${toSqlNumeric(
-      assignedLoginId
-    )}::INT,
-      ${toSqlTimestamp(claimedDate)}::TIMESTAMP, ${toSqlNumeric(
-      claimedLoginId
-    )}::INT,
-      ${toSqlString(reviewNotes)}::VARCHAR, ${toSqlString(instagram)}::VARCHAR,
-      ${toSqlString(adminContactName)}::VARCHAR, ${toSqlString(
-      adminContactPhone
-    )}::VARCHAR,
-      ${toSqlString(adminContactEmail)}::VARCHAR,
-      ${toSqlString(donationContactName)}::VARCHAR,
-      ${toSqlString(donationContactPhone)}::VARCHAR,
-      ${toSqlString(donationContactEmail)}::VARCHAR,
-      ${toSqlBoolean(donationPickup)},
-      ${toSqlBoolean(donationAcceptFrozen)},
-      ${toSqlBoolean(donationAcceptRefrigerated)},
-      ${toSqlBoolean(donationAcceptPerishable)},
-      ${toSqlString(donationSchedule)}::VARCHAR,
-      ${toSqlString(donationDeliveryInstructions)}::VARCHAR,
-      ${toSqlString(donationNotes)}::VARCHAR,
-      ${toSqlString(covidNotes)}::VARCHAR,
-      ${toSqlString(categoryNotes)}::VARCHAR,
-      ${toSqlString(eligibilityNotes)}::VARCHAR,
-      ${toSqlString(foodTypes)}::VARCHAR,
-      ${toSqlString(languages)}::VARCHAR,
-      ${toSqlBoolean(confirmedName)},
-      ${toSqlBoolean(confirmedCategories)},
-      ${toSqlBoolean(confirmedAddress)},
-      ${toSqlBoolean(confirmedPhone)},
-      ${toSqlBoolean(confirmedEmail)},
-      ${toSqlBoolean(confirmedHours)},
-      ${toSqlNumeric(verificationStatusId)}::INT,
-      ${toSqlBoolean(inactiveTemporary)},
-      ${categories}, ${formattedHours})`;
+        ${toSqlNumeric(0)}::INT,
+        ${toSqlNumeric(tenantId)}::INT,
+        ${toSqlString(name)}::VARCHAR, 
+        ${toSqlString(address1)}::VARCHAR, 
+        ${toSqlString(address2)}::VARCHAR,
+        ${toSqlString(city)}::VARCHAR, 
+        ${toSqlString(state)}::VARCHAR, 
+        ${toSqlString(zip)}::VARCHAR,
+        ${toSqlString(phone)}::VARCHAR,
+        ${toSqlNumeric(latitude)}::NUMERIC, 
+        ${toSqlNumeric(longitude)}::NUMERIC,
+        ${toSqlString(website)}::VARCHAR, ${toSqlBoolean(inactive)},
+        ${toSqlString(notes)}::VARCHAR, 
+        ${toSqlString(requirements)}::VARCHAR,
+        ${toSqlString(adminNotes)}::VARCHAR, 
+        ${toSqlNumeric(loginId)}::INT,
+        ${toSqlString(parentOrganization)}::VARCHAR, 
+        ${toSqlString(physicalAccess)}::VARCHAR,
+        ${toSqlString(email)}::VARCHAR, 
+        ${toSqlString(items)}::VARCHAR,
+        ${toSqlString(services)}::VARCHAR, ${toSqlString(facebook)}::VARCHAR,
+        ${toSqlString(twitter)}::VARCHAR, ${toSqlString(pinterest)}::VARCHAR,
+        ${toSqlString(linkedin)}::VARCHAR, ${toSqlString(description)}::VARCHAR,
+        ${toSqlTimestamp(submittedDate)}::TIMESTAMPTZ, 
+        ${toSqlNumeric(submittedLoginId)}::INT,
+        ${toSqlTimestamp(approvedDate)}::TIMESTAMP,
+        ${toSqlNumeric(reviewedLoginId)}::INT,
+        ${toSqlTimestamp(assignedDate)}::TIMESTAMP, 
+        ${toSqlNumeric(assignedLoginId)}::INT,
+        ${toSqlTimestamp(claimedDate)}::TIMESTAMP, 
+        ${toSqlNumeric(claimedLoginId)}::INT,
+        ${toSqlString(reviewNotes)}::VARCHAR, 
+        ${toSqlString(instagram)}::VARCHAR,
+        ${toSqlString(adminContactName)}::VARCHAR, 
+        ${toSqlString(adminContactPhone)}::VARCHAR,
+        ${toSqlString(adminContactEmail)}::VARCHAR,
+        ${toSqlString(donationContactName)}::VARCHAR,
+        ${toSqlString(donationContactPhone)}::VARCHAR,
+        ${toSqlString(donationContactEmail)}::VARCHAR,
+        ${toSqlBoolean(donationPickup)},
+        ${toSqlBoolean(donationAcceptFrozen)},
+        ${toSqlBoolean(donationAcceptRefrigerated)},
+        ${toSqlBoolean(donationAcceptPerishable)},
+        ${toSqlString(donationSchedule)}::VARCHAR,
+        ${toSqlString(donationDeliveryInstructions)}::VARCHAR,
+        ${toSqlString(donationNotes)}::VARCHAR,
+        ${toSqlString(covidNotes)}::VARCHAR,
+        ${toSqlString(categoryNotes)}::VARCHAR,
+        ${toSqlString(eligibilityNotes)}::VARCHAR,
+        ${toSqlString(foodTypes)}::VARCHAR,
+        ${toSqlString(languages)}::VARCHAR,
+        ${toSqlBoolean(confirmedName)},
+        ${toSqlBoolean(confirmedCategories)},
+        ${toSqlBoolean(confirmedAddress)},
+        ${toSqlBoolean(confirmedPhone)},
+        ${toSqlBoolean(confirmedEmail)},
+        ${toSqlBoolean(confirmedHours)},
+        ${toSqlBoolean(confirmedFoodTypes)},
+        ${toSqlNumeric(verificationStatusId)}::INT,
+        ${toSqlBoolean(inactiveTemporary)},
+        ${categories}, ${formattedHours},
+        ${toSqlBoolean(foodBakery)}, ${toSqlBoolean(foodDryGoods)},
+        ${toSqlBoolean(foodProduce)}, ${toSqlBoolean(foodDairy)},
+        ${toSqlBoolean(foodPrepared)}, ${toSqlBoolean(foodMeat)}
+      )`;
     const stakeholderResult = await pool.query(invokeSprocSql);
     const id = stakeholderResult.rows[0].s_id;
     return { id };
@@ -787,8 +817,15 @@ const update = async (model) => {
     confirmedPhone,
     confirmedEmail,
     confirmedHours,
+    confirmedFoodTypes,
     verificationStatusId,
     inactiveTemporary,
+    foodBakery,
+    foodDryGoods,
+    foodProduce,
+    foodDairy,
+    foodPrepared,
+    foodMeat,
   } = model;
 
   let hoursSqlValues = hours.length
@@ -812,70 +849,74 @@ const update = async (model) => {
   // (ARRAY['(2,Wed,13:02,13:04)', '(3,Thu,07:00,08:00)'])::stakeholder_hours[]); --array of stakeholder_hours
   // objects, which are defined as a postgres type (see repo file for more detail on this type).
   const invokeSprocSql = `CALL update_stakeholder (
-    ${toSqlString(name)}::VARCHAR, ${toSqlString(
-    address1
-  )}::VARCHAR, ${toSqlString(address2)}::VARCHAR,
-    ${toSqlString(city)}::VARCHAR, ${toSqlString(
-    state
-  )}::VARCHAR, ${toSqlString(zip)}::VARCHAR, ${toSqlString(phone)}::VARCHAR,
-    ${toSqlNumeric(latitude)}::NUMERIC, ${toSqlNumeric(
-    longitude
-  )}::NUMERIC, ${toSqlString(website)}::VARCHAR,
-    ${toSqlBoolean(inactive)}, ${toSqlString(notes)}::VARCHAR, ${toSqlString(
-    requirements
-  )}::VARCHAR,
-    ${toSqlString(adminNotes)}::VARCHAR, ${toSqlString(
-    parentOrganization
-  )}::VARCHAR, ${toSqlString(physicalAccess)}::VARCHAR,
-    ${toSqlString(email)}::VARCHAR, ${toSqlString(
-    items
-  )}::VARCHAR, ${toSqlString(services)}::VARCHAR, ${toSqlString(
-    facebook
-  )}::VARCHAR,
-    ${toSqlString(twitter)}::VARCHAR, ${toSqlString(
-    pinterest
-  )}::VARCHAR, ${toSqlString(linkedin)}::VARCHAR, ${toSqlString(
-    description
-  )}::VARCHAR,
-    ${toSqlNumeric(loginId)}::INT, ${toSqlTimestamp(
-    submittedDate
-  )}::TIMESTAMPTZ, ${toSqlNumeric(submittedLoginId)}::INT,
-    ${toSqlTimestamp(approvedDate)}::TIMESTAMP,
-    ${toSqlNumeric(reviewedLoginId)}::INT,
-    ${toSqlTimestamp(assignedDate)}::TIMESTAMP, ${toSqlNumeric(
-    assignedLoginId
-  )}::INT, ${toSqlTimestamp(claimedDate)}::TIMESTAMP,
-    ${toSqlNumeric(claimedLoginId)}::INT, ${toSqlString(
-    reviewNotes
-  )}::VARCHAR, ${toSqlString(instagram)}::VARCHAR,
-    ${toSqlString(adminContactName)}::VARCHAR, ${toSqlString(
-    adminContactPhone
-  )}::VARCHAR, ${toSqlString(adminContactEmail)}::VARCHAR,
-    ${toSqlString(donationContactName)}::VARCHAR, ${toSqlString(
-    donationContactPhone
-  )}::VARCHAR, ${toSqlString(donationContactEmail)}::VARCHAR,
-    ${toSqlBoolean(donationPickup)}, ${toSqlBoolean(
-    donationAcceptFrozen
-  )}, ${toSqlBoolean(donationAcceptRefrigerated)},
-    ${toSqlBoolean(donationAcceptPerishable)}, ${toSqlString(
-    donationSchedule
-  )}::VARCHAR, ${toSqlString(donationDeliveryInstructions)}::VARCHAR,
-    ${toSqlString(donationNotes)}::VARCHAR, ${toSqlString(
-    covidNotes
-  )}::VARCHAR, ${toSqlString(categoryNotes)}::VARCHAR,
-    ${toSqlString(eligibilityNotes)}::VARCHAR, ${toSqlString(
-    foodTypes
-  )}::VARCHAR, ${toSqlString(languages)}::VARCHAR,
-    ${toSqlBoolean(confirmedName)}, ${toSqlBoolean(
-    confirmedCategories
-  )}, ${toSqlBoolean(confirmedAddress)},
-    ${toSqlBoolean(confirmedPhone)}, ${toSqlBoolean(
-    confirmedEmail
-  )}, ${toSqlBoolean(confirmedHours)},
-    ${toSqlNumeric(verificationStatusId)}::INT, ${toSqlBoolean(
-    inactiveTemporary
-  )},
-    ${id}, ${categories}, ${formattedHours})`;
+      ${toSqlString(name)}::VARCHAR, 
+      ${toSqlString(address1)}::VARCHAR,
+      ${toSqlString(address2)}::VARCHAR,
+      ${toSqlString(city)}::VARCHAR, 
+      ${toSqlString(state)}::VARCHAR, 
+      ${toSqlString(zip)}::VARCHAR, 
+      ${toSqlString(phone)}::VARCHAR,
+      ${toSqlNumeric(latitude)}::NUMERIC, 
+      ${toSqlNumeric(longitude)}::NUMERIC, 
+      ${toSqlString(website)}::VARCHAR,
+      ${toSqlBoolean(inactive)}, 
+      ${toSqlString(notes)}::VARCHAR, 
+      ${toSqlString(requirements)}::VARCHAR,
+      ${toSqlString(adminNotes)}::VARCHAR,
+      ${toSqlString(parentOrganization)}::VARCHAR,
+      ${toSqlString(physicalAccess)}::VARCHAR,
+      ${toSqlString(email)}::VARCHAR, 
+      ${toSqlString(items)}::VARCHAR, 
+      ${toSqlString(services)}::VARCHAR, 
+      ${toSqlString(facebook)}::VARCHAR,
+      ${toSqlString(twitter)}::VARCHAR, 
+      ${toSqlString(pinterest)}::VARCHAR, 
+      ${toSqlString(linkedin)}::VARCHAR, 
+      ${toSqlString(description)}::VARCHAR,
+      ${toSqlNumeric(loginId)}::INT, 
+      ${toSqlTimestamp(submittedDate)}::TIMESTAMPTZ, 
+      ${toSqlNumeric(submittedLoginId)}::INT,
+      ${toSqlTimestamp(approvedDate)}::TIMESTAMP,
+      ${toSqlNumeric(reviewedLoginId)}::INT,
+      ${toSqlTimestamp(assignedDate)}::TIMESTAMP, 
+      ${toSqlNumeric(assignedLoginId)}::INT, 
+      ${toSqlTimestamp(claimedDate)}::TIMESTAMP,
+      ${toSqlNumeric(claimedLoginId)}::INT, 
+      ${toSqlString(reviewNotes)}::VARCHAR, 
+      ${toSqlString(instagram)}::VARCHAR,
+      ${toSqlString(adminContactName)}::VARCHAR, 
+      ${toSqlString(adminContactPhone)}::VARCHAR, 
+      ${toSqlString(adminContactEmail)}::VARCHAR,
+      ${toSqlString(donationContactName)}::VARCHAR, 
+      ${toSqlString(donationContactPhone)}::VARCHAR, 
+      ${toSqlString(donationContactEmail)}::VARCHAR,
+      ${toSqlBoolean(donationPickup)}, 
+      ${toSqlBoolean(donationAcceptFrozen)}, 
+      ${toSqlBoolean(donationAcceptRefrigerated)},
+      ${toSqlBoolean(donationAcceptPerishable)}, 
+      ${toSqlString(donationSchedule)}::VARCHAR, 
+      ${toSqlString(donationDeliveryInstructions)}::VARCHAR,
+      ${toSqlString(donationNotes)}::VARCHAR, 
+      ${toSqlString(covidNotes)}::VARCHAR, 
+      ${toSqlString(categoryNotes)}::VARCHAR,
+      ${toSqlString(eligibilityNotes)}::VARCHAR, 
+      ${toSqlString(foodTypes)}::VARCHAR, 
+      ${toSqlString(languages)}::VARCHAR,
+      ${toSqlBoolean(confirmedName)}, 
+      ${toSqlBoolean(confirmedCategories)}, 
+      ${toSqlBoolean(confirmedAddress)},
+      ${toSqlBoolean(confirmedPhone)}, 
+      ${toSqlBoolean(confirmedEmail)}, ${toSqlBoolean(confirmedHours)},
+      ${toSqlBoolean(confirmedFoodTypes)},
+      ${toSqlNumeric(verificationStatusId)}::INT, 
+      ${toSqlBoolean(inactiveTemporary)},
+      ${id}, 
+      ${categories}, 
+      ${formattedHours},
+      ${toSqlBoolean(foodBakery)}, ${toSqlBoolean(foodDryGoods)},
+      ${toSqlBoolean(foodProduce)}, ${toSqlBoolean(foodDairy)},
+      ${toSqlBoolean(foodPrepared)}, ${toSqlBoolean(foodMeat)}
+    )`;
 
   try {
     await pool.query(invokeSprocSql);

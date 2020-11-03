@@ -160,6 +160,12 @@ const adminColumns = [
     width: 60,
   },
   {
+    key: "confirmedFoodTypes",
+    name: "FoodTypes",
+    formatter: confirmationFormatter,
+    width: 60,
+  },
+  {
     key: "neighborhoodName",
     name: "Neighborhood",
     width: 80,

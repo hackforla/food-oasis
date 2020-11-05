@@ -154,12 +154,14 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
     >
       <div className={classes.leftInfo}>
         <Icon stakeholder={stakeholder} height="50px" width="50px" />
-        <div>
-          {stakeholder.distance >= 10
-            ? stakeholder.distance.toString().substring(0, 3).padEnd(4, "0")
-            : stakeholder.distance.toString().substring(0, 3)}{" "}
-          mi
-        </div>
+        {stakeholder.distance ? (
+          <div>
+            {stakeholder.distance >= 10
+              ? stakeholder.distance.toString().substring(0, 3).padEnd(4, "0")
+              : stakeholder.distance.toString().substring(0, 3)}{" "}
+            mi
+          </div>
+        ) : null}
       </div>
       <div className={classes.info}>
         <p className={classes.name}>{stakeholder.name}</p>
@@ -232,7 +234,11 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
               Call
             </Button>
           )}
-          <Button variant="outlined" size="small">
+          <Button
+            variant="outlined"
+            size="small"
+            disabled={stakeholder.inactive}
+          >
             Details
           </Button>
         </div>

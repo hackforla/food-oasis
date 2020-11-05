@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 
 import { useOrganizationBests } from "hooks/useOrganizationBests";
 import useCategoryIds from "hooks/useCategoryIds";
 import { isMobile } from "helpers";
-import { originCoordinates } from "../../helpers/Configuration";
+import { defaultCoordinates } from "helpers/Configuration";
+import { DEFAULT_CATEGORIES } from "constants/stakeholder";
 
 import Filters from "./ResultsFilters";
 import List from "./ResultsList";
@@ -22,87 +23,48 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ResultsContainer(props) {
+export default function ResultsContainer({
+  userCoordinates,
+  origin,
+  setOrigin,
+  setToast,
+}) {
   // Component state
-  const storage = window.sessionStorage;
-  const { userCoordinates, userSearch, setToast } = props;
   const { data, search } = useOrganizationBests();
   const [sortedData, setSortedData] = useState([]);
   const classes = useStyles();
 
-  const windowSize = window.innerWidth > 960 ? true : false;
-  const [isWindowWide, changeWindow] = useState(windowSize);
-
   const [selectedStakeholder, onSelectStakeholder] = useState(null);
   const [isMapView, setIsMapView] = useState(true);
+  const mobileView = isMobile();
 
-  const doSelectStakeholder = (stakeholder) => {
-    if (stakeholder && !isMobile) {
-      setViewport({
-        ...viewport,
-        latitude: stakeholder.latitude,
-        longitude: stakeholder.longitude,
-      });
-    }
-    onSelectStakeholder(stakeholder);
-  };
+  const { categoryIds, toggleCategory } = useCategoryIds([]);
+  const [isVerifiedSelected, selectVerified] = useState(false);
+  const [viewport, setViewport] = useState({
+    zoom: defaultCoordinates.zoom,
+    latitude: origin.latitude,
+    longitude: origin.longitude,
+    logoPosition: "top-left",
+  });
+
+  const doSelectStakeholder = useCallback(
+    (stakeholder) => {
+      if (stakeholder && !isMobile) {
+        setViewport({
+          ...viewport,
+          latitude: stakeholder.latitude,
+          longitude: stakeholder.longitude,
+        });
+      }
+      onSelectStakeholder(stakeholder);
+    },
+    [viewport, setViewport]
+  );
 
   const switchResultsView = () => {
     doSelectStakeholder();
     setIsMapView(!isMapView);
   };
-
-  const initialCategories = storage.categoryIds
-    ? JSON.parse(storage.categoryIds)
-    : [];
-  const { categoryIds, toggleCategory } = useCategoryIds(initialCategories);
-
-  const initialCoords = {
-    locationName: userSearch
-      ? userSearch.locationName
-      : storage.origin
-      ? JSON.parse(storage.origin).locationName
-      : "",
-    latitude: userSearch
-      ? userSearch.latitude
-      : storage.origin
-      ? JSON.parse(storage.origin).latitude
-      : userCoordinates
-      ? userCoordinates.latitude
-      : originCoordinates.lat,
-    longitude: userSearch
-      ? userSearch.longitude
-      : storage.origin
-      ? JSON.parse(storage.origin).longitude
-      : userCoordinates
-      ? userCoordinates.longitude
-      : originCoordinates.lon,
-  };
-
-  const [radius, setRadius] = useState(
-    storage?.radius ? JSON.parse(storage.radius) : 5
-  );
-  const [origin, setOrigin] = useState(initialCoords);
-  const [isVerifiedSelected, selectVerified] = useState(
-    storage?.verified ? JSON.parse(storage.verified) : false
-  );
-
-  const viewPortHash = {
-    1: 13.5,
-    2: 12.5,
-    3: 12,
-    5: 11,
-    10: 10,
-    20: 9,
-    50: 8,
-  };
-
-  const [viewport, setViewport] = useState({
-    zoom: viewPortHash[radius],
-    latitude: origin.latitude || JSON.parse(storage.origin).latitude,
-    longitude: origin.longitude || JSON.parse(storage.origin).longitude,
-    logoPosition: "top-left",
-  });
 
   // Component effects
 
@@ -130,28 +92,46 @@ export default function ResultsContainer(props) {
     setSortedData(data.sort(sortOrganizations));
   }, [data]);
 
-  useEffect(() => {
-    const changeInputContainerWidth = () => {
-      window.innerWidth > 960 ? changeWindow(true) : changeWindow(false);
-    };
+  const handleSearch = useCallback(
+    (e, center, bounds) => {
+      if (e) e.preventDefault();
+      search({
+        latitude:
+          (center && center.lat) || origin.latitude || userCoordinates.latitude,
+        longitude:
+          (center && center.lng) ||
+          origin.longitude ||
+          userCoordinates.longitude,
+        categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
+        isInactive: "either",
+        verificationStatusId: 0,
+        bounds,
+        radius: defaultCoordinates.radius,
+      });
 
-    window.addEventListener("resize", changeInputContainerWidth);
-
-    return () =>
-      window.removeEventListener("resize", changeInputContainerWidth);
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      sessionStorage.clear();
-    };
-  }, []);
+      if (!center)
+        setViewport({
+          zoom: defaultCoordinates.zoom,
+          latitude: origin.latitude,
+          longitude: origin.longitude,
+        });
+      doSelectStakeholder(null);
+    },
+    [
+      search,
+      origin.latitude,
+      origin.longitude,
+      userCoordinates.latitude,
+      userCoordinates.longitude,
+      categoryIds,
+      setViewport,
+      doSelectStakeholder,
+    ]
+  );
 
   return (
     <>
       <Filters
-        radius={radius}
-        setRadius={setRadius}
         origin={origin}
         setOrigin={setOrigin}
         toggleCategory={toggleCategory}
@@ -159,17 +139,12 @@ export default function ResultsContainer(props) {
         isVerifiedSelected={isVerifiedSelected}
         selectVerified={selectVerified}
         userCoordinates={userCoordinates}
-        search={search}
-        isWindowWide={isWindowWide}
-        viewport={viewport}
-        setViewport={setViewport}
-        doSelectStakeholder={doSelectStakeholder}
-        viewPortHash={viewPortHash}
+        handleSearch={handleSearch}
         isMapView={isMapView}
         switchResultsView={switchResultsView}
       />
       <Grid item container spacing={0} className={classes.listMapContainer}>
-        {(!isMobile || (isMobile && !isMapView)) && (
+        {(!mobileView || (mobileView && !isMapView)) && (
           <List
             selectedStakeholder={selectedStakeholder}
             doSelectStakeholder={doSelectStakeholder}
@@ -177,17 +152,15 @@ export default function ResultsContainer(props) {
             setToast={setToast}
           />
         )}
-        {(!isMobile || (isMobile && isMapView)) && (
+        {(!mobileView || (mobileView && isMapView)) && (
           <Map
-            selectedLatitude={initialCoords.latitude}
-            selectedLongitude={initialCoords.longitude}
+            handleSearch={handleSearch}
             viewport={viewport}
             setViewport={setViewport}
             stakeholders={data}
             doSelectStakeholder={doSelectStakeholder}
             selectedStakeholder={selectedStakeholder}
             categoryIds={categoryIds}
-            isWindowWide={isWindowWide}
             setToast={setToast}
           />
         )}

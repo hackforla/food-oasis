@@ -6,11 +6,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import StakeholderPreview from "components/Stakeholder/StakeholderPreview";
 import { isMobile } from "helpers";
 
-const useStyles = makeStyles((theme, props) => ({
+const useStyles = makeStyles((theme) => ({
   list: {
     textAlign: "center",
-    fontSize: "12px",
-    overflow: "scroll",
     width: "100%",
     display: "flex",
     flexDirection: "column",
@@ -19,9 +17,16 @@ const useStyles = makeStyles((theme, props) => ({
     [theme.breakpoints.up("md")]: {
       height: "100%",
     },
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.up("sm")]: {
+      overflowY: "scroll",
+    },
+    [theme.breakpoints.only("sm")]: {
       order: 1,
-      height: (props) => (props.isMobile ? "100%" : "30em"),
+      height: "30em",
+    },
+    [theme.breakpoints.down("xs")]: {
+      height: "100%",
+      fontSize: "12px",
     },
   },
   preview: {
@@ -36,7 +41,7 @@ const ResultsList = ({
   stakeholders,
   setToast,
 }) => {
-  const classes = useStyles({ isMobile });
+  const classes = useStyles();
   const listRef = useRef();
   const itemsRef = useRef([]);
 
@@ -46,15 +51,17 @@ const ResultsList = ({
     itemsRef.current = itemsRef.current.slice(0, stakeholders.length);
   }, [stakeholders]);
 
+  const mobileView = isMobile();
+
   const selectStakeholder = (stakeholder) => {
     doSelectStakeholder(stakeholder);
-    if (stakeholder && isMobile) {
+    if (stakeholder && mobileView) {
       const index = stakeholders.findIndex((s) => s.id === stakeholder.id);
       const currentRef = itemsRef.current[index];
       setPosition(currentRef.offsetTop);
       listRef.current.scrollTo(0, 0);
     }
-    if (!stakeholder && isMobile) {
+    if (!stakeholder && mobileView) {
       window.scrollTo(0, 0);
       listRef.current.scrollTo(0, position);
     }

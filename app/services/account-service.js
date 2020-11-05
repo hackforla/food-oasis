@@ -402,7 +402,7 @@ const setPermissions = async (userId, permissionName, value) => {
   try {
     // do a tiny bit of sanity checking on our input
     var booleanValue = Boolean(value);
-    const updateSql = `update login set ${permissionName}=$1} where id = ${userId};`;
+    const updateSql = `update login set ${permissionName}=$1 where id = ${userId};`;
     await pool.query(updateSql, [booleanValue]);
     return {
       success: true,

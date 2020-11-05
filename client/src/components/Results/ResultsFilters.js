@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Select, MenuItem, Button, Box } from "@material-ui/core";
+import { Grid, Button, Box } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
+import LocationSearchingIcon from "@material-ui/icons/LocationSearching";
 
 import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
-  DEFAULT_CATEGORIES,
 } from "constants/stakeholder";
 import { isMobile } from "helpers";
 
@@ -27,23 +27,57 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.main,
     padding: "1rem 0",
     flex: "1 0 auto",
+    position: "sticky",
+    top: "48px",
+    zIndex: 1,
+    justifyContent: "center",
   },
   inputContainer: {
     display: "flex",
     alignItems: "center",
+    width: "100%",
+    maxWidth: "30rem",
+    margin: "0 0.5rem",
+  },
+  form: {
+    all: "inherit",
+    backgroundColor: "white",
+    borderRadius: "6px",
   },
   searchIcon: {
     width: 32,
     height: 32,
   },
-  submit: {
+  nearbyIcon: {
+    maxWidth: "30px",
+  },
+  nearbySearch: {
     height: "40px",
     minWidth: "25px",
+    padding: 0,
+    marginLeft: "5px",
+    borderRadius: 0,
+    backgroundColor: "white",
+    boxShadow: "none",
+    "& .MuiButton-startIcon": {
+      margin: 0,
+    },
+    "&.Mui-disabled": {
+      opacity: 0.8,
+      backgroundColor: "white",
+    },
+    "&:hover": {
+      boxShadow: "none",
+    },
+  },
+  submit: {
+    height: "40px",
     backgroundColor: "#BCE76D",
     borderRadius: "0 6px 6px 0",
     boxShadow: "none",
     "& .MuiButton-startIcon": {
       marginRight: 0,
+      marginLeft: "3px",
     },
     "&.Mui-disabled": {
       backgroundColor: "#BCE76D",
@@ -53,92 +87,29 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "#C7F573",
       boxShadow: "none",
     },
-    [theme.breakpoints.down("xs")]: {
-      marginRight: ".5rem",
-    },
   },
   buttonHolder: {
     display: "flex",
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       marginTop: "0.5rem",
     },
   },
 }));
 
-const distanceInfo = [0, 1, 2, 3, 5, 10, 20, 50, 100, 500];
-
 const ResultsFilters = ({
-  search,
-  isWindowWide,
-  viewport,
-  setViewport,
-  doSelectStakeholder,
+  handleSearch,
   origin,
   setOrigin,
-  radius,
-  setRadius,
   isVerifiedSelected,
   userCoordinates,
   categoryIds,
   toggleCategory,
-  viewPortHash,
   isMapView,
   switchResultsView,
 }) => {
   const classes = useStyles();
   const isMealsSelected = categoryIds.indexOf(MEAL_PROGRAM_CATEGORY_ID) >= 0;
   const isPantrySelected = categoryIds.indexOf(FOOD_PANTRY_CATEGORY_ID) >= 0;
-
-  const doHandleSearch = useCallback(
-    (e) => {
-      if (e) e.preventDefault();
-      const storage = window.sessionStorage;
-      search({
-        latitude:
-          origin.latitude ||
-          userCoordinates.latitude ||
-          JSON.parse(storage.origin).latitude,
-        longitude:
-          origin.longitude ||
-          userCoordinates.longitude ||
-          JSON.parse(storage.origin).longitude,
-        radius,
-        categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
-        isInactive: "either",
-        verificationStatusId: 0,
-      });
-      if (origin.locationName && origin.latitude && origin.longitude)
-        storage.origin = JSON.stringify({
-          locationName: origin.locationName,
-          latitude: origin.latitude,
-          longitude: origin.longitude,
-        });
-
-      storage.categoryIds = JSON.stringify(categoryIds);
-      storage.radius = JSON.stringify(radius);
-      storage.verified = JSON.stringify(isVerifiedSelected);
-      setViewport({
-        zoom: viewPortHash[radius],
-        latitude: origin.latitude,
-        longitude: origin.longitude,
-      });
-      doSelectStakeholder(null);
-    },
-    [
-      search,
-      origin.locationName,
-      origin.latitude,
-      origin.longitude,
-      userCoordinates.latitude,
-      userCoordinates.longitude,
-      radius,
-      categoryIds,
-      isVerifiedSelected,
-      setViewport,
-      doSelectStakeholder,
-      viewPortHash,
-    ]
-  );
 
   const toggleMeal = useCallback(() => {
     toggleCategory(MEAL_PROGRAM_CATEGORY_ID);
@@ -149,28 +120,14 @@ const ResultsFilters = ({
   }, [toggleCategory]);
 
   useEffect(() => {
-    doHandleSearch();
+    handleSearch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [origin, radius, categoryIds, isVerifiedSelected, toggleCategory]);
+  }, [origin, categoryIds, isVerifiedSelected, toggleCategory]);
 
-  const handleDistanceChange = (distance) => {
-    setRadius(distance);
-    setViewport({
-      ...viewport,
-      zoom: viewPortHash[distance],
-    });
-  };
+  const mobileView = isMobile();
 
   return (
-    <Grid
-      item
-      container
-      wrap="wrap-reverse"
-      className={classes.controlPanel}
-      style={{
-        justifyContent: isWindowWide ? null : "center",
-      }}
-    >
+    <Grid item container wrap="wrap-reverse" className={classes.controlPanel}>
       <Grid
         item
         container
@@ -181,34 +138,6 @@ const ResultsFilters = ({
         alignItems="center"
         className={classes.buttonHolder}
       >
-        <Grid item>
-          <Select
-            disableUnderline
-            value={radius}
-            onChange={(e) => handleDistanceChange(e.target.value)}
-            inputProps={{
-              classes: {
-                icon: classes.select,
-              },
-            }}
-            className={classes.select}
-          >
-            <MenuItem key={0} value={0} className={classes.menuItems}>
-              DISTANCE
-            </MenuItem>
-            {distanceInfo.map((distance) => (
-              <MenuItem
-                key={distance}
-                value={distance}
-                className={classes.menuItems}
-              >
-                {distance === 0
-                  ? "(Any)"
-                  : `${distance} MILE${distance > 1 ? "S" : ""}`}
-              </MenuItem>
-            ))}
-          </Select>
-        </Grid>
         <Grid item>
           <Button
             style={{
@@ -266,7 +195,7 @@ const ResultsFilters = ({
           </Button>
         </Grid>
         <Grid item>
-          {isMobile && (
+          {mobileView && (
             <SwitchViewsButton
               isMapView={isMapView}
               onClick={switchResultsView}
@@ -275,19 +204,23 @@ const ResultsFilters = ({
           )}
         </Grid>
       </Grid>
-      <Box
-        className={classes.inputContainer}
-        style={{ width: isWindowWide ? "30rem" : "100%" }}
-      >
+      <Box className={classes.inputContainer}>
         <form
           noValidate
-          onSubmit={(e) => doHandleSearch(e)}
-          style={{ all: "inherit" }}
+          onSubmit={(e) => handleSearch(e)}
+          className={classes.form}
         >
           <Search
             userCoordinates={userCoordinates}
             setOrigin={setOrigin}
             origin={origin}
+          />
+          <Button
+            onClick={() => setOrigin(userCoordinates)}
+            disabled={!userCoordinates.latitude || !userCoordinates.longitude}
+            variant="contained"
+            className={classes.nearbySearch}
+            startIcon={<LocationSearchingIcon className={classes.nearbyIcon} />}
           />
           <Button
             type="submit"

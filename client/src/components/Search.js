@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     width: "100%",
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       marginLeft: ".5rem",
     },
     position: "relative",
@@ -77,8 +77,6 @@ export default function Search({ userCoordinates, setOrigin, origin }) {
   });
 
   const handleInputChange = (event) => {
-    console.log(event);
-    // if (!event.target.value) return;
     setSelectedPlace(event.target.value);
     updateNewInputValue(event.target.value);
     fetchMapboxResults(event.target.value);

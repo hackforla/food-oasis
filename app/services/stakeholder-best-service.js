@@ -12,6 +12,9 @@ record has been approved, it will be the most recent version (i.e., have
 If you make changes to the database structure, be sure to update these
 methods as well as the corresponding methods in the stakeholder-service.js.
 
+You can search by max/min lat, lng bounds or by a center and radius(distance),
+with bounds taking precedence.
+
 */
 
 const booleanEitherClause = (columnName, value) => {
@@ -27,13 +30,16 @@ const search = async ({
   latitude,
   longitude,
   distance,
+  maxLat,
+  maxLng,
+  minLat,
+  minLng,
   isInactive,
   verificationStatusId,
   tenantId,
 }) => {
   const locationClause = buildLocationClause(latitude, longitude);
   const categoryClause = buildCTEClause(categoryIds, "");
-
   const sql = `${categoryClause}
     select s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
     s.phone, s.latitude, s.longitude, s.website,  s.notes,
@@ -62,16 +68,20 @@ const search = async ({
     s.donation_delivery_instructions, s.donation_notes, s.covid_notes,
     s.category_notes, s.eligibility_notes, s.food_types, s.languages,
     s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email,
-    s.v_hours, s.verification_status_id, s.inactive_temporary,
+    s.v_hours, s.v_food_types, s.verification_status_id, s.inactive_temporary,
     array_to_json(s.hours) as hours, s.category_ids,
     s.neighborhood_id, s.is_verified,
+    s.food_bakery, s.food_dry_goods, s.food_produce,
+    s.food_dairy, s.food_prepared, s.food_meat,
     ${locationClause ? `${locationClause} AS distance,` : ""}
     ${buildLoginSelectsClause()}
     from stakeholder_set as s
     ${buildLoginJoinsClause()}
-    where s.tenant_id = ${tenantId} 
+    where s.tenant_id = ${tenantId}
     ${
-      Number(distance) && locationClause
+      maxLat && maxLng && minLat && minLng
+        ? buildBounds({ maxLat, maxLng, minLat, minLng })
+        : Number(distance) && locationClause
         ? `AND ${locationClause} < ${distance}`
         : ""
     }
@@ -83,7 +93,6 @@ const search = async ({
     }
     order by distance
   `;
-  // console.log(sql);
   let stakeholders = [];
   let categoriesResults = [];
   var stakeholderResult, stakeholder_ids;
@@ -173,6 +182,12 @@ const search = async ({
       covidNotes: row.covid_notes || "",
       categoryNotes: row.category_notes || "",
       eligibilityNotes: row.eligibility_notes || "",
+      foodBakery: row.food_bakery,
+      foodDryGoods: row.food_dry_goods,
+      foodProduce: row.food_produce,
+      foodDairy: row.food_dairy,
+      foodPrepared: row.food_prepared,
+      foodMeat: row.food_meat,
       foodTypes: row.food_types || "",
       languages: row.languages || "",
       confirmedName: row.v_name,
@@ -181,6 +196,7 @@ const search = async ({
       confirmedPhone: row.v_phone,
       confirmedEmail: row.v_email,
       confirmedHours: row.v_hours,
+      confirmedFoodTypes: row.v_food_types,
       verificationStatusId: row.verification_status_id,
       inactiveTemporary: row.inactive_temporary,
       neighborhoodId: row.neighborhood_id,
@@ -224,8 +240,10 @@ const selectById = async (id) => {
       s.donation_delivery_instructions, s.donation_notes, s.covid_notes,
       s.category_notes, s.eligibility_notes, s.food_types, s.languages,
       s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email,
-      s.v_hours, s.verification_status_id, s.inactive_temporary,
+      s.v_hours, s.v_food_types, s.verification_status_id, s.inactive_temporary,
       s.neighborhood_id, s.is_verified,
+      s.food_bakery, s.food_dry_goods, s.food_produce,
+      s.food_dairy, s.food_prepared, s.food_meat,
       ${buildLoginSelectsClause()}
     from stakeholder_best s
     ${buildLoginJoinsClause()}
@@ -296,6 +314,12 @@ const selectById = async (id) => {
     covidNotes: row.covid_notes || "",
     categoryNotes: row.category_notes || "",
     eligibilityNotes: row.eligibility_notes || "",
+    foodBakery: row.food_bakery,
+    foodDryGoods: row.food_dry_goods,
+    foodProduce: row.food_produce,
+    foodDairy: row.food_dairy,
+    foodPrepared: row.food_prepared,
+    foodMeat: row.food_meat,
     foodTypes: row.food_types || "",
     languages: row.languages || "",
     confirmedName: row.v_name,
@@ -304,6 +328,7 @@ const selectById = async (id) => {
     confirmedPhone: row.v_phone,
     confirmedEmail: row.v_email,
     confirmedHours: row.v_hours,
+    confirmedFoodTypes: row.v_food_types,
     verificationStatusId: row.verification_status_id,
     inactiveTemporary: row.inactive_temporary,
     neighborhoodId: row.neighborhood_id,
@@ -347,6 +372,13 @@ const buildLocationClause = (latitude, longitude) => {
       ") <@> point(s.longitude, s.latitude) ";
   }
   return locationClause;
+};
+
+const buildBounds = ({ maxLat, maxLng, minLat, minLng }) => {
+  return `
+    AND s.latitude BETWEEN ${minLat} AND ${maxLat}
+    AND s.longitude BETWEEN ${minLng} AND ${maxLng}
+  `;
 };
 
 const buildLoginJoinsClause = () => {

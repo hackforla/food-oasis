@@ -393,7 +393,9 @@ const OrganizationEdit = (props) => {
           </ListItemText>
         </ListItem>
       </List>
-      <Typography>If you don't get through to them: (choose one)</Typography>
+      <Typography>
+        If you don&apos;t get through to them: (choose one)
+      </Typography>
       <List dense>
         <ListItem>
           <ListItemText primary="1. The phone was inactive" />

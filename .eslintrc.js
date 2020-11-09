@@ -1,6 +1,6 @@
 module.exports = {
-  extends: ["eslint:recommended", "plugin:prettier/recommended"],
-  plugins: ["react", "prettier", "eslint-plugin-react"],
+  extends: ["eslint:recommended", "plugin:prettier/recommended", "plugin:react/recommended"],
+  plugins: ["react", "prettier"],
   env: {
     mocha: true,
     es6: true,
@@ -14,6 +14,7 @@ module.exports = {
     },
   },
   rules: {
+    "react/prop-types": 0,
     "prettier/prettier": "error",
   },
   settings: {

@@ -16,4 +16,12 @@ module.exports = {
   rules: {
     "prettier/prettier": "error",
   },
+  settings: {
+    react: {
+      // Version checking of react. Default is "detect", which
+      // fails at the root directory, since react is not installed
+      // here. Providing a dummy number supresses the warning
+      version: "16.0",
+    },
+  },
 };

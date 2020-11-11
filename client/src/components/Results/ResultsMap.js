@@ -22,16 +22,32 @@ const styles = {
   },
 };
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme, props) => ({
   map: {
     textAlign: "center",
     fontSize: "12px",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.up("md")]: {
+      height: "100%",
+    },
+    [theme.breakpoints.down("xs")]: {
+      height: (props) =>
+        props.selectedStakeholder ? "calc(100% - 120px)" : "100%",
+    },
+    [theme.breakpoints.only("sm")]: {
       order: 0,
+      height: "50%",
     },
   },
   preview: {
     margin: "0 1em",
+  },
+  details: {
+    textAlign: "center",
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    padding: "0 1em",
   },
   searchButton: {
     position: "absolute",
@@ -50,12 +66,11 @@ function Map({
   categoryIds,
   doSelectStakeholder,
   selectedStakeholder,
-  isWindowWide,
   viewport,
   setViewport,
   setToast,
 }) {
-  const classes = useStyles();
+  const classes = useStyles({ selectedStakeholder });
   const mapRef = useRef();
   const categoryIdsOrDefault = categoryIds.length
     ? categoryIds
@@ -81,8 +96,16 @@ function Map({
 
   const searchArea = () => {
     setShowSearchArea(false);
-    const center = mapRef.current.getMap().getCenter();
-    handleSearch(null, center);
+    const map = mapRef.current.getMap();
+    const center = map.getCenter();
+    const mapBounds = map.getBounds();
+    const bounds = {
+      maxLat: mapBounds._ne.lat,
+      minLat: mapBounds._sw.lat,
+      maxLng: mapBounds._ne.lng,
+      minLng: mapBounds._sw.lng,
+    };
+    handleSearch(null, center, bounds);
   };
 
   const unselectStakeholder = () => {
@@ -90,36 +113,25 @@ function Map({
     doSelectStakeholder(null);
   };
 
-  if (showDetails && isMobile && selectedStakeholder) {
+  const mobileView = isMobile();
+
+  if (showDetails && mobileView && selectedStakeholder) {
     return (
-      <StakeholderDetails
-        doSelectStakeholder={unselectStakeholder}
-        selectedStakeholder={selectedStakeholder}
-        setToast={setToast}
-      />
+      <Grid item xs={12} md={4} className={classes.details}>
+        <StakeholderDetails
+          doSelectStakeholder={unselectStakeholder}
+          selectedStakeholder={selectedStakeholder}
+          setToast={setToast}
+        />
+      </Grid>
     );
   }
 
   return (
     <>
-      <Grid
-        item
-        xs={12}
-        md={8}
-        className={classes.map}
-        style={{
-          height:
-            isWindowWide || isMobile
-              ? isMobile && !!selectedStakeholder
-                ? `calc(100% - 120px)`
-                : "100%"
-              : "50%",
-        }}
-      >
+      <Grid item xs={12} md={8} className={classes.map}>
         <ReactMapGL
           {...viewport}
-          /* dragPan={isWindowWide && isMobile ? false : true} */
-          // touchAction="pan-y pinch-zoom"
           ref={mapRef}
           width="100%"
           height="100%"
@@ -169,7 +181,7 @@ function Map({
               })}
         </ReactMapGL>
       </Grid>
-      {!!selectedStakeholder && isMobile && (
+      {!!selectedStakeholder && mobileView && (
         <Grid
           item
           xs={12}
@@ -190,8 +202,6 @@ function Map({
 Map.propTypes = {
   stakeholders: PropTypes.array,
   categoryIds: PropTypes.arrayOf(PropTypes.number).isRequired,
-  selectedLatitude: PropTypes.number.isRequired,
-  selectedLongitude: PropTypes.number.isRequired,
 };
 
 export default Map;

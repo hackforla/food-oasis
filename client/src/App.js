@@ -4,7 +4,7 @@ import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 import theme from "theme/materialUI";
 import { logout } from "services/account-service";
-import { tenantId, originCoordinates } from "helpers/Configuration";
+import { tenantId, defaultCoordinates } from "helpers/Configuration";
 
 // Components
 import { UserContext } from "components/user-context";
@@ -75,8 +75,8 @@ function App() {
   const [toast, setToast] = useState({ message: "" });
   const [bgImg, setBgImg] = useState("");
   const [origin, setOrigin] = useState({
-    latitude: originCoordinates.lat,
-    longitude: originCoordinates.lon,
+    latitude: defaultCoordinates.lat,
+    longitude: defaultCoordinates.lon,
   });
 
   useEffect(() => {
@@ -127,8 +127,8 @@ function App() {
         (error) => {
           console.log(`Getting browser location failed: ${error.message}`);
           const userCoordinates = {
-            latitude: originCoordinates.lat,
-            longitude: originCoordinates.lon,
+            latitude: defaultCoordinates.lat,
+            longitude: defaultCoordinates.lon,
           };
           setUserCoordinates(userCoordinates);
         }
@@ -176,7 +176,8 @@ function App() {
               <Route path="/organizations">
                 <Results
                   userCoordinates={userCoordinates}
-                  userSearch={origin}
+                  origin={origin}
+                  setOrigin={setOrigin}
                   setToast={setToast}
                 />
               </Route>

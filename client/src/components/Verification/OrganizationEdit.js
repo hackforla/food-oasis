@@ -190,8 +190,15 @@ const emptyOrganization = {
   confirmedEmail: false,
   confirmedPhone: false,
   confirmedHours: false,
+  confirmedFoodTypes: false,
   verificationStatusId: VERIFICATION_STATUS.NEEDS_VERIFICATION,
   inactiveTemporary: false,
+  foodBakery: false,
+  foodDryGoods: false,
+  foodProduce: false,
+  foodDairy: false,
+  foodPrepared: false,
+  foodMeat: false,
 };
 
 const OrganizationEdit = (props) => {
@@ -1091,112 +1098,243 @@ const OrganizationEdit = (props) => {
                   <Grid item xs={12}>
                     <Typography>Details for Food Seekers to See</Typography>
                   </Grid>
-                  <Grid item xs={12}>
-                    <TextInput
-                      name="foodTypes"
-                      label="Food Types"
-                      multiline
-                      rows={2}
-                      rowsMax={12}
-                      value={values.foodTypes}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      helperText={touched.foodTypes ? errors.foodTypes : ""}
-                      error={touched.foodTypes && Boolean(errors.foodTypes)}
-                    />
+                  <Grid item container justify="space-between" xs={12}>
+                    <Grid item xs={6}>
+                      <Typography>Food Types</Typography>
+                    </Grid>
+                    <Grid item container justify="flex-end" xs={6}>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            margin="normal"
+                            name="confirmedFoodTypes"
+                            value={values.confirmedFoodTypes}
+                            checked={values.confirmedFoodTypes}
+                            onChange={(e) =>
+                              setFieldValue(
+                                "confirmedFoodTypes",
+                                e.target.checked
+                              )
+                            }
+                            onBlur={handleBlur}
+                            size="medium"
+                          />
+                        }
+                        label="Confirm Food Types"
+                      />
+                    </Grid>
                   </Grid>
-                  <Grid item xs={12}>
-                    <TextInput
-                      tooltip="(Items besides food, i.e. dog food, cat food, hygiene products, diapers, female hygiene products)"
-                      name="items"
-                      label="Non-Food Items"
-                      value={values.items}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      helperText={touched.items ? errors.items : ""}
-                      error={touched.items && Boolean(errors.items)}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextInput
-                      tooltip="(Besides feeding ppl, i.e., family counseling, career counseling, drop in for women or homeless, etc.)"
-                      name="services"
-                      label="Services (separated by commas)"
-                      value={values.services}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      helperText={touched.services ? errors.services : ""}
-                      error={touched.services && Boolean(errors.services)}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextInput
-                      tooltip="(Must go to chapel service, must be < 18, must show citizenship, etc.)"
-                      name="requirements"
-                      label="Eligibility / Requirements"
-                      multiline
-                      rows={2}
-                      rowsMax={12}
-                      value={values.requirements}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      helperText={
-                        touched.requirements ? errors.requirements : ""
+                  <Grid item xs={12} sm={4}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          margin="normal"
+                          name="foodBakery"
+                          label="Bakery"
+                          value={values.foodBakery}
+                          checked={values.foodBakery}
+                          onChange={() =>
+                            setFieldValue("foodBakery", !values.foodBakery)
+                          }
+                          onBlur={handleBlur}
+                        />
                       }
-                      error={
-                        touched.requirements && Boolean(errors.requirements)
+                      label="Baked Goods"
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={4}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          margin="normal"
+                          name="foodDryGoods"
+                          label="Dry Goods"
+                          value={values.foodDryGoods}
+                          checked={values.foodDryGoods}
+                          onChange={() =>
+                            setFieldValue("foodDryGoods", !values.foodDryGoods)
+                          }
+                          onBlur={handleBlur}
+                        />
                       }
+                      label="Dry Goods"
                     />
                   </Grid>
-                  <Grid item xs={12}>
-                    <TextInput
-                      tooltip="Other notes about eligibility requirements"
-                      name="eligibilityNotes"
-                      label="Eligibility Notes"
-                      multiline
-                      rows={2}
-                      rowsMax={12}
-                      value={values.eligibilityNotes}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      helperText={
-                        touched.eligibilityNotes ? errors.eligibilityNotes : ""
+
+                  <Grid item xs={12} sm={4}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          margin="normal"
+                          name="foodProduce"
+                          label="Produce"
+                          value={values.foodProduce}
+                          checked={values.foodProduce}
+                          onChange={() =>
+                            setFieldValue("foodProduce", !values.foodProduce)
+                          }
+                          onBlur={handleBlur}
+                        />
                       }
-                      error={
-                        touched.eligibilityNotes &&
-                        Boolean(errors.eligibilityNotes)
+                      label="Produce"
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={4}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          margin="normal"
+                          name="foodDairy"
+                          label="Dairy"
+                          value={values.foodDairy}
+                          checked={values.foodDairy}
+                          onChange={() =>
+                            setFieldValue("foodDairy", !values.foodDairy)
+                          }
+                          onBlur={handleBlur}
+                        />
                       }
+                      label="Dairy"
                     />
                   </Grid>
-                  <Grid item xs={12}>
-                    <TextInput
-                      name="languages"
-                      label="Languages"
-                      multiline
-                      rows={2}
-                      rowsMax={12}
-                      value={values.languages}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      helperText={touched.languages ? errors.languages : ""}
-                      error={touched.languages && Boolean(errors.languages)}
+                  <Grid item xs={12} sm={4}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          margin="normal"
+                          name="foodPrepared"
+                          label="Prepared Food"
+                          value={values.foodPrepared}
+                          checked={values.foodPrepared}
+                          onChange={() =>
+                            setFieldValue("foodPrepared", !values.foodPrepared)
+                          }
+                          onBlur={handleBlur}
+                        />
+                      }
+                      label="Prepared Food"
                     />
                   </Grid>
-                  <Grid item xs={12}>
-                    <TextInput
-                      tooltip={noteTooltip}
-                      name="notes"
-                      label="Notes for the Public"
-                      multiline
-                      rows={2}
-                      rowsMax={12}
-                      value={values.notes}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      helperText={touched.notes ? errors.notes : ""}
-                      error={touched.notes && Boolean(errors.notes)}
+                  <Grid item xs={12} sm={4}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          margin="normal"
+                          name="foodMeat"
+                          label="Meat"
+                          value={values.foodMeat}
+                          checked={values.foodMeat}
+                          onChange={() =>
+                            setFieldValue("foodMeat", !values.foodMeat)
+                          }
+                          onBlur={handleBlur}
+                        />
+                      }
+                      label="Meat"
                     />
                   </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                  <TextInput
+                    name="foodTypes"
+                    label="Other Food Types"
+                    multiline
+                    rows={2}
+                    rowsMax={12}
+                    value={values.foodTypes}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={touched.foodTypes ? errors.foodTypes : ""}
+                    error={touched.foodTypes && Boolean(errors.foodTypes)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextInput
+                    tooltip="(Items besides food, i.e. dog food, cat food, hygiene products, diapers, female hygiene products)"
+                    name="items"
+                    label="Non-Food Items"
+                    value={values.items}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={touched.items ? errors.items : ""}
+                    error={touched.items && Boolean(errors.items)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextInput
+                    tooltip="(Besides feeding ppl, i.e., family counseling, career counseling, drop in for women or homeless, etc.)"
+                    name="services"
+                    label="Services (separated by commas)"
+                    value={values.services}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={touched.services ? errors.services : ""}
+                    error={touched.services && Boolean(errors.services)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextInput
+                    tooltip="(Must go to chapel service, must be < 18, must show citizenship, etc.)"
+                    name="requirements"
+                    label="Eligibility / Requirements"
+                    multiline
+                    rows={2}
+                    rowsMax={12}
+                    value={values.requirements}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={touched.requirements ? errors.requirements : ""}
+                    error={touched.requirements && Boolean(errors.requirements)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextInput
+                    tooltip="Other notes about eligibility requirements"
+                    name="eligibilityNotes"
+                    label="Eligibility Notes"
+                    multiline
+                    rows={2}
+                    rowsMax={12}
+                    value={values.eligibilityNotes}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={
+                      touched.eligibilityNotes ? errors.eligibilityNotes : ""
+                    }
+                    error={
+                      touched.eligibilityNotes &&
+                      Boolean(errors.eligibilityNotes)
+                    }
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextInput
+                    name="languages"
+                    label="Languages"
+                    multiline
+                    rows={2}
+                    rowsMax={12}
+                    value={values.languages}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={touched.languages ? errors.languages : ""}
+                    error={touched.languages && Boolean(errors.languages)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextInput
+                    tooltip={noteTooltip}
+                    name="notes"
+                    label="Notes for the Public"
+                    multiline
+                    rows={2}
+                    rowsMax={12}
+                    value={values.notes}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={touched.notes ? errors.notes : ""}
+                    error={touched.notes && Boolean(errors.notes)}
+                  />
                 </Grid>
               </TabPanel>
               <TabPanel value={tabPage} index={4} className={classes.tabPanel}>

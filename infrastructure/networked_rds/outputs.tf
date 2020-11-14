@@ -1,3 +1,16 @@
+output "region" {
+  description = "Region for ECS and DB"
+  value       = var.region
+}
+
+
+output "vpc_id" {
+  description  = "Vpc Id"
+  value       = module.network.vpc_id
+}
+
+
+
 output "bastion_security_group_id" {
   description = "the security group id of the bastion server. Add this id to other services that run within the vpc to which you want to access externally."
   value       = module.bastion.security_group_id

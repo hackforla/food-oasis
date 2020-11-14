@@ -6,7 +6,7 @@ locals {
 resource "aws_lb" "alb" {
   name               = "${local.name}-lb"
   load_balancer_type = "application"
-  subnets            = var.public_subnet_ids
+  subnets            = tolist(module.networked_rds.network_public_subnet_ids)
   security_groups    = [aws_security_group.alb.id]
   tags               = merge({ Name = local.name }, var.tags)
 }
@@ -14,7 +14,9 @@ resource "aws_lb" "alb" {
 resource "aws_security_group" "alb" {
   name_prefix = substr(local.name, 0, 6)
   description = "load balancer sg for ingress and egress to ${var.task_name}"
-  vpc_id      = var.vpc_id
+  vpc_id      = module.networked_rds.vpc_id
+
+
 
   tags = merge({ Name = local.name }, var.tags)
 
@@ -75,7 +77,7 @@ resource "aws_lb_target_group" "default" {
   protocol    = "HTTP"
 	deregistration_delay = 100
   target_type = "ip"
-  vpc_id      = var.vpc_id
+  vpc_id      = module.networked_rds.vpc_id
 
   health_check {
 		enabled = true

@@ -25,6 +25,7 @@ variable stage {
 }
 variable region {
   description = "the aws region code where this is deployed; ex: 'us-west-2', 'us-east-1', 'us-east-2'"
+  default     = "us-east-2"
 }
 
 variable cron_key_update_schedule {
@@ -83,5 +84,4 @@ variable db_major_version {
 variable ssh_public_key_names {
   description = "the name of the public key files in ./public_keys without the file extension; example ['alice', 'bob', 'carol']"
   type        = list(string)
-  default     = ["myname.pub"]
 }

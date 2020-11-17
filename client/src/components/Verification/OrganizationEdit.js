@@ -30,7 +30,8 @@ import {
 } from "@material-ui/core";
 import * as stakeholderService from "services/stakeholder-service";
 import { useCategories } from "hooks/useCategories/useCategories";
-import * as esriService from "services/esri_service";
+//import * as esriService from "services/esri_service";
+import * as geocoder from "services/geocode-tamu-service";
 import OpenTimeForm from "components/OpenTimeForm";
 import { TabPanel, a11yProps } from "components/TabPanel";
 import { PlainButton, VerifyButton } from "components/Buttons";
@@ -269,21 +270,30 @@ const OrganizationEdit = (props) => {
     }
   };
 
-  function formatMapAddress(formData) {
-    return `${formData.address1 || ""} ${formData.address2 || ""} ${
-      formData.city || ""
-    }, ${formData.state || ""} ${formData.zip || ""}`;
-  }
+  // function formatMapAddress(formData) {
+  //   return `${formData.address1 || ""} ${formData.address2 || ""} ${
+  //     formData.city || ""
+  //   }, ${formData.state || ""} ${formData.zip || ""}`;
+  // }
 
   const geocode = async (formData) => {
     try {
-      const result = await esriService.geocode(formatMapAddress(formData));
-      if (Array.isArray(result)) {
-        setGeocodeResults(result);
+      const result = await geocoder.geocode(
+        formData.address1,
+        formData.city,
+        formData.state,
+        formData.zip
+      );
+      if (result.FeatureMatchingResultType === "Success") {
+        setGeocodeResults(result.OutputGeocodes);
+      } else if (result.Exception) {
+        setToast({
+          message: result.Exception,
+        });
       } else {
         setToast({
           message:
-            `Geocoder request failed: ${result} ` +
+            `Geocoder request failed: ` +
             `Please try again and/or contact support.`,
         });
       }
@@ -951,9 +961,9 @@ const OrganizationEdit = (props) => {
                             >
                               <Grid container>
                                 <Grid item xs={10}>
-                                  <Typography>{`(${result.location.y}, ${result.location.x})`}</Typography>
-                                  <Typography>{`${result.attributes.Match_addr}`}</Typography>
-                                  <Typography>{`${result.attributes.Addr_type}`}</Typography>
+                                  <Typography>{`(${result.OutputGeocode.Latitude}, ${result.OutputGeocode.Longitude})`}</Typography>
+                                  <Typography>{`Match Score: ${result.OutputGeocode.MatchScore} ${result.OutputGeocode.MatchType}`}</Typography>
+                                  {/* <Typography>{`${result.attributes.Addr_type}`}</Typography> */}
                                 </Grid>
                                 <Grid item xs={2}>
                                   <VerifyButton
@@ -961,11 +971,11 @@ const OrganizationEdit = (props) => {
                                     onClick={() => {
                                       setFieldValue(
                                         "latitude",
-                                        result.location.y
+                                        result.OutputGeocode.Latitude
                                       );
                                       setFieldValue(
                                         "longitude",
-                                        result.location.x
+                                        result.OutputGeocode.Longitude
                                       );
                                       setGeocodeResults([]);
                                     }}

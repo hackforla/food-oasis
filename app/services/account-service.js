@@ -217,7 +217,16 @@ const forgotPassword = async (model) => {
     // Replace the success result if there is a prob
     // sending email.
     result = await requestResetPasswordConfirmation(email, result);
-    return result;
+    if (result === true) {
+      return {
+        isSuccess: true,
+        code: "FORGOT_PASSWORD_SUCCESS",
+        newId: checkAccountResult.rows[0].id,
+        message: "Account found.",
+      };
+    } else {
+      return result;
+    }
   } catch (err) {
     return Promise.reject(`Unexpected Error: ${err.message}`);
   }

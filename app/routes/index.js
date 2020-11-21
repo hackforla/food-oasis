@@ -11,6 +11,7 @@ const stakeholderRouter = require("./stakeholder-router");
 const stakeholderBestRouter = require("./stakeholder-best-router");
 const stakeholderLogRouter = require("./stakeholder-log-router");
 const importRouter = require("./import-router");
+const exportRouter = require("./export-router");
 const loadRouter = require("./load-router");
 const esriRouter = require("./esri-router");
 
@@ -25,6 +26,7 @@ router.use("/api/categories", categoryRouter);
 router.use("/api/neighborhoods", neighborhoodRouter);
 router.use("/api/suggestions", suggestionRouter);
 router.use("/api/faqs", faqRouter);
-router.use("/api/imports", importRouter);
+router.use("/api/import", importRouter);
+router.use("/api/export", exportRouter);
 router.use("/api/loads", loadRouter);
 router.use("/api/esri", esriRouter);

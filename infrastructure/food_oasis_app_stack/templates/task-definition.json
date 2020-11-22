@@ -1,13 +1,12 @@
 [
   {
     "name": "foodoasis-container",
-    "image": "foodoasisla/foodoasisla::${image_tag}",
+    "image": "470363915259.dkr.ecr.us-east-2.amazonaws.com/food-oasis",
     "cpu": ${container_cpu},
     "memory": ${container_memory},
     "portMappings": [
-      {
-        "containerPort": 5000
-      }
+      { "containerPort": ${container_port}, "hostPort": ${container_port} },
+      { "containerPort": 80, "hostPort": 80 }
     ],
     "essential": true,
     "logConfiguration": {

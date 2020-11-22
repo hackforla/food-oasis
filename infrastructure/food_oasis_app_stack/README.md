@@ -8,11 +8,11 @@ creates the Postgres RDS instance with the database and credentials (which are s
 
 creates the ECS cluster, service and the load balancer
 
-Installations:
+# Installations:
 --> AWS CLI
 --> Terraform
 
-Pre-requisite:
+# Pre-requisite:
 
 Make a folder public_keys : mkdir -p public_keys
 
@@ -21,10 +21,10 @@ create an SSH key pair and copy the public key to the public_keys folder.
 ssh-keygen -t rsa -m PEM -b 4096 -C "myname@example.com" -N "" -f myname
 
 
-Deployment: 
+# Deployment: 
 --> Manual Deployment
 
-Parameters:
+# Parameters:
 
 The following parameters (at minimum) need to be set in order to run the blueprint. You can use, for example, a .tfvars file for these.
 
@@ -34,11 +34,11 @@ db_name
 db_username
 db_password
 
-References:
+# References:
 
 For Network and Database stack refer https://github.com/100Automations/terraform-aws-postgres-vpc
 
-Commands:
+# Commands:
 
 terraform init
 terraform apply

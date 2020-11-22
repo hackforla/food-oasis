@@ -1,6 +1,7 @@
 // read all values in .env file and export to environment
 require("dotenv").config();
 
+
 module.exports = {
   user: process.env.POSTGRES_USERNAME,
   password: process.env.POSTGRES_PASSWORD,

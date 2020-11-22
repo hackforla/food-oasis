@@ -1,62 +1,44 @@
-# ballotnav infrastructure configuration
+# FoodOasis infrastructure configuration
 
-These files describe the load balancer and webserver infrastructure of the ballotnav app using [`terraform`](https://www.terraform.io/) HCL. 
+This Terraform blueprint manages the infrastructure needed to run the 311 Data API project in AWS.
 
-Additional configuration and environment-specific values are stored in a private
-github repo.
+creates the complete network infrastructure including the VPC, subnets, gateway, network ACLs, and security groups across 2 availability zones
 
-# Getting started
-To apply this configuration in a new environment:
+creates the Postgres RDS instance with the database and credentials (which are stored in a SSM parameter store)
 
-## prerequisites
-- `terraform` v0.12.0+
-- aws account and credentials created 
-- `awscli` installed and configured [see docs here](https://aws.amazon.com/cli/)
-- all required secrets are created & stored in SSM, see below:
+creates the ECS cluster, service and the load balancer
 
-### secrets stored in SSM
-This configuration should create the initial deployment and infra for a load
-balancer and ecs cluster running the ballotnav app at the given version. It
-injects some secrets that the app requires to boot, .e.g `POSTGRES_PASSWORD` and
-`TOKEN_SECRET`. 
+Installations:
+--> AWS CLI
+--> Terraform
 
-When applying this configuration these values are fetched securely from AWS
-Systems Manager Param Store (AWS SSM), and so they must be created there first.
+Pre-requisite:
 
-[See the aws guide that describes a this in more detail](https://aws.amazon.com/premiumsupport/knowledge-center/ecs-data-security-container-task/#Complete_prerequisites)
+Make a folder public_keys : mkdir -p public_keys
 
-#### secrets path name
-AWS SSM values lookup are path-based, i.e. /path/to/my/SECRET_VALUE, and so values are stored using the convention
-of `/environment/region/secret_name = secret value`
+create an SSH key pair and copy the public key to the public_keys folder.
 
-For example in deploying ballotnav configuration in a "dev" environment of AWS's
-Oregon region (coded as `us-west-2`) we would use the SSM path prefix of
-`/dev/us-west-2/`
+ssh-keygen -t rsa -m PEM -b 4096 -C "myname@example.com" -N "" -f myname
 
-**example**
-creating a secret called `DB_PASSWORD` for a dev environment
-```bash
-aws ssm put-paramter --type SecureString --name /dev/us-west-2/DB_PASSWORD
---value secret123x234
-```
 
-**example**
-creating that same secret for the prod deployment environment, note the `/prod`
-path.
+Deployment: 
+--> Manual Deployment
 
-```bash
-aws ssm put-paramter --type SecureString --name /prod/us-west-2/DB_PASSWORD
---value secret123x234
-```
+Parameters:
 
-## Plan & apply
-Run `terraform plan` to preview the configuration
+The following parameters (at minimum) need to be set in order to run the blueprint. You can use, for example, a .tfvars file for these.
 
-```bash
-terraform plan
-```
+profile
+account_id
+db_name
+db_username
+db_password
 
-Run `apply` to apply it to the cloud and deploy the infrastructure.
-```bash
+References:
+
+For Network and Database stack refer https://github.com/100Automations/terraform-aws-postgres-vpc
+
+Commands:
+
+terraform init
 terraform apply
-```

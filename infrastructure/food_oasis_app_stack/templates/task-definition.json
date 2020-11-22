@@ -1,12 +1,13 @@
 [
   {
-    "name": "${container_name}",
+    "name": "foodoasis-container",
     "image": "foodoasisla/foodoasisla::${image_tag}",
     "cpu": ${container_cpu},
     "memory": ${container_memory},
     "portMappings": [
-      { "containerPort": ${container_port}, "hostPort": ${container_port} },
-      { "containerPort": 80, "hostPort": 80 }
+      {
+        "containerPort": 5000
+      }
     ],
     "essential": true,
     "logConfiguration": {
@@ -26,17 +27,7 @@
       "interval": 20,
       "timeout": 30,
       "retries": 2
-    },
-    "environment": [
-      { "name": "NODE_ENV", "value": "development" },
-      { "name": "DISABLE_DB_MIGRATION_AUTO_RUN", "value": "1" },
-      { "name": "POSTGRES_USER", "value": "dbuser" },
-      { "name": "POSTGRES_DB", "value": "main" }
-    ],
-    "secrets": [
-      { "name": "DB_HOSTNAME", "valueFrom": "${db_hostname}" },
-      { "name": "POSTGRES_PASSWORD", "valueFrom": "${postgres_password}" }
-    ],
-    "command": ["node", "server.js"]
+    }
+  
   }
 ]

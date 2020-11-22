@@ -14,7 +14,7 @@ resource "aws_lb" "alb" {
 resource "aws_security_group" "alb" {
   name_prefix = substr(local.name, 0, 6)
   description = "load balancer sg for ingress and egress to ${var.task_name}"
-  vpc_id      = module.networked_rds.vpc_id
+  vpc_id      = module.networked_rds.network_vpc_id
 
 
 
@@ -58,6 +58,8 @@ resource "aws_lb_listener" "http" {
    }
 }
 
+# I believe the certificate is not yet installed
+
 # resource "aws_lb_listener" "https" {
 #   load_balancer_arn = aws_lb.alb.arn
 #   port              = 443
@@ -77,13 +79,13 @@ resource "aws_lb_target_group" "default" {
   protocol    = "HTTP"
 	deregistration_delay = 100
   target_type = "ip"
-  vpc_id      = module.networked_rds.vpc_id
+  vpc_id      = module.networked_rds.network_vpc_id
 
   health_check {
 		enabled = true
 		healthy_threshold = 5
 		interval = 30
-		path = "/status"
+		path = "/health"
 		port = "traffic-port"
 		protocol = "HTTP"
 		timeout = 10

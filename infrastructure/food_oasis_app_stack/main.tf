@@ -1,35 +1,24 @@
 provider "aws" {
-  region  = module.networked_rds.region
+  region  = var.region
 }
 module "networked_rds" {
-  source = "../networked_rds"
+  source = "git::https://github.com/100Automations/terraform-aws-postgres-vpc.git"
 
   project_name = "food-oasis"
-  stage = "dev"
-  region = "us-east-2"
-  account_id = "470363915259"
+  stage = var.stage
+  region = var.region
+  account_id = var.account_id
 
   ssh_public_key_names = ["prashant"]
-  availability_zones = ["us-east-2a", "us-east-2b", "us-east-2c"]
+  availability_zones = var.availability_zones
 
-  db_username = "foodoasis"
-  db_name = "foodoasisdb"
-  db_password = "password"
+  db_username = var.db_username
+  db_name = var.db_name
+  db_password = var.db_password
 }
-
-variable db_password {
-  description = "The postgres database password created for the default database when the instance is booted"
-}
-
-variable region {
-  description = "The AWS region where infrastructure is to be deployed"
-}
-
-
-
 
 data "aws_ssm_parameter" "db_hostname" {
-  name = "/${var.stage}/${module.networked_rds.region}/DB_HOSTNAME"
+  name = "/${var.stage}/${var.region}/DB_HOSTNAME"
 }
 
 # data "aws_ssm_parameter" "token_secret" {
@@ -37,7 +26,7 @@ data "aws_ssm_parameter" "db_hostname" {
 # }
 
 data "aws_ssm_parameter" "postgres_password" {
-  name = "/${var.stage}/${module.networked_rds.region}/POSTGRES_PASSWORD"
+  name = "/${var.stage}/${var.region}/POSTGRES_PASSWORD"
 }
 
 data "template_file" "task_definition" {
@@ -50,7 +39,7 @@ data "template_file" "task_definition" {
     image_tag        = var.image_tag
     cluster_name     = var.cluster_name
     task_name        = var.task_name
-    region           = module.networked_rds.region
+    region           = var.region
     # secrets injected securely from AWS SSM systems manager param store
     # https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html
     db_hostname = data.aws_ssm_parameter.db_hostname.arn
@@ -85,7 +74,7 @@ data "aws_iam_policy_document" "logs" {
     actions = [
       "ssm:Get*"
     ]
-    resources = ["arn:aws:ssm:${module.networked_rds.region}:${var.account_id}:parameter/${var.stage}/*"]
+    resources = ["arn:aws:ssm:${var.region}:${var.account_id}:parameter/${var.stage}/*"]
   }
 }
 
@@ -130,7 +119,7 @@ resource "aws_security_group" "svc_sg" {
   name_prefix = "bn-loadbalancer"
   description = "inbound from load balancer to ecs service"
 
-  vpc_id = module.networked_rds.vpc_id
+  vpc_id = module.networked_rds.network_vpc_id
 
   ingress {
     description     = "inbound from load balancer"
@@ -153,7 +142,7 @@ resource "aws_security_group" "svc_sg" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    # security_groups = [aws_security_group.alb.id]
+    security_groups = [aws_security_group.alb.id]
     cidr_blocks = ["0.0.0.0/0"]
   }
   tags = merge({ Name = "ecs-service-sg" }, var.tags)

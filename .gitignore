@@ -282,3 +282,6 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+
+#public_keys
+public_keys/

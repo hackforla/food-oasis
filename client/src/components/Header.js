@@ -5,6 +5,7 @@ import Menu from "./Menu";
 // The two tenant logos happen to be the same at this moment
 import logo from "images/foodoasis.svg";
 import logoCA from "images/foodoasis.svg";
+import logoHI from "./StaticPagesHI/assets/aloha-harvest-bg-none.png";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { tenantId } from "../helpers/Configuration";
@@ -44,6 +45,13 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.down("xs")]: {
       height: "45px",
+    },
+  },
+  logoHI: {
+    margin: theme.spacing(1),
+    height: "3.25rem",
+    "&:hover": {
+      filter: "brightness(1.2)",
     },
   },
   tagline: {
@@ -86,10 +94,16 @@ export default function Header(props) {
                     <img src={logo} className={classes.logo} alt="logo" />{" "}
                   </a>
                 </div>
-              ) : (
+              ) : tenantId === 2 ? (
                 <div>
                   <a href="/">
                     <img src={logoCA} className={classes.logo} alt="logo" />{" "}
+                  </a>
+                </div>
+              ) : (
+                <div>
+                  <a href="/">
+                    <img src={logoHI} className={classes.logoHI} alt="logo" />{" "}
                   </a>
                 </div>
               ))}

@@ -1,15 +1,6 @@
-export const tenantId = (() =>
-  window.location.hostname.toLowerCase().includes("hi.food") ||
-  window.location.hostname.toLowerCase().includes("hawaii") ||
-  process.env.REACT_APP_TENANT_ID === "3"
-    ? 3
-    : window.location.hostname.toLowerCase().includes("ca.food") ||
-      window.location.hostname.toLowerCase().includes("california") ||
-      process.env.REACT_APP_TENANT_ID === "2"
-    ? 2
-    : 1)();
+export const tenantId = 3;
 
-export const defaultCoordinates = (() => {
+export const originCoordinates = (() => {
   switch (tenantId) {
     case 3:
       return { lat: 21.3101548, lon: -157.8428712, zoom: 12, radius: 5 };

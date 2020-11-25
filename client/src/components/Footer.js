@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 // The two tenant logos happen to be the same at this moment
 import logo from "images/foodoasis.svg";
 import logoCA from "images/foodoasis.svg";
+import logoHI from "./StaticPagesHI/assets/aloha-harvest-bg-none.png";
 import { tenantId } from "../helpers/Configuration";
 
 const useStyles = makeStyles((theme) => ({
@@ -24,16 +25,21 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "0",
     marginBottom: "auto",
     height: "20px",
-
+    "&:hover": {
+      filter: "brightness(1.2)",
+    },
+  },
+  logoHi: {
+    marginTop: "0",
+    marginBottom: "auto",
+    height: "3.25rem",
     "&:hover": {
       filter: "brightness(1.2)",
     },
   },
   textHolder: {
     display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    width: "100%",
+    flexDirection: "row"
   },
   linkStyle: {
     padding: "0 !important",
@@ -42,7 +48,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "16px",
     textTransform: "uppercase",
     margin: ".4em 0 .4em 1.5em",
-
     "&:hover": {
       textDecoration: "underline",
     },
@@ -100,7 +105,9 @@ const Footer = () => {
 
   return (
     <Box className={classes.footer} style={holderStyle}>
-      {tenantId === 2 ? (
+      {tenantId === 3 ? (
+        <img src={logoHI} className={classes.logoHi} alt="logo" />
+      ) : tenantId === 2 ? (
         <img src={logoCA} className={classes.logo} alt="logo" />
       ) : (
         <img src={logo} className={classes.logo} alt="logo" />

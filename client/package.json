@@ -5,7 +5,7 @@
   "author": "Hack for LA",
   "license": "GPL-2.0",
   "private": true,
-  "proxy": "http://localhost:5000",
+  "proxy": "https://foodoasis.la",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

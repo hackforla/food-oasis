@@ -1130,7 +1130,7 @@ const OrganizationEdit = (props) => {
                             size="medium"
                           />
                         }
-                        label="Confirm Food Types"
+                        label="confirm"
                       />
                     </Grid>
                   </Grid>

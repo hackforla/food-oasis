@@ -188,6 +188,18 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
           ))}
         </div>
         <div className={classes.label}>
+          <em
+            key={stakeholder.id}
+            style={{
+              alignSelf: "flex-start",
+              margin: "0.25em 0",
+              marginRight: "0.25em",
+            }}
+          >
+            {stakeholder.foodTypes}
+          </em>
+        </div>
+        <div className={classes.label}>
           {stakeholder.inactiveTemporary || stakeholder.inactive ? (
             <em className={classes.closedLabel}>
               {stakeholder.inactiveTemporary

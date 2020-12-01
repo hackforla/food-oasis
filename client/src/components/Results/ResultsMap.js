@@ -229,6 +229,7 @@ function Map({
     doSelectStakeholder(null);
   };
 
+  // the list of stake holders that are not in a cluster
   const shownStakeHolders = [];
   if (mapRef.current) {
     const mapInstance = mapRef.current.getMap();
@@ -293,6 +294,7 @@ function Map({
                   sh.latitude &&
                   sh.longitude &&
                   !(sh.inactive || sh.inactiveTemporary) &&
+                  // only show the stakeholders that are not in a cluster
                   shownStakeHolders.includes(sh.id)
               )
               .map((stakeholder) => {

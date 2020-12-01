@@ -4,11 +4,9 @@ import ReactMapGL, { Layer, NavigationControl, Source } from "react-map-gl";
 import { Grid, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Marker from "components/Marker";
-
 import { MAPBOX_STYLE } from "constants/map";
 import { DEFAULT_CATEGORIES } from "constants/stakeholder";
 import { isMobile } from "helpers";
-
 import StakeholderPreview from "components/Stakeholder/StakeholderPreview";
 import StakeholderDetails from "components/Stakeholder/StakeholderDetails";
 
@@ -22,7 +20,56 @@ const styles = {
   },
 };
 
-const useStyles = makeStyles((theme, props) => ({
+// the map layer that shows the bubbles
+const clusterLayer = {
+  id: "clusters",
+  type: "circle",
+  source: "stakeholders",
+  filter: ["has", "point_count"],
+  paint: {
+    "circle-color": [
+      "step",
+      ["get", "point_count"],
+      "#51bbd6",
+      100,
+      "#f1f075",
+      750,
+      "#f28cb1",
+    ],
+    "circle-radius": ["step", ["get", "point_count"], 20, 100, 30, 750, 40],
+  },
+};
+
+// the map layer that shows the numbers on the cluster bubbles
+const clusterCountLayer = {
+  id: "cluster-count",
+  type: "symbol",
+  source: "stakeholders",
+  filter: ["has", "point_count"],
+  layout: {
+    "text-field": "{point_count_abbreviated}",
+    "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
+    "text-size": 12,
+  },
+};
+
+// this one is weird, we don't actually show it on the map however that act as un
+// invisible marker to show the actual markers. we need to do this because the actual
+// markers have custom html that can not be shown
+const unclusteredPointLayer = {
+  id: "unclustered-point",
+  type: "circle",
+  source: "stakeholders",
+  filter: ["!", ["has", "point_count"]],
+  paint: {
+    "circle-color": "#11b4da",
+    "circle-radius": 0,
+    "circle-stroke-width": 0,
+    "circle-stroke-color": "#fff",
+  },
+};
+
+const useStyles = makeStyles((theme) => ({
   map: {
     textAlign: "center",
     fontSize: "12px",
@@ -128,53 +175,6 @@ function Map({
     );
   }
 
-  const clusterLayer = {
-    id: "clusters",
-    type: "circle",
-    source: "stakeholders",
-    filter: ["has", "point_count"],
-    paint: {
-      "circle-color": [
-        "step",
-        ["get", "point_count"],
-        "#51bbd6",
-        100,
-        "#f1f075",
-        750,
-        "#f28cb1",
-      ],
-      "circle-radius": ["step", ["get", "point_count"], 20, 100, 30, 750, 40],
-    },
-    // layout: {
-    //   'icon-image': 'custom-marker',
-    // }
-  };
-
-  const clusterCountLayer = {
-    id: "cluster-count",
-    type: "symbol",
-    source: "stakeholders",
-    filter: ["has", "point_count"],
-    layout: {
-      "text-field": "{point_count_abbreviated}",
-      "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
-      "text-size": 12,
-    },
-  };
-
-  const unclusteredPointLayer = {
-    id: "unclustered-point",
-    type: "circle",
-    source: "stakeholders",
-    filter: ["!", ["has", "point_count"]],
-    paint: {
-      "circle-color": "#11b4da",
-      "circle-radius": 0,
-      "circle-stroke-width": 0,
-      "circle-stroke-color": "#fff",
-    },
-  };
-
   const data = {
     type: "FeatureCollection",
     features: (stakeholders || [])
@@ -224,18 +224,6 @@ function Map({
 
         return;
       }
-
-      // // if we are clicking on a place
-      // if (layer === "unclustered-point") {
-      //   // select the stakeholder
-      //   stakeholders.forEach((sh) => {
-      //     if (sh.id === e.features[0].properties.stakeholderId) {
-      //       doSelectStakeholder(sh);
-      //     }
-      //   });
-
-      //   return;
-      // }
     }
 
     doSelectStakeholder(null);

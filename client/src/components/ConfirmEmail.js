@@ -34,7 +34,7 @@ const ConfirmEmail = (props) => {
     <React.Fragment>
       <div>Confirm Email</div>
       {!confirmResult ? (
-        <div>"Confirming Email..."</div>
+        <div>&ldquo;Confirming Email...&ldquo;</div>
       ) : confirmResult.success ? (
         <Redirect to={"/login"} />
       ) : emailSent ? (

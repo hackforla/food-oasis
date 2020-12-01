@@ -3,9 +3,10 @@ import PropTypes from "prop-types";
 import ReactMapGL, { Layer, NavigationControl, Source } from "react-map-gl";
 import { Grid, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import Marker from "components/Marker";
 
 import { MAPBOX_STYLE } from "constants/map";
-// import { DEFAULT_CATEGORIES } from "constants/stakeholder";
+import { DEFAULT_CATEGORIES } from "constants/stakeholder";
 import { isMobile } from "helpers";
 
 import StakeholderPreview from "components/Stakeholder/StakeholderPreview";
@@ -72,9 +73,9 @@ function Map({
   const classes = useStyles({ selectedStakeholder });
   const mapRef = useRef();
   const sourceRef = useRef();
-  // const categoryIdsOrDefault = categoryIds.length
-  //   ? categoryIds
-  //   : DEFAULT_CATEGORIES;
+  const categoryIdsOrDefault = categoryIds.length
+    ? categoryIds
+    : DEFAULT_CATEGORIES;
 
   const [showDetails, setShowDetails] = useState(false);
   const [showSearchArea, setShowSearchArea] = useState(false);
@@ -168,8 +169,8 @@ function Map({
     filter: ["!", ["has", "point_count"]],
     paint: {
       "circle-color": "#11b4da",
-      "circle-radius": 4,
-      "circle-stroke-width": 1,
+      "circle-radius": 0,
+      "circle-stroke-width": 0,
       "circle-stroke-color": "#fff",
     },
   };
@@ -224,21 +225,37 @@ function Map({
         return;
       }
 
-      // if we are clicking on a place
-      if (layer === "unclustered-point") {
-        // select the stakeholder
-        stakeholders.forEach((sh) => {
-          if (sh.id === e.features[0].properties.stakeholderId) {
-            doSelectStakeholder(sh);
-          }
-        });
+      // // if we are clicking on a place
+      // if (layer === "unclustered-point") {
+      //   // select the stakeholder
+      //   stakeholders.forEach((sh) => {
+      //     if (sh.id === e.features[0].properties.stakeholderId) {
+      //       doSelectStakeholder(sh);
+      //     }
+      //   });
 
-        return;
-      }
+      //   return;
+      // }
     }
 
     doSelectStakeholder(null);
   };
+
+  const shownStakeHolders = [];
+  if (mapRef.current) {
+    const mapInstance = mapRef.current.getMap();
+    const features = mapInstance.querySourceFeatures("stakeholders");
+
+    features.forEach((feature) => {
+      const props = feature.properties;
+
+      if (props.cluster) {
+        return;
+      }
+
+      shownStakeHolders.push(props.stakeholderId);
+    });
+  }
 
   return (
     <>
@@ -268,6 +285,7 @@ function Map({
             </Button>
           )}
           <Source
+            id="stakeholders"
             type="geojson"
             data={data}
             cluster={true}
@@ -280,13 +298,14 @@ function Map({
             <Layer {...unclusteredPointLayer} />
           </Source>
 
-          {/* {stakeholders &&
+          {stakeholders &&
             stakeholders
               .filter(
                 (sh) =>
                   sh.latitude &&
                   sh.longitude &&
-                  !(sh.inactive || sh.inactiveTemporary)
+                  !(sh.inactive || sh.inactiveTemporary) &&
+                  shownStakeHolders.includes(sh.id)
               )
               .map((stakeholder) => {
                 const categories = stakeholder.categories.filter(({ id }) =>
@@ -304,7 +323,7 @@ function Map({
                     }}
                   />
                 );
-              })} */}
+              })}
         </ReactMapGL>
       </Grid>
       {!!selectedStakeholder && mobileView && (

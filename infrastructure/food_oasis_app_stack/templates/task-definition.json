@@ -1,7 +1,7 @@
 [
   {
     "name": "foodoasis-container",
-    "image": "470363915259.dkr.ecr.us-east-2.amazonaws.com/food-oasis",
+    "image": "470363915259.dkr.ecr.us-east-2.amazonaws.com/food-oasis:latest",
     "cpu": ${container_cpu},
     "memory": ${container_memory},
     "portMappings": [
@@ -26,7 +26,17 @@
       "interval": 20,
       "timeout": 30,
       "retries": 2
-    }
-  
+    },
+
+    "environment": [
+      { "name": "NODE_ENV", "value": "development" },
+      { "name": "POSTGRES_USER", "value": "postgres" },
+      { "name": "POSTGRES_DB", "value": "foodoasisdev" },
+      { "name": "POSTGRES_PORT", "value": "5432" },
+      { "name": "POSTGRES_HOST", "value": "foodoasis.cxwbfia6jxlt.us-east-2.rds.amazonaws.com" },
+      { "name": "POSTGRES_PASSWORD", "value": "quokkafola" }
+    ]
+
+
   }
 ]

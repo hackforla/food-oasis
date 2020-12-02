@@ -36,7 +36,7 @@ data "template_file" "task_definition" {
     container_cpu    = var.container_cpu
     container_port   = var.container_port
     container_name   = var.container_name
-    image_tag        = var.image_tag
+    #image_tag        = var.image_tag
     cluster_name     = var.cluster_name
     task_name        = var.task_name
     region           = var.region
@@ -113,6 +113,7 @@ resource "aws_ecs_task_definition" "task" {
   memory                   = var.container_memory
   cpu                      = var.container_cpu
   execution_role_arn       = aws_iam_role.task_exec_role.arn
+  task_role_arn            = aws_iam_role.task_exec_role.arn
 }
 
 resource "aws_security_group" "svc_sg" {

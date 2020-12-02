@@ -69,6 +69,6 @@ variable cluster_name {
 variable image_tag {}
 
 variable desired_count {
-  default     = 2
+  default     = 1
   type        = number
 }

@@ -9,6 +9,7 @@ import { DEFAULT_CATEGORIES } from "constants/stakeholder";
 import { isMobile } from "helpers";
 import StakeholderPreview from "components/Stakeholder/StakeholderPreview";
 import StakeholderDetails from "components/Stakeholder/StakeholderDetails";
+import theme from "theme/materialUI";
 
 const styles = {
   navigationControl: {
@@ -27,15 +28,7 @@ const clusterLayer = {
   source: "stakeholders",
   filter: ["has", "point_count"],
   paint: {
-    "circle-color": [
-      "step",
-      ["get", "point_count"],
-      "#51bbd6",
-      100,
-      "#f1f075",
-      750,
-      "#f28cb1",
-    ],
+    "circle-color": theme.palette.primary.light,
     "circle-radius": ["step", ["get", "point_count"], 20, 100, 30, 750, 40],
   },
 };
@@ -48,8 +41,10 @@ const clusterCountLayer = {
   filter: ["has", "point_count"],
   layout: {
     "text-field": "{point_count_abbreviated}",
-    "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
     "text-size": 12,
+  },
+  paint: {
+    "text-color": theme.palette.primary.contrastText,
   },
 };
 
@@ -210,6 +205,7 @@ function Map({
 
         mapboxSource.getClusterExpansionZoom(clusterId, (err, zoom) => {
           if (err) {
+            console.error("Error zooming into cluster", err);
             return;
           }
 
@@ -230,7 +226,7 @@ function Map({
   };
 
   // the list of stake holders that are not in a cluster
-  const shownStakeHolders = [];
+  const shownStakeholders = [];
   if (mapRef.current) {
     const mapInstance = mapRef.current.getMap();
     const features = mapInstance.querySourceFeatures("stakeholders");
@@ -242,7 +238,7 @@ function Map({
         return;
       }
 
-      shownStakeHolders.push(props.stakeholderId);
+      shownStakeholders.push(props.stakeholderId);
     });
   }
 
@@ -295,7 +291,7 @@ function Map({
                   sh.longitude &&
                   !(sh.inactive || sh.inactiveTemporary) &&
                   // only show the stakeholders that are not in a cluster
-                  shownStakeHolders.includes(sh.id)
+                  shownStakeholders.includes(sh.id)
               )
               .map((stakeholder) => {
                 const categories = stakeholder.categories.filter(({ id }) =>

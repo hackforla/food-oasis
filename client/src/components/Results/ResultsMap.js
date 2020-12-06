@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import ReactMapGL, { Layer, NavigationControl, Source } from "react-map-gl";
 import { Grid, Button } from "@material-ui/core";
@@ -10,6 +10,7 @@ import { isMobile } from "helpers";
 import StakeholderPreview from "components/Stakeholder/StakeholderPreview";
 import StakeholderDetails from "components/Stakeholder/StakeholderDetails";
 import theme from "theme/materialUI";
+import { defaultCoordinates } from "helpers/Configuration";
 
 const styles = {
   navigationControl: {
@@ -58,7 +59,7 @@ const unclusteredPointLayer = {
   filter: ["!", ["has", "point_count"]],
   paint: {
     "circle-color": "#11b4da",
-    "circle-radius": 0,
+    "circle-radius": 10,
     "circle-stroke-width": 0,
     "circle-stroke-color": "#fff",
   },
@@ -108,10 +109,23 @@ function Map({
   categoryIds,
   doSelectStakeholder,
   selectedStakeholder,
-  viewport,
-  setViewport,
+  initViewport,
+  origin,
   setToast,
 }) {
+  const [viewport, setViewport] = useState(
+    initViewport || {
+      zoom: defaultCoordinates.zoom,
+      latitude: origin.latitude,
+      longitude: origin.longitude,
+      logoPosition: "top-left",
+    }
+  );
+
+  useEffect(() => {
+    setViewport(initViewport);
+  }, [initViewport]);
+
   const classes = useStyles({ selectedStakeholder });
   const mapRef = useRef();
   const sourceRef = useRef();
@@ -121,6 +135,7 @@ function Map({
 
   const [showDetails, setShowDetails] = useState(false);
   const [showSearchArea, setShowSearchArea] = useState(false);
+  const [shownStakeholders, setShownStakeholders] = useState([]);
 
   const onInteractionStateChange = (s) => {
     // don't do anything if the mapview is moving
@@ -135,6 +150,33 @@ function Map({
       return;
     // make sure map has already loaded
     if (mapRef && mapRef.current && mapRef.current) setShowSearchArea(true);
+  };
+
+  const updateShownStakeholders = () => {
+    if (mapRef.current) {
+      // this gets called after the component is mounted
+
+      const mapInstance = mapRef.current.getMap();
+      const features = mapInstance.querySourceFeatures("stakeholders");
+      const newShownStakeholders = [];
+
+      features.forEach((feature) => {
+        const props = feature.properties;
+
+        if (props.cluster) {
+          return;
+        }
+
+        newShownStakeholders.push(props.stakeholderId);
+      });
+
+      if (
+        JSON.stringify(newShownStakeholders.sort()) !==
+        JSON.stringify(shownStakeholders.sort())
+      ) {
+        setShownStakeholders(newShownStakeholders);
+      }
+    }
   };
 
   const searchArea = () => {
@@ -205,7 +247,7 @@ function Map({
 
         mapboxSource.getClusterExpansionZoom(clusterId, (err, zoom) => {
           if (err) {
-            console.error("Error zooming into cluster", err);
+            console.error("Error get cluster expansion zoom", err);
             return;
           }
 
@@ -213,34 +255,17 @@ function Map({
             ...viewport,
             longitude: feature.geometry.coordinates[0],
             latitude: feature.geometry.coordinates[1],
-            zoom,
+            zoom: zoom + 1,
             transitionDuration: 500,
           });
         });
-
-        return;
       }
     }
 
     doSelectStakeholder(null);
   };
 
-  // the list of stake holders that are not in a cluster
-  const shownStakeholders = [];
-  if (mapRef.current) {
-    const mapInstance = mapRef.current.getMap();
-    const features = mapInstance.querySourceFeatures("stakeholders");
-
-    features.forEach((feature) => {
-      const props = feature.properties;
-
-      if (props.cluster) {
-        return;
-      }
-
-      shownStakeholders.push(props.stakeholderId);
-    });
-  }
+  setTimeout(updateShownStakeholders, 10);
 
   return (
     <>
@@ -250,7 +275,13 @@ function Map({
           ref={mapRef}
           width="100%"
           height="100%"
-          onViewportChange={(newViewport) => setViewport(newViewport)}
+          onLoad={() => setTimeout(updateShownStakeholders, 10)}
+          onViewportChange={(newViewport) => {
+            setViewport(newViewport);
+          }}
+          onTransitionEnd={() => {
+            setTimeout(updateShownStakeholders, 10);
+          }}
           mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
           mapStyle={MAPBOX_STYLE}
           onClick={onMapClick}

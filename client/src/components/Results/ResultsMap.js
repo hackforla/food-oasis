@@ -58,8 +58,7 @@ const unclusteredPointLayer = {
   source: "stakeholders",
   filter: ["!", ["has", "point_count"]],
   paint: {
-    "circle-color": "#11b4da",
-    "circle-radius": 10,
+    "circle-radius": 0,
     "circle-stroke-width": 0,
     "circle-stroke-color": "#fff",
   },

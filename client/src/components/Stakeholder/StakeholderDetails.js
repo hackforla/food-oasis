@@ -284,15 +284,22 @@ const StakeholderDetails = ({
       <div className={classes.buttons}>
         <Button
           variant="outlined"
-          onClick={() =>
+          onClick={() => {
+            window.dataLayer.push({
+              event: "getDirections",
+              action: "click",
+              value: selectedStakeholder.id,
+              name: selectedStakeholder.name,
+            });
+
             window.open(
               getGoogleMapsUrl(
                 selectedStakeholder.zip,
                 selectedStakeholder.address1,
                 selectedStakeholder.address2 || null
               )
-            )
-          }
+            );
+          }}
         >
           Directions
         </Button>

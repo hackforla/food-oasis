@@ -27,15 +27,10 @@ const useStyles = makeStyles(() => ({
     margin: 0,
     padding: "32px 0",
   },
-  btnOrange: {
-    color: "#fff",
-    fontSize: "18px",
-    background: "#e57109",
-    boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-    borderRadius: "6px",
-    padding: "8px 16px",
-    textDecoration: "none",
-    textTransform: "uppercase",
+  btnContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
   },
   btnOutline: {
     color: "#fff",
@@ -46,6 +41,18 @@ const useStyles = makeStyles(() => ({
     textDecoration: "none",
     textTransform: "uppercase",
   },
+  btnBlue: {
+    color: "#ffffff",
+    background: "#336699",
+    borderRadius: "6px",
+    padding: "8px 16px",
+    margin: ".5rem",
+    textDecoration: "none",
+    textTransform: "uppercase",
+    "&:hover": {
+      filter: "brightness(1.2)",
+    },
+  },
   btnWhite: {
     color: "#336699",
     background: "#ffffff",
@@ -53,6 +60,9 @@ const useStyles = makeStyles(() => ({
     padding: "8px 16px",
     textDecoration: "none",
     textTransform: "uppercase",
+    "&:hover": {
+      filter: "brightness(1.2)",
+    },
   },
   figure: {
     margin: 0,
@@ -68,7 +78,7 @@ const useStyles = makeStyles(() => ({
     color: "#4d4d4d",
     background: "#f0f0f0",
     display: "flex",
-    flexWrap: "wrap",
+    flexDirection: "column",
     "& $h2": {
       color: "#336699",
       flexBasis: "100%",
@@ -90,7 +100,7 @@ const useStyles = makeStyles(() => ({
     color: "#fff",
     background: "#336699",
     display: "flex",
-    flexWrap: "wrap",
+    flexDirection: "column",
     "& $h2": {
       color: "#fff",
       flexBasis: "100%",
@@ -107,9 +117,9 @@ const useStyles = makeStyles(() => ({
   },
   cards: {
     display: "flex",
-    flexWrap: "wrap",
+    flexDirection: "column",
     margin: "0 0 32px 0",
-    justifyContent: "center",
+    alignItems: "center",
     "& $aside": {
       textAlign: "center",
       borderRadius: "24px",
@@ -138,6 +148,7 @@ const useStyles = makeStyles(() => ({
   },
   signup: {
     background: "rgba(229, 113, 9, .7)",
+    textAlign: "center",
   },
   volunteer: {
     background: "#e57109",
@@ -160,31 +171,31 @@ const Donate = () => {
             className={classes.icon}
             height="40"
           />
-          <h2>Why Donate?</h2>
+          <h2>Help feed Hawaiʻi’s hungry.</h2>
           <p>
-            We’ve done so much already as a 100% volunteer-run organization—but
-            we need your help to finish what we set out to do. The admin,
-            development, and marketing costs to expand our directory are
-            extensive. We have a directory of over 1,300 organizations to
-            update. Your tax-deductible donation would help us offset some of
-            those costs.
+          Aloha Harvest is the largest nonprofit doing this work in the state of Hawaiʻi, acting as an essential collaborator with local food banks and social service agencies. 
+          In Hawaiʻi, 1 in 5 people rely on food pantries for assistance and yet 237,000 tons of good food is wasted annually. Since Aloha Harvest’s founding in 1999, we have rescued over 24 million pounds of quality food and gotten it into stomachs instead of landfills.
           </p>
-          <p>
-            Please make donations to our parent organization (Code for America).
-            At the Code for America donation page you will see a text box: “What
-            inspired you to donate today”? Please write "Food Oasis and Code for
-            Hawaii" in that box. Your donation will get earmarked for Food Oasis
-            Hawaii.
-          </p>
-          <a
-            // href="//www.codeforamerica.org/donate"
-            href=" https://svbinthecommunity.benevity.org/community/fundraiser/1842"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={classes.btnOutline}
-          >
-            Donate
-          </a>
+          <p>Since Aloha Harvest’s founding in 1999, we have rescued over 24 million pounds of quality food and gotten it into stomachs instead of landfills.</p>
+          <p>Please visit Aloha Harvest's official website to learn how to help</p>
+          <div className={classes.btnContainer}>
+            <a
+              href="https://alohaharvest.org/donate-food/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={classes.btnBlue}
+            >
+              Food Donations
+            </a>
+            <a
+              href="https://alohaharvest.org/donate-money/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={classes.btnBlue}
+            >
+              Monetary Donations
+            </a>
+          </div>
         </section>
         <div className={classes.volunteerSection}>
           <img
@@ -193,46 +204,20 @@ const Donate = () => {
             className={classes.icon}
             height="40"
           />
-          <h2>Volunteer</h2>
+          <h2>Be a Difference-Maker.</h2>
           <p>
-            We’re run 100% by remote volunteers who do critical work by updating
-            our food directory weekly. The work you do impact those who don’t
-            have enough to eat. Your help to update our directory makes it
-            easier for anyone to get in touch with groups that fit their needs.
+            As a food rescue organization, we play a critical role alongside food banks and food pantries in the fight against hunger. And you can, too.
           </p>
+          <p>Please visit Aloha Harvest's website to see current volunteer opportunities.</p>
           <a
-            href="//laworks.com/opportunity/a0C3l00000iCS6GEAW"
+            href="https://alohaharvest.galaxydigital.com/"
             target="_blank"
             rel="noopener noreferrer"
             className={classes.btnWhite}
           >
-            Become a Volunteer
+            Volunteer
           </a>
         </div>
-        <section className={classes.cards}>
-          <aside className={classes.signup}>
-            <h3>Get monthly updates on what we're doing</h3>
-            <a
-              href="//foodoasis.us18.list-manage.com/subscribe?u=40d31892cbbe01312937f7de6&id=42235bb7ce"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={classes.btnWhite}
-            >
-              Signup
-            </a>
-          </aside>
-          <aside className={classes.volunteer}>
-            <h3>Want to give your time instead?</h3>
-            <a
-              href="//laworks.com/opportunity/a0C3l00000iCS6GEAW"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={classes.btnWhite}
-            >
-              Volunteer
-            </a>
-          </aside>
-        </section>
         <Footer />
       </div>
     </div>

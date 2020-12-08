@@ -171,44 +171,25 @@ const About = () => {
             className={classes.icon}
             height="40"
           />
-          <h2>For Volunteers</h2>
+          <h2>General Questions</h2>
           <dl className={classes.dl}>
-            <dt>How can I sign up to volunteer?</dt>
+            <dt>How can I become a volunteer?</dt>
             <dd>
               <a
-                href="//laworks.com/opportunity/a0C3l00000iCS6GEAW"
+                href="https://alohaharvest.galaxydigital.com/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Attend a training session
+                Visit Aloha Harvest
               </a>{" "}
-              to get an assignment, or reach out to{" "}
-              <a href="mailto:jenny@foodoasis.la">jenny@foodoasis.la</a>.
+              to see current volunteer openings.
             </dd>
-            <dt>When can I volunteer?</dt>
+            <dt>What types of volunteers do you need?</dt>
             <dd>
-              Anytime. After you attend a training session, you can update the
-              details whenever you have time. That may mean calling in the
-              mornings or researching online in the evenings.
+              Depending on demand and skillset, volunteer opportunities range
+              from food distribution, delivery, data analysis, community
+              outreach, photography, and more.
             </dd>
-            <dt>How do I set up an account to start my assignment?</dt>
-            <dd>
-              <a href="/register">Enter your info here</a>, and look out for a
-              confirmation email from{" "}
-              <a href="mailto:foodoasishi@gmail.com">foodoasishi@gmail.com</a>.
-              Follow the instructions on the email.
-            </dd>
-          </dl>
-        </section>
-        <section className={classes.forDonors}>
-          <img
-            alt="For Donors"
-            src={iconSpacerBlue}
-            className={classes.icon}
-            height="40"
-          />
-          <h2>For Donors</h2>
-          <dl className={classes.dl}>
             <dt>What is food insecurity?</dt>
             <dd>
               Unable to consistently access or afford adequate food to live a
@@ -216,15 +197,31 @@ const About = () => {
             </dd>
             <dt>How is Food Oasis helping to diminish food insecurity?</dt>
             <dd>
-              Food Oasis is creating a directory of updated food resources.
-              There are countless groups helping to feed hungry Hawaiians. But
-              it’s difficult for those in need to find them because there’s no
-              one source of updated info. We’re working to change that.
+              Although there are multiple food directories in the islands, many
+              are not well-maintained or they lack easy-to-use interfaces. Now
+              more than ever, we need to react to the changing needs of
+              Hawaiʻi’s people, and providing a location-based, maintainable web
+              app will decrease the friction in finding food resources.
             </dd>
-            <dt>What will my donation go toward?</dt>
+            <dt>Do you accept food or monetary donations?</dt>
             <dd>
-              Your donations help us with the human costs required to update the
-              food resources in Hawaii.
+              Yes! Please visit the Aloha Harvest{" "}
+              <a
+                href="https://alohaharvest.org/donate-food/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                food donation
+              </a>{" "}
+              and{" "}
+              <a
+                href="https://alohaharvest.org/donate-money/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                monetary donation
+              </a>{" "}
+              pages for more information.
             </dd>
           </dl>
         </section>

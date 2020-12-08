@@ -49,6 +49,14 @@ export default function ResultsContainer({
 
   const doSelectStakeholder = useCallback(
     (stakeholder) => {
+      if (stakeholder) {
+        window.dataLayer.push({
+          event: "viewDetail",
+          action: "click",
+          value: stakeholder.id,
+          name: stakeholder.name,
+        });
+      }
       if (stakeholder && !isMobile) {
         setViewport({
           ...viewport,

@@ -213,15 +213,21 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
           <Button
             variant="outlined"
             size="small"
-            onClick={() =>
+            onClick={() => {
+              window.dataLayer.push({
+                event: "getDirections",
+                action: "click",
+                value: stakeholder.id,
+                name: stakeholder.name,
+              });
               window.open(
                 getGoogleMapsUrl(
                   stakeholder.zip,
                   stakeholder.address1,
                   stakeholder.address2 || null
                 )
-              )
-            }
+              );
+            }}
           >
             Directions
           </Button>
@@ -229,7 +235,15 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
             <Button
               variant="outlined"
               size="small"
-              onClick={() => window.open(`tel:${mainNumber.value}`)}
+              onClick={() => {
+                window.dataLayer.push({
+                  event: "dialPhone",
+                  action: "click",
+                  value: stakeholder.id,
+                  name: stakeholder.name,
+                });
+                window.open(`tel:${mainNumber.value}`);
+              }}
             >
               Call
             </Button>

@@ -333,6 +333,7 @@ const OrganizationEdit = (props) => {
       values.confirmedEmail &&
       values.confirmedPhone &&
       values.confirmedHours &&
+      values.confirmedFoodTypes &&
       values.name &&
       values.address1 &&
       values.city &&

@@ -33,7 +33,6 @@ function SearchCriteriaDisplay({
   defaultCriteria,
   criteria,
   neighborhoods,
-  tenants,
   categories,
   isLoading,
 }) {
@@ -42,7 +41,6 @@ function SearchCriteriaDisplay({
 
   const checkForCriteriaPresent = () => {
     if (
-      criteria.tenantId !== defaultCriteria.tenantId ||
       criteria.name !== defaultCriteria.name ||
       criteria.placeName !== defaultCriteria.placeName ||
       criteria.radius !== defaultCriteria.radius ||
@@ -84,24 +82,6 @@ function SearchCriteriaDisplay({
 
   const getCriteriaToDisplay = () => {
     let criterias = [];
-
-    if (criteria.tenantId !== defaultCriteria.tenantId) {
-      let tenantName = "";
-
-      tenants.forEach((tenant) => {
-        if (tenant.id === criteria.tenantId) {
-          tenantName = tenant.name;
-        }
-      });
-
-      criterias.push(
-        <CriteriaChip
-          key={"CriteriaChip_Region"}
-          value={tenantName}
-          label="Region"
-        />
-      );
-    }
 
     if (criteria.name !== defaultCriteria.name) {
       criterias.push(

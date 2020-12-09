@@ -36,7 +36,6 @@ const closeTo = (lat1, lon1, lat2, lon2) => {
 };
 
 const SearchCriteria = ({
-  tenants,
   userLatitude,
   userLongitude,
   categories,
@@ -134,36 +133,6 @@ const SearchCriteria = ({
     <Card className={classes.card}>
       <CardContent>
         <Grid container spacing={4}>
-          <Grid item xs={12} sm={6}>
-            <FormControl variant="outlined" fullWidth>
-              <FormLabel
-                id="verification-status-id-label"
-                className={classes.formLabel}
-              >
-                Region
-              </FormLabel>
-              <Select
-                labelId="tenant-id-label"
-                name="tenantId"
-                variant="outlined"
-                size="small"
-                value={criteria.tenantId}
-                onChange={setCriterion}
-              >
-                <MenuItem key={0} value={0}>
-                  (Any)
-                </MenuItem>
-                {tenants
-                  ? tenants.map((tenant) => (
-                      <MenuItem key={tenant.id} value={tenant.id}>
-                        {tenant.name}
-                      </MenuItem>
-                    ))
-                  : null}
-              </Select>
-            </FormControl>
-          </Grid>
-
           <Grid item xs={12} sm={6}>
             <FormControl variant="outlined" fullWidth>
               <FormLabel

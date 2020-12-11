@@ -1111,7 +1111,18 @@ const OrganizationEdit = (props) => {
                   <Grid item xs={12}>
                     <Typography>Details for Food Seekers to See</Typography>
                   </Grid>
-                  <Grid item container justify="space-between" xs={12}>
+                  <Grid
+                    item
+                    container
+                    justify="space-between"
+                    xs={12}
+                    style={{
+                      border: "1px solid gray",
+                      borderRadius: "4px",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
                     <Grid item xs={6}>
                       <Typography>Food Types</Typography>
                     </Grid>

@@ -192,8 +192,7 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
             key={stakeholder.id}
             style={{
               alignSelf: "flex-start",
-              margin: "0.25em 0",
-              marginRight: "0.25em",
+              margin: "0 0.25em 0.5em 0",
             }}
           >
             {stakeholder.foodTypes}

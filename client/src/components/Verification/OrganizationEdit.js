@@ -333,6 +333,7 @@ const OrganizationEdit = (props) => {
       values.confirmedEmail &&
       values.confirmedPhone &&
       values.confirmedHours &&
+      values.confirmedFoodTypes &&
       values.name &&
       values.address1 &&
       values.city &&
@@ -403,7 +404,9 @@ const OrganizationEdit = (props) => {
           </ListItemText>
         </ListItem>
       </List>
-      <Typography>If you don't get through to them: (choose one)</Typography>
+      <Typography>
+        If you don&apos;t get through to them: (choose one)
+      </Typography>
       <List dense>
         <ListItem>
           <ListItemText primary="1. The phone was inactive" />
@@ -1108,7 +1111,18 @@ const OrganizationEdit = (props) => {
                   <Grid item xs={12}>
                     <Typography>Details for Food Seekers to See</Typography>
                   </Grid>
-                  <Grid item container justify="space-between" xs={12}>
+                  <Grid
+                    item
+                    container
+                    justify="space-between"
+                    xs={12}
+                    style={{
+                      border: "1px solid gray",
+                      borderRadius: "4px",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
                     <Grid item xs={6}>
                       <Typography>Food Types</Typography>
                     </Grid>

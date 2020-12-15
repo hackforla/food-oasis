@@ -1,6 +1,6 @@
 {
   "name": "foodoasis",
-  "version": "1.0.30",
+  "version": "1.0.32",
   "author": "Hack for LA",
   "description": "Web API Server for Food Oasis",
   "main": "server.js",
@@ -11,8 +11,8 @@
     "server": "nodemon server.js",
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "lint": "eslint -c .eslintrc.js --ignore-path .eslintignore  **/*.{js,jsx}",
-    "lint:fix": "eslint -c .eslintrc.js --ignore-path .eslintignore --fix  **/*.{js,jsx}",
+    "lint": "eslint -c .eslintrc.js --ignore-path .eslintignore  \"**/*.{js,jsx}\"",
+    "lint:fix": "eslint -c .eslintrc.js --ignore-path .eslintignore --fix  \"**/*.{js,jsx}\"",
     "release-notes": "gren release",
     "migrate": "node-pg-migrate -f db/config.js",
     "loadtest:local": "loadtest -n 200 -c 20 \"http://localhost:3000/api/stakeholders?name=&categoryIds[]=1&categoryIds[]=9&latitude=34.0544&longitude=-118.2439&distance=5&isInactive=false\" ",

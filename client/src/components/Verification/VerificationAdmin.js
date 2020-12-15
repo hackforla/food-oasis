@@ -10,7 +10,6 @@ import StakeholderGrid from "./VerificationAdminGrid";
 import { RotateLoader } from "react-spinners";
 import { useOrganizations } from "hooks/useOrganizations";
 import { useCategories } from "hooks/useCategories/useCategories";
-import { useTenants } from "hooks/useTenants/useTenants";
 import { useNeighborhoods } from "hooks/useNeighborhoods/useNeighborhoods";
 import {
   needsVerification,
@@ -90,7 +89,6 @@ DialogTitle.propTypes = {
 };
 
 const defaultCriteria = {
-  tenantId: 0,
   name: "",
   latitude: 34,
   longitude: -118,
@@ -140,8 +138,6 @@ function VerificationAdmin(props) {
     loading: categoriesLoading,
     error: categoriesError,
   } = useCategories();
-
-  const { data: tenants, loading: tenantsLoading } = useTenants();
 
   const {
     data: neighborhoods,
@@ -317,9 +313,8 @@ function VerificationAdmin(props) {
         defaultCriteria={defaultCriteria}
         criteria={criteria}
         neighborhoods={neighborhoods}
-        tenants={tenants}
         categories={categories}
-        isLoading={neighborhoodsLoading || categoriesLoading || tenantsLoading}
+        isLoading={neighborhoodsLoading || categoriesLoading}
       />
       <div className={classes.mainContent}>
         <Dialog
@@ -339,7 +334,6 @@ function VerificationAdmin(props) {
                 userLatitude={userCoordinates.latitude}
                 userLongitude={userCoordinates.longitude}
                 categories={categories && categories.filter((c) => !c.inactive)}
-                tenants={tenants}
                 neighborhoods={neighborhoods}
                 criteria={criteria}
                 setCriteria={setCriteria}

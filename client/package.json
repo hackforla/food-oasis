@@ -1,7 +1,7 @@
 {
   "name": "food-oasis-client",
   "description": "React Client for Food Oasis",
-  "version": "1.0.30",
+  "version": "1.0.32",
   "author": "Hack for LA",
   "license": "GPL-2.0",
   "private": true,
@@ -34,6 +34,7 @@
     "react": "^16.13.1",
     "react-data-grid": "^6.1.0",
     "react-dom": "^16.13.1",
+    "react-gtm-module": "^2.0.11",
     "react-i18next": "^10.13.2",
     "react-map-gl": "^5.2.5",
     "react-proptypes": "^1.0.0",

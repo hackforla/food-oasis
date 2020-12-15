@@ -661,13 +661,14 @@ const insert = async (model) => {
 };
 
 const requestAssignment = async (model) => {
-  const { loginId } = model;
+  const { loginId, tenantId } = model;
   const sql = `with selected_stakeholder as (
     select distinct sh.id, sh.modified_date
     from stakeholder sh join stakeholder_category sc 
       on sh.id = sc.stakeholder_id
     join category c on sc.category_id = c.id
     where sh.verification_status_id = 1
+    and sh.tenant_id = ${toSqlNumeric(tenantId)}
     and c.inactive = false
     order by sh.modified_date
     limit 1

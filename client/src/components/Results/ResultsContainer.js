@@ -32,6 +32,7 @@ export default function ResultsContainer({
   // Component state
   const { data, search } = useOrganizationBests();
   const [sortedData, setSortedData] = useState([]);
+  const [status, setStatus] = useState("initial"); // 'initial', 'loading', 'loaded'
   const classes = useStyles();
 
   const [selectedStakeholder, onSelectStakeholder] = useState(null);
@@ -77,6 +78,7 @@ export default function ResultsContainer({
   // Component effects
 
   useEffect(() => {
+    setStatus("loading");
     const sortOrganizations = (a, b) => {
       if (
         (a.inactive || a.inactiveTemporary) &&
@@ -98,10 +100,12 @@ export default function ResultsContainer({
       return;
     }
     setSortedData(data.sort(sortOrganizations));
+    setStatus("loaded");
   }, [data]);
 
   const handleSearch = useCallback(
     (e, center, bounds) => {
+      setStatus("loading");
       if (e) e.preventDefault();
       search({
         latitude:
@@ -124,6 +128,7 @@ export default function ResultsContainer({
           longitude: origin.longitude,
         });
       doSelectStakeholder(null);
+      setStatus("loaded");
     },
     [
       search,
@@ -158,6 +163,8 @@ export default function ResultsContainer({
             doSelectStakeholder={doSelectStakeholder}
             stakeholders={sortedData}
             setToast={setToast}
+            status={status}
+            handleReset={handleSearch}
           />
         )}
         {(!mobileView || (mobileView && isMapView)) && (

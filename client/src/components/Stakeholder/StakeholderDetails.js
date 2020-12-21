@@ -227,6 +227,17 @@ const StakeholderDetails = ({
             </em>
           ))}
           <div className={classes.label}>
+            <em
+              key={selectedStakeholder.id}
+              style={{
+                alignSelf: "flex-start",
+                margin: "0 0.25em 0.25em 0",
+              }}
+            >
+              {selectedStakeholder.foodTypes}
+            </em>
+          </div>
+          <div className={classes.label}>
             {selectedStakeholder.inactiveTemporary ||
             selectedStakeholder.inactive ? (
               <em className={classes.closedLabel}>

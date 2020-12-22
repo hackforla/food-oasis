@@ -61,13 +61,13 @@ function SuggestionDialog(props) {
   const handleSubmit = () => {
     return suggestionService
       .post(stakeholder)
-      .then((response) => {
+      .then(() => {
         setToast({
           message: "Thank you for your help!",
         });
         onClose(true);
       })
-      .catch((err) => {
+      .catch(() => {
         setToast({
           message:
             "Sorry, submitting your correction failed, please email us at the address on the About page.",

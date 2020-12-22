@@ -178,7 +178,7 @@ const Donate = () => {
           </p>
           <a
             // href="//www.codeforamerica.org/donate"
-            href=" https://svbinthecommunity.benevity.org/community/fundraiser/1842"
+            href="//www.codeforamerica.org/donate"
             target="_blank"
             rel="noopener noreferrer"
             className={classes.btnOutline}

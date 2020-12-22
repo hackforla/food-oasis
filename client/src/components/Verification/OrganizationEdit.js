@@ -44,7 +44,7 @@ import {
 import { PrimaryButton, TextInput } from "../../ui/index";
 import moment from "moment";
 
-const BigTooltip = withStyles((theme) => ({
+const BigTooltip = withStyles(() => ({
   tooltip: {
     fontSize: 16,
   },
@@ -450,7 +450,7 @@ const OrganizationEdit = (props) => {
             if (values.id) {
               return stakeholderService
                 .put({ ...values, loginId: user.id })
-                .then((response) => {
+                .then(() => {
                   setToast({
                     message: "Update successful.",
                   });

@@ -54,7 +54,7 @@ const FaqEdit = ({ match, history }) => {
 
         setAddedFaq(addedLanguages);
         setNeedToAddFaqs(needToAddLanguages);
-      } catch {
+      } catch (error) {
         throw new Error("Cannot fetch FAQs...");
       }
     }

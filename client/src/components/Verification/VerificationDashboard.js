@@ -83,6 +83,7 @@ function VerificationDashboard(props) {
     search: stakeholderSearch,
   } = useOrganizations();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const searchCallback = useCallback(stakeholderSearch, []);
 
   useEffect(() => {

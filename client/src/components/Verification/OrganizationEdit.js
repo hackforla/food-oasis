@@ -202,6 +202,49 @@ const emptyOrganization = {
   foodMeat: false,
 };
 
+const FOOD_TYPES = [
+  {
+    name: "foodBakery",
+    label: "Baked Goods",
+  },
+  {
+    name: "foodDryGoods",
+    label: "Dry Goods",
+  },
+  {
+    name: "foodProduce",
+    label: "Produce",
+  },
+  {
+    name: "foodDairy",
+    label: "Dairy",
+  },
+  {
+    name: "foodPrepared",
+    label: "Prepared Food",
+  },
+  {
+    name: "foodMeat",
+    label: "Meat",
+  },
+];
+
+const CheckboxWithLabel = ({ name, label, checked, onChange, ...props }) => (
+  <Grid item xs={12} sm={4}>
+    <FormControlLabel
+      control={
+        <Checkbox
+          name={name}
+          checked={checked}
+          onChange={onChange}
+          {...props}
+        />
+      }
+      label={label}
+    />
+  </Grid>
+);
+
 const OrganizationEdit = (props) => {
   const { classes, setToast, match, user, history } = props;
   const editId = match.params.id;
@@ -1111,7 +1154,13 @@ const OrganizationEdit = (props) => {
                   <Grid item xs={12}>
                     <Typography>Details for Food Seekers to See</Typography>
                   </Grid>
-                  <Grid item container justify="space-between" xs={12}>
+                  <Grid
+                    item
+                    container
+                    justify="space-between"
+                    xs={12}
+                    alignItems="center"
+                  >
                     <Grid item xs={6}>
                       <Typography>Food Types</Typography>
                     </Grid>
@@ -1133,118 +1182,28 @@ const OrganizationEdit = (props) => {
                             size="medium"
                           />
                         }
-                        label="Confirm Food Types"
+                        label="confirm"
                       />
                     </Grid>
                   </Grid>
-                  <Grid item xs={12} sm={4}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          margin="normal"
-                          name="foodBakery"
-                          label="Bakery"
-                          value={values.foodBakery}
-                          checked={values.foodBakery}
-                          onChange={() =>
-                            setFieldValue("foodBakery", !values.foodBakery)
-                          }
+                  <Grid
+                    container
+                    alignItems="center"
+                    style={{ maxWidth: "600px" }}
+                  >
+                    {FOOD_TYPES.map(({ name, label }) => {
+                      const checked = values[name];
+                      return (
+                        <CheckboxWithLabel
+                          key={name}
+                          name={name}
+                          label={label}
+                          checked={checked}
+                          onChange={() => setFieldValue(name, !checked)}
                           onBlur={handleBlur}
                         />
-                      }
-                      label="Baked Goods"
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={4}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          margin="normal"
-                          name="foodDryGoods"
-                          label="Dry Goods"
-                          value={values.foodDryGoods}
-                          checked={values.foodDryGoods}
-                          onChange={() =>
-                            setFieldValue("foodDryGoods", !values.foodDryGoods)
-                          }
-                          onBlur={handleBlur}
-                        />
-                      }
-                      label="Dry Goods"
-                    />
-                  </Grid>
-
-                  <Grid item xs={12} sm={4}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          margin="normal"
-                          name="foodProduce"
-                          label="Produce"
-                          value={values.foodProduce}
-                          checked={values.foodProduce}
-                          onChange={() =>
-                            setFieldValue("foodProduce", !values.foodProduce)
-                          }
-                          onBlur={handleBlur}
-                        />
-                      }
-                      label="Produce"
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={4}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          margin="normal"
-                          name="foodDairy"
-                          label="Dairy"
-                          value={values.foodDairy}
-                          checked={values.foodDairy}
-                          onChange={() =>
-                            setFieldValue("foodDairy", !values.foodDairy)
-                          }
-                          onBlur={handleBlur}
-                        />
-                      }
-                      label="Dairy"
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={4}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          margin="normal"
-                          name="foodPrepared"
-                          label="Prepared Food"
-                          value={values.foodPrepared}
-                          checked={values.foodPrepared}
-                          onChange={() =>
-                            setFieldValue("foodPrepared", !values.foodPrepared)
-                          }
-                          onBlur={handleBlur}
-                        />
-                      }
-                      label="Prepared Food"
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={4}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          margin="normal"
-                          name="foodMeat"
-                          label="Meat"
-                          value={values.foodMeat}
-                          checked={values.foodMeat}
-                          onChange={() =>
-                            setFieldValue("foodMeat", !values.foodMeat)
-                          }
-                          onBlur={handleBlur}
-                        />
-                      }
-                      label="Meat"
-                    />
+                      );
+                    })}
                   </Grid>
                 </Grid>
                 <Grid item xs={12}>

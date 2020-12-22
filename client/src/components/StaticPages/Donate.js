@@ -177,7 +177,6 @@ const Donate = () => {
             Angeles.
           </p>
           <a
-            // href="//www.codeforamerica.org/donate"
             href="//www.codeforamerica.org/donate"
             target="_blank"
             rel="noopener noreferrer"

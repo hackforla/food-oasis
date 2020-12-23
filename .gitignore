@@ -244,6 +244,7 @@ env
 dotenv 
 
 /.vscode
+.eslintcache
 
 # End of project-specific exclusions
 #

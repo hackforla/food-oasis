@@ -57,7 +57,7 @@ const Faq = () => {
         } else {
           setMessage("There are currently no FAQs.");
         }
-      } catch {
+      } catch (error) {
         setMessage("Cannot fetch FAQs...");
         throw new Error("Cannot fetch FAQs...");
       }

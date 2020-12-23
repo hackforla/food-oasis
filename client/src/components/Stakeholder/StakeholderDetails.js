@@ -16,7 +16,7 @@ import { extractNumbers, getGoogleMapsUrl } from "helpers";
 import Icon from "components/Icon";
 import SuggestionDialog from "components/SuggestionDialog";
 
-const useStyles = makeStyles((theme, props) => ({
+const useStyles = makeStyles((theme) => ({
   stakeholder: {
     width: "100%",
     display: "flex",
@@ -122,7 +122,7 @@ const StakeholderDetails = ({
     setSuggestionDialogOpen(true);
   };
 
-  const handleSuggestionDialogClose = async (loginId) => {
+  const handleSuggestionDialogClose = async () => {
     setSuggestionDialogOpen(false);
   };
 

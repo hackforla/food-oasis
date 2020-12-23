@@ -9,7 +9,7 @@ import logo from "images/foodoasis.svg";
 import logoCA from "images/foodoasis.svg";
 import { tenantId } from "../helpers/Configuration";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   footer: {
     position: "relative",
     backgroundColor: "#FFF",

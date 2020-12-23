@@ -29,8 +29,10 @@ async function login(req, res) {
     sub: `${req.user.role}` || "",
   });
   res.cookie("jwt", token, {
-    httpOnly: true,
+    httpOnly: false,
     expires: new Date(Date.now() + 86400000), // 1 day
+    sameSite: "None",
+    secure: false,
   });
   const user = req.user;
   res.json({ isSuccess: true, token: token, user });

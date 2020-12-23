@@ -22,7 +22,7 @@ import LocationAutocomplete from "../LocationAutocomplete";
 import AccountAutocomplete from "../AccountAutocomplete";
 import { defaultCoordinates } from "../../helpers/Configuration";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   card: {
     margin: "0px",
   },
@@ -42,7 +42,6 @@ const SearchCriteria = ({
   neighborhoods,
   criteria,
   setCriteria,
-  search,
 }) => {
   const [useMyLocation, setUseMyLocation] = useState(
     criteria.latitude

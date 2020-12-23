@@ -30,7 +30,7 @@ exports.up = (pgm) => {
   `
   );
 
-  pgm.createCol;
+  //pgm.createCol;
 };
 
 exports.down = () => {};

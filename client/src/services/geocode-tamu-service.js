@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "./axios-instance";
 
 const baseUrl =
   "//geoservices.tamu.edu/Services/Geocode/WebService/GeocoderWebServiceHttpNonParsed_V04_01.aspx";

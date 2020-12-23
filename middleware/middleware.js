@@ -13,7 +13,7 @@ function cors(req, res, next) {
   res.setHeader("Access-Control-Max-Age", "86400");
   res.setHeader(
     "Access-Control-Allow-Headers",
-    "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"
+    "Origin, X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"
   );
 
   next();

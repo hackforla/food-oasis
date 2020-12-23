@@ -34,7 +34,7 @@ export default (initialState) => {
     [dispatch]
   );
   const clearCategories = useCallback(
-    (value) => dispatch({ type: CATEGORY_CLEAR, initialState }),
+    () => dispatch({ type: CATEGORY_CLEAR, initialState }),
     [initialState]
   );
 

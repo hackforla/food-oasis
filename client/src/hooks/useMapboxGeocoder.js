@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+import axios from "../services/axios-instance";
 import debounce from "debounce-fn";
 import { tenantId } from "helpers/Configuration";
 

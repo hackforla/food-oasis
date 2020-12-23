@@ -37,7 +37,7 @@ import Suggestion from "components/Suggestion";
 import newTheme from "./theme/newTheme";
 
 const useStyles = makeStyles({
-  app: (props) => ({
+  app: () => ({
     color: "black",
     margin: "0",
     height: "100%",

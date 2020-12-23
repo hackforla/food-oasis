@@ -470,8 +470,6 @@ function VerificationAdmin(props) {
           )}
         </>
       </div>
-      <div>{`Mapbox Token: ${process.env.REACT_APP_MAPBOX_TOKEN}`}</div>
-      <div>{`NODE_ENV: ${process.env.NODE_ENV}`}</div>
     </main>
   );
 }

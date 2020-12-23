@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "./axios-instance";
 import moment from "moment";
 import { tenantId } from "helpers/Configuration";
 

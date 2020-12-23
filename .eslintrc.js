@@ -6,7 +6,7 @@ module.exports = {
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
   ],
-  plugins: ["prettier", "react"],
+  plugins: ["prettier", "react", "react-hooks"],
   env: {
     mocha: true,
     es6: true,

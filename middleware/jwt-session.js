@@ -28,10 +28,15 @@ async function login(req, res) {
     id: req.user.id,
     sub: `${req.user.role}` || "",
   });
-  res.cookie("jwt", token, {
-    httpOnly: true,
+  const cookieConfig = {
+    httpOnly: false,
     expires: new Date(Date.now() + 86400000), // 1 day
-  });
+  };
+  if (req.secure) {
+    cookieConfig.sameSite = "None";
+    cookieConfig.secure = true;
+  }
+  res.cookie("jwt", token, cookieConfig);
   const user = req.user;
   res.json({ isSuccess: true, token: token, user });
 }

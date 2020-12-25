@@ -11,7 +11,7 @@ export default function AccountAutocomplete({
 }) {
   const { data: accounts } = useAccounts();
 
-  const handleChange = (event, value, reason) => {
+  const handleChange = (event, value) => {
     setAccount && setAccount(value);
     setAccountId && setAccountId(value ? value.id : null);
   };

@@ -1,8 +1,8 @@
-import axios from "axios";
+import axios from "./axios-instance";
 
 const baseUrl = "/api/faqs";
 
-export const getAll = async (language) => {
+export const getAll = async () => {
   const response = await axios.get(baseUrl);
   return response.data;
 };

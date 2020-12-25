@@ -199,7 +199,7 @@ const forgotPassword = async (model) => {
     if (
       checkAccountResult &&
       checkAccountResult.rows &&
-      checkAccountResult.rows.length == 1
+      checkAccountResult.rows.length === 1
     ) {
       result = {
         isSuccess: true,

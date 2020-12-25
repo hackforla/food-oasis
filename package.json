@@ -28,7 +28,7 @@
   },
   "lint-staged": {
     "**/*.{js,jsx}": [
-      "eslint -c .eslintrc.js --ignore-path .eslintignore --fix"
+      "eslint --fix"
     ]
   },
   "license": "GPL-2.0",

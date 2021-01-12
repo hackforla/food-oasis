@@ -17,12 +17,18 @@ import OrganizationEdit from "components/Verification/OrganizationEdit";
 import Donate from "components/StaticPages/Donate";
 import About from "components/StaticPages/About";
 import Faq from "components/StaticPages/Faq";
+import DonateLA from "components/StaticPagesLA/Donate";
+import AboutLA from "components/StaticPagesLA/About";
+import FaqLA from "components/StaticPagesLA/Faq";
 import DonateCA from "components/StaticPagesCA/Donate";
 import AboutCA from "components/StaticPagesCA/About";
 import FaqCA from "components/StaticPagesCA/Faq";
 import DonateHI from "components/StaticPagesHI/Donate";
 import AboutHI from "components/StaticPagesHI/About";
 import FaqHI from "components/StaticPagesHI/Faq";
+import DonatePDX from "components/StaticPagesPDX/Donate";
+import AboutPDX from "components/StaticPagesPDX/About";
+import FaqPDX from "components/StaticPagesPDX/Faq";
 import Resources from "components/Resources";
 import Register from "components/Register";
 import Login from "components/Login";
@@ -242,28 +248,40 @@ function App() {
                 <ResetPassword setToast={setToast} />
               </Route>
               <Route path="/donate">
-                {tenantId === 3 ? (
+                {tenantId === 4 ? (
+                  <DonatePDX />
+                ) : tenantId === 3 ? (
                   <DonateHI />
                 ) : tenantId === 2 ? (
                   <DonateCA />
+                ) : tenantId === 1 ? (
+                  <DonateLA />
                 ) : (
                   <Donate />
                 )}
               </Route>
               <Route path="/about">
-                {tenantId === 3 ? (
+                {tenantId === 4 ? (
+                  <AboutPDX />
+                ) : tenantId === 3 ? (
                   <AboutHI />
                 ) : tenantId === 2 ? (
                   <AboutCA />
+                ) : tenantId === 1 ? (
+                  <AboutLA />
                 ) : (
                   <About />
                 )}
               </Route>
               <Route exact path="/faqs">
-                {tenantId === 3 ? (
+                {tenantId === 4 ? (
+                  <FaqPDX />
+                ) : tenantId === 3 ? (
                   <FaqHI />
                 ) : tenantId === 2 ? (
                   <FaqCA />
+                ) : tenantId === 1 ? (
+                  <FaqLA />
                 ) : (
                   <Faq />
                 )}

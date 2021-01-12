@@ -1,7 +1,7 @@
 {
   "name": "food-oasis-client",
   "description": "React Client for Food Oasis",
-  "version": "1.0.35",
+  "version": "1.0.36",
   "author": "Hack for LA",
   "license": "GPL-2.0",
   "private": true,
@@ -18,7 +18,7 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.51",
     "@material-ui/pickers": "^3.2.10",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "classnames": "^2.2.6",
     "debounce-fn": "^3.0.1",
     "dotenv": "^8.2.0",

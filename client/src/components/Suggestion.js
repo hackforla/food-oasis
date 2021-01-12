@@ -65,14 +65,14 @@ function Suggestion(props) {
     setIsSubmitting(true);
     return suggestionService
       .post(stakeholder)
-      .then((response) => {
+      .then(() => {
         setIsSubmitting(false);
         setToast({
           message: "Thank you for your help!",
         });
         history.push("/");
       })
-      .catch((err) => {
+      .catch(() => {
         setIsSubmitting(false);
         setToast({
           message:

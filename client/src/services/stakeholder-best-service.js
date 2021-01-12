@@ -1,8 +1,8 @@
-import axios from "axios";
+import axios from "./axios-instance";
 import moment from "moment";
 import { tenantId } from "helpers/Configuration";
 
-const baseUrl = "/api/stakeholderbests";
+const baseUrl = `/api/stakeholderbests`;
 
 const toLocalMoment = (ts) => {
   return !ts ? null : moment.utc(ts).local();

@@ -22,7 +22,7 @@ const styles = {
   },
 };
 
-const useStyles = makeStyles((theme, props) => ({
+const useStyles = makeStyles((theme) => ({
   map: {
     textAlign: "center",
     fontSize: "12px",

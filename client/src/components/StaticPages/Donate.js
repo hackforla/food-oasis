@@ -17,6 +17,8 @@ import Box from '@material-ui/core/Box';
 import donationCheckbox from "images/donationCheckbox.png";
 import donationRecipient from "images/donationRecipient.png";
 import donationBrigade from "images/donationBrigade.png";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
 
 const useStyles = makeStyles((theme) => ({
   outer: {
@@ -167,6 +169,12 @@ const useStyles = makeStyles((theme) => ({
   step: {
     backgroundColor: "#ef624f",
   },
+  dialogCloseButton: {
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  }
 }));
 const Donate = () => {
   const classes = useStyles();
@@ -279,15 +287,17 @@ export default Donate;
 
 const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
   const classes = useStyles();
-
+  const handleCloseDonationDialog = () => {
+    setShowDonationDialog(false);
+  };
   return (
     <Dialog
-      onClose={() => setShowDonationDialog(false)}
+      onClose={handleCloseDonationDialog}
       aria-labelledby="simple-dialog-title"
       open={showDonationDialog}
       maxWidth="sm"
     >
-      <DialogTitle id="simple-dialog-title">
+      <DialogTitle id="simple-dialog-title" >
         <Grid container justify="center">
           <img style={{ height: "50px" }} src={logo} alt="logo" />
           <Grid item>
@@ -298,6 +308,15 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
             <Typography align="center" color="error" variant="h6">
               This is a 3-step process.
             </Typography>
+          </Grid>
+          <Grid item>
+            <IconButton
+              aria-label="close"
+              className={classes.dialogCloseButton}
+              onClick={handleCloseDonationDialog}
+            >
+              <CloseIcon />
+            </IconButton>
           </Grid>
         </Grid>
       </DialogTitle>

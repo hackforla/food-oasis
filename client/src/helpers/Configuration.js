@@ -1,6 +1,8 @@
 export const tenantId = (() =>
+  window.location.hostname.toLowerCase().includes("or.") ||
+  window.location.hostname.toLowerCase().includes("oregon.") ||
   window.location.hostname.toLowerCase().includes("pdx.") ||
-  window.location.hostname.toLowerCase().includes("portland") ||
+  window.location.hostname.toLowerCase().includes("portland.") ||
   process.env.REACT_APP_TENANT_ID === "4"
     ? 4
     : window.location.hostname.toLowerCase().includes("hi.") ||

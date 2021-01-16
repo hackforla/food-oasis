@@ -14,9 +14,13 @@ import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import donationCheckbox from "images/donationCheckbox.png";
-import donationRecipient from "images/donationRecipient.png";
-import donationBrigade from "images/donationBrigade.png";
+import donationStep1 from "images/donationStep1.png";
+import donationStep2 from "images/donationStep2.png";
+import donationStep3 from "images/donationStep3.png";
+import donationStep4 from "images/donationStep4.png";
+import donationStep5 from "images/donationStep5.png";
+import donationStep6 from "images/donationStep6.png";
+import donationStep7 from "images/donationStep7.png";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 
@@ -174,8 +178,14 @@ const useStyles = makeStyles((theme) => ({
     right: theme.spacing(1),
     top: theme.spacing(1),
     color: theme.palette.grey[500],
+  },
+  donateButtonWrapper: {
+    position: 'sticky',
+    bottom: 0,
+    backgroundColor: '#fff'
   }
 }));
+
 const Donate = () => {
   const classes = useStyles();
   const [showDonationDialog, setShowDonationDialog] = React.useState(false);
@@ -306,7 +316,7 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
               America)
             </Typography>
             <Typography align="center" color="error" variant="h6">
-              This is a 3-step process.
+              This is a 7-step process.
             </Typography>
           </Grid>
           <Grid item>
@@ -328,13 +338,11 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
             </Grid>
             <Grid item xs zeroMinWidth>
               <Typography>
-                After entering your donation amount, check the{" "}
-                <em>"Dedicate my donation in honor or in memory of someone"</em>{" "}
-                box.
+                Enter your donation amount.
               </Typography>
               <img
                 style={{ height: "300px" }}
-                src={donationCheckbox}
+                src={donationStep1}
                 alt="logo"
               />
             </Grid>
@@ -347,12 +355,11 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
             </Grid>
             <Grid item xs zeroMinWidth>
               <Typography>
-                Under Honoree Name and Recipient Name write{" "}
-                <em>"Food Oasis"</em>.
+                Check the box right below.
               </Typography>
               <img
                 style={{ height: "300px" }}
-                src={donationRecipient}
+                src={donationStep2}
                 alt="logo"
               />
             </Grid>
@@ -365,31 +372,102 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
             </Grid>
             <Grid item xs zeroMinWidth>
               <Typography>
-                Choose the brigade <em>"Hack for LA"</em> in the dropdown.
+                Under "Person to notify" and "Honoree Name" write{" "}
+                <em>"Food Oasis"</em>.
               </Typography>
               <img
                 style={{ height: "300px" }}
-                src={donationBrigade}
+                src={donationStep3}
                 alt="logo"
               />
             </Grid>
           </Grid>
         </Paper>
-        <Grid container justify="center">
-          <Grid item>
-            <Box m={3}>
-              <a
-                href="//www.codeforamerica.org/donate"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={classes.btnOutline}
-              >
-                Donate
-              </a>
-            </Box>
+        <Paper className={classes.paper}>
+          <Grid container wrap="nowrap" spacing={2}>
+            <Grid item>
+              <Avatar className={classes.step}>4</Avatar>
+            </Grid>
+            <Grid item xs zeroMinWidth>
+              <Typography>
+                Under "Recipient Email" write{" "}
+                <em>"foodoasis+donations@hackforla.org"</em>.
+              </Typography>
+              <img
+                style={{ height: "300px" }}
+                src={donationStep4}
+                alt="logo"
+              />
+            </Grid>
           </Grid>
-        </Grid>
+        </Paper>
+        <Paper className={classes.paper}>
+          <Grid container wrap="nowrap" spacing={2}>
+            <Grid item>
+              <Avatar className={classes.step}>5</Avatar>
+            </Grid>
+            <Grid item xs zeroMinWidth>
+              <Typography>
+                Choose the brigade <em>"Hack for LA"</em> in the dropdown.
+              </Typography>
+              <img
+                style={{ height: "300px" }}
+                src={donationStep5}
+                alt="logo"
+              />
+            </Grid>
+          </Grid>
+        </Paper>
+        <Paper className={classes.paper}>
+          <Grid container wrap="nowrap" spacing={2}>
+            <Grid item>
+              <Avatar className={classes.step}>6</Avatar>
+            </Grid>
+            <Grid item xs zeroMinWidth>
+              <Typography>
+                Click next.
+              </Typography>
+              <img
+                style={{ height: "300px" }}
+                src={donationStep6}
+                alt="logo"
+              />
+            </Grid>
+          </Grid>
+        </Paper>
+        <Paper className={classes.paper}>
+          <Grid container wrap="nowrap" spacing={2}>
+            <Grid item>
+              <Avatar className={classes.step}>7</Avatar>
+            </Grid>
+            <Grid item xs zeroMinWidth>
+              <Typography>
+                Under "What inspired you to donate today?" write{" "}
+                <em>"Food Oasis"</em>.
+              </Typography>
+              <img
+                style={{ height: "300px" }}
+                src={donationStep7}
+                alt="logo"
+              />
+            </Grid>
+          </Grid>
+        </Paper>
       </div>
+      <Grid className={classes.donateButtonWrapper} container justify="center">
+        <Grid item>
+          <Box m={3}>
+            <a
+              href="//www.codeforamerica.org/donate"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={classes.btnOutline}
+            >
+              Donate
+            </a>
+          </Box>
+        </Grid>
+      </Grid>
     </Dialog>
   );
 };

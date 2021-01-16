@@ -216,13 +216,6 @@ const Donate = () => {
             update. Your tax-deductible donation would help us offset some of
             those costs.
           </p>
-          <p>
-            Please make donations to our parent organization (Code for America).
-            At the Code for America donation page you will see a text box: “What
-            inspired you to donate today”? Please write Food Oasis and Hack for
-            LA in that box. Your donation will get earmarked for Food Oasis Los
-            Angeles.
-          </p>
           <Button
             className={classes.btnOutline}
             onClick={handleShowDonationDialog}

@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 import theme from "theme/materialUI";
@@ -176,6 +181,12 @@ function App() {
                   />
                 </div>
               </Route>
+              {/* 
+              Following route provides backward-compatibilty for the 
+              http"//foodoasis.la/search Link that has been published at  
+              http://publichealth.lacounty.gov/eh/LACFRI/ShareAndDonate.htm 
+              */}
+              <Redirect from="/search" to="/organizations" />
               <Route path="/organizations">
                 <Results
                   userCoordinates={userCoordinates}

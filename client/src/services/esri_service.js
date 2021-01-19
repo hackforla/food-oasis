@@ -1,4 +1,4 @@
-import axios from "./axios-instance";
+import axios from "axios";
 const baseUrl = "/api/esri";
 
 // This geocoder api is deprecated for the Food Oasis App,

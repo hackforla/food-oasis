@@ -21,8 +21,8 @@ module.exports = function applyEmailTemplate(emailBody, baseUrl) {
                     <table width="100%" style="border-spacing:0;">
                         <tr>
                         <td style="padding:0;padding:10px;text-align:center;">
-                            <a href="https://foodoasis.la/">
-                            <img src="${baseUrl}/FoodOasisLogo.png" alt="Food Oasis Logo" title="Food Oasis Logo" height="55" style="border:0;">
+                            <a href="${baseUrl}">
+                            <img src="${baseUrl}/FoodOasisLogo.svg" alt="Food Oasis Logo" title="Food Oasis Logo" height="55" style="border:0;">
                             </a>
                             <p class="header" style="font-size:20px;line-height:23px;text-align:center;Margin-top:8px !important;Margin-bottom:.25em !important;">
                             Your free food directory
@@ -38,7 +38,7 @@ module.exports = function applyEmailTemplate(emailBody, baseUrl) {
                     <td class="font-body" style="padding:0;font-style:normal;font-weight:normal;font-size:16px;line-height:24px;">
                     <div style="Margin: 0px 50px;">
                     ${emailBody}
-                                </div>
+                    </div>
                     </td>
                 </tr>
                 <tr>
@@ -49,7 +49,7 @@ module.exports = function applyEmailTemplate(emailBody, baseUrl) {
                     <table width="100%" style="border-spacing:0;border-spacing: 0;">
                         <tr>
                         <td style="padding:0;padding:10px;text-align:center;">
-                            <a href="#"><img src="${baseUrl}/icon-spacer-blue.png" alt="Icon Spacer" height="24" style="border:0;"></a>
+                            <img src="${baseUrl}/icon-spacer-blue.png" alt="Icon Spacer" height="24" style="border:0;">
                             <p style="color:#336699;font-size:16px;font-style:normal;font-weight:500;line-height:24px;Margin:0;padding-top:10px;">Contact Us</p>
                         </td>
                         </tr>

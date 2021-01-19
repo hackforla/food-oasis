@@ -13,6 +13,7 @@ const stakeholderLogRouter = require("./stakeholder-log-router");
 const importRouter = require("./import-router");
 const loadRouter = require("./load-router");
 const esriRouter = require("./esri-router");
+const emailRouter = require("./email-router");
 
 module.exports = router;
 
@@ -28,3 +29,4 @@ router.use("/api/faqs", faqRouter);
 router.use("/api/imports", importRouter);
 router.use("/api/loads", loadRouter);
 router.use("/api/esri", esriRouter);
+router.use("/api/emails", emailRouter);

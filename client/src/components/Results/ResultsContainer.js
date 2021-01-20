@@ -37,16 +37,13 @@ export default function ResultsContainer({
 
   const [selectedStakeholder, onSelectStakeholder] = useState(null);
   const [isMapView, setIsMapView] = useState(true);
+
   const mobileView = isMobile();
 
   const { categoryIds, toggleCategory } = useCategoryIds([]);
   const [isVerifiedSelected, selectVerified] = useState(false);
-  const [viewport, setViewport] = useState({
-    zoom: defaultCoordinates.zoom,
-    latitude: origin.latitude,
-    longitude: origin.longitude,
-    logoPosition: "top-left",
-  });
+
+  const [initViewport, setInitViewport] = useState(null);
 
   const doSelectStakeholder = useCallback(
     (stakeholder) => {
@@ -59,15 +56,14 @@ export default function ResultsContainer({
         });
       }
       if (stakeholder && !isMobile) {
-        setViewport({
-          ...viewport,
+        setInitViewport({
           latitude: stakeholder.latitude,
           longitude: stakeholder.longitude,
         });
       }
       onSelectStakeholder(stakeholder);
     },
-    [viewport, setViewport]
+    [setInitViewport]
   );
 
   const switchResultsView = () => {
@@ -121,12 +117,13 @@ export default function ResultsContainer({
         radius: defaultCoordinates.radius,
       });
 
-      if (!center)
-        setViewport({
+      if (!center) {
+        setInitViewport({
           zoom: defaultCoordinates.zoom,
           latitude: origin.latitude,
           longitude: origin.longitude,
         });
+      }
       doSelectStakeholder(null);
       setStatus("loaded");
     },
@@ -137,7 +134,7 @@ export default function ResultsContainer({
       userCoordinates.latitude,
       userCoordinates.longitude,
       categoryIds,
-      setViewport,
+      setInitViewport,
       doSelectStakeholder,
     ]
   );
@@ -170,13 +167,13 @@ export default function ResultsContainer({
         {(!mobileView || (mobileView && isMapView)) && (
           <Map
             handleSearch={handleSearch}
-            viewport={viewport}
-            setViewport={setViewport}
+            origin={origin}
             stakeholders={data}
             doSelectStakeholder={doSelectStakeholder}
             selectedStakeholder={selectedStakeholder}
             categoryIds={categoryIds}
             setToast={setToast}
+            initViewport={initViewport}
           />
         )}
       </Grid>

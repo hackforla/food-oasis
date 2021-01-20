@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 import theme from "theme/materialUI";
@@ -23,6 +28,9 @@ import FaqCA from "components/StaticPagesCA/Faq";
 import DonateHI from "components/StaticPagesHI/Donate";
 import AboutHI from "components/StaticPagesHI/About";
 import FaqHI from "components/StaticPagesHI/Faq";
+import DonatePDX from "components/StaticPagesPDX/Donate";
+import AboutPDX from "components/StaticPagesPDX/About";
+import FaqPDX from "components/StaticPagesPDX/Faq";
 import Resources from "components/Resources";
 import Register from "components/Register";
 import Login from "components/Login";
@@ -174,6 +182,12 @@ function App() {
                   />
                 </div>
               </Route>
+              {/* 
+              Following route provides backward-compatibilty for the 
+              http"//foodoasis.la/search Link that has been published at  
+              http://publichealth.lacounty.gov/eh/LACFRI/ShareAndDonate.htm 
+              */}
+              <Redirect from="/search" to="/organizations" />
               <Route path="/organizations">
                 <Results
                   userCoordinates={userCoordinates}
@@ -246,7 +260,9 @@ function App() {
                 <ResetPassword setToast={setToast} />
               </Route>
               <Route path="/donate">
-                {tenantId === 3 ? (
+                {tenantId === 4 ? (
+                  <DonatePDX />
+                ) : tenantId === 3 ? (
                   <DonateHI />
                 ) : tenantId === 2 ? (
                   <DonateCA />
@@ -255,7 +271,9 @@ function App() {
                 )}
               </Route>
               <Route path="/about">
-                {tenantId === 3 ? (
+                {tenantId === 4 ? (
+                  <AboutPDX />
+                ) : tenantId === 3 ? (
                   <AboutHI />
                 ) : tenantId === 2 ? (
                   <AboutCA />
@@ -264,7 +282,9 @@ function App() {
                 )}
               </Route>
               <Route exact path="/faqs">
-                {tenantId === 3 ? (
+                {tenantId === 4 ? (
+                  <FaqPDX />
+                ) : tenantId === 3 ? (
                   <FaqHI />
                 ) : tenantId === 2 ? (
                   <FaqCA />

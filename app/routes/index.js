@@ -14,6 +14,7 @@ const importRouter = require("./import-router");
 const exportRouter = require("./export-router");
 const loadRouter = require("./load-router");
 const esriRouter = require("./esri-router");
+const emailRouter = require("./email-router");
 
 module.exports = router;
 
@@ -30,3 +31,4 @@ router.use("/api/import", importRouter);
 router.use("/api/export", exportRouter);
 router.use("/api/loads", loadRouter);
 router.use("/api/esri", esriRouter);
+router.use("/api/emails", emailRouter);

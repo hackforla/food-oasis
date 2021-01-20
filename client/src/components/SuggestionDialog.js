@@ -100,139 +100,10 @@ function SuggestionDialog(props) {
             <TextField
               type="text"
               size="small"
-              label="Organization Name"
-              name="name"
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              autoFocus
-              value={stakeholder.name}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              type="text"
-              size="small"
-              label="Address Line 1"
-              name="address1"
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              autoFocus
-              value={stakeholder.address1}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              type="text"
-              size="small"
-              label="Address Line 2"
-              name="address2"
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              autoFocus
-              value={stakeholder.address2}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              type="text"
-              size="small"
-              label="City"
-              name="city"
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              autoFocus
-              value={stakeholder.city}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              type="text"
-              size="small"
-              label="State"
-              name="state"
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              autoFocus
-              value={stakeholder.state}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              type="text"
-              size="small"
-              label="Zip Code"
-              name="zip"
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              autoFocus
-              value={stakeholder.zip}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              type="text"
-              size="small"
-              label="Phone"
-              name="phone"
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              autoFocus
-              value={stakeholder.phone}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              type="text"
-              size="small"
-              label="Email"
-              name="email"
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              autoFocus
-              value={stakeholder.email}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              type="text"
-              size="small"
               multiline
               rows={2}
               rowsMax={12}
-              label="Changes to Hours"
-              name="hours"
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              autoFocus
-              value={stakeholder.hours}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              type="text"
-              size="small"
-              multiline
-              rows={2}
-              rowsMax={12}
-              label="Other corrections / information"
+              label="Corrections"
               name="notes"
               variant="outlined"
               margin="normal"
@@ -249,7 +120,7 @@ function SuggestionDialog(props) {
               multiline
               rows={2}
               rowsMax={12}
-              label="Your Name"
+              label="Your Name (optional)"
               name="tipsterName"
               variant="outlined"
               margin="normal"
@@ -266,7 +137,7 @@ function SuggestionDialog(props) {
               multiline
               rows={2}
               rowsMax={12}
-              label="Your Phone"
+              label="Your Phone (optional)"
               name="tipsterPhone"
               variant="outlined"
               margin="normal"
@@ -283,7 +154,7 @@ function SuggestionDialog(props) {
               multiline
               rows={2}
               rowsMax={12}
-              label="Your Email"
+              label="Your Email (optional)"
               name="tipsterEmail"
               variant="outlined"
               margin="normal"

@@ -21,9 +21,8 @@ module.exports = function applyEmailTemplate(emailBody, baseUrl) {
                     <table width="100%" style="border-spacing:0;">
                         <tr>
                         <td style="padding:0;padding:10px;text-align:center;">
-                            <a href="${baseUrl}">
-                            <img src="${baseUrl}/FoodOasisLogo.svg" alt="Food Oasis Logo" title="Food Oasis Logo" height="55" style="border:0;">
-                            </a>
+                            <img src="${baseUrl}/FoodOasisLogo.png" alt="Food Oasis Logo" 
+                                title="Food Oasis Logo" height="55" style="border:0;">
                             <p class="header" style="font-size:20px;line-height:23px;text-align:center;Margin-top:8px !important;Margin-bottom:.25em !important;">
                             Your free food directory
                             </p>

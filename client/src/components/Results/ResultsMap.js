@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import ReactMapGL, { Layer, NavigationControl, Source } from "react-map-gl";
 import { Grid, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+
 import Marker from "components/Marker";
 import { MAPBOX_STYLE } from "constants/map";
 import { DEFAULT_CATEGORIES } from "constants/stakeholder";
@@ -42,7 +43,7 @@ const clusterCountLayer = {
   filter: ["has", "point_count"],
   layout: {
     "text-field": "{point_count_abbreviated}",
-    "text-size": 12,
+    "text-size": 14,
   },
   paint: {
     "text-color": theme.palette.primary.contrastText,
@@ -120,10 +121,36 @@ function Map({
       logoPosition: "top-left",
     }
   );
+  const [showDetails, setShowDetails] = useState(false);
+  const [showSearchArea, setShowSearchArea] = useState(false);
+  const [shownStakeholders, setShownStakeholders] = useState([]);
 
   useEffect(() => {
     setViewport(initViewport);
   }, [initViewport]);
+
+  useEffect(() => {
+    if (mapRef.current) {
+      // this gets called after the component is mounted
+
+      const mapInstance = mapRef.current.getMap();
+      const features = mapInstance.querySourceFeatures("stakeholders");
+      const newShownStakeholders = [];
+
+      features.forEach((feature) => {
+        const props = feature.properties;
+        if (!props.cluster)
+          newShownStakeholders.push(props.stakeholderId);
+      });
+
+      if (
+        JSON.stringify(newShownStakeholders.sort()) !==
+        JSON.stringify(shownStakeholders.sort())
+      ) {
+        setShownStakeholders(newShownStakeholders);
+      }
+    }
+  }, [viewport, shownStakeholders]);
 
   const classes = useStyles({ selectedStakeholder });
   const mapRef = useRef();
@@ -131,10 +158,6 @@ function Map({
   const categoryIdsOrDefault = categoryIds.length
     ? categoryIds
     : DEFAULT_CATEGORIES;
-
-  const [showDetails, setShowDetails] = useState(false);
-  const [showSearchArea, setShowSearchArea] = useState(false);
-  const [shownStakeholders, setShownStakeholders] = useState([]);
 
   const onInteractionStateChange = (s) => {
     // don't do anything if the mapview is moving
@@ -149,33 +172,6 @@ function Map({
       return;
     // make sure map has already loaded
     if (mapRef && mapRef.current && mapRef.current) setShowSearchArea(true);
-  };
-
-  const updateShownStakeholders = () => {
-    if (mapRef.current) {
-      // this gets called after the component is mounted
-
-      const mapInstance = mapRef.current.getMap();
-      const features = mapInstance.querySourceFeatures("stakeholders");
-      const newShownStakeholders = [];
-
-      features.forEach((feature) => {
-        const props = feature.properties;
-
-        if (props.cluster) {
-          return;
-        }
-
-        newShownStakeholders.push(props.stakeholderId);
-      });
-
-      if (
-        JSON.stringify(newShownStakeholders.sort()) !==
-        JSON.stringify(shownStakeholders.sort())
-      ) {
-        setShownStakeholders(newShownStakeholders);
-      }
-    }
   };
 
   const searchArea = () => {
@@ -264,8 +260,6 @@ function Map({
     doSelectStakeholder(null);
   };
 
-  setTimeout(updateShownStakeholders, 10);
-
   return (
     <>
       <Grid item xs={12} md={8} className={classes.map}>
@@ -274,12 +268,8 @@ function Map({
           ref={mapRef}
           width="100%"
           height="100%"
-          onLoad={() => setTimeout(updateShownStakeholders, 10)}
           onViewportChange={(newViewport) => {
             setViewport(newViewport);
-          }}
-          onTransitionEnd={() => {
-            setTimeout(updateShownStakeholders, 10);
           }}
           mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
           mapStyle={MAPBOX_STYLE}

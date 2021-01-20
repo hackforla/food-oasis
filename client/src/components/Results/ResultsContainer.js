@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
+import { useHistory, useLocation } from "react-router-dom";
 
 import { useOrganizationBests } from "hooks/useOrganizationBests";
 import useCategoryIds from "hooks/useCategoryIds";
@@ -34,6 +35,8 @@ export default function ResultsContainer({
   const [sortedData, setSortedData] = useState([]);
   const [status, setStatus] = useState("initial"); // 'initial', 'loading', 'loaded'
   const classes = useStyles();
+  const history = useHistory();
+  const location = useLocation();
 
   const [selectedStakeholder, onSelectStakeholder] = useState(null);
   const [isMapView, setIsMapView] = useState(true);
@@ -54,6 +57,10 @@ export default function ResultsContainer({
           value: stakeholder.id,
           name: stakeholder.name,
         });
+        const name = stakeholder.name.toLowerCase().replaceAll(' ', '_');
+        history.push(`/organizations?org=${name}`)
+      } else {
+        history.push('/organizations')
       }
       if (stakeholder && !isMobile) {
         setInitViewport({
@@ -63,8 +70,21 @@ export default function ResultsContainer({
       }
       onSelectStakeholder(stakeholder);
     },
-    [setInitViewport]
+    [setInitViewport, history]
   );
+
+  useEffect(() => {
+    if (location.search.includes('?org=') && data) {
+      const org = location.search.replace('?org=', '').replaceAll('_', ' ');
+      const stakeholder = data.find(s => s.name.toLowerCase() === org)
+      onSelectStakeholder(stakeholder);
+      setInitViewport({
+        latitude: stakeholder.latitude,
+        longitude: stakeholder.longitude,
+        zoom: 13,
+      });
+    }
+  }, [data]);
 
   const switchResultsView = () => {
     doSelectStakeholder();
@@ -124,7 +144,6 @@ export default function ResultsContainer({
           longitude: origin.longitude,
         });
       }
-      doSelectStakeholder(null);
       setStatus("loaded");
     },
     [
@@ -135,7 +154,6 @@ export default function ResultsContainer({
       userCoordinates.longitude,
       categoryIds,
       setInitViewport,
-      doSelectStakeholder,
     ]
   );
 

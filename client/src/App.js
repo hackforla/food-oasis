@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 import theme from "theme/materialUI";
@@ -17,9 +22,6 @@ import OrganizationEdit from "components/Verification/OrganizationEdit";
 import Donate from "components/StaticPages/Donate";
 import About from "components/StaticPages/About";
 import Faq from "components/StaticPages/Faq";
-import DonateLA from "components/StaticPagesLA/Donate";
-import AboutLA from "components/StaticPagesLA/About";
-import FaqLA from "components/StaticPagesLA/Faq";
 import DonateCA from "components/StaticPagesCA/Donate";
 import AboutCA from "components/StaticPagesCA/About";
 import FaqCA from "components/StaticPagesCA/Faq";
@@ -179,6 +181,12 @@ function App() {
                   />
                 </div>
               </Route>
+              {/* 
+              Following route provides backward-compatibilty for the 
+              http"//foodoasis.la/search Link that has been published at  
+              http://publichealth.lacounty.gov/eh/LACFRI/ShareAndDonate.htm 
+              */}
+              <Redirect from="/search" to="/organizations" />
               <Route path="/organizations">
                 <Results
                   userCoordinates={userCoordinates}
@@ -254,8 +262,6 @@ function App() {
                   <DonateHI />
                 ) : tenantId === 2 ? (
                   <DonateCA />
-                ) : tenantId === 1 ? (
-                  <DonateLA />
                 ) : (
                   <Donate />
                 )}
@@ -267,8 +273,6 @@ function App() {
                   <AboutHI />
                 ) : tenantId === 2 ? (
                   <AboutCA />
-                ) : tenantId === 1 ? (
-                  <AboutLA />
                 ) : (
                   <About />
                 )}
@@ -280,8 +284,6 @@ function App() {
                   <FaqHI />
                 ) : tenantId === 2 ? (
                   <FaqCA />
-                ) : tenantId === 1 ? (
-                  <FaqLA />
                 ) : (
                   <Faq />
                 )}

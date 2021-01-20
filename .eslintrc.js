@@ -1,19 +1,27 @@
 module.exports = {
-  extends: ["eslint:recommended", "plugin:prettier/recommended"],
-  plugins: ["react", "prettier", "eslint-plugin-react"],
+  extends: [
+    "eslint:recommended",
+    "plugin:prettier/recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+  ],
+  plugins: ["prettier", "react", "react-hooks"],
   env: {
     mocha: true,
     es6: true,
     node: true,
+    jest: true,
+    browser: true,
   },
   parserOptions: {
-    ecmaVersion: 2018,
+    ecmaVersion: 2020,
     sourceType: "module",
     ecmaFeatures: {
       jsx: true,
     },
   },
   rules: {
+    "react/prop-types": 0,
     "prettier/prettier": "error",
   },
   settings: {

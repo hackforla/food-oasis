@@ -170,15 +170,14 @@ const Donate = () => {
             those costs.
           </p>
           <p>
-            Please make donations to our parent organization (Code for America).
-            At the Code for America donation page you will see a text box: “What
-            inspired you to donate today”? Please write "Food Oasis and Code for
-            Hawaii" in that box. Your donation will get earmarked for Food Oasis
-            Hawaii.
+            Please make donations to our parent organization (Code for America)
+            At the Code for America donation page you will see a text box:
+            &quot;What inspired you to donate today&quot;? Please write
+            &quot;Food Oasis and Code for Hawaii&quot; in that box. Your
+            donation will get earmarked for Food Oasis Hawaii
           </p>
           <a
-            // href="//www.codeforamerica.org/donate"
-            href=" https://svbinthecommunity.benevity.org/community/fundraiser/1842"
+            href="//www.codeforamerica.org/donate"
             target="_blank"
             rel="noopener noreferrer"
             className={classes.btnOutline}
@@ -211,7 +210,7 @@ const Donate = () => {
         </div>
         <section className={classes.cards}>
           <aside className={classes.signup}>
-            <h3>Get monthly updates on what we're doing</h3>
+            <h3>Get monthly updates on what we&apos;`re doing</h3>
             <a
               href="//foodoasis.us18.list-manage.com/subscribe?u=40d31892cbbe01312937f7de6&id=42235bb7ce"
               target="_blank"

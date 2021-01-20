@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 
 function ConfirmDialog(props) {
-  const { onClose, open, tite, message, ...other } = props;
+  const { onClose, open, ...other } = props;
 
   const handleCancel = () => {
     onClose(false);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, forwardRef } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/styles";
 import ListItem from "@material-ui/core/ListItem";
@@ -11,12 +11,13 @@ const useStyles = makeStyles({
   },
 });
 
-export default function MenuItemLink({ to, text, userSection, onClick }) {
+const MenuItemLink = ({ to, text, userSection, onClick }) => {
   const classes = useStyles();
 
-  const renderLink = React.useMemo(
+  const renderLink = useMemo(
     () =>
-      React.forwardRef((itemProps, ref) => (
+      // eslint-disable-next-line react/display-name
+      forwardRef((itemProps, ref) => (
         <Link to={to} innerRef={ref} {...itemProps} />
       )),
     [to]
@@ -29,7 +30,7 @@ export default function MenuItemLink({ to, text, userSection, onClick }) {
       </ListItem>
     </span>
   );
-}
+};
 
 MenuItemLink.propTypes = {
   to: PropTypes.string,
@@ -37,3 +38,5 @@ MenuItemLink.propTypes = {
   userSection: PropTypes.bool,
   onClick: PropTypes.func,
 };
+
+export default MenuItemLink;

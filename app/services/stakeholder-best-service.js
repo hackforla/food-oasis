@@ -151,7 +151,7 @@ const search = async ({
       assignedUser: row.assigned_user || "",
       claimedUser: row.claimed_user || "",
       categories: categoriesResults.rows.filter(
-        (cats) => cats.stakeholder_id == row.id
+        (cats) => cats.stakeholder_id === row.id
       ),
       hours: row.hours || [],
       parentOrganization: row.parent_organization || "",

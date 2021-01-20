@@ -1,9 +1,53 @@
 import React, { useState, useEffect } from "react";
+import Footer from "./Footer";
 import { Redirect, withRouter } from "react-router-dom";
-import { Card, Button, TextField } from "@material-ui/core";
+import {
+  withStyles,
+  Avatar,
+  Button,
+  Container,
+  CssBaseline,
+  TextField,
+  Typography,
+} from "@material-ui/core";
 import * as accountService from "../services/account-service";
+import EmailOutlinedIcon from "@material-ui/icons/EmailOutlined";
+
+const styles = (theme) => ({
+  "@global": {
+    body: {
+      backgroundColor: theme.palette.common.white,
+    },
+  },
+  paper: {
+    marginTop: theme.spacing(1),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+  body: {
+    display: "flex",
+    height: "97.8%",
+    flexDirection: "column",
+  },
+  container: {
+    flex: 1,
+  },
+});
 
 const ConfirmEmail = (props) => {
+  const { classes } = props;
   const [confirmResult, setConfirmResult] = useState(false);
   const [email, setEmail] = useState("");
   const [emailSent, setEmailSent] = useState(false);
@@ -31,46 +75,63 @@ const ConfirmEmail = (props) => {
   };
 
   return (
-    <React.Fragment>
-      <div>Confirm Email</div>
-      {!confirmResult ? (
-        <div>"Confirming Email..."</div>
-      ) : confirmResult.success ? (
-        <Redirect to={"/login"} />
-      ) : emailSent ? (
-        <p>
-          {`A confirmation email has been sent to ${email}. Please find this
-            email and click on the link provided to complete your email confirmation.`}
-        </p>
-      ) : (
-        <div>
-          <Card>
+    <div className={classes.body}>
+      <Container component="main" maxWidth="xs" className={classes.container}>
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <EmailOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Confirm Email
+          </Typography>
+          {!confirmResult ? (
+            <div>&ldquo;Confirming Email...&ldquo;</div>
+          ) : confirmResult.success ? (
+            <Redirect to={"/login"} />
+          ) : emailSent ? (
             <p>
-              The confirmation request was not found, or has expired. Please
-              press the button to re-send the registration confirmation email.
+              {`A confirmation email has been sent to ${email}. Please find this
+            email and click on the link provided to complete your email confirmation.`}
             </p>
-            <form onSubmit={resendConfirmationEmail}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="email"
-                label="Enter the email for your account"
-                type="email"
-                id="email"
-                value={email}
-                onChange={(evt) => {
-                  setEmail(evt.target.value);
-                }}
-              />
-
-              <Button type="submit">Re-send confirmation email</Button>
-            </form>
-          </Card>
+          ) : (
+            <div>
+              <p>
+                The confirmation request was not found, or has expired. Please
+                enter your email here and press the button to re-send the
+                registration confirmation email.
+              </p>
+              <form onSubmit={resendConfirmationEmail}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="email"
+                  label="Enter the email for your account"
+                  type="email"
+                  id="email"
+                  value={email}
+                  onChange={(evt) => {
+                    setEmail(evt.target.value);
+                  }}
+                />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                >
+                  Re-send confirmation email
+                </Button>
+              </form>
+            </div>
+          )}
         </div>
-      )}
-    </React.Fragment>
+      </Container>
+      <Footer />
+    </div>
   );
 };
 
-export default withRouter(ConfirmEmail);
+export default withStyles(styles)(withRouter(ConfirmEmail));

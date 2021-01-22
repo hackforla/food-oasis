@@ -163,26 +163,45 @@ const useStyles = makeStyles((theme) => ({
   donationDialog: {
     flexGrow: 1,
     overflow: "scroll",
-    padding: theme.spacing(1, 4),
+    padding: theme.spacing(1),
+    margin: theme.spacing(1),
+    "@media only screen and (min-width: 64em)": {
+      margin: `${theme.spacing(1)}px auto`,
+      padding: theme.spacing(1, 4),
+    }
   },
   paper: {
     maxWidth: 400,
-    margin: `${theme.spacing(1)}px auto`,
     padding: theme.spacing(2),
+    margin: `${theme.spacing(2)}px auto`,
+    "@media only screen and (min-width: 64em)": {
+      margin: `${theme.spacing(3)}px auto`,
+      padding: theme.spacing(3),
+    }
   },
   step: {
     backgroundColor: "#ef624f",
+    width: theme.spacing(3),
+    height: theme.spacing(3),
+    "@media only screen and (min-width: 64em)": {
+      width: theme.spacing(7),
+      height: theme.spacing(7),
+    }
   },
   dialogCloseButton: {
-    position: 'absolute',
+    position: "absolute",
     right: theme.spacing(1),
     top: theme.spacing(1),
     color: theme.palette.grey[500],
   },
   donateButtonWrapper: {
-    position: 'sticky',
+    position: "sticky",
     bottom: 0,
     backgroundColor: '#fff'
+  },
+  donationImg: {
+    width: "100%",
+    height: "auto"
   }
 }));
 
@@ -304,7 +323,7 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
         <Grid container justify="center">
           <img style={{ height: "50px" }} src={logo} alt="logo" />
           <Grid item>
-            <Typography>
+            <Typography align="center">
               Please make donations to our parent organization (Code for
               America)
             </Typography>
@@ -334,7 +353,7 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
                 Enter your donation amount.
               </Typography>
               <img
-                style={{ height: "300px" }}
+                className={classes.donationImg}
                 src={donationStep1}
                 alt="logo"
               />
@@ -351,7 +370,7 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
                 Check the box right below.
               </Typography>
               <img
-                style={{ height: "300px" }}
+                className={classes.donationImg}
                 src={donationStep2}
                 alt="logo"
               />
@@ -369,7 +388,7 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
                 <em>"Food Oasis"</em>.
               </Typography>
               <img
-                style={{ height: "300px" }}
+                className={classes.donationImg}
                 src={donationStep3}
                 alt="logo"
               />
@@ -387,7 +406,7 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
                 <em>"foodoasis+donations@hackforla.org"</em>.
               </Typography>
               <img
-                style={{ height: "300px" }}
+                className={classes.donationImg}
                 src={donationStep4}
                 alt="logo"
               />
@@ -404,7 +423,7 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
                 Choose the brigade <em>"Hack for LA"</em> in the dropdown.
               </Typography>
               <img
-                style={{ height: "300px" }}
+                className={classes.donationImg}
                 src={donationStep5}
                 alt="logo"
               />
@@ -421,7 +440,7 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
                 Click next.
               </Typography>
               <img
-                style={{ height: "300px" }}
+                className={classes.donationImg}
                 src={donationStep6}
                 alt="logo"
               />
@@ -439,7 +458,7 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
                 <em>"Food Oasis"</em>.
               </Typography>
               <img
-                style={{ height: "300px" }}
+                className={classes.donationImg}
                 src={donationStep7}
                 alt="logo"
               />

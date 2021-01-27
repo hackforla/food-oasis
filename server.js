@@ -31,8 +31,13 @@ app.use(middleware.cors);
 app.use(express.static(path.join(__dirname, "client/build")));
 app.use(express.static("public"));
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: "500kb" }));
+app.use(
+  bodyParser.urlencoded({
+    limit: "500kb",
+    extended: true,
+  })
+);
 app.use(cookieParser());
 
 app.use(router);

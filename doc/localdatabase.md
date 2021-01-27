@@ -9,7 +9,7 @@ then you should work with a _copy_ of the shared development database on your lo
 
     - If you develop on an IOS, Linux or Windows Pro edition machine, you can [Install Docker Desktop](https://www.docker.com/get-started) for your machine and run a Postgres docker image.
 
-    - Alternatively, on any machine, you can [Install Postgres](https://www.postgresql.org/download/) on your native O/S. This will also install Postgres' de-facto standard database development tool, pgAdmin. In fact, even if you intend to run your Local Database in docker, you still might want to install Postgres this way, just to install pgAdmin (the GUI development tool) and psql (the command-line tool for working with Postgres).
+    - Alternatively, on any machine, you can install postgres on your native O/S as described in the Running Postgres on Your Native Platform section below.
 
     - Windows Home Edition does not run docker very well as of July 2020, so we recommend running Postgres natively.
 
@@ -20,7 +20,7 @@ then you should work with a _copy_ of the shared development database on your lo
 
 4.  Configure the development environment to connect to the local database by editing the .env file with your local database connection string information.
 
-5.  Run database migrations to update the datbase with existing migration scripts to bring it up to date.
+5.  Run database migrations to update the database with existing migration scripts to bring it up to date.
 
 The following sections provide more detailed instructions for each of these steps.
 

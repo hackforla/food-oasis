@@ -1,5 +1,9 @@
 # How to deploy docker container to Heroku
 
+references:
+
+- [Container Registry & Runtime (Docker Deploys)](https://devcenter.heroku.com/articles/container-registry-and-runtime)
+
 Pre-requisite: [Install Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli)
 
 ```

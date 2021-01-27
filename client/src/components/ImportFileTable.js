@@ -46,7 +46,7 @@ const ImportFileTable = (props) => {
     return () => {
       setImportData(null);
     };
-  }, []);
+  }, [setImportData]);
 
   return (
     <section className={classes.section}>

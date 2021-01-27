@@ -26,7 +26,7 @@ The following sections provide more detailed instructions for each of these step
 
 ## Install Postgres
 
-We are currently running Postgres version 11.6 in production, but you can run a newer version locally if you wish.
+We are currently running Postgres version 11.6 in production, but you may install a more current version locally, if you wish.
 
 ### Running Postgres in a Docker Container
 
@@ -41,7 +41,7 @@ docker version
 Then you can download the official postgis-enabled Postgres image from Docker Hub and create a local container named `foodoasisdb` by running:
 
 ```
-docker run --name foodoasisdb \
+sudo docker run --name foodoasisdb \
 -e POSTGRES_PASSWORD=pgpass \
 -d -p 5433:5432  postgis/postgis:11-2.5
 ```
@@ -68,13 +68,13 @@ POSTGRES_PASSWORD=pgpass
 
 When creating the container, I specified mapping port 5433 to avoid conflicts with an existing default Postgres installation, which would be using the default port of 5432.
 
-Even though this runs Postgres in a docker container, you still might want to install Postgres as described just to install pgAdmin (the GUI development tool) and psql (the command-line tool for working with Postgres).
+Even if you always use this local docker instance for your development database, you may want to also install Postgres natively as described in the next section, so you can use psql and pgAdmin as clients to manipulate the database.
 
-### Running Postgres on Your Native Platform
+### Running Postgres on your native platform
 
-To install Postgres directly on your native machine, just download and install Postgres by following the instructions [here](https://www.postgresql.org/download/). Be sure to choose the options to install any client tools (e.g., pgAdmin and psql), if the installation has such options. This should also install Postgres' de-facto standard database development tool, pgAdmin.
+To install Postgres directly on your native machine, just download and install Postgres by following the instructions [here](https://www.postgresql.org/download/). Specify `pgpass` as the password for the postgres user when prompted. Be sure to choose the options to install any client tools (e.g., pgAdmin and psql), if the installation has such options.
 
-You will also need to [Install the PostGIS extension](https://postgis.net/install/) to support the geogrphic features that Food Oasis uses.
+You need to also install the [PostGIS extension](https://postgis.net/install/)
 
 By default, the connection parameters for a database instance installed this way will be:
 
@@ -87,6 +87,8 @@ POSTGRES_PASSWORD=pgpass
 
 though we will install a database named _food_ below.
 
+If you are running on Windows, you will need to add the postgres bin directory to your Windows PATH environment variable. For me, the path to be added was `C:\Program Files\PostgreSQL\13\bin`. This allow the Git Bash or cmd shell to find the psql command.
+
 ## Create an empty Database
 
 ### Create an empty Database with psql
@@ -94,16 +96,16 @@ though we will install a database named _food_ below.
 If you followed the above instructions for installing natively, then you can connect via the psql utility and create a new database named foodoasis like this:
 
 ```
-$ psql --host localhost --port 5433 --username postgres --dbname postgres --password
+$ psql --host localhost --port 5433 --username postgres --password
 psql (12.3)
 WARNING: Console code page (437) differs from Windows code page (1252)
          8-bit characters might not work correctly. See psql reference
          page "Notes for Windows users" for details.
 Type "help" for help.
 
-fola=# create database food;
+postgres=# create database food;
 CREATE DATABASE
-fola=# \q
+psotgres=# \q
 
 $
 ```

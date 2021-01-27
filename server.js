@@ -56,6 +56,10 @@ app.get("/health", (req, res) => {
   res.status(200).json({ status: "OK" });
 });
 
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, "client/build")));
+app.use(express.static("public"));
+
 // In a production environment, the client code is served
 // as static files associated with the /client/build/index.html
 // page, so requests that don't match any of the above are

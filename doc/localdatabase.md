@@ -9,7 +9,7 @@ then you should work with a _copy_ of the shared development database on your lo
 
     - If you develop on an IOS, Linux or Windows Pro edition machine, you can [Install Docker Desktop](https://www.docker.com/get-started) for your machine and run a Postgres docker image.
 
-    - Alternatively, on any machine, you can [Install Postgres](https://www.postgresql.org/download/) on your native O/S. This will also install Postgres' de-facto standard database development tool, pgAdmin. In fact, even if you intend to run your Local Database in docker, you still might want to install Postgres this way, just to install pgAdmin (the GUI development tool) and psql (the command-line tool for working with Postgres).
+    - Alternatively, on any machine, you can install postgres on your native O/S as described in the Running Postgres on Your Native Platform section below.
 
     - Windows Home Edition does not run docker very well as of July 2020, so we recommend running Postgres natively.
 
@@ -20,13 +20,13 @@ then you should work with a _copy_ of the shared development database on your lo
 
 4.  Configure the development environment to connect to the local database by editing the .env file with your local database connection string information.
 
-5.  Run database migrations to update the datbase with existing migration scripts to bring it up to date.
+5.  Run database migrations to update the database with existing migration scripts to bring it up to date.
 
 The following sections provide more detailed instructions for each of these steps.
 
 ## Install Postgres
 
-We are currently running Postgres version 11.6 in production, so you generally want to run version 11.\* locally, for best compatibility.
+We are currently running Postgres version 11.6 in production, but you can run a newer version locally if you wish.
 
 ### Running Postgres in a Docker Container
 
@@ -68,9 +68,15 @@ POSTGRES_PASSWORD=pgpass
 
 When creating the container, I specified mapping port 5433 to avoid conflicts with an existing default Postgres installation, which would be using the default port of 5432.
 
-### Running Postgres on your native platform
+Even though this runs Postgres in a docker container, you still might want to install Postgres as described just to install pgAdmin (the GUI development tool) and psql (the command-line tool for working with Postgres).
 
-To install Postgres directly on your native machine, just download and install Postgres by following the instructions [here](https://www.postgresql.org/download/). Be sure to choose the options to install any client tools (e.g., pgAdmin and psql), if the installation has such options. By default, the connection parameters for a database instance installed this way will be:
+### Running Postgres on Your Native Platform
+
+To install Postgres directly on your native machine, just download and install Postgres by following the instructions [here](https://www.postgresql.org/download/). Be sure to choose the options to install any client tools (e.g., pgAdmin and psql), if the installation has such options. This should also install Postgres' de-facto standard database development tool, pgAdmin.
+
+You will also need to [Install the PostGIS extension](https://postgis.net/install/) to support the geogrphic features that Food Oasis uses.
+
+By default, the connection parameters for a database instance installed this way will be:
 
 ```
 POSTGRES_HOST=localhost

@@ -23,7 +23,7 @@ Now build the docker image on your local machine, naming it `fola`.
 
 ```
 
-docker build -t fola -f Dockerfile-fullstack .
+docker build -t fola .
 ```
 
 Wait for image to build

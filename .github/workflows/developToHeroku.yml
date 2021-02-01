@@ -1,4 +1,4 @@
-name: Deploy
+name: Deploy develop branch to foodoasisdev.herokuapp.com
 
 on:
   push:

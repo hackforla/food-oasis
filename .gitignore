@@ -143,9 +143,6 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-# React .env should be in repo - it has no secrets, and is 
-# required for GitHub action to build react app.
-!/client/.env
 
 # Spyder project settings
 .spyderproject
@@ -245,6 +242,10 @@ node_modules
 env  
 # Just in case developer forgets to rename file to .env
 dotenv 
+
+# React .env SHOULD be in repo - it has no secrets, and is 
+# required for GitHub action to build react app.
+!/client/.env
 
 /.vscode
 .eslintcache

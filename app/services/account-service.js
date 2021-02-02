@@ -73,7 +73,7 @@ const selectByEmail = (email) => {
 };
 
 const register = async (model) => {
-  const { firstName, lastName, email } = model;
+  const { firstName, lastName, email, clientUrl } = model;
   let result = null;
   await hashPassword(model);
   try {
@@ -92,7 +92,7 @@ const register = async (model) => {
       newId: insertResult.rows[0].id,
       message: "Registration successful.",
     };
-    await requestRegistrationConfirmation(email, result);
+    await requestRegistrationConfirmation(email, result, clientUrl);
     return result;
   } catch (err) {
     return {
@@ -104,7 +104,7 @@ const register = async (model) => {
 };
 
 // Re-transmit confirmation email
-const resendConfirmationEmail = async (email) => {
+const resendConfirmationEmail = async (email, clientUrl) => {
   let result = null;
   try {
     const sql = `select id from  login where email ilike $1`;
@@ -115,7 +115,7 @@ const resendConfirmationEmail = async (email) => {
       newId: insertResult.rows[0].id,
       message: "Account found.",
     };
-    result = await requestRegistrationConfirmation(email, result);
+    result = await requestRegistrationConfirmation(email, result, clientUrl);
     return result;
   } catch (err) {
     // Assume any error is an email that does not correspond to
@@ -130,13 +130,13 @@ const resendConfirmationEmail = async (email) => {
 
 // Generate security token and transmit registration
 // confirmation email
-const requestRegistrationConfirmation = async (email, result) => {
+const requestRegistrationConfirmation = async (email, result, clientUrl) => {
   const token = uuid4();
   try {
     const sqlToken = `insert into security_token (token, email)
         values ($1, $2) `;
     await pool.query(sqlToken, [token, email]);
-    await sendRegistrationConfirmation(email, token);
+    await sendRegistrationConfirmation(email, token, clientUrl);
     return result;
   } catch (err) {
     return {
@@ -191,7 +191,7 @@ const confirmRegistration = async (token) => {
 // Forgot Password - verify email matches an account and
 // send password reset confirmation email.
 const forgotPassword = async (model) => {
-  const { email } = model;
+  const { email, clientUrl } = model;
   let result = null;
   try {
     const sql = `select id from  login where email ilike $1`;
@@ -216,7 +216,7 @@ const forgotPassword = async (model) => {
     }
     // Replace the success result if there is a prob
     // sending email.
-    result = await requestResetPasswordConfirmation(email, result);
+    result = await requestResetPasswordConfirmation(email, result, clientUrl);
     if (result === true) {
       return {
         isSuccess: true,
@@ -234,13 +234,13 @@ const forgotPassword = async (model) => {
 
 // Generate security token and transmit password reset
 // confirmation email
-const requestResetPasswordConfirmation = async (email, result) => {
+const requestResetPasswordConfirmation = async (email, result, clientUrl) => {
   const token = uuid4();
   try {
     const sqlToken = `insert into security_token (token, email)
         values ($1, $2); `;
     await pool.query(sqlToken, [token, email]);
-    result = await sendResetPasswordConfirmation(email, token);
+    result = await sendResetPasswordConfirmation(email, token, clientUrl);
     return result;
   } catch (err) {
     return {

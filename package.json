@@ -1,6 +1,6 @@
 {
   "name": "foodoasis",
-  "version": "1.0.39",
+  "version": "1.0.40",
   "author": "Hack for LA",
   "description": "Web API Server for Food Oasis",
   "main": "server.js",
@@ -39,6 +39,7 @@
     "body-parser": "^1.19.0",
     "cheerio": "^1.0.0-rc.3",
     "cookie-parser": "^1.4.4",
+    "csv-parse": "^4.14.2",
     "csv-stringify": "^5.5.0",
     "dotenv": "^8.2.0",
     "eslint-config-react-app": "^6.0.0",
@@ -52,6 +53,7 @@
     "massive": "^6.6.0",
     "mocha": "^8.1.3",
     "moment": "2.24.0",
+    "multer": "^1.4.2",
     "node-pg-migrate": "^5.0.0",
     "nodemailer": "^6.3.1",
     "nodemon": "^2.0.4",

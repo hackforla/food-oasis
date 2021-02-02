@@ -55,7 +55,7 @@ describes how to use `node inspector`.
 To build a deployable fullstack container:
 
 ```
-docker build -t fola -f Dockerfile-fullstack .
+docker build -t fola .
 ```
 
 To test, you can run this container locally against a localhost

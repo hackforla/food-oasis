@@ -31,8 +31,13 @@ app.use(middleware.cors);
 app.use(express.static(path.join(__dirname, "client/build")));
 app.use(express.static("public"));
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: "500kb" }));
+app.use(
+  bodyParser.urlencoded({
+    limit: "500kb",
+    extended: true,
+  })
+);
 app.use(cookieParser());
 
 app.use(router);
@@ -50,6 +55,10 @@ app.get("/throw", (req, res, next) => {
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "OK" });
 });
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, "client/build")));
+app.use(express.static("public"));
 
 // In a production environment, the client code is served
 // as static files associated with the /client/build/index.html

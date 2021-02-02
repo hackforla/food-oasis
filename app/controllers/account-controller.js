@@ -40,8 +40,10 @@ const register = async (req, res) => {
 
 const resendConfirmationEmail = async (req, res) => {
   try {
+    const { email, clientUrl } = req.body;
     const response = await accountService.resendConfirmationEmail(
-      req.body.email
+      email,
+      clientUrl
     );
     res.send(response);
   } catch (err) {

@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const baseUrl = "/api/accounts";
+const clientUrl = window.location.origin;
 
 export const getAll = async () => {
   const response = await axios.get(baseUrl);
@@ -8,19 +9,19 @@ export const getAll = async () => {
 };
 
 export const register = async (firstName, lastName, email, password) => {
-  const body = { firstName, lastName, email, password };
+  const body = { firstName, lastName, email, password, clientUrl };
   const response = await axios.post(baseUrl + "/register", body);
   return response.data;
 };
 
 export const resendConfirmationEmail = async (email) => {
-  const body = { email };
+  const body = { email, clientUrl };
   const response = await axios.post(baseUrl + "/resendConfirmationEmail", body);
   return response.data;
 };
 
 export const forgotPassword = async (email) => {
-  const body = { email };
+  const body = { email, clientUrl };
   const response = await axios.post(baseUrl + "/forgotPassword", body);
   return response.data;
 };

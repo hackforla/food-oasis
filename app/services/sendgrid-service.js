@@ -1,6 +1,5 @@
 const sgMail = require("@sendgrid/mail");
 const applyEmailTemplate = require("./EmailTemplate");
-const clientUrl = process.env.CLIENT_URL;
 const emailUser = process.env.EMAIL_USER;
 const sendgridKey = process.env.SENDGRID_API_KEY;
 
@@ -27,6 +26,7 @@ const send = async (emailTo, emailFrom, subject, textBody, htmlBody) => {
 const sendRegistrationConfirmation = async (
   email,
   token,
+  clientUrl,
   emailTemplate = applyEmailTemplate
 ) => {
   const emailBody = `
@@ -68,6 +68,7 @@ const sendRegistrationConfirmation = async (
 const sendResetPasswordConfirmation = async (
   email,
   token,
+  clientUrl,
   emailTemplate = applyEmailTemplate
 ) => {
   const emailBody = `

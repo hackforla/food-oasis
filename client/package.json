@@ -1,5 +1,5 @@
 {
-  "name": "food-oasis-client",
+  "name": "foodoasis-client",
   "description": "React Client for Food Oasis",
   "version": "1.0.40",
   "author": "Hack for LA",
@@ -10,7 +10,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint -c .eslintrc.json --ignore-path .eslintignore  **/*.{js,jsx}",
+    "lint:fix": "eslint -c .eslintrc.json --ignore-path .eslintignore --fix  **/*.{js,jsx}"
   },
   "dependencies": {
     "@date-io/moment": "^1.3.13",

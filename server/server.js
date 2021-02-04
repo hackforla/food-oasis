@@ -60,15 +60,13 @@ app.get("/health", (req, res) => {
 app.use(express.static(path.join(__dirname, "client/build")));
 app.use(express.static("public"));
 
-// In a production environment, the client code is served
+// In a deployed environment, the client code is served
 // as static files associated with the /client/build/index.html
 // page, so requests that don't match any of the above are
 // assumed to be for react pages.
-// if (process.env.NODE_ENV === "production") {
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname + "/client/build/index.html"));
 });
-// }
 
 app.use(middleware.notFound);
 app.use(middleware.handleError);

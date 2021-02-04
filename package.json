@@ -3,11 +3,15 @@
   "private": true,
   "devDependencies": {
     "husky": "^4.3.5",
-    "lerna": "^3.22.1"
+    "lerna": "^3.22.1",
+    "lerna-cli": "^3.0.0"
   },
   "husky": {
     "hooks": {
       "pre-commit": "lerna run lint"
     }
+  },
+  "dependencies": {
+    "npm": "^7.5.2"
   }
 }

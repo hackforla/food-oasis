@@ -64,17 +64,19 @@ app.use(express.static("public"));
 // as static files associated with the /client/build/index.html
 // page, so requests that don't match any of the above are
 // assumed to be for react pages.
-if (process.env.NODE_ENV === "production") {
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname + "/client/build/index.html"));
-  });
-}
+// if (process.env.NODE_ENV === "production") {
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname + "/client/build/index.html"));
+});
+// }
 
 app.use(middleware.notFound);
 app.use(middleware.handleError);
 
 const port = process.env.PORT || 5000;
 
-app.listen(port, () => console.log(`Server running on port ${port}`));
+app.listen(port, () =>
+  console.log(`The Web API server is ready to serve requests.`)
+);
 
 module.exports = app;

@@ -1,9 +1,9 @@
 # Contributing to the Food Oasis Project
 
 If you are not going to do hands-on development, you can simply experiment
-with the test version of the application at <a href="https://food-oasis-dev.herokuapp.com"> https://food-oasis-dev.herokuapp.com</a>.
+with the test version of the application at <a href="https://devla.foodoasis.net"> https://devla.foodoasis.net</a>.
 
-The production version is deployed to <a href="https://food-oasis.herokuapp.com"> https://food-oasis.herokuapp.com</a>.
+The production version is deployed to <a href="https://la.foodoasis.net"> https://la.foodoasis.net</a>.
 
 If you wish to study or contribute to the code base, follow these Installation
 Instructions to install a development environment on your machine:
@@ -35,14 +35,24 @@ The simplest way to get started is to run the application on your machine native
    ```
    cd food-oasis
    ```
-1. Install the node server npm depedencies:
+1. Install the project root npm depedencies:
    ```
    npm install
    ```
-1. Obtain the `dotenv` file from the Food-Oasis/Developers G-Drive folder and place it in this directory. _Re-name this file to .env on your machine._ It contains private info (i.e., the production database connection string) that we cannot put in this public GitHub repo.
+1. Change to the /server subdirectory:
+   ```
+   cd server
+   ```
+1. Install the server npm dependencies:
+
+   ```
+   npm install
+   ```
+
+1. Obtain the `dotenv` file from the Food-Oasis/Developers G-Drive folder and place it in this directory. _Re-name this file to .env on your machine._ It contains private info (i.e., the production database connection string) that we cannot put in the public GitHub repo.
 1. Change to the client directory:
    ```
-   cd client
+   cd ../client
    ```
 1. Install the client (React) dependencies:
    ```
@@ -51,19 +61,19 @@ The simplest way to get started is to run the application on your machine native
 
 ### To Run the React/Node Application
 
-1. In one terminal window, navigate back to the /food-oasis directory and start the node server:
+1. In one terminal window, navigate back to the /food-oasis/server directory and start the node server:
 
-```
-cd ..
-npm start
-```
+   ```
+   cd ..
+   npm start
+   ```
 
 1. In a separate terminal window, navigate to the /food-oasis/client directory, start the react app, and open the browser :
 
-```
-cd client
-npm start
-```
+   ```
+   cd client
+   npm start
+   ```
 
 Note: Node server (backend) should start before the React server (frontend/client)
 

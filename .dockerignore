@@ -4,4 +4,4 @@
 *.md
 !README.md
 **/node_modules
-**/db
+**/db/demo-db

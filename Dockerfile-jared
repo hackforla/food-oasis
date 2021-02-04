@@ -21,7 +21,7 @@ RUN npm ci
 COPY ./server/middleware/ ./middleware
 COPY ./server/app/ ./app
 COPY ./server/server.js ./
-#COPY ./server/db/config.js ./db/
+COPY ./server/db/config.js ./db/
 COPY ./server/entrypoint.sh ./
 
 # we dont want to run as sudo so create group and user

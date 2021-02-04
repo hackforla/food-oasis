@@ -10,7 +10,7 @@ on:
 jobs:
   webapi:
     runs-on: ubuntu-latest
-    name: build & push image
+    name: Build and push Web API Container to Docker Hub
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
@@ -24,10 +24,10 @@ jobs:
           tag_with_ref: true
           tag_with_sha: true
           add_git_labels: true
-          labels: description="Food Oasis LA",maintained="foodoasis+hub@hackforla.org"
+          labels: description="Food Oasis",maintained="foodoasis+hub@hackforla.org"
   fullstack:
     runs-on: ubuntu-latest
-    name: build & push image
+    name: Build and push Full-Stack Container to Docker Hub
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
@@ -41,4 +41,4 @@ jobs:
           tag_with_ref: true
           tag_with_sha: true
           add_git_labels: true
-          labels: description="Food Oasis LA",maintained="foodoasis+hub@hackforla.org"
+          labels: description="Food Oasis",maintained="foodoasis+hub@hackforla.org"

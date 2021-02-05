@@ -15,6 +15,7 @@ const exportRouter = require("./export-router");
 const loadRouter = require("./load-router");
 const esriRouter = require("./esri-router");
 const emailRouter = require("./email-router");
+const parentOrganizationRouter = require("./parent-organization-router");
 
 module.exports = router;
 
@@ -32,3 +33,4 @@ router.use("/api/export", exportRouter);
 router.use("/api/loads", loadRouter);
 router.use("/api/esri", esriRouter);
 router.use("/api/emails", emailRouter);
+router.use("/api/parent_organization", parentOrganizationRouter);

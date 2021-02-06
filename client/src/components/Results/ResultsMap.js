@@ -139,8 +139,7 @@ function Map({
 
       features.forEach((feature) => {
         const props = feature.properties;
-        if (!props.cluster)
-          newShownStakeholders.push(props.stakeholderId);
+        if (!props.cluster) newShownStakeholders.push(props.stakeholderId);
       });
 
       if (

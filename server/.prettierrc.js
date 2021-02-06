@@ -3,5 +3,5 @@
 // user may have set, so the project enforces
 // using default prettier settings.
 module.exports = {
-  trailingComma: "es5"
+  trailingComma: "es5",
 };

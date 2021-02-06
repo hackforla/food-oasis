@@ -57,10 +57,10 @@ export default function ResultsContainer({
           value: stakeholder.id,
           name: stakeholder.name,
         });
-        const name = stakeholder.name.toLowerCase().replaceAll(' ', '_');
-        history.push(`/organizations?org=${name}`)
+        const name = stakeholder.name.toLowerCase().replaceAll(" ", "_");
+        history.push(`/organizations?org=${name}`);
       } else {
-        history.push('/organizations')
+        history.push("/organizations");
       }
       if (stakeholder && !isMobile) {
         setInitViewport({
@@ -74,9 +74,9 @@ export default function ResultsContainer({
   );
 
   useEffect(() => {
-    if (location.search.includes('?org=') && data) {
-      const org = location.search.replace('?org=', '').replaceAll('_', ' ');
-      const stakeholder = data.find(s => s.name.toLowerCase() === org)
+    if (location.search.includes("?org=") && data) {
+      const org = location.search.replace("?org=", "").replaceAll("_", " ");
+      const stakeholder = data.find((s) => s.name.toLowerCase() === org);
       onSelectStakeholder(stakeholder);
       setInitViewport({
         latitude: stakeholder.latitude,

@@ -8,6 +8,7 @@
     "test": "mocha",
     "start": "nodemon",
     "heroku-postbuild": "cd client && npm i && npm run build",
+    "format": "prettier --write  \"**/*.{js,jsx}\"",
     "lint": "eslint  \"**/*.{js,jsx}\"",
     "lint:fix": "eslint --fix  \"**/*.{js,jsx}\"",
     "release-notes": "gren release",

@@ -1,4 +1,4 @@
-# How to Perform Simple Load Testing with loadtest
+# Load Testing
 
 Install the loadtest module globally on your machine:
 

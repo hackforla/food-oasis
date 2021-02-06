@@ -11,6 +11,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "format": "prettier --write '*.{js,jsx,ts,tsx,json]",
     "lint": "eslint -c .eslintrc.json --ignore-path .eslintignore  **/*.{js,jsx}",
     "lint:fix": "eslint -c .eslintrc.json --ignore-path .eslintignore --fix  **/*.{js,jsx}"
   },
@@ -58,5 +59,7 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "prettier": "^2.2.1"
+  }
 }

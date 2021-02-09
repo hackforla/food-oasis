@@ -25,6 +25,7 @@ RUN npm ci
 
 # TODO @jafow re-structure directory heirarchy so we can flatten these down
 COPY ./server/middleware/ ./middleware
+COPY ./server/uploads ./uploads
 COPY ./server/app/ ./app
 COPY ./server/server.js ./
 #COPY db/config.js ./db/

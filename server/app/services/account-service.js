@@ -6,7 +6,7 @@ const {
   sendRegistrationConfirmation,
   sendResetPasswordConfirmation,
 } = require("./sendgrid-service");
-const uuid4 = require("uuid/v4");
+const { v4: uuid4 } = require("uuid");
 
 const SALT_ROUNDS = 10;
 

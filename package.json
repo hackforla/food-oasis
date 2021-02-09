@@ -1,6 +1,9 @@
 {
   "name": "root",
   "private": true,
+  "scripts": {
+    "release-notes": "gren release"
+  },
   "devDependencies": {
     "husky": "^4.3.5",
     "lerna": "^3.22.1",

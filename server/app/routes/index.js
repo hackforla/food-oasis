@@ -5,6 +5,7 @@ const accountRouter = require("./account-router");
 const categoryRouter = require("./category-router");
 const neighborhoodRouter = require("./neighborhood-router");
 const suggestionRouter = require("./suggestion-router");
+const parentOrganizationRouter = require("./parent-organization-router");
 
 const faqRouter = require("./faq-router");
 const stakeholderRouter = require("./stakeholder-router");
@@ -32,3 +33,4 @@ router.use("/api/export", exportRouter);
 router.use("/api/loads", loadRouter);
 router.use("/api/esri", esriRouter);
 router.use("/api/emails", emailRouter);
+router.use("/api/parent-organizations", parentOrganizationRouter);

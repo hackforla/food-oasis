@@ -99,6 +99,7 @@ const adminColumns = [
     name: "Categories",
     formatter: categoriesFormatter,
     width: 180,
+    frozen: true,
   },
   {
     key: "completeCriticalPercent",

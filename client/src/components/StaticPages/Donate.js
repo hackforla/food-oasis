@@ -9,11 +9,11 @@ import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import logo from "images/foodoasis.svg";
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
+import Avatar from "@material-ui/core/Avatar";
+import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
 import donationStep1 from "images/donationStep1.png";
 import donationStep2 from "images/donationStep2.png";
 import donationStep3 from "images/donationStep3.png";
@@ -168,7 +168,7 @@ const useStyles = makeStyles((theme) => ({
     "@media only screen and (min-width: 64em)": {
       margin: `${theme.spacing(1)}px auto`,
       padding: theme.spacing(1, 4),
-    }
+    },
   },
   paper: {
     maxWidth: 400,
@@ -177,7 +177,7 @@ const useStyles = makeStyles((theme) => ({
     "@media only screen and (min-width: 64em)": {
       margin: `${theme.spacing(3)}px auto`,
       padding: theme.spacing(3),
-    }
+    },
   },
   step: {
     backgroundColor: "#ef624f",
@@ -186,7 +186,7 @@ const useStyles = makeStyles((theme) => ({
     "@media only screen and (min-width: 64em)": {
       width: theme.spacing(7),
       height: theme.spacing(7),
-    }
+    },
   },
   dialogCloseButton: {
     position: "absolute",
@@ -197,12 +197,12 @@ const useStyles = makeStyles((theme) => ({
   donateButtonWrapper: {
     position: "sticky",
     bottom: 0,
-    backgroundColor: '#fff'
+    backgroundColor: "#fff",
   },
   donationImg: {
     width: "100%",
-    height: "auto"
-  }
+    height: "auto",
+  },
 }));
 
 const Donate = () => {
@@ -244,12 +244,10 @@ const Donate = () => {
             Donate
           </Button>
           {showDonationDialog && (
-            (
             <DonationDialog
               showDonationDialog={showDonationDialog}
               setShowDonationDialog={setShowDonationDialog}
             />
-          )
           )}
         </section>
         <div className={classes.volunteerSection}>
@@ -319,7 +317,7 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
       open={showDonationDialog}
       maxWidth="sm"
     >
-      <DialogTitle id="simple-dialog-title" >
+      <DialogTitle id="simple-dialog-title">
         <Grid container justify="center">
           <img style={{ height: "50px" }} src={logo} alt="logo" />
           <Grid item>
@@ -349,9 +347,7 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
               <Avatar className={classes.step}>1</Avatar>
             </Grid>
             <Grid item xs zeroMinWidth>
-              <Typography>
-                Enter your donation amount.
-              </Typography>
+              <Typography>Enter your donation amount.</Typography>
               <img
                 className={classes.donationImg}
                 src={donationStep1}
@@ -366,9 +362,7 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
               <Avatar className={classes.step}>2</Avatar>
             </Grid>
             <Grid item xs zeroMinWidth>
-              <Typography>
-                Check the box right below.
-              </Typography>
+              <Typography>Check the box right below.</Typography>
               <img
                 className={classes.donationImg}
                 src={donationStep2}
@@ -436,9 +430,7 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
               <Avatar className={classes.step}>6</Avatar>
             </Grid>
             <Grid item xs zeroMinWidth>
-              <Typography>
-                Click next.
-              </Typography>
+              <Typography>Click next.</Typography>
               <img
                 className={classes.donationImg}
                 src={donationStep6}

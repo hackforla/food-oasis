@@ -19,18 +19,17 @@ LABEL org.hackforla="Hack For LA"
 LABEL description="Food Oasis app"
 
 WORKDIR /fola
-COPY package.json ./
-COPY package-lock.json ./
+COPY ./server/package.json ./
+COPY ./server/package-lock.json ./
 RUN npm ci
 
 # TODO @jafow re-structure directory heirarchy so we can flatten these down
-COPY middleware/ ./middleware
-COPY app/ ./app
-COPY server.js ./
+COPY ./server/middleware/ ./middleware
+COPY ./server/uploads ./uploads
+COPY ./server/app/ ./app
+COPY ./server/server.js ./
 #COPY db/config.js ./db/
 COPY --from=clientBuilder /app/build ./client/build
-
-#COPY entrypoint.sh ./
 
 # we dont want to run as sudo so create group and user
 RUN groupadd -r fola && useradd --no-log-init -r -g fola fola
@@ -39,7 +38,3 @@ USER fola
 EXPOSE 5000
 
 ENTRYPOINT ["/usr/local/bin/node", "server.js"]
-
-# TODO: Make this into a full-stack docker container script
-#ENTRYPOINT ["./entrypoint.sh"]
-#CMD ["node", "server.js"]

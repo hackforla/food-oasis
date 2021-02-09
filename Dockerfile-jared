@@ -18,11 +18,11 @@ COPY package-lock.json ./
 RUN npm ci
 
 # TODO @jafow re-structure directory heirarchy so we can flatten these down
-COPY middleware/ ./middleware
-COPY app/ ./app
-COPY server.js ./
-COPY db/config.js ./db/
-COPY entrypoint.sh ./
+COPY ./server/middleware/ ./middleware
+COPY ./server/app/ ./app
+COPY ./server/server.js ./
+COPY ./server/db/config.js ./db/
+COPY ./server/entrypoint.sh ./
 
 # we dont want to run as sudo so create group and user
 RUN groupadd -r fola && useradd --no-log-init -r -g fola fola

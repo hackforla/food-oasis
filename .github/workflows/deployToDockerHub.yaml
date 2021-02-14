@@ -42,3 +42,67 @@ jobs:
           tag_with_sha: true
           add_git_labels: true
           labels: description="Food Oasis",maintained="foodoasis+hub@hackforla.org"
+
+  production-deploy:
+    name: Deploy production into AWS
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Debug Action
+      uses: hmarr/debug-action@v1.0.0
+      
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-west-1
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+      
+    - name: Set ECS Cluster Name & ECR repository variables
+      id: ecs-variables
+      env:
+        ECR_REPOSITORY: e-immigrate-client-dev
+        ECS_CLUSTER: multi-tenant-dev
+      run: |
+        echo "::set-output name=repo::$ECR_REPOSITORY"
+        echo "::set-output name=cluster::$ECS_CLUSTER"
+    # In this step, this action saves a list of existing images,
+    # the cache is created without them in the post run.
+    # It also restores the cache if it exists.
+    - uses: satackey/action-docker-layer-caching@v0.0.11
+      # Ignore the failure of a step and avoid terminating the job.
+      continue-on-error: true
+
+    - name: Client - Build, Tag, Push image to ECR
+      id: client-build
+      uses: whoan/docker-build-with-cache-action@v5.9.0
+      with:
+        dockerfile: AWS-Deployment/client/Dockerfile
+        registry: ${{ steps.login-ecr.outputs.registry }}
+        stages_image_name: ${{ steps.ecs-variables.outputs.repo }}
+        image_name: ${{ steps.ecs-variables.outputs.repo }}
+        image_tag: ${{ github.sha }},latest
+
+    - name: Fill in the new image ID in the Amazon ECS task definition
+      id: task-definition
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: AWS-Deployment/client/task-definition.json
+        container-name: ${{ steps.ecs-variables.outputs.repo }}-container
+        image: ${{ steps.client-build.outputs.FULL_IMAGE_NAME }}:${{ github.sha }}
+
+    - name: Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.task-definition.outputs.task-definition }}
+        service: ${{ steps.ecs-variables.outputs.repo }}
+        cluster: ${{ steps.ecs-variables.outputs.cluster }}
+        wait-for-service-stability: true
+        wait-for-minutes: 5 minutes

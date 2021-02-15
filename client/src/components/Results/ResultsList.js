@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import StakeholderDetails from "components/Stakeholder/StakeholderDetails";
 import PropTypes from "prop-types";
-import { Grid } from "@material-ui/core";
+import { Button, CircularProgress, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import StakeholderPreview from "components/Stakeholder/StakeholderPreview";
 import { isMobile } from "helpers";
@@ -33,6 +33,12 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     borderBottom: " .2em solid #f1f1f1",
   },
+  emptyResult: {
+    padding: "1em 0",
+    display: "flex",
+    flexDirection: "column",
+    alignContent: "center",
+  },
 }));
 
 const ResultsList = ({
@@ -40,6 +46,8 @@ const ResultsList = ({
   selectedStakeholder,
   stakeholders,
   setToast,
+  status,
+  handleReset,
 }) => {
   const classes = useStyles();
   const listRef = useRef();
@@ -69,6 +77,24 @@ const ResultsList = ({
 
   return (
     <Grid item xs={12} md={4} className={classes.list} ref={listRef}>
+      {status === "loading" && (
+        <div className={classes.emptyResult}>
+          <CircularProgress />
+        </div>
+      )}
+      {status === "loaded" && stakeholders.length === 0 && (
+        <div className={classes.emptyResult}>
+          <p>Sorry, we don&apos;t have any results for this area.</p>
+          <Button
+            onClick={handleReset}
+            variant="contained"
+            color="primary"
+            disableElevation
+          >
+            Click here to reset the search
+          </Button>
+        </div>
+      )}
       {stakeholders && selectedStakeholder && !selectedStakeholder.inactive ? (
         <StakeholderDetails
           doSelectStakeholder={selectStakeholder}
@@ -98,6 +124,8 @@ ResultsList.propTypes = {
   stakeholders: PropTypes.arrayOf(PropTypes.object),
   doSelectStakeholder: PropTypes.func,
   setToast: PropTypes.func,
+  status: PropTypes.string,
+  handleReset: PropTypes.func,
 };
 
 export default ResultsList;

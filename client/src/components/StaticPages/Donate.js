@@ -5,8 +5,26 @@ import iconSpacer from "./assets/icon-spacer.svg";
 import iconSpacerBlue from "./assets/icon-spacer-blue.svg";
 import { makeStyles } from "@material-ui/core";
 import Footer from "../../components/Footer";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import logo from "images/foodoasis.svg";
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
+import Avatar from "@material-ui/core/Avatar";
+import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
+import donationStep1 from "images/donationStep1.png";
+import donationStep2 from "images/donationStep2.png";
+import donationStep3 from "images/donationStep3.png";
+import donationStep4 from "images/donationStep4.png";
+import donationStep5 from "images/donationStep5.png";
+import donationStep6 from "images/donationStep6.png";
+import donationStep7 from "images/donationStep7.png";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   outer: {
     background: "#fff",
   },
@@ -142,10 +160,58 @@ const useStyles = makeStyles(() => ({
   volunteer: {
     background: "#e57109",
   },
+  donationDialog: {
+    flexGrow: 1,
+    overflow: "scroll",
+    padding: theme.spacing(1),
+    margin: theme.spacing(1),
+    "@media only screen and (min-width: 64em)": {
+      margin: `${theme.spacing(1)}px auto`,
+      padding: theme.spacing(1, 4),
+    },
+  },
+  paper: {
+    maxWidth: 400,
+    padding: theme.spacing(2),
+    margin: `${theme.spacing(2)}px auto`,
+    "@media only screen and (min-width: 64em)": {
+      margin: `${theme.spacing(3)}px auto`,
+      padding: theme.spacing(3),
+    },
+  },
+  step: {
+    backgroundColor: "#ef624f",
+    width: theme.spacing(3),
+    height: theme.spacing(3),
+    "@media only screen and (min-width: 64em)": {
+      width: theme.spacing(7),
+      height: theme.spacing(7),
+    },
+  },
+  dialogCloseButton: {
+    position: "absolute",
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
+  donateButtonWrapper: {
+    position: "sticky",
+    bottom: 0,
+    backgroundColor: "#fff",
+  },
+  donationImg: {
+    width: "100%",
+    height: "auto",
+  },
 }));
+
 const Donate = () => {
   const classes = useStyles();
-  // const { t } = useTranslation("donate");
+  const [showDonationDialog, setShowDonationDialog] = React.useState(false);
+
+  const handleShowDonationDialog = () => {
+    setShowDonationDialog(showDonationDialog ? false : true);
+  };
   return (
     <div className={classes.outer}>
       <h1 className={classes.title}>Donate</h1>
@@ -169,22 +235,20 @@ const Donate = () => {
             update. Your tax-deductible donation would help us offset some of
             those costs.
           </p>
-          <p>
-            Please make donations to our parent organization (Code for America).
-            At the Code for America donation page you will see a text box: “What
-            inspired you to donate today”? Please write Food Oasis and Hack for
-            LA in that box. Your donation will get earmarked for Food Oasis Los
-            Angeles.
-          </p>
-          <a
-            // href="//www.codeforamerica.org/donate"
-            href=" https://svbinthecommunity.benevity.org/community/fundraiser/1842"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Button
             className={classes.btnOutline}
+            onClick={handleShowDonationDialog}
+            color="primary"
+            variant="contained"
           >
             Donate
-          </a>
+          </Button>
+          {showDonationDialog && (
+            <DonationDialog
+              showDonationDialog={showDonationDialog}
+              setShowDonationDialog={setShowDonationDialog}
+            />
+          )}
         </section>
         <div className={classes.volunteerSection}>
           <img
@@ -211,7 +275,7 @@ const Donate = () => {
         </div>
         <section className={classes.cards}>
           <aside className={classes.signup}>
-            <h3>Get monthly updates on what we're doing</h3>
+            <h3>Get monthly updates on what we&apos;re doing</h3>
             <a
               href="//foodoasis.us18.list-manage.com/subscribe?u=40d31892cbbe01312937f7de6&id=42235bb7ce"
               target="_blank"
@@ -240,3 +304,174 @@ const Donate = () => {
 };
 
 export default Donate;
+
+const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
+  const classes = useStyles();
+  const handleCloseDonationDialog = () => {
+    setShowDonationDialog(false);
+  };
+  return (
+    <Dialog
+      onClose={handleCloseDonationDialog}
+      aria-labelledby="simple-dialog-title"
+      open={showDonationDialog}
+      maxWidth="sm"
+    >
+      <DialogTitle id="simple-dialog-title">
+        <Grid container justify="center">
+          <img style={{ height: "50px" }} src={logo} alt="logo" />
+          <Grid item>
+            <Typography align="center">
+              Please make donations to our parent organization (Code for
+              America)
+            </Typography>
+            <Typography align="center" color="error" variant="h6">
+              This is a 7-step process.
+            </Typography>
+          </Grid>
+          <Grid item>
+            <IconButton
+              aria-label="close"
+              className={classes.dialogCloseButton}
+              onClick={handleCloseDonationDialog}
+            >
+              <CloseIcon />
+            </IconButton>
+          </Grid>
+        </Grid>
+      </DialogTitle>
+      <div className={classes.donationDialog}>
+        <Paper className={classes.paper}>
+          <Grid container wrap="nowrap" spacing={2}>
+            <Grid item>
+              <Avatar className={classes.step}>1</Avatar>
+            </Grid>
+            <Grid item xs zeroMinWidth>
+              <Typography>Enter your donation amount.</Typography>
+              <img
+                className={classes.donationImg}
+                src={donationStep1}
+                alt="logo"
+              />
+            </Grid>
+          </Grid>
+        </Paper>
+        <Paper className={classes.paper}>
+          <Grid container wrap="nowrap" spacing={2}>
+            <Grid item>
+              <Avatar className={classes.step}>2</Avatar>
+            </Grid>
+            <Grid item xs zeroMinWidth>
+              <Typography>Check the box right below.</Typography>
+              <img
+                className={classes.donationImg}
+                src={donationStep2}
+                alt="logo"
+              />
+            </Grid>
+          </Grid>
+        </Paper>
+        <Paper className={classes.paper}>
+          <Grid container wrap="nowrap" spacing={2}>
+            <Grid item>
+              <Avatar className={classes.step}>3</Avatar>
+            </Grid>
+            <Grid item xs zeroMinWidth>
+              <Typography>
+                Under "Person to notify" and "Honoree Name" write{" "}
+                <em>"Food Oasis"</em>.
+              </Typography>
+              <img
+                className={classes.donationImg}
+                src={donationStep3}
+                alt="logo"
+              />
+            </Grid>
+          </Grid>
+        </Paper>
+        <Paper className={classes.paper}>
+          <Grid container wrap="nowrap" spacing={2}>
+            <Grid item>
+              <Avatar className={classes.step}>4</Avatar>
+            </Grid>
+            <Grid item xs zeroMinWidth>
+              <Typography>
+                Under "Recipient Email" write{" "}
+                <em>"foodoasis+donations@hackforla.org"</em>.
+              </Typography>
+              <img
+                className={classes.donationImg}
+                src={donationStep4}
+                alt="logo"
+              />
+            </Grid>
+          </Grid>
+        </Paper>
+        <Paper className={classes.paper}>
+          <Grid container wrap="nowrap" spacing={2}>
+            <Grid item>
+              <Avatar className={classes.step}>5</Avatar>
+            </Grid>
+            <Grid item xs zeroMinWidth>
+              <Typography>
+                Choose the brigade <em>"Hack for LA"</em> in the dropdown.
+              </Typography>
+              <img
+                className={classes.donationImg}
+                src={donationStep5}
+                alt="logo"
+              />
+            </Grid>
+          </Grid>
+        </Paper>
+        <Paper className={classes.paper}>
+          <Grid container wrap="nowrap" spacing={2}>
+            <Grid item>
+              <Avatar className={classes.step}>6</Avatar>
+            </Grid>
+            <Grid item xs zeroMinWidth>
+              <Typography>Click next.</Typography>
+              <img
+                className={classes.donationImg}
+                src={donationStep6}
+                alt="logo"
+              />
+            </Grid>
+          </Grid>
+        </Paper>
+        <Paper className={classes.paper}>
+          <Grid container wrap="nowrap" spacing={2}>
+            <Grid item>
+              <Avatar className={classes.step}>7</Avatar>
+            </Grid>
+            <Grid item xs zeroMinWidth>
+              <Typography>
+                Under "What inspired you to donate today?" write{" "}
+                <em>"Food Oasis"</em>.
+              </Typography>
+              <img
+                className={classes.donationImg}
+                src={donationStep7}
+                alt="logo"
+              />
+            </Grid>
+          </Grid>
+        </Paper>
+      </div>
+      <Grid className={classes.donateButtonWrapper} container justify="center">
+        <Grid item>
+          <Box m={3}>
+            <a
+              href="//www.codeforamerica.org/donate"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={classes.btnOutline}
+            >
+              Donate
+            </a>
+          </Box>
+        </Grid>
+      </Grid>
+    </Dialog>
+  );
+};

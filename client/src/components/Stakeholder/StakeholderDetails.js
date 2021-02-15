@@ -16,7 +16,7 @@ import { extractNumbers, getGoogleMapsUrl } from "helpers";
 import Icon from "components/Icon";
 import SuggestionDialog from "components/SuggestionDialog";
 
-const useStyles = makeStyles((theme, props) => ({
+const useStyles = makeStyles((theme) => ({
   stakeholder: {
     width: "100%",
     display: "flex",
@@ -122,7 +122,7 @@ const StakeholderDetails = ({
     setSuggestionDialogOpen(true);
   };
 
-  const handleSuggestionDialogClose = async (loginId) => {
+  const handleSuggestionDialogClose = async () => {
     setSuggestionDialogOpen(false);
   };
 
@@ -227,6 +227,17 @@ const StakeholderDetails = ({
             </em>
           ))}
           <div className={classes.label}>
+            <em
+              key={selectedStakeholder.id}
+              style={{
+                alignSelf: "flex-start",
+                margin: "0 0.25em 0.25em 0",
+              }}
+            >
+              {selectedStakeholder.foodTypes}
+            </em>
+          </div>
+          <div className={classes.label}>
             {selectedStakeholder.inactiveTemporary ||
             selectedStakeholder.inactive ? (
               <em className={classes.closedLabel}>
@@ -284,15 +295,22 @@ const StakeholderDetails = ({
       <div className={classes.buttons}>
         <Button
           variant="outlined"
-          onClick={() =>
+          onClick={() => {
+            window.dataLayer.push({
+              event: "getDirections",
+              action: "click",
+              value: selectedStakeholder.id,
+              name: selectedStakeholder.name,
+            });
+
             window.open(
               getGoogleMapsUrl(
                 selectedStakeholder.zip,
                 selectedStakeholder.address1,
                 selectedStakeholder.address2 || null
               )
-            )
-          }
+            );
+          }}
         >
           Directions
         </Button>

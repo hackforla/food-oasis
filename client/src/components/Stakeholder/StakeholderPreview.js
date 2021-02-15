@@ -92,8 +92,9 @@ const stakeholdersCurrentDaysHours = (stakeholder) => {
   const currentDayOfWeek = currentDay.format("ddd");
   const dayOccurrenceInMonth = Math.ceil(currentDay.date() / 7); // In tandum with currentDayOfWeek tells us which week the day falls
   const currentTime = currentDay.format("HH:mm:ss");
-  const currentDaysHoursOfOperation = stakeholder?.hours.filter(
-    (todaysHours) => {
+  const currentDaysHoursOfOperation =
+    stakeholder.hours &&
+    stakeholder.hours.filter((todaysHours) => {
       const hasHoursToday = currentDayOfWeek === todaysHours.day_of_week;
       const stakeholderOpenTime = moment(todaysHours.open, "HH:mm:ss").format(
         "HH:mm:ss"
@@ -114,8 +115,7 @@ const stakeholdersCurrentDaysHours = (stakeholder) => {
           dayOccurrenceInMonth === todaysHours.week_of_month ||
           isOnlyOpenOnLastWeekOfMonth)
       );
-    }
-  );
+    });
   if (currentDaysHoursOfOperation?.length > 0) {
     return currentDaysHoursOfOperation;
   }
@@ -188,6 +188,17 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
           ))}
         </div>
         <div className={classes.label}>
+          <em
+            key={stakeholder.id}
+            style={{
+              alignSelf: "flex-start",
+              margin: "0 0.25em 0.5em 0",
+            }}
+          >
+            {stakeholder.foodTypes}
+          </em>
+        </div>
+        <div className={classes.label}>
           {stakeholder.inactiveTemporary || stakeholder.inactive ? (
             <em className={classes.closedLabel}>
               {stakeholder.inactiveTemporary
@@ -213,15 +224,21 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
           <Button
             variant="outlined"
             size="small"
-            onClick={() =>
+            onClick={() => {
+              window.dataLayer.push({
+                event: "getDirections",
+                action: "click",
+                value: stakeholder.id,
+                name: stakeholder.name,
+              });
               window.open(
                 getGoogleMapsUrl(
                   stakeholder.zip,
                   stakeholder.address1,
                   stakeholder.address2 || null
                 )
-              )
-            }
+              );
+            }}
           >
             Directions
           </Button>
@@ -229,7 +246,15 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
             <Button
               variant="outlined"
               size="small"
-              onClick={() => window.open(`tel:${mainNumber.value}`)}
+              onClick={() => {
+                window.dataLayer.push({
+                  event: "dialPhone",
+                  action: "click",
+                  value: stakeholder.id,
+                  name: stakeholder.name,
+                });
+                window.open(`tel:${mainNumber.value}`);
+              }}
             >
               Call
             </Button>

@@ -3,5 +3,5 @@
 .vscode
 *.md
 !README.md
-node_modules
-db/pg_data/*
+**/node_modules
+**/db/demo-db

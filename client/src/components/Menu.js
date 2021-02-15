@@ -33,8 +33,10 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     transform: "scale(1.6,1.5)",
     minWidth: "0",
+    backgroundColor: "#FFF",
     "&:hover": {
       backgroundColor: "#FFF",
+      opacity: 0.8,
     },
     [theme.breakpoints.down("xs")]: {
       transform: "scale(1.2, 1.2)",
@@ -124,6 +126,11 @@ export default function Menu(props) {
                     key="organizationedit"
                     to="/organizationedit"
                     text="Add New Organization"
+                  />
+                  <MenuItemLink
+                    key="organizationimport"
+                    to="/organizationimport"
+                    text="Import Organizations"
                   />
                   <MenuItemLink
                     key="verificationadmin"

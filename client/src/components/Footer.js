@@ -10,7 +10,7 @@ import logoCA from "images/foodoasis.svg";
 import logoHI from "./StaticPagesHI/assets/aloha-harvest-bg-none.png";
 import { tenantId } from "../helpers/Configuration";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   footer: {
     position: "relative",
     backgroundColor: "#FFF",

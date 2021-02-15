@@ -8,6 +8,7 @@ const baseUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places`;
 const losAngelesCountyLatLong = "-118.9517,33.6988,-117.6462,34.8233";
 const californiaLatLong = "-124.389, 32.4796, -114.1723, 42.072";
 const hawaiiLatLong = "-160.25, 18.91, -154.58, 22.30";
+const portlandLatLong = "-123.153, 45.28, -122.120, 45.959";
 
 const initialState = {
   isLoading: false,
@@ -49,11 +50,13 @@ export function useMapboxGeocoder() {
   const fetchMapboxResults = debounce(
     async (searchString) => {
       const bbox =
-        tenantId === 1
-          ? losAngelesCountyLatLong
+        tenantId === 4
+          ? portlandLatLong
+          : tenantId === 3
+          ? hawaiiLatLong
           : tenantId === 2
           ? californiaLatLong
-          : hawaiiLatLong;
+          : losAngelesCountyLatLong;
       const mapboxUrl = `${baseUrl}/${searchString}.json?bbox=${bbox}&access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`;
 
       dispatch({ type: actionTypes.FETCH_REQUEST });

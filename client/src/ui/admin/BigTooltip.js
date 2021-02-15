@@ -1,6 +1,6 @@
 import { Tooltip, withStyles } from "@material-ui/core";
 
-const BigTooltip = withStyles((theme) => ({
+const BigTooltip = withStyles(() => ({
   tooltip: {
     fontSize: 16,
   },

@@ -179,8 +179,7 @@ const Donate = () => {
             Your donation will get earmarked for Food Oasis.
           </p>
           <a
-            // href="//www.codeforamerica.org/donate"
-            href="https://svbinthecommunity.benevity.org/community/fundraiser/1842"
+            href="//www.codeforamerica.org/donate"
             target="_blank"
             rel="noopener noreferrer"
             className={classes.btnOutline}
@@ -223,7 +222,7 @@ const Donate = () => {
         </div>
         <section className={classes.cards}>
           <aside className={classes.signup}>
-            <h3>Get monthly updates on what we're doing</h3>
+            <h3>Get monthly updates on what we&apos;re doing</h3>
             <a
               href="//foodoasis.us18.list-manage.com/subscribe?u=40d31892cbbe01312937f7de6&id=42235bb7ce"
               target="_blank"

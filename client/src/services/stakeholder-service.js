@@ -10,7 +10,7 @@ const toLocalMoment = (ts) => {
 };
 
 export const search = async (searchParams) => {
-  searchParams = searchParams || {};
+  searchParams = { ...searchParams, tenantId } || { tenantId };
   const response = await axios.get(`${baseUrl}`, {
     params: searchParams,
   });
@@ -68,6 +68,7 @@ export const put = async (stakeholder) => {
 export const requestAssignment = async (loginId) => {
   const response = await axios.post(`${baseUrl}/requestAssignment`, {
     loginId,
+    tenantId,
   });
   return response.data;
 };

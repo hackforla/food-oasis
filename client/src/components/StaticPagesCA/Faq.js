@@ -194,8 +194,10 @@ const About = () => {
             <dd>
               <a href="/register">Enter your info here</a>, and look out for a
               confirmation email from{" "}
-              <a href="mailto:darragh@entrotech.net">darragh@entrotech.net</a>.
-              Follow the instructions on the email.
+              <a href="mailto:foodoasis+noreply@hackforla.org">
+                foodoasis+noreply@hackforla.org
+              </a>
+              . Follow the instructions on the email.
             </dd>
           </dl>
         </section>

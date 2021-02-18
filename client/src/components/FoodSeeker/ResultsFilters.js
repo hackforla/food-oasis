@@ -13,7 +13,7 @@ import { isMobile } from "helpers";
 
 import theme from "theme/materialUI";
 import SwitchViewsButton from "components/FoodSeeker/SwitchViewsButton";
-import Search from "components/Deprecated/Search";
+import Search from "components/FoodSeeker/Search";
 
 const useStyles = makeStyles((theme) => ({
   select: {

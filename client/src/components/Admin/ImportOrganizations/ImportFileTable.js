@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import makeStyles from "@material-ui/styles/makeStyles";
-import { STAKEHOLDER_SCHEMA } from "../../constants/stakeholder-schema";
+import { STAKEHOLDER_SCHEMA } from "../../../constants/stakeholder-schema";
 
 const useStyles = makeStyles((theme) => ({
   root: {

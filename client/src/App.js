@@ -31,7 +31,7 @@ import FaqHI from "components/StaticPagesHI/Faq";
 import DonatePDX from "components/StaticPagesPDX/Donate";
 import AboutPDX from "components/StaticPagesPDX/About";
 import FaqPDX from "components/StaticPagesPDX/Faq";
-import Resources from "components/Deprecated/Resources";
+import Resources from "components/Layout/Resources";
 import Register from "components/Account/Register";
 import Login from "components/Account/Login";
 import ForgotPassword from "components/Account/ForgotPassword";
@@ -42,7 +42,7 @@ import FaqAdd from "components/Faq/FaqAdd";
 import Home from "components/FoodSeeker/LandingPage";
 import Results from "components/FoodSeeker/ResultsContainer";
 import Suggestion from "components/FoodSeeker/Suggestion";
-import ImportFile from "components/ImportOrganizations/ImportFile";
+import ImportFile from "components/Admin/ImportOrganizations/ImportFile";
 import newTheme from "./theme/newTheme";
 
 const useStyles = makeStyles({

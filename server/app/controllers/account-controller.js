@@ -5,7 +5,8 @@ const getAll = async (req, res) => {
     const response = await accountService.selectAll();
     res.send(response);
   } catch (err) {
-    res.status("500").json({ error: err.toString() });
+    console.error(err);
+    res.status(500);
   }
 };
 
@@ -15,7 +16,8 @@ const getById = async (req, res) => {
     const response = await accountService.selectById(id);
     res.send(response);
   } catch (err) {
-    res.status("500").json({ error: err.toString() });
+    console.error(err);
+    res.sendStatus(500);
   }
 };
 
@@ -25,7 +27,8 @@ const getByEmail = async (req, res) => {
     const response = await accountService.selectByEmail(id);
     res.send(response);
   } catch (err) {
-    res.status("500").json({ error: err.toString() });
+    console.error(err);
+    res.sendStatus(500);
   }
 };
 
@@ -34,7 +37,8 @@ const register = async (req, res) => {
     const response = await accountService.register(req.body);
     res.send(response);
   } catch (err) {
-    res.status("500").json({ error: err.toString() });
+    console.error(err);
+    res.sendStatus(500);
   }
 };
 
@@ -47,7 +51,8 @@ const resendConfirmationEmail = async (req, res) => {
     );
     res.send(response);
   } catch (err) {
-    res.status("500").json({ error: err.toString() });
+    console.error(err);
+    res.sendStatus(500);
   }
 };
 
@@ -65,7 +70,8 @@ const resetPassword = async (req, res) => {
     const response = await accountService.resetPassword(req.body);
     res.send(response);
   } catch (err) {
-    res.status("500").json({ error: err.toString() });
+    console.error(err);
+    res.sendStatus(500);
   }
 };
 
@@ -79,7 +85,8 @@ const setPermissions = async (req, res) => {
     );
     res.send(response);
   } catch (err) {
-    res.status("500").json({ error: err.toString() });
+    console.error(err);
+    res.sendStatus(500);
   }
 };
 
@@ -94,7 +101,8 @@ const confirmRegister = async (req, res) => {
     const response = await accountService.confirmRegistration(req.body.token);
     res.send(response);
   } catch (err) {
-    res.status("500").json({ error: err.toString() });
+    console.error(err);
+    res.sendStatus(500);
   }
 };
 
@@ -109,7 +117,8 @@ const login = async (req, res, next) => {
       res.json(resp);
     }
   } catch (err) {
-    res.status("500").json({ error: err.toString() });
+    console.error(err);
+    res.sendStatus(500);
   }
 };
 
@@ -118,7 +127,8 @@ const put = async (req, res) => {
     await accountService.update(req.body);
     res.sendStatus(200);
   } catch (err) {
-    res.status("500").json({ error: err.toString() });
+    console.error(err);
+    res.sendStatus(500);
   }
 };
 
@@ -128,7 +138,8 @@ const remove = async (req, res) => {
     await accountService.remove(id);
     res.sendStatus(200);
   } catch (err) {
-    res.status("500").json({ error: err.toString() });
+    console.error(err);
+    res.sendStatus(500);
   }
 };
 

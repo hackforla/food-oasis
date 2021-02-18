@@ -1,4 +1,3 @@
-// const { pool } = require("./postgres-pool");
 const db = require("./db");
 
 const selectAll = async () => {
@@ -7,12 +6,9 @@ const selectAll = async () => {
     from tenant
     order by name
   `;
-  try {
-    const rows = await db.manyOrNone(sql);
-    return rows;
-  } catch (e) {
-    return e;
-  }
+
+  const rows = await db.manyOrNone(sql);
+  return rows;
 };
 
 const selectById = async (id) => {
@@ -21,12 +17,8 @@ const selectById = async (id) => {
     from tenant
     where id = $<id>
   `;
-  try {
-    const row = await db.one(sql, { id });
-    return row;
-  } catch (e) {
-    return e;
-  }
+
+  return await db.one(sql, { id });
 };
 
 const insert = async (params) => {
@@ -34,11 +26,7 @@ const insert = async (params) => {
     insert into tenant(id, name, code)
     values ($<id>, $<name>, $<code>)
   `;
-  try {
-    await db.none(sql, params);
-  } catch (e) {
-    return e;
-  }
+  await db.none(sql, params);
 };
 
 const update = async (params) => {
@@ -47,22 +35,18 @@ const update = async (params) => {
       name = $<name>,
       code = $<code>
     where id = $<id>;`;
-  try {
-    await db.none(sql, params);
-  } catch (e) {
-    return e;
-  }
+
+  const result = await db.result(sql, params);
+  return result.rowCount;
 };
 
 const remove = async (id) => {
   const sql = `
     delete from tenant
     where id = $<id>;`;
-  try {
-    await db.none(sql, { id });
-  } catch (e) {
-    return null;
-  }
+
+  const result = await db.result(sql, { id });
+  return result.rowCount;
 };
 
 module.exports = {

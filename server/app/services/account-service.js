@@ -1,4 +1,6 @@
-const { pool } = require("./postgres-pool");
+const db = require("./db");
+const camelcaseKeys = require("camelcase-keys");
+
 const { promisify } = require("util");
 const moment = require("moment");
 const bcrypt = require("bcrypt");
@@ -10,86 +12,39 @@ const { v4: uuid4 } = require("uuid");
 
 const SALT_ROUNDS = 10;
 
-const selectAll = () => {
+const selectAll = async () => {
   let sql = `
     select * from login order by last_name, first_name, date_created
   `;
-  return pool.query(sql).then((res) => {
-    return res.rows.map((row) => ({
-      id: row.id,
-      firstName: row.first_name,
-      lastName: row.last_name,
-      email: row.email,
-      dateCreated: row.date_created,
-      emailConfirmed: row.email_confirmed,
-      isAdmin: row.is_admin,
-      isCoordinator: row.is_coordinator,
-      isSecurityAdmin: row.is_security_admin,
-      isDataEntry: row.is_data_entry,
-    }));
-  });
+  const result = await db.manyOrNone(sql);
+  return result.map((r) => camelcaseKeys(r));
 };
 
-const selectById = (id) => {
-  const sql = `select * from login where id = $1`;
-  return pool.query(sql, [id]).then((res) => {
-    const row = res.rows[0];
-    return {
-      id: row.id,
-      firstName: row.first_name,
-      lastName: row.last_name,
-      email: row.email,
-      dateCreated: row.date_created,
-      emailConfirmed: row.email_confirmed,
-      isAdmin: row.is_admin,
-      isCoordinator: row.is_coordinator,
-      isSecurityAdmin: row.is_security_admin,
-      isDataEntry: row.is_data_entry,
-    };
-  });
+const selectById = async (id) => {
+  const sql = `select * from login where id = $<id>`;
+  const row = await db.one(sql, { id: Number(id) });
+  return camelcaseKeys(row);
 };
 
-const selectByEmail = (email) => {
-  const sql = `select * from login where email ilike $1`;
-  return pool.query(sql, [email]).then((res) => {
-    const row = res.rows[0];
-    if (row) {
-      return {
-        id: row.id,
-        firstName: row.first_name,
-        lastName: row.last_name,
-        passwordHash: row.password_hash,
-        email: row.email,
-        dateCreated: row.date_created,
-        emailConfirmed: row.email_confirmed,
-        isAdmin: row.is_admin,
-        isCoordinator: row.is_coordinator,
-        isSecurityAdmin: row.is_security_admin,
-        isDataEntry: row.is_data_entry,
-      };
-    }
-    return null;
-  });
+const selectByEmail = async (email) => {
+  const sql = `select * from login where email ilike $<email>`;
+  const row = await db.one(sql, { email });
+  return camelcaseKeys(row);
 };
 
 const register = async (model) => {
-  const { firstName, lastName, email, clientUrl } = model;
+  const { email, clientUrl } = model;
   let result = null;
   await hashPassword(model);
   try {
     const sql = `insert into login (first_name, last_name, email,
         password_hash)
-        values ($1, $2, $3, $4) returning id`;
-    const insertResult = await pool.query(sql, [
-      firstName,
-      lastName,
-      email,
-      model.passwordHash,
-    ]);
+        values ($<firstName>, $<lastName>, $<email>, $<passwordHash>) returning id`;
+    const row = await db.one(sql, model);
     result = {
       isSuccess: true,
       code: "REG_SUCCESS",
-      newId: insertResult.rows[0].id,
+      newId: row.id,
       message: "Registration successful.",
     };
     await requestRegistrationConfirmation(email, result, clientUrl);
@@ -107,12 +62,12 @@ const register = async (model) => {
 const resendConfirmationEmail = async (email, clientUrl) => {
   let result = null;
   try {
-    const sql = `select id from  login where email ilike $1`;
-    const insertResult = await pool.query(sql, [email]);
+    const sql = `select id from  login where email ilike $<email>`;
+    const rows = await db.manyOrNone(sql, { email });
     result = {
       success: true,
       code: "REG_SUCCESS",
-      newId: insertResult.rows[0].id,
+      newId: rows[0].id,
       message: "Account found.",
     };
     result = await requestRegistrationConfirmation(email, result, clientUrl);
@@ -134,8 +89,8 @@ const requestRegistrationConfirmation = async (email, result, clientUrl) => {
   const token = uuid4();
   try {
     const sqlToken = `insert into security_token (token, email)
-        values ($1, $2) `;
-    await pool.query(sqlToken, [token, email]);
+        values ($<token>, $<email>) `;
+    await db.none(sqlToken, { token, email });
     await sendRegistrationConfirmation(email, token, clientUrl);
     return result;
   } catch (err) {
@@ -149,19 +104,19 @@ const requestRegistrationConfirmation = async (email, result, clientUrl) => {
 
 const confirmRegistration = async (token) => {
   const sql = `select email, date_created
-    from security_token where token = $1;`;
+    from security_token where token = $<token>;`;
   try {
-    const sqlResult = await pool.query(sql, [token]);
+    const rows = await db.manyOrNone(sql, { token });
     const now = moment();
 
-    if (sqlResult.rows.length < 1) {
+    if (rows.length < 1) {
       return {
         success: false,
         code: "REG_CONFIRM_TOKEN_INVALID",
         message:
           "Email confirmation failed. Invalid security token. Re-send confirmation email.",
       };
-    } else if (moment(now).diff(sqlResult.rows[0].date_created, "hours") >= 1) {
+    } else if (moment(now).diff(rows[0].date_created, "hours") >= 1) {
       return {
         success: false,
         code: "REG_CONFIRM_TOKEN_EXPIRED",
@@ -171,11 +126,11 @@ const confirmRegistration = async (token) => {
     }
 
     // If we get this far, we can update the login.email_confirmed flag
-    const email = sqlResult.rows[0].email;
+    const email = rows[0].email;
     const confirmSql = `update login
             set email_confirmed = true
-            where email ilike $1`;
-    await pool.query(confirmSql, [email]);
+            where email ilike $<email>`;
+    await db.none(confirmSql, { email });
 
     return {
       success: true,
@@ -194,17 +149,13 @@ const forgotPassword = async (model) => {
   const { email, clientUrl } = model;
   let result = null;
   try {
-    const sql = `select id from  login where email ilike $1`;
-    const checkAccountResult = await pool.query(sql, [email]);
-    if (
-      checkAccountResult &&
-      checkAccountResult.rows &&
-      checkAccountResult.rows.length === 1
-    ) {
+    const sql = `select id from  login where email ilike $<email>`;
+    const row = await db.one(sql, { email });
+    if (row) {
       result = {
         isSuccess: true,
         code: "FORGOT_PASSWORD_SUCCESS",
-        newId: checkAccountResult.rows[0].id,
+        newId: row.id,
         message: "Account found.",
       };
     } else {
@@ -221,7 +172,7 @@ const forgotPassword = async (model) => {
       return {
         isSuccess: true,
         code: "FORGOT_PASSWORD_SUCCESS",
-        newId: checkAccountResult.rows[0].id,
+        newId: row.id,
         message: "Account found.",
       };
     } else {
@@ -238,8 +189,8 @@ const requestResetPasswordConfirmation = async (email, result, clientUrl) => {
   const token = uuid4();
   try {
     const sqlToken = `insert into security_token (token, email)
-        values ($1, $2); `;
-    await pool.query(sqlToken, [token, email]);
+        values ($<token>, $<email>); `;
+    await db.none(sqlToken, { token, email });
     result = await sendResetPasswordConfirmation(email, token, clientUrl);
     return result;
   } catch (err) {
@@ -254,20 +205,20 @@ const requestResetPasswordConfirmation = async (email, result, clientUrl) => {
 // Verify password reset token and change password
 const resetPassword = async ({ token, password }) => {
   const sql = `select email, date_created
-    from security_token where token = $1; `;
+    from security_token where token = $<token>; `;
   const now = moment();
   let email = "";
   try {
-    const sqlResult = await pool.query(sql, [token]);
+    const row = await db.one(sql, { token });
 
-    if (sqlResult.rows.length < 1) {
+    if (!row) {
       return {
         isSuccess: false,
         code: "RESET_PASSWORD_TOKEN_INVALID",
         message:
           "Password reset failed. Invalid security token. Re-send confirmation email.",
       };
-    } else if (moment(now).diff(sqlResult.rows[0].date_created, "hours") >= 1) {
+    } else if (moment(now).diff(row.date_created, "hours") >= 1) {
       return {
         isSuccess: false,
         code: "RESET_PASSWORD_TOKEN_EXPIRED",
@@ -278,11 +229,11 @@ const resetPassword = async ({ token, password }) => {
 
     // If we get this far, we can update the password
     const passwordHash = await promisify(bcrypt.hash)(password, SALT_ROUNDS);
-    email = sqlResult.rows[0].email;
+    email = row.email;
     const resetSql = `update login
-            set password_hash = $1
-            where email ilike $2 ;`;
-    await pool.query(resetSql, [passwordHash, email]);
+            set password_hash = $<passwordHash>
+            where email ilike $<email> ;`;
+    await db.none(resetSql, { passwordHash, email });
 
     return {
       isSuccess: true,
@@ -356,22 +307,17 @@ const authenticate = async (email, password) => {
   };
 };
 
-const update = (model) => {
-  const { id, firstName, lastName } = model;
+const update = async (model) => {
   const sql = `update login
-               set firstName = $1,
-                lastName = $2
-                where id = $3;`;
-  return pool.query(sql, [firstName, lastName, id]).then((res) => {
-    return res;
-  });
+               set firstName = $<firstName>,
+                lastName = $<lastName>
+                where id = $<id>;`;
+  return await db.none(sql, model);
 };
 
-const remove = (id) => {
-  const sql = `delete from login where id = $1`;
-  return pool.query(sql, [id]).then((res) => {
-    return res;
-  });
+const remove = async (id) => {
+  const sql = `delete from login where id = $<id>`;
+  return await db.none(sql, { id: Number(id) });
 };
 
 async function hashPassword(user) {
@@ -411,8 +357,8 @@ const setPermissions = async (userId, permissionName, value) => {
   try {
     // do a tiny bit of sanity checking on our input
     var booleanValue = Boolean(value);
-    const updateSql = `update login set ${permissionName}=$1 where id = ${userId};`;
-    await pool.query(updateSql, [booleanValue]);
+    const updateSql = `update login set $<permissionName:name> = $<booleanValue> where id = $<userId>;`;
+    await db.none(updateSql, { permissionName, booleanValue, userId });
     return {
       success: true,
       code: "UPDATE_SUCCESS",

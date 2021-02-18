@@ -1,49 +1,43 @@
-const { pool } = require("./postgres-pool");
+const db = require("./db");
+const camelcaseKeys = require("camelcase-keys");
 
-const selectAll = () => {
+const selectAll = async () => {
   const sql = `
     select id, name, display_order as displayOrder, inactive
     from category
     order by name
   `;
-  return pool.query(sql).then((res) => {
-    return res.rows;
-  });
+  const result = await db.manyOrNone(sql);
+  return result.map((r) => camelcaseKeys(r));
 };
 
-const selectById = (id) => {
+const selectById = async (id) => {
   const sql = `select id, name, display_order as displayOrder, inactive
-   from category where id = ${id}`;
-  return pool.query(sql).then((res) => {
-    return res.rows[0];
-  });
+   from category where id = $<id>`;
+
+  const row = await db.one(sql, { id: Number(id) });
+  return camelcaseKeys(row);
 };
 
-const insert = (model) => {
-  // Partial implementation need to escape characters, add other columns
-  const { name } = model;
-  const sql = `insert into category (name) values ('${name}',) returning id`;
-  return pool.query(sql).then((res) => {
-    return res.rows[0];
-  });
+const insert = async (model) => {
+  model.suggestionStatusId = 1;
+  const sql = `insert into category (name) values ($<name>) returning id`;
+
+  const result = await db.one(sql, model);
+  return { id: result.id };
 };
 
-const update = (model) => {
-  const { id, name } = model;
-  // Partial implementation need to escape characters, add other columns
+const update = async (model) => {
   const sql = `update category
-               set name = '${name}'
-                where id = ${id}`;
-  return pool.query(sql).then((res) => {
-    return res;
-  });
+               set name = $<name>
+                where id = $<id>`;
+  await db.none(sql, model);
 };
 
-const remove = (id) => {
-  const sql = `delete from category where id = ${id}`;
-  return pool.query(sql).then((res) => {
-    return res;
-  });
+const remove = async (id) => {
+  const sql = `delete from category where id = $<id>`;
+  const result = await db.result(sql, { id: Number(id) });
+  return result.rowCount;
 };
 
 module.exports = {

@@ -1,4 +1,4 @@
-const { pool } = require("./postgres-pool");
+const db = require("./db");
 
 /* 
 
@@ -73,6 +73,7 @@ const search = async ({
     s.neighborhood_id, s.is_verified,
     s.food_bakery, s.food_dry_goods, s.food_produce,
     s.food_dairy, s.food_prepared, s.food_meat,
+    s.parent_organization_id,
     ${locationClause ? `${locationClause} AS distance,` : ""}
     ${buildLoginSelectsClause()}
     from stakeholder_set as s
@@ -94,27 +95,24 @@ const search = async ({
     order by distance
   `;
   let stakeholders = [];
-  let categoriesResults = [];
-  var stakeholderResult, stakeholder_ids;
-  try {
-    stakeholderResult = await pool.query(sql);
-    stakeholder_ids = stakeholderResult.rows.map((a) => a.id);
+  let categories = [];
+  var rows, stakeholder_ids;
 
-    if (stakeholder_ids.length) {
-      // Hoover up all the stakeholder categories
-      // for all of our stakeholder row results.
-      const categoriesSql = `select sc.stakeholder_id, c.id, c.name, c.display_order
+  rows = await db.manyOrNone(sql);
+  stakeholder_ids = rows.map((a) => a.id);
+
+  if (stakeholder_ids.length) {
+    // Hoover up all the stakeholder categories
+    // for all of our stakeholder row results.
+    const categoriesSql = `select sc.stakeholder_id, c.id, c.name, c.display_order
           from category c
           join stakeholder_category sc on c.id = sc.category_id
           where sc.stakeholder_id in (${stakeholder_ids.join(",")})
           order by c.display_order, c.name`;
-      categoriesResults = await pool.query(categoriesSql);
-    }
-  } catch (err) {
-    return Promise.reject(err.message);
+    categories = await db.manyOrNone(categoriesSql);
   }
 
-  stakeholderResult.rows.forEach((row) => {
+  rows.forEach((row) => {
     stakeholders.push({
       id: row.id,
       name: row.name || "",
@@ -150,9 +148,7 @@ const search = async ({
       reviewedUser: row.reviewed_user || "",
       assignedUser: row.assigned_user || "",
       claimedUser: row.claimed_user || "",
-      categories: categoriesResults.rows.filter(
-        (cats) => cats.stakeholder_id === row.id
-      ),
+      categories: categories.filter((cats) => cats.stakeholder_id === row.id),
       hours: row.hours || [],
       parentOrganization: row.parent_organization || "",
       physicalAccess: row.physical_access || "",
@@ -200,7 +196,8 @@ const search = async ({
       verificationStatusId: row.verification_status_id,
       inactiveTemporary: row.inactive_temporary,
       neighborhoodId: row.neighborhood_id,
-      is_verified: row.is_verified,
+      isVerified: row.is_verified,
+      parentOrganizationId: row.parent_organization_id,
     });
   });
 
@@ -244,12 +241,13 @@ const selectById = async (id) => {
       s.neighborhood_id, s.is_verified,
       s.food_bakery, s.food_dry_goods, s.food_produce,
       s.food_dairy, s.food_prepared, s.food_meat,
+      s.parent_organization_id,
       ${buildLoginSelectsClause()}
     from stakeholder_best s
     ${buildLoginJoinsClause()}
     where s.id = ${id}`;
-  const result = await pool.query(sql);
-  const row = result.rows[0];
+  const row = await db.one(sql);
+
   const stakeholder = {
     id: row.id,
     name: row.name || "",
@@ -332,7 +330,8 @@ const selectById = async (id) => {
     verificationStatusId: row.verification_status_id,
     inactiveTemporary: row.inactive_temporary,
     neighborhoodId: row.neighborhood_id,
-    is_verified: row.is_verified,
+    isVerified: row.is_verified,
+    parentOrganizationId: row.parent_organization_id,
   };
 
   // Don't have a distance, since we didn't specify origin

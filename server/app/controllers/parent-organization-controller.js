@@ -1,48 +1,55 @@
 const parentOrganizationService = require("../services/parent-organization-service");
 
-const getAll = (req, res) => {
-  parentOrganizationService
-    .selectAll()
-    .then((resp) => {
-      res.send(resp);
-    })
-    .catch((err) => {
-      res.status("404").json({ error: err.toString() });
-    });
+const getAll = async (req, res) => {
+  try {
+    const resp = await parentOrganizationService.selectAll();
+    res.send(resp);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
 };
 
-const post = (req, res) => {
-  parentOrganizationService
-    .insert(req.body)
-    .then((resp) => {
-      res.json(resp);
-    })
-    .catch((err) => {
-      res.status("500").json({ error: err.toString() });
-    });
+const post = async (req, res) => {
+  try {
+    const resp = await parentOrganizationService.insert(req.body);
+    res.status(201).json(resp);
+  } catch (err) {
+    if (err.message.includes("duplicate")) {
+      res.status(400).json({ error: "Cannot insert duplicate row." });
+    } else {
+      console.error(err);
+      res.sendStatus(500);
+    }
+  }
 };
 
-const put = (req, res) => {
-  parentOrganizationService
-    .update(req.body)
-    .then(() => {
-      res.sendStatus(200);
-    })
-    .catch((err) => {
-      res.status("500").json({ error: err.toString() });
-    });
+const put = async (req, res) => {
+  try {
+    await parentOrganizationService.update(req.body);
+    res.sendStatus(200);
+  } catch (err) {
+    console.error(err);
+    res.status(500);
+  }
 };
 
-const remove = (req, res) => {
-  const { id } = req.params;
-  parentOrganizationService
-    .remove(id)
-    .then(() => {
-      res.sendStatus(200);
-    })
-    .catch((err) => {
-      res.status("500").json({ error: err.toString() });
-    });
+const remove = async (req, res) => {
+  try {
+    // params are always strings, need to
+    // convert to correct Javascript type, so
+    // pg=promise can format SQL correctly.
+    const id = Number(req.params.id);
+    const rowCount = await parentOrganizationService.remove(id);
+    if (rowCount !== 1) {
+      res.status(400).json({ error: "Record not found" });
+      return;
+    }
+    res.sendStatus(204);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
 };
 
 module.exports = {

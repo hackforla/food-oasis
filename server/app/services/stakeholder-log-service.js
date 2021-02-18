@@ -1,4 +1,4 @@
-const { pool } = require("./postgres-pool");
+const db = require("./db");
 const categoryService = require("./category-service");
 
 /* 
@@ -38,31 +38,15 @@ const selectById = async (id) => {
       ${buildLoginSelectsClause()}
     from stakeholder_log s
     ${buildLoginJoinsClause()}
-    where s.id = $1
+    where s.id = $<id>
     order by s.version desc`;
 
-  let stakeholders = [];
-  let categories = [];
-  var stakeholderResult;
-  try {
-    stakeholderResult = await pool.query(sql, [id]);
-    categories = await categoryService.selectAll();
-    // stakeholder_ids = stakeholderResult.rows.map((a) => a.id);
-    // if (stakeholder_ids.length) {
-    //   // Hoover up all the stakeholder categories
-    //   // for all of our stakeholder row results.
-    //   const categoriesSql = `select sc.stakeholder_id, c.id, c.name, c.display_order
-    //     from category c
-    //     join stakeholder_category sc on c.id = sc.category_id
-    //     where sc.stakeholder_id in (${stakeholder_ids.join(",")})
-    //     order by c.display_order`;
-    //   categoriesResults = await pool.query(categoriesSql);
-    //}
-  } catch (err) {
-    return Promise.reject(err.message);
-  }
+  const stakeholders = [];
 
-  stakeholderResult.rows.forEach((row) => {
+  const rows = await db.manyOrNone(sql, { id: Number(id) });
+  const categories = await categoryService.selectAll();
+
+  rows.forEach((row) => {
     stakeholders.push({
       id: row.id,
       version: row.version,

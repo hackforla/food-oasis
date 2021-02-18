@@ -1,4 +1,5 @@
 import axios from "axios";
+import { tenantId } from "../helpers/Configuration";
 
 const baseUrl = "/api/import";
 
@@ -12,10 +13,10 @@ const uploadCsv = async (formData) => {
 };
 
 const importCsv = async (importData) => {
-  const response = await axios.post(
-    `${baseUrl}/stakeholders-csv/import`,
-    importData
-  );
+  const response = await axios.post(`${baseUrl}/stakeholders-csv/import`, {
+    importData,
+    tenantId,
+  });
   return response;
 };
 

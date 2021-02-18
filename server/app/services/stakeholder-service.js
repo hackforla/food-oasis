@@ -1,13 +1,7 @@
-const { pool } = require("./postgres-pool");
-const {
-  toSqlString,
-  toSqlNumeric,
-  toSqlBoolean,
-  toSqlTimestamp,
-} = require("./postgres-utils");
+const db = require("./db");
+const camelcaseKeys = require("camelcase-keys");
 
 /* 
-
 This service is for getting data from the stakeholder table, which
 is what we want for the administration UI. It represents the most recent
 draft version of each stakeholder for data entry and administrators
@@ -15,7 +9,6 @@ to work with.
 
 If you make changes to the database structure, be sure to update these
 methods as well as the corresponding methods in the stakeholder-best-service.js.
-
 */
 
 const trueFalseEitherClause = (columnName, value) => {
@@ -56,7 +49,6 @@ const search = async (params) => {
     minCompleteCriticalPercent,
     maxCompleteCriticalPercent,
   } = params;
-  console.log(params);
 
   const locationClause = buildLocationClause(latitude, longitude);
   const categoryClause = buildCTEClause(categoryIds, name || "", false);
@@ -95,6 +87,7 @@ const search = async (params) => {
       ${locationClause ? `${locationClause} AS distance,` : ""}
       s.food_bakery, s.food_dry_goods, s.food_produce,
       s.food_dairy, s.food_prepared, s.food_meat,
+      s.parent_organization_id,
     ${buildLoginSelectsClause()}
     from stakeholder_set as s
     left outer join neighborhood n on s.neighborhood_id = n.id
@@ -136,14 +129,14 @@ const search = async (params) => {
         : ""
     }
     order by ${locationClause ? "distance" : "s.name"}
+
   `;
-  // console.log(sql);
   let stakeholders = [];
   let categoriesResults = [];
-  var stakeholderResult, stakeholder_ids;
+  var rows, stakeholder_ids;
   try {
-    stakeholderResult = await pool.query(sql);
-    stakeholder_ids = stakeholderResult.rows.map((a) => a.id);
+    rows = await db.manyOrNone(sql);
+    stakeholder_ids = rows.map((a) => a.id);
     if (stakeholder_ids.length) {
       // Hoover up all the stakeholder categories
       // for all of our stakeholder row results.
@@ -152,13 +145,13 @@ const search = async (params) => {
         join stakeholder_category sc on c.id = sc.category_id
         where sc.stakeholder_id in (${stakeholder_ids.join(",")})
         order by c.display_order`;
-      categoriesResults = await pool.query(categoriesSql);
+      categoriesResults = await db.manyOrNone(categoriesSql);
     }
   } catch (err) {
     return Promise.reject(err.message);
   }
 
-  stakeholderResult.rows.forEach((row) => {
+  rows.forEach((row) => {
     stakeholders.push({
       id: row.id,
       name: row.name || "",
@@ -193,7 +186,7 @@ const search = async (params) => {
       reviewedUser: row.reviewed_user || "",
       assignedUser: row.assigned_user || "",
       claimedUser: row.claimed_user || "",
-      categories: categoriesResults.rows.filter(
+      categories: categoriesResults.filter(
         (cats) => cats.stakeholder_id === row.id
       ),
       email: row.email || "",
@@ -216,6 +209,7 @@ const search = async (params) => {
       foodDairy: row.food_dairy,
       foodPrepared: row.food_prepared,
       foodMeat: row.food_meat,
+      parentOrganizationId: row.parent_organization_id,
     });
   });
 
@@ -265,12 +259,12 @@ const selectById = async (id) => {
       s.neighborhood_id, 
       s.food_bakery, s.food_dry_goods, s.food_produce,
       s.food_dairy, s.food_prepared, s.food_meat,
+      s.parent_organization_id,
       ${buildLoginSelectsClause()}
     from stakeholder s
     ${buildLoginJoinsClause()}
     where s.id = ${id}`;
-  const result = await pool.query(sql);
-  const row = result.rows[0];
+  const row = await db.one(sql);
   const stakeholder = {
     id: row.id,
     name: row.name || "",
@@ -353,6 +347,7 @@ const selectById = async (id) => {
     foodDairy: row.food_dairy,
     foodPrepared: row.food_prepared,
     foodMeat: row.food_meat,
+    parentOrganizationId: row.parent_organization_id,
   };
 
   // Don't have a distance, since we didn't specify origin
@@ -416,8 +411,8 @@ left join login L5 on s.assigned_login_id = L5.id
 left join login L6 on s.claimed_login_id = L6.id
 left join neighborhood n on s.neighborhood_id = n.id
 where s.id in (${ids.join(", ")})`;
-  const result = await pool.query(sql);
-  const stakeholders = result.rows.map((row) => {
+  const rows = await db.manyOrNone(sql);
+  const stakeholders = rows.map((row) => {
     return {
       id: row.id,
       name: row.name || "",
@@ -499,631 +494,313 @@ where s.id in (${ids.join(", ")})`;
 };
 
 const insert = async (model) => {
-  const {
-    tenantId,
-    name,
-    address1,
-    address2,
-    city,
-    state,
-    zip,
-    phone,
-    latitude,
-    longitude,
-    website,
-    inactive,
-    notes,
-    requirements,
-    adminNotes,
-    selectedCategoryIds,
-    hours,
-    parentOrganization,
-    physicalAccess,
-    email,
-    items,
-    services,
-    facebook,
-    twitter,
-    pinterest,
-    linkedin,
-    loginId,
-    description,
-    submittedDate,
-    submittedLoginId,
-    approvedDate,
-    reviewedLoginId,
-    assignedDate,
-    assignedLoginId,
-    claimedDate,
-    claimedLoginId,
-    reviewNotes,
-    instagram,
-    adminContactName,
-    adminContactPhone,
-    adminContactEmail,
-    donationContactName,
-    donationContactPhone,
-    donationContactEmail,
-    donationPickup,
-    donationAcceptFrozen,
-    donationAcceptRefrigerated,
-    donationAcceptPerishable,
-    donationSchedule,
-    donationDeliveryInstructions,
-    donationNotes,
-    covidNotes,
-    categoryNotes,
-    eligibilityNotes,
-    foodTypes,
-    languages,
-    confirmedName,
-    confirmedCategories,
-    confirmedAddress,
-    confirmedPhone,
-    confirmedEmail,
-    confirmedHours,
-    confirmedFoodTypes,
-    verificationStatusId,
-    inactiveTemporary,
-    foodBakery,
-    foodDryGoods,
-    foodProduce,
-    foodDairy,
-    foodPrepared,
-    foodMeat,
-  } = model;
-  try {
-    let hoursSqlValues = hours.length
-      ? hours
-          .reduce((acc, cur) => {
-            return (acc += `'(${cur.weekOfMonth},${cur.dayOfWeek},${cur.open},${cur.close})', `);
-          }, "")
-          .slice(0, -2)
-      : "";
-    const categories = "ARRAY[" + selectedCategoryIds.join(",") + "]::int[]";
-    const formattedHours = "ARRAY[" + hoursSqlValues + "]::stakeholder_hours[]";
+  // Array of catetory_ids is formatted as, e.g.,  '{1,9}'
+  const categories = model.selectedCategoryIds
+    ? "{" + model.selectedCategoryIds.join(",") + "}"
+    : "{12}";
 
-    // create_stakeholder is a postgres stored procedure. Source of this stored
-    // procedure is in the repo at db/stored_procs/create_stakeholder.sql.
-    // We pass in category_ids and stakeholder hours like this:
-    // ARRAY[3,5,7]::int[],                                                      --array of integer category_ids
-    // (ARRAY['(2,Wed,13:02,13:04)', '(3,Thu,07:00,08:00)'])::stakeholder_hours[]); --array of stakeholder_hours
-    // objects, which are defined as a postgres type (see repo file for more detail on this type).
-    const invokeSprocSql = `CALL create_stakeholder(
-        ${toSqlNumeric(0)}::INT,
-        ${toSqlNumeric(tenantId)}::INT,
-        ${toSqlString(name)}::VARCHAR, 
-        ${toSqlString(address1)}::VARCHAR, 
-        ${toSqlString(address2)}::VARCHAR,
-        ${toSqlString(city)}::VARCHAR, 
-        ${toSqlString(state)}::VARCHAR, 
-        ${toSqlString(zip)}::VARCHAR,
-        ${toSqlString(phone)}::VARCHAR,
-        ${toSqlNumeric(latitude)}::NUMERIC, 
-        ${toSqlNumeric(longitude)}::NUMERIC,
-        ${toSqlString(website)}::VARCHAR, ${toSqlBoolean(inactive)},
-        ${toSqlString(notes)}::VARCHAR, 
-        ${toSqlString(requirements)}::VARCHAR,
-        ${toSqlString(adminNotes)}::VARCHAR, 
-        ${toSqlNumeric(loginId)}::INT,
-        ${toSqlString(parentOrganization)}::VARCHAR, 
-        ${toSqlString(physicalAccess)}::VARCHAR,
-        ${toSqlString(email)}::VARCHAR, 
-        ${toSqlString(items)}::VARCHAR,
-        ${toSqlString(services)}::VARCHAR, ${toSqlString(facebook)}::VARCHAR,
-        ${toSqlString(twitter)}::VARCHAR, ${toSqlString(pinterest)}::VARCHAR,
-        ${toSqlString(linkedin)}::VARCHAR, ${toSqlString(description)}::VARCHAR,
-        ${toSqlTimestamp(submittedDate)}::TIMESTAMPTZ, 
-        ${toSqlNumeric(submittedLoginId)}::INT,
-        ${toSqlTimestamp(approvedDate)}::TIMESTAMP,
-        ${toSqlNumeric(reviewedLoginId)}::INT,
-        ${toSqlTimestamp(assignedDate)}::TIMESTAMP, 
-        ${toSqlNumeric(assignedLoginId)}::INT,
-        ${toSqlTimestamp(claimedDate)}::TIMESTAMP, 
-        ${toSqlNumeric(claimedLoginId)}::INT,
-        ${toSqlString(reviewNotes)}::VARCHAR, 
-        ${toSqlString(instagram)}::VARCHAR,
-        ${toSqlString(adminContactName)}::VARCHAR, 
-        ${toSqlString(adminContactPhone)}::VARCHAR,
-        ${toSqlString(adminContactEmail)}::VARCHAR,
-        ${toSqlString(donationContactName)}::VARCHAR,
-        ${toSqlString(donationContactPhone)}::VARCHAR,
-        ${toSqlString(donationContactEmail)}::VARCHAR,
-        ${toSqlBoolean(donationPickup)},
-        ${toSqlBoolean(donationAcceptFrozen)},
-        ${toSqlBoolean(donationAcceptRefrigerated)},
-        ${toSqlBoolean(donationAcceptPerishable)},
-        ${toSqlString(donationSchedule)}::VARCHAR,
-        ${toSqlString(donationDeliveryInstructions)}::VARCHAR,
-        ${toSqlString(donationNotes)}::VARCHAR,
-        ${toSqlString(covidNotes)}::VARCHAR,
-        ${toSqlString(categoryNotes)}::VARCHAR,
-        ${toSqlString(eligibilityNotes)}::VARCHAR,
-        ${toSqlString(foodTypes)}::VARCHAR,
-        ${toSqlString(languages)}::VARCHAR,
-        ${toSqlBoolean(confirmedName)},
-        ${toSqlBoolean(confirmedCategories)},
-        ${toSqlBoolean(confirmedAddress)},
-        ${toSqlBoolean(confirmedPhone)},
-        ${toSqlBoolean(confirmedEmail)},
-        ${toSqlBoolean(confirmedHours)},
-        ${toSqlBoolean(confirmedFoodTypes)},
-        ${toSqlNumeric(verificationStatusId)}::INT,
-        ${toSqlBoolean(inactiveTemporary)},
-        ${categories}, ${formattedHours},
-        ${toSqlBoolean(foodBakery)}, ${toSqlBoolean(foodDryGoods)},
-        ${toSqlBoolean(foodProduce)}, ${toSqlBoolean(foodDairy)},
-        ${toSqlBoolean(foodPrepared)}, ${toSqlBoolean(foodMeat)}
-      )`;
-    const stakeholderResult = await pool.query(invokeSprocSql);
-    const id = stakeholderResult.rows[0].s_id;
-    return { id };
-  } catch (err) {
-    return Promise.reject(err.message);
-  }
+  // Array of hours if formatted as, e.g., `{"(0,Mon,10:00:00,13:00:00)","(3,Sat,08:00:00,10:30:00)"}
+  let hoursSqlValues =
+    model.hours && model.hours.length
+      ? model.hours
+          .reduce((acc, cur) => {
+            return (acc += `"(${cur.weekOfMonth},${cur.dayOfWeek},${cur.open},${cur.close})",`);
+          }, "")
+          .slice(0, -1)
+      : "";
+  const formattedHours = "{" + hoursSqlValues + "}";
+
+  // create_stakeholder is a postgres stored procedure. Source of this stored
+  // procedure is in the repo at db/stored_procs/create_stakeholder.sql.
+  const params = [
+    0,
+    Number(model.tenantId),
+    model.name || "",
+    model.address1 || "",
+    model.address2 || "",
+    model.city || "",
+    model.state || "",
+    model.zip || "",
+    model.phone || "",
+    Number(model.latitude) || null, // numeric
+    Number(model.longitude) || null, // numeric
+    model.website || "",
+    model.inactive || false, // bool
+    model.notes || "",
+    model.requirements || "",
+    model.adminNotes || "",
+    Number(model.loginId) || null, // numeric
+    model.parentOrganization || "",
+    model.physicalAccess || "",
+    model.email || "",
+    model.items || "",
+    model.services || "",
+    model.facebook || "",
+    model.twitter || "",
+    model.pinterest || "",
+    model.linkedin || "",
+    model.description || "",
+    model.submittedDate || null, // TIMESTAMPTZ
+    Number(model.submittedLoginId), // INT
+    model.approvedDate || null, // TIMESTAMP
+    Number(model.reviewedLoginId) || null, // INT
+    model.assignedDate || null, // TIMESTAMP
+    Number(model.assignedLoginId) || null, // INT
+    model.claimedDate || null, // TIMESTAMP
+    Number(model.claimedLoginId) || null, // INT
+    model.reviewNotes || "",
+    model.instagram || "",
+    model.adminContactName || "",
+    model.adminContactPhone || "",
+    model.adminContactEmail || "",
+    model.donationContactName || "",
+    model.donationContactPhone || "",
+    model.donationContactEmail || "",
+    model.donationPickup || false, // bool
+    model.donationAcceptFrozen || false, // bool
+    model.donationAcceptRefrigerated || false, // bool
+    model.donationAcceptPerishable || false, // bool
+    model.donationSchedule || "",
+    model.donationDeliveryInstructions || "",
+    model.donationNotes || "",
+    model.covidNotes || "",
+    model.categoryNotes || "",
+    model.eligibilityNotes || "",
+    model.foodTypes || "",
+    model.languages || "",
+    model.confirmedName || false, //  bool
+    model.confirmedCategories || false, //  bool
+    model.confirmedAddress || false, //  bool
+    model.confirmedPhone || false, //  bool
+    model.confirmedEmail || false, //  bool
+    model.confirmedHours || false, //  bool
+    model.confirmedFoodTypes || false, //  bool
+    Number(model.verificationStatusId) || 1, // INT,
+    model.inactiveTemporary || false, // bool
+    categories,
+    formattedHours,
+    model.foodBakery || false,
+    model.foodDryGoods || false,
+    model.foodProduce || false,
+    model.foodDairy || false,
+    model.foodPrepared || false,
+    model.foodMeat || false,
+    model.parentOrganizationId || null,
+  ];
+
+  const result = await db.proc("create_stakeholder", params);
+  return { id: result.s_id };
 };
 
-const insertBulk = async (stakeholderArray) => {
-  for (let i = 0; i < stakeholderArray.length; i++) {
-    const model = stakeholderArray[i];
-    const {
-      tenant_id,
-      name,
-      address_1,
-      address_2,
-      city,
-      state,
-      zip,
-      phone,
-      latitude,
-      longitude,
-      website,
-      inactive,
-      notes,
-      requirements,
-      admin_notes,
-      created_login_id,
-      category_ids,
-      hours,
-      parent_organization,
-      physical_access,
-      email,
-      items,
-      services,
-      facebook,
-      twitter,
-      pinterest,
-      linkedin,
-      description,
-      submitted_date,
-      submitted_login_id,
-      approved_date,
-      reviewed_login_id,
-      assigned_date,
-      assigned_login_id,
-      claimed_date,
-      claimed_login_id,
-      review_notes,
-      instagram,
-      admin_contact_name,
-      admin_contact_phone,
-      admin_contact_email,
-      donation_contact_name,
-      donation_contact_phone,
-      donation_contact_email,
-      donation_pickup,
-      donation_accept_frozen,
-      donation_accept_refrigerated,
-      donation_accept_perishable,
-      donation_schedule,
-      donation_delivery_instructions,
-      donation_notes,
-      covid_notes,
-      category_notes,
-      eligibility_notes,
-      food_types,
-      languages,
-      v_name,
-      v_categories,
-      v_address,
-      v_phone,
-      v_email,
-      v_hours,
-      v_food_types,
-      verification_status_id,
-      inactive_temporary,
-      food_bakery,
-      food_dry_goods,
-      food_produce,
-      food_dairy,
-      food_prepared,
-      food_meat,
-    } = model;
-    try {
-      let hoursSqlValues = hours.length
-        ? hours.replace(/[(]/g, "'(").replace(/[)]/g, ")'")
-        : "";
-      const categories = "ARRAY[" + category_ids + "]::int[]";
-      const formattedHours =
-        "ARRAY[" + hoursSqlValues + "]::stakeholder_hours[]";
-
-      // create_stakeholder is a postgres stored procedure. Source of this stored
-      // procedure is in the repo at db/stored_procs/create_stakeholder.sql.
-      // We pass in category_ids and stakeholder hours like this:
-      // ARRAY[3,5,7]::int[],                                                      --array of integer category_ids
-      // (ARRAY['(2,Wed,13:02,13:04)', '(3,Thu,07:00,08:00)'])::stakeholder_hours[]); --array of stakeholder_hours
-      // objects, which are defined as a postgres type (see repo file for more detail on this type).
-
-      const invokeSprocSql = `CALL create_stakeholder(
-          ${toSqlNumeric(0)}::INT,
-          ${toSqlNumeric(tenant_id)}::INT,
-          ${toSqlString(name)}::VARCHAR,
-          ${toSqlString(address_1)}::VARCHAR, 
-          ${toSqlString(address_2)}::VARCHAR,
-          ${toSqlString(city)}::VARCHAR, 
-          ${toSqlString(state)}::VARCHAR, 
-          ${toSqlString(zip)}::VARCHAR,
-          ${toSqlString(phone)}::VARCHAR,
-          ${toSqlNumeric(latitude)}::NUMERIC, 
-          ${toSqlNumeric(longitude)}::NUMERIC,
-          ${toSqlString(website)}::VARCHAR, 
-          ${toSqlBoolean(inactive)},
-          ${toSqlString(notes)}::VARCHAR, 
-          ${toSqlString(requirements)}::VARCHAR,
-          ${toSqlString(admin_notes)}::VARCHAR, 
-          ${toSqlNumeric(created_login_id)}::INT,
-          ${toSqlString(parent_organization)}::VARCHAR, 
-          ${toSqlString(physical_access)}::VARCHAR,
-          ${toSqlString(email)}::VARCHAR, 
-          ${toSqlString(items)}::VARCHAR,
-          ${toSqlString(services)}::VARCHAR, 
-          ${toSqlString(facebook)}::VARCHAR,
-          ${toSqlString(twitter)}::VARCHAR, 
-          ${toSqlString(pinterest)}::VARCHAR,
-          ${toSqlString(linkedin)}::VARCHAR, 
-          ${toSqlString(description)}::VARCHAR,
-          ${toSqlTimestamp(submitted_date)}::TIMESTAMPTZ, 
-          ${toSqlNumeric(submitted_login_id)}::INT,
-          ${toSqlTimestamp(approved_date)}::TIMESTAMP,
-          ${toSqlNumeric(reviewed_login_id)}::INT,
-          ${toSqlTimestamp(assigned_date)}::TIMESTAMP, 
-          ${toSqlNumeric(assigned_login_id)}::INT,
-          ${toSqlTimestamp(claimed_date)}::TIMESTAMP, 
-          ${toSqlNumeric(claimed_login_id)}::INT,
-          ${toSqlString(review_notes)}::VARCHAR, 
-          ${toSqlString(instagram)}::VARCHAR,
-          ${toSqlString(admin_contact_name)}::VARCHAR, 
-          ${toSqlString(admin_contact_phone)}::VARCHAR,
-          ${toSqlString(admin_contact_email)}::VARCHAR,
-          ${toSqlString(donation_contact_name)}::VARCHAR,
-          ${toSqlString(donation_contact_phone)}::VARCHAR,
-          ${toSqlString(donation_contact_email)}::VARCHAR,
-          ${toSqlBoolean(donation_pickup)},
-          ${toSqlBoolean(donation_accept_frozen)},
-          ${toSqlBoolean(donation_accept_refrigerated)},
-          ${toSqlBoolean(donation_accept_perishable)},
-          ${toSqlString(donation_schedule)}::VARCHAR,
-          ${toSqlString(donation_delivery_instructions)}::VARCHAR,
-          ${toSqlString(donation_notes)}::VARCHAR,
-          ${toSqlString(covid_notes)}::VARCHAR,
-          ${toSqlString(category_notes)}::VARCHAR,
-          ${toSqlString(eligibility_notes)}::VARCHAR,
-          ${toSqlString(food_types)}::VARCHAR,
-          ${toSqlString(languages)}::VARCHAR,
-          ${toSqlBoolean(v_name)},
-          ${toSqlBoolean(v_categories)},
-          ${toSqlBoolean(v_address)},
-          ${toSqlBoolean(v_phone)},
-          ${toSqlBoolean(v_email)},
-          ${toSqlBoolean(v_hours)},
-          ${toSqlBoolean(v_food_types)},
-          ${toSqlNumeric(verification_status_id)}::INT,
-          ${toSqlBoolean(inactive_temporary)},
-          ${categories},
-          ${formattedHours},
-          ${toSqlBoolean(food_bakery)},${toSqlBoolean(food_dry_goods)},
-          ${toSqlBoolean(food_produce)},${toSqlBoolean(food_dairy)},
-          ${toSqlBoolean(food_prepared)},${toSqlBoolean(food_meat)}
-        )`;
-      const stakeholderResult = await pool.query(invokeSprocSql);
-      const id = stakeholderResult.rows[0].s_id;
-      return { id };
-    } catch (err) {
-      return Promise.reject(err.message);
+const insertBulk = async (tenantId, stakeholderArray) => {
+  try {
+    for (let i = 0; i < stakeholderArray.length; i++) {
+      const model = camelcaseKeys(stakeholderArray[i]);
+      model.tenantId = tenantId;
+      if (model.hours) {
+        model.hours = JSON.parse(model.hours);
+      }
+      await insert(model);
     }
+  } catch (err) {
+    console.error(err);
   }
 };
 
 const requestAssignment = async (model) => {
-  const { loginId, tenantId } = model;
   const sql = `with selected_stakeholder as (
     select distinct sh.id, sh.modified_date
     from stakeholder sh join stakeholder_category sc 
       on sh.id = sc.stakeholder_id
     join category c on sc.category_id = c.id
     where sh.verification_status_id = 1
-    and sh.tenant_id = ${toSqlNumeric(tenantId)}
+    and sh.tenant_id = $<tenantId>
     and c.inactive = false
     order by sh.modified_date
     limit 1
   )
   update stakeholder set
     verification_status_id = 2,
-    assigned_login_id = ${toSqlNumeric(loginId)},
+    assigned_login_id = $<loginId>,
     assigned_date = current_timestamp,
     modified_date = current_timestamp,
-    modified_login_id = ${toSqlNumeric(loginId)}
+    modified_login_id = $<loginId>
   where stakeholder.id in (select id from selected_stakeholder)`;
-  try {
-    await pool.query(sql);
-  } catch (err) {
-    console.log(err);
-    return Promise.reject(err.message);
-  }
+
+  const result = await db.result(sql, model);
+  return result.rowCount;
 };
 
 const assign = async (model) => {
-  const { id, userLoginId, loginId } = model;
-  const sql = `update stakeholder set
-                assigned_login_id = ${toSqlNumeric(loginId)},
-                assigned_date = CURRENT_TIMESTAMP,
-                submitted_date = null,
-                submitted_login_id = null,
-                modified_login_id = ${toSqlNumeric(userLoginId)},
-                modified_date = CURRENT_TIMESTAMP,
-                approved_date = null,
-                reviewed_login_id = null,
-                verification_status_id = 2
-              where id = ${id}`;
-  try {
-    await pool.query(sql);
-    return true;
-  } catch (err) {
-    console.log(err);
-    return Promise.reject(err.message);
-  }
+  const sql = `
+    update stakeholder set
+      assigned_login_id = $<loginId>,
+      assigned_date = CURRENT_TIMESTAMP,
+      submitted_date = null,
+      submitted_login_id = null,
+      modified_login_id = $<userLoginId>,
+      modified_date = CURRENT_TIMESTAMP,
+      approved_date = null,
+      reviewed_login_id = null,
+      verification_status_id = 2
+    where id = $<id>`;
+
+  const result = await db.result(sql, model);
+  return result.rowCount;
 };
 
 const needsVerification = async (model) => {
-  const { id, userLoginId, message } = model;
-  const sql = `update stakeholder set
+  const sql =
+    `update stakeholder set
                 assigned_login_id = null,
                 assigned_date = null,
                 submitted_date = null,
                 submitted_login_id = null,
-                modified_login_id = ${toSqlNumeric(userLoginId)},
+                modified_login_id = $<userLoginId>,
                 modified_date = CURRENT_TIMESTAMP,
                 approved_date = null,
                 reviewed_login_id = null,
                 verification_status_id = 1,
-                review_notes = CASE WHEN length(review_notes) > 0  THEN review_notes ${
-                  message
-                    ? ` || chr(10) || chr(10) || ${toSqlString(message)} `
-                    : ""
-                } ELSE ${toSqlString(message)} END
-              where id = ${id}`;
-  try {
-    await pool.query(sql);
-  } catch (err) {
-    console.log(err);
-    return Promise.reject(err.message);
-  }
+                review_notes = CASE WHEN length(review_notes) > 0  THEN  review_notes ` +
+    (model.message ? `|| chr(10) || chr(10) || $<message> ` : "") +
+    ` ELSE $<message> END
+              where id = $<id>`;
+
+  const result = await db.result(sql, model);
+  return result.rowCount;
 };
 
 const claim = async (model) => {
-  const { id, userLoginId, loginId, setClaimed } = model;
+  // const { id, userLoginId, loginId, setClaimed } = model;
   const sql = `update stakeholder set
-                claimed_login_id = ${
-                  setClaimed ? toSqlNumeric(loginId) : "null"
-                },
-                claimed_date = ${setClaimed ? "CURRENT_TIMESTAMP" : "null"},
-                modified_login_id = ${toSqlNumeric(userLoginId)},
-                modified_date = CURRENT_TIMESTAMP,
-              where id = ${id}`;
-  try {
-    await pool.query(sql);
-  } catch (err) {
-    console.log(err);
-    return Promise.reject(err.message);
-  }
+                claimed_login_id = $<loginId>,
+                claimed_date = CASE $<setClaimed> THEN CURRENT_TIMESTAMP ELSE null END,
+                modified_login_id = $<userLoginId>,
+                modified_date = CURRENT_TIMESTAMP,,
+              where id = $<id>`;
+
+  const result = await db.result(sql, model);
+  return result.rowCount;
 };
 
 const update = async (model) => {
-  const {
-    id,
-    name,
-    address1,
-    address2,
-    city,
-    state,
-    zip,
-    phone,
-    latitude,
-    longitude,
-    website,
-    inactive,
-    notes,
-    requirements,
-    adminNotes,
-    selectedCategoryIds,
-    hours,
-    parentOrganization,
-    physicalAccess,
-    email,
-    items,
-    services,
-    facebook,
-    twitter,
-    pinterest,
-    linkedin,
-    loginId,
-    description,
-    submittedDate,
-    submittedLoginId,
-    approvedDate,
-    reviewedLoginId,
-    assignedDate,
-    assignedLoginId,
-    claimedDate,
-    claimedLoginId,
-    reviewNotes,
-    instagram,
-    adminContactName,
-    adminContactPhone,
-    adminContactEmail,
-    donationContactName,
-    donationContactPhone,
-    donationContactEmail,
-    donationPickup,
-    donationAcceptFrozen,
-    donationAcceptRefrigerated,
-    donationAcceptPerishable,
-    donationSchedule,
-    donationDeliveryInstructions,
-    donationNotes,
-    covidNotes,
-    categoryNotes,
-    eligibilityNotes,
-    foodTypes,
-    languages,
-    confirmedName,
-    confirmedCategories,
-    confirmedAddress,
-    confirmedPhone,
-    confirmedEmail,
-    confirmedHours,
-    confirmedFoodTypes,
-    verificationStatusId,
-    inactiveTemporary,
-    foodBakery,
-    foodDryGoods,
-    foodProduce,
-    foodDairy,
-    foodPrepared,
-    foodMeat,
-  } = model;
-
-  let hoursSqlValues = hours.length
-    ? hours
+  // Array of catetory_ids is formatted as, e.g.,  '{1,9}'
+  const categories = "{" + model.selectedCategoryIds.join(",") + "}";
+  // Array of hours if formatted as, e.g., `{"(0,Mon,10:00:00,13:00:00)","(3,Sat,08:00:00,10:30:00)"}
+  let hoursSqlValues = model.hours.length
+    ? model.hours
         .reduce((acc, cur) => {
-          return (acc += `'(${cur.weekOfMonth},${cur.dayOfWeek},${cur.open},${cur.close})', `);
+          return (acc += `"(${cur.weekOfMonth},${cur.dayOfWeek},${cur.open},${cur.close})",`);
         }, "")
-        .slice(0, -2)
+        .slice(0, -1)
     : "";
-  const categories = "ARRAY[" + selectedCategoryIds.join(",") + "]::int[]";
-  const formattedHours = "ARRAY[" + hoursSqlValues + "]::stakeholder_hours[]";
+  const formattedHours = "{" + hoursSqlValues + "}";
 
   // update_stakeholder is a postgres stored procedure. Source of this stored
   // procedure is in the repo at db/stored_procs/update_stakeholder.sql.
   //
   // Currently, it updates stakeholder category and schedule by deleting the existing category/schedule rows,
   // and creating new ones.
-  //
-  // We pass in category_ids and stakeholder hours like this:
-  // ARRAY[3,5,7]::int[],                                                      --array of integer category_ids
-  // (ARRAY['(2,Wed,13:02,13:04)', '(3,Thu,07:00,08:00)'])::stakeholder_hours[]); --array of stakeholder_hours
-  // objects, which are defined as a postgres type (see repo file for more detail on this type).
-  const invokeSprocSql = `CALL update_stakeholder (
-      ${toSqlString(name)}::VARCHAR, 
-      ${toSqlString(address1)}::VARCHAR,
-      ${toSqlString(address2)}::VARCHAR,
-      ${toSqlString(city)}::VARCHAR, 
-      ${toSqlString(state)}::VARCHAR, 
-      ${toSqlString(zip)}::VARCHAR, 
-      ${toSqlString(phone)}::VARCHAR,
-      ${toSqlNumeric(latitude)}::NUMERIC, 
-      ${toSqlNumeric(longitude)}::NUMERIC, 
-      ${toSqlString(website)}::VARCHAR,
-      ${toSqlBoolean(inactive)}, 
-      ${toSqlString(notes)}::VARCHAR, 
-      ${toSqlString(requirements)}::VARCHAR,
-      ${toSqlString(adminNotes)}::VARCHAR,
-      ${toSqlString(parentOrganization)}::VARCHAR,
-      ${toSqlString(physicalAccess)}::VARCHAR,
-      ${toSqlString(email)}::VARCHAR, 
-      ${toSqlString(items)}::VARCHAR, 
-      ${toSqlString(services)}::VARCHAR, 
-      ${toSqlString(facebook)}::VARCHAR,
-      ${toSqlString(twitter)}::VARCHAR, 
-      ${toSqlString(pinterest)}::VARCHAR, 
-      ${toSqlString(linkedin)}::VARCHAR, 
-      ${toSqlString(description)}::VARCHAR,
-      ${toSqlNumeric(loginId)}::INT, 
-      ${toSqlTimestamp(submittedDate)}::TIMESTAMPTZ, 
-      ${toSqlNumeric(submittedLoginId)}::INT,
-      ${toSqlTimestamp(approvedDate)}::TIMESTAMP,
-      ${toSqlNumeric(reviewedLoginId)}::INT,
-      ${toSqlTimestamp(assignedDate)}::TIMESTAMP, 
-      ${toSqlNumeric(assignedLoginId)}::INT, 
-      ${toSqlTimestamp(claimedDate)}::TIMESTAMP,
-      ${toSqlNumeric(claimedLoginId)}::INT, 
-      ${toSqlString(reviewNotes)}::VARCHAR, 
-      ${toSqlString(instagram)}::VARCHAR,
-      ${toSqlString(adminContactName)}::VARCHAR, 
-      ${toSqlString(adminContactPhone)}::VARCHAR, 
-      ${toSqlString(adminContactEmail)}::VARCHAR,
-      ${toSqlString(donationContactName)}::VARCHAR, 
-      ${toSqlString(donationContactPhone)}::VARCHAR, 
-      ${toSqlString(donationContactEmail)}::VARCHAR,
-      ${toSqlBoolean(donationPickup)}, 
-      ${toSqlBoolean(donationAcceptFrozen)}, 
-      ${toSqlBoolean(donationAcceptRefrigerated)},
-      ${toSqlBoolean(donationAcceptPerishable)}, 
-      ${toSqlString(donationSchedule)}::VARCHAR, 
-      ${toSqlString(donationDeliveryInstructions)}::VARCHAR,
-      ${toSqlString(donationNotes)}::VARCHAR, 
-      ${toSqlString(covidNotes)}::VARCHAR, 
-      ${toSqlString(categoryNotes)}::VARCHAR,
-      ${toSqlString(eligibilityNotes)}::VARCHAR, 
-      ${toSqlString(foodTypes)}::VARCHAR, 
-      ${toSqlString(languages)}::VARCHAR,
-      ${toSqlBoolean(confirmedName)}, 
-      ${toSqlBoolean(confirmedCategories)}, 
-      ${toSqlBoolean(confirmedAddress)},
-      ${toSqlBoolean(confirmedPhone)}, 
-      ${toSqlBoolean(confirmedEmail)}, ${toSqlBoolean(confirmedHours)},
-      ${toSqlBoolean(confirmedFoodTypes)},
-      ${toSqlNumeric(verificationStatusId)}::INT, 
-      ${toSqlBoolean(inactiveTemporary)},
-      ${id}, 
-      ${categories}, 
-      ${formattedHours},
-      ${toSqlBoolean(foodBakery)}, ${toSqlBoolean(foodDryGoods)},
-      ${toSqlBoolean(foodProduce)}, ${toSqlBoolean(foodDairy)},
-      ${toSqlBoolean(foodPrepared)}, ${toSqlBoolean(foodMeat)}
-    )`;
+  const params = [
+    model.name || "",
+    model.address1 || "",
+    model.address2 || "",
+    model.city || "",
+    model.state || "",
+    model.zip || "",
+    model.phone || "",
+    model.latitude, // numeric
+    model.longitude, // numeric
+    model.website || "",
+    model.inactive, // bool
+    model.notes || "",
+    model.requirements || "",
+    model.adminNotes || "",
+    model.parentOrganization || "",
+    model.physicalAccess || "",
+    model.email || "",
+    model.items || "",
+    model.services || "",
+    model.facebook || "",
+    model.twitter || "",
+    model.pinterest || "",
+    model.linkedin || "",
+    model.description || "",
+    model.loginId, // numeric
+    model.submittedDate || null, // TIMESTAMPTZ
+    model.submittedLoginId, // INT
+    model.approvedDate || null, // TIMESTAMP
+    model.reviewedLoginId, // INT
+    model.assignedDate || null, // TIMESTAMP
+    model.assignedLoginId, // INT
+    model.claimedDate || null, // TIMESTAMP
+    model.claimedLoginId, // INT
+    model.reviewNotes || "",
+    model.instagram || "",
+    model.adminContactName || "",
+    model.adminContactPhone || "",
+    model.adminContactEmail || "",
+    model.donationContactName || "",
+    model.donationContactPhone || "",
+    model.donationContactEmail || "",
+    model.donationPickup, // bool
+    model.donationAcceptFrozen, // bool
+    model.donationAcceptRefrigerated, // bool
+    model.donationAcceptPerishable, // bool
+    model.donationSchedule || "",
+    model.donationDeliveryInstructions || "",
+    model.donationNotes || "",
+    model.covidNotes || "",
+    model.categoryNotes || "",
+    model.eligibilityNotes || "",
+    model.foodTypes || "",
+    model.languages || "",
+    model.confirmedName, //  bool
+    model.confirmedCategories, //  bool
+    model.confirmedAddress, //  bool
+    model.confirmedPhone, //  bool
+    model.confirmedEmail, //  bool
+    model.confirmedHours, //  bool
+    model.confirmedFoodTypes, //  bool
+    model.verificationStatusId, // INT,
+    model.inactiveTemporary, // bool
+    model.id, // int
+    categories,
+    formattedHours,
+    model.foodBakery,
+    model.foodDryGoods,
+    model.foodProduce,
+    model.foodDairy,
+    model.foodPrepared,
+    model.foodMeat,
+    model.parentOrganizationId,
+  ];
 
-  try {
-    await pool.query(invokeSprocSql);
-  } catch (err) {
-    console.log(err);
-    return Promise.reject(err.message);
-  }
+  await db.proc("update_stakeholder", params);
 };
 
-const remove = async (id) => {
-  // TODO: Could move this to a stored procedure
-  try {
-    await pool.query("BEGIN");
-    await pool.query(
-      "delete from stakeholder_schedule where stakeholder_id = $1",
-      [Number(id)]
+const remove = async (idParm) => {
+  const id = Number(idParm);
+  await db.tx(async (t) => {
+    await t.none(
+      "delete from stakeholder_schedule where stakeholder_id = $<id>",
+      { id }
     );
-    await pool.query(
-      "delete from stakeholder_category where stakeholder_id = $1",
-      [Number(id)]
+    await t.none(
+      "delete from stakeholder_category where stakeholder_id = $<id>",
+      { id }
     );
-    await pool.query("delete from stakeholder where id = $1", [Number(id)]);
-    await pool.query("delete from stakeholder_log where id = $1", [Number(id)]);
-    await pool.query("delete from stakeholder_best where id = $1", [
-      Number(id),
-    ]);
-    await pool.query("COMMIT");
-    return true;
-  } catch (e) {
-    await pool.query("ROLLBACK");
-    throw e;
-  }
+    const result = await t.result("delete from stakeholder where id = $<id>", {
+      id,
+    });
+    await t.none("delete from stakeholder_log where id = $<id>", {
+      id,
+    });
+    await t.none("delete from stakeholder_best where id = $<id>", {
+      id,
+    });
+    return result.rowCount;
+  });
 };
 
 const buildCTEClause = (categoryIds, name) => {

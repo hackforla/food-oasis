@@ -237,22 +237,24 @@ function Map({
         const feature = e.features[0];
         const clusterId = feature.properties.cluster_id;
 
-        const mapboxSource = sourceRef.current.getSource();
+        const mapboxSource = sourceRef.current?.getSource();
 
-        mapboxSource.getClusterExpansionZoom(clusterId, (err, zoom) => {
-          if (err) {
-            console.error("Error get cluster expansion zoom", err);
-            return;
-          }
+        if (mapboxSource) {
+          mapboxSource.getClusterExpansionZoom(clusterId, (err, zoom) => {
+            if (err) {
+              console.error("Error get cluster expansion zoom", err);
+              return;
+            }
 
-          setViewport({
-            ...viewport,
-            longitude: feature.geometry.coordinates[0],
-            latitude: feature.geometry.coordinates[1],
-            zoom: zoom + 1,
-            transitionDuration: 500,
+            setViewport({
+              ...viewport,
+              longitude: feature.geometry.coordinates[0],
+              latitude: feature.geometry.coordinates[1],
+              zoom: zoom + 1,
+              transitionDuration: 500,
+            });
           });
-        });
+        }
       }
     }
 

@@ -27,13 +27,13 @@ const uploadStakeholderCsv = async (req, res) => {
 };
 
 const importStakeholderCsv = async (req, res) => {
-  const { body } = req;
+  const { tenantId, importData } = req.body;
   try {
     let response;
-    if (Array.isArray(body)) {
-      response = await importService.importCsv(body);
+    if (Array.isArray(importData)) {
+      response = await importService.importCsv(tenantId, importData);
     } else {
-      response = await importService.importCsv([body]);
+      response = await importService.importCsv(tenantId, [importData]);
     }
     res.send(response);
   } catch (err) {

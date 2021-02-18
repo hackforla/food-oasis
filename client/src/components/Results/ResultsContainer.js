@@ -84,7 +84,7 @@ export default function ResultsContainer({
         zoom: 13,
       });
     }
-  }, [data]);
+  }, [data, location.search]);
 
   const switchResultsView = () => {
     doSelectStakeholder();

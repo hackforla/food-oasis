@@ -1,15 +1,15 @@
-const { pool } = require("./postgres-pool");
+const db = require("./db");
+const camelcaseKeys = require("camelcase-keys");
 
-const selectAll = () => {
+const selectAll = async () => {
   const sql = `
     select id, name, website, empower_link, nc_id,
       certified, service_region, geometry
     from neighborhood
     order by name
   `;
-  return pool.query(sql).then((res) => {
-    return res.rows;
-  });
+  const result = await db.manyOrNone(sql);
+  return result.map((r) => camelcaseKeys(r));
 };
 
 // findNeighborhood: use the postgis postgres extension to find
@@ -23,19 +23,19 @@ const findNeighborhood = async (latitude, longitude) => {
       FROM neighborhood
      WHERE ST_Contains(
       geometry,
-      ST_GeomFromText('POINT(${latitude} ${longitude})'))
+      ST_GeomFromText('POINT($<latitude> $<longitude>)'))
     `;
-  const result = await pool.query(sql);
-  if (!result.rows.length) {
+  const rows = await db.manyOrNone(sql, { latitude, longitude });
+  if (!rows.length) {
     // Could not find a neighborhood that contains this point
     return null;
   }
-  return result.rows[0];
+  return rows[0];
 };
 
 // assignNeighborhood: given a stakeholder_id, find and assign a neighborhood_id
 // if one exists for that location.
-const assignNeighborhood = (
+const assignNeighborhood = async (
   stakeholder_id,
   stakeholder_lat,
   stakeholder_lon
@@ -46,9 +46,7 @@ const assignNeighborhood = (
       UPDATE stakeholder set neighborhood_id = ${neighborhood_id}
       WHERE id = ${stakeholder_id}
     `;
-    return pool.query(sql).then((res) => {
-      return res;
-    });
+    return db.none(sql, { stakeholder_id, stakeholder_lat, stakeholder_lon });
   }
   // otherwise...what?
   return Promise.reject(

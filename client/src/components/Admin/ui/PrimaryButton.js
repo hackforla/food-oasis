@@ -11,7 +11,7 @@ import {
   bodyTextColor,
   inactiveButtonColor,
   inactiveButtonTextColor,
-} from "../../theme/colors";
+} from "../../../theme/colors";
 
 /**
  * Mapping for logo params to components.

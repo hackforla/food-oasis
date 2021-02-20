@@ -5,7 +5,7 @@ import { CssBaseline, Dialog, Typography } from "@material-ui/core";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import { makeStyles } from "@material-ui/core/styles";
 import { SearchButton } from "../UI/Buttons";
-import { PrimaryButton } from "../UI";
+import PrimaryButton from "./ui/PrimaryButton";
 import StakeholderGrid from "./VerificationAdminGrid";
 import { RotateLoader } from "react-spinners";
 import { useOrganizations } from "hooks/useOrganizations";
@@ -17,7 +17,7 @@ import {
   exportCsv,
 } from "services/stakeholder-service";
 import AssignDialog from "./AssignDialog";
-import NeedsVerificationDialog from "./MessageConfirmDialog";
+import NeedsVerificationDialog from "./ui/MessageConfirmDialog";
 import SearchCriteria from "./SearchCriteria";
 import SearchCriteriaDisplay from "./SearchCriteriaDisplay";
 

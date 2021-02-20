@@ -1,12 +1,7 @@
 import React from "react";
-// import { makeStyles } from "@material-ui/core/styles";
 import { TextField } from "@material-ui/core";
 import PropTypes from "prop-types";
-// import classNames from "classnames";
-// import { bodyTextColor } from "../../theme/colors";
 import BigTooltip from "./BigTooltip";
-
-// const useStyles = makeStyles((theme) => ({}));
 
 const TextInput = (props) => {
   let { tooltip } = props;

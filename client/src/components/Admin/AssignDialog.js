@@ -7,7 +7,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@material-ui/core";
-import AccountAutocomplete from "../UI/AccountAutocomplete";
+import AccountAutocomplete from "./AccountAutocomplete";
 
 function AssignDialog(props) {
   const { onClose, open, ...other } = props;

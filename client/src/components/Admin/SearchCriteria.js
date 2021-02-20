@@ -17,9 +17,9 @@ import {
   RadioGroup,
   Radio,
 } from "@material-ui/core";
-import RadioTrueFalseEither from "../UI/RadioTrueFalseEither";
+import RadioTrueFalseEither from "./ui/RadioTrueFalseEither";
 import LocationAutocomplete from "./LocationAutocomplete";
-import AccountAutocomplete from "../UI/AccountAutocomplete";
+import AccountAutocomplete from "./AccountAutocomplete";
 import { defaultCoordinates } from "../../helpers/Configuration";
 
 const useStyles = makeStyles(() => ({

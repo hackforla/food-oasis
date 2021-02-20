@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { UserContext } from "contexts/user-context";
 import { Formik } from "formik";
-import AccountAutocomplete from "components/UI/AccountAutocomplete";
+import AccountAutocomplete from "components/Admin/AccountAutocomplete";
 import * as Yup from "yup";
 import {
   AppBar,
@@ -33,15 +33,16 @@ import { useCategories } from "hooks/useCategories/useCategories";
 //import * as esriService from "services/esri_service";
 import * as geocoder from "services/geocode-tamu-service";
 import OpenTimeForm from "components/Admin/OpenTimeForm";
-import { TabPanel, a11yProps } from "components/Admin/TabPanel";
+import { TabPanel, a11yProps } from "components/Admin/ui/TabPanel";
 import { PlainButton, VerifyButton } from "components/UI/Buttons";
 import AssignDialog from "components/Admin/AssignDialog";
-import ConfirmDialog from "components/UI/ConfirmDialog";
+import ConfirmDialog from "components/Admin/ui/ConfirmDialog";
 import {
   VERIFICATION_STATUS,
   VERIFICATION_STATUS_NAMES,
 } from "constants/stakeholder";
-import { PrimaryButton, TextInput } from "../UI/index";
+import PrimaryButton from "./ui/PrimaryButton";
+import TextInput from "./ui/TextInput";
 import moment from "moment";
 
 const BigTooltip = withStyles(() => ({

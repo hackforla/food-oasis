@@ -17,7 +17,7 @@ import {
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import MenuIcon from "@material-ui/icons/Menu";
 import { MENU_ITEMS } from "helpers/Constants";
-import MenuItemLink from "../UI/MenuItemLink";
+import MenuItemLink from "./MenuItemLink";
 import { logout } from "../Account/Logout";
 
 Menu.propTypes = {

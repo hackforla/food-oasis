@@ -30,8 +30,8 @@ const clusterLayer = {
   source: "stakeholders",
   filter: ["has", "point_count"],
   paint: {
-    "circle-color": theme.palette.primary.light,
-    "circle-radius": ["step", ["get", "point_count"], 20, 100, 30, 750, 40],
+    "circle-color": theme.palette.primary.main,
+    "circle-radius": ["step", ["get", "point_count"], 14, 100, 24, 750, 40],
   },
 };
 
@@ -43,7 +43,7 @@ const clusterCountLayer = {
   filter: ["has", "point_count"],
   layout: {
     "text-field": "{point_count_abbreviated}",
-    "text-size": 14,
+    "text-size": 12,
   },
   paint: {
     "text-color": theme.palette.primary.contrastText,

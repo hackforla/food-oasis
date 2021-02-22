@@ -7,7 +7,7 @@ import logo from "images/foodoasis.svg";
 import logoCA from "images/foodoasis.svg";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { tenantId } from "../../helpers/Configuration";
+import { tenantId, tenantName } from "../../helpers/Configuration";
 
 Header.propTypes = {
   user: PropTypes.object,
@@ -23,6 +23,8 @@ const useStyles = makeStyles((theme) => ({
   },
   header: {
     minHeight: "60px",
+    display: "flex",
+    justifyContent: "space-between",
     padding: "0 1.5em 0 0",
     [theme.breakpoints.down("xs")]: {
       padding: "0 0.5em 0 0",
@@ -31,9 +33,10 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     display: "flex",
-    justifyContent: "flex-start",
+    justifyContent: "space-between",
+    flexGrow: 1,
     alignItems: "center",
-    width: "100%",
+    paddingRight: "1em",
   },
   logo: {
     width: "90px",
@@ -49,8 +52,15 @@ const useStyles = makeStyles((theme) => ({
   tagline: {
     color: "#1b1b1b",
     fontStyle: "italic",
-    paddingLeft: "9px",
     lineHeight: "1.5",
+    fontFamily: `"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans- serif`,
+  },
+  username: {
+    color: "#1b1b1b",
+    fontStyle: "italic",
+    lineHeight: "1.5",
+    flexBasis: "1em",
+    textAlign: "right",
     fontFamily: `"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans- serif`,
   },
 }));
@@ -72,7 +82,7 @@ export default function Header(props) {
 
   const styles = isHomePage ? homePageStyles : defaultStyles;
   const classes = useStyles(styles);
-  const taglineText = ""; // isHomePage ? "" : "Your free food directory";
+  const taglineText = isHomePage ? "" : "Locate Free Food in " + tenantName;
 
   return (
     <>
@@ -93,15 +103,12 @@ export default function Header(props) {
                   </a>
                 </div>
               ))}
-            {!isHomePage && user ? (
-              <Typography variant="subtitle1" className={classes.tagline}>
-                {user.firstName}
-              </Typography>
-            ) : (
-              <Typography variant="subtitle1" className={classes.tagline}>
-                {taglineText}
-              </Typography>
-            )}
+            <Typography variant="subtitle1" className={classes.tagline}>
+              {taglineText}
+            </Typography>
+            <Typography variant="subtitle1" className={classes.username}>
+              {!isHomePage && user?.firstName ? user.firstName : null}
+            </Typography>
           </div>
           <Menu user={user} setUser={setUser} setToast={setToast} />
         </Toolbar>

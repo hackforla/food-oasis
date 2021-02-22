@@ -15,6 +15,19 @@ export const tenantId = (() =>
     ? 2
     : 1)();
 
+export const tenantName = (() => {
+  switch (tenantId) {
+    case 2:
+      return "California";
+    case 3:
+      return "Hawaii";
+    case 4:
+      return "Oregon";
+    default:
+      return "Los Angeles";
+  }
+})();
+
 export const defaultCoordinates = (() => {
   switch (tenantId) {
     case 4:

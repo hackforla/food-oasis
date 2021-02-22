@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Button, Box } from "@material-ui/core";
-import SearchIcon from "@material-ui/icons/Search";
+import { Grid, Button, Box, Tooltip } from "@material-ui/core";
+// import SearchIcon from "@material-ui/icons/Search";
 import LocationSearchingIcon from "@material-ui/icons/LocationSearching";
 
 import {
@@ -41,8 +41,8 @@ const useStyles = makeStyles((theme) => ({
   },
   form: {
     all: "inherit",
-    backgroundColor: "white",
-    borderRadius: "6px",
+    // backgroundColor: "white",
+    // borderRadius: "6px",
   },
   searchIcon: {
     width: 32,
@@ -54,9 +54,11 @@ const useStyles = makeStyles((theme) => ({
   nearbySearch: {
     height: "40px",
     minWidth: "25px",
+    maxWidth: "25px",
+    marginLeft: "4px",
     padding: 0,
-    marginLeft: "5px",
-    borderRadius: 0,
+    cornerRadius: "4px",
+    borderRadius: "4px",
     backgroundColor: "white",
     boxShadow: "none",
     "& .MuiButton-startIcon": {
@@ -106,6 +108,7 @@ const ResultsFilters = ({
   toggleCategory,
   isMapView,
   switchResultsView,
+  browserLocation,
 }) => {
   const classes = useStyles();
   const isMealsSelected = categoryIds.indexOf(MEAL_PROGRAM_CATEGORY_ID) >= 0;
@@ -212,25 +215,37 @@ const ResultsFilters = ({
         >
           <Search
             userCoordinates={userCoordinates}
-            setOrigin={setOrigin}
+            setOrigin={(origin) => {
+              setOrigin(origin);
+              handleSearch();
+            }}
             origin={origin}
+            browserLocation={browserLocation}
           />
-          <Button
-            onClick={() => setOrigin(userCoordinates)}
-            disabled={!userCoordinates.latitude || !userCoordinates.longitude}
-            variant="contained"
-            className={classes.nearbySearch}
-            startIcon={<LocationSearchingIcon className={classes.nearbyIcon} />}
-          />
-          <Button
+          <Tooltip title="Re-center">
+            <Button
+              onClick={() => {
+                setOrigin(userCoordinates);
+                handleSearch();
+              }}
+              disabled={!userCoordinates.latitude || !userCoordinates.longitude}
+              variant="contained"
+              className={classes.nearbySearch}
+              startIcon={
+                <LocationSearchingIcon className={classes.nearbyIcon} />
+              }
+            />
+          </Tooltip>
+
+          {/* <Button
             type="submit"
             disabled={!origin}
             variant="contained"
             className={classes.submit}
             startIcon={
               <SearchIcon fontSize="large" className={classes.searchIcon} />
-            }
-          />
+            } 
+          /> */}
         </form>
       </Box>
     </Grid>

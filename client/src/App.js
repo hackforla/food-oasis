@@ -39,7 +39,7 @@ import ResetPassword from "components/Account/ResetPassword";
 import ConfirmEmail from "components/Account/ConfirmEmail";
 import FaqEdit from "components/Faq/FaqEdit";
 import FaqAdd from "components/Faq/FaqAdd";
-import Home from "components/FoodSeeker/LandingPage";
+import Home from "components/FoodSeeker/Home";
 import Results from "components/FoodSeeker/ResultsContainer";
 import Suggestion from "components/FoodSeeker/Suggestion";
 import ImportFile from "components/Admin/ImportOrganizations/ImportFile";
@@ -88,6 +88,8 @@ function App() {
     longitude: defaultCoordinates.lon,
   });
 
+  const [browserLocation, setBrowserLocation] = useState(false);
+
   useEffect(() => {
     const imgNum = Math.floor(Math.random() * (21 - 1)) + 1;
     const backgroundImage = `url("/landing-page/${imgNum}.jpg")`;
@@ -104,9 +106,48 @@ function App() {
     } else {
       setUser(JSON.parse(storedJson));
     }
-  }, [user, userCoordinates]);
+  }, [user]);
 
   useEffect(() => {
+    const fetchLocation = () => {
+      let userCoordinates = { latitude: null, longitude: null };
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            if (position) {
+              const userCoordinates = {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+              };
+              setUserCoordinates(userCoordinates);
+              setBrowserLocation(true);
+            }
+          },
+          (error) => {
+            // Ususally because user has blocked location
+            console.log(`Getting browser location failed: ${error.message}`);
+            const userCoordinates = {
+              latitude: defaultCoordinates.lat,
+              longitude: defaultCoordinates.lon,
+            };
+            setUserCoordinates(userCoordinates);
+            setBrowserLocation(false);
+          }
+        );
+      } else {
+        console.log(
+          "Browser does not support getting users location - using default location for area"
+        );
+        const userCoordinates = {
+          latitude: defaultCoordinates.lat,
+          longitude: defaultCoordinates.lon,
+        };
+        setUserCoordinates(userCoordinates);
+        setBrowserLocation(false);
+      }
+
+      return userCoordinates;
+    };
     fetchLocation();
   }, []);
 
@@ -120,37 +161,6 @@ function App() {
     setUser(user);
   };
 
-  const fetchLocation = () => {
-    let userCoordinates = { latitude: null, longitude: null };
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          if (position) {
-            const userCoordinates = {
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-            };
-            setUserCoordinates(userCoordinates);
-          }
-        },
-        (error) => {
-          console.log(`Getting browser location failed: ${error.message}`);
-          const userCoordinates = {
-            latitude: defaultCoordinates.lat,
-            longitude: defaultCoordinates.lon,
-          };
-          setUserCoordinates(userCoordinates);
-        }
-      );
-    } else {
-      // If browser location permission is denied, the request is
-      // "successful", but the result is null coordinates.
-      console.log("Enable location permission to use location-based features.");
-    }
-
-    return userCoordinates;
-  };
-
   const classes = useStyles();
 
   return (
@@ -162,7 +172,6 @@ function App() {
             direction="column"
             wrap="nowrap"
             alignContent="stretch"
-            //justify="stretch"
             spacing={0}
             classes={{
               container: classes.app,
@@ -175,11 +184,17 @@ function App() {
                   className={classes.homeWrapper}
                   style={{ backgroundImage: bgImg }}
                 >
-                  <Home
-                    userCoordinates={userCoordinates}
-                    origin={origin}
-                    setOrigin={setOrigin}
-                  />
+                  <div
+                    className={classes.homeWrapper}
+                    style={{ backgroundImage: bgImg }}
+                  >
+                    <Home
+                      userCoordinates={userCoordinates}
+                      origin={origin}
+                      setOrigin={setOrigin}
+                      browserLocation={browserLocation}
+                    />
+                  </div>
                 </div>
               </Route>
               {/* 
@@ -194,6 +209,7 @@ function App() {
                   origin={origin}
                   setOrigin={setOrigin}
                   setToast={setToast}
+                  browserLocation={browserLocation}
                 />
               </Route>
               <Route path="/suggestion">

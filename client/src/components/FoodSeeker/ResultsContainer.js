@@ -29,6 +29,7 @@ export default function ResultsContainer({
   origin,
   setOrigin,
   setToast,
+  browserLocation,
 }) {
   // Component state
   const { data, search } = useOrganizationBests();
@@ -170,6 +171,7 @@ export default function ResultsContainer({
         handleSearch={handleSearch}
         isMapView={isMapView}
         switchResultsView={switchResultsView}
+        browserLocation={browserLocation}
       />
       <Grid item container spacing={0} className={classes.listMapContainer}>
         {(!mobileView || (mobileView && !isMapView)) && (

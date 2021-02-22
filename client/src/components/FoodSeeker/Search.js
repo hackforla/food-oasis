@@ -30,16 +30,9 @@ const useStyles = makeStyles((theme) => ({
   },
   address: {
     backgroundColor: "#fff",
-    borderRadius: "4px 0 0 4px",
-    cornerRadius: "6px",
+    borderRadius: "4px",
+    cornerRadius: "4px",
     height: 40,
-
-    // "& .MuiOutlinedInput-root": {
-    //   borderRadius: "4px 0 0 4px",
-    // },
-    // "& .MuiOutlinedInput-input": {
-    //   padding: "11.5px 14px",
-    // },
     "& .MuiInputLabel-outlined": {
       transform: "translate(14px, 14px) scale(1)",
     },
@@ -55,7 +48,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Search({ userCoordinates, setOrigin, origin }) {
+export default function Search({
+  userCoordinates,
+  setOrigin,
+  origin,
+  browserLocation,
+}) {
   const classes = useStyles();
   const [selectedPlace, setSelectedPlace] = useState("");
   const [newInputValue, updateNewInputValue] = useState(origin?.locationName);
@@ -118,7 +116,7 @@ export default function Search({ userCoordinates, setOrigin, origin }) {
           },
           ...InputProps,
         }}
-        style={{ width: isWindow960orLess ? "27rem" : "100%" }}
+        // style={{ width: isWindow960orLess ? "100%" : "100%" }}
       />
     );
   };
@@ -150,7 +148,12 @@ export default function Search({ userCoordinates, setOrigin, origin }) {
     mapboxResults,
     getItemProps,
   }) => {
-    if (!inputValue && userCoordinates && userCoordinates.latitude) {
+    if (
+      browserLocation &&
+      !inputValue &&
+      userCoordinates &&
+      userCoordinates.latitude
+    ) {
       return (
         <MenuItem
           component="div"

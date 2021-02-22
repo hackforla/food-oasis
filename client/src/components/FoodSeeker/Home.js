@@ -119,7 +119,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Home = (props) => {
   const classes = useStyles();
-  const { origin, setOrigin, userCoordinates } = props;
+  const { origin, setOrigin, userCoordinates, browserLocation } = props;
   //const isDefaultOrigin = !origin?.hasOwnProperty("locationName");
   const isDefaultOrigin = !origin?.locationName;
 
@@ -128,6 +128,11 @@ const Home = (props) => {
       sessionStorage.clear();
     }
   }, [props.match.path]);
+
+  const selectLocation = (origin) => {
+    setOrigin(origin);
+    props.history.push("/organizations");
+  };
 
   return (
     <Container component="main" maxWidth="sm" className={classes.container}>
@@ -168,10 +173,11 @@ const Home = (props) => {
             <Box className={classes.inputContainer}>
               <Search
                 userCoordinates={userCoordinates}
-                setOrigin={setOrigin}
+                setOrigin={selectLocation}
                 origin={origin}
+                browserLocation={browserLocation}
               />
-              <Button
+              {/* <Button
                 type="submit"
                 disabled={isDefaultOrigin}
                 variant="contained"
@@ -179,9 +185,9 @@ const Home = (props) => {
                 startIcon={
                   <SearchIcon fontSize="large" className={classes.searchIcon} />
                 }
-              >
+              > 
                 {""}
-              </Button>
+              </Button>*/}
             </Box>
           </form>
         </Box>

@@ -1,0 +1,26 @@
+{
+  "containerDefinitions": [
+      {
+          "name": "foodoasis-dev-container",
+          "image": "foodoasisla/foodoasisla:develop",
+          "cpu": 0,
+          "memoryReservation": 256,
+          "portMappings": [
+              {
+                  "containerPort": 5000,
+                  "hostPort": 0,
+                  "protocol": "tcp"
+              }
+          ],
+          "essential": true,
+          "environment": [
+              {
+                  "name": "NODE_ENV",
+                  "value": "production"
+              }
+          ]
+      }
+  ],
+  "family": "foodoasis-dev-td",
+  "networkMode": "bridge"
+}

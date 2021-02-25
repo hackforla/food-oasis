@@ -1,4 +1,4 @@
-import theme from "theme/materialUI";
+import theme from "theme/clientTheme";
 
 export const getGoogleMapsUrl = (zip, address1, address2) => {
   const baseUrl = `https://google.com/maps/place/`;

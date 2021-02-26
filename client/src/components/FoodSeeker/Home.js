@@ -1,8 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router";
-import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import SearchIcon from "@material-ui/icons/Search";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
@@ -120,8 +118,6 @@ const useStyles = makeStyles((theme) => ({
 const Home = (props) => {
   const classes = useStyles();
   const { origin, setOrigin, userCoordinates, browserLocation } = props;
-  //const isDefaultOrigin = !origin?.hasOwnProperty("locationName");
-  const isDefaultOrigin = !origin?.locationName;
 
   React.useEffect(() => {
     if (props.match.path === "/") {

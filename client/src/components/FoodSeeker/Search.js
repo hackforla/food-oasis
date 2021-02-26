@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
   },
   address: {
-    backgroundColor: "#fff",
+    backgroundColor: "#F0F0F0",
     borderRadius: "4px",
     cornerRadius: "4px",
     height: 40,
@@ -60,19 +60,19 @@ export default function Search({
 
   const { mapboxResults, fetchMapboxResults } = useMapboxGeocoder();
 
-  const initialWidth = window.innerWidth > 960 ? true : false;
-  const [isWindow960orLess, switchAddressWidth] = useState(initialWidth);
-  useEffect(() => {
-    const changeAddressWidth = () => {
-      window.innerWidth > 960
-        ? switchAddressWidth(true)
-        : switchAddressWidth(false);
-    };
+  // const initialWidth = window.innerWidth > 960 ? true : false;
+  // const [isWindow960orLess, switchAddressWidth] = useState(initialWidth);
 
-    window.addEventListener("resize", changeAddressWidth);
+  // useEffect(() => {
+  //   const changeAddressWidth = () => {
+  //     // window.innerWidth > 960
+  //     !isWindow960orLess ? switchAddressWidth(true) : switchAddressWidth(false);
+  //   };
 
-    return () => window.removeEventListener("resize", changeAddressWidth);
-  });
+  //   window.addEventListener("resize", changeAddressWidth);
+
+  //   return () => window.removeEventListener("resize", changeAddressWidth);
+  // });
 
   const handleInputChange = (event) => {
     setSelectedPlace(event.target.value);

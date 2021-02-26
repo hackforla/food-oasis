@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     width: 250,
   },
   menuButton: {
-    transform: "scale(1.6,1.5)",
+    transform: "scale(1.4,1.2)",
     minWidth: "0",
     backgroundColor: "#FFF",
     "&:hover": {

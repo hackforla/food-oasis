@@ -10,9 +10,11 @@ const useStyles = makeStyles((theme) => ({
   list: {
     textAlign: "center",
     width: "100%",
+    height: "100%",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    overflowY: "scroll",
     padding: "0 1em",
     [theme.breakpoints.up("md")]: {
       height: "100%",

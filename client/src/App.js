@@ -15,6 +15,7 @@ import { tenantId, defaultCoordinates } from "helpers/Configuration";
 import { UserContext } from "contexts/user-context";
 import Toast from "components/UI/Toast";
 import Header from "components/Layout/Header";
+import HeaderHome from "components/Layout/HeaderHome";
 import VerificationAdmin from "components/Admin/VerificationAdmin";
 import VerificationDashboard from "components/Admin/VerificationDashboard";
 import SecurityAdminDashboard from "components/Account/SecurityAdminDashboard/SecurityAdminDashboard";
@@ -177,7 +178,14 @@ function App() {
               container: classes.app,
             }}
           >
-            <Header user={user} setUser={onLogin} setToast={setToast} />
+            <Switch>
+              <Route exact path="/">
+                <HeaderHome user={user} setUser={onLogin} setToast={setToast} />
+              </Route>
+              <Route>
+                <Header user={user} setUser={onLogin} setToast={setToast} />
+              </Route>
+            </Switch>
             <Switch className={classes.mainContent}>
               <Route exact path="/">
                 <div

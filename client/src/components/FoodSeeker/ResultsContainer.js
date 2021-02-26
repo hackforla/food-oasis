@@ -78,12 +78,16 @@ export default function ResultsContainer({
     if (location.search.includes("?org=") && data) {
       const org = location.search.replace("?org=", "").replaceAll("_", " ");
       const stakeholder = data.find((s) => s.name.toLowerCase() === org);
-      onSelectStakeholder(stakeholder);
-      setInitViewport({
-        latitude: stakeholder.latitude,
-        longitude: stakeholder.longitude,
-        zoom: 13,
-      });
+      if (stakeholder) {
+        onSelectStakeholder(stakeholder);
+        setInitViewport({
+          latitude: stakeholder.latitude,
+          longitude: stakeholder.longitude,
+          zoom: 13,
+        });
+      } else {
+        onSelectStakeholder(null);
+      }
     }
   }, [data, location.search]);
 

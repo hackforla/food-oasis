@@ -18,7 +18,8 @@ const styles = {
     position: "absolute",
     top: 0,
     right: 0,
-    margin: 10,
+    margin: "10px",
+    marginRight: "40px",
     zIndex: 5,
   },
 };

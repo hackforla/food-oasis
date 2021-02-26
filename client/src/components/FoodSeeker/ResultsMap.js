@@ -96,9 +96,8 @@ const useStyles = makeStyles((theme) => ({
   searchButton: {
     position: "absolute",
     top: "5px",
-    left: 0,
-    right: 0,
-    margin: "auto",
+    left: "50%",
+    transform: "translate(-50%)",
     backgroundColor: "white",
     zIndex: 2,
   },

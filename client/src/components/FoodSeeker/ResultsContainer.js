@@ -15,12 +15,11 @@ import Map from "./ResultsMap";
 
 const useStyles = makeStyles((theme) => ({
   listMapContainer: {
-    [theme.breakpoints.down("sm")]: {
-      height: "100%",
-    },
-    [theme.breakpoints.up("md")]: {
+    height: "100%",
+    [theme.breakpoints.up("sm")]: {
       height: "79%",
     },
+    overflowY: "hidden",
   },
 }));
 

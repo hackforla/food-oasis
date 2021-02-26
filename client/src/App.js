@@ -6,7 +6,7 @@ import {
   Redirect,
 } from "react-router-dom";
 import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
-import { Grid } from "@material-ui/core";
+import { Grid, CssBaseline } from "@material-ui/core";
 import theme from "theme/materialUI";
 import { logout } from "services/account-service";
 import { tenantId, defaultCoordinates } from "helpers/Configuration";
@@ -167,6 +167,7 @@ function App() {
   return (
     <UserContext.Provider value={user}>
       <ThemeProvider theme={theme}>
+        <CssBaseline />
         <Router>
           <Grid
             container

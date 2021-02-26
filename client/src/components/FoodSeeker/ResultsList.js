@@ -14,13 +14,10 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    overflowY: "scroll",
+    overflowY: "auto",
     padding: "0 1em",
     [theme.breakpoints.up("md")]: {
       height: "100%",
-    },
-    [theme.breakpoints.up("sm")]: {
-      overflowY: "scroll",
     },
     [theme.breakpoints.only("sm")]: {
       order: 1,

@@ -3,10 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta
-      name="viewport"
-      content="minimum-scale=1, initial-scale=1"
-    />
+    <meta name="viewport" content="minimum-scale=1, initial-scale=1" />
     <!-- <meta
       name="viewport"
       content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
@@ -19,7 +16,10 @@
     <meta property="og:title" content="Food Oasis" />
     <meta property="og:url" content="https://foodoasis.la/" />
     <meta property="og:image" content="%PUBLIC_URL%/favicon.ico" />
-    <meta property="og:description" content="Food Oasis LA is a Hack for LA project that aims to provide verified information about free food resources, such as address, location, phone number, etc. to food seekers in the LA county area and to help them find resources near them by visualizing all of these organizations on one map. " />
+    <meta
+      property="og:description"
+      content="Food Oasis LA is a Hack for LA project that aims to provide verified information about free food resources, such as address, location, phone number, etc. to food seekers in the LA county area and to help them find resources near them by visualizing all of these organizations on one map. "
+    />
     <meta property="og:locale" content="en_US" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/favicon.ico" />
     <link
@@ -46,8 +46,10 @@
       html,
       #body,
       #root {
-        height: 100%;
-        min-height: 100%;
+        height: 100vh;
+        min-height: 100vh;
+        width: 100vw;
+        min-width: 100vw;
         margin: 0;
       }
     </style>
@@ -66,31 +68,30 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
 
-
     <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
 
-  <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
-  <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js"></script>
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js"></script>
 
-  <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
-  <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-analytics.js"></script>
+    <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+    <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-analytics.js"></script>
 
-  <script>
-    // Your web app's Firebase configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-    var firebaseConfig = {
-      apiKey: "AIzaSyD9P_FtD1_6A3UefslE-DouTjAnjvv89fw",
-      authDomain: "hack-for-la-firebase-project.firebaseapp.com",
-      databaseURL: "https://hack-for-la-firebase-project.firebaseio.com",
-      projectId: "hack-for-la-firebase-project",
-      storageBucket: "hack-for-la-firebase-project.appspot.com",
-      messagingSenderId: "901423769273",
-      appId: "1:901423769273:web:9f2954b9ba134d7e8f1d68",
-      measurementId: "G-BX2932LS6Y"
-    };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    firebase.analytics();
-  </script>
+    <script>
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      var firebaseConfig = {
+        apiKey: "AIzaSyD9P_FtD1_6A3UefslE-DouTjAnjvv89fw",
+        authDomain: "hack-for-la-firebase-project.firebaseapp.com",
+        databaseURL: "https://hack-for-la-firebase-project.firebaseio.com",
+        projectId: "hack-for-la-firebase-project",
+        storageBucket: "hack-for-la-firebase-project.appspot.com",
+        messagingSenderId: "901423769273",
+        appId: "1:901423769273:web:9f2954b9ba134d7e8f1d68",
+        measurementId: "G-BX2932LS6Y",
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+    </script>
   </body>
 </html>

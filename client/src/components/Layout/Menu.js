@@ -137,6 +137,11 @@ export default function Menu(props) {
                     to="/verificationadmin"
                     text="Verification Admin"
                   />
+                  <MenuItemLink
+                    key="viewusersuggestion"
+                    to="/viewusersuggestion"
+                    text="View User Suggestion"
+                  />
                   <Divider />
                 </>
               ) : null}

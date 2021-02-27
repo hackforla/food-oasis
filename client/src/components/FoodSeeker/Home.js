@@ -148,7 +148,11 @@ const Home = (props) => {
             className={classes.form}
             onSubmit={() => props.history.push("/organizations")}
           >
-            {tenantId === 4 ? (
+            {tenantId === 5 ? (
+              <Typography variant={"h5"} className={classes.label}>
+                Locate free food resources in McKinney
+              </Typography>
+            ) : tenantId === 4 ? (
               <Typography variant={"h5"} className={classes.label}>
                 Locate free food resources in Portland
               </Typography>

@@ -7,7 +7,6 @@ import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { tenantName } from "../../helpers/Configuration";
 import { isMobile } from "../../helpers";
-import { bodyTextColor } from "theme/colors";
 
 Header.propTypes = {
   user: PropTypes.object,

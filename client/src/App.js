@@ -32,6 +32,9 @@ import FaqHI from "components/StaticPagesHI/Faq";
 import DonatePDX from "components/StaticPagesPDX/Donate";
 import AboutPDX from "components/StaticPagesPDX/About";
 import FaqPDX from "components/StaticPagesPDX/Faq";
+import DonateMCK from "components/StaticPagesMCK/Donate";
+import AboutMCK from "components/StaticPagesMCK/About";
+import FaqMCK from "components/StaticPagesMCK/Faq";
 import Resources from "components/Layout/Resources";
 import Register from "components/Account/Register";
 import Login from "components/Account/Login";
@@ -285,7 +288,9 @@ function App() {
                 <ResetPassword setToast={setToast} />
               </Route>
               <Route path="/donate">
-                {tenantId === 4 ? (
+                {tenantId === 5 ? (
+                  <DonateMCK />
+                ) : tenantId === 4 ? (
                   <DonatePDX />
                 ) : tenantId === 3 ? (
                   <DonateHI />
@@ -296,7 +301,9 @@ function App() {
                 )}
               </Route>
               <Route path="/about">
-                {tenantId === 4 ? (
+                {tenantId === 5 ? (
+                  <AboutMCK />
+                ) : tenantId === 4 ? (
                   <AboutPDX />
                 ) : tenantId === 3 ? (
                   <AboutHI />
@@ -307,7 +314,9 @@ function App() {
                 )}
               </Route>
               <Route exact path="/faqs">
-                {tenantId === 4 ? (
+                {tenantId === 5 ? (
+                  <FaqMCK />
+                ) : tenantId === 4 ? (
                   <FaqPDX />
                 ) : tenantId === 3 ? (
                   <FaqHI />

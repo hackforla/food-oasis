@@ -83,7 +83,11 @@ jobs:
     #     stages_image_name: ${{ env.DOCKER_REPOSITORY }}
     #     image_name: ${{ env.DOCKER_REPOSITORY }}
     #     image_tag: ${{ github.sha }},latest
-    
+    - name: Test AWS cli commands
+      id: aws-task-definition
+      run: |
+        aws sts get-caller-identity
+
     - name: Build and push Image DockerHub
       id: docker-build
       uses: docker/build-push-action@v2
@@ -95,11 +99,6 @@ jobs:
         tag_with_ref: true
         tag_with_sha: true
         add_git_labels: true
-
-    - name: Test AWS cli commands
-      id: aws-task-definition
-      run: |
-        aws sts get-caller-identity
 
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-definition

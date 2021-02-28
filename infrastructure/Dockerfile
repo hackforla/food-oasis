@@ -1,7 +1,5 @@
 FROM node:alpine as clientBuilder
 
-ENV NODE_ENV "development"
-
 RUN mkdir /app
 WORKDIR /app
 COPY client/package*.json ./

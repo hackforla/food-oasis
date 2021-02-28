@@ -4,7 +4,7 @@ ENV NODE_ENV "development"
 
 RUN mkdir /app
 WORKDIR /app
-COPY client/package*.json .
+COPY client/package*.json ./
 RUN npm ci
 COPY client .
 

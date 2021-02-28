@@ -11,6 +11,8 @@ env:
   DOCKER_REPOSITORY: foodoasisla/foodoasisla
   AWS_ECS_CLUSTER_NAME: foodoasis-dev
   AWS_APP_ENVNAME: foodoasis-dev
+  AWS_REGION_PROD: us-west-1
+  AWS_REGION_STAGE: us-west-1
   
 jobs:
   production-deploy:
@@ -30,7 +32,7 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-west-1
+        aws-region: ${{ env.AWS_REGION_PROD }}
 
     - name: Test AWS cli commands
       id: aws-task-definition

@@ -4,7 +4,7 @@ import donatebg from "./assets/donate-bg.png";
 import iconSpacer from "./assets/icon-spacer.svg";
 import iconSpacerBlue from "./assets/icon-spacer-blue.svg";
 import { makeStyles } from "@material-ui/core";
-import Footer from "../../components/Footer";
+import Footer from "../Layout/Footer";
 
 const useStyles = makeStyles(() => ({
   outer: {

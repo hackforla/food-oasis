@@ -56,8 +56,8 @@ jobs:
     - name: Debug Action
       uses: hmarr/debug-action@v1.0.0
       
-    # - name: Checkout
-    #   uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v2
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -75,7 +75,6 @@ jobs:
 
     - name: Client - Build, Tag, Push image to ECR
       id: client-build
-      uses: actions/checkout@v2
       uses: whoan/docker-build-with-cache-action@v5.9.0
       with:
         username: ${{ secrets.DOCKER_USERNAME }}

@@ -5,7 +5,7 @@
     "jest/globals": true
   },
   "extends": ["eslint:recommended", "prettier", "plugin:prettier/recommended"],
-  "plugins": ["prettier", "jest", "react", "react-hooks"],
+  "plugins": ["prettier", "jest"],
   "parserOptions": {
     "ecmaVersion": 2020,
     "sourceType": "module"

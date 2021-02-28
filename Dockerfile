@@ -4,7 +4,8 @@ ENV NODE_ENV "development"
 
 RUN mkdir /app
 WORKDIR /app
-COPY client/package*.json .
+COPY client/package.json .
+COPY client/package-lock.json .
 RUN npm ci
 COPY client .
 
@@ -18,7 +19,8 @@ LABEL org.hackforla="Hack For LA"
 LABEL description="Food Oasis app"
 
 WORKDIR /fola
-COPY ./server/package*.json ./
+COPY ./server/package.json ./
+COPY ./server/package-lock.json ./
 RUN npm ci
 
 # TODO @jafow re-structure directory heirarchy so we can flatten these down

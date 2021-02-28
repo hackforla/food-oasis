@@ -1,26 +1,95 @@
 {
-  "containerDefinitions": [
-      {
-          "name": "foodoasis-dev-container",
-          "image": "foodoasisla/foodoasisla:develop",
-          "cpu": 0,
-          "memoryReservation": 256,
-          "portMappings": [
-              {
-                  "containerPort": 5000,
-                  "hostPort": 0,
-                  "protocol": "tcp"
-              }
-          ],
-          "essential": true,
-          "environment": [
-              {
-                  "name": "NODE_ENV",
-                  "value": "production"
-              }
-          ]
-      }
-  ],
-  "family": "foodoasis-dev-td",
-  "networkMode": "bridge"
+    "containerDefinitions": [
+        {
+            "name": "foodoasis-dev-container",
+            "image": "foodoasisla/foodoasisla:develop",
+            "cpu": 0,
+            "memoryReservation": 256,
+            "portMappings": [
+                {
+                    "containerPort": 5000,
+                    "hostPort": 0,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "environment": [
+                {
+                    "name": "CLIENT_URL",
+                    "value": "http://food-oasis.herokuapp.com"
+                },
+                {
+                    "name": "NODE_ENV",
+                    "value": "production"
+                },
+                {
+                    "name": "REACT_APP_API_URL",
+                    "value": "https://foodoasis.la"
+                },
+                {
+                    "name": "SERVER_URL",
+                    "value": "http://food-oasis.herokuapp.com"
+                }
+            ],
+            "secrets": [
+                {
+                    "name": "DATABASE_URL",
+                    "valueFrom": "arn:aws:ssm:us-west-1:470363915259:parameter/foodoasis/dev/DATABASE_URL"
+                },
+                {
+                    "name": "EMAIL_USER",
+                    "valueFrom": "arn:aws:ssm:us-west-1:470363915259:parameter/foodoasis/dev/EMAIL_USER"
+                },
+                {
+                    "name": "ESRI_CLIENT_ID",
+                    "valueFrom": "arn:aws:ssm:us-west-1:470363915259:parameter/foodoasis/dev/ESRI_CLIENT_ID"
+                },
+                {
+                    "name": "ESRI_CLIENT_SECRET",
+                    "valueFrom": "arn:aws:ssm:us-west-1:470363915259:parameter/foodoasis/dev/ESRI_CLIENT_SECRET"
+                },
+                {
+                    "name": "POSTGRES_DATABASE",
+                    "valueFrom": "arn:aws:ssm:us-west-1:470363915259:parameter/foodoasis/dev/POSTGRES_DATABASE"
+                },
+                {
+                    "name": "POSTGRES_HOST",
+                    "valueFrom": "arn:aws:ssm:us-west-1:470363915259:parameter/foodoasis/dev/POSTGRES_HOST"
+                },
+                {
+                    "name": "POSTGRES_PASSWORD",
+                    "valueFrom": "arn:aws:ssm:us-west-1:470363915259:parameter/foodoasis/dev/POSTGRES_PASSWORD"
+                },
+                {
+                    "name": "POSTGRES_PORT",
+                    "valueFrom": "arn:aws:ssm:us-west-1:470363915259:parameter/foodoasis/dev/POSTGRES_PORT"
+                },
+                {
+                    "name": "POSTGRES_SSL",
+                    "valueFrom": "arn:aws:ssm:us-west-1:470363915259:parameter/foodoasis/dev/POSTGRES_SSL"
+                },
+                {
+                    "name": "POSTGRES_USERNAME",
+                    "valueFrom": "arn:aws:ssm:us-west-1:470363915259:parameter/foodoasis/dev/POSTGRES_USERNAME"
+                },
+                {
+                    "name": "REACT_APP_MAPBOX_TOKEN",
+                    "valueFrom": "arn:aws:ssm:us-west-1:470363915259:parameter/foodoasis/dev/REACT_APP_MAPBOX_TOKEN"
+                },
+                {
+                    "name": "REACT_APP_TAMU_GEOSERVICES_API_KEY",
+                    "valueFrom": "arn:aws:ssm:us-west-1:470363915259:parameter/foodoasis/dev/REACT_APP_TAMU_GEOSERVICES_API_KEY"
+                },
+                {
+                    "name": "SENDGRID_API_KEY",
+                    "valueFrom": "arn:aws:ssm:us-west-1:470363915259:parameter/foodoasis/dev/SENDGRID_API_KEY"
+                }
+            ]
+        }
+    ],
+    "family": "foodoasis-dev-td",
+    "executionRoleArn": "arn:aws:iam::470363915259:role/foodoasis_task_execution",
+    "networkMode": "bridge",
+    "status": "ACTIVE",
+    "memory": "256"
 }

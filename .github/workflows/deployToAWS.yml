@@ -41,8 +41,8 @@ jobs:
             jq 'del(.taskDefinitionArn,.revision,.status)')"
     - name: Test output
       run: |
-        echo "steps.aws-task-definition.*"
-        
+        echo "${{ steps.aws-task-definition.* }}"
+
     # - name: Build and push Image DockerHub
     #   id: docker_build
     #   uses: docker/build-push-action@v2

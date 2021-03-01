@@ -90,6 +90,5 @@
     "family": "foodoasis-dev-td",
     "executionRoleArn": "arn:aws:iam::470363915259:role/foodoasis_task_execution",
     "networkMode": "bridge",
-    "status": "ACTIVE",
     "memory": "256"
 }

@@ -59,11 +59,11 @@ jobs:
         # image: ${{ steps.docker_build.outputs.digest }}
         image: foodoasisla/foodoasisla:main
 
-    - name: Deploy Amazon ECS task definition
-      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-      with:
-        task-definition: ${{ steps.task-definition.outputs.task-definition }}
-        service: ${{ env.AWS_APP_ENVNAME }}
-        cluster: ${{ env.AWS_ECS_CLUSTER_NAME }}
-        wait-for-service-stability: true
-        wait-for-minutes: 5 minutes
+    # - name: Deploy Amazon ECS task definition
+    #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+    #   with:
+    #     task-definition: ${{ steps.task-definition.outputs.task-definition }}
+    #     service: ${{ env.AWS_APP_ENVNAME }}
+    #     cluster: ${{ env.AWS_ECS_CLUSTER_NAME }}
+    #     wait-for-service-stability: true
+    #     wait-for-minutes: 5 minutes

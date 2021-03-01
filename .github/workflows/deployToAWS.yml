@@ -42,7 +42,8 @@ jobs:
 
     - name: Test output
       run: |
-        echo "::set-output name=test::${{ steps.aws-task-definition.outpus.task-definition }}"
+        echo "::set-output name=test::${{ steps.aws-task-definition.outputs.task-definition }}"
+        echo "${{ steps.aws-task-definition.outputs.task-definition }}"
 
     # - name: Build and push Image DockerHub
     #   id: docker_build

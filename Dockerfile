@@ -10,7 +10,6 @@ RUN npm ci
 COPY client .
 
 RUN npm run build
-RUN echo package.json
 
 # Server Container
 FROM node:12-buster-slim

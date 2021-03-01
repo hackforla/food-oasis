@@ -31,10 +31,12 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION_PROD }}
 
-    - name: Test AWS cli commands
+    - name: Pull Task Definition
       id: aws-task-definition
       run: |
-        aws sts get-caller-identity
+        aws ecs describe-task-definition \
+          --task-definition ${{ AWS_APP_ENVNAME }}-td \
+          --query taskDefinition
 
     # - name: Build and push Image DockerHub
     #   id: docker_build
@@ -57,11 +59,11 @@ jobs:
         # image: ${{ steps.docker_build.outputs.digest }}
         image: foodoasisla/foodoasisla:main
 
-    - name: Deploy Amazon ECS task definition
-      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-      with:
-        task-definition: ${{ steps.task-definition.outputs.task-definition }}
-        service: ${{ env.AWS_APP_ENVNAME }}
-        cluster: ${{ env.AWS_ECS_CLUSTER_NAME }}
-        wait-for-service-stability: true
-        wait-for-minutes: 5 minutes
+    # - name: Deploy Amazon ECS task definition
+    #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+    #   with:
+    #     task-definition: ${{ steps.task-definition.outputs.task-definition }}
+    #     service: ${{ env.AWS_APP_ENVNAME }}
+    #     cluster: ${{ env.AWS_ECS_CLUSTER_NAME }}
+    #     wait-for-service-stability: true
+    #     wait-for-minutes: 5 minutes

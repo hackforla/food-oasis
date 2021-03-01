@@ -38,7 +38,7 @@ jobs:
           aws ecs describe-task-definition \
             --task-definition ${{ env.AWS_APP_ENVNAME }}-td \
             --query taskDefinition | \
-            jq 'del(.taskDefinitionArn,.revision,.status)')"
+            jq 'del(.taskDefinitionArn,.revision,.status,.registeredBy,.registeredAt)')"
 
     - name: Test output
       run: |
@@ -61,7 +61,7 @@ jobs:
       id: task-definition
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
-        task-definition: infrastructure/templates/task-definition.json
+        task-definition: ${{ steps.aws-task-definition.outputs.task-definition }}
         container-name: ${{ env.AWS_APP_ENVNAME }}-container
         # image: ${{ steps.docker_build.outputs.digest }}
         image: foodoasisla/foodoasisla:main

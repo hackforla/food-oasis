@@ -1,4 +1,4 @@
-# build and push a docker image from the latest push to "develop" branch
+name: Build Image & Deploy into AWS ECS
 on:
   push:
     branches:

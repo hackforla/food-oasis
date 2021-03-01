@@ -64,7 +64,7 @@ jobs:
       id: task-definition
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
-        task-definition: ${{ steps.aws-task-definition.outputs.task-definition }}
+        task-definition: task-def.json
         container-name: ${{ env.AWS_APP_ENVNAME }}-container
         # image: ${{ steps.docker_build.outputs.digest }}
         image: foodoasisla/foodoasisla:main

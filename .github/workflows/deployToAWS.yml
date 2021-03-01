@@ -34,10 +34,15 @@ jobs:
     - name: Pull Task Definition
       id: aws-task-definition
       run: |
-        aws ecs describe-task-definition \
-          --task-definition ${{ env.AWS_APP_ENVNAME }}-td \
-          --query taskDefinition | jq .taskDefinitionArn
-
+        echo "::set-output name=task-definition::$(\
+          aws ecs describe-task-definition \
+            --task-definition foodoasis-dev-td \
+            --query taskDefinition | \
+            jq 'del(.taskDefinitionArn,.revision,.status)')"
+    - name: Test output
+      run: |
+        echo "steps.aws-task-definition.*"
+        
     # - name: Build and push Image DockerHub
     #   id: docker_build
     #   uses: docker/build-push-action@v2

@@ -36,7 +36,7 @@ jobs:
       run: |
         aws ecs describe-task-definition \
           --task-definition ${{ env.AWS_APP_ENVNAME }}-td \
-          --query taskDefinition
+          --query taskDefinition | jq .taskDefinitionArn
 
     # - name: Build and push Image DockerHub
     #   id: docker_build

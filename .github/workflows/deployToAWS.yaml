@@ -35,7 +35,7 @@ jobs:
       id: aws-task-definition
       run: |
         aws ecs describe-task-definition \
-          --task-definition ${{ AWS_APP_ENVNAME }}-td \
+          --task-definition ${{ env.AWS_APP_ENVNAME }}-td \
           --query taskDefinition
 
     # - name: Build and push Image DockerHub

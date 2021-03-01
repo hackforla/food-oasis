@@ -1,0 +1,38 @@
+on:
+  push:
+    branches:
+      - develop
+      - main
+
+env:
+  HEROKU_EMAIL_USER: darragh@entrotech.net
+  HEROKU_DEVELOP_APP: foodoasisdev
+  HEROKU_PROD_APP: foodoasis
+
+jobs:
+  deploy-main:
+    name: Deploy into Heroku foodoasis.herokuapp.com
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.8.9
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ env.HEROKU_PROD_APP }}
+          heroku_email: ${{ env.HEROKU_EMAIL_USER }}
+          usedocker: true
+
+  deploy-develop:
+    name: Deploy into Heroku foodoasisdev.herokuapp.com
+    if: github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.8.9
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ env.HEROKU_DEVELOP_APP }}
+          heroku_email: ${{ env.HEROKU_EMAIL_USER }}
+          usedocker: true
+

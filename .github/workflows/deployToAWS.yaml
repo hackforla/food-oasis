@@ -3,9 +3,6 @@ on:
   push:
     branches:
       - aws-deployment
-  release:
-    types:
-      - published
 
 env:
   DOCKER_REPOSITORY: foodoasisla/foodoasisla
@@ -16,8 +13,8 @@ env:
   
 jobs:
   production-deploy:
-    if: github.ref == 'refs/heads/aws-deployment'
     name: Deploy production into AWS
+    if: github.ref == 'refs/heads/aws-deployment'
     runs-on: ubuntu-latest
 
     steps:

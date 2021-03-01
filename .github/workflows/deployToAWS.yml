@@ -36,7 +36,7 @@ jobs:
       run: |
         echo "::set-output name=task-definition::$(\
           aws ecs describe-task-definition \
-            --task-definition foodoasis-dev-td \
+            --task-definition ${{ env.AWS_APP_ENVNAME }}-td \
             --query taskDefinition | \
             jq 'del(.taskDefinitionArn,.revision,.status)')"
     - name: Test output

@@ -52,7 +52,7 @@ jobs:
       id: task-definition
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
-        task-definition: infrastructure/task-definition.json
+        task-definition: infrastructure/templates/task-definition.json
         container-name: ${{ env.AWS_APP_ENVNAME }}-container
         image: ${{ steps.docker_build.outputs.digest }}
 

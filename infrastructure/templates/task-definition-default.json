@@ -1,4 +1,5 @@
 {
+    "taskDefinitionArn": "arn:aws:ecs:us-west-1:470363915259:task-definition/foodoasis-dev-td:10",
     "containerDefinitions": [
         {
             "name": "foodoasis-dev-container",
@@ -92,7 +93,9 @@
     "family": "foodoasis-dev-td",
     "executionRoleArn": "arn:aws:iam::470363915259:role/foodoasis_task_execution",
     "networkMode": "bridge",
+    "revision": 10,
     "volumes": [],
+    "status": "ACTIVE",
     "requiresAttributes": [
         {
             "name": "com.amazonaws.ecs.capability.docker-remote-api.1.21"

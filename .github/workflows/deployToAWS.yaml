@@ -36,17 +36,17 @@ jobs:
       run: |
         aws sts get-caller-identity
 
-    - name: Build and push Image DockerHub
-      id: docker_build
-      uses: docker/build-push-action@v2
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-        repository: ${{ env.DOCKER_REPOSITORY }}
-        dockerfile: ./Dockerfile
-        tag_with_ref: true
-        tag_with_sha: true
-        add_git_labels: true
+    # - name: Build and push Image DockerHub
+    #   id: docker_build
+    #   uses: docker/build-push-action@v2
+    #   with:
+    #     username: ${{ secrets.DOCKER_USERNAME }}
+    #     password: ${{ secrets.DOCKER_PASSWORD }}
+    #     repository: ${{ env.DOCKER_REPOSITORY }}
+    #     dockerfile: ./Dockerfile
+    #     tag_with_ref: true
+    #     tag_with_sha: true
+    #     add_git_labels: true
 
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-definition
@@ -54,7 +54,8 @@ jobs:
       with:
         task-definition: infrastructure/templates/task-definition.json
         container-name: ${{ env.AWS_APP_ENVNAME }}-container
-        image: ${{ steps.docker_build.outputs.digest }}
+        # image: ${{ steps.docker_build.outputs.digest }}
+        image: foodoasisla/foodoasisla:main
 
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1

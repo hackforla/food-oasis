@@ -10,7 +10,7 @@ const linkFormatter = ({ value, row }) => {
   return <Link to={`/organizationedit/${row.id}`}>{value}</Link>;
 };
 
-const inactiveFormatter = ({ value, row }) => {
+const inactiveFormatter = ({ value }) => {
   return value ? (
     <div style={{ textAlign: "center" }}>
       <Block style={{ color: "red" }} />
@@ -20,7 +20,7 @@ const inactiveFormatter = ({ value, row }) => {
   );
 };
 
-const confirmationFormatter = ({ value, row }) => {
+const confirmationFormatter = ({ value }) => {
   return value ? (
     <div style={{ backgroundColor: "green", margin: "0", textAlign: "center" }}>
       <Check style={{ color: "white" }} />
@@ -32,7 +32,7 @@ const confirmationFormatter = ({ value, row }) => {
   );
 };
 
-const verificationStatusFormatter = ({ value, row }) => {
+const verificationStatusFormatter = ({ value }) => {
   return VERIFICATION_STATUS_NAMES[value];
 };
 
@@ -99,6 +99,7 @@ const adminColumns = [
     name: "Categories",
     formatter: categoriesFormatter,
     width: 180,
+    frozen: true,
   },
   {
     key: "completeCriticalPercent",
@@ -289,6 +290,12 @@ const dataEntryColumns = [
   {
     key: "confirmedHours",
     name: "Hours",
+    formatter: confirmationFormatter,
+    width: 60,
+  },
+  {
+    key: "confirmedFoodTypes",
+    name: "FoodTypes",
     formatter: confirmationFormatter,
     width: 60,
   },

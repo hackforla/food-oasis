@@ -4,7 +4,7 @@ services:
     image: jred/fola
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile-jared
     environment:
       NODE_ENV: local
       DATABASE_URL: postgres://fola:pgpass@db:5432/food

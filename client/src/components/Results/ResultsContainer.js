@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
+import { useHistory, useLocation } from "react-router-dom";
 
 import { useOrganizationBests } from "hooks/useOrganizationBests";
 import useCategoryIds from "hooks/useCategoryIds";
@@ -32,34 +33,58 @@ export default function ResultsContainer({
   // Component state
   const { data, search } = useOrganizationBests();
   const [sortedData, setSortedData] = useState([]);
+  const [status, setStatus] = useState("initial"); // 'initial', 'loading', 'loaded'
   const classes = useStyles();
+  const history = useHistory();
+  const location = useLocation();
 
   const [selectedStakeholder, onSelectStakeholder] = useState(null);
   const [isMapView, setIsMapView] = useState(true);
+
   const mobileView = isMobile();
 
   const { categoryIds, toggleCategory } = useCategoryIds([]);
   const [isVerifiedSelected, selectVerified] = useState(false);
-  const [viewport, setViewport] = useState({
-    zoom: defaultCoordinates.zoom,
-    latitude: origin.latitude,
-    longitude: origin.longitude,
-    logoPosition: "top-left",
-  });
+
+  const [initViewport, setInitViewport] = useState(null);
 
   const doSelectStakeholder = useCallback(
     (stakeholder) => {
+      if (stakeholder) {
+        window.dataLayer.push({
+          event: "viewDetail",
+          action: "click",
+          value: stakeholder.id,
+          name: stakeholder.name,
+        });
+        const name = stakeholder.name.toLowerCase().replaceAll(" ", "_");
+        history.push(`/organizations?org=${name}`);
+      } else {
+        history.push("/organizations");
+      }
       if (stakeholder && !isMobile) {
-        setViewport({
-          ...viewport,
+        setInitViewport({
           latitude: stakeholder.latitude,
           longitude: stakeholder.longitude,
         });
       }
       onSelectStakeholder(stakeholder);
     },
-    [viewport, setViewport]
+    [setInitViewport, history]
   );
+
+  useEffect(() => {
+    if (location.search.includes("?org=") && data) {
+      const org = location.search.replace("?org=", "").replaceAll("_", " ");
+      const stakeholder = data.find((s) => s.name.toLowerCase() === org);
+      onSelectStakeholder(stakeholder);
+      setInitViewport({
+        latitude: stakeholder.latitude,
+        longitude: stakeholder.longitude,
+        zoom: 13,
+      });
+    }
+  }, [data]);
 
   const switchResultsView = () => {
     doSelectStakeholder();
@@ -69,6 +94,7 @@ export default function ResultsContainer({
   // Component effects
 
   useEffect(() => {
+    setStatus("loading");
     const sortOrganizations = (a, b) => {
       if (
         (a.inactive || a.inactiveTemporary) &&
@@ -90,10 +116,12 @@ export default function ResultsContainer({
       return;
     }
     setSortedData(data.sort(sortOrganizations));
+    setStatus("loaded");
   }, [data]);
 
   const handleSearch = useCallback(
     (e, center, bounds) => {
+      setStatus("loading");
       if (e) e.preventDefault();
       search({
         latitude:
@@ -109,13 +137,14 @@ export default function ResultsContainer({
         radius: defaultCoordinates.radius,
       });
 
-      if (!center)
-        setViewport({
+      if (!center) {
+        setInitViewport({
           zoom: defaultCoordinates.zoom,
           latitude: origin.latitude,
           longitude: origin.longitude,
         });
-      doSelectStakeholder(null);
+      }
+      setStatus("loaded");
     },
     [
       search,
@@ -124,8 +153,7 @@ export default function ResultsContainer({
       userCoordinates.latitude,
       userCoordinates.longitude,
       categoryIds,
-      setViewport,
-      doSelectStakeholder,
+      setInitViewport,
     ]
   );
 
@@ -150,18 +178,20 @@ export default function ResultsContainer({
             doSelectStakeholder={doSelectStakeholder}
             stakeholders={sortedData}
             setToast={setToast}
+            status={status}
+            handleReset={handleSearch}
           />
         )}
         {(!mobileView || (mobileView && isMapView)) && (
           <Map
             handleSearch={handleSearch}
-            viewport={viewport}
-            setViewport={setViewport}
+            origin={origin}
             stakeholders={data}
             doSelectStakeholder={doSelectStakeholder}
             selectedStakeholder={selectedStakeholder}
             categoryIds={categoryIds}
             setToast={setToast}
+            initViewport={initViewport}
           />
         )}
       </Grid>

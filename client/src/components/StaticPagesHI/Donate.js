@@ -160,77 +160,22 @@ const Donate = () => {
             className={classes.icon}
             height="40"
           />
-          <h2>Why Donate?</h2>
+          <h2>How to Donate?</h2>
           <p>
-            We’ve done so much already as a 100% volunteer-run organization—but
-            we need your help to finish what we set out to do. The admin,
-            development, and marketing costs to expand our directory are
-            extensive. We have a directory of over 1,300 organizations to
-            update. Your tax-deductible donation would help us offset some of
-            those costs.
+            As a 501(c)(3), we rely completely on the generosity of our funders, ranging from national grants to
+            individual donations by community members.
           </p>
+          <br/>
           <p>
-            Please make donations to our parent organization (Code for America)
-            At the Code for America donation page you will see a text box:
-            &quot;What inspired you to donate today&quot;? Please write
-            &quot;Food Oasis and Code for Hawaii&quot; in that box. Your
-            donation will get earmarked for Food Oasis Hawaii
+            To donate online, visit <a href="http://alohaharvest.org/donate">http://alohaharvest.org/donate</a>.
           </p>
-          <a
-            href="//www.codeforamerica.org/donate"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={classes.btnOutline}
-          >
-            Donate
-          </a>
-        </section>
-        <div className={classes.volunteerSection}>
-          <img
-            alt="Volunteer"
-            src={iconSpacer}
-            className={classes.icon}
-            height="40"
-          />
-          <h2>Volunteer</h2>
+          <br/>
           <p>
-            We’re run 100% by remote volunteers who do critical work by updating
-            our food directory weekly. The work you do impact those who don’t
-            have enough to eat. Your help to update our directory makes it
-            easier for anyone to get in touch with groups that fit their needs.
+            To donate via check, please make your donation out to: <br/>
+            Aloha Harvest <br/>
+            3599 Wai`alae Ave., Suite 23 <br/>
+            Honolulu, HI 96816<br/>
           </p>
-          <a
-            href="//laworks.com/opportunity/a0C3l00000iCS6GEAW"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={classes.btnWhite}
-          >
-            Become a Volunteer
-          </a>
-        </div>
-        <section className={classes.cards}>
-          <aside className={classes.signup}>
-            <h3>Get monthly updates on what we&apos;`re doing</h3>
-            <a
-              href="//foodoasis.us18.list-manage.com/subscribe?u=40d31892cbbe01312937f7de6&id=42235bb7ce"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={classes.btnWhite}
-            >
-              Signup
-            </a>
-          </aside>
-          <aside className={classes.volunteer}>
-            <h3>Want to give your time instead?</h3>
-            <a
-              href="//laworks.com/opportunity/a0C3l00000iCS6GEAW"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={classes.btnWhite}
-            >
-              Volunteer
-            </a>
-          </aside>
         </section>
         <Footer />
       </div>

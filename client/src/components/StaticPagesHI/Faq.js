@@ -173,30 +173,9 @@ const About = () => {
           />
           <h2>For Volunteers</h2>
           <dl className={classes.dl}>
-            <dt>How can I sign up to volunteer?</dt>
+            <dt>Interested in donating excess food, volunteering, or anything else?</dt>
             <dd>
-              <a
-                href="//laworks.com/opportunity/a0C3l00000iCS6GEAW"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Attend a training session
-              </a>{" "}
-              to get an assignment, or reach out to{" "}
-              <a href="mailto:jenny@foodoasis.la">jenny@foodoasis.la</a>.
-            </dd>
-            <dt>When can I volunteer?</dt>
-            <dd>
-              Anytime. After you attend a training session, you can update the
-              details whenever you have time. That may mean calling in the
-              mornings or researching online in the evenings.
-            </dd>
-            <dt>How do I set up an account to start my assignment?</dt>
-            <dd>
-              <a href="/register">Enter your info here</a>, and look out for a
-              confirmation email from{" "}
-              <a href="mailto:foodoasishi@gmail.com">foodoasishi@gmail.com</a>.
-              Follow the instructions on the email.
+              Visit our website at alohaharvest.org.
             </dd>
           </dl>
         </section>

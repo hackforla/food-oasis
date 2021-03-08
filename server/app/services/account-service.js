@@ -252,59 +252,60 @@ const resetPassword = async ({ token, password }) => {
 };
 
 const authenticate = async (email, password) => {
-  const user = await selectByEmail(email);
-  if (!user) {
+  try {
+    const user = await selectByEmail(email);
+    if (!user.emailConfirmed) {
+      return {
+        isSuccess: false,
+        code: "AUTH_NOT_CONFIRMED",
+        reason: `Email ${email} not confirmed`,
+      };
+    }
+    const isUser = await bcrypt.compare(password, user.passwordHash);
+    if (isUser) {
+      // assign role on JWT; default to least privilege
+      let role = [];
+      if (user.isAdmin) {
+        role.push("admin");
+      }
+      if (user.isSecurityAdmin) {
+        role.push("security_admin");
+      }
+      if (user.isCoordinator) {
+        role.push("coordinator");
+      }
+      if (user.isDataEntry) {
+        role.push("data_entry");
+      }
+      return {
+        isSuccess: true,
+        code: "AUTH_SUCCESS",
+        user: {
+          id: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          isAdmin: user.isAdmin,
+          isCoordinator: user.isCoordinator,
+          isSecurityAdmin: user.isSecurityAdmin,
+          isDataEntry: user.isDataEntry,
+          emailConfirmed: user.emailConfirmed,
+          role: role.join(","), // join list of roles to string
+        },
+      };
+    }
+    return {
+      isSuccess: false,
+      code: "AUTH_INCORRECT_PASSWORD",
+      reason: `Incorrect password`,
+    };
+  } catch (err) {
     return {
       isSuccess: false,
       code: "AUTH_NO_ACCOUNT",
       reason: `No account found for email ${email}`,
     };
   }
-  if (!user.emailConfirmed) {
-    return {
-      isSuccess: false,
-      code: "AUTH_NOT_CONFIRMED",
-      reason: `Email ${email} not confirmed`,
-    };
-  }
-  const isUser = await bcrypt.compare(password, user.passwordHash);
-  if (isUser) {
-    // assign role on JWT; default to least privilege
-    let role = [];
-    if (user.isAdmin) {
-      role.push("admin");
-    }
-    if (user.isSecurityAdmin) {
-      role.push("security_admin");
-    }
-    if (user.isCoordinator) {
-      role.push("coordinator");
-    }
-    if (user.isDataEntry) {
-      role.push("data_entry");
-    }
-    return {
-      isSuccess: true,
-      code: "AUTH_SUCCESS",
-      user: {
-        id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        isAdmin: user.isAdmin,
-        isCoordinator: user.isCoordinator,
-        isSecurityAdmin: user.isSecurityAdmin,
-        isDataEntry: user.isDataEntry,
-        emailConfirmed: user.emailConfirmed,
-        role: role.join(","), // join list of roles to string
-      },
-    };
-  }
-  return {
-    isSuccess: false,
-    code: "AUTH_INCORRECT_PASSWORD",
-    reason: `Incorrect password`,
-  };
 };
 
 const update = async (model) => {

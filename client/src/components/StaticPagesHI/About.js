@@ -157,71 +157,26 @@ const About = () => {
           />
           <h2>Our Mission</h2>
           <p>
-            Access to enough food should be a basic right. Unfortunately, this
-            is not the reality for millions of people in Hawaii. Food insecurity
-            is inconsistent with access to cheap and nutritious food.
-          </p>
-          <p>(TBD)</p>
-          <p>
-            Food pantries in the area are experiencing unprecedented demand. The
-            demand for food assistance has almost doubled since the beginning of
-            2020. To compound matters, it is the hard work of volunteers that
-            keeps pantries and meal programs open. The number of volunteers
-            available to distribute food has diminished.
+            <a href={"https://alohaharvest.org/"}>Aloha Harvest</a> is the largest food rescue nonprofit in the state
+            of Hawaiʻi. Seven days a week, free of
+            charge and free of liability, we rescue quality excess food from donors (ex: wholesale distributors,
+            grocery stores, restaurants, hotels) and redistribute it to recipient agencies feeding the hungry
+            (ex: homeless shelters, social services, food pantries).
           </p>
           <p>
-            The primary goal of Food Oasis is to provide up-to-date information
-            to Hawaiians. We built a directory that connects anyone with
-            hundreds of free food resources. Food Oasis presents reliable
-            information on a user-friendly platform. This will reduce stress and
-            uncertainty for food seekers. It will also demonstrate to our
-            community the growing need of food donations on the islands.
+            We have been doing this work for over 21 years and represent the largest and most successful collaboration
+            between businesses and nonprofits in the state.
+            <a href="https://drive.google.com/file/d/1-sdszGH_y2MLd-yTDVa0ESalyY_zCDKH/view">Last year</a>, we
+            worked with 370 food donors and 273 recipient agencies to redistribute over 2.7 million pounds of good
+            food that would have otherwise been wasted!
           </p>
           <p>
-            Food Oasis is creating a directory of updated food resources. There
-            are countless groups helping to feed hungry Hawaiians. But it’s
-            difficult for those in need to find them because there’s no one
-            source of updated info. We’re working to change that.
+            This work is essential because even while 1 in 5 people in Hawaiʻi rely on food pantries for assistance,
+            about 237,000 tons of good food is wasted annually. Here's a
+            <a href="https://www.youtube.com/watch?v=p9kNYCUtg8E&feature=youtu.be">short</a> video that explains
+            more of our process, impact, and future potential.
           </p>
         </div>
-        <section className={classes.team}>
-          <img
-            alt="Our Team"
-            src={iconSpacer}
-            className={classes.icon}
-            height="40"
-          />
-          <h2>Our Team</h2>
-          <p>
-            Food Oasis started in 2015 under{" "}
-            <a href="//hackforla.org" target="_blank" rel="noopener noreferrer">
-              Hack for LA
-            </a>
-            , a brigade under the non-profit{" "}
-            <a
-              href="//codeforamerica.org"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Code for America
-            </a>
-            . The goal was to create a site of free and subsidized food
-            resources. The team gave the project to a nonprofit to manage its
-            day-to-day operations. The upkeep turned out to be much more work
-            than any single nonprofit could handle.
-          </p>
-
-          <p>
-            Our web-based solution is sparking collaboration, community
-            building, and team building. The result of this community-building
-            gives the food seeker updated information to find the free food
-            resources they need.
-          </p>
-          <p>
-            We are 100% volunteer-run project. We look forward to sharing our
-            updated directory with Hawaii.
-          </p>
-        </section>
         <section className={classes.contact}>
           <img
             alt="Contact Us"
@@ -241,7 +196,7 @@ const About = () => {
           <p>
             Please contact us
             <br />
-            <a href="mailto:foodoasishi@gmail.com">foodoasishi@gmail.com</a>
+            <a href="https://alohaharvest.org/">Aloha Harvest</a>
           </p>
         </section>
         <section className={classes.partners}>

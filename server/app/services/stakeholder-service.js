@@ -726,15 +726,15 @@ const update = async (model) => {
     model.pinterest || "",
     model.linkedin || "",
     model.description || "",
-    model.loginId, // numeric
+    model.loginId || null, //INT
     model.submittedDate || null, // TIMESTAMPTZ
-    model.submittedLoginId, // INT
+    model.submittedLoginId || null, //INT
     model.approvedDate || null, // TIMESTAMP
-    model.reviewedLoginId, // INT
+    model.reviewedLoginId || null, //INT
     model.assignedDate || null, // TIMESTAMP
-    model.assignedLoginId, // INT
+    model.assignedLoginId || null, //INT
     model.claimedDate || null, // TIMESTAMP
-    model.claimedLoginId, // INT
+    model.claimedLoginId || null, //INT
     model.reviewNotes || "",
     model.instagram || "",
     model.adminContactName || "",
@@ -762,7 +762,7 @@ const update = async (model) => {
     model.confirmedEmail, //  bool
     model.confirmedHours, //  bool
     model.confirmedFoodTypes, //  bool
-    model.verificationStatusId, // INT,
+    model.verificationStatusId || null, //INT
     model.inactiveTemporary, // bool
     model.id, // int
     categories,

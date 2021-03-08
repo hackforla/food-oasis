@@ -63,7 +63,9 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     fontSize: "14px",
     lineHeight: "1.2",
-    textAlign: "left",
+    textAlign: "center",
+    flexGrow: 1,
+    flexShrink: 1,
     fontFamily: `Helvetica, Arial, "Lucida Grande", sans- serif`,
     [theme.breakpoints.up("sm")]: {
       display: "none",
@@ -75,6 +77,7 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: "1.5",
     flexBasis: "1em",
     textAlign: "right",
+    flexGrow: 1,
     fontFamily: `"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans- serif`,
   },
 }));

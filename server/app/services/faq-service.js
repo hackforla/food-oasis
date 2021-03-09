@@ -1,40 +1,43 @@
-const { pool } = require("./postgres-pool");
+const db = require("./db");
+const camelcaseKeys = require("camelcase-keys");
 
-const selectAll = () => {
+const selectAll = async () => {
   const sql = `
     select id, question, answer, language, identifier
     from faq
   `;
-  return pool.query(sql, []).then((res) => {
-    return res.rows;
-  });
+  const result = await db.manyOrNone(sql);
+  return result.map((r) => camelcaseKeys(r));
 };
 
 // Identifier Table in DB follows `#:identifier` scheme, for both identifying and also ordering
-const selectAllByLanguage = (language) => {
+const selectAllByLanguage = async (language) => {
   const sql = `
     select id, question, answer, language, identifier
     from faq
-    where language = $1
+    where language = $<language>
     order by identifier desc
   `;
-  return pool.query(sql, [language]).then((res) => {
-    return res.rows;
-  });
+  const result = await db.manyOrNone(sql, { language });
+  return result.map((r) => camelcaseKeys(r));
 };
 
-const selectById = (id) => {
-  const sql = `select id, question, answer, language, identifier from faq where id = $1`;
-  return pool.query(sql, [id]).then((res) => {
-    return res.rows[0];
-  });
+const selectById = async (suggestionId) => {
+  // Need to cast id to number so pg-promise knows how
+  // to format SQL
+  const id = Number(suggestionId);
+  const sql = `select id, question, answer, language, identifier 
+  from faq where id = $<id>`;
+
+  const row = await db.one(sql, { id });
+  return camelcaseKeys(row);
 };
 
-const selectByIdentifier = (identifier) => {
-  const sql = `select id, question, answer, language, identifier from faq where identifier = $1`;
-  return pool.query(sql, [identifier]).then((res) => {
-    return res.rows;
-  });
+const selectByIdentifier = async (identifier) => {
+  const sql = `select id, question, answer, language, identifier 
+  from faq where identifier = $1`;
+  const result = await db.manyOrNone(sql, { identifier: Number(identifier) });
+  return result.map((r) => camelcaseKeys(r));
 };
 
 /* 
@@ -43,14 +46,13 @@ ex. [{question: "", answer: "", language: "en", identifier: "example"}, {questio
 Do 2 requests to POST /api/faqs/
 */
 
-const insert = (model) => {
-  const { question, answer, language, identifier } = model;
-  const sql = `insert into faq (question, answer, language, identifier) values ($1, $2, $3, $4) returning id`;
-  return pool
-    .query(sql, [question, answer, language, identifier])
-    .then((res) => {
-      return res.rows[0];
-    });
+const insert = async (model) => {
+  const sql = `insert into faq (question, answer, language, identifier) 
+  values ($<question>, $<answer>, $<language>, $<identifier>) 
+  returning id`;
+
+  const result = await db.one(sql, model);
+  return { id: result.id };
 };
 
 /* 
@@ -58,18 +60,14 @@ Assuming Admins will have enough bandwidth, make multiple requests at the same t
 ex. [{question: "", answer: "", language: "en"}, {question: "", answer: "", language: "es"}]
 Do 2 requests to PUT /api/faqs/
 */
-const update = (id, model) => {
-  const { question, answer, language, identifier } = model;
+
+const update = async (model) => {
   const sql = `
     update faq
     set question = $1, answer = $2, language = $3, identifier = $4
     where id = $5 returning *
   `;
-  return pool
-    .query(sql, [question, answer, language, identifier, id])
-    .then((res) => {
-      return res.rows[0];
-    });
+  return await db.one(sql, model);
 };
 
 /*
@@ -77,11 +75,9 @@ Deletes all FAQs from identifier
 ex. {identifier: ""}
 Verify that admin wants to delete FAQs, as it will delete all languages for FAQ.
 */
-const remove = (identifier) => {
-  const sql = `delete from faq where identifier = $1`;
-  return pool.query(sql, [identifier]).then((res) => {
-    return res;
-  });
+const remove = async (identifier) => {
+  const sql = `delete from faq where identifier = $<identifier>`;
+  return await db.none(sql, { identifier: Number(identifier) });
 };
 
 module.exports = {

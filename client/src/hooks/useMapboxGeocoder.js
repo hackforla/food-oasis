@@ -9,6 +9,7 @@ const losAngelesCountyLatLong = "-118.9517,33.6988,-117.6462,34.8233";
 const californiaLatLong = "-124.389, 32.4796, -114.1723, 42.072";
 const hawaiiLatLong = "-160.25, 18.91, -154.58, 22.30";
 const portlandLatLong = "-123.153, 45.28, -122.120, 45.959";
+const mckinneyLatLong = "-96.9, 33.1, -96.4, 33.4";
 
 const initialState = {
   isLoading: false,
@@ -50,7 +51,9 @@ export function useMapboxGeocoder() {
   const fetchMapboxResults = debounce(
     async (searchString) => {
       const bbox =
-        tenantId === 4
+        tenantId === 5
+          ? mckinneyLatLong
+          : tenantId === 4
           ? portlandLatLong
           : tenantId === 3
           ? hawaiiLatLong

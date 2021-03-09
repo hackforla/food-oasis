@@ -6,19 +6,20 @@ import {
   Redirect,
 } from "react-router-dom";
 import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
-import { Grid } from "@material-ui/core";
+import { Grid, CssBaseline } from "@material-ui/core";
 import theme from "theme/materialUI";
 import { logout } from "services/account-service";
 import { tenantId, defaultCoordinates } from "helpers/Configuration";
 
 // Components
-import { UserContext } from "components/user-context";
-import Toast from "components/Toast";
-import Header from "components/Header";
-import VerificationAdmin from "components/Verification/VerificationAdmin";
-import VerificationDashboard from "components/Verification/VerificationDashboard";
-import SecurityAdminDashboard from "components/SecurityAdminDashboard/SecurityAdminDashboard";
-import OrganizationEdit from "components/Verification/OrganizationEdit";
+import { UserContext } from "contexts/user-context";
+import Toast from "components/UI/Toast";
+import Header from "components/Layout/Header";
+import HeaderHome from "components/Layout/HeaderHome";
+import VerificationAdmin from "components/Admin/VerificationAdmin";
+import VerificationDashboard from "components/Admin/VerificationDashboard";
+import SecurityAdminDashboard from "components/Account/SecurityAdminDashboard/SecurityAdminDashboard";
+import OrganizationEdit from "components/Admin/OrganizationEdit";
 import Donate from "components/StaticPages/Donate";
 import About from "components/StaticPages/About";
 import Faq from "components/StaticPages/Faq";
@@ -31,18 +32,21 @@ import FaqHI from "components/StaticPagesHI/Faq";
 import DonatePDX from "components/StaticPagesPDX/Donate";
 import AboutPDX from "components/StaticPagesPDX/About";
 import FaqPDX from "components/StaticPagesPDX/Faq";
-import Resources from "components/Resources";
-import Register from "components/Register";
-import Login from "components/Login";
-import ForgotPassword from "components/ForgotPassword";
-import ResetPassword from "components/ResetPassword";
-import ConfirmEmail from "components/ConfirmEmail";
-import FaqEdit from "components/FaqEdit";
-import FaqAdd from "components/FaqAdd";
-import Home from "containers/Home";
-import Results from "components/Results/ResultsContainer";
-import Suggestion from "components/Suggestion";
-import ImportFile from "components/ImportFile";
+import DonateMCK from "components/StaticPagesMCK/Donate";
+import AboutMCK from "components/StaticPagesMCK/About";
+import FaqMCK from "components/StaticPagesMCK/Faq";
+import Resources from "components/Layout/Resources";
+import Register from "components/Account/Register";
+import Login from "components/Account/Login";
+import ForgotPassword from "components/Account/ForgotPassword";
+import ResetPassword from "components/Account/ResetPassword";
+import ConfirmEmail from "components/Account/ConfirmEmail";
+import FaqEdit from "components/Faq/FaqEdit";
+import FaqAdd from "components/Faq/FaqAdd";
+import Home from "components/FoodSeeker/Home";
+import Results from "components/FoodSeeker/ResultsContainer";
+import Suggestion from "components/FoodSeeker/Suggestion";
+import ImportFile from "components/Admin/ImportOrganizations/ImportFile";
 import newTheme from "./theme/newTheme";
 
 const useStyles = makeStyles({
@@ -88,6 +92,8 @@ function App() {
     longitude: defaultCoordinates.lon,
   });
 
+  const [browserLocation, setBrowserLocation] = useState(false);
+
   useEffect(() => {
     const imgNum = Math.floor(Math.random() * (21 - 1)) + 1;
     const backgroundImage = `url("/landing-page/${imgNum}.jpg")`;
@@ -104,9 +110,48 @@ function App() {
     } else {
       setUser(JSON.parse(storedJson));
     }
-  }, [user, userCoordinates]);
+  }, [user]);
 
   useEffect(() => {
+    const fetchLocation = () => {
+      let userCoordinates = { latitude: null, longitude: null };
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            if (position) {
+              const userCoordinates = {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+              };
+              setUserCoordinates(userCoordinates);
+              setBrowserLocation(true);
+            }
+          },
+          (error) => {
+            // Ususally because user has blocked location
+            console.log(`Getting browser location failed: ${error.message}`);
+            const userCoordinates = {
+              latitude: defaultCoordinates.lat,
+              longitude: defaultCoordinates.lon,
+            };
+            setUserCoordinates(userCoordinates);
+            setBrowserLocation(false);
+          }
+        );
+      } else {
+        console.log(
+          "Browser does not support getting users location - using default location for area"
+        );
+        const userCoordinates = {
+          latitude: defaultCoordinates.lat,
+          longitude: defaultCoordinates.lon,
+        };
+        setUserCoordinates(userCoordinates);
+        setBrowserLocation(false);
+      }
+
+      return userCoordinates;
+    };
     fetchLocation();
   }, []);
 
@@ -120,66 +165,48 @@ function App() {
     setUser(user);
   };
 
-  const fetchLocation = () => {
-    let userCoordinates = { latitude: null, longitude: null };
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          if (position) {
-            const userCoordinates = {
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-            };
-            setUserCoordinates(userCoordinates);
-          }
-        },
-        (error) => {
-          console.log(`Getting browser location failed: ${error.message}`);
-          const userCoordinates = {
-            latitude: defaultCoordinates.lat,
-            longitude: defaultCoordinates.lon,
-          };
-          setUserCoordinates(userCoordinates);
-        }
-      );
-    } else {
-      // If browser location permission is denied, the request is
-      // "successful", but the result is null coordinates.
-      console.log("Enable location permission to use location-based features.");
-    }
-
-    return userCoordinates;
-  };
-
   const classes = useStyles();
 
   return (
     <UserContext.Provider value={user}>
       <ThemeProvider theme={theme}>
+        <CssBaseline />
         <Router>
           <Grid
             container
             direction="column"
             wrap="nowrap"
             alignContent="stretch"
-            //justify="stretch"
             spacing={0}
             classes={{
               container: classes.app,
             }}
           >
-            <Header user={user} setUser={onLogin} setToast={setToast} />
+            <Switch>
+              <Route exact path="/">
+                <HeaderHome user={user} setUser={onLogin} setToast={setToast} />
+              </Route>
+              <Route>
+                <Header user={user} setUser={onLogin} setToast={setToast} />
+              </Route>
+            </Switch>
             <Switch className={classes.mainContent}>
               <Route exact path="/">
                 <div
                   className={classes.homeWrapper}
                   style={{ backgroundImage: bgImg }}
                 >
-                  <Home
-                    userCoordinates={userCoordinates}
-                    origin={origin}
-                    setOrigin={setOrigin}
-                  />
+                  <div
+                    className={classes.homeWrapper}
+                    style={{ backgroundImage: bgImg }}
+                  >
+                    <Home
+                      userCoordinates={userCoordinates}
+                      origin={origin}
+                      setOrigin={setOrigin}
+                      browserLocation={browserLocation}
+                    />
+                  </div>
                 </div>
               </Route>
               {/* 
@@ -194,6 +221,7 @@ function App() {
                   origin={origin}
                   setOrigin={setOrigin}
                   setToast={setToast}
+                  browserLocation={browserLocation}
                 />
               </Route>
               <Route path="/suggestion">
@@ -260,7 +288,9 @@ function App() {
                 <ResetPassword setToast={setToast} />
               </Route>
               <Route path="/donate">
-                {tenantId === 4 ? (
+                {tenantId === 5 ? (
+                  <DonateMCK />
+                ) : tenantId === 4 ? (
                   <DonatePDX />
                 ) : tenantId === 3 ? (
                   <DonateHI />
@@ -271,7 +301,9 @@ function App() {
                 )}
               </Route>
               <Route path="/about">
-                {tenantId === 4 ? (
+                {tenantId === 5 ? (
+                  <AboutMCK />
+                ) : tenantId === 4 ? (
                   <AboutPDX />
                 ) : tenantId === 3 ? (
                   <AboutHI />
@@ -282,7 +314,9 @@ function App() {
                 )}
               </Route>
               <Route exact path="/faqs">
-                {tenantId === 4 ? (
+                {tenantId === 5 ? (
+                  <FaqMCK />
+                ) : tenantId === 4 ? (
                   <FaqPDX />
                 ) : tenantId === 3 ? (
                   <FaqHI />

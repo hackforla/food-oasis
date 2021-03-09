@@ -48,9 +48,9 @@ const parseCsv = async (file) => {
   return rowArray;
 };
 
-const importCsv = async (importData, action) => {
+const importCsv = async (data, action, tenantId) => {
   try {
-    await stakeholderService.insertBulk(importData, action);
+    await stakeholderService.insertBulk(data, action, tenantId);
   } catch (err) {
     console.error(err.message);
   }

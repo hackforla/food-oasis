@@ -56,7 +56,6 @@ const search = async (params) => {
     minCompleteCriticalPercent,
     maxCompleteCriticalPercent,
   } = params;
-  console.log(params);
 
   const locationClause = buildLocationClause(latitude, longitude);
   const categoryClause = buildCTEClause(categoryIds, name || "", false);
@@ -663,173 +662,25 @@ const insert = async (model) => {
   }
 };
 
-const insertBulk = async (stakeholderArray) => {
-  for (let i = 0; i < stakeholderArray.length; i++) {
-    const model = stakeholderArray[i];
-    const {
-      tenant_id,
-      name,
-      address_1,
-      address_2,
-      city,
-      state,
-      zip,
-      phone,
-      latitude,
-      longitude,
-      website,
-      inactive,
-      notes,
-      requirements,
-      admin_notes,
-      created_login_id,
-      category_ids,
-      hours,
-      parent_organization,
-      physical_access,
-      email,
-      items,
-      services,
-      facebook,
-      twitter,
-      pinterest,
-      linkedin,
-      description,
-      submitted_date,
-      submitted_login_id,
-      approved_date,
-      reviewed_login_id,
-      assigned_date,
-      assigned_login_id,
-      claimed_date,
-      claimed_login_id,
-      review_notes,
-      instagram,
-      admin_contact_name,
-      admin_contact_phone,
-      admin_contact_email,
-      donation_contact_name,
-      donation_contact_phone,
-      donation_contact_email,
-      donation_pickup,
-      donation_accept_frozen,
-      donation_accept_refrigerated,
-      donation_accept_perishable,
-      donation_schedule,
-      donation_delivery_instructions,
-      donation_notes,
-      covid_notes,
-      category_notes,
-      eligibility_notes,
-      food_types,
-      languages,
-      v_name,
-      v_categories,
-      v_address,
-      v_phone,
-      v_email,
-      v_hours,
-      v_food_types,
-      verification_status_id,
-      inactive_temporary,
-      food_bakery,
-      food_dry_goods,
-      food_produce,
-      food_dairy,
-      food_prepared,
-      food_meat,
-    } = model;
-    try {
-      let hoursSqlValues = hours.length
-        ? hours.replace(/[(]/g, "'(").replace(/[)]/g, ")'")
-        : "";
-      const categories = "ARRAY[" + category_ids + "]::int[]";
-      const formattedHours =
-        "ARRAY[" + hoursSqlValues + "]::stakeholder_hours[]";
-
-      // create_stakeholder is a postgres stored procedure. Source of this stored
-      // procedure is in the repo at db/stored_procs/create_stakeholder.sql.
-      // We pass in category_ids and stakeholder hours like this:
-      // ARRAY[3,5,7]::int[],                                                      --array of integer category_ids
-      // (ARRAY['(2,Wed,13:02,13:04)', '(3,Thu,07:00,08:00)'])::stakeholder_hours[]); --array of stakeholder_hours
-      // objects, which are defined as a postgres type (see repo file for more detail on this type).
-
-      const invokeSprocSql = `CALL create_stakeholder(
-          ${toSqlNumeric(0)}::INT,
-          ${toSqlNumeric(tenant_id)}::INT,
-          ${toSqlString(name)}::VARCHAR,
-          ${toSqlString(address_1)}::VARCHAR, 
-          ${toSqlString(address_2)}::VARCHAR,
-          ${toSqlString(city)}::VARCHAR, 
-          ${toSqlString(state)}::VARCHAR, 
-          ${toSqlString(zip)}::VARCHAR,
-          ${toSqlString(phone)}::VARCHAR,
-          ${toSqlNumeric(latitude)}::NUMERIC, 
-          ${toSqlNumeric(longitude)}::NUMERIC,
-          ${toSqlString(website)}::VARCHAR, 
-          ${toSqlBoolean(inactive)},
-          ${toSqlString(notes)}::VARCHAR, 
-          ${toSqlString(requirements)}::VARCHAR,
-          ${toSqlString(admin_notes)}::VARCHAR, 
-          ${toSqlNumeric(created_login_id)}::INT,
-          ${toSqlString(parent_organization)}::VARCHAR, 
-          ${toSqlString(physical_access)}::VARCHAR,
-          ${toSqlString(email)}::VARCHAR, 
-          ${toSqlString(items)}::VARCHAR,
-          ${toSqlString(services)}::VARCHAR, 
-          ${toSqlString(facebook)}::VARCHAR,
-          ${toSqlString(twitter)}::VARCHAR, 
-          ${toSqlString(pinterest)}::VARCHAR,
-          ${toSqlString(linkedin)}::VARCHAR, 
-          ${toSqlString(description)}::VARCHAR,
-          ${toSqlTimestamp(submitted_date)}::TIMESTAMPTZ, 
-          ${toSqlNumeric(submitted_login_id)}::INT,
-          ${toSqlTimestamp(approved_date)}::TIMESTAMP,
-          ${toSqlNumeric(reviewed_login_id)}::INT,
-          ${toSqlTimestamp(assigned_date)}::TIMESTAMP, 
-          ${toSqlNumeric(assigned_login_id)}::INT,
-          ${toSqlTimestamp(claimed_date)}::TIMESTAMP, 
-          ${toSqlNumeric(claimed_login_id)}::INT,
-          ${toSqlString(review_notes)}::VARCHAR, 
-          ${toSqlString(instagram)}::VARCHAR,
-          ${toSqlString(admin_contact_name)}::VARCHAR, 
-          ${toSqlString(admin_contact_phone)}::VARCHAR,
-          ${toSqlString(admin_contact_email)}::VARCHAR,
-          ${toSqlString(donation_contact_name)}::VARCHAR,
-          ${toSqlString(donation_contact_phone)}::VARCHAR,
-          ${toSqlString(donation_contact_email)}::VARCHAR,
-          ${toSqlBoolean(donation_pickup)},
-          ${toSqlBoolean(donation_accept_frozen)},
-          ${toSqlBoolean(donation_accept_refrigerated)},
-          ${toSqlBoolean(donation_accept_perishable)},
-          ${toSqlString(donation_schedule)}::VARCHAR,
-          ${toSqlString(donation_delivery_instructions)}::VARCHAR,
-          ${toSqlString(donation_notes)}::VARCHAR,
-          ${toSqlString(covid_notes)}::VARCHAR,
-          ${toSqlString(category_notes)}::VARCHAR,
-          ${toSqlString(eligibility_notes)}::VARCHAR,
-          ${toSqlString(food_types)}::VARCHAR,
-          ${toSqlString(languages)}::VARCHAR,
-          ${toSqlBoolean(v_name)},
-          ${toSqlBoolean(v_categories)},
-          ${toSqlBoolean(v_address)},
-          ${toSqlBoolean(v_phone)},
-          ${toSqlBoolean(v_email)},
-          ${toSqlBoolean(v_hours)},
-          ${toSqlBoolean(v_food_types)},
-          ${toSqlNumeric(verification_status_id)}::INT,
-          ${toSqlBoolean(inactive_temporary)},
-          ${categories},
-          ${formattedHours},
-          ${toSqlBoolean(food_bakery)},${toSqlBoolean(food_dry_goods)},
-          ${toSqlBoolean(food_produce)},${toSqlBoolean(food_dairy)},
-          ${toSqlBoolean(food_prepared)},${toSqlBoolean(food_meat)}
-        )`;
-      const stakeholderResult = await pool.query(invokeSprocSql);
-      const id = stakeholderResult.rows[0].s_id;
-      return { id };
-    } catch (err) {
-      return Promise.reject(err.message);
+const insertBulk = async (stakeholderArray, action) => {
+  if (action === "add") {
+    for (let i = 0; i < stakeholderArray.length; i++) {
+      const model = stakeholderArray[i];
+      await insert(model);
+    }
+  } else if (action === "update") {
+    for (let i = 0; i < stakeholderArray.length; i++) {
+      const model = stakeholderArray[i];
+      if (model.id && model.id.length) {
+        await update(model);
+      } else await insert(model);
+    }
+  } else if (action === "replace") {
+    const removed = await removeAll();
+    if (!removed) return null;
+    for (let i = 0; i < stakeholderArray.length; i++) {
+      const model = stakeholderArray[i];
+      await insert(model);
     }
   }
 };
@@ -1118,6 +969,21 @@ const remove = async (id) => {
     await pool.query("delete from stakeholder_best where id = $1", [
       Number(id),
     ]);
+    await pool.query("COMMIT");
+    return true;
+  } catch (e) {
+    await pool.query("ROLLBACK");
+    throw e;
+  }
+};
+
+const removeAll = async () => {
+  try {
+    await pool.query("delete from stakeholder");
+    await pool.query("delete from stakeholder_schedule");
+    await pool.query("delete from stakeholder_category");
+    await pool.query("delete from stakeholder_log");
+    await pool.query("delete from stakeholder_best");
     await pool.query("COMMIT");
     return true;
   } catch (e) {

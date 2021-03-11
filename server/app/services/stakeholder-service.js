@@ -595,7 +595,7 @@ const insert = async (model) => {
 const insertBulk = async (stakeholderArray, action, tenantId) => {
   if (action === "add") {
     for (let i = 0; i < stakeholderArray.length; i++) {
-      const model = stakeholderArray[i];
+      const model = camelcaseKeys(stakeholderArray[i]);
       model.tenantId = tenantId;
       if (model.hours) {
         model.hours = JSON.parse(model.hours);
@@ -604,20 +604,21 @@ const insertBulk = async (stakeholderArray, action, tenantId) => {
     }
   } else if (action === "update") {
     for (let i = 0; i < stakeholderArray.length; i++) {
-      const model = stakeholderArray[i];
+      const model = camelcaseKeys(stakeholderArray[i]);
       model.tenantId = tenantId;
       if (model.hours) {
         model.hours = JSON.parse(model.hours);
       }
       if (model.id && model.id.length) {
         await update(model);
-      } else await insert(model);
+      } else {
+        await insert(model);
+      }
     }
   } else if (action === "replace") {
-    const removed = await removeAll();
-    if (!removed) return null;
+    await removeAll();
     for (let i = 0; i < stakeholderArray.length; i++) {
-      const model = stakeholderArray[i];
+      const model = camelcaseKeys(stakeholderArray[i]);
       model.tenantId = tenantId;
       if (model.hours) {
         model.hours = JSON.parse(model.hours);
@@ -824,18 +825,14 @@ const remove = async (idParm) => {
 };
 
 const removeAll = async () => {
-  try {
-    await pool.query("delete from stakeholder");
-    await pool.query("delete from stakeholder_schedule");
-    await pool.query("delete from stakeholder_category");
-    await pool.query("delete from stakeholder_log");
-    await pool.query("delete from stakeholder_best");
-    await pool.query("COMMIT");
-    return true;
-  } catch (e) {
-    await pool.query("ROLLBACK");
-    throw e;
-  }
+  await db.tx(async (t) => {
+    await t.none("delete from stakeholder_schedule");
+    await t.none("delete from stakeholder_category");
+    const result = await t.result("delete from stakeholder");
+    await t.none("delete from stakeholder_log");
+    await t.none("delete from stakeholder_best");
+    return result.rowCount;
+  });
 };
 
 const buildCTEClause = (categoryIds, name) => {

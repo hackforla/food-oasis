@@ -497,7 +497,7 @@ const insert = async (model) => {
   // Array of catetory_ids is formatted as, e.g.,  '{1,9}'
   const categories = model.selectedCategoryIds
     ? "{" + model.selectedCategoryIds.join(",") + "}"
-    : "{12}";
+    : "{1}";
 
   // Array of hours if formatted as, e.g., `{"(0,Mon,10:00:00,13:00:00)","(3,Sat,08:00:00,10:30:00)"}
   let hoursSqlValues =

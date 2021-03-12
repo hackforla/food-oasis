@@ -9,6 +9,7 @@ function formatMapAddress(formData) {
   }, ${formData.state || ""} ${formData.zip || ""}`;
 }
 
+// we can use this function to reformat the field names/values in the csv before rendering in browser table
 const parseCsv = async (file) => {
   // memory storage
   const { buffer } = file;
@@ -28,6 +29,7 @@ const parseCsv = async (file) => {
     if (row.latitude && row.longitude) {
       const newRow = await {
         ...row,
+        selectedCategoryIds: row.selectedCategoryIds.split(","),
         latitude: +row.latitude,
         longitude: +row.longitude,
       };
@@ -36,6 +38,7 @@ const parseCsv = async (file) => {
       const response = await esriService.geocode(formatMapAddress(row));
       const newRow = await {
         ...row,
+        selectedCategoryIds: row.selectedCategoryIds.split(","),
         latitude: response[0].attributes.Y,
         longitude: response[0].attributes.X,
       };
@@ -45,9 +48,9 @@ const parseCsv = async (file) => {
   return rowArray;
 };
 
-const importCsv = async (tenantId, importData) => {
+const importCsv = async (data, action, tenantId) => {
   try {
-    await stakeholderService.insertBulk(tenantId, importData);
+    await stakeholderService.insertBulk(data, action, tenantId);
   } catch (err) {
     console.error(err.message);
   }

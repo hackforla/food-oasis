@@ -592,8 +592,8 @@ const insert = async (model) => {
   return { id: result.s_id };
 };
 
-const insertBulk = async (tenantId, stakeholderArray) => {
-  try {
+const insertBulk = async (stakeholderArray, action, tenantId) => {
+  if (action === "add") {
     for (let i = 0; i < stakeholderArray.length; i++) {
       const model = camelcaseKeys(stakeholderArray[i]);
       model.tenantId = tenantId;
@@ -602,8 +602,29 @@ const insertBulk = async (tenantId, stakeholderArray) => {
       }
       await insert(model);
     }
-  } catch (err) {
-    console.error(err);
+  } else if (action === "update") {
+    for (let i = 0; i < stakeholderArray.length; i++) {
+      const model = camelcaseKeys(stakeholderArray[i]);
+      model.tenantId = tenantId;
+      if (model.hours) {
+        model.hours = JSON.parse(model.hours);
+      }
+      if (model.id && model.id.length) {
+        await update(model);
+      } else {
+        await insert(model);
+      }
+    }
+  } else if (action === "replace") {
+    await removeAll();
+    for (let i = 0; i < stakeholderArray.length; i++) {
+      const model = camelcaseKeys(stakeholderArray[i]);
+      model.tenantId = tenantId;
+      if (model.hours) {
+        model.hours = JSON.parse(model.hours);
+      }
+      await insert(model);
+    }
   }
 };
 
@@ -799,6 +820,17 @@ const remove = async (idParm) => {
     await t.none("delete from stakeholder_best where id = $<id>", {
       id,
     });
+    return result.rowCount;
+  });
+};
+
+const removeAll = async () => {
+  await db.tx(async (t) => {
+    await t.none("delete from stakeholder_schedule");
+    await t.none("delete from stakeholder_category");
+    const result = await t.result("delete from stakeholder");
+    await t.none("delete from stakeholder_log");
+    await t.none("delete from stakeholder_best");
     return result.rowCount;
   });
 };

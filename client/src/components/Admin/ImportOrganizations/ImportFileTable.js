@@ -39,12 +39,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ImportFileTable = (props) => {
-  const { importData, setImportData, handleImport, handleCancel } = props;
+  const { data, handleImportAction, handleCancel } = props;
   const classes = useStyles();
 
   useEffect(() => {
     return () => {
-      setImportData(null);
+      handleCancel();
     };
   }, []);
 
@@ -53,14 +53,14 @@ const ImportFileTable = (props) => {
       <div className={classes.tableBanner}>
         <Typography variant="h5">Import Stakeholders</Typography>
         <Typography>
-          Review your import below and click "Submit" when you're ready to
+          Review your import below and click "Import" when you're ready to
           update your records.
         </Typography>
-        <Button variant="contained" onClick={handleImport}>
-          Submit
-        </Button>
         <Button variant="contained" onClick={handleCancel}>
           Cancel
+        </Button>
+        <Button variant="contained" onClick={handleImportAction}>
+          Import
         </Button>
       </div>
       <TableContainer className={classes.tableContainer}>
@@ -73,8 +73,8 @@ const ImportFileTable = (props) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {importData &&
-              importData.map((d) => (
+            {data &&
+              data.map((d) => (
                 <TableRow key={d.name}>
                   {STAKEHOLDER_SCHEMA.map((field) => (
                     <TableCell key={field.name}>{d[field.name]}</TableCell>
@@ -89,9 +89,8 @@ const ImportFileTable = (props) => {
 };
 
 ImportFileTable.propTypes = {
-  importData: PropTypes.arrayOf(PropTypes.object),
-  setImportData: PropTypes.func.isRequired,
-  handleImport: PropTypes.func.isRequired,
+  data: PropTypes.arrayOf(PropTypes.object),
+  handleImportAction: PropTypes.func.isRequired,
   handleCancel: PropTypes.func.isRequired,
 };
 

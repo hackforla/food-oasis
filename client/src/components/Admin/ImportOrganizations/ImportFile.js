@@ -7,6 +7,7 @@ import { uploadCsv, importCsv } from "../../../services/import-service";
 import exportCsv from "../../../services/export-service";
 import ImportFileTable from "./ImportFileTable";
 import ImportFileGuide from "./ImportFileGuide";
+import ImportDialog from "./ImportDialog";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,10 +29,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const initialImportData = {
+  data: null,
+  action: null,
+  tenantId: 3,
+};
+
 const ImportFile = (props) => {
   const { user, history, setToast } = props;
   const [file, setFile] = useState(null);
-  const [importData, setImportData] = useState(null);
+  const [importData, setImportData] = useState(initialImportData);
+  const [dialog, setDialog] = useState(false);
   const classes = useStyles();
 
   const handleChange = (e) => {
@@ -44,9 +52,32 @@ const ImportFile = (props) => {
     formData.append("file", file);
     uploadCsv(formData)
       .then((res) => {
-        setImportData(res);
+        setImportData((prevState) => ({
+          ...prevState,
+          data: res,
+        }));
       })
       .catch((err) => console.error(err.message));
+  };
+
+  const handleImportDialog = () => {
+    setDialog(!dialog);
+  };
+
+  const handleImportAction = (e) => {
+    const action = e.target.value;
+    if (!action) {
+      setDialog(!dialog);
+      setImportData((prevState) => ({
+        ...prevState,
+        action: null,
+      }));
+    } else {
+      setImportData((prevState) => ({
+        ...prevState,
+        action,
+      }));
+    }
   };
 
   const handleImport = () => {
@@ -64,12 +95,13 @@ const ImportFile = (props) => {
             "File could not be imported. Please doublecheck file format and schema.",
         });
       });
+    setDialog(false);
   };
 
-  const handleCancel = () => setImportData(null);
+  const handleCancel = () => setImportData(initialImportData);
 
   useEffect(() => {
-    if (importData) {
+    if (importData.data) {
       history.push("/organizationimport/review");
     } else {
       history.push("/organizationimport");
@@ -100,12 +132,20 @@ const ImportFile = (props) => {
             path="/organizationimport/review"
             render={() => (
               <ImportFileTable
-                importData={importData}
+                data={importData.data}
                 setImportData={setImportData}
-                handleImport={handleImport}
+                handleImportAction={handleImportAction}
+                handleImportDialog={handleImportDialog}
                 handleCancel={handleCancel}
               />
             )}
+          />
+          <ImportDialog
+            open={dialog}
+            importData={importData}
+            title="Import stakeholder records"
+            handleImportAction={handleImportAction}
+            handleImport={handleImport}
           />
         </div>
       ) : (

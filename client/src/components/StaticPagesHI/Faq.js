@@ -171,12 +171,13 @@ const About = () => {
             className={classes.icon}
             height="40"
           />
-          <h2>For Volunteers</h2>
+          <h2>General Questions</h2>
           <dl className={classes.dl}>
-            <dt>Interested in donating excess food, volunteering, or anything else?</dt>
-            <dd>
-              Visit our website at alohaharvest.org.
-            </dd>
+            <dt>
+              Interested in donating excess food, volunteering, or anything
+              else?
+            </dt>
+            <dd>Visit our website at alohaharvest.org.</dd>
           </dl>
         </section>
         <section className={classes.forDonors}>
@@ -195,15 +196,31 @@ const About = () => {
             </dd>
             <dt>How is Food Oasis helping to diminish food insecurity?</dt>
             <dd>
-              Food Oasis is creating a directory of updated food resources.
-              There are countless groups helping to feed hungry Hawaiians. But
-              it’s difficult for those in need to find them because there’s no
-              one source of updated info. We’re working to change that.
+              Although there are multiple food directories in the islands, many
+              are not well-maintained or they lack easy-to-use interfaces. Now
+              more than ever, we need to react to the changing needs of
+              Hawaiʻi’s people, and providing a location-based, maintainable web
+              app will decrease the friction in finding food resources.
             </dd>
-            <dt>What will my donation go toward?</dt>
+            <dt>Do you accept food or monetary donations?</dt>
             <dd>
-              Your donations help us with the human costs required to update the
-              food resources in Hawaii.
+              Yes! Please visit the Aloha Harvest{" "}
+              <a
+                href="https://alohaharvest.org/donate-food/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                food donation
+              </a>{" "}
+              and{" "}
+              <a
+                href="https://alohaharvest.org/donate-money/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                monetary donation
+              </a>{" "}
+              pages for more information.
             </dd>
           </dl>
         </section>

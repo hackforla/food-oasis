@@ -1,5 +1,13 @@
 export const STAKEHOLDER_SCHEMA = [
   {
+    name: "id",
+    label: "ID",
+    description: "Stakeholder ID (leave blank for new entries)",
+    required: "No",
+    default_value: "",
+    sample_format: "",
+  },
+  {
     name: "name",
     label: "Name",
     description: "Name of stakeholder",
@@ -8,7 +16,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "address_1",
+    name: "address1",
     label: "Address 1",
     description: "",
     required: "Yes",
@@ -16,7 +24,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "address_2",
+    name: "address2",
     label: "Address 2",
     description: "",
     required: "No",
@@ -80,7 +88,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "https://foodoasis.la",
   },
   {
-    name: "fm_id",
+    name: "fmId",
     label: "FM ID",
     description: "",
     required: "No",
@@ -96,7 +104,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "created_date",
+    name: "createdDate",
     label: "Created Date",
     description: "",
     required: "No",
@@ -104,7 +112,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "created_login_id",
+    name: "createdLoginId",
     label: "Created Login ID",
     description: "ID of user who created record",
     required: "No",
@@ -112,7 +120,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: 101,
   },
   {
-    name: "modified_date",
+    name: "modifiedDate",
     label: "Modified Date",
     description: "",
     required: "Yes",
@@ -120,7 +128,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "modified_login_id",
+    name: "modifiedLoginId",
     label: "Modified Login ID",
     description: "ID of user who modified record",
     required: "Yes",
@@ -128,7 +136,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "submitted_date",
+    name: "submittedDate",
     label: "Submitted Date",
     description: "",
     required: "Yes",
@@ -136,7 +144,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "submitted_login_id",
+    name: "submittedLoginId",
     label: "Submitted Login ID",
     description: "ID of user who submitted record",
     required: "Yes",
@@ -152,7 +160,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "admin_notes",
+    name: "adminNotes",
     label: "Admin Notes",
     description: "",
     required: "Yes",
@@ -168,7 +176,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "parent_organization",
+    name: "parentOrganization",
     label: "Parent Organization",
     description: "",
     required: "Yes",
@@ -176,7 +184,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "physical_access",
+    name: "physicalAccess",
     label: "Physical Access",
     description: "",
     required: "Yes",
@@ -248,7 +256,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "approved_date",
+    name: "approvedDate",
     label: "Approved Date",
     description: "",
     required: "Yes",
@@ -256,7 +264,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "reviewed_login_id",
+    name: "reviewedLoginId",
     label: "Reviewed Login ID",
     description: "ID of user who reviewed stakeholder",
     required: "Yes",
@@ -264,7 +272,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "assigned_login_id",
+    name: "assignedLoginId",
     label: "Assigned Login ID",
     description: "ID of user who is assigned to stakeholder",
     required: "Yes",
@@ -272,7 +280,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "agency_type",
+    name: "agencyType",
     label: "Agency Type",
     description: "",
     required: "Yes",
@@ -280,7 +288,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "assigned_date",
+    name: "assignedDate",
     label: "Assigned Date",
     description: "",
     required: "Yes",
@@ -288,7 +296,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "review_notes",
+    name: "reviewNotes",
     label: "Review Notes",
     description: "",
     required: "Yes",
@@ -296,7 +304,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "claimed_login_id",
+    name: "claimedLoginId",
     label: "Claimed Login ID",
     description: "",
     required: "Yes",
@@ -304,7 +312,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "claimed_date",
+    name: "claimedDate",
     label: "Claimed Date",
     description: "",
     required: "Yes",
@@ -320,7 +328,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "admin_contact_name",
+    name: "adminContactName",
     label: "Admin Contact Name",
     description: "",
     required: "Yes",
@@ -328,7 +336,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "admin_contact_phone",
+    name: "adminContactPhone",
     label: "Admin Contact Phone",
     description: "",
     required: "Yes",
@@ -336,7 +344,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "admin_contact_email",
+    name: "adminContactEmail",
     label: "Admin Contact Email",
     description: "",
     required: "Yes",
@@ -344,7 +352,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "donation_contact_name",
+    name: "donationContactName",
     label: "Donation Contact Name",
     description: "",
     required: "Yes",
@@ -352,7 +360,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "donation_contact_phone",
+    name: "donationContactPhone",
     label: "Donation Contact Phone",
     description: "",
     required: "Yes",
@@ -360,7 +368,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "donation_contact_email",
+    name: "donationContactEmail",
     label: "Donation Contact Email",
     description: "",
     required: "Yes",
@@ -368,7 +376,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "donation_pickup",
+    name: "donationPickup",
     label: "Donation Pickup",
     description: "",
     required: "Yes",
@@ -376,7 +384,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "donation_accept_frozen",
+    name: "donationAcceptFrozen",
     label: "Donation Accept Frozen",
     description: "",
     required: "Yes",
@@ -384,7 +392,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "donation_accept_refrigerated",
+    name: "donationAcceptRefrigerated",
     label: "Donation Accept Refrigerated",
     description: "",
     required: "Yes",
@@ -392,7 +400,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "donation_accept_perishable",
+    name: "donationAcceptPerishable",
     label: "Donation Accept Perishable",
     description: "",
     required: "Yes",
@@ -400,7 +408,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "donation_schedule",
+    name: "donationSchedule",
     label: "Donation Schedule",
     description: "",
     required: "Yes",
@@ -408,7 +416,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "donation_delivery_instructions",
+    name: "donationDeliveryInstructions",
     label: "Donation Delivery Instructions",
     description: "",
     required: "Yes",
@@ -416,7 +424,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "covid_notes",
+    name: "covidNotes",
     label: "COVID Notes",
     description: "",
     required: "Yes",
@@ -424,7 +432,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "donation_notes",
+    name: "donationNotes",
     label: "Donation Notes",
     description: "",
     required: "Yes",
@@ -432,7 +440,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "category_notes",
+    name: "categoryNotes",
     label: "Category Notes",
     description: "",
     required: "Yes",
@@ -440,7 +448,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "eligibility_notes",
+    name: "eligibilityNotes",
     label: "Eligibility Notes",
     description: "",
     required: "Yes",
@@ -448,7 +456,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "food_types",
+    name: "foodTypes",
     label: "Food Types",
     description: "",
     required: "Yes",
@@ -464,63 +472,63 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "v_name",
-    label: "V Name",
+    name: "confirmedName",
+    label: "",
     description: "",
-    required: "Yes",
-    default_value: "",
-    sample_format: "",
+    required: "No",
+    default_value: "f",
+    sample_format: "f",
   },
   {
-    name: "v_categories",
-    label: "V Categories",
+    name: "confirmedCategories",
+    label: "",
     description: "",
-    required: "Yes",
-    default_value: "",
-    sample_format: "",
+    required: "No",
+    default_value: "f",
+    sample_format: "f",
   },
   {
-    name: "v_address",
-    label: "V Address",
+    name: "confirmedAddress",
+    label: "",
     description: "",
-    required: "Yes",
-    default_value: "",
-    sample_format: "",
+    required: "No",
+    default_value: "f",
+    sample_format: "f",
   },
   {
-    name: "v_email",
-    label: "V Email",
+    name: "confirmedPhone",
+    label: "",
     description: "",
-    required: "Yes",
-    default_value: "",
-    sample_format: "",
+    required: "No",
+    default_value: "f",
+    sample_format: "f",
   },
   {
-    name: "v_phone",
-    label: "V Phone",
+    name: "confirmedEmail",
+    label: "",
     description: "",
-    required: "Yes",
-    default_value: "",
-    sample_format: "",
+    required: "No",
+    default_value: "f",
+    sample_format: "f",
   },
   {
-    name: "v_hours",
-    label: "V Hours",
+    name: "confirmedHours",
+    label: "",
     description: "",
-    required: "Yes",
-    default_value: "",
-    sample_format: "",
+    required: "No",
+    default_value: "f",
+    sample_format: "f",
   },
   {
-    name: "v_food_types",
-    label: "V Food Types",
+    name: "confirmedFoodTypes",
+    label: "",
     description: "",
-    required: "Yes",
-    default_value: "",
-    sample_format: "",
+    required: "No",
+    default_value: "f",
+    sample_format: "f",
   },
   {
-    name: "verification_status_id",
+    name: "verificationStatusId",
     label: "Verification Status ID",
     description: "",
     required: "Yes",
@@ -528,7 +536,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "inactive_temporary",
+    name: "inactiveTemporary",
     label: "Inactive Temporary",
     description: "",
     required: "Yes",
@@ -540,13 +548,13 @@ export const STAKEHOLDER_SCHEMA = [
     label: "Hours",
     description:
       "Hours of operation. Format = (week of month, day of week, open time, close time)",
-    required: "Yes",
+    required: "No",
     default_value: "---",
     sample_format:
       "(3,Fri,10:00:00,13:00:00),\n(1,Sat,10:00:00,13:00:00),\n(1,Fri 10:00:00,13:00:00),\n (3,Sat,10:00:00,13:00:00)",
   },
   {
-    name: "category_ids",
+    name: "categoryIds",
     label: "Category IDs",
     description: "",
     required: "Yes",
@@ -554,7 +562,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "neighborhood_id",
+    name: "neighborhoodId",
     label: "Neighborhood ID",
     description: "",
     required: "Yes",
@@ -562,7 +570,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "complete_critical_percent",
+    name: "completeCriticalPercent",
     label: "Complete Critical Percent",
     description: "",
     required: "Yes",
@@ -570,16 +578,16 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "tenant_id",
+    name: "tenantId",
     label: "Tenant ID",
     description:
-      "ID of the tenant who is hosting the food oasis service (1 = LA, 2 = CA, 3 = HI",
+      "ID of the tenant who is hosting the food oasis service (1 = LA, 2 = CA, 3 = HI)",
     required: "Yes",
     default_value: "",
     sample_format: 1,
   },
   {
-    name: "food_bakery",
+    name: "foodBakery",
     label: "Food Bakery",
     description: "",
     required: "Yes",
@@ -587,7 +595,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "food_dry_goods",
+    name: "foodDryGoods",
     label: "Food Dry Goods",
     description: "",
     required: "Yes",
@@ -595,7 +603,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "food_produce",
+    name: "foodProduce",
     label: "Food Produce",
     description: "",
     required: "Yes",
@@ -603,7 +611,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "food_dairy",
+    name: "foodDairy",
     label: "Food Dairy",
     description: "",
     required: "Yes",
@@ -611,7 +619,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "food_prepared",
+    name: "foodPrepared",
     label: "Food Prepared",
     description: "",
     required: "Yes",
@@ -619,7 +627,7 @@ export const STAKEHOLDER_SCHEMA = [
     sample_format: "",
   },
   {
-    name: "food_meat",
+    name: "foodMeat",
     label: "Food Meat",
     description: "",
     required: "Yes",

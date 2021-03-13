@@ -6,6 +6,9 @@ on:
         description: 'Turn bastion on/off'     
         required: true
         default: 'enable'
+env:
+  BASTION_ASG_NAME_PROD: foodoasis-prod-bastion
+  AWS_REGION_PROD: us-west-2
 jobs:
   bastion:
     name: Scale Bastion server

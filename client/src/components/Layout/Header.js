@@ -86,8 +86,8 @@ export default function Header(props) {
   const { user, setUser, setToast } = props;
   const classes = useStyles();
   const taglineText = isMobile()
-    ? "Locate Free Food in " + tenantName
-    : "Locate Free Food in " + tenantName;
+    ? "Locate free food in " + tenantName
+    : "Locate free food in " + tenantName;
 
   return (
     <>

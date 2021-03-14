@@ -157,7 +157,7 @@ const ResultsFilters = ({
   }, [origin, categoryIds, isVerifiedSelected, toggleCategory]);
 
   const mobileView = isMobile();
-  const taglineText = "Locate Free Food in " + tenantName;
+  const taglineText = "Locate free food in " + tenantName;
 
   return (
     <Grid item container className={classes.controlPanel}>

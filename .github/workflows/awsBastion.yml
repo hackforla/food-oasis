@@ -1,0 +1,44 @@
+name: Turn on/off Bastion Server
+on: 
+  workflow_dispatch:
+    inputs:
+      state:
+        description: 'Turn bastion on/off'     
+        required: true
+        default: 'enable'
+
+env:
+  BASTION_ASG_NAME_PROD: foodoasis-prod-bastion
+  AWS_REGION_PROD: us-west-2
+
+jobs:
+  bastion:
+    name: Scale Bastion server
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Debug Action
+      uses: hmarr/debug-action@v1.0.0
+
+    - name: Interpolate Bastion capacity flag
+      id: bastion_capacity
+      run: |
+        echo "bastion_count=$(\
+          if [[ ${{ github.event.inputs.state }} == 'enable' ]]; then \
+          echo 1; \
+          else
+          echo 0; \
+          fi)" >> $GITHUB_ENV
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION_PROD }}
+
+    - name: Scale up/down Bastion ASG
+      run: |
+        aws autoscaling update-auto-scaling-group \
+        	--auto-scaling-group-name ${{ env.BASTION_ASG_NAME_PROD }} \
+        	--desired-capacity ${{ env.bastion_count }}

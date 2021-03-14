@@ -99,7 +99,7 @@ const useStyles = makeStyles((theme) => ({
     left: "50%",
     transform: "translate(-50%)",
     backgroundColor: "white",
-    zIndex: 2,
+    zIndex: 0,
   },
 }));
 

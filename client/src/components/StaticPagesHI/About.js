@@ -157,24 +157,34 @@ const About = () => {
           />
           <h2>Our Mission</h2>
           <p>
-            <a href={"https://alohaharvest.org/"}>Aloha Harvest</a> is the largest food rescue nonprofit in the state
-            of Hawaiʻi. Seven days a week, free of
-            charge and free of liability, we rescue quality excess food from donors (ex: wholesale distributors,
-            grocery stores, restaurants, hotels) and redistribute it to recipient agencies feeding the hungry
-            (ex: homeless shelters, social services, food pantries).
+            <a href={"https://alohaharvest.org/"}>Aloha Harvest</a> is the
+            largest food rescue nonprofit in the state of Hawaiʻi. Seven days a
+            week, free of charge and free of liability, we rescue quality excess
+            food from donors (ex: wholesale distributors, grocery stores,
+            restaurants, hotels) and redistribute it to recipient agencies
+            feeding the hungry (ex: homeless shelters, social services, food
+            pantries).
           </p>
           <p>
-            We have been doing this work for over 21 years and represent the largest and most successful collaboration
-            between businesses and nonprofits in the state.
-            <a href="https://drive.google.com/file/d/1-sdszGH_y2MLd-yTDVa0ESalyY_zCDKH/view">Last year</a>, we
-            worked with 370 food donors and 273 recipient agencies to redistribute over 2.7 million pounds of good
-            food that would have otherwise been wasted!
+            We have been doing this work for over 21 years and represent the
+            largest and most successful collaboration between businesses and
+            nonprofits in the state.
+            <a href="https://drive.google.com/file/d/1-sdszGH_y2MLd-yTDVa0ESalyY_zCDKH/view">
+              Last year
+            </a>
+            , we worked with 370 food donors and 273 recipient agencies to
+            redistribute over 2.7 million pounds of good food that would have
+            otherwise been wasted!
           </p>
           <p>
-            This work is essential because even while 1 in 5 people in Hawaiʻi rely on food pantries for assistance,
-            about 237,000 tons of good food is wasted annually. Here's a
-            <a href="https://www.youtube.com/watch?v=p9kNYCUtg8E&feature=youtu.be">short</a> video that explains
-            more of our process, impact, and future potential.
+            This work is essential because even while 1 in 5 people in Hawaiʻi
+            rely on food pantries for assistance, about 237,000 tons of good
+            food is wasted annually. Here's a
+            <a href="https://www.youtube.com/watch?v=p9kNYCUtg8E&feature=youtu.be">
+              short
+            </a>{" "}
+            video that explains more of our process, impact, and future
+            potential.
           </p>
         </div>
         <section className={classes.contact}>

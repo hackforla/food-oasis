@@ -150,23 +150,23 @@ const Home = (props) => {
           >
             {tenantId === 5 ? (
               <Typography variant={"h5"} className={classes.label}>
-                Locate free food resources in McKinney
+                Locate free food in McKinney
               </Typography>
             ) : tenantId === 4 ? (
               <Typography variant={"h5"} className={classes.label}>
-                Locate free food resources in Portland
+                Locate free food in Portland
               </Typography>
             ) : tenantId === 3 ? (
               <Typography variant={"h5"} className={classes.label}>
-                Locate free food resources in Hawaii
+                Locate free food in Hawaii
               </Typography>
             ) : tenantId === 2 ? (
               <Typography variant={"h5"} className={classes.label}>
-                Locate free food resources in California
+                Locate free food in California
               </Typography>
             ) : (
               <Typography variant={"h5"} className={classes.label}>
-                Locate free food resources in Los Angeles
+                Locate free food in Los Angeles
               </Typography>
             )}
 

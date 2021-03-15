@@ -1,5 +1,4 @@
 import axios from "axios";
-import { tenantId } from "../helpers/Configuration";
 
 const baseUrl = "/api/import";
 

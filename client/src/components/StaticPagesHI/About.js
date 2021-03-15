@@ -1,7 +1,6 @@
 import React from "react";
 
 import aboutbg from "./assets/about-bg.png";
-import iconSpacer from "./assets/icon-spacer.svg";
 import iconSpacerBlue from "./assets/icon-spacer-blue.svg";
 import foodBank from "./assets/aloha-harvest.png";
 import { makeStyles } from "@material-ui/core";

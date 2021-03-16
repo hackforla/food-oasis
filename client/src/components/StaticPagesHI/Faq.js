@@ -4,7 +4,7 @@ import faqbg from "./assets/faq-bg.png";
 import iconSpacer from "./assets/icon-spacer.svg";
 import iconSpacerBlue from "./assets/icon-spacer-blue.svg";
 import { makeStyles } from "@material-ui/core";
-import Footer from "../Footer";
+import Footer from "../Layout/Footer";
 
 const useStyles = makeStyles(() => ({
   outer: {
@@ -173,23 +173,22 @@ const About = () => {
           />
           <h2>General Questions</h2>
           <dl className={classes.dl}>
-            <dt>How can I become a volunteer?</dt>
-            <dd>
-              <a
-                href="https://alohaharvest.galaxydigital.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Visit Aloha Harvest
-              </a>{" "}
-              to see current volunteer openings.
-            </dd>
-            <dt>What types of volunteers do you need?</dt>
-            <dd>
-              Depending on demand and skillset, volunteer opportunities range
-              from food distribution, delivery, data analysis, community
-              outreach, photography, and more.
-            </dd>
+            <dt>
+              Interested in donating excess food, volunteering, or anything
+              else?
+            </dt>
+            <dd>Visit our website at alohaharvest.org.</dd>
+          </dl>
+        </section>
+        <section className={classes.forDonors}>
+          <img
+            alt="For Donors"
+            src={iconSpacerBlue}
+            className={classes.icon}
+            height="40"
+          />
+          <h2>For Donors</h2>
+          <dl className={classes.dl}>
             <dt>What is food insecurity?</dt>
             <dd>
               Unable to consistently access or afford adequate food to live a

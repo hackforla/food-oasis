@@ -4,7 +4,7 @@ import faqbg from "./assets/faq-bg.png";
 import iconSpacer from "./assets/icon-spacer.svg";
 import iconSpacerBlue from "./assets/icon-spacer-blue.svg";
 import { makeStyles } from "@material-ui/core";
-import Footer from "../../components/Footer";
+import Footer from "../Layout/Footer";
 
 const useStyles = makeStyles(() => ({
   outer: {
@@ -183,7 +183,10 @@ const About = () => {
                 Attend a training session
               </a>{" "}
               to get an assignment, or reach out to{" "}
-              <a href="mailto:jenny@foodoasis.la">jenny@foodoasis.la</a>.
+              <a href="mailto:foodoasisinfo@hackforla.org">
+                foodoasisinfo@hackforla.org
+              </a>
+              .
             </dd>
             <dt>When can I volunteer?</dt>
             <dd>

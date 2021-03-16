@@ -11,10 +11,10 @@ const uploadCsv = async (formData) => {
   return response.data;
 };
 
-const importCsv = async (importData) => {
+const importCsv = async (payload) => {
   const response = await axios.post(
     `${baseUrl}/stakeholders-csv/import`,
-    importData
+    payload
   );
   return response;
 };

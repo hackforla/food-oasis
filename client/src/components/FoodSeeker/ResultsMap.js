@@ -10,7 +10,7 @@ import { DEFAULT_CATEGORIES } from "constants/stakeholder";
 import { isMobile } from "helpers";
 import StakeholderPreview from "components/FoodSeeker/StakeholderPreview";
 import StakeholderDetails from "components/FoodSeeker/StakeholderDetails";
-import theme from "theme/materialUI";
+import theme from "theme/clientTheme";
 import { defaultCoordinates } from "helpers/Configuration";
 
 const styles = {

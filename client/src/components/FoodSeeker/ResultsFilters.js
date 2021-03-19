@@ -11,7 +11,7 @@ import {
 } from "constants/stakeholder";
 import { isMobile } from "helpers";
 
-import theme from "theme/materialUI";
+import theme from "theme/clientTheme";
 import SwitchViewsButton from "components/FoodSeeker/SwitchViewsButton";
 import Search from "components/FoodSeeker/Search";
 
@@ -294,7 +294,7 @@ const ResultsFilters = ({
             className={classes.submit}
             startIcon={
               <SearchIcon fontSize="large" className={classes.searchIcon} />
-            } 
+            }
           /> */}
           </form>
         </Grid>

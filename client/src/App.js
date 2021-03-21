@@ -45,6 +45,7 @@ import FaqEdit from "components/Faq/FaqEdit";
 import FaqAdd from "components/Faq/FaqAdd";
 import Home from "components/FoodSeeker/Home";
 import Results from "components/FoodSeeker/ResultsContainer";
+import ResultsExp from "components/FoodSeeker/ResultsContainerExp";
 import Suggestion from "components/FoodSeeker/Suggestion";
 import ImportFile from "components/Admin/ImportOrganizations/ImportFile";
 import adminTheme from "./theme/adminTheme";
@@ -84,9 +85,13 @@ const useStyles = makeStyles({
 
 function App() {
   const [user, setUser] = useState(null);
+  // userCoordinates is the user's location if location is enabled, or the
+  // default tenant center location if the browser location is disabled.
   const [userCoordinates, setUserCoordinates] = useState({});
   const [toast, setToast] = useState({ message: "" });
   const [bgImg, setBgImg] = useState("");
+  // origin is where the map should be centered. It is at the App level
+  // so it can be passed from leanding pages to the ResultsContainer.
   const [origin, setOrigin] = useState({
     latitude: defaultCoordinates.lat,
     longitude: defaultCoordinates.lon,
@@ -217,6 +222,15 @@ function App() {
               <Redirect from="/search" to="/organizations" />
               <Route path="/organizations">
                 <Results
+                  userCoordinates={userCoordinates}
+                  origin={origin}
+                  setOrigin={setOrigin}
+                  setToast={setToast}
+                  browserLocation={browserLocation}
+                />
+              </Route>
+              <Route path="/organizationsexp">
+                <ResultsExp
                   userCoordinates={userCoordinates}
                   origin={origin}
                   setOrigin={setOrigin}

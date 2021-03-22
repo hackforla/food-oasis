@@ -541,7 +541,7 @@ const insert = async (model) => {
     model.linkedin || "",
     model.description || "",
     model.submittedDate || null, // TIMESTAMPTZ
-    Number(model.submittedLoginId), // INT
+    Number(model.submittedLoginId) || null, // INT
     model.approvedDate || null, // TIMESTAMP
     Number(model.reviewedLoginId) || null, // INT
     model.assignedDate || null, // TIMESTAMP
@@ -585,7 +585,7 @@ const insert = async (model) => {
     model.foodDairy || false,
     model.foodPrepared || false,
     model.foodMeat || false,
-    model.parentOrganizationId || null,
+    Number(model.parentOrganizationId) || null, // INT
   ];
 
   const result = await db.proc("create_stakeholder", params);
@@ -616,7 +616,7 @@ const insertBulk = async (stakeholderArray, action, tenantId) => {
       }
     }
   } else if (action === "replace") {
-    await removeAll();
+    await removeAll(tenantId);
     for (let i = 0; i < stakeholderArray.length; i++) {
       const model = camelcaseKeys(stakeholderArray[i]);
       model.tenantId = tenantId;
@@ -824,13 +824,26 @@ const remove = async (idParm) => {
   });
 };
 
-const removeAll = async () => {
+const removeAll = async (tenantId) => {
   await db.tx(async (t) => {
-    await t.none("delete from stakeholder_schedule");
-    await t.none("delete from stakeholder_category");
-    const result = await t.result("delete from stakeholder");
-    await t.none("delete from stakeholder_log");
-    await t.none("delete from stakeholder_best");
+    await t.none(
+      "delete from stakeholder_schedule where stakeholder_id in (select stakeholder_id from stakeholder where tenant_id = $<tenantId>)",
+      { tenantId }
+    );
+    await t.none(
+      "delete from stakeholder_category where stakeholder_id in (select stakeholder_id from stakeholder where tenant_id = $<tenantId>)",
+      { tenantId }
+    );
+    const result = await t.result(
+      "delete from stakeholder where tenant_id = $<tenantId>",
+      { tenantId }
+    );
+    await t.none("delete from stakeholder_log where tenant_id = $<tenantId>", {
+      tenantId,
+    });
+    await t.none("delete from stakeholder_best where tenant_id = $<tenantId>", {
+      tenantId,
+    });
     return result.rowCount;
   });
 };

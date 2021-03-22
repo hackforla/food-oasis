@@ -585,7 +585,7 @@ const insert = async (model) => {
     model.foodDairy || false,
     model.foodPrepared || false,
     model.foodMeat || false,
-    Number(model.parentOrganizationId) || null,
+    Number(model.parentOrganizationId) || null, // INT
   ];
 
   const result = await db.proc("create_stakeholder", params);

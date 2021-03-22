@@ -1806,9 +1806,6 @@ const OrganizationEdit = (props) => {
                   </Grid>
                 </Grid>
               </TabPanel>
-              <div>
-                <pre>{JSON.stringify(errors)}</pre>
-              </div>
               <div style={{ display: "flex" }}>
                 <div style={{ flexBasis: "20%", flexGrow: 1 }}>
                   <TextInput

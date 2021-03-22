@@ -541,7 +541,7 @@ const insert = async (model) => {
     model.linkedin || "",
     model.description || "",
     model.submittedDate || null, // TIMESTAMPTZ
-    Number(model.submittedLoginId), // INT
+    Number(model.submittedLoginId) || null, // INT
     model.approvedDate || null, // TIMESTAMP
     Number(model.reviewedLoginId) || null, // INT
     model.assignedDate || null, // TIMESTAMP
@@ -585,7 +585,7 @@ const insert = async (model) => {
     model.foodDairy || false,
     model.foodPrepared || false,
     model.foodMeat || false,
-    model.parentOrganizationId || null,
+    Number(model.parentOrganizationId) || null,
   ];
 
   const result = await db.proc("create_stakeholder", params);

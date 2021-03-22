@@ -1,30 +1,23 @@
 import { createMuiTheme } from "@material-ui/core/styles";
-import {
-  white,
-  primaryColor,
-  secondaryColor,
-  successColor,
-  errorColor,
-  bodyTextColor,
-} from "./colors";
+import { white, primary, secondary, success, error, bodyText } from "./colors";
 
-const customTheme = createMuiTheme({
+export const theme = {
   palette: {
     common: {
-      black: bodyTextColor,
+      black: bodyText,
       white: white,
     },
     primary: {
-      main: primaryColor,
+      main: primary,
     },
     secondary: {
-      main: secondaryColor,
+      main: secondary,
     },
     success: {
-      main: successColor,
+      main: success,
     },
     error: {
-      main: errorColor,
+      main: error,
     },
   },
   typography: {
@@ -34,6 +27,7 @@ const customTheme = createMuiTheme({
       fontSize: 40,
       fontWeight: "500",
       lineHeight: "49px",
+      color: "red",
     },
     // Heading 2
     h2: {
@@ -108,7 +102,7 @@ const customTheme = createMuiTheme({
     },
     MuiTypography: {
       root: {
-        color: bodyTextColor,
+        color: bodyText,
       },
     },
     MuiSvgIcon: {
@@ -127,6 +121,8 @@ const customTheme = createMuiTheme({
       disableTouchRipple: true,
     },
   },
-});
+};
 
-export default customTheme;
+const adminTheme = createMuiTheme(theme);
+
+export default adminTheme;

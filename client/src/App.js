@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import { Grid, CssBaseline } from "@material-ui/core";
-import theme from "theme/materialUI";
+import theme from "theme/clientTheme";
 import { logout } from "services/account-service";
 import { tenantId, defaultCoordinates } from "helpers/Configuration";
 
@@ -47,7 +47,7 @@ import Home from "components/FoodSeeker/Home";
 import Results from "components/FoodSeeker/ResultsContainer";
 import Suggestion from "components/FoodSeeker/Suggestion";
 import ImportFile from "components/Admin/ImportOrganizations/ImportFile";
-import newTheme from "./theme/newTheme";
+import adminTheme from "./theme/adminTheme";
 
 const useStyles = makeStyles({
   app: () => ({
@@ -209,10 +209,10 @@ function App() {
                   </div>
                 </div>
               </Route>
-              {/* 
-              Following route provides backward-compatibilty for the 
-              http"//foodoasis.la/search Link that has been published at  
-              http://publichealth.lacounty.gov/eh/LACFRI/ShareAndDonate.htm 
+              {/*
+              Following route provides backward-compatibilty for the
+              http"//foodoasis.la/search Link that has been published at
+              http://publichealth.lacounty.gov/eh/LACFRI/ShareAndDonate.htm
               */}
               <Redirect from="/search" to="/organizations" />
               <Route path="/organizations">
@@ -228,7 +228,7 @@ function App() {
                 <Suggestion setToast={setToast} />
               </Route>
               <Route path="/organizationedit/:id?">
-                <ThemeProvider theme={newTheme}>
+                <ThemeProvider theme={adminTheme}>
                   <div className={classes.OrganizationEditWrapper}>
                     <OrganizationEdit setToast={setToast} user={user} />
                   </div>
@@ -243,7 +243,7 @@ function App() {
                 </div>
               </Route>
               <Route path="/verificationadmin">
-                <ThemeProvider theme={newTheme}>
+                <ThemeProvider theme={adminTheme}>
                   <div className={classes.verificationAdminWrapper}>
                     <VerificationAdmin
                       user={user}

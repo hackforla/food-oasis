@@ -46,7 +46,22 @@ export default function ResultsContainer({
   const { categoryIds, toggleCategory } = useCategoryIds([]);
   const [isVerifiedSelected, selectVerified] = useState(false);
 
-  const [initViewport, setInitViewport] = useState(null);
+  const [viewport, setViewport] = useState({
+    latitude: location?.lat || origin.latitude || defaultCoordinates.lat,
+    longitude: location?.lon || origin.longitude || defaultCoordinates.lon,
+    zoom: defaultCoordinates.zoom,
+  });
+  const [mapRef, setMapRef] = useState(null);
+
+  const setCenter = (coords) => {
+    setViewport({
+      ...viewport,
+      latitude: coords.latitude,
+      longitude: coords.longitude,
+      logoPosition: "top-left",
+    });
+    setOrigin(coords);
+  };
 
   const doSelectStakeholder = useCallback(
     (stakeholder) => {
@@ -64,35 +79,27 @@ export default function ResultsContainer({
       } else {
         history.push("/organizationsexp");
       }
-      // Commented out, since we do not want to re=center map on marker
-      // when user selects
-      // if (stakeholder && !isMobile) {
-      //   setInitViewport({
-      //     latitude: stakeholder.latitude,
-      //     longitude: stakeholder.longitude,
-      //   });
-      // }
       onSelectStakeholder(stakeholder);
     },
-    [/*setInitViewport, */ history]
+    [history]
   );
 
-  useEffect(() => {
-    if (location.search.includes("?org=") && data) {
-      const org = location.search.replace("?org=", "").replaceAll("_", " ");
-      const stakeholder = data.find((s) => s.name.toLowerCase() === org);
-      if (stakeholder) {
-        onSelectStakeholder(stakeholder);
-        setInitViewport({
-          latitude: stakeholder.latitude,
-          longitude: stakeholder.longitude,
-          zoom: 13,
-        });
-      } else {
-        onSelectStakeholder(null);
-      }
-    }
-  }, [data, location.search]);
+  // useEffect(() => {
+  //   if (location.search.includes("?org=") && data) {
+  //     const org = location.search.replace("?org=", "").replaceAll("_", " ");
+  //     const stakeholder = data.find((s) => s.name.toLowerCase() === org);
+  //     if (stakeholder) {
+  //       onSelectStakeholder(stakeholder);
+  //       setViewport({
+  //         ...viewport,
+  //         latitude: stakeholder.latitude,
+  //         longitude: stakeholder.longitude,
+  //       });
+  //     } else {
+  //       onSelectStakeholder(null);
+  //     }
+  //   }
+  // }, [data, location.search, viewport]);
 
   const switchResultsView = () => {
     doSelectStakeholder();
@@ -127,49 +134,95 @@ export default function ResultsContainer({
     setStatus("loaded");
   }, [data]);
 
-  const handleSearch = useCallback(
-    (e, center, bounds) => {
+  const handleSearchThisArea = useCallback(
+    (center, bounds) => {
+      if (!center || !bounds) {
+        console.error("handleSearchThisArea is missing args");
+      }
       setStatus("loading");
-      if (e) e.preventDefault();
+
+      setViewport({
+        ...viewport,
+        latitude: center.lat,
+        longitude: center.lng,
+      });
+
       search({
-        latitude:
-          (center && center.lat) || origin.latitude || userCoordinates.latitude,
-        longitude:
-          (center && center.lng) ||
-          origin.longitude ||
-          userCoordinates.longitude,
+        latitude: viewport.latitude,
+        longitude: viewport.longitude,
         categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
         isInactive: "either",
         verificationStatusId: 0,
         bounds,
         radius: defaultCoordinates.radius,
       });
-
-      if (!center) {
-        setInitViewport({
-          zoom: defaultCoordinates.zoom,
-          latitude: origin.latitude,
-          longitude: origin.longitude,
-        });
-      }
       setStatus("loaded");
     },
-    [
-      search,
-      origin.latitude,
-      origin.longitude,
-      userCoordinates.latitude,
-      userCoordinates.longitude,
-      categoryIds,
-      setInitViewport,
-    ]
+    [search, categoryIds, viewport]
   );
+
+  const handleSearch = () => {
+    setStatus("loading");
+    let bounds = null;
+    if (mapRef) {
+      const map = mapRef.current.getMap();
+      const mapBounds = map.getBounds();
+      bounds = {
+        maxLat: mapBounds._ne.lat,
+        minLat: mapBounds._sw.lat,
+        maxLng: mapBounds._ne.lng,
+        minLng: mapBounds._sw.lng,
+      };
+    }
+
+    search({
+      latitude: viewport.latitude,
+      longitude: viewport.longitude,
+      categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
+      isInactive: "either",
+      verificationStatusId: 0,
+      bounds,
+      radius: defaultCoordinates.radius,
+    });
+
+    setStatus("loaded");
+  };
+
+  // useEffect(() => {
+  //   const execute = () => {
+  //     setStatus("loading");
+  //     let bounds = null;
+  //     if (mapRef) {
+  //       const map = mapRef.current.getMap();
+  //       const mapBounds = map.getBounds();
+  //       bounds = {
+  //         maxLat: mapBounds._ne.lat,
+  //         minLat: mapBounds._sw.lat,
+  //         maxLng: mapBounds._ne.lng,
+  //         minLng: mapBounds._sw.lng,
+  //       };
+  //     }
+
+  //     search({
+  //       latitude: viewport.latitude,
+  //       longitude: viewport.longitude,
+  //       categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
+  //       isInactive: "either",
+  //       verificationStatusId: 0,
+  //       bounds,
+  //       radius: defaultCoordinates.radius,
+  //     });
+
+  //     setStatus("loaded");
+  //   };
+  //   execute();
+  // }, [mapRef, categoryIds, search, viewport.latitude, viewport.longitude]);
 
   return (
     <>
       <Filters
         origin={origin}
-        setOrigin={setOrigin}
+        setOrigin={setCenter}
         toggleCategory={toggleCategory}
         categoryIds={categoryIds}
         isVerifiedSelected={isVerifiedSelected}
@@ -193,14 +246,15 @@ export default function ResultsContainer({
         )}
         {(!mobileView || (mobileView && isMapView)) && (
           <Map
-            handleSearch={handleSearch}
-            origin={origin}
+            handleSearch={handleSearchThisArea}
             stakeholders={data}
             doSelectStakeholder={doSelectStakeholder}
             selectedStakeholder={selectedStakeholder}
             categoryIds={categoryIds}
             setToast={setToast}
-            initViewport={initViewport}
+            viewport={viewport}
+            setViewport={setViewport}
+            setMapRef={setMapRef}
           />
         )}
       </Grid>

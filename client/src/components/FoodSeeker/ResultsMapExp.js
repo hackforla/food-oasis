@@ -10,7 +10,6 @@ import { DEFAULT_CATEGORIES } from "constants/stakeholder";
 import { isMobile } from "helpers";
 import StakeholderPreview from "components/FoodSeeker/StakeholderPreview";
 import StakeholderDetails from "components/FoodSeeker/StakeholderDetails";
-import { defaultCoordinates } from "helpers/Configuration";
 
 const styles = {
   navigationControl: {
@@ -56,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
     left: "50%",
     transform: "translate(-50%)",
     backgroundColor: "white",
-    zIndex: 0,
+    zIndex: 5,
   },
 }));
 
@@ -66,34 +65,23 @@ function Map({
   categoryIds,
   doSelectStakeholder,
   selectedStakeholder,
-  initViewport,
-  origin,
+  viewport,
+  setViewport,
   setToast,
+  setMapRef,
 }) {
-  const [viewport, setViewport] = useState(
-    initViewport || {
-      latitude: origin.latitude,
-      longitude: origin.longitude,
-      logoPosition: "top-left",
-    }
-  );
-  const [zoom, setZoom] = useState(defaultCoordinates.zoom);
   const [showDetails, setShowDetails] = useState(false);
   const [showSearchArea, setShowSearchArea] = useState(false);
-
-  useEffect(() => {
-    setViewport(initViewport);
-  }, []);
-
-  useEffect(() => {
-    setViewport(initViewport);
-  }, [initViewport]);
 
   const classes = useStyles({ selectedStakeholder });
   const mapRef = useRef();
   const categoryIdsOrDefault = categoryIds.length
     ? categoryIds
     : DEFAULT_CATEGORIES;
+
+  useEffect(() => {
+    setMapRef(mapRef);
+  }, [setMapRef, mapRef]);
 
   const onInteractionStateChange = (s) => {
     // don't do anything if the mapview is moving
@@ -123,7 +111,7 @@ function Map({
       maxLng: mapBounds._ne.lng,
       minLng: mapBounds._sw.lng,
     };
-    handleSearch(null, center, bounds);
+    handleSearch(center, bounds);
   };
 
   const unselectStakeholder = () => {
@@ -155,6 +143,9 @@ function Map({
           height="100%"
           onViewportChange={(newViewport) => {
             setViewport(newViewport);
+            // // Pass zooom level up to parent control, this allows us
+            // // to maintain zoom when search is re-executed, etc.
+            // setZoom(newViewport.zoom);
           }}
           mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
           mapStyle={MAPBOX_STYLE}
@@ -223,6 +214,7 @@ function Map({
 Map.propTypes = {
   stakeholders: PropTypes.array,
   categoryIds: PropTypes.arrayOf(PropTypes.number).isRequired,
+  setZoom: PropTypes.func,
 };
 
 export default Map;

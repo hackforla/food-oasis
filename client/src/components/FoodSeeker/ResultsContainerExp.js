@@ -164,6 +164,11 @@ export default function ResultsContainer({
   const handleSearch = () => {
     setStatus("loading");
 
+    // TODO: This fn is called by ResultsFilter, and unfortunately, neither the
+    // filter nor this component know the map component lat, long bounds, so
+    // we're just using a radius-based query, which may not get all of the
+    // orgs in the map area. Need to try to work out a way to get boundaries
+    // for query.
     search({
       latitude: viewport.latitude,
       longitude: viewport.longitude,

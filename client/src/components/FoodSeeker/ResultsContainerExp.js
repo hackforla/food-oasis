@@ -163,17 +163,6 @@ export default function ResultsContainer({
 
   const handleSearch = () => {
     setStatus("loading");
-    let bounds = null;
-    if (mapRef) {
-      const map = mapRef.current.getMap();
-      const mapBounds = map.getBounds();
-      bounds = {
-        maxLat: mapBounds._ne.lat,
-        minLat: mapBounds._sw.lat,
-        maxLng: mapBounds._ne.lng,
-        minLng: mapBounds._sw.lng,
-      };
-    }
 
     search({
       latitude: viewport.latitude,
@@ -181,42 +170,12 @@ export default function ResultsContainer({
       categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
       isInactive: "either",
       verificationStatusId: 0,
-      bounds,
+      bounds: null,
       radius: defaultCoordinates.radius,
     });
 
     setStatus("loaded");
   };
-
-  // useEffect(() => {
-  //   const execute = () => {
-  //     setStatus("loading");
-  //     let bounds = null;
-  //     if (mapRef) {
-  //       const map = mapRef.current.getMap();
-  //       const mapBounds = map.getBounds();
-  //       bounds = {
-  //         maxLat: mapBounds._ne.lat,
-  //         minLat: mapBounds._sw.lat,
-  //         maxLng: mapBounds._ne.lng,
-  //         minLng: mapBounds._sw.lng,
-  //       };
-  //     }
-
-  //     search({
-  //       latitude: viewport.latitude,
-  //       longitude: viewport.longitude,
-  //       categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
-  //       isInactive: "either",
-  //       verificationStatusId: 0,
-  //       bounds,
-  //       radius: defaultCoordinates.radius,
-  //     });
-
-  //     setStatus("loaded");
-  //   };
-  //   execute();
-  // }, [mapRef, categoryIds, search, viewport.latitude, viewport.longitude]);
 
   return (
     <>

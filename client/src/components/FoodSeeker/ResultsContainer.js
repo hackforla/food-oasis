@@ -138,7 +138,7 @@ export default function ResultsContainer({
         isInactive: "either",
         verificationStatusId: 0,
         bounds,
-        radius: defaultCoordinates.radius * 4,
+        radius: defaultCoordinates.radius,
       });
 
       if (!center) {

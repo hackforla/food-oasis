@@ -4,17 +4,16 @@
   "scripts": {
     "release-notes": "gren release"
   },
-  "devDependencies": {
-    "husky": "^4.3.5",
-    "lerna": "^3.22.1",
-    "lerna-cli": "^3.0.0"
-  },
+  "devDependencies": {},
   "husky": {
     "hooks": {
       "pre-commit": "lerna run lint"
     }
   },
   "dependencies": {
+    "husky": "^6.0.0",
+    "lerna": "^4.0.0",
+    "lerna-cli": "^4.0.0",
     "npm": "^7.5.2"
   }
 }

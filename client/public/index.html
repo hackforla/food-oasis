@@ -53,6 +53,30 @@
         margin: 0;
       }
     </style>
+    <script type="text/javascript">
+      (function (e, t, n, r, i, s, o) {
+        e["StormlyObject"] = i;
+        (e[i] =
+          e[i] ||
+          function () {
+            (e[i].q = e[i].q || []).push(arguments);
+          }),
+          (s = t.createElement(n)),
+          (o = t.getElementsByTagName(n)[0]);
+        s.async = 1;
+        s.src = r;
+        o.parentNode.insertBefore(s, o);
+      })(
+        window,
+        document,
+        "script",
+        "//cdn.stormly.com/assets/tracking/t.js",
+        "stormly"
+      );
+      stormly("create", "d6f56047e6527499d8e4854b8db2f5f49", {
+        anonymizeIP: false,
+      });
+    </script>
   </head>
   <body id="body">
     <noscript>You need to enable JavaScript to run this app.</noscript>

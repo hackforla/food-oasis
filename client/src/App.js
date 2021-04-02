@@ -106,6 +106,10 @@ function App() {
   }, []);
 
   useEffect(() => {
+    window.stormly("event", "visitAppComponent");
+  }, []);
+
+  useEffect(() => {
     const storedJson = sessionStorage.getItem("user");
     const userJson = JSON.stringify(user);
     if (!userJson && !storedJson) {

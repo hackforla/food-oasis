@@ -68,7 +68,7 @@ function Map({
   viewport,
   setViewport,
   setToast,
-  setMapRef,
+  // setMapRef,
 }) {
   const [showDetails, setShowDetails] = useState(false);
   const [showSearchArea, setShowSearchArea] = useState(false);
@@ -79,9 +79,9 @@ function Map({
     ? categoryIds
     : DEFAULT_CATEGORIES;
 
-  useEffect(() => {
-    setMapRef(mapRef);
-  }, [setMapRef, mapRef]);
+  // useEffect(() => {
+  //   setMapRef(mapRef);
+  // }, [setMapRef, mapRef]);
 
   const onInteractionStateChange = (s) => {
     // don't do anything if the mapview is moving

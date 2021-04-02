@@ -74,6 +74,10 @@ export default function ResultsContainer({
   );
 
   useEffect(() => {
+    window.stormly("event", "visitMap");
+  }, []);
+
+  useEffect(() => {
     if (location.search.includes("?org=") && data) {
       const org = location.search.replace("?org=", "").replaceAll("_", " ");
       const stakeholder = data.find((s) => s.name.toLowerCase() === org);

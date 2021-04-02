@@ -13,6 +13,8 @@ import Filters from "./ResultsFilters";
 import List from "./ResultsList";
 import Map from "./ResultsMapExp";
 
+import * as stormly from "../../services/stormly";
+
 const useStyles = makeStyles((theme) => ({
   listMapContainer: {
     height: "100%",
@@ -51,7 +53,6 @@ export default function ResultsContainer({
     longitude: location?.lon || origin.longitude || defaultCoordinates.lon,
     zoom: defaultCoordinates.zoom,
   });
-  const [mapRef, setMapRef] = useState(null);
 
   const setCenter = (coords) => {
     setViewport({
@@ -73,6 +74,11 @@ export default function ResultsContainer({
           value: stakeholder.id,
           name: stakeholder.name,
         });
+        stormly.post("getDirections", {
+          id: stakeholder.id,
+          name: stakeholder.name,
+        });
+
         //Update url history
         const name = stakeholder.name.toLowerCase().replaceAll(" ", "_");
         history.push(`/organizationsexp?org=${name}`);
@@ -83,6 +89,10 @@ export default function ResultsContainer({
     },
     [history]
   );
+
+  useEffect(() => {
+    window.stormly("event", "visitMap");
+  }, []);
 
   // useEffect(() => {
   //   if (location.search.includes("?org=") && data) {
@@ -218,7 +228,6 @@ export default function ResultsContainer({
             setToast={setToast}
             viewport={viewport}
             setViewport={setViewport}
-            setMapRef={setMapRef}
           />
         )}
       </Grid>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
 
@@ -15,6 +15,7 @@ import { extractNumbers, getGoogleMapsUrl } from "helpers";
 
 import Icon from "components/FoodSeeker/Icon";
 import SuggestionDialog from "components/FoodSeeker/SuggestionDialog";
+import * as stormly from "../../services/stormly";
 
 const useStyles = makeStyles((theme) => ({
   stakeholder: {
@@ -117,6 +118,10 @@ const StakeholderDetails = ({
 }) => {
   const classes = useStyles();
   const [SuggestionDialogOpen, setSuggestionDialogOpen] = useState(false);
+
+  useEffect(() => {
+    window.stormly("event", "visitMap");
+  }, []);
 
   const handleSuggestionDialogOpen = async () => {
     setSuggestionDialogOpen(true);
@@ -300,6 +305,11 @@ const StakeholderDetails = ({
               event: "getDirections",
               action: "click",
               value: selectedStakeholder.id,
+              name: selectedStakeholder.name,
+            });
+
+            stormly.post("getDirections", {
+              id: selectedStakeholder.id,
               name: selectedStakeholder.name,
             });
 

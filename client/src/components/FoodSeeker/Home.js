@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { withRouter } from "react-router";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
@@ -118,6 +118,10 @@ const useStyles = makeStyles((theme) => ({
 const Home = (props) => {
   const classes = useStyles();
   const { origin, setOrigin, userCoordinates, browserLocation } = props;
+
+  useEffect(() => {
+    window.stormly("event", "visitLandingPage");
+  }, []);
 
   React.useEffect(() => {
     if (props.match.path === "/") {

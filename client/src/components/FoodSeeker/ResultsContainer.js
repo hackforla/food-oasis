@@ -51,7 +51,6 @@ export default function ResultsContainer({
     longitude: location?.lon || origin.longitude || defaultCoordinates.lon,
     zoom: defaultCoordinates.zoom,
   });
-  const [mapRef, setMapRef] = useState(null);
 
   const setCenter = (coords) => {
     setViewport({
@@ -218,7 +217,6 @@ export default function ResultsContainer({
             setToast={setToast}
             viewport={viewport}
             setViewport={setViewport}
-            setMapRef={setMapRef}
           />
         )}
       </Grid>

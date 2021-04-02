@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import PropTypes from "prop-types";
 import ReactMapGL, { NavigationControl } from "react-map-gl";
 import { Grid, Button } from "@material-ui/core";
@@ -68,7 +68,6 @@ function Map({
   viewport,
   setViewport,
   setToast,
-  setMapRef,
 }) {
   const [showDetails, setShowDetails] = useState(false);
   const [showSearchArea, setShowSearchArea] = useState(false);
@@ -78,10 +77,6 @@ function Map({
   const categoryIdsOrDefault = categoryIds.length
     ? categoryIds
     : DEFAULT_CATEGORIES;
-
-  useEffect(() => {
-    setMapRef(mapRef);
-  }, [setMapRef, mapRef]);
 
   const onInteractionStateChange = (s) => {
     // don't do anything if the mapview is moving

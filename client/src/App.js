@@ -45,7 +45,6 @@ import FaqEdit from "components/Faq/FaqEdit";
 import FaqAdd from "components/Faq/FaqAdd";
 import Home from "components/FoodSeeker/Home";
 import Results from "components/FoodSeeker/ResultsContainer";
-import ResultsExp from "components/FoodSeeker/ResultsContainerExp";
 import Suggestion from "components/FoodSeeker/Suggestion";
 import ImportFile from "components/Admin/ImportOrganizations/ImportFile";
 import adminTheme from "./theme/adminTheme";
@@ -222,15 +221,6 @@ function App() {
               <Redirect from="/search" to="/organizations" />
               <Route path="/organizations">
                 <Results
-                  userCoordinates={userCoordinates}
-                  origin={origin}
-                  setOrigin={setOrigin}
-                  setToast={setToast}
-                  browserLocation={browserLocation}
-                />
-              </Route>
-              <Route path="/organizationsexp">
-                <ResultsExp
                   userCoordinates={userCoordinates}
                   origin={origin}
                   setOrigin={setOrigin}

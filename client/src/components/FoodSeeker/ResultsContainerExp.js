@@ -51,6 +51,8 @@ export default function ResultsContainer({
     longitude: location?.lon || origin.longitude || defaultCoordinates.lon,
     zoom: defaultCoordinates.zoom,
   });
+  
+  // eslint-disable-next-line no-unused-vars
   const [mapRef, setMapRef] = useState(null);
 
   const setCenter = (coords) => {

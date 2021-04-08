@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Route, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Typography } from "@material-ui/core";
@@ -100,6 +100,8 @@ const ImportFile = (props) => {
 
   const handleCancel = () => setImportData(initialImportData);
 
+  const resetData = useCallback(() => setImportData(initialImportData), []);
+
   useEffect(() => {
     if (importData.data) {
       history.push("/organizationimport/review");
@@ -137,6 +139,7 @@ const ImportFile = (props) => {
                 handleImportAction={handleImportAction}
                 handleImportDialog={handleImportDialog}
                 handleCancel={handleCancel}
+                resetData={resetData}
               />
             )}
           />

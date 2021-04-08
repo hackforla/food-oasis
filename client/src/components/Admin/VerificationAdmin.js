@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { withRouter, Redirect } from "react-router-dom";
 import { CssBaseline, Dialog, Typography } from "@material-ui/core";
@@ -149,11 +149,8 @@ function VerificationAdmin(props) {
     data: stakeholders,
     loading: stakeholdersLoading,
     error: stakeholdersError,
-    search: stakeholderSearch,
+    searchCallback,
   } = useOrganizations();
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const searchCallback = useCallback(stakeholderSearch, []);
 
   useEffect(() => {
     const execute = async () => {

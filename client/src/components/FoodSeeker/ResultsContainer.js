@@ -65,13 +65,6 @@ export default function ResultsContainer({
   const doSelectStakeholder = useCallback(
     (stakeholder) => {
       if (stakeholder) {
-        // Tell analytics that stakeholder is selected
-        window.dataLayer.push({
-          event: "viewDetail",
-          action: "click",
-          value: stakeholder.id,
-          name: stakeholder.name,
-        });
         //Update url history
         const name = stakeholder.name.toLowerCase().replaceAll(" ", "_");
         history.push(`/organizations?org=${name}`);
@@ -83,6 +76,8 @@ export default function ResultsContainer({
     [history]
   );
 
+  // Need to get this working to navigate to a specific organization, which may
+  // not be listed in the previously fetched data collection
   // useEffect(() => {
   //   if (location.search.includes("?org=") && data) {
   //     const org = location.search.replace("?org=", "").replaceAll("_", " ");

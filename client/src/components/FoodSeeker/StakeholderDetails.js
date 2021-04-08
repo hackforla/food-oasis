@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
 
@@ -15,6 +15,7 @@ import { extractNumbers, getGoogleMapsUrl } from "helpers";
 
 import Icon from "components/FoodSeeker/Icon";
 import SuggestionDialog from "components/FoodSeeker/SuggestionDialog";
+import * as analytics from "../../services/analytics";
 
 const useStyles = makeStyles((theme) => ({
   stakeholder: {
@@ -117,6 +118,15 @@ const StakeholderDetails = ({
 }) => {
   const classes = useStyles();
   const [SuggestionDialogOpen, setSuggestionDialogOpen] = useState(false);
+
+  useEffect(() => {
+    if (selectedStakeholder?.id) {
+      analytics.postEvent("viewDetail", {
+        id: selectedStakeholder.id,
+        name: selectedStakeholder.name,
+      });
+    }
+  }, [selectedStakeholder?.id, selectedStakeholder?.name]);
 
   const handleSuggestionDialogOpen = async () => {
     setSuggestionDialogOpen(true);
@@ -296,10 +306,8 @@ const StakeholderDetails = ({
         <Button
           variant="outlined"
           onClick={() => {
-            window.dataLayer.push({
-              event: "getDirections",
-              action: "click",
-              value: selectedStakeholder.id,
+            analytics.postEvent("getDirections", {
+              id: selectedStakeholder.id,
               name: selectedStakeholder.name,
             });
 
@@ -356,7 +364,17 @@ const StakeholderDetails = ({
 
       <h2 className={classes.title}>Phone</h2>
       {numbers.length ? (
-        <div className={classes.numbers}>{numbers}</div>
+        <div
+          className={classes.numbers}
+          onClick={() => {
+            analytics.postEvent("dialPhone", {
+              id: selectedStakeholder.id,
+              name: selectedStakeholder.name,
+            });
+          }}
+        >
+          {numbers}
+        </div>
       ) : (
         <span className={classes.fontSize}>No Phone Number on record</span>
       )}
@@ -366,6 +384,12 @@ const StakeholderDetails = ({
           <a
             className={classes.fontSize}
             href={"mailto:" + selectedStakeholder.email}
+            onClick={() => {
+              analytics.postEvent("sendEmail", {
+                id: selectedStakeholder.id,
+                name: selectedStakeholder.name,
+              });
+            }}
             target="_blank"
             rel="noopener noreferrer"
           >

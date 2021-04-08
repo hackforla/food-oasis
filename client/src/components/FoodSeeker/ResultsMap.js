@@ -10,6 +10,8 @@ import { DEFAULT_CATEGORIES } from "constants/stakeholder";
 import { isMobile } from "helpers";
 import StakeholderPreview from "components/FoodSeeker/StakeholderPreview";
 import StakeholderDetails from "components/FoodSeeker/StakeholderDetails";
+import * as analytics from "../../services/analytics";
+
 
 const styles = {
   navigationControl: {
@@ -106,6 +108,7 @@ function Map({
       maxLng: mapBounds._ne.lng,
       minLng: mapBounds._sw.lng,
     };
+    analytics.postEvent("searchArea", {});
     handleSearch(center, bounds);
   };
 

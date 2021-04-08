@@ -39,14 +39,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ImportFileTable = (props) => {
-  const { data, handleImportAction, handleCancel } = props;
+  const { data, handleImportAction, handleCancel, resetData} = props;
   const classes = useStyles();
 
   useEffect(() => {
     return () => {
-      handleCancel();
-    };
-  }, []);
+      resetData();
+    }
+  }, [resetData],);
 
   return (
     <section className={classes.section}>

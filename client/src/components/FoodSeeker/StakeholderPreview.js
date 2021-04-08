@@ -10,6 +10,7 @@ import {
 } from "constants/stakeholder";
 import { ORGANIZATION_COLORS, CLOSED_COLOR } from "constants/map";
 import { getGoogleMapsUrl, extractNumbers } from "helpers";
+import * as analytics from "../../services/analytics";
 
 import Icon from "components/FoodSeeker/Icon";
 
@@ -225,12 +226,11 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
             variant="outlined"
             size="small"
             onClick={() => {
-              window.dataLayer.push({
-                event: "getDirections",
-                action: "click",
-                value: stakeholder.id,
+              analytics.postEvent("getDirections", {
+                id: stakeholder.id,
                 name: stakeholder.name,
               });
+
               window.open(
                 getGoogleMapsUrl(
                   stakeholder.zip,
@@ -247,10 +247,8 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
               variant="outlined"
               size="small"
               onClick={() => {
-                window.dataLayer.push({
-                  event: "dialPhone",
-                  action: "click",
-                  value: stakeholder.id,
+                analytics.postEvent("dialPhone", {
+                  id: stakeholder.id,
                   name: stakeholder.name,
                 });
                 window.open(`tel:${mainNumber.value}`);

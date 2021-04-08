@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import { useOrganizationBests } from "hooks/useOrganizationBests";
 import useCategoryIds from "hooks/useCategoryIds";
@@ -12,8 +12,6 @@ import { DEFAULT_CATEGORIES } from "constants/stakeholder";
 import Filters from "./ResultsFilters";
 import List from "./ResultsList";
 import Map from "./ResultsMapOld";
-
-import * as stormly from "../../services/stormly";
 
 const useStyles = makeStyles((theme) => ({
   listMapContainer: {
@@ -38,7 +36,6 @@ export default function ResultsContainer({
   const [status, setStatus] = useState("initial"); // 'initial', 'loading', 'loaded'
   const classes = useStyles();
   const history = useHistory();
-  const location = useLocation();
 
   const [selectedStakeholder, onSelectStakeholder] = useState(null);
   const [isMapView, setIsMapView] = useState(true);
@@ -198,8 +195,8 @@ export default function ResultsContainer({
             selectedStakeholder={selectedStakeholder}
             categoryIds={categoryIds}
             setToast={setToast}
-            viewport={viewport}
-            setViewport={setViewport}
+            viewport={initViewport}
+            setViewport={setInitViewport}
             initViewport={initViewport}
           />
         )}

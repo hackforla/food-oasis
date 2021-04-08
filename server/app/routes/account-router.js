@@ -22,7 +22,6 @@ router.post(
 
 router.post("/login/:email?", accountController.login, jwtSession.login);
 router.get("/logout", (req, res) => {
-  console.log("logging out");
   // "Delete" cookie by expiring it immediately
   res.cookie("jwt", "", {
     httpOnly: true,

@@ -15,6 +15,7 @@ import {
 import { Formik } from "formik";
 import * as Yup from "yup";
 import * as accountService from "services/account-service";
+import * as analytics from "../../services/analytics";
 
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
@@ -88,6 +89,7 @@ const LoginForm = (props) => {
                     values.password
                   );
                   if (response.isSuccess) {
+                    analytics.identify(response.user.id);
                     setUser(response.user);
                     setToast({
                       message: "Login successful.",

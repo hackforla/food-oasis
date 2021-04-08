@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Button, Typography, Tooltip } from "@material-ui/core";
 import { tenantName } from "../../helpers/Configuration";
 import LocationSearchingIcon from "@material-ui/icons/LocationSearching";
+import * as analytics from "../../services/analytics";
 
 import {
   MEAL_PROGRAM_CATEGORY_ID,
@@ -145,10 +146,12 @@ const ResultsFilters = ({
 
   const toggleMeal = useCallback(() => {
     toggleCategory(MEAL_PROGRAM_CATEGORY_ID);
+    analytics.postEvent("toggleMealFilter", {});
   }, [toggleCategory]);
 
   const togglePantry = useCallback(() => {
     toggleCategory(FOOD_PANTRY_CATEGORY_ID);
+    analytics.postEvent("togglePantryFilter", {});
   }, [toggleCategory]);
 
   useEffect(() => {
@@ -265,6 +268,7 @@ const ResultsFilters = ({
               userCoordinates={userCoordinates}
               setOrigin={(origin) => {
                 setOrigin(origin);
+                analytics.postEvent("changeOrigin", {});
                 handleSearch();
               }}
               origin={origin}

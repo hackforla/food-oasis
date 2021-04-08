@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { withRouter } from "react-router";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
@@ -119,6 +119,10 @@ const Home = (props) => {
   const classes = useStyles();
   const { origin, setOrigin, userCoordinates, browserLocation } = props;
 
+  useEffect(() => {
+    window.stormly("event", "visitLandingPage");
+  }, []);
+
   React.useEffect(() => {
     if (props.match.path === "/") {
       sessionStorage.clear();
@@ -163,6 +167,10 @@ const Home = (props) => {
             ) : tenantId === 2 ? (
               <Typography variant={"h5"} className={classes.label}>
                 Locate free food in California
+              </Typography>
+            ) : tenantId === 6 ? (
+              <Typography variant={"h5"} className={classes.label}>
+                Locate free food in Santa Barbara
               </Typography>
             ) : (
               <Typography variant={"h5"} className={classes.label}>

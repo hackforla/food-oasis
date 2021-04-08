@@ -35,6 +35,10 @@ import FaqPDX from "components/StaticPagesPDX/Faq";
 import DonateMCK from "components/StaticPagesMCK/Donate";
 import AboutMCK from "components/StaticPagesMCK/About";
 import FaqMCK from "components/StaticPagesMCK/Faq";
+import DonateSB from "components/StaticPagesSB/Donate";
+import AboutSB from "components/StaticPagesSB/About";
+import FaqSB from "components/StaticPagesSB/Faq";
+
 import Resources from "components/Layout/Resources";
 import Register from "components/Account/Register";
 import Login from "components/Account/Login";
@@ -48,6 +52,7 @@ import Results from "components/FoodSeeker/ResultsContainer";
 import Suggestion from "components/FoodSeeker/Suggestion";
 import ImportFile from "components/Admin/ImportOrganizations/ImportFile";
 import adminTheme from "./theme/adminTheme";
+import * as analytics from "../src/services/analytics";
 
 const useStyles = makeStyles({
   app: () => ({
@@ -105,6 +110,11 @@ function App() {
   }, []);
 
   useEffect(() => {
+    const result = analytics.postEvent("visitAppComponent");
+    console.error(result);
+  }, []);
+
+  useEffect(() => {
     const storedJson = sessionStorage.getItem("user");
     const userJson = JSON.stringify(user);
     if (!userJson && !storedJson) {
@@ -112,7 +122,11 @@ function App() {
     } else if (userJson === storedJson) {
       return;
     } else {
-      setUser(JSON.parse(storedJson));
+      const user = JSON.parse(storedJson);
+      if (user) {
+        analytics.identify(user.id);
+      }
+      setUser(user);
     }
   }, [user]);
 
@@ -292,7 +306,9 @@ function App() {
                 <ResetPassword setToast={setToast} />
               </Route>
               <Route path="/donate">
-                {tenantId === 5 ? (
+                {tenantId === 6 ? (
+                  <DonateSB />
+                ) : tenantId === 5 ? (
                   <DonateMCK />
                 ) : tenantId === 4 ? (
                   <DonatePDX />
@@ -305,7 +321,9 @@ function App() {
                 )}
               </Route>
               <Route path="/about">
-                {tenantId === 5 ? (
+                {tenantId === 6 ? (
+                  <AboutSB />
+                ) : tenantId === 5 ? (
                   <AboutMCK />
                 ) : tenantId === 4 ? (
                   <AboutPDX />
@@ -318,7 +336,9 @@ function App() {
                 )}
               </Route>
               <Route exact path="/faqs">
-                {tenantId === 5 ? (
+                {tenantId === 6 ? (
+                  <FaqSB />
+                ) : tenantId === 5 ? (
                   <FaqMCK />
                 ) : tenantId === 4 ? (
                   <FaqPDX />

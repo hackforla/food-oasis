@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import PropTypes from "prop-types";
-import ReactMapGL, { Layer, NavigationControl, Source } from "react-map-gl";
+import ReactMapGL, { NavigationControl } from "react-map-gl";
 import { Grid, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -10,8 +10,6 @@ import { DEFAULT_CATEGORIES } from "constants/stakeholder";
 import { isMobile } from "helpers";
 import StakeholderPreview from "components/FoodSeeker/StakeholderPreview";
 import StakeholderDetails from "components/FoodSeeker/StakeholderDetails";
-import theme from "theme/clientTheme";
-import { defaultCoordinates } from "helpers/Configuration";
 
 const styles = {
   navigationControl: {
@@ -21,48 +19,6 @@ const styles = {
     margin: "10px",
     marginRight: "40px",
     zIndex: 5,
-  },
-};
-
-// the map layer that shows the bubbles
-const clusterLayer = {
-  id: "clusters",
-  type: "circle",
-  source: "stakeholders",
-  filter: ["has", "point_count"],
-  paint: {
-    "circle-color": theme.palette.primary.main,
-    "circle-radius": ["step", ["get", "point_count"], 14, 100, 24, 750, 40],
-  },
-};
-
-// the map layer that shows the numbers on the cluster bubbles
-const clusterCountLayer = {
-  id: "cluster-count",
-  type: "symbol",
-  source: "stakeholders",
-  filter: ["has", "point_count"],
-  layout: {
-    "text-field": "{point_count_abbreviated}",
-    "text-size": 12,
-  },
-  paint: {
-    "text-color": theme.palette.primary.contrastText,
-  },
-};
-
-// this one is weird, we don't actually show it on the map however that act as un
-// invisible marker to show the actual markers. we need to do this because the actual
-// markers have custom html that can not be shown
-const unclusteredPointLayer = {
-  id: "unclustered-point",
-  type: "circle",
-  source: "stakeholders",
-  filter: ["!", ["has", "point_count"]],
-  paint: {
-    "circle-radius": 0,
-    "circle-stroke-width": 0,
-    "circle-stroke-color": "#fff",
   },
 };
 
@@ -99,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
     left: "50%",
     transform: "translate(-50%)",
     backgroundColor: "white",
-    zIndex: 0,
+    zIndex: 5,
   },
 }));
 
@@ -109,51 +65,15 @@ function Map({
   categoryIds,
   doSelectStakeholder,
   selectedStakeholder,
-  initViewport,
-  origin,
+  viewport,
+  setViewport,
   setToast,
 }) {
-  const [viewport, setViewport] = useState(
-    initViewport || {
-      zoom: defaultCoordinates.zoom,
-      latitude: origin.latitude,
-      longitude: origin.longitude,
-      logoPosition: "top-left",
-    }
-  );
   const [showDetails, setShowDetails] = useState(false);
   const [showSearchArea, setShowSearchArea] = useState(false);
-  const [shownStakeholders, setShownStakeholders] = useState([]);
-
-  useEffect(() => {
-    setViewport(initViewport);
-  }, [initViewport]);
-
-  useEffect(() => {
-    if (mapRef.current) {
-      // this gets called after the component is mounted
-
-      const mapInstance = mapRef.current.getMap();
-      const features = mapInstance.querySourceFeatures("stakeholders");
-      const newShownStakeholders = [];
-
-      features.forEach((feature) => {
-        const props = feature.properties;
-        if (!props.cluster) newShownStakeholders.push(props.stakeholderId);
-      });
-
-      if (
-        JSON.stringify(newShownStakeholders.sort()) !==
-        JSON.stringify(shownStakeholders.sort())
-      ) {
-        setShownStakeholders(newShownStakeholders);
-      }
-    }
-  }, [viewport, shownStakeholders]);
 
   const classes = useStyles({ selectedStakeholder });
   const mapRef = useRef();
-  const sourceRef = useRef();
   const categoryIdsOrDefault = categoryIds.length
     ? categoryIds
     : DEFAULT_CATEGORIES;
@@ -170,7 +90,9 @@ function Map({
     )
       return;
     // make sure map has already loaded
-    if (mapRef && mapRef.current && mapRef.current) setShowSearchArea(true);
+    if (mapRef && mapRef.current && mapRef.current) {
+      setShowSearchArea(true);
+    }
   };
 
   const searchArea = () => {
@@ -184,7 +106,7 @@ function Map({
       maxLng: mapBounds._ne.lng,
       minLng: mapBounds._sw.lng,
     };
-    handleSearch(null, center, bounds);
+    handleSearch(center, bounds);
   };
 
   const unselectStakeholder = () => {
@@ -206,61 +128,6 @@ function Map({
     );
   }
 
-  const data = {
-    type: "FeatureCollection",
-    features: (stakeholders || [])
-      .filter(
-        (sh) =>
-          sh.latitude && sh.longitude && !(sh.inactive || sh.inactiveTemporary)
-      )
-      .map((stakeholder) => {
-        return {
-          type: "Feature",
-          properties: {
-            stakeholderId: stakeholder.id,
-          },
-          geometry: {
-            type: "Point",
-            coordinates: [stakeholder.longitude, stakeholder.latitude, 0],
-          },
-        };
-      }),
-  };
-
-  const onMapClick = (e) => {
-    // if we are clicking on a feature
-    if (e.features && e.features.length > 0) {
-      const layer = e.features[0].layer.id;
-
-      // if we are clicking on a cluster, then zoom in on it
-      if (layer === "clusters" || layer === "cluster-count") {
-        const feature = e.features[0];
-        const clusterId = feature.properties.cluster_id;
-
-        const mapboxSource = sourceRef.current?.getSource();
-
-        if (mapboxSource) {
-          mapboxSource.getClusterExpansionZoom(clusterId, (err, zoom) => {
-            if (err) {
-              console.error("Error get cluster expansion zoom", err);
-              return;
-            }
-
-            setViewport({
-              ...viewport,
-              longitude: feature.geometry.coordinates[0],
-              latitude: feature.geometry.coordinates[1],
-              zoom: zoom + 1,
-              transitionDuration: 500,
-            });
-          });
-        }
-      }
-    }
-
-    doSelectStakeholder(null);
-  };
-
   return (
     <>
       <Grid item xs={12} md={8} className={classes.map}>
@@ -271,10 +138,13 @@ function Map({
           height="100%"
           onViewportChange={(newViewport) => {
             setViewport(newViewport);
+            // // Pass zooom level up to parent control, this allows us
+            // // to maintain zoom when search is re-executed, etc.
+            // setZoom(newViewport.zoom);
           }}
           mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
           mapStyle={MAPBOX_STYLE}
-          onClick={onMapClick}
+          onClick={unselectStakeholder}
           onInteractionStateChange={onInteractionStateChange}
         >
           <div style={styles.navigationControl}>
@@ -290,29 +160,14 @@ function Map({
               Search this area
             </Button>
           )}
-          <Source
-            id="stakeholders"
-            type="geojson"
-            data={data}
-            cluster={true}
-            clusterMaxZoom={14}
-            clusterRadius={50}
-            ref={sourceRef}
-          >
-            <Layer {...clusterLayer} />
-            <Layer {...clusterCountLayer} />
-            <Layer {...unclusteredPointLayer} />
-          </Source>
-
           {stakeholders &&
             stakeholders
               .filter(
+                // Only show markers for orgs that are active
                 (sh) =>
                   sh.latitude &&
                   sh.longitude &&
-                  !(sh.inactive || sh.inactiveTemporary) &&
-                  // only show the stakeholders that are not in a cluster
-                  shownStakeholders.includes(sh.id)
+                  !(sh.inactive || sh.inactiveTemporary)
               )
               .map((stakeholder) => {
                 const categories = stakeholder.categories.filter(({ id }) =>
@@ -354,6 +209,7 @@ function Map({
 Map.propTypes = {
   stakeholders: PropTypes.array,
   categoryIds: PropTypes.arrayOf(PropTypes.number).isRequired,
+  setZoom: PropTypes.func,
 };
 
 export default Map;

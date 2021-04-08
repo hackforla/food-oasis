@@ -168,6 +168,10 @@ const Home = (props) => {
               <Typography variant={"h5"} className={classes.label}>
                 Locate free food in California
               </Typography>
+            ) : tenantId === 6 ? (
+              <Typography variant={"h5"} className={classes.label}>
+                Locate free food in Santa Barbara
+              </Typography>
             ) : (
               <Typography variant={"h5"} className={classes.label}>
                 Locate free food in Los Angeles

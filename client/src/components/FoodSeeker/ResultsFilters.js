@@ -267,8 +267,8 @@ const ResultsFilters = ({
             <Search
               userCoordinates={userCoordinates}
               setOrigin={(origin) => {
-                setOrigin(origin);
                 analytics.postEvent("changeOrigin", {});
+                setOrigin(origin);
                 handleSearch();
               }}
               origin={origin}
@@ -277,6 +277,7 @@ const ResultsFilters = ({
             <Tooltip title="Re-center">
               <Button
                 onClick={() => {
+                  analytics.postEvent("recenterMap", {});
                   setOrigin(userCoordinates);
                   handleSearch();
                 }}

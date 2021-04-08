@@ -35,6 +35,10 @@ import FaqPDX from "components/StaticPagesPDX/Faq";
 import DonateMCK from "components/StaticPagesMCK/Donate";
 import AboutMCK from "components/StaticPagesMCK/About";
 import FaqMCK from "components/StaticPagesMCK/Faq";
+import DonateSB from "components/StaticPagesSB/Donate";
+import AboutSB from "components/StaticPagesSB/About";
+import FaqSB from "components/StaticPagesSB/Faq";
+
 import Resources from "components/Layout/Resources";
 import Register from "components/Account/Register";
 import Login from "components/Account/Login";
@@ -106,7 +110,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const result = analytics.postEvent("event", "visitAppComponent");
+    const result = analytics.postEvent("visitAppComponent");
     console.error(result);
   }, []);
 
@@ -302,7 +306,9 @@ function App() {
                 <ResetPassword setToast={setToast} />
               </Route>
               <Route path="/donate">
-                {tenantId === 5 ? (
+                {tenantId === 6 ? (
+                  <DonateSB />
+                ) : tenantId === 5 ? (
                   <DonateMCK />
                 ) : tenantId === 4 ? (
                   <DonatePDX />
@@ -315,7 +321,9 @@ function App() {
                 )}
               </Route>
               <Route path="/about">
-                {tenantId === 5 ? (
+                {tenantId === 6 ? (
+                  <AboutSB />
+                ) : tenantId === 5 ? (
                   <AboutMCK />
                 ) : tenantId === 4 ? (
                   <AboutPDX />
@@ -328,7 +336,9 @@ function App() {
                 )}
               </Route>
               <Route exact path="/faqs">
-                {tenantId === 5 ? (
+                {tenantId === 6 ? (
+                  <FaqSB />
+                ) : tenantId === 5 ? (
                   <FaqMCK />
                 ) : tenantId === 4 ? (
                   <FaqPDX />

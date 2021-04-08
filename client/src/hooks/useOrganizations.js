@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import * as stakeholderService from "../services/stakeholder-service";
 
 export const useOrganizations = () => {
@@ -61,5 +61,9 @@ export const useOrganizations = () => {
     }
   };
 
-  return { ...state, search };
+  const searchCallback = useCallback((searchCriteria) => {
+    search(searchCriteria);
+  }, []);
+
+  return { ...state, search, searchCallback};
 };

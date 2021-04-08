@@ -112,10 +112,6 @@ function Map({
   initViewport,
   origin,
   setToast,
-<<<<<<< HEAD:client/src/components/FoodSeeker/ResultsMapExp.js
-  // setMapRef,
-=======
->>>>>>> origin/develop:client/src/components/FoodSeeker/ResultsMapOld.js
 }) {
   const [viewport, setViewport] = useState(
     initViewport || {
@@ -162,13 +158,6 @@ function Map({
     ? categoryIds
     : DEFAULT_CATEGORIES;
 
-<<<<<<< HEAD:client/src/components/FoodSeeker/ResultsMapExp.js
-  // useEffect(() => {
-  //   setMapRef(mapRef);
-  // }, [setMapRef, mapRef]);
-
-=======
->>>>>>> origin/develop:client/src/components/FoodSeeker/ResultsMapOld.js
   const onInteractionStateChange = (s) => {
     // don't do anything if the mapview is moving
     if (

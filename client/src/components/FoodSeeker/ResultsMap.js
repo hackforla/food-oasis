@@ -10,7 +10,10 @@ import { DEFAULT_CATEGORIES } from "constants/stakeholder";
 import { isMobile } from "helpers";
 import StakeholderPreview from "components/FoodSeeker/StakeholderPreview";
 import StakeholderDetails from "components/FoodSeeker/StakeholderDetails";
+<<<<<<< HEAD
 import * as analytics from "../../services/analytics";
+=======
+>>>>>>> origin/develop
 
 const styles = {
   navigationControl: {
@@ -107,7 +110,10 @@ function Map({
       maxLng: mapBounds._ne.lng,
       minLng: mapBounds._sw.lng,
     };
+<<<<<<< HEAD
     analytics.postEvent("searchArea", {});
+=======
+>>>>>>> origin/develop
     handleSearch(center, bounds);
   };
 

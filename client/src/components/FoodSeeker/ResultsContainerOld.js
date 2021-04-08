@@ -75,11 +75,6 @@ export default function ResultsContainer({
     [setInitViewport, history]
   );
 
-  useEffect(() => {
-<<<<<<< HEAD:client/src/components/FoodSeeker/ResultsContainerExp.js
-    window.stormly("event", "visitMap");
-  }, []);
-
   // useEffect(() => {
   //   if (location.search.includes("?org=") && data) {
   //     const org = location.search.replace("?org=", "").replaceAll("_", " ");
@@ -96,23 +91,6 @@ export default function ResultsContainer({
   //     }
   //   }
   // }, [data, location.search, viewport]);
-=======
-    if (location.search.includes("?org=") && data) {
-      const org = location.search.replace("?org=", "").replaceAll("_", " ");
-      const stakeholder = data.find((s) => s.name.toLowerCase() === org);
-      if (stakeholder) {
-        onSelectStakeholder(stakeholder);
-        setInitViewport({
-          latitude: stakeholder.latitude,
-          longitude: stakeholder.longitude,
-          zoom: 13,
-        });
-      } else {
-        onSelectStakeholder(null);
-      }
-    }
-  }, [data, location.search]);
->>>>>>> origin/develop:client/src/components/FoodSeeker/ResultsContainerOld.js
 
   const switchResultsView = () => {
     doSelectStakeholder();
@@ -220,12 +198,9 @@ export default function ResultsContainer({
             selectedStakeholder={selectedStakeholder}
             categoryIds={categoryIds}
             setToast={setToast}
-<<<<<<< HEAD:client/src/components/FoodSeeker/ResultsContainerExp.js
             viewport={viewport}
             setViewport={setViewport}
-=======
             initViewport={initViewport}
->>>>>>> origin/develop:client/src/components/FoodSeeker/ResultsContainerOld.js
           />
         )}
       </Grid>

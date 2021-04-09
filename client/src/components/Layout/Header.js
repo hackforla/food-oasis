@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Menu from "./Menu";
 import logo from "images/foodoasis.svg";
-import logoStacked from "images/foodoasisla.svg";
+import logoStacked from "images/logo-food-oasis-stacked.svg";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { tenantName } from "../../helpers/Configuration";

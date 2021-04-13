@@ -142,7 +142,7 @@ const About = () => {
   return (
     <div className={classes.outer}>
       <h1 className={classes.title}>
-        <span>About</span> Food Oasis Hawaii
+        <span>About</span> About This Food-Finder Tool:  Code For Hawaii and Aloha Harvest
       </h1>
       <div className={classes.main}>
         <figure className={classes.figure}>
@@ -166,13 +166,13 @@ const About = () => {
           <p>
             We have been doing this work for over 21 years and represent the largest and most successful collaboration
             between businesses and nonprofits in the state.
-            <a href="https://drive.google.com/file/d/1-sdszGH_y2MLd-yTDVa0ESalyY_zCDKH/view">Last year</a>, we
+            &nbsp;<a href="https://drive.google.com/file/d/1-sdszGH_y2MLd-yTDVa0ESalyY_zCDKH/view">Last year</a>, we
             worked with 370 food donors and 273 recipient agencies to redistribute over 2.7 million pounds of good
             food that would have otherwise been wasted!
           </p>
           <p>
             This work is essential because even while 1 in 5 people in Hawaiʻi rely on food pantries for assistance,
-            about 237,000 tons of good food is wasted annually. Here's a
+            about 237,000 tons of good food is wasted annually. Here's a &nbsp;
             <a href="https://www.youtube.com/watch?v=p9kNYCUtg8E&feature=youtu.be">short</a> video that explains
             more of our process, impact, and future potential.
           </p>

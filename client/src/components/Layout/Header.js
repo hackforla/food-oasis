@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Menu from "./Menu";
 import logo from "images/foodoasis.svg";
-import logoStacked from "images/foodoasisla.svg";
+import logoStacked from "images/logo-food-oasis-stacked.svg";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { tenantName } from "../../helpers/Configuration";
@@ -63,7 +63,9 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     fontSize: "14px",
     lineHeight: "1.2",
-    textAlign: "left",
+    textAlign: "center",
+    flexGrow: 1,
+    flexShrink: 1,
     fontFamily: `Helvetica, Arial, "Lucida Grande", sans- serif`,
     [theme.breakpoints.up("sm")]: {
       display: "none",
@@ -75,6 +77,7 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: "1.5",
     flexBasis: "1em",
     textAlign: "right",
+    flexGrow: 1,
     fontFamily: `"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans- serif`,
   },
 }));
@@ -83,8 +86,8 @@ export default function Header(props) {
   const { user, setUser, setToast } = props;
   const classes = useStyles();
   const taglineText = isMobile()
-    ? "Locate Free Food in " + tenantName
-    : "Locate Free Food in " + tenantName;
+    ? "Locate free food in " + tenantName
+    : "Locate free food in " + tenantName;
 
   return (
     <>

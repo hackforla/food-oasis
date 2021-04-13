@@ -20,7 +20,7 @@ export default function AccountAutocomplete({
     <>
       {accounts ? (
         <Autocomplete
-          value={accounts.find((acct) => acct.id === accountId)}
+          value={accounts.find((acct) => acct.id === accountId) || null}
           onChange={handleChange}
           options={accounts}
           getOptionLabel={(option) =>

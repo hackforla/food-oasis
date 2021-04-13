@@ -1,4 +1,5 @@
 import axios from "axios";
+import * as analytics from "./analytics";
 
 const baseUrl = "/api/accounts";
 const clientUrl = window.location.origin;
@@ -49,6 +50,7 @@ export const login = async (email, password) => {
 };
 
 export const logout = async () => {
+  analytics.identify(null);
   const response = await axios.get(baseUrl + "/logout");
   return response.data;
 };

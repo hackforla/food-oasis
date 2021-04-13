@@ -1,7 +1,5 @@
 import React from "react";
-
 import donatebg from "./assets/donate-bg.png";
-import iconSpacer from "./assets/icon-spacer.svg";
 import iconSpacerBlue from "./assets/icon-spacer-blue.svg";
 import { makeStyles } from "@material-ui/core";
 import Footer from "../Layout/Footer";
@@ -27,15 +25,10 @@ const useStyles = makeStyles(() => ({
     margin: 0,
     padding: "32px 0",
   },
-  btnOrange: {
-    color: "#fff",
-    fontSize: "18px",
-    background: "#e57109",
-    boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-    borderRadius: "6px",
-    padding: "8px 16px",
-    textDecoration: "none",
-    textTransform: "uppercase",
+  btnContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
   btnOutline: {
     color: "#fff",
@@ -46,6 +39,18 @@ const useStyles = makeStyles(() => ({
     textDecoration: "none",
     textTransform: "uppercase",
   },
+  btnBlue: {
+    color: "#ffffff",
+    background: "#336699",
+    borderRadius: "6px",
+    padding: "8px 16px",
+    margin: ".5rem",
+    textDecoration: "none",
+    textTransform: "uppercase",
+    "&:hover": {
+      filter: "brightness(1.2)",
+    },
+  },
   btnWhite: {
     color: "#336699",
     background: "#ffffff",
@@ -53,6 +58,9 @@ const useStyles = makeStyles(() => ({
     padding: "8px 16px",
     textDecoration: "none",
     textTransform: "uppercase",
+    "&:hover": {
+      filter: "brightness(1.2)",
+    },
   },
   figure: {
     margin: 0,
@@ -68,7 +76,7 @@ const useStyles = makeStyles(() => ({
     color: "#4d4d4d",
     background: "#f0f0f0",
     display: "flex",
-    flexWrap: "wrap",
+    flexDirection: "column",
     "& $h2": {
       color: "#336699",
       flexBasis: "100%",
@@ -90,7 +98,7 @@ const useStyles = makeStyles(() => ({
     color: "#fff",
     background: "#336699",
     display: "flex",
-    flexWrap: "wrap",
+    flexDirection: "column",
     "& $h2": {
       color: "#fff",
       flexBasis: "100%",
@@ -107,9 +115,9 @@ const useStyles = makeStyles(() => ({
   },
   cards: {
     display: "flex",
-    flexWrap: "wrap",
+    flexDirection: "column",
     margin: "0 0 32px 0",
-    justifyContent: "center",
+    alignItems: "center",
     "& $aside": {
       textAlign: "center",
       borderRadius: "24px",
@@ -138,6 +146,7 @@ const useStyles = makeStyles(() => ({
   },
   signup: {
     background: "rgba(229, 113, 9, .7)",
+    textAlign: "center",
   },
   volunteer: {
     background: "#e57109",
@@ -182,14 +191,19 @@ const Donate = () => {
 
           <br/>
           <p>
-            To donate online, visit <a href="http://alohaharvest.org/donate">http://alohaharvest.org/donate</a>.
+            To donate online, visit{" "}
+            <a href="http://alohaharvest.org/donate">
+              http://alohaharvest.org/donate
+            </a>
+            .
           </p>
-          <br/>
+          <br />
           <p>
-            To donate via check, please make your donation out to: <br/>
-            Aloha Harvest <br/>
-            3599 Wai`alae Ave., Suite 23 <br/>
-            Honolulu, HI 96816<br/>
+            To donate via check, please make your donation out to: <br />
+            Aloha Harvest <br />
+            3599 Wai`alae Ave., Suite 23 <br />
+            Honolulu, HI 96816
+            <br />
           </p>
           <h2>Donate Excess Food</h2>
           <p>If you or your business have excess food you’d like to donate to us for redistribution, please visit

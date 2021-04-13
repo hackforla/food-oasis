@@ -33,6 +33,9 @@ const useStyles = makeStyles((theme) => ({
       minWidth: "200px",
     },
   },
+  isRequired: {
+    color: (props) => (props.required ? "red" : "green"),
+  },
   instructions: {
     margin: "0 auto",
     maxWidth: "650px",
@@ -42,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ImportFileGuide = (props) => {
   const { handleDownload, handleChange, handleUpload } = props;
-  const classes = useStyles();
+  const classes = useStyles(props);
 
   return (
     <main className={classes.root}>
@@ -53,10 +56,6 @@ const ImportFileGuide = (props) => {
             <strong>Warning: this feature is still being tested. </strong>
           </Typography>
           <ul className={classes.instructions}>
-            <li>
-              Perform import only with an empty database; otherwise, duplicate
-              records may be created.
-            </li>
             <li>
               You will have a chance to review your data before importing.
             </li>

@@ -497,7 +497,7 @@ const insert = async (model) => {
   // Array of catetory_ids is formatted as, e.g.,  '{1,9}'
   const categories = model.selectedCategoryIds
     ? "{" + model.selectedCategoryIds.join(",") + "}"
-    : "{12}";
+    : "{1}";
 
   // Array of hours if formatted as, e.g., `{"(0,Mon,10:00:00,13:00:00)","(3,Sat,08:00:00,10:30:00)"}
   let hoursSqlValues =
@@ -541,7 +541,7 @@ const insert = async (model) => {
     model.linkedin || "",
     model.description || "",
     model.submittedDate || null, // TIMESTAMPTZ
-    Number(model.submittedLoginId), // INT
+    Number(model.submittedLoginId) || null, // INT
     model.approvedDate || null, // TIMESTAMP
     Number(model.reviewedLoginId) || null, // INT
     model.assignedDate || null, // TIMESTAMP
@@ -585,15 +585,15 @@ const insert = async (model) => {
     model.foodDairy || false,
     model.foodPrepared || false,
     model.foodMeat || false,
-    model.parentOrganizationId || null,
+    Number(model.parentOrganizationId) || null, // INT
   ];
 
   const result = await db.proc("create_stakeholder", params);
   return { id: result.s_id };
 };
 
-const insertBulk = async (tenantId, stakeholderArray) => {
-  try {
+const insertBulk = async (stakeholderArray, action, tenantId) => {
+  if (action === "add") {
     for (let i = 0; i < stakeholderArray.length; i++) {
       const model = camelcaseKeys(stakeholderArray[i]);
       model.tenantId = tenantId;
@@ -602,8 +602,29 @@ const insertBulk = async (tenantId, stakeholderArray) => {
       }
       await insert(model);
     }
-  } catch (err) {
-    console.error(err);
+  } else if (action === "update") {
+    for (let i = 0; i < stakeholderArray.length; i++) {
+      const model = camelcaseKeys(stakeholderArray[i]);
+      model.tenantId = tenantId;
+      if (model.hours) {
+        model.hours = JSON.parse(model.hours);
+      }
+      if (model.id && model.id.length) {
+        await update(model);
+      } else {
+        await insert(model);
+      }
+    }
+  } else if (action === "replace") {
+    await removeAll(tenantId);
+    for (let i = 0; i < stakeholderArray.length; i++) {
+      const model = camelcaseKeys(stakeholderArray[i]);
+      model.tenantId = tenantId;
+      if (model.hours) {
+        model.hours = JSON.parse(model.hours);
+      }
+      await insert(model);
+    }
   }
 };
 
@@ -726,15 +747,15 @@ const update = async (model) => {
     model.pinterest || "",
     model.linkedin || "",
     model.description || "",
-    model.loginId, // numeric
+    model.loginId || null, //INT
     model.submittedDate || null, // TIMESTAMPTZ
-    model.submittedLoginId, // INT
+    model.submittedLoginId || null, //INT
     model.approvedDate || null, // TIMESTAMP
-    model.reviewedLoginId, // INT
+    model.reviewedLoginId || null, //INT
     model.assignedDate || null, // TIMESTAMP
-    model.assignedLoginId, // INT
+    model.assignedLoginId || null, //INT
     model.claimedDate || null, // TIMESTAMP
-    model.claimedLoginId, // INT
+    model.claimedLoginId || null, //INT
     model.reviewNotes || "",
     model.instagram || "",
     model.adminContactName || "",
@@ -762,7 +783,7 @@ const update = async (model) => {
     model.confirmedEmail, //  bool
     model.confirmedHours, //  bool
     model.confirmedFoodTypes, //  bool
-    model.verificationStatusId, // INT,
+    model.verificationStatusId || null, //INT
     model.inactiveTemporary, // bool
     model.id, // int
     categories,
@@ -798,6 +819,30 @@ const remove = async (idParm) => {
     });
     await t.none("delete from stakeholder_best where id = $<id>", {
       id,
+    });
+    return result.rowCount;
+  });
+};
+
+const removeAll = async (tenantId) => {
+  await db.tx(async (t) => {
+    await t.none(
+      "delete from stakeholder_schedule where stakeholder_id in (select stakeholder_id from stakeholder where tenant_id = $<tenantId>)",
+      { tenantId }
+    );
+    await t.none(
+      "delete from stakeholder_category where stakeholder_id in (select stakeholder_id from stakeholder where tenant_id = $<tenantId>)",
+      { tenantId }
+    );
+    const result = await t.result(
+      "delete from stakeholder where tenant_id = $<tenantId>",
+      { tenantId }
+    );
+    await t.none("delete from stakeholder_log where tenant_id = $<tenantId>", {
+      tenantId,
+    });
+    await t.none("delete from stakeholder_best where tenant_id = $<tenantId>", {
+      tenantId,
     });
     return result.rowCount;
   });

@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import { Grid, CssBaseline } from "@material-ui/core";
-import theme from "theme/materialUI";
+import theme from "theme/clientTheme";
 import { logout } from "services/account-service";
 import { tenantId, defaultCoordinates } from "helpers/Configuration";
 
@@ -35,6 +35,10 @@ import FaqPDX from "components/StaticPagesPDX/Faq";
 import DonateMCK from "components/StaticPagesMCK/Donate";
 import AboutMCK from "components/StaticPagesMCK/About";
 import FaqMCK from "components/StaticPagesMCK/Faq";
+import DonateSB from "components/StaticPagesSB/Donate";
+import AboutSB from "components/StaticPagesSB/About";
+import FaqSB from "components/StaticPagesSB/Faq";
+
 import Resources from "components/Layout/Resources";
 import Register from "components/Account/Register";
 import Login from "components/Account/Login";
@@ -47,7 +51,8 @@ import Home from "components/FoodSeeker/Home";
 import Results from "components/FoodSeeker/ResultsContainer";
 import Suggestion from "components/FoodSeeker/Suggestion";
 import ImportFile from "components/Admin/ImportOrganizations/ImportFile";
-import newTheme from "./theme/newTheme";
+import adminTheme from "./theme/adminTheme";
+import * as analytics from "../src/services/analytics";
 
 const useStyles = makeStyles({
   app: () => ({
@@ -84,9 +89,13 @@ const useStyles = makeStyles({
 
 function App() {
   const [user, setUser] = useState(null);
+  // userCoordinates is the user's location if location is enabled, or the
+  // default tenant center location if the browser location is disabled.
   const [userCoordinates, setUserCoordinates] = useState({});
   const [toast, setToast] = useState({ message: "" });
   const [bgImg, setBgImg] = useState("");
+  // origin is where the map should be centered. It is at the App level
+  // so it can be passed from leanding pages to the ResultsContainer.
   const [origin, setOrigin] = useState({
     latitude: defaultCoordinates.lat,
     longitude: defaultCoordinates.lon,
@@ -101,6 +110,11 @@ function App() {
   }, []);
 
   useEffect(() => {
+    const result = analytics.postEvent("visitAppComponent");
+    console.error(result);
+  }, []);
+
+  useEffect(() => {
     const storedJson = sessionStorage.getItem("user");
     const userJson = JSON.stringify(user);
     if (!userJson && !storedJson) {
@@ -108,7 +122,11 @@ function App() {
     } else if (userJson === storedJson) {
       return;
     } else {
-      setUser(JSON.parse(storedJson));
+      const user = JSON.parse(storedJson);
+      if (user) {
+        analytics.identify(user.id);
+      }
+      setUser(user);
     }
   }, [user]);
 
@@ -209,10 +227,10 @@ function App() {
                   </div>
                 </div>
               </Route>
-              {/* 
-              Following route provides backward-compatibilty for the 
-              http"//foodoasis.la/search Link that has been published at  
-              http://publichealth.lacounty.gov/eh/LACFRI/ShareAndDonate.htm 
+              {/*
+              Following route provides backward-compatibilty for the
+              http"//foodoasis.la/search Link that has been published at
+              http://publichealth.lacounty.gov/eh/LACFRI/ShareAndDonate.htm
               */}
               <Redirect from="/search" to="/organizations" />
               <Route path="/organizations">
@@ -228,7 +246,7 @@ function App() {
                 <Suggestion setToast={setToast} />
               </Route>
               <Route path="/organizationedit/:id?">
-                <ThemeProvider theme={newTheme}>
+                <ThemeProvider theme={adminTheme}>
                   <div className={classes.OrganizationEditWrapper}>
                     <OrganizationEdit setToast={setToast} user={user} />
                   </div>
@@ -243,7 +261,7 @@ function App() {
                 </div>
               </Route>
               <Route path="/verificationadmin">
-                <ThemeProvider theme={newTheme}>
+                <ThemeProvider theme={adminTheme}>
                   <div className={classes.verificationAdminWrapper}>
                     <VerificationAdmin
                       user={user}
@@ -288,7 +306,9 @@ function App() {
                 <ResetPassword setToast={setToast} />
               </Route>
               <Route path="/donate">
-                {tenantId === 5 ? (
+                {tenantId === 6 ? (
+                  <DonateSB />
+                ) : tenantId === 5 ? (
                   <DonateMCK />
                 ) : tenantId === 4 ? (
                   <DonatePDX />
@@ -301,7 +321,9 @@ function App() {
                 )}
               </Route>
               <Route path="/about">
-                {tenantId === 5 ? (
+                {tenantId === 6 ? (
+                  <AboutSB />
+                ) : tenantId === 5 ? (
                   <AboutMCK />
                 ) : tenantId === 4 ? (
                   <AboutPDX />
@@ -314,7 +336,9 @@ function App() {
                 )}
               </Route>
               <Route exact path="/faqs">
-                {tenantId === 5 ? (
+                {tenantId === 6 ? (
+                  <FaqSB />
+                ) : tenantId === 5 ? (
                   <FaqMCK />
                 ) : tenantId === 4 ? (
                   <FaqPDX />

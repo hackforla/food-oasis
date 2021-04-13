@@ -6,11 +6,11 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import {
   white,
-  primaryColor,
-  hoverColor,
-  bodyTextColor,
-  inactiveButtonColor,
-  inactiveButtonTextColor,
+  primary,
+  hover,
+  bodyText,
+  inactiveButton,
+  inactiveButtonText,
 } from "../../../theme/colors";
 
 /**
@@ -30,46 +30,46 @@ const useStyles = makeStyles((theme) => ({
     color: white,
   },
   text: {
-    color: bodyTextColor,
+    color: bodyText,
     borderRadius: 0,
     "&:hover": {
       backgroundColor: "transparent",
-      borderBottom: `3px solid ${hoverColor}`,
+      borderBottom: `3px solid ${hover}`,
       transition: "none",
       margin: "-3px 0 -6px",
     },
     margin: "3px 0",
   },
   contained: {
-    backgroundColor: primaryColor,
+    backgroundColor: primary,
     "&:hover": {
-      backgroundColor: hoverColor,
+      backgroundColor: hover,
       "&:disabled": {
-        backgroundColor: inactiveButtonColor,
+        backgroundColor: inactiveButton,
       },
     },
     "&:disabled": {
-      backgroundColor: inactiveButtonColor,
-      color: inactiveButtonTextColor,
+      backgroundColor: inactiveButton,
+      color: inactiveButtonText,
     },
     lineHeight: "17px",
   },
   outlined: {
     backgroundColor: "transparent",
-    border: `1px solid ${primaryColor}`,
-    color: primaryColor,
+    border: `1px solid ${primary}`,
+    color: primary,
     "&:hover": {
       backgroundColor: "transparent",
-      border: `1px solid ${hoverColor}`,
-      color: hoverColor,
+      border: `1px solid ${hover}`,
+      color: hover,
       "&:disabled": {
         backgroundColor: "transparent",
       },
     },
     "&:disabled": {
       backgroundColor: "transparent",
-      border: `1px solid ${inactiveButtonTextColor}`,
-      color: inactiveButtonTextColor,
+      border: `1px solid ${inactiveButtonText}`,
+      color: inactiveButtonText,
     },
   },
   bigButtonStyles: theme.typography.overline,

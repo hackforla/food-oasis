@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Button, Typography, Tooltip } from "@material-ui/core";
 import { tenantName } from "../../helpers/Configuration";
 import LocationSearchingIcon from "@material-ui/icons/LocationSearching";
+import * as analytics from "../../services/analytics";
 
 import {
   MEAL_PROGRAM_CATEGORY_ID,
@@ -11,7 +12,7 @@ import {
 } from "constants/stakeholder";
 import { isMobile } from "helpers";
 
-import theme from "theme/materialUI";
+import theme from "theme/clientTheme";
 import SwitchViewsButton from "components/FoodSeeker/SwitchViewsButton";
 import Search from "components/FoodSeeker/Search";
 
@@ -145,10 +146,12 @@ const ResultsFilters = ({
 
   const toggleMeal = useCallback(() => {
     toggleCategory(MEAL_PROGRAM_CATEGORY_ID);
+    analytics.postEvent("toggleMealFilter", {});
   }, [toggleCategory]);
 
   const togglePantry = useCallback(() => {
     toggleCategory(FOOD_PANTRY_CATEGORY_ID);
+    analytics.postEvent("togglePantryFilter", {});
   }, [toggleCategory]);
 
   useEffect(() => {
@@ -157,7 +160,7 @@ const ResultsFilters = ({
   }, [origin, categoryIds, isVerifiedSelected, toggleCategory]);
 
   const mobileView = isMobile();
-  const taglineText = "Locate Free Food in " + tenantName;
+  const taglineText = "Locate free food in " + tenantName;
 
   return (
     <Grid item container className={classes.controlPanel}>
@@ -264,6 +267,7 @@ const ResultsFilters = ({
             <Search
               userCoordinates={userCoordinates}
               setOrigin={(origin) => {
+                analytics.postEvent("changeOrigin", {});
                 setOrigin(origin);
                 handleSearch();
               }}
@@ -273,6 +277,7 @@ const ResultsFilters = ({
             <Tooltip title="Re-center">
               <Button
                 onClick={() => {
+                  analytics.postEvent("recenterMap", {});
                   setOrigin(userCoordinates);
                   handleSearch();
                 }}
@@ -294,7 +299,7 @@ const ResultsFilters = ({
             className={classes.submit}
             startIcon={
               <SearchIcon fontSize="large" className={classes.searchIcon} />
-            } 
+            }
           /> */}
           </form>
         </Grid>

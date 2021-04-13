@@ -24,7 +24,14 @@ const useStyles = makeStyles(() => ({
     marginTop: "0",
     marginBottom: "auto",
     height: "20px",
-
+    "&:hover": {
+      filter: "brightness(1.2)",
+    },
+  },
+  logoHi: {
+    marginTop: "0",
+    marginBottom: "auto",
+    height: "3.25rem",
     "&:hover": {
       filter: "brightness(1.2)",
     },
@@ -32,8 +39,6 @@ const useStyles = makeStyles(() => ({
   textHolder: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "center",
-    width: "100%",
   },
   linkStyle: {
     padding: "0 !important",
@@ -42,7 +47,6 @@ const useStyles = makeStyles(() => ({
     fontSize: "16px",
     textTransform: "uppercase",
     margin: ".4em 0 .4em 1.5em",
-
     "&:hover": {
       textDecoration: "underline",
     },

@@ -42,16 +42,16 @@ export const tenantName = (() => {
 export const defaultCoordinates = (() => {
   switch (tenantId) {
     case 6:
-      return { lat: 34.68758, lon: -120.157, zoom: 8.75, radius: 15 };
+      return { lat: 34.68758, lon: -120.157, zoom: 8.75, radius: 100 };
     case 5:
-      return { lat: 33.216239, lon: -96.65014, zoom: 11, radius: 8 };
+      return { lat: 33.216239, lon: -96.65014, zoom: 10.5, radius: 100 };
     case 4:
-      return { lat: 45.52445, lon: -122.65066, zoom: 12, radius: 5 };
+      return { lat: 45.52445, lon: -122.65066, zoom: 8, radius: 300 };
     case 3:
-      return { lat: 21.3101548, lon: -157.8428712, zoom: 12, radius: 5 };
+      return { lat: 21.4601548, lon: -157.99, zoom: 9.5, radius: 100 };
     case 2:
-      return { lat: 38.3949164, lon: -122.7287326, zoom: 6, radius: 50 };
+      return { lat: 37.96, lon: -118.87, zoom: 4.5, radius: 450 };
     default:
-      return { lat: 34.0354899, lon: -118.2439235, zoom: 12, radius: 5 };
+      return { lat: 34.0354899, lon: -118.2439235, zoom: 11, radius: 20 };
   }
 })();

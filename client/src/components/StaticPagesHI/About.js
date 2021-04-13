@@ -2,7 +2,6 @@ import React from "react";
 
 import aboutbg from "./assets/about-bg.png";
 import iconSpacerBlue from "./assets/icon-spacer-blue.svg";
-import foodBank from "./assets/aloha-harvest.png";
 import { makeStyles } from "@material-ui/core";
 import Footer from "../Layout/Footer";
 
@@ -141,7 +140,8 @@ const About = () => {
   return (
     <div className={classes.outer}>
       <h1 className={classes.title}>
-        <span>About</span> About This Food-Finder Tool:  Code For Hawaiʻi and Aloha Harvest
+        <span>About</span> About This Food-Finder Tool: Code For Hawaiʻi and
+        Aloha Harvest
       </h1>
       <div className={classes.main}>
         <figure className={classes.figure}>
@@ -178,7 +178,7 @@ const About = () => {
           <p>
             This work is essential because even while 1 in 5 people in Hawaiʻi
             rely on food pantries for assistance, about 237,000 tons of good
-            food is wasted annually. Here's a
+            food is wasted annually. Here's a{" "}
             <a href="https://www.youtube.com/watch?v=p9kNYCUtg8E&feature=youtu.be">
               short
             </a>{" "}
@@ -186,18 +186,30 @@ const About = () => {
             potential.
           </p>
           <h2>More About Aloha Harvest</h2>
-          <p>Aloha Harvest is the largest food rescue nonprofit in the state of Hawaiʻi. Seven days a week, free of
-            charge and free of liability, we rescue quality excess food from donors (ex: wholesale distributors, grocery
-            stores, restaurants, hotels) and redistribute it to recipient agencies feeding the hungry (ex: homeless
-            shelters, social services, food pantries).</p>
-            <p>We have been doing this work for over 21 years and represent the largest and most successful collaboration
-            between businesses and nonprofits in the state. Last year, we worked with 370 food donors and 273 recipient
-            agencies to redistribute over 2.7 million pounds of good food that would have otherwise been wasted!
-            This work is essential because even while 1 in 5 people in Hawaiʻi rely on food pantries for assistance,
-            about 237,000 tons of good food is wasted annually. Here's a short video that explains more of our process,
-            impact, and future potential.</p>
+          <p>
+            Aloha Harvest is the largest food rescue nonprofit in the state of
+            Hawaiʻi. Seven days a week, free of charge and free of liability, we
+            rescue quality excess food from donors (ex: wholesale distributors,
+            grocery stores, restaurants, hotels) and redistribute it to
+            recipient agencies feeding the hungry (ex: homeless shelters, social
+            services, food pantries).
+          </p>
+          <p>
+            We have been doing this work for over 21 years and represent the
+            largest and most successful collaboration between businesses and
+            nonprofits in the state. Last year, we worked with 370 food donors
+            and 273 recipient agencies to redistribute over 2.7 million pounds
+            of good food that would have otherwise been wasted! This work is
+            essential because even while 1 in 5 people in Hawaiʻi rely on food
+            pantries for assistance, about 237,000 tons of good food is wasted
+            annually. Here's a short video that explains more of our process,
+            impact, and future potential.
+          </p>
 
-          <p>Visit alohaharvest.org or follow us on Instagram, Facebook, LinkedIn, and Twitter: @alohaharvest.</p>
+          <p>
+            Visit alohaharvest.org or follow us on Instagram, Facebook,
+            LinkedIn, and Twitter: @alohaharvest.
+          </p>
         </div>
         <section className={classes.contact}>
           <img
@@ -208,7 +220,8 @@ const About = () => {
           />
           <h2>Contact Aloha Harvest</h2>
           <p>
-            Call our office at 808-208-1581, or email <a href="mailto:info@alohaharvest.org">info@alohaharvest.org</a>
+            Call our office at 808-208-1581, or email{" "}
+            <a href="mailto:info@alohaharvest.org">info@alohaharvest.org</a>
           </p>
         </section>
         <Footer />

@@ -164,7 +164,7 @@ const About = () => {
 
             <dt>Does this tool include resources for neighbor islands?</dt>
             <dd>No, unfortunately Aloha Harvest is currently only located on O‘ahu and does not yet have the capacity to
-              establish presence on the neighbor islands. As such, our list of food resources only applies to O‘ahu.
+              establish presence on the neighbor islands. As such, our list of food resources only applies to Oʻahu.
               However, we do have a goal of expanding to the other islands within the next 5 years.
             </dd>
 
@@ -172,7 +172,7 @@ const About = () => {
             <dd>No, unlike a food bank or food pantry, Aloha Harvest provides no direct services to individuals.
               Instead, we perform a “middle man” role: We pick up excess food from a network of food donors and
               redistribute it to a network of nonprofits and social service agencies feeding O‘ahu’s hungry. To learn
-              more, visit this tool’s About Us page or our website directly at alohaharvest.org.
+              more, visit this tool’s About Us page or our website directly at <a href={alohaharvest.org}>alohaharvest.org</a>.
             </dd>
           </dl>
         </section>

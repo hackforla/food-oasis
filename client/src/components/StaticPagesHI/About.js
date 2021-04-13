@@ -142,7 +142,7 @@ const About = () => {
   return (
     <div className={classes.outer}>
       <h1 className={classes.title}>
-        <span>About</span> About This Food-Finder Tool:  Code For Hawaii and Aloha Harvest
+        <span>About</span> About This Food-Finder Tool:  Code For Hawaiʻi and Aloha Harvest
       </h1>
       <div className={classes.main}>
         <figure className={classes.figure}>
@@ -150,25 +150,22 @@ const About = () => {
         </figure>
         <div className={classes.mission}>
           <img
-            alt="Our Mission"
+            alt="Code For Hawaiʻi and Aloha Harvest"
             src={iconSpacerBlue}
             className={classes.icon}
             height="40"
           />
-          <h2>Our Mission</h2>
+          <h2>Code For Hawaiʻi and Aloha Harvest</h2>
           <p>
-            <a href={"https://alohaharvest.org/"}>Aloha Harvest</a> is the largest food rescue nonprofit in the state
-            of Hawaiʻi. Seven days a week, free of
-            charge and free of liability, we rescue quality excess food from donors (ex: wholesale distributors,
-            grocery stores, restaurants, hotels) and redistribute it to recipient agencies feeding the hungry
-            (ex: homeless shelters, social services, food pantries).
-          </p>
-          <p>
-            We have been doing this work for over 21 years and represent the largest and most successful collaboration
-            between businesses and nonprofits in the state.
-            &nbsp;<a href="https://drive.google.com/file/d/1-sdszGH_y2MLd-yTDVa0ESalyY_zCDKH/view">Last year</a>, we
-            worked with 370 food donors and 273 recipient agencies to redistribute over 2.7 million pounds of good
-            food that would have otherwise been wasted!
+            This food-finder tool was developed by Hack for LA Brigade, and this Oʻahu-specific instance was built out
+            by Code For Hawaiʻi. These groups are part of the Code For America network, a national alliance of community
+            organizers, developers, and designers that are putting technology to work in service of their local
+            communities.
+
+
+            Code For Hawaiʻi reached out to Aloha Harvest to provide the data (directory of places to get food) for this
+            tool. It’s a natural partnership, as Aloha Harvest has long needed a user-friendly way to assist people who
+            are seeking food.
           </p>
           <p>
             This work is essential because even while 1 in 5 people in Hawaiʻi rely on food pantries for assistance,
@@ -176,42 +173,31 @@ const About = () => {
             <a href="https://www.youtube.com/watch?v=p9kNYCUtg8E&feature=youtu.be">short</a> video that explains
             more of our process, impact, and future potential.
           </p>
+          <h2>More About Aloha Harvest</h2>
+          <p>Aloha Harvest is the largest food rescue nonprofit in the state of Hawaiʻi. Seven days a week, free of
+            charge and free of liability, we rescue quality excess food from donors (ex: wholesale distributors, grocery
+            stores, restaurants, hotels) and redistribute it to recipient agencies feeding the hungry (ex: homeless
+            shelters, social services, food pantries).</p>
+            <p>We have been doing this work for over 21 years and represent the largest and most successful collaboration
+            between businesses and nonprofits in the state. Last year, we worked with 370 food donors and 273 recipient
+            agencies to redistribute over 2.7 million pounds of good food that would have otherwise been wasted!
+            This work is essential because even while 1 in 5 people in Hawaiʻi rely on food pantries for assistance,
+            about 237,000 tons of good food is wasted annually. Here's a short video that explains more of our process,
+            impact, and future potential.</p>
+
+          <p>Visit alohaharvest.org or follow us on Instagram, Facebook, LinkedIn, and Twitter: @alohaharvest.</p>
         </div>
         <section className={classes.contact}>
           <img
-            alt="Contact Us"
+            alt="Contact Aloha Harvest"
             src={iconSpacerBlue}
             className={classes.icon}
             height="40"
           />
-          <h2>Contact Us</h2>
+          <h2>Contact Aloha Harvest</h2>
           <p>
-            Questions about our project?
-            <br />
-            Updates to the listings?
-            <br />
-            General inquiries?
-            <br />
+            Call our office at 808-208-1581, or email <a href="mailto:info@alohaharvest.org">info@alohaharvest.org</a>
           </p>
-          <p>
-            Please contact us
-            <br />
-            <a href="https://alohaharvest.org/">Aloha Harvest</a>
-          </p>
-        </section>
-        <section className={classes.partners}>
-          <img
-            alt="Our Team"
-            src={iconSpacerBlue}
-            className={classes.icon}
-            height="40"
-          />
-          <h2>Our Partners</h2>
-          <img
-            alt="Aloha Harvest"
-            src={foodBank}
-            className={classes.partnersLogo}
-          />
         </section>
         <Footer />
       </div>

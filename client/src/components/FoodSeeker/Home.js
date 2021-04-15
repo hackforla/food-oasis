@@ -6,6 +6,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
+import Link from '@material-ui/core/Link';
+import { Link as RouterLink } from 'react-router-dom';
 import Search from "components/FoodSeeker/Search";
 // The three tenant logos happen to be the same at the moment
 import logo from "images/foodoasis.svg";
@@ -113,6 +115,13 @@ const useStyles = makeStyles((theme) => ({
     width: 32,
     height: 32,
   },
+  learnMore: {
+    color: "white",
+    textDecoration: "underline",
+    "&:visited": {
+      color: "white",
+    },
+  },
 }));
 
 const Home = (props) => {
@@ -196,6 +205,11 @@ const Home = (props) => {
               > 
                 {""}
               </Button>*/}
+            </Box>
+            <Box className={classes.inputContainer}>
+                <Link component={RouterLink} to="/about" className={classes.learnMore}>
+                  Learn about this site
+                </Link>
             </Box>
           </form>
         </Box>

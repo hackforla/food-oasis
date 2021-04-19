@@ -16,8 +16,13 @@ router.post("/forgotPassword", accountController.forgotPassword);
 router.post("/resetPassword", accountController.resetPassword);
 router.post(
   "/setPermissions",
-  jwtSession.validateUserHasRequiredRoles(["admin", "security_admin"]),
-  accountController.setPermissions
+  jwtSession.validateUserHasRequiredRoles(["security_admin", "global_admin"]),
+  accountController.setTenantPermissions
+);
+router.post(
+  "/setGlobalPermissions",
+  jwtSession.validateUserHasRequiredRoles(["global_admin"]),
+  accountController.setGlobalPermissions
 );
 
 router.post("/login/:email?", accountController.login, jwtSession.login);

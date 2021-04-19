@@ -2,7 +2,8 @@ const accountService = require("../services/account-service");
 
 const getAll = async (req, res) => {
   try {
-    const response = await accountService.selectAll();
+    const { tenantId } = req.query;
+    const response = await accountService.selectAll(Number(tenantId));
     res.send(response);
   } catch (err) {
     console.error(err);
@@ -75,13 +76,30 @@ const resetPassword = async (req, res) => {
   }
 };
 
-const setPermissions = async (req, res) => {
-  const { userId, permissionName, value } = req.body;
+const setTenantPermissions = async (req, res) => {
+  const { userId, permissionName, value, tenantId } = req.body;
   try {
-    const response = await accountService.setPermissions(
+    const response = await accountService.setTenantPermissions(
       userId,
       permissionName,
-      value
+      value,
+      tenantId
+    );
+    res.send(response);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+};
+
+const setGlobalPermissions = async (req, res) => {
+  const { userId, permissionName, value, tenantId } = req.body;
+  try {
+    const response = await accountService.setGlobalPermissions(
+      userId,
+      permissionName,
+      value,
+      tenantId
     );
     res.send(response);
   } catch (err) {
@@ -107,9 +125,9 @@ const confirmRegister = async (req, res) => {
 };
 
 const login = async (req, res, next) => {
-  const { email, password } = req.body;
+  const { email, password, tenantId } = req.body;
   try {
-    const resp = await accountService.authenticate(email, password);
+    const resp = await accountService.authenticate(email, password, tenantId);
     if (resp.isSuccess) {
       req.user = resp.user;
       next();
@@ -150,7 +168,8 @@ module.exports = {
   register,
   confirmRegister,
   resendConfirmationEmail,
-  setPermissions,
+  setTenantPermissions,
+  setGlobalPermissions,
   forgotPassword,
   resetPassword,
   login,

@@ -150,7 +150,7 @@ export default function Menu(props) {
                   <Divider />
                 </>
               ) : null}
-              {user && user.isSecurityAdmin ? (
+              {user && (user.isSecurityAdmin || user.isGlobalAdmin) ? (
                 <>
                   <MenuItemLink
                     key="securityadmindashboard"

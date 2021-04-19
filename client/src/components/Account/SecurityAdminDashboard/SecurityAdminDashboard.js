@@ -72,6 +72,10 @@ const SecurityAdminDashboard = () => {
         account["isSecurityAdmin"] = value;
       } else if (permission === "is_data_entry") {
         account["isDataEntry"] = value;
+      } else if (permission === "is_global_admin") {
+        account["isGlobalAdmin"] = value;
+      } else if (permission === "is_global_reporting") {
+        account["isGlobalReporting"] = value;
       }
     }
     let filtered = [...filteredAccounts, { ...account }];

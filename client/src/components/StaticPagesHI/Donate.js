@@ -1,5 +1,5 @@
 import React from "react";
-import donatebg from "./assets/donate-bg.png";
+import donatebg from "./assets/donate-header.jpg";
 import iconSpacerBlue from "./assets/icon-spacer-blue.svg";
 import { makeStyles } from "@material-ui/core";
 import Footer from "../Layout/Footer";
@@ -169,7 +169,8 @@ const Donate = () => {
             className={classes.icon}
             height="40"
           />
-          <h2>How to Donate?</h2>
+          <h1>Donate</h1>
+          <h2>Make a Financial Contribution</h2>
           <p>
             Mahalo for making the work of food rescue and redistribution on O‘ahu possible! As a 501(c)(3) nonprofit,
             Aloha Harvest relies completely on the generosity of our funders, ranging from national grants to individual

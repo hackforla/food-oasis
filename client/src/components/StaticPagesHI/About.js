@@ -2,7 +2,6 @@ import React from "react";
 
 import aboutbg from "./assets/about-header.jpg";
 import iconSpacerBlue from "./assets/icon-spacer-blue.svg";
-import foodBank from "./assets/aloha-harvest.png";
 import { makeStyles } from "@material-ui/core";
 import Footer from "../Layout/Footer";
 
@@ -169,7 +168,7 @@ const About = () => {
           <p>
             This work is essential because even while 1 in 5 people in Hawaiʻi
             rely on food pantries for assistance, about 237,000 tons of good
-            food is wasted annually. Here's a
+            food is wasted annually. Here's a{" "}
             <a href="https://www.youtube.com/watch?v=p9kNYCUtg8E&feature=youtu.be">
               short
             </a>{" "}
@@ -192,7 +191,8 @@ const About = () => {
           />
           <h2>Contact Aloha Harvest</h2>
           <p>
-            Call our office at 808-208-1581, or email <a href="mailto:info@alohaharvest.org">info@alohaharvest.org</a>
+            Call our office at 808-208-1581, or email{" "}
+            <a href="mailto:info@alohaharvest.org">info@alohaharvest.org</a>
           </p>
         </section>
         <Footer />

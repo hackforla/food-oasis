@@ -144,15 +144,19 @@ const About = () => {
               Phone, Email, and Eligibility Requirements.
             </dd>
 
-
-            <dt>Does this food-finder tool include every single place I can get food/food assistance on Oʻahu?</dt>
+            <dt>
+              Does this food-finder tool include every single place I can get
+              food/food assistance on Oʻahu?
+            </dt>
             <dd>
-              No. The data Aloha Harvest uses to populate this directory includes all food pantry and meal programs we
-              deliver food to that are open to the public. We deliver food to almost every program of this kind on the
-              island, but not 100% of them. Furthermore, there are many places that individuals can apply to receive
-              food assistance that are not open to the general public.
-
-              A volunteer reviews our list once a week to confirm that all details are still current and correct.
+              No. The data Aloha Harvest uses to populate this directory
+              includes all food pantry and meal programs we deliver food to that
+              are open to the public. We deliver food to almost every program of
+              this kind on the island, but not 100% of them. Furthermore, there
+              are many places that individuals can apply to receive food
+              assistance that are not open to the general public. A volunteer
+              reviews our list once a week to confirm that all details are still
+              current and correct.
             </dd>
 
             <dt>Where can I go for a comprehensive, statewide list of food resources and related assistance?</dt>
@@ -221,7 +225,7 @@ const About = () => {
             <dd>
               Yes! Please visit the Aloha Harvest{" "}
               <a
-                href="https://alohaharvest.org/donate-food/"
+                href="//alohaharvest.org/donate-food/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -229,7 +233,7 @@ const About = () => {
               </a>{" "}
               and{" "}
               <a
-                href="https://alohaharvest.org/donate-money/"
+                href="//alohaharvest.org/donate-money/"
                 target="_blank"
                 rel="noopener noreferrer"
               >

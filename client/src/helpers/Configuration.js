@@ -52,6 +52,6 @@ export const defaultCoordinates = (() => {
     case 2:
       return { lat: 37.96, lon: -118.87, zoom: 4.5, radius: 450 };
     default:
-      return { lat: 34.0354899, lon: -118.2439235, zoom: 11, radius: 20 };
+      return { lat: 34.0354899, lon: -118.2439235, zoom: 13.5, radius: 3 };
   }
 })();

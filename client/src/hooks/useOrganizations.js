@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import * as stakeholderService from "../services/stakeholder-service";
+import * as analytics from "../services/analytics";
 
 export const useOrganizations = () => {
   const [state, setState] = useState({
@@ -30,6 +31,25 @@ export const useOrganizations = () => {
     maxCompleteCriticalPercent,
   }) => {
     try {
+      analytics.postEvent("searchAdmin", {
+        name,
+        latitude,
+        longitude,
+        radius,
+        categoryIds,
+        isInactive,
+        isAssigned,
+        isSubmitted,
+        isApproved,
+        isClaimed,
+        assignedLoginId,
+        verificationStatusId,
+        isInactiveTemporary,
+        neighborhoodId,
+        minCompleteCriticalPercent,
+        maxCompleteCriticalPercent,
+      });
+
       setState({ data: null, loading: true, error: false });
       const stakeholders = await stakeholderService.search({
         tenantId,
@@ -65,5 +85,5 @@ export const useOrganizations = () => {
     search(searchCriteria);
   }, []);
 
-  return { ...state, search, searchCallback};
+  return { ...state, search, searchCallback };
 };

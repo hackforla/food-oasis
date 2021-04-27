@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import ReactMapGL, {
   NavigationControl,
@@ -94,6 +94,10 @@ function Map({
   const categoryIdsOrDefault = categoryIds.length
     ? categoryIds
     : DEFAULT_CATEGORIES;
+
+  useEffect(() => {
+    analytics.postEvent("showMap");
+  }, []);
 
   const onInteractionStateChange = (s) => {
     // don't do anything if the mapview is moving

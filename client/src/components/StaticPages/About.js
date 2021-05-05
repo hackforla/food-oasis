@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import aboutbg from "./assets/about-bg.png";
 import iconSpacer from "./assets/icon-spacer.svg";
@@ -9,6 +9,7 @@ import farmPeople from "./assets/farm-people.png";
 import foodBank from "./assets/food-bank.png";
 import { makeStyles } from "@material-ui/core";
 import Footer from "../Layout/Footer";
+import * as analytics from "../../services/analytics";
 
 const useStyles = makeStyles(() => ({
   outer: {
@@ -138,6 +139,11 @@ const useStyles = makeStyles(() => ({
 }));
 const About = () => {
   const classes = useStyles();
+
+  useEffect(() => {
+    analytics.postEvent("visitAboutPage");
+  }, []);
+
   // const { t } = useTranslation("about");
   return (
     <div className={classes.outer}>

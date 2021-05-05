@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import donatebg from "./assets/donate-bg.png";
 import iconSpacer from "./assets/icon-spacer.svg";
@@ -23,6 +23,7 @@ import donationStep6 from "images/donationStep6.png";
 import donationStep7 from "images/donationStep7.png";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
+import * as analytics from "../../services/analytics";
 
 const useStyles = makeStyles((theme) => ({
   outer: {
@@ -208,6 +209,10 @@ const useStyles = makeStyles((theme) => ({
 const Donate = () => {
   const classes = useStyles();
   const [showDonationDialog, setShowDonationDialog] = React.useState(false);
+
+  useEffect(() => {
+    analytics.postEvent("visitDonatePage");
+  }, []);
 
   const handleShowDonationDialog = () => {
     setShowDonationDialog(showDonationDialog ? false : true);

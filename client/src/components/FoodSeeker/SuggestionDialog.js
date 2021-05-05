@@ -31,6 +31,7 @@ function SuggestionDialog(props) {
           tipsterName: "",
           tipsterPhone: "",
           tipsterEmail: "",
+          category: "",
         }
       : {
           id: 0,
@@ -47,6 +48,7 @@ function SuggestionDialog(props) {
           tipsterName: "",
           tipsterPhone: "",
           tipsterEmail: "",
+          category: "",
         }
   );
 

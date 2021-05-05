@@ -54,6 +54,7 @@ function Suggestion(props) {
     tipsterName: "",
     tipsterPhone: "",
     tipsterEmail: "",
+    category: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -106,6 +107,20 @@ function Suggestion(props) {
             fullWidth
             autoFocus
             value={stakeholder.name}
+            onChange={handleChange}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            type="text"
+            size="small"
+            label="Category (Food Pantry, Meal Program, etc.)"
+            name="category"
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            autoFocus
+            value={stakeholder.category}
             onChange={handleChange}
           />
         </Grid>

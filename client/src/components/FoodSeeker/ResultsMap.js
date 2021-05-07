@@ -1,6 +1,10 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
-import ReactMapGL, { NavigationControl } from "react-map-gl";
+import ReactMapGL, {
+  NavigationControl,
+  ScaleControl,
+  AttributionControl,
+} from "react-map-gl";
 import { Grid, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -12,15 +16,26 @@ import StakeholderPreview from "components/FoodSeeker/StakeholderPreview";
 import StakeholderDetails from "components/FoodSeeker/StakeholderDetails";
 import * as analytics from "../../services/analytics";
 
-
 const styles = {
   navigationControl: {
     position: "absolute",
     top: 0,
-    right: 0,
-    margin: "10px",
+    right: 30,
+    margin: "8px",
     marginRight: "40px",
     zIndex: 5,
+  },
+  scaleControl: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    margin: "8px",
+
+    zIndex: 5,
+  },
+  attributionStyle: {
+    right: 10,
+    bottom: 0,
   },
 };
 
@@ -79,6 +94,10 @@ function Map({
   const categoryIdsOrDefault = categoryIds.length
     ? categoryIds
     : DEFAULT_CATEGORIES;
+
+  useEffect(() => {
+    analytics.postEvent("showMap");
+  }, []);
 
   const onInteractionStateChange = (s) => {
     // don't do anything if the mapview is moving
@@ -150,9 +169,21 @@ function Map({
           onClick={unselectStakeholder}
           onInteractionStateChange={onInteractionStateChange}
         >
+          <AttributionControl
+            compact={mobileView}
+            style={styles.attributionStyle}
+          />
           <div style={styles.navigationControl}>
             <NavigationControl showCompass={false} />
           </div>
+          <div style={styles.scaleControl}>
+            <ScaleControl
+              maxWidth={100}
+              unit="imperial"
+              className={classes.scaleControl}
+            />
+          </div>
+
           {showSearchArea && (
             <Button
               onClick={searchArea}

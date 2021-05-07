@@ -1,5 +1,6 @@
 import { useState } from "react";
 import * as stakeholderService from "../services/stakeholder-best-service";
+import * as analytics from "../services/analytics";
 
 export const useOrganizationBests = () => {
   const [state, setState] = useState({
@@ -25,6 +26,16 @@ export const useOrganizationBests = () => {
       console.error(msg);
       return Promise.reject(msg);
     }
+    analytics.postEvent("searchFoodSeeker", {
+      name,
+      latitude,
+      longitude,
+      radius,
+      bounds,
+      categoryIds,
+      isInactive,
+      verificationStatusId,
+    });
     //if (!categoryIds || categoryIds.length === 0) return;
     try {
       setState({ data: null, loading: true, error: false });

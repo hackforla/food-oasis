@@ -1,6 +1,6 @@
 import React from "react";
 
-import faqbg from "./assets/faq-bg.png";
+import faqbg from "./assets/faq-header.jpg";
 import iconSpacer from "./assets/icon-spacer.svg";
 import iconSpacerBlue from "./assets/icon-spacer-blue.svg";
 import { makeStyles } from "@material-ui/core";
@@ -57,7 +57,7 @@ const useStyles = makeStyles(() => ({
       marginBottom: "20px",
     },
   },
-  forVolunteers: {
+  darkSection: {
     padding: "32px",
     margin: "32px 0",
     borderRadius: "24px",
@@ -78,7 +78,7 @@ const useStyles = makeStyles(() => ({
       color: "#ffffff",
     },
   },
-  forDonors: {
+  lightSection: {
     color: "#4d4d4d",
     background: "#fff",
     padding: "32px",
@@ -126,45 +126,64 @@ const About = () => {
         <figure className={classes.figure}>
           <img alt="FAQ" src={faqbg} style={{ width: "100%" }} />
         </figure>
-        <section className={classes.glossary}>
+        <section className={classes.darkSection}>
           <img
-            alt="Glossary"
-            src={iconSpacerBlue}
+            alt="For Users"
+            src={iconSpacer}
             className={classes.icon}
             height="40"
           />
-          <h2>Glossary</h2>
+          <h2>For Users</h2>
           <dl className={classes.dl}>
-            <dt>Food Seeker</dt>
-            <dd>A person in need of free groceries or meals.</dd>
-            <dt>Food Pantry</dt>
+            <dt>How do I use this tool to find food near me?</dt>
             <dd>
-              A place that gives away free groceries—not cooked meals—to the
-              community.
+              From the <a href="https://devhi.foodoasis.net/organizations">“Find Food”</a> page, type in your zip code
+               or address and hit Enter. A list of nearby options,
+              sorted from nearest to farthest, will pop up on the left side of the page. Click “PANTRIES” or “MEALS” if
+              you’d like to filter by type. Click “Details” on an entry to view information like Directions, Hours,
+              Phone, Email, and Eligibility Requirements.
             </dd>
-            <dt>Food Bank</dt>
+
+            <dt>
+              Does this food-finder tool include every single place I can get
+              food/food assistance on Oʻahu?
+            </dt>
             <dd>
-              A nonprofit that collects donated food and distributes it to food
-              pantries.
+              No. The data Aloha Harvest uses to populate this directory
+              includes all food pantry and meal programs we deliver food to that
+              are open to the public. We deliver food to almost every program of
+              this kind on the island, but not 100% of them. Furthermore, there
+              are many places that individuals can apply to receive food
+              assistance that are not open to the general public. A volunteer
+              reviews our list once a week to confirm that all details are still
+              current and correct.
             </dd>
-            <dt>Meal Program or Soup Kitchen</dt>
-            <dd>
-              A place that gives away free cooked meals—not grocery and pantry
-              items—to the community.
+
+            <dt>Where can I go for a comprehensive, statewide list of food resources and related assistance?</dt>
+            <dd><a href="https://www.auw211.org/s/">Aloha United Way</a> can be called by dialing 211 or visiting
+              <a href="https://auw211.org">auw211.org</a>. Their specialists can help you
+              through a directory of every registered social service agency in the state that helps get food to people
+              who need it. They can also search a database of 4,000+ government and nonprofit services and programs to
+              find the answers you need on related issues, like shelter, clothing, childcare, elderly care, disability
+              services and more. They are the only statewide hotline partnering with the Department of Health.
             </dd>
-            <dt>Food Donation</dt>
-            <dd>
-              Donated food includes pantry items, produce, and prepared meals.
+
+            <dt>Does this tool include resources for neighbor islands?</dt>
+            <dd>No, unfortunately Aloha Harvest is currently only located on Oʻahu and does not yet have the capacity to
+              establish presence on the neighbor islands. As such, our list of food resources only applies to Oʻahu.
+              However, we do have a goal of expanding to the other islands within the next 5 years.
             </dd>
-            <dt>Food Rescue Organization</dt>
-            <dd>
-              Collects food donations from farmers, grocery stores, restaurants,
-              corporations, and caterers. Their goal is to give food to people
-              who need it and not have it go to waste.
+
+            <dt>Does Aloha Harvest deliver food directly to individuals?</dt>
+            <dd>No, unlike a food bank or food pantry, Aloha Harvest provides no direct services to individuals.
+              Instead, we perform a “middle man” role: We pick up excess food from a network of food donors and
+              redistribute it to a network of nonprofits and social service agencies feeding O‘ahu’s hungry. To learn
+              more, visit this tool’s About Us page or our website directly at
+              <a href="https://alohaharvest.org">alohaharvest.org</a>.
             </dd>
           </dl>
         </section>
-        <section className={classes.forVolunteers}>
+        <section className={classes.lightSection}>
           <img
             alt="For Volunteers"
             src={iconSpacer}
@@ -180,7 +199,7 @@ const About = () => {
             <dd>Visit our website at alohaharvest.org.</dd>
           </dl>
         </section>
-        <section className={classes.forDonors}>
+        <section className={classes.darkSection}>
           <img
             alt="For Donors"
             src={iconSpacerBlue}
@@ -206,7 +225,7 @@ const About = () => {
             <dd>
               Yes! Please visit the Aloha Harvest{" "}
               <a
-                href="https://alohaharvest.org/donate-food/"
+                href="//alohaharvest.org/donate-food/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -214,7 +233,7 @@ const About = () => {
               </a>{" "}
               and{" "}
               <a
-                href="https://alohaharvest.org/donate-money/"
+                href="//alohaharvest.org/donate-money/"
                 target="_blank"
                 rel="noopener noreferrer"
               >

@@ -10,6 +10,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
 import * as accountService from "../../../services/account-service";
+import { UserContext } from "../../../contexts/user-context";
 
 const useStyles = makeStyles({
   table: {
@@ -72,6 +73,40 @@ export default function SecurityTable(props) {
     }
   };
 
+  // arg `roleType` is expected to be one of:
+  //   'globalAdmin' or 'globalReporting'
+  const handleGlobalToggle = (userId, e, roleType) => {
+    if (roleType === "globalAdmin") {
+      props.accounts.map(async (each) => {
+        if (userId === each.id) {
+          let check = e.target.checked;
+          await accountService.setGlobalPermissions(
+            each.id,
+            "is_global_admin",
+            check
+          );
+          await props.handlePermissionChange(each.id, "is_global_admin", check);
+        }
+      });
+    } else if (roleType === "globalReporting") {
+      props.accounts.map(async (each) => {
+        if (userId === each.id) {
+          let check = e.target.checked;
+          await accountService.setPermissions(
+            each.id,
+            "is_global_reporting",
+            check
+          );
+          await props.handlePermissionChange(
+            each.id,
+            "is_global_reporting",
+            check
+          );
+        }
+      });
+    }
+  };
+
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">
@@ -81,6 +116,20 @@ export default function SecurityTable(props) {
             <TableCell align="right" className={classes.text}>
               Name
             </TableCell>
+            <UserContext.Consumer>
+              {(user) =>
+                user && user.isGlobalAdmin ? (
+                  <>
+                    <TableCell align="right" className={classes.text}>
+                      Root
+                    </TableCell>
+                    <TableCell align="right" className={classes.text}>
+                      Reports
+                    </TableCell>
+                  </>
+                ) : null
+              }
+            </UserContext.Consumer>
             <TableCell align="right" className={classes.text}>
               Admin
             </TableCell>
@@ -105,6 +154,30 @@ export default function SecurityTable(props) {
                 <TableCell align="right">
                   {row.lastName}, {row.firstName}
                 </TableCell>
+                <UserContext.Consumer>
+                  {(user) =>
+                    user && user.isGlobalAdmin ? (
+                      <>
+                        <TableCell align="right">
+                          <Checkbox
+                            checked={row.isGlobalAdmin}
+                            onChange={(e) =>
+                              handleGlobalToggle(row.id, e, "globalAdmin")
+                            }
+                          />
+                        </TableCell>
+                        <TableCell align="right">
+                          <Checkbox
+                            checked={row.isGlobalReporting}
+                            onChange={(e) =>
+                              handleGlobalToggle(row.id, e, "globalReporting")
+                            }
+                          />
+                        </TableCell>
+                      </>
+                    ) : null
+                  }
+                </UserContext.Consumer>
                 <TableCell align="right">
                   <Checkbox
                     checked={row.isAdmin}

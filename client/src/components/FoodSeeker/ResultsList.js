@@ -5,6 +5,7 @@ import { Button, CircularProgress, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import StakeholderPreview from "components/FoodSeeker/StakeholderPreview";
 import { isMobile } from "helpers";
+import * as analytics from "../../services/analytics";
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -57,6 +58,10 @@ const ResultsList = ({
   useEffect(() => {
     itemsRef.current = itemsRef.current.slice(0, stakeholders.length);
   }, [stakeholders]);
+
+  useEffect(() => {
+    analytics.postEvent("showList");
+  }, []);
 
   const mobileView = isMobile();
 

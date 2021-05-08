@@ -116,10 +116,18 @@ const useStyles = makeStyles((theme) => ({
     height: 32,
   },
   learnMore: {
+    fontSize: "19px",
     color: "white",
     textDecoration: "underline",
     "&:visited": {
       color: "white",
+    },
+  },
+  locationBtn: {
+    backgroundColor: '#4CAF50',
+    color: "white",
+    "&:hover": {
+      backgroundColor: "#439846",
     },
   },
 }));

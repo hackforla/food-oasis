@@ -207,6 +207,28 @@ const Home = (props) => {
               </Button>*/}
             </Box>
             <Box className={classes.inputContainer}>
+              <>
+                or
+              </>
+            </Box>
+            <Box className={classes.inputContainer}>
+              {/* <Search
+                userCoordinates={userCoordinates}
+                setOrigin={selectLocation}
+                origin={origin}
+                browserLocation={browserLocation}
+              /> */}
+              <Button
+                className={classes.locationBtn} 
+                variant="contained" 
+                fullWidth 
+                startIcon={<LocationOnIcon />}
+                onClick={useMyLocationTrigger}
+              >
+                Use my current location
+              </Button>
+            </Box>
+            <Box className={classes.inputContainer}>
                 <Link component={RouterLink} to="/about" className={classes.learnMore}>
                   Learn about this site
                 </Link>

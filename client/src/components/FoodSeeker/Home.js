@@ -7,13 +7,15 @@ import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Link from '@material-ui/core/Link';
+import Button from '@material-ui/core/Button';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
 import { Link as RouterLink } from 'react-router-dom';
 import Search from "components/FoodSeeker/Search";
 // The three tenant logos happen to be the same at the moment
 import logo from "images/foodoasis.svg";
 import logoCA from "images/foodoasis.svg";
 import logoHI from "images/foodoasis.svg";
-import { tenantId } from "helpers/Configuration";
+import { tenantId, defaultCoordinates } from "helpers/Configuration";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -134,7 +136,14 @@ const useStyles = makeStyles((theme) => ({
 
 const Home = (props) => {
   const classes = useStyles();
-  const { origin, setOrigin, userCoordinates, browserLocation } = props;
+  const {
+    origin,
+    setOrigin,
+    userCoordinates,
+    setUserCoordinates,
+    browserLocation,
+    setBrowserLocation
+  } = props;
 
   useEffect(() => {
     window.stormly("event", "visitLandingPage");

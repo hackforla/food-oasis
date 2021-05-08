@@ -155,15 +155,17 @@ export default function Search({
       userCoordinates.latitude
     ) {
       return (
-        <MenuItem
-          component="div"
-          onClick={() => {
-            setOrigin({ ...userCoordinates, locationName: "Current Location" });
-            handleDownshiftOnChange("Current Location");
-          }}
-        >
-          <LocationOnIcon /> Current Location
-        </MenuItem>
+        <>
+        </>
+        // <MenuItem
+        //   component="div"
+        //   onClick={() => {
+        //     setOrigin({ ...userCoordinates, locationName: "Current Location" });
+        //     handleDownshiftOnChange("Current Location");
+        //   }}
+        // >
+        //   <LocationOnIcon /> Current Location
+        // </MenuItem>
       );
     }
 

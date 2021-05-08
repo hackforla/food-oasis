@@ -5,6 +5,8 @@ import { MenuItem, TextField, Paper } from "@material-ui/core";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { makeStyles } from "@material-ui/core/styles";
 import { useMapboxGeocoder } from "hooks/useMapboxGeocoder";
+import InputAdornment from '@material-ui/core/InputAdornment';
+import SearchIcon from '@material-ui/icons/Search';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -46,6 +48,14 @@ const useStyles = makeStyles((theme) => ({
       opacity: "1",
     },
   },
+  searchIcon: {
+    color: "#19334c",
+    backgroundColor: 'red',
+  },
+  searchIconCont: {
+    backgroundColor: 'orange',
+    cursor: 'pointer',
+  }
 }));
 
 export default function Search({
@@ -111,6 +121,11 @@ export default function Search({
         size="small"
         autoFocus={false}
         InputProps={{
+          endAdornment: (
+            <InputAdornment onClick={() => setOrigin({})} position="start" className={classes.searchIconCont}>
+              <SearchIcon className={classes.searchIcon}/>
+            </InputAdornment>
+          ),
           classes: {
             input: classes.input,
           },

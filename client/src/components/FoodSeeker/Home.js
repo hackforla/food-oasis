@@ -140,6 +140,49 @@ const Home = (props) => {
     window.stormly("event", "visitLandingPage");
   }, []);
 
+  const useMyLocationTrigger = () => {
+    let userCoordinates = { latitude: null, longitude: null };
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          if (position) {
+            const userCoordinates = {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            };
+            setUserCoordinates(userCoordinates);
+            setBrowserLocation(true);
+            setOrigin(userCoordinates);
+            selectLocation(userCoordinates);
+          }
+        },
+        (error) => {
+          // Ususally because user has blocked location
+          console.log(`Getting browser location failed: ${error.message}`);
+          const userCoordinates = {
+            latitude: defaultCoordinates.lat,
+            longitude: defaultCoordinates.lon,
+          };
+          setUserCoordinates(userCoordinates);
+          setBrowserLocation(false);
+          selectLocation(userCoordinates);
+        }
+      );
+    } else {
+      console.log(
+        "Browser does not support getting users location - using default location for area"
+      );
+      const userCoordinates = {
+        latitude: defaultCoordinates.lat,
+        longitude: defaultCoordinates.lon,
+      };
+      setUserCoordinates(userCoordinates);
+      setBrowserLocation(false);
+      selectLocation(userCoordinates);
+    }
+    return userCoordinates;
+  };
+
   React.useEffect(() => {
     if (props.match.path === "/") {
       sessionStorage.clear();

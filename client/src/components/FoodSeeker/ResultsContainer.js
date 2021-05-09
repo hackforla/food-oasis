@@ -11,7 +11,7 @@ import { DEFAULT_CATEGORIES } from "constants/stakeholder";
 
 import Filters from "./ResultsFilters";
 import List from "./ResultsListOptimized";
-import Map from "./ResultsMap";
+import Map from "./ResultsMapOptimized";
 import * as analytics from "../../services/analytics";
 
 const useStyles = makeStyles((theme) => ({

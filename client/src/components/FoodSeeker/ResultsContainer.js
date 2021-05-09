@@ -10,7 +10,7 @@ import { defaultCoordinates } from "helpers/Configuration";
 import { DEFAULT_CATEGORIES } from "constants/stakeholder";
 
 import Filters from "./ResultsFilters";
-import List from "./ResultsList";
+import List from "./ResultsListOptimized";
 import Map from "./ResultsMap";
 import * as analytics from "../../services/analytics";
 

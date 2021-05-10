@@ -253,6 +253,7 @@ const Home = (props) => {
                 setOrigin={selectLocation}
                 origin={origin}
                 browserLocation={browserLocation}
+                showSearchIcon
               />
               {/* <Button
                 type="submit"

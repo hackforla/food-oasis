@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Downshift from "downshift";
 import { MenuItem, TextField, Paper } from "@material-ui/core";
-import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { makeStyles } from "@material-ui/core/styles";
 import { useMapboxGeocoder } from "hooks/useMapboxGeocoder";
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -61,6 +60,7 @@ export default function Search({
   setOrigin,
   origin,
   browserLocation,
+  showSearchIcon
 }) {
   const classes = useStyles();
   const [selectedPlace, setSelectedPlace] = useState("");
@@ -119,11 +119,11 @@ export default function Search({
         size="small"
         autoFocus={false}
         InputProps={{
-          endAdornment: (
+          endAdornment: (showSearchIcon ?
             <InputAdornment onClick={() => setOrigin({})} position="start" className={classes.searchIconCont}>
               <SearchIcon className={classes.searchIcon}/>
             </InputAdornment>
-          ),
+            : <div />),
           classes: {
             input: classes.input,
           },
@@ -259,4 +259,9 @@ Search.propTypes = {
     longitude: PropTypes.number,
   }),
   setOrigin: PropTypes.func,
+  showSearchIcon: PropTypes.bool,
+};
+
+Search.defaultProps = {
+  showSearchIcon: false,
 };

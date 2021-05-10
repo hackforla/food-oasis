@@ -50,10 +50,8 @@ const useStyles = makeStyles((theme) => ({
   },
   searchIcon: {
     color: "#19334c",
-    backgroundColor: 'red',
   },
   searchIconCont: {
-    backgroundColor: 'orange',
     cursor: 'pointer',
   }
 }));

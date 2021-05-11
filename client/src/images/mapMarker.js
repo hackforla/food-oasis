@@ -1,9 +1,15 @@
 import React from "react";
 import { foodPantry, mealProgram, closed } from "theme/colors";
 
-const MapMarker = (category, inactive, onClick, selected = false) => {
-  const width = selected ? "38px" : "30px";
-  const height = selected ? "50px" : "40px";
+const MapMarker = ({
+  category,
+  inactive,
+  onClick,
+  selected = false,
+  scale = 1.0,
+}) => {
+  const width = (selected ? 38 : 30) * scale;
+  const height = (selected ? 50 : 40) * scale;
   const filter = selected ? "url(#f1)" : "";
   let content;
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
 
-import mapMarker from "images/mapMarker";
+import MapMarker from "images/mapMarker";
 import fbIcon from "images/fbIcon.png";
 import instaIcon from "images/instaIcon.png";
 import {
@@ -266,19 +266,25 @@ const StakeholderDetails = ({
                 .padEnd(4, "0")
             : selectedStakeholder.distance.toString().substring(0, 3)}{" "}
           mi
-          {mapMarker(
-            selectedStakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID &&
+          <MapMarker
+            category={
+              selectedStakeholder.categories[0].id ===
+                FOOD_PANTRY_CATEGORY_ID &&
               selectedStakeholder.categories[1] &&
               selectedStakeholder.categories[1].id === MEAL_PROGRAM_CATEGORY_ID
-              ? -1
-              : selectedStakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID
-              ? 0
-              : 1,
-            selectedStakeholder.inactiveTemporary ||
+                ? -1
+                : selectedStakeholder.categories[0].id ===
+                  FOOD_PANTRY_CATEGORY_ID
+                ? 0
+                : 1
+            }
+            inactive={
+              selectedStakeholder.inactiveTemporary ||
               selectedStakeholder.inactive
-              ? true
-              : false
-          )}
+                ? true
+                : false
+            }
+          />
         </div>
       </div>
       {selectedStakeholder.verificationStatusId ===

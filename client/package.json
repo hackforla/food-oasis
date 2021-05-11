@@ -1,7 +1,7 @@
 {
   "name": "foodoasis-client",
   "description": "React Client for Food Oasis",
-  "version": "1.0.52",
+  "version": "1.0.53",
   "author": "Hack for LA",
   "license": "GPL-2.0",
   "private": true,
@@ -47,6 +47,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.2",
     "react-spinners": "^0.10.4",
+    "react-virtualized": "^9.22.3",
     "yup": "^0.32.8"
   },
   "browserslist": {
@@ -63,11 +64,11 @@
   },
   "devDependencies": {
     "@storybook/addon-actions": "^6.1.20",
-    "@storybook/addon-essentials": "^6.1.20",
+    "@storybook/addon-essentials": "^6.2.9",
     "@storybook/addon-links": "^6.1.20",
     "@storybook/node-logger": "^6.1.20",
     "@storybook/preset-create-react-app": "^3.1.6",
-    "@storybook/react": "^6.1.20",
+    "@storybook/react": "^6.2.9",
     "prettier": "^2.2.1",
     "react-syntax-highlighter": "^15.4.3",
     "storybook-addon-material-ui": "^0.9.0-alpha.24"

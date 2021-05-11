@@ -107,7 +107,7 @@ function Map({
   const [showDetails, setShowDetails] = useState(false);
   const [showSearchArea, setShowSearchArea] = useState(false);
   const [mapReady, setMapReady] = useState(false);
-  const classes = useStyles();
+  const classes = useStyles({ selectedStakeholder });
   const mapRef = useRef();
   const categoryIdsOrDefault = categoryIds.length
     ? categoryIds

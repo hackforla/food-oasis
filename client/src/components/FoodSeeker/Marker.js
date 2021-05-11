@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Marker } from "react-map-gl";
 import { makeStyles } from "@material-ui/core/styles";
 
-import mapMarker from "images/mapMarker";
+import MapMarkerIcon from "images/mapMarker";
 import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
@@ -32,17 +32,19 @@ const MapMarker = ({ onClick, stakeholder, selectedStakeholder }) => {
       latitude={latitude}
       className={selected ? classes.active : ""}
     >
-      {mapMarker(
-        categories[0]?.id === FOOD_PANTRY_CATEGORY_ID &&
+      <MapMarkerIcon
+        category={
+          categories[0]?.id === FOOD_PANTRY_CATEGORY_ID &&
           categories[1]?.id === MEAL_PROGRAM_CATEGORY_ID
-          ? -1
-          : categories[0]?.id === FOOD_PANTRY_CATEGORY_ID
-          ? 0
-          : 1,
-        inactiveTemporary || inactive,
-        onClick,
-        selected
-      )}
+            ? -1
+            : categories[0]?.id === FOOD_PANTRY_CATEGORY_ID
+            ? 0
+            : 1
+        }
+        inactive={inactiveTemporary || inactive}
+        onClick={onClick}
+        selected={selected}
+      />
     </Marker>
   );
 };

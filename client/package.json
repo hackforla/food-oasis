@@ -47,6 +47,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.2",
     "react-spinners": "^0.10.4",
+    "react-virtualized": "^9.22.3",
     "yup": "^0.32.8"
   },
   "browserslist": {

@@ -2,6 +2,24 @@ import { useState } from "react";
 import * as stakeholderService from "../services/stakeholder-best-service";
 import * as analytics from "../services/analytics";
 
+const sortOrganizations = (a, b) => {
+  if (
+    (a.inactive || a.inactiveTemporary) &&
+    !b.inactive &&
+    !b.inactiveTemporary
+  ) {
+    return 1;
+  } else if (
+    !a.inactive &&
+    !a.inactiveTemporary &&
+    (b.inactive || b.inactiveTemporary)
+  ) {
+    return -1;
+  } else {
+    return a.distance < b.distance ? -1 : a.distance > b.distance ? 1 : 0;
+  }
+};
+
 export const useOrganizationBests = () => {
   const [state, setState] = useState({
     data: null,
@@ -59,6 +77,7 @@ export const useOrganizationBests = () => {
         };
       }
       const stakeholders = await stakeholderService.search(params);
+      stakeholders.sort(sortOrganizations);
       setState({ data: stakeholders, loading: false, error: false });
       return stakeholders;
     } catch (err) {

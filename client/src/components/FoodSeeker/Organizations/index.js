@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 import { useHistory, useLocation } from "react-router-dom";
@@ -31,10 +31,7 @@ export default function ResultsContainer({
   setToast,
   browserLocation,
 }) {
-  // Component state
-  const { data, search } = useOrganizationBests();
-  const [sortedData, setSortedData] = useState([]);
-  const [status, setStatus] = useState("initial"); // 'initial', 'loading', 'loaded'
+  const { data: stakeholders, search, loading } = useOrganizationBests();
   const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
@@ -82,64 +79,16 @@ export default function ResultsContainer({
     [history]
   );
 
-  // Need to get this working to navigate to a specific organization, which may
-  // not be listed in the previously fetched data collection
-  // useEffect(() => {
-  //   if (location.search.includes("?org=") && data) {
-  //     const org = location.search.replace("?org=", "").replaceAll("_", " ");
-  //     const stakeholder = data.find((s) => s.name.toLowerCase() === org);
-  //     if (stakeholder) {
-  //       onSelectStakeholder(stakeholder);
-  //       setViewport({
-  //         ...viewport,
-  //         latitude: stakeholder.latitude,
-  //         longitude: stakeholder.longitude,
-  //       });
-  //     } else {
-  //       onSelectStakeholder(null);
-  //     }
-  //   }
-  // }, [data, location.search, viewport]);
-
   const switchResultsView = () => {
     doSelectStakeholder();
     setIsMapView(!isMapView);
   };
-
-  // Component effects
-
-  useEffect(() => {
-    setStatus("loading");
-    const sortOrganizations = (a, b) => {
-      if (
-        (a.inactive || a.inactiveTemporary) &&
-        !b.inactive &&
-        !b.inactiveTemporary
-      ) {
-        return 1;
-      } else if (
-        !a.inactive &&
-        !a.inactiveTemporary &&
-        (b.inactive || b.inactiveTemporary)
-      ) {
-        return -1;
-      } else {
-        return a.distance < b.distance ? -1 : a.distance > b.distance ? 1 : 0;
-      }
-    };
-    if (!data) {
-      return;
-    }
-    setSortedData(data.sort(sortOrganizations));
-    setStatus("loaded");
-  }, [data]);
 
   const handleSearchThisArea = useCallback(
     (center, bounds) => {
       if (!center || !bounds) {
         console.error("handleSearchThisArea is missing args");
       }
-      setStatus("loading");
 
       setViewport({
         ...viewport,
@@ -156,14 +105,11 @@ export default function ResultsContainer({
         bounds,
         radius: defaultCoordinates.radius,
       });
-      setStatus("loaded");
     },
     [search, categoryIds, viewport]
   );
 
   const handleSearch = () => {
-    setStatus("loading");
-
     // TODO: This fn is called by ResultsFilter, and unfortunately, neither the
     // filter nor this component know the map component lat, long bounds, so
     // we're just using a radius-based query, which may not get all of the
@@ -178,8 +124,6 @@ export default function ResultsContainer({
       bounds: null,
       radius: defaultCoordinates.radius,
     });
-
-    setStatus("loaded");
   };
 
   return (
@@ -202,16 +146,16 @@ export default function ResultsContainer({
           <List
             selectedStakeholder={selectedStakeholder}
             doSelectStakeholder={doSelectStakeholder}
-            stakeholders={sortedData}
+            stakeholders={stakeholders || []}
             setToast={setToast}
-            status={status}
+            loading={loading}
             handleReset={handleSearch}
           />
         )}
         {(!mobileView || (mobileView && isMapView)) && (
           <Map
             handleSearch={handleSearchThisArea}
-            stakeholders={data}
+            stakeholders={stakeholders}
             doSelectStakeholder={doSelectStakeholder}
             selectedStakeholder={selectedStakeholder}
             categoryIds={categoryIds}

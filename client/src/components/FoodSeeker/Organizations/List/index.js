@@ -59,7 +59,7 @@ const ResultsList = ({
   selectedStakeholder,
   stakeholders,
   setToast,
-  status,
+  loading,
   handleReset,
 }) => {
   const classes = useStyles();
@@ -105,12 +105,12 @@ const ResultsList = ({
 
   return (
     <Grid item xs={12} md={4} className={classes.listContainer}>
-      {status === "loading" && (
+      {loading && (
         <div className={classes.emptyResult}>
           <CircularProgress />
         </div>
       )}
-      {status === "loaded" && stakeholders.length === 0 && (
+      {!loading && stakeholders.length === 0 && (
         <div className={classes.emptyResult}>
           <p>Sorry, we don&apos;t have any results for this area.</p>
           <Button

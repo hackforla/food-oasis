@@ -1,102 +1,49 @@
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  useMemo,
-  useCallback,
-} from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import ReactMapGL, {
   NavigationControl,
   ScaleControl,
-  AttributionControl,
   Source,
   Layer,
 } from "react-map-gl";
-import { Grid, Button } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { MAPBOX_STYLE } from "constants/map";
 import { DEFAULT_CATEGORIES } from "constants/stakeholder";
-import { isMobile } from "helpers";
-import StakeholderPreview from "../Preview";
-import StakeholderDetails from "../Details";
 import * as analytics from "services/analytics";
 import {
+  MARKERS_LAYER_ID,
   loadMarkerIcons,
   markersLayerStyles,
-  getMarkersGeojson,
+  useMarkersGeojson,
 } from "./MarkerHelpers";
-
-const styles = {
-  navigationControl: {
-    position: "absolute",
-    top: 0,
-    right: 30,
-    margin: "8px",
-    marginRight: "40px",
-    zIndex: 5,
-  },
-  scaleControl: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    margin: "8px",
-
-    zIndex: 5,
-  },
-  attributionStyle: {
-    right: 10,
-    bottom: 0,
-  },
-};
 
 const useStyles = makeStyles((theme) => ({
   map: {
-    textAlign: "center",
-    fontSize: "12px",
-    [theme.breakpoints.up("md")]: {
-      height: "100%",
+    width: '100%',
+    height: '100%',
+    position: 'relative',
+    '& .mapboxgl-ctrl-attrib-button': {
+      display: 'none',
     },
-    [theme.breakpoints.down("xs")]: {
-      height: (props) =>
-        props.selectedStakeholder ? "calc(100% - 120px)" : "100%",
-    },
-    [theme.breakpoints.only("sm")]: {
-      order: 0,
-      height: "50%",
-    },
-    position: "relative",
   },
-  preview: {
-    margin: "0 1em",
+  scaleControl: {
+    top: 8,
+    left: 8,
   },
-  details: {
-    textAlign: "center",
-    width: "100%",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    padding: "0 1em",
-    position: "absolute",
-    height: "100%",
-    backgroundColor: theme.palette.background.default,
-    zIndex: 10000,
+  navigationControl: {
+    top: 8,
+    right: 8,
   },
   searchButton: {
     position: "absolute",
-    top: "5px",
+    top: 5,
     left: "50%",
     transform: "translate(-50%)",
     backgroundColor: "white",
     zIndex: 1000,
   },
 }));
-
-const MARKERS_LAYER_ID = "markers";
-
-const getCursor = ({ isHovering, isDragging }) => {
-  return isDragging ? "grabbing" : isHovering ? "pointer" : "grab";
-};
 
 function Map({
   handleSearch,
@@ -107,68 +54,48 @@ function Map({
   viewport,
   setViewport,
   setToast,
+  loading,
 }) {
-  const [showDetails, setShowDetails] = useState(false);
-  const [showSearchArea, setShowSearchArea] = useState(false);
-  const [mapReady, setMapReady] = useState(false);
-  const classes = useStyles({ selectedStakeholder });
+  const classes = useStyles();
   const mapRef = useRef();
-  const categoryIdsOrDefault = categoryIds.length
-    ? categoryIds
-    : DEFAULT_CATEGORIES;
+  const [markersLoaded, setMarkersLoaded] = useState(false);
 
   useEffect(() => {
     analytics.postEvent("showMap");
-
-    const map = mapRef.current.getMap();
-    map.on("load", async () => {
-      await loadMarkerIcons(map);
-      setMapReady(true);
-    });
   }, []);
 
-  // modify the stakeholders array by:
-  // 1. filtering out the inactive orgs
-  // 2. limiting the categories for each org to the ones currently selecte4d
-  const modifiedStakeholders = useMemo(() => {
-    if (!stakeholders) return null;
+  const onLoad = useCallback(async () => {
+    const map = mapRef.current.getMap();
+    await loadMarkerIcons(map);
+    setMarkersLoaded(true);
+  }, []);
 
-    return stakeholders
-      .filter(
-        (sh) =>
-          sh.latitude && sh.longitude && !(sh.inactive || sh.inactiveTemporary)
-      )
-      .map((stakeholder) => ({
-        ...stakeholder,
-        categories: stakeholder.categories.filter(({ id }) =>
-          categoryIdsOrDefault.includes(id)
-        ),
-      }));
-  }, [stakeholders, categoryIdsOrDefault]);
+  const onClick = useCallback(
+    (e) => {
+      if (!e.features || !e.features.length) {
+        doSelectStakeholder(null);
+      } else if (stakeholders) {
+        const { id } = e.features[0];
+        const selectedStakeholder = stakeholders.find((sh) => sh.id === id);
+        doSelectStakeholder(selectedStakeholder);
+      }
+    },
+    [stakeholders, doSelectStakeholder]
+  );
 
-  const markersGeojson = useMemo(() => {
-    return getMarkersGeojson(modifiedStakeholders, selectedStakeholder);
-  }, [modifiedStakeholders, selectedStakeholder]);
+  const interactiveLayerIds = markersLoaded ? [MARKERS_LAYER_ID] : undefined;
 
-  const onInteractionStateChange = (s) => {
-    // don't do anything if the mapview is moving
-    if (
-      s.isDragging ||
-      s.inTransition ||
-      s.isRotating ||
-      s.isZooming ||
-      s.isHovering ||
-      s.isPanning
-    )
-      return;
-    // make sure map has already loaded
-    if (mapRef && mapRef.current && mapRef.current) {
-      setShowSearchArea(true);
-    }
-  };
+  const getCursor = useCallback(({ isHovering, isDragging }) => {
+    return isDragging ? "grabbing" : isHovering ? "pointer" : "grab";
+  }, []);
+
+  const markersGeojson = useMarkersGeojson({
+    stakeholders,
+    selectedStakeholder,
+    categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
+  });
 
   const searchArea = (e) => {
-    setShowSearchArea(false);
     const map = mapRef.current.getMap();
     const center = map.getCenter();
     const mapBounds = map.getBounds();
@@ -182,102 +109,45 @@ function Map({
     handleSearch(center, bounds);
   };
 
-  const unselectStakeholder = useCallback(() => {
-    setShowDetails(false);
-    doSelectStakeholder(null);
-  }, [doSelectStakeholder]);
-
-  const handleClick = useCallback(
-    (e) => {
-      if (!e.features || !e.features.length) {
-        unselectStakeholder();
-      } else if (stakeholders) {
-        const { id } = e.features[0];
-        const selectedStakeholder = stakeholders.find((sh) => sh.id === id);
-        doSelectStakeholder(selectedStakeholder);
-      }
-    },
-    [stakeholders, unselectStakeholder, doSelectStakeholder]
-  );
-
-  const mobileView = isMobile();
-
   return (
-    <>
-      <Grid item xs={12} md={8} className={classes.map}>
-        <ReactMapGL
-          {...viewport}
-          ref={mapRef}
-          width="100%"
-          height="100%"
-          onViewportChange={(newViewport) => {
-            setViewport(newViewport);
-            // // Pass zooom level up to parent control, this allows us
-            // // to maintain zoom when search is re-executed, etc.
-            // setZoom(newViewport.zoom);
-          }}
-          mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
-          mapStyle={MAPBOX_STYLE}
-          onClick={handleClick}
-          onInteractionStateChange={onInteractionStateChange}
-          interactiveLayerIds={mapReady ? [MARKERS_LAYER_ID] : undefined}
-          getCursor={getCursor}
-        >
-          <AttributionControl
-            compact={mobileView}
-            style={styles.attributionStyle}
-          />
-          <div style={styles.navigationControl}>
-            <NavigationControl showCompass={false} />
-          </div>
-          <div style={styles.scaleControl}>
-            <ScaleControl
-              maxWidth={100}
-              unit="imperial"
-              className={classes.scaleControl}
-            />
-          </div>
-          {mapReady && (
-            <Source type="geojson" data={markersGeojson}>
-              <Layer id={MARKERS_LAYER_ID} {...markersLayerStyles} />
-            </Source>
-          )}
-        </ReactMapGL>
-        {showSearchArea && (
-          <Button
-            onClick={searchArea}
-            variant="outlined"
-            size="small"
-            className={classes.searchButton}
-          >
-            Search this area
-          </Button>
-        )}
-      </Grid>
-      {!!selectedStakeholder && mobileView && (
-        <Grid
-          item
-          xs={12}
-          md={8}
-          className={classes.preview}
-          onClick={() => setShowDetails(true)}
-        >
-          <StakeholderPreview
-            doSelectStakeholder={doSelectStakeholder}
-            stakeholder={selectedStakeholder}
-          />
-        </Grid>
+    <ReactMapGL
+      ref={mapRef}
+      mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
+      mapStyle={MAPBOX_STYLE}
+      {...viewport}
+      onViewportChange={setViewport}
+      onLoad={onLoad}
+      onClick={onClick}
+      interactiveLayerIds={interactiveLayerIds}
+      getCursor={getCursor}
+      width="100%"
+      height="100%"
+      className={classes.map}
+    >
+      <NavigationControl
+        showCompass={false}
+        className={classes.navigationControl}
+      />
+      <ScaleControl
+        maxWidth={100}
+        unit="imperial"
+        className={classes.scaleControl}
+      />
+      {markersLoaded && (
+        <Source type="geojson" data={markersGeojson}>
+          <Layer {...markersLayerStyles} />
+        </Source>
       )}
-      {!!selectedStakeholder && mobileView && showDetails && (
-        <Grid item xs={12} md={4} className={classes.details}>
-          <StakeholderDetails
-            doSelectStakeholder={unselectStakeholder}
-            selectedStakeholder={selectedStakeholder}
-            setToast={setToast}
-          />
-        </Grid>
-      )}
-    </>
+      <Button
+        onClick={searchArea}
+        variant="outlined"
+        size="small"
+        className={classes.searchButton}
+        disabled={loading}
+      >
+        Search this area
+      </Button>
+    </ReactMapGL>
   );
 }
 

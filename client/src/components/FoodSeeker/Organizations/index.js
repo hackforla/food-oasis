@@ -12,6 +12,8 @@ import { DEFAULT_CATEGORIES } from "constants/stakeholder";
 import Filters from "./Filters";
 import List from "./List";
 import Map from "./Map";
+import Preview from "./Preview";
+import Details from "./Details";
 import * as analytics from "services/analytics";
 
 const useStyles = makeStyles((theme) => ({
@@ -21,6 +23,34 @@ const useStyles = makeStyles((theme) => ({
       height: "79%",
     },
     overflowY: "hidden",
+  },
+  map: {
+    [theme.breakpoints.up("md")]: {
+      height: "100%",
+    },
+    [theme.breakpoints.down("xs")]: {
+      height: (props) =>
+        props.selectedStakeholder ? "calc(100% - 120px)" : "100%",
+    },
+    [theme.breakpoints.only("sm")]: {
+      order: 0,
+      height: "50%",
+    },
+  },
+  preview: {
+    margin: "0 1em",
+  },
+  details: {
+    textAlign: "center",
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    padding: "0 1em",
+    position: "absolute",
+    height: "100%",
+    backgroundColor: theme.palette.background.default,
+    zIndex: 10000,
   },
 }));
 
@@ -32,14 +62,16 @@ export default function ResultsContainer({
   browserLocation,
 }) {
   const { data: stakeholders, search, loading } = useOrganizationBests();
-  const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
 
   const [selectedStakeholder, onSelectStakeholder] = useState(null);
   const [isMapView, setIsMapView] = useState(true);
 
+  const [showDetails, setShowDetails] = useState(false);
   const mobileView = isMobile();
+
+  const classes = useStyles({ selectedStakeholder });
 
   const { categoryIds, toggleCategory } = useCategoryIds([]);
   const [isVerifiedSelected, selectVerified] = useState(false);
@@ -126,6 +158,11 @@ export default function ResultsContainer({
     });
   };
 
+  const unselectStakeholder = useCallback(() => {
+    setShowDetails(false);
+    doSelectStakeholder(null);
+  }, [doSelectStakeholder]);
+
   return (
     <>
       <Filters
@@ -153,16 +190,44 @@ export default function ResultsContainer({
           />
         )}
         {(!mobileView || (mobileView && isMapView)) && (
-          <Map
-            handleSearch={handleSearchThisArea}
-            stakeholders={stakeholders}
-            doSelectStakeholder={doSelectStakeholder}
-            selectedStakeholder={selectedStakeholder}
-            categoryIds={categoryIds}
-            setToast={setToast}
-            viewport={viewport}
-            setViewport={setViewport}
-          />
+          <>
+            <Grid item xs={12} md={8} className={classes.map}>
+              <Map
+                handleSearch={handleSearchThisArea}
+                stakeholders={stakeholders}
+                doSelectStakeholder={doSelectStakeholder}
+                selectedStakeholder={selectedStakeholder}
+                categoryIds={categoryIds}
+                setToast={setToast}
+                viewport={viewport}
+                setViewport={setViewport}
+                loading={loading}
+              />
+            </Grid>
+            {!!selectedStakeholder && mobileView && (
+              <Grid
+                item
+                xs={12}
+                md={8}
+                className={classes.preview}
+                onClick={() => setShowDetails(true)}
+              >
+                <Preview
+                  doSelectStakeholder={doSelectStakeholder}
+                  stakeholder={selectedStakeholder}
+                />
+              </Grid>
+            )}
+            {!!selectedStakeholder && mobileView && showDetails && (
+              <Grid item xs={12} md={4} className={classes.details}>
+                <Details
+                  doSelectStakeholder={unselectStakeholder}
+                  selectedStakeholder={selectedStakeholder}
+                  setToast={setToast}
+                />
+              </Grid>
+            )}
+          </>
         )}
       </Grid>
     </>

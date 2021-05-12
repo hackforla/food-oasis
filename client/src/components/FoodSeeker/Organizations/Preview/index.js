@@ -10,9 +10,9 @@ import {
 } from "constants/stakeholder";
 import { ORGANIZATION_COLORS, CLOSED_COLOR } from "constants/map";
 import { getGoogleMapsUrl, extractNumbers } from "helpers";
-import * as analytics from "../../services/analytics";
+import * as analytics from "services/analytics";
 
-import Icon from "components/FoodSeeker/Icon";
+import StakeholderIcon from "images/stakeholderIcon";
 
 const useStyles = makeStyles(() => ({
   stakeholder: {
@@ -154,7 +154,7 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
       onClick={() => doSelectStakeholder(stakeholder)}
     >
       <div className={classes.leftInfo}>
-        <Icon stakeholder={stakeholder} height="50px" width="50px" />
+        <StakeholderIcon stakeholder={stakeholder} height="50px" width="50px" />
         {stakeholder.distance ? (
           <div>
             {stakeholder.distance >= 10

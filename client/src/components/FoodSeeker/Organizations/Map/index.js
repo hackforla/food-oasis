@@ -18,8 +18,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { MAPBOX_STYLE } from "constants/map";
 import { DEFAULT_CATEGORIES } from "constants/stakeholder";
 import { isMobile } from "helpers";
-import StakeholderPreview from "components/FoodSeeker/StakeholderPreview";
-import StakeholderDetails from "components/FoodSeeker/StakeholderDetails";
+import StakeholderPreview from "../Preview";
+import StakeholderDetails from "../Details";
 import * as analytics from "services/analytics";
 import {
   loadMarkerIcons,

@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
 
 import MapMarker from "images/mapMarker";
+import StakeholderIcon from "images/stakeholderIcon";
 import fbIcon from "images/fbIcon.png";
 import instaIcon from "images/instaIcon.png";
 import {
@@ -13,9 +14,8 @@ import {
 import { ORGANIZATION_COLORS, CLOSED_COLOR } from "constants/map";
 import { extractNumbers, getGoogleMapsUrl } from "helpers";
 
-import Icon from "components/FoodSeeker/Icon";
-import SuggestionDialog from "components/FoodSeeker/SuggestionDialog";
-import * as analytics from "../../services/analytics";
+import SuggestionDialog from "./SuggestionDialog";
+import * as analytics from "services/analytics";
 
 const useStyles = makeStyles((theme) => ({
   stakeholder: {
@@ -210,7 +210,7 @@ const StakeholderDetails = ({
         setToast={setToast}
       />
       <div className={classes.topInfo}>
-        <Icon stakeholder={selectedStakeholder} />
+        <StakeholderIcon stakeholder={selectedStakeholder} />
         <div className={classes.info}>
           <span>{selectedStakeholder.name}</span>
           <span>{selectedStakeholder.address1}</span>

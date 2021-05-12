@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Search({
+export default function SearchBar({
   userCoordinates,
   setOrigin,
   origin,
@@ -238,7 +238,7 @@ export default function Search({
   );
 }
 
-Search.propTypes = {
+SearchBar.propTypes = {
   userCoordinates: PropTypes.shape({
     latitude: PropTypes.number,
     longitude: PropTypes.number,

@@ -6,8 +6,8 @@ import List from "react-virtualized/dist/es/List";
 import AutoSizer from "react-virtualized/dist/es/AutoSizer";
 import CellMeasurer from "react-virtualized/dist/es/CellMeasurer";
 import CellMeasurerCache from "react-virtualized/dist/es/CellMeasurer/CellMeasurerCache";
-import StakeholderPreview from "components/FoodSeeker/StakeholderPreview";
-import StakeholderDetails from "components/FoodSeeker/StakeholderDetails";
+import StakeholderPreview from "../Preview";
+import StakeholderDetails from "../Details";
 import * as analytics from "services/analytics";
 
 const useStyles = makeStyles((theme) => ({

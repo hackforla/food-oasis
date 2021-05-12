@@ -48,7 +48,7 @@ import ConfirmEmail from "components/Account/ConfirmEmail";
 import FaqEdit from "components/Faq/FaqEdit";
 import FaqAdd from "components/Faq/FaqAdd";
 import Home from "components/FoodSeeker/Home";
-import Results from "components/FoodSeeker/ResultsContainer";
+import Organizations from "components/FoodSeeker/Organizations";
 import Suggestion from "components/FoodSeeker/Suggestion";
 import ImportFile from "components/Admin/ImportOrganizations/ImportFile";
 import adminTheme from "./theme/adminTheme";
@@ -233,7 +233,7 @@ function App() {
               */}
               <Redirect from="/search" to="/organizations" />
               <Route path="/organizations">
-                <Results
+                <Organizations
                   userCoordinates={userCoordinates}
                   origin={origin}
                   setOrigin={setOrigin}

@@ -6,13 +6,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
-import Search from "components/FoodSeeker/Search";
+import SearchBar from "components/FoodSeeker/shared/SearchBar";
 // The three tenant logos happen to be the same at the moment
 import logo from "images/foodoasis.svg";
 import logoCA from "images/foodoasis.svg";
 import logoHI from "images/foodoasis.svg";
 import { tenantId } from "helpers/Configuration";
-import * as analytics from "../../services/analytics";
+import * as analytics from "services/analytics";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -180,7 +180,7 @@ const Home = (props) => {
             )}
 
             <Box className={classes.inputContainer}>
-              <Search
+              <SearchBar
                 userCoordinates={userCoordinates}
                 setOrigin={selectLocation}
                 origin={origin}
@@ -194,7 +194,7 @@ const Home = (props) => {
                 startIcon={
                   <SearchIcon fontSize="large" className={classes.searchIcon} />
                 }
-              > 
+              >
                 {""}
               </Button>*/}
             </Box>

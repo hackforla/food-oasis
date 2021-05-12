@@ -2,9 +2,9 @@ import React, { useCallback, useEffect } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Button, Typography, Tooltip } from "@material-ui/core";
-import { tenantName } from "../../helpers/Configuration";
+import { tenantName } from "helpers/Configuration";
 import LocationSearchingIcon from "@material-ui/icons/LocationSearching";
-import * as analytics from "../../services/analytics";
+import * as analytics from "services/analytics";
 
 import {
   MEAL_PROGRAM_CATEGORY_ID,
@@ -13,8 +13,8 @@ import {
 import { isMobile } from "helpers";
 
 import theme from "theme/clientTheme";
-import SwitchViewsButton from "components/FoodSeeker/SwitchViewsButton";
-import Search from "components/FoodSeeker/Search";
+import SwitchViewsButton from "./SwitchViewsButton";
+import SearchBar from "components/FoodSeeker/shared/SearchBar";
 
 const useStyles = makeStyles((theme) => ({
   select: {
@@ -264,7 +264,7 @@ const ResultsFilters = ({
             onSubmit={(e) => handleSearch(e)}
             className={classes.form}
           >
-            <Search
+            <SearchBar
               userCoordinates={userCoordinates}
               setOrigin={(origin) => {
                 analytics.postEvent("changeOrigin", {});

@@ -1,11 +1,8 @@
 import React, { useState, useCallback } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Grid } from "@material-ui/core";
 import { useHistory, useLocation } from "react-router-dom";
 
 import { useOrganizationBests } from "hooks/useOrganizationBests";
 import useCategoryIds from "hooks/useCategoryIds";
-import { isMobile } from "helpers";
 import { defaultCoordinates } from "helpers/Configuration";
 import { DEFAULT_CATEGORIES } from "constants/stakeholder";
 
@@ -16,43 +13,8 @@ import Preview from "./Preview";
 import Details from "./Details";
 import * as analytics from "services/analytics";
 
-const useStyles = makeStyles((theme) => ({
-  listMapContainer: {
-    height: "100%",
-    [theme.breakpoints.up("sm")]: {
-      height: "79%",
-    },
-    overflowY: "hidden",
-  },
-  map: {
-    [theme.breakpoints.up("md")]: {
-      height: "100%",
-    },
-    [theme.breakpoints.down("xs")]: {
-      height: (props) =>
-        props.selectedStakeholder ? "calc(100% - 120px)" : "100%",
-    },
-    [theme.breakpoints.only("sm")]: {
-      order: 0,
-      height: "50%",
-    },
-  },
-  preview: {
-    margin: "0 1em",
-  },
-  details: {
-    textAlign: "center",
-    width: "100%",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    padding: "0 1em",
-    position: "absolute",
-    height: "100%",
-    backgroundColor: theme.palette.background.default,
-    zIndex: 10000,
-  },
-}));
+import useBreakpoints from "hooks/useBreakpoints";
+import { Mobile, Tablet, Desktop } from "./layouts";
 
 export default function ResultsContainer({
   userCoordinates,
@@ -67,11 +29,6 @@ export default function ResultsContainer({
 
   const [selectedStakeholder, onSelectStakeholder] = useState(null);
   const [isMapView, setIsMapView] = useState(true);
-
-  const [showDetails, setShowDetails] = useState(false);
-  const mobileView = isMobile();
-
-  const classes = useStyles({ selectedStakeholder });
 
   const { categoryIds, toggleCategory } = useCategoryIds([]);
   const [isVerifiedSelected, selectVerified] = useState(false);
@@ -111,10 +68,10 @@ export default function ResultsContainer({
     [history]
   );
 
-  const switchResultsView = () => {
-    doSelectStakeholder();
-    setIsMapView(!isMapView);
-  };
+  const switchResultsView = useCallback(() => {
+    doSelectStakeholder(null);
+    setIsMapView((isMapView) => !isMapView);
+  }, [doSelectStakeholder]);
 
   const handleSearchThisArea = useCallback(
     (center, bounds) => {
@@ -158,78 +115,90 @@ export default function ResultsContainer({
     });
   };
 
-  const unselectStakeholder = useCallback(() => {
-    setShowDetails(false);
-    doSelectStakeholder(null);
-  }, [doSelectStakeholder]);
+  const { isMobile, isTablet } = useBreakpoints();
+
+  const filters = (
+    <Filters
+      origin={origin}
+      setOrigin={setCenter}
+      toggleCategory={toggleCategory}
+      categoryIds={categoryIds}
+      isVerifiedSelected={isVerifiedSelected}
+      selectVerified={selectVerified}
+      userCoordinates={userCoordinates}
+      handleSearch={handleSearch}
+      isMapView={isMapView}
+      switchResultsView={switchResultsView}
+      browserLocation={browserLocation}
+    />
+  );
+
+  const list = (
+    <List
+      selectedStakeholder={selectedStakeholder}
+      doSelectStakeholder={doSelectStakeholder}
+      stakeholders={stakeholders || []}
+      setToast={setToast}
+      loading={loading}
+      handleReset={handleSearch}
+    />
+  );
+
+  const map = (
+    <Map
+      handleSearch={handleSearchThisArea}
+      stakeholders={stakeholders}
+      doSelectStakeholder={doSelectStakeholder}
+      selectedStakeholder={selectedStakeholder}
+      categoryIds={categoryIds}
+      setToast={setToast}
+      viewport={viewport}
+      setViewport={setViewport}
+      loading={loading}
+    />
+  );
+
+  const preview = isMobile && selectedStakeholder && (
+    <Preview
+      doSelectStakeholder={doSelectStakeholder}
+      stakeholder={selectedStakeholder}
+    />
+  );
+
+  const details = isMobile && selectedStakeholder && (
+    <Details
+      selectedStakeholder={selectedStakeholder}
+      onClose={doSelectStakeholder.bind(null, null)}
+      setToast={setToast}
+    />
+  );
+
+  if (isMobile)
+    return (
+      <Mobile
+        isMapView={isMapView}
+        filters={filters}
+        list={list}
+        map={map}
+        preview={preview}
+        details={details}
+      />
+    )
+
+  if (isTablet)
+    return (
+      <Tablet
+        filters={filters}
+        list={list}
+        map={map}
+      />
+    )
 
   return (
-    <>
-      <Filters
-        origin={origin}
-        setOrigin={setCenter}
-        toggleCategory={toggleCategory}
-        categoryIds={categoryIds}
-        isVerifiedSelected={isVerifiedSelected}
-        selectVerified={selectVerified}
-        userCoordinates={userCoordinates}
-        handleSearch={handleSearch}
-        isMapView={isMapView}
-        switchResultsView={switchResultsView}
-        browserLocation={browserLocation}
-      />
-      <Grid item container spacing={0} className={classes.listMapContainer}>
-        {(!mobileView || (mobileView && !isMapView)) && (
-          <List
-            selectedStakeholder={selectedStakeholder}
-            doSelectStakeholder={doSelectStakeholder}
-            stakeholders={stakeholders || []}
-            setToast={setToast}
-            loading={loading}
-            handleReset={handleSearch}
-          />
-        )}
-        {(!mobileView || (mobileView && isMapView)) && (
-          <>
-            <Grid item xs={12} md={8} className={classes.map}>
-              <Map
-                handleSearch={handleSearchThisArea}
-                stakeholders={stakeholders}
-                doSelectStakeholder={doSelectStakeholder}
-                selectedStakeholder={selectedStakeholder}
-                categoryIds={categoryIds}
-                setToast={setToast}
-                viewport={viewport}
-                setViewport={setViewport}
-                loading={loading}
-              />
-            </Grid>
-            {!!selectedStakeholder && mobileView && (
-              <Grid
-                item
-                xs={12}
-                md={8}
-                className={classes.preview}
-                onClick={() => setShowDetails(true)}
-              >
-                <Preview
-                  doSelectStakeholder={doSelectStakeholder}
-                  stakeholder={selectedStakeholder}
-                />
-              </Grid>
-            )}
-            {!!selectedStakeholder && mobileView && showDetails && (
-              <Grid item xs={12} md={4} className={classes.details}>
-                <Details
-                  doSelectStakeholder={unselectStakeholder}
-                  selectedStakeholder={selectedStakeholder}
-                  setToast={setToast}
-                />
-              </Grid>
-            )}
-          </>
-        )}
-      </Grid>
-    </>
-  );
+    <Desktop
+      filters={filters}
+      list={list}
+      map={map}
+    />
+  )
 }

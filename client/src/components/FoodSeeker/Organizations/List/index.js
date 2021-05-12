@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
-import { Button, CircularProgress, Grid } from "@material-ui/core";
+import { Button, CircularProgress } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "react-virtualized/dist/es/List";
 import AutoSizer from "react-virtualized/dist/es/AutoSizer";
@@ -18,16 +18,8 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    [theme.breakpoints.up("md")]: {
-      height: "100%",
-    },
-    [theme.breakpoints.only("sm")]: {
-      order: 1,
-      height: "30em",
-    },
     [theme.breakpoints.down("xs")]: {
-      height: "100%",
-      fontSize: "12px",
+      fontSize: 12,
     },
   },
   list: {
@@ -104,7 +96,7 @@ const ResultsList = ({
   );
 
   return (
-    <Grid item xs={12} md={4} className={classes.listContainer}>
+    <div className={classes.listContainer}>
       {loading && (
         <div className={classes.emptyResult}>
           <CircularProgress />
@@ -125,8 +117,8 @@ const ResultsList = ({
       )}
       {stakeholders && selectedStakeholder && !selectedStakeholder.inactive ? (
         <StakeholderDetails
-          doSelectStakeholder={doSelectStakeholder}
           selectedStakeholder={selectedStakeholder}
+          onClose={doSelectStakeholder.bind(null, null)}
           setToast={setToast}
         />
       ) : (
@@ -146,7 +138,7 @@ const ResultsList = ({
           </AutoSizer>
         </div>
       )}
-    </Grid>
+    </div>
   );
 };
 

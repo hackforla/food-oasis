@@ -266,7 +266,7 @@ const ResultsFilters = ({
                 <Button
                   onClick={() => {
                     analytics.postEvent("recenterMap", {});
-                    setOrigin(userCoordinates);
+                    setOrigin({ ...userCoordinates });
                   }}
                   disabled={!userCoordinates}
                   variant="contained"

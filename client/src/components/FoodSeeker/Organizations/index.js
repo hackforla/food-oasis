@@ -1,6 +1,4 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import { defaultCoordinates } from "helpers/Configuration";
 import useOrganizationBests from "hooks/useOrganizationBests";
 import useCategoryIds from "hooks/useCategoryIds";
 import useSelectedStakeholder from "hooks/useSelectedStakeholder";
@@ -19,35 +17,18 @@ export default function ResultsContainer({
   setOrigin,
   setToast,
 }) {
+  const { isMobile, isTablet } = useBreakpoints();
   const { data: stakeholders, search, loading } = useOrganizationBests();
-  const location = useLocation();
   const [mapPosition, setMapPosition] = useState(null);
   const [isMapView, setIsMapView] = useState(true);
   const { categoryIds, toggleCategory } = useCategoryIds([]);
   const { selectedStakeholder, doSelectStakeholder } = useSelectedStakeholder();
   const [isVerifiedSelected, selectVerified] = useState(false);
 
-  const [viewport, setViewport] = useState({
-    latitude: location?.lat || origin.latitude || defaultCoordinates.lat,
-    longitude: location?.lon || origin.longitude || defaultCoordinates.lon,
-    zoom: defaultCoordinates.zoom,
-  })
-
-  const setCenter = (coords) => {
-    setViewport((viewport) => ({
-      latitude: coords.latitude,
-      longitude: coords.longitude,
-    }));
-    setOrigin(coords);
-  };
-
   useEffect(() => {
     if (!mapPosition || !categoryIds) return
 
-    const {
-      center: { lat: latitude, lng: longitude },
-      bounds
-    } = mapPosition
+    const { center: { latitude, longitude }, bounds } = mapPosition
 
     search({
       latitude,
@@ -66,12 +47,10 @@ export default function ResultsContainer({
     setIsMapView((isMapView) => !isMapView);
   }, [doSelectStakeholder]);
 
-  const { isMobile, isTablet } = useBreakpoints();
-
   const filters = (
     <Filters
       origin={origin}
-      setOrigin={setCenter}
+      setOrigin={setOrigin}
       toggleCategory={toggleCategory}
       categoryIds={categoryIds}
       isVerifiedSelected={isVerifiedSelected}
@@ -89,7 +68,7 @@ export default function ResultsContainer({
       stakeholders={stakeholders || []}
       setToast={setToast}
       loading={loading}
-      handleReset={setCenter.bind(null, userCoordinates)}
+      handleReset={setOrigin.bind(null, userCoordinates)}
     />
   );
 
@@ -102,7 +81,7 @@ export default function ResultsContainer({
       setToast={setToast}
       loading={loading}
       setMapPosition={setMapPosition}
-      viewport={viewport}
+      origin={origin}
     />
   );
 

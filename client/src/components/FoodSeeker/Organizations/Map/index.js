@@ -52,7 +52,7 @@ function Map({
   setToast,
   loading,
   setMapPosition,
-  viewport: outerViewport,
+  origin,
 }, ref) {
   const classes = useStyles();
   const mapRef = useRef();
@@ -96,10 +96,13 @@ function Map({
 
   const updateMapPosition = useCallback(() => {
     const map = mapRef.current.getMap();
-    const bounds = map.getBounds();
     const center = map.getCenter();
+    const bounds = map.getBounds();
     setMapPosition({
-      center,
+      center: {
+        latitude: center.lat,
+        longitude: center.lng,
+      },
       bounds: {
         maxLat: bounds._ne.lat,
         minLat: bounds._sw.lat,
@@ -110,15 +113,19 @@ function Map({
   }, [setMapPosition])
 
   useEffect(() => {
+    const { latitude, longitude, zoom } = origin;
+
     setViewport((viewport) => ({
       ...viewport,
-      ...outerViewport,
+      latitude,
+      longitude,
+      zoom: zoom || 13.5,
     }))
 
     const map = mapRef.current.getMap();
     const event = map.loaded() ? 'moveend' : 'load';
-    mapRef.current.getMap().once(event, updateMapPosition);
-  }, [outerViewport, updateMapPosition])
+    map.once(event, updateMapPosition);
+  }, [origin, updateMapPosition])
 
   return (
     <ReactMapGL

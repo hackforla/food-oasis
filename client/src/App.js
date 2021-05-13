@@ -102,6 +102,7 @@ function App() {
   const [origin, setOrigin] = useState({
     latitude: defaultCoordinates.lat,
     longitude: defaultCoordinates.lon,
+    zoom: defaultCoordinates.zoom,
   });
 
   useEffect(() => {

@@ -24,7 +24,7 @@ const sortOrganizations = (a, b) => {
 export default function useOrganizationBests() {
   const [state, setState] = useState({
     data: null,
-    loading: false,
+    loading: true,
     error: false,
   });
 

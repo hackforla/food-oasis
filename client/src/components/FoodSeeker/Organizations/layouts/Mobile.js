@@ -7,6 +7,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     overflow: "auto",
+    position: "relative",
   },
   map: {
     flex: 1,

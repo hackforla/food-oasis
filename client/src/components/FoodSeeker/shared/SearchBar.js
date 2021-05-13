@@ -179,7 +179,7 @@ export default function SearchBar({
     <>
       <Downshift
         onChange={handleDownshiftOnChange}
-        itemToString={(item) => item?.place_name || ""}
+        itemToString={(item) => item ? item.place_name : ""}
       >
         {({
           getInputProps,

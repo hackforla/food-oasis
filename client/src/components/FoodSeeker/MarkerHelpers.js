@@ -90,6 +90,7 @@ export const markersLayerStyles = {
     "icon-image": ["get", "iconId"],
     "icon-allow-overlap": true,
     "icon-size": 1 / MARKER_SCALE,
+    "icon-anchor": "bottom",
   },
 }
 

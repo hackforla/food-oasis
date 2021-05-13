@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import * as stakeholderService from "../services/stakeholder-best-service";
 import * as analytics from "../services/analytics";
+import { DEFAULT_CATEGORIES } from "constants/stakeholder";
 
 const sortOrganizations = (a, b) => {
   if (
@@ -59,7 +60,7 @@ export default function useOrganizationBests() {
       setState({ data: null, loading: true, error: false });
       let params = {
         name,
-        categoryIds,
+        categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
         latitude,
         longitude,
         distance: radius,

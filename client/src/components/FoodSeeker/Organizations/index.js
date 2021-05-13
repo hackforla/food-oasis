@@ -1,7 +1,6 @@
-import React, { useState, useCallback, useRef, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { defaultCoordinates } from "helpers/Configuration";
-import { DEFAULT_CATEGORIES } from "constants/stakeholder";
 import useOrganizationBests from "hooks/useOrganizationBests";
 import useCategoryIds from "hooks/useCategoryIds";
 import useSelectedStakeholder from "hooks/useSelectedStakeholder";
@@ -21,7 +20,6 @@ export default function ResultsContainer({
   setToast,
   browserLocation,
 }) {
-  const mapRef = useRef(null);
   const { data: stakeholders, search, loading } = useOrganizationBests();
   const location = useLocation();
   const [mapPosition, setMapPosition] = useState(null);
@@ -37,7 +35,6 @@ export default function ResultsContainer({
   })
 
   const setCenter = (coords) => {
-    console.log('setting center:', coords);
     setViewport((viewport) => ({
       latitude: coords.latitude,
       longitude: coords.longitude,
@@ -45,32 +42,25 @@ export default function ResultsContainer({
     setOrigin(coords);
   };
 
-  const handleSearch = useCallback(
-    (mapPosition, categoryIds) => {
-      console.log('searching from:', mapPosition)
-      const { center, bounds } = mapPosition
-
-      // console.log('searching from:', mapRef.current.getBounds());
-      // const { center, bounds } = mapRef.current.getBounds();
-
-      search({
-        latitude: center.lat,
-        longitude: center.lng,
-        bounds,
-        categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
-        isInactive: "either",
-        verificationStatusId: 0,
-      });
-
-      analytics.postEvent("searchArea", {});
-    },
-    [search],
-  );
-
   useEffect(() => {
     if (!mapPosition || !categoryIds) return
-    handleSearch(mapPosition, categoryIds);
-  }, [categoryIds, mapPosition, handleSearch]);
+
+    const {
+      center: { lat: latitude, lng: longitude },
+      bounds
+    } = mapPosition
+
+    search({
+      latitude,
+      longitude,
+      bounds,
+      categoryIds,
+      isInactive: "either",
+      verificationStatusId: 0,
+    });
+
+    analytics.postEvent("searchArea", {});
+  }, [categoryIds, mapPosition, search]);
 
   const switchResultsView = useCallback(() => {
     doSelectStakeholder(null);
@@ -101,13 +91,12 @@ export default function ResultsContainer({
       stakeholders={stakeholders || []}
       setToast={setToast}
       loading={loading}
-      handleReset={() => setCenter(userCoordinates)}
+      handleReset={setCenter.bind(null, userCoordinates)}
     />
   );
 
   const map = (
     <Map
-      ref={mapRef}
       stakeholders={stakeholders}
       doSelectStakeholder={doSelectStakeholder}
       selectedStakeholder={selectedStakeholder}
@@ -137,16 +126,15 @@ export default function ResultsContainer({
   if (isMobile)
     return (
       <Mobile
-        isMapView={isMapView}
         filters={filters}
         list={list}
         map={map}
         preview={preview}
         details={details}
+        isMapView={isMapView}
       />
     )
-
-  if (isTablet)
+  else if (isTablet)
     return (
       <Tablet
         filters={filters}
@@ -154,12 +142,12 @@ export default function ResultsContainer({
         map={map}
       />
     )
-
-  return (
-    <Desktop
-      filters={filters}
-      list={list}
-      map={map}
-    />
-  )
+  else
+    return (
+      <Desktop
+        filters={filters}
+        list={list}
+        map={map}
+      />
+    )
 }

@@ -9,6 +9,7 @@ const useStyles = makeStyles((theme) => ({
   },
   list: {
     width: "35%",
+    overflow: "auto",
   },
   map: {
     height: "100%",

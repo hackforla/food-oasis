@@ -1,28 +1,21 @@
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-  forwardRef,
-  useImperativeHandle,
-} from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import { Button } from "@material-ui/core";
 import ReactMapGL, {
   NavigationControl,
   ScaleControl,
   Source,
   Layer,
 } from "react-map-gl";
-import { Button } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
 import { MAPBOX_STYLE } from "constants/map";
 import { DEFAULT_CATEGORIES } from "constants/stakeholder";
-import * as analytics from "services/analytics";
 import {
   MARKERS_LAYER_ID,
   loadMarkerIcons,
   markersLayerStyles,
   useMarkersGeojson,
 } from "./MarkerHelpers";
+import * as analytics from "services/analytics";
 
 const useStyles = makeStyles((theme) => ({
   map: {
@@ -70,21 +63,6 @@ function Map({
     analytics.postEvent("showMap");
   }, []);
 
-  const updateMapPosition = useCallback(() => {
-    const map = mapRef.current.getMap();
-    const bounds = map.getBounds();
-    const center = map.getCenter();
-    setMapPosition({
-      center,
-      bounds: {
-        maxLat: bounds._ne.lat,
-        minLat: bounds._sw.lat,
-        maxLng: bounds._ne.lng,
-        minLng: bounds._sw.lng,
-      },
-    })
-  }, [setMapPosition])
-
   const onLoad = useCallback(async () => {
     const map = mapRef.current.getMap();
     await loadMarkerIcons(map);
@@ -116,56 +94,22 @@ function Map({
     categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
   });
 
-  // const searchArea = (e) => {
-  //   const map = mapRef.current.getMap();
-  //   const center = map.getCenter();
-  //   const mapBounds = map.getBounds();
-  //   const bounds = {
-  //     maxLat: mapBounds._ne.lat,
-  //     minLat: mapBounds._sw.lat,
-  //     maxLng: mapBounds._ne.lng,
-  //     minLng: mapBounds._sw.lng,
-  //   };
-  //   analytics.postEvent("searchArea", {});
-  //   handleSearch(center, bounds);
-  // };
-
-  useImperativeHandle(ref, () => ({
-    getBounds: () => {
-      const map = mapRef.current.getMap();
-      const bounds = map.getBounds();
-      const center = map.getCenter();
-      return {
-        center,
-        bounds: {
-          maxLat: bounds._ne.lat,
-          minLat: bounds._sw.lat,
-          maxLng: bounds._ne.lng,
-          minLng: bounds._sw.lng,
-        },
-      }
-    },
-    setViewport: (newViewport) => {
-      console.log('setViewport called:', newViewport);
-      return new Promise((resolve) => {
-        setViewport((viewport) => ({
-          ...viewport,
-          ...newViewport,
-        }))
-        mapRef.current.getMap().once('moveend', resolve)
-      });
-    },
-  }));
-
-  useEffect(() => {
-    const map = mapRef.current.getMap()
-    map.on('moveend', () => {
-      console.log('map idled:', map.getCenter())
+  const updateMapPosition = useCallback(() => {
+    const map = mapRef.current.getMap();
+    const bounds = map.getBounds();
+    const center = map.getCenter();
+    setMapPosition({
+      center,
+      bounds: {
+        maxLat: bounds._ne.lat,
+        minLat: bounds._sw.lat,
+        maxLng: bounds._ne.lng,
+        minLng: bounds._sw.lng,
+      },
     })
-  }, [])
+  }, [setMapPosition])
 
   useEffect(() => {
-    console.log('setting viewport:', outerViewport);
     setViewport((viewport) => ({
       ...viewport,
       ...outerViewport,
@@ -218,4 +162,4 @@ function Map({
   );
 }
 
-export default forwardRef(Map);
+export default Map;

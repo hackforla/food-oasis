@@ -1,20 +1,18 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
-import { useHistory, useLocation } from "react-router-dom";
-
-import { useOrganizationBests } from "hooks/useOrganizationBests";
-import useCategoryIds from "hooks/useCategoryIds";
+import { useLocation } from "react-router-dom";
 import { defaultCoordinates } from "helpers/Configuration";
 import { DEFAULT_CATEGORIES } from "constants/stakeholder";
-
+import useOrganizationBests from "hooks/useOrganizationBests";
+import useCategoryIds from "hooks/useCategoryIds";
+import useSelectedStakeholder from "hooks/useSelectedStakeholder";
+import useBreakpoints from "hooks/useBreakpoints";
+import { Mobile, Tablet, Desktop } from "./layouts";
 import Filters from "./Filters";
 import List from "./List";
 import Map from "./Map";
 import Preview from "./Preview";
 import Details from "./Details";
 import * as analytics from "services/analytics";
-
-import useBreakpoints from "hooks/useBreakpoints";
-import { Mobile, Tablet, Desktop } from "./layouts";
 
 export default function ResultsContainer({
   userCoordinates,
@@ -23,16 +21,13 @@ export default function ResultsContainer({
   setToast,
   browserLocation,
 }) {
-  const { data: stakeholders, search, loading } = useOrganizationBests();
-  const history = useHistory();
-  const location = useLocation();
   const mapRef = useRef(null);
+  const { data: stakeholders, search, loading } = useOrganizationBests();
+  const location = useLocation();
   const [mapPosition, setMapPosition] = useState(null);
-
-  const [selectedStakeholder, onSelectStakeholder] = useState(null);
   const [isMapView, setIsMapView] = useState(true);
-
   const { categoryIds, toggleCategory } = useCategoryIds([]);
+  const { selectedStakeholder, doSelectStakeholder } = useSelectedStakeholder();
   const [isVerifiedSelected, selectVerified] = useState(false);
 
   const [viewport, setViewport] = useState({
@@ -50,30 +45,6 @@ export default function ResultsContainer({
     setOrigin(coords);
   };
 
-  const doSelectStakeholder = useCallback(
-    (stakeholder) => {
-      if (stakeholder) {
-        analytics.postEvent("selectOrganization", {
-          id: stakeholder.id,
-          name: stakeholder.name,
-        });
-
-        //Update url history
-        const name = stakeholder.name.toLowerCase().replaceAll(" ", "_");
-        history.push(`/organizations?org=${name}`);
-      } else {
-        history.push("/organizations");
-      }
-      onSelectStakeholder(stakeholder);
-    },
-    [history]
-  );
-
-  const switchResultsView = useCallback(() => {
-    doSelectStakeholder(null);
-    setIsMapView((isMapView) => !isMapView);
-  }, [doSelectStakeholder]);
-
   const handleSearch = useCallback(
     (mapPosition, categoryIds) => {
       console.log('searching from:', mapPosition)
@@ -90,6 +61,8 @@ export default function ResultsContainer({
         isInactive: "either",
         verificationStatusId: 0,
       });
+
+      analytics.postEvent("searchArea", {});
     },
     [search],
   );
@@ -98,6 +71,11 @@ export default function ResultsContainer({
     if (!mapPosition || !categoryIds) return
     handleSearch(mapPosition, categoryIds);
   }, [categoryIds, mapPosition, handleSearch]);
+
+  const switchResultsView = useCallback(() => {
+    doSelectStakeholder(null);
+    setIsMapView((isMapView) => !isMapView);
+  }, [doSelectStakeholder]);
 
   const { isMobile, isTablet } = useBreakpoints();
 
@@ -110,7 +88,6 @@ export default function ResultsContainer({
       isVerifiedSelected={isVerifiedSelected}
       selectVerified={selectVerified}
       userCoordinates={userCoordinates}
-      handleSearch={handleSearch}
       isMapView={isMapView}
       switchResultsView={switchResultsView}
       browserLocation={browserLocation}
@@ -124,7 +101,7 @@ export default function ResultsContainer({
       stakeholders={stakeholders || []}
       setToast={setToast}
       loading={loading}
-      handleReset={handleSearch}
+      handleReset={() => setCenter(userCoordinates)}
     />
   );
 

@@ -20,7 +20,7 @@ const sortOrganizations = (a, b) => {
   }
 };
 
-export const useOrganizationBests = () => {
+export default function useOrganizationBests() {
   const [state, setState] = useState({
     data: null,
     loading: false,

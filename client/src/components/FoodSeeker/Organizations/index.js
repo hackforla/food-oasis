@@ -18,7 +18,6 @@ export default function ResultsContainer({
   origin,
   setOrigin,
   setToast,
-  browserLocation,
 }) {
   const { data: stakeholders, search, loading } = useOrganizationBests();
   const location = useLocation();
@@ -80,7 +79,6 @@ export default function ResultsContainer({
       userCoordinates={userCoordinates}
       isMapView={isMapView}
       switchResultsView={switchResultsView}
-      browserLocation={browserLocation}
     />
   );
 

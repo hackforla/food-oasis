@@ -137,7 +137,6 @@ const ResultsFilters = ({
   toggleCategory,
   isMapView,
   switchResultsView,
-  browserLocation,
 }) => {
   const classes = useStyles();
   const isMealsSelected = categoryIds.indexOf(MEAL_PROGRAM_CATEGORY_ID) >= 0;
@@ -261,7 +260,6 @@ const ResultsFilters = ({
                 setOrigin(origin);
               }}
               origin={origin}
-              browserLocation={browserLocation}
             />
             <Tooltip title="Re-center">
               <span>
@@ -270,9 +268,7 @@ const ResultsFilters = ({
                     analytics.postEvent("recenterMap", {});
                     setOrigin(userCoordinates);
                   }}
-                  disabled={
-                    !userCoordinates.latitude || !userCoordinates.longitude
-                  }
+                  disabled={!userCoordinates}
                   variant="contained"
                   className={classes.nearbySearch}
                   startIcon={

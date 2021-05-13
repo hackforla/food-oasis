@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import * as stakeholderService from "../services/stakeholder-best-service";
 import * as analytics from "../services/analytics";
 
@@ -27,7 +27,7 @@ export const useOrganizationBests = () => {
     error: false,
   });
 
-  const search = async ({
+  const search = useCallback(async ({
     name,
     latitude,
     longitude,
@@ -37,13 +37,13 @@ export const useOrganizationBests = () => {
     isInactive,
     verificationStatusId,
   }) => {
-    if (!latitude || !longitude) {
-      setState({ data: null, loading: false, error: true });
-      const msg =
-        "Call to search function missing latitude and/or longitude parameters";
-      console.error(msg);
-      return Promise.reject(msg);
-    }
+    // if (!latitude || !longitude) {
+    //   setState({ data: null, loading: false, error: true });
+    //   const msg =
+    //     "Call to search function missing latitude and/or longitude parameters";
+    //   console.error(msg);
+    //   return Promise.reject(msg);
+    // }
     analytics.postEvent("searchFoodSeeker", {
       name,
       latitude,
@@ -85,7 +85,7 @@ export const useOrganizationBests = () => {
       console.error(err);
       return Promise.reject(err);
     }
-  };
+  }, []);
 
   return { ...state, search };
 };

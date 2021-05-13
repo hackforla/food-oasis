@@ -1,5 +1,11 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
-import PropTypes from "prop-types";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import ReactMapGL, {
   NavigationControl,
   ScaleControl,
@@ -46,23 +52,38 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Map({
-  handleSearch,
   stakeholders,
   categoryIds,
   doSelectStakeholder,
   selectedStakeholder,
-  viewport,
-  setViewport,
   setToast,
   loading,
-}) {
+  setMapPosition,
+  viewport: outerViewport,
+}, ref) {
   const classes = useStyles();
   const mapRef = useRef();
   const [markersLoaded, setMarkersLoaded] = useState(false);
+  const [viewport, setViewport] = useState(null);
 
   useEffect(() => {
     analytics.postEvent("showMap");
   }, []);
+
+  const updateMapPosition = useCallback(() => {
+    const map = mapRef.current.getMap();
+    const bounds = map.getBounds();
+    const center = map.getCenter();
+    setMapPosition({
+      center,
+      bounds: {
+        maxLat: bounds._ne.lat,
+        minLat: bounds._sw.lat,
+        maxLng: bounds._ne.lng,
+        minLng: bounds._sw.lng,
+      },
+    })
+  }, [setMapPosition])
 
   const onLoad = useCallback(async () => {
     const map = mapRef.current.getMap();
@@ -95,19 +116,65 @@ function Map({
     categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
   });
 
-  const searchArea = (e) => {
+  // const searchArea = (e) => {
+  //   const map = mapRef.current.getMap();
+  //   const center = map.getCenter();
+  //   const mapBounds = map.getBounds();
+  //   const bounds = {
+  //     maxLat: mapBounds._ne.lat,
+  //     minLat: mapBounds._sw.lat,
+  //     maxLng: mapBounds._ne.lng,
+  //     minLng: mapBounds._sw.lng,
+  //   };
+  //   analytics.postEvent("searchArea", {});
+  //   handleSearch(center, bounds);
+  // };
+
+  useImperativeHandle(ref, () => ({
+    getBounds: () => {
+      const map = mapRef.current.getMap();
+      const bounds = map.getBounds();
+      const center = map.getCenter();
+      return {
+        center,
+        bounds: {
+          maxLat: bounds._ne.lat,
+          minLat: bounds._sw.lat,
+          maxLng: bounds._ne.lng,
+          minLng: bounds._sw.lng,
+        },
+      }
+    },
+    setViewport: (newViewport) => {
+      console.log('setViewport called:', newViewport);
+      return new Promise((resolve) => {
+        setViewport((viewport) => ({
+          ...viewport,
+          ...newViewport,
+        }))
+        mapRef.current.getMap().once('moveend', resolve)
+      });
+    },
+  }));
+
+  useEffect(() => {
+    const map = mapRef.current.getMap()
+    map.on('moveend', () => {
+      console.log('map idled:', map.getCenter())
+    })
+  }, [])
+
+  useEffect(() => {
+    console.log('setting viewport:', outerViewport);
+    setViewport((viewport) => ({
+      ...viewport,
+      ...outerViewport,
+    }))
+
     const map = mapRef.current.getMap();
-    const center = map.getCenter();
-    const mapBounds = map.getBounds();
-    const bounds = {
-      maxLat: mapBounds._ne.lat,
-      minLat: mapBounds._sw.lat,
-      maxLng: mapBounds._ne.lng,
-      minLng: mapBounds._sw.lng,
-    };
-    analytics.postEvent("searchArea", {});
-    handleSearch(center, bounds);
-  };
+    const event = map.loaded() ? 'moveend' : 'load';
+    mapRef.current.getMap().once(event, updateMapPosition);
+  }, [outerViewport, updateMapPosition])
 
   return (
     <ReactMapGL
@@ -139,7 +206,7 @@ function Map({
         </Source>
       )}
       <Button
-        onClick={searchArea}
+        onClick={updateMapPosition}
         variant="outlined"
         size="small"
         className={classes.searchButton}
@@ -151,10 +218,4 @@ function Map({
   );
 }
 
-Map.propTypes = {
-  stakeholders: PropTypes.array,
-  categoryIds: PropTypes.arrayOf(PropTypes.number).isRequired,
-  setZoom: PropTypes.func,
-};
-
-export default Map;
+export default forwardRef(Map);

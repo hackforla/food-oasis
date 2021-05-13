@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Button, Typography, Tooltip } from "@material-ui/core";
@@ -129,7 +129,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ResultsFilters = ({
-  handleSearch,
   origin,
   setOrigin,
   isVerifiedSelected,
@@ -153,11 +152,6 @@ const ResultsFilters = ({
     toggleCategory(FOOD_PANTRY_CATEGORY_ID);
     analytics.postEvent("togglePantryFilter", {});
   }, [toggleCategory]);
-
-  useEffect(() => {
-    handleSearch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [origin, categoryIds, isVerifiedSelected, toggleCategory]);
 
   const mobileView = isMobile();
   const taglineText = "Locate free food in " + tenantName;
@@ -259,17 +253,12 @@ const ResultsFilters = ({
           </Grid>
         </Grid>
         <Grid item xs={12} sm={6} className={classes.inputContainer}>
-          <form
-            noValidate
-            onSubmit={(e) => handleSearch(e)}
-            className={classes.form}
-          >
+          <div className={classes.form}>
             <SearchBar
               userCoordinates={userCoordinates}
               setOrigin={(origin) => {
                 analytics.postEvent("changeOrigin", {});
                 setOrigin(origin);
-                handleSearch();
               }}
               origin={origin}
               browserLocation={browserLocation}
@@ -280,7 +269,6 @@ const ResultsFilters = ({
                   onClick={() => {
                     analytics.postEvent("recenterMap", {});
                     setOrigin(userCoordinates);
-                    handleSearch();
                   }}
                   disabled={
                     !userCoordinates.latitude || !userCoordinates.longitude
@@ -293,17 +281,7 @@ const ResultsFilters = ({
                 />
               </span>
             </Tooltip>
-
-            {/* <Button
-            type="submit"
-            disabled={!origin}
-            variant="contained"
-            className={classes.submit}
-            startIcon={
-              <SearchIcon fontSize="large" className={classes.searchIcon} />
-            }
-          /> */}
-          </form>
+          </div>
         </Grid>
       </Grid>
     </Grid>

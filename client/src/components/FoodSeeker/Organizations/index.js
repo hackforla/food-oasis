@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 
 import { useOrganizationBests } from "hooks/useOrganizationBests";
@@ -26,6 +26,8 @@ export default function ResultsContainer({
   const { data: stakeholders, search, loading } = useOrganizationBests();
   const history = useHistory();
   const location = useLocation();
+  const mapRef = useRef(null);
+  const [mapPosition, setMapPosition] = useState(null);
 
   const [selectedStakeholder, onSelectStakeholder] = useState(null);
   const [isMapView, setIsMapView] = useState(true);
@@ -37,15 +39,14 @@ export default function ResultsContainer({
     latitude: location?.lat || origin.latitude || defaultCoordinates.lat,
     longitude: location?.lon || origin.longitude || defaultCoordinates.lon,
     zoom: defaultCoordinates.zoom,
-  });
+  })
 
   const setCenter = (coords) => {
-    setViewport({
-      ...viewport,
+    console.log('setting center:', coords);
+    setViewport((viewport) => ({
       latitude: coords.latitude,
       longitude: coords.longitude,
-      logoPosition: "top-left",
-    });
+    }));
     setOrigin(coords);
   };
 
@@ -73,47 +74,30 @@ export default function ResultsContainer({
     setIsMapView((isMapView) => !isMapView);
   }, [doSelectStakeholder]);
 
-  const handleSearchThisArea = useCallback(
-    (center, bounds) => {
-      if (!center || !bounds) {
-        console.error("handleSearchThisArea is missing args");
-      }
+  const handleSearch = useCallback(
+    (mapPosition, categoryIds) => {
+      console.log('searching from:', mapPosition)
+      const { center, bounds } = mapPosition
 
-      setViewport({
-        ...viewport,
-        latitude: center.lat,
-        longitude: center.lng,
-      });
+      // console.log('searching from:', mapRef.current.getBounds());
+      // const { center, bounds } = mapRef.current.getBounds();
 
       search({
-        latitude: viewport.latitude,
-        longitude: viewport.longitude,
+        latitude: center.lat,
+        longitude: center.lng,
+        bounds,
         categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
         isInactive: "either",
         verificationStatusId: 0,
-        bounds,
-        radius: defaultCoordinates.radius,
       });
     },
-    [search, categoryIds, viewport]
+    [search],
   );
 
-  const handleSearch = () => {
-    // TODO: This fn is called by ResultsFilter, and unfortunately, neither the
-    // filter nor this component know the map component lat, long bounds, so
-    // we're just using a radius-based query, which may not get all of the
-    // orgs in the map area. Need to try to work out a way to get boundaries
-    // for query.
-    search({
-      latitude: viewport.latitude,
-      longitude: viewport.longitude,
-      categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
-      isInactive: "either",
-      verificationStatusId: 0,
-      bounds: null,
-      radius: defaultCoordinates.radius,
-    });
-  };
+  useEffect(() => {
+    if (!mapPosition || !categoryIds) return
+    handleSearch(mapPosition, categoryIds);
+  }, [categoryIds, mapPosition, handleSearch]);
 
   const { isMobile, isTablet } = useBreakpoints();
 
@@ -146,15 +130,15 @@ export default function ResultsContainer({
 
   const map = (
     <Map
-      handleSearch={handleSearchThisArea}
+      ref={mapRef}
       stakeholders={stakeholders}
       doSelectStakeholder={doSelectStakeholder}
       selectedStakeholder={selectedStakeholder}
       categoryIds={categoryIds}
       setToast={setToast}
-      viewport={viewport}
-      setViewport={setViewport}
       loading={loading}
+      setMapPosition={setMapPosition}
+      viewport={viewport}
     />
   );
 

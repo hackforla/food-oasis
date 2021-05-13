@@ -110,8 +110,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const result = analytics.postEvent("visitAppComponent");
-    console.error(result);
+    analytics.postEvent("visitAppComponent");
   }, []);
 
   useEffect(() => {

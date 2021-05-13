@@ -77,6 +77,10 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
     padding: "0 1em",
+    position: "absolute",
+    height: "100%",
+    backgroundColor: theme.palette.background.default,
+    zIndex: 10000,
   },
   searchButton: {
     position: "absolute",
@@ -107,7 +111,7 @@ function Map({
   const [showDetails, setShowDetails] = useState(false);
   const [showSearchArea, setShowSearchArea] = useState(false);
   const [mapReady, setMapReady] = useState(false);
-  const classes = useStyles();
+  const classes = useStyles({ selectedStakeholder });
   const mapRef = useRef();
   const categoryIdsOrDefault = categoryIds.length
     ? categoryIds
@@ -198,18 +202,6 @@ function Map({
 
   const mobileView = isMobile();
 
-  if (showDetails && mobileView && selectedStakeholder) {
-    return (
-      <Grid item xs={12} md={4} className={classes.details}>
-        <StakeholderDetails
-          doSelectStakeholder={unselectStakeholder}
-          selectedStakeholder={selectedStakeholder}
-          setToast={setToast}
-        />
-      </Grid>
-    );
-  }
-
   return (
     <>
       <Grid item xs={12} md={8} className={classes.map}>
@@ -273,6 +265,15 @@ function Map({
           <StakeholderPreview
             doSelectStakeholder={doSelectStakeholder}
             stakeholder={selectedStakeholder}
+          />
+        </Grid>
+      )}
+      {!!selectedStakeholder && mobileView && showDetails && (
+        <Grid item xs={12} md={4} className={classes.details}>
+          <StakeholderDetails
+            doSelectStakeholder={unselectStakeholder}
+            selectedStakeholder={selectedStakeholder}
+            setToast={setToast}
           />
         </Grid>
       )}

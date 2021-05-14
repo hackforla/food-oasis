@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MobileLayout = ({ filters, list, map, preview, details, isMapView }) => {
+const MobileLayout = ({ filters, map, list, preview, details }) => {
   const classes = useStyles();
   const [showDetails, setShowDetails] = useState(false);
 
@@ -40,6 +40,11 @@ const MobileLayout = ({ filters, list, map, preview, details, isMapView }) => {
       { filters }
       <div className={classes.container}>
         <div className={classes.map}>{ map }</div>
+        {list && (
+          <div className={classes.overlay}>
+            {list}
+          </div>
+        )}
         {preview && (
           <div className={classes.preview} onClick={show}>
             { preview }
@@ -48,11 +53,6 @@ const MobileLayout = ({ filters, list, map, preview, details, isMapView }) => {
         {details && showDetails && (
           <div className={classes.overlay}>
             { details }
-          </div>
-        )}
-        {!isMapView && (
-          <div className={classes.overlay}>
-            {list}
           </div>
         )}
       </div>

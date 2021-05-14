@@ -49,7 +49,7 @@ import ConfirmEmail from "components/Account/ConfirmEmail";
 import FaqEdit from "components/Faq/FaqEdit";
 import FaqAdd from "components/Faq/FaqAdd";
 import Home from "components/FoodSeeker/Home";
-import Organizations from "components/FoodSeeker/Organizations";
+import SearchResults from "components/FoodSeeker/SearchResults";
 import Suggestion from "components/FoodSeeker/Suggestion";
 import ImportFile from "components/Admin/ImportOrganizations/ImportFile";
 import adminTheme from "./theme/adminTheme";
@@ -91,18 +91,19 @@ const useStyles = makeStyles({
 function App() {
   const [user, setUser] = useState(null);
 
-  const [toast, setToast] = useState({ message: "" });
-  const [bgImg, setBgImg] = useState("");
-
-  // userCoordinates is the user's location if location is enabled, or null.
-  const userCoordinates = useGeolocation();
-
   // origin is where the map should be centered. It is at the App level
-  // so it can be passed from leanding pages to the ResultsContainer.
+  // so it can be passed from landing pages to the SearchResults.
   const [origin, setOrigin] = useState({
     latitude: defaultCoordinates.lat,
     longitude: defaultCoordinates.lon,
   });
+
+  // userCoordinates is the user's location if geolocation is enabled,
+  // otherwise null.
+  const userCoordinates = useGeolocation();
+
+  const [toast, setToast] = useState({ message: "" });
+  const [bgImg, setBgImg] = useState("");
 
   useEffect(() => {
     const imgNum = Math.floor(Math.random() * (21 - 1)) + 1;
@@ -190,10 +191,10 @@ function App() {
               */}
               <Redirect from="/search" to="/organizations" />
               <Route path="/organizations">
-                <Organizations
-                  userCoordinates={userCoordinates}
+                <SearchResults
                   origin={origin}
                   setOrigin={setOrigin}
+                  userCoordinates={userCoordinates}
                   setToast={setToast}
                 />
               </Route>

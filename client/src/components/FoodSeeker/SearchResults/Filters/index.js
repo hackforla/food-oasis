@@ -8,9 +8,9 @@ import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
 } from "constants/stakeholder";
-import { isMobile } from "helpers";
+import useBreakpoints from "hooks/useBreakpoints";
 import theme from "theme/clientTheme";
-import SearchBar from "components/FoodSeeker/shared/SearchBar";
+import SearchBar from "components/FoodSeeker/SearchBar";
 import SwitchViewsButton from "./SwitchViewsButton";
 import CategoryButton from "./CategoryButton";
 import * as analytics from "services/analytics";
@@ -130,8 +130,8 @@ const ResultsFilters = ({
   userCoordinates,
   categoryIds,
   toggleCategory,
-  isMapView,
-  switchResultsView,
+  showList,
+  toggleShowList,
 }) => {
   const classes = useStyles();
   const isMealsSelected = categoryIds.indexOf(MEAL_PROGRAM_CATEGORY_ID) >= 0;
@@ -147,12 +147,12 @@ const ResultsFilters = ({
     analytics.postEvent("togglePantryFilter", {});
   }, [toggleCategory]);
 
-  const mobileView = isMobile();
+  const { isMobile } = useBreakpoints();
   const taglineText = "Locate free food in " + tenantName;
 
   return (
     <Grid item container className={classes.controlPanel}>
-      {!mobileView && (
+      {!isMobile && (
         <Grid item sm={4} className={classes.taglineContainer}>
           <Typography variant="h6" className={classes.tagline}>
             {taglineText}
@@ -188,10 +188,10 @@ const ResultsFilters = ({
             />
           </Grid>
           <Grid item>
-            {mobileView && (
+            {isMobile && (
               <SwitchViewsButton
-                isMapView={isMapView}
-                onClick={switchResultsView}
+                isListView={showList}
+                onClick={toggleShowList}
                 color={theme.palette.primary.dark}
                 style={{ marginLeft: 5 }}
               />

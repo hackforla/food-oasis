@@ -38,13 +38,13 @@ export default function useOrganizationBests() {
     isInactive,
     verificationStatusId,
   }) => {
-    // if (!latitude || !longitude) {
-    //   setState({ data: null, loading: false, error: true });
-    //   const msg =
-    //     "Call to search function missing latitude and/or longitude parameters";
-    //   console.error(msg);
-    //   return Promise.reject(msg);
-    // }
+    if (!latitude || !longitude) {
+      setState({ data: null, loading: false, error: true });
+      const msg =
+        "Call to search function missing latitude and/or longitude parameters";
+      console.error(msg);
+      return Promise.reject(msg);
+    }
     analytics.postEvent("searchFoodSeeker", {
       name,
       latitude,

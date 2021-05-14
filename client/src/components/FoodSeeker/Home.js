@@ -6,7 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
-import SearchBar from "components/FoodSeeker/shared/SearchBar";
+import SearchBar from "components/FoodSeeker/SearchBar";
 // The three tenant logos happen to be the same at the moment
 import logo from "images/foodoasis.svg";
 import logoCA from "images/foodoasis.svg";

@@ -6,14 +6,8 @@ import React, {
   forwardRef,
   useImperativeHandle,
 } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
-import ReactMapGL, {
-  NavigationControl,
-  ScaleControl,
-  Source,
-  Layer,
-} from "react-map-gl";
+import ReactMapGL, * as Map from "react-map-gl";
 import { MAPBOX_STYLE } from "constants/map";
 import { defaultCoordinates } from "helpers/Configuration";
 import {
@@ -22,33 +16,10 @@ import {
   markersLayerStyles,
   useMarkersGeojson,
 } from "./MarkerHelpers";
+import useStyles from "./styles";
 import * as analytics from "services/analytics";
 
-const useStyles = makeStyles((theme) => ({
-  map: {
-    position: 'relative',
-    '& .mapboxgl-ctrl-attrib-button': {
-      display: 'none',
-    },
-  },
-  scaleControl: {
-    top: 8,
-    left: 8,
-  },
-  navigationControl: {
-    top: 8,
-    right: 8,
-  },
-  searchButton: {
-    position: "absolute",
-    top: 5,
-    left: "50%",
-    transform: "translate(-50%)",
-    backgroundColor: "white",
-  },
-}));
-
-function Map({
+const ResultsMap = ({
   center,
   stakeholders,
   doSelectStakeholder,
@@ -56,7 +27,7 @@ function Map({
   categoryIds,
   loading,
   searchMapArea,
-}, ref) {
+}, ref) => {
   const classes = useStyles();
   const mapRef = useRef();
   const [markersLoaded, setMarkersLoaded] = useState(false);
@@ -135,19 +106,19 @@ function Map({
       height="100%"
       className={classes.map}
     >
-      <NavigationControl
+      <Map.NavigationControl
         showCompass={false}
         className={classes.navigationControl}
       />
-      <ScaleControl
+      <Map.ScaleControl
         maxWidth={100}
         unit="imperial"
         className={classes.scaleControl}
       />
       {markersLoaded && (
-        <Source type="geojson" data={markersGeojson}>
-          <Layer {...markersLayerStyles} />
-        </Source>
+        <Map.Source type="geojson" data={markersGeojson}>
+          <Map.Layer {...markersLayerStyles} />
+        </Map.Source>
       )}
       <Button
         onClick={searchMapArea}
@@ -162,4 +133,4 @@ function Map({
   );
 }
 
-export default forwardRef(Map);
+export default forwardRef(ResultsMap);

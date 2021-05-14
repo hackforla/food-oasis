@@ -15,7 +15,7 @@ import ReactMapGL, {
   Layer,
 } from "react-map-gl";
 import { MAPBOX_STYLE } from "constants/map";
-import { DEFAULT_CATEGORIES } from "constants/stakeholder";
+import { defaultCoordinates } from "helpers/Configuration";
 import {
   MARKERS_LAYER_ID,
   loadMarkerIcons,
@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Map({
-  origin,
+  center,
   stakeholders,
   doSelectStakeholder,
   selectedStakeholder,
@@ -60,15 +60,18 @@ function Map({
   const classes = useStyles();
   const mapRef = useRef();
   const [markersLoaded, setMarkersLoaded] = useState(false);
-  const [viewport, setViewport] = useState(origin);
+  const [viewport, setViewport] = useState({
+    ...center,
+    zoom: defaultCoordinates.zoom,
+  });
 
   useEffect(() => {
     analytics.postEvent("showMap");
   }, []);
 
   useEffect(() => {
-    setViewport((viewport) => ({ ...viewport, ...origin }));
-  }, [origin]);
+    setViewport((viewport) => ({ ...viewport, ...center }));
+  }, [center]);
 
   const onLoad = useCallback(async () => {
     const map = mapRef.current.getMap();
@@ -98,7 +101,7 @@ function Map({
   const markersGeojson = useMarkersGeojson({
     stakeholders,
     selectedStakeholder,
-    categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
+    categoryIds,
   });
 
   useImperativeHandle(ref, () => ({

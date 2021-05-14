@@ -201,19 +201,19 @@ const ResultsFilters = ({
         <Grid item xs={12} sm={6} className={classes.inputContainer}>
           <div className={classes.form}>
             <SearchBar
-              userCoordinates={userCoordinates}
+              origin={origin}
               setOrigin={(origin) => {
                 analytics.postEvent("changeOrigin", {});
-                setOrigin({ ...origin });
+                setOrigin(origin);
               }}
-              origin={origin}
+              userCoordinates={userCoordinates}
             />
             <Tooltip title="Re-center">
               <span>
                 <Button
                   onClick={() => {
                     analytics.postEvent("recenterMap", {});
-                    setOrigin({ ...userCoordinates });
+                    setOrigin(userCoordinates);
                   }}
                   disabled={!userCoordinates}
                   variant="contained"

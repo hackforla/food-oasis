@@ -4,6 +4,7 @@ import MapMarker from "images/mapMarker";
 import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
+  DEFAULT_CATEGORIES,
 } from "constants/stakeholder";
 
 export const MARKERS_LAYER_ID = "markers";
@@ -101,9 +102,11 @@ export function useMarkersGeojson({
   categoryIds,
 }) {
 
+  const catIds = categoryIds.length ? categoryIds : DEFAULT_CATEGORIES;
+
   // modify the stakeholders array by:
   // 1. filtering out the inactive orgs
-  // 2. limiting the categories for each org to the ones currently selecte4d
+  // 2. limiting the categories for each org to the ones currently selected
   const modifiedStakeholders = useMemo(
     () => (stakeholders || [])
       .filter(
@@ -112,9 +115,9 @@ export function useMarkersGeojson({
       )
       .map((sh) => ({
         ...sh,
-        categories: sh.categories.filter(({ id }) => categoryIds.includes(id)),
+        categories: sh.categories.filter(({ id }) => catIds.includes(id)),
       })),
-    [stakeholders, categoryIds]
+    [stakeholders, catIds]
   );
 
   // This generates the geojson needed to show the stakeholders in a symbol

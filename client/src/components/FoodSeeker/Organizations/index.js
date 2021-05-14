@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import useOrganizationBests from "hooks/useOrganizationBests";
 import useCategoryIds from "hooks/useCategoryIds";
 import useSelectedStakeholder from "hooks/useSelectedStakeholder";
@@ -10,25 +10,37 @@ import Map from "./Map";
 import Preview from "./Preview";
 import Details from "./Details";
 import * as analytics from "services/analytics";
+import geoViewport from '@mapbox/geo-viewport';
+
+function getBounds(center, zoom, dimensions) {
+  const [minLng, minLat, maxLng, maxLat] = geoViewport.bounds(
+    [center.longitude, center.latitude],
+    zoom,
+    [dimensions.width, dimensions.height],
+    512,
+  )
+
+  return { minLng, minLat, maxLng, maxLat };
+}
 
 export default function ResultsContainer({
-  userCoordinates,
   origin,
   setOrigin,
+  userCoordinates,
   setToast,
 }) {
+  const mapRef = useRef(null);
   const { isMobile, isTablet } = useBreakpoints();
   const { data: stakeholders, search, loading } = useOrganizationBests();
-  const [mapPosition, setMapPosition] = useState(null);
   const [isMapView, setIsMapView] = useState(true);
   const { categoryIds, toggleCategory } = useCategoryIds([]);
   const { selectedStakeholder, doSelectStakeholder } = useSelectedStakeholder();
   const [isVerifiedSelected, selectVerified] = useState(false);
 
   useEffect(() => {
-    if (!mapPosition || !categoryIds) return
-
-    const { center: { latitude, longitude }, bounds } = mapPosition
+    const { latitude, longitude } = origin;
+    const { zoom, dimensions } = mapRef.current.getViewport();
+    const bounds = getBounds(origin, zoom, dimensions);
 
     search({
       latitude,
@@ -40,7 +52,12 @@ export default function ResultsContainer({
     });
 
     analytics.postEvent("searchArea", {});
-  }, [categoryIds, mapPosition, search]);
+  }, [categoryIds, origin, search]);
+
+  const searchMapArea = useCallback(() => {
+    const { center } = mapRef.current.getViewport();
+    setOrigin(center);
+  }, [setOrigin]);
 
   const switchResultsView = useCallback(() => {
     doSelectStakeholder(null);
@@ -74,14 +91,14 @@ export default function ResultsContainer({
 
   const map = (
     <Map
+      ref={mapRef}
+      origin={origin}
       stakeholders={stakeholders}
       doSelectStakeholder={doSelectStakeholder}
       selectedStakeholder={selectedStakeholder}
       categoryIds={categoryIds}
-      setToast={setToast}
       loading={loading}
-      setMapPosition={setMapPosition}
-      origin={origin}
+      searchMapArea={searchMapArea}
     />
   );
 

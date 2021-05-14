@@ -1,4 +1,11 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
 import ReactMapGL, {
@@ -19,8 +26,6 @@ import * as analytics from "services/analytics";
 
 const useStyles = makeStyles((theme) => ({
   map: {
-    width: '100%',
-    height: '100%',
     position: 'relative',
     '& .mapboxgl-ctrl-attrib-button': {
       display: 'none',
@@ -44,23 +49,26 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Map({
+  origin,
   stakeholders,
-  categoryIds,
   doSelectStakeholder,
   selectedStakeholder,
-  setToast,
+  categoryIds,
   loading,
-  setMapPosition,
-  origin,
+  searchMapArea,
 }, ref) {
   const classes = useStyles();
   const mapRef = useRef();
   const [markersLoaded, setMarkersLoaded] = useState(false);
-  const [viewport, setViewport] = useState(null);
+  const [viewport, setViewport] = useState(origin);
 
   useEffect(() => {
     analytics.postEvent("showMap");
   }, []);
+
+  useEffect(() => {
+    setViewport((viewport) => ({ ...viewport, ...origin }));
+  }, [origin]);
 
   const onLoad = useCallback(async () => {
     const map = mapRef.current.getMap();
@@ -93,38 +101,21 @@ function Map({
     categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
   });
 
-  const updateMapPosition = useCallback(() => {
-    const map = mapRef.current.getMap();
-    const center = map.getCenter();
-    const bounds = map.getBounds();
-    setMapPosition({
-      center: {
-        latitude: center.lat,
-        longitude: center.lng,
-      },
-      bounds: {
-        maxLat: bounds._ne.lat,
-        minLat: bounds._sw.lat,
-        maxLng: bounds._ne.lng,
-        minLng: bounds._sw.lng,
-      },
-    })
-  }, [setMapPosition])
+  useImperativeHandle(ref, () => ({
+    getViewport: () => {
+      const map = mapRef.current.getMap();
 
-  useEffect(() => {
-    const { latitude, longitude, zoom } = origin;
+      const { lat: latitude, lng: longitude } = map.getCenter();
+      const zoom = map.getZoom();
+      const { width, height } = map.getContainer().getBoundingClientRect();
 
-    setViewport((viewport) => ({
-      ...viewport,
-      latitude,
-      longitude,
-      zoom: zoom || 13.5,
-    }))
-
-    const map = mapRef.current.getMap();
-    const event = map.loaded() ? 'moveend' : 'load';
-    map.once(event, updateMapPosition);
-  }, [origin, updateMapPosition])
+      return {
+        center: { latitude, longitude },
+        zoom,
+        dimensions: { width, height },
+      };
+    },
+  }), [])
 
   return (
     <ReactMapGL
@@ -156,7 +147,7 @@ function Map({
         </Source>
       )}
       <Button
-        onClick={updateMapPosition}
+        onClick={searchMapArea}
         variant="outlined"
         size="small"
         className={classes.searchButton}
@@ -168,4 +159,4 @@ function Map({
   );
 }
 
-export default Map;
+export default forwardRef(Map);

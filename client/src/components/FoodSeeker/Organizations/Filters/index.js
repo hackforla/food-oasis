@@ -193,6 +193,7 @@ const ResultsFilters = ({
                 isMapView={isMapView}
                 onClick={switchResultsView}
                 color={theme.palette.primary.dark}
+                style={{ marginLeft: 5 }}
               />
             )}
           </Grid>

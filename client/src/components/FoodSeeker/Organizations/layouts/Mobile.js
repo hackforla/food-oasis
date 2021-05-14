@@ -16,18 +16,12 @@ const useStyles = makeStyles((theme) => ({
     margin: "0 1em",
     flex: 0,
   },
-  details: {
-    textAlign: "center",
-    width: "100%",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    padding: "0 1em",
+  overlay: {
     position: "absolute",
+    width: "100%",
     height: "100%",
     backgroundColor: theme.palette.background.default,
-    zIndex: 10000,
-    overflow: "auto",
+    zIndex: 1000,
   },
 }));
 
@@ -45,21 +39,22 @@ const MobileLayout = ({ filters, list, map, preview, details, isMapView }) => {
     <>
       { filters }
       <div className={classes.container}>
-        {isMapView ? (
-          <>
-            <div className={classes.map}>{ map }</div>
-            {preview && (
-              <div className={classes.preview} onClick={show}>
-                { preview }
-              </div>
-            )}
-            {details && showDetails && (
-              <div className={classes.details}>
-                { details }
-              </div>
-            )}
-          </>
-        ) : list}
+        <div className={classes.map}>{ map }</div>
+        {preview && (
+          <div className={classes.preview} onClick={show}>
+            { preview }
+          </div>
+        )}
+        {details && showDetails && (
+          <div className={classes.overlay}>
+            { details }
+          </div>
+        )}
+        {!isMapView && (
+          <div className={classes.overlay}>
+            {list}
+          </div>
+        )}
       </div>
     </>
   )

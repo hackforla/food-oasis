@@ -7,9 +7,10 @@ export default function SwitchViewsButton({
   isMapView,
   onClick,
   color = "primary",
+  style,
 }) {
   return (
-    <Button onClick={onClick} style={{ color }}>
+    <Button onClick={onClick} style={{ color, ...style }}>
       {isMapView && (
         <>
           <FormatListBulletedIcon />

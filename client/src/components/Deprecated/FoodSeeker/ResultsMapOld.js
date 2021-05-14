@@ -11,7 +11,7 @@ import { isMobile } from "helpers";
 import StakeholderPreview from "components/FoodSeeker/StakeholderPreview";
 import StakeholderDetails from "components/FoodSeeker/StakeholderDetails";
 import theme from "theme/clientTheme";
-import { defaultCoordinates } from "helpers/Configuration";
+import { defaultViewport } from "helpers/Configuration";
 
 const styles = {
   navigationControl: {
@@ -115,7 +115,7 @@ function Map({
 }) {
   const [viewport, setViewport] = useState(
     initViewport || {
-      zoom: defaultCoordinates.zoom,
+      zoom: defaultViewport.zoom,
       latitude: origin.latitude,
       longitude: origin.longitude,
       logoPosition: "top-left",

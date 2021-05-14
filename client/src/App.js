@@ -9,7 +9,7 @@ import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import { Grid, CssBaseline } from "@material-ui/core";
 import theme from "theme/clientTheme";
 import { logout } from "services/account-service";
-import { tenantId, defaultCoordinates } from "helpers/Configuration";
+import { tenantId, defaultViewport } from "helpers/Configuration";
 import useGeolocation from "hooks/useGeolocation";
 
 // Components
@@ -93,10 +93,7 @@ function App() {
 
   // origin is where the map should be centered. It is at the App level
   // so it can be passed from landing pages to the SearchResults.
-  const [origin, setOrigin] = useState({
-    latitude: defaultCoordinates.lat,
-    longitude: defaultCoordinates.lon,
-  });
+  const [origin, setOrigin] = useState(defaultViewport.center);
 
   // userCoordinates is the user's location if geolocation is enabled,
   // otherwise null.

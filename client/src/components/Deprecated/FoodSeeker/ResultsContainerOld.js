@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 import { useOrganizationBests } from "hooks/useOrganizationBests";
 import useCategoryIds from "hooks/useCategoryIds";
 import { isMobile } from "helpers";
-import { defaultCoordinates } from "helpers/Configuration";
+import { defaultViewport } from "helpers/Configuration";
 import { DEFAULT_CATEGORIES } from "constants/stakeholder";
 
 import Filters from "./ResultsFilters";
@@ -137,12 +137,12 @@ export default function ResultsContainer({
         isInactive: "either",
         verificationStatusId: 0,
         bounds,
-        radius: defaultCoordinates.radius,
+        radius: defaultViewport.radius,
       });
 
       if (!center) {
         setInitViewport({
-          zoom: defaultCoordinates.zoom,
+          zoom: defaultViewport.zoom,
           latitude: origin.latitude,
           longitude: origin.longitude,
         });

@@ -9,7 +9,7 @@ import React, {
 import { Button } from "@material-ui/core";
 import ReactMapGL, * as Map from "react-map-gl";
 import { MAPBOX_STYLE } from "constants/map";
-import { defaultCoordinates } from "helpers/Configuration";
+import { defaultViewport } from "helpers/Configuration";
 import {
   MARKERS_LAYER_ID,
   loadMarkerIcons,
@@ -32,8 +32,9 @@ const ResultsMap = ({
   const mapRef = useRef();
   const [markersLoaded, setMarkersLoaded] = useState(false);
   const [viewport, setViewport] = useState({
-    ...center,
-    zoom: defaultCoordinates.zoom,
+    latitude: center.latitude,
+    longitude: center.longitude,
+    zoom: defaultViewport.zoom,
   });
 
   useEffect(() => {
@@ -41,7 +42,11 @@ const ResultsMap = ({
   }, []);
 
   useEffect(() => {
-    setViewport((viewport) => ({ ...viewport, ...center }));
+    setViewport((viewport) => ({
+      ...viewport,
+      latitude: center.latitude,
+      longitude: center.longitude,
+    }));
   }, [center]);
 
   const onLoad = useCallback(async () => {
@@ -89,7 +94,7 @@ const ResultsMap = ({
         dimensions: { width, height },
       };
     },
-  }), [])
+  }), []);
 
   return (
     <ReactMapGL

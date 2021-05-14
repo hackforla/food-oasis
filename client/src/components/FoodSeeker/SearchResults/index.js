@@ -4,6 +4,7 @@ import useCategoryIds from "hooks/useCategoryIds";
 import useSelectedStakeholder from "hooks/useSelectedStakeholder";
 import useBreakpoints from "hooks/useBreakpoints";
 import { getMapBounds } from "helpers";
+import { defaultViewport } from "helpers/Configuration";
 import { Mobile, Tablet, Desktop } from "./layouts";
 import Filters from "./Filters";
 import Map from "./Map";
@@ -40,6 +41,10 @@ const ResultsContainer = ({ origin, setOrigin, userCoordinates, setToast }) => {
     const { center } = mapRef.current.getViewport();
     setOrigin(center);
   }, [setOrigin]);
+
+  const resetOrigin = useCallback(() => {
+    setOrigin(userCoordinates || defaultViewport.center);
+  }, [setOrigin, userCoordinates]);
 
   const toggleShowList = useCallback(() => {
     doSelectStakeholder(null);
@@ -80,7 +85,7 @@ const ResultsContainer = ({ origin, setOrigin, userCoordinates, setToast }) => {
       stakeholders={stakeholders || []}
       setToast={setToast}
       loading={loading}
-      handleReset={setOrigin.bind(null, userCoordinates)}
+      handleReset={resetOrigin}
     />
   );
 

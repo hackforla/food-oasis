@@ -3,7 +3,7 @@ const camelcaseKeys = require("camelcase-keys");
 
 const selectAll = async () => {
   const sql = `
-    select id, name, code
+    select id, name, code, tenant_id
     from parent_organization
     order by name
   `;
@@ -11,12 +11,12 @@ const selectAll = async () => {
   return result.map((r) => camelcaseKeys(r));
 };
 
-const selectById = async (suggestionId) => {
+const selectById = async (tenantId) => {
   // Need to cast id to number so pg-promise knows how
   // to format SQL
-  const id = Number(suggestionId);
-  const sql = `select id, name, code
-  from parent_organization where id = $<id>`;
+  const id = Number(tenantId);
+  const sql = `select id, name, code, tenant_id
+  from parent_organization where tenantId = $<id>`;
 
   const row = await db.one(sql, { id });
   return camelcaseKeys(row);
@@ -24,8 +24,8 @@ const selectById = async (suggestionId) => {
 
 const insert = async (model) => {
   model.suggestionStatusId = 1;
-  const sql = `insert into parent_organization (name, code) 
-    values ($<name>, $<code>) 
+  const sql = `insert into parent_organization (name, code)
+    values ($<name>, $<code>)
     returning id`;
 
   const result = await db.one(sql, model);

@@ -68,8 +68,8 @@ const register = async (model) => {
       message: "Registration successful.",
     };
     const sqlRole = `insert into login_tenant (login_id, tenant_id, is_data_entry)
-      values ($<loginId>, $<tenantid>, true) returning id`;
-    await db.one(sqlRole, { loginId: row.id, tenantId: Number(tenantId) });
+      values ($<loginId>, $<tenantId>, true)`;
+    await db.none(sqlRole, { loginId: row.id, tenantId: Number(tenantId) });
 
     await requestRegistrationConfirmation(email, result, clientUrl);
     return result;

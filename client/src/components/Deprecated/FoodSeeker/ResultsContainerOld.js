@@ -1,18 +1,17 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import { useOrganizationBests } from "hooks/useOrganizationBests";
 import useCategoryIds from "hooks/useCategoryIds";
 import { isMobile } from "helpers";
-import { defaultCoordinates } from "helpers/Configuration";
+import { defaultViewport } from "helpers/Configuration";
 import { DEFAULT_CATEGORIES } from "constants/stakeholder";
 
 import Filters from "./ResultsFilters";
-import List from "./ResultsListOptimized";
-import Map from "./ResultsMapOptimized";
-import * as analytics from "../../services/analytics";
+import List from "./ResultsList";
+import Map from "./ResultsMapOld";
 
 const useStyles = makeStyles((theme) => ({
   listMapContainer: {
@@ -37,7 +36,6 @@ export default function ResultsContainer({
   const [status, setStatus] = useState("initial"); // 'initial', 'loading', 'loaded'
   const classes = useStyles();
   const history = useHistory();
-  const location = useLocation();
 
   const [selectedStakeholder, onSelectStakeholder] = useState(null);
   const [isMapView, setIsMapView] = useState(true);
@@ -47,43 +45,33 @@ export default function ResultsContainer({
   const { categoryIds, toggleCategory } = useCategoryIds([]);
   const [isVerifiedSelected, selectVerified] = useState(false);
 
-  const [viewport, setViewport] = useState({
-    latitude: location?.lat || origin.latitude || defaultCoordinates.lat,
-    longitude: location?.lon || origin.longitude || defaultCoordinates.lon,
-    zoom: defaultCoordinates.zoom,
-  });
-
-  const setCenter = (coords) => {
-    setViewport({
-      ...viewport,
-      latitude: coords.latitude,
-      longitude: coords.longitude,
-      logoPosition: "top-left",
-    });
-    setOrigin(coords);
-  };
+  const [initViewport, setInitViewport] = useState(null);
 
   const doSelectStakeholder = useCallback(
     (stakeholder) => {
       if (stakeholder) {
-        analytics.postEvent("selectOrganization", {
-          id: stakeholder.id,
+        window.dataLayer.push({
+          event: "viewDetail",
+          action: "click",
+          value: stakeholder.id,
           name: stakeholder.name,
         });
-
-        //Update url history
         const name = stakeholder.name.toLowerCase().replaceAll(" ", "_");
         history.push(`/organizations?org=${name}`);
       } else {
         history.push("/organizations");
       }
+      if (stakeholder && !isMobile) {
+        setInitViewport({
+          latitude: stakeholder.latitude,
+          longitude: stakeholder.longitude,
+        });
+      }
       onSelectStakeholder(stakeholder);
     },
-    [history]
+    [setInitViewport, history]
   );
 
-  // Need to get this working to navigate to a specific organization, which may
-  // not be listed in the previously fetched data collection
   // useEffect(() => {
   //   if (location.search.includes("?org=") && data) {
   //     const org = location.search.replace("?org=", "").replaceAll("_", " ");
@@ -134,59 +122,49 @@ export default function ResultsContainer({
     setStatus("loaded");
   }, [data]);
 
-  const handleSearchThisArea = useCallback(
-    (center, bounds) => {
-      if (!center || !bounds) {
-        console.error("handleSearchThisArea is missing args");
-      }
+  const handleSearch = useCallback(
+    (e, center, bounds) => {
       setStatus("loading");
-
-      setViewport({
-        ...viewport,
-        latitude: center.lat,
-        longitude: center.lng,
-      });
-
+      if (e) e.preventDefault();
       search({
-        latitude: viewport.latitude,
-        longitude: viewport.longitude,
+        latitude:
+          (center && center.lat) || origin.latitude || userCoordinates.latitude,
+        longitude:
+          (center && center.lng) ||
+          origin.longitude ||
+          userCoordinates.longitude,
         categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
         isInactive: "either",
         verificationStatusId: 0,
         bounds,
-        radius: defaultCoordinates.radius,
+        radius: defaultViewport.radius,
       });
+
+      if (!center) {
+        setInitViewport({
+          zoom: defaultViewport.zoom,
+          latitude: origin.latitude,
+          longitude: origin.longitude,
+        });
+      }
       setStatus("loaded");
     },
-    [search, categoryIds, viewport]
+    [
+      search,
+      origin.latitude,
+      origin.longitude,
+      userCoordinates.latitude,
+      userCoordinates.longitude,
+      categoryIds,
+      setInitViewport,
+    ]
   );
-
-  const handleSearch = () => {
-    setStatus("loading");
-
-    // TODO: This fn is called by ResultsFilter, and unfortunately, neither the
-    // filter nor this component know the map component lat, long bounds, so
-    // we're just using a radius-based query, which may not get all of the
-    // orgs in the map area. Need to try to work out a way to get boundaries
-    // for query.
-    search({
-      latitude: viewport.latitude,
-      longitude: viewport.longitude,
-      categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
-      isInactive: "either",
-      verificationStatusId: 0,
-      bounds: null,
-      radius: defaultCoordinates.radius,
-    });
-
-    setStatus("loaded");
-  };
 
   return (
     <>
       <Filters
         origin={origin}
-        setOrigin={setCenter}
+        setOrigin={setOrigin}
         toggleCategory={toggleCategory}
         categoryIds={categoryIds}
         isVerifiedSelected={isVerifiedSelected}
@@ -210,14 +188,16 @@ export default function ResultsContainer({
         )}
         {(!mobileView || (mobileView && isMapView)) && (
           <Map
-            handleSearch={handleSearchThisArea}
+            handleSearch={handleSearch}
+            origin={origin}
             stakeholders={data}
             doSelectStakeholder={doSelectStakeholder}
             selectedStakeholder={selectedStakeholder}
             categoryIds={categoryIds}
             setToast={setToast}
-            viewport={viewport}
-            setViewport={setViewport}
+            viewport={initViewport}
+            setViewport={setInitViewport}
+            initViewport={initViewport}
           />
         )}
       </Grid>

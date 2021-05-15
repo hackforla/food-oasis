@@ -10,7 +10,7 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import * as suggestionService from "../../services/suggestion-service";
+import * as suggestionService from "services/suggestion-service";
 
 function SuggestionDialog(props) {
   const { onClose, open, setToast, stakeholder: sh, ...other } = props;

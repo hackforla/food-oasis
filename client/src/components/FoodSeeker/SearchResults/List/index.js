@@ -1,13 +1,13 @@
 import React, { useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
-import { Button, CircularProgress, Grid } from "@material-ui/core";
+import { Button, CircularProgress } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "react-virtualized/dist/es/List";
 import AutoSizer from "react-virtualized/dist/es/AutoSizer";
 import CellMeasurer from "react-virtualized/dist/es/CellMeasurer";
 import CellMeasurerCache from "react-virtualized/dist/es/CellMeasurer/CellMeasurerCache";
-import StakeholderPreview from "components/FoodSeeker/StakeholderPreview";
-import StakeholderDetails from "components/FoodSeeker/StakeholderDetails";
+import StakeholderPreview from "../Preview";
+import StakeholderDetails from "../Details";
 import * as analytics from "services/analytics";
 
 const useStyles = makeStyles((theme) => ({
@@ -18,16 +18,8 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    [theme.breakpoints.up("md")]: {
-      height: "100%",
-    },
-    [theme.breakpoints.only("sm")]: {
-      order: 1,
-      height: "30em",
-    },
     [theme.breakpoints.down("xs")]: {
-      height: "100%",
-      fontSize: "12px",
+      fontSize: 12,
     },
   },
   list: {
@@ -59,7 +51,7 @@ const ResultsList = ({
   selectedStakeholder,
   stakeholders,
   setToast,
-  status,
+  loading,
   handleReset,
 }) => {
   const classes = useStyles();
@@ -104,13 +96,13 @@ const ResultsList = ({
   );
 
   return (
-    <Grid item xs={12} md={4} className={classes.listContainer}>
-      {status === "loading" && (
+    <div className={classes.listContainer}>
+      {loading && (
         <div className={classes.emptyResult}>
           <CircularProgress />
         </div>
       )}
-      {status === "loaded" && stakeholders.length === 0 && (
+      {!loading && stakeholders.length === 0 && (
         <div className={classes.emptyResult}>
           <p>Sorry, we don&apos;t have any results for this area.</p>
           <Button
@@ -125,8 +117,8 @@ const ResultsList = ({
       )}
       {stakeholders && selectedStakeholder && !selectedStakeholder.inactive ? (
         <StakeholderDetails
-          doSelectStakeholder={doSelectStakeholder}
           selectedStakeholder={selectedStakeholder}
+          onClose={doSelectStakeholder.bind(null, null)}
           setToast={setToast}
         />
       ) : (
@@ -146,7 +138,7 @@ const ResultsList = ({
           </AutoSizer>
         </div>
       )}
-    </Grid>
+    </div>
   );
 };
 

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Downshift from "downshift";
-import { MenuItem, TextField, Paper } from "@material-ui/core";
+import { MenuItem, TextField, Paper, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useMapboxGeocoder } from "hooks/useMapboxGeocoder";
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -46,9 +46,6 @@ const useStyles = makeStyles((theme) => ({
     "&::placeholder": {
       opacity: "1",
     },
-  },
-  searchIcon: {
-    color: "#19334c",
   },
   searchIconCont: {
     cursor: 'pointer',
@@ -109,28 +106,30 @@ export default function Search({
 
   const renderInput = ({ InputProps, classes }) => {
     return (
-      <TextField
-        className={classes.address}
-        variant="outlined"
-        margin="none"
-        fullWidth
-        placeholder="Search by address or zip code"
-        name="address"
-        size="small"
-        autoFocus={false}
-        InputProps={{
-          endAdornment: (showSearchIcon ?
-            <InputAdornment onClick={() => setOrigin({})} position="start" className={classes.searchIconCont}>
-              <SearchIcon className={classes.searchIcon}/>
-            </InputAdornment>
-            : <div />),
-          classes: {
-            input: classes.input,
-          },
-          ...InputProps,
-        }}
-        // style={{ width: isWindow960orLess ? "100%" : "100%" }}
-      />
+      <Grid container justify="center" alignItems="center">
+          <TextField
+            className={classes.address}
+            variant="outlined"
+            margin="none"
+            fullWidth
+            placeholder="Search by address or zip code"
+            name="address"
+            size="small"
+            autoFocus={false}
+            InputProps={{
+              endAdornment: (showSearchIcon ?
+                <InputAdornment onClick={() => setOrigin({})} className={classes.searchIconCont}>
+                  <SearchIcon/>
+                </InputAdornment>
+                : <div />),
+              classes: {
+                input: classes.input,
+              },
+              ...InputProps,
+            }}
+            // style={{ width: isWindow960orLess ? "100%" : "100%" }}
+          />
+      </Grid>
     );
   };
 

@@ -46,14 +46,14 @@ function loadMarkerIcon({ map, marker, iconId }) {
   return new Promise((resolve, reject) => {
     const icon = new Image();
     const svgString = renderToString(marker);
-    const svg = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
+    const svg = new Blob([svgString], { type: "image/svg+xml" });
     const url = URL.createObjectURL(svg);
-    icon.src = url;
     icon.onload = () => {
       map.addImage(iconId, icon);
       URL.revokeObjectURL(url);
       resolve();
     };
+    icon.src = url;
   });
 }
 

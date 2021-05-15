@@ -6,12 +6,16 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
+import Link from '@material-ui/core/Link';
+import Button from '@material-ui/core/Button';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
+import { Link as RouterLink } from 'react-router-dom';
 import Search from "components/FoodSeeker/Search";
 // The three tenant logos happen to be the same at the moment
 import logo from "images/foodoasis.svg";
 import logoCA from "images/foodoasis.svg";
 import logoHI from "images/foodoasis.svg";
-import { tenantId } from "helpers/Configuration";
+import { tenantId, defaultCoordinates } from "helpers/Configuration";
 import * as analytics from "../../services/analytics";
 
 const useStyles = makeStyles((theme) => ({
@@ -114,15 +118,80 @@ const useStyles = makeStyles((theme) => ({
     width: 32,
     height: 32,
   },
+  learnMore: {
+    fontSize: "19px",
+    color: "white",
+    textDecoration: "underline",
+    "&:visited": {
+      color: "white",
+    },
+  },
+  locationBtn: {
+    backgroundColor: '#4CAF50',
+    color: "white",
+    "&:hover": {
+      backgroundColor: "#439846",
+    },
+  },
 }));
 
 const Home = (props) => {
   const classes = useStyles();
-  const { origin, setOrigin, userCoordinates, browserLocation } = props;
+  const {
+    origin,
+    setOrigin,
+    userCoordinates,
+    setUserCoordinates,
+    browserLocation,
+    setBrowserLocation
+  } = props;
 
   useEffect(() => {
     analytics.postEvent("visitLandingPage");
   }, []);
+
+  const useMyLocationTrigger = () => {
+    let userCoordinates = { latitude: null, longitude: null };
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          if (position) {
+            const userCoordinates = {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            };
+            setUserCoordinates(userCoordinates);
+            setBrowserLocation(true);
+            setOrigin(userCoordinates);
+            selectLocation(userCoordinates);
+          }
+        },
+        (error) => {
+          // Ususally because user has blocked location
+          console.log(`Getting browser location failed: ${error.message}`);
+          const userCoordinates = {
+            latitude: defaultCoordinates.lat,
+            longitude: defaultCoordinates.lon,
+          };
+          setUserCoordinates(userCoordinates);
+          setBrowserLocation(false);
+          selectLocation(userCoordinates);
+        }
+      );
+    } else {
+      console.log(
+        "Browser does not support getting users location - using default location for area"
+      );
+      const userCoordinates = {
+        latitude: defaultCoordinates.lat,
+        longitude: defaultCoordinates.lon,
+      };
+      setUserCoordinates(userCoordinates);
+      setBrowserLocation(false);
+      selectLocation(userCoordinates);
+    }
+    return userCoordinates;
+  };
 
   React.useEffect(() => {
     if (props.match.path === "/") {
@@ -185,6 +254,7 @@ const Home = (props) => {
                 setOrigin={selectLocation}
                 origin={origin}
                 browserLocation={browserLocation}
+                showSearchIcon
               />
               {/* <Button
                 type="submit"
@@ -197,6 +267,33 @@ const Home = (props) => {
               > 
                 {""}
               </Button>*/}
+            </Box>
+            <Box className={classes.inputContainer}>
+              <>
+                or
+              </>
+            </Box>
+            <Box className={classes.inputContainer}>
+              {/* <Search
+                userCoordinates={userCoordinates}
+                setOrigin={selectLocation}
+                origin={origin}
+                browserLocation={browserLocation}
+              /> */}
+              <Button
+                className={classes.locationBtn} 
+                variant="contained" 
+                fullWidth 
+                startIcon={<LocationOnIcon />}
+                onClick={useMyLocationTrigger}
+              >
+                Use my current location
+              </Button>
+            </Box>
+            <Box className={classes.inputContainer}>
+                <Link component={RouterLink} to="/about" className={classes.learnMore}>
+                  Learn about this site
+                </Link>
             </Box>
           </form>
         </Box>

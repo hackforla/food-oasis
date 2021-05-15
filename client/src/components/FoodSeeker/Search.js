@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Downshift from "downshift";
-import { MenuItem, TextField, Paper } from "@material-ui/core";
-import LocationOnIcon from "@material-ui/icons/LocationOn";
+import { MenuItem, TextField, Paper, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useMapboxGeocoder } from "hooks/useMapboxGeocoder";
+import InputAdornment from '@material-ui/core/InputAdornment';
+import SearchIcon from '@material-ui/icons/Search';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -46,6 +47,9 @@ const useStyles = makeStyles((theme) => ({
       opacity: "1",
     },
   },
+  searchIconCont: {
+    cursor: 'pointer',
+  }
 }));
 
 export default function Search({
@@ -53,6 +57,7 @@ export default function Search({
   setOrigin,
   origin,
   browserLocation,
+  showSearchIcon
 }) {
   const classes = useStyles();
   const [selectedPlace, setSelectedPlace] = useState("");
@@ -101,23 +106,30 @@ export default function Search({
 
   const renderInput = ({ InputProps, classes }) => {
     return (
-      <TextField
-        className={classes.address}
-        variant="outlined"
-        margin="none"
-        fullWidth
-        placeholder="Search by address or zip code"
-        name="address"
-        size="small"
-        autoFocus={false}
-        InputProps={{
-          classes: {
-            input: classes.input,
-          },
-          ...InputProps,
-        }}
-        // style={{ width: isWindow960orLess ? "100%" : "100%" }}
-      />
+      <Grid container justify="center" alignItems="center">
+          <TextField
+            className={classes.address}
+            variant="outlined"
+            margin="none"
+            fullWidth
+            placeholder="Search by address or zip code"
+            name="address"
+            size="small"
+            autoFocus={false}
+            InputProps={{
+              endAdornment: (showSearchIcon ?
+                <InputAdornment onClick={() => setOrigin({})} className={classes.searchIconCont}>
+                  <SearchIcon/>
+                </InputAdornment>
+                : <div />),
+              classes: {
+                input: classes.input,
+              },
+              ...InputProps,
+            }}
+            // style={{ width: isWindow960orLess ? "100%" : "100%" }}
+          />
+      </Grid>
     );
   };
 
@@ -155,15 +167,17 @@ export default function Search({
       userCoordinates.latitude
     ) {
       return (
-        <MenuItem
-          component="div"
-          onClick={() => {
-            setOrigin({ ...userCoordinates, locationName: "Current Location" });
-            handleDownshiftOnChange("Current Location");
-          }}
-        >
-          <LocationOnIcon /> Current Location
-        </MenuItem>
+        <>
+        </>
+        // <MenuItem
+        //   component="div"
+        //   onClick={() => {
+        //     setOrigin({ ...userCoordinates, locationName: "Current Location" });
+        //     handleDownshiftOnChange("Current Location");
+        //   }}
+        // >
+        //   <LocationOnIcon /> Current Location
+        // </MenuItem>
       );
     }
 
@@ -244,4 +258,9 @@ Search.propTypes = {
     longitude: PropTypes.number,
   }),
   setOrigin: PropTypes.func,
+  showSearchIcon: PropTypes.bool,
+};
+
+Search.defaultProps = {
+  showSearchIcon: false,
 };

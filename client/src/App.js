@@ -219,9 +219,11 @@ function App() {
                   >
                     <Home
                       userCoordinates={userCoordinates}
+                      setUserCoordinates={setUserCoordinates}
                       origin={origin}
                       setOrigin={setOrigin}
                       browserLocation={browserLocation}
+                      setBrowserLocation={setBrowserLocation}
                     />
                   </div>
                 </div>

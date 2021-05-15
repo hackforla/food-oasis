@@ -165,7 +165,7 @@ const ResultsFilters = ({
   return (
     <Grid item container className={classes.controlPanel}>
       {!mobileView && (
-        <Grid item xs={0} sm={4} className={classes.taglineContainer}>
+        <Grid item sm={4} className={classes.taglineContainer}>
           <Typography variant="h6" className={classes.tagline}>
             {taglineText}
           </Typography>
@@ -275,21 +275,23 @@ const ResultsFilters = ({
               browserLocation={browserLocation}
             />
             <Tooltip title="Re-center">
-              <Button
-                onClick={() => {
-                  analytics.postEvent("recenterMap", {});
-                  setOrigin(userCoordinates);
-                  handleSearch();
-                }}
-                disabled={
-                  !userCoordinates.latitude || !userCoordinates.longitude
-                }
-                variant="contained"
-                className={classes.nearbySearch}
-                startIcon={
-                  <LocationSearchingIcon className={classes.nearbyIcon} />
-                }
-              />
+              <span>
+                <Button
+                  onClick={() => {
+                    analytics.postEvent("recenterMap", {});
+                    setOrigin(userCoordinates);
+                    handleSearch();
+                  }}
+                  disabled={
+                    !userCoordinates.latitude || !userCoordinates.longitude
+                  }
+                  variant="contained"
+                  className={classes.nearbySearch}
+                  startIcon={
+                    <LocationSearchingIcon className={classes.nearbyIcon} />
+                  }
+                />
+              </span>
             </Tooltip>
 
             {/* <Button

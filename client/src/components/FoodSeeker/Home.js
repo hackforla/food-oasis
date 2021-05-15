@@ -16,6 +16,7 @@ import logo from "images/foodoasis.svg";
 import logoCA from "images/foodoasis.svg";
 import logoHI from "images/foodoasis.svg";
 import { tenantId, defaultCoordinates } from "helpers/Configuration";
+import * as analytics from "../../services/analytics";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -146,7 +147,7 @@ const Home = (props) => {
   } = props;
 
   useEffect(() => {
-    window.stormly("event", "visitLandingPage");
+    analytics.postEvent("visitLandingPage");
   }, []);
 
   const useMyLocationTrigger = () => {

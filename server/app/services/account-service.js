@@ -12,28 +12,48 @@ const { v4: uuid4 } = require("uuid");
 
 const SALT_ROUNDS = 10;
 
-const selectAll = async () => {
+const selectAll = async (tenantId) => {
   let sql = `
-    select * from login order by last_name, first_name, date_created
+  select login.id, login.first_name, login.last_name, login.email, login.email_confirmed,
+  login.password_hash, login.date_created, login.is_global_admin, login.is_global_reporting, 
+    lt.tenant_id, lt.is_admin, lt.is_security_admin, lt.is_data_entry, lt.is_coordinator 
+  from login left outer join 
+  (
+    select * from login_tenant where tenant_id = $<tenantId>
+  ) as lt on login.id = lt.login_id
   `;
-  const result = await db.manyOrNone(sql);
+  const result = await db.manyOrNone(sql, { tenantId });
   return result.map((r) => camelcaseKeys(r));
 };
 
-const selectById = async (id) => {
-  const sql = `select * from login where id = $<id>`;
-  const row = await db.one(sql, { id: Number(id) });
+const selectById = async (id, tenantId) => {
+  const sql = `select login.id, login.first_name, login.last_name, login.email, login.email_confirmed,
+  login.password_hash, login.date_created, login.is_global_admin, login.is_global_reporting, 
+  lt.tenant_id, lt.is_admin, lt.is_security_admin, lt.is_data_entry, lt.is_coordinator 
+  from login left outer join 
+  (
+    select * from login_tenant where tenant_id = $<tenantId>
+  ) as lt on login.id = lt.login_id
+  where id = $<id>`;
+  const row = await db.one(sql, { id: Number(id), tenantId: Number(tenantId) });
   return camelcaseKeys(row);
 };
 
-const selectByEmail = async (email) => {
-  const sql = `select * from login where email ilike $<email>`;
-  const row = await db.one(sql, { email });
+const selectByEmail = async (email, tenantId) => {
+  const sql = `select login.id, login.first_name, login.last_name, login.email, login.email_confirmed,
+  login.password_hash, login.date_created, login.is_global_admin, login.is_global_reporting, 
+  lt.tenant_id, lt.is_admin, lt.is_security_admin, lt.is_data_entry, lt.is_coordinator 
+  from login left outer join 
+  (
+    select * from login_tenant where tenant_id = $<tenantId>
+  ) as lt on login.id = lt.login_id
+  where email ilike $<email> `;
+  const row = await db.one(sql, { email, tenantId: Number(tenantId) });
   return camelcaseKeys(row);
 };
 
 const register = async (model) => {
-  const { email, clientUrl } = model;
+  const { email, clientUrl, tenantId } = model;
   let result = null;
   await hashPassword(model);
   try {
@@ -47,6 +67,10 @@ const register = async (model) => {
       newId: row.id,
       message: "Registration successful.",
     };
+    const sqlRole = `insert into login_tenant (login_id, tenant_id, is_data_entry)
+      values ($<loginId>, $<tenantId>, true)`;
+    await db.none(sqlRole, { loginId: row.id, tenantId: Number(tenantId) });
+
     await requestRegistrationConfirmation(email, result, clientUrl);
     return result;
   } catch (err) {
@@ -251,9 +275,9 @@ const resetPassword = async ({ token, password }) => {
   }
 };
 
-const authenticate = async (email, password) => {
+const authenticate = async (email, password, tenantId) => {
   try {
-    const user = await selectByEmail(email);
+    const user = await selectByEmail(email, tenantId);
     if (!user.emailConfirmed) {
       return {
         isSuccess: false,
@@ -277,6 +301,12 @@ const authenticate = async (email, password) => {
       if (user.isDataEntry) {
         role.push("data_entry");
       }
+      if (user.isGlobalAdmin) {
+        role.push("global_admin");
+      }
+      if (user.isGlobalReporting) {
+        role.push("global_reporting");
+      }
       return {
         isSuccess: true,
         code: "AUTH_SUCCESS",
@@ -290,6 +320,8 @@ const authenticate = async (email, password) => {
           isSecurityAdmin: user.isSecurityAdmin,
           isDataEntry: user.isDataEntry,
           emailConfirmed: user.emailConfirmed,
+          isGlobalAdmin: user.isGlobalAdmin,
+          isGlobalReporting: user.isGlboalReporting,
           role: role.join(","), // join list of roles to string
         },
       };
@@ -330,8 +362,13 @@ async function hashPassword(user) {
 }
 
 // Update login table with the specified permissionName column set to value
-const setPermissions = async (userId, permissionName, value) => {
-  const user = await selectById(userId);
+const setTenantPermissions = async (
+  userId,
+  permissionName,
+  value,
+  tenantId
+) => {
+  const user = await selectById(userId, tenantId);
   if (!user) {
     return {
       success: false,
@@ -347,6 +384,70 @@ const setPermissions = async (userId, permissionName, value) => {
     "is_security_admin",
     "is_data_entry",
   ];
+  if (!allowedPermissions.includes(permissionName)) {
+    return {
+      success: false,
+      code: "DB_ERROR",
+      message: `Cannot modify login field ${permissionName}.`,
+    };
+  }
+
+  try {
+    // do a tiny bit of sanity checking on our input
+    var booleanValue = Boolean(value);
+    // if granting a role for the first time, a login_tenant record may not
+    // exist, so we might need to insert it.
+    if (booleanValue) {
+      const insertSql = `INSERT INTO login_tenant ( login_id, tenant_id )
+      VALUES ( $<userId>, $<tenantId> )`;
+      try {
+        await db.none(insertSql, { userId, tenantId });
+      } catch (err) {
+        console.error(err);
+        console.log(
+          `login_tenant record already exists for login_id ${userId}, tenant_id ${tenantId}`
+        );
+      }
+    }
+
+    const updateSql = `update login_tenant set $<permissionName:name> = $<booleanValue> where login_id = $<userId> and tenant_id = $<tenantId>;`;
+    await db.none(updateSql, {
+      permissionName,
+      booleanValue,
+      userId,
+      tenantId,
+    });
+    return {
+      success: true,
+      code: "UPDATE_SUCCESS",
+      reason: `${permissionName} successfully set to ${booleanValue} for ${userId}`,
+    };
+  } catch (err) {
+    return {
+      success: false,
+      code: "DB_ERROR",
+      message: `Updating login.${permissionName} failed: ${err}`,
+    };
+  }
+};
+
+const setGlobalPermissions = async (
+  userId,
+  permissionName,
+  value,
+  tenantId
+) => {
+  const user = await selectById(userId, tenantId);
+  if (!user) {
+    return {
+      success: false,
+      code: "AUTH_NO_ACCOUNT",
+      reason: `No account found for id ${userId}`,
+    };
+  }
+  // Don't expose any columns besides the currently allowed ones:
+  // is_global_admin, is_global_reporting
+  var allowedPermissions = ["is_global_admin", "is_global_reporting"];
   if (!allowedPermissions.includes(permissionName)) {
     return {
       success: false,
@@ -380,7 +481,8 @@ module.exports = {
   register,
   confirmRegistration,
   resendConfirmationEmail,
-  setPermissions,
+  setTenantPermissions,
+  setGlobalPermissions,
   forgotPassword,
   resetPassword,
   authenticate,

@@ -10,8 +10,9 @@ import { defaultCoordinates } from "helpers/Configuration";
 import { DEFAULT_CATEGORIES } from "constants/stakeholder";
 
 import Filters from "./ResultsFilters";
-import List from "./ResultsList";
-import Map from "./ResultsMap";
+import List from "./ResultsListOptimized";
+import Map from "./ResultsMapOptimized";
+import * as analytics from "../../services/analytics";
 
 const useStyles = makeStyles((theme) => ({
   listMapContainer: {
@@ -65,6 +66,11 @@ export default function ResultsContainer({
   const doSelectStakeholder = useCallback(
     (stakeholder) => {
       if (stakeholder) {
+        analytics.postEvent("selectOrganization", {
+          id: stakeholder.id,
+          name: stakeholder.name,
+        });
+
         //Update url history
         const name = stakeholder.name.toLowerCase().replaceAll(" ", "_");
         history.push(`/organizations?org=${name}`);

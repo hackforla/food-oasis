@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { withRouter } from "react-router";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
@@ -6,13 +6,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
-import Search from "components/FoodSeeker/Search";
+import SearchBar from "components/FoodSeeker/SearchBar";
 // The three tenant logos happen to be the same at the moment
 import logo from "images/foodoasis.svg";
 import logoCA from "images/foodoasis.svg";
 import logoHI from "images/foodoasis.svg";
 import { tenantId } from "helpers/Configuration";
-import * as analytics from "../../services/analytics";
+import * as analytics from "services/analytics";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -116,24 +116,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Home = (props) => {
+const Home = ({ origin, setOrigin, userCoordinates, match, history }) => {
   const classes = useStyles();
-  const { origin, setOrigin, userCoordinates, browserLocation } = props;
 
   useEffect(() => {
     analytics.postEvent("visitLandingPage");
   }, []);
 
-  React.useEffect(() => {
-    if (props.match.path === "/") {
+  useEffect(() => {
+    if (match.path === "/") {
       sessionStorage.clear();
     }
-  }, [props.match.path]);
+  }, [match.path]);
 
-  const selectLocation = (origin) => {
+  const selectLocation = useCallback((origin) => {
     setOrigin(origin);
-    props.history.push("/organizations");
-  };
+    history.push("/organizations");
+  }, [setOrigin, history]);
 
   return (
     <Container component="main" maxWidth="sm" className={classes.container}>
@@ -151,7 +150,7 @@ const Home = (props) => {
         <Box className={classes.formContainer}>
           <form
             className={classes.form}
-            onSubmit={() => props.history.push("/organizations")}
+            onSubmit={() => history.push("/organizations")}
           >
             {tenantId === 5 ? (
               <Typography variant={"h5"} className={classes.label}>
@@ -178,25 +177,12 @@ const Home = (props) => {
                 Locate free food in Los Angeles
               </Typography>
             )}
-
             <Box className={classes.inputContainer}>
-              <Search
+              <SearchBar
                 userCoordinates={userCoordinates}
                 setOrigin={selectLocation}
                 origin={origin}
-                browserLocation={browserLocation}
               />
-              {/* <Button
-                type="submit"
-                disabled={isDefaultOrigin}
-                variant="contained"
-                className={classes.submit}
-                startIcon={
-                  <SearchIcon fontSize="large" className={classes.searchIcon} />
-                }
-              > 
-                {""}
-              </Button>*/}
             </Box>
           </form>
         </Box>

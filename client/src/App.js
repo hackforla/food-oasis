@@ -9,7 +9,8 @@ import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import { Grid, CssBaseline } from "@material-ui/core";
 import theme from "theme/clientTheme";
 import { logout } from "services/account-service";
-import { tenantId, defaultCoordinates } from "helpers/Configuration";
+import { tenantId, defaultViewport } from "helpers/Configuration";
+import useGeolocation from "hooks/useGeolocation";
 
 // Components
 import { UserContext } from "contexts/user-context";
@@ -48,7 +49,7 @@ import ConfirmEmail from "components/Account/ConfirmEmail";
 import FaqEdit from "components/Faq/FaqEdit";
 import FaqAdd from "components/Faq/FaqAdd";
 import Home from "components/FoodSeeker/Home";
-import Results from "components/FoodSeeker/ResultsContainer";
+import SearchResults from "components/FoodSeeker/SearchResults";
 import Suggestion from "components/FoodSeeker/Suggestion";
 import ImportFile from "components/Admin/ImportOrganizations/ImportFile";
 import adminTheme from "./theme/adminTheme";
@@ -89,19 +90,17 @@ const useStyles = makeStyles({
 
 function App() {
   const [user, setUser] = useState(null);
-  // userCoordinates is the user's location if location is enabled, or the
-  // default tenant center location if the browser location is disabled.
-  const [userCoordinates, setUserCoordinates] = useState({});
+
+  // origin is where the map should be centered. It is at the App level
+  // so it can be passed from landing pages to the SearchResults.
+  const [origin, setOrigin] = useState(defaultViewport.center);
+
+  // userCoordinates is the user's location if geolocation is enabled,
+  // otherwise null.
+  const userCoordinates = useGeolocation();
+
   const [toast, setToast] = useState({ message: "" });
   const [bgImg, setBgImg] = useState("");
-  // origin is where the map should be centered. It is at the App level
-  // so it can be passed from leanding pages to the ResultsContainer.
-  const [origin, setOrigin] = useState({
-    latitude: defaultCoordinates.lat,
-    longitude: defaultCoordinates.lon,
-  });
-
-  const [browserLocation, setBrowserLocation] = useState(false);
 
   useEffect(() => {
     const imgNum = Math.floor(Math.random() * (21 - 1)) + 1;
@@ -128,49 +127,6 @@ function App() {
       setUser(user);
     }
   }, [user]);
-
-  useEffect(() => {
-    const fetchLocation = () => {
-      let userCoordinates = { latitude: null, longitude: null };
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            if (position) {
-              const userCoordinates = {
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-              };
-              setUserCoordinates(userCoordinates);
-              setBrowserLocation(true);
-            }
-          },
-          (error) => {
-            // Ususally because user has blocked location
-            console.log(`Getting browser location failed: ${error.message}`);
-            const userCoordinates = {
-              latitude: defaultCoordinates.lat,
-              longitude: defaultCoordinates.lon,
-            };
-            setUserCoordinates(userCoordinates);
-            setBrowserLocation(false);
-          }
-        );
-      } else {
-        console.log(
-          "Browser does not support getting users location - using default location for area"
-        );
-        const userCoordinates = {
-          latitude: defaultCoordinates.lat,
-          longitude: defaultCoordinates.lon,
-        };
-        setUserCoordinates(userCoordinates);
-        setBrowserLocation(false);
-      }
-
-      return userCoordinates;
-    };
-    fetchLocation();
-  }, []);
 
   const onLogin = (user) => {
     if (user) {
@@ -221,7 +177,6 @@ function App() {
                       userCoordinates={userCoordinates}
                       origin={origin}
                       setOrigin={setOrigin}
-                      browserLocation={browserLocation}
                     />
                   </div>
                 </div>
@@ -233,12 +188,11 @@ function App() {
               */}
               <Redirect from="/search" to="/organizations" />
               <Route path="/organizations">
-                <Results
-                  userCoordinates={userCoordinates}
+                <SearchResults
                   origin={origin}
                   setOrigin={setOrigin}
+                  userCoordinates={userCoordinates}
                   setToast={setToast}
-                  browserLocation={browserLocation}
                 />
               </Route>
               <Route path="/suggestion">

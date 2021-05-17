@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { renderToString } from "react-dom/server";
 import MapMarker from "images/mapMarker";
 import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
+  DEFAULT_CATEGORIES,
 } from "constants/stakeholder";
 
-///////////////////// CONSTANTS ///////////////////
+export const MARKERS_LAYER_ID = "markers";
 
 // note that we have 3 marker categories, and 2 selected states, for a
 // total of 6 possible marker variants.
@@ -17,8 +18,6 @@ const SELECTED_VALUES = [false, true];
 // using the pixel ratio to scale the marker helps prevent
 // blurry edges when the marker is converted to an image
 const MARKER_SCALE = window.devicePixelRatio;
-
-////////////////////// FUNCTIONS //////////////////
 
 // each marker variant has a unique id based on its category and
 // whether it is selected
@@ -47,14 +46,14 @@ function loadMarkerIcon({ map, marker, iconId }) {
   return new Promise((resolve, reject) => {
     const icon = new Image();
     const svgString = renderToString(marker);
-    const svg = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
+    const svg = new Blob([svgString], { type: "image/svg+xml" });
     const url = URL.createObjectURL(svg);
-    icon.src = url;
     icon.onload = () => {
       map.addImage(iconId, icon);
       URL.revokeObjectURL(url);
       resolve();
     };
+    icon.src = url;
   });
 }
 
@@ -84,7 +83,9 @@ export function loadMarkerIcons(map) {
   return Promise.all(iconLoaders)
 }
 
+// symbol layer style definition
 export const markersLayerStyles = {
+  id: MARKERS_LAYER_ID,
   type: "symbol",
   layout: {
     "icon-image": ["get", "iconId"],
@@ -94,25 +95,54 @@ export const markersLayerStyles = {
   },
 }
 
-// This generates the geojson needed to show the stakeholders in a symbol layer.
-// Note that the iconId is added as a property.
-export function getMarkersGeojson(stakeholders, selectedStakeholder) {
-  return {
-    type: "FeatureCollection",
-    features: (stakeholders || []).map((sh) => {
-      const category = getMarkerCategory(sh)
-      const selected = sh.id === selectedStakeholder?.id
-      return {
-        type: "Feature",
-        id: sh.id,
-        geometry: {
-          type: "Point",
-          coordinates: [sh.longitude, sh.latitude],
-        },
-        properties: {
-          iconId: getIconId(category, selected),
-        },
-      }
+// symbol layer data
+export function useMarkersGeojson({
+  stakeholders,
+  selectedStakeholder,
+  categoryIds,
+}) {
+
+  const catIds = categoryIds.length ? categoryIds : DEFAULT_CATEGORIES;
+
+  // modify the stakeholders array by:
+  // 1. filtering out the inactive orgs
+  // 2. limiting the categories for each org to the ones currently selected
+  const modifiedStakeholders = useMemo(
+    () => (stakeholders || [])
+      .filter(
+        (sh) =>
+          sh.latitude && sh.longitude && !(sh.inactive || sh.inactiveTemporary)
+      )
+      .map((sh) => ({
+        ...sh,
+        categories: sh.categories.filter(({ id }) => catIds.includes(id)),
+      })),
+    [stakeholders, catIds]
+  );
+
+  // This generates the geojson needed to show the stakeholders in a symbol
+  // layer. Note that the iconId is added as a property.
+  const markersGeojson = useMemo(
+    () => ({
+      type: "FeatureCollection",
+      features: modifiedStakeholders.map((sh) => {
+        const category = getMarkerCategory(sh)
+        const selected = sh.id === selectedStakeholder?.id
+        return {
+          type: "Feature",
+          id: sh.id,
+          geometry: {
+            type: "Point",
+            coordinates: [sh.longitude, sh.latitude],
+          },
+          properties: {
+            iconId: getIconId(category, selected),
+          },
+        }
+      }),
     }),
-  }
+    [modifiedStakeholders, selectedStakeholder]
+  );
+
+  return markersGeojson;
 }

@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import * as suggestionService from "../../services/suggestion-service";
+import * as suggestionService from "services/suggestion-service";
 import { withStyles } from "@material-ui/core";
 
 const styles = (theme) => ({

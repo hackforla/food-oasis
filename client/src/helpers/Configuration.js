@@ -39,19 +39,37 @@ export const tenantName = (() => {
   }
 })();
 
-export const defaultCoordinates = (() => {
+export const defaultViewport = (() => {
   switch (tenantId) {
     case 6:
-      return { lat: 34.68758, lon: -120.157, zoom: 8.75, radius: 100 };
+      return {
+        center: { latitude: 34.68758, longitude: -120.157 },
+        zoom: 8.75,
+      };
     case 5:
-      return { lat: 33.216239, lon: -96.65014, zoom: 10.5, radius: 100 };
+      return {
+        center: { latitude: 33.216239, longitude: -96.65014 },
+        zoom: 10.5,
+      };
     case 4:
-      return { lat: 45.52445, lon: -122.65066, zoom: 8, radius: 300 };
+      return {
+        center: { latitude: 45.52445, longitude: -122.65066 },
+        zoom: 8,
+      };
     case 3:
-      return { lat: 21.4601548, lon: -157.99, zoom: 9.5, radius: 100 };
+      return {
+        center: { latitude: 21.4601548, longitude: -157.99 },
+        zoom: 9.5,
+      };
     case 2:
-      return { lat: 37.96, lon: -118.87, zoom: 4.5, radius: 450 };
+      return {
+        center: { latitude: 37.96, longitude: -118.87 },
+        zoom: 4.5,
+      };
     default:
-      return { lat: 34.0354899, lon: -118.2439235, zoom: 13.5, radius: 3 };
+      return {
+        center: { latitude: 34.0354899, longitude: -118.2439235 },
+        zoom: 9,
+      };
   }
 })();

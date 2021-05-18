@@ -20,7 +20,7 @@ import {
 import RadioTrueFalseEither from "./ui/RadioTrueFalseEither";
 import LocationAutocomplete from "./LocationAutocomplete";
 import AccountAutocomplete from "./AccountAutocomplete";
-import { defaultCoordinates } from "../../helpers/Configuration";
+import { defaultViewport } from "../../helpers/Configuration";
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -56,9 +56,11 @@ const SearchCriteria = ({
       : "custom"
   );
 
-  const [customLatitude, setCustomLatitude] = useState(defaultCoordinates.lat);
+  const [customLatitude, setCustomLatitude] = useState(
+    defaultViewport.center.latitude
+  );
   const [customLongitude, setCustomLongitude] = useState(
-    defaultCoordinates.lon
+    defaultViewport.center.longitude
   );
   const [customPlaceName, setCustomPlaceName] = useState("");
 

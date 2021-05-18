@@ -1,15 +1,34 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import * as stakeholderService from "../services/stakeholder-best-service";
 import * as analytics from "../services/analytics";
+import { DEFAULT_CATEGORIES } from "constants/stakeholder";
 
-export const useOrganizationBests = () => {
+const sortOrganizations = (a, b) => {
+  if (
+    (a.inactive || a.inactiveTemporary) &&
+    !b.inactive &&
+    !b.inactiveTemporary
+  ) {
+    return 1;
+  } else if (
+    !a.inactive &&
+    !a.inactiveTemporary &&
+    (b.inactive || b.inactiveTemporary)
+  ) {
+    return -1;
+  } else {
+    return a.distance < b.distance ? -1 : a.distance > b.distance ? 1 : 0;
+  }
+};
+
+export default function useOrganizationBests() {
   const [state, setState] = useState({
     data: null,
-    loading: false,
+    loading: true,
     error: false,
   });
 
-  const search = async ({
+  const search = useCallback(async ({
     name,
     latitude,
     longitude,
@@ -41,7 +60,7 @@ export const useOrganizationBests = () => {
       setState({ data: null, loading: true, error: false });
       let params = {
         name,
-        categoryIds,
+        categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
         latitude,
         longitude,
         distance: radius,
@@ -59,6 +78,7 @@ export const useOrganizationBests = () => {
         };
       }
       const stakeholders = await stakeholderService.search(params);
+      stakeholders.sort(sortOrganizations);
       setState({ data: stakeholders, loading: false, error: false });
       return stakeholders;
     } catch (err) {
@@ -66,7 +86,7 @@ export const useOrganizationBests = () => {
       console.error(err);
       return Promise.reject(err);
     }
-  };
+  }, []);
 
   return { ...state, search };
 };

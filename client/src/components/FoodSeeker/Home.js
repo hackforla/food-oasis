@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { withRouter } from "react-router";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
@@ -6,17 +6,18 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
-import Link from '@material-ui/core/Link';
-import Button from '@material-ui/core/Button';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
-import { Link as RouterLink } from 'react-router-dom';
-import Search from "components/FoodSeeker/Search";
-// The three tenant logos happen to be the same at the moment
+import Link from "@material-ui/core/Link";
+import Button from "@material-ui/core/Button";
+import LocationOnIcon from "@material-ui/icons/LocationOn";
+import { Link as RouterLink } from "react-router-dom";
+import SearchBar from "components/FoodSeeker/SearchBar";
+
+// All the tenant logos happen to be the same for now
 import logo from "images/foodoasis.svg";
 import logoCA from "images/foodoasis.svg";
 import logoHI from "images/foodoasis.svg";
-import { tenantId, defaultCoordinates } from "helpers/Configuration";
-import * as analytics from "../../services/analytics";
+import { tenantId, defaultViewport } from "helpers/Configuration";
+import * as analytics from "services/analytics";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -127,7 +128,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   locationBtn: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: "#4CAF50",
     color: "white",
     "&:hover": {
       backgroundColor: "#439846",
@@ -135,74 +136,76 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Home = (props) => {
+const Home = ({
+  origin,
+  setOrigin,
+  userCoordinates,
+  setUserCoordinates,
+  match,
+  history,
+}) => {
   const classes = useStyles();
-  const {
-    origin,
-    setOrigin,
-    userCoordinates,
-    setUserCoordinates,
-    browserLocation,
-    setBrowserLocation
-  } = props;
 
   useEffect(() => {
     analytics.postEvent("visitLandingPage");
   }, []);
 
   const useMyLocationTrigger = () => {
-    let userCoordinates = { latitude: null, longitude: null };
+    let originCoordinates = { latitude: null, longitude: null };
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           if (position) {
-            const userCoordinates = {
+            originCoordinates = {
               latitude: position.coords.latitude,
               longitude: position.coords.longitude,
             };
-            setUserCoordinates(userCoordinates);
-            setBrowserLocation(true);
-            setOrigin(userCoordinates);
-            selectLocation(userCoordinates);
+            setUserCoordinates(originCoordinates);
+            // setBrowserLocation(true);
+            // setOrigin(userCoordinates);
+            selectLocation(originCoordinates);
           }
         },
         (error) => {
           // Ususally because user has blocked location
-          console.log(`Getting browser location failed: ${error.message}`);
-          const userCoordinates = {
-            latitude: defaultCoordinates.lat,
-            longitude: defaultCoordinates.lon,
+          console.error(`Getting browser location failed: ${error.message}`);
+          originCoordinates = {
+            latitude: defaultViewport.center.latitude,
+            longitude: defaultViewport.center.longitude,
           };
-          setUserCoordinates(userCoordinates);
-          setBrowserLocation(false);
-          selectLocation(userCoordinates);
+          setUserCoordinates(null);
+          // setBrowserLocation(false);
+          selectLocation(originCoordinates);
         }
       );
     } else {
-      console.log(
+      console.error(
         "Browser does not support getting users location - using default location for area"
       );
-      const userCoordinates = {
-        latitude: defaultCoordinates.lat,
-        longitude: defaultCoordinates.lon,
+      originCoordinates = {
+        latitude: defaultViewport.center.latitude,
+        longitude: defaultViewport.center.longitude,
       };
-      setUserCoordinates(userCoordinates);
-      setBrowserLocation(false);
-      selectLocation(userCoordinates);
+      setUserCoordinates(null);
+      // setBrowserLocation(false);
+      selectLocation(originCoordinates);
     }
-    return userCoordinates;
+    return originCoordinates;
   };
 
-  React.useEffect(() => {
-    if (props.match.path === "/") {
+  useEffect(() => {
+    if (match.path === "/") {
       sessionStorage.clear();
     }
-  }, [props.match.path]);
+  }, [match.path]);
 
-  const selectLocation = (origin) => {
-    setOrigin(origin);
-    props.history.push("/organizations");
-  };
+  const selectLocation = useCallback(
+    (origin) => {
+      setOrigin(origin);
+      history.push("/organizations");
+    },
+    [setOrigin, history]
+  );
 
   return (
     <Container component="main" maxWidth="sm" className={classes.container}>
@@ -220,7 +223,7 @@ const Home = (props) => {
         <Box className={classes.formContainer}>
           <form
             className={classes.form}
-            onSubmit={() => props.history.push("/organizations")}
+            onSubmit={() => history.push("/organizations")}
           >
             {tenantId === 5 ? (
               <Typography variant={"h5"} className={classes.label}>
@@ -247,31 +250,17 @@ const Home = (props) => {
                 Locate free food in Los Angeles
               </Typography>
             )}
-
             <Box className={classes.inputContainer}>
-              <Search
+              <SearchBar
                 userCoordinates={userCoordinates}
                 setOrigin={selectLocation}
                 origin={origin}
-                browserLocation={browserLocation}
+                browserLocation={userCoordinates}
                 showSearchIcon
               />
-              {/* <Button
-                type="submit"
-                disabled={isDefaultOrigin}
-                variant="contained"
-                className={classes.submit}
-                startIcon={
-                  <SearchIcon fontSize="large" className={classes.searchIcon} />
-                }
-              > 
-                {""}
-              </Button>*/}
             </Box>
             <Box className={classes.inputContainer}>
-              <>
-                or
-              </>
+              <>or</>
             </Box>
             <Box className={classes.inputContainer}>
               {/* <Search
@@ -281,9 +270,9 @@ const Home = (props) => {
                 browserLocation={browserLocation}
               /> */}
               <Button
-                className={classes.locationBtn} 
-                variant="contained" 
-                fullWidth 
+                className={classes.locationBtn}
+                variant="contained"
+                fullWidth
                 startIcon={<LocationOnIcon />}
                 onClick={useMyLocationTrigger}
               >
@@ -291,9 +280,13 @@ const Home = (props) => {
               </Button>
             </Box>
             <Box className={classes.inputContainer}>
-                <Link component={RouterLink} to="/about" className={classes.learnMore}>
-                  Learn about this site
-                </Link>
+              <Link
+                component={RouterLink}
+                to="/about"
+                className={classes.learnMore}
+              >
+                Learn about this site
+              </Link>
             </Box>
           </form>
         </Box>

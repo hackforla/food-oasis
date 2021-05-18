@@ -15,6 +15,7 @@ import Box from "@material-ui/core/Box";
 import Button from "../UI/Button";
 import Input from "../UI/Input";
 import { Formik } from "formik";
+import * as parentOrganizationService from "../../services/parent-organization-service";
 
 const columns = [
   { id: "name", label: "Name", minWidth: 100 },
@@ -109,7 +110,7 @@ export default function ParentOrganizations(props) {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [activeId, setActiveId] = React.useState(null);
+  const [activeOrg, setActiveOrg] = React.useState(null);
   const [modalStyle] = React.useState(getModalStyle);
 
   const handleChangePage = (event, newPage) => {
@@ -121,9 +122,10 @@ export default function ParentOrganizations(props) {
     setPage(0);
   };
 
-  const handleSave = (e) => {
-    console.log(e);
-    setActiveId(null);
+  const handleSave = (data) => {
+    console.log({ data });
+    setActiveOrg(null);
+    parentOrganizationService.update(data);
   };
 
   return (
@@ -154,8 +156,8 @@ export default function ParentOrganizations(props) {
                       role="checkbox"
                       tabIndex={-1}
                       key={parentOrg.id}
-                      selected={parentOrg.id === activeId}
-                      onClick={() => setActiveId(parentOrgs[parentOrg.id])}
+                      selected={parentOrg.id === activeOrg}
+                      onClick={() => setActiveOrg(parentOrgs[parentOrg.id])}
                     >
                       {columns.map((column) => {
                         const value = parentOrg[column.id];
@@ -183,8 +185,8 @@ export default function ParentOrganizations(props) {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
         <Modal
-          open={activeId}
-          onClose={() => setActiveId(null)}
+          open={activeOrg}
+          onClose={() => setActiveOrg(null)}
           aria-labelledby="parent-org-modal"
           aria-describedby="parent-org-modal-description"
         >
@@ -195,7 +197,8 @@ export default function ParentOrganizations(props) {
 
             <Formik
               initialValues={{
-                name: (activeId && activeId.name) || "",
+                name: (activeOrg && activeOrg.name) || "",
+                code: (activeOrg && activeOrg.code) || "",
               }}
               onSubmit={(values) => handleSave(values)}
             >
@@ -223,8 +226,18 @@ export default function ParentOrganizations(props) {
                     fullWidth
                     autoFocus
                   />
+                  <Input
+                    label="Code"
+                    id="code"
+                    value={values.code}
+                    onChange={handleChange}
+                    helperText={touched.code ? errors.code : ""}
+                    error={touched.code && Boolean(errors.code)}
+                    fullWidth
+                    autoFocus
+                  />
                   <Box mt={3} display="flex" justifyContent="space-between">
-                    <Button color="white" onClick={() => setActiveId(null)}>
+                    <Button color="white" onClick={() => setActiveOrg(null)}>
                       Cancel
                     </Button>
                     <Button type="submit" disabled={isSubmitting}>

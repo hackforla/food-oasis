@@ -13,7 +13,6 @@ const selectById = async (tenantId) => {
 };
 
 const insert = async (model) => {
-  model.suggestionStatusId = 1;
   const sql = `insert into parent_organization (name, code)
     values ($<name>, $<code>)
     returning id`;

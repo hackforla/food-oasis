@@ -10,7 +10,7 @@ import { Grid, CssBaseline } from "@material-ui/core";
 import theme from "theme/clientTheme";
 import { logout } from "services/account-service";
 import { tenantId, defaultViewport } from "helpers/Configuration";
-import useGeolocation from "hooks/useGeolocation";
+// import useGeolocation from "hooks/useGeolocation";
 
 // Components
 import { UserContext } from "contexts/user-context";
@@ -97,7 +97,8 @@ function App() {
 
   // userCoordinates is the user's location if geolocation is enabled,
   // otherwise null.
-  const userCoordinates = useGeolocation();
+  //const userCoordinates = useGeolocation();
+  const [userCoordinates, setUserCoordinates] = useState(null);
 
   const [toast, setToast] = useState({ message: "" });
   const [bgImg, setBgImg] = useState("");
@@ -175,6 +176,7 @@ function App() {
                   >
                     <Home
                       userCoordinates={userCoordinates}
+                      setUserCoordinates={setUserCoordinates}
                       origin={origin}
                       setOrigin={setOrigin}
                     />

@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const cache = new CellMeasurerCache({
-  defaultHeight: 140,
+  defaultHeight: 340,
   fixedWidth: true,
 });
 

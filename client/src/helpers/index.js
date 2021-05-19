@@ -1,16 +1,16 @@
 import theme from "theme/clientTheme";
-import geoViewport from '@mapbox/geo-viewport';
+import geoViewport from "@mapbox/geo-viewport";
 
 export const getMapBounds = (center, zoom, dimensions) => {
   const [minLng, minLat, maxLng, maxLat] = geoViewport.bounds(
     [center.longitude, center.latitude],
     zoom,
     [dimensions.width, dimensions.height],
-    512,
-  )
+    512
+  );
 
   return { minLng, minLat, maxLng, maxLat };
-}
+};
 
 export const getGoogleMapsUrl = (zip, address1, address2) => {
   const baseUrl = `https://google.com/maps/place/`;
@@ -29,6 +29,17 @@ export const getGoogleMapsUrl = (zip, address1, address2) => {
   }
 
   return `${baseUrl}${address1url},+${zip}`;
+};
+
+export const getGoogleMapsDirectionsUrl = (
+  originCoordinates,
+  destinationCoordinates
+) => {
+  return (
+    `https://google.com/maps/dir/?api=1` +
+    `&origin=${originCoordinates.latitude},${originCoordinates.longitude}` +
+    `&destination=${destinationCoordinates.latitude},${destinationCoordinates.longitude}`
+  );
 };
 
 export const isMobile = () => window.innerWidth < theme.breakpoints.values.sm;

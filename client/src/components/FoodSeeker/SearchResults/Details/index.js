@@ -12,8 +12,9 @@ import {
   VERIFICATION_STATUS,
 } from "constants/stakeholder";
 import { ORGANIZATION_COLORS, CLOSED_COLOR } from "constants/map";
-import { extractNumbers, getGoogleMapsUrl } from "helpers";
+import { extractNumbers, getGoogleMapsDirectionsUrl } from "helpers";
 
+import { OriginCoordinatesContext } from "contexts/origin-coordinates-context";
 import SuggestionDialog from "./SuggestionDialog";
 import * as analytics from "services/analytics";
 
@@ -111,11 +112,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const StakeholderDetails = ({
-  selectedStakeholder,
-  onClose,
-  setToast,
-}) => {
+const StakeholderDetails = ({ selectedStakeholder, onClose, setToast }) => {
   const classes = useStyles();
   const [SuggestionDialogOpen, setSuggestionDialogOpen] = useState(false);
 
@@ -309,25 +306,28 @@ const StakeholderDetails = ({
         </p>
       ) : null}
       <div className={classes.buttons}>
-        <Button
-          variant="outlined"
-          onClick={() => {
-            analytics.postEvent("getDirections", {
-              id: selectedStakeholder.id,
-              name: selectedStakeholder.name,
-            });
+        <OriginCoordinatesContext.Consumer>
+          {(origin) => (
+            <Button
+              variant="outlined"
+              onClick={() => {
+                analytics.postEvent("getDirections", {
+                  id: selectedStakeholder.id,
+                  name: selectedStakeholder.name,
+                });
 
-            window.open(
-              getGoogleMapsUrl(
-                selectedStakeholder.zip,
-                selectedStakeholder.address1,
-                selectedStakeholder.address2 || null
-              )
-            );
-          }}
-        >
-          Directions
-        </Button>
+                window.open(
+                  getGoogleMapsDirectionsUrl(origin, {
+                    latitude: selectedStakeholder.latitude,
+                    longitude: selectedStakeholder.longitude,
+                  })
+                );
+              }}
+            >
+              Directions
+            </Button>
+          )}
+        </OriginCoordinatesContext.Consumer>
         <Button variant="outlined" onClick={handleSuggestionDialogOpen}>
           Send Correction
         </Button>

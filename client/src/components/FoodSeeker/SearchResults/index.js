@@ -25,16 +25,16 @@ const ResultsContainer = ({ origin, setOrigin, userCoordinates, setToast }) => {
   useEffect(() => {
     const { zoom, dimensions } = mapRef.current.getViewport();
 
-    search({
+    const criteria = {
       latitude: origin.latitude,
       longitude: origin.longitude,
       bounds: getMapBounds(origin, zoom, dimensions),
       categoryIds,
       isInactive: "either",
       verificationStatusId: 0,
-    });
-
-    analytics.postEvent("searchArea", {});
+    };
+    search(criteria);
+    analytics.postEvent("searchArea", criteria);
   }, [origin, categoryIds, search]);
 
   const searchMapArea = useCallback(() => {
@@ -89,44 +89,34 @@ const ResultsContainer = ({ origin, setOrigin, userCoordinates, setToast }) => {
     />
   );
 
-  if (isDesktop)
-    return (
-      <Desktop
-        filters={filters}
-        map={map}
-        list={list}
-      />
-    )
+  if (isDesktop) return <Desktop filters={filters} map={map} list={list} />;
 
-  if (isTablet)
-    return (
-      <Tablet
-        filters={filters}
-        map={map}
-        list={list}
-      />
-    )
+  if (isTablet) return <Tablet filters={filters} map={map} list={list} />;
 
   return (
     <Mobile
       filters={filters}
       map={map}
       list={showList && list}
-      preview={selectedStakeholder && (
-        <Preview
-          doSelectStakeholder={doSelectStakeholder}
-          stakeholder={selectedStakeholder}
-        />
-      )}
-      details={selectedStakeholder && (
-        <Details
-          selectedStakeholder={selectedStakeholder}
-          onClose={doSelectStakeholder.bind(null, null)}
-          setToast={setToast}
-        />
-      )}
+      preview={
+        selectedStakeholder && (
+          <Preview
+            doSelectStakeholder={doSelectStakeholder}
+            stakeholder={selectedStakeholder}
+          />
+        )
+      }
+      details={
+        selectedStakeholder && (
+          <Details
+            selectedStakeholder={selectedStakeholder}
+            onClose={doSelectStakeholder.bind(null, null)}
+            setToast={setToast}
+          />
+        )
+      }
     />
-  )
-}
+  );
+};
 
 export default ResultsContainer;

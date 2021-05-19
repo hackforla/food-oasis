@@ -45,31 +45,31 @@ export const defaultViewport = (() => {
       return {
         center: { latitude: 34.68758, longitude: -120.157 },
         zoom: 8.75,
-      }
+      };
     case 5:
       return {
         center: { latitude: 33.216239, longitude: -96.65014 },
         zoom: 10.5,
-      }
+      };
     case 4:
       return {
         center: { latitude: 45.52445, longitude: -122.65066 },
         zoom: 8,
-      }
+      };
     case 3:
       return {
         center: { latitude: 21.4601548, longitude: -157.99 },
         zoom: 9.5,
-      }
+      };
     case 2:
       return {
         center: { latitude: 37.96, longitude: -118.87 },
         zoom: 4.5,
-      }
+      };
     default:
       return {
         center: { latitude: 34.0354899, longitude: -118.2439235 },
-        zoom: 13.5,
-      }
+        zoom: 9,
+      };
   }
 })();

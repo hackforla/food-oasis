@@ -69,7 +69,7 @@ export const defaultViewport = (() => {
     default:
       return {
         center: { latitude: 34.0354899, longitude: -118.2439235 },
-        zoom: 9,
+        zoom: 11,
       };
   }
 })();

@@ -14,6 +14,7 @@ import { tenantId, defaultViewport } from "helpers/Configuration";
 
 // Components
 import { UserContext } from "contexts/user-context";
+import { OriginCoordinatesContext } from "contexts/origin-coordinates-context";
 import Toast from "components/UI/Toast";
 import Header from "components/Layout/Header";
 import HeaderHome from "components/Layout/HeaderHome";
@@ -143,33 +144,34 @@ function App() {
 
   return (
     <UserContext.Provider value={user}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Router>
-          <Grid
-            container
-            direction="column"
-            wrap="nowrap"
-            alignContent="stretch"
-            spacing={0}
-            classes={{
-              container: classes.app,
-            }}
-          >
-            <Switch>
-              <Route exact path="/">
-                <HeaderHome user={user} setUser={onLogin} setToast={setToast} />
-              </Route>
-              <Route>
-                <Header user={user} setUser={onLogin} setToast={setToast} />
-              </Route>
-            </Switch>
-            <Switch className={classes.mainContent}>
-              <Route exact path="/">
-                <div
-                  className={classes.homeWrapper}
-                  style={{ backgroundImage: bgImg }}
-                >
+      <OriginCoordinatesContext.Provider value={origin}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Router>
+            <Grid
+              container
+              direction="column"
+              wrap="nowrap"
+              alignContent="stretch"
+              spacing={0}
+              classes={{
+                container: classes.app,
+              }}
+            >
+              <Switch>
+                <Route exact path="/">
+                  <HeaderHome
+                    user={user}
+                    setUser={onLogin}
+                    setToast={setToast}
+                  />
+                </Route>
+                <Route>
+                  <Header user={user} setUser={onLogin} setToast={setToast} />
+                </Route>
+              </Switch>
+              <Switch className={classes.mainContent}>
+                <Route exact path="/">
                   <div
                     className={classes.homeWrapper}
                     style={{ backgroundImage: bgImg }}
@@ -181,135 +183,135 @@ function App() {
                       setOrigin={setOrigin}
                     />
                   </div>
-                </div>
-              </Route>
-              {/*
+                </Route>
+                {/*
               Following route provides backward-compatibilty for the
               http"//foodoasis.la/search Link that has been published at
               http://publichealth.lacounty.gov/eh/LACFRI/ShareAndDonate.htm
               */}
-              <Redirect from="/search" to="/organizations" />
-              <Route path="/organizations">
-                <SearchResults
-                  origin={origin}
-                  setOrigin={setOrigin}
-                  userCoordinates={userCoordinates}
-                  setToast={setToast}
-                />
-              </Route>
-              <Route path="/suggestion">
-                <Suggestion setToast={setToast} />
-              </Route>
-              <Route path="/organizationedit/:id?">
-                <ThemeProvider theme={adminTheme}>
-                  <div className={classes.OrganizationEditWrapper}>
-                    <OrganizationEdit setToast={setToast} user={user} />
-                  </div>
-                </ThemeProvider>
-              </Route>
-              <Route path="/verificationdashboard">
-                <div className={classes.verificationAdminWrapper}>
-                  <VerificationDashboard
-                    user={user}
+                <Redirect from="/search" to="/organizations" />
+                <Route path="/organizations">
+                  <SearchResults
+                    origin={origin}
+                    setOrigin={setOrigin}
                     userCoordinates={userCoordinates}
+                    setToast={setToast}
                   />
-                </div>
-              </Route>
-              <Route path="/verificationadmin">
-                <ThemeProvider theme={adminTheme}>
+                </Route>
+                <Route path="/suggestion">
+                  <Suggestion setToast={setToast} />
+                </Route>
+                <Route path="/organizationedit/:id?">
+                  <ThemeProvider theme={adminTheme}>
+                    <div className={classes.OrganizationEditWrapper}>
+                      <OrganizationEdit setToast={setToast} user={user} />
+                    </div>
+                  </ThemeProvider>
+                </Route>
+                <Route path="/verificationdashboard">
                   <div className={classes.verificationAdminWrapper}>
-                    <VerificationAdmin
+                    <VerificationDashboard
                       user={user}
                       userCoordinates={userCoordinates}
                     />
                   </div>
-                </ThemeProvider>
-              </Route>
-              <Route path="/securityadmindashboard">
-                <div className={classes.verificationAdminWrapper}>
-                  <SecurityAdminDashboard
-                    user={user}
-                    userCoordinates={userCoordinates}
-                  />
-                </div>
-              </Route>
-              <Route path="/organizationimport">
-                <ImportFile user={user} setToast={setToast} />
-              </Route>
-              <Route path="/faqs/add">
-                <FaqAdd />
-              </Route>
-              <Route path="/faqs/:identifier">
-                <FaqEdit setToast={setToast} />
-              </Route>
-              <Route path="/resources">
-                <Resources />
-              </Route>
-              <Route path="/register">
-                <Register setToast={setToast} />
-              </Route>
-              <Route path="/confirm/:token">
-                <ConfirmEmail setToast={setToast} />
-              </Route>
-              <Route path="/login/:email?">
-                <Login user={user} setUser={onLogin} setToast={setToast} />
-              </Route>
-              <Route path="/forgotpassword/:email?">
-                <ForgotPassword setToast={setToast} />
-              </Route>
-              <Route path="/resetPassword/:token">
-                <ResetPassword setToast={setToast} />
-              </Route>
-              <Route path="/donate">
-                {tenantId === 6 ? (
-                  <DonateSB />
-                ) : tenantId === 5 ? (
-                  <DonateMCK />
-                ) : tenantId === 4 ? (
-                  <DonatePDX />
-                ) : tenantId === 3 ? (
-                  <DonateHI />
-                ) : tenantId === 2 ? (
-                  <DonateCA />
-                ) : (
-                  <Donate />
-                )}
-              </Route>
-              <Route path="/about">
-                {tenantId === 6 ? (
-                  <AboutSB />
-                ) : tenantId === 5 ? (
-                  <AboutMCK />
-                ) : tenantId === 4 ? (
-                  <AboutPDX />
-                ) : tenantId === 3 ? (
-                  <AboutHI />
-                ) : tenantId === 2 ? (
-                  <AboutCA />
-                ) : (
-                  <About />
-                )}
-              </Route>
-              <Route exact path="/faqs">
-                {tenantId === 6 ? (
-                  <FaqSB />
-                ) : tenantId === 5 ? (
-                  <FaqMCK />
-                ) : tenantId === 4 ? (
-                  <FaqPDX />
-                ) : tenantId === 3 ? (
-                  <FaqHI />
-                ) : tenantId === 2 ? (
-                  <FaqCA />
-                ) : (
-                  <Faq />
-                )}
-              </Route>
-            </Switch>
-            <Toast toast={toast} setToast={setToast} />
-          </Grid>
-        </Router>
-      </ThemeProvider>
+                </Route>
+                <Route path="/verificationadmin">
+                  <ThemeProvider theme={adminTheme}>
+                    <div className={classes.verificationAdminWrapper}>
+                      <VerificationAdmin
+                        user={user}
+                        userCoordinates={userCoordinates}
+                      />
+                    </div>
+                  </ThemeProvider>
+                </Route>
+                <Route path="/securityadmindashboard">
+                  <div className={classes.verificationAdminWrapper}>
+                    <SecurityAdminDashboard
+                      user={user}
+                      userCoordinates={userCoordinates}
+                    />
+                  </div>
+                </Route>
+                <Route path="/organizationimport">
+                  <ImportFile user={user} setToast={setToast} />
+                </Route>
+                <Route path="/faqs/add">
+                  <FaqAdd />
+                </Route>
+                <Route path="/faqs/:identifier">
+                  <FaqEdit setToast={setToast} />
+                </Route>
+                <Route path="/resources">
+                  <Resources />
+                </Route>
+                <Route path="/register">
+                  <Register setToast={setToast} />
+                </Route>
+                <Route path="/confirm/:token">
+                  <ConfirmEmail setToast={setToast} />
+                </Route>
+                <Route path="/login/:email?">
+                  <Login user={user} setUser={onLogin} setToast={setToast} />
+                </Route>
+                <Route path="/forgotpassword/:email?">
+                  <ForgotPassword setToast={setToast} />
+                </Route>
+                <Route path="/resetPassword/:token">
+                  <ResetPassword setToast={setToast} />
+                </Route>
+                <Route path="/donate">
+                  {tenantId === 6 ? (
+                    <DonateSB />
+                  ) : tenantId === 5 ? (
+                    <DonateMCK />
+                  ) : tenantId === 4 ? (
+                    <DonatePDX />
+                  ) : tenantId === 3 ? (
+                    <DonateHI />
+                  ) : tenantId === 2 ? (
+                    <DonateCA />
+                  ) : (
+                    <Donate />
+                  )}
+                </Route>
+                <Route path="/about">
+                  {tenantId === 6 ? (
+                    <AboutSB />
+                  ) : tenantId === 5 ? (
+                    <AboutMCK />
+                  ) : tenantId === 4 ? (
+                    <AboutPDX />
+                  ) : tenantId === 3 ? (
+                    <AboutHI />
+                  ) : tenantId === 2 ? (
+                    <AboutCA />
+                  ) : (
+                    <About />
+                  )}
+                </Route>
+                <Route exact path="/faqs">
+                  {tenantId === 6 ? (
+                    <FaqSB />
+                  ) : tenantId === 5 ? (
+                    <FaqMCK />
+                  ) : tenantId === 4 ? (
+                    <FaqPDX />
+                  ) : tenantId === 3 ? (
+                    <FaqHI />
+                  ) : tenantId === 2 ? (
+                    <FaqCA />
+                  ) : (
+                    <Faq />
+                  )}
+                </Route>
+              </Switch>
+              <Toast toast={toast} setToast={setToast} />
+            </Grid>
+          </Router>
+        </ThemeProvider>
+      </OriginCoordinatesContext.Provider>
     </UserContext.Provider>
   );
 }

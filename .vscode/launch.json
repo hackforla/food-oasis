@@ -8,8 +8,8 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Web API Server",
-      "program": "${workspaceFolder}\\server\\server.js",
-      "envFile": "${workspaceFolder}\\server\\.env"
+      "program": "${workspaceFolder}/server/server.js",
+      "envFile": "${workspaceFolder}/server/.env"
     }
   ]
 }

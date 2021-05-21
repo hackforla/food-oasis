@@ -219,6 +219,7 @@ function App() {
                     <VerificationAdmin
                       user={user}
                       userCoordinates={userCoordinates}
+                      origin={origin}
                     />
                   </div>
                 </ThemeProvider>

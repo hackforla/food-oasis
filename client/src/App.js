@@ -213,6 +213,7 @@ function App() {
                     <VerificationDashboard
                       user={user}
                       userCoordinates={userCoordinates}
+                      origin={origin}
                     />
                   </div>
                 </Route>

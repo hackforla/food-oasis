@@ -118,10 +118,14 @@ VerificationAdmin.propTypes = {
     latitude: PropTypes.number,
     longitude: PropTypes.number,
   }),
+  origin: PropTypes.shape({
+    latitude: PropTypes.number,
+    longitude: PropTypes.number,
+  }),
 };
 
 function VerificationAdmin(props) {
-  const { user, userCoordinates } = props;
+  const { user, userCoordinates, origin } = props;
   const classes = useStyles();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [assignDialogOpen, setAssignDialogOpen] = useState(false);
@@ -159,8 +163,8 @@ function VerificationAdmin(props) {
       if (!initialCriteria) {
         initialCriteria = {
           ...defaultCriteria,
-          latitude: userCoordinates.latitude,
-          longitude: userCoordinates.longitude,
+          latitude: userCoordinates?.latitude || origin?.latitude || 0,
+          longitude: userCoordinates?.longitude || origin?.longitude || 0,
           verificationStatusId: 0,
         };
       } else {
@@ -180,7 +184,7 @@ function VerificationAdmin(props) {
       }
     };
     execute();
-  }, [userCoordinates, searchCallback]);
+  }, [userCoordinates, origin, searchCallback]);
 
   const search = async () => {
     try {
@@ -326,11 +330,16 @@ function VerificationAdmin(props) {
             <div style={{ overflowY: "scroll" }}>
               <SearchCriteria
                 key={JSON.stringify({
-                  userLatitude: userCoordinates.latitude,
+                  userLatitude:
+                    userCoordinates?.latitude || origin?.latitude || 0,
                   categories,
                 })}
-                userLatitude={userCoordinates.latitude}
-                userLongitude={userCoordinates.longitude}
+                userLatitude={
+                  userCoordinates?.latitude || origin?.latitude || 0
+                }
+                userLongitude={
+                  userCoordinates?.longitude || origin?.longitude || 0
+                }
                 categories={categories && categories.filter((c) => !c.inactive)}
                 neighborhoods={neighborhoods}
                 criteria={criteria}

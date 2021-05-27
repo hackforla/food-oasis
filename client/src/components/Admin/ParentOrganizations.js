@@ -16,16 +16,11 @@ import Button from "../UI/Button";
 import Input from "../UI/Input";
 import { Formik } from "formik";
 import * as parentOrganizationService from "../../services/parent-organization-service";
+import { tenantId } from "helpers/Configuration";
 
 const columns = [
   { id: "name", label: "Name", minWidth: 100 },
   { id: "code", label: "Code", minWidth: 10 },
-  {
-    id: "tenantId",
-    label: "Tenant ID",
-    minWidth: 10,
-    align: "left",
-  },
 ];
 
 function rand() {
@@ -44,12 +39,14 @@ function getModalStyle() {
 }
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "50%",
-  },
   container: {
-    maxHeight: 340,
+    maxHeight: "500px",
     cursor: "pointer",
+  },
+  addNewButton: {
+    marginBottom: theme.spacing(1),
+    display: "flex",
+    justifyContent: "flex-end",
   },
   paper: {
     position: "absolute",
@@ -61,57 +58,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ParentOrganizations(props) {
-  // const parentOrgs = useParentOrganization();
-  const parentOrgs = [
-    {
-      code: "TSA",
-      id: 1,
-      name: "first",
-      tenantId: 1,
-    },
-    {
-      code: "TSA",
-      id: 2,
-      name: "second",
-      tenantId: 2,
-    },
-    {
-      code: "TSA",
-      id: 3,
-      name: "third",
-      tenantId: 3,
-    },
-    {
-      code: "TSA",
-      id: 4,
-      name: "fourth",
-      tenantId: 1,
-    },
-    {
-      code: "TSA",
-      id: 5,
-      name: "fifth",
-      tenantId: 1,
-    },
-    {
-      code: "TSA",
-      id: 6,
-      name: "sixth",
-      tenantId: 2,
-    },
-    {
-      code: "TSA",
-      id: 7,
-      name: "seventh",
-      tenantId: 3,
-    },
-  ];
-
+  let { data: parentOrgs } = useParentOrganization();
+  // const [parentOrgs, setParentOrgs] = React.useState([]);
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [activeOrg, setActiveOrg] = React.useState(null);
   const [modalStyle] = React.useState(getModalStyle);
+
+  // React.useEffect(() => {
+  //   if (data) {
+  //     setParentOrgs(data);
+  //   }
+  // }, [data]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -122,14 +81,32 @@ export default function ParentOrganizations(props) {
     setPage(0);
   };
 
-  const handleSave = (data) => {
-    console.log({ data });
+  console.log({ parentOrgs });
+  const handleSave = async (data) => {
+    if (activeOrg.id) {
+      await parentOrganizationService.update({ ...data, id: activeOrg.id });
+    } else {
+      await parentOrganizationService.post(data);
+      // setParentOrgs([...parentOrgs, data]);
+      parentOrgs = [...parentOrgs, data]
+    }
     setActiveOrg(null);
-    parentOrganizationService.update(data);
   };
 
+    const handleAddNew = () => {
+      setActiveOrg({
+        code: "",
+        name: "",
+        tenantId,
+      });
+    };
+
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="sm">
+      <div className={classes.addNewButton}>
+        <Button onClick={handleAddNew}>Add New</Button>
+      </div>
+
       <Paper>
         <TableContainer className={classes.container}>
           <Table stickyHeader aria-label="sticky table">
@@ -157,7 +134,12 @@ export default function ParentOrganizations(props) {
                       tabIndex={-1}
                       key={parentOrg.id}
                       selected={parentOrg.id === activeOrg}
-                      onClick={() => setActiveOrg(parentOrgs[parentOrg.id])}
+                      onClick={() => {
+                        const org = parentOrgs.find(
+                          (org) => parentOrg.id === org.id
+                        );
+                        setActiveOrg(org);
+                      }}
                     >
                       {columns.map((column) => {
                         const value = parentOrg[column.id];
@@ -234,7 +216,6 @@ export default function ParentOrganizations(props) {
                     helperText={touched.code ? errors.code : ""}
                     error={touched.code && Boolean(errors.code)}
                     fullWidth
-                    autoFocus
                   />
                   <Box mt={3} display="flex" justifyContent="space-between">
                     <Button color="white" onClick={() => setActiveOrg(null)}>

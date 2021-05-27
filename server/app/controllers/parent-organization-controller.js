@@ -2,9 +2,7 @@ const parentOrganizationService = require("../services/parent-organization-servi
 
 const getAllByTenantId = async (req, res) => {
   try {
-    const resp = await parentOrganizationService.selectById(
-      req.params.tenantId
-    );
+    const resp = await parentOrganizationService.selectAllById(req.params.id);
     res.send(resp);
   } catch (err) {
     console.error(err);

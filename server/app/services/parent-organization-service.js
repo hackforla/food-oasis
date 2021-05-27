@@ -1,15 +1,15 @@
 const db = require("./db");
 const camelcaseKeys = require("camelcase-keys");
 
-const selectById = async (tenantId) => {
+const selectAllById = async (tenantId) => {
   // Need to cast id to number so pg-promise knows how
   // to format SQL
   const id = Number(tenantId);
   const sql = `select id, name, code, tenant_id
-  from parent_organization where tenantId = $<id>`;
+  from parent_organization where tenant_id = $<id>`;
 
-  const row = await db.one(sql, { id });
-  return camelcaseKeys(row);
+  const result = await db.manyOrNone(sql, { id });
+  return result.map((r) => camelcaseKeys(r));
 };
 
 const insert = async (model) => {
@@ -35,7 +35,7 @@ const remove = async (id) => {
 };
 
 module.exports = {
-  selectById,
+  selectAllById,
   insert,
   update,
   remove,

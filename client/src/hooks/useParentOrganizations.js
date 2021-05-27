@@ -1,31 +1,28 @@
-import { useState, useEffect, useCallback } from "react";
-import * as parentOrganizations from "../services/parent-organization-service";
+import { useState, useEffect } from "react";
+import * as parentOrganizationService from "../services/parent-organization-service";
 
 export const useParentOrganization = () => {
-  const [state, setState] = useState({
-    data: [],
-    loading: false,
-    error: false,
-  });
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const fetch = useCallback(() => {
-    const fetchApi = async () => {
-      setState({ data: null, loading: true, error: false });
-      try {
-        const tenants = await parentOrganizations.getAllByTenantId();
-        setState({ data: tenants || [], loading: false, error: false });
-      } catch (err) {
-        setState({ data: [], loading: false, error: true });
-        console.error(err);
-      }
-    };
+  const fetchApi = async () => {
+    setLoading({ loading: true });
+    try {
+      const parentOrgs = await parentOrganizationService.getAllByTenantId();
 
+      setData(parentOrgs);
+      setLoading(false);
+    } catch (err) {
+      setError(err);
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
     fetchApi();
   }, []);
 
-  useEffect(() => {
-    fetch();
-  }, [fetch]);
-
-  return { ...state, refetch: fetch };
+  return { data, error, loading, refetch: fetch };
 };
+

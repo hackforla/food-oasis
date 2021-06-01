@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useMapboxGeocoder } from "hooks/useMapboxGeocoder";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
+import { defaultViewport } from "helpers/Configuration";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -118,7 +119,13 @@ export default function SearchBar({
           InputProps={{
             endAdornment: showSearchIcon ? (
               <InputAdornment
-                onClick={() => setOrigin({})}
+                onClick={() => {
+                  const defaultCoordinates = {
+                    latitude: defaultViewport.center.latitude,
+                    longitude: defaultViewport.center.longitude,
+                  };
+                  setOrigin(defaultCoordinates);
+                }}
                 className={classes.searchIconCont}
               >
                 <SearchIcon />

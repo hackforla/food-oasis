@@ -207,6 +207,7 @@ const ResultsFilters = ({
                 setOrigin(origin);
               }}
               userCoordinates={userCoordinates}
+              showSearchIcon={true}
             />
             <Tooltip title="Re-center">
               <span>

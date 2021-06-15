@@ -6,12 +6,17 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
+import Link from "@material-ui/core/Link";
+import Button from "@material-ui/core/Button";
+import LocationOnIcon from "@material-ui/icons/LocationOn";
+import { Link as RouterLink } from "react-router-dom";
 import SearchBar from "components/FoodSeeker/SearchBar";
-// The three tenant logos happen to be the same at the moment
+
+// All the tenant logos happen to be the same for now
 import logo from "images/foodoasis.svg";
 import logoCA from "images/foodoasis.svg";
 import logoHI from "images/foodoasis.svg";
-import { tenantId } from "helpers/Configuration";
+import { tenantId, defaultViewport } from "helpers/Configuration";
 import * as analytics from "services/analytics";
 
 const useStyles = makeStyles((theme) => ({
@@ -114,14 +119,79 @@ const useStyles = makeStyles((theme) => ({
     width: 32,
     height: 32,
   },
+  learnMore: {
+    fontSize: "19px",
+    color: "white",
+    textDecoration: "underline",
+    "&:visited": {
+      color: "white",
+    },
+  },
+  locationBtn: {
+    backgroundColor: "#4CAF50",
+    color: "white",
+    "&:hover": {
+      backgroundColor: "#439846",
+    },
+  },
 }));
 
-const Home = ({ origin, setOrigin, userCoordinates, match, history }) => {
+const Home = ({
+  origin,
+  setOrigin,
+  userCoordinates,
+  setUserCoordinates,
+  match,
+  history,
+}) => {
   const classes = useStyles();
 
   useEffect(() => {
     analytics.postEvent("visitLandingPage");
   }, []);
+
+  const useMyLocationTrigger = () => {
+    let originCoordinates = { latitude: null, longitude: null };
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          if (position) {
+            originCoordinates = {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            };
+            setUserCoordinates(originCoordinates);
+            // setBrowserLocation(true);
+            // setOrigin(userCoordinates);
+            selectLocation(originCoordinates);
+          }
+        },
+        (error) => {
+          // Ususally because user has blocked location
+          console.error(`Getting browser location failed: ${error.message}`);
+          originCoordinates = {
+            latitude: defaultViewport.center.latitude,
+            longitude: defaultViewport.center.longitude,
+          };
+          setUserCoordinates(null);
+          // setBrowserLocation(false);
+          selectLocation(originCoordinates);
+        }
+      );
+    } else {
+      console.error(
+        "Browser does not support getting users location - using default location for area"
+      );
+      originCoordinates = {
+        latitude: defaultViewport.center.latitude,
+        longitude: defaultViewport.center.longitude,
+      };
+      setUserCoordinates(null);
+      // setBrowserLocation(false);
+      selectLocation(originCoordinates);
+    }
+    return originCoordinates;
+  };
 
   useEffect(() => {
     if (match.path === "/") {
@@ -129,10 +199,13 @@ const Home = ({ origin, setOrigin, userCoordinates, match, history }) => {
     }
   }, [match.path]);
 
-  const selectLocation = useCallback((origin) => {
-    setOrigin(origin);
-    history.push("/organizations");
-  }, [setOrigin, history]);
+  const selectLocation = useCallback(
+    (origin) => {
+      setOrigin(origin);
+      history.push("/organizations");
+    },
+    [setOrigin, history]
+  );
 
   return (
     <Container component="main" maxWidth="sm" className={classes.container}>
@@ -182,7 +255,38 @@ const Home = ({ origin, setOrigin, userCoordinates, match, history }) => {
                 userCoordinates={userCoordinates}
                 setOrigin={selectLocation}
                 origin={origin}
+                browserLocation={userCoordinates}
+                showSearchIcon
               />
+            </Box>
+            <Box className={classes.inputContainer}>
+              <>or</>
+            </Box>
+            <Box className={classes.inputContainer}>
+              {/* <Search
+                userCoordinates={userCoordinates}
+                setOrigin={selectLocation}
+                origin={origin}
+                browserLocation={browserLocation}
+              /> */}
+              <Button
+                className={classes.locationBtn}
+                variant="contained"
+                fullWidth
+                startIcon={<LocationOnIcon />}
+                onClick={useMyLocationTrigger}
+              >
+                Use my current location
+              </Button>
+            </Box>
+            <Box className={classes.inputContainer}>
+              <Link
+                component={RouterLink}
+                to="/about"
+                className={classes.learnMore}
+              >
+                Learn about this site
+              </Link>
             </Box>
           </form>
         </Box>

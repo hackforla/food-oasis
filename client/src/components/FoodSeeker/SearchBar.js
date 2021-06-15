@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Downshift from "downshift";
-import { MenuItem, TextField, Paper } from "@material-ui/core";
-import LocationOnIcon from "@material-ui/icons/LocationOn";
+import { MenuItem, TextField, Paper, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useMapboxGeocoder } from "hooks/useMapboxGeocoder";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import SearchIcon from "@material-ui/icons/Search";
+import { defaultViewport } from "helpers/Configuration";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -46,12 +48,16 @@ const useStyles = makeStyles((theme) => ({
       opacity: "1",
     },
   },
+  searchIconCont: {
+    cursor: "pointer",
+  },
 }));
 
 export default function SearchBar({
   userCoordinates,
   setOrigin,
   origin,
+  showSearchIcon,
 }) {
   const classes = useStyles();
   const [selectedPlace, setSelectedPlace] = useState("");
@@ -98,24 +104,45 @@ export default function SearchBar({
     }
   };
 
-  const renderInput = ({ InputProps, classes }) => (
-    <TextField
-      className={classes.address}
-      variant="outlined"
-      margin="none"
-      fullWidth
-      placeholder="Search by address or zip code"
-      name="address"
-      size="small"
-      autoFocus={false}
-      InputProps={{
-        classes: {
-          input: classes.input,
-        },
-        ...InputProps,
-      }}
-    />
-  );
+  const renderInput = ({ InputProps, classes }) => {
+    return (
+      <Grid container justify="center" alignItems="center">
+        <TextField
+          className={classes.address}
+          variant="outlined"
+          margin="none"
+          fullWidth
+          placeholder="Search by address or zip code"
+          name="address"
+          size="small"
+          autoFocus={false}
+          InputProps={{
+            endAdornment: showSearchIcon ? (
+              <InputAdornment
+                onClick={() => {
+                  const defaultCoordinates = {
+                    latitude: defaultViewport.center.latitude,
+                    longitude: defaultViewport.center.longitude,
+                  };
+                  setOrigin(defaultCoordinates);
+                }}
+                className={classes.searchIconCont}
+              >
+                <SearchIcon />
+              </InputAdornment>
+            ) : (
+              <div />
+            ),
+            classes: {
+              input: classes.input,
+            },
+            ...InputProps,
+          }}
+          // style={{ width: isWindow960orLess ? "100%" : "100%" }}
+        />
+      </Grid>
+    );
+  };
 
   const renderSuggestion = (params) => {
     const { item, index, itemProps, highlightedIndex, selectedItem } = params;
@@ -146,15 +173,16 @@ export default function SearchBar({
   }) => {
     if (!inputValue && userCoordinates) {
       return (
-        <MenuItem
-          component="div"
-          onClick={() => {
-            setOrigin({ ...userCoordinates, locationName: "Current Location" });
-            handleDownshiftOnChange("Current Location");
-          }}
-        >
-          <LocationOnIcon /> Current Location
-        </MenuItem>
+        <></>
+        // <MenuItem
+        //   component="div"
+        //   onClick={() => {
+        //     setOrigin({ ...userCoordinates, locationName: "Current Location" });
+        //     handleDownshiftOnChange("Current Location");
+        //   }}
+        // >
+        //   <LocationOnIcon /> Current Location
+        // </MenuItem>
       );
     }
 
@@ -179,7 +207,7 @@ export default function SearchBar({
     <>
       <Downshift
         onChange={handleDownshiftOnChange}
-        itemToString={(item) => item ? item.place_name : ""}
+        itemToString={(item) => (item ? item.place_name : "")}
       >
         {({
           getInputProps,
@@ -233,4 +261,9 @@ SearchBar.propTypes = {
     longitude: PropTypes.number,
   }),
   setOrigin: PropTypes.func,
+  showSearchIcon: PropTypes.bool,
+};
+
+SearchBar.defaultProps = {
+  showSearchIcon: false,
 };

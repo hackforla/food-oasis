@@ -9,7 +9,8 @@ import {
   FOOD_PANTRY_CATEGORY_ID,
 } from "constants/stakeholder";
 import { ORGANIZATION_COLORS, CLOSED_COLOR } from "constants/map";
-import { getGoogleMapsUrl, extractNumbers } from "helpers";
+import { getGoogleMapsDirectionsUrl, extractNumbers } from "helpers";
+import { OriginCoordinatesContext } from "contexts/origin-coordinates-context";
 import * as analytics from "services/analytics";
 
 import StakeholderIcon from "images/stakeholderIcon";
@@ -222,26 +223,29 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
           ) : null}
         </div>
         <div className={classes.buttons}>
-          <Button
-            variant="outlined"
-            size="small"
-            onClick={() => {
-              analytics.postEvent("getDirections", {
-                id: stakeholder.id,
-                name: stakeholder.name,
-              });
+          <OriginCoordinatesContext.Consumer>
+            {(origin) => (
+              <Button
+                variant="outlined"
+                size="small"
+                onClick={() => {
+                  analytics.postEvent("getDirections", {
+                    id: stakeholder.id,
+                    name: stakeholder.name,
+                  });
 
-              window.open(
-                getGoogleMapsUrl(
-                  stakeholder.zip,
-                  stakeholder.address1,
-                  stakeholder.address2 || null
-                )
-              );
-            }}
-          >
-            Directions
-          </Button>
+                  window.open(
+                    getGoogleMapsDirectionsUrl(origin, {
+                      latitude: stakeholder.latitude,
+                      longitude: stakeholder.longitude,
+                    })
+                  );
+                }}
+              >
+                Directions
+              </Button>
+            )}
+          </OriginCoordinatesContext.Consumer>
           {mainNumber && (
             <Button
               variant="outlined"

@@ -13,8 +13,8 @@ const selectAllById = async (tenantId) => {
 };
 
 const insert = async (model) => {
-  const sql = `insert into parent_organization (name, code)
-    values ($<name>, $<code>)
+  const sql = `insert into parent_organization (name, code, tenant_id)
+    values ($<name>, $<code>, $<tenantId>)
     returning id`;
 
   const result = await db.one(sql, model);

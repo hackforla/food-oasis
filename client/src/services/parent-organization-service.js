@@ -27,3 +27,8 @@ export const post = async (data) => {
   });
   return response.data;
 };
+
+export const remove = async (id) => {
+  const response = await axios.delete(`${baseUrl}/${id}`);
+  return response.data;
+};

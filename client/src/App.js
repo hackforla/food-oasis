@@ -76,7 +76,7 @@ const useStyles = makeStyles({
   },
   homeWrapper: {
     backgroundSize: "cover",
-    backgroundImage:'url("/landing-page/map.png")', // replaced the background image style inside useStyles instead of inline styling
+    backgroundImage: 'url("/landing-page/map.png")', // replaced the background image style inside useStyles instead of inline styling
     minHeight: "max(100.7vh,20em)",
     display: "flex",
     flexDirection: "column",
@@ -168,7 +168,12 @@ function App() {
                   />
                 </Route>
                 <Route>
-                  <Header user={user} setUser={onLogin} setToast={setToast} />
+                  <Header
+                    tenantId={tenantId}
+                    user={user}
+                    setUser={onLogin}
+                    setToast={setToast}
+                  />
                 </Route>
               </Switch>
               <Switch className={classes.mainContent}>
@@ -182,6 +187,7 @@ function App() {
                       setUserCoordinates={setUserCoordinates}
                       origin={origin}
                       setOrigin={setOrigin}
+                      tenantId={tenantId}
                     />
                   </div>
                 </Route>

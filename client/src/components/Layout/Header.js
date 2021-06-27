@@ -14,6 +14,18 @@ Header.propTypes = {
   setToast: PropTypes.func,
 };
 
+const logoPaths = {
+  1: require("images/foodoasis.svg"),
+  2: require("images/foodoasis.svg"),
+  3: require("../StaticPagesHI/assets/aloha-harvest-bg-none.png"),
+};
+
+const logoStackedPaths = {
+  1: require("images/logo-food-oasis-stacked.svg"),
+  2: require("images/logo-food-oasis-stacked.svg"),
+  3: require("../StaticPagesHI/assets/aloha-harvest-bg-none.png"),
+};
+
 const useStyles = makeStyles((theme) => ({
   headerHolder: {
     backgroundColor: "#FFF",
@@ -25,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     minHeight: "60px",
     display: "flex",
     justifyContent: "space-between",
-    padding: "0",
+    padding: ".5",
     [theme.breakpoints.down("sm")]: {
       padding: "0 0.5em 0 0",
       minHeight: "45px",
@@ -34,18 +46,16 @@ const useStyles = makeStyles((theme) => ({
   content: {
     display: "flex",
     justifyContent: "space-between",
-    flexGrow: 1,
     alignItems: "center",
     paddingRight: "1em",
   },
   logo: {
-    height: "40px",
-    margin: "0 .5rem",
+    maxWidth: "175px",
+    height: "100%",
+    width: "100%",
+    margin: ".5rem",
     "&:hover": {
       filter: "brightness(1.2)",
-    },
-    [theme.breakpoints.down("sm")]: {
-      height: "45px",
     },
   },
   logoStacked: {
@@ -83,7 +93,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Header(props) {
-  const { user, setUser, setToast } = props;
+  const { user, setUser, tenantId, setToast } = props;
   const classes = useStyles();
   const taglineText = isMobile()
     ? "Locate free food in " + tenantName
@@ -97,11 +107,25 @@ export default function Header(props) {
             <div>
               {isMobile() ? (
                 <a href="/">
-                  <img src={logoStacked} className={classes.logo} alt="logo" />{" "}
+                  <img
+                    src={
+                      logoStackedPaths[tenantId]
+                        ? logoStackedPaths[tenantId].default
+                        : logoStacked
+                    }
+                    className={classes.logo}
+                    alt="logo"
+                  />{" "}
                 </a>
               ) : (
                 <a href="/">
-                  <img src={logo} className={classes.logo} alt="logo" />{" "}
+                  <img
+                    src={
+                      logoPaths[tenantId] ? logoPaths[tenantId].default : logo
+                    }
+                    className={classes.logo}
+                    alt="logo"
+                  />{" "}
                 </a>
               )}
             </div>

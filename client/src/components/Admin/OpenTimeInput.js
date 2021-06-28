@@ -6,7 +6,6 @@ import {
   Grid,
   MenuItem,
   FormControl,
-  IconButton,
   InputLabel,
   Select,
 } from "@material-ui/core";
@@ -15,8 +14,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
 } from "@material-ui/pickers";
-import { CancelIconButton } from "../UI/Buttons";
-import { WrapText } from "@material-ui/icons";
+import IconButton from "../UI/IconButton";
 
 const useStyles = makeStyles((theme) => ({
   row: {
@@ -160,17 +158,14 @@ function OpenTimeInput(props) {
           />
         </Grid>
         <Grid item xs={2} sm={1}>
-          <CancelIconButton onClick={removeInput} />
+          <IconButton onClick={removeInput} kind="cancel" ariaLabel="cancel" />
         </Grid>
         <Grid item xs={2} sm={1}>
           <IconButton
-            variant="contained"
-            color="default"
-            aria-label="cancel"
+            ariaLabel="cancel"
             onClick={copyInput}
-          >
-            <WrapText />
-          </IconButton>
+            kind="wrapText"
+          />
         </Grid>
       </Grid>
     </MuiPickersUtilsProvider>

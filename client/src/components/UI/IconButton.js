@@ -14,6 +14,7 @@ import {
   Remove,
   Save,
   Search,
+  WrapText,
 } from "@material-ui/icons";
 
 const IconButton = ({ kind, ...props }) => {
@@ -22,7 +23,7 @@ const IconButton = ({ kind, ...props }) => {
     <MaterialIconButton
       variant="contained"
       color="default"
-      aria-label={props.ariaLabel}
+      aria-label={props.ariaLabel || kind}
       {...props}
     >
       <Icon />
@@ -51,4 +52,5 @@ export const ICON_DICT = {
   search: Search,
   details: Details,
   remove: Remove,
+  wrapText: WrapText,
 };

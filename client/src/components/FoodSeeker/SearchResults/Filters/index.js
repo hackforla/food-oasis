@@ -1,8 +1,7 @@
 import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Button, Typography, Tooltip } from "@material-ui/core";
-import LocationSearchingIcon from "@material-ui/icons/LocationSearching";
+import { Grid, Typography, Tooltip } from "@material-ui/core";
 import { tenantName } from "helpers/Configuration";
 import {
   MEAL_PROGRAM_CATEGORY_ID,
@@ -14,6 +13,7 @@ import SearchBar from "components/FoodSeeker/SearchBar";
 import SwitchViewsButton from "./SwitchViewsButton";
 import CategoryButton from "./CategoryButton";
 import * as analytics from "services/analytics";
+import Controls from '../../../../components/UI';
 
 const useStyles = makeStyles((theme) => ({
   select: {
@@ -211,17 +211,16 @@ const ResultsFilters = ({
             />
             <Tooltip title="Re-center">
               <span>
-                <Button
+                <Controls.Button 
+                  text=''
                   onClick={() => {
                     analytics.postEvent("recenterMap", {});
                     setOrigin(userCoordinates);
                   }}
                   disabled={!userCoordinates}
-                  variant="contained"
                   className={classes.nearbySearch}
-                  startIcon={
-                    <LocationSearchingIcon className={classes.nearbyIcon} />
-                  }
+                  icon='locationSearching'
+                  iconPosition='start'
                 />
               </span>
             </Tooltip>

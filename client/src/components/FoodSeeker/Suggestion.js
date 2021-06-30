@@ -4,13 +4,12 @@ import { withRouter } from "react-router-dom";
 import {
   Container,
   CssBaseline,
-  Button,
   Grid,
-  TextField,
   Typography,
 } from "@material-ui/core";
 import * as suggestionService from "services/suggestion-service";
 import { withStyles } from "@material-ui/core";
+import Controls from '../../components/UI';
 
 const styles = (theme) => ({
   "@global": {
@@ -97,133 +96,124 @@ function Suggestion(props) {
           </Typography>
         </Grid>
         <Grid item xs={12}>
-          <TextField
+          <Controls.Input 
             type="text"
             size="small"
             label="Organization Name"
             name="name"
-            variant="outlined"
             margin="normal"
             fullWidth
             autoFocus
             value={stakeholder.name}
-            onChange={handleChange}
+            onChange={handleChange}          
           />
         </Grid>
         <Grid item xs={12}>
-          <TextField
+          <Controls.Input 
             type="text"
             size="small"
             label="Category (Food Pantry, Meal Program, etc.)"
             name="category"
-            variant="outlined"
             margin="normal"
             fullWidth
             autoFocus
             value={stakeholder.category}
-            onChange={handleChange}
+            onChange={handleChange}          
           />
         </Grid>
         <Grid item xs={12}>
-          <TextField
+          <Controls.Input 
             type="text"
             size="small"
             label="Address Line 1"
             name="address1"
-            variant="outlined"
             margin="normal"
             fullWidth
             autoFocus
             value={stakeholder.address1}
-            onChange={handleChange}
+            onChange={handleChange}          
           />
         </Grid>
         <Grid item xs={12}>
-          <TextField
+          <Controls.Input 
             type="text"
             size="small"
             label="Address Line 2"
             name="address2"
-            variant="outlined"
             margin="normal"
             fullWidth
             autoFocus
             value={stakeholder.address2}
-            onChange={handleChange}
+            onChange={handleChange}          
           />
         </Grid>
         <Grid item xs={12}>
-          <TextField
+          <Controls.Input 
             type="text"
             size="small"
             label="City"
             name="city"
-            variant="outlined"
             margin="normal"
             fullWidth
             autoFocus
             value={stakeholder.city}
-            onChange={handleChange}
+            onChange={handleChange}          
           />
         </Grid>
         <Grid item xs={12}>
-          <TextField
+          <Controls.Input 
             type="text"
             size="small"
             label="State"
             name="state"
-            variant="outlined"
             margin="normal"
             fullWidth
             autoFocus
             value={stakeholder.state}
-            onChange={handleChange}
+            onChange={handleChange}          
           />
         </Grid>
         <Grid item xs={12}>
-          <TextField
+          <Controls.Input 
             type="text"
             size="small"
             label="Zip Code"
             name="zip"
-            variant="outlined"
             margin="normal"
             fullWidth
             autoFocus
             value={stakeholder.zip}
-            onChange={handleChange}
+            onChange={handleChange}          
           />
         </Grid>
         <Grid item xs={12}>
-          <TextField
+          <Controls.Input 
             type="text"
             size="small"
             label="Phone"
             name="phone"
-            variant="outlined"
             margin="normal"
             fullWidth
             autoFocus
             value={stakeholder.phone}
-            onChange={handleChange}
+            onChange={handleChange}          
           />
         </Grid>
         <Grid item xs={12}>
-          <TextField
+          <Controls.Input 
             type="text"
             size="small"
             label="Email"
             name="email"
-            variant="outlined"
             margin="normal"
             fullWidth
             autoFocus
             value={stakeholder.email}
-            onChange={handleChange}
+            onChange={handleChange}          
           />
         </Grid>
         <Grid item xs={12}>
-          <TextField
+          <Controls.Input 
             type="text"
             size="small"
             multiline
@@ -231,16 +221,15 @@ function Suggestion(props) {
             rowsMax={12}
             label="Changes to Hours"
             name="hours"
-            variant="outlined"
             margin="normal"
             fullWidth
             autoFocus
             value={stakeholder.hours}
-            onChange={handleChange}
+            onChange={handleChange}          
           />
         </Grid>
         <Grid item xs={12}>
-          <TextField
+          <Controls.Input 
             type="text"
             size="small"
             multiline
@@ -248,16 +237,15 @@ function Suggestion(props) {
             rowsMax={12}
             label="Other Information"
             name="notes"
-            variant="outlined"
             margin="normal"
             fullWidth
             autoFocus
             value={stakeholder.notes}
-            onChange={handleChange}
+            onChange={handleChange}          
           />
         </Grid>
         <Grid item xs={12}>
-          <TextField
+          <Controls.Input 
             type="text"
             size="small"
             multiline
@@ -265,16 +253,15 @@ function Suggestion(props) {
             rowsMax={12}
             label="Your Name"
             name="tipsterName"
-            variant="outlined"
             margin="normal"
             fullWidth
             autoFocus
             value={stakeholder.tipsterName}
-            onChange={handleChange}
+            onChange={handleChange}          
           />
         </Grid>
         <Grid item xs={12}>
-          <TextField
+          <Controls.Input 
             type="text"
             size="small"
             multiline
@@ -282,16 +269,15 @@ function Suggestion(props) {
             rowsMax={12}
             label="Your Phone"
             name="tipsterPhone"
-            variant="outlined"
             margin="normal"
             fullWidth
             autoFocus
             value={stakeholder.tipsterPhone}
-            onChange={handleChange}
+            onChange={handleChange}          
           />
         </Grid>
         <Grid item xs={12}>
-          <TextField
+          <Controls.Input 
             type="text"
             size="small"
             multiline
@@ -299,26 +285,21 @@ function Suggestion(props) {
             rowsMax={12}
             label="Your Email"
             name="tipsterEmail"
-            variant="outlined"
             margin="normal"
             fullWidth
             autoFocus
             value={stakeholder.tipsterEmail}
-            onChange={handleChange}
+            onChange={handleChange}          
           />
         </Grid>
       </Grid>
-      <Button
-        type="button"
+      <Controls.Button 
+        text='Send Suggestions'
         fullWidth
         onClick={handleSubmit}
-        variant="contained"
-        color="primary"
         className={classes.submit}
         disabled={isSubmitting}
-      >
-        Send Suggestion
-      </Button>
+      />
     </Container>
   );
 }

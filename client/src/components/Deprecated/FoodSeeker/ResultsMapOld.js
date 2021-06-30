@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import ReactMapGL, { Layer, NavigationControl, Source } from "react-map-gl";
-import { Grid, Button } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import Marker from "components/FoodSeeker/Marker";
@@ -12,6 +12,7 @@ import StakeholderPreview from "components/FoodSeeker/StakeholderPreview";
 import StakeholderDetails from "components/FoodSeeker/StakeholderDetails";
 import theme from "theme/clientTheme";
 import { defaultViewport } from "helpers/Configuration";
+import Controls from '../../../components/UI';
 
 const styles = {
   navigationControl: {
@@ -281,14 +282,13 @@ function Map({
             <NavigationControl showCompass={false} />
           </div>
           {showSearchArea && (
-            <Button
+            <Controls.Button 
+              variant='outlined'
+              size='small'
+              text='Search this area'
               onClick={searchArea}
-              variant="outlined"
-              size="small"
               className={classes.searchButton}
-            >
-              Search this area
-            </Button>
+            />
           )}
           <Source
             id="stakeholders"

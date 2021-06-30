@@ -6,16 +6,16 @@ const Input = (props) => {
   return (
     <TextField
       {...props}
+      variant={props.variant || 'outlined'}
       label={props.label}
-      onChange={(e) => props.onChange(e.target.value)}
     />
   );
 };
 
 Input.propTypes = {
-  label: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  value: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  onChange: PropTypes.func,
+  value: PropTypes.string,
 };
 
 export default Input;

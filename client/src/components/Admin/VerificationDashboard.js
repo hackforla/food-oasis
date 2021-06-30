@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { withRouter, Redirect } from "react-router-dom";
 import { CssBaseline, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { SearchButton, PlainButton } from "../UI/Buttons";
 import StakeholderGrid from "./VerificationAdminGrid";
 import { RotateLoader } from "react-spinners";
 import { useOrganizations } from "hooks/useOrganizations";
 import * as stakeholderService from "services/stakeholder-service";
+import Controls from '../../components/UI';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -157,13 +157,19 @@ function VerificationDashboard(props) {
             {`${user && user.firstName} ${user && user.lastName}'s Dashboard`}
           </Typography>
           <div style={{ display: "flex", flexDirection: "row" }}>
-            <PlainButton
+            <Controls.Button 
+              type='button'
+              text='Request Assignment'
               onClick={requestAssignment}
-              label="Request Assignment"
-              style={{ marginRight: "0.2em" }}
               disabled={disableRequestAssignment()}
             />
-            <SearchButton onClick={search} label="Refresh" />
+            <Controls.Button 
+              type='button'
+              text='Refresh'
+              icon='search'
+              iconPosition='start'
+              onClick={search}
+            />
           </div>
         </header>
       </div>

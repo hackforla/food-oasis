@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import {
-  Button,
   Table,
   TableBody,
   TableCell,
@@ -12,6 +11,7 @@ import {
 } from "@material-ui/core";
 import makeStyles from "@material-ui/styles/makeStyles";
 import { STAKEHOLDER_SCHEMA } from "../../../constants/stakeholder-schema";
+import Controls from '../../../components/UI';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -56,12 +56,16 @@ const ImportFileTable = (props) => {
           Review your import below and click "Import" when you're ready to
           update your records.
         </Typography>
-        <Button variant="contained" onClick={handleCancel}>
-          Cancel
-        </Button>
-        <Button variant="contained" onClick={handleImportAction}>
-          Import
-        </Button>
+        <Controls.Button 
+          type='button'
+          text='Cancel'
+          onClick={handleCancel}
+        />
+        <Controls.Button 
+          type='button'
+          text='Import'
+          onClick={handleImportAction}
+        />
       </div>
       <TableContainer className={classes.tableContainer}>
         <Table>

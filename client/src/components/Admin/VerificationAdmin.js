@@ -4,8 +4,6 @@ import { withRouter, Redirect } from "react-router-dom";
 import { CssBaseline, Dialog, Typography } from "@material-ui/core";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import { makeStyles } from "@material-ui/core/styles";
-import { SearchButton } from "../UI/Buttons";
-import PrimaryButton from "./ui/PrimaryButton";
 import StakeholderGrid from "./VerificationAdminGrid";
 import { RotateLoader } from "react-spinners";
 import { useOrganizations } from "hooks/useOrganizations";
@@ -20,6 +18,7 @@ import AssignDialog from "./AssignDialog";
 import NeedsVerificationDialog from "./ui/MessageConfirmDialog";
 import SearchCriteria from "./SearchCriteria";
 import SearchCriteriaDisplay from "./SearchCriteriaDisplay";
+import Controls from '../../components/UI';
 
 const CRITERIA_TOKEN = "verificationAdminCriteria";
 
@@ -73,8 +72,12 @@ const DialogTitle = (props) => {
     <MuiDialogTitle disableTypography className={classes.root} {...other}>
       <Typography variant="h6">{children}</Typography>
       {onClose ? (
-        <SearchButton
-          aria-label="close"
+        <Controls.Button 
+          type='button'
+          text='Search'
+          icon='search'
+          iconPosition='start'
+          kind='close'
           onClick={onClose}
           className={classes.closeButton}
         />
@@ -306,9 +309,13 @@ function VerificationAdmin(props) {
           >
             Verification Administration
           </Typography>
-          <PrimaryButton onClick={handleDialogOpen} logo="search">
-            Criteria...
-          </PrimaryButton>
+          <Controls.Button 
+            type='button'
+            text='Criteria...'
+            icon='search'
+            iconPosition='start'
+            onClick={handleDialogOpen}
+          />
         </header>
       </div>
       <SearchCriteriaDisplay
@@ -437,27 +444,24 @@ function VerificationAdmin(props) {
                     justifyContent: "flex-start",
                   }}
                 >
-                  <PrimaryButton
-                    title="Mark for verification"
+                  <Controls.Button 
+                    type='button'
+                    text='Needs Verification'
                     disabled={selectedStakeholderIds.length === 0}
                     onClick={handleNeedsVerificationDialogOpen}
-                  >
-                    Needs Verification
-                  </PrimaryButton>
-                  <PrimaryButton
-                    title="Assign selected Organizations to User for Verification"
+                  />
+                  <Controls.Button 
+                    type='button'
+                    text='Assign'
                     disabled={selectedStakeholderIds.length === 0}
                     onClick={handleAssignDialogOpen}
-                  >
-                    Assign
-                  </PrimaryButton>
-                  <PrimaryButton
-                    title="Export selected Organizations to file"
+                  />
+                  <Controls.Button 
+                    type='button'
+                    text='Export'
                     disabled={selectedStakeholderIds.length === 0}
                     onClick={handleExport}
-                  >
-                    Export
-                  </PrimaryButton>
+                  />
                 </div>
                 <div>{`${stakeholders.length} rows`} </div>
               </div>

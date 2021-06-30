@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import * as faqService from "../../services/faq-service";
 
-import TextField from "@material-ui/core/TextField";
-import { SaveButton } from "../UI/Buttons";
+import Controls from '../../components/UI';
 
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -57,14 +56,13 @@ const FaqEditForm = ({ faq, notAdded, history }) => {
       </h3>
       <form onSubmit={handleSubmit}>
         <h5>Question</h5>
-        <TextField
+        <Controls.Input 
           placeholder="Question"
           type="text"
-          variant="outlined"
           fullWidth
           value={question}
           onChange={(event) => handleQuestionChange(event)}
-          name="question"
+          name="question"        
         />
         <h5>Answer</h5>
         <ReactQuill
@@ -72,10 +70,12 @@ const FaqEditForm = ({ faq, notAdded, history }) => {
           onChange={handleAnswerChange}
           name="answer"
         />
-        <SaveButton
-          type="submit"
-          variant="outlined"
-          label={notAdded ? "Add Faq" : "Update Faq"}
+        <Controls.Button 
+          type='submit'
+          variant='outlined'
+          text={notAdded ? "Add Faq" : "Update Faq"}
+          icon='save'
+          iconPosition='start'
         />
       </form>
     </div>

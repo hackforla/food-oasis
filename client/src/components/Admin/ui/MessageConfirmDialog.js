@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  TextField,
 } from "@material-ui/core";
+import Controls from '../../../components/UI';
 
 function MessageDialog(props) {
   const { onClose, open, message: initialMessage, ...other } = props;
@@ -33,8 +32,7 @@ function MessageDialog(props) {
     >
       <DialogTitle id="confirmation-dialog-title">Message:</DialogTitle>
       <DialogContent dividers>
-        <TextField
-          variant="outlined"
+        <Controls.Input 
           margin="normal"
           fullWidth
           name="message"
@@ -45,16 +43,20 @@ function MessageDialog(props) {
           rows={4}
           rowsMax={12}
           value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          onChange={(e) => setMessage(e.target.value)}        
         />
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={handleCancel} color="primary">
-          Cancel
-        </Button>
-        <Button onClick={handleSubmit} color="primary">
-          OK
-        </Button>
+        <Controls.Button 
+          type='button'
+          text='Cancel'
+          onClick={handleCancel}
+        />
+        <Controls.Button 
+          type='button'
+          text='OK'
+          onClick={handleSubmit}
+        />
       </DialogActions>
     </Dialog>
   );

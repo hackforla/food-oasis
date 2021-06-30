@@ -7,10 +7,9 @@ import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Link from "@material-ui/core/Link";
-import Button from "@material-ui/core/Button";
-import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { Link as RouterLink } from "react-router-dom";
 import SearchBar from "components/FoodSeeker/SearchBar";
+import Controls from '../../components/UI';
 
 // All the tenant logos happen to be the same for now
 import logo from "images/foodoasis.svg";
@@ -52,6 +51,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 10,
     marginBottom: "0.5em",
     padding: "0 5vw",
+    
     [theme.breakpoints.down("sm")]: {
       padding: "0 5vw",
     },
@@ -269,15 +269,13 @@ const Home = ({
                 origin={origin}
                 browserLocation={browserLocation}
               /> */}
-              <Button
+              <Controls.Button 
+                text='Use my current location'
+                icon='locationOn'
+                iconPosition='start'
                 className={classes.locationBtn}
-                variant="contained"
-                fullWidth
-                startIcon={<LocationOnIcon />}
                 onClick={useMyLocationTrigger}
-              >
-                Use my current location
-              </Button>
+              />
             </Box>
             <Box className={classes.inputContainer}>
               <Link

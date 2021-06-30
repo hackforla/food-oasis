@@ -1,13 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   Typography,
 } from "@material-ui/core";
+import Controls from '../../../components/UI';
 
 function ConfirmDialog(props) {
   const { onClose, open, ...other } = props;
@@ -35,12 +35,17 @@ function ConfirmDialog(props) {
         <Typography>{props.message}</Typography>
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={handleCancel} color="primary">
-          Cancel
-        </Button>
-        <Button onClick={handleAssign} color="primary">
-          Confirm Delete
-        </Button>
+        <Controls.Button 
+          type='button'
+          text='Cancel'
+          autoFocus
+          onClick={handleCancel}
+        />
+        <Controls.Button 
+          type='button'
+          text='Confirm Delete'
+          onClick={handleAssign}
+        />
       </DialogActions>
     </Dialog>
   );

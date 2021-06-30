@@ -6,16 +6,15 @@ import * as Yup from "yup";
 import * as accountService from "../../services/account-service";
 import {
   Avatar,
-  Button,
   Container,
   CssBaseline,
-  TextField,
   Link,
   Grid,
   Typography,
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Footer from "../Layout/Footer";
+import Controls from '../../components/UI';
 
 const styles = (theme) => ({
   "@global": {
@@ -138,7 +137,7 @@ const ForgotPassword = (props) => {
                   handleSubmit(evt);
                 }}
               >
-                <TextField
+                <Controls.Input 
                   type="email"
                   id="email"
                   label="Email"
@@ -152,19 +151,15 @@ const ForgotPassword = (props) => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   helperText={touched.email ? errors.email : ""}
-                  error={touched.email && Boolean(errors.email)}
+                  error={touched.email && Boolean(errors.email)}              
                 />
-
-                <Button
+                <Controls.Button 
                   type="submit"
+                  text='Send Reset Link to Email'
                   fullWidth
-                  variant="contained"
-                  color="primary"
                   className={classes.submit}
-                  disabled={isSubmitting}
-                >
-                  Send Reset Link to Email
-                </Button>
+                  disabled={isSubmitting}                
+                />
                 <Grid container>
                   <Grid item xs>
                     <Link href={`/login/${values.email || ""}`} variant="body2">

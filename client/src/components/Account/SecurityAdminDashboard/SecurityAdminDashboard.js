@@ -3,8 +3,8 @@ import SecurityTable from "./SecurityTable";
 import { makeStyles } from "@material-ui/styles";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-import { TextField } from "@material-ui/core";
 import * as accountService from "../../../services/account-service";
+import Controls from '../../UI';
 
 const useStyles = makeStyles({
   root: {
@@ -89,7 +89,7 @@ const SecurityAdminDashboard = () => {
     <Container maxWidth="lg" className={classes.root}>
       <Typography variant="h4">Security Roles</Typography>
       <Typography variant="h6">Grant or Revoke Permissions</Typography>
-      <TextField
+      <Controls.Input 
         variant="outlined"
         margin="none"
         placeholder="Find"

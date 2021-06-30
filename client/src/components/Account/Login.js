@@ -4,10 +4,8 @@ import { withRouter } from "react-router-dom";
 import {
   withStyles,
   Avatar,
-  Button,
   Container,
   CssBaseline,
-  TextField,
   Link,
   Grid,
   Typography,
@@ -16,6 +14,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import * as accountService from "services/account-service";
 import * as analytics from "../../services/analytics";
+import Controls from '../../components/UI';
 
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
@@ -161,7 +160,7 @@ const LoginForm = (props) => {
               /* and other goodies */
             }) => (
               <form className={classes.form} noValidate onSubmit={handleSubmit}>
-                <TextField
+                <Controls.Input 
                   type="email"
                   id="email"
                   label="Email"
@@ -177,7 +176,7 @@ const LoginForm = (props) => {
                   helperText={touched.email ? errors.email : ""}
                   error={touched.email && Boolean(errors.email)}
                 />
-                <TextField
+                <Controls.Input 
                   variant="outlined"
                   margin="normal"
                   fullWidth
@@ -192,16 +191,13 @@ const LoginForm = (props) => {
                   helperText={touched.password ? errors.password : ""}
                   error={touched.password && Boolean(errors.password)}
                 />
-                <Button
+                <Controls.Button
                   type="submit"
+                  text='Sign In'
                   fullWidth
-                  variant="contained"
-                  color="primary"
                   className={classes.submit}
                   disabled={isSubmitting}
-                >
-                  Sign In
-                </Button>
+                />
                 <Grid container>
                   <Grid item xs>
                     <Link

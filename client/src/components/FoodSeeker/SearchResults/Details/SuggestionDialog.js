@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   Grid,
-  TextField,
   Typography,
 } from "@material-ui/core";
 import * as suggestionService from "services/suggestion-service";
+import Controls from '../../../../components/UI';
 
 function SuggestionDialog(props) {
   const { onClose, open, setToast, stakeholder: sh, ...other } = props;
@@ -99,7 +98,7 @@ function SuggestionDialog(props) {
             </Typography>
           </Grid>
           <Grid item xs={12}>
-            <TextField
+            <Controls.Input 
               type="text"
               size="small"
               multiline
@@ -107,16 +106,15 @@ function SuggestionDialog(props) {
               rowsMax={12}
               label="Corrections"
               name="notes"
-              variant="outlined"
               margin="normal"
               fullWidth
               autoFocus
               value={stakeholder.notes}
-              onChange={handleChange}
+              onChange={handleChange}            
             />
           </Grid>
           <Grid item xs={12}>
-            <TextField
+            <Controls.Input 
               type="text"
               size="small"
               multiline
@@ -124,16 +122,15 @@ function SuggestionDialog(props) {
               rowsMax={12}
               label="Your Name (optional)"
               name="tipsterName"
-              variant="outlined"
               margin="normal"
               fullWidth
               autoFocus
               value={stakeholder.tipsterName}
-              onChange={handleChange}
+              onChange={handleChange}            
             />
           </Grid>
           <Grid item xs={12}>
-            <TextField
+            <Controls.Input 
               type="text"
               size="small"
               multiline
@@ -141,16 +138,15 @@ function SuggestionDialog(props) {
               rowsMax={12}
               label="Your Phone (optional)"
               name="tipsterPhone"
-              variant="outlined"
               margin="normal"
               fullWidth
               autoFocus
               value={stakeholder.tipsterPhone}
-              onChange={handleChange}
+              onChange={handleChange}            
             />
           </Grid>
           <Grid item xs={12}>
-            <TextField
+            <Controls.Input 
               type="text"
               size="small"
               multiline
@@ -158,23 +154,25 @@ function SuggestionDialog(props) {
               rowsMax={12}
               label="Your Email (optional)"
               name="tipsterEmail"
-              variant="outlined"
               margin="normal"
               fullWidth
               autoFocus
               value={stakeholder.tipsterEmail}
-              onChange={handleChange}
+              onChange={handleChange}            
             />
           </Grid>
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={handleCancel} color="primary">
-          Cancel
-        </Button>
-        <Button onClick={handleSubmit} color="primary">
-          Send
-        </Button>
+        <Controls.Button 
+          text='Cancel'
+          autoFocus
+          onClick={handleCancel}
+        />
+        <Controls.Button 
+          text='Send'
+          onClick={handleSubmit}
+        />
       </DialogActions>
     </Dialog>
   );

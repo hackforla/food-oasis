@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { makeStyles } from "@material-ui/core/styles";
-import { Button } from "@material-ui/core";
+import Controls from '../../../../components/UI';
 
 import {
   MEAL_PROGRAM_CATEGORY_ID,
@@ -15,7 +15,7 @@ import * as analytics from "services/analytics";
 
 import StakeholderIcon from "images/stakeholderIcon";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   stakeholder: {
     width: "100%",
     minHeight: "6em",
@@ -80,6 +80,11 @@ const useStyles = makeStyles(() => ({
   name: {
     fontSize: "16px",
   },
+  button: {
+    '&:hover': {
+      background:theme.palette.primary.main,
+    }
+  }
 }));
 
 const isLastOccurrenceInMonth = (currentDay) => {
@@ -225,9 +230,11 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
         <div className={classes.buttons}>
           <OriginCoordinatesContext.Consumer>
             {(origin) => (
-              <Button
-                variant="outlined"
-                size="small"
+              <Controls.Button 
+                text='Directions'
+                variant='outlined'
+                size='small'
+                className={classes.button}
                 onClick={() => {
                   analytics.postEvent("getDirections", {
                     id: stakeholder.id,
@@ -241,15 +248,15 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
                     })
                   );
                 }}
-              >
-                Directions
-              </Button>
+              />
             )}
           </OriginCoordinatesContext.Consumer>
           {mainNumber && (
-            <Button
-              variant="outlined"
-              size="small"
+            <Controls.Button 
+              text='Call'
+              variant='outlined'
+              size='small'
+              className={classes.button}
               onClick={() => {
                 analytics.postEvent("dialPhone", {
                   id: stakeholder.id,
@@ -257,17 +264,15 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
                 });
                 window.open(`tel:${mainNumber.value}`);
               }}
-            >
-              Call
-            </Button>
+            />
           )}
-          <Button
+          <Controls.Button 
+            text='Details'
             variant="outlined"
             size="small"
+            className={classes.button}
             disabled={stakeholder.inactive}
-          >
-            Details
-          </Button>
+          />
         </div>
       </div>
     </div>

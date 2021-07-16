@@ -160,7 +160,8 @@ const Home = ({
     let originCoordinates = { latitude: null, longitude: null };
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
+        (position) => { 
+          console.log({position})
           if (position) {
             originCoordinates = {
               latitude: position.coords.latitude,

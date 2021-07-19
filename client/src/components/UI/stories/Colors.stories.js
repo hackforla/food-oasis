@@ -1,7 +1,6 @@
 import React from "react";
 import { storiesOf } from "@storybook/react";
 import { decorators } from "../helpers";
-import Divider from '@material-ui/core/Divider';
 
 import SystemColors from "../SystemColors";
 import LogoColors from "../LogoColors";

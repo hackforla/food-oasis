@@ -1,5 +1,5 @@
 ---
-name: Update Team Roster
+name: 2 - Update Team Roster
 about: Provides new team members a link to team roster to input their information
 title: ''
 labels: documentation, good first issue, question

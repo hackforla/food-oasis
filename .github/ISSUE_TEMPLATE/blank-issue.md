@@ -8,7 +8,7 @@ assignees: ''
 ---
 
 ### Overview
-REPLACE THIS TEXT -Text here that clearly states the purpose of this issue in 2 sentences or less.
+REPLACE THIS TEXT -This should be in the form of a user story and why we are doing this. We need to do x for y reason.
 
 ### Action Items
 REPLACE THIS TEXT -If this is the beginning of the task this is most likely something to be researched and documented.

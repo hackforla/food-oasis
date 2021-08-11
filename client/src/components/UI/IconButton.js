@@ -10,7 +10,7 @@ const IconButton = ({ icon, ...props }) => {
     <MuiIconButton
       variant={props.variant || "contained"}
       color={props.color || "default"}
-      aria-label={icon || ''}
+      aria-label={icon}
       {...props}
     >
       <Icon />

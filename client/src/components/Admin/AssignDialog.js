@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from "@material-ui/core";
 import AccountAutocomplete from "./AccountAutocomplete";
-import Controls from '../../components/UI';
+import { Button } from '../../components/UI';
 
 function AssignDialog(props) {
   const { onClose, open, ...other } = props;
@@ -40,12 +40,12 @@ function AssignDialog(props) {
         />
       </DialogContent>
       <DialogActions>
-        <Controls.Button 
+        <Button 
           autoFocus 
           onClick={handleCancel} 
           text='Cancel'
         />
-        <Controls.Button 
+        <Button 
           text='Assign'
           onClick={handleAssign} 
           disabled={!accountId}

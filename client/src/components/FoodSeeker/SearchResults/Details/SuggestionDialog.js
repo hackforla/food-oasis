@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import * as suggestionService from "services/suggestion-service";
-import Controls from '../../../../components/UI';
+import { Input, Button } from '../../../../components/UI';
 
 function SuggestionDialog(props) {
   const { onClose, open, setToast, stakeholder: sh, ...other } = props;
@@ -98,7 +98,7 @@ function SuggestionDialog(props) {
             </Typography>
           </Grid>
           <Grid item xs={12}>
-            <Controls.Input 
+            <Input 
               type="text"
               size="small"
               multiline
@@ -114,7 +114,7 @@ function SuggestionDialog(props) {
             />
           </Grid>
           <Grid item xs={12}>
-            <Controls.Input 
+            <Input 
               type="text"
               size="small"
               multiline
@@ -130,7 +130,7 @@ function SuggestionDialog(props) {
             />
           </Grid>
           <Grid item xs={12}>
-            <Controls.Input 
+            <Input 
               type="text"
               size="small"
               multiline
@@ -146,7 +146,7 @@ function SuggestionDialog(props) {
             />
           </Grid>
           <Grid item xs={12}>
-            <Controls.Input 
+            <Input 
               type="text"
               size="small"
               multiline
@@ -164,12 +164,12 @@ function SuggestionDialog(props) {
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Controls.Button 
+        <Button 
           text='Cancel'
           autoFocus
           onClick={handleCancel}
         />
-        <Controls.Button 
+        <Button 
           text='Send'
           onClick={handleSubmit}
         />

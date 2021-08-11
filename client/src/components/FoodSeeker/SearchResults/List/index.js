@@ -9,7 +9,7 @@ import CellMeasurerCache from "react-virtualized/dist/es/CellMeasurer/CellMeasur
 import StakeholderPreview from "../Preview";
 import StakeholderDetails from "../Details";
 import * as analytics from "services/analytics";
-import Controls from '../../../../components/UI';
+import { Button } from '../../../../components/UI';
 
 const useStyles = makeStyles((theme) => ({
   listContainer: {
@@ -106,7 +106,7 @@ const ResultsList = ({
       {!loading && stakeholders.length === 0 && (
         <div className={classes.emptyResult}>
           <p>Sorry, we don&apos;t have any results for this area.</p>
-          <Controls.Button 
+          <Button 
             text='Click here to reset the search'
             onClick={handleReset}
             disableElevation

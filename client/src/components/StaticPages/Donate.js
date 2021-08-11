@@ -21,7 +21,7 @@ import donationStep5 from "images/donationStep5.png";
 import donationStep6 from "images/donationStep6.png";
 import donationStep7 from "images/donationStep7.png";
 import * as analytics from "../../services/analytics";
-import Controls from '../../components/UI';
+import { Button, IconButton } from '../../components/UI';
 
 const useStyles = makeStyles((theme) => ({
   outer: {
@@ -238,7 +238,7 @@ const Donate = () => {
             update. Your tax-deductible donation would help us offset some of
             those costs.
           </p>
-          <Controls.Button 
+          <Button 
             text='Donate'
             className={classes.btnOutline}
             onClick={handleShowDonationDialog}
@@ -330,7 +330,7 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
             </Typography>
           </Grid>
           <Grid item>
-            <Controls.IconButton 
+            <IconButton 
               icon='close'
               className={classes.dialogCloseButton}
               onClick={handleCloseDonationDialog}

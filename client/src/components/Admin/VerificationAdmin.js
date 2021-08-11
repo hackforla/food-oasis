@@ -18,7 +18,7 @@ import AssignDialog from "./AssignDialog";
 import NeedsVerificationDialog from "./ui/MessageConfirmDialog";
 import SearchCriteria from "./SearchCriteria";
 import SearchCriteriaDisplay from "./SearchCriteriaDisplay";
-import Controls from '../../components/UI';
+import { Button } from '../../components/UI';
 
 const CRITERIA_TOKEN = "verificationAdminCriteria";
 
@@ -72,7 +72,7 @@ const DialogTitle = (props) => {
     <MuiDialogTitle disableTypography className={classes.root} {...other}>
       <Typography variant="h6">{children}</Typography>
       {onClose ? (
-        <Controls.Button 
+        <Button 
           type='button'
           text='Search'
           icon='search'
@@ -309,7 +309,7 @@ function VerificationAdmin(props) {
           >
             Verification Administration
           </Typography>
-          <Controls.Button 
+          <Button 
             type='button'
             text='Criteria...'
             icon='search'
@@ -444,19 +444,19 @@ function VerificationAdmin(props) {
                     justifyContent: "flex-start",
                   }}
                 >
-                  <Controls.Button 
+                  <Button 
                     type='button'
                     text='Needs Verification'
                     disabled={selectedStakeholderIds.length === 0}
                     onClick={handleNeedsVerificationDialogOpen}
                   />
-                  <Controls.Button 
+                  <Button 
                     type='button'
                     text='Assign'
                     disabled={selectedStakeholderIds.length === 0}
                     onClick={handleAssignDialogOpen}
                   />
-                  <Controls.Button 
+                  <Button 
                     type='button'
                     text='Export'
                     disabled={selectedStakeholderIds.length === 0}

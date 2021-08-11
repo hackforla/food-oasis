@@ -14,7 +14,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import * as accountService from "services/account-service";
 import * as analytics from "../../services/analytics";
-import Controls from '../../components/UI';
+import { Button, Input } from '../../components/UI';
 
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
@@ -160,7 +160,7 @@ const LoginForm = (props) => {
               /* and other goodies */
             }) => (
               <form className={classes.form} noValidate onSubmit={handleSubmit}>
-                <Controls.Input 
+                <Input 
                   type="email"
                   id="email"
                   label="Email"
@@ -176,7 +176,7 @@ const LoginForm = (props) => {
                   helperText={touched.email ? errors.email : ""}
                   error={touched.email && Boolean(errors.email)}
                 />
-                <Controls.Input 
+                <Input 
                   variant="outlined"
                   margin="normal"
                   fullWidth
@@ -191,7 +191,7 @@ const LoginForm = (props) => {
                   helperText={touched.password ? errors.password : ""}
                   error={touched.password && Boolean(errors.password)}
                 />
-                <Controls.Button
+                <Button
                   type="submit"
                   text='Sign In'
                   fullWidth

@@ -15,7 +15,7 @@ import { isMobile } from "helpers";
 import StakeholderPreview from "components/FoodSeeker/StakeholderPreview";
 import StakeholderDetails from "components/FoodSeeker/StakeholderDetails";
 import * as analytics from "../../services/analytics";
-import Controls from '../../../components/UI';
+import { Button } from '../../../components/UI';
 
 const styles = {
   navigationControl: {
@@ -186,7 +186,7 @@ function Map({
           </div>
 
           {showSearchArea && (
-            <Controls.Button 
+            <Button 
               variant='outlined'
               size='small'
               text='Search this area'

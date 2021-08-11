@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 import makeStyles from "@material-ui/styles/makeStyles";
 import { STAKEHOLDER_SCHEMA } from "../../../constants/stakeholder-schema";
-import Controls from '../../../components/UI';
+import { Button } from '../../../components/UI';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -67,7 +67,7 @@ const ImportFileGuide = (props) => {
           <br />
           <Input type="file" onChange={handleChange} />
           <br />
-          <Controls.Button 
+          <Button 
             type='button'
             text='Submit'
             onClick={handleUpload}
@@ -82,7 +82,7 @@ const ImportFileGuide = (props) => {
             </li>
             <li>Do not change column names or order.</li>
           </ul>
-          <Controls.Button 
+          <Button 
             type='button'
             text='Download CSV template'
             onClick={handleDownload}

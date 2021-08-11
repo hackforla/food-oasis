@@ -12,7 +12,7 @@ import StakeholderPreview from "components/FoodSeeker/StakeholderPreview";
 import StakeholderDetails from "components/FoodSeeker/StakeholderDetails";
 import theme from "theme/clientTheme";
 import { defaultViewport } from "helpers/Configuration";
-import Controls from '../../../components/UI';
+import { Button } from '../../../components/UI';
 
 const styles = {
   navigationControl: {
@@ -282,7 +282,7 @@ function Map({
             <NavigationControl showCompass={false} />
           </div>
           {showSearchArea && (
-            <Controls.Button 
+            <Button 
               variant='outlined'
               size='small'
               text='Search this area'

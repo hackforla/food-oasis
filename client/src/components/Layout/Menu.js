@@ -17,7 +17,7 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { MENU_ITEMS } from "helpers/Constants";
 import MenuItemLink from "./MenuItemLink";
 import { logout } from "../Account/Logout";
-import Controls from '../../components/UI';
+import { IconButton } from '../../components/UI';
 
 Menu.propTypes = {
   user: PropTypes.object,
@@ -176,7 +176,7 @@ export default function Menu(props) {
 
   return (
     <div>
-      <Controls.IconButton 
+      <IconButton 
         icon='menu'
         onClick={toggleDrawer}
         classes={{

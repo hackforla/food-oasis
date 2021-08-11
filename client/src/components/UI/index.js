@@ -3,12 +3,9 @@ import IconButton from './IconButton';
 import Box from './Box';
 import Input from './Input';
 
-
-const Controls = {
+export {
     Button,
     IconButton,
     Box,
     Input,
 }
-
-export default Controls;

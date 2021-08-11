@@ -5,9 +5,9 @@ import PropTypes from "prop-types";
 const Input = (props) => {
   return (
     <TextField
-      {...props}
       variant={props.variant || 'outlined'}
       label={props.label}
+      {...props}
     />
   );
 };

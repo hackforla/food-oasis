@@ -1,7 +1,7 @@
 import React from "react";
 import { Autocomplete } from "@material-ui/lab";
 import { useAccounts } from "../../hooks/useAccounts/useAccounts";
-import Controls from '../UI';
+import { Input } from '../UI';
 
 export default function AccountAutocomplete({
   accountId,
@@ -28,7 +28,7 @@ export default function AccountAutocomplete({
           }
           style={{ width: "100%" }}
           renderInput={(params) => (
-            <Controls.Input 
+            <Input 
               {...params}
               label={label || ""}
               variant="outlined"

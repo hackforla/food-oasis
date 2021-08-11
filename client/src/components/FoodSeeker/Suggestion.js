@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import * as suggestionService from "services/suggestion-service";
 import { withStyles } from "@material-ui/core";
-import Controls from '../../components/UI';
+import { Input, Button } from '../../components/UI';
 
 const styles = (theme) => ({
   "@global": {
@@ -96,7 +96,7 @@ function Suggestion(props) {
           </Typography>
         </Grid>
         <Grid item xs={12}>
-          <Controls.Input 
+          <Input 
             type="text"
             size="small"
             label="Organization Name"
@@ -109,7 +109,7 @@ function Suggestion(props) {
           />
         </Grid>
         <Grid item xs={12}>
-          <Controls.Input 
+          <Input 
             type="text"
             size="small"
             label="Category (Food Pantry, Meal Program, etc.)"
@@ -122,7 +122,7 @@ function Suggestion(props) {
           />
         </Grid>
         <Grid item xs={12}>
-          <Controls.Input 
+          <Input 
             type="text"
             size="small"
             label="Address Line 1"
@@ -135,7 +135,7 @@ function Suggestion(props) {
           />
         </Grid>
         <Grid item xs={12}>
-          <Controls.Input 
+          <Input 
             type="text"
             size="small"
             label="Address Line 2"
@@ -148,7 +148,7 @@ function Suggestion(props) {
           />
         </Grid>
         <Grid item xs={12}>
-          <Controls.Input 
+          <Input 
             type="text"
             size="small"
             label="City"
@@ -161,7 +161,7 @@ function Suggestion(props) {
           />
         </Grid>
         <Grid item xs={12}>
-          <Controls.Input 
+          <Input 
             type="text"
             size="small"
             label="State"
@@ -174,7 +174,7 @@ function Suggestion(props) {
           />
         </Grid>
         <Grid item xs={12}>
-          <Controls.Input 
+          <Input 
             type="text"
             size="small"
             label="Zip Code"
@@ -187,7 +187,7 @@ function Suggestion(props) {
           />
         </Grid>
         <Grid item xs={12}>
-          <Controls.Input 
+          <Input 
             type="text"
             size="small"
             label="Phone"
@@ -200,7 +200,7 @@ function Suggestion(props) {
           />
         </Grid>
         <Grid item xs={12}>
-          <Controls.Input 
+          <Input 
             type="text"
             size="small"
             label="Email"
@@ -213,7 +213,7 @@ function Suggestion(props) {
           />
         </Grid>
         <Grid item xs={12}>
-          <Controls.Input 
+          <Input 
             type="text"
             size="small"
             multiline
@@ -229,7 +229,7 @@ function Suggestion(props) {
           />
         </Grid>
         <Grid item xs={12}>
-          <Controls.Input 
+          <Input 
             type="text"
             size="small"
             multiline
@@ -245,7 +245,7 @@ function Suggestion(props) {
           />
         </Grid>
         <Grid item xs={12}>
-          <Controls.Input 
+          <Input 
             type="text"
             size="small"
             multiline
@@ -261,7 +261,7 @@ function Suggestion(props) {
           />
         </Grid>
         <Grid item xs={12}>
-          <Controls.Input 
+          <Input 
             type="text"
             size="small"
             multiline
@@ -277,7 +277,7 @@ function Suggestion(props) {
           />
         </Grid>
         <Grid item xs={12}>
-          <Controls.Input 
+          <Input 
             type="text"
             size="small"
             multiline
@@ -293,7 +293,7 @@ function Suggestion(props) {
           />
         </Grid>
       </Grid>
-      <Controls.Button 
+      <Button 
         text='Send Suggestions'
         fullWidth
         onClick={handleSubmit}

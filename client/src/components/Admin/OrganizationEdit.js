@@ -42,7 +42,7 @@ import {
 } from "constants/stakeholder";
 import TextInput from "./ui/TextInput";
 import moment from "moment";
-import Controls from '../../components/UI';
+import { Button } from '../../components/UI';
 
 const BigTooltip = withStyles(() => ({
   tooltip: {
@@ -953,7 +953,7 @@ const OrganizationEdit = (props) => {
                         >
                           <BigTooltip title="Click to get latitude / longitude for address">
                             <Grid item>
-                              <Controls.Button 
+                              <Button 
                                 icon='search'
                                 iconPosition='start'
                                 text={(geocodeResults && geocodeResults.length) < 1 ? 'Get Coordinates' : 'Close'}
@@ -1008,7 +1008,7 @@ const OrganizationEdit = (props) => {
                                 </Grid>
                                 <Grid item xs={2}>
 
-                                  <Controls.Button 
+                                  <Button 
                                     type='button'
                                     text=''
                                     onClick={() => {
@@ -1840,7 +1840,7 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <Controls.Button 
+                          <Button 
                             type='submit' 
                             text='Save Progress'
                             className={classes.submit}
@@ -1859,7 +1859,7 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <Controls.Button 
+                          <Button 
                             type='button'
                             text='Needs Verfication'
                             onClick={() => {
@@ -1898,7 +1898,7 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <Controls.Button 
+                          <Button 
                             type='button'
                             text='(Re-)Assign'
                             onClick={() => {
@@ -1938,7 +1938,7 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <Controls.Button 
+                          <Button 
                             type='button'
                             text='Request Changes'
                             onClick={() => {
@@ -1977,7 +1977,7 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <Controls.Button 
+                          <Button 
                             type='button'
                             text='Approve'
                             onClick={() => {
@@ -2012,7 +2012,7 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <Controls.Button 
+                          <Button 
                             type='button'
                             text='Delete'
                             onClick={() => {
@@ -2041,7 +2041,7 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <Controls.Button 
+                          <Button 
                             type='submit'
                             text='Save Progress'
                             className={classes.submit}
@@ -2059,7 +2059,7 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <Controls.Button 
+                          <Button 
                             type='button'
                             text='Hand Off'
                             onClick={() => {
@@ -2091,7 +2091,7 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <Controls.Button 
+                          <Button 
                             type='button'
                             text='Submit For Review'
                             onClick={() => {

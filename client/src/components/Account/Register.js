@@ -14,7 +14,7 @@ import {
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Footer from "../Layout/Footer";
-import Controls from '../../components/UI';
+import { Input, Button } from '../../components/UI';
 
 
 const styles = (theme) => ({
@@ -77,7 +77,7 @@ const form = (props) => {
           <form className={classes.form} noValidate onSubmit={handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
-                <Controls.Input 
+                <Input 
                   autoComplete="fname"
                   name="firstName"
                   variant="outlined"
@@ -94,7 +94,7 @@ const form = (props) => {
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <Controls.Input 
+                <Input 
                   variant="outlined"
                   required
                   fullWidth
@@ -110,7 +110,7 @@ const form = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Controls.Input 
+                <Input 
                   type="email"
                   id="email"
                   label="Email"
@@ -126,7 +126,7 @@ const form = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Controls.Input 
+                <Input 
                   variant="outlined"
                   required
                   fullWidth
@@ -143,7 +143,7 @@ const form = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Controls.Input 
+                <Input 
                   variant="outlined"
                   required
                   fullWidth
@@ -163,7 +163,7 @@ const form = (props) => {
                 />
               </Grid>
             </Grid>
-            <Controls.Button
+            <Button
               type='submit'
               text='Register'
               fullWidth

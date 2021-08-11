@@ -14,7 +14,7 @@ import {
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Footer from "../Layout/Footer";
-import Controls from '../../components/UI';
+import { Input, Button } from '../../components/UI';
 
 const styles = (theme) => ({
   "@global": {
@@ -133,7 +133,7 @@ const ResetPassword = (props) => {
                   handleSubmit(evt);
                 }}
               >
-                <Controls.Input 
+                <Input 
                   variant="outlined"
                   margin="normal"
                   fullWidth
@@ -148,7 +148,7 @@ const ResetPassword = (props) => {
                   helperText={touched.password ? errors.password : ""}
                   error={touched.password && Boolean(errors.password)}
                 />
-                <Controls.Input 
+                <Input 
                   variant="outlined"
                   margin="normal"
                   fullWidth
@@ -166,7 +166,7 @@ const ResetPassword = (props) => {
                     touched.passwordConfirm && Boolean(errors.passwordConfirm)
                   }                
                 />
-                <Controls.Button
+                <Button
                   type="submit"
                   text='Reset Password'
                   fullWidth

@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { useHistory, withRouter } from "react-router-dom";
-import Controls from '../UI';
+import { Button } from '../UI';
 
 LogoutButton.propTypes = {
   setUser: PropTypes.func,
@@ -26,7 +26,7 @@ export const logout = (setUser, setToast, history) => {
 function LogoutButton({ setUser, setToast }) {
   const history = useHistory();
   return (
-    <Controls.Button 
+    <Button 
       text='Logout'
       onClick={() => logout(setUser, setToast, history)}
     />

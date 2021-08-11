@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Controls from '../../../../components/UI';
+import { Button } from '../../../../components/UI';
 
 import MapMarker from "images/mapMarker";
 import StakeholderIcon from "images/stakeholderIcon";
@@ -308,7 +308,7 @@ const StakeholderDetails = ({ selectedStakeholder, onClose, setToast }) => {
       <div className={classes.buttons}>
         <OriginCoordinatesContext.Consumer>
           {(origin) => (
-            <Controls.Button 
+            <Button 
               text='Directions'
               variant='outlined'
               onClick={() => {
@@ -326,7 +326,7 @@ const StakeholderDetails = ({ selectedStakeholder, onClose, setToast }) => {
             />
           )}
         </OriginCoordinatesContext.Consumer>
-        <Controls.Button 
+        <Button 
           text='Send Correction'
           variant='outlined'
           onClick={handleSuggestionDialogOpen}

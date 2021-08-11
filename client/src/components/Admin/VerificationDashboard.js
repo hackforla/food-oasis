@@ -6,7 +6,7 @@ import StakeholderGrid from "./VerificationAdminGrid";
 import { RotateLoader } from "react-spinners";
 import { useOrganizations } from "hooks/useOrganizations";
 import * as stakeholderService from "services/stakeholder-service";
-import Controls from '../../components/UI';
+import { Button } from '../../components/UI';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -157,13 +157,13 @@ function VerificationDashboard(props) {
             {`${user && user.firstName} ${user && user.lastName}'s Dashboard`}
           </Typography>
           <div style={{ display: "flex", flexDirection: "row" }}>
-            <Controls.Button 
+            <Button 
               type='button'
               text='Request Assignment'
               onClick={requestAssignment}
               disabled={disableRequestAssignment()}
             />
-            <Controls.Button 
+            <Button 
               type='button'
               text='Refresh'
               icon='search'

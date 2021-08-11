@@ -11,7 +11,7 @@ import {
 } from "@material-ui/core";
 import makeStyles from "@material-ui/styles/makeStyles";
 import { STAKEHOLDER_SCHEMA } from "../../../constants/stakeholder-schema";
-import Controls from '../../../components/UI';
+import { Button } from '../../../components/UI';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -56,12 +56,12 @@ const ImportFileTable = (props) => {
           Review your import below and click "Import" when you're ready to
           update your records.
         </Typography>
-        <Controls.Button 
+        <Button 
           type='button'
           text='Cancel'
           onClick={handleCancel}
         />
-        <Controls.Button 
+        <Button 
           type='button'
           text='Import'
           onClick={handleImportAction}

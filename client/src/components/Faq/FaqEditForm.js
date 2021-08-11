@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import * as faqService from "../../services/faq-service";
 
-import Controls from '../../components/UI';
+import { Input, Button } from '../../components/UI';
 
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -56,7 +56,7 @@ const FaqEditForm = ({ faq, notAdded, history }) => {
       </h3>
       <form onSubmit={handleSubmit}>
         <h5>Question</h5>
-        <Controls.Input 
+        <Input 
           placeholder="Question"
           type="text"
           fullWidth
@@ -70,7 +70,7 @@ const FaqEditForm = ({ faq, notAdded, history }) => {
           onChange={handleAnswerChange}
           name="answer"
         />
-        <Controls.Button 
+        <Button 
           type='submit'
           variant='outlined'
           text={notAdded ? "Add Faq" : "Update Faq"}

@@ -7,7 +7,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import hackForLA from "../images/hackforla.svg";
 import codeForAmerica from "../images/codeforamerica.svg";
-import Controls from '../../components/UI';
+import { Button } from '../../components/UI';
 
 const useStyles = makeStyles({
   root: {
@@ -46,7 +46,7 @@ const Donate = () => {
       <Typography className={classes.description} component={`p`}>
         {t("support-p")}
       </Typography>
-      <Controls.Button 
+      <Button 
         variant='outlined'
         text={t('donate')}
       />
@@ -56,7 +56,7 @@ const Donate = () => {
       <Typography className={classes.description} component={`p`}>
         {t("subscribe-text")}
       </Typography>
-      <Controls.Button 
+      <Button 
         variant='outlined'
         text={t('subscribe-button')}
       />
@@ -66,7 +66,7 @@ const Donate = () => {
       <Typography className={classes.description} component={`p`}>
         {t("questions-text")}
       </Typography>
-      <Controls.Button 
+      <Button 
         variant='outlined'
         text={t('send-a-message')}
       />

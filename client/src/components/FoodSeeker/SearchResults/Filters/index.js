@@ -13,7 +13,7 @@ import SearchBar from "components/FoodSeeker/SearchBar";
 import SwitchViewsButton from "./SwitchViewsButton";
 import CategoryButton from "./CategoryButton";
 import * as analytics from "services/analytics";
-import Controls from '../../../../components/UI';
+import { Button } from '../../../../components/UI';
 
 const useStyles = makeStyles((theme) => ({
   select: {
@@ -211,7 +211,7 @@ const ResultsFilters = ({
             />
             <Tooltip title="Re-center">
               <span>
-                <Controls.Button 
+                <Button 
                   text=''
                   onClick={() => {
                     analytics.postEvent("recenterMap", {});

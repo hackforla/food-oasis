@@ -3,7 +3,7 @@ import FaqEditForm from "./FaqEditForm";
 import { useTranslation } from "react-i18next";
 
 import Container from "@material-ui/core/Container";
-import Controls from '../UI';
+import { Input } from '../UI';
 
 const FaqAdd = () => {
   const { i18n } = useTranslation();
@@ -18,7 +18,7 @@ const FaqAdd = () => {
     <Container maxWidth="md">
       <h2>Add New FAQ</h2>
       <h4>Set up an Identifier for the question</h4>
-      <Controls.Input 
+      <Input 
         placeholder="Identifier"
         type="text"
         fullWidth

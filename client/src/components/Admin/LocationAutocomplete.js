@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import * as esriService from "../../services/esri_service";
 import { Grid, Typography } from "@material-ui/core";
-import Controls from '../UI';
+import { Input } from '../UI';
 
 let latestSearchString = "";
 
@@ -33,7 +33,7 @@ const LocationAutocomplete = (props) => {
 
   return (
     <div>
-      <Controls.Input 
+      <Input 
         name="searchString"
         variant="outlined"
         value={searchString}

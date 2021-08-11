@@ -7,7 +7,7 @@ import {
   DialogTitle,
   Typography,
 } from "@material-ui/core";
-import Controls from '../../../components/UI';
+import { Button } from '../../../components/UI';
 
 function ConfirmDialog(props) {
   const { onClose, open, ...other } = props;
@@ -35,13 +35,13 @@ function ConfirmDialog(props) {
         <Typography>{props.message}</Typography>
       </DialogContent>
       <DialogActions>
-        <Controls.Button 
+        <Button 
           type='button'
           text='Cancel'
           autoFocus
           onClick={handleCancel}
         />
-        <Controls.Button 
+        <Button 
           type='button'
           text='Confirm Delete'
           onClick={handleAssign}

@@ -1,6 +1,6 @@
 import React from "react";
 import { Snackbar, withStyles } from "@material-ui/core";
-import Controls from './index';
+import { IconButton } from './index';
 
 const styles = (theme) => ({
   close: {
@@ -33,7 +33,7 @@ const Toast = (props) => {
       }}
       message={<span id="message-id">{toast.message}</span>}
       action={[
-        <Controls.IconButton 
+        <IconButton 
           icon='close'
           className={classes.close}
           onClick={handleSnackbarClose}

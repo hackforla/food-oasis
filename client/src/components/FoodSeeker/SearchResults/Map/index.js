@@ -17,7 +17,7 @@ import {
 } from "./MarkerHelpers";
 import useStyles from "./styles";
 import * as analytics from "services/analytics";
-import Controls from '../../../../components/UI';
+import { Button } from '../../../../components/UI';
 
 const ResultsMap = ({
   center,
@@ -125,7 +125,7 @@ const ResultsMap = ({
           <Map.Layer {...markersLayerStyles} />
         </Map.Source>
       )}
-      <Controls.Button 
+      <Button 
         variant='outlined'
         text='Search this area'
         onClick={searchMapArea}

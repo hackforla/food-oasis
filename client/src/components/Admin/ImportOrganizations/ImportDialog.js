@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import makeStyles from "@material-ui/styles/makeStyles";
-import Controls from '../../../components/UI';
+import { Button } from '../../../components/UI';
 
 const optionDescriptions = {
   replace:
@@ -77,12 +77,12 @@ function ImportDialog(props) {
         </RadioGroup>
       </FormControl>
       <DialogActions>
-        <Controls.Button 
+        <Button 
           type='button'
           text='Cancel'
           onClick={handleImportAction}
         />
-        <Controls.Button 
+        <Button 
           type='button'
           text='Submit'
           autoFocus

@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import * as accountService from "../../services/account-service";
 import EmailOutlinedIcon from "@material-ui/icons/EmailOutlined";
-import Controls from '../../components/UI';
+import { Button, Input } from '../../components/UI';
 
 const styles = (theme) => ({
   "@global": {
@@ -101,7 +101,7 @@ const ConfirmEmail = (props) => {
                 registration confirmation email.
               </p>
               <form onSubmit={resendConfirmationEmail}>
-                <Controls.Input 
+                <Input 
                   variant="outlined"
                   required
                   fullWidth
@@ -114,7 +114,7 @@ const ConfirmEmail = (props) => {
                     setEmail(evt.target.value);
                   }}                
                 />
-                <Controls.Button
+                <Button
                   type="submit"
                   text='Re-send confirmation email'
                   fullWidth

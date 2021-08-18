@@ -112,9 +112,6 @@ function App() {
       case 3:
         setBgImg(`url("/landing-page/bg-HI.jpeg")`)
         break;
-      case 4:
-        setBgImg(`url("/landing-page/bg-LA.jpeg")`); // no bg img specifically for oregon
-        break;
       case 5:
         setBgImg(`url("/landing-page/bg-TX.jpeg")`);
         break;

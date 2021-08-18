@@ -22,6 +22,7 @@ import VerificationAdmin from "components/Admin/VerificationAdmin";
 import VerificationDashboard from "components/Admin/VerificationDashboard";
 import SecurityAdminDashboard from "components/Account/SecurityAdminDashboard/SecurityAdminDashboard";
 import OrganizationEdit from "components/Admin/OrganizationEdit";
+import ParentOrganizations from "components/Admin/ParentOrganizations";
 import Donate from "components/StaticPages/Donate";
 import About from "components/StaticPages/About";
 import Faq from "components/StaticPages/Faq";
@@ -227,6 +228,11 @@ function App() {
                       />
                     </div>
                   </ThemeProvider>
+                </Route>
+                <Route path="/parentorganizations">
+                  <div className={classes.OrganizationEditWrapper}>
+                    <ParentOrganizations setToast={setToast} user={user} />
+                  </div>
                 </Route>
                 <Route path="/securityadmindashboard">
                   <div className={classes.verificationAdminWrapper}>

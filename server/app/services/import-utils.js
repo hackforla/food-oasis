@@ -6,7 +6,7 @@ const {
   WEEKS_HOURLY,
   MAP_NUM_TO_DAY,
   STAKEHOLDER_SCHEMA,
-} = require("../../constants/import-constants");
+} = require("./import-constants");
 
 function formatMapAddress(formData) {
   return `${formData.address_1 || ""} ${formData.address_2 || ""} ${

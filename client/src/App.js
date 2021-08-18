@@ -77,7 +77,6 @@ const useStyles = makeStyles({
   },
   homeWrapper: {
     backgroundSize: "cover",
-    backgroundImage:'url("/landing-page/map.png")', // replaced the background image style inside useStyles instead of inline styling
     minHeight: "max(100.7vh,20em)",
     display: "flex",
     flexDirection: "column",
@@ -104,13 +103,27 @@ function App() {
   const [userCoordinates, setUserCoordinates] = useState(null);
 
   const [toast, setToast] = useState({ message: "" });
-  // const [bgImg, setBgImg] = useState(""); // no need for this state as it is included in useStyles
+  const [bgImg, setBgImg] = useState(`url("/landing-page/bg-LA.jpeg")`);
 
-  // removed the useEffect for the background image
-  // useEffect(() => {
-  //   const backgroundImage = `url("/landing-page/map3.jpg")`;
-  //   setBgImg(backgroundImage);
-  // }, []);
+  useEffect(() => {
+    switch (tenantId) {
+      case 2:
+        setBgImg(`url("/landing-page/bg-LA.jpeg")`)
+        break;
+      case 3:
+        setBgImg(`url("/landing-page/bg-HI.jpeg")`)
+        break;
+      case 5:
+        setBgImg(`url("/landing-page/bg-TX.jpeg")`);
+        break;
+      case 6:
+        setBgImg(`url("/landing-page/bg-LA.jpeg")`)
+        break;      
+      default:
+        setBgImg(`url("/landing-page/bg-LA.jpeg")`)
+        return;
+    }
+  }, []);
 
   useEffect(() => {
     analytics.postEvent("visitAppComponent");
@@ -176,7 +189,7 @@ function App() {
                 <Route exact path="/">
                   <div
                     className={classes.homeWrapper}
-                    // style={{ backgroundImage: bgImg }} // replaced this to useStyles
+                    style={{ backgroundImage: bgImg }} 
                   >
                     <Home
                       userCoordinates={userCoordinates}

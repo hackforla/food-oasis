@@ -9,9 +9,8 @@ import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import { Grid, CssBaseline } from "@material-ui/core";
 import theme from "theme/clientTheme";
 import { logout } from "services/account-service";
-import { tenantId, defaultViewport } from "helpers/Configuration";
+import { tenantId, tenantName, defaultViewport } from "helpers/Configuration";
 // import useGeolocation from "hooks/useGeolocation";
-
 // Components
 import { UserContext } from "contexts/user-context";
 import { OriginCoordinatesContext } from "contexts/origin-coordinates-context";
@@ -263,7 +262,12 @@ function App() {
                   </div>
                 </Route>
                 <Route path="/organizationimport">
-                  <ImportFile user={user} setToast={setToast} />
+                  <ImportFile
+                    user={user}
+                    setToast={setToast}
+                    tenantId={tenantId}
+                    tenantName={tenantName}
+                  />
                 </Route>
                 <Route path="/faqs/add">
                   <FaqAdd />

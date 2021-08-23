@@ -76,10 +76,12 @@ const useStyles = makeStyles({
   },
   homeWrapper: {
     backgroundSize: "cover",
+    backgroundPosition:"center",
     minHeight: "max(100.7vh,20em)",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
+    alignItems:"center",
   },
   verificationAdminWrapper: {
     flexBasis: "100%",

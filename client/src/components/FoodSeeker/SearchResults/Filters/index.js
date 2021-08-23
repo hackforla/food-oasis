@@ -172,20 +172,20 @@ const ResultsFilters = ({
         <Grid item container xs={12} sm={6} spacing={1} className={classes.buttonContainer}>
           <Grid item>
             <CategoryButton
+                icon="pantry"
+                onClick={togglePantry}
+                label="Pantries"
+                isSelected={isPantrySelected}
+              />
+          </Grid>
+          <Grid item>
+            <CategoryButton
               icon="meal"
               onClick={toggleMeal}
               label="Meals"
               isSelected={isMealsSelected}
               style={{ marginLeft: 5 }}
             />
-          </Grid>
-          <Grid item>
-            <CategoryButton
-                icon="pantry"
-                onClick={togglePantry}
-                label="Pantries"
-                isSelected={isPantrySelected}
-              />
           </Grid>
           <Grid item>
             {isMobile && (

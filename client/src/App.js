@@ -9,9 +9,8 @@ import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import { Grid, CssBaseline } from "@material-ui/core";
 import theme from "theme/clientTheme";
 import { logout } from "services/account-service";
-import { tenantId, defaultViewport } from "helpers/Configuration";
+import { tenantId, tenantName, defaultViewport } from "helpers/Configuration";
 // import useGeolocation from "hooks/useGeolocation";
-
 // Components
 import { UserContext } from "contexts/user-context";
 import { OriginCoordinatesContext } from "contexts/origin-coordinates-context";
@@ -22,6 +21,7 @@ import VerificationAdmin from "components/Admin/VerificationAdmin";
 import VerificationDashboard from "components/Admin/VerificationDashboard";
 import SecurityAdminDashboard from "components/Account/SecurityAdminDashboard/SecurityAdminDashboard";
 import OrganizationEdit from "components/Admin/OrganizationEdit";
+import ParentOrganizations from "components/Admin/ParentOrganizations";
 import Donate from "components/StaticPages/Donate";
 import About from "components/StaticPages/About";
 import Faq from "components/StaticPages/Faq";
@@ -77,6 +77,7 @@ const useStyles = makeStyles({
   homeWrapper: {
     backgroundSize: "cover",
     backgroundPosition:"center",
+    backgroundImage: 'url("/landing-page/map.png")', // replaced the background image style inside useStyles instead of inline styling
     minHeight: "max(100.7vh,20em)",
     display: "flex",
     flexDirection: "column",
@@ -183,7 +184,12 @@ function App() {
                   />
                 </Route>
                 <Route>
-                  <Header user={user} setUser={onLogin} setToast={setToast} />
+                  <Header
+                    tenantId={tenantId}
+                    user={user}
+                    setUser={onLogin}
+                    setToast={setToast}
+                  />
                 </Route>
               </Switch>
               <Switch className={classes.mainContent}>
@@ -197,6 +203,7 @@ function App() {
                       setUserCoordinates={setUserCoordinates}
                       origin={origin}
                       setOrigin={setOrigin}
+                      tenantId={tenantId}
                     />
                   </div>
                 </Route>
@@ -243,6 +250,11 @@ function App() {
                     </div>
                   </ThemeProvider>
                 </Route>
+                <Route path="/parentorganizations">
+                  <div className={classes.OrganizationEditWrapper}>
+                    <ParentOrganizations setToast={setToast} user={user} />
+                  </div>
+                </Route>
                 <Route path="/securityadmindashboard">
                   <div className={classes.verificationAdminWrapper}>
                     <SecurityAdminDashboard
@@ -252,7 +264,12 @@ function App() {
                   </div>
                 </Route>
                 <Route path="/organizationimport">
-                  <ImportFile user={user} setToast={setToast} />
+                  <ImportFile
+                    user={user}
+                    setToast={setToast}
+                    tenantId={tenantId}
+                    tenantName={tenantName}
+                  />
                 </Route>
                 <Route path="/faqs/add">
                   <FaqAdd />

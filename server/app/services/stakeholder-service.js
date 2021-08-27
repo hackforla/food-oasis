@@ -500,14 +500,19 @@ const insert = async (model) => {
     : "{1}";
 
   // Array of hours if formatted as, e.g., `{"(0,Mon,10:00:00,13:00:00)","(3,Sat,08:00:00,10:30:00)"}
-  let hoursSqlValues =
-    model.hours && model.hours.length
-      ? model.hours
-          .reduce((acc, cur) => {
-            return (acc += `"(${cur.weekOfMonth},${cur.dayOfWeek},${cur.open},${cur.close})",`);
-          }, "")
-          .slice(0, -1)
-      : "";
+  let hoursSqlValues;
+  if (typeof model.hours === "string") {
+    hoursSqlValues = model.hours;
+  } else if (model.hours && model.hours.length) {
+    hoursSqlValues = model.hours
+      .reduce((acc, cur) => {
+        return (acc += `"(${cur.weekOfMonth},${cur.dayOfWeek},${cur.open},${cur.close})",`);
+      }, "")
+      .slice(0, -1);
+  } else {
+    hoursSqlValues = "";
+  }
+
   const formattedHours = "{" + hoursSqlValues + "}";
 
   // create_stakeholder is a postgres stored procedure. Source of this stored
@@ -593,22 +598,23 @@ const insert = async (model) => {
 };
 
 const insertBulk = async (stakeholderArray, action, tenantId) => {
+  if (!tenantId) return;
   if (action === "add") {
     for (let i = 0; i < stakeholderArray.length; i++) {
-      const model = camelcaseKeys(stakeholderArray[i]);
-      model.tenantId = tenantId;
-      if (model.hours) {
-        model.hours = JSON.parse(model.hours);
-      }
+      const model = {
+        ...camelcaseKeys(stakeholderArray[i]),
+        id: "",
+        tenantId,
+      };
       await insert(model);
     }
   } else if (action === "update") {
     for (let i = 0; i < stakeholderArray.length; i++) {
-      const model = camelcaseKeys(stakeholderArray[i]);
-      model.tenantId = tenantId;
-      if (model.hours) {
-        model.hours = JSON.parse(model.hours);
-      }
+      const model = {
+        ...camelcaseKeys(stakeholderArray[i]),
+        tenantId,
+      };
+      await insert(model);
       if (model.id && model.id.length) {
         await update(model);
       } else {
@@ -618,11 +624,11 @@ const insertBulk = async (stakeholderArray, action, tenantId) => {
   } else if (action === "replace") {
     await removeAll(tenantId);
     for (let i = 0; i < stakeholderArray.length; i++) {
-      const model = camelcaseKeys(stakeholderArray[i]);
-      model.tenantId = tenantId;
-      if (model.hours) {
-        model.hours = JSON.parse(model.hours);
-      }
+      const model = {
+        ...camelcaseKeys(stakeholderArray[i]),
+        id: "",
+        tenantId,
+      };
       await insert(model);
     }
   }
@@ -844,7 +850,7 @@ const removeAll = async (tenantId) => {
     await t.none("delete from stakeholder_best where tenant_id = $<tenantId>", {
       tenantId,
     });
-    return result.rowCount;
+    return result;
   });
 };
 

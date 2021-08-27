@@ -51,16 +51,15 @@ const useStyles = makeStyles((theme) => ({
     color: "#4D4D4D",
     textAlign: "center",
   },
-  label: {
+  label: { 
     textAlign: "center",
     marginTop: 10,
-    marginBottom: "0.5em",
-    padding: "0 5vw",
-    [theme.breakpoints.down("sm")]: {
-      padding: "0 5vw",
-    },
-    [theme.breakpoints.down("md")]: {
-      padding: "0 8.5vw",
+    marginBottom: "0.75em",
+    padding: "0",
+    fontSize:"20px",
+    [theme.breakpoints.up("sm")]: {
+      padding: "0 1vw",
+      fontSize:"24px",
     },
   },
   form: {

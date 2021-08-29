@@ -47,7 +47,7 @@ const ImportFile = (props) => {
   const [dialog, setDialog] = useState(false);
   const [loading, setLoading] = useState(false);
   const classes = useStyles();
-  let formData = new FormData();
+  let formData = React.useMemo(() => new FormData(), []);
 
   const handleChange = (e) => {
     const uploadedFile = e.currentTarget.files[0];
@@ -164,7 +164,7 @@ const ImportFile = (props) => {
     } else {
       formData.append("file", file);
     }
-  }, [file]);
+  }, [file, formData]);
 
   const handleDownload = async () => {
     exportCsv("template.csv");

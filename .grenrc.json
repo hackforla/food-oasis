@@ -10,9 +10,13 @@
   "override": true,
   "onlyMilestones": false,
   "groupBy": {
-    "Enhancements:": ["enhancement"],
-    "Bug Fixes:": ["bug"],
-    "Technical Debt:": ["refactor", "system update", "tech debt"]
+    "Enhancements:": ["Release Note: Enhancement"],
+    "Bug Fixes:": ["Release Note: Bug"],
+    "Technical Debt:": [
+      "Release Note: Refactor",
+      "ReleaseNote: System Update",
+      "Release Note: Tech Debt"
+    ]
   },
   "template": {
     "issue": "- {{name}} [{{text}}]({{url}})"

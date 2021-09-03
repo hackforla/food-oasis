@@ -18,6 +18,7 @@ const getLaplFoodResources = async (req, res) => {
 
 const uploadStakeholderCsv = async (req, res) => {
   const { file } = req;
+  if (!file) return;
   try {
     const response = await importService.parseCsv(file);
     res.send(response);

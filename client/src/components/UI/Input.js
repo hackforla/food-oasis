@@ -3,13 +3,7 @@ import TextField from "@material-ui/core/TextField";
 import PropTypes from "prop-types";
 
 const Input = (props) => {
-  return (
-    <TextField
-      {...props}
-      label={props.label}
-      onChange={(e) => props.onChange(e.target.value)}
-    />
-  );
+  return <TextField {...props} label={props.label} onChange={props.onChange} />;
 };
 
 Input.propTypes = {

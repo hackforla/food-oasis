@@ -169,14 +169,14 @@ const ResultsFilters = ({
         className={classes.filterContainer}
         wrap="wrap-reverse"
       >
-        <Grid item container xs={12} sm={6} className={classes.buttonContainer}>
+        <Grid item container xs={12} sm={6} spacing={1} className={classes.buttonContainer}>
           <Grid item>
             <CategoryButton
-              icon="pantry"
-              onClick={togglePantry}
-              label="Pantries"
-              isSelected={isPantrySelected}
-            />
+                icon="pantry"
+                onClick={togglePantry}
+                label="Pantries"
+                isSelected={isPantrySelected}
+              />
           </Grid>
           <Grid item>
             <CategoryButton

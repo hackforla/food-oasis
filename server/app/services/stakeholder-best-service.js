@@ -106,7 +106,7 @@ const search = async ({
     // for all of our stakeholder row results.
     const categoriesSql = `select sc.stakeholder_id, c.id, c.name, c.display_order
           from category c
-          join stakeholder_category sc on c.id = sc.category_id
+          join stakeholder_best_category sc on c.id = sc.category_id
           where sc.stakeholder_id in (${stakeholder_ids.join(",")})
           order by c.display_order, c.name`;
     categories = await db.manyOrNone(categoriesSql);

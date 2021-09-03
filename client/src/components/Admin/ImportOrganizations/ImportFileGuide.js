@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import {
   Button,
   Input,
+  FormControl,
+  FormHelperText,
+  MenuItem,
+  Select,
   Table,
   TableBody,
   TableCell,
@@ -33,19 +37,39 @@ const useStyles = makeStyles((theme) => ({
       minWidth: "200px",
     },
   },
-  isRequired: {
-    color: (props) => (props.required ? "red" : "green"),
+  tableCell: {},
+  tableRow: {
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.action.hover,
+    },
   },
   instructions: {
     margin: "0 auto",
     maxWidth: "650px",
     textAlign: "left",
   },
+  formControl: {
+    display: "block",
+    marginLeft: "auto",
+    paddingRight: "0",
+    width: "100px",
+  },
 }));
 
 const ImportFileGuide = (props) => {
-  const { handleDownload, handleChange, handleUpload } = props;
+  const { handleDownload, handleChange, handleUpload, file } = props;
+  const [visibleFields, setVisibleFields] = useState("all");
+  const ref = useRef(null);
   const classes = useStyles(props);
+
+  const handleVisibleFields = (e) => {
+    const { value } = e.target;
+    setVisibleFields(value);
+  };
+
+  useEffect(() => {
+    if (!file) ref.current.value = "";
+  }, [file]);
 
   return (
     <main className={classes.root}>
@@ -65,9 +89,9 @@ const ImportFileGuide = (props) => {
             </li>
           </ul>
           <br />
-          <Input type="file" onChange={handleChange} />
+          <Input type="file" onChange={handleChange} inputRef={ref} />
           <br />
-          <Button variant="contained" onClick={handleUpload}>
+          <Button variant="contained" onClick={handleUpload} disabled={!file}>
             Submit
           </Button>
         </section>
@@ -90,27 +114,66 @@ const ImportFileGuide = (props) => {
             The schema below lists the CSV column names, meanings, and
             guidelines.
           </Typography>
+          <FormControl className={classes.formControl}>
+            <Select
+              defaultValue="all"
+              onChange={handleVisibleFields}
+              style={{ width: "100%" }}
+            >
+              <MenuItem value="all">All</MenuItem>
+              <MenuItem value="required">Required</MenuItem>
+            </Select>
+            <FormHelperText>Show columns</FormHelperText>
+          </FormControl>
           <TableContainer>
             <Table>
               <TableHead>
                 <TableRow>
                   <TableCell>Column name</TableCell>
                   <TableCell>Description</TableCell>
-                  <TableCell>Required?</TableCell>
                   <TableCell>Default value</TableCell>
                   <TableCell>Sample format</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {STAKEHOLDER_SCHEMA.map((field) => (
-                  <TableRow key={field.name}>
-                    <TableCell>{field.name}</TableCell>
-                    <TableCell>{field.description}</TableCell>
-                    <TableCell>{field.required}</TableCell>
-                    <TableCell>{field.default_value}</TableCell>
-                    <TableCell>{field.sample_format}</TableCell>
-                  </TableRow>
-                ))}
+                {STAKEHOLDER_SCHEMA.map(
+                  (field) =>
+                    field.show &&
+                    (visibleFields === "all" ? (
+                      <TableRow key={field.name} className={classes.tableRow}>
+                        <TableCell
+                          style={{ fontWeight: field.required && 900 }}
+                        >
+                          {`${field.name} ${
+                            field.required ? "(required)" : ""
+                          }`}
+                        </TableCell>
+                        <TableCell>{field.description}</TableCell>
+                        <TableCell
+                          style={{ fontWeight: field.required && 900 }}
+                        >
+                          {field.default_value}
+                        </TableCell>
+                        <TableCell>{field.sample_format}</TableCell>
+                      </TableRow>
+                    ) : (
+                      visibleFields === "required" &&
+                      field.required && (
+                        <TableRow key={field.name} className={classes.tableRow}>
+                          <TableCell style={{ fontWeight: 900 }}>
+                            {`${field.name} ${
+                              field.required ? "(required)" : ""
+                            }`}
+                          </TableCell>
+                          <TableCell>{field.description}</TableCell>
+                          <TableCell style={{ fontWeight: 900 }}>
+                            {field.default_value}
+                          </TableCell>
+                          <TableCell>{field.sample_format}</TableCell>
+                        </TableRow>
+                      )
+                    ))
+                )}
               </TableBody>
             </Table>
           </TableContainer>

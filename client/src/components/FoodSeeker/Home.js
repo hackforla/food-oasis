@@ -14,10 +14,14 @@ import SearchBar from "components/FoodSeeker/SearchBar";
 
 // All the tenant logos happen to be the same for now
 import logo from "images/foodoasis.svg";
-import logoCA from "images/foodoasis.svg";
-import logoHI from "images/foodoasis.svg";
-import { tenantId, defaultViewport } from "helpers/Configuration";
+import { defaultViewport } from "helpers/Configuration";
 import * as analytics from "services/analytics";
+
+const logoPaths = {
+  1: require("images/foodoasis.svg"),
+  2: require("images/foodoasis.svg"),
+  3: require("../StaticPagesHI/assets/aloha-harvest-bg-none.png"),
+};
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -47,16 +51,15 @@ const useStyles = makeStyles((theme) => ({
     color: "#4D4D4D",
     textAlign: "center",
   },
-  label: {
+  label: { 
     textAlign: "center",
     marginTop: 10,
-    marginBottom: "0.5em",
-    padding: "0 5vw",
-    [theme.breakpoints.down("sm")]: {
-      padding: "0 5vw",
-    },
-    [theme.breakpoints.down("md")]: {
-      padding: "0 8.5vw",
+    marginBottom: "0.75em",
+    padding: "0",
+    fontSize:"20px",
+    [theme.breakpoints.up("sm")]: {
+      padding: "0 1vw",
+      fontSize:"24px",
     },
   },
   form: {
@@ -111,7 +114,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   logo: {
-    width: 161,
+    width: "55%",
     height: "auto",
     textAlign: "center",
   },
@@ -143,6 +146,7 @@ const Home = ({
   setUserCoordinates,
   match,
   history,
+  tenantId,
 }) => {
   const classes = useStyles();
 
@@ -212,13 +216,11 @@ const Home = ({
       <CssBaseline />
       <Paper className={classes.paper}>
         <Box className={classes.logoContainer}>
-          {tenantId === 3 ? (
-            <img src={logoHI} alt="logo" className={classes.logo} />
-          ) : tenantId === 2 ? (
-            <img src={logoCA} alt="logo" className={classes.logo} />
-          ) : (
-            <img src={logo} alt="logo" className={classes.logo} />
-          )}
+          <img
+            src={logoPaths[tenantId] ? logoPaths[tenantId].default : logo}
+            alt="logo"
+            className={classes.logo}
+          />
         </Box>
         <Box className={classes.formContainer}>
           <form

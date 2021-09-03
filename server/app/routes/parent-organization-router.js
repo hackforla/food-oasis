@@ -3,7 +3,7 @@ const parentOrganizationController = require("../controllers/parent-organization
 
 const jwtSession = require("../../middleware/jwt-session");
 
-router.get("/", parentOrganizationController.getAll);
+router.get("/:id", parentOrganizationController.getAllByTenantId);
 router.post(
   "/",
   jwtSession.validateUserHasRequiredRoles(["admin"]),

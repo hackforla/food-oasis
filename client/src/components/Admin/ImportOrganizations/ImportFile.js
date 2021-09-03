@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { Route, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Typography } from "@material-ui/core";
@@ -8,6 +8,9 @@ import exportCsv from "../../../services/export-service";
 import ImportFileTable from "./ImportFileTable";
 import ImportFileGuide from "./ImportFileGuide";
 import ImportDialog from "./ImportDialog";
+import { STAKEHOLDER_SCHEMA } from "../../../constants/stakeholder-schema";
+import importValidation from "./importValidation";
+import ProgressBackdrop from "./ProgressBackdrop";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,15 +35,19 @@ const useStyles = makeStyles((theme) => ({
 const initialImportData = {
   data: null,
   action: null,
-  tenantId: 3,
 };
 
 const ImportFile = (props) => {
-  const { user, history, setToast } = props;
+  const { user, history, setToast, tenantId, tenantName } = props;
   const [file, setFile] = useState(null);
-  const [importData, setImportData] = useState(initialImportData);
+  const [importData, setImportData] = useState({
+    ...initialImportData,
+    tenantId,
+  });
   const [dialog, setDialog] = useState(false);
+  const [loading, setLoading] = useState(false);
   const classes = useStyles();
+  let formData = React.useMemo(() => new FormData(), []);
 
   const handleChange = (e) => {
     const uploadedFile = e.currentTarget.files[0];
@@ -48,17 +55,48 @@ const ImportFile = (props) => {
   };
 
   const handleUpload = () => {
-    let formData = new FormData();
-    formData.append("file", file);
+    setLoading(true);
     uploadCsv(formData)
       .then((res) => {
-        setImportData((prevState) => ({
-          ...prevState,
-          data: res,
-        }));
+        if (file) {
+          onUploadSuccess(res);
+        } else {
+          handleCancel();
+        }
       })
-      .catch((err) => console.error(err.message));
+      .catch((err) => {
+        console.error(err.message);
+        setToast({
+          message:
+            "File could not be uploaded. Please doublecheck file format and schema.",
+        });
+        handleCancel();
+      });
   };
+
+  const onUploadSuccess = (res) => {
+    setImportData((prevState) => ({
+      ...prevState,
+      data: res,
+    }));
+    setToast({
+      message: "File successfully uploaded!",
+    });
+  };
+
+  const handleCancel = () => {
+    setImportData(initialImportData);
+    setFile(null);
+  };
+
+  // closes loading backdrop, but doesn't cancel file upload/parsing
+  // const handleCancelUpload = () => {
+  //   setImportData((prevState) => ({
+  //     ...prevState,
+  //     initialImportData,
+  //   }));
+  //   setLoading(false);
+  // };
 
   const handleImportDialog = () => {
     setDialog(!dialog);
@@ -81,6 +119,17 @@ const ImportFile = (props) => {
   };
 
   const handleImport = () => {
+    const validationCheck = importValidation(
+      importData.data,
+      STAKEHOLDER_SCHEMA
+    );
+    if (!validationCheck) {
+      setToast({
+        message:
+          "File fields could not be validated. Please doublecheck format, schema, and column names.",
+      });
+      return;
+    }
     importCsv(importData)
       .then(() => {
         setToast({
@@ -92,24 +141,30 @@ const ImportFile = (props) => {
         console.error(err.message);
         setToast({
           message:
-            "File could not be imported. Please doublecheck file format and schema.",
+            "File could not be imported. Please doublecheck format, schema, and column names.",
         });
       });
     setDialog(false);
   };
 
-  const handleCancel = () => setImportData(initialImportData);
-
-  const resetData = useCallback(() => setImportData(initialImportData), []);
-
   useEffect(() => {
     if (importData.data) {
       history.push("/organizationimport/review");
+      setLoading(false);
     } else {
       history.push("/organizationimport");
+      setFile(null);
     }
-    setFile(null);
   }, [importData, history]);
+
+  useEffect(() => {
+    if (!file) {
+      formData.append("file", null);
+      setLoading(false);
+    } else {
+      formData.append("file", file);
+    }
+  }, [file, formData]);
 
   const handleDownload = async () => {
     exportCsv("template.csv");
@@ -127,6 +182,7 @@ const ImportFile = (props) => {
                 handleChange={handleChange}
                 handleUpload={handleUpload}
                 handleDownload={handleDownload}
+                file={file}
               />
             )}
           />
@@ -134,16 +190,16 @@ const ImportFile = (props) => {
             path="/organizationimport/review"
             render={() => (
               <ImportFileTable
+                tenantName={tenantName}
                 data={importData.data}
-                setImportData={setImportData}
                 handleImportAction={handleImportAction}
                 handleImportDialog={handleImportDialog}
                 handleCancel={handleCancel}
-                resetData={resetData}
               />
             )}
           />
           <ImportDialog
+            tenantName={tenantName}
             open={dialog}
             importData={importData}
             title="Import stakeholder records"
@@ -154,6 +210,11 @@ const ImportFile = (props) => {
       ) : (
         <Typography>You must have admin access to import files</Typography>
       )}
+      <ProgressBackdrop
+        loading={loading}
+        messageOnLoad="Importing file. This may take up to a minute."
+        // handleCancelUpload={handleCancelUpload}
+      />
     </main>
   );
 };

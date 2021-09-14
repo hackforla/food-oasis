@@ -1,6 +1,7 @@
 import React from "react";
 
 import aboutbg from "./assets/about-header.jpg";
+import iconSpacer from "./assets/icon-spacer.svg";
 import iconSpacerBlue from "./assets/icon-spacer-blue.svg";
 import { makeStyles } from "@material-ui/core";
 import Footer from "../Layout/Footer";
@@ -35,7 +36,7 @@ const useStyles = makeStyles(() => ({
   icon: {
     margin: "auto",
   },
-  lightSection: {
+  mission: {
     padding: "32px",
     margin: "32px 0",
     borderRadius: "24px",
@@ -54,7 +55,7 @@ const useStyles = makeStyles(() => ({
       marginBottom: "20px",
     },
   },
-  darkSection: {
+  team: {
     padding: "32px",
     margin: "32px 0 0 0",
     borderRadius: "24px",
@@ -75,6 +76,61 @@ const useStyles = makeStyles(() => ({
       color: "#fff",
     },
   },
+  contact: {
+    padding: "32px",
+    margin: "32px 0 0 0",
+    borderRadius: "24px",
+    color: "#fff",
+    background: "#336699",
+    display: "flex",
+    flexDirection: "column",
+    textAlign: "center",
+    "& $h2": {
+      color: "#fff",
+      flexBasis: "100",
+      textTransform: "uppercase;",
+      textAlign: "center",
+      fontWeight: "500",
+      fontSize: "32px",
+      marginTop: "10px",
+      marginBottom: "20px",
+    },
+    "& $a": {
+      color: "#fff",
+    },
+  },
+  partners: {
+    background: "#fff",
+    padding: "48px 32px",
+    borderRadius: "24px",
+    justifyContent: "space-between",
+    alignItems: "center",
+    display: "flex",
+    flexWrap: "wrap",
+    flexDirection: "column",
+    "& $h2": {
+      color: "#336699",
+      width: "100%",
+      flexBasis: "100",
+      textTransform: "uppercase;",
+      textAlign: "center",
+      fontWeight: "500",
+      fontSize: "32px",
+      marginTop: "10px",
+      marginBottom: "60px",
+    },
+    "@media only screen and (min-width: 64em)": {
+      flexDirection: "row",
+    },
+  },
+  partnersLogo: {
+    maxWidth: "100%",
+    height: "100%",
+    marginBottom: "40px",
+    "@media only screen and (min-width: 64em) ": {
+      marginBottom: 0,
+    },
+  },
 }));
 const About = () => {
   const classes = useStyles();
@@ -82,13 +138,17 @@ const About = () => {
   return (
     <div className={classes.outer}>
       <h1 className={classes.title}>
-        <span>About This Food-Finder Tool:<br/>Code For Hawaiʻi and Aloha Harvest</span>
+        <span>
+          About This Food-Finder Tool:
+          <br />
+          Code For Hawaiʻi and Aloha Harvest
+        </span>
       </h1>
       <div className={classes.main}>
         <figure className={classes.figure}>
           <img alt="About" src={aboutbg} style={{ width: "100%" }} />
         </figure>
-        <div className={classes.lightSection}>
+        <div className={classes.mission}>
           <img
             alt="Code For Hawaiʻi and Aloha Harvest"
             src={iconSpacerBlue}
@@ -97,47 +157,53 @@ const About = () => {
           />
           <h2>What Is This Tool & How Do I Use It?</h2>
           <p>
-            This tool is meant to provide an easy way for people on Oʻahu to locate food resources near them that are
-            open to the public.
+            This tool is meant to provide an easy way for people on Oʻahu to
+            locate food resources near them that are open to the public.
           </p>
           <p>
-            From the “Find Food” page, type in your zip code or address and hit Enter. A list of nearby options, sorted
-            from nearest to farthest, will pop up on the left side of the page. Click “PANTRIES” or “MEALS” if you’d
-            like to filter by type. Click “Details” on an entry to view information like Directions, Hours, Phone,
-            Email, and Eligibility Requirements.
+            From the “Find Food” page, type in your zip code or address and hit
+            Enter. A list of nearby options, sorted from nearest to farthest,
+            will pop up on the left side of the page. Click “PANTRIES” or
+            “MEALS” if you’d like to filter by type. Click “Details” on an entry
+            to view information like Directions, Hours, Phone, Email, and
+            Eligibility Requirements.
           </p>
           <p>
-            The data Aloha Harvest uses to populate this directory includes all food pantry and meal programs we work
-            with that are open to the public. It is not an exhaustive list of every single food resource on O‘ahu. A
-            volunteer reviews this list once a week to confirm that all details are still current and correct. Learn
-            more on the FAQs page.
+            The data Aloha Harvest uses to populate this directory includes all
+            food pantry and meal programs we work with that are open to the
+            public. It is not an exhaustive list of every single food resource
+            on O‘ahu. A volunteer reviews this list once a week to confirm that
+            all details are still current and correct. Learn more on the FAQs
+            page.
           </p>
           <p>
-            Click to the three horizontal lines in the upper right of the page to use the Menu and navigate to other
-            pages.
+            Click to the three horizontal lines in the upper right of the page
+            to use the Menu and navigate to other pages.
           </p>
         </div>
-        <div className={classes.darkSection}>
+        <div className={classes.team}>
           <img
             alt="Code For Hawaiʻi and Aloha Harvest"
-            src={iconSpacerBlue}
+            src={iconSpacer}
             className={classes.icon}
             height="40"
           />
           <h2>Code For Hawaii and Aloha Harvest</h2>
           <p>
-            This food-finder tool was developed by Hack for LA Brigade, and this O‘ahu-specific instance was built out
-            by Code For Hawaii. These groups are part of the Code For America network, a national alliance of community
-            organizers, developers, and designers that are putting technology to work in service of their local
-            communities.
+            This food-finder tool was developed by Hack for LA Brigade, and this
+            O‘ahu-specific instance was built out by Code For Hawaii. These
+            groups are part of the Code For America network, a national alliance
+            of community organizers, developers, and designers that are putting
+            technology to work in service of their local communities.
           </p>
           <p>
-            Code For Hawaii reached out to Aloha Harvest to provide the data (directory of places to get food) for this
-            tool. It’s a natural partnership, as Aloha Harvest has long needed a user-friendly way to assist people who
-            are seeking food.
+            Code For Hawaii reached out to Aloha Harvest to provide the data
+            (directory of places to get food) for this tool. It’s a natural
+            partnership, as Aloha Harvest has long needed a user-friendly way to
+            assist people who are seeking food.
           </p>
         </div>
-        <div className={classes.lightSection}>
+        <div className={classes.mission}>
           <img
             alt="Code For Hawaiʻi and Aloha Harvest"
             src={iconSpacerBlue}
@@ -176,16 +242,18 @@ const About = () => {
             potential.
           </p>
           <p>
-            Visit <a href="https://alohaharvest.org">alohaharvest.org</a> or follow us on
-            <a href="http://instagram.com/alohaharvest">Instagram</a>, <a href="http://facebook.com/alohaharvest">Facebook</a>,
-            <a href="https://www.linkedin.com/company/4005035">LinkedIn</a>,
-            and <a href="http://twitter.com/alohaharvest">Twitter</a>.
+            Visit <a href="https://alohaharvest.org">alohaharvest.org</a> or
+            follow us on
+            <a href="http://instagram.com/alohaharvest">Instagram</a>,{" "}
+            <a href="http://facebook.com/alohaharvest">Facebook</a>,
+            <a href="https://www.linkedin.com/company/4005035">LinkedIn</a>, and{" "}
+            <a href="http://twitter.com/alohaharvest">Twitter</a>.
           </p>
         </div>
         <section className={classes.contact}>
           <img
             alt="Contact Aloha Harvest"
-            src={iconSpacerBlue}
+            src={iconSpacer}
             className={classes.icon}
             height="40"
           />

@@ -51,15 +51,15 @@ const useStyles = makeStyles((theme) => ({
     color: "#4D4D4D",
     textAlign: "center",
   },
-  label: { 
+  label: {
     textAlign: "center",
     marginTop: 10,
     marginBottom: "0.75em",
     padding: "0",
-    fontSize:"20px",
+    fontSize: "20px",
     [theme.breakpoints.up("sm")]: {
       padding: "0 1vw",
-      fontSize:"24px",
+      fontSize: "24px",
     },
   },
   form: {
@@ -147,6 +147,7 @@ const Home = ({
   match,
   history,
   tenantId,
+  taglineText,
 }) => {
   const classes = useStyles();
 
@@ -227,31 +228,7 @@ const Home = ({
             className={classes.form}
             onSubmit={() => history.push("/organizations")}
           >
-            {tenantId === 5 ? (
-              <Typography variant={"h5"} className={classes.label}>
-                Locate free food in McKinney
-              </Typography>
-            ) : tenantId === 4 ? (
-              <Typography variant={"h5"} className={classes.label}>
-                Locate free food in Portland
-              </Typography>
-            ) : tenantId === 3 ? (
-              <Typography variant={"h5"} className={classes.label}>
-                Locate free food in Hawaii
-              </Typography>
-            ) : tenantId === 2 ? (
-              <Typography variant={"h5"} className={classes.label}>
-                Locate free food in California
-              </Typography>
-            ) : tenantId === 6 ? (
-              <Typography variant={"h5"} className={classes.label}>
-                Locate free food in Santa Barbara
-              </Typography>
-            ) : (
-              <Typography variant={"h5"} className={classes.label}>
-                Locate free food in Los Angeles
-              </Typography>
-            )}
+            <Typography>{taglineText}</Typography>
             <Box className={classes.inputContainer}>
               <SearchBar
                 userCoordinates={userCoordinates}

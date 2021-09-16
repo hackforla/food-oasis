@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Button, Typography, Tooltip } from "@material-ui/core";
 import LocationSearchingIcon from "@material-ui/icons/LocationSearching";
-import { tenantName } from "helpers/Configuration";
 import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
@@ -132,6 +131,7 @@ const ResultsFilters = ({
   toggleCategory,
   showList,
   toggleShowList,
+  taglineText,
 }) => {
   const classes = useStyles();
   const isMealsSelected = categoryIds.indexOf(MEAL_PROGRAM_CATEGORY_ID) >= 0;
@@ -148,7 +148,6 @@ const ResultsFilters = ({
   }, [toggleCategory]);
 
   const { isMobile } = useBreakpoints();
-  const taglineText = "Locate free food in " + tenantName;
 
   return (
     <Grid item container className={classes.controlPanel}>
@@ -169,14 +168,21 @@ const ResultsFilters = ({
         className={classes.filterContainer}
         wrap="wrap-reverse"
       >
-        <Grid item container xs={12} sm={6} spacing={1} className={classes.buttonContainer}>
+        <Grid
+          item
+          container
+          xs={12}
+          sm={6}
+          spacing={1}
+          className={classes.buttonContainer}
+        >
           <Grid item>
             <CategoryButton
-                icon="pantry"
-                onClick={togglePantry}
-                label="Pantries"
-                isSelected={isPantrySelected}
-              />
+              icon="pantry"
+              onClick={togglePantry}
+              label="Pantries"
+              isSelected={isPantrySelected}
+            />
           </Grid>
           <Grid item>
             <CategoryButton

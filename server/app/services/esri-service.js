@@ -30,7 +30,11 @@ const geocode = async (address) => {
   const searchString = encodeURI(address);
   if (esriToken === "") {
     console.log("Generating initial ESRI token...");
-    await generateToken();
+    try {
+      await generateToken();
+    } catch {
+      return null;
+    }
   } else {
     console.log("Trying geocoding with existing token...");
   }

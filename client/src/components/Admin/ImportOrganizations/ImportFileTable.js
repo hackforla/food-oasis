@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import {
   Table,
@@ -38,20 +38,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ImportFileTable = (props) => {
-  const { data, handleImportAction, handleCancel, resetData} = props;
-  const classes = useStyles();
+const flattenHours = (daysArray) => {
+  if (!daysArray || !daysArray.length) return [];
+  return daysArray.map((day) => {
+    return `(${day.weekOfMonth},${day.dayOfWeek},${day.open},${day.close})`;
+  });
+};
 
-  useEffect(() => {
-    return () => {
-      resetData();
-    }
-  }, [resetData],);
+const ImportFileTable = (props) => {
+  const { tenantName, data, handleImportAction, handleCancel } = props;
+  const classes = useStyles();
 
   return (
     <section className={classes.section}>
       <div className={classes.tableBanner}>
-        <Typography variant="h5">Import Stakeholders</Typography>
+        <Typography variant="h5">
+          Import Stakeholders ({tenantName} region)
+        </Typography>
         <Typography>
           Review your import below and click "Import" when you're ready to
           update your records.
@@ -71,18 +74,29 @@ const ImportFileTable = (props) => {
         <Table>
           <TableHead>
             <TableRow>
-              {STAKEHOLDER_SCHEMA.map((field) => (
-                <TableCell key={field.name}>{field.label}</TableCell>
-              ))}
+              {STAKEHOLDER_SCHEMA.map(
+                (field) =>
+                  field.show && (
+                    <TableCell key={field.name}>{field.label}</TableCell>
+                  )
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
             {data &&
               data.map((d) => (
                 <TableRow key={d.name}>
-                  {STAKEHOLDER_SCHEMA.map((field) => (
-                    <TableCell key={field.name}>{d[field.name]}</TableCell>
-                  ))}
+                  {STAKEHOLDER_SCHEMA.map(
+                    (field, index) =>
+                      field.show &&
+                      (field.name === "hours" ? (
+                        <TableCell key={field.name}>
+                          {flattenHours(d[field.name])}
+                        </TableCell>
+                      ) : (
+                        <TableCell key={field.name}>{d[field.name]}</TableCell>
+                      ))
+                  )}
                 </TableRow>
               ))}
           </TableBody>

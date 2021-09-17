@@ -7,7 +7,7 @@
   "devDependencies": {
     "husky": "^6.0.0",
     "lerna": "^4.0.0",
-    "lerna-cli": "^4.0.0"
+    "lerna-cli": "^4.1.0"
   },
   "husky": {
     "hooks": {

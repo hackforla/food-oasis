@@ -132,10 +132,8 @@ function VerificationAdmin(props) {
   const classes = useStyles();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [assignDialogOpen, setAssignDialogOpen] = useState(false);
-  const [
-    needsVerificationDialogOpen,
-    setNeedsVerificationDialogOpen,
-  ] = useState(false);
+  const [needsVerificationDialogOpen, setNeedsVerificationDialogOpen] =
+    useState(false);
   const [criteria, setCriteria] = useState(defaultCriteria);
   const [selectedStakeholderIds, setSelectedStakeholderIds] = useState([]);
   const [unauthorized, setUnauthorized] = useState(false);

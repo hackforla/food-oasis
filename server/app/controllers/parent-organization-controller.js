@@ -1,8 +1,8 @@
 const parentOrganizationService = require("../services/parent-organization-service");
 
-const getAll = async (req, res) => {
+const getAllByTenantId = async (req, res) => {
   try {
-    const resp = await parentOrganizationService.selectAll();
+    const resp = await parentOrganizationService.selectAllById(req.params.id);
     res.send(resp);
   } catch (err) {
     console.error(err);
@@ -53,7 +53,7 @@ const remove = async (req, res) => {
 };
 
 module.exports = {
-  getAll,
+  getAllByTenantId,
   post,
   put,
   remove,

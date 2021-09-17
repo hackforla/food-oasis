@@ -6,8 +6,13 @@ import { MENU_ITEMS } from "helpers/Constants";
 import { Link } from "react-router-dom";
 // The two tenant logos happen to be the same at this moment
 import logo from "images/foodoasis.svg";
-import logoCA from "images/foodoasis.svg";
 import { tenantId } from "../../helpers/Configuration";
+
+const logoPaths = {
+  1: require("images/foodoasis.svg"),
+  2: require("images/foodoasis.svg"),
+  3: require("../StaticPagesHI/assets/aloha-harvest-bg-none.png"),
+};
 
 const useStyles = makeStyles(() => ({
   footer: {
@@ -21,9 +26,11 @@ const useStyles = makeStyles(() => ({
     fontFamily: `"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans- serif`,
   },
   logo: {
+    maxWidth: "95px",
+    height: "100%",
+    width: "100%",
     marginTop: "0",
     marginBottom: "auto",
-    height: "20px",
     "&:hover": {
       filter: "brightness(1.2)",
     },
@@ -58,9 +65,8 @@ const Footer = () => {
   const classes = useStyles();
 
   const initialFooterSwitch = window.innerWidth >= 1000 ? true : false;
-  const [fullSizeFooterVisible, changeFooterSize] = useState(
-    initialFooterSwitch
-  );
+  const [fullSizeFooterVisible, changeFooterSize] =
+    useState(initialFooterSwitch);
 
   useEffect(() => {
     const checkWindowSize = () => {
@@ -104,12 +110,11 @@ const Footer = () => {
 
   return (
     <Box className={classes.footer} style={holderStyle}>
-      {tenantId === 2 ? (
-        <img src={logoCA} className={classes.logo} alt="logo" />
-      ) : (
-        <img src={logo} className={classes.logo} alt="logo" />
-      )}
-
+      <img
+        src={logoPaths[tenantId] ? logoPaths[tenantId].default : logo}
+        className={classes.logo}
+        alt="logo"
+      />
       <div className={classes.textHolder} style={constantStyles}>
         {constantLinks}
       </div>

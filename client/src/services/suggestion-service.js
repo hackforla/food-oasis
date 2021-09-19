@@ -19,17 +19,12 @@ export const getById = async (id) => {
   return response.data;
 };
 
-export const post = async (correction) => {
-  const response = await axios.post(baseUrl, {
-    ...correction,
-  });
+export const post = async (suggestion) => {
+  const response = await axios.post(baseUrl, suggestion);
   return response.data;
 };
 
-//export const put = async (category, id) => {
-//   const response = await axios.put(`${baseUrl}/${id}`, {
-//     category,
-//     id,
-//   });
-//   return response.data;
-// };
+export const update = async (suggestion) => {
+  const response = await axios.put(`${baseUrl}/${suggestion.id}`, suggestion);
+  return response.data;
+};

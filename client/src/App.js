@@ -55,6 +55,7 @@ import Suggestion from "components/FoodSeeker/Suggestion";
 import ImportFile from "components/Admin/ImportOrganizations/ImportFile";
 import adminTheme from "./theme/adminTheme";
 import * as analytics from "../src/services/analytics";
+import Suggestions from "components/Admin/Suggestions";
 
 const useStyles = makeStyles({
   app: () => ({
@@ -69,20 +70,20 @@ const useStyles = makeStyles({
     overflowY: "scroll",
     flexGrow: 1,
   },
-  OrganizationEditWrapper: {
+  organizationEditWrapper: {
     flexBasis: "90%",
     paddingTop: "1em",
     paddingBottom: "1em",
   },
   homeWrapper: {
     backgroundSize: "cover",
-    backgroundPosition:"center",
+    backgroundPosition: "center",
     backgroundImage: 'url("/landing-page/map.png")', // replaced the background image style inside useStyles instead of inline styling
     minHeight: "max(100.7vh,20em)",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    alignItems:"center",
+    alignItems: "center",
   },
   verificationAdminWrapper: {
     flexBasis: "100%",
@@ -110,19 +111,19 @@ function App() {
   useEffect(() => {
     switch (tenantId) {
       case 2:
-        setBgImg(`url("/landing-page/bg-LA.jpeg")`)
+        setBgImg(`url("/landing-page/bg-LA.jpeg")`);
         break;
       case 3:
-        setBgImg(`url("/landing-page/bg-HI.jpeg")`)
+        setBgImg(`url("/landing-page/bg-HI.jpeg")`);
         break;
       case 5:
         setBgImg(`url("/landing-page/bg-TX.jpeg")`);
         break;
       case 6:
-        setBgImg(`url("/landing-page/bg-LA.jpeg")`)
-        break;      
+        setBgImg(`url("/landing-page/bg-LA.jpeg")`);
+        break;
       default:
-        setBgImg(`url("/landing-page/bg-LA.jpeg")`)
+        setBgImg(`url("/landing-page/bg-LA.jpeg")`);
         return;
     }
   }, []);
@@ -196,7 +197,7 @@ function App() {
                 <Route exact path="/">
                   <div
                     className={classes.homeWrapper}
-                    style={{ backgroundImage: bgImg }} 
+                    style={{ backgroundImage: bgImg }}
                   >
                     <Home
                       userCoordinates={userCoordinates}
@@ -226,7 +227,7 @@ function App() {
                 </Route>
                 <Route path="/organizationedit/:id?">
                   <ThemeProvider theme={adminTheme}>
-                    <div className={classes.OrganizationEditWrapper}>
+                    <div className={classes.organizationEditWrapper}>
                       <OrganizationEdit setToast={setToast} user={user} />
                     </div>
                   </ThemeProvider>
@@ -251,8 +252,13 @@ function App() {
                   </ThemeProvider>
                 </Route>
                 <Route path="/parentorganizations">
-                  <div className={classes.OrganizationEditWrapper}>
+                  <div className={classes.organizationEditWrapper}>
                     <ParentOrganizations setToast={setToast} user={user} />
+                  </div>
+                </Route>
+                <Route path="/suggestions">
+                  <div className={classes.organizationEditWrapper}>
+                    <Suggestions setToast={setToast} user={user} />
                   </div>
                 </Route>
                 <Route path="/securityadmindashboard">

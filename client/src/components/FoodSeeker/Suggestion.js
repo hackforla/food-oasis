@@ -55,6 +55,7 @@ function Suggestion(props) {
     tipsterPhone: "",
     tipsterEmail: "",
     category: "",
+    status: "Open",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 

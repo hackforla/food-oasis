@@ -9,7 +9,12 @@ import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import { Grid, CssBaseline } from "@material-ui/core";
 import theme from "theme/clientTheme";
 import { logout } from "services/account-service";
-import { tenantId, tenantName, defaultViewport } from "helpers/Configuration";
+import {
+  tenantId,
+  tenantName,
+  defaultViewport,
+  tenantDetails,
+} from "helpers/Configuration";
 // import useGeolocation from "hooks/useGeolocation";
 // Components
 import { UserContext } from "contexts/user-context";
@@ -76,11 +81,13 @@ const useStyles = makeStyles({
   },
   homeWrapper: {
     backgroundSize: "cover",
+    backgroundPosition: "center",
     backgroundImage: 'url("/landing-page/map.png")', // replaced the background image style inside useStyles instead of inline styling
     minHeight: "max(100.7vh,20em)",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
+    alignItems: "center",
   },
   verificationAdminWrapper: {
     flexBasis: "100%",
@@ -108,19 +115,19 @@ function App() {
   useEffect(() => {
     switch (tenantId) {
       case 2:
-        setBgImg(`url("/landing-page/bg-LA.jpeg")`)
+        setBgImg(`url("/landing-page/bg-LA.jpeg")`);
         break;
       case 3:
-        setBgImg(`url("/landing-page/bg-HI.jpeg")`)
+        setBgImg(`url("/landing-page/bg-HI.jpeg")`);
         break;
       case 5:
         setBgImg(`url("/landing-page/bg-TX.jpeg")`);
         break;
       case 6:
-        setBgImg(`url("/landing-page/bg-LA.jpeg")`)
-        break;      
+        setBgImg(`url("/landing-page/bg-LA.jpeg")`);
+        break;
       default:
-        setBgImg(`url("/landing-page/bg-LA.jpeg")`)
+        setBgImg(`url("/landing-page/bg-LA.jpeg")`);
         return;
     }
   }, []);
@@ -184,6 +191,7 @@ function App() {
                 <Route>
                   <Header
                     tenantId={tenantId}
+                    taglineText={tenantDetails.taglineText}
                     user={user}
                     setUser={onLogin}
                     setToast={setToast}
@@ -194,7 +202,7 @@ function App() {
                 <Route exact path="/">
                   <div
                     className={classes.homeWrapper}
-                    style={{ backgroundImage: bgImg }} 
+                    style={{ backgroundImage: bgImg }}
                   >
                     <Home
                       userCoordinates={userCoordinates}
@@ -202,6 +210,7 @@ function App() {
                       origin={origin}
                       setOrigin={setOrigin}
                       tenantId={tenantId}
+                      taglineText={tenantDetails.taglineText}
                     />
                   </div>
                 </Route>
@@ -217,6 +226,7 @@ function App() {
                     setOrigin={setOrigin}
                     userCoordinates={userCoordinates}
                     setToast={setToast}
+                    taglineText={tenantDetails.taglineText}
                   />
                 </Route>
                 <Route path="/suggestion">

@@ -132,6 +132,7 @@ const ResultsFilters = ({
   toggleCategory,
   showList,
   toggleShowList,
+  taglineText,
 }) => {
   const classes = useStyles();
   const isMealsSelected = categoryIds.indexOf(MEAL_PROGRAM_CATEGORY_ID) >= 0;
@@ -148,7 +149,6 @@ const ResultsFilters = ({
   }, [toggleCategory]);
 
   const { isMobile } = useBreakpoints();
-  const taglineText = "Locate free food in " + tenantName;
 
   return (
     <Grid item container className={classes.controlPanel}>

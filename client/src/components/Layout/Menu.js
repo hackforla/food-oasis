@@ -159,6 +159,16 @@ export default function Menu(props) {
                   <Divider />
                 </>
               ) : null}
+              {user && user.isGlobalAdmin ? (
+                <>
+                  <MenuItemLink
+                    key="parentorganizations"
+                    to="/parentorganizations"
+                    text="Parent Organization Dashboard"
+                  />
+                  <Divider />
+                </>
+              ) : null}
             </>
           )}
         </UserContext.Consumer>

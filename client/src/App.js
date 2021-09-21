@@ -60,6 +60,7 @@ import Suggestion from "components/FoodSeeker/Suggestion";
 import ImportFile from "components/Admin/ImportOrganizations/ImportFile";
 import adminTheme from "./theme/adminTheme";
 import * as analytics from "../src/services/analytics";
+import Suggestions from "components/Admin/Suggestions";
 
 const useStyles = makeStyles({
   app: () => ({
@@ -74,7 +75,7 @@ const useStyles = makeStyles({
     overflowY: "scroll",
     flexGrow: 1,
   },
-  OrganizationEditWrapper: {
+  organizationEditWrapper: {
     flexBasis: "90%",
     paddingTop: "1em",
     paddingBottom: "1em",
@@ -234,7 +235,7 @@ function App() {
                 </Route>
                 <Route path="/organizationedit/:id?">
                   <ThemeProvider theme={adminTheme}>
-                    <div className={classes.OrganizationEditWrapper}>
+                    <div className={classes.organizationEditWrapper}>
                       <OrganizationEdit setToast={setToast} user={user} />
                     </div>
                   </ThemeProvider>
@@ -259,8 +260,13 @@ function App() {
                   </ThemeProvider>
                 </Route>
                 <Route path="/parentorganizations">
-                  <div className={classes.OrganizationEditWrapper}>
+                  <div className={classes.organizationEditWrapper}>
                     <ParentOrganizations setToast={setToast} user={user} />
+                  </div>
+                </Route>
+                <Route path="/suggestions">
+                  <div className={classes.organizationEditWrapper}>
+                    <Suggestions setToast={setToast} user={user} />
                   </div>
                 </Route>
                 <Route path="/securityadmindashboard">

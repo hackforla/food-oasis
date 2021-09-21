@@ -104,22 +104,20 @@ export default function Menu(props) {
     >
       <List>
         {user && (
-          <>
-            <ListItem>
-              <ListItemAvatar>
-                <Avatar>
-                  <AccountCircleIcon />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText primary={user.firstName} />
-            </ListItem>
-            <Divider />
-          </>
+          <ListItem>
+            <ListItemAvatar>
+              <Avatar>
+                <AccountCircleIcon />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary={user.firstName} />
+          </ListItem>
         )}
+        <Divider />
         <UserContext.Consumer>
           {(user) => (
             <>
-              {user && (user.isAdmin || user.isCoordinator) ? (
+              {user && (user.isAdmin || user.isCoordinator) && (
                 <>
                   <MenuItemLink
                     key="organizationedit"
@@ -136,39 +134,39 @@ export default function Menu(props) {
                     to="/verificationadmin"
                     text="Verification Admin"
                   />
-                  <Divider />
                 </>
-              ) : null}
-              {user && user.isDataEntry ? (
-                <>
-                  <MenuItemLink
-                    key="verificationdashboard"
-                    to="/verificationdashboard"
-                    text="My Dashboard"
-                  />
-                  <Divider />
-                </>
-              ) : null}
-              {user && (user.isSecurityAdmin || user.isGlobalAdmin) ? (
-                <>
-                  <MenuItemLink
-                    key="securityadmindashboard"
-                    to="/securityadmindashboard"
-                    text="Security Admin Dashboard"
-                  />
-                  <Divider />
-                </>
-              ) : null}
-              {user && user.isGlobalAdmin ? (
+              )}
+              <Divider />
+              {user && user.isDataEntry && (
+                <MenuItemLink
+                  key="verificationdashboard"
+                  to="/verificationdashboard"
+                  text="My Dashboard"
+                />
+              )}
+              <Divider />
+              {user && (user.isSecurityAdmin || user.isGlobalAdmin) && (
+                <MenuItemLink
+                  key="securityadmindashboard"
+                  to="/securityadmindashboard"
+                  text="Security Admin Dashboard"
+                />
+              )}
+              {user && user.isGlobalAdmin && (
                 <>
                   <MenuItemLink
                     key="parentorganizations"
                     to="/parentorganizations"
                     text="Parent Organization Dashboard"
                   />
-                  <Divider />
+                  <MenuItemLink
+                    key="suggestions"
+                    to="/suggestions"
+                    text="Suggestions Dashboard"
+                  />
                 </>
-              ) : null}
+              )}
+              <Divider />
             </>
           )}
         </UserContext.Consumer>

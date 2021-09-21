@@ -5,7 +5,7 @@ import ReactMapGL, {
   ScaleControl,
   AttributionControl,
 } from "react-map-gl";
-import { Grid, Button } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import Marker from "components/FoodSeeker/Marker";
@@ -15,6 +15,7 @@ import { isMobile } from "helpers";
 import StakeholderPreview from "components/FoodSeeker/StakeholderPreview";
 import StakeholderDetails from "components/FoodSeeker/StakeholderDetails";
 import * as analytics from "../../services/analytics";
+import { Button } from '../../../components/UI';
 
 const styles = {
   navigationControl: {
@@ -185,14 +186,13 @@ function Map({
           </div>
 
           {showSearchArea && (
-            <Button
+            <Button 
+              variant='outlined'
+              size='small'
+              text='Search this area'
               onClick={searchArea}
-              variant="outlined"
-              size="small"
               className={classes.searchButton}
-            >
-              Search this area
-            </Button>
+            />
           )}
           {stakeholders &&
             stakeholders

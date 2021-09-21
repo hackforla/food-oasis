@@ -6,7 +6,6 @@ import { UserContext } from "../../contexts/user-context";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Drawer,
-  Button,
   List,
   ListItem,
   ListItemText,
@@ -15,10 +14,10 @@ import {
   Divider,
 } from "@material-ui/core";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import MenuIcon from "@material-ui/icons/Menu";
 import { MENU_ITEMS } from "helpers/Constants";
 import MenuItemLink from "./MenuItemLink";
 import { logout } from "../Account/Logout";
+import { IconButton } from '../../components/UI';
 
 Menu.propTypes = {
   user: PropTypes.object,
@@ -187,10 +186,14 @@ export default function Menu(props) {
 
   return (
     <div>
-      <Button className={classes.menuButton} onClick={toggleDrawer}>
-        <MenuIcon className={classes.blueMenu} />
-      </Button>
-
+      <IconButton 
+        icon='menu'
+        onClick={toggleDrawer}
+        classes={{
+          root:classes.menuButton,
+          label:classes.blueMenu
+        }}
+      />
       <Drawer anchor={"right"} open={isOpen} onClose={toggleDrawer}>
         {sideList()}
       </Drawer>

@@ -1,13 +1,19 @@
 import React from "react";
-import { Button as MaterialButton } from "@material-ui/core";
+import { Button as MuiButton } from "@material-ui/core";
 import PropTypes from "prop-types";
-import { ICON_DICT } from "./IconButton";
+import { ICON_DICT } from "./iconLookup";
 
-const Base = ({ children, color = "primary", ...props }) => {
+const Base = ({ children, variant, color, type, ...props }) => {
   return (
-    <MaterialButton variant="contained" color={color} {...props}>
+    <MuiButton 
+      type={type || 'button'}
+      variant={variant || 'contained'}
+      color={color || 'primary'} 
+      aria-label={type || 'button'}
+      {...props}
+    >
       {children}
-    </MaterialButton>
+    </MuiButton>
   );
 };
 
@@ -15,24 +21,41 @@ Base.propTypes = {
   children: PropTypes.string.isRequired,
   onChange: PropTypes.func,
   color: PropTypes.string,
+  variant:PropTypes.string,
+  ariaLabel:PropTypes.string,
+  type:PropTypes.string
 };
 
-const Button = ({ icon, children, ...props }) => {
-  const Icon = ICON_DICT[icon];
-  if (icon) {
-    return (
-      <Base startIcon={<Icon />} {...props}>
-        {children}
-      </Base>
-    );
+const Button = ({ text, icon, iconPosition, ...props}) => {
+  
+  if(icon !== undefined && iconPosition !== undefined){
+    let Icon = ICON_DICT[icon];
+
+    if(iconPosition === 'start'){
+      return(
+        <Base startIcon={<Icon />} {...props}>
+          {text}
+        </Base>
+      )
+    }
+    if(iconPosition === 'end'){
+      return(
+        <Base endIcon={<Icon />} {...props}>
+          {text}
+        </Base>
+      )    }
   }
-  return <Base {...props}>{children}</Base>;
-};
 
-export default Button;
+  return(
+    <Base {...props}>
+      {text}
+    </Base>
+  )
+}
 
 Button.propTypes = {
-  kind: PropTypes.string,
+  text:PropTypes.string.isRequired,
+  kind:PropTypes.string,
   icon: PropTypes.oneOf([
     "add",
     "delete",
@@ -41,8 +64,14 @@ Button.propTypes = {
     "save",
     "edit",
     "cancel",
+    "locationOn",
+    "locationSearching",
+    "menu",
     "search",
     "details",
     "remove",
   ]),
-};
+
+}
+
+export default Button

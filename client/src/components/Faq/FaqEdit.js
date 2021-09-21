@@ -4,8 +4,7 @@ import { useTranslation } from "react-i18next";
 import Container from "@material-ui/core/Container";
 import * as faqService from "../../services/faq-service";
 import FaqEditForm from "./FaqEditForm";
-import { EditButton, SaveButton, CancelButton } from "../UI/Buttons";
-import TextField from "@material-ui/core/TextField";
+import { Button, Input } from '../../components/UI';
 
 const FaqEdit = ({ match, history }) => {
   const { i18n } = useTranslation();
@@ -94,20 +93,34 @@ const FaqEdit = ({ match, history }) => {
         {!editIdentifier ? (
           <>
             <span>{identifier}</span>
-            <EditButton onClick={handleEditIdentifier}>Edit</EditButton>
+            <Button 
+              text='Edit'
+              icon='edit'
+              iconPosition='start'
+              onClick={handleEditIdentifier}
+            />
           </>
         ) : (
           <>
-            <TextField
+            <Input 
               type="text"
               name="identifier"
               placeholder="Identifier"
-              variant="outlined"
               value={identifier}
-              onChange={handleIdentifier}
+              onChange={handleIdentifier}            
             />
-            <SaveButton onClick={handleUpdateIdentifier}>Update</SaveButton>
-            <CancelButton onClick={handleEditIdentifier}>Cancel</CancelButton>
+            <Button 
+              text='Update'
+              icon='save'
+              iconPosition='start'
+              onClick={handleUpdateIdentifier}
+            />
+            <Button 
+              text='Cancel'
+              icon='cancel'
+              iconPosition='start'
+              onClick={handleEditIdentifier}
+            />
           </>
         )}
       </h3>

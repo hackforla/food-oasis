@@ -3,9 +3,8 @@ import { storiesOf } from "@storybook/react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { decorators } from "../helpers";
-import Button from "../Button";
-import IconButton from "../IconButton";
 import Grid from "@material-ui/core/Grid";
+import { Button, IconButton } from '../index';
 
 storiesOf("Components/Button", module)
   .addDecorator(decorators)
@@ -13,7 +12,9 @@ storiesOf("Components/Button", module)
     <>
       <h1>Button</h1>
       <h2>Default</h2>
-      <Button>Confirm</Button>
+      <Button 
+        text='Confirm'
+      />
       <br />
       <br />
       <br />
@@ -97,47 +98,69 @@ icon: PropTypes.oneOf([
       <h2>IconButton</h2>
       <Grid container>
         <Grid item xs>
-          <IconButton kind="cancel" ariaLabel="cancel" />
+          <IconButton 
+            icon='cancel'
+          />
           <p>cancel</p>
         </Grid>
         <Grid item xs>
-          <IconButton kind="remove" ariaLabel="remove" />
+          <IconButton 
+            icon='remove'
+          />
           <p>remove</p>
         </Grid>
         <Grid item xs>
-          <IconButton kind="add" ariaLabel="add" />
+          <IconButton 
+            icon='add'
+          />
           <p>add</p>
         </Grid>
         <Grid item xs>
-          <IconButton kind="delete" ariaLabel="delete" />
+          <IconButton 
+            icon='delete'
+          />
           <p>delete</p>
         </Grid>
         <Grid item xs>
-          <IconButton kind="close" ariaLabel="close" />
+          <IconButton 
+            icon='close'
+          />
           <p>close</p>
         </Grid>
         <Grid item xs>
-          <IconButton kind="save" ariaLabel="save" />
+          <IconButton 
+            icon='save'
+          />
           <p>save</p>
         </Grid>
         <Grid item xs>
-          <IconButton kind="edit" ariaLabel="edit" />
+          <IconButton 
+            icon='edit'
+          />
           <p>edit</p>
         </Grid>
         <Grid item xs>
-          <IconButton kind="search" ariaLabel="search" />
+          <IconButton 
+            icon='search'
+          />
           <p>search</p>
         </Grid>
         <Grid item xs>
-          <IconButton kind="details" ariaLabel="details" />
+          <IconButton 
+            icon='details'
+          />
           <p>details</p>
         </Grid>
         <Grid item xs>
-          <IconButton kind="arrowUp" ariaLabel="arrowUp" />
+          <IconButton 
+            icon='arrowUp'
+          />
           <p>arrowUp</p>
         </Grid>
         <Grid item xs>
-          <IconButton kind="arrowDown" ariaLabel="arrowDown" />
+          <IconButton 
+            icon='arrowDown'
+          />
           <p>arrowDown</p>
         </Grid>
       </Grid>
@@ -147,7 +170,7 @@ icon: PropTypes.oneOf([
       <br />
 
       <SyntaxHighlighter language="javascript" style={vscDarkPlus}>
-        {`<IconButton kind="cancel" ariaLabel="cancel" />`}
+        {`<IconButton icon="cancel" />`}
       </SyntaxHighlighter>
       <h3>Props</h3>
       <SyntaxHighlighter language="javascript" style={vscDarkPlus}>

@@ -3,13 +3,19 @@ import TextField from "@material-ui/core/TextField";
 import PropTypes from "prop-types";
 
 const Input = (props) => {
-  return <TextField {...props} label={props.label} onChange={props.onChange} />;
+  return (
+    <TextField
+      variant={props.variant || 'outlined'}
+      label={props.label}
+      {...props}
+    />
+  );
 };
 
 Input.propTypes = {
-  label: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  value: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  onChange: PropTypes.func,
+  value: PropTypes.string,
 };
 
 export default Input;

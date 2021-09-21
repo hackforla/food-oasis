@@ -4,14 +4,13 @@ import { Redirect, withRouter } from "react-router-dom";
 import {
   withStyles,
   Avatar,
-  Button,
   Container,
   CssBaseline,
-  TextField,
   Typography,
 } from "@material-ui/core";
 import * as accountService from "../../services/account-service";
 import EmailOutlinedIcon from "@material-ui/icons/EmailOutlined";
+import { Button, Input } from '../../components/UI';
 
 const styles = (theme) => ({
   "@global": {
@@ -102,7 +101,7 @@ const ConfirmEmail = (props) => {
                 registration confirmation email.
               </p>
               <form onSubmit={resendConfirmationEmail}>
-                <TextField
+                <Input 
                   variant="outlined"
                   required
                   fullWidth
@@ -113,17 +112,14 @@ const ConfirmEmail = (props) => {
                   value={email}
                   onChange={(evt) => {
                     setEmail(evt.target.value);
-                  }}
+                  }}                
                 />
                 <Button
                   type="submit"
+                  text='Re-send confirmation email'
                   fullWidth
-                  variant="contained"
-                  color="primary"
                   className={classes.submit}
-                >
-                  Re-send confirmation email
-                </Button>
+                />
               </form>
             </div>
           )}

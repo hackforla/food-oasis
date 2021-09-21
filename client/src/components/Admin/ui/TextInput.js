@@ -28,7 +28,8 @@ const TextInput = (props) => {
 };
 
 TextInput.propTypes = {
-  tooltip: PropTypes.string,
+  variant:PropTypes.string
+  // tooltip: PropTypes.string,
 };
 
 export default TextInput;

@@ -6,7 +6,6 @@ import React, {
   forwardRef,
   useImperativeHandle,
 } from "react";
-import { Button } from "@material-ui/core";
 import ReactMapGL, * as Map from "react-map-gl";
 import { MAPBOX_STYLE } from "constants/map";
 import { defaultViewport } from "helpers/Configuration";
@@ -18,6 +17,7 @@ import {
 } from "./MarkerHelpers";
 import useStyles from "./styles";
 import * as analytics from "services/analytics";
+import { Button } from '../../../../components/UI';
 
 const ResultsMap = ({
   center,
@@ -125,15 +125,14 @@ const ResultsMap = ({
           <Map.Layer {...markersLayerStyles} />
         </Map.Source>
       )}
-      <Button
+      <Button 
+        variant='outlined'
+        text='Search this area'
         onClick={searchMapArea}
-        variant="outlined"
         size="small"
         className={classes.searchButton}
         disabled={loading}
-      >
-        Search this area
-      </Button>
+      />
     </ReactMapGL>
   );
 }

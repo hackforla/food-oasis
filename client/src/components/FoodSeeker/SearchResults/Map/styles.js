@@ -21,6 +21,9 @@ const useStyles = makeStyles((theme) => ({
     left: "50%",
     transform: "translate(-50%)",
     backgroundColor: "white",
+    '&:hover': {
+      background:theme.palette.primary.main,
+    }
   },
 }));
 

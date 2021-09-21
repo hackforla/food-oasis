@@ -1,18 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {
-	Button,
-	Dialog,
-	DialogActions,
-	DialogContent,
-	DialogTitle,
-	FormControl,
-	FormControlLabel,
-	Radio,
-	RadioGroup,
-	Typography,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormControl,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+  Typography,
 } from "@material-ui/core";
 import makeStyles from "@material-ui/styles/makeStyles";
+import { Button } from '../../../components/UI';
 
 const optionDescriptions = {
 	replace:
@@ -44,61 +44,55 @@ function ImportDialog(props) {
 	} = props;
 	const classes = useStyles();
 
-	return (
-		<Dialog
-			disableBackdropClick
-			disableEscapeKeyDown
-			fullWidth
-			maxWidth="sm"
-			aria-labelledby="import-dialog-title"
-			open={open}
-			{...other}
-		>
-			<DialogTitle id="import-dialog-title">
-				{props.title} ({tenantName} region)
-			</DialogTitle>
-			<DialogContent dividers className={classes.dialogContent}>
-				<Typography>{props.message}</Typography>
-				<Typography>
-					{optionDescriptions[importData.action] ||
-						"Please select an option below."}
-				</Typography>
-			</DialogContent>
-			<FormControl component="fieldset" className={classes.formControl}>
-				<RadioGroup
-					arial-label="import-options"
-					name="import-options"
-					onChange={handleImportAction}
-				>
-					<FormControlLabel
-						value="replace"
-						control={<Radio />}
-						label="Replace"
-					/>
-					<FormControlLabel value="update" control={<Radio />} label="Update" />
-					<FormControlLabel value="add" control={<Radio />} label="Add" />
-				</RadioGroup>
-			</FormControl>
-			<DialogActions>
-				<Button
-					variant="contained"
-					onClick={handleImportAction}
-					color="primary"
-				>
-					Cancel
-				</Button>
-				<Button
-					autoFocus
-					variant="contained"
-					onClick={handleImport}
-					color="primary"
-					disabled={!importData.action}
-				>
-					Submit
-				</Button>
-			</DialogActions>
-		</Dialog>
-	);
+  return (
+    <Dialog
+      disableBackdropClick
+      disableEscapeKeyDown
+      fullWidth
+      maxWidth="sm"
+      aria-labelledby="import-dialog-title"
+      open={open}
+      {...other}
+    >
+      <DialogTitle id="import-dialog-title">{props.title}</DialogTitle>
+      <DialogContent dividers className={classes.dialogContent}>
+        <Typography>{props.message}</Typography>
+        <Typography>
+          {optionDescriptions[importData.action] ||
+            "Please select an option below."}
+        </Typography>
+      </DialogContent>
+      <FormControl component="fieldset" className={classes.formControl}>
+        <RadioGroup
+          arial-label="import-options"
+          name="import-options"
+          onChange={handleImportAction}
+        >
+          <FormControlLabel
+            value="replace"
+            control={<Radio />}
+            label="Replace"
+          />
+          <FormControlLabel value="update" control={<Radio />} label="Update" />
+          <FormControlLabel value="add" control={<Radio />} label="Add" />
+        </RadioGroup>
+      </FormControl>
+      <DialogActions>
+        <Button 
+          type='button'
+          text='Cancel'
+          onClick={handleImportAction}
+        />
+        <Button 
+          type='button'
+          text='Submit'
+          autoFocus
+          onClick={handleImport}
+          disabled={!importData.action}
+        />
+      </DialogActions>
+    </Dialog>
+  );
 }
 
 ImportDialog.propTypes = {

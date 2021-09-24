@@ -44,7 +44,7 @@ const insert = async (model) => {
     $<city>, $<state>, $<zip>,
     $<phone>, $<email>,  $<notes>,
     $<tipsterName>, $<tipsterPhone>, $<tipsterEmail>,
-    $<hours>, $<category>
+    $<hours>, $<category>, $<status>
   )
   returning id`;
   const result = await db.one(sql, model);

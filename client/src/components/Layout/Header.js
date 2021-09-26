@@ -1,8 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Menu from "./Menu";
-import logo from "images/foodoasis.svg";
-import logoStacked from "images/logo-food-oasis-stacked.svg";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { isMobile } from "../../helpers";
@@ -17,12 +15,18 @@ const logoPaths = {
   1: require("images/foodoasis.svg"),
   2: require("images/foodoasis.svg"),
   3: require("../StaticPagesHI/assets/aloha-harvest-bg-none-no-tag.png"),
+  4: require("images/foodoasis.svg"),
+  5: require("images/foodoasis.svg"),
+  6: require("images/foodoasis.svg"),
 };
 
 const logoStackedPaths = {
   1: require("images/logo-food-oasis-stacked.svg"),
   2: require("images/logo-food-oasis-stacked.svg"),
   3: require("../StaticPagesHI/assets/aloha-harvest-bg-none-no-tag.png"),
+  4: require("images/logo-food-oasis-stacked.svg"),
+  5: require("images/logo-food-oasis-stacked.svg"),
+  6: require("images/logo-food-oasis-stacked.svg"),
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -109,7 +113,7 @@ export default function Header(props) {
                   src={
                     logoStackedPaths[tenantId]
                       ? logoStackedPaths[tenantId].default
-                      : logoStacked
+                      : logoStackedPaths[1].default
                   }
                   className={classes.logo}
                   style={
@@ -121,7 +125,11 @@ export default function Header(props) {
             ) : (
               <a href="/">
                 <img
-                  src={logoPaths[tenantId] ? logoPaths[tenantId].default : logo}
+                  src={
+                    logoPaths[tenantId]
+                      ? logoPaths[tenantId].default
+                      : logoPaths[1].default
+                  }
                   className={classes.logo}
                   style={
                     imageType === "svg" ? { width: "100%", height: "100%" } : {}

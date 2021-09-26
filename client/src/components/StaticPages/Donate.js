@@ -5,7 +5,6 @@ import iconSpacer from "./assets/icon-spacer.svg";
 import iconSpacerBlue from "./assets/icon-spacer-blue.svg";
 import { makeStyles } from "@material-ui/core";
 import Footer from "../Layout/Footer";
-import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import logo from "images/foodoasis.svg";
@@ -21,9 +20,8 @@ import donationStep4 from "images/donationStep4.png";
 import donationStep5 from "images/donationStep5.png";
 import donationStep6 from "images/donationStep6.png";
 import donationStep7 from "images/donationStep7.png";
-import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
 import * as analytics from "../../services/analytics";
+import { Button, IconButton } from '../../components/UI';
 
 const useStyles = makeStyles((theme) => ({
   outer: {
@@ -240,14 +238,11 @@ const Donate = () => {
             update. Your tax-deductible donation would help us offset some of
             those costs.
           </p>
-          <Button
+          <Button 
+            text='Donate'
             className={classes.btnOutline}
             onClick={handleShowDonationDialog}
-            color="primary"
-            variant="contained"
-          >
-            Donate
-          </Button>
+          />
           {showDonationDialog && (
             <DonationDialog
               showDonationDialog={showDonationDialog}
@@ -335,13 +330,11 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
             </Typography>
           </Grid>
           <Grid item>
-            <IconButton
-              aria-label="close"
+            <IconButton 
+              icon='close'
               className={classes.dialogCloseButton}
               onClick={handleCloseDonationDialog}
-            >
-              <CloseIcon />
-            </IconButton>
+            />
           </Grid>
         </Grid>
       </DialogTitle>

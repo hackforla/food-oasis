@@ -1,13 +1,15 @@
 const db = require("./db");
 const camelcaseKeys = require("camelcase-keys");
 
-const selectAll = async () => {
+const selectAll = async (params) => {
+  const filters = Object.values(params).join("', '");
   const sql = `
     select id, name, address_1, address_2, city, state, zip,
     phone, email, notes,
     tipster_name, tipster_phone, tipster_email,
-    hours, category, suggestion_status_id, admin_notes
+    hours, category, suggestion_status_id, admin_notes, status
     from suggestion
+    where status in ('${filters}')
     order by created_date
   `;
   const result = await db.manyOrNone(sql);
@@ -22,7 +24,7 @@ const selectById = async (suggestionId) => {
     select id, name, address_1, address_2, city, state, zip,
     phone, email, notes,
     tipster_name, tipster_phone, tipster_email,
-    hours, category, suggestion_status_id, admin_notes
+    hours, category, suggestion_status_id, admin_notes, status
     from suggestion where id = $<id>`;
 
   const row = await db.one(sql, { id });
@@ -36,14 +38,14 @@ const insert = async (model) => {
     city, state, zip,
     phone, email, notes,
     tipster_name, tipster_phone, tipster_email,
-    hours, category
+    hours, category, status
   ) values (
     $<name>, $<address1>, $<address2>,
     $<city>, $<state>, $<zip>,
     $<phone>, $<email>,  $<notes>,
     $<tipsterName>, $<tipsterPhone>, $<tipsterEmail>,
-    $<hours>, $<category>
-  ) 
+    $<hours>, $<category>, $<status>
+  )
   returning id`;
   const result = await db.one(sql, model);
   return { id: result.id };
@@ -51,22 +53,8 @@ const insert = async (model) => {
 
 const update = async (model) => {
   const sql = `update suggestion set
-    name = $<name>,
-    address_1 = $<address1>,
-    address_2 = $<address2>,
-    city = $<city>,
-    state = $<state>,
-    zip = $<zip>,
-    phone = $<zip>,
-    email = $<email>,
-    notes = $<notes>,
-    tipster_name = $<tipsterName>,
-    tipster_phone = $<tipsterPhone>,
-    tipster_email = $<tipsterEmail>,
-    hours = $<hours>,
-    category = $<category> ,
-    suggestion_status_id = $<suggestionStatusId>,
-    admin_notes = $<adminNotes>
+    admin_notes = $<adminNotes>,
+    status = $<status>
   where id = $<id>`;
   await db.none(sql, model);
 };

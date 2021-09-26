@@ -6,16 +6,15 @@ import * as Yup from "yup";
 import * as accountService from "../../services/account-service";
 import {
   Avatar,
-  Button,
   Container,
   CssBaseline,
-  TextField,
   Link,
   Grid,
   Typography,
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Footer from "../Layout/Footer";
+import { Input, Button } from '../../components/UI';
 
 const styles = (theme) => ({
   "@global": {
@@ -134,7 +133,7 @@ const ResetPassword = (props) => {
                   handleSubmit(evt);
                 }}
               >
-                <TextField
+                <Input 
                   variant="outlined"
                   margin="normal"
                   fullWidth
@@ -149,7 +148,7 @@ const ResetPassword = (props) => {
                   helperText={touched.password ? errors.password : ""}
                   error={touched.password && Boolean(errors.password)}
                 />
-                <TextField
+                <Input 
                   variant="outlined"
                   margin="normal"
                   fullWidth
@@ -165,18 +164,15 @@ const ResetPassword = (props) => {
                   }
                   error={
                     touched.passwordConfirm && Boolean(errors.passwordConfirm)
-                  }
+                  }                
                 />
                 <Button
                   type="submit"
+                  text='Reset Password'
                   fullWidth
-                  variant="contained"
-                  color="primary"
                   className={classes.submit}
                   disabled={isSubmitting}
-                >
-                  Reset Password
-                </Button>
+                />
                 <Grid container>
                   <Grid item xs>
                     <Link href="/forgotpassword" variant="body2">

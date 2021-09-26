@@ -4,12 +4,10 @@ import {
   Card,
   CardContent,
   Checkbox,
-  Input,
   ListItemText,
   MenuItem,
   Select,
   Grid,
-  TextField,
   FormControl,
   FormLabel,
   FormControlLabel,
@@ -21,6 +19,7 @@ import RadioTrueFalseEither from "./ui/RadioTrueFalseEither";
 import LocationAutocomplete from "./LocationAutocomplete";
 import AccountAutocomplete from "./AccountAutocomplete";
 import { defaultViewport } from "../../helpers/Configuration";
+import { Input } from '../UI';
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -226,7 +225,7 @@ const SearchCriteria = ({
           </Grid>
           <Grid item xs={12} sm={6}>
             <FormLabel className={classes.formLabel}>Name</FormLabel>
-            <TextField
+            <Input 
               autoComplete="off"
               name="name"
               value={criteria.name}
@@ -266,7 +265,7 @@ const SearchCriteria = ({
           </Grid>
           <Grid item xs={12} sm={4}>
             <FormLabel className={classes.formLabel}>Organization ID</FormLabel>
-            <TextField
+            <Input 
               autoComplete="off"
               type="number"
               name="stakeholderId"
@@ -282,7 +281,7 @@ const SearchCriteria = ({
             <FormLabel className={classes.formLabel}>
               Min % Critical Complete
             </FormLabel>
-            <TextField
+            <Input 
               autoComplete="off"
               type="number"
               min="0"
@@ -292,14 +291,14 @@ const SearchCriteria = ({
               variant="outlined"
               fullWidth
               size="small"
-              onChange={setCriterion}
+              onChange={setCriterion}            
             />
           </Grid>
           <Grid item xs={12} sm={4}>
             <FormLabel className={classes.formLabel}>
               Max % Critical Complete
             </FormLabel>
-            <TextField
+            <Input 
               autoComplete="off"
               type="number"
               min="0"

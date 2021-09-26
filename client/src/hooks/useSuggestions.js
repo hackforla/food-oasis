@@ -1,18 +1,19 @@
-import { useCallback, useState, useEffect } from "react";
-import * as parentOrganizationService from "../services/parent-organization-service";
+import React from "react";
+import { useState, useEffect } from "react";
+import * as suggestionService from "../services/suggestion-service";
 
-export const useParentOrganizations = () => {
+export const useSuggestions = (params = {}) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const fetch = useCallback(() => {
+  const fetch = React.useCallback(async () => {
     const fetchApi = async () => {
       setLoading({ loading: true });
       try {
-        const parentOrgs = await parentOrganizationService.getAllByTenantId();
+        const suggestions = await suggestionService.getAll(params);
 
-        setData(parentOrgs);
+        setData(suggestions);
         setLoading(false);
       } catch (err) {
         setError(err);
@@ -20,7 +21,7 @@ export const useParentOrganizations = () => {
       }
     };
     fetchApi();
-  }, []);
+  }, [params]);
 
   useEffect(() => {
     fetch();

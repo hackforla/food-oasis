@@ -6,7 +6,6 @@ import { UserContext } from "../../contexts/user-context";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Drawer,
-  Button,
   List,
   ListItem,
   ListItemText,
@@ -15,10 +14,10 @@ import {
   Divider,
 } from "@material-ui/core";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import MenuIcon from "@material-ui/icons/Menu";
 import { MENU_ITEMS } from "helpers/Constants";
 import MenuItemLink from "./MenuItemLink";
 import { logout } from "../Account/Logout";
+import { IconButton } from '../../components/UI';
 
 Menu.propTypes = {
   user: PropTypes.object,
@@ -105,22 +104,20 @@ export default function Menu(props) {
     >
       <List>
         {user && (
-          <>
-            <ListItem>
-              <ListItemAvatar>
-                <Avatar>
-                  <AccountCircleIcon />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText primary={user.firstName} />
-            </ListItem>
-            <Divider />
-          </>
+          <ListItem>
+            <ListItemAvatar>
+              <Avatar>
+                <AccountCircleIcon />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary={user.firstName} />
+          </ListItem>
         )}
+        <Divider />
         <UserContext.Consumer>
           {(user) => (
             <>
-              {user && (user.isAdmin || user.isCoordinator) ? (
+              {user && (user.isAdmin || user.isCoordinator) && (
                 <>
                   <MenuItemLink
                     key="organizationedit"
@@ -137,39 +134,39 @@ export default function Menu(props) {
                     to="/verificationadmin"
                     text="Verification Admin"
                   />
-                  <Divider />
                 </>
-              ) : null}
-              {user && user.isDataEntry ? (
-                <>
-                  <MenuItemLink
-                    key="verificationdashboard"
-                    to="/verificationdashboard"
-                    text="My Dashboard"
-                  />
-                  <Divider />
-                </>
-              ) : null}
-              {user && (user.isSecurityAdmin || user.isGlobalAdmin) ? (
-                <>
-                  <MenuItemLink
-                    key="securityadmindashboard"
-                    to="/securityadmindashboard"
-                    text="Security Admin Dashboard"
-                  />
-                  <Divider />
-                </>
-              ) : null}
-              {user && user.isGlobalAdmin ? (
+              )}
+              <Divider />
+              {user && user.isDataEntry && (
+                <MenuItemLink
+                  key="verificationdashboard"
+                  to="/verificationdashboard"
+                  text="My Dashboard"
+                />
+              )}
+              <Divider />
+              {user && (user.isSecurityAdmin || user.isGlobalAdmin) && (
+                <MenuItemLink
+                  key="securityadmindashboard"
+                  to="/securityadmindashboard"
+                  text="Security Admin Dashboard"
+                />
+              )}
+              {user && user.isGlobalAdmin && (
                 <>
                   <MenuItemLink
                     key="parentorganizations"
                     to="/parentorganizations"
                     text="Parent Organization Dashboard"
                   />
-                  <Divider />
+                  <MenuItemLink
+                    key="suggestions"
+                    to="/suggestions"
+                    text="Suggestions Dashboard"
+                  />
                 </>
-              ) : null}
+              )}
+              <Divider />
             </>
           )}
         </UserContext.Consumer>
@@ -187,10 +184,14 @@ export default function Menu(props) {
 
   return (
     <div>
-      <Button className={classes.menuButton} onClick={toggleDrawer}>
-        <MenuIcon className={classes.blueMenu} />
-      </Button>
-
+      <IconButton 
+        icon='menu'
+        onClick={toggleDrawer}
+        classes={{
+          root:classes.menuButton,
+          label:classes.blueMenu
+        }}
+      />
       <Drawer anchor={"right"} open={isOpen} onClose={toggleDrawer}>
         {sideList()}
       </Drawer>

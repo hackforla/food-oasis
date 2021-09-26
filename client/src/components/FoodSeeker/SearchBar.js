@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Downshift from "downshift";
-import { MenuItem, TextField, Paper, Grid } from "@material-ui/core";
+import { MenuItem, Paper, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useMapboxGeocoder } from "hooks/useMapboxGeocoder";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
 import { defaultViewport } from "helpers/Configuration";
+import { Input } from "../UI";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -107,9 +108,8 @@ export default function SearchBar({
   const renderInput = ({ InputProps, classes }) => {
     return (
       <Grid container justifyContent="center" alignItems="center">
-        <TextField
+        <Input
           className={classes.address}
-          variant="outlined"
           margin="none"
           fullWidth
           placeholder="Search by address or zip code"
@@ -138,7 +138,6 @@ export default function SearchBar({
             },
             ...InputProps,
           }}
-          // style={{ width: isWindow960orLess ? "100%" : "100%" }}
         />
       </Grid>
     );

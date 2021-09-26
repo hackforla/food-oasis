@@ -1,8 +1,7 @@
 import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Button, Typography, Tooltip } from "@material-ui/core";
-import LocationSearchingIcon from "@material-ui/icons/LocationSearching";
+import { Grid, Typography, Tooltip } from "@material-ui/core";
 import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
@@ -13,6 +12,7 @@ import SearchBar from "components/FoodSeeker/SearchBar";
 import SwitchViewsButton from "./SwitchViewsButton";
 import CategoryButton from "./CategoryButton";
 import * as analytics from "services/analytics";
+import { Button } from "../../../../components/UI";
 
 const useStyles = makeStyles((theme) => ({
   select: {
@@ -178,19 +178,19 @@ const ResultsFilters = ({
         >
           <Grid item>
             <CategoryButton
-              icon="pantry"
-              onClick={togglePantry}
-              label="Pantries"
-              isSelected={isPantrySelected}
-            />
-          </Grid>
-          <Grid item>
-            <CategoryButton
               icon="meal"
               onClick={toggleMeal}
               label="Meals"
               isSelected={isMealsSelected}
               style={{ marginLeft: 5 }}
+            />
+          </Grid>
+          <Grid item>
+            <CategoryButton
+              icon="pantry"
+              onClick={togglePantry}
+              label="Pantries"
+              isSelected={isPantrySelected}
             />
           </Grid>
           <Grid item>
@@ -218,16 +218,15 @@ const ResultsFilters = ({
             <Tooltip title="Re-center">
               <span>
                 <Button
+                  text=""
                   onClick={() => {
                     analytics.postEvent("recenterMap", {});
                     setOrigin(userCoordinates);
                   }}
                   disabled={!userCoordinates}
-                  variant="contained"
                   className={classes.nearbySearch}
-                  startIcon={
-                    <LocationSearchingIcon className={classes.nearbyIcon} />
-                  }
+                  icon="locationSearching"
+                  iconPosition="start"
                 />
               </span>
             </Tooltip>

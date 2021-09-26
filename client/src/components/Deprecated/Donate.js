@@ -4,10 +4,10 @@ import { useTranslation } from "react-i18next";
 import { makeStyles } from "@material-ui/styles";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import hackForLA from "../images/hackforla.svg";
 import codeForAmerica from "../images/codeforamerica.svg";
+import { Button } from '../../components/UI';
 
 const useStyles = makeStyles({
   root: {
@@ -46,21 +46,30 @@ const Donate = () => {
       <Typography className={classes.description} component={`p`}>
         {t("support-p")}
       </Typography>
-      <Button variant="outlined">{t("donate")}</Button>
+      <Button 
+        variant='outlined'
+        text={t('donate')}
+      />
       <Typography className={classes.sectionHeader} align="center" variant="h4">
         {t("subscribe")}
       </Typography>
       <Typography className={classes.description} component={`p`}>
         {t("subscribe-text")}
       </Typography>
-      <Button variant="outlined">{t("subscribe-button")}</Button>
+      <Button 
+        variant='outlined'
+        text={t('subscribe-button')}
+      />
       <Typography className={classes.sectionHeader} align="center" variant="h4">
         {t("questions")}
       </Typography>
       <Typography className={classes.description} component={`p`}>
         {t("questions-text")}
       </Typography>
-      <Button variant="outlined">{t("send-a-message")}</Button>
+      <Button 
+        variant='outlined'
+        text={t('send-a-message')}
+      />
     </Container>
   );
 };

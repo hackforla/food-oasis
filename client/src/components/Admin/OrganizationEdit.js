@@ -34,16 +34,15 @@ import { useCategories } from "hooks/useCategories/useCategories";
 import * as geocoder from "services/geocode-tamu-service";
 import OpenTimeForm from "components/Admin/OpenTimeForm";
 import { TabPanel, a11yProps } from "components/Admin/ui/TabPanel";
-import { PlainButton, VerifyButton } from "components/UI/Buttons";
 import AssignDialog from "components/Admin/AssignDialog";
 import ConfirmDialog from "components/Admin/ui/ConfirmDialog";
 import {
   VERIFICATION_STATUS,
   VERIFICATION_STATUS_NAMES,
 } from "constants/stakeholder";
-import PrimaryButton from "./ui/PrimaryButton";
 import TextInput from "./ui/TextInput";
 import moment from "moment";
+import { Button } from '../../components/UI';
 
 const BigTooltip = withStyles(() => ({
   tooltip: {
@@ -954,22 +953,17 @@ const OrganizationEdit = (props) => {
                         >
                           <BigTooltip title="Click to get latitude / longitude for address">
                             <Grid item>
-                              <PrimaryButton
+                              <Button 
+                                icon='search'
+                                iconPosition='start'
+                                text={(geocodeResults && geocodeResults.length) < 1 ? 'Get Coordinates' : 'Close'}
+                                style={{ marginTop: "1.2em" }}
                                 onClick={() => {
                                   (geocodeResults && geocodeResults.length) < 1
                                     ? geocode(values)
                                     : setGeocodeResults([]);
                                 }}
-                                logo="search"
-                                style={{ marginTop: "1.2em" }}
-                              >
-                                {(geocodeResults && geocodeResults.length) <
-                                1 ? (
-                                  <>Get Coordinates</>
-                                ) : (
-                                  <>Close</>
-                                )}
-                              </PrimaryButton>
+                              />
                             </Grid>
                           </BigTooltip>
                           <div className={classes.confirmCheckboxWrapper}>
@@ -1013,8 +1007,10 @@ const OrganizationEdit = (props) => {
                                   {/* <Typography>{`${result.attributes.Addr_type}`}</Typography> */}
                                 </Grid>
                                 <Grid item xs={2}>
-                                  <VerifyButton
-                                    label=""
+
+                                  <Button 
+                                    type='button'
+                                    text=''
                                     onClick={() => {
                                       setFieldValue(
                                         "latitude",
@@ -1844,14 +1840,13 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <PrimaryButton
-                            type="submit"
+                          <Button 
+                            type='submit' 
+                            text='Save Progress'
                             className={classes.submit}
                             disabled={isSubmitting || isUnchanged(values)}
-                            style={{ margin: "auto 0.5em" }}
-                          >
-                            Save Progress
-                          </PrimaryButton>
+                            // style={{ margin: "auto 0.5em" }}
+                          />
                         </div>
                       </BigTooltip>
                       <BigTooltip title="Mark for re-verification">
@@ -1864,8 +1859,9 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <PrimaryButton
-                            type="button"
+                          <Button 
+                            type='button'
+                            text='Needs Verfication'
                             onClick={() => {
                               setFieldValue("reviewedLoginId", "");
                               setFieldValue("reviewedUser", "");
@@ -1889,10 +1885,7 @@ const OrganizationEdit = (props) => {
                               values.verifivation_status_id ===
                                 VERIFICATION_STATUS.NEEDS_VERIFICATION
                             }
-                            style={{ margin: "auto 0.5em" }}
-                          >
-                            Needs Verification
-                          </PrimaryButton>
+                          />
                         </div>
                       </BigTooltip>
                       <BigTooltip title="Assign for Verification">
@@ -1905,8 +1898,9 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <PrimaryButton
-                            type="button"
+                          <Button 
+                            type='button'
+                            text='(Re-)Assign'
                             onClick={() => {
                               handleAssignDialogOpen({
                                 callback: (loginId) => {
@@ -1929,10 +1923,7 @@ const OrganizationEdit = (props) => {
                               values.verification_status_id ===
                                 VERIFICATION_STATUS.SUBMITTED
                             }
-                            style={{ margin: "auto 0.5em" }}
-                          >
-                            (Re-)Assign
-                          </PrimaryButton>
+                          />
                         </div>
                       </BigTooltip>
                       <BigTooltip
@@ -1947,8 +1938,9 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <PrimaryButton
-                            type="button"
+                          <Button 
+                            type='button'
+                            text='Request Changes'
                             onClick={() => {
                               setFieldValue(
                                 "reviewedUser",
@@ -1972,10 +1964,7 @@ const OrganizationEdit = (props) => {
                               !values.submittedDate ||
                               values.verificationStatusId !== 3
                             }
-                            style={{ margin: "auto 0.5em" }}
-                          >
-                            Request Changes
-                          </PrimaryButton>
+                          />
                         </div>
                       </BigTooltip>
                       <BigTooltip title="Approve as Verified">
@@ -1988,8 +1977,9 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <PrimaryButton
-                            type="button"
+                          <Button 
+                            type='button'
+                            text='Approve'
                             onClick={() => {
                               setFieldValue("approvedDate", moment());
                               setFieldValue(
@@ -2009,10 +1999,7 @@ const OrganizationEdit = (props) => {
                               !criticalFieldsValidate(values) ||
                               (user.isCoordinator && !user.isAdmin)
                             }
-                            style={{ margin: "auto 0.5em" }}
-                          >
-                            Approve
-                          </PrimaryButton>
+                          />
                         </div>
                       </BigTooltip>
                       <BigTooltip title="Delete Organization from Database Permanently">
@@ -2025,8 +2012,9 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <PlainButton
-                            type="button"
+                          <Button 
+                            type='button'
+                            text='Delete'
                             onClick={() => {
                               handleConfirmDialogOpen({
                                 callback: () => {
@@ -2036,10 +2024,8 @@ const OrganizationEdit = (props) => {
                                 },
                               });
                             }}
-                            label="Delete"
                             disabled={!user.isAdmin || !values.id}
-                            style={{ margin: "auto 0.5em" }}
-                          />
+                          />                         
                         </div>
                       </BigTooltip>
                     </>
@@ -2055,12 +2041,11 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <PlainButton
-                            type="submit"
-                            label="Save Progress"
+                          <Button 
+                            type='submit'
+                            text='Save Progress'
                             className={classes.submit}
                             disabled={isSubmitting || isUnchanged(values)}
-                            style={{ margin: "auto" }}
                           />
                         </div>
                       </BigTooltip>
@@ -2074,8 +2059,9 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <PlainButton
-                            type="button"
+                          <Button 
+                            type='button'
+                            text='Hand Off'
                             onClick={() => {
                               setFieldValue("assignedLoginId", "");
                               setFieldValue("assignedUser", "");
@@ -2087,13 +2073,11 @@ const OrganizationEdit = (props) => {
                               setNextUrl("/verificationdashboard");
                               handleSubmit();
                             }}
-                            label="Hand Off"
                             disabled={
                               criticalFieldsValidate(values) ||
                               values.verificationStatusId ===
                                 VERIFICATION_STATUS.NEEDS_VERIFICATION
                             }
-                            style={{ margin: "auto" }}
                           />
                         </div>
                       </BigTooltip>
@@ -2107,8 +2091,9 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <PlainButton
-                            type="button"
+                          <Button 
+                            type='button'
+                            text='Submit For Review'
                             onClick={() => {
                               setFieldValue("submittedDate", moment());
                               setFieldValue(
@@ -2123,13 +2108,11 @@ const OrganizationEdit = (props) => {
                               setNextUrl("/verificationdashboard");
                               handleSubmit();
                             }}
-                            label="Submit For Review"
                             disabled={
                               !criticalFieldsValidate(values) ||
                               values.verificationStatusId ===
                                 VERIFICATION_STATUS.SUBMITTED
                             }
-                            style={{ margin: "auto" }}
                           />
                         </div>
                       </BigTooltip>

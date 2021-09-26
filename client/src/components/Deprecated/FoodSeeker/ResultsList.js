@@ -1,11 +1,12 @@
 import React, { useRef, useState, useEffect } from "react";
 import StakeholderDetails from "components/FoodSeeker/StakeholderDetails";
 import PropTypes from "prop-types";
-import { Button, CircularProgress, Grid } from "@material-ui/core";
+import { CircularProgress, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import StakeholderPreview from "components/FoodSeeker/StakeholderPreview";
 import { isMobile } from "helpers";
 import * as analytics from "../../services/analytics";
+import { Button } from '../../../components/UI';
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -89,14 +90,11 @@ const ResultsList = ({
       {status === "loaded" && stakeholders.length === 0 && (
         <div className={classes.emptyResult}>
           <p>Sorry, we don&apos;t have any results for this area.</p>
-          <Button
+          <Button 
+            text='Click here to reset the search'
             onClick={handleReset}
-            variant="contained"
-            color="primary"
             disableElevation
-          >
-            Click here to reset the search
-          </Button>
+          />
         </div>
       )}
       {stakeholders && selectedStakeholder && !selectedStakeholder.inactive ? (

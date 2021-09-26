@@ -2,7 +2,7 @@ const suggestionService = require("../services/suggestion-service");
 
 const getAll = async (req, res) => {
   try {
-    const resp = await suggestionService.selectAll();
+    const resp = await suggestionService.selectAll(req.query);
     res.send(resp);
   } catch (err) {
     console.error(err);

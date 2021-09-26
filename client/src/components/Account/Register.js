@@ -6,9 +6,7 @@ import * as Yup from "yup";
 import * as accountService from "../../services/account-service";
 import {
   Avatar,
-  Button,
   CssBaseline,
-  TextField,
   Link,
   Grid,
   Typography,
@@ -16,6 +14,7 @@ import {
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Footer from "../Layout/Footer";
+import { Input, Button } from "../../components/UI";
 
 const styles = (theme) => ({
   "@global": {
@@ -77,7 +76,7 @@ const form = (props) => {
           <form className={classes.form} noValidate onSubmit={handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
-                <TextField
+                <Input
                   autoComplete="fname"
                   name="firstName"
                   variant="outlined"
@@ -94,7 +93,7 @@ const form = (props) => {
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField
+                <Input
                   variant="outlined"
                   required
                   fullWidth
@@ -110,7 +109,7 @@ const form = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
+                <Input
                   type="email"
                   id="email"
                   label="Email"
@@ -126,7 +125,7 @@ const form = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
+                <Input
                   variant="outlined"
                   required
                   fullWidth
@@ -143,7 +142,7 @@ const form = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
+                <Input
                   variant="outlined"
                   required
                   fullWidth
@@ -165,14 +164,11 @@ const form = (props) => {
             </Grid>
             <Button
               type="submit"
+              text="Register"
               fullWidth
-              variant="contained"
-              color="primary"
               className={classes.submit}
               disabled={isSubmitting}
-            >
-              Register
-            </Button>
+            />
             <Grid container justifyContent="center">
               <Grid item>
                 <Link href="/login" variant="body2">

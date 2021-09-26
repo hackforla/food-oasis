@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Button } from "@material-ui/core";
+import { Button } from '../../../../components/UI';
 
 import MapMarker from "images/mapMarker";
 import StakeholderIcon from "images/stakeholderIcon";
@@ -308,14 +308,14 @@ const StakeholderDetails = ({ selectedStakeholder, onClose, setToast }) => {
       <div className={classes.buttons}>
         <OriginCoordinatesContext.Consumer>
           {(origin) => (
-            <Button
-              variant="outlined"
+            <Button 
+              text='Directions'
+              variant='outlined'
               onClick={() => {
                 analytics.postEvent("getDirections", {
                   id: selectedStakeholder.id,
                   name: selectedStakeholder.name,
                 });
-
                 window.open(
                   getGoogleMapsDirectionsUrl(origin, {
                     latitude: selectedStakeholder.latitude,
@@ -323,14 +323,14 @@ const StakeholderDetails = ({ selectedStakeholder, onClose, setToast }) => {
                   })
                 );
               }}
-            >
-              Directions
-            </Button>
+            />
           )}
         </OriginCoordinatesContext.Consumer>
-        <Button variant="outlined" onClick={handleSuggestionDialogOpen}>
-          Send Correction
-        </Button>
+        <Button 
+          text='Send Correction'
+          variant='outlined'
+          onClick={handleSuggestionDialogOpen}
+        />
       </div>
       {selectedStakeholder.hours ? (
         <>

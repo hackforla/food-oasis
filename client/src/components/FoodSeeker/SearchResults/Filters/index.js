@@ -2,7 +2,6 @@ import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Typography, Tooltip } from "@material-ui/core";
-import { tenantName } from "helpers/Configuration";
 import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
@@ -13,7 +12,7 @@ import SearchBar from "components/FoodSeeker/SearchBar";
 import SwitchViewsButton from "./SwitchViewsButton";
 import CategoryButton from "./CategoryButton";
 import * as analytics from "services/analytics";
-import { Button } from '../../../../components/UI';
+import { Button } from "../../../../components/UI";
 
 const useStyles = makeStyles((theme) => ({
   select: {
@@ -164,12 +163,19 @@ const ResultsFilters = ({
         container
         xs={12}
         sm={8}
-        justify="center"
+        justifyContent="center"
         alignItems="center"
         className={classes.filterContainer}
         wrap="wrap-reverse"
       >
-        <Grid item container xs={12} sm={6} spacing={1} className={classes.buttonContainer}>
+        <Grid
+          item
+          container
+          xs={12}
+          sm={6}
+          spacing={1}
+          className={classes.buttonContainer}
+        >
           <Grid item>
             <CategoryButton
               icon="meal"
@@ -181,11 +187,11 @@ const ResultsFilters = ({
           </Grid>
           <Grid item>
             <CategoryButton
-                icon="pantry"
-                onClick={togglePantry}
-                label="Pantries"
-                isSelected={isPantrySelected}
-              />
+              icon="pantry"
+              onClick={togglePantry}
+              label="Pantries"
+              isSelected={isPantrySelected}
+            />
           </Grid>
           <Grid item>
             {isMobile && (
@@ -211,16 +217,16 @@ const ResultsFilters = ({
             />
             <Tooltip title="Re-center">
               <span>
-                <Button 
-                  text=''
+                <Button
+                  text=""
                   onClick={() => {
                     analytics.postEvent("recenterMap", {});
                     setOrigin(userCoordinates);
                   }}
                   disabled={!userCoordinates}
                   className={classes.nearbySearch}
-                  icon='locationSearching'
-                  iconPosition='start'
+                  icon="locationSearching"
+                  iconPosition="start"
                 />
               </span>
             </Tooltip>

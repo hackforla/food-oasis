@@ -7,7 +7,7 @@ import { useMapboxGeocoder } from "hooks/useMapboxGeocoder";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
 import { defaultViewport } from "helpers/Configuration";
-import { Input } from '../UI';
+import { Input } from "../UI";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -107,8 +107,8 @@ export default function SearchBar({
 
   const renderInput = ({ InputProps, classes }) => {
     return (
-      <Grid container justify="center" alignItems="center">
-        <Input 
+      <Grid container justifyContent="center" alignItems="center">
+        <Input
           className={classes.address}
           margin="none"
           fullWidth
@@ -137,7 +137,7 @@ export default function SearchBar({
               input: classes.input,
             },
             ...InputProps,
-          }}        
+          }}
         />
       </Grid>
     );

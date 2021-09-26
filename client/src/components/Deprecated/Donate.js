@@ -32,7 +32,7 @@ const Donate = () => {
   return (
     <Container maxWidth="sm" className={classes.root}>
       <Typography variant="h6">{t("title")}</Typography>
-      <Grid container justify="space-around" alignItems="center">
+      <Grid container justifyContent="space-around" alignItems="center">
         <Grid item className={classes.image}>
           <img src={hackForLA} alt="Hack for LA logo" />
         </Grid>

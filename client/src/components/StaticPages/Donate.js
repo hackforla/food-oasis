@@ -318,7 +318,7 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
       maxWidth="sm"
     >
       <DialogTitle id="simple-dialog-title">
-        <Grid container justify="center">
+        <Grid container justifyContent="center">
           <img style={{ height: "50px" }} src={logo} alt="logo" />
           <Grid item>
             <Typography align="center">
@@ -456,7 +456,11 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
           </Grid>
         </Paper>
       </div>
-      <Grid className={classes.donateButtonWrapper} container justify="center">
+      <Grid
+        className={classes.donateButtonWrapper}
+        container
+        justifyContent="center"
+      >
         <Grid item>
           <Box m={3}>
             <a

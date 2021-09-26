@@ -163,7 +163,7 @@ const ResultsFilters = ({
         container
         xs={12}
         sm={8}
-        justify="center"
+        justifyContent="center"
         alignItems="center"
         className={classes.filterContainer}
         wrap="wrap-reverse"

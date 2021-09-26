@@ -106,7 +106,7 @@ export default function SearchBar({
 
   const renderInput = ({ InputProps, classes }) => {
     return (
-      <Grid container justify="center" alignItems="center">
+      <Grid container justifyContent="center" alignItems="center">
         <TextField
           className={classes.address}
           variant="outlined"

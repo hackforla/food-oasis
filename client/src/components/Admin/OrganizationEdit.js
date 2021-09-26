@@ -1158,14 +1158,14 @@ const OrganizationEdit = (props) => {
                   <Grid
                     item
                     container
-                    justify="space-between"
+                    justifyContent="space-between"
                     xs={12}
                     alignItems="center"
                   >
                     <Grid item xs={6}>
                       <Typography>Food Types</Typography>
                     </Grid>
-                    <Grid item container justify="flex-end" xs={6}>
+                    <Grid item container justifyContent="flex-end" xs={6}>
                       <FormControlLabel
                         control={
                           <Checkbox

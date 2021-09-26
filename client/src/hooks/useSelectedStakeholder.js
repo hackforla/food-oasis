@@ -16,7 +16,7 @@ export default function useSelectedStakeholder() {
 
         //Update url history
         const name = stakeholder.name.toLowerCase().replaceAll(" ", "_");
-        history.push(`/organizations?org=${name}`);
+        history.push(`/organizations?id=${stakeholder.id}&org=${name}`);
       } else {
         history.push("/organizations");
       }

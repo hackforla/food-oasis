@@ -1,5 +1,4 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import * as suggestionService from "../services/suggestion-service";
 
 export const useSuggestions = (params = {}) => {

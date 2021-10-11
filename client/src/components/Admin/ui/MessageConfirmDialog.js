@@ -6,7 +6,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@material-ui/core";
-import { Input, Button } from '../../../components/UI';
+import { Input, Button } from "../../../components/UI";
 
 function MessageDialog(props) {
   const { onClose, open, message: initialMessage, ...other } = props;
@@ -32,7 +32,7 @@ function MessageDialog(props) {
     >
       <DialogTitle id="confirmation-dialog-title">Message:</DialogTitle>
       <DialogContent dividers>
-        <Input 
+        <Input
           margin="normal"
           fullWidth
           name="message"
@@ -41,22 +41,14 @@ function MessageDialog(props) {
           size="small"
           multiline
           rows={4}
-          rowsMax={12}
+          maxRows={12}
           value={message}
-          onChange={(e) => setMessage(e.target.value)}        
+          onChange={(e) => setMessage(e.target.value)}
         />
       </DialogContent>
       <DialogActions>
-        <Button 
-          type='button'
-          text='Cancel'
-          onClick={handleCancel}
-        />
-        <Button 
-          type='button'
-          text='OK'
-          onClick={handleSubmit}
-        />
+        <Button type="button" text="Cancel" onClick={handleCancel} />
+        <Button type="button" text="OK" onClick={handleSubmit} />
       </DialogActions>
     </Dialog>
   );

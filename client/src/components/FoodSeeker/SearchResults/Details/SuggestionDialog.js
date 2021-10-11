@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import * as suggestionService from "services/suggestion-service";
-import { Input, Button } from '../../../../components/UI';
+import { Input, Button } from "../../../../components/UI";
 
 function SuggestionDialog(props) {
   const { onClose, open, setToast, stakeholder: sh, ...other } = props;
@@ -78,7 +78,6 @@ function SuggestionDialog(props) {
 
   return (
     <Dialog
-      disableBackdropClick
       disableEscapeKeyDown
       fullWidth
       maxWidth="sm"
@@ -98,81 +97,74 @@ function SuggestionDialog(props) {
             </Typography>
           </Grid>
           <Grid item xs={12}>
-            <Input 
+            <Input
               type="text"
               size="small"
               multiline
               rows={2}
-              rowsMax={12}
+              maxRows={12}
               label="Corrections"
               name="notes"
               margin="normal"
               fullWidth
               autoFocus
               value={stakeholder.notes}
-              onChange={handleChange}            
+              onChange={handleChange}
             />
           </Grid>
           <Grid item xs={12}>
-            <Input 
+            <Input
               type="text"
               size="small"
               multiline
               rows={2}
-              rowsMax={12}
+              maxRows={12}
               label="Your Name (optional)"
               name="tipsterName"
               margin="normal"
               fullWidth
               autoFocus
               value={stakeholder.tipsterName}
-              onChange={handleChange}            
+              onChange={handleChange}
             />
           </Grid>
           <Grid item xs={12}>
-            <Input 
+            <Input
               type="text"
               size="small"
               multiline
               rows={2}
-              rowsMax={12}
+              maxRows={12}
               label="Your Phone (optional)"
               name="tipsterPhone"
               margin="normal"
               fullWidth
               autoFocus
               value={stakeholder.tipsterPhone}
-              onChange={handleChange}            
+              onChange={handleChange}
             />
           </Grid>
           <Grid item xs={12}>
-            <Input 
+            <Input
               type="text"
               size="small"
               multiline
               rows={2}
-              rowsMax={12}
+              maxRows={12}
               label="Your Email (optional)"
               name="tipsterEmail"
               margin="normal"
               fullWidth
               autoFocus
               value={stakeholder.tipsterEmail}
-              onChange={handleChange}            
+              onChange={handleChange}
             />
           </Grid>
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button 
-          text='Cancel'
-          autoFocus
-          onClick={handleCancel}
-        />
-        <Button 
-          text='Send'
-          onClick={handleSubmit}
-        />
+        <Button text="Cancel" autoFocus onClick={handleCancel} />
+        <Button text="Send" onClick={handleSubmit} />
       </DialogActions>
     </Dialog>
   );

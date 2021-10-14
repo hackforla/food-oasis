@@ -198,7 +198,7 @@ function Suggestion(props) {
             size="small"
             multiline
             rows={2}
-            rowsMax={12}
+            maxRows={12}
             label="Changes to Hours"
             name="hours"
             margin="normal"
@@ -214,7 +214,7 @@ function Suggestion(props) {
             size="small"
             multiline
             rows={2}
-            rowsMax={12}
+            maxRows={12}
             label="Other Information"
             name="notes"
             margin="normal"
@@ -230,7 +230,7 @@ function Suggestion(props) {
             size="small"
             multiline
             rows={2}
-            rowsMax={12}
+            maxRows={12}
             label="Your Name"
             name="tipsterName"
             margin="normal"
@@ -246,7 +246,7 @@ function Suggestion(props) {
             size="small"
             multiline
             rows={2}
-            rowsMax={12}
+            maxRows={12}
             label="Your Phone"
             name="tipsterPhone"
             margin="normal"
@@ -262,7 +262,7 @@ function Suggestion(props) {
             size="small"
             multiline
             rows={2}
-            rowsMax={12}
+            maxRows={12}
             label="Your Email"
             name="tipsterEmail"
             margin="normal"

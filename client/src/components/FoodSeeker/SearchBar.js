@@ -119,6 +119,7 @@ export default function SearchBar({
           InputProps={{
             endAdornment: showSearchIcon ? (
               <InputAdornment
+                position="end"
                 onClick={() => {
                   const defaultCoordinates = {
                     latitude: defaultViewport.center.latitude,

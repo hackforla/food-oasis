@@ -47,7 +47,6 @@ function SuggestionDialog(props) {
 
   return (
     <Dialog
-      disableBackdropClick
       disableEscapeKeyDown
       fullWidth
       maxWidth="sm"
@@ -72,7 +71,7 @@ function SuggestionDialog(props) {
               size="small"
               multiline
               rows={2}
-              rowsMax={12}
+              maxRows={12}
               label="Corrections"
               name="notes"
               margin="normal"
@@ -88,7 +87,7 @@ function SuggestionDialog(props) {
               size="small"
               multiline
               rows={2}
-              rowsMax={12}
+              maxRows={12}
               label="Your Name (optional)"
               name="tipsterName"
               margin="normal"
@@ -104,7 +103,7 @@ function SuggestionDialog(props) {
               size="small"
               multiline
               rows={2}
-              rowsMax={12}
+              maxRows={12}
               label="Your Phone (optional)"
               name="tipsterPhone"
               margin="normal"
@@ -120,7 +119,7 @@ function SuggestionDialog(props) {
               size="small"
               multiline
               rows={2}
-              rowsMax={12}
+              maxRows={12}
               label="Your Email (optional)"
               name="tipsterEmail"
               margin="normal"

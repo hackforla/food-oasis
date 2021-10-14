@@ -9,7 +9,7 @@ import CellMeasurerCache from "react-virtualized/dist/es/CellMeasurer/CellMeasur
 import StakeholderPreview from "../Preview";
 import StakeholderDetails from "../Details";
 import * as analytics from "services/analytics";
-import { Button } from '../../../../components/UI';
+import { Button } from "../../../../components/UI";
 
 const useStyles = makeStyles((theme) => ({
   listContainer: {
@@ -22,9 +22,11 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("xs")]: {
       fontSize: 12,
     },
+    padding: "1px", // This keeps the control width from infintely switching widths back and forth - have no idea why
   },
   list: {
     width: "100%",
+    margin: 0,
     flex: 1,
   },
   preview: {
@@ -45,7 +47,7 @@ const cache = new CellMeasurerCache({
   fixedWidth: true,
 });
 
-const clearCache = () => cache.clearAll();
+// const clearCache = () => cache.clearAll();
 
 const ResultsList = ({
   doSelectStakeholder,
@@ -57,18 +59,18 @@ const ResultsList = ({
 }) => {
   const classes = useStyles();
 
-  useEffect(() => {
-    analytics.postEvent("showList");
-  }, []);
+  // useEffect(() => {
+  //   analytics.postEvent("showList");
+  // }, []);
 
-  useEffect(() => {
-    window.addEventListener("resize", clearCache);
-    return () => window.removeEventListener("resize", clearCache);
-  }, []);
+  // useEffect(() => {
+  //   window.addEventListener("resize", clearCache);
+  //   return () => window.removeEventListener("resize", clearCache);
+  // }, []);
 
-  useEffect(() => {
-    clearCache();
-  }, [stakeholders]);
+  // useEffect(() => {
+  //   clearCache();
+  // }, [stakeholders]);
 
   const scrollToIndex = selectedStakeholder
     ? stakeholders.findIndex((s) => s.id === selectedStakeholder.id)
@@ -106,8 +108,8 @@ const ResultsList = ({
       {!loading && stakeholders.length === 0 && (
         <div className={classes.emptyResult}>
           <p>Sorry, we don&apos;t have any results for this area.</p>
-          <Button 
-            text='Click here to reset the search'
+          <Button
+            text="Click here to reset the search"
             onClick={handleReset}
             disableElevation
           />

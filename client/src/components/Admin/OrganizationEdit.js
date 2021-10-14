@@ -42,7 +42,7 @@ import {
 } from "constants/stakeholder";
 import TextInput from "./ui/TextInput";
 import moment from "moment";
-import { Button } from '../../components/UI';
+import { Button } from "../../components/UI";
 
 const BigTooltip = withStyles(() => ({
   tooltip: {
@@ -755,7 +755,7 @@ const OrganizationEdit = (props) => {
                       label="Category Notes"
                       multiline
                       rows={2}
-                      rowsMax={12}
+                      maxRows={12}
                       value={values.categoryNotes}
                       onChange={handleChange}
                       onBlur={handleBlur}
@@ -817,7 +817,7 @@ const OrganizationEdit = (props) => {
                       label="COVID Notes"
                       multiline
                       rows={2}
-                      rowsMax={12}
+                      maxRows={12}
                       value={values.covidNotes}
                       onChange={handleChange}
                       onBlur={handleBlur}
@@ -833,7 +833,7 @@ const OrganizationEdit = (props) => {
                       label="Description"
                       multiline
                       rows={2}
-                      rowsMax={12}
+                      maxRows={12}
                       value={values.description}
                       onChange={handleChange}
                       onBlur={handleBlur}
@@ -953,10 +953,14 @@ const OrganizationEdit = (props) => {
                         >
                           <BigTooltip title="Click to get latitude / longitude for address">
                             <Grid item>
-                              <Button 
-                                icon='search'
-                                iconPosition='start'
-                                text={(geocodeResults && geocodeResults.length) < 1 ? 'Get Coordinates' : 'Close'}
+                              <Button
+                                icon="search"
+                                iconPosition="start"
+                                text={
+                                  (geocodeResults && geocodeResults.length) < 1
+                                    ? "Get Coordinates"
+                                    : "Close"
+                                }
                                 style={{ marginTop: "1.2em" }}
                                 onClick={() => {
                                   (geocodeResults && geocodeResults.length) < 1
@@ -1007,10 +1011,9 @@ const OrganizationEdit = (props) => {
                                   {/* <Typography>{`${result.attributes.Addr_type}`}</Typography> */}
                                 </Grid>
                                 <Grid item xs={2}>
-
-                                  <Button 
-                                    type='button'
-                                    text=''
+                                  <Button
+                                    type="button"
+                                    text=""
                                     onClick={() => {
                                       setFieldValue(
                                         "latitude",
@@ -1209,7 +1212,7 @@ const OrganizationEdit = (props) => {
                     label="Other Food Types"
                     multiline
                     rows={2}
-                    rowsMax={12}
+                    maxRows={12}
                     value={values.foodTypes}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -1248,7 +1251,7 @@ const OrganizationEdit = (props) => {
                     label="Eligibility / Requirements"
                     multiline
                     rows={2}
-                    rowsMax={12}
+                    maxRows={12}
                     value={values.requirements}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -1263,7 +1266,7 @@ const OrganizationEdit = (props) => {
                     label="Eligibility Notes"
                     multiline
                     rows={2}
-                    rowsMax={12}
+                    maxRows={12}
                     value={values.eligibilityNotes}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -1282,7 +1285,7 @@ const OrganizationEdit = (props) => {
                     label="Languages"
                     multiline
                     rows={2}
-                    rowsMax={12}
+                    maxRows={12}
                     value={values.languages}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -1297,7 +1300,7 @@ const OrganizationEdit = (props) => {
                     label="Notes for the Public"
                     multiline
                     rows={2}
-                    rowsMax={12}
+                    maxRows={12}
                     value={values.notes}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -1792,7 +1795,7 @@ const OrganizationEdit = (props) => {
                       label="Reviewer Notes"
                       multiline
                       rows={2}
-                      rowsMax={12}
+                      maxRows={12}
                       value={values.reviewNotes}
                       onChange={handleChange}
                       onBlur={handleBlur}
@@ -1810,7 +1813,7 @@ const OrganizationEdit = (props) => {
                     label="Verification Notes"
                     multiline
                     rows={2}
-                    rowsMax={12}
+                    maxRows={12}
                     value={values.adminNotes}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -1840,9 +1843,9 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <Button 
-                            type='submit' 
-                            text='Save Progress'
+                          <Button
+                            type="submit"
+                            text="Save Progress"
                             className={classes.submit}
                             disabled={isSubmitting || isUnchanged(values)}
                             // style={{ margin: "auto 0.5em" }}
@@ -1859,9 +1862,9 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <Button 
-                            type='button'
-                            text='Needs Verfication'
+                          <Button
+                            type="button"
+                            text="Needs Verfication"
                             onClick={() => {
                               setFieldValue("reviewedLoginId", "");
                               setFieldValue("reviewedUser", "");
@@ -1898,9 +1901,9 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <Button 
-                            type='button'
-                            text='(Re-)Assign'
+                          <Button
+                            type="button"
+                            text="(Re-)Assign"
                             onClick={() => {
                               handleAssignDialogOpen({
                                 callback: (loginId) => {
@@ -1938,9 +1941,9 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <Button 
-                            type='button'
-                            text='Request Changes'
+                          <Button
+                            type="button"
+                            text="Request Changes"
                             onClick={() => {
                               setFieldValue(
                                 "reviewedUser",
@@ -1977,9 +1980,9 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <Button 
-                            type='button'
-                            text='Approve'
+                          <Button
+                            type="button"
+                            text="Approve"
                             onClick={() => {
                               setFieldValue("approvedDate", moment());
                               setFieldValue(
@@ -2012,9 +2015,9 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <Button 
-                            type='button'
-                            text='Delete'
+                          <Button
+                            type="button"
+                            text="Delete"
                             onClick={() => {
                               handleConfirmDialogOpen({
                                 callback: () => {
@@ -2025,7 +2028,7 @@ const OrganizationEdit = (props) => {
                               });
                             }}
                             disabled={!user.isAdmin || !values.id}
-                          />                         
+                          />
                         </div>
                       </BigTooltip>
                     </>
@@ -2041,9 +2044,9 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <Button 
-                            type='submit'
-                            text='Save Progress'
+                          <Button
+                            type="submit"
+                            text="Save Progress"
                             className={classes.submit}
                             disabled={isSubmitting || isUnchanged(values)}
                           />
@@ -2059,9 +2062,9 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <Button 
-                            type='button'
-                            text='Hand Off'
+                          <Button
+                            type="button"
+                            text="Hand Off"
                             onClick={() => {
                               setFieldValue("assignedLoginId", "");
                               setFieldValue("assignedUser", "");
@@ -2091,9 +2094,9 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <Button 
-                            type='button'
-                            text='Submit For Review'
+                          <Button
+                            type="button"
+                            text="Submit For Review"
                             onClick={() => {
                               setFieldValue("submittedDate", moment());
                               setFieldValue(

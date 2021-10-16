@@ -27,8 +27,6 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.primary.main,
     padding: "0.5rem 0",
     flex: "1 0 auto",
-    position: "sticky",
-    top: "48px",
     margin: 0,
     zIndex: 1,
     justifyContent: "center",

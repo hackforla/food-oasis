@@ -22,6 +22,7 @@ import { OriginCoordinatesContext } from "contexts/origin-coordinates-context";
 import Toast from "components/UI/Toast";
 import Header from "components/Layout/Header";
 import HeaderHome from "components/Layout/HeaderHome";
+import WidgetFooter from "components/Layout/WidgetFooter";
 import VerificationAdmin from "components/Admin/VerificationAdmin";
 import VerificationDashboard from "components/Admin/VerificationDashboard";
 import SecurityAdminDashboard from "components/Account/SecurityAdminDashboard/SecurityAdminDashboard";
@@ -189,6 +190,7 @@ function App() {
                     setToast={setToast}
                   />
                 </Route>
+                <Route path="/widget"></Route>
                 <Route>
                   <Header
                     tenantId={tenantId}
@@ -220,7 +222,19 @@ function App() {
               http"//foodoasis.la/search Link that has been published at
               http://publichealth.lacounty.gov/eh/LACFRI/ShareAndDonate.htm
               */}
-                <Redirect from="/search" to="/organizations" />
+                <Redirect from="/search" to="/widget" />
+                <Route path="/widget">
+                  <>
+                    <SearchResults
+                      origin={origin}
+                      setOrigin={setOrigin}
+                      userCoordinates={userCoordinates}
+                      setToast={setToast}
+                      taglineText={tenantDetails.taglineText}
+                    />
+                    <WidgetFooter tenantId={tenantId} />
+                  </>
+                </Route>
                 <Route path="/organizations">
                   <SearchResults
                     origin={origin}

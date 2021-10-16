@@ -5,11 +5,11 @@ import { ICON_DICT } from "./iconLookup";
 
 const Base = ({ children, variant, color, type, ...props }) => {
   return (
-    <MuiButton 
-      type={type || 'button'}
-      variant={variant || 'contained'}
-      color={color || 'primary'} 
-      aria-label={type || 'button'}
+    <MuiButton
+      type={type || "button"}
+      variant={variant || "contained"}
+      color={color || "primary"}
+      aria-label={type || "button"}
       {...props}
     >
       {children}
@@ -21,41 +21,38 @@ Base.propTypes = {
   children: PropTypes.string.isRequired,
   onChange: PropTypes.func,
   color: PropTypes.string,
-  variant:PropTypes.string,
-  ariaLabel:PropTypes.string,
-  type:PropTypes.string
+  variant: PropTypes.string,
+  ariaLabel: PropTypes.string,
+  type: PropTypes.string,
 };
 
-const Button = ({ text, icon, iconPosition, ...props}) => {
-  
-  if(icon !== undefined && iconPosition !== undefined){
+const Button = ({ children, text, icon, iconPosition, ...props }) => {
+  const buttonText = children || text;
+  if (icon !== undefined && iconPosition !== undefined) {
     let Icon = ICON_DICT[icon];
 
-    if(iconPosition === 'start'){
-      return(
+    if (iconPosition === "start") {
+      return (
         <Base startIcon={<Icon />} {...props}>
-          {text}
+          {buttonText}
         </Base>
-      )
+      );
     }
-    if(iconPosition === 'end'){
-      return(
+    if (iconPosition === "end") {
+      return (
         <Base endIcon={<Icon />} {...props}>
-          {text}
+          {buttonText}
         </Base>
-      )    }
+      );
+    }
   }
 
-  return(
-    <Base {...props}>
-      {text}
-    </Base>
-  )
-}
+  return <Base {...props}>{buttonText}</Base>;
+};
 
 Button.propTypes = {
-  text:PropTypes.string.isRequired,
-  kind:PropTypes.string,
+  text: PropTypes.string.isRequired,
+  kind: PropTypes.string,
   icon: PropTypes.oneOf([
     "add",
     "delete",
@@ -71,7 +68,6 @@ Button.propTypes = {
     "details",
     "remove",
   ]),
+};
 
-}
-
-export default Button
+export default Button;

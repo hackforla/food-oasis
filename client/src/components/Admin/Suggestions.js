@@ -37,6 +37,7 @@ import PhoneIphoneIcon from "@material-ui/icons/PhoneIphone";
 import HomeIcon from "@material-ui/icons/Home";
 import LocationCityIcon from "@material-ui/icons/LocationCity";
 import PhoneIcon from "@material-ui/icons/Phone";
+import { getIsMobile } from "../../hooks/utils";
 
 const columns = [
   { id: "name", label: "Name", minWidth: 100 },
@@ -55,6 +56,8 @@ function getModalStyle() {
     left: `${left}%`,
     transform: `translate(-${top}%, -${left}%)`,
     maxHeight: "80vh",
+    // minWidth: "60vw",
+    width: "90vw",
     overflow: "scroll",
   };
 }
@@ -73,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
+    padding: theme.spacing(2, getIsMobile() ? 1 : 4, 3),
   },
   error: {
     color: theme.palette.error.main,
@@ -94,6 +97,7 @@ function Suggestions(props) {
   const [error, setError] = React.useState("");
   const [filters, setFilters] = React.useState(["Verified", "Open", "Closed"]);
   let { data, status } = useSuggestions(filters);
+  const isMobile = getIsMobile();
 
   React.useEffect(() => {
     if (data) {
@@ -274,16 +278,14 @@ function Suggestions(props) {
                     id="simple-modal-title"
                     style={{
                       display: "flex",
+                      flexDirection: isMobile ? "column" : "row",
                       alignItems: "center",
                       justifyContent: "space-between",
                     }}
                   >
                     <h1
                       style={{
-                        width: "80%",
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
+                        width: isMobile ? "90%" : "80%",
                       }}
                     >
                       {activeOrg.name}

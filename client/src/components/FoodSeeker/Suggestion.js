@@ -5,6 +5,7 @@ import { Container, CssBaseline, Grid, Typography } from "@material-ui/core";
 import * as suggestionService from "services/suggestion-service";
 import { withStyles } from "@material-ui/core";
 import { Input, Button } from "../../components/UI";
+import { DEFAULT_STAKEHOLDER } from "../../constants/stakeholder";
 
 const styles = (theme) => ({
   "@global": {
@@ -33,24 +34,7 @@ const styles = (theme) => ({
 
 function Suggestion(props) {
   const { setToast, history, classes } = props;
-  const [stakeholder, setStakeholder] = useState({
-    id: 0,
-    name: "",
-    address1: "",
-    address2: "",
-    city: "",
-    state: "",
-    zip: "",
-    phone: "",
-    email: "",
-    notes: "",
-    hours: "",
-    tipsterName: "",
-    tipsterPhone: "",
-    tipsterEmail: "",
-    category: "",
-    status: "Open",
-  });
+  const [stakeholder, setStakeholder] = useState(DEFAULT_STAKEHOLDER);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {

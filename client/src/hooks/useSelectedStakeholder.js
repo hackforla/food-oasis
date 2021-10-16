@@ -1,9 +1,10 @@
 import { useCallback, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import * as analytics from "services/analytics";
 
 export default function useSelectedStakeholder() {
   const history = useHistory();
+  const location = useLocation();
   const [selectedStakeholder, onSelectStakeholder] = useState(null);
 
   const doSelectStakeholder = useCallback(
@@ -16,13 +17,13 @@ export default function useSelectedStakeholder() {
 
         //Update url history
         const name = stakeholder.name.toLowerCase().replaceAll(" ", "_");
-        history.push(`/organizations?id=${stakeholder.id}&org=${name}`);
+        history.push(`${location.pathname}?id=${stakeholder.id}&org=${name}`);
       } else {
-        history.push("/organizations");
+        history.push(location.pathname);
       }
       onSelectStakeholder(stakeholder);
     },
-    [history]
+    [history, location]
   );
 
   return {

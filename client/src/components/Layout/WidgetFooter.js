@@ -1,5 +1,5 @@
 import React from "react";
-import { withRouter, useHistory } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -81,7 +81,6 @@ const useStyles = makeStyles((theme) => ({
 function WidgetFooter(props) {
   const { tenantId } = props;
   const classes = useStyles();
-  const history = useHistory();
   const imageType = logoPaths
     ? logoPaths[tenantId].default.split(".").pop()
     : "unknown";

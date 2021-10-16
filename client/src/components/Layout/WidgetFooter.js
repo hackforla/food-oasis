@@ -98,7 +98,7 @@ function WidgetFooter(props) {
               Data Provided by&nbsp;
             </Typography>
             <a
-              href="https://la.foodoasis.net"
+              href={`${window.location.origin}`}
               target="_blank"
               rel="noopener noreferrer"
             >

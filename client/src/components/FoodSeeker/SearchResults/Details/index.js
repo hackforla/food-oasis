@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Button } from '../../../../components/UI';
+import { Button } from "../../../../components/UI";
 
 import MapMarker from "images/mapMarker";
 import StakeholderIcon from "images/stakeholderIcon";
@@ -110,6 +110,26 @@ const useStyles = makeStyles((theme) => ({
     display: "inline",
     alignSelf: "flex-start",
   },
+  backButtonWrapper: {
+    display: "inline",
+    alignSelf: "flex-start",
+    marginBottom: "1em",
+    position: "sticky",
+    top: "-0.1em",
+    width: "100%",
+    cursor: "pointer",
+    backgroundColor: "#fafafa",
+    zIndex: 10,
+    textAlign: "left",
+  },
+  backButton: {
+    paddingTop: "1em",
+    paddingBottom: "1em",
+    color: "blue",
+    textDecoration: "underline",
+    border: "none",
+    backgroundColor: "#fafafa",
+  },
 }));
 
 const StakeholderDetails = ({ selectedStakeholder, onClose, setToast }) => {
@@ -198,6 +218,12 @@ const StakeholderDetails = ({ selectedStakeholder, onClose, setToast }) => {
 
   return (
     <div className={classes.stakeholder}>
+      <div className={classes.backButtonWrapper}>
+        <button className={classes.backButton} onClick={onClose}>
+          {" "}
+          &lt; Back to List{" "}
+        </button>
+      </div>
       <SuggestionDialog
         id="assign-dialog"
         keepMounted
@@ -308,9 +334,9 @@ const StakeholderDetails = ({ selectedStakeholder, onClose, setToast }) => {
       <div className={classes.buttons}>
         <OriginCoordinatesContext.Consumer>
           {(origin) => (
-            <Button 
-              text='Directions'
-              variant='outlined'
+            <Button
+              text="Directions"
+              variant="outlined"
               onClick={() => {
                 analytics.postEvent("getDirections", {
                   id: selectedStakeholder.id,
@@ -326,9 +352,9 @@ const StakeholderDetails = ({ selectedStakeholder, onClose, setToast }) => {
             />
           )}
         </OriginCoordinatesContext.Consumer>
-        <Button 
-          text='Send Correction'
-          variant='outlined'
+        <Button
+          text="Send Correction"
+          variant="outlined"
           onClick={handleSuggestionDialogOpen}
         />
       </div>
@@ -497,41 +523,6 @@ const StakeholderDetails = ({ selectedStakeholder, onClose, setToast }) => {
           </div>
         </React.Fragment>
       ) : null}
-      <svg
-        width="40"
-        height="40"
-        viewBox="0 0 40 40"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        onClick={onClose}
-        className={classes.arrow}
-      >
-        <circle
-          cx="20"
-          cy="20"
-          r="20"
-          fill={
-            selectedStakeholder.inactiveTemporary ||
-            selectedStakeholder.inactive
-              ? CLOSED_COLOR
-              : selectedStakeholder.categories[0].id === 1
-              ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
-              : ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
-          }
-        />
-        <path
-          d="M5.38477 19.6153L19.8078 11.2882L19.8078 27.9425L5.38477 19.6153Z"
-          fill="white"
-        />
-        <line
-          x1="19.2309"
-          y1="18.8076"
-          x2="31.5386"
-          y2="18.8076"
-          stroke="white"
-          strokeWidth="7"
-        />
-      </svg>
     </div>
   );
 };

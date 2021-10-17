@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { isMobile } from "../../helpers";
+import hackforlalogo from "../../images/hackforla.svg";
 
 WidgetFooter.propTypes = {
   tenantId: PropTypes.number,
@@ -28,23 +29,20 @@ const logoStackedPaths = {
 };
 
 const useStyles = makeStyles((theme) => ({
-  headerHolder: {
+  container: {
     backgroundColor: "#FFF",
     marginBottom: 0,
     boxShadow: "none",
     borderBottomColor: theme.palette.primary,
-  },
-  header: {
-    minHeight: "40px",
+    minHeight: "50px",
     display: "flex",
     justifyContent: "space-between",
-    padding: "2px 1em",
+    padding: "2px 0.5em",
   },
   logo: {
     maxWidth: "175px",
-    maxHeight: "28px",
-    margin: "0",
-
+    maxHeight: "32px",
+    marginRight: "1em",
     "&:hover": {
       filter: "brightness(1.2)",
     },
@@ -61,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 0,
     justifyContent: "space-between",
     alignItems: "center",
-    margin: "0px 24px",
+    margin: "0",
   },
   tagline: {
     color: theme.palette.primary.dark,
@@ -87,58 +85,137 @@ function WidgetFooter(props) {
 
   return (
     <>
-      <div position="sticky" className={classes.headerHolder}>
-        <div className={classes.header}>
-          <div className={classes.content}>
-            <Typography
-              variant="subtitle1"
-              className={classes.tagline}
-              align="left"
+      <div position="sticky" className={classes.container}>
+        <div className={classes.content}>
+          <a href="http://hackforla.org">
+            <img
+              src={hackforlalogo}
+              className={classes.logoStacked}
+              style={{
+                width: "100%",
+                height: "100%",
+                margin: 0,
+              }}
+              alt="Hack for LA Logo"
+            />{" "}
+          </a>
+        </div>
+        <div className={classes.content}>
+          {isMobile() ? (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
             >
-              Data Provided by&nbsp;
-            </Typography>
-            <a
-              href={`${window.location.origin}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {" "}
-              Food Oasis
+              <div>
+                <Typography
+                  variant="subtitle1"
+                  className={classes.tagline}
+                  align="left"
+                >
+                  Data and Map Provided by&nbsp;
+                </Typography>
+                <a
+                  href={`${window.location.origin}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {" "}
+                  Food Oasis
+                </a>
+                <Typography
+                  variant="subtitle1"
+                  className={classes.tagline}
+                  align="left"
+                >
+                  ,
+                </Typography>
+              </div>
+              <div>
+                <Typography
+                  variant="subtitle1"
+                  className={classes.tagline}
+                  align="left"
+                >
+                  a Project by&nbsp;
+                </Typography>
+                <a
+                  href={"http://hackforla.org"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Hack for LA
+                </a>
+              </div>
+            </div>
+          ) : (
+            <>
+              <Typography
+                variant="subtitle1"
+                className={classes.tagline}
+                align="left"
+              >
+                Data and Map Provided by&nbsp;
+              </Typography>
+              <a
+                href={`${window.location.origin}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {" "}
+                Food Oasis
+              </a>
+              <Typography
+                variant="subtitle1"
+                className={classes.tagline}
+                align="left"
+              >
+                ,&nbsp;a Project by&nbsp;
+              </Typography>
+              <a
+                href={"http://hackforla.org"}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Hack for LA
+              </a>
+            </>
+          )}
+        </div>
+        <div>
+          {isMobile() ? (
+            <a href="/widget">
+              <img
+                src={
+                  logoStackedPaths[tenantId]
+                    ? logoStackedPaths[tenantId].default
+                    : logoStackedPaths[1].default
+                }
+                className={classes.logoStacked}
+                style={
+                  imageType === "svg" ? { width: "100%", height: "100%" } : {}
+                }
+                alt="Food Oasis Logo"
+              />{" "}
             </a>
-          </div>
-          <div>
-            {isMobile() ? (
-              <a href="/widget">
-                <img
-                  src={
-                    logoStackedPaths[tenantId]
-                      ? logoStackedPaths[tenantId].default
-                      : logoStackedPaths[1].default
-                  }
-                  className={classes.logoStacked}
-                  style={
-                    imageType === "svg" ? { width: "100%", height: "100%" } : {}
-                  }
-                  alt="logo"
-                />{" "}
-              </a>
-            ) : (
-              <a href="/widget">
-                <img
-                  src={
-                    logoPaths[tenantId]
-                      ? logoPaths[tenantId].default
-                      : logoPaths[1].default
-                  }
-                  className={classes.logo}
-                  style={
-                    imageType === "svg" ? { width: "100%", height: "100%" } : {}
-                  }
-                  alt="logo"
-                />{" "}
-              </a>
-            )}
-          </div>
+          ) : (
+            <a href="/widget" style={{ fontSize: "32px" }}>
+              <img
+                src={
+                  logoPaths[tenantId]
+                    ? logoPaths[tenantId].default
+                    : logoPaths[1].default
+                }
+                className={classes.logo}
+                style={
+                  imageType === "svg" ? { width: "100%", height: "100%" } : {}
+                }
+                alt="Food Oasis Logo"
+              />{" "}
+            </a>
+          )}
         </div>
       </div>
     </>

@@ -197,7 +197,7 @@ function Suggestion(props) {
             type="text"
             size="small"
             multiline
-            rows={2}
+            minRows={2}
             maxRows={12}
             label="Changes to Hours"
             name="hours"
@@ -213,7 +213,7 @@ function Suggestion(props) {
             type="text"
             size="small"
             multiline
-            rows={2}
+            minRows={2}
             maxRows={12}
             label="Other Information"
             name="notes"
@@ -229,7 +229,7 @@ function Suggestion(props) {
             type="text"
             size="small"
             multiline
-            rows={2}
+            minRows={2}
             maxRows={12}
             label="Your Name"
             name="tipsterName"
@@ -245,7 +245,7 @@ function Suggestion(props) {
             type="text"
             size="small"
             multiline
-            rows={2}
+            minRows={2}
             maxRows={12}
             label="Your Phone"
             name="tipsterPhone"
@@ -261,7 +261,7 @@ function Suggestion(props) {
             type="text"
             size="small"
             multiline
-            rows={2}
+            minRows={2}
             maxRows={12}
             label="Your Email"
             name="tipsterEmail"

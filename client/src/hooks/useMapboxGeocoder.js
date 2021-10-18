@@ -63,7 +63,7 @@ export function useMapboxGeocoder() {
           : tenantId === 2
           ? californiaLatLong
           : losAngelesCountyLatLong;
-      const mapboxUrl = `${baseUrl}/${searchString}.json?bbox=${bbox}&access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`;
+      const mapboxUrl = `${baseUrl}/${searchString}.json?bbox=${bbox}&access_token=${process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}`;
 
       dispatch({ type: actionTypes.FETCH_REQUEST });
       try {

@@ -17,17 +17,20 @@ import {
 } from "./MarkerHelpers";
 import useStyles from "./styles";
 import * as analytics from "services/analytics";
-import { Button } from '../../../../components/UI';
+import { Button } from "../../../../components/UI";
 
-const ResultsMap = ({
-  center,
-  stakeholders,
-  doSelectStakeholder,
-  selectedStakeholder,
-  categoryIds,
-  loading,
-  searchMapArea,
-}, ref) => {
+const ResultsMap = (
+  {
+    center,
+    stakeholders,
+    doSelectStakeholder,
+    selectedStakeholder,
+    categoryIds,
+    loading,
+    searchMapArea,
+  },
+  ref
+) => {
   const classes = useStyles();
   const mapRef = useRef();
   const [markersLoaded, setMarkersLoaded] = useState(false);
@@ -80,26 +83,30 @@ const ResultsMap = ({
     categoryIds,
   });
 
-  useImperativeHandle(ref, () => ({
-    getViewport: () => {
-      const map = mapRef.current.getMap();
+  useImperativeHandle(
+    ref,
+    () => ({
+      getViewport: () => {
+        const map = mapRef.current.getMap();
 
-      const { lat: latitude, lng: longitude } = map.getCenter();
-      const zoom = map.getZoom();
-      const { width, height } = map.getContainer().getBoundingClientRect();
+        const { lat: latitude, lng: longitude } = map.getCenter();
+        const zoom = map.getZoom();
+        const { width, height } = map.getContainer().getBoundingClientRect();
 
-      return {
-        center: { latitude, longitude },
-        zoom,
-        dimensions: { width, height },
-      };
-    },
-  }), []);
+        return {
+          center: { latitude, longitude },
+          zoom,
+          dimensions: { width, height },
+        };
+      },
+    }),
+    []
+  );
 
   return (
     <ReactMapGL
       ref={mapRef}
-      mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
+      mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
       mapStyle={MAPBOX_STYLE}
       {...viewport}
       onViewportChange={setViewport}
@@ -125,9 +132,9 @@ const ResultsMap = ({
           <Map.Layer {...markersLayerStyles} />
         </Map.Source>
       )}
-      <Button 
-        variant='outlined'
-        text='Search this area'
+      <Button
+        variant="outlined"
+        text="Search this area"
         onClick={searchMapArea}
         size="small"
         className={classes.searchButton}
@@ -135,6 +142,6 @@ const ResultsMap = ({
       />
     </ReactMapGL>
   );
-}
+};
 
 export default forwardRef(ResultsMap);

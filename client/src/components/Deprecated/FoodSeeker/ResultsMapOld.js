@@ -12,7 +12,7 @@ import StakeholderPreview from "components/FoodSeeker/StakeholderPreview";
 import StakeholderDetails from "components/FoodSeeker/StakeholderDetails";
 import theme from "theme/clientTheme";
 import { defaultViewport } from "helpers/Configuration";
-import { Button } from '../../../components/UI';
+import { Button } from "../../../components/UI";
 
 const styles = {
   navigationControl: {
@@ -273,7 +273,7 @@ function Map({
           onViewportChange={(newViewport) => {
             setViewport(newViewport);
           }}
-          mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
+          mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
           mapStyle={MAPBOX_STYLE}
           onClick={onMapClick}
           onInteractionStateChange={onInteractionStateChange}
@@ -282,10 +282,10 @@ function Map({
             <NavigationControl showCompass={false} />
           </div>
           {showSearchArea && (
-            <Button 
-              variant='outlined'
-              size='small'
-              text='Search this area'
+            <Button
+              variant="outlined"
+              size="small"
+              text="Search this area"
               onClick={searchArea}
               className={classes.searchButton}
             />

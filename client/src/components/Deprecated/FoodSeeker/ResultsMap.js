@@ -15,7 +15,7 @@ import { isMobile } from "helpers";
 import StakeholderPreview from "components/FoodSeeker/StakeholderPreview";
 import StakeholderDetails from "components/FoodSeeker/StakeholderDetails";
 import * as analytics from "../../services/analytics";
-import { Button } from '../../../components/UI';
+import { Button } from "../../../components/UI";
 
 const styles = {
   navigationControl: {
@@ -165,7 +165,7 @@ function Map({
             // // to maintain zoom when search is re-executed, etc.
             // setZoom(newViewport.zoom);
           }}
-          mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
+          mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
           mapStyle={MAPBOX_STYLE}
           onClick={unselectStakeholder}
           onInteractionStateChange={onInteractionStateChange}
@@ -186,10 +186,10 @@ function Map({
           </div>
 
           {showSearchArea && (
-            <Button 
-              variant='outlined'
-              size='small'
-              text='Search this area'
+            <Button
+              variant="outlined"
+              size="small"
+              text="Search this area"
               onClick={searchArea}
               className={classes.searchButton}
             />

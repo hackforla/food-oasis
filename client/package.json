@@ -42,7 +42,7 @@
     "react-dom": "^17.0.2",
     "react-gtm-module": "^2.0.11",
     "react-i18next": "^11.12.0",
-    "react-map-gl": "^5.3.17",
+    "react-map-gl": "^6.1.17",
     "react-proptypes": "^1.0.0",
     "react-quill": "^2.0.0-beta.4",
     "react-router-dom": "^5.3.0",

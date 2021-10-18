@@ -70,7 +70,7 @@ function SuggestionDialog(props) {
               type="text"
               size="small"
               multiline
-              rows={2}
+              minRows={2}
               maxRows={12}
               label="Corrections"
               name="notes"
@@ -86,7 +86,7 @@ function SuggestionDialog(props) {
               type="text"
               size="small"
               multiline
-              rows={2}
+              minRows={2}
               maxRows={12}
               label="Your Name (optional)"
               name="tipsterName"
@@ -102,7 +102,7 @@ function SuggestionDialog(props) {
               type="text"
               size="small"
               multiline
-              rows={2}
+              minRows={2}
               maxRows={12}
               label="Your Phone (optional)"
               name="tipsterPhone"
@@ -118,7 +118,7 @@ function SuggestionDialog(props) {
               type="text"
               size="small"
               multiline
-              rows={2}
+              minRows={2}
               maxRows={12}
               label="Your Email (optional)"
               name="tipsterEmail"

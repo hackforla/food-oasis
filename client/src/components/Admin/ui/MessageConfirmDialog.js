@@ -40,7 +40,7 @@ function MessageDialog(props) {
           type="text"
           size="small"
           multiline
-          rows={4}
+          minRows={4}
           maxRows={12}
           value={message}
           onChange={(e) => setMessage(e.target.value)}

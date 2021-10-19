@@ -6,6 +6,13 @@ import React, {
   forwardRef,
   useImperativeHandle,
 } from "react";
+// Mapbox is tricky, because version 6.* is "incompatible with some Babel transforms
+// because of the way it shares code between the maint thread and Web Worker."
+// See https://docs.mapbox.com/mapbox-gl-js/guides/install/#transpiling for details
+// https://github.com/mapbox/mapbox-gl-js/issues/10565 for current Create-React-App
+// recommendation from Mapbox team
+// https://github.com/mapbox/mapbox-gl-js/issues/10173  See comment by IvanDreamer on Mar 22
+// for craco.config.js contents
 import ReactMapGL, * as Map from "react-map-gl";
 import { MAPBOX_STYLE } from "constants/map";
 import { defaultViewport } from "helpers/Configuration";

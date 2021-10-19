@@ -13,5 +13,8 @@
     "hooks": {
       "pre-commit": "lerna run lint"
     }
+  },
+  "dependencies": {
+    "react-map-gl": "^6.1.17"
   }
 }

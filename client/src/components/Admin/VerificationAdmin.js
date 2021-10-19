@@ -74,13 +74,14 @@ const DialogTitle = (props) => {
       {onClose ? (
         <Button 
           type='button'
-          text='Search'
           icon='search'
           iconPosition='start'
           kind='close'
           onClick={onClose}
           className={classes.closeButton}
-        />
+        >
+          Search
+        </Button>
       ) : null}
     </MuiDialogTitle>
   );
@@ -309,11 +310,12 @@ function VerificationAdmin(props) {
           </Typography>
           <Button 
             type='button'
-            text='Criteria...'
             icon='search'
             iconPosition='start'
             onClick={handleDialogOpen}
-          />
+          >
+            Criteria&hellip;
+          </Button>
         </header>
       </div>
       <SearchCriteriaDisplay
@@ -444,22 +446,25 @@ function VerificationAdmin(props) {
                 >
                   <Button 
                     type='button'
-                    text='Needs Verification'
                     disabled={selectedStakeholderIds.length === 0}
                     onClick={handleNeedsVerificationDialogOpen}
-                  />
+                  >
+                    Needs Verification
+                  </Button>
                   <Button 
                     type='button'
-                    text='Assign'
                     disabled={selectedStakeholderIds.length === 0}
                     onClick={handleAssignDialogOpen}
-                  />
+                  >
+                    Assign
+                  </Button>
                   <Button 
                     type='button'
-                    text='Export'
                     disabled={selectedStakeholderIds.length === 0}
                     onClick={handleExport}
-                  />
+                  >
+                    Export
+                  </Button>
                 </div>
                 <div>{`${stakeholders.length} rows`} </div>
               </div>

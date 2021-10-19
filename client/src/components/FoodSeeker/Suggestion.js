@@ -274,12 +274,13 @@ function Suggestion(props) {
         </Grid>
       </Grid>
       <Button
-        text="Send Suggestions"
         fullWidth
         onClick={handleSubmit}
         className={classes.submit}
         disabled={isSubmitting}
-      />
+      >
+        Send Suggestions
+      </Button>
     </Container>
   );
 }

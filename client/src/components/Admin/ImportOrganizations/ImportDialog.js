@@ -80,16 +80,18 @@ function ImportDialog(props) {
       <DialogActions>
         <Button 
           type='button'
-          text='Cancel'
           onClick={handleImportAction}
-        />
+        >
+          Cancel
+        </Button>
         <Button 
           type='button'
-          text='Submit'
           autoFocus
           onClick={handleImport}
           disabled={!importData.action}
-        />
+        >
+          Submit
+        </Button>
       </DialogActions>
     </Dialog>
   );

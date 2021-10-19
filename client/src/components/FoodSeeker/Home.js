@@ -250,12 +250,13 @@ const Home = ({
                 browserLocation={browserLocation}
               /> */}
               <Button 
-                text='Use my current location'
                 icon='locationOn'
                 iconPosition='start'
                 className={classes.locationBtn}
                 onClick={useMyLocationTrigger}
-              />
+              >
+                Use my current location
+              </Button>
             </Box>
             <Box className={classes.inputContainer}>
               <Link

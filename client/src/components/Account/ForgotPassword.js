@@ -155,11 +155,13 @@ const ForgotPassword = (props) => {
                 />
                 <Button 
                   type="submit"
-                  text='Send Reset Link to Email'
+                  text=''
                   fullWidth
                   className={classes.submit}
                   disabled={isSubmitting}                
-                />
+                >
+                  Send Reset Link to Email
+                </Button>
                 <Grid container>
                   <Grid item xs>
                     <Link href={`/login/${values.email || ""}`} variant="body2">

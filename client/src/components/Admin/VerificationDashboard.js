@@ -159,17 +159,19 @@ function VerificationDashboard(props) {
           <div style={{ display: "flex", flexDirection: "row" }}>
             <Button 
               type='button'
-              text='Request Assignment'
               onClick={requestAssignment}
               disabled={disableRequestAssignment()}
-            />
+            >
+              Request Assignment
+            </Button>
             <Button 
               type='button'
-              text='Refresh'
               icon='search'
               iconPosition='start'
               onClick={search}
-            />
+            >
+              Refresh
+            </Button>
           </div>
         </header>
       </div>

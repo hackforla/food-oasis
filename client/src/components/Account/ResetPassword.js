@@ -168,11 +168,12 @@ const ResetPassword = (props) => {
                 />
                 <Button
                   type="submit"
-                  text='Reset Password'
                   fullWidth
                   className={classes.submit}
                   disabled={isSubmitting}
-                />
+                >
+                  Reset Password
+                </Button>
                 <Grid container>
                   <Grid item xs>
                     <Link href="/forgotpassword" variant="body2">

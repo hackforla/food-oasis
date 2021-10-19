@@ -26,32 +26,31 @@ Base.propTypes = {
   type: PropTypes.string,
 };
 
-const Button = ({ children, text, icon, iconPosition, ...props }) => {
-  const buttonText = children || text;
+const Button = ({ children, icon, iconPosition, ...props }) => {
   if (icon !== undefined && iconPosition !== undefined) {
     let Icon = ICON_DICT[icon];
 
     if (iconPosition === "start") {
       return (
         <Base startIcon={<Icon />} {...props}>
-          {buttonText}
+          {...children}
         </Base>
       );
     }
     if (iconPosition === "end") {
       return (
         <Base endIcon={<Icon />} {...props}>
-          {buttonText}
+          {...children}
         </Base>
       );
     }
   }
 
-  return <Base {...props}>{buttonText}</Base>;
+  return <Base {...props}>{...children}</Base>;
 };
 
 Button.propTypes = {
-  text: PropTypes.string.isRequired,
+  children: PropTypes.string.isRequired,
   kind: PropTypes.string,
   icon: PropTypes.oneOf([
     "add",

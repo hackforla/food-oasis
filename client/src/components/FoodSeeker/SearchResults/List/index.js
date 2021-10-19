@@ -109,7 +109,7 @@ const ResultsList = ({
         <div className={classes.emptyResult}>
           <p>Sorry, we don&apos;t have any results for this area.</p>
           <Button
-            text="Click here to reset the search"
+            children="Click here to reset the search"
             onClick={handleReset}
             disableElevation
           />

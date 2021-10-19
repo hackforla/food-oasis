@@ -134,7 +134,7 @@ const ResultsMap = (
       )}
       <Button
         variant="outlined"
-        text="Search this area"
+        children="Search this area"
         onClick={searchMapArea}
         size="small"
         className={classes.searchButton}

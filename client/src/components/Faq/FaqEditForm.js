@@ -73,7 +73,7 @@ const FaqEditForm = ({ faq, notAdded, history }) => {
         <Button 
           type='submit'
           variant='outlined'
-          text={notAdded ? "Add Faq" : "Update Faq"}
+          children={notAdded ? "Add Faq" : "Update Faq"}
           icon='save'
           iconPosition='start'
         />

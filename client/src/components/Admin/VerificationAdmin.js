@@ -74,7 +74,7 @@ const DialogTitle = (props) => {
       {onClose ? (
         <Button 
           type='button'
-          text='Search'
+          children='Search'
           icon='search'
           iconPosition='start'
           kind='close'
@@ -309,7 +309,7 @@ function VerificationAdmin(props) {
           </Typography>
           <Button 
             type='button'
-            text='Criteria...'
+            children='Criteria...'
             icon='search'
             iconPosition='start'
             onClick={handleDialogOpen}
@@ -444,19 +444,19 @@ function VerificationAdmin(props) {
                 >
                   <Button 
                     type='button'
-                    text='Needs Verification'
+                    children='Needs Verification'
                     disabled={selectedStakeholderIds.length === 0}
                     onClick={handleNeedsVerificationDialogOpen}
                   />
                   <Button 
                     type='button'
-                    text='Assign'
+                    children='Assign'
                     disabled={selectedStakeholderIds.length === 0}
                     onClick={handleAssignDialogOpen}
                   />
                   <Button 
                     type='button'
-                    text='Export'
+                    children='Export'
                     disabled={selectedStakeholderIds.length === 0}
                     onClick={handleExport}
                   />

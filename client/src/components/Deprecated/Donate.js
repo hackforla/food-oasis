@@ -48,7 +48,7 @@ const Donate = () => {
       </Typography>
       <Button 
         variant='outlined'
-        text={t('donate')}
+        children={t('donate')}
       />
       <Typography className={classes.sectionHeader} align="center" variant="h4">
         {t("subscribe")}
@@ -58,7 +58,7 @@ const Donate = () => {
       </Typography>
       <Button 
         variant='outlined'
-        text={t('subscribe-button')}
+         children={t('subscribe-button')}
       />
       <Typography className={classes.sectionHeader} align="center" variant="h4">
         {t("questions")}
@@ -68,7 +68,7 @@ const Donate = () => {
       </Typography>
       <Button 
         variant='outlined'
-        text={t('send-a-message')}
+        children={t('send-a-message')}
       />
     </Container>
   );

@@ -94,7 +94,7 @@ const FaqEdit = ({ match, history }) => {
           <>
             <span>{identifier}</span>
             <Button 
-              text='Edit'
+              children='Edit'
               icon='edit'
               iconPosition='start'
               onClick={handleEditIdentifier}
@@ -110,13 +110,13 @@ const FaqEdit = ({ match, history }) => {
               onChange={handleIdentifier}            
             />
             <Button 
-              text='Update'
+              children='Update'
               icon='save'
               iconPosition='start'
               onClick={handleUpdateIdentifier}
             />
             <Button 
-              text='Cancel'
+              children='Cancel'
               icon='cancel'
               iconPosition='start'
               onClick={handleEditIdentifier}

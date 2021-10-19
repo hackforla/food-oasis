@@ -231,7 +231,7 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
           <OriginCoordinatesContext.Consumer>
             {(origin) => (
               <Button 
-                text='Directions'
+                children='Directions'
                 variant='outlined'
                 size='small'
                 className={classes.button}
@@ -253,7 +253,7 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
           </OriginCoordinatesContext.Consumer>
           {mainNumber && (
             <Button 
-              text='Call'
+              children='Call'
               variant='outlined'
               size='small'
               className={classes.button}
@@ -267,7 +267,7 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
             />
           )}
           <Button 
-            text='Details'
+            children='Details'
             variant="outlined"
             size="small"
             className={classes.button}

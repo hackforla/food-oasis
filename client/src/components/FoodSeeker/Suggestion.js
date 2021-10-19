@@ -274,7 +274,7 @@ function Suggestion(props) {
         </Grid>
       </Grid>
       <Button
-        text="Send Suggestions"
+        children="Send Suggestions"
         fullWidth
         onClick={handleSubmit}
         className={classes.submit}

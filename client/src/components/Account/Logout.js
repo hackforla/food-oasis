@@ -27,7 +27,7 @@ function LogoutButton({ setUser, setToast }) {
   const history = useHistory();
   return (
     <Button 
-      text='Logout'
+      children='Logout'
       onClick={() => logout(setUser, setToast, history)}
     />
   );

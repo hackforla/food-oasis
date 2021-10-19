@@ -20,11 +20,11 @@ const News = () => {
       <div>{t("title")}</div>
       <div>{t("description")}</div>
       <Button 
-        text='es'
+        children='es'
         onClick={() => changeLanguage("es")}
       />
       <Button 
-        text='en'
+        children='en'
         onClick={() => changeLanguage("en")}
       />
     </>

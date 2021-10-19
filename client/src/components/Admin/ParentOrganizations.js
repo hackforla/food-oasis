@@ -139,7 +139,7 @@ function ParentOrganizations(props) {
     <Container maxWidth="sm">
       <div className={classes.heading}>
         <h2 style={{ margin: 0 }}>Parent Organizations</h2>
-        <Button onClick={handleAddNew}>Add New</Button>
+        <Button children="Add New" onClick={handleAddNew} />
       </div>
 
       {deleteError && (
@@ -289,12 +289,8 @@ function ParentOrganizations(props) {
                     <div className={classes.error}>Something went wrong.</div>
                   )}
                   <Box mt={3} display="flex" justifyContent="space-between">
-                    <Button color="white" onClick={() => setActiveOrg(null)}>
-                      Cancel
-                    </Button>
-                    <Button type="submit" disabled={isSubmitting}>
-                      Save
-                    </Button>
+                    <Button children="Cancel" color="white" onClick={() => setActiveOrg(null)} />
+                    <Button children="Save" type="submit" disabled={isSubmitting} />
                   </Box>
                 </form>
               )}

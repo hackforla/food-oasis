@@ -216,7 +216,7 @@ const ResultsFilters = ({
             <Tooltip title="Re-center">
               <span>
                 <Button
-                  text=""
+                  children=""
                   onClick={() => {
                     analytics.postEvent("recenterMap", {});
                     setOrigin(userCoordinates);

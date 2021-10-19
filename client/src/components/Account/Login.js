@@ -193,7 +193,7 @@ const LoginForm = (props) => {
                 />
                 <Button
                   type="submit"
-                  text='Sign In'
+                  children='Sign In'
                   fullWidth
                   className={classes.submit}
                   disabled={isSubmitting}

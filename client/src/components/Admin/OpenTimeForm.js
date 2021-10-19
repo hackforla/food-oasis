@@ -89,7 +89,7 @@ function OpenTimeForm(props) {
             : null}
           <Button 
             type='button'
-            text='Add Hours'
+            children='Add Hours'
             onClick={addHours}
             icon='add'
             iconPosition='start'

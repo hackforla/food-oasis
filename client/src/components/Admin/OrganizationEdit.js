@@ -956,7 +956,7 @@ const OrganizationEdit = (props) => {
                               <Button
                                 icon="search"
                                 iconPosition="start"
-                                text={
+                                children={
                                   (geocodeResults && geocodeResults.length) < 1
                                     ? "Get Coordinates"
                                     : "Close"
@@ -1013,7 +1013,7 @@ const OrganizationEdit = (props) => {
                                 <Grid item xs={2}>
                                   <Button
                                     type="button"
-                                    text=""
+                                    children=""
                                     onClick={() => {
                                       setFieldValue(
                                         "latitude",
@@ -1845,7 +1845,7 @@ const OrganizationEdit = (props) => {
                         >
                           <Button
                             type="submit"
-                            text="Save Progress"
+                            children="Save Progress"
                             className={classes.submit}
                             disabled={isSubmitting || isUnchanged(values)}
                             // style={{ margin: "auto 0.5em" }}
@@ -1864,7 +1864,7 @@ const OrganizationEdit = (props) => {
                         >
                           <Button
                             type="button"
-                            text="Needs Verfication"
+                            children="Needs Verfication"
                             onClick={() => {
                               setFieldValue("reviewedLoginId", "");
                               setFieldValue("reviewedUser", "");
@@ -1903,7 +1903,7 @@ const OrganizationEdit = (props) => {
                         >
                           <Button
                             type="button"
-                            text="(Re-)Assign"
+                            children="(Re-)Assign"
                             onClick={() => {
                               handleAssignDialogOpen({
                                 callback: (loginId) => {
@@ -1943,7 +1943,7 @@ const OrganizationEdit = (props) => {
                         >
                           <Button
                             type="button"
-                            text="Request Changes"
+                            children="Request Changes"
                             onClick={() => {
                               setFieldValue(
                                 "reviewedUser",
@@ -1982,7 +1982,7 @@ const OrganizationEdit = (props) => {
                         >
                           <Button
                             type="button"
-                            text="Approve"
+                            children="Approve"
                             onClick={() => {
                               setFieldValue("approvedDate", moment());
                               setFieldValue(
@@ -2017,7 +2017,7 @@ const OrganizationEdit = (props) => {
                         >
                           <Button
                             type="button"
-                            text="Delete"
+                            children="Delete"
                             onClick={() => {
                               handleConfirmDialogOpen({
                                 callback: () => {
@@ -2046,7 +2046,7 @@ const OrganizationEdit = (props) => {
                         >
                           <Button
                             type="submit"
-                            text="Save Progress"
+                            children="Save Progress"
                             className={classes.submit}
                             disabled={isSubmitting || isUnchanged(values)}
                           />
@@ -2064,7 +2064,7 @@ const OrganizationEdit = (props) => {
                         >
                           <Button
                             type="button"
-                            text="Hand Off"
+                            children="Hand Off"
                             onClick={() => {
                               setFieldValue("assignedLoginId", "");
                               setFieldValue("assignedUser", "");
@@ -2096,7 +2096,7 @@ const OrganizationEdit = (props) => {
                         >
                           <Button
                             type="button"
-                            text="Submit For Review"
+                            children="Submit For Review"
                             onClick={() => {
                               setFieldValue("submittedDate", moment());
                               setFieldValue(

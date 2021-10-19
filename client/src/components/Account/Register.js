@@ -164,7 +164,7 @@ const form = (props) => {
             </Grid>
             <Button
               type="submit"
-              text="Register"
+              children="Register"
               fullWidth
               className={classes.submit}
               disabled={isSubmitting}

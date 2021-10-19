@@ -250,7 +250,7 @@ const Home = ({
                 browserLocation={browserLocation}
               /> */}
               <Button 
-                text='Use my current location'
+                children='Use my current location'
                 icon='locationOn'
                 iconPosition='start'
                 className={classes.locationBtn}

@@ -382,14 +382,11 @@ function Suggestions(props) {
                     )}
                     <Box mt={3} display="flex" justifyContent="space-between">
                       <Button
+                        children="Cancel"
                         color="default"
                         onClick={() => setActiveOrg(null)}
-                      >
-                        Cancel
-                      </Button>
-                      <Button type="submit" disabled={isSubmitting}>
-                        Save
-                      </Button>
+                      />
+                      <Button children="Save" type="submit" disabled={isSubmitting} />
                     </Box>
                   </form>
                 </div>

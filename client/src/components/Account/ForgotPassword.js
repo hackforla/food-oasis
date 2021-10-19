@@ -155,7 +155,7 @@ const ForgotPassword = (props) => {
                 />
                 <Button 
                   type="submit"
-                  text='Send Reset Link to Email'
+                  children='Send Reset Link to Email'
                   fullWidth
                   className={classes.submit}
                   disabled={isSubmitting}                

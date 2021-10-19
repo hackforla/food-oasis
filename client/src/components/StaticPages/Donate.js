@@ -239,7 +239,7 @@ const Donate = () => {
             those costs.
           </p>
           <Button 
-            text='Donate'
+            children='Donate'
             className={classes.btnOutline}
             onClick={handleShowDonationDialog}
           />

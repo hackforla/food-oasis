@@ -93,7 +93,7 @@ const ImportFileGuide = (props) => {
           <br />
           <Button 
             type='button'
-            text='Submit'
+            children='Submit'
             onClick={handleUpload}
           />
         </section>
@@ -108,7 +108,7 @@ const ImportFileGuide = (props) => {
           </ul>
           <Button 
             type='button'
-            text='Download CSV template'
+            children='Download CSV template'
             onClick={handleDownload}
           />
         </section>

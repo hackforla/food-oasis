@@ -168,7 +168,7 @@ const ResetPassword = (props) => {
                 />
                 <Button
                   type="submit"
-                  text='Reset Password'
+                  children='Reset Password'
                   fullWidth
                   className={classes.submit}
                   disabled={isSubmitting}

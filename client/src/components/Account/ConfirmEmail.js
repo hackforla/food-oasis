@@ -116,7 +116,7 @@ const ConfirmEmail = (props) => {
                 />
                 <Button
                   type="submit"
-                  text='Re-send confirmation email'
+                  children='Re-send confirmation email'
                   fullWidth
                   className={classes.submit}
                 />

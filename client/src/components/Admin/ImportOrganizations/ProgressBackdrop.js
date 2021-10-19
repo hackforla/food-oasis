@@ -50,12 +50,11 @@ function ProgressBackdrop(props) {
         </Typography>
       )}
       {/* <Button
+        children="Cancel"
         onClick={handleCancelUpload}
         className={classes.buttonCancel}
         variant="contained"
-      >
-        Cancel
-      </Button> */}
+      /> */}
     </Backdrop>
   );
 }

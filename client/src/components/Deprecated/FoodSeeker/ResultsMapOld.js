@@ -285,7 +285,7 @@ function Map({
             <Button
               variant="outlined"
               size="small"
-              text="Search this area"
+              children="Search this area"
               onClick={searchArea}
               className={classes.searchButton}
             />

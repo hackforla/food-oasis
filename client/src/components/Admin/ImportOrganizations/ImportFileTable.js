@@ -61,12 +61,12 @@ const ImportFileTable = (props) => {
         </Typography>
         <Button 
           type='button'
-          text='Cancel'
+          children='Cancel'
           onClick={handleCancel}
         />
         <Button 
           type='button'
-          text='Import'
+          children='Import'
           onClick={handleImportAction}
         />
       </div>

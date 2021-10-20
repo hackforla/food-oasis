@@ -26,10 +26,7 @@ export const logout = (setUser, setToast, history) => {
 function LogoutButton({ setUser, setToast }) {
   const history = useHistory();
   return (
-    <Button 
-      text='Logout'
-      onClick={() => logout(setUser, setToast, history)}
-    />
+    <Button onClick={() => logout(setUser, setToast, history)}>Logout</Button>
   );
 }
 

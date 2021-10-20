@@ -78,18 +78,17 @@ function ImportDialog(props) {
         </RadioGroup>
       </FormControl>
       <DialogActions>
-        <Button 
-          type='button'
-          text='Cancel'
-          onClick={handleImportAction}
-        />
-        <Button 
-          type='button'
-          text='Submit'
+        <Button type="button" onClick={handleImportAction}>
+          Cancel
+        </Button>
+        <Button
+          type="button"
           autoFocus
           onClick={handleImport}
           disabled={!importData.action}
-        />
+        >
+          Submit
+        </Button>
       </DialogActions>
     </Dialog>
   );

@@ -34,8 +34,12 @@ function ConfirmDialog(props) {
         <Typography>{props.message}</Typography>
       </DialogContent>
       <DialogActions>
-        <Button type="button" text="Cancel" autoFocus onClick={handleCancel} />
-        <Button type="button" text="Confirm Delete" onClick={handleAssign} />
+        <Button type="button" autoFocus onClick={handleCancel}>
+          Cancel
+        </Button>
+        <Button type="button" onClick={handleAssign}>
+          Confirm Delete
+        </Button>
       </DialogActions>
     </Dialog>
   );

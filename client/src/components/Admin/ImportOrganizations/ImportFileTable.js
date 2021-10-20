@@ -59,16 +59,12 @@ const ImportFileTable = (props) => {
           Review your import below and click "Import" when you're ready to
           update your records.
         </Typography>
-        <Button 
-          type='button'
-          text='Cancel'
-          onClick={handleCancel}
-        />
-        <Button 
-          type='button'
-          text='Import'
-          onClick={handleImportAction}
-        />
+        <Button type="button" onClick={handleCancel}>
+          Cancel
+        </Button>
+        <Button type="button" onClick={handleImportAction}>
+          Import
+        </Button>
       </div>
       <TableContainer className={classes.tableContainer}>
         <Table>

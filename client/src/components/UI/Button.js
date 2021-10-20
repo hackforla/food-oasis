@@ -51,7 +51,7 @@ const Button = ({ children, text, icon, iconPosition, ...props }) => {
 };
 
 Button.propTypes = {
-  text: PropTypes.string.isRequired,
+  children: PropTypes.string.isRequired,
   kind: PropTypes.string,
   icon: PropTypes.oneOf([
     "add",

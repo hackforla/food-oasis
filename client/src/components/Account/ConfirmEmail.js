@@ -101,7 +101,7 @@ const ConfirmEmail = (props) => {
                 registration confirmation email.
               </p>
               <form onSubmit={resendConfirmationEmail}>
-                <Input 
+                <Input
                   variant="outlined"
                   required
                   fullWidth
@@ -112,14 +112,11 @@ const ConfirmEmail = (props) => {
                   value={email}
                   onChange={(evt) => {
                     setEmail(evt.target.value);
-                  }}                
+                  }}
                 />
-                <Button
-                  type="submit"
-                  text='Re-send confirmation email'
-                  fullWidth
-                  className={classes.submit}
-                />
+                <Button type="submit" fullWidth className={classes.submit}>
+                  Re-send confirmation email
+                </Button>
               </form>
             </div>
           )}

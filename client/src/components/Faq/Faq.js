@@ -147,20 +147,19 @@ const Faq = () => {
           (user.isAdmin || user.isCoordinator) && (
             <div className={classes.buttonsContainer}>
               <Link className={classes.link} to="/faqs/add">
-                <Button 
-                  text='Add'
-                  icon='add'
-                  iconPosition='start'
-                />
+                <Button icon="add" iconPosition="start">
+                  Add
+                </Button>
+                >
               </Link>
-              <Button 
+              <Button
                 text={
                   reorder
                     ? "Click to Stop Reordering Faqs"
                     : "Click to Reorder Faqs"
                 }
-                icon='edit'
-                iconPosition='start'
+                icon="edit"
+                iconPosition="start"
                 onClick={onReorderClick}
                 color={reorder ? "secondary" : "primary"}
               />

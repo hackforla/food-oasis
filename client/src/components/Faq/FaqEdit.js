@@ -93,34 +93,37 @@ const FaqEdit = ({ match, history }) => {
         {!editIdentifier ? (
           <>
             <span>{identifier}</span>
-            <Button 
-              text='Edit'
-              icon='edit'
-              iconPosition='start'
+            <Button
+              icon="edit"
+              iconPosition="start"
               onClick={handleEditIdentifier}
-            />
+            >
+              Edit
+            </Button>
           </>
         ) : (
           <>
-            <Input 
+            <Input
               type="text"
               name="identifier"
               placeholder="Identifier"
               value={identifier}
-              onChange={handleIdentifier}            
+              onChange={handleIdentifier}
             />
-            <Button 
-              text='Update'
-              icon='save'
-              iconPosition='start'
+            <Button
+              icon="save"
+              iconPosition="start"
               onClick={handleUpdateIdentifier}
-            />
-            <Button 
-              text='Cancel'
-              icon='cancel'
-              iconPosition='start'
+            >
+              Update
+            </Button>
+            <Button
+              icon="cancel"
+              iconPosition="start"
               onClick={handleEditIdentifier}
-            />
+            >
+              Cancel
+            </Button>
           </>
         )}
       </h3>

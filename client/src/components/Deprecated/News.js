@@ -19,14 +19,8 @@ const News = () => {
     <>
       <div>{t("title")}</div>
       <div>{t("description")}</div>
-      <Button 
-        text='es'
-        onClick={() => changeLanguage("es")}
-      />
-      <Button 
-        text='en'
-        onClick={() => changeLanguage("en")}
-      />
+      <Button onClick={() => changeLanguage("es")}>es</Button>
+      <Button onClick={() => changeLanguage("en")}>en</Button>
     </>
   );
 };

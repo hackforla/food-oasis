@@ -48,14 +48,14 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "20px",
     marginBottom: ".25em",
     color: "#4D4D4D",
-    textAlign: "center"
+    textAlign: "center",
   },
   label: {
     textAlign: "center",
     marginTop: 10,
     marginBottom: "0.5em",
     padding: "0 5vw",
-    
+
     [theme.breakpoints.down("sm")]: {
       padding: "0 5vw",
     },
@@ -249,13 +249,14 @@ const Home = ({
                 origin={origin}
                 browserLocation={browserLocation}
               /> */}
-              <Button 
-                text='Use my current location'
-                icon='locationOn'
-                iconPosition='start'
+              <Button
+                icon="locationOn"
+                iconPosition="start"
                 className={classes.locationBtn}
                 onClick={useMyLocationTrigger}
-              />
+              >
+                Use my current location
+              </Button>
             </Box>
             <Box className={classes.inputContainer}>
               <Link

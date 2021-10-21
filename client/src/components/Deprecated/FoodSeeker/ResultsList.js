@@ -90,11 +90,9 @@ const ResultsList = ({
       {status === "loaded" && stakeholders.length === 0 && (
         <div className={classes.emptyResult}>
           <p>Sorry, we don&apos;t have any results for this area.</p>
-          <Button 
-            text='Click here to reset the search'
-            onClick={handleReset}
-            disableElevation
-          />
+          <Button onClick={handleReset} disableElevation>
+            Click here to reset the search
+          </Button>
         </div>
       )}
       {stakeholders && selectedStakeholder && !selectedStakeholder.inactive ? (

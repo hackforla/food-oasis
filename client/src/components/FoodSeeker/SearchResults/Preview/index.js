@@ -230,10 +230,9 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
         <div className={classes.buttons}>
           <OriginCoordinatesContext.Consumer>
             {(origin) => (
-              <Button 
-                text='Directions'
-                variant='outlined'
-                size='small'
+              <Button
+                variant="outlined"
+                size="small"
                 className={classes.button}
                 onClick={() => {
                   analytics.postEvent("getDirections", {
@@ -248,14 +247,15 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
                     })
                   );
                 }}
-              />
+              >
+                Directions
+              </Button>
             )}
           </OriginCoordinatesContext.Consumer>
           {mainNumber && (
-            <Button 
-              text='Call'
-              variant='outlined'
-              size='small'
+            <Button
+              variant="outlined"
+              size="small"
               className={classes.button}
               onClick={() => {
                 analytics.postEvent("dialPhone", {
@@ -264,15 +264,18 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
                 });
                 window.open(`tel:${mainNumber.value}`);
               }}
-            />
+            >
+              Call
+            </Button>
           )}
-          <Button 
-            text='Details'
+          <Button
             variant="outlined"
             size="small"
             className={classes.button}
             disabled={stakeholder.inactive}
-          />
+          >
+            Details
+          </Button>
         </div>
       </div>
     </div>

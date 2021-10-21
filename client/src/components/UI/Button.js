@@ -22,7 +22,6 @@ Base.propTypes = {
   onChange: PropTypes.func,
   color: PropTypes.string,
   variant: PropTypes.string,
-  ariaLabel: PropTypes.string,
   type: PropTypes.string,
 };
 

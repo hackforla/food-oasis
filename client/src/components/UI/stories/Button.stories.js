@@ -12,9 +12,7 @@ storiesOf("Components/Button", module)
     <>
       <h1>Button</h1>
       <h2>Default</h2>
-      <Button 
-        text='Confirm'
-      />
+      <Button>Confirm</Button>
       <br />
       <br />
       <br />
@@ -98,69 +96,47 @@ icon: PropTypes.oneOf([
       <h2>IconButton</h2>
       <Grid container>
         <Grid item xs>
-          <IconButton 
-            icon='cancel'
-          />
+          <IconButton icon="cancel" />
           <p>cancel</p>
         </Grid>
         <Grid item xs>
-          <IconButton 
-            icon='remove'
-          />
+          <IconButton icon="remove" />
           <p>remove</p>
         </Grid>
         <Grid item xs>
-          <IconButton 
-            icon='add'
-          />
+          <IconButton icon="add" />
           <p>add</p>
         </Grid>
         <Grid item xs>
-          <IconButton 
-            icon='delete'
-          />
+          <IconButton icon="delete" />
           <p>delete</p>
         </Grid>
         <Grid item xs>
-          <IconButton 
-            icon='close'
-          />
+          <IconButton icon="close" />
           <p>close</p>
         </Grid>
         <Grid item xs>
-          <IconButton 
-            icon='save'
-          />
+          <IconButton icon="save" />
           <p>save</p>
         </Grid>
         <Grid item xs>
-          <IconButton 
-            icon='edit'
-          />
+          <IconButton icon="edit" />
           <p>edit</p>
         </Grid>
         <Grid item xs>
-          <IconButton 
-            icon='search'
-          />
+          <IconButton icon="search" />
           <p>search</p>
         </Grid>
         <Grid item xs>
-          <IconButton 
-            icon='details'
-          />
+          <IconButton icon="details" />
           <p>details</p>
         </Grid>
         <Grid item xs>
-          <IconButton 
-            icon='arrowUp'
-          />
+          <IconButton icon="arrowUp" />
           <p>arrowUp</p>
         </Grid>
         <Grid item xs>
-          <IconButton 
-            icon='arrowDown'
-          />
+          <IconButton icon="arrowDown" />
           <p>arrowDown</p>
         </Grid>
       </Grid>
@@ -175,7 +151,6 @@ icon: PropTypes.oneOf([
       <h3>Props</h3>
       <SyntaxHighlighter language="javascript" style={vscDarkPlus}>
         {`
-ariaLabel: PropTypes.string.isRequired,
 kind: PropTypes.string.isRequired,
 onChange: PropTypes.func,
 color: PropTypes.string

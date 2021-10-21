@@ -238,11 +238,12 @@ const Donate = () => {
             update. Your tax-deductible donation would help us offset some of
             those costs.
           </p>
-          <Button 
-            text='Donate'
+          <Button
             className={classes.btnOutline}
             onClick={handleShowDonationDialog}
-          />
+          >
+            Donate
+          </Button>
           {showDonationDialog && (
             <DonationDialog
               showDonationDialog={showDonationDialog}
@@ -330,8 +331,8 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
             </Typography>
           </Grid>
           <Grid item>
-            <IconButton 
-              icon='close'
+            <IconButton
+              icon="close"
               className={classes.dialogCloseButton}
               onClick={handleCloseDonationDialog}
             />

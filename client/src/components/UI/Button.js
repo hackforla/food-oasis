@@ -26,47 +26,43 @@ Base.propTypes = {
   type: PropTypes.string,
 };
 
-const Button = ({ children, text, icon, iconPosition, ...props }) => {
-  const buttonText = children || text;
-  if (icon !== undefined && iconPosition !== undefined) {
+const Button = ({ children, icon, iconPosition, ...props }) => {
+  if (icon) {
     let Icon = ICON_DICT[icon];
-
-    if (iconPosition === "start") {
-      return (
-        <Base startIcon={<Icon />} {...props}>
-          {buttonText}
-        </Base>
-      );
-    }
-    if (iconPosition === "end") {
-      return (
-        <Base endIcon={<Icon />} {...props}>
-          {buttonText}
-        </Base>
-      );
-    }
+    let position =
+      iconPosition === "end" ? { endIcon: <Icon /> } : { startIcon: <Icon /> };
+    return (
+      <Base {...props} {...position}>
+        {children}
+      </Base>
+    );
   }
 
-  return <Base {...props}>{buttonText}</Base>;
+  return <Base {...props}>{children}</Base>;
 };
 
 Button.propTypes = {
-  text: PropTypes.string.isRequired,
+  children: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
   kind: PropTypes.string,
+  iconPosition: PropTypes.oneOf(["end", "start"]), // will default to "start" if not provided
   icon: PropTypes.oneOf([
     "add",
-    "delete",
+    "arrowUp",
+    "arrowDown",
+    "cancel",
     "check",
     "close",
-    "save",
+    "delete",
+    "details",
     "edit",
-    "cancel",
     "locationOn",
     "locationSearching",
     "menu",
-    "search",
-    "details",
     "remove",
+    "save",
+    "search",
+    "wrapText",
   ]),
 };
 

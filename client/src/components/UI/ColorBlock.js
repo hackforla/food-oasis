@@ -4,6 +4,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 
+
 const useStyles = makeStyles({
   root: {
     width: 150,
@@ -16,7 +17,7 @@ const useStyles = makeStyles({
   }
 });
 
-function IconColor({ hexCode, hexPurpose}) {
+function ColorBlock({ hexCode, description}) {
   const props = { backgroundColor: `${hexCode}` }
   const classes = useStyles(props);
   
@@ -24,7 +25,7 @@ function IconColor({ hexCode, hexPurpose}) {
       <Card className={classes.root}>
         <Card className={classes.color}>
         </Card>
-        <CardContent>
+        <CardContent> 
           <Typography 
             align="center"
             variant="overline" 
@@ -34,11 +35,11 @@ function IconColor({ hexCode, hexPurpose}) {
           {hexCode}
           </Typography>
           <Typography variant="caption" color="textSecondary" component="p" align="center">
-          {hexPurpose}
+          {description}
           </Typography>
         </CardContent>
       </Card>
   );
 }
 
-export default IconColor;
+export default ColorBlock;

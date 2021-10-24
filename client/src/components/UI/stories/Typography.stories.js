@@ -2,7 +2,7 @@ import React from "react";
 import { storiesOf } from "@storybook/react";
 import { decorators } from "../helpers";
 
-storiesOf("Components/Colors", module)
+storiesOf("Components/Typography", module)
   .addDecorator(decorators)
   .add("Overview", () => {
     const App = () => {

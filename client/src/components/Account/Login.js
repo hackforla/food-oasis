@@ -193,11 +193,12 @@ const LoginForm = (props) => {
                 />
                 <Button
                   type="submit"
-                  text='Sign In'
                   fullWidth
                   className={classes.submit}
                   disabled={isSubmitting}
-                />
+                >
+                  Sign In
+                </Button>
                 <Grid container>
                   <Grid item xs>
                     <Link

@@ -116,10 +116,12 @@ const ConfirmEmail = (props) => {
                 />
                 <Button
                   type="submit"
-                  text='Re-send confirmation email'
+                  text=''
                   fullWidth
                   className={classes.submit}
-                />
+                >
+                  Re-send confirmation email
+                </Button>
               </form>
             </div>
           )}

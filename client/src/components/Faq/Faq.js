@@ -148,22 +148,22 @@ const Faq = () => {
             <div className={classes.buttonsContainer}>
               <Link className={classes.link} to="/faqs/add">
                 <Button 
-                  text='Add'
                   icon='add'
                   iconPosition='start'
-                />
+                >
+                  Add
+                </Button>
               </Link>
               <Button 
-                text={
-                  reorder
-                    ? "Click to Stop Reordering Faqs"
-                    : "Click to Reorder Faqs"
-                }
                 icon='edit'
                 iconPosition='start'
                 onClick={onReorderClick}
                 color={reorder ? "secondary" : "primary"}
-              />
+              >
+                { reorder
+                    ? "Click to Stop Reordering Faqs"
+                    : "Click to Reorder Faqs" }
+              </Button>
             </div>
           )
         }

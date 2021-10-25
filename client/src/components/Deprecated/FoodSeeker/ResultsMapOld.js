@@ -285,10 +285,11 @@ function Map({
             <Button
               variant="outlined"
               size="small"
-              text="Search this area"
               onClick={searchArea}
               className={classes.searchButton}
-            />
+            >
+              Search this area
+            </Button>
           )}
           <Source
             id="stakeholders"

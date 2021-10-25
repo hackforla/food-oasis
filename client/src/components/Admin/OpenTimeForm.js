@@ -89,11 +89,12 @@ function OpenTimeForm(props) {
             : null}
           <Button 
             type='button'
-            text='Add Hours'
             onClick={addHours}
             icon='add'
             iconPosition='start'
-          />
+          >
+            Add Hours
+          </Button>
         </CardContent>
       </Card>
     </MuiPickersUtilsProvider>

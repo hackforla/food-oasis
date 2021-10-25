@@ -231,7 +231,6 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
           <OriginCoordinatesContext.Consumer>
             {(origin) => (
               <Button 
-                text='Directions'
                 variant='outlined'
                 size='small'
                 className={classes.button}
@@ -248,12 +247,13 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
                     })
                   );
                 }}
-              />
+              >
+                Directions
+              </Button>
             )}
           </OriginCoordinatesContext.Consumer>
           {mainNumber && (
             <Button 
-              text='Call'
               variant='outlined'
               size='small'
               className={classes.button}
@@ -264,15 +264,18 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
                 });
                 window.open(`tel:${mainNumber.value}`);
               }}
-            />
+            >
+              Call
+            </Button>
           )}
           <Button 
-            text='Details'
             variant="outlined"
             size="small"
             className={classes.button}
             disabled={stakeholder.inactive}
-          />
+          >
+            Details
+          </Button>
         </div>
       </div>
     </div>

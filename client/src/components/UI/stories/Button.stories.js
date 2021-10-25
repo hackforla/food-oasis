@@ -12,9 +12,9 @@ storiesOf("Components/Button", module)
     <>
       <h1>Button</h1>
       <h2>Default</h2>
-      <Button 
-        text='Confirm'
-      />
+      <Button>
+        Confirm
+      </Button>
       <br />
       <br />
       <br />

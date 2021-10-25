@@ -47,8 +47,8 @@ function MessageDialog(props) {
         />
       </DialogContent>
       <DialogActions>
-        <Button type="button" text="Cancel" onClick={handleCancel} />
-        <Button type="button" text="OK" onClick={handleSubmit} />
+        <Button type="button" onClick={handleCancel}>Cancel</Button>
+        <Button type="button" onClick={handleSubmit}>OK</Button>
       </DialogActions>
     </Dialog>
   );

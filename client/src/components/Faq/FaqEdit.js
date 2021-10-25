@@ -94,11 +94,12 @@ const FaqEdit = ({ match, history }) => {
           <>
             <span>{identifier}</span>
             <Button 
-              text='Edit'
               icon='edit'
               iconPosition='start'
               onClick={handleEditIdentifier}
-            />
+            >
+              Edit
+            </Button>
           </>
         ) : (
           <>
@@ -110,17 +111,19 @@ const FaqEdit = ({ match, history }) => {
               onChange={handleIdentifier}            
             />
             <Button 
-              text='Update'
               icon='save'
               iconPosition='start'
               onClick={handleUpdateIdentifier}
-            />
+            >
+              Update
+            </Button>
             <Button 
-              text='Cancel'
               icon='cancel'
               iconPosition='start'
               onClick={handleEditIdentifier}
-            />
+            >
+              Cancel
+            </Button>
           </>
         )}
       </h3>

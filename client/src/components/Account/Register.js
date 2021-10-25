@@ -164,11 +164,12 @@ const form = (props) => {
             </Grid>
             <Button
               type="submit"
-              text="Register"
               fullWidth
               className={classes.submit}
               disabled={isSubmitting}
-            />
+            >
+              Register
+            </Button>
             <Grid container justifyContent="center">
               <Grid item>
                 <Link href="/login" variant="body2">

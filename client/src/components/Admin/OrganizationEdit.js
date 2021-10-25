@@ -1023,9 +1023,7 @@ const OrganizationEdit = (props) => {
                                       );
                                       setGeocodeResults([]);
                                     }}
-                                  >
-                                    where is this button?
-                                  </Button>
+                                  ></Button>
                                 </Grid>
                               </Grid>
                             </div>

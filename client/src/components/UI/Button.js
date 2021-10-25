@@ -22,7 +22,6 @@ Base.propTypes = {
   onChange: PropTypes.func,
   color: PropTypes.string,
   variant: PropTypes.string,
-  ariaLabel: PropTypes.string,
   type: PropTypes.string,
 };
 
@@ -33,20 +32,20 @@ const Button = ({ children, icon, iconPosition, ...props }) => {
     if (iconPosition === "start") {
       return (
         <Base startIcon={<Icon />} {...props}>
-          {...children}
+          {children}
         </Base>
       );
     }
     if (iconPosition === "end") {
       return (
         <Base endIcon={<Icon />} {...props}>
-          {...children}
+          {children}
         </Base>
       );
     }
   }
 
-  return <Base {...props}>{...children}</Base>;
+  return <Base {...props}>{children}</Base>;
 };
 
 Button.propTypes = {

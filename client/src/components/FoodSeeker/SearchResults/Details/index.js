@@ -353,10 +353,7 @@ const StakeholderDetails = ({ selectedStakeholder, onClose, setToast }) => {
             </Button>
           )}
         </OriginCoordinatesContext.Consumer>
-        <Button
-          variant="outlined"
-          onClick={handleSuggestionDialogOpen}
-        >
+        <Button variant="outlined" onClick={handleSuggestionDialogOpen}>
           Send Correction
         </Button>
       </div>

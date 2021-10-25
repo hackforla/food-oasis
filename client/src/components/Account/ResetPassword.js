@@ -133,7 +133,7 @@ const ResetPassword = (props) => {
                   handleSubmit(evt);
                 }}
               >
-                <Input 
+                <Input
                   variant="outlined"
                   margin="normal"
                   fullWidth
@@ -148,7 +148,7 @@ const ResetPassword = (props) => {
                   helperText={touched.password ? errors.password : ""}
                   error={touched.password && Boolean(errors.password)}
                 />
-                <Input 
+                <Input
                   variant="outlined"
                   margin="normal"
                   fullWidth
@@ -164,7 +164,7 @@ const ResetPassword = (props) => {
                   }
                   error={
                     touched.passwordConfirm && Boolean(errors.passwordConfirm)
-                  }                
+                  }
                 />
                 <Button
                   type="submit"

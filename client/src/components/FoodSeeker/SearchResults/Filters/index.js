@@ -224,7 +224,9 @@ const ResultsFilters = ({
                   className={classes.nearbySearch}
                   icon="locationSearching"
                   iconPosition="start"
-                ></Button>
+                >
+                  where is this button?
+                </Button>
               </span>
             </Tooltip>
           </div>

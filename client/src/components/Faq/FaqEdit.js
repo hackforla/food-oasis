@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import Container from "@material-ui/core/Container";
 import * as faqService from "../../services/faq-service";
 import FaqEditForm from "./FaqEditForm";
-import { Button, Input } from '../../components/UI';
+import { Button, Input } from "../../components/UI";
 
 const FaqEdit = ({ match, history }) => {
   const { i18n } = useTranslation();
@@ -46,10 +46,8 @@ const FaqEdit = ({ match, history }) => {
           identifier: faqIdentifier,
         });
 
-        let {
-          addedLanguages,
-          needToAddLanguages,
-        } = checkHowManySavedLanguageTexts(fetchedFaq);
+        let { addedLanguages, needToAddLanguages } =
+          checkHowManySavedLanguageTexts(fetchedFaq);
 
         setAddedFaq(addedLanguages);
         setNeedToAddFaqs(needToAddLanguages);
@@ -93,9 +91,9 @@ const FaqEdit = ({ match, history }) => {
         {!editIdentifier ? (
           <>
             <span>{identifier}</span>
-            <Button 
-              icon='edit'
-              iconPosition='start'
+            <Button
+              icon="edit"
+              iconPosition="start"
               onClick={handleEditIdentifier}
             >
               Edit
@@ -103,23 +101,23 @@ const FaqEdit = ({ match, history }) => {
           </>
         ) : (
           <>
-            <Input 
+            <Input
               type="text"
               name="identifier"
               placeholder="Identifier"
               value={identifier}
-              onChange={handleIdentifier}            
+              onChange={handleIdentifier}
             />
-            <Button 
-              icon='save'
-              iconPosition='start'
+            <Button
+              icon="save"
+              iconPosition="start"
               onClick={handleUpdateIdentifier}
             >
               Update
             </Button>
-            <Button 
-              icon='cancel'
-              iconPosition='start'
+            <Button
+              icon="cancel"
+              iconPosition="start"
               onClick={handleEditIdentifier}
             >
               Cancel

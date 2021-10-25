@@ -39,8 +39,12 @@ function AssignDialog(props) {
         />
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={handleCancel}>Cancel</Button>
-        <Button onClick={handleAssign} disabled={!accountId}>Assign</Button>
+        <Button autoFocus onClick={handleCancel}>
+          Cancel
+        </Button>
+        <Button onClick={handleAssign} disabled={!accountId}>
+          Assign
+        </Button>
       </DialogActions>
     </Dialog>
   );

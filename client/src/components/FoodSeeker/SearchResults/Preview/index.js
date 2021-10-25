@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { makeStyles } from "@material-ui/core/styles";
-import { Button } from '../../../../components/UI';
+import { Button } from "../../../../components/UI";
 
 import {
   MEAL_PROGRAM_CATEGORY_ID,
@@ -81,10 +81,10 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "16px",
   },
   button: {
-    '&:hover': {
-      background:theme.palette.primary.main,
-    }
-  }
+    "&:hover": {
+      background: theme.palette.primary.main,
+    },
+  },
 }));
 
 const isLastOccurrenceInMonth = (currentDay) => {
@@ -230,9 +230,9 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
         <div className={classes.buttons}>
           <OriginCoordinatesContext.Consumer>
             {(origin) => (
-              <Button 
-                variant='outlined'
-                size='small'
+              <Button
+                variant="outlined"
+                size="small"
                 className={classes.button}
                 onClick={() => {
                   analytics.postEvent("getDirections", {
@@ -253,9 +253,9 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
             )}
           </OriginCoordinatesContext.Consumer>
           {mainNumber && (
-            <Button 
-              variant='outlined'
-              size='small'
+            <Button
+              variant="outlined"
+              size="small"
               className={classes.button}
               onClick={() => {
                 analytics.postEvent("dialPhone", {
@@ -268,7 +268,7 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
               Call
             </Button>
           )}
-          <Button 
+          <Button
             variant="outlined"
             size="small"
             className={classes.button}

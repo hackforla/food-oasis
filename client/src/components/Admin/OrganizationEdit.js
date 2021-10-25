@@ -964,8 +964,8 @@ const OrganizationEdit = (props) => {
                                 }}
                               >
                                 {(geocodeResults && geocodeResults.length) < 1
-                                    ? "Get Coordinates"
-                                    : "Close"}
+                                  ? "Get Coordinates"
+                                  : "Close"}
                               </Button>
                             </Grid>
                           </BigTooltip>
@@ -1023,7 +1023,9 @@ const OrganizationEdit = (props) => {
                                       );
                                       setGeocodeResults([]);
                                     }}
-                                  ></Button>
+                                  >
+                                    where is this button?
+                                  </Button>
                                 </Grid>
                               </Grid>
                             </div>

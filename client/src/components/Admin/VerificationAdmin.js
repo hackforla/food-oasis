@@ -18,7 +18,7 @@ import AssignDialog from "./AssignDialog";
 import NeedsVerificationDialog from "./ui/MessageConfirmDialog";
 import SearchCriteria from "./SearchCriteria";
 import SearchCriteriaDisplay from "./SearchCriteriaDisplay";
-import { Button } from '../../components/UI';
+import { Button } from "../../components/UI";
 
 const CRITERIA_TOKEN = "verificationAdminCriteria";
 
@@ -72,11 +72,11 @@ const DialogTitle = (props) => {
     <MuiDialogTitle disableTypography className={classes.root} {...other}>
       <Typography variant="h6">{children}</Typography>
       {onClose ? (
-        <Button 
-          type='button'
-          icon='search'
-          iconPosition='start'
-          kind='close'
+        <Button
+          type="button"
+          icon="search"
+          iconPosition="start"
+          kind="close"
           onClick={onClose}
           className={classes.closeButton}
         >
@@ -308,13 +308,13 @@ function VerificationAdmin(props) {
           >
             Verification Administration
           </Typography>
-          <Button 
-            type='button'
-            icon='search'
-            iconPosition='start'
+          <Button
+            type="button"
+            icon="search"
+            iconPosition="start"
             onClick={handleDialogOpen}
           >
-            Criteria&hellip;
+            Criteria...
           </Button>
         </header>
       </div>
@@ -444,22 +444,22 @@ function VerificationAdmin(props) {
                     justifyContent: "flex-start",
                   }}
                 >
-                  <Button 
-                    type='button'
+                  <Button
+                    type="button"
                     disabled={selectedStakeholderIds.length === 0}
                     onClick={handleNeedsVerificationDialogOpen}
                   >
                     Needs Verification
                   </Button>
-                  <Button 
-                    type='button'
+                  <Button
+                    type="button"
                     disabled={selectedStakeholderIds.length === 0}
                     onClick={handleAssignDialogOpen}
                   >
                     Assign
                   </Button>
-                  <Button 
-                    type='button'
+                  <Button
+                    type="button"
                     disabled={selectedStakeholderIds.length === 0}
                     onClick={handleExport}
                   >

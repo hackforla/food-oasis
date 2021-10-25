@@ -132,7 +132,9 @@ function SuggestionDialog(props) {
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={handleCancel}>Cancel</Button>
+        <Button autoFocus onClick={handleCancel}>
+          Cancel
+        </Button>
         <Button onClick={handleSubmit}>Send</Button>
       </DialogActions>
     </Dialog>

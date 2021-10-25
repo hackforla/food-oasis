@@ -21,7 +21,7 @@ import donationStep5 from "images/donationStep5.png";
 import donationStep6 from "images/donationStep6.png";
 import donationStep7 from "images/donationStep7.png";
 import * as analytics from "../../services/analytics";
-import { Button, IconButton } from '../../components/UI';
+import { Button, IconButton } from "../../components/UI";
 
 const useStyles = makeStyles((theme) => ({
   outer: {

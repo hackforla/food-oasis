@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import * as accountService from "../../services/account-service";
 import EmailOutlinedIcon from "@material-ui/icons/EmailOutlined";
-import { Button, Input } from '../../components/UI';
+import { Button, Input } from "../../components/UI";
 
 const styles = (theme) => ({
   "@global": {

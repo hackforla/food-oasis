@@ -6,7 +6,7 @@ import StakeholderGrid from "./VerificationAdminGrid";
 import { RotateLoader } from "react-spinners";
 import { useOrganizations } from "hooks/useOrganizations";
 import * as stakeholderService from "services/stakeholder-service";
-import { Button } from '../../components/UI';
+import { Button } from "../../components/UI";
 
 const useStyles = makeStyles((theme) => ({
   root: {

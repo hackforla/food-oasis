@@ -16,7 +16,7 @@ import {
 } from "@material-ui/core";
 import makeStyles from "@material-ui/styles/makeStyles";
 import { STAKEHOLDER_SCHEMA } from "../../../constants/stakeholder-schema";
-import { Button } from '../../../components/UI';
+import { Button } from "../../../components/UI";
 
 const useStyles = makeStyles((theme) => ({
   root: {

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/styles";
 import { UserContext } from "../../contexts/user-context";
 import { Typography } from "@material-ui/core";
-import { Button } from '../../components/UI';
+import { Button } from "../../components/UI";
 
 const useStyles = makeStyles({
   edit: {

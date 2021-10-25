@@ -2087,7 +2087,9 @@ const OrganizationEdit = (props) => {
                               values.verificationStatusId ===
                                 VERIFICATION_STATUS.NEEDS_VERIFICATION
                             }
-                          >Hand Off</Button>
+                          >
+                            Hand Off
+                          </Button>
                         </div>
                       </BigTooltip>
                       <BigTooltip title="Critical information entered, Submit for Review.">
@@ -2121,7 +2123,9 @@ const OrganizationEdit = (props) => {
                               values.verificationStatusId ===
                                 VERIFICATION_STATUS.SUBMITTED
                             }
-                          >Submit For Review</Button>
+                          >
+                            Submit For Review
+                          </Button>
                         </div>
                       </BigTooltip>
                     </>

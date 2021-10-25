@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import Container from "@material-ui/core/Container";
 import * as faqService from "../../services/faq-service";
 import FaqEditForm from "./FaqEditForm";
-import { Button, Input } from '../../components/UI';
+import { Button, Input } from "../../components/UI";
 
 const FaqEdit = ({ match, history }) => {
   const { i18n } = useTranslation();
@@ -46,10 +46,8 @@ const FaqEdit = ({ match, history }) => {
           identifier: faqIdentifier,
         });
 
-        let {
-          addedLanguages,
-          needToAddLanguages,
-        } = checkHowManySavedLanguageTexts(fetchedFaq);
+        let { addedLanguages, needToAddLanguages } =
+          checkHowManySavedLanguageTexts(fetchedFaq);
 
         setAddedFaq(addedLanguages);
         setNeedToAddFaqs(needToAddLanguages);

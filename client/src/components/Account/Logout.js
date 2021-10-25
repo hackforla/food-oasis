@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { useHistory, withRouter } from "react-router-dom";
-import { Button } from '../UI';
+import { Button } from "../UI";
 
 LogoutButton.propTypes = {
   setUser: PropTypes.func,

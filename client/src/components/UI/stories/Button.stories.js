@@ -4,7 +4,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { decorators } from "../helpers";
 import Grid from "@material-ui/core/Grid";
-import { Button, IconButton } from '../index';
+import { Button, IconButton } from "../index";
 
 storiesOf("Components/Button", module)
   .addDecorator(decorators)

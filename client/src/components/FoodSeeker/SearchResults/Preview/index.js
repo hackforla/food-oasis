@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { makeStyles } from "@material-ui/core/styles";
-import { Button } from '../../../../components/UI';
+import { Button } from "../../../../components/UI";
 
 import {
   MEAL_PROGRAM_CATEGORY_ID,
@@ -81,10 +81,10 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "16px",
   },
   button: {
-    '&:hover': {
-      background:theme.palette.primary.main,
-    }
-  }
+    "&:hover": {
+      background: theme.palette.primary.main,
+    },
+  },
 }));
 
 const isLastOccurrenceInMonth = (currentDay) => {

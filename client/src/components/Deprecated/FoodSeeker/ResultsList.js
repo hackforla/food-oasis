@@ -6,7 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import StakeholderPreview from "components/FoodSeeker/StakeholderPreview";
 import { isMobile } from "helpers";
 import * as analytics from "../../services/analytics";
-import { Button } from '../../../components/UI';
+import { Button } from "../../../components/UI";
 
 const useStyles = makeStyles((theme) => ({
   list: {

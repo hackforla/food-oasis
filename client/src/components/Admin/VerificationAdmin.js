@@ -18,7 +18,7 @@ import AssignDialog from "./AssignDialog";
 import NeedsVerificationDialog from "./ui/MessageConfirmDialog";
 import SearchCriteria from "./SearchCriteria";
 import SearchCriteriaDisplay from "./SearchCriteriaDisplay";
-import { Button } from '../../components/UI';
+import { Button } from "../../components/UI";
 
 const CRITERIA_TOKEN = "verificationAdminCriteria";
 

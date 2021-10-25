@@ -12,7 +12,7 @@ storiesOf("Components/Button", module)
     <>
       <h1>Button</h1>
       <h2>Default</h2>
-      <Button>Confirm</Button>
+      <Button onClick={console.log}>Confirm </Button>
       <br />
       <br />
       <br />
@@ -27,40 +27,64 @@ storiesOf("Components/Button", module)
 
       <Grid container spacing={1}>
         <Grid item>
-          <Button icon="add">add</Button>
+          <Button icon="add" onClick={console.log}>
+            add
+          </Button>
         </Grid>
         <Grid item>
-          <Button icon="cancel">cancel</Button>
+          <Button icon="cancel" onClick={console.log}>
+            cancel
+          </Button>
         </Grid>
         <Grid item>
-          <Button icon="close">close</Button>
+          <Button icon="close" onClick={console.log}>
+            close
+          </Button>
         </Grid>
         <Grid item>
-          <Button icon="delete">delete</Button>
+          <Button icon="delete" onClick={console.log}>
+            delete
+          </Button>
         </Grid>
         <Grid item>
-          <Button icon="details">details</Button>
+          <Button icon="details" onClick={console.log}>
+            details
+          </Button>
         </Grid>
         <Grid item>
-          <Button icon="edit">edit</Button>
+          <Button icon="edit" onClick={console.log}>
+            edit
+          </Button>
         </Grid>
         <Grid item>
-          <Button icon="remove">remove</Button>
+          <Button icon="remove" onClick={console.log}>
+            remove
+          </Button>
         </Grid>
         <Grid item>
-          <Button icon="save">save</Button>
+          <Button icon="save" onClick={console.log}>
+            save
+          </Button>
         </Grid>
         <Grid item>
-          <Button icon="search">search</Button>
+          <Button icon="search" onClick={console.log}>
+            search
+          </Button>
         </Grid>
         <Grid item>
-          <Button icon="check">check</Button>
+          <Button icon="check" onClick={console.log}>
+            check
+          </Button>
         </Grid>
         <Grid item>
-          <Button icon="arrowUp">arrowUp</Button>
+          <Button icon="arrowUp" onClick={console.log}>
+            arrowUp
+          </Button>
         </Grid>
         <Grid item>
-          <Button icon="arrowDown">arrowDown</Button>
+          <Button icon="arrowDown" onClick={console.log}>
+            arrowDown
+          </Button>
         </Grid>
       </Grid>
 
@@ -71,21 +95,26 @@ storiesOf("Components/Button", module)
       <SyntaxHighlighter language="javascript" style={vscDarkPlus}>
         {`
 children: PropTypes.string.isRequired,
-onChange: PropTypes.func,
+onClick: PropTypes.func.isRequired,
+iconPosition: PropTypes.oneOf(["end", "start"]), // will default to "start" if not provided
 color: PropTypes.string,
 icon: PropTypes.oneOf([
   "add",
-  "arrowDown",
   "arrowUp",
-  "delete",
+  "arrowDown",
+  "cancel",
   "check",
   "close",
-  "save",
-  "edit",
-  "cancel",
-  "search",
+  "delete",
   "details",
+  "edit",
+  "locationOn",
+  "locationSearching",
+  "menu",
   "remove",
+  "save",
+  "search",
+  "wrapText",
 ]),
 `}
       </SyntaxHighlighter>
@@ -152,7 +181,7 @@ icon: PropTypes.oneOf([
       <SyntaxHighlighter language="javascript" style={vscDarkPlus}>
         {`
 kind: PropTypes.string.isRequired,
-onChange: PropTypes.func,
+onClick: PropTypes.func.isRequired,
 color: PropTypes.string
 `}
       </SyntaxHighlighter>

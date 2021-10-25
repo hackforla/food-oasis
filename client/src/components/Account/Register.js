@@ -164,11 +164,12 @@ const form = (props) => {
             </Grid>
             <Button
               type="submit"
-              text="Register"
               fullWidth
               className={classes.submit}
               disabled={isSubmitting}
-            />
+            >
+              Register
+            </Button>
             <Grid container justifyContent="center">
               <Grid item>
                 <Link href="/login" variant="body2">
@@ -231,15 +232,15 @@ const Register = withFormik({
             props.history.push("/");
           } else if (result.code === "REG_DUPLICATE_EMAIL") {
             props.setToast({
-              message: `The email ${email} is already registered. 
-              Please login or use the Forgot Password feature if you have 
+              message: `The email ${email} is already registered.
+              Please login or use the Forgot Password feature if you have
               forgotten your password.`,
             });
           } else {
             props.setToast({
-              message: `An error occurred in sending the 
-              confirmation message to ${email}. 
-              Try to log in, and follow the instructions for re-sending the 
+              message: `An error occurred in sending the
+              confirmation message to ${email}.
+              Try to log in, and follow the instructions for re-sending the
               confirmation email.`,
             });
           }

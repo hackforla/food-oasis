@@ -14,7 +14,7 @@ import {
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Footer from "../Layout/Footer";
-import { Button, Input } from '../../components/UI';
+import { Button, Input } from "../../components/UI";
 
 const styles = (theme) => ({
   "@global": {
@@ -137,7 +137,7 @@ const ForgotPassword = (props) => {
                   handleSubmit(evt);
                 }}
               >
-                <Input 
+                <Input
                   type="email"
                   id="email"
                   label="Email"
@@ -151,15 +151,16 @@ const ForgotPassword = (props) => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   helperText={touched.email ? errors.email : ""}
-                  error={touched.email && Boolean(errors.email)}              
+                  error={touched.email && Boolean(errors.email)}
                 />
-                <Button 
+                <Button
                   type="submit"
-                  text='Send Reset Link to Email'
                   fullWidth
                   className={classes.submit}
-                  disabled={isSubmitting}                
-                />
+                  disabled={isSubmitting}
+                >
+                  Send Reset Link to Email
+                </Button>
                 <Grid container>
                   <Grid item xs>
                     <Link href={`/login/${values.email || ""}`} variant="body2">

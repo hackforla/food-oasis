@@ -46,30 +46,27 @@ const Donate = () => {
       <Typography className={classes.description} component={`p`}>
         {t("support-p")}
       </Typography>
-      <Button 
-        variant='outlined'
-        text={t('donate')}
-      />
+      <Button variant='outlined'>
+        {t('donate')}
+      </Button>
       <Typography className={classes.sectionHeader} align="center" variant="h4">
         {t("subscribe")}
       </Typography>
       <Typography className={classes.description} component={`p`}>
         {t("subscribe-text")}
       </Typography>
-      <Button 
-        variant='outlined'
-        text={t('subscribe-button')}
-      />
+      <Button variant='outlined'>
+        {t('subscribe-button')}
+      </Button>
       <Typography className={classes.sectionHeader} align="center" variant="h4">
         {t("questions")}
       </Typography>
       <Typography className={classes.description} component={`p`}>
         {t("questions-text")}
       </Typography>
-      <Button 
-        variant='outlined'
-        text={t('send-a-message')}
-      />
+      <Button variant='outlined'>
+        {t('send-a-message')}
+      </Button>
     </Container>
   );
 };

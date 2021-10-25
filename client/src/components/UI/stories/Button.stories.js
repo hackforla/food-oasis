@@ -180,7 +180,6 @@ icon: PropTypes.oneOf([
       <h3>Props</h3>
       <SyntaxHighlighter language="javascript" style={vscDarkPlus}>
         {`
-ariaLabel: PropTypes.string.isRequired,
 kind: PropTypes.string.isRequired,
 onClick: PropTypes.func.isRequired,
 color: PropTypes.string

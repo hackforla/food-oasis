@@ -335,7 +335,6 @@ const StakeholderDetails = ({ selectedStakeholder, onClose, setToast }) => {
         <OriginCoordinatesContext.Consumer>
           {(origin) => (
             <Button
-              text="Directions"
               variant="outlined"
               onClick={() => {
                 analytics.postEvent("getDirections", {
@@ -349,14 +348,14 @@ const StakeholderDetails = ({ selectedStakeholder, onClose, setToast }) => {
                   })
                 );
               }}
-            />
+            >
+              Directions
+            </Button>
           )}
         </OriginCoordinatesContext.Consumer>
-        <Button
-          text="Send Correction"
-          variant="outlined"
-          onClick={handleSuggestionDialogOpen}
-        />
+        <Button variant="outlined" onClick={handleSuggestionDialogOpen}>
+          Send Correction
+        </Button>
       </div>
       {selectedStakeholder.hours ? (
         <>

@@ -956,18 +956,17 @@ const OrganizationEdit = (props) => {
                               <Button
                                 icon="search"
                                 iconPosition="start"
-                                text={
-                                  (geocodeResults && geocodeResults.length) < 1
-                                    ? "Get Coordinates"
-                                    : "Close"
-                                }
                                 style={{ marginTop: "1.2em" }}
                                 onClick={() => {
                                   (geocodeResults && geocodeResults.length) < 1
                                     ? geocode(values)
                                     : setGeocodeResults([]);
                                 }}
-                              />
+                              >
+                                {(geocodeResults && geocodeResults.length) < 1
+                                  ? "Get Coordinates"
+                                  : "Close"}
+                              </Button>
                             </Grid>
                           </BigTooltip>
                           <div className={classes.confirmCheckboxWrapper}>
@@ -1013,7 +1012,6 @@ const OrganizationEdit = (props) => {
                                 <Grid item xs={2}>
                                   <Button
                                     type="button"
-                                    text=""
                                     onClick={() => {
                                       setFieldValue(
                                         "latitude",
@@ -1025,7 +1023,7 @@ const OrganizationEdit = (props) => {
                                       );
                                       setGeocodeResults([]);
                                     }}
-                                  />
+                                  ></Button>
                                 </Grid>
                               </Grid>
                             </div>
@@ -1845,11 +1843,12 @@ const OrganizationEdit = (props) => {
                         >
                           <Button
                             type="submit"
-                            text="Save Progress"
                             className={classes.submit}
                             disabled={isSubmitting || isUnchanged(values)}
                             // style={{ margin: "auto 0.5em" }}
-                          />
+                          >
+                            Save Progress
+                          </Button>
                         </div>
                       </BigTooltip>
                       <BigTooltip title="Mark for re-verification">
@@ -1864,7 +1863,6 @@ const OrganizationEdit = (props) => {
                         >
                           <Button
                             type="button"
-                            text="Needs Verfication"
                             onClick={() => {
                               setFieldValue("reviewedLoginId", "");
                               setFieldValue("reviewedUser", "");
@@ -1888,7 +1886,9 @@ const OrganizationEdit = (props) => {
                               values.verifivation_status_id ===
                                 VERIFICATION_STATUS.NEEDS_VERIFICATION
                             }
-                          />
+                          >
+                            Needs Verfication
+                          </Button>
                         </div>
                       </BigTooltip>
                       <BigTooltip title="Assign for Verification">
@@ -1903,7 +1903,6 @@ const OrganizationEdit = (props) => {
                         >
                           <Button
                             type="button"
-                            text="(Re-)Assign"
                             onClick={() => {
                               handleAssignDialogOpen({
                                 callback: (loginId) => {
@@ -1926,7 +1925,9 @@ const OrganizationEdit = (props) => {
                               values.verification_status_id ===
                                 VERIFICATION_STATUS.SUBMITTED
                             }
-                          />
+                          >
+                            (Re-)Assign
+                          </Button>
                         </div>
                       </BigTooltip>
                       <BigTooltip
@@ -1943,7 +1944,6 @@ const OrganizationEdit = (props) => {
                         >
                           <Button
                             type="button"
-                            text="Request Changes"
                             onClick={() => {
                               setFieldValue(
                                 "reviewedUser",
@@ -1967,7 +1967,9 @@ const OrganizationEdit = (props) => {
                               !values.submittedDate ||
                               values.verificationStatusId !== 3
                             }
-                          />
+                          >
+                            Request Changes
+                          </Button>
                         </div>
                       </BigTooltip>
                       <BigTooltip title="Approve as Verified">
@@ -1982,7 +1984,6 @@ const OrganizationEdit = (props) => {
                         >
                           <Button
                             type="button"
-                            text="Approve"
                             onClick={() => {
                               setFieldValue("approvedDate", moment());
                               setFieldValue(
@@ -2002,7 +2003,9 @@ const OrganizationEdit = (props) => {
                               !criticalFieldsValidate(values) ||
                               (user.isCoordinator && !user.isAdmin)
                             }
-                          />
+                          >
+                            Approve
+                          </Button>
                         </div>
                       </BigTooltip>
                       <BigTooltip title="Delete Organization from Database Permanently">
@@ -2017,7 +2020,6 @@ const OrganizationEdit = (props) => {
                         >
                           <Button
                             type="button"
-                            text="Delete"
                             onClick={() => {
                               handleConfirmDialogOpen({
                                 callback: () => {
@@ -2028,7 +2030,9 @@ const OrganizationEdit = (props) => {
                               });
                             }}
                             disabled={!user.isAdmin || !values.id}
-                          />
+                          >
+                            Delete
+                          </Button>
                         </div>
                       </BigTooltip>
                     </>
@@ -2046,10 +2050,11 @@ const OrganizationEdit = (props) => {
                         >
                           <Button
                             type="submit"
-                            text="Save Progress"
                             className={classes.submit}
                             disabled={isSubmitting || isUnchanged(values)}
-                          />
+                          >
+                            Save Progress
+                          </Button>
                         </div>
                       </BigTooltip>
                       <BigTooltip title="Unable to complete six critical fields (*), but need to hand off to someone else to complete">
@@ -2064,7 +2069,6 @@ const OrganizationEdit = (props) => {
                         >
                           <Button
                             type="button"
-                            text="Hand Off"
                             onClick={() => {
                               setFieldValue("assignedLoginId", "");
                               setFieldValue("assignedUser", "");
@@ -2081,7 +2085,9 @@ const OrganizationEdit = (props) => {
                               values.verificationStatusId ===
                                 VERIFICATION_STATUS.NEEDS_VERIFICATION
                             }
-                          />
+                          >
+                            Hand Off
+                          </Button>
                         </div>
                       </BigTooltip>
                       <BigTooltip title="Critical information entered, Submit for Review.">
@@ -2096,7 +2102,6 @@ const OrganizationEdit = (props) => {
                         >
                           <Button
                             type="button"
-                            text="Submit For Review"
                             onClick={() => {
                               setFieldValue("submittedDate", moment());
                               setFieldValue(
@@ -2116,7 +2121,9 @@ const OrganizationEdit = (props) => {
                               values.verificationStatusId ===
                                 VERIFICATION_STATUS.SUBMITTED
                             }
-                          />
+                          >
+                            Submit For Review
+                          </Button>
                         </div>
                       </BigTooltip>
                     </>

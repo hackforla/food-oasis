@@ -184,8 +184,7 @@ function ParentOrganizations(props) {
                               align={column.align}
                             >
                               <IconButton
-                                kind="edit"
-                                ariaLabel="edit"
+                                icon="edit"
                                 onClick={() => {
                                   const org = parentOrgs.find(
                                     (org) => parentOrg.id === org.id
@@ -204,8 +203,7 @@ function ParentOrganizations(props) {
                               style={{ maxWidth: "5px", padding: "5px" }}
                             >
                               <IconButton
-                                kind="delete"
-                                ariaLabel="delete"
+                                icon="delete"
                                 onClick={() => handleDelete(parentOrg.id)}
                               />
                             </TableCell>
@@ -231,8 +229,8 @@ function ParentOrganizations(props) {
           count={parentOrgs.length}
           rowsPerPage={rowsPerPage}
           page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
         />
         <Modal
           open={!!activeOrg}

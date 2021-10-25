@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import * as faqService from "../../services/faq-service";
 import { UserContext } from "../../contexts/user-context";
-import { Button } from '../../components/UI';
+import { Button } from "../../components/UI";
 
 import FaqList from "./FaqList";
 import Container from "@material-ui/core/Container";
@@ -147,23 +147,21 @@ const Faq = () => {
           (user.isAdmin || user.isCoordinator) && (
             <div className={classes.buttonsContainer}>
               <Link className={classes.link} to="/faqs/add">
-                <Button 
-                  text='Add'
-                  icon='add'
-                  iconPosition='start'
-                />
+                <Button icon="add" iconPosition="start">
+                  Add
+                </Button>
+                >
               </Link>
-              <Button 
-                text={
-                  reorder
-                    ? "Click to Stop Reordering Faqs"
-                    : "Click to Reorder Faqs"
-                }
-                icon='edit'
-                iconPosition='start'
+              <Button
+                icon="edit"
+                iconPosition="start"
                 onClick={onReorderClick}
                 color={reorder ? "secondary" : "primary"}
-              />
+              >
+                {reorder
+                  ? "Click to Stop Reordering Faqs"
+                  : "Click to Reorder Faqs"}
+              </Button>
             </div>
           )
         }

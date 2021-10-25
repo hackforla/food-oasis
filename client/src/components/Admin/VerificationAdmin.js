@@ -18,7 +18,7 @@ import AssignDialog from "./AssignDialog";
 import NeedsVerificationDialog from "./ui/MessageConfirmDialog";
 import SearchCriteria from "./SearchCriteria";
 import SearchCriteriaDisplay from "./SearchCriteriaDisplay";
-import { Button } from '../../components/UI';
+import { Button } from "../../components/UI";
 
 const CRITERIA_TOKEN = "verificationAdminCriteria";
 
@@ -72,15 +72,16 @@ const DialogTitle = (props) => {
     <MuiDialogTitle disableTypography className={classes.root} {...other}>
       <Typography variant="h6">{children}</Typography>
       {onClose ? (
-        <Button 
-          type='button'
-          text='Search'
-          icon='search'
-          iconPosition='start'
-          kind='close'
+        <Button
+          type="button"
+          icon="search"
+          iconPosition="start"
+          kind="close"
           onClick={onClose}
           className={classes.closeButton}
-        />
+        >
+          Search
+        </Button>
       ) : null}
     </MuiDialogTitle>
   );
@@ -307,13 +308,14 @@ function VerificationAdmin(props) {
           >
             Verification Administration
           </Typography>
-          <Button 
-            type='button'
-            text='Criteria...'
-            icon='search'
-            iconPosition='start'
+          <Button
+            type="button"
+            icon="search"
+            iconPosition="start"
             onClick={handleDialogOpen}
-          />
+          >
+            Criteria...
+          </Button>
         </header>
       </div>
       <SearchCriteriaDisplay
@@ -442,24 +444,27 @@ function VerificationAdmin(props) {
                     justifyContent: "flex-start",
                   }}
                 >
-                  <Button 
-                    type='button'
-                    text='Needs Verification'
+                  <Button
+                    type="button"
                     disabled={selectedStakeholderIds.length === 0}
                     onClick={handleNeedsVerificationDialogOpen}
-                  />
-                  <Button 
-                    type='button'
-                    text='Assign'
+                  >
+                    Needs Verification
+                  </Button>
+                  <Button
+                    type="button"
                     disabled={selectedStakeholderIds.length === 0}
                     onClick={handleAssignDialogOpen}
-                  />
-                  <Button 
-                    type='button'
-                    text='Export'
+                  >
+                    Assign
+                  </Button>
+                  <Button
+                    type="button"
                     disabled={selectedStakeholderIds.length === 0}
                     onClick={handleExport}
-                  />
+                  >
+                    Export
+                  </Button>
                 </div>
                 <div>{`${stakeholders.length} rows`} </div>
               </div>

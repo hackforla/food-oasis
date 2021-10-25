@@ -6,7 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import StakeholderPreview from "components/FoodSeeker/StakeholderPreview";
 import { isMobile } from "helpers";
 import * as analytics from "../../services/analytics";
-import { Button } from '../../../components/UI';
+import { Button } from "../../../components/UI";
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -90,11 +90,9 @@ const ResultsList = ({
       {status === "loaded" && stakeholders.length === 0 && (
         <div className={classes.emptyResult}>
           <p>Sorry, we don&apos;t have any results for this area.</p>
-          <Button 
-            text='Click here to reset the search'
-            onClick={handleReset}
-            disableElevation
-          />
+          <Button onClick={handleReset} disableElevation>
+            Click here to reset the search
+          </Button>
         </div>
       )}
       {stakeholders && selectedStakeholder && !selectedStakeholder.inactive ? (

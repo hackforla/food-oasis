@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/styles";
 import { UserContext } from "../../contexts/user-context";
 import { Typography } from "@material-ui/core";
-import { Button } from '../../components/UI';
+import { Button } from "../../components/UI";
 
 const useStyles = makeStyles({
   edit: {
@@ -63,28 +63,28 @@ const FaqItem = ({ faq, reorder, reorderFaqs, faqLength }) => {
               </Typography>
               {reorder ? (
                 <>
-                  <Button 
-                    text='Up'
-                    icon='arrowUp'
-                    iconPosition='start'
+                  <Button
+                    icon="arrowUp"
+                    iconPosition="start"
                     className={Number(order) === 1 ? classes.hide : ""}
                     onClick={() => reorderFaqs("up", order)}
-                  />
-                  <Button 
-                    text='Down'
-                    icon='arrowDown'
-                    iconPosition='start'
+                  >
+                    Up
+                  </Button>
+                  <Button
+                    icon="arrowDown"
+                    iconPosition="start"
                     className={Number(order) === faqLength ? classes.hide : ""}
                     onClick={() => reorderFaqs("down", order)}
-                  />
+                  >
+                    Down
+                  </Button>
                 </>
               ) : (
                 <Link className={classes.link} to={`/faqs/${faq.identifier}`}>
-                  <Button 
-                    text='Edit'
-                    icon='edit'
-                    iconPosition='start'
-                  />
+                  <Button icon="edit" iconPosition="start">
+                    Edit
+                  </Button>
                 </Link>
               )}
             </div>

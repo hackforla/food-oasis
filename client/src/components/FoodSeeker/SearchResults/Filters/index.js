@@ -216,7 +216,6 @@ const ResultsFilters = ({
             <Tooltip title="Re-center">
               <span>
                 <Button
-                  text=""
                   onClick={() => {
                     analytics.postEvent("recenterMap", {});
                     setOrigin(userCoordinates);
@@ -225,7 +224,7 @@ const ResultsFilters = ({
                   className={classes.nearbySearch}
                   icon="locationSearching"
                   iconPosition="start"
-                />
+                ></Button>
               </span>
             </Tooltip>
           </div>

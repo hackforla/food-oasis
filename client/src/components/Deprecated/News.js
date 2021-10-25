@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Button } from '../../components/UI';
+import { Button } from "../../components/UI";
 
 // Temporarily keep this page, even though it does not appear
 // in the application, because it shows how to implement
@@ -19,14 +19,8 @@ const News = () => {
     <>
       <div>{t("title")}</div>
       <div>{t("description")}</div>
-      <Button 
-        text='es'
-        onClick={() => changeLanguage("es")}
-      />
-      <Button 
-        text='en'
-        onClick={() => changeLanguage("en")}
-      />
+      <Button onClick={() => changeLanguage("es")}>es</Button>
+      <Button onClick={() => changeLanguage("en")}>en</Button>
     </>
   );
 };

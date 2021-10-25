@@ -16,7 +16,7 @@ import {
 } from "@material-ui/core";
 import makeStyles from "@material-ui/styles/makeStyles";
 import { STAKEHOLDER_SCHEMA } from "../../../constants/stakeholder-schema";
-import { Button } from '../../../components/UI';
+import { Button } from "../../../components/UI";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -91,11 +91,9 @@ const ImportFileGuide = (props) => {
           <br />
           <Input type="file" onChange={handleChange} inputRef={ref} />
           <br />
-          <Button 
-            type='button'
-            text='Submit'
-            onClick={handleUpload}
-          />
+          <Button type="button" onClick={handleUpload}>
+            Submit
+          </Button>
         </section>
         <section className={classes.section}>
           <Typography variant="h5">CSV Template</Typography>
@@ -106,11 +104,9 @@ const ImportFileGuide = (props) => {
             </li>
             <li>Do not change column names or order.</li>
           </ul>
-          <Button 
-            type='button'
-            text='Download CSV template'
-            onClick={handleDownload}
-          />
+          <Button type="button" onClick={handleDownload}>
+            Download CSV template
+          </Button>
         </section>
         <section className={classes.section}>
           <Typography variant="h5">Schema Guide</Typography>

@@ -141,12 +141,13 @@ const ResultsMap = (
       )}
       <Button
         variant="outlined"
-        text="Search this area"
         onClick={searchMapArea}
         size="small"
         className={classes.searchButton}
         disabled={loading}
-      />
+      >
+        Search this area
+      </Button>
     </ReactMapGL>
   );
 };

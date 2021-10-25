@@ -108,15 +108,15 @@ const LoginForm = (props) => {
                         values.email
                       );
                       setToast({
-                        message: `Your email has not been confirmed. 
-                      Please look through your email for a Registration 
-                      Confirmation link and use it to confirm that you 
+                        message: `Your email has not been confirmed.
+                      Please look through your email for a Registration
+                      Confirmation link and use it to confirm that you
                       own this email address.`,
                       });
                       formikBag.setSubmitting(false);
                     } catch (err) {
                       setToast({
-                        message: `An internal error occurred in sending 
+                        message: `An internal error occurred in sending
                     an email to ${values.email}`,
                       });
                       formikBag.setSubmitting(false);
@@ -124,7 +124,7 @@ const LoginForm = (props) => {
                   } else if (response.code === "AUTH_NO_ACCOUNT") {
                     console.log("Account not found!!");
                     setToast({
-                      message: `The email ${values.email} does not correspond to an 
+                      message: `The email ${values.email} does not correspond to an
                     existing account. Please verify the email or register as a
                     new account.`,
                     });
@@ -132,7 +132,7 @@ const LoginForm = (props) => {
                   } else {
                     // Presumably response.code === "AUTH_INVALID_PASSWORD"
                     setToast({
-                      message: `The password is incorrect, please check it 
+                      message: `The password is incorrect, please check it
                   and try again or use the Forgot Password feature.`,
                     });
                     formikBag.setSubmitting(false);
@@ -160,7 +160,7 @@ const LoginForm = (props) => {
               /* and other goodies */
             }) => (
               <form className={classes.form} noValidate onSubmit={handleSubmit}>
-                <Input 
+                <Input
                   type="email"
                   id="email"
                   label="Email"
@@ -176,7 +176,7 @@ const LoginForm = (props) => {
                   helperText={touched.email ? errors.email : ""}
                   error={touched.email && Boolean(errors.email)}
                 />
-                <Input 
+                <Input
                   variant="outlined"
                   margin="normal"
                   fullWidth
@@ -193,11 +193,12 @@ const LoginForm = (props) => {
                 />
                 <Button
                   type="submit"
-                  text='Sign In'
                   fullWidth
                   className={classes.submit}
                   disabled={isSubmitting}
-                />
+                >
+                  Sign In
+                </Button>
                 <Grid container>
                   <Grid item xs>
                     <Link

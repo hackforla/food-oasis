@@ -4,7 +4,7 @@ import OpenTimeInputs from "./OpenTimeInput";
 import { Card, CardContent, Typography } from "@material-ui/core";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import MomentUtils from "@date-io/moment";
-import { Button } from '../../components/UI';
+import { Button } from "../../components/UI";
 
 function OpenTimeForm(props) {
   const { value: hours, onChange } = props;
@@ -87,13 +87,14 @@ function OpenTimeForm(props) {
                 </div>
               ))
             : null}
-          <Button 
-            type='button'
-            text='Add Hours'
+          <Button
+            type="button"
             onClick={addHours}
-            icon='add'
-            iconPosition='start'
-          />
+            icon="add"
+            iconPosition="start"
+          >
+            Add Hours
+          </Button>
         </CardContent>
       </Card>
     </MuiPickersUtilsProvider>

@@ -12,37 +12,36 @@ import {
   Typography,
 } from "@material-ui/core";
 import makeStyles from "@material-ui/styles/makeStyles";
-import { Button } from '../../../components/UI';
+import { Button } from "../../../components/UI";
 
 const optionDescriptions = {
-	replace:
-		"Removes all current records and adds imported records. This will REMOVE ALL existing stakeholder data.",
-	update:
-		"Updates all records matching your provided IDs. If an ID field is blank, the record will be treated as a new entry.",
-	add:
-		"Imports records without changing any existing records. This is not destructive but can result in duplicate records.",
+  replace:
+    "Removes all current records and adds imported records. This will REMOVE ALL existing stakeholder data.",
+  update:
+    "Updates all records matching your provided IDs. If an ID field is blank, the record will be treated as a new entry.",
+  add: "Imports records without changing any existing records. This is not destructive but can result in duplicate records.",
 };
 
 const useStyles = makeStyles((theme) => ({
-	formControl: {
-		padding: theme.spacing(3),
-	},
-	dialogContent: {
-		minHeight: "3em",
-	},
+  formControl: {
+    padding: theme.spacing(3),
+  },
+  dialogContent: {
+    minHeight: "3em",
+  },
 }));
 
 function ImportDialog(props) {
-	const {
-		tenantName,
-		handleImport,
-		handleImportAction,
-		importData,
-		open,
-		children,
-		...other
-	} = props;
-	const classes = useStyles();
+  const {
+    tenantName,
+    handleImport,
+    handleImportAction,
+    importData,
+    open,
+    children,
+    ...other
+  } = props;
+  const classes = useStyles();
 
   return (
     <Dialog
@@ -78,25 +77,24 @@ function ImportDialog(props) {
         </RadioGroup>
       </FormControl>
       <DialogActions>
-        <Button 
-          type='button'
-          text='Cancel'
-          onClick={handleImportAction}
-        />
-        <Button 
-          type='button'
-          text='Submit'
+        <Button type="button" onClick={handleImportAction}>
+          Cancel
+        </Button>
+        <Button
+          type="button"
           autoFocus
           onClick={handleImport}
           disabled={!importData.action}
-        />
+        >
+          Submit
+        </Button>
       </DialogActions>
     </Dialog>
   );
 }
 
 ImportDialog.propTypes = {
-	open: PropTypes.bool.isRequired,
+  open: PropTypes.bool.isRequired,
 };
 
 export default ImportDialog;

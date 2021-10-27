@@ -1,5 +1,7 @@
 import React, { useMemo } from "react";
 import { renderToString } from "react-dom/server";
+// Nest two imports are sOnly for support of testing selected organization map
+// marker styles - remove after test of issue #923 is complete.
 import MapMarker from "images/mapMarkerTest";
 import MapMarker2 from "images/mapMarkerTest2";
 import {
@@ -8,6 +10,8 @@ import {
   DEFAULT_CATEGORIES,
 } from "constants/stakeholder";
 
+// Only for support of testing selected organization map
+// marker styles - remove after test of issue #923 is complete.
 import { tenantId } from "helpers/Configuration";
 
 export const MARKERS_LAYER_ID = "markers";

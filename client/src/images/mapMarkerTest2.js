@@ -1,6 +1,14 @@
 import React from "react";
 import { foodPantry, mealProgram, closed } from "theme/colors";
 
+/*
+This is a temporary test file for Issue #923 testing. It should be
+removed once we make a decision about the selected orgaiation map pin style,
+and the contents of this file should replace mapMarker.js, if this is the
+preferred style.
+
+*/
+
 const MapMarker = ({
   category,
   inactive,

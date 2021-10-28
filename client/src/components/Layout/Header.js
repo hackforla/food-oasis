@@ -4,10 +4,9 @@ import Menu from "./Menu";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { isMobile } from "../../helpers";
+import { useUserContext } from "../../contexts/user-context";
 
 Header.propTypes = {
-  user: PropTypes.object,
-  setUser: PropTypes.func,
   setToast: PropTypes.func,
 };
 
@@ -96,11 +95,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Header(props) {
-  const { user, setUser, tenantId, setToast, taglineText } = props;
+  const { tenantId, setToast, taglineText } = props;
   const classes = useStyles();
   const imageType = logoPaths
     ? logoPaths[tenantId].default.split(".").pop()
     : "unknown";
+  const { user } = useUserContext();
 
   return (
     <>
@@ -159,7 +159,7 @@ export default function Header(props) {
               </Typography>
             )}
           </div>
-          <Menu user={user} setUser={setUser} setToast={setToast} />
+          <Menu setToast={setToast} />
         </Toolbar>
       </AppBar>
     </>

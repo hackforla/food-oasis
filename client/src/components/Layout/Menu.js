@@ -1,8 +1,5 @@
 import React, { useState } from "react";
 import useLocationHook from "hooks/useLocationHook";
-import PropTypes from "prop-types";
-import { useHistory } from "react-router-dom";
-import { UserContext } from "../../contexts/user-context";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Drawer,
@@ -16,14 +13,8 @@ import {
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { MENU_ITEMS } from "helpers/Constants";
 import MenuItemLink from "./MenuItemLink";
-import { logout } from "../Account/Logout";
-import { IconButton } from '../../components/UI';
-
-Menu.propTypes = {
-  user: PropTypes.object,
-  setUser: PropTypes.func,
-  setToast: PropTypes.func,
-};
+import { IconButton } from "../../components/UI";
+import { useUserContext } from "../../contexts/user-context";
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -57,9 +48,8 @@ export default function Menu(props) {
   };
   const styles = isHomePage ? homePageStyles : defaultStyles;
   const classes = useStyles(styles);
-  const { user, setUser, setToast } = props;
   const [isOpen, setIsOpen] = useState(false);
-  const history = useHistory();
+  const { user, onLogout } = useUserContext();
 
   const toggleDrawer = (event) => {
     if (
@@ -88,7 +78,7 @@ export default function Menu(props) {
         to="/"
         key="logout"
         text="Logout"
-        onClick={() => logout(setUser, setToast, history)}
+        onClick={() => onLogout()}
       >
         Logout
       </MenuItemLink>
@@ -114,63 +104,60 @@ export default function Menu(props) {
           </ListItem>
         )}
         <Divider />
-        <UserContext.Consumer>
-          {(user) => (
-            <>
-              {user && (user.isAdmin || user.isCoordinator) && (
-                <>
-                  <MenuItemLink
-                    key="organizationedit"
-                    to="/organizationedit"
-                    text="Add New Organization"
-                  />
-                  <MenuItemLink
-                    key="organizationimport"
-                    to="/organizationimport"
-                    text="Import Organizations"
-                  />
-                  <MenuItemLink
-                    key="verificationadmin"
-                    to="/verificationadmin"
-                    text="Verification Admin"
-                  />
-                </>
-              )}
-              <Divider />
-              {user && user.isDataEntry && (
+        {
+          <>
+            {user && (user.isAdmin || user.isCoordinator) && (
+              <>
                 <MenuItemLink
-                  key="verificationdashboard"
-                  to="/verificationdashboard"
-                  text="My Dashboard"
+                  key="organizationedit"
+                  to="/organizationedit"
+                  text="Add New Organization"
                 />
-              )}
-              <Divider />
-              {user && (user.isSecurityAdmin || user.isGlobalAdmin) && (
                 <MenuItemLink
-                  key="securityadmindashboard"
-                  to="/securityadmindashboard"
-                  text="Security Admin Dashboard"
+                  key="organizationimport"
+                  to="/organizationimport"
+                  text="Import Organizations"
                 />
-              )}
-              {user && user.isGlobalAdmin && (
-                <>
-                  <MenuItemLink
-                    key="parentorganizations"
-                    to="/parentorganizations"
-                    text="Parent Organization Dashboard"
-                  />
-                  <MenuItemLink
-                    key="suggestions"
-                    to="/suggestions"
-                    text="Suggestions Dashboard"
-                  />
-                </>
-              )}
-              <Divider />
-            </>
-          )}
-        </UserContext.Consumer>
-
+                <MenuItemLink
+                  key="verificationadmin"
+                  to="/verificationadmin"
+                  text="Verification Admin"
+                />
+              </>
+            )}
+            <Divider />
+            {user && user.isDataEntry && (
+              <MenuItemLink
+                key="verificationdashboard"
+                to="/verificationdashboard"
+                text="My Dashboard"
+              />
+            )}
+            <Divider />
+            {user && (user.isSecurityAdmin || user.isGlobalAdmin) && (
+              <MenuItemLink
+                key="securityadmindashboard"
+                to="/securityadmindashboard"
+                text="Security Admin Dashboard"
+              />
+            )}
+            {user && user.isGlobalAdmin && (
+              <>
+                <MenuItemLink
+                  key="parentorganizations"
+                  to="/parentorganizations"
+                  text="Parent Organization Dashboard"
+                />
+                <MenuItemLink
+                  key="suggestions"
+                  to="/suggestions"
+                  text="Suggestions Dashboard"
+                />
+              </>
+            )}
+            <Divider />
+          </>
+        }
         {MENU_ITEMS.map((item, index) => {
           const { text, link } = item;
           return <MenuItemLink key={index} to={link} text={text} />;
@@ -184,12 +171,12 @@ export default function Menu(props) {
 
   return (
     <div>
-      <IconButton 
-        icon='menu'
+      <IconButton
+        icon="menu"
         onClick={toggleDrawer}
         classes={{
-          root:classes.menuButton,
-          label:classes.blueMenu
+          root: classes.menuButton,
+          label: classes.blueMenu,
         }}
       />
       <Drawer anchor={"right"} open={isOpen} onClose={toggleDrawer}>

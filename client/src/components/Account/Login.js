@@ -15,6 +15,7 @@ import * as Yup from "yup";
 import * as accountService from "services/account-service";
 import * as analytics from "../../services/analytics";
 import { Button, Input } from '../../components/UI';
+import { useUserContext } from "../../contexts/user-context";
 
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
@@ -61,7 +62,8 @@ const validationSchema = Yup.object().shape({
 });
 
 const LoginForm = (props) => {
-  const { classes, setToast, setUser, history, match } = props;
+  const { classes, setToast, history, match } = props;
+  const { onLogin } = useUserContext();
 
   return (
     <div className={classes.body}>
@@ -89,7 +91,7 @@ const LoginForm = (props) => {
                   );
                   if (response.isSuccess) {
                     analytics.identify(response.user.id);
-                    setUser(response.user);
+                    onLogin(response.user);
                     setToast({
                       message: "Login successful.",
                     });

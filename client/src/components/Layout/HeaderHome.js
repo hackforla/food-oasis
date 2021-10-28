@@ -5,8 +5,6 @@ import { AppBar, Toolbar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 Header.propTypes = {
-  user: PropTypes.object,
-  setUser: PropTypes.func,
   setToast: PropTypes.func,
 };
 
@@ -29,14 +27,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Header(props) {
-  const { user, setUser, setToast } = props;
+  const { setToast } = props;
   const classes = useStyles();
 
   return (
     <>
       <AppBar position="sticky" className={classes.headerHolder}>
         <Toolbar className={classes.header}>
-          <Menu user={user} setUser={setUser} setToast={setToast} />
+          <Menu setToast={setToast} />
         </Toolbar>
       </AppBar>
     </>

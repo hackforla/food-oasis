@@ -95,7 +95,7 @@ const ResetPassword = (props) => {
                   response.code === "RESET_PASSWORD_TOKEN_INVALID" ||
                   response.code === "RESET_PASSWORD_TOKEN_EXPIRED"
                 ) {
-                  console.log(
+                  console.error(
                     "The reset token is invalid or has expired. Use the forgot password link to try again."
                   );
                   formikBag.setSubmitting(false);
@@ -110,7 +110,7 @@ const ResetPassword = (props) => {
                 setToast({
                   message: `Password reset failed. ${err.message}`,
                 });
-                console.log(err);
+                console.error(err);
                 formikBag.setSubmitting(false);
               }
             }}

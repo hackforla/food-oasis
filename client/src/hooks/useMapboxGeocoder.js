@@ -36,7 +36,7 @@ function reducer(state = initialState, action) {
         mapboxResults: action.results,
       };
     case actionTypes.FETCH_FAILURE:
-      console.log(action.error);
+      console.error(action.error);
       return { ...state, isLoading: false, error: true };
     default:
       return state;

@@ -250,7 +250,7 @@ const Register = withFormik({
           props.setToast({
             message: `Registration failed. ${err.message || ""}`,
           });
-          console.log(err);
+          console.error(err);
         });
     }, 1000);
   },

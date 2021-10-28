@@ -8,7 +8,7 @@ const toLocalMoment = (ts) => {
   return !ts ? null : moment.utc(ts).local();
 };
 
-/* 
+/*
     searchParams is an object with any/all of the following properties:
         name - look for this string as substring of the stakeholder's name
         categoryIds - array of integers corresponding to the desired categories
@@ -46,7 +46,6 @@ export const search = async (searchParams) => {
     };
   });
 
-  // console.log("stakeholders", stakeholders);
   return stakeholders;
 };
 

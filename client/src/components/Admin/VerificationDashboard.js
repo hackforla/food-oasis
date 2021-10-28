@@ -123,7 +123,6 @@ function VerificationDashboard(props) {
   };
 
   const disableRequestAssignment = () => {
-    console.log(stakeholders);
     if (!stakeholders) return false;
     const stakeholdersAssigned = stakeholders.filter(
       (stakeholder) => stakeholder.verificationStatusId === 2

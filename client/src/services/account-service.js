@@ -48,7 +48,7 @@ export const login = async (email, password) => {
     const response = await axios.post(baseUrl + "/login", body);
     return response.data;
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -66,7 +66,7 @@ export const setPermissions = async (userId, permissionName, value) => {
     const response = await axios.post(baseUrl + "/setPermissions", body);
     return response.data;
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -76,6 +76,6 @@ export const setGlobalPermissions = async (userId, permissionName, value) => {
     const response = await axios.post(baseUrl + "/setGlobalPermissions", body);
     return response.data;
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };

@@ -122,7 +122,7 @@ const LoginForm = (props) => {
                       formikBag.setSubmitting(false);
                     }
                   } else if (response.code === "AUTH_NO_ACCOUNT") {
-                    console.log("Account not found!!");
+                    console.error("Account not found!!");
                     setToast({
                       message: `The email ${values.email} does not correspond to an
                     existing account. Please verify the email or register as a
@@ -143,7 +143,7 @@ const LoginForm = (props) => {
                   setToast({
                     message: "Server error. Please contact support.",
                   });
-                  console.log(err);
+                  console.error(err);
                   formikBag.setSubmitting(false);
                 }
               }, 400);

@@ -90,7 +90,7 @@ const ForgotPassword = (props) => {
                 ) {
                   const msg =
                     "Account not found. If you want to create a new account with this email, please register.";
-                  console.log(msg);
+                  console.error(msg);
                   setToast({
                     message: msg,
                   });
@@ -98,13 +98,13 @@ const ForgotPassword = (props) => {
                 } else if (response.code === "FORGOT_PASSWORD_EMAIL_FAILED") {
                   const msg =
                     "A problem occurred with sending an email to this address.";
-                  console.log(msg);
+                  console.error(msg);
                   setToast({
                     message: msg,
                   });
                   formikBag.setSubmitting(false);
                 } else {
-                  console.log(response.message);
+                  console.error(response.message);
                   setToast({
                     message: response.message,
                   });
@@ -114,7 +114,7 @@ const ForgotPassword = (props) => {
                 setToast({
                   message: `Server error. ${err.message}`,
                 });
-                console.log(err);
+                console.error(err);
                 formikBag.setSubmitting(false);
               }
             }}

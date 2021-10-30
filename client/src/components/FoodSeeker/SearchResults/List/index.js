@@ -59,9 +59,9 @@ const ResultsList = ({
 }) => {
   const classes = useStyles();
 
-  // useEffect(() => {
-  //   analytics.postEvent("showList");
-  // }, []);
+  useEffect(() => {
+    analytics.postEvent("showList");
+  }, []);
 
   // useEffect(() => {
   //   window.addEventListener("resize", clearCache);

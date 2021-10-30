@@ -216,6 +216,31 @@ const StakeholderDetails = ({ selectedStakeholder, onClose, setToast }) => {
     }
   });
 
+  const formatEmailPhone = (text) => {
+    const phoneRegEx =
+      /(\+?( |-|\.)?\d{1,2}( |-|\.)?)?(\(?\d{3}\)?|\d{3})( |-|\.)?(\d{3}( |-|\.)?\d{4})/g;
+    const emailRegEx = /\b[\w.-]+@[\w.-]+\.\w{2,4}\b/gi;
+    const phoneMatches = text.match(phoneRegEx);
+    const emailMatches = text.match(emailRegEx);
+    if (phoneMatches) {
+      phoneMatches.forEach((match) => {
+        text = text.replace(
+          match,
+          `<a key=${match} href="tel:${match}">${match}</a>`
+        );
+      });
+    }
+    if (emailMatches) {
+      emailMatches.forEach((match) => {
+        text = text.replace(
+          match,
+          `<a key=${match} href="mailto:${match}">${match}</a>`
+        );
+      });
+    }
+    return text;
+  };
+
   return (
     <div className={classes.stakeholder}>
       <div className={classes.backButtonWrapper}>
@@ -433,9 +458,12 @@ const StakeholderDetails = ({ selectedStakeholder, onClose, setToast }) => {
 
       <h2 className={classes.title}>Eligibility/Requirements</h2>
       {selectedStakeholder.requirements ? (
-        <span className={classes.fontSize}>
-          {selectedStakeholder.requirements}
-        </span>
+        <span
+          className={classes.fontSize}
+          dangerouslySetInnerHTML={{
+            __html: formatEmailPhone(selectedStakeholder.requirements),
+          }}
+        ></span>
       ) : (
         <span className={classes.fontSize}>No special requirements</span>
       )}
@@ -451,16 +479,24 @@ const StakeholderDetails = ({ selectedStakeholder, onClose, setToast }) => {
 
       <h2 className={classes.title}>Notes</h2>
       {selectedStakeholder.notes ? (
-        <span className={classes.fontSize}>{selectedStakeholder.notes}</span>
+        <span
+          className={classes.fontSize}
+          dangerouslySetInnerHTML={{
+            __html: formatEmailPhone(selectedStakeholder.notes),
+          }}
+        ></span>
       ) : (
         <span className={classes.fontSize}>No notes to display.</span>
       )}
 
       <h2 className={classes.title}>Covid Notes</h2>
       {selectedStakeholder.covidNotes ? (
-        <span className={classes.fontSize}>
-          {selectedStakeholder.covidNotes}
-        </span>
+        <span
+          className={classes.fontSize}
+          dangerouslySetInnerHTML={{
+            __html: formatEmailPhone(selectedStakeholder.covidNotes),
+          }}
+        ></span>
       ) : (
         <span className={classes.fontSize}>No covid notes to display.</span>
       )}

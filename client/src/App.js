@@ -8,7 +8,6 @@ import {
 import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import { Grid, CssBaseline } from "@material-ui/core";
 import theme from "theme/clientTheme";
-import { logout } from "services/account-service";
 import {
   tenantId,
   tenantName,
@@ -17,7 +16,7 @@ import {
 } from "helpers/Configuration";
 // import useGeolocation from "hooks/useGeolocation";
 // Components
-import { UserContext } from "contexts/user-context";
+import { UserProvider } from "contexts/user-context";
 import { OriginCoordinatesContext } from "contexts/origin-coordinates-context";
 import Toast from "components/UI/Toast";
 import Header from "components/Layout/Header";
@@ -100,8 +99,6 @@ const useStyles = makeStyles({
 });
 
 function App() {
-  const [user, setUser] = useState(null);
-
   // origin is where the map should be centered. It is at the App level
   // so it can be passed from landing pages to the SearchResults.
   const [origin, setOrigin] = useState(defaultViewport.center);
@@ -138,36 +135,10 @@ function App() {
     analytics.postEvent("visitAppComponent");
   }, []);
 
-  useEffect(() => {
-    const storedJson = sessionStorage.getItem("user");
-    const userJson = JSON.stringify(user);
-    if (!userJson && !storedJson) {
-      return;
-    } else if (userJson === storedJson) {
-      return;
-    } else {
-      const user = JSON.parse(storedJson);
-      if (user) {
-        analytics.identify(user.id);
-      }
-      setUser(user);
-    }
-  }, [user]);
-
-  const onLogin = (user) => {
-    if (user) {
-      sessionStorage.setItem("user", JSON.stringify(user));
-    } else {
-      sessionStorage.removeItem("user");
-      logout();
-    }
-    setUser(user);
-  };
-
   const classes = useStyles();
 
   return (
-    <UserContext.Provider value={user}>
+    <UserProvider setToast={setToast}>
       <OriginCoordinatesContext.Provider value={origin}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
@@ -184,19 +155,13 @@ function App() {
             >
               <Switch>
                 <Route exact path="/">
-                  <HeaderHome
-                    user={user}
-                    setUser={onLogin}
-                    setToast={setToast}
-                  />
+                  <HeaderHome setToast={setToast} />
                 </Route>
                 <Route path="/widget"></Route>
                 <Route>
                   <Header
                     tenantId={tenantId}
                     taglineText={tenantDetails.taglineText}
-                    user={user}
-                    setUser={onLogin}
                     setToast={setToast}
                   />
                 </Route>
@@ -250,14 +215,13 @@ function App() {
                 <Route path="/organizationedit/:id?">
                   <ThemeProvider theme={adminTheme}>
                     <div className={classes.organizationEditWrapper}>
-                      <OrganizationEdit setToast={setToast} user={user} />
+                      <OrganizationEdit setToast={setToast} />
                     </div>
                   </ThemeProvider>
                 </Route>
                 <Route path="/verificationdashboard">
                   <div className={classes.verificationAdminWrapper}>
                     <VerificationDashboard
-                      user={user}
                       userCoordinates={userCoordinates}
                       origin={origin}
                     />
@@ -266,34 +230,27 @@ function App() {
                 <Route path="/verificationadmin">
                   <ThemeProvider theme={adminTheme}>
                     <div className={classes.verificationAdminWrapper}>
-                      <VerificationAdmin
-                        user={user}
-                        userCoordinates={userCoordinates}
-                      />
+                      <VerificationAdmin userCoordinates={userCoordinates} />
                     </div>
                   </ThemeProvider>
                 </Route>
                 <Route path="/parentorganizations">
                   <div className={classes.organizationEditWrapper}>
-                    <ParentOrganizations setToast={setToast} user={user} />
+                    <ParentOrganizations setToast={setToast} />
                   </div>
                 </Route>
                 <Route path="/suggestions">
                   <div className={classes.organizationEditWrapper}>
-                    <Suggestions setToast={setToast} user={user} />
+                    <Suggestions setToast={setToast} />
                   </div>
                 </Route>
                 <Route path="/securityadmindashboard">
                   <div className={classes.verificationAdminWrapper}>
-                    <SecurityAdminDashboard
-                      user={user}
-                      userCoordinates={userCoordinates}
-                    />
+                    <SecurityAdminDashboard userCoordinates={userCoordinates} />
                   </div>
                 </Route>
                 <Route path="/organizationimport">
                   <ImportFile
-                    user={user}
                     setToast={setToast}
                     tenantId={tenantId}
                     tenantName={tenantName}
@@ -315,7 +272,7 @@ function App() {
                   <ConfirmEmail setToast={setToast} />
                 </Route>
                 <Route path="/login/:email?">
-                  <Login user={user} setUser={onLogin} setToast={setToast} />
+                  <Login setToast={setToast} />
                 </Route>
                 <Route path="/forgotpassword/:email?">
                   <ForgotPassword setToast={setToast} />
@@ -374,7 +331,7 @@ function App() {
           </Router>
         </ThemeProvider>
       </OriginCoordinatesContext.Provider>
-    </UserContext.Provider>
+    </UserProvider>
   );
 }
 

@@ -7,6 +7,7 @@ import { RotateLoader } from "react-spinners";
 import { useOrganizations } from "hooks/useOrganizations";
 import * as stakeholderService from "services/stakeholder-service";
 import { Button } from "../../components/UI";
+import { useUserContext } from "../../contexts/user-context";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -72,7 +73,7 @@ const defaultCriteria = {
 };
 
 function VerificationDashboard(props) {
-  const { user } = props;
+  const { user } = useUserContext();
   const classes = useStyles();
   const [criteria, setCriteria] = useState(defaultCriteria);
 

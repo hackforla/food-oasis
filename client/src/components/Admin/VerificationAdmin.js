@@ -19,6 +19,7 @@ import NeedsVerificationDialog from "./ui/MessageConfirmDialog";
 import SearchCriteria from "./SearchCriteria";
 import SearchCriteriaDisplay from "./SearchCriteriaDisplay";
 import { Button } from "../../components/UI";
+import { useUserContext } from "../../contexts/user-context";
 
 const CRITERIA_TOKEN = "verificationAdminCriteria";
 
@@ -129,7 +130,8 @@ VerificationAdmin.propTypes = {
 };
 
 function VerificationAdmin(props) {
-  const { user, userCoordinates, origin } = props;
+  const { userCoordinates, origin } = props;
+  const { user } = useUserContext();
   const classes = useStyles();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [assignDialogOpen, setAssignDialogOpen] = useState(false);

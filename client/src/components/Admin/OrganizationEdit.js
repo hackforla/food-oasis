@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
-import { UserContext } from "contexts/user-context";
+import { useUserContext } from "contexts/user-context";
 import { Formik } from "formik";
 import AccountAutocomplete from "components/Admin/AccountAutocomplete";
 import * as Yup from "yup";
@@ -246,7 +246,7 @@ const CheckboxWithLabel = ({ name, label, checked, onChange, ...props }) => (
 );
 
 const OrganizationEdit = (props) => {
-  const { classes, setToast, match, user, history } = props;
+  const { classes, setToast, match, history } = props;
   const editId = match.params.id;
   const [assignDialogOpen, setAssignDialogOpen] = useState(false);
   const [assignDialogCallback, setAssignDialogCallback] = useState({});
@@ -256,6 +256,7 @@ const OrganizationEdit = (props) => {
   const [geocodeResults, setGeocodeResults] = useState([]);
   const [nextUrl, setNextUrl] = useState(null);
   const [originalData, setOriginalData] = useState(emptyOrganization);
+  const { user } = useUserContext();
 
   const { data: categories } = useCategories();
 
@@ -1753,38 +1754,34 @@ const OrganizationEdit = (props) => {
                         </Typography>
                       </div>
                       <div className={classes.workflowColumn4}>
-                        <UserContext.Consumer>
-                          {(user) =>
-                            user && (user.isAdmin || user.isCoordinator) ? (
-                              <div
-                                style={{
-                                  display: "flex",
-                                  flexDirection: "row",
-                                  justifyContent: "flex-end",
-                                }}
-                              >
-                                <AccountAutocomplete
-                                  style={{ width: "100%" }}
-                                  accountId={values.claimedLoginId || ""}
-                                  setAccount={(login) => {
-                                    if (login) {
-                                      setFieldValue("claimedLoginId", login.id);
-                                      setFieldValue(
-                                        "claimedUser",
-                                        `${login.firstName} ${login.lastName}`
-                                      );
-                                      setFieldValue("claimedDate", moment());
-                                    } else {
-                                      setFieldValue("claimedLoginId", "");
-                                      setFieldValue("claimedUser", "");
-                                      setFieldValue("claimedDate", "");
-                                    }
-                                  }}
-                                />
-                              </div>
-                            ) : null
-                          }
-                        </UserContext.Consumer>
+                        {user && (user.isAdmin || user.isCoordinator) ? (
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              justifyContent: "flex-end",
+                            }}
+                          >
+                            <AccountAutocomplete
+                              style={{ width: "100%" }}
+                              accountId={values.claimedLoginId || ""}
+                              setAccount={(login) => {
+                                if (login) {
+                                  setFieldValue("claimedLoginId", login.id);
+                                  setFieldValue(
+                                    "claimedUser",
+                                    `${login.firstName} ${login.lastName}`
+                                  );
+                                  setFieldValue("claimedDate", moment());
+                                } else {
+                                  setFieldValue("claimedLoginId", "");
+                                  setFieldValue("claimedUser", "");
+                                  setFieldValue("claimedDate", "");
+                                }
+                              }}
+                            />
+                          </div>
+                        ) : null}
                       </div>
                     </div>
                   </Grid>
@@ -2144,7 +2141,6 @@ OrganizationEdit.propTypes = {
   classes: PropTypes.object,
   setToast: PropTypes.func,
   match: PropTypes.object,
-  user: PropTypes.object,
   history: PropTypes.object,
 };
 

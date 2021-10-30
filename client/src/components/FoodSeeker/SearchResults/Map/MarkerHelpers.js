@@ -2,17 +2,12 @@ import React, { useMemo } from "react";
 import { renderToString } from "react-dom/server";
 // Nest two imports are sOnly for support of testing selected organization map
 // marker styles - remove after test of issue #923 is complete.
-import MapMarker from "images/mapMarkerTest";
-import MapMarker2 from "images/mapMarkerTest2";
+import MapMarker from "images/mapMarker";
 import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
   DEFAULT_CATEGORIES,
 } from "constants/stakeholder";
-
-// Only for support of testing selected organization map
-// marker styles - remove after test of issue #923 is complete.
-import { tenantId } from "helpers/Configuration";
 
 export const MARKERS_LAYER_ID = "markers";
 
@@ -74,20 +69,13 @@ export function loadMarkerIcons(map) {
       iconLoaders.push(
         loadMarkerIcon({
           map,
-          marker:
-            tenantId === 1 ? (
-              <MapMarker
-                category={category}
-                selected={selected}
-                scale={MARKER_SCALE}
-              />
-            ) : (
-              <MapMarker2
-                category={category}
-                selected={selected}
-                scale={MARKER_SCALE}
-              />
-            ),
+          marker: (
+            <MapMarker
+              category={category}
+              selected={selected}
+              scale={MARKER_SCALE}
+            />
+          ),
           iconId: getIconId(category, selected),
         })
       );

@@ -18,7 +18,7 @@ const Base = ({ children, variant, color, type, ...props }) => {
 };
 
 Base.propTypes = {
-  children: PropTypes.string.isRequired,
+  children: PropTypes.any,
   onChange: PropTypes.func,
   color: PropTypes.string,
   variant: PropTypes.string,
@@ -41,8 +41,8 @@ const Button = ({ children, icon, iconPosition, ...props }) => {
 };
 
 Button.propTypes = {
-  children: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
+  children: PropTypes.any,
+  onClick: PropTypes.func,
   kind: PropTypes.string,
   iconPosition: PropTypes.oneOf(["end", "start"]), // will default to "start" if not provided
   icon: PropTypes.oneOf([

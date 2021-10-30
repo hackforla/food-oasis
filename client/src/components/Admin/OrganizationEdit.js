@@ -277,7 +277,7 @@ const OrganizationEdit = (props) => {
           setOriginalData(emptyOrganization);
         }
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     };
     fetchData();
@@ -341,7 +341,7 @@ const OrganizationEdit = (props) => {
         });
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
       setToast({
         message:
           `Geocoder request failed: ${err} ` +

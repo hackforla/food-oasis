@@ -221,7 +221,6 @@ function VerificationAdmin(props) {
 
   const handleAssignDialogOpen = async () => {
     setAssignDialogOpen(true);
-    console.log(selectedStakeholderIds);
   };
 
   const handleAssignDialogClose = async (loginId) => {

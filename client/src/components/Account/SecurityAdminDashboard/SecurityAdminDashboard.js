@@ -30,7 +30,7 @@ const SecurityAdminDashboard = () => {
         const response = await accountService.getAll();
         setAccounts(response.data);
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     };
     fetchData();
@@ -89,7 +89,7 @@ const SecurityAdminDashboard = () => {
     <Container maxWidth="lg" className={classes.root}>
       <Typography variant="h4">Security Roles</Typography>
       <Typography variant="h6">Grant or Revoke Permissions</Typography>
-      <Input 
+      <Input
         variant="outlined"
         margin="none"
         placeholder="Find"

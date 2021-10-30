@@ -40,7 +40,6 @@ export const WebMapView = (props) => {
           latitude: coords.latitude,
           longitude: coords.longitude,
         });
-        console.log(response.result);
       });
       search.search();
       //   .then(searchResponse => {

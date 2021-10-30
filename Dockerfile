@@ -1,6 +1,7 @@
 FROM node:alpine as clientBuilder
 
 ENV NODE_ENV "development"
+ENV NODE_OPTIONS=--openssl-legacy-provider
 
 RUN mkdir /app
 WORKDIR /app

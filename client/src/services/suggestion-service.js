@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import { tenantId } from "helpers/Configuration";
 const baseUrl = "/api/suggestions";
 
 export const getAll = async (searchParams) => {
@@ -20,7 +20,7 @@ export const getById = async (id) => {
 };
 
 export const post = async (suggestion) => {
-  const response = await axios.post(baseUrl, suggestion);
+  const response = await axios.post(baseUrl, { ...suggestion, tenantId });
   return response.data;
 };
 

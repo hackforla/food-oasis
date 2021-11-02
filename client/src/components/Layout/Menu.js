@@ -123,17 +123,36 @@ export default function Menu(props) {
                   to="/verificationadmin"
                   text="Verification Admin"
                 />
+                <Divider />
               </>
             )}
-            <Divider />
-            {user && user.isDataEntry && (
-              <MenuItemLink
-                key="verificationdashboard"
-                to="/verificationdashboard"
-                text="My Dashboard"
-              />
+            {user && user.isAdmin && (
+              <>
+                <MenuItemLink
+                  key="parentorganizations"
+                  to="/parentorganizations"
+                  text="Parent Organizations"
+                />
+                <MenuItemLink
+                  key="suggestions"
+                  to="/suggestions"
+                  text="Suggestions"
+                />
+                <Divider />
+              </>
             )}
-            <Divider />
+
+            {user && user.isDataEntry && (
+              <>
+                <MenuItemLink
+                  key="verificationdashboard"
+                  to="/verificationdashboard"
+                  text="My Dashboard"
+                />
+                <Divider />
+              </>
+            )}
+
             {user && (user.isSecurityAdmin || user.isGlobalAdmin) && (
               <MenuItemLink
                 key="securityadmindashboard"
@@ -141,21 +160,6 @@ export default function Menu(props) {
                 text="Security Admin Dashboard"
               />
             )}
-            {user && user.isGlobalAdmin && (
-              <>
-                <MenuItemLink
-                  key="parentorganizations"
-                  to="/parentorganizations"
-                  text="Parent Organization Dashboard"
-                />
-                <MenuItemLink
-                  key="suggestions"
-                  to="/suggestions"
-                  text="Suggestions Dashboard"
-                />
-              </>
-            )}
-            <Divider />
           </>
         }
         {MENU_ITEMS.map((item, index) => {

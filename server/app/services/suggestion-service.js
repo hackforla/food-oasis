@@ -41,7 +41,7 @@ const insert = async (model) => {
     city, state, zip,
     phone, email, notes,
     tipster_name, tipster_phone, tipster_email,
-    hours, category, tenantId
+    hours, category, tenant_id
   ) values (
     $<name>, $<address1>, $<address2>,
     $<city>, $<state>, $<zip>,

@@ -1,6 +1,5 @@
 import axios from "axios";
 import { tenantId } from "helpers/Configuration";
-
 const baseUrl = "/api/suggestions";
 
 export const getAll = async (statuses) => {

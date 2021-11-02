@@ -123,26 +123,6 @@ export default function Menu(props) {
                   to="/verificationadmin"
                   text="Verification Admin"
                 />
-              </>
-            )}
-            <Divider />
-            {user && user.isDataEntry && (
-              <MenuItemLink
-                key="verificationdashboard"
-                to="/verificationdashboard"
-                text="My Dashboard"
-              />
-            )}
-            <Divider />
-            {user && (user.isSecurityAdmin || user.isGlobalAdmin) && (
-              <MenuItemLink
-                key="securityadmindashboard"
-                to="/securityadmindashboard"
-                text="Security Admin Dashboard"
-              />
-            )}
-            {user && user.isGlobalAdmin && (
-              <>
                 <MenuItemLink
                   key="parentorganizations"
                   to="/parentorganizations"
@@ -153,9 +133,30 @@ export default function Menu(props) {
                   to="/suggestions"
                   text="Suggestions Dashboard"
                 />
+                <Divider />
               </>
             )}
-            <Divider />
+            {user && user.isDataEntry && (
+              <>
+                <MenuItemLink
+                  key="verificationdashboard"
+                  to="/verificationdashboard"
+                  text="My Dashboard"
+                />
+                <Divider />
+              </>
+            )}
+
+            {user && (user.isSecurityAdmin || user.isGlobalAdmin) && (
+              <>
+                <MenuItemLink
+                  key="securityadmindashboard"
+                  to="/securityadmindashboard"
+                  text="Security Admin Dashboard"
+                />
+                <Divider />
+              </>
+            )}
           </>
         }
         {MENU_ITEMS.map((item, index) => {

@@ -2,17 +2,20 @@ const db = require("./db");
 const camelcaseKeys = require("camelcase-keys");
 
 const selectAll = async (params) => {
-  const filters = Object.values(params).join("', '");
+  const statusIds = params.statuses.map((s) => Number(s)).join(",");
   const sql = `
     select id, name, address_1, address_2, city, state, zip,
     phone, email, notes,
     tipster_name, tipster_phone, tipster_email,
-    hours, category, suggestion_status_id, admin_notes, status
+    hours, category, suggestion_status_id, admin_notes, tenant_id
     from suggestion
-    where status in ('${filters}')
+    where suggestion_status_id in (${statusIds})
+    and tenant_id = $<tenantId>
     order by created_date
   `;
-  const result = await db.manyOrNone(sql);
+  const result = await db.manyOrNone(sql, {
+    tenantId: Number(params.tenantId),
+  });
   return result.map((r) => camelcaseKeys(r));
 };
 
@@ -24,7 +27,7 @@ const selectById = async (suggestionId) => {
     select id, name, address_1, address_2, city, state, zip,
     phone, email, notes,
     tipster_name, tipster_phone, tipster_email,
-    hours, category, suggestion_status_id, admin_notes, status
+    hours, category, suggestion_status_id, admin_notes, tenant_id
     from suggestion where id = $<id>`;
 
   const row = await db.one(sql, { id });
@@ -38,13 +41,13 @@ const insert = async (model) => {
     city, state, zip,
     phone, email, notes,
     tipster_name, tipster_phone, tipster_email,
-    hours, category, status
+    hours, category, tenantId
   ) values (
     $<name>, $<address1>, $<address2>,
     $<city>, $<state>, $<zip>,
     $<phone>, $<email>,  $<notes>,
     $<tipsterName>, $<tipsterPhone>, $<tipsterEmail>,
-    $<hours>, $<category>, $<status>
+    $<hours>, $<category>, $<tenantId>
   )
   returning id`;
   const result = await db.one(sql, model);
@@ -54,7 +57,7 @@ const insert = async (model) => {
 const update = async (model) => {
   const sql = `update suggestion set
     admin_notes = $<adminNotes>,
-    status = $<status>
+    suggestion_status_id = $<suggestion_status_id>
   where id = $<id>`;
   await db.none(sql, model);
 };

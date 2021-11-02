@@ -45,7 +45,12 @@ const columns = [
   { id: "status", label: "Status", minWidth: 10 },
 ];
 
-const FILTERS = ["Verified", "Closed", "Open"];
+const FILTERS = [
+  { id: 1, name: "New" },
+  { id: 2, name: "Pending" },
+  { id: 3, name: "Rejected" },
+  { id: 4, name: "Closed" },
+];
 
 function getModalStyle() {
   const top = 50;
@@ -95,8 +100,8 @@ function Suggestions(props) {
   const [activeOrg, setActiveOrg] = React.useState(null);
   const [modalStyle] = React.useState(getModalStyle);
   const [error, setError] = React.useState("");
-  const [filters, setFilters] = React.useState(["Verified", "Open", "Closed"]);
-  let { data, status } = useSuggestions(filters);
+  const [filters, setFilters] = React.useState([1, 2, 3, 4]);
+  let { data, status, setStatusIds } = useSuggestions({ statuses: filters });
   const isMobile = getIsMobile();
 
   React.useEffect(() => {
@@ -149,6 +154,7 @@ function Suggestions(props) {
   const handleFilterChange = (e) => {
     const value = e.target.value;
     setFilters(value);
+    setStatusIds(value);
   };
 
   const getStatusColor = (value) => {
@@ -172,12 +178,16 @@ function Suggestions(props) {
             multiple
             value={filters}
             onChange={handleFilterChange}
-            renderValue={(selected) => selected.join(", ")}
+            renderValue={(selected) =>
+              selected
+                .map((s) => (s = FILTERS.find((f) => f.id === Number(s)).name))
+                .join(", ")
+            }
           >
             {FILTERS.map((filter) => (
-              <MenuItem key={filter} value={filter}>
-                <Checkbox checked={filters.indexOf(filter) > -1} />
-                <ListItemText primary={filter} />
+              <MenuItem key={filter.id} value={filter.id}>
+                <Checkbox checked={filters.indexOf(filter.id) > -1} />
+                <ListItemText primary={filter.name} />
               </MenuItem>
             ))}
           </Select>

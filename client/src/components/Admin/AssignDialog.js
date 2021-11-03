@@ -23,6 +23,7 @@ function AssignDialog(props) {
 
   return (
     <Dialog
+      onClose={handleCancel}
       disableEscapeKeyDown
       fullWidth
       maxWidth="sm"

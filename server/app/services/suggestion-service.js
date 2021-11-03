@@ -2,7 +2,9 @@ const db = require("./db");
 const camelcaseKeys = require("camelcase-keys");
 
 const selectAll = async (params) => {
-  const statusIds = params.statuses.map((s) => Number(s)).join(",");
+  const statusIds = params.statusIds
+    ? params.statusIds.map((s) => Number(s)).join(",")
+    : "-1";
   const sql = `
     select id, name, address_1, address_2, city, state, zip,
     phone, email, notes,
@@ -57,7 +59,7 @@ const insert = async (model) => {
 const update = async (model) => {
   const sql = `update suggestion set
     admin_notes = $<adminNotes>,
-    suggestion_status_id = $<suggestion_status_id>
+    suggestion_status_id = $<suggestionStatusId>
   where id = $<id>`;
   await db.none(sql, model);
 };

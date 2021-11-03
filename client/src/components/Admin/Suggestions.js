@@ -42,7 +42,7 @@ import { getIsMobile } from "../../hooks/utils";
 const columns = [
   { id: "name", label: "Name", minWidth: 100 },
   { id: "notes", label: "Suggestion", minWidth: 10 },
-  { id: "status", label: "Status", minWidth: 10 },
+  { id: "suggestionStatusId", label: "Status", minWidth: 10 },
 ];
 
 const FILTERS = [
@@ -93,6 +93,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Suggestions(props) {
+  const initialStatusIds = [1, 2, 3, 4];
   const [suggestions, setSuggestions] = React.useState([]);
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
@@ -100,8 +101,8 @@ function Suggestions(props) {
   const [activeOrg, setActiveOrg] = React.useState(null);
   const [modalStyle] = React.useState(getModalStyle);
   const [error, setError] = React.useState("");
-  const [filters, setFilters] = React.useState([1, 2, 3, 4]);
-  let { data, status, setStatusIds } = useSuggestions({ statuses: filters });
+  const [filters, setFilters] = React.useState(initialStatusIds);
+  let { data, status, setStatusIds } = useSuggestions(initialStatusIds);
   const isMobile = getIsMobile();
 
   React.useEffect(() => {
@@ -158,10 +159,12 @@ function Suggestions(props) {
   };
 
   const getStatusColor = (value) => {
-    if (value === "Verified") {
+    if (value === 1) {
       return "primary";
-    } else if (value === "Open") {
+    } else if (value === 2) {
       return "secondary";
+    } else if (value === 3) {
+      return "default";
     }
     return "default";
   };
@@ -237,7 +240,7 @@ function Suggestions(props) {
                           >
                             {column.label === "Status" ? (
                               <Chip
-                                label={value}
+                                label={FILTERS.find((s) => s.id === value).name}
                                 color={getStatusColor(value)}
                               />
                             ) : (
@@ -271,7 +274,7 @@ function Suggestions(props) {
             <Formik
               initialValues={{
                 adminNotes: activeOrg.adminNotes || "",
-                status: activeOrg.status || "",
+                suggestionStatusId: activeOrg.suggestionStatusId || 1,
               }}
               onSubmit={(values) => handleSave(values)}
             >
@@ -304,14 +307,14 @@ function Suggestions(props) {
                       <InputLabel id="status-select">Status</InputLabel>
                       <Select
                         labelId="status-select"
-                        id="status"
-                        name="status"
-                        value={values.status}
+                        id="suggestionStatusId"
+                        name="suggestionStatusId"
+                        value={values.suggestionStatusId}
                         onChange={handleChange}
                       >
                         {FILTERS.map((status) => (
-                          <MenuItem key={status} value={status}>
-                            {status}
+                          <MenuItem key={status.id} value={status.id}>
+                            {status.name}
                           </MenuItem>
                         ))}
                       </Select>

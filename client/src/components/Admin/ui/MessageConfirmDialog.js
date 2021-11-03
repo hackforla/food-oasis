@@ -22,7 +22,7 @@ function MessageDialog(props) {
 
   return (
     <Dialog
-      disableBackdropClick
+      onClose={handleCancel}
       disableEscapeKeyDown
       fullWidth
       maxWidth="md"

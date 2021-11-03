@@ -123,19 +123,25 @@ export default function Menu(props) {
                   to="/verificationadmin"
                   text="Verification Admin"
                 />
+                <Divider />
+              </>
+            )}
+            {user && user.isAdmin && (
+              <>
                 <MenuItemLink
                   key="parentorganizations"
                   to="/parentorganizations"
-                  text="Parent Organization Dashboard"
+                  text="Parent Organizations"
                 />
                 <MenuItemLink
                   key="suggestions"
                   to="/suggestions"
-                  text="Suggestions Dashboard"
+                  text="Suggestions"
                 />
                 <Divider />
               </>
             )}
+
             {user && user.isDataEntry && (
               <>
                 <MenuItemLink
@@ -148,14 +154,11 @@ export default function Menu(props) {
             )}
 
             {user && (user.isSecurityAdmin || user.isGlobalAdmin) && (
-              <>
-                <MenuItemLink
-                  key="securityadmindashboard"
-                  to="/securityadmindashboard"
-                  text="Security Admin Dashboard"
-                />
-                <Divider />
-              </>
+              <MenuItemLink
+                key="securityadmindashboard"
+                to="/securityadmindashboard"
+                text="Security Admin Dashboard"
+              />
             )}
           </>
         }

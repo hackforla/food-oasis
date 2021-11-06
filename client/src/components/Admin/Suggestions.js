@@ -13,7 +13,7 @@ import Container from "@material-ui/core/Container";
 import Modal from "@material-ui/core/Modal";
 import Box from "@material-ui/core/Box";
 import Button from "../UI/Button";
-import Input from "../UI/Input";
+import Input from "../UI/TextField";
 import { Formik } from "formik";
 import * as suggestionService from "../../services/suggestion-service";
 import { Redirect, withRouter } from "react-router-dom";

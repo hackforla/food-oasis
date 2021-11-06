@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/styles";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import * as accountService from "../../../services/account-service";
-import { Input } from '../../UI';
+import { TextField } from "../../UI";
 
 const useStyles = makeStyles({
   root: {
@@ -89,7 +89,7 @@ const SecurityAdminDashboard = () => {
     <Container maxWidth="lg" className={classes.root}>
       <Typography variant="h4">Security Roles</Typography>
       <Typography variant="h6">Grant or Revoke Permissions</Typography>
-      <Input
+      <TextField
         variant="outlined"
         margin="none"
         placeholder="Find"

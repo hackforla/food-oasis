@@ -45,7 +45,6 @@ function ImportDialog(props) {
 
   return (
     <Dialog
-      disableBackdropClick
       disableEscapeKeyDown
       fullWidth
       maxWidth="sm"

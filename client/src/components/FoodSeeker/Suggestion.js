@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 import { Container, CssBaseline, Grid, Typography } from "@material-ui/core";
 import * as suggestionService from "services/suggestion-service";
 import { withStyles } from "@material-ui/core";
-import { Input, Button } from "../../components/UI";
+import { TextField, Button } from "../../components/UI";
 import { DEFAULT_STAKEHOLDER } from "../../constants/stakeholder";
 
 const styles = (theme) => ({
@@ -76,7 +76,7 @@ function Suggestion(props) {
           </Typography>
         </Grid>
         <Grid item xs={12}>
-          <Input
+          <TextField
             type="text"
             size="small"
             label="Organization Name"
@@ -89,7 +89,7 @@ function Suggestion(props) {
           />
         </Grid>
         <Grid item xs={12}>
-          <Input
+          <TextField
             type="text"
             size="small"
             label="Category (Food Pantry, Meal Program, etc.)"
@@ -102,7 +102,7 @@ function Suggestion(props) {
           />
         </Grid>
         <Grid item xs={12}>
-          <Input
+          <TextField
             type="text"
             size="small"
             label="Address Line 1"
@@ -115,7 +115,7 @@ function Suggestion(props) {
           />
         </Grid>
         <Grid item xs={12}>
-          <Input
+          <TextField
             type="text"
             size="small"
             label="Address Line 2"
@@ -128,7 +128,7 @@ function Suggestion(props) {
           />
         </Grid>
         <Grid item xs={12}>
-          <Input
+          <TextField
             type="text"
             size="small"
             label="City"
@@ -141,7 +141,7 @@ function Suggestion(props) {
           />
         </Grid>
         <Grid item xs={12}>
-          <Input
+          <TextField
             type="text"
             size="small"
             label="State"
@@ -154,7 +154,7 @@ function Suggestion(props) {
           />
         </Grid>
         <Grid item xs={12}>
-          <Input
+          <TextField
             type="text"
             size="small"
             label="Zip Code"
@@ -167,7 +167,7 @@ function Suggestion(props) {
           />
         </Grid>
         <Grid item xs={12}>
-          <Input
+          <TextField
             type="text"
             size="small"
             label="Phone"
@@ -180,7 +180,7 @@ function Suggestion(props) {
           />
         </Grid>
         <Grid item xs={12}>
-          <Input
+          <TextField
             type="text"
             size="small"
             label="Email"
@@ -193,7 +193,7 @@ function Suggestion(props) {
           />
         </Grid>
         <Grid item xs={12}>
-          <Input
+          <TextField
             type="text"
             size="small"
             multiline
@@ -209,7 +209,7 @@ function Suggestion(props) {
           />
         </Grid>
         <Grid item xs={12}>
-          <Input
+          <TextField
             type="text"
             size="small"
             multiline
@@ -225,7 +225,7 @@ function Suggestion(props) {
           />
         </Grid>
         <Grid item xs={12}>
-          <Input
+          <TextField
             type="text"
             size="small"
             multiline
@@ -241,7 +241,7 @@ function Suggestion(props) {
           />
         </Grid>
         <Grid item xs={12}>
-          <Input
+          <TextField
             type="text"
             size="small"
             multiline
@@ -257,7 +257,7 @@ function Suggestion(props) {
           />
         </Grid>
         <Grid item xs={12}>
-          <Input
+          <TextField
             type="text"
             size="small"
             multiline

@@ -4,7 +4,7 @@ import { muiTheme } from "storybook-addon-material-ui";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 
-import Input from "../Input";
+import TextField from "../TextField";
 
 storiesOf("Components/Input", module)
   .addDecorator(muiTheme())
@@ -13,17 +13,18 @@ storiesOf("Components/Input", module)
       const [inputValue, setInputValue] = React.useState("");
       return (
         <>
-          <h1>Input</h1>
-          <Input
+          <h1>TextField</h1>
+          <TextField
             label="Input Label"
             value={inputValue}
-            onChange={setInputValue}
+            placeholder="Please type here"
+            onChange={(e) => setInputValue(e.target.value)}
           />
           <br />
           <br />
           <br />
           <SyntaxHighlighter language="javascript" style={vscDarkPlus}>
-            {`<Input
+            {`<TextField
   label="Input Label"
   value={inputValue}
   onChange={setInputValue}

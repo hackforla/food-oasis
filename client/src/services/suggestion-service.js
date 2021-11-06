@@ -2,12 +2,10 @@ import axios from "axios";
 import { tenantId } from "helpers/Configuration";
 const baseUrl = "/api/suggestions";
 
-export const getAll = async (searchParams) => {
-  searchParams = searchParams || {};
+export const getAll = async (statusIds) => {
   try {
-    const response = await axios.get(baseUrl, {
-      params: searchParams,
-    });
+    const params = { statusIds, tenantId };
+    const response = await axios.get(baseUrl, { params });
     return response.data;
   } catch (err) {
     throw new Error(err.message);

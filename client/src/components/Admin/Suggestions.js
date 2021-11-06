@@ -42,10 +42,15 @@ import { getIsMobile } from "../../hooks/utils";
 const columns = [
   { id: "name", label: "Name", minWidth: 100 },
   { id: "notes", label: "Suggestion", minWidth: 10 },
-  { id: "status", label: "Status", minWidth: 10 },
+  { id: "suggestionStatusId", label: "Status", minWidth: 10 },
 ];
 
-const FILTERS = ["Verified", "Closed", "Open"];
+const FILTERS = [
+  { id: 1, name: "New" },
+  { id: 2, name: "Pending" },
+  { id: 3, name: "Rejected" },
+  { id: 4, name: "Closed" },
+];
 
 function getModalStyle() {
   const top = 50;
@@ -88,6 +93,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Suggestions(props) {
+  const initialStatusIds = [1, 2, 3, 4];
   const [suggestions, setSuggestions] = React.useState([]);
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
@@ -95,8 +101,8 @@ function Suggestions(props) {
   const [activeOrg, setActiveOrg] = React.useState(null);
   const [modalStyle] = React.useState(getModalStyle);
   const [error, setError] = React.useState("");
-  const [filters, setFilters] = React.useState(["Verified", "Open", "Closed"]);
-  let { data, status } = useSuggestions(filters);
+  const [filters, setFilters] = React.useState(initialStatusIds);
+  let { data, status, setStatusIds } = useSuggestions(initialStatusIds);
   const isMobile = getIsMobile();
 
   React.useEffect(() => {
@@ -149,13 +155,16 @@ function Suggestions(props) {
   const handleFilterChange = (e) => {
     const value = e.target.value;
     setFilters(value);
+    setStatusIds(value);
   };
 
   const getStatusColor = (value) => {
-    if (value === "Verified") {
+    if (value === 1) {
       return "primary";
-    } else if (value === "Open") {
+    } else if (value === 2) {
       return "secondary";
+    } else if (value === 3) {
+      return "default";
     }
     return "default";
   };
@@ -172,12 +181,16 @@ function Suggestions(props) {
             multiple
             value={filters}
             onChange={handleFilterChange}
-            renderValue={(selected) => selected.join(", ")}
+            renderValue={(selected) =>
+              selected
+                .map((s) => (s = FILTERS.find((f) => f.id === Number(s)).name))
+                .join(", ")
+            }
           >
             {FILTERS.map((filter) => (
-              <MenuItem key={filter} value={filter}>
-                <Checkbox checked={filters.indexOf(filter) > -1} />
-                <ListItemText primary={filter} />
+              <MenuItem key={filter.id} value={filter.id}>
+                <Checkbox checked={filters.indexOf(filter.id) > -1} />
+                <ListItemText primary={filter.name} />
               </MenuItem>
             ))}
           </Select>
@@ -227,7 +240,7 @@ function Suggestions(props) {
                           >
                             {column.label === "Status" ? (
                               <Chip
-                                label={value}
+                                label={FILTERS.find((s) => s.id === value).name}
                                 color={getStatusColor(value)}
                               />
                             ) : (
@@ -261,7 +274,7 @@ function Suggestions(props) {
             <Formik
               initialValues={{
                 adminNotes: activeOrg.adminNotes || "",
-                status: activeOrg.status || "",
+                suggestionStatusId: activeOrg.suggestionStatusId || 1,
               }}
               onSubmit={(values) => handleSave(values)}
             >
@@ -294,14 +307,14 @@ function Suggestions(props) {
                       <InputLabel id="status-select">Status</InputLabel>
                       <Select
                         labelId="status-select"
-                        id="status"
-                        name="status"
-                        value={values.status}
+                        id="suggestionStatusId"
+                        name="suggestionStatusId"
+                        value={values.suggestionStatusId}
                         onChange={handleChange}
                       >
                         {FILTERS.map((status) => (
-                          <MenuItem key={status} value={status}>
-                            {status}
+                          <MenuItem key={status.id} value={status.id}>
+                            {status.name}
                           </MenuItem>
                         ))}
                       </Select>

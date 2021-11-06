@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import * as faqService from "../../services/faq-service";
 
-import { Input, Button } from '../../components/UI';
+import { TextField, Button } from "../../components/UI";
 
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -56,13 +56,13 @@ const FaqEditForm = ({ faq, notAdded, history }) => {
       </h3>
       <form onSubmit={handleSubmit}>
         <h5>Question</h5>
-        <Input 
+        <TextField
           placeholder="Question"
           type="text"
           fullWidth
           value={question}
           onChange={(event) => handleQuestionChange(event)}
-          name="question"        
+          name="question"
         />
         <h5>Answer</h5>
         <ReactQuill
@@ -70,11 +70,11 @@ const FaqEditForm = ({ faq, notAdded, history }) => {
           onChange={handleAnswerChange}
           name="answer"
         />
-        <Button 
-          type='submit'
-          variant='outlined'
-          icon='save'
-          iconPosition='start'
+        <Button
+          type="submit"
+          variant="outlined"
+          icon="save"
+          iconPosition="start"
         >
           {notAdded ? "Add Faq" : "Update Faq"}
         </Button>

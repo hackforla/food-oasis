@@ -6,7 +6,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@material-ui/core";
-import { Input, Button } from "../../../components/UI";
+import { TextField, Button } from "../../../components/UI";
 
 function MessageDialog(props) {
   const { onClose, open, message: initialMessage, ...other } = props;
@@ -22,7 +22,6 @@ function MessageDialog(props) {
 
   return (
     <Dialog
-      disableBackdropClick
       disableEscapeKeyDown
       fullWidth
       maxWidth="md"
@@ -32,7 +31,7 @@ function MessageDialog(props) {
     >
       <DialogTitle id="confirmation-dialog-title">Message:</DialogTitle>
       <DialogContent dividers>
-        <Input
+        <TextField
           margin="normal"
           fullWidth
           name="message"

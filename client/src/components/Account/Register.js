@@ -14,7 +14,7 @@ import {
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Footer from "../Layout/Footer";
-import { Input, Button } from "../../components/UI";
+import { TextField, Button } from "../../components/UI";
 
 const styles = (theme) => ({
   "@global": {
@@ -76,7 +76,7 @@ const form = (props) => {
           <form className={classes.form} noValidate onSubmit={handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
-                <Input
+                <TextField
                   autoComplete="fname"
                   name="firstName"
                   variant="outlined"
@@ -93,7 +93,7 @@ const form = (props) => {
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <Input
+                <TextField
                   variant="outlined"
                   required
                   fullWidth
@@ -109,7 +109,7 @@ const form = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Input
+                <TextField
                   type="email"
                   id="email"
                   label="Email"
@@ -125,7 +125,7 @@ const form = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Input
+                <TextField
                   variant="outlined"
                   required
                   fullWidth
@@ -142,7 +142,7 @@ const form = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Input
+                <TextField
                   variant="outlined"
                   required
                   fullWidth

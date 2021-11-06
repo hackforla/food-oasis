@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import * as suggestionService from "services/suggestion-service";
-import { Input, Button } from "../../../../components/UI";
+import { TextField, Button } from "../../../../components/UI";
 import { DEFAULT_STAKEHOLDER } from "../../../../constants/stakeholder";
 
 function SuggestionDialog(props) {
@@ -66,7 +66,7 @@ function SuggestionDialog(props) {
             </Typography>
           </Grid>
           <Grid item xs={12}>
-            <Input
+            <TextField
               type="text"
               size="small"
               multiline
@@ -82,7 +82,7 @@ function SuggestionDialog(props) {
             />
           </Grid>
           <Grid item xs={12}>
-            <Input
+            <TextField
               type="text"
               size="small"
               multiline
@@ -98,7 +98,7 @@ function SuggestionDialog(props) {
             />
           </Grid>
           <Grid item xs={12}>
-            <Input
+            <TextField
               type="text"
               size="small"
               multiline
@@ -114,7 +114,7 @@ function SuggestionDialog(props) {
             />
           </Grid>
           <Grid item xs={12}>
-            <Input
+            <TextField
               type="text"
               size="small"
               multiline

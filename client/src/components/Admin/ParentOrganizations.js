@@ -13,7 +13,7 @@ import Container from "@material-ui/core/Container";
 import Modal from "@material-ui/core/Modal";
 import Box from "@material-ui/core/Box";
 import Button from "../UI/Button";
-import Input from "../UI/Input";
+import Input from "../UI/TextField";
 import { Formik } from "formik";
 import * as parentOrganizationService from "../../services/parent-organization-service";
 import { tenantId } from "helpers/Configuration";
@@ -304,4 +304,4 @@ function ParentOrganizations(props) {
   );
 }
 
-export default withRouter(ParentOrganizations)
+export default withRouter(ParentOrganizations);

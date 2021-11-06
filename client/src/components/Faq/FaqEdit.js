@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import Container from "@material-ui/core/Container";
 import * as faqService from "../../services/faq-service";
 import FaqEditForm from "./FaqEditForm";
-import { Button, Input } from "../../components/UI";
+import { Button, TextField } from "../../components/UI";
 
 const FaqEdit = ({ match, history }) => {
   const { i18n } = useTranslation();
@@ -101,7 +101,7 @@ const FaqEdit = ({ match, history }) => {
           </>
         ) : (
           <>
-            <Input
+            <TextField
               type="text"
               name="identifier"
               placeholder="Identifier"

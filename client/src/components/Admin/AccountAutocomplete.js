@@ -1,7 +1,7 @@
 import React from "react";
 import { Autocomplete } from "@material-ui/lab";
 import { useAccounts } from "../../hooks/useAccounts/useAccounts";
-import { Input } from '../UI';
+import { TextField } from "../UI";
 
 export default function AccountAutocomplete({
   accountId,
@@ -28,11 +28,11 @@ export default function AccountAutocomplete({
           }
           style={{ width: "100%" }}
           renderInput={(params) => (
-            <Input 
+            <TextField
               {...params}
               label={label || ""}
               variant="outlined"
-              size="small"            
+              size="small"
             />
           )}
         />

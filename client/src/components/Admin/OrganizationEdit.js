@@ -30,7 +30,6 @@ import {
 } from "@material-ui/core";
 import * as stakeholderService from "services/stakeholder-service";
 import { useCategories } from "hooks/useCategories/useCategories";
-//import * as esriService from "services/esri_service";
 import * as geocoder from "services/geocode-tamu-service";
 import OpenTimeForm from "components/Admin/OpenTimeForm";
 import { TabPanel, a11yProps } from "components/Admin/ui/TabPanel";
@@ -755,7 +754,7 @@ const OrganizationEdit = (props) => {
                       name="categoryNotes"
                       label="Category Notes"
                       multiline
-                      rows={2}
+                      minRows={2}
                       maxRows={12}
                       value={values.categoryNotes}
                       onChange={handleChange}
@@ -817,7 +816,7 @@ const OrganizationEdit = (props) => {
                       name="covidNotes"
                       label="COVID Notes"
                       multiline
-                      rows={2}
+                      minRows={2}
                       maxRows={12}
                       value={values.covidNotes}
                       onChange={handleChange}
@@ -833,7 +832,7 @@ const OrganizationEdit = (props) => {
                       name="description"
                       label="Description"
                       multiline
-                      rows={2}
+                      minRows={2}
                       maxRows={12}
                       value={values.description}
                       onChange={handleChange}
@@ -1212,7 +1211,7 @@ const OrganizationEdit = (props) => {
                     name="foodTypes"
                     label="Other Food Types"
                     multiline
-                    rows={2}
+                    minRows={2}
                     maxRows={12}
                     value={values.foodTypes}
                     onChange={handleChange}
@@ -1251,7 +1250,7 @@ const OrganizationEdit = (props) => {
                     name="requirements"
                     label="Eligibility / Requirements"
                     multiline
-                    rows={2}
+                    minRows={2}
                     maxRows={12}
                     value={values.requirements}
                     onChange={handleChange}
@@ -1266,7 +1265,7 @@ const OrganizationEdit = (props) => {
                     name="eligibilityNotes"
                     label="Eligibility Notes"
                     multiline
-                    rows={2}
+                    minRows={2}
                     maxRows={12}
                     value={values.eligibilityNotes}
                     onChange={handleChange}
@@ -1285,7 +1284,7 @@ const OrganizationEdit = (props) => {
                     name="languages"
                     label="Languages"
                     multiline
-                    rows={2}
+                    minRows={2}
                     maxRows={12}
                     value={values.languages}
                     onChange={handleChange}
@@ -1300,7 +1299,7 @@ const OrganizationEdit = (props) => {
                     name="notes"
                     label="Notes for the Public"
                     multiline
-                    rows={2}
+                    minRows={2}
                     maxRows={12}
                     value={values.notes}
                     onChange={handleChange}
@@ -1791,7 +1790,7 @@ const OrganizationEdit = (props) => {
                       name="reviewNotes"
                       label="Reviewer Notes"
                       multiline
-                      rows={2}
+                      minRows={2}
                       maxRows={12}
                       value={values.reviewNotes}
                       onChange={handleChange}
@@ -1809,7 +1808,7 @@ const OrganizationEdit = (props) => {
                     name="adminNotes"
                     label="Verification Notes"
                     multiline
-                    rows={2}
+                    minRows={2}
                     maxRows={12}
                     value={values.adminNotes}
                     onChange={handleChange}

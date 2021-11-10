@@ -36,7 +36,7 @@ function reducer(state = initialState, action) {
         mapboxResults: action.results,
       };
     case actionTypes.FETCH_FAILURE:
-      console.log(action.error);
+      console.error(action.error);
       return { ...state, isLoading: false, error: true };
     default:
       return state;
@@ -63,7 +63,7 @@ export function useMapboxGeocoder() {
           : tenantId === 2
           ? californiaLatLong
           : losAngelesCountyLatLong;
-      const mapboxUrl = `${baseUrl}/${searchString}.json?bbox=${bbox}&access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`;
+      const mapboxUrl = `${baseUrl}/${searchString}.json?bbox=${bbox}&access_token=${process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}`;
 
       dispatch({ type: actionTypes.FETCH_REQUEST });
       try {

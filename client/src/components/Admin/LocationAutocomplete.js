@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import * as esriService from "../../services/esri_service";
-import { Grid, TextField, Typography } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
+import { TextField } from "../UI";
 
 let latestSearchString = "";
 
@@ -56,7 +57,7 @@ const LocationAutocomplete = (props) => {
             <Typography>{`(${result.location.y}, ${result.location.x})`}</Typography>
             <Typography>{`${result.attributes.PlaceName}`}</Typography>
             <Typography>{`${result.attributes.StAddr}`}</Typography>
-            <Grid container justify="space-between">
+            <Grid container justifyContent="space-between">
               <Typography>
                 {`${result.attributes.City}, ${result.attributes.RegionAbbr} `}
               </Typography>

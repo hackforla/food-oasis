@@ -1,16 +1,11 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
-import {
-  Container,
-  CssBaseline,
-  Button,
-  Grid,
-  TextField,
-  Typography,
-} from "@material-ui/core";
+import { Container, CssBaseline, Grid, Typography } from "@material-ui/core";
 import * as suggestionService from "services/suggestion-service";
 import { withStyles } from "@material-ui/core";
+import { TextField, Button } from "../../components/UI";
+import { DEFAULT_STAKEHOLDER } from "../../constants/stakeholder";
 
 const styles = (theme) => ({
   "@global": {
@@ -39,23 +34,7 @@ const styles = (theme) => ({
 
 function Suggestion(props) {
   const { setToast, history, classes } = props;
-  const [stakeholder, setStakeholder] = useState({
-    id: 0,
-    name: "",
-    address1: "",
-    address2: "",
-    city: "",
-    state: "",
-    zip: "",
-    phone: "",
-    email: "",
-    notes: "",
-    hours: "",
-    tipsterName: "",
-    tipsterPhone: "",
-    tipsterEmail: "",
-    category: "",
-  });
+  const [stakeholder, setStakeholder] = useState(DEFAULT_STAKEHOLDER);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
@@ -102,7 +81,6 @@ function Suggestion(props) {
             size="small"
             label="Organization Name"
             name="name"
-            variant="outlined"
             margin="normal"
             fullWidth
             autoFocus
@@ -116,7 +94,6 @@ function Suggestion(props) {
             size="small"
             label="Category (Food Pantry, Meal Program, etc.)"
             name="category"
-            variant="outlined"
             margin="normal"
             fullWidth
             autoFocus
@@ -130,7 +107,6 @@ function Suggestion(props) {
             size="small"
             label="Address Line 1"
             name="address1"
-            variant="outlined"
             margin="normal"
             fullWidth
             autoFocus
@@ -144,7 +120,6 @@ function Suggestion(props) {
             size="small"
             label="Address Line 2"
             name="address2"
-            variant="outlined"
             margin="normal"
             fullWidth
             autoFocus
@@ -158,7 +133,6 @@ function Suggestion(props) {
             size="small"
             label="City"
             name="city"
-            variant="outlined"
             margin="normal"
             fullWidth
             autoFocus
@@ -172,7 +146,6 @@ function Suggestion(props) {
             size="small"
             label="State"
             name="state"
-            variant="outlined"
             margin="normal"
             fullWidth
             autoFocus
@@ -186,7 +159,6 @@ function Suggestion(props) {
             size="small"
             label="Zip Code"
             name="zip"
-            variant="outlined"
             margin="normal"
             fullWidth
             autoFocus
@@ -200,7 +172,6 @@ function Suggestion(props) {
             size="small"
             label="Phone"
             name="phone"
-            variant="outlined"
             margin="normal"
             fullWidth
             autoFocus
@@ -214,7 +185,6 @@ function Suggestion(props) {
             size="small"
             label="Email"
             name="email"
-            variant="outlined"
             margin="normal"
             fullWidth
             autoFocus
@@ -227,11 +197,10 @@ function Suggestion(props) {
             type="text"
             size="small"
             multiline
-            rows={2}
-            rowsMax={12}
+            minRows={2}
+            maxRows={12}
             label="Changes to Hours"
             name="hours"
-            variant="outlined"
             margin="normal"
             fullWidth
             autoFocus
@@ -244,11 +213,10 @@ function Suggestion(props) {
             type="text"
             size="small"
             multiline
-            rows={2}
-            rowsMax={12}
+            minRows={2}
+            maxRows={12}
             label="Other Information"
             name="notes"
-            variant="outlined"
             margin="normal"
             fullWidth
             autoFocus
@@ -261,11 +229,10 @@ function Suggestion(props) {
             type="text"
             size="small"
             multiline
-            rows={2}
-            rowsMax={12}
+            minRows={2}
+            maxRows={12}
             label="Your Name"
             name="tipsterName"
-            variant="outlined"
             margin="normal"
             fullWidth
             autoFocus
@@ -278,11 +245,10 @@ function Suggestion(props) {
             type="text"
             size="small"
             multiline
-            rows={2}
-            rowsMax={12}
+            minRows={2}
+            maxRows={12}
             label="Your Phone"
             name="tipsterPhone"
-            variant="outlined"
             margin="normal"
             fullWidth
             autoFocus
@@ -295,11 +261,10 @@ function Suggestion(props) {
             type="text"
             size="small"
             multiline
-            rows={2}
-            rowsMax={12}
+            minRows={2}
+            maxRows={12}
             label="Your Email"
             name="tipsterEmail"
-            variant="outlined"
             margin="normal"
             fullWidth
             autoFocus
@@ -309,15 +274,12 @@ function Suggestion(props) {
         </Grid>
       </Grid>
       <Button
-        type="button"
         fullWidth
         onClick={handleSubmit}
-        variant="contained"
-        color="primary"
         className={classes.submit}
         disabled={isSubmitting}
       >
-        Send Suggestion
+        Send Suggestions
       </Button>
     </Container>
   );

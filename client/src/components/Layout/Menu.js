@@ -1,12 +1,8 @@
 import React, { useState } from "react";
 import useLocationHook from "hooks/useLocationHook";
-import PropTypes from "prop-types";
-import { useHistory } from "react-router-dom";
-import { UserContext } from "../../contexts/user-context";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Drawer,
-  Button,
   List,
   ListItem,
   ListItemText,
@@ -15,16 +11,10 @@ import {
   Divider,
 } from "@material-ui/core";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import MenuIcon from "@material-ui/icons/Menu";
 import { MENU_ITEMS } from "helpers/Constants";
 import MenuItemLink from "./MenuItemLink";
-import { logout } from "../Account/Logout";
-
-Menu.propTypes = {
-  user: PropTypes.object,
-  setUser: PropTypes.func,
-  setToast: PropTypes.func,
-};
+import { IconButton } from "../../components/UI";
+import { useUserContext } from "../../contexts/user-context";
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -58,9 +48,8 @@ export default function Menu(props) {
   };
   const styles = isHomePage ? homePageStyles : defaultStyles;
   const classes = useStyles(styles);
-  const { user, setUser, setToast } = props;
   const [isOpen, setIsOpen] = useState(false);
-  const history = useHistory();
+  const { user, onLogout } = useUserContext();
 
   const toggleDrawer = (event) => {
     if (
@@ -89,7 +78,7 @@ export default function Menu(props) {
         to="/"
         key="logout"
         text="Logout"
-        onClick={() => logout(setUser, setToast, history)}
+        onClick={() => onLogout()}
       >
         Logout
       </MenuItemLink>
@@ -105,75 +94,74 @@ export default function Menu(props) {
     >
       <List>
         {user && (
-          <>
-            <ListItem>
-              <ListItemAvatar>
-                <Avatar>
-                  <AccountCircleIcon />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText primary={user.firstName} />
-            </ListItem>
-            <Divider />
-          </>
+          <ListItem>
+            <ListItemAvatar>
+              <Avatar>
+                <AccountCircleIcon />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary={user.firstName} />
+          </ListItem>
         )}
-        <UserContext.Consumer>
-          {(user) => (
-            <>
-              {user && (user.isAdmin || user.isCoordinator) ? (
-                <>
-                  <MenuItemLink
-                    key="organizationedit"
-                    to="/organizationedit"
-                    text="Add New Organization"
-                  />
-                  <MenuItemLink
-                    key="organizationimport"
-                    to="/organizationimport"
-                    text="Import Organizations"
-                  />
-                  <MenuItemLink
-                    key="verificationadmin"
-                    to="/verificationadmin"
-                    text="Verification Admin"
-                  />
-                  <Divider />
-                </>
-              ) : null}
-              {user && user.isDataEntry ? (
-                <>
-                  <MenuItemLink
-                    key="verificationdashboard"
-                    to="/verificationdashboard"
-                    text="My Dashboard"
-                  />
-                  <Divider />
-                </>
-              ) : null}
-              {user && (user.isSecurityAdmin || user.isGlobalAdmin) ? (
-                <>
-                  <MenuItemLink
-                    key="securityadmindashboard"
-                    to="/securityadmindashboard"
-                    text="Security Admin Dashboard"
-                  />
-                  <Divider />
-                </>
-              ) : null}
-              {user && user.isGlobalAdmin ? (
-                <>
-                  <MenuItemLink
-                    key="parentorganizations"
-                    to="/parentorganizations"
-                    text="Parent Organization Dashboard"
-                  />
-                  <Divider />
-                </>
-              ) : null}
-            </>
-          )}
-        </UserContext.Consumer>
+        <Divider />
+        {
+          <>
+            {user && (user.isAdmin || user.isCoordinator) && (
+              <>
+                <MenuItemLink
+                  key="organizationedit"
+                  to="/organizationedit"
+                  text="Add New Organization"
+                />
+                <MenuItemLink
+                  key="organizationimport"
+                  to="/organizationimport"
+                  text="Import Organizations"
+                />
+                <MenuItemLink
+                  key="verificationadmin"
+                  to="/verificationadmin"
+                  text="Verification Admin"
+                />
+                <Divider />
+              </>
+            )}
+            {user && user.isAdmin && (
+              <>
+                <MenuItemLink
+                  key="parentorganizations"
+                  to="/parentorganizations"
+                  text="Parent Organizations"
+                />
+                <MenuItemLink
+                  key="suggestions"
+                  to="/suggestions"
+                  text="Suggestions"
+                />
+                <Divider />
+              </>
+            )}
 
+            {user && user.isDataEntry && (
+              <>
+                <MenuItemLink
+                  key="verificationdashboard"
+                  to="/verificationdashboard"
+                  text="My Dashboard"
+                />
+                <Divider />
+              </>
+            )}
+
+            {user && (user.isSecurityAdmin || user.isGlobalAdmin) && (
+              <MenuItemLink
+                key="securityadmindashboard"
+                to="/securityadmindashboard"
+                text="Security Admin Dashboard"
+              />
+            )}
+          </>
+        }
         {MENU_ITEMS.map((item, index) => {
           const { text, link } = item;
           return <MenuItemLink key={index} to={link} text={text} />;
@@ -187,10 +175,14 @@ export default function Menu(props) {
 
   return (
     <div>
-      <Button className={classes.menuButton} onClick={toggleDrawer}>
-        <MenuIcon className={classes.blueMenu} />
-      </Button>
-
+      <IconButton
+        icon="menu"
+        onClick={toggleDrawer}
+        classes={{
+          root: classes.menuButton,
+          label: classes.blueMenu,
+        }}
+      />
       <Drawer anchor={"right"} open={isOpen} onClose={toggleDrawer}>
         {sideList()}
       </Drawer>

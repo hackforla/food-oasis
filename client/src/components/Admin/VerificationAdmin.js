@@ -4,8 +4,6 @@ import { withRouter, Redirect } from "react-router-dom";
 import { CssBaseline, Dialog, Typography } from "@material-ui/core";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import { makeStyles } from "@material-ui/core/styles";
-import { SearchButton } from "../UI/Buttons";
-import PrimaryButton from "./ui/PrimaryButton";
 import StakeholderGrid from "./VerificationAdminGrid";
 import { RotateLoader } from "react-spinners";
 import { useOrganizations } from "hooks/useOrganizations";
@@ -20,6 +18,8 @@ import AssignDialog from "./AssignDialog";
 import NeedsVerificationDialog from "./ui/MessageConfirmDialog";
 import SearchCriteria from "./SearchCriteria";
 import SearchCriteriaDisplay from "./SearchCriteriaDisplay";
+import { Button } from "../../components/UI";
+import { useUserContext } from "../../contexts/user-context";
 
 const CRITERIA_TOKEN = "verificationAdminCriteria";
 
@@ -73,11 +73,16 @@ const DialogTitle = (props) => {
     <MuiDialogTitle disableTypography className={classes.root} {...other}>
       <Typography variant="h6">{children}</Typography>
       {onClose ? (
-        <SearchButton
-          aria-label="close"
+        <Button
+          type="button"
+          icon="search"
+          iconPosition="start"
+          kind="close"
           onClick={onClose}
           className={classes.closeButton}
-        />
+        >
+          Search
+        </Button>
       ) : null}
     </MuiDialogTitle>
   );
@@ -125,7 +130,8 @@ VerificationAdmin.propTypes = {
 };
 
 function VerificationAdmin(props) {
-  const { user, userCoordinates, origin } = props;
+  const { userCoordinates, origin } = props;
+  const { user } = useUserContext();
   const classes = useStyles();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [assignDialogOpen, setAssignDialogOpen] = useState(false);
@@ -217,7 +223,6 @@ function VerificationAdmin(props) {
 
   const handleAssignDialogOpen = async () => {
     setAssignDialogOpen(true);
-    console.log(selectedStakeholderIds);
   };
 
   const handleAssignDialogClose = async (loginId) => {
@@ -304,9 +309,14 @@ function VerificationAdmin(props) {
           >
             Verification Administration
           </Typography>
-          <PrimaryButton onClick={handleDialogOpen} logo="search">
+          <Button
+            type="button"
+            icon="search"
+            iconPosition="start"
+            onClick={handleDialogOpen}
+          >
             Criteria...
-          </PrimaryButton>
+          </Button>
         </header>
       </div>
       <SearchCriteriaDisplay
@@ -435,27 +445,27 @@ function VerificationAdmin(props) {
                     justifyContent: "flex-start",
                   }}
                 >
-                  <PrimaryButton
-                    title="Mark for verification"
+                  <Button
+                    type="button"
                     disabled={selectedStakeholderIds.length === 0}
                     onClick={handleNeedsVerificationDialogOpen}
                   >
                     Needs Verification
-                  </PrimaryButton>
-                  <PrimaryButton
-                    title="Assign selected Organizations to User for Verification"
+                  </Button>
+                  <Button
+                    type="button"
                     disabled={selectedStakeholderIds.length === 0}
                     onClick={handleAssignDialogOpen}
                   >
                     Assign
-                  </PrimaryButton>
-                  <PrimaryButton
-                    title="Export selected Organizations to file"
+                  </Button>
+                  <Button
+                    type="button"
                     disabled={selectedStakeholderIds.length === 0}
                     onClick={handleExport}
                   >
                     Export
-                  </PrimaryButton>
+                  </Button>
                 </div>
                 <div>{`${stakeholders.length} rows`} </div>
               </div>

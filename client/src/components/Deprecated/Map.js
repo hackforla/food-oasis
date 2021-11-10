@@ -55,7 +55,7 @@ function Map({ selectedLatitude, selectedLongitude, stakeholders }) {
         width={`90vw`}
         height={`82vh`}
         onViewportChange={(newViewport) => setViewport(newViewport)}
-        mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
+        mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
         mapStyle={MAPBOX_STYLE}
       >
         {/* TODO: uncomment GeolocateControl when you can figure out why it's crashing the page now */}

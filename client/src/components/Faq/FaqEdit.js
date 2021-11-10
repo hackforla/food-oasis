@@ -4,8 +4,7 @@ import { useTranslation } from "react-i18next";
 import Container from "@material-ui/core/Container";
 import * as faqService from "../../services/faq-service";
 import FaqEditForm from "./FaqEditForm";
-import { EditButton, SaveButton, CancelButton } from "../UI/Buttons";
-import TextField from "@material-ui/core/TextField";
+import { Button, TextField } from "../../components/UI";
 
 const FaqEdit = ({ match, history }) => {
   const { i18n } = useTranslation();
@@ -47,10 +46,8 @@ const FaqEdit = ({ match, history }) => {
           identifier: faqIdentifier,
         });
 
-        let {
-          addedLanguages,
-          needToAddLanguages,
-        } = checkHowManySavedLanguageTexts(fetchedFaq);
+        let { addedLanguages, needToAddLanguages } =
+          checkHowManySavedLanguageTexts(fetchedFaq);
 
         setAddedFaq(addedLanguages);
         setNeedToAddFaqs(needToAddLanguages);
@@ -94,7 +91,13 @@ const FaqEdit = ({ match, history }) => {
         {!editIdentifier ? (
           <>
             <span>{identifier}</span>
-            <EditButton onClick={handleEditIdentifier}>Edit</EditButton>
+            <Button
+              icon="edit"
+              iconPosition="start"
+              onClick={handleEditIdentifier}
+            >
+              Edit
+            </Button>
           </>
         ) : (
           <>
@@ -102,12 +105,23 @@ const FaqEdit = ({ match, history }) => {
               type="text"
               name="identifier"
               placeholder="Identifier"
-              variant="outlined"
               value={identifier}
               onChange={handleIdentifier}
             />
-            <SaveButton onClick={handleUpdateIdentifier}>Update</SaveButton>
-            <CancelButton onClick={handleEditIdentifier}>Cancel</CancelButton>
+            <Button
+              icon="save"
+              iconPosition="start"
+              onClick={handleUpdateIdentifier}
+            >
+              Update
+            </Button>
+            <Button
+              icon="cancel"
+              iconPosition="start"
+              onClick={handleEditIdentifier}
+            >
+              Cancel
+            </Button>
           </>
         )}
       </h3>

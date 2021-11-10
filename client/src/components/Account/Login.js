@@ -4,10 +4,8 @@ import { withRouter } from "react-router-dom";
 import {
   withStyles,
   Avatar,
-  Button,
   Container,
   CssBaseline,
-  TextField,
   Link,
   Grid,
   Typography,
@@ -16,6 +14,8 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import * as accountService from "services/account-service";
 import * as analytics from "../../services/analytics";
+import { Button, TextField } from "../../components/UI";
+import { useUserContext } from "../../contexts/user-context";
 
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
@@ -62,7 +62,8 @@ const validationSchema = Yup.object().shape({
 });
 
 const LoginForm = (props) => {
-  const { classes, setToast, setUser, history, match } = props;
+  const { classes, setToast, history, match } = props;
+  const { onLogin } = useUserContext();
 
   return (
     <div className={classes.body}>
@@ -90,7 +91,7 @@ const LoginForm = (props) => {
                   );
                   if (response.isSuccess) {
                     analytics.identify(response.user.id);
-                    setUser(response.user);
+                    onLogin(response.user);
                     setToast({
                       message: "Login successful.",
                     });
@@ -109,23 +110,23 @@ const LoginForm = (props) => {
                         values.email
                       );
                       setToast({
-                        message: `Your email has not been confirmed. 
-                      Please look through your email for a Registration 
-                      Confirmation link and use it to confirm that you 
+                        message: `Your email has not been confirmed.
+                      Please look through your email for a Registration
+                      Confirmation link and use it to confirm that you
                       own this email address.`,
                       });
                       formikBag.setSubmitting(false);
                     } catch (err) {
                       setToast({
-                        message: `An internal error occurred in sending 
+                        message: `An internal error occurred in sending
                     an email to ${values.email}`,
                       });
                       formikBag.setSubmitting(false);
                     }
                   } else if (response.code === "AUTH_NO_ACCOUNT") {
-                    console.log("Account not found!!");
+                    console.error("Account not found!!");
                     setToast({
-                      message: `The email ${values.email} does not correspond to an 
+                      message: `The email ${values.email} does not correspond to an
                     existing account. Please verify the email or register as a
                     new account.`,
                     });
@@ -133,7 +134,7 @@ const LoginForm = (props) => {
                   } else {
                     // Presumably response.code === "AUTH_INVALID_PASSWORD"
                     setToast({
-                      message: `The password is incorrect, please check it 
+                      message: `The password is incorrect, please check it
                   and try again or use the Forgot Password feature.`,
                     });
                     formikBag.setSubmitting(false);
@@ -144,7 +145,7 @@ const LoginForm = (props) => {
                   setToast({
                     message: "Server error. Please contact support.",
                   });
-                  console.log(err);
+                  console.error(err);
                   formikBag.setSubmitting(false);
                 }
               }, 400);
@@ -195,8 +196,6 @@ const LoginForm = (props) => {
                 <Button
                   type="submit"
                   fullWidth
-                  variant="contained"
-                  color="primary"
                   className={classes.submit}
                   disabled={isSubmitting}
                 >

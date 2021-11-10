@@ -2,8 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/styles";
 import { UserContext } from "../../contexts/user-context";
-import { EditButton, MoveUpButton, MoveDownButton } from "../UI/Buttons";
 import { Typography } from "@material-ui/core";
+import { Button } from "../../components/UI";
 
 const useStyles = makeStyles({
   edit: {
@@ -63,18 +63,28 @@ const FaqItem = ({ faq, reorder, reorderFaqs, faqLength }) => {
               </Typography>
               {reorder ? (
                 <>
-                  <MoveUpButton
+                  <Button
+                    icon="arrowUp"
+                    iconPosition="start"
                     className={Number(order) === 1 ? classes.hide : ""}
                     onClick={() => reorderFaqs("up", order)}
-                  />
-                  <MoveDownButton
+                  >
+                    Up
+                  </Button>
+                  <Button
+                    icon="arrowDown"
+                    iconPosition="start"
                     className={Number(order) === faqLength ? classes.hide : ""}
                     onClick={() => reorderFaqs("down", order)}
-                  />
+                  >
+                    Down
+                  </Button>
                 </>
               ) : (
                 <Link className={classes.link} to={`/faqs/${faq.identifier}`}>
-                  <EditButton label="  Edit  " />
+                  <Button icon="edit" iconPosition="start">
+                    Edit
+                  </Button>
                 </Link>
               )}
             </div>

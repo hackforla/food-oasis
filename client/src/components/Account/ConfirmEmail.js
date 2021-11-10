@@ -4,14 +4,13 @@ import { Redirect, withRouter } from "react-router-dom";
 import {
   withStyles,
   Avatar,
-  Button,
   Container,
   CssBaseline,
-  TextField,
   Typography,
 } from "@material-ui/core";
 import * as accountService from "../../services/account-service";
 import EmailOutlinedIcon from "@material-ui/icons/EmailOutlined";
+import { Button, TextField } from "../../components/UI";
 
 const styles = (theme) => ({
   "@global": {
@@ -115,13 +114,7 @@ const ConfirmEmail = (props) => {
                     setEmail(evt.target.value);
                   }}
                 />
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  className={classes.submit}
-                >
+                <Button type="submit" fullWidth className={classes.submit}>
                   Re-send confirmation email
                 </Button>
               </form>

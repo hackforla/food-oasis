@@ -4,10 +4,10 @@ import { useTranslation } from "react-i18next";
 import { makeStyles } from "@material-ui/styles";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import hackForLA from "../images/hackforla.svg";
 import codeForAmerica from "../images/codeforamerica.svg";
+import { Button } from '../../components/UI';
 
 const useStyles = makeStyles({
   root: {
@@ -32,7 +32,7 @@ const Donate = () => {
   return (
     <Container maxWidth="sm" className={classes.root}>
       <Typography variant="h6">{t("title")}</Typography>
-      <Grid container justify="space-around" alignItems="center">
+      <Grid container justifyContent="space-around" alignItems="center">
         <Grid item className={classes.image}>
           <img src={hackForLA} alt="Hack for LA logo" />
         </Grid>
@@ -46,21 +46,27 @@ const Donate = () => {
       <Typography className={classes.description} component={`p`}>
         {t("support-p")}
       </Typography>
-      <Button variant="outlined">{t("donate")}</Button>
+      <Button variant='outlined'>
+        {t('donate')}
+      </Button>
       <Typography className={classes.sectionHeader} align="center" variant="h4">
         {t("subscribe")}
       </Typography>
       <Typography className={classes.description} component={`p`}>
         {t("subscribe-text")}
       </Typography>
-      <Button variant="outlined">{t("subscribe-button")}</Button>
+      <Button variant='outlined'>
+        {t('subscribe-button')}
+      </Button>
       <Typography className={classes.sectionHeader} align="center" variant="h4">
         {t("questions")}
       </Typography>
       <Typography className={classes.description} component={`p`}>
         {t("questions-text")}
       </Typography>
-      <Button variant="outlined">{t("send-a-message")}</Button>
+      <Button variant='outlined'>
+        {t('send-a-message')}
+      </Button>
     </Container>
   );
 };

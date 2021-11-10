@@ -1,13 +1,11 @@
 import axios from "axios";
-
+import { tenantId } from "helpers/Configuration";
 const baseUrl = "/api/suggestions";
 
-export const getAll = async (searchParams) => {
-  searchParams = searchParams || {};
+export const getAll = async (statusIds) => {
   try {
-    const response = await axios.get(baseUrl, {
-      params: searchParams,
-    });
+    const params = { statusIds, tenantId };
+    const response = await axios.get(baseUrl, { params });
     return response.data;
   } catch (err) {
     throw new Error(err.message);
@@ -19,17 +17,12 @@ export const getById = async (id) => {
   return response.data;
 };
 
-export const post = async (correction) => {
-  const response = await axios.post(baseUrl, {
-    ...correction,
-  });
+export const post = async (suggestion) => {
+  const response = await axios.post(baseUrl, { ...suggestion, tenantId });
   return response.data;
 };
 
-//export const put = async (category, id) => {
-//   const response = await axios.put(`${baseUrl}/${id}`, {
-//     category,
-//     id,
-//   });
-//   return response.data;
-// };
+export const update = async (suggestion) => {
+  const response = await axios.put(`${baseUrl}/${suggestion.id}`, suggestion);
+  return response.data;
+};

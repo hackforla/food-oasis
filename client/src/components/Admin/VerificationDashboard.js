@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { withRouter, Redirect } from "react-router-dom";
 import { CssBaseline, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { SearchButton, PlainButton } from "../UI/Buttons";
 import StakeholderGrid from "./VerificationAdminGrid";
 import { RotateLoader } from "react-spinners";
 import { useOrganizations } from "hooks/useOrganizations";
 import * as stakeholderService from "services/stakeholder-service";
+import { Button } from "../../components/UI";
+import { useUserContext } from "../../contexts/user-context";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -72,7 +73,7 @@ const defaultCriteria = {
 };
 
 function VerificationDashboard(props) {
-  const { user } = props;
+  const { user } = useUserContext();
   const classes = useStyles();
   const [criteria, setCriteria] = useState(defaultCriteria);
 
@@ -123,7 +124,6 @@ function VerificationDashboard(props) {
   };
 
   const disableRequestAssignment = () => {
-    console.log(stakeholders);
     if (!stakeholders) return false;
     const stakeholdersAssigned = stakeholders.filter(
       (stakeholder) => stakeholder.verificationStatusId === 2
@@ -157,13 +157,21 @@ function VerificationDashboard(props) {
             {`${user && user.firstName} ${user && user.lastName}'s Dashboard`}
           </Typography>
           <div style={{ display: "flex", flexDirection: "row" }}>
-            <PlainButton
+            <Button
+              type="button"
               onClick={requestAssignment}
-              label="Request Assignment"
-              style={{ marginRight: "0.2em" }}
               disabled={disableRequestAssignment()}
-            />
-            <SearchButton onClick={search} label="Refresh" />
+            >
+              Request Assignment
+            </Button>
+            <Button
+              type="button"
+              icon="search"
+              iconPosition="start"
+              onClick={search}
+            >
+              Refresh
+            </Button>
           </div>
         </header>
       </div>

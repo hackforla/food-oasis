@@ -6,9 +6,7 @@ import * as Yup from "yup";
 import * as accountService from "../../services/account-service";
 import {
   Avatar,
-  Button,
   CssBaseline,
-  TextField,
   Link,
   Grid,
   Typography,
@@ -16,6 +14,7 @@ import {
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Footer from "../Layout/Footer";
+import { TextField, Button } from "../../components/UI";
 
 const styles = (theme) => ({
   "@global": {
@@ -166,14 +165,12 @@ const form = (props) => {
             <Button
               type="submit"
               fullWidth
-              variant="contained"
-              color="primary"
               className={classes.submit}
               disabled={isSubmitting}
             >
               Register
             </Button>
-            <Grid container justify="center">
+            <Grid container justifyContent="center">
               <Grid item>
                 <Link href="/login" variant="body2">
                   Already have an account? Login
@@ -235,15 +232,15 @@ const Register = withFormik({
             props.history.push("/");
           } else if (result.code === "REG_DUPLICATE_EMAIL") {
             props.setToast({
-              message: `The email ${email} is already registered. 
-              Please login or use the Forgot Password feature if you have 
+              message: `The email ${email} is already registered.
+              Please login or use the Forgot Password feature if you have
               forgotten your password.`,
             });
           } else {
             props.setToast({
-              message: `An error occurred in sending the 
-              confirmation message to ${email}. 
-              Try to log in, and follow the instructions for re-sending the 
+              message: `An error occurred in sending the
+              confirmation message to ${email}.
+              Try to log in, and follow the instructions for re-sending the
               confirmation email.`,
             });
           }
@@ -253,7 +250,7 @@ const Register = withFormik({
           props.setToast({
             message: `Registration failed. ${err.message || ""}`,
           });
-          console.log(err);
+          console.error(err);
         });
     }, 1000);
   },

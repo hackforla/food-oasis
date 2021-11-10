@@ -7,10 +7,9 @@ import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Link from "@material-ui/core/Link";
-import Button from "@material-ui/core/Button";
-import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { Link as RouterLink } from "react-router-dom";
 import SearchBar from "components/FoodSeeker/SearchBar";
+import { Button } from "../../components/UI";
 
 // All the tenant logos happen to be the same for now
 import logo from "images/foodoasis.svg";
@@ -51,15 +50,17 @@ const useStyles = makeStyles((theme) => ({
     color: "#4D4D4D",
     textAlign: "center",
   },
-  label: { 
+  label: {
     textAlign: "center",
     marginTop: 10,
-    marginBottom: "0.75em",
-    padding: "0",
-    fontSize:"20px",
-    [theme.breakpoints.up("sm")]: {
-      padding: "0 1vw",
-      fontSize:"24px",
+    marginBottom: "0.5em",
+    padding: "0 5vw",
+
+    [theme.breakpoints.down("sm")]: {
+      padding: "0 5vw",
+    },
+    [theme.breakpoints.down("md")]: {
+      padding: "0 8.5vw",
     },
   },
   form: {
@@ -147,6 +148,7 @@ const Home = ({
   match,
   history,
   tenantId,
+  taglineText,
 }) => {
   const classes = useStyles();
 
@@ -227,31 +229,7 @@ const Home = ({
             className={classes.form}
             onSubmit={() => history.push("/organizations")}
           >
-            {tenantId === 5 ? (
-              <Typography variant={"h5"} className={classes.label}>
-                Locate free food in McKinney
-              </Typography>
-            ) : tenantId === 4 ? (
-              <Typography variant={"h5"} className={classes.label}>
-                Locate free food in Portland
-              </Typography>
-            ) : tenantId === 3 ? (
-              <Typography variant={"h5"} className={classes.label}>
-                Locate free food in Hawaii
-              </Typography>
-            ) : tenantId === 2 ? (
-              <Typography variant={"h5"} className={classes.label}>
-                Locate free food in California
-              </Typography>
-            ) : tenantId === 6 ? (
-              <Typography variant={"h5"} className={classes.label}>
-                Locate free food in Santa Barbara
-              </Typography>
-            ) : (
-              <Typography variant={"h5"} className={classes.label}>
-                Locate free food in Los Angeles
-              </Typography>
-            )}
+            <Typography>{taglineText}</Typography>
             <Box className={classes.inputContainer}>
               <SearchBar
                 userCoordinates={userCoordinates}
@@ -272,10 +250,9 @@ const Home = ({
                 browserLocation={browserLocation}
               /> */}
               <Button
+                icon="locationOn"
+                iconPosition="start"
                 className={classes.locationBtn}
-                variant="contained"
-                fullWidth
-                startIcon={<LocationOnIcon />}
                 onClick={useMyLocationTrigger}
               >
                 Use my current location

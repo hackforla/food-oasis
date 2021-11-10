@@ -3,7 +3,7 @@ import FaqEditForm from "./FaqEditForm";
 import { useTranslation } from "react-i18next";
 
 import Container from "@material-ui/core/Container";
-import TextField from "@material-ui/core/TextField";
+import { TextField } from "../UI";
 
 const FaqAdd = () => {
   const { i18n } = useTranslation();
@@ -21,7 +21,6 @@ const FaqAdd = () => {
       <TextField
         placeholder="Identifier"
         type="text"
-        variant="outlined"
         fullWidth
         value={identifier}
         onChange={(event) => handleIdentifierChange(event)}

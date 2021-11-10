@@ -5,7 +5,7 @@ import ReactMapGL, {
   ScaleControl,
   AttributionControl,
 } from "react-map-gl";
-import { Grid, Button } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import Marker from "components/FoodSeeker/Marker";
@@ -15,6 +15,7 @@ import { isMobile } from "helpers";
 import StakeholderPreview from "components/FoodSeeker/StakeholderPreview";
 import StakeholderDetails from "components/FoodSeeker/StakeholderDetails";
 import * as analytics from "../../services/analytics";
+import { Button } from "../../../components/UI";
 
 const styles = {
   navigationControl: {
@@ -164,7 +165,7 @@ function Map({
             // // to maintain zoom when search is re-executed, etc.
             // setZoom(newViewport.zoom);
           }}
-          mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
+          mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
           mapStyle={MAPBOX_STYLE}
           onClick={unselectStakeholder}
           onInteractionStateChange={onInteractionStateChange}
@@ -186,9 +187,9 @@ function Map({
 
           {showSearchArea && (
             <Button
-              onClick={searchArea}
               variant="outlined"
               size="small"
+              onClick={searchArea}
               className={classes.searchButton}
             >
               Search this area

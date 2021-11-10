@@ -5,7 +5,7 @@ import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { decorators } from "../helpers";
 
 import Box from "../Box";
-import Input from "../Input";
+import Input from "../TextField";
 
 storiesOf("Components/Box", module)
   .addDecorator(decorators)

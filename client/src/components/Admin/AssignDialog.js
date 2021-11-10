@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
 } from "@material-ui/core";
 import AccountAutocomplete from "./AccountAutocomplete";
+import { Button } from "../../components/UI";
 
 function AssignDialog(props) {
   const { onClose, open, ...other } = props;
@@ -23,7 +23,7 @@ function AssignDialog(props) {
 
   return (
     <Dialog
-      disableBackdropClick
+      onClose={handleCancel}
       disableEscapeKeyDown
       fullWidth
       maxWidth="sm"
@@ -40,10 +40,10 @@ function AssignDialog(props) {
         />
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={handleCancel} color="primary">
+        <Button autoFocus onClick={handleCancel}>
           Cancel
         </Button>
-        <Button onClick={handleAssign} color="primary" disabled={!accountId}>
+        <Button onClick={handleAssign} disabled={!accountId}>
           Assign
         </Button>
       </DialogActions>

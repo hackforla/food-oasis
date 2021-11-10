@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
-import { UserContext } from "contexts/user-context";
+import { useUserContext } from "contexts/user-context";
 import { Formik } from "formik";
 import AccountAutocomplete from "components/Admin/AccountAutocomplete";
 import * as Yup from "yup";
@@ -30,20 +30,18 @@ import {
 } from "@material-ui/core";
 import * as stakeholderService from "services/stakeholder-service";
 import { useCategories } from "hooks/useCategories/useCategories";
-//import * as esriService from "services/esri_service";
 import * as geocoder from "services/geocode-tamu-service";
 import OpenTimeForm from "components/Admin/OpenTimeForm";
 import { TabPanel, a11yProps } from "components/Admin/ui/TabPanel";
-import { PlainButton, VerifyButton } from "components/UI/Buttons";
 import AssignDialog from "components/Admin/AssignDialog";
 import ConfirmDialog from "components/Admin/ui/ConfirmDialog";
 import {
   VERIFICATION_STATUS,
   VERIFICATION_STATUS_NAMES,
 } from "constants/stakeholder";
-import PrimaryButton from "./ui/PrimaryButton";
 import TextInput from "./ui/TextInput";
 import moment from "moment";
+import { Button } from "../../components/UI";
 
 const BigTooltip = withStyles(() => ({
   tooltip: {
@@ -247,7 +245,7 @@ const CheckboxWithLabel = ({ name, label, checked, onChange, ...props }) => (
 );
 
 const OrganizationEdit = (props) => {
-  const { classes, setToast, match, user, history } = props;
+  const { classes, setToast, match, history } = props;
   const editId = match.params.id;
   const [assignDialogOpen, setAssignDialogOpen] = useState(false);
   const [assignDialogCallback, setAssignDialogCallback] = useState({});
@@ -257,6 +255,7 @@ const OrganizationEdit = (props) => {
   const [geocodeResults, setGeocodeResults] = useState([]);
   const [nextUrl, setNextUrl] = useState(null);
   const [originalData, setOriginalData] = useState(emptyOrganization);
+  const { user } = useUserContext();
 
   const { data: categories } = useCategories();
 
@@ -278,7 +277,7 @@ const OrganizationEdit = (props) => {
           setOriginalData(emptyOrganization);
         }
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     };
     fetchData();
@@ -342,7 +341,7 @@ const OrganizationEdit = (props) => {
         });
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
       setToast({
         message:
           `Geocoder request failed: ${err} ` +
@@ -755,8 +754,8 @@ const OrganizationEdit = (props) => {
                       name="categoryNotes"
                       label="Category Notes"
                       multiline
-                      rows={2}
-                      rowsMax={12}
+                      minRows={2}
+                      maxRows={12}
                       value={values.categoryNotes}
                       onChange={handleChange}
                       onBlur={handleBlur}
@@ -817,8 +816,8 @@ const OrganizationEdit = (props) => {
                       name="covidNotes"
                       label="COVID Notes"
                       multiline
-                      rows={2}
-                      rowsMax={12}
+                      minRows={2}
+                      maxRows={12}
                       value={values.covidNotes}
                       onChange={handleChange}
                       onBlur={handleBlur}
@@ -833,8 +832,8 @@ const OrganizationEdit = (props) => {
                       name="description"
                       label="Description"
                       multiline
-                      rows={2}
-                      rowsMax={12}
+                      minRows={2}
+                      maxRows={12}
                       value={values.description}
                       onChange={handleChange}
                       onBlur={handleBlur}
@@ -954,22 +953,20 @@ const OrganizationEdit = (props) => {
                         >
                           <BigTooltip title="Click to get latitude / longitude for address">
                             <Grid item>
-                              <PrimaryButton
+                              <Button
+                                icon="search"
+                                iconPosition="start"
+                                style={{ marginTop: "1.2em" }}
                                 onClick={() => {
                                   (geocodeResults && geocodeResults.length) < 1
                                     ? geocode(values)
                                     : setGeocodeResults([]);
                                 }}
-                                logo="search"
-                                style={{ marginTop: "1.2em" }}
                               >
-                                {(geocodeResults && geocodeResults.length) <
-                                1 ? (
-                                  <>Get Coordinates</>
-                                ) : (
-                                  <>Close</>
-                                )}
-                              </PrimaryButton>
+                                {(geocodeResults && geocodeResults.length) < 1
+                                  ? "Get Coordinates"
+                                  : "Close"}
+                              </Button>
                             </Grid>
                           </BigTooltip>
                           <div className={classes.confirmCheckboxWrapper}>
@@ -1013,8 +1010,8 @@ const OrganizationEdit = (props) => {
                                   {/* <Typography>{`${result.attributes.Addr_type}`}</Typography> */}
                                 </Grid>
                                 <Grid item xs={2}>
-                                  <VerifyButton
-                                    label=""
+                                  <Button
+                                    type="button"
                                     onClick={() => {
                                       setFieldValue(
                                         "latitude",
@@ -1026,7 +1023,9 @@ const OrganizationEdit = (props) => {
                                       );
                                       setGeocodeResults([]);
                                     }}
-                                  />
+                                  >
+                                    {""}
+                                  </Button>
                                 </Grid>
                               </Grid>
                             </div>
@@ -1158,14 +1157,14 @@ const OrganizationEdit = (props) => {
                   <Grid
                     item
                     container
-                    justify="space-between"
+                    justifyContent="space-between"
                     xs={12}
                     alignItems="center"
                   >
                     <Grid item xs={6}>
                       <Typography>Food Types</Typography>
                     </Grid>
-                    <Grid item container justify="flex-end" xs={6}>
+                    <Grid item container justifyContent="flex-end" xs={6}>
                       <FormControlLabel
                         control={
                           <Checkbox
@@ -1212,8 +1211,8 @@ const OrganizationEdit = (props) => {
                     name="foodTypes"
                     label="Other Food Types"
                     multiline
-                    rows={2}
-                    rowsMax={12}
+                    minRows={2}
+                    maxRows={12}
                     value={values.foodTypes}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -1251,8 +1250,8 @@ const OrganizationEdit = (props) => {
                     name="requirements"
                     label="Eligibility / Requirements"
                     multiline
-                    rows={2}
-                    rowsMax={12}
+                    minRows={2}
+                    maxRows={12}
                     value={values.requirements}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -1266,8 +1265,8 @@ const OrganizationEdit = (props) => {
                     name="eligibilityNotes"
                     label="Eligibility Notes"
                     multiline
-                    rows={2}
-                    rowsMax={12}
+                    minRows={2}
+                    maxRows={12}
                     value={values.eligibilityNotes}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -1285,8 +1284,8 @@ const OrganizationEdit = (props) => {
                     name="languages"
                     label="Languages"
                     multiline
-                    rows={2}
-                    rowsMax={12}
+                    minRows={2}
+                    maxRows={12}
                     value={values.languages}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -1300,8 +1299,8 @@ const OrganizationEdit = (props) => {
                     name="notes"
                     label="Notes for the Public"
                     multiline
-                    rows={2}
-                    rowsMax={12}
+                    minRows={2}
+                    maxRows={12}
                     value={values.notes}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -1754,38 +1753,34 @@ const OrganizationEdit = (props) => {
                         </Typography>
                       </div>
                       <div className={classes.workflowColumn4}>
-                        <UserContext.Consumer>
-                          {(user) =>
-                            user && (user.isAdmin || user.isCoordinator) ? (
-                              <div
-                                style={{
-                                  display: "flex",
-                                  flexDirection: "row",
-                                  justifyContent: "flex-end",
-                                }}
-                              >
-                                <AccountAutocomplete
-                                  style={{ width: "100%" }}
-                                  accountId={values.claimedLoginId || ""}
-                                  setAccount={(login) => {
-                                    if (login) {
-                                      setFieldValue("claimedLoginId", login.id);
-                                      setFieldValue(
-                                        "claimedUser",
-                                        `${login.firstName} ${login.lastName}`
-                                      );
-                                      setFieldValue("claimedDate", moment());
-                                    } else {
-                                      setFieldValue("claimedLoginId", "");
-                                      setFieldValue("claimedUser", "");
-                                      setFieldValue("claimedDate", "");
-                                    }
-                                  }}
-                                />
-                              </div>
-                            ) : null
-                          }
-                        </UserContext.Consumer>
+                        {user && (user.isAdmin || user.isCoordinator) ? (
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              justifyContent: "flex-end",
+                            }}
+                          >
+                            <AccountAutocomplete
+                              style={{ width: "100%" }}
+                              accountId={values.claimedLoginId || ""}
+                              setAccount={(login) => {
+                                if (login) {
+                                  setFieldValue("claimedLoginId", login.id);
+                                  setFieldValue(
+                                    "claimedUser",
+                                    `${login.firstName} ${login.lastName}`
+                                  );
+                                  setFieldValue("claimedDate", moment());
+                                } else {
+                                  setFieldValue("claimedLoginId", "");
+                                  setFieldValue("claimedUser", "");
+                                  setFieldValue("claimedDate", "");
+                                }
+                              }}
+                            />
+                          </div>
+                        ) : null}
                       </div>
                     </div>
                   </Grid>
@@ -1795,8 +1790,8 @@ const OrganizationEdit = (props) => {
                       name="reviewNotes"
                       label="Reviewer Notes"
                       multiline
-                      rows={2}
-                      rowsMax={12}
+                      minRows={2}
+                      maxRows={12}
                       value={values.reviewNotes}
                       onChange={handleChange}
                       onBlur={handleBlur}
@@ -1813,8 +1808,8 @@ const OrganizationEdit = (props) => {
                     name="adminNotes"
                     label="Verification Notes"
                     multiline
-                    rows={2}
-                    rowsMax={12}
+                    minRows={2}
+                    maxRows={12}
                     value={values.adminNotes}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -1844,14 +1839,14 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <PrimaryButton
+                          <Button
                             type="submit"
                             className={classes.submit}
                             disabled={isSubmitting || isUnchanged(values)}
-                            style={{ margin: "auto 0.5em" }}
+                            // style={{ margin: "auto 0.5em" }}
                           >
                             Save Progress
-                          </PrimaryButton>
+                          </Button>
                         </div>
                       </BigTooltip>
                       <BigTooltip title="Mark for re-verification">
@@ -1864,7 +1859,7 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <PrimaryButton
+                          <Button
                             type="button"
                             onClick={() => {
                               setFieldValue("reviewedLoginId", "");
@@ -1889,10 +1884,9 @@ const OrganizationEdit = (props) => {
                               values.verifivation_status_id ===
                                 VERIFICATION_STATUS.NEEDS_VERIFICATION
                             }
-                            style={{ margin: "auto 0.5em" }}
                           >
-                            Needs Verification
-                          </PrimaryButton>
+                            Needs Verfication
+                          </Button>
                         </div>
                       </BigTooltip>
                       <BigTooltip title="Assign for Verification">
@@ -1905,7 +1899,7 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <PrimaryButton
+                          <Button
                             type="button"
                             onClick={() => {
                               handleAssignDialogOpen({
@@ -1929,10 +1923,9 @@ const OrganizationEdit = (props) => {
                               values.verification_status_id ===
                                 VERIFICATION_STATUS.SUBMITTED
                             }
-                            style={{ margin: "auto 0.5em" }}
                           >
                             (Re-)Assign
-                          </PrimaryButton>
+                          </Button>
                         </div>
                       </BigTooltip>
                       <BigTooltip
@@ -1947,7 +1940,7 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <PrimaryButton
+                          <Button
                             type="button"
                             onClick={() => {
                               setFieldValue(
@@ -1972,10 +1965,9 @@ const OrganizationEdit = (props) => {
                               !values.submittedDate ||
                               values.verificationStatusId !== 3
                             }
-                            style={{ margin: "auto 0.5em" }}
                           >
                             Request Changes
-                          </PrimaryButton>
+                          </Button>
                         </div>
                       </BigTooltip>
                       <BigTooltip title="Approve as Verified">
@@ -1988,7 +1980,7 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <PrimaryButton
+                          <Button
                             type="button"
                             onClick={() => {
                               setFieldValue("approvedDate", moment());
@@ -2009,10 +2001,9 @@ const OrganizationEdit = (props) => {
                               !criticalFieldsValidate(values) ||
                               (user.isCoordinator && !user.isAdmin)
                             }
-                            style={{ margin: "auto 0.5em" }}
                           >
                             Approve
-                          </PrimaryButton>
+                          </Button>
                         </div>
                       </BigTooltip>
                       <BigTooltip title="Delete Organization from Database Permanently">
@@ -2025,7 +2016,7 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <PlainButton
+                          <Button
                             type="button"
                             onClick={() => {
                               handleConfirmDialogOpen({
@@ -2036,10 +2027,10 @@ const OrganizationEdit = (props) => {
                                 },
                               });
                             }}
-                            label="Delete"
                             disabled={!user.isAdmin || !values.id}
-                            style={{ margin: "auto 0.5em" }}
-                          />
+                          >
+                            Delete
+                          </Button>
                         </div>
                       </BigTooltip>
                     </>
@@ -2055,13 +2046,13 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <PlainButton
+                          <Button
                             type="submit"
-                            label="Save Progress"
                             className={classes.submit}
                             disabled={isSubmitting || isUnchanged(values)}
-                            style={{ margin: "auto" }}
-                          />
+                          >
+                            Save Progress
+                          </Button>
                         </div>
                       </BigTooltip>
                       <BigTooltip title="Unable to complete six critical fields (*), but need to hand off to someone else to complete">
@@ -2074,7 +2065,7 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <PlainButton
+                          <Button
                             type="button"
                             onClick={() => {
                               setFieldValue("assignedLoginId", "");
@@ -2087,14 +2078,14 @@ const OrganizationEdit = (props) => {
                               setNextUrl("/verificationdashboard");
                               handleSubmit();
                             }}
-                            label="Hand Off"
                             disabled={
                               criticalFieldsValidate(values) ||
                               values.verificationStatusId ===
                                 VERIFICATION_STATUS.NEEDS_VERIFICATION
                             }
-                            style={{ margin: "auto" }}
-                          />
+                          >
+                            Hand Off
+                          </Button>
                         </div>
                       </BigTooltip>
                       <BigTooltip title="Critical information entered, Submit for Review.">
@@ -2107,7 +2098,7 @@ const OrganizationEdit = (props) => {
                             justifyContent: "center",
                           }}
                         >
-                          <PlainButton
+                          <Button
                             type="button"
                             onClick={() => {
                               setFieldValue("submittedDate", moment());
@@ -2123,14 +2114,14 @@ const OrganizationEdit = (props) => {
                               setNextUrl("/verificationdashboard");
                               handleSubmit();
                             }}
-                            label="Submit For Review"
                             disabled={
                               !criticalFieldsValidate(values) ||
                               values.verificationStatusId ===
                                 VERIFICATION_STATUS.SUBMITTED
                             }
-                            style={{ margin: "auto" }}
-                          />
+                          >
+                            Submit For Review
+                          </Button>
                         </div>
                       </BigTooltip>
                     </>
@@ -2149,7 +2140,6 @@ OrganizationEdit.propTypes = {
   classes: PropTypes.object,
   setToast: PropTypes.func,
   match: PropTypes.object,
-  user: PropTypes.object,
   history: PropTypes.object,
 };
 

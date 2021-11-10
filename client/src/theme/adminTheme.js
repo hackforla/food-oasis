@@ -1,4 +1,4 @@
-import { createMuiTheme } from "@material-ui/core/styles";
+import { createTheme } from "@material-ui/core/styles";
 import { white, primary, secondary, success, error, bodyText } from "./colors";
 
 export const theme = {
@@ -123,6 +123,6 @@ export const theme = {
   },
 };
 
-const adminTheme = createMuiTheme(theme);
+const adminTheme = createTheme(theme);
 
 export default adminTheme;

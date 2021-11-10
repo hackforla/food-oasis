@@ -8,15 +8,20 @@ import {
 import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import { Grid, CssBaseline } from "@material-ui/core";
 import theme from "theme/clientTheme";
-import { logout } from "services/account-service";
-import { tenantId, tenantName, defaultViewport } from "helpers/Configuration";
+import {
+  tenantId,
+  tenantName,
+  defaultViewport,
+  tenantDetails,
+} from "helpers/Configuration";
 // import useGeolocation from "hooks/useGeolocation";
 // Components
-import { UserContext } from "contexts/user-context";
+import { UserProvider } from "contexts/user-context";
 import { OriginCoordinatesContext } from "contexts/origin-coordinates-context";
 import Toast from "components/UI/Toast";
 import Header from "components/Layout/Header";
 import HeaderHome from "components/Layout/HeaderHome";
+import WidgetFooter from "components/Layout/WidgetFooter";
 import VerificationAdmin from "components/Admin/VerificationAdmin";
 import VerificationDashboard from "components/Admin/VerificationDashboard";
 import SecurityAdminDashboard from "components/Account/SecurityAdminDashboard/SecurityAdminDashboard";
@@ -55,6 +60,7 @@ import Suggestion from "components/FoodSeeker/Suggestion";
 import ImportFile from "components/Admin/ImportOrganizations/ImportFile";
 import adminTheme from "./theme/adminTheme";
 import * as analytics from "../src/services/analytics";
+import Suggestions from "components/Admin/Suggestions";
 
 const useStyles = makeStyles({
   app: () => ({
@@ -69,20 +75,20 @@ const useStyles = makeStyles({
     overflowY: "scroll",
     flexGrow: 1,
   },
-  OrganizationEditWrapper: {
+  organizationEditWrapper: {
     flexBasis: "90%",
     paddingTop: "1em",
     paddingBottom: "1em",
   },
   homeWrapper: {
     backgroundSize: "cover",
-    backgroundPosition:"center",
+    backgroundPosition: "center",
     backgroundImage: 'url("/landing-page/map.png")', // replaced the background image style inside useStyles instead of inline styling
     minHeight: "max(100.7vh,20em)",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    alignItems:"center",
+    alignItems: "center",
   },
   verificationAdminWrapper: {
     flexBasis: "100%",
@@ -93,8 +99,6 @@ const useStyles = makeStyles({
 });
 
 function App() {
-  const [user, setUser] = useState(null);
-
   // origin is where the map should be centered. It is at the App level
   // so it can be passed from landing pages to the SearchResults.
   const [origin, setOrigin] = useState(defaultViewport.center);
@@ -110,19 +114,19 @@ function App() {
   useEffect(() => {
     switch (tenantId) {
       case 2:
-        setBgImg(`url("/landing-page/bg-LA.jpeg")`)
+        setBgImg(`url("/landing-page/bg-LA.jpeg")`);
         break;
       case 3:
-        setBgImg(`url("/landing-page/bg-HI.jpeg")`)
+        setBgImg(`url("/landing-page/bg-HI.jpeg")`);
         break;
       case 5:
         setBgImg(`url("/landing-page/bg-TX.jpeg")`);
         break;
       case 6:
-        setBgImg(`url("/landing-page/bg-LA.jpeg")`)
-        break;      
+        setBgImg(`url("/landing-page/bg-LA.jpeg")`);
+        break;
       default:
-        setBgImg(`url("/landing-page/bg-LA.jpeg")`)
+        setBgImg(`url("/landing-page/bg-LA.jpeg")`);
         return;
     }
   }, []);
@@ -131,36 +135,10 @@ function App() {
     analytics.postEvent("visitAppComponent");
   }, []);
 
-  useEffect(() => {
-    const storedJson = sessionStorage.getItem("user");
-    const userJson = JSON.stringify(user);
-    if (!userJson && !storedJson) {
-      return;
-    } else if (userJson === storedJson) {
-      return;
-    } else {
-      const user = JSON.parse(storedJson);
-      if (user) {
-        analytics.identify(user.id);
-      }
-      setUser(user);
-    }
-  }, [user]);
-
-  const onLogin = (user) => {
-    if (user) {
-      sessionStorage.setItem("user", JSON.stringify(user));
-    } else {
-      sessionStorage.removeItem("user");
-      logout();
-    }
-    setUser(user);
-  };
-
   const classes = useStyles();
 
   return (
-    <UserContext.Provider value={user}>
+    <UserProvider setToast={setToast}>
       <OriginCoordinatesContext.Provider value={origin}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
@@ -177,17 +155,13 @@ function App() {
             >
               <Switch>
                 <Route exact path="/">
-                  <HeaderHome
-                    user={user}
-                    setUser={onLogin}
-                    setToast={setToast}
-                  />
+                  <HeaderHome setToast={setToast} />
                 </Route>
+                <Route path="/widget"></Route>
                 <Route>
                   <Header
                     tenantId={tenantId}
-                    user={user}
-                    setUser={onLogin}
+                    taglineText={tenantDetails.taglineText}
                     setToast={setToast}
                   />
                 </Route>
@@ -196,7 +170,7 @@ function App() {
                 <Route exact path="/">
                   <div
                     className={classes.homeWrapper}
-                    style={{ backgroundImage: bgImg }} 
+                    style={{ backgroundImage: bgImg }}
                   >
                     <Home
                       userCoordinates={userCoordinates}
@@ -204,6 +178,7 @@ function App() {
                       origin={origin}
                       setOrigin={setOrigin}
                       tenantId={tenantId}
+                      taglineText={tenantDetails.taglineText}
                     />
                   </div>
                 </Route>
@@ -212,13 +187,26 @@ function App() {
               http"//foodoasis.la/search Link that has been published at
               http://publichealth.lacounty.gov/eh/LACFRI/ShareAndDonate.htm
               */}
-                <Redirect from="/search" to="/organizations" />
+                <Redirect from="/search" to="/widget" />
+                <Route path="/widget">
+                  <>
+                    <SearchResults
+                      origin={origin}
+                      setOrigin={setOrigin}
+                      userCoordinates={userCoordinates}
+                      setToast={setToast}
+                      taglineText={tenantDetails.taglineText}
+                    />
+                    <WidgetFooter tenantId={tenantId} />
+                  </>
+                </Route>
                 <Route path="/organizations">
                   <SearchResults
                     origin={origin}
                     setOrigin={setOrigin}
                     userCoordinates={userCoordinates}
                     setToast={setToast}
+                    taglineText={tenantDetails.taglineText}
                   />
                 </Route>
                 <Route path="/suggestion">
@@ -226,15 +214,14 @@ function App() {
                 </Route>
                 <Route path="/organizationedit/:id?">
                   <ThemeProvider theme={adminTheme}>
-                    <div className={classes.OrganizationEditWrapper}>
-                      <OrganizationEdit setToast={setToast} user={user} />
+                    <div className={classes.organizationEditWrapper}>
+                      <OrganizationEdit setToast={setToast} />
                     </div>
                   </ThemeProvider>
                 </Route>
                 <Route path="/verificationdashboard">
                   <div className={classes.verificationAdminWrapper}>
                     <VerificationDashboard
-                      user={user}
                       userCoordinates={userCoordinates}
                       origin={origin}
                     />
@@ -243,29 +230,27 @@ function App() {
                 <Route path="/verificationadmin">
                   <ThemeProvider theme={adminTheme}>
                     <div className={classes.verificationAdminWrapper}>
-                      <VerificationAdmin
-                        user={user}
-                        userCoordinates={userCoordinates}
-                      />
+                      <VerificationAdmin userCoordinates={userCoordinates} />
                     </div>
                   </ThemeProvider>
                 </Route>
                 <Route path="/parentorganizations">
-                  <div className={classes.OrganizationEditWrapper}>
-                    <ParentOrganizations setToast={setToast} user={user} />
+                  <div className={classes.organizationEditWrapper}>
+                    <ParentOrganizations setToast={setToast} />
+                  </div>
+                </Route>
+                <Route path="/suggestions">
+                  <div className={classes.organizationEditWrapper}>
+                    <Suggestions setToast={setToast} />
                   </div>
                 </Route>
                 <Route path="/securityadmindashboard">
                   <div className={classes.verificationAdminWrapper}>
-                    <SecurityAdminDashboard
-                      user={user}
-                      userCoordinates={userCoordinates}
-                    />
+                    <SecurityAdminDashboard userCoordinates={userCoordinates} />
                   </div>
                 </Route>
                 <Route path="/organizationimport">
                   <ImportFile
-                    user={user}
                     setToast={setToast}
                     tenantId={tenantId}
                     tenantName={tenantName}
@@ -287,7 +272,7 @@ function App() {
                   <ConfirmEmail setToast={setToast} />
                 </Route>
                 <Route path="/login/:email?">
-                  <Login user={user} setUser={onLogin} setToast={setToast} />
+                  <Login setToast={setToast} />
                 </Route>
                 <Route path="/forgotpassword/:email?">
                   <ForgotPassword setToast={setToast} />
@@ -346,7 +331,7 @@ function App() {
           </Router>
         </ThemeProvider>
       </OriginCoordinatesContext.Provider>
-    </UserContext.Provider>
+    </UserProvider>
   );
 }
 

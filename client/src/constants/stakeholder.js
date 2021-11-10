@@ -18,3 +18,21 @@ export const VERIFICATION_STATUS_NAMES = {
   3: "Submitted",
   4: "Approved",
 };
+
+export const DEFAULT_STAKEHOLDER = {
+  id: 0,
+  name: "",
+  address1: "",
+  address2: "",
+  city: "",
+  state: "",
+  zip: "",
+  phone: "",
+  email: "",
+  notes: "",
+  hours: "",
+  tipsterName: "",
+  tipsterPhone: "",
+  tipsterEmail: "",
+  category: "",
+};

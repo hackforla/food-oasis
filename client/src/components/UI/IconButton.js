@@ -1,54 +1,25 @@
 import React from "react";
-import { IconButton as MaterialIconButton } from "@material-ui/core";
+import { IconButton as MuiIconButton } from "@material-ui/core";
 import PropTypes from "prop-types";
-import {
-  Add,
-  ArrowDownward,
-  ArrowUpward,
-  Cancel,
-  Check,
-  Close,
-  Delete,
-  Details,
-  Edit,
-  Remove,
-  Save,
-  Search,
-} from "@material-ui/icons";
+import { ICON_DICT } from "./iconLookup";
 
-const IconButton = ({ kind, ...props }) => {
-  const Icon = ICON_DICT[kind];
+const IconButton = ({ icon, ...props }) => {
+  const Icon = ICON_DICT[icon];
   return (
-    <MaterialIconButton
-      variant="contained"
-      color="default"
-      aria-label={props.ariaLabel}
+    <MuiIconButton
+      variant={props.variant || "contained"}
+      color={props.color || "default"}
+      aria-label={icon}
       {...props}
     >
       <Icon />
-    </MaterialIconButton>
+    </MuiIconButton>
   );
 };
 
 IconButton.propTypes = {
-  ariaLabel: PropTypes.string.isRequired,
-  kind: PropTypes.string.isRequired,
-  onChange: PropTypes.func,
+  icon: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
 };
 
 export default IconButton;
-
-export const ICON_DICT = {
-  add: Add,
-  arrowUp: ArrowUpward,
-  arrowDown: ArrowDownward,
-  delete: Delete,
-  check: Check,
-  close: Close,
-  save: Save,
-  edit: Edit,
-  cancel: Cancel,
-  search: Search,
-  details: Details,
-  remove: Remove,
-};

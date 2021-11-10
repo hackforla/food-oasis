@@ -1,13 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   Typography,
 } from "@material-ui/core";
+import { Button } from "../../../components/UI";
 
 function ConfirmDialog(props) {
   const { onClose, open, ...other } = props;
@@ -22,7 +22,6 @@ function ConfirmDialog(props) {
 
   return (
     <Dialog
-      disableBackdropClick
       disableEscapeKeyDown
       fullWidth
       maxWidth="sm"
@@ -35,10 +34,10 @@ function ConfirmDialog(props) {
         <Typography>{props.message}</Typography>
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={handleCancel} color="primary">
+        <Button type="button" autoFocus onClick={handleCancel}>
           Cancel
         </Button>
-        <Button onClick={handleAssign} color="primary">
+        <Button type="button" onClick={handleAssign}>
           Confirm Delete
         </Button>
       </DialogActions>

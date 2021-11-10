@@ -14,11 +14,11 @@ export default function useGeolocation() {
         },
         (error) => {
           // Usually because user has blocked location
-          console.log(`Getting browser location failed: ${error.message}`);
+          console.error(`Getting browser location failed: ${error.message}`);
         }
       );
     } else {
-      console.log("Browser does not support getting users location.");
+      console.error("Browser does not support getting users location.");
     }
   }, []);
 

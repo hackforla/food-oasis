@@ -26,7 +26,6 @@ export const search = async (searchParams) => {
     };
   });
 
-  // console.log("stakeholders", stakeholders);
   return stakeholders;
 };
 

@@ -122,9 +122,9 @@ const search = async ({
       state: row.state || "",
       zip: row.zip || "",
       phone: row.phone || "",
-      latitude: row.latitude ? Number(row.latitude) : null,
-      longitude: row.longitude ? Number(row.longitude) : null,
-      distance: row.distance ? Number(row.distance) : null,
+      latitude: Number(row.latitude) ? Number(row.latitude) : null,
+      longitude: Number(row.longitude) ? Number(row.longitude) : null,
+      distance: Number(row.distance) ? Number(row.distance) : 0,
       website: row.website || "",
       notes: row.notes || "",
       createdDate: row.created_date,
@@ -335,7 +335,7 @@ const selectById = async (id) => {
   };
 
   // Don't have a distance, since we didn't specify origin
-  stakeholder.distance = null;
+  stakeholder.distance = 0;
 
   return stakeholder;
 };

@@ -6,16 +6,15 @@ import * as Yup from "yup";
 import * as accountService from "../../services/account-service";
 import {
   Avatar,
-  Button,
   Container,
   CssBaseline,
-  TextField,
   Link,
   Grid,
   Typography,
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Footer from "../Layout/Footer";
+import { Button, TextField } from "../../components/UI";
 
 const styles = (theme) => ({
   "@global": {
@@ -91,7 +90,7 @@ const ForgotPassword = (props) => {
                 ) {
                   const msg =
                     "Account not found. If you want to create a new account with this email, please register.";
-                  console.log(msg);
+                  console.error(msg);
                   setToast({
                     message: msg,
                   });
@@ -99,13 +98,13 @@ const ForgotPassword = (props) => {
                 } else if (response.code === "FORGOT_PASSWORD_EMAIL_FAILED") {
                   const msg =
                     "A problem occurred with sending an email to this address.";
-                  console.log(msg);
+                  console.error(msg);
                   setToast({
                     message: msg,
                   });
                   formikBag.setSubmitting(false);
                 } else {
-                  console.log(response.message);
+                  console.error(response.message);
                   setToast({
                     message: response.message,
                   });
@@ -115,7 +114,7 @@ const ForgotPassword = (props) => {
                 setToast({
                   message: `Server error. ${err.message}`,
                 });
-                console.log(err);
+                console.error(err);
                 formikBag.setSubmitting(false);
               }
             }}
@@ -154,12 +153,9 @@ const ForgotPassword = (props) => {
                   helperText={touched.email ? errors.email : ""}
                   error={touched.email && Boolean(errors.email)}
                 />
-
                 <Button
                   type="submit"
                   fullWidth
-                  variant="contained"
-                  color="primary"
                   className={classes.submit}
                   disabled={isSubmitting}
                 >

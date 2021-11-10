@@ -1,3 +1,5 @@
+import { TENANT_CONFIG } from "./Constants";
+
 export const tenantId = (() =>
   window.location.hostname.toLowerCase().includes("sb.") ||
   process.env.REACT_APP_TENANT_ID === "6"
@@ -37,6 +39,10 @@ export const tenantName = (() => {
     default:
       return "Los Angeles";
   }
+})();
+
+export const tenantDetails = (() => {
+  return TENANT_CONFIG[tenantId];
 })();
 
 export const defaultViewport = (() => {

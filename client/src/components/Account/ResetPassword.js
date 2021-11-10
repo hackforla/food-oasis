@@ -6,16 +6,15 @@ import * as Yup from "yup";
 import * as accountService from "../../services/account-service";
 import {
   Avatar,
-  Button,
   Container,
   CssBaseline,
-  TextField,
   Link,
   Grid,
   Typography,
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Footer from "../Layout/Footer";
+import { TextField, Button } from "../../components/UI";
 
 const styles = (theme) => ({
   "@global": {
@@ -96,7 +95,7 @@ const ResetPassword = (props) => {
                   response.code === "RESET_PASSWORD_TOKEN_INVALID" ||
                   response.code === "RESET_PASSWORD_TOKEN_EXPIRED"
                 ) {
-                  console.log(
+                  console.error(
                     "The reset token is invalid or has expired. Use the forgot password link to try again."
                   );
                   formikBag.setSubmitting(false);
@@ -111,7 +110,7 @@ const ResetPassword = (props) => {
                 setToast({
                   message: `Password reset failed. ${err.message}`,
                 });
-                console.log(err);
+                console.error(err);
                 formikBag.setSubmitting(false);
               }
             }}
@@ -170,8 +169,6 @@ const ResetPassword = (props) => {
                 <Button
                   type="submit"
                   fullWidth
-                  variant="contained"
-                  color="primary"
                   className={classes.submit}
                   disabled={isSubmitting}
                 >

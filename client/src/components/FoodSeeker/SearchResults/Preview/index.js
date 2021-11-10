@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { makeStyles } from "@material-ui/core/styles";
-import { Button } from "@material-ui/core";
+import { Button } from "../../../../components/UI";
 
 import {
   MEAL_PROGRAM_CATEGORY_ID,
@@ -15,7 +15,7 @@ import * as analytics from "services/analytics";
 
 import StakeholderIcon from "images/stakeholderIcon";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   stakeholder: {
     width: "100%",
     minHeight: "6em",
@@ -79,6 +79,11 @@ const useStyles = makeStyles(() => ({
   },
   name: {
     fontSize: "16px",
+  },
+  button: {
+    "&:hover": {
+      background: theme.palette.primary.main,
+    },
   },
 }));
 
@@ -228,6 +233,7 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
               <Button
                 variant="outlined"
                 size="small"
+                className={classes.button}
                 onClick={() => {
                   analytics.postEvent("getDirections", {
                     id: stakeholder.id,
@@ -250,6 +256,7 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
             <Button
               variant="outlined"
               size="small"
+              className={classes.button}
               onClick={() => {
                 analytics.postEvent("dialPhone", {
                   id: stakeholder.id,
@@ -264,6 +271,7 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
           <Button
             variant="outlined"
             size="small"
+            className={classes.button}
             disabled={stakeholder.inactive}
           >
             Details

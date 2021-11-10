@@ -1,9 +1,7 @@
 import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Button, Typography, Tooltip } from "@material-ui/core";
-import LocationSearchingIcon from "@material-ui/icons/LocationSearching";
-import { tenantName } from "helpers/Configuration";
+import { Grid, Typography, Tooltip } from "@material-ui/core";
 import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
@@ -14,6 +12,7 @@ import SearchBar from "components/FoodSeeker/SearchBar";
 import SwitchViewsButton from "./SwitchViewsButton";
 import CategoryButton from "./CategoryButton";
 import * as analytics from "services/analytics";
+import { Button } from "../../../../components/UI";
 
 const useStyles = makeStyles((theme) => ({
   select: {
@@ -28,8 +27,6 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.primary.main,
     padding: "0.5rem 0",
     flex: "1 0 auto",
-    position: "sticky",
-    top: "48px",
     margin: 0,
     zIndex: 1,
     justifyContent: "center",
@@ -132,6 +129,7 @@ const ResultsFilters = ({
   toggleCategory,
   showList,
   toggleShowList,
+  taglineText,
 }) => {
   const classes = useStyles();
   const isMealsSelected = categoryIds.indexOf(MEAL_PROGRAM_CATEGORY_ID) >= 0;
@@ -148,7 +146,6 @@ const ResultsFilters = ({
   }, [toggleCategory]);
 
   const { isMobile } = useBreakpoints();
-  const taglineText = "Locate free food in " + tenantName;
 
   return (
     <Grid item container className={classes.controlPanel}>
@@ -164,20 +161,19 @@ const ResultsFilters = ({
         container
         xs={12}
         sm={8}
-        justify="center"
+        justifyContent="center"
         alignItems="center"
         className={classes.filterContainer}
         wrap="wrap-reverse"
       >
-        <Grid item container xs={12} sm={6} spacing={1} className={classes.buttonContainer}>
-          <Grid item>
-            <CategoryButton
-                icon="pantry"
-                onClick={togglePantry}
-                label="Pantries"
-                isSelected={isPantrySelected}
-              />
-          </Grid>
+        <Grid
+          item
+          container
+          xs={12}
+          sm={6}
+          spacing={1}
+          className={classes.buttonContainer}
+        >
           <Grid item>
             <CategoryButton
               icon="meal"
@@ -185,6 +181,14 @@ const ResultsFilters = ({
               label="Meals"
               isSelected={isMealsSelected}
               style={{ marginLeft: 5 }}
+            />
+          </Grid>
+          <Grid item>
+            <CategoryButton
+              icon="pantry"
+              onClick={togglePantry}
+              label="Pantries"
+              isSelected={isPantrySelected}
             />
           </Grid>
           <Grid item>
@@ -217,12 +221,10 @@ const ResultsFilters = ({
                     setOrigin(userCoordinates);
                   }}
                   disabled={!userCoordinates}
-                  variant="contained"
                   className={classes.nearbySearch}
-                  startIcon={
-                    <LocationSearchingIcon className={classes.nearbyIcon} />
-                  }
-                />
+                  icon="locationSearching"
+                  iconPosition="start"
+                ></Button>
               </span>
             </Tooltip>
           </div>

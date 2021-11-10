@@ -1,48 +1,68 @@
 import React from "react";
-import { Button as MaterialButton } from "@material-ui/core";
+import { Button as MuiButton } from "@material-ui/core";
 import PropTypes from "prop-types";
-import { ICON_DICT } from "./IconButton";
+import { ICON_DICT } from "./iconLookup";
 
-const Base = ({ children, color = "primary", ...props }) => {
+const Base = ({ children, variant, color, type, ...props }) => {
   return (
-    <MaterialButton variant="contained" color={color} {...props}>
+    <MuiButton
+      type={type || "button"}
+      variant={variant || "contained"}
+      color={color || "primary"}
+      aria-label={type || "button"}
+      {...props}
+    >
       {children}
-    </MaterialButton>
+    </MuiButton>
   );
 };
 
 Base.propTypes = {
-  children: PropTypes.string.isRequired,
+  children: PropTypes.any,
   onChange: PropTypes.func,
   color: PropTypes.string,
+  variant: PropTypes.string,
+  type: PropTypes.string,
 };
 
-const Button = ({ icon, children, ...props }) => {
-  const Icon = ICON_DICT[icon];
+const Button = ({ children, icon, iconPosition, ...props }) => {
   if (icon) {
+    let Icon = ICON_DICT[icon];
+    let position =
+      iconPosition === "end" ? { endIcon: <Icon /> } : { startIcon: <Icon /> };
     return (
-      <Base startIcon={<Icon />} {...props}>
+      <Base {...props} {...position}>
         {children}
       </Base>
     );
   }
+
   return <Base {...props}>{children}</Base>;
 };
 
-export default Button;
-
 Button.propTypes = {
+  children: PropTypes.any,
+  onClick: PropTypes.func,
   kind: PropTypes.string,
+  iconPosition: PropTypes.oneOf(["end", "start"]), // will default to "start" if not provided
   icon: PropTypes.oneOf([
     "add",
-    "delete",
+    "arrowUp",
+    "arrowDown",
+    "cancel",
     "check",
     "close",
-    "save",
-    "edit",
-    "cancel",
-    "search",
+    "delete",
     "details",
+    "edit",
+    "locationOn",
+    "locationSearching",
+    "menu",
     "remove",
+    "save",
+    "search",
+    "wrapText",
   ]),
 };
+
+export default Button;

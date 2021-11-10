@@ -1,5 +1,7 @@
 import React, { useMemo } from "react";
 import { renderToString } from "react-dom/server";
+// Nest two imports are sOnly for support of testing selected organization map
+// marker styles - remove after test of issue #923 is complete.
 import MapMarker from "images/mapMarker";
 import {
   MEAL_PROGRAM_CATEGORY_ID,
@@ -22,7 +24,7 @@ const MARKER_SCALE = window.devicePixelRatio;
 // each marker variant has a unique id based on its category and
 // whether it is selected
 function getIconId(markerCategory, isSelected) {
-  return `fola-marker::${markerCategory}::${isSelected}`
+  return `fola-marker::${markerCategory}::${isSelected}`;
 }
 
 // selects the right marker category based on the stakeholder categories array.
@@ -60,7 +62,7 @@ function loadMarkerIcon({ map, marker, iconId }) {
 // load an icon for each possible combination of marker category and
 // selected value.
 export function loadMarkerIcons(map) {
-  const iconLoaders = []
+  const iconLoaders = [];
 
   MARKER_CATEGORIES.forEach((category) => {
     SELECTED_VALUES.forEach((selected) => {
@@ -76,11 +78,11 @@ export function loadMarkerIcons(map) {
           ),
           iconId: getIconId(category, selected),
         })
-      )
-    })
-  })
+      );
+    });
+  });
 
-  return Promise.all(iconLoaders)
+  return Promise.all(iconLoaders);
 }
 
 // symbol layer style definition
@@ -93,7 +95,7 @@ export const markersLayerStyles = {
     "icon-size": 1 / MARKER_SCALE,
     "icon-anchor": "bottom",
   },
-}
+};
 
 // symbol layer data
 export function useMarkersGeojson({
@@ -101,22 +103,24 @@ export function useMarkersGeojson({
   selectedStakeholder,
   categoryIds,
 }) {
-
   const catIds = categoryIds.length ? categoryIds : DEFAULT_CATEGORIES;
 
   // modify the stakeholders array by:
   // 1. filtering out the inactive orgs
   // 2. limiting the categories for each org to the ones currently selected
   const modifiedStakeholders = useMemo(
-    () => (stakeholders || [])
-      .filter(
-        (sh) =>
-          sh.latitude && sh.longitude && !(sh.inactive || sh.inactiveTemporary)
-      )
-      .map((sh) => ({
-        ...sh,
-        categories: sh.categories.filter(({ id }) => catIds.includes(id)),
-      })),
+    () =>
+      (stakeholders || [])
+        .filter(
+          (sh) =>
+            sh.latitude &&
+            sh.longitude &&
+            !(sh.inactive || sh.inactiveTemporary)
+        )
+        .map((sh) => ({
+          ...sh,
+          categories: sh.categories.filter(({ id }) => catIds.includes(id)),
+        })),
     [stakeholders, catIds]
   );
 
@@ -126,8 +130,8 @@ export function useMarkersGeojson({
     () => ({
       type: "FeatureCollection",
       features: modifiedStakeholders.map((sh) => {
-        const category = getMarkerCategory(sh)
-        const selected = sh.id === selectedStakeholder?.id
+        const category = getMarkerCategory(sh);
+        const selected = sh.id === selectedStakeholder?.id;
         return {
           type: "Feature",
           id: sh.id,
@@ -138,7 +142,7 @@ export function useMarkersGeojson({
           properties: {
             iconId: getIconId(category, selected),
           },
-        }
+        };
       }),
     }),
     [modifiedStakeholders, selectedStakeholder]

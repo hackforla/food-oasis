@@ -6,7 +6,13 @@ import React, {
   forwardRef,
   useImperativeHandle,
 } from "react";
-import { Button } from "@material-ui/core";
+// Mapbox is tricky, because version 6.* is "incompatible with some Babel transforms
+// because of the way it shares code between the maint thread and Web Worker."
+// See https://docs.mapbox.com/mapbox-gl-js/guides/install/#transpiling for details
+// https://github.com/mapbox/mapbox-gl-js/issues/10565 for current Create-React-App
+// recommendation from Mapbox team
+// https://github.com/mapbox/mapbox-gl-js/issues/10173  See comment by IvanDreamer on Mar 22
+// for craco.config.js contents
 import ReactMapGL, * as Map from "react-map-gl";
 import { MAPBOX_STYLE } from "constants/map";
 import { defaultViewport } from "helpers/Configuration";
@@ -18,16 +24,20 @@ import {
 } from "./MarkerHelpers";
 import useStyles from "./styles";
 import * as analytics from "services/analytics";
+import { Button } from "../../../../components/UI";
 
-const ResultsMap = ({
-  center,
-  stakeholders,
-  doSelectStakeholder,
-  selectedStakeholder,
-  categoryIds,
-  loading,
-  searchMapArea,
-}, ref) => {
+const ResultsMap = (
+  {
+    center,
+    stakeholders,
+    doSelectStakeholder,
+    selectedStakeholder,
+    categoryIds,
+    loading,
+    searchMapArea,
+  },
+  ref
+) => {
   const classes = useStyles();
   const mapRef = useRef();
   const [markersLoaded, setMarkersLoaded] = useState(false);
@@ -80,26 +90,30 @@ const ResultsMap = ({
     categoryIds,
   });
 
-  useImperativeHandle(ref, () => ({
-    getViewport: () => {
-      const map = mapRef.current.getMap();
+  useImperativeHandle(
+    ref,
+    () => ({
+      getViewport: () => {
+        const map = mapRef.current.getMap();
 
-      const { lat: latitude, lng: longitude } = map.getCenter();
-      const zoom = map.getZoom();
-      const { width, height } = map.getContainer().getBoundingClientRect();
+        const { lat: latitude, lng: longitude } = map.getCenter();
+        const zoom = map.getZoom();
+        const { width, height } = map.getContainer().getBoundingClientRect();
 
-      return {
-        center: { latitude, longitude },
-        zoom,
-        dimensions: { width, height },
-      };
-    },
-  }), []);
+        return {
+          center: { latitude, longitude },
+          zoom,
+          dimensions: { width, height },
+        };
+      },
+    }),
+    []
+  );
 
   return (
     <ReactMapGL
       ref={mapRef}
-      mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
+      mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
       mapStyle={MAPBOX_STYLE}
       {...viewport}
       onViewportChange={setViewport}
@@ -126,8 +140,8 @@ const ResultsMap = ({
         </Map.Source>
       )}
       <Button
-        onClick={searchMapArea}
         variant="outlined"
+        onClick={searchMapArea}
         size="small"
         className={classes.searchButton}
         disabled={loading}
@@ -136,6 +150,6 @@ const ResultsMap = ({
       </Button>
     </ReactMapGL>
   );
-}
+};
 
 export default forwardRef(ResultsMap);

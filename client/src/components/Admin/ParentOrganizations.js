@@ -1,5 +1,5 @@
 import React from "react";
-import { useParentOrganization } from "hooks/useParentOrganizations";
+import { useParentOrganizations } from "hooks/useParentOrganizations";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
@@ -13,7 +13,7 @@ import Container from "@material-ui/core/Container";
 import Modal from "@material-ui/core/Modal";
 import Box from "@material-ui/core/Box";
 import Button from "../UI/Button";
-import Input from "../UI/Input";
+import Input from "../UI/TextField";
 import { Formik } from "formik";
 import * as parentOrganizationService from "../../services/parent-organization-service";
 import { tenantId } from "helpers/Configuration";
@@ -47,10 +47,10 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: "500px",
     cursor: "pointer",
   },
-  addNewButton: {
+  heading: {
     marginBottom: theme.spacing(1),
     display: "flex",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
   },
   paper: {
     position: "absolute",
@@ -60,22 +60,22 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2, 4, 3),
   },
   error: {
-    color: theme.palette.error.main
-  }
+    color: theme.palette.error.main,
+  },
 }));
 
 function ParentOrganizations(props) {
-  let { data, status } = useParentOrganization();
+  let { data, status } = useParentOrganizations();
   const [parentOrgs, setParentOrgs] = React.useState([]);
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [activeOrg, setActiveOrg] = React.useState(null);
+  const [activeOrg, setActiveOrg] = React.useState(false);
   const [modalStyle] = React.useState(getModalStyle);
   const [error, setError] = React.useState("");
   const [deleteError, setDeleteError] = React.useState("");
 
-   React.useEffect(() => {
+  React.useEffect(() => {
     if (data) {
       setParentOrgs(data);
     }
@@ -83,11 +83,13 @@ function ParentOrganizations(props) {
 
   React.useEffect(() => {
     if (status === 401) {
-      return  <Redirect
-      to={{ pathname: "/login", state: { from: props.location } }}
-    />
+      return (
+        <Redirect
+          to={{ pathname: "/login", state: { from: props.location } }}
+        />
+      );
     }
-  })
+  });
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -103,16 +105,16 @@ function ParentOrganizations(props) {
       if (activeOrg.id) {
         await parentOrganizationService.update({ ...data, id: activeOrg.id });
       } else {
-        const {id} = await parentOrganizationService.post(data);
-        setParentOrgs([...parentOrgs, {...data, id}]);
+        const { id } = await parentOrganizationService.post(data);
+        setParentOrgs([...parentOrgs, { ...data, id }]);
       }
       setActiveOrg(null);
-    } catch  (e) {
+    } catch (e) {
       setError(e.message);
     }
     setTimeout(() => {
-      setError('')
-    }, 3000)
+      setError("");
+    }, 3000);
   };
 
   const handleAddNew = () => {
@@ -124,19 +126,19 @@ function ParentOrganizations(props) {
   };
 
   const handleDelete = async (id) => {
-    console.log({id})
     try {
-      await parentOrganizationService.remove(id)
-      const data = parentOrgs.filter(parentOrg => parentOrg.id !== id);
-      setParentOrgs(data)
-    } catch(e) {
-      setDeleteError(e.message)
+      await parentOrganizationService.remove(id);
+      const data = parentOrgs.filter((parentOrg) => parentOrg.id !== id);
+      setParentOrgs(data);
+    } catch (e) {
+      setDeleteError(e.message);
     }
-  }
+  };
 
   return (
     <Container maxWidth="sm">
-      <div className={classes.addNewButton}>
+      <div className={classes.heading}>
+        <h2 style={{ margin: 0 }}>Parent Organizations</h2>
         <Button onClick={handleAddNew}>Add New</Button>
       </div>
 
@@ -174,12 +176,15 @@ function ParentOrganizations(props) {
                     >
                       {columns.map((column) => {
                         const value = parentOrg[column.id];
-                        if (column.id === 'edit') {
+                        if (column.id === "edit") {
                           return (
-                            <TableCell style={{ maxWidth: '5px', padding: '5px' }} key={column.id} align={column.align}>
+                            <TableCell
+                              style={{ maxWidth: "5px", padding: "5px" }}
+                              key={column.id}
+                              align={column.align}
+                            >
                               <IconButton
-                                kind="edit"
-                                ariaLabel="edit"
+                                icon="edit"
                                 onClick={() => {
                                   const org = parentOrgs.find(
                                     (org) => parentOrg.id === org.id
@@ -188,18 +193,21 @@ function ParentOrganizations(props) {
                                 }}
                               />
                             </TableCell>
-                          )
+                          );
                         }
-                        if (column.id === 'delete') {
+                        if (column.id === "delete") {
                           return (
-                            <TableCell key={column.id} align={column.align} style={{ maxWidth: '5px', padding: '5px' }}>
+                            <TableCell
+                              key={column.id}
+                              align={column.align}
+                              style={{ maxWidth: "5px", padding: "5px" }}
+                            >
                               <IconButton
-                                kind="delete"
-                                ariaLabel="delete"
+                                icon="delete"
                                 onClick={() => handleDelete(parentOrg.id)}
                               />
                             </TableCell>
-                          )
+                          );
                         }
                         return (
                           <TableCell key={column.id} align={column.align}>
@@ -221,11 +229,11 @@ function ParentOrganizations(props) {
           count={parentOrgs.length}
           rowsPerPage={rowsPerPage}
           page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
         />
         <Modal
-          open={activeOrg}
+          open={!!activeOrg}
           onClose={() => setActiveOrg(null)}
           aria-labelledby="parent-org-modal"
           aria-describedby="parent-org-modal-description"
@@ -296,4 +304,4 @@ function ParentOrganizations(props) {
   );
 }
 
-export default withRouter(ParentOrganizations)
+export default withRouter(ParentOrganizations);

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import ReactMapGL, { Layer, NavigationControl, Source } from "react-map-gl";
-import { Grid, Button } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import Marker from "components/FoodSeeker/Marker";
@@ -12,6 +12,7 @@ import StakeholderPreview from "components/FoodSeeker/StakeholderPreview";
 import StakeholderDetails from "components/FoodSeeker/StakeholderDetails";
 import theme from "theme/clientTheme";
 import { defaultViewport } from "helpers/Configuration";
+import { Button } from "../../../components/UI";
 
 const styles = {
   navigationControl: {
@@ -272,7 +273,7 @@ function Map({
           onViewportChange={(newViewport) => {
             setViewport(newViewport);
           }}
-          mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
+          mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
           mapStyle={MAPBOX_STYLE}
           onClick={onMapClick}
           onInteractionStateChange={onInteractionStateChange}
@@ -282,9 +283,9 @@ function Map({
           </div>
           {showSearchArea && (
             <Button
-              onClick={searchArea}
               variant="outlined"
               size="small"
+              onClick={searchArea}
               className={classes.searchButton}
             >
               Search this area

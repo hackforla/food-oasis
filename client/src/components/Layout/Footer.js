@@ -11,7 +11,7 @@ import { tenantId } from "../../helpers/Configuration";
 const logoPaths = {
   1: require("images/foodoasis.svg"),
   2: require("images/foodoasis.svg"),
-  3: require("../StaticPagesHI/assets/aloha-harvest-bg-none.png"),
+  3: require("../StaticPagesHI/assets/aloha-harvest-bg-none-no-tag.png"),
 };
 
 const useStyles = makeStyles(() => ({

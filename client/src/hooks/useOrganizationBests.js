@@ -28,24 +28,8 @@ export default function useOrganizationBests() {
     error: false,
   });
 
-  const search = useCallback(async ({
-    name,
-    latitude,
-    longitude,
-    radius,
-    bounds,
-    categoryIds,
-    isInactive,
-    verificationStatusId,
-  }) => {
-    if (!latitude || !longitude) {
-      setState({ data: null, loading: false, error: true });
-      const msg =
-        "Call to search function missing latitude and/or longitude parameters";
-      console.error(msg);
-      return Promise.reject(msg);
-    }
-    analytics.postEvent("searchFoodSeeker", {
+  const search = useCallback(
+    async ({
       name,
       latitude,
       longitude,
@@ -54,39 +38,78 @@ export default function useOrganizationBests() {
       categoryIds,
       isInactive,
       verificationStatusId,
-    });
-    //if (!categoryIds || categoryIds.length === 0) return;
-    try {
-      setState({ data: null, loading: true, error: false });
-      let params = {
+    }) => {
+      if (!latitude || !longitude) {
+        setState({ data: null, loading: false, error: true });
+        const msg =
+          "Call to search function missing latitude and/or longitude parameters";
+        console.error(msg);
+        return Promise.reject(msg);
+      }
+      analytics.postEvent("searchFoodSeeker", {
         name,
-        categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
         latitude,
         longitude,
-        distance: radius,
+        radius,
+        bounds,
+        categoryIds,
         isInactive,
         verificationStatusId,
-      };
-      if (bounds) {
-        const { maxLat, maxLng, minLat, minLng } = bounds;
-        params = {
-          ...params,
-          maxLng,
-          maxLat,
-          minLng,
-          minLat,
+      });
+      //if (!categoryIds || categoryIds.length === 0) return;
+      try {
+        setState({ data: null, loading: true, error: false });
+        let params = {
+          name,
+          categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
+          latitude,
+          longitude,
+          distance: radius,
+          isInactive,
+          verificationStatusId,
         };
+        if (bounds) {
+          const { maxLat, maxLng, minLat, minLng } = bounds;
+          params = {
+            ...params,
+            maxLng,
+            maxLat,
+            minLng,
+            minLat,
+          };
+        }
+        const stakeholders = await stakeholderService.search(params);
+        stakeholders.sort(sortOrganizations);
+        setState({ data: stakeholders, loading: false, error: false });
+        return stakeholders;
+      } catch (err) {
+        setState({ data: null, loading: false, error: true });
+        console.error(err);
+        return Promise.reject(err);
       }
-      const stakeholders = await stakeholderService.search(params);
-      stakeholders.sort(sortOrganizations);
-      setState({ data: stakeholders, loading: false, error: false });
-      return stakeholders;
-    } catch (err) {
+    },
+    []
+  );
+
+  const getById = useCallback(async (id) => {
+    if (!id) {
       setState({ data: null, loading: false, error: true });
+      const msg = "Call to getById missing id parameter";
+      console.error(msg);
+      return Promise.reject(msg);
+    }
+    try {
+      setState({ data: null, loading: true, error: false });
+
+      const stakeholder = await stakeholderService.getById(id);
+      setState({ loading: false, error: false });
+      return stakeholder;
+    } catch (err) {
+      setState({ loading: false, error: true });
       console.error(err);
       return Promise.reject(err);
     }
   }, []);
 
-  return { ...state, search };
-};
+  return { ...state, search, getById };
+}

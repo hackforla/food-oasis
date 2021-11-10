@@ -1,6 +1,6 @@
 import React from "react";
-import { Snackbar, IconButton, withStyles } from "@material-ui/core";
-import { Close } from "@material-ui/icons";
+import { Snackbar, withStyles } from "@material-ui/core";
+import { IconButton } from './index';
 
 const styles = (theme) => ({
   close: {
@@ -33,23 +33,11 @@ const Toast = (props) => {
       }}
       message={<span id="message-id">{toast.message}</span>}
       action={[
-        // <Button
-        //   key="undo"
-        //   color="secondary"
-        //   size="small"
-        //   onClick={handleSnackbarClose}
-        // >
-        //   UNDO
-        // </Button>,
-        <IconButton
-          key="close"
-          aria-label="close"
-          color="inherit"
+        <IconButton 
+          icon='close'
           className={classes.close}
           onClick={handleSnackbarClose}
-        >
-          <Close />
-        </IconButton>,
+        />
       ]}
     />
   ) : null;

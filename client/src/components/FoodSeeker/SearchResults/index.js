@@ -13,7 +13,13 @@ import Preview from "./Preview";
 import Details from "./Details";
 import * as analytics from "services/analytics";
 
-const ResultsContainer = ({ origin, setOrigin, userCoordinates, setToast }) => {
+const ResultsContainer = ({
+  origin,
+  setOrigin,
+  userCoordinates,
+  setToast,
+  taglineText,
+}) => {
   const mapRef = useRef(null);
   const { isDesktop, isTablet } = useBreakpoints();
   const { data: stakeholders, search, loading } = useOrganizationBests();
@@ -62,6 +68,7 @@ const ResultsContainer = ({ origin, setOrigin, userCoordinates, setToast }) => {
       userCoordinates={userCoordinates}
       showList={showList}
       toggleShowList={toggleShowList}
+      taglineText={taglineText}
     />
   );
 

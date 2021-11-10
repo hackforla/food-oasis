@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  TextField,
 } from "@material-ui/core";
+import { TextField, Button } from "../../../components/UI";
 
 function MessageDialog(props) {
   const { onClose, open, message: initialMessage, ...other } = props;
@@ -23,7 +22,6 @@ function MessageDialog(props) {
 
   return (
     <Dialog
-      disableBackdropClick
       disableEscapeKeyDown
       fullWidth
       maxWidth="md"
@@ -34,7 +32,6 @@ function MessageDialog(props) {
       <DialogTitle id="confirmation-dialog-title">Message:</DialogTitle>
       <DialogContent dividers>
         <TextField
-          variant="outlined"
           margin="normal"
           fullWidth
           name="message"
@@ -42,17 +39,17 @@ function MessageDialog(props) {
           type="text"
           size="small"
           multiline
-          rows={4}
-          rowsMax={12}
+          minRows={4}
+          maxRows={12}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={handleCancel} color="primary">
+        <Button type="button" onClick={handleCancel}>
           Cancel
         </Button>
-        <Button onClick={handleSubmit} color="primary">
+        <Button type="button" onClick={handleSubmit}>
           OK
         </Button>
       </DialogActions>

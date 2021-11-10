@@ -123,6 +123,8 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "left",
   },
   backButton: {
+    fontSize: "1.2em",
+    fontWeight: "bold",
     paddingTop: "1em",
     paddingBottom: "1em",
     color: "blue",
@@ -244,10 +246,10 @@ const StakeholderDetails = ({ selectedStakeholder, onClose, setToast }) => {
   return (
     <div className={classes.stakeholder}>
       <div className={classes.backButtonWrapper}>
-        <button className={classes.backButton} onClick={onClose}>
+        <div role="button" className={classes.backButton} onClick={onClose}>
           {" "}
           &lt; Back to List{" "}
-        </button>
+        </div>
       </div>
       <SuggestionDialog
         id="assign-dialog"

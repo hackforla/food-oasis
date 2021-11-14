@@ -12,6 +12,7 @@ import { STAKEHOLDER_SCHEMA } from "../../../constants/stakeholder-schema";
 import importValidation from "./importValidation";
 import ProgressBackdrop from "./ProgressBackdrop";
 import { useUserContext } from "../../../contexts/user-context";
+import { useToasterContext } from "../../../contexts/toaster-context";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,8 +40,9 @@ const initialImportData = {
 };
 
 const ImportFile = (props) => {
-  const { history, setToast, tenantId, tenantName } = props;
+  const { history, tenantId, tenantName } = props;
   const { user } = useUserContext();
+  const { setToast } = useToasterContext();
   const [file, setFile] = useState(null);
   const [importData, setImportData] = useState({
     ...initialImportData,
@@ -223,7 +225,6 @@ const ImportFile = (props) => {
 
 ImportFile.propTypes = {
   history: PropTypes.object.isRequired,
-  setToast: PropTypes.func.isRequired,
 };
 
 export default withRouter(ImportFile);

@@ -7,7 +7,8 @@ import { isMobile } from "../../helpers";
 import { useUserContext } from "../../contexts/user-context";
 
 Header.propTypes = {
-  setToast: PropTypes.func,
+  tenantId: PropTypes.number,
+  taglineText: PropTypes.string,
 };
 
 const logoPaths = {
@@ -95,7 +96,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Header(props) {
-  const { tenantId, setToast, taglineText } = props;
+  const { tenantId, taglineText } = props;
   const classes = useStyles();
   const imageType = logoPaths
     ? logoPaths[tenantId].default.split(".").pop()
@@ -159,7 +160,7 @@ export default function Header(props) {
               </Typography>
             )}
           </div>
-          <Menu setToast={setToast} />
+          <Menu />
         </Toolbar>
       </AppBar>
     </>

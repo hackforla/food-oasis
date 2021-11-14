@@ -27,6 +27,7 @@ const FaqEditForm = ({ faq, notAdded, history }) => {
   };
 
   const handleSubmit = (event) => {
+    // TODO: add toast
     event.preventDefault();
     if (notAdded) {
       faqService.add({

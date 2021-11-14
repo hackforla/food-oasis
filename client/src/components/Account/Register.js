@@ -15,6 +15,7 @@ import {
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Footer from "../Layout/Footer";
 import { TextField, Button } from "../../components/UI";
+import { useToasterContext } from "contexts/toaster-context";
 
 const styles = (theme) => ({
   "@global": {
@@ -187,7 +188,7 @@ const form = (props) => {
 
 // Register component is higher-order component that
 // provides validation and server interaction.
-const Register = withFormik({
+const RegisterForm = withFormik({
   mapPropsToValues: ({
     firstName,
     lastName,
@@ -256,4 +257,9 @@ const Register = withFormik({
   },
 })(form);
 
-export default withStyles(styles)(withRouter(Register));
+const WrappedRegisterForm = withStyles(styles)(withRouter(RegisterForm));
+
+export default function Register() {
+  const { setToast } = useToasterContext();
+  return <WrappedRegisterForm setToast={setToast} />;
+}

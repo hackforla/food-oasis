@@ -15,6 +15,7 @@ import {
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Footer from "../Layout/Footer";
 import { TextField, Button } from "../../components/UI";
+import { useToasterContext } from "../../contexts/toaster-context";
 
 const styles = (theme) => ({
   "@global": {
@@ -60,7 +61,8 @@ const validationSchema = Yup.object().shape({
 });
 
 const ResetPassword = (props) => {
-  const { classes, setToast, history, match } = props;
+  const { classes, history, match } = props;
+  const { setToast } = useToasterContext();
 
   return (
     <div className={classes.body}>

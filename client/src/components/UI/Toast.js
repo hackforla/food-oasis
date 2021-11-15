@@ -33,7 +33,13 @@ const Toast = () => {
         "aria-describedby": "message-id",
       }}
       message={<span id="message-id">{toast.message}</span>}
-      action={[<IconButton icon="close" onClick={handleSnackbarClose} />]}
+      action={[
+        <IconButton
+          key={toast.message}
+          icon="close"
+          onClick={handleSnackbarClose}
+        />,
+      ]}
     />
   ) : null;
 };

@@ -1,12 +1,7 @@
 import React from "react";
-import PropTypes from "prop-types";
 import Menu from "./Menu";
 import { AppBar, Toolbar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-
-Header.propTypes = {
-  setToast: PropTypes.func,
-};
 
 const useStyles = makeStyles((theme) => ({
   headerHolder: {
@@ -26,15 +21,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Header(props) {
-  const { setToast } = props;
+export default function Header() {
   const classes = useStyles();
 
   return (
     <>
       <AppBar position="sticky" className={classes.headerHolder}>
         <Toolbar className={classes.header}>
-          <Menu setToast={setToast} />
+          <Menu />
         </Toolbar>
       </AppBar>
     </>

@@ -53,7 +53,6 @@ const ResultsList = ({
   doSelectStakeholder,
   selectedStakeholder,
   stakeholders,
-  setToast,
   loading,
   handleReset,
 }) => {
@@ -117,7 +116,6 @@ const ResultsList = ({
         <StakeholderDetails
           selectedStakeholder={selectedStakeholder}
           onClose={doSelectStakeholder.bind(null, null)}
-          setToast={setToast}
         />
       ) : (
         <div className={classes.list}>
@@ -144,7 +142,6 @@ ResultsList.propTypes = {
   selectedStakeholder: PropTypes.object,
   stakeholders: PropTypes.arrayOf(PropTypes.object),
   doSelectStakeholder: PropTypes.func,
-  setToast: PropTypes.func,
   status: PropTypes.string,
   handleReset: PropTypes.func,
 };

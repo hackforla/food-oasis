@@ -16,6 +16,7 @@ import * as accountService from "services/account-service";
 import * as analytics from "../../services/analytics";
 import { Button, TextField } from "../../components/UI";
 import { useUserContext } from "../../contexts/user-context";
+import { useToasterContext } from "../../contexts/toaster-context";
 
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
@@ -62,8 +63,9 @@ const validationSchema = Yup.object().shape({
 });
 
 const LoginForm = (props) => {
-  const { classes, setToast, history, match } = props;
+  const { classes, history, match } = props;
   const { onLogin } = useUserContext();
+  const { setToast } = useToasterContext();
 
   return (
     <div className={classes.body}>

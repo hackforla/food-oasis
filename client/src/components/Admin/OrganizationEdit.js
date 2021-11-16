@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { useUserContext } from "contexts/user-context";
+import { useToasterContext } from "contexts/toaster-context";
 import { Formik } from "formik";
 import AccountAutocomplete from "components/Admin/AccountAutocomplete";
 import * as Yup from "yup";
@@ -245,7 +246,7 @@ const CheckboxWithLabel = ({ name, label, checked, onChange, ...props }) => (
 );
 
 const OrganizationEdit = (props) => {
-  const { classes, setToast, match, history } = props;
+  const { classes, match, history } = props;
   const editId = match.params.id;
   const [assignDialogOpen, setAssignDialogOpen] = useState(false);
   const [assignDialogCallback, setAssignDialogCallback] = useState({});
@@ -256,6 +257,7 @@ const OrganizationEdit = (props) => {
   const [nextUrl, setNextUrl] = useState(null);
   const [originalData, setOriginalData] = useState(emptyOrganization);
   const { user } = useUserContext();
+  const { setToast } = useToasterContext();
 
   const { data: categories } = useCategories();
 
@@ -2138,7 +2140,6 @@ const OrganizationEdit = (props) => {
 
 OrganizationEdit.propTypes = {
   classes: PropTypes.object,
-  setToast: PropTypes.func,
   match: PropTypes.object,
   history: PropTypes.object,
 };

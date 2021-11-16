@@ -17,7 +17,6 @@ const ResultsContainer = ({
   origin,
   setOrigin,
   userCoordinates,
-  setToast,
   taglineText,
 }) => {
   const mapRef = useRef(null);
@@ -90,7 +89,6 @@ const ResultsContainer = ({
       selectedStakeholder={selectedStakeholder}
       doSelectStakeholder={doSelectStakeholder}
       stakeholders={stakeholders || []}
-      setToast={setToast}
       loading={loading}
       handleReset={resetOrigin}
     />
@@ -118,7 +116,6 @@ const ResultsContainer = ({
           <Details
             selectedStakeholder={selectedStakeholder}
             onClose={doSelectStakeholder.bind(null, null)}
-            setToast={setToast}
           />
         )
       }

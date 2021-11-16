@@ -134,7 +134,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const StakeholderDetails = ({ selectedStakeholder, onClose, setToast }) => {
+const StakeholderDetails = ({ selectedStakeholder, onClose }) => {
   const classes = useStyles();
   const [SuggestionDialogOpen, setSuggestionDialogOpen] = useState(false);
 
@@ -257,7 +257,6 @@ const StakeholderDetails = ({ selectedStakeholder, onClose, setToast }) => {
         open={SuggestionDialogOpen}
         onClose={handleSuggestionDialogClose}
         stakeholder={selectedStakeholder}
-        setToast={setToast}
       />
       <div className={classes.topInfo}>
         <StakeholderIcon stakeholder={selectedStakeholder} />

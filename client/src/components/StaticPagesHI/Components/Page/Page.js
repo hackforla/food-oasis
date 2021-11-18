@@ -46,7 +46,7 @@ const Page = (props) => {
             <img
               alt={pageImage.alt}
               src={pageImage.src}
-              style={{ width: "100%" }}
+              style={{ width: "100%", borderRadius: "24px" }}
             />
           </figure>
         )}

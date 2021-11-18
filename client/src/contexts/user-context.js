@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import * as analytics from "../services/analytics";
 import { logout } from "../services/account-service";
 import PropTypes from "prop-types";
+import { useToasterContext } from "../contexts/toaster-context";
 
 export const UserContext = React.createContext(null);
 
-export const UserProvider = ({ children, setToast }) => {
+export const UserProvider = ({ children }) => {
+  const { setToast } = useToasterContext();
   const [user, setUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = React.useState(null);
 
@@ -69,5 +71,5 @@ export const UserProvider = ({ children, setToast }) => {
 export const useUserContext = () => React.useContext(UserContext);
 
 UserProvider.propTypes = {
-  setToast: PropTypes.func,
+  children: PropTypes.any,
 };

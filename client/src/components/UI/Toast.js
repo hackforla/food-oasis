@@ -1,6 +1,7 @@
 import React from "react";
 import { Snackbar, withStyles } from "@material-ui/core";
-import { IconButton } from './index';
+import { IconButton } from "./index";
+import { useToasterContext } from "../../contexts/toaster-context";
 
 const styles = (theme) => ({
   close: {
@@ -8,8 +9,8 @@ const styles = (theme) => ({
   },
 });
 
-const Toast = (props) => {
-  const { classes, toast, setToast } = props;
+const Toast = () => {
+  const { toast, setToast } = useToasterContext();
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -33,11 +34,11 @@ const Toast = (props) => {
       }}
       message={<span id="message-id">{toast.message}</span>}
       action={[
-        <IconButton 
-          icon='close'
-          className={classes.close}
+        <IconButton
+          key={toast.message}
+          icon="close"
           onClick={handleSnackbarClose}
-        />
+        />,
       ]}
     />
   ) : null;

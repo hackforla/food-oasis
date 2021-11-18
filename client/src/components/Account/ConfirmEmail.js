@@ -11,6 +11,7 @@ import {
 import * as accountService from "../../services/account-service";
 import EmailOutlinedIcon from "@material-ui/icons/EmailOutlined";
 import { Button, TextField } from "../../components/UI";
+import { useToasterContext } from "../../contexts/toaster-context";
 
 const styles = (theme) => ({
   "@global": {
@@ -51,7 +52,7 @@ const ConfirmEmail = (props) => {
   const [email, setEmail] = useState("");
   const [emailSent, setEmailSent] = useState(false);
   const token = props.match.params.token;
-  const setToast = props.setToast;
+  const { setToast } = useToasterContext();
 
   useEffect(() => {
     const confirmEmail = async (tok) => {

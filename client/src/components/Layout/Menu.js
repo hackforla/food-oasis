@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Menu(props) {
+export default function Menu() {
   const isHomePage = useLocationHook();
   const homePageStyles = {
     buttonColor: "#F1F1F1",

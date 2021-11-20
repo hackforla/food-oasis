@@ -1014,6 +1014,8 @@ const OrganizationEdit = (props) => {
                                 <Grid item xs={2}>
                                   <Button
                                     type="button"
+                                    icon="check"
+                                    style={{ paddingRight: "0" }}
                                     onClick={() => {
                                       setFieldValue(
                                         "latitude",
@@ -1025,9 +1027,7 @@ const OrganizationEdit = (props) => {
                                       );
                                       setGeocodeResults([]);
                                     }}
-                                  >
-                                    {""}
-                                  </Button>
+                                  ></Button>
                                 </Grid>
                               </Grid>
                             </div>

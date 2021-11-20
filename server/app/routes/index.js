@@ -7,6 +7,7 @@ const neighborhoodRouter = require("./neighborhood-router");
 const suggestionRouter = require("./suggestion-router");
 const parentOrganizationRouter = require("./parent-organization-router");
 const tagRouter = require("./tag-router");
+const loginsRouter = require("./logins-router");
 
 const faqRouter = require("./faq-router");
 const stakeholderRouter = require("./stakeholder-router");
@@ -36,3 +37,4 @@ router.use("/api/esri", esriRouter);
 router.use("/api/emails", emailRouter);
 router.use("/api/parent-organizations", parentOrganizationRouter);
 router.use("/api/tags", tagRouter);
+router.use("/api/logins", loginsRouter);

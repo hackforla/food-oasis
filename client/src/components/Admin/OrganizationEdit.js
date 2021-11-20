@@ -42,7 +42,7 @@ import {
 } from "constants/stakeholder";
 import TextInput from "./ui/TextInput";
 import moment from "moment";
-import { Button, IconButton } from "../../components/UI";
+import { Button } from "../../components/UI";
 
 const BigTooltip = withStyles(() => ({
   tooltip: {

@@ -200,6 +200,9 @@ const emptyOrganization = {
   foodDairy: false,
   foodPrepared: false,
   foodMeat: false,
+  hoursNotes: "",
+  allowWalkins: false,
+  tags: [],
 };
 
 const FOOD_TYPES = [
@@ -1076,6 +1079,36 @@ const OrganizationEdit = (props) => {
                       name="hours"
                       onChange={(e) => setFieldValue("hours", e.target.value)}
                       value={values.hours}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          margin="normal"
+                          name="allowWalkins"
+                          value={values.allowWalkins}
+                          checked={values.allowWalkins}
+                          onChange={() =>
+                            setFieldValue("allowWalkins", !values.allowWalkins)
+                          }
+                          onBlur={handleBlur}
+                        />
+                      }
+                      label="Allow Walk-Ins"
+                    />
+                    <TextInput
+                      tooltip="Notes and caveats about hours"
+                      name="hoursNotes"
+                      label="Notes about hours"
+                      value={values.hoursNotes}
+                      multiline
+                      minRows={2}
+                      maxRows={12}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      helperText={touched.hoursNotes ? errors.hoursNotes : ""}
+                      error={touched.hoursNotes && Boolean(errors.hoursNotes)}
                     />
                   </Grid>
                 </Grid>

@@ -87,7 +87,7 @@ const search = async (params) => {
       ${locationClause ? `${locationClause} AS distance,` : ""}
       s.food_bakery, s.food_dry_goods, s.food_produce,
       s.food_dairy, s.food_prepared, s.food_meat,
-      s.parent_organization_id,
+      s.parent_organization_id, s.hours_notes, s.allow_walkins, s.tags,
     ${buildLoginSelectsClause()}
     from stakeholder_set as s
     left outer join neighborhood n on s.neighborhood_id = n.id
@@ -210,6 +210,9 @@ const search = async (params) => {
       foodPrepared: row.food_prepared,
       foodMeat: row.food_meat,
       parentOrganizationId: row.parent_organization_id,
+      hoursNotes: row.hours_notes,
+      allowWalkins: row.allow_walkins,
+      tags: row.tags,
     });
   });
 
@@ -260,6 +263,7 @@ const selectById = async (id) => {
       s.food_bakery, s.food_dry_goods, s.food_produce,
       s.food_dairy, s.food_prepared, s.food_meat,
       s.parent_organization_id,
+      s.hours_notes, s.allow_walkins, s.tags,
       ${buildLoginSelectsClause()}
     from stakeholder s
     ${buildLoginJoinsClause()}
@@ -348,6 +352,9 @@ const selectById = async (id) => {
     foodPrepared: row.food_prepared,
     foodMeat: row.food_meat,
     parentOrganizationId: row.parent_organization_id,
+    hoursNotes: row.hours_notes,
+    allowWalkins: row.allow_walkins,
+    tags: row.tags,
   };
 
   // Don't have a distance, since we didn't specify origin
@@ -401,7 +408,11 @@ const selectCsv = async (ids) => {
   s.category_notes, s.eligibility_notes, s.food_types, s.languages,
   s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email,
   s.v_hours, s.verification_status_id, s.inactive_temporary,
-  s.neighborhood_id, n.name as neighborhood_name
+  s.neighborhood_id, n.name as neighborhood_name,
+  s.food_bakery, s.food_dry_goods, s.food_produce,
+  s.food_dairy, s.food_prepared, s.food_meat,
+  s.parent_organization_id,
+  s.hours_notes, s.allow_walkins, s.tags
 from stakeholder s
 left join login L1 on s.created_login_id = L1.id
 left join login L2 on s.modified_login_id = L2.id
@@ -488,6 +499,16 @@ where s.id in (${ids.join(", ")})`;
       verificationStatusId: row.verification_status_id,
       inactiveTemporary: row.inactive_temporary,
       neighborhoodId: row.neighborhood_id,
+      foodBakery: row.food_bakery,
+      foodDryGoods: row.food_dry_goods,
+      foodProduce: row.food_produce,
+      foodDairy: row.food_dairy,
+      foodPrepared: row.food_prepared,
+      foodMeat: row.food_meat,
+      parentOrganizationId: row.parent_organization_id,
+      hoursNotes: row.hours_notes,
+      allowWalkins: row.allow_walkins,
+      tags: row.tags,
     };
   });
   return stakeholders;
@@ -498,6 +519,16 @@ const insert = async (model) => {
   const categories = model.selectedCategoryIds
     ? "{" + model.selectedCategoryIds.join(",") + "}"
     : "{1}";
+
+  // Array of tags is formatted as, e.g.,  "{'tag1','tag2'}"
+  const tags = model.tags
+    ? "{" +
+      model.tags
+        .sort()
+        .map((t) => `'${t}'`)
+        .join(",") +
+      "}"
+    : null;
 
   // Array of hours if formatted as, e.g., `{"(0,Mon,10:00:00,13:00:00)","(3,Sat,08:00:00,10:30:00)"}
   let hoursSqlValues;
@@ -591,6 +622,9 @@ const insert = async (model) => {
     model.foodPrepared || false,
     model.foodMeat || false,
     Number(model.parentOrganizationId) || null, // INT
+    model.hoursNotes || "",
+    model.allowWalkins || false,
+    tags,
   ];
 
   const result = await db.proc("create_stakeholder", params);
@@ -713,6 +747,17 @@ const claim = async (model) => {
 const update = async (model) => {
   // Array of catetory_ids is formatted as, e.g.,  '{1,9}'
   const categories = "{" + model.selectedCategoryIds.join(",") + "}";
+
+  // Array of tags is formatted as, e.g.,  "{'tag1','tag2'}"
+  const tags = model.tags
+    ? "{" +
+      model.tags
+        .sort()
+        .map((t) => `'${t}'`)
+        .join(",") +
+      "}"
+    : null;
+
   // Array of hours if formatted as, e.g., `{"(0,Mon,10:00:00,13:00:00)","(3,Sat,08:00:00,10:30:00)"}
   let hoursSqlValues = model.hours.length
     ? model.hours
@@ -800,7 +845,10 @@ const update = async (model) => {
     model.foodDairy,
     model.foodPrepared,
     model.foodMeat,
-    model.parentOrganizationId,
+    model.parentOrganizationId || null, // INT
+    model.hoursNotes || "",
+    model.allowWalkins || false,
+    tags,
   ];
 
   await db.proc("update_stakeholder", params);

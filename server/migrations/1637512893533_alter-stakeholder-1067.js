@@ -11,7 +11,7 @@ exports.up = (pgm) => {
             name character varying COLLATE pg_catalog."default" NOT NULL,
             tenant_id integer,
             CONSTRAINT stakeholder_tag_pkey PRIMARY KEY (id)
-        )
+        );
 
         alter table stakeholder 
             add column hours_notes character varying default '' not null,

@@ -1102,6 +1102,9 @@ const OrganizationEdit = (props) => {
                       name="hoursNotes"
                       label="Notes about hours"
                       value={values.hoursNotes}
+                      multiline
+                      minRows={2}
+                      maxRows={12}
                       onChange={handleChange}
                       onBlur={handleBlur}
                       helperText={touched.hoursNotes ? errors.hoursNotes : ""}

@@ -58,13 +58,13 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     display: "inherit",
     flexDirection: "inherit",
-    fontSize: "1.2em",
+    fontSize: "1.1em",
   },
   singleHourContainer: {
     width: "100%",
     display: "inherit",
     justifyContent: "space-between",
-    margin: ".8em 0",
+    margin: ".2em 0",
   },
   fontSize: {
     fontSize: "14px",
@@ -383,9 +383,34 @@ const StakeholderDetails = ({ selectedStakeholder, onClose }) => {
           Send Correction
         </Button>
       </div>
+
+      <h2 className={classes.title}>Eligibility/Requirements</h2>
+      {selectedStakeholder.requirements ? (
+        <span
+          className={classes.fontSize}
+          dangerouslySetInnerHTML={{
+            __html: formatEmailPhone(selectedStakeholder.requirements),
+          }}
+        ></span>
+      ) : (
+        <div className={classes.fontSize}>No special requirements</div>
+      )}
+
+      <h2 className={classes.title}>Hours</h2>
+      {selectedStakeholder.allowWalkins ? (
+        <div className={classes.fontSize}>Walk-ins welcome.</div>
+      ) : null}
+
+      {selectedStakeholder.hoursNotes ? (
+        <div
+          className={classes.fontSize}
+          dangerouslySetInnerHTML={{
+            __html: formatEmailPhone(selectedStakeholder.hoursNotes),
+          }}
+        ></div>
+      ) : null}
       {selectedStakeholder.hours ? (
         <>
-          <h2 className={classes.title}>Hours</h2>
           <div className={classes.hoursContainer}>
             {selectedStakeholder.hours &&
             selectedStakeholder.hours.length > 0 ? (
@@ -455,18 +480,6 @@ const StakeholderDetails = ({ selectedStakeholder, onClose }) => {
         </React.Fragment>
       ) : (
         <span className={classes.fontSize}>No E-Mail Address on record</span>
-      )}
-
-      <h2 className={classes.title}>Eligibility/Requirements</h2>
-      {selectedStakeholder.requirements ? (
-        <span
-          className={classes.fontSize}
-          dangerouslySetInnerHTML={{
-            __html: formatEmailPhone(selectedStakeholder.requirements),
-          }}
-        ></span>
-      ) : (
-        <span className={classes.fontSize}>No special requirements</span>
       )}
 
       <h2 className={classes.title}>Languages</h2>

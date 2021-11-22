@@ -74,6 +74,7 @@ const search = async ({
     s.food_bakery, s.food_dry_goods, s.food_produce,
     s.food_dairy, s.food_prepared, s.food_meat,
     s.parent_organization_id,
+    s.allow_walkins, s.hours_notes, s.tags,
     ${locationClause ? `${locationClause} AS distance,` : ""}
     ${buildLoginSelectsClause()}
     from stakeholder_set as s
@@ -198,6 +199,9 @@ const search = async ({
       neighborhoodId: row.neighborhood_id,
       isVerified: row.is_verified,
       parentOrganizationId: row.parent_organization_id,
+      allowWalkins: row.allow_walkins,
+      hoursNotes: row.hours_notes,
+      tags: row.tags,
     });
   });
 
@@ -242,6 +246,7 @@ const selectById = async (id) => {
       s.food_bakery, s.food_dry_goods, s.food_produce,
       s.food_dairy, s.food_prepared, s.food_meat,
       s.parent_organization_id,
+      s.allow_walkins, s.hours_notes, s.tags,
       ${buildLoginSelectsClause()}
     from stakeholder_best s
     ${buildLoginJoinsClause()}
@@ -332,6 +337,9 @@ const selectById = async (id) => {
     neighborhoodId: row.neighborhood_id,
     isVerified: row.is_verified,
     parentOrganizationId: row.parent_organization_id,
+    allowWalkins: row.allow_walkins,
+    hoursNotes: row.hours_notes,
+    tags: row.tags,
   };
 
   // Don't have a distance, since we didn't specify origin

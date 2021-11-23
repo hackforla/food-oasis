@@ -28,6 +28,7 @@ import VerificationDashboard from "components/Admin/VerificationDashboard";
 import SecurityAdminDashboard from "components/Account/SecurityAdminDashboard/SecurityAdminDashboard";
 import OrganizationEdit from "components/Admin/OrganizationEdit";
 import ParentOrganizations from "components/Admin/ParentOrganizations";
+import TagAdmin from "components/Admin/TagAdmin";
 import Donate from "components/StaticPages/Donate";
 import About from "components/StaticPages/About";
 import Faq from "components/StaticPages/Faq";
@@ -235,6 +236,11 @@ function App() {
                   <Route path="/parentorganizations">
                     <div className={classes.organizationEditWrapper}>
                       <ParentOrganizations />
+                    </div>
+                  </Route>
+                  <Route path="/tags">
+                    <div className={classes.organizationEditWrapper}>
+                      <TagAdmin />
                     </div>
                   </Route>
                   <Route path="/suggestions">

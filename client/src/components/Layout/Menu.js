@@ -128,6 +128,7 @@ export default function Menu() {
             )}
             {user && user.isAdmin && (
               <>
+                <MenuItemLink key="tags" to="/tags" text="Tags" />
                 <MenuItemLink
                   key="parentorganizations"
                   to="/parentorganizations"

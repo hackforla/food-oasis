@@ -34,6 +34,7 @@ function SearchCriteriaDisplay({
   criteria,
   neighborhoods,
   categories,
+  tags,
   isLoading,
 }) {
   const classes = useStyles();
@@ -59,7 +60,8 @@ function SearchCriteriaDisplay({
       criteria.minCompleteCriticalPercent !==
         defaultCriteria.minCompleteCriticalPercent ||
       criteria.maxCompleteCriticalPercent !==
-        defaultCriteria.maxCompleteCriticalPercent
+        defaultCriteria.maxCompleteCriticalPercent ||
+      criteria.tag !== defaultCriteria.tag
       // TODO: latituted and longitude are omitted because they are buggy
       // criteria.latitude != defaultCriteria.latitude ||
       // criteria.longitude != defaultCriteria.longitude ||
@@ -89,6 +91,16 @@ function SearchCriteriaDisplay({
           key={"CriteriaChip_Name"}
           value={criteria.name}
           label="Name"
+        />
+      );
+    }
+
+    if (criteria.tag !== defaultCriteria.tag) {
+      criterias.push(
+        <CriteriaChip
+          key={"CriteriaChip_Tag"}
+          value={criteria.tag}
+          label="Tag"
         />
       );
     }

@@ -37,9 +37,12 @@ const search = async ({
   isInactive,
   verificationStatusId,
   tenantId,
+  name,
+  neighborhoodId,
+  tag,
 }) => {
   const locationClause = buildLocationClause(latitude, longitude);
-  const categoryClause = buildCTEClause(categoryIds, "");
+  const categoryClause = buildCTEClause(categoryIds, name || "");
   const sql = `${categoryClause}
     select s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
     s.phone, s.latitude, s.longitude, s.website,  s.notes,
@@ -70,7 +73,7 @@ const search = async ({
     s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email,
     s.v_hours, s.v_food_types, s.verification_status_id, s.inactive_temporary,
     array_to_json(s.hours) as hours, s.category_ids,
-    s.neighborhood_id, s.is_verified,
+    s.neighborhood_id, n.name as neighborhood_name, s.is_verified,
     s.food_bakery, s.food_dry_goods, s.food_produce,
     s.food_dairy, s.food_prepared, s.food_meat,
     s.parent_organization_id,
@@ -78,6 +81,7 @@ const search = async ({
     ${locationClause ? `${locationClause} AS distance,` : ""}
     ${buildLoginSelectsClause()}
     from stakeholder_set as s
+    left outer join neighborhood n on s.neighborhood_id = n.id
     ${buildLoginJoinsClause()}
     where s.tenant_id = ${tenantId}
     ${
@@ -93,6 +97,12 @@ const search = async ({
         ? ` and s.verification_status_id = ${verificationStatusId} `
         : ""
     }
+    ${
+      Number(neighborhoodId) > 0
+        ? ` and s.neighborhood_id = ${neighborhoodId} `
+        : ""
+    }
+    ${tag ? ` and '${tag}' = ANY (s.tags) ` : ""}
     order by distance
   `;
   let stakeholders = [];
@@ -242,13 +252,14 @@ const selectById = async (id) => {
       s.category_notes, s.eligibility_notes, s.food_types, s.languages,
       s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email,
       s.v_hours, s.v_food_types, s.verification_status_id, s.inactive_temporary,
-      s.neighborhood_id, s.is_verified,
+      s.neighborhood_id,  n.name as neighborhood_name, s.is_verified,
       s.food_bakery, s.food_dry_goods, s.food_produce,
       s.food_dairy, s.food_prepared, s.food_meat,
       s.parent_organization_id,
       s.allow_walkins, s.hours_notes, s.tags,
       ${buildLoginSelectsClause()}
     from stakeholder_best s
+    left outer join neighborhood n on s.neighborhood_id = n.id
     ${buildLoginJoinsClause()}
     where s.id = ${id}`;
   const row = await db.one(sql);

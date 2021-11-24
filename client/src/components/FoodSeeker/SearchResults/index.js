@@ -26,6 +26,13 @@ const ResultsContainer = ({
   const { selectedStakeholder, doSelectStakeholder } = useSelectedStakeholder();
   const [isVerifiedSelected, selectVerified] = useState(false);
   const [showList, setShowList] = useState(true);
+  // The following two states are temporarily hard-coded - they eventually should be
+  // set from query parameters on the url. This allows the url
+  // specified by an iframe (e.g. https://la.foodoasis.net/widget?neighborhoodId=3)
+  // to pass  aneightborhoodId or tag parameter to filter the
+  // results by neighborhood or tag from an iframe host site.
+  const [tag] = useState("");
+  const [neighborhoodId] = useState(3);
 
   useEffect(() => {
     const { zoom, dimensions } = mapRef.current.getViewport();
@@ -37,10 +44,12 @@ const ResultsContainer = ({
       categoryIds,
       isInactive: "either",
       verificationStatusId: 0,
+      neighborhoodId: neighborhoodId,
+      tag: tag,
     };
     search(criteria);
     analytics.postEvent("searchArea", criteria);
-  }, [origin, categoryIds, search]);
+  }, [origin, categoryIds, search, tag, neighborhoodId]);
 
   const searchMapArea = useCallback(() => {
     const { center } = mapRef.current.getViewport();

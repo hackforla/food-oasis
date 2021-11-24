@@ -29,6 +29,7 @@ export const useOrganizations = () => {
     neighborhoodId,
     minCompleteCriticalPercent,
     maxCompleteCriticalPercent,
+    tag,
   }) => {
     try {
       analytics.postEvent("searchAdmin", {
@@ -48,6 +49,7 @@ export const useOrganizations = () => {
         neighborhoodId,
         minCompleteCriticalPercent,
         maxCompleteCriticalPercent,
+        tag,
       });
 
       setState({ data: null, loading: true, error: false });
@@ -71,6 +73,7 @@ export const useOrganizations = () => {
         neighborhoodId,
         minCompleteCriticalPercent,
         maxCompleteCriticalPercent,
+        tag,
       });
       setState({ data: stakeholders, loading: false, error: false });
       return stakeholders;

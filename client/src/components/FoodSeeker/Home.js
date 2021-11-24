@@ -199,12 +199,6 @@ const Home = ({
     return originCoordinates;
   };
 
-  useEffect(() => {
-    if (match.path === "/") {
-      sessionStorage.clear();
-    }
-  }, [match.path]);
-
   const selectLocation = useCallback(
     (origin) => {
       setOrigin(origin);

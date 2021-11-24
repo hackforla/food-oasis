@@ -38,6 +38,8 @@ export default function useOrganizationBests() {
       categoryIds,
       isInactive,
       verificationStatusId,
+      neighborhoodId,
+      tag,
     }) => {
       if (!latitude || !longitude) {
         setState({ data: null, loading: false, error: true });
@@ -55,6 +57,8 @@ export default function useOrganizationBests() {
         categoryIds,
         isInactive,
         verificationStatusId,
+        neighborhoodId,
+        tag,
       });
       //if (!categoryIds || categoryIds.length === 0) return;
       try {
@@ -67,6 +71,8 @@ export default function useOrganizationBests() {
           distance: radius,
           isInactive,
           verificationStatusId,
+          neighborhoodId,
+          tag,
         };
         if (bounds) {
           const { maxLat, maxLng, minLat, minLng } = bounds;

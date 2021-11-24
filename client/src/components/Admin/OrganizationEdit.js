@@ -1065,12 +1065,7 @@ const OrganizationEdit = (props) => {
                             if (tags.length === 0) {
                               return "(Select Tags)";
                             }
-                            return tags
-                              .map(
-                                (tagName) =>
-                                  allTags.find((t) => t.name === tagName).name
-                              )
-                              .join(", ");
+                            return tags.join(", ");
                           }}
                           MenuProps={MenuProps}
                         >

@@ -6,7 +6,8 @@ const selectAllById = async (tenantId) => {
   // to format SQL
   const id = Number(tenantId);
   const sql = `select id, name, tenant_id
-  from stakeholder_tag where tenant_id = $<id>`;
+  from stakeholder_tag where tenant_id = $<id>
+  order by name`;
 
   const result = await db.manyOrNone(sql, { id });
   return result.map((r) => camelcaseKeys(r));

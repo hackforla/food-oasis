@@ -48,10 +48,11 @@ const search = async (params) => {
     neighborhoodId,
     minCompleteCriticalPercent,
     maxCompleteCriticalPercent,
+    tag,
   } = params;
 
   const locationClause = buildLocationClause(latitude, longitude);
-  const categoryClause = buildCTEClause(categoryIds, name || "", false);
+  const categoryClause = buildCTEClause(categoryIds, name || "");
   // false means search stakeholder table, not stakeholder_best, since this is
   // for the administrative dashboard
 
@@ -128,6 +129,7 @@ const search = async (params) => {
         ? ` and s.complete_critical_percent <= ${maxCompleteCriticalPercent} `
         : ""
     }
+    ${tag ? ` and '${tag}' = ANY (s.tags) ` : ""}
     order by ${locationClause ? "distance" : "s.name"}
 
   `;
@@ -520,12 +522,12 @@ const insert = async (model) => {
     ? "{" + model.selectedCategoryIds.join(",") + "}"
     : "{1}";
 
-  // Array of tags is formatted as, e.g.,  "{'tag1','tag2'}"
+  // Array of tags is formatted as, e.g.,  '{"tag1","tag2"}'
   const tags = model.tags
     ? "{" +
       model.tags
         .sort()
-        .map((t) => `'${t}'`)
+        .map((t) => `"${t}"`)
         .join(",") +
       "}"
     : null;
@@ -748,12 +750,12 @@ const update = async (model) => {
   // Array of catetory_ids is formatted as, e.g.,  '{1,9}'
   const categories = "{" + model.selectedCategoryIds.join(",") + "}";
 
-  // Array of tags is formatted as, e.g.,  "{'tag1','tag2'}"
+  // Array of tags is formatted as, e.g.,  '{"tag1","tag2"}'
   const tags = model.tags
     ? "{" +
       model.tags
         .sort()
-        .map((t) => `'${t}'`)
+        .map((t) => `"${t}"`)
         .join(",") +
       "}"
     : null;

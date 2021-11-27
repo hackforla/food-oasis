@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
@@ -9,7 +9,8 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
-import { getIsMobile } from "../../hooks/utils";
+import FormControl from "@material-ui/core/FormControl";
+import { TextField } from "../UI";
 import { useLogins } from "hooks/useLogins";
 
 const columns = [
@@ -27,15 +28,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "space-between",
   },
-  paper: {
-    position: "absolute",
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, getIsMobile() ? 1 : 4, 3),
-  },
-  error: {
-    color: theme.palette.error.main,
-  },
   formControl: {
     margin: theme.spacing(1),
     minWidth: 180,
@@ -45,11 +37,13 @@ const useStyles = makeStyles((theme) => ({
 const Logins = () => {
   const classes = useStyles();
   const [logins, setLogins] = useState([]);
+  const [filteredLogins, setFilteredLogins] = useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [search, setSearch] = useState("");
   let { data } = useLogins();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (data) {
       setLogins(data);
     }
@@ -64,8 +58,42 @@ const Logins = () => {
     setPage(0);
   };
 
+  useEffect(() => {
+    if (search.length === 0) {
+      setFilteredLogins(logins);
+    } else {
+      const result = logins.filter((login) => {
+        return (
+          login.firstName.toLowerCase().includes(search) ||
+          login.lastName.toLowerCase().includes(search) ||
+          login.email.toLowerCase().includes(search) ||
+          login.loginTime.toLowerCase().includes(search)
+        );
+      });
+      setFilteredLogins(result);
+    }
+  }, [search, logins]);
+
+  const handleChange = (e) => {
+    setSearch(e.target.value.toLowerCase());
+  };
   return (
     <Container>
+      <div className={classes.heading}>
+        <h2>User Logins</h2>
+        <FormControl className={classes.formControl}>
+          <TextField
+            variant="outlined"
+            margin="none"
+            placeholder="Find"
+            size="small"
+            className={classes.textInput}
+            onChange={handleChange}
+            value={search}
+          />
+        </FormControl>
+      </div>
+
       <Paper>
         <TableContainer className={classes.container}>
           <Table stickyHeader aria-label="sticky table">
@@ -83,22 +111,21 @@ const Logins = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {logins
+              {filteredLogins
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((logins) => {
+                .map((filteredLogins) => {
                   return (
                     <TableRow
                       hover
                       role="checkbox"
                       tabIndex={-1}
-                      key={logins.id}
-                      //   selected={suggestion.id === activeOrg}
+                      key={filteredLogins.id}
                     >
                       {columns.map((column) => {
                         const value =
                           column.id === "name"
-                            ? `${logins["lastName"]}, ${logins["firstName"]}`
-                            : logins[column.id];
+                            ? `${["lastName"]}, ${filteredLogins["firstName"]}`
+                            : filteredLogins[column.id];
                         return (
                           <TableCell key={column.id} align={column.align}>
                             {value}

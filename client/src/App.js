@@ -63,6 +63,7 @@ import ImportFile from "components/Admin/ImportOrganizations/ImportFile";
 import adminTheme from "./theme/adminTheme";
 import * as analytics from "../src/services/analytics";
 import Suggestions from "components/Admin/Suggestions";
+import Logins from "components/Admin/Logins";
 
 const useStyles = makeStyles({
   app: () => ({
@@ -211,6 +212,9 @@ function App() {
                   <Route path="/suggestion">
                     <Suggestion />
                   </Route>
+                  <Route path="/logins">
+                    <Logins />
+                  </Route>
                   <Route path="/organizationedit/:id?">
                     <ThemeProvider theme={adminTheme}>
                       <div className={classes.organizationEditWrapper}>
@@ -246,6 +250,11 @@ function App() {
                   <Route path="/suggestions">
                     <div className={classes.organizationEditWrapper}>
                       <Suggestions />
+                    </div>
+                  </Route>
+                  <Route path="/logins">
+                    <div className={classes.organizationEditWrapper}>
+                      <Logins />
                     </div>
                   </Route>
                   <Route path="/securityadmindashboard">

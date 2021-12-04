@@ -124,7 +124,7 @@ const Logins = () => {
                       {columns.map((column) => {
                         const value =
                           column.id === "name"
-                            ? `${["lastName"]}, ${filteredLogins["firstName"]}`
+                            ? `${filteredLogins["lastName"]}, ${filteredLogins["firstName"]}`
                             : filteredLogins[column.id];
                         return (
                           <TableCell key={column.id} align={column.align}>

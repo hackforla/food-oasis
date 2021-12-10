@@ -1,10 +1,8 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import useOrganizationBests from "hooks/useOrganizationBests";
 import useCategoryIds from "hooks/useCategoryIds";
-import useSelectedStakeholder from "hooks/useSelectedStakeholder";
 import useBreakpoints from "hooks/useBreakpoints";
 import { getMapBounds } from "helpers";
-import { defaultViewport } from "helpers/Configuration";
 import { Mobile, Tablet, Desktop } from "./layouts";
 import Filters from "./Filters";
 import Map from "./Map";
@@ -12,19 +10,23 @@ import List from "./List";
 import Preview from "./Preview";
 import Details from "./Details";
 import * as analytics from "services/analytics";
+import {
+  useSearchCoordinates,
+  useAppDispatch,
+  useSelectedOrganization,
+} from "../../../appReducer";
+import { useHistory, useLocation } from "react-router";
 
-const ResultsContainer = ({
-  origin,
-  setOrigin,
-  userCoordinates,
-  taglineText,
-}) => {
+const ResultsContainer = () => {
   const mapRef = useRef(null);
   const { isDesktop, isTablet } = useBreakpoints();
-  const { data: stakeholders, search, loading } = useOrganizationBests();
+  const {
+    data: stakeholders,
+    search,
+    loading,
+    getById,
+  } = useOrganizationBests();
   const { categoryIds, toggleCategory } = useCategoryIds([]);
-  const { selectedStakeholder, doSelectStakeholder } = useSelectedStakeholder();
-  const [isVerifiedSelected, selectVerified] = useState(false);
   const [showList, setShowList] = useState(true);
   // The following two states are temporarily hard-coded - they eventually should be
   // set from query parameters on the url. This allows the url
@@ -33,14 +35,54 @@ const ResultsContainer = ({
   // results by neighborhood or tag from an iframe host site.
   const [tag] = useState("");
   const [neighborhoodId] = useState(null);
+  const searchCoordinates = useSearchCoordinates();
+  const dispatch = useAppDispatch();
+  const selectedOrganization = useSelectedOrganization();
+  const history = useHistory();
+  const location = useLocation();
+
+  React.useEffect(() => {
+    if (!location.search) return;
+    async function getOrganization() {
+      const queryParams = new URLSearchParams(location.search);
+      const id = queryParams.get("id");
+
+      if (id) {
+        const organization = await getById(id);
+
+        dispatch({
+          type: "SELECTED_ORGANIZATION_UPDATED",
+          organization,
+        });
+      }
+    }
+
+    getOrganization();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  React.useEffect(() => {
+    if (!selectedOrganization) return;
+
+    analytics.postEvent("selectOrganization", {
+      id: selectedOrganization.id,
+      name: selectedOrganization.name,
+    });
+
+    //Update url history
+    const name = selectedOrganization.name.toLowerCase().replaceAll(" ", "_");
+    history.push(
+      `${location.pathname}?id=${selectedOrganization.id}&org=${name}`
+    );
+    // eslint-disable-next-line
+  }, [selectedOrganization]);
 
   useEffect(() => {
     const { zoom, dimensions } = mapRef.current.getViewport();
-
     const criteria = {
-      latitude: origin.latitude,
-      longitude: origin.longitude,
-      bounds: getMapBounds(origin, zoom, dimensions),
+      latitude: searchCoordinates.latitude,
+      longitude: searchCoordinates.longitude,
+      bounds: getMapBounds(searchCoordinates, zoom, dimensions),
       categoryIds,
       isInactive: "either",
       verificationStatusId: 0,
@@ -49,44 +91,35 @@ const ResultsContainer = ({
     };
     search(criteria);
     analytics.postEvent("searchArea", criteria);
-  }, [origin, categoryIds, search, tag, neighborhoodId]);
+  }, [categoryIds, search, tag, neighborhoodId, searchCoordinates]);
 
   const searchMapArea = useCallback(() => {
     const { center } = mapRef.current.getViewport();
-    setOrigin(center);
-  }, [setOrigin]);
+    dispatch({ type: "SEARCH_COORDINATES_UPDATED", coordinates: center });
+  }, [dispatch]);
 
   const resetOrigin = useCallback(() => {
-    setOrigin(userCoordinates || defaultViewport.center);
-  }, [setOrigin, userCoordinates]);
+    dispatch({ type: "RESET_COORDINATES" });
+  }, [dispatch]);
 
   const toggleShowList = useCallback(() => {
-    doSelectStakeholder(null);
+    dispatch({ type: "RESET_SELECTED_ORGANIZATION" });
     setShowList((showList) => !showList);
-  }, [doSelectStakeholder]);
+  }, [dispatch]);
 
   const filters = (
     <Filters
-      origin={origin}
-      setOrigin={setOrigin}
-      toggleCategory={toggleCategory}
       categoryIds={categoryIds}
-      isVerifiedSelected={isVerifiedSelected}
-      selectVerified={selectVerified}
-      userCoordinates={userCoordinates}
+      toggleCategory={toggleCategory}
       showList={showList}
       toggleShowList={toggleShowList}
-      taglineText={taglineText}
     />
   );
 
   const map = (
     <Map
       ref={mapRef}
-      center={origin}
       stakeholders={stakeholders}
-      doSelectStakeholder={doSelectStakeholder}
-      selectedStakeholder={selectedStakeholder}
       categoryIds={categoryIds}
       loading={loading}
       searchMapArea={searchMapArea}
@@ -95,8 +128,6 @@ const ResultsContainer = ({
 
   const list = (
     <List
-      selectedStakeholder={selectedStakeholder}
-      doSelectStakeholder={doSelectStakeholder}
       stakeholders={stakeholders || []}
       loading={loading}
       handleReset={resetOrigin}
@@ -112,22 +143,8 @@ const ResultsContainer = ({
       filters={filters}
       map={map}
       list={showList && list}
-      preview={
-        selectedStakeholder && (
-          <Preview
-            doSelectStakeholder={doSelectStakeholder}
-            stakeholder={selectedStakeholder}
-          />
-        )
-      }
-      details={
-        selectedStakeholder && (
-          <Details
-            selectedStakeholder={selectedStakeholder}
-            onClose={doSelectStakeholder.bind(null, null)}
-          />
-        )
-      }
+      preview={selectedOrganization && <Preview />}
+      details={selectedOrganization && <Details />}
     />
   );
 };

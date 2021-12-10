@@ -11,7 +11,7 @@ import {
 import * as suggestionService from "services/suggestion-service";
 import { TextField, Button } from "../../../../components/UI";
 import { DEFAULT_STAKEHOLDER } from "../../../../constants/stakeholder";
-import { useToasterContext } from "../../../../contexts/toaster-context";
+import { useToasterContext } from "../../../../contexts/toasterContext";
 
 function SuggestionDialog(props) {
   const { setToast } = useToasterContext();

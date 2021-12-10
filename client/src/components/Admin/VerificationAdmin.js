@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { withRouter, Redirect } from "react-router-dom";
+import { useLocation, Redirect } from "react-router-dom";
 import { CssBaseline, Dialog, Typography } from "@material-ui/core";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import { makeStyles } from "@material-ui/core/styles";
@@ -20,7 +20,8 @@ import NeedsVerificationDialog from "./ui/MessageConfirmDialog";
 import SearchCriteria from "./SearchCriteria";
 import SearchCriteriaDisplay from "./SearchCriteriaDisplay";
 import { Button } from "../../components/UI";
-import { useUserContext } from "../../contexts/user-context";
+import { useUserContext } from "../../contexts/userContext";
+import { useSearchCoordinates, useUserCoordinates } from "../../appReducer";
 
 const CRITERIA_TOKEN = "verificationAdminCriteria";
 
@@ -118,22 +119,7 @@ const defaultCriteria = {
   tag: "",
 };
 
-VerificationAdmin.propTypes = {
-  user: PropTypes.shape({
-    id: PropTypes.number,
-  }),
-  userCoordinates: PropTypes.shape({
-    latitude: PropTypes.number,
-    longitude: PropTypes.number,
-  }),
-  origin: PropTypes.shape({
-    latitude: PropTypes.number,
-    longitude: PropTypes.number,
-  }),
-};
-
-function VerificationAdmin(props) {
-  const { userCoordinates, origin } = props;
+function VerificationAdmin() {
   const { user } = useUserContext();
   const classes = useStyles();
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -143,6 +129,9 @@ function VerificationAdmin(props) {
   const [criteria, setCriteria] = useState(defaultCriteria);
   const [selectedStakeholderIds, setSelectedStakeholderIds] = useState([]);
   const [unauthorized, setUnauthorized] = useState(false);
+  const userCoordinates = useUserCoordinates();
+  const location = useLocation();
+  const searchCoordinates = useSearchCoordinates();
 
   const {
     data: categories,
@@ -172,8 +161,10 @@ function VerificationAdmin(props) {
       if (!initialCriteria) {
         initialCriteria = {
           ...defaultCriteria,
-          latitude: userCoordinates?.latitude || origin?.latitude || 0,
-          longitude: userCoordinates?.longitude || origin?.longitude || 0,
+          latitude:
+            userCoordinates?.latitude || searchCoordinates?.latitude || 0,
+          longitude:
+            userCoordinates?.longitude || searchCoordinates?.longitude || 0,
           verificationStatusId: 0,
         };
       } else {
@@ -193,7 +184,7 @@ function VerificationAdmin(props) {
       }
     };
     execute();
-  }, [userCoordinates, origin, searchCallback]);
+  }, [userCoordinates, searchCallback, searchCoordinates]);
 
   const search = async () => {
     try {
@@ -292,9 +283,7 @@ function VerificationAdmin(props) {
   return (
     <main className={classes.root}>
       {stakeholdersError.status === 401 || unauthorized ? (
-        <Redirect
-          to={{ pathname: "/login", state: { from: props.location } }}
-        />
+        <Redirect to={{ pathname: "/login", state: { from: location } }} />
       ) : null}
       <CssBaseline />
       <div
@@ -499,4 +488,4 @@ function VerificationAdmin(props) {
   );
 }
 
-export default withRouter(VerificationAdmin);
+export default VerificationAdmin;

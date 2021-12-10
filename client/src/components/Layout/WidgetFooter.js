@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import { isMobile } from "../../helpers";
+import { useSiteContext } from "../../contexts/siteContext";
 
 const logoPaths = {
   1: require("images/foodoasis.svg"),
@@ -105,9 +105,9 @@ function WidgetFooterSection(props) {
   );
 }
 
-function WidgetFooter(props) {
+function WidgetFooter() {
   const [mobile, setMobile] = useState(null);
-  const { tenantId, tenantDetails } = props;
+  const { tenantId, tenantDetails } = useSiteContext();
   const { maintainer } = tenantDetails;
   const classes = useStyles();
 
@@ -161,9 +161,4 @@ WidgetFooterSection.defaultProps = {
   style: {},
 };
 
-WidgetFooter.propTypes = {
-  tenantId: PropTypes.number.isRequired,
-  tenantDetails: PropTypes.shape().isRequired,
-};
-
-export default withRouter(WidgetFooter);
+export default WidgetFooter;

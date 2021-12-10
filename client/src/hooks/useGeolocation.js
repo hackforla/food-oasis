@@ -1,26 +1,57 @@
-import { useState, useEffect } from "react";
+import React from "react";
+import { useAppDispatch, useUserCoordinates } from "../appReducer";
 
 export default function useGeolocation() {
-  const [userCoordinates, setUserCoordinates] = useState(null);
+  const dispatch = useAppDispatch();
+  const userCoordinates = useUserCoordinates();
 
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          if (position) {
-            const { longitude, latitude } = position.coords;
-            setUserCoordinates({ longitude, latitude });
+  const setCoordinates = React.useCallback(
+    (coordinates) => {
+      dispatch({
+        type: "USER_COORDINATES_UPDATED",
+        coordinates,
+      });
+    },
+    [dispatch]
+  );
+
+  return React.useCallback(
+    (callback) => {
+      if (userCoordinates) {
+        setCoordinates({
+          latitude: userCoordinates.latitude,
+          longitude: userCoordinates.longitude,
+        });
+        callback();
+      }
+      if (navigator.geolocation) {
+        return navigator.geolocation.getCurrentPosition(
+          (position) => {
+            if (position) {
+              setCoordinates({
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+              });
+              callback();
+            }
+          },
+          (error) => {
+            // Usually because user has blocked location
+            console.error(`Getting browser location failed: ${error.message}`);
+            dispatch({
+              type: "RESET_COORDINATES",
+            });
           }
-        },
-        (error) => {
-          // Usually because user has blocked location
-          console.error(`Getting browser location failed: ${error.message}`);
-        }
-      );
-    } else {
-      console.error("Browser does not support getting users location.");
-    }
-  }, []);
-
-  return userCoordinates;
+        );
+      } else {
+        console.error(
+          "Browser does not support getting users location - using default location for area"
+        );
+        dispatch({
+          type: "RESET_COORDINATES",
+        });
+      }
+    },
+    [dispatch, userCoordinates, setCoordinates]
+  );
 }

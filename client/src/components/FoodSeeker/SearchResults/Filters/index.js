@@ -13,6 +13,8 @@ import SwitchViewsButton from "./SwitchViewsButton";
 import CategoryButton from "./CategoryButton";
 import * as analytics from "services/analytics";
 import { Button } from "../../../../components/UI";
+import { tenantDetails } from "../../../../helpers/Configuration";
+import useGeolocation from "hooks/useGeolocation";
 
 const useStyles = makeStyles((theme) => ({
   select: {
@@ -53,7 +55,6 @@ const useStyles = makeStyles((theme) => ({
     padding: 0,
     cornerRadius: "4px",
     borderRadius: "4px",
-    backgroundColor: "#F0F0F0",
     boxShadow: "none",
     "& .MuiButton-startIcon": {
       margin: 0,
@@ -120,19 +121,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ResultsFilters = ({
-  origin,
-  setOrigin,
-  isVerifiedSelected,
-  userCoordinates,
   categoryIds,
   toggleCategory,
   showList,
   toggleShowList,
-  taglineText,
 }) => {
   const classes = useStyles();
   const isMealsSelected = categoryIds.indexOf(MEAL_PROGRAM_CATEGORY_ID) >= 0;
   const isPantrySelected = categoryIds.indexOf(FOOD_PANTRY_CATEGORY_ID) >= 0;
+  const { taglineText } = tenantDetails;
+  const recenterMap = useGeolocation();
+  const [isGeoLocationLoading, setIsGeoLocationLoading] = React.useState(false);
 
   const toggleMeal = useCallback(() => {
     toggleCategory(MEAL_PROGRAM_CATEGORY_ID);
@@ -203,26 +202,19 @@ const ResultsFilters = ({
         </Grid>
         <Grid item xs={12} sm={6} className={classes.inputContainer}>
           <div className={classes.form}>
-            <SearchBar
-              origin={origin}
-              setOrigin={(origin) => {
-                analytics.postEvent("changeOrigin", {});
-                setOrigin(origin);
-              }}
-              userCoordinates={userCoordinates}
-              showSearchIcon={true}
-            />
+            <SearchBar />
             <Tooltip title="Re-center">
               <span>
                 <Button
                   onClick={() => {
                     analytics.postEvent("recenterMap", {});
-                    setOrigin(userCoordinates);
+                    setIsGeoLocationLoading(true);
+                    recenterMap(() => setIsGeoLocationLoading(false));
                   }}
-                  disabled={!userCoordinates}
                   className={classes.nearbySearch}
                   icon="locationSearching"
                   iconPosition="start"
+                  isLoading={isGeoLocationLoading}
                 ></Button>
               </span>
             </Tooltip>
@@ -234,12 +226,11 @@ const ResultsFilters = ({
 };
 
 ResultsFilters.propTypes = {
-  distance: PropTypes.number,
-  placeName: PropTypes.string,
-  isPantryCategorySelected: PropTypes.bool,
-  isMealCategorySelected: PropTypes.bool,
-  isVerifiedFilterSelected: PropTypes.bool,
-  search: PropTypes.func,
+  categoryIds: PropTypes.any,
+  toggleCategory: PropTypes.func,
+  showList: PropTypes.bool,
+  toggleShowList: PropTypes.func,
 };
+
 
 export default ResultsFilters;

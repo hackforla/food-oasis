@@ -15,8 +15,8 @@ import * as Yup from "yup";
 import * as accountService from "services/account-service";
 import * as analytics from "../../services/analytics";
 import { Button, TextField } from "../../components/UI";
-import { useUserContext } from "../../contexts/user-context";
-import { useToasterContext } from "../../contexts/toaster-context";
+import { useUserContext } from "../../contexts/userContext";
+import { useToasterContext } from "../../contexts/toasterContext";
 
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 

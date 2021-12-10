@@ -7,7 +7,7 @@ import { RotateLoader } from "react-spinners";
 import { useOrganizations } from "hooks/useOrganizations";
 import * as stakeholderService from "services/stakeholder-service";
 import { Button } from "../../components/UI";
-import { useUserContext } from "../../contexts/user-context";
+import { useUserContext } from "../../contexts/userContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {

@@ -25,27 +25,23 @@ import {
 import useStyles from "./styles";
 import * as analytics from "services/analytics";
 import { Button } from "../../../../components/UI";
+import { useSearchCoordinates, useAppDispatch } from "../../../../appReducer";
+import PropTypes from "prop-types";
 
 const ResultsMap = (
-  {
-    center,
-    stakeholders,
-    doSelectStakeholder,
-    selectedStakeholder,
-    categoryIds,
-    loading,
-    searchMapArea,
-  },
+  { stakeholders, categoryIds, loading, searchMapArea },
   ref
 ) => {
   const classes = useStyles();
   const mapRef = useRef();
   const [markersLoaded, setMarkersLoaded] = useState(false);
+  const searchCoordinates = useSearchCoordinates();
   const [viewport, setViewport] = useState({
-    latitude: center.latitude,
-    longitude: center.longitude,
+    latitude: searchCoordinates.latitude,
+    longitude: searchCoordinates.longitude,
     zoom: defaultViewport.zoom,
   });
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     analytics.postEvent("showMap");
@@ -54,10 +50,10 @@ const ResultsMap = (
   useEffect(() => {
     setViewport((viewport) => ({
       ...viewport,
-      latitude: center.latitude,
-      longitude: center.longitude,
+      latitude: searchCoordinates.latitude,
+      longitude: searchCoordinates.longitude,
     }));
-  }, [center]);
+  }, [searchCoordinates]);
 
   const onLoad = useCallback(async () => {
     const map = mapRef.current.getMap();
@@ -68,14 +64,17 @@ const ResultsMap = (
   const onClick = useCallback(
     (e) => {
       if (!e.features || !e.features.length) {
-        doSelectStakeholder(null);
+        dispatch({ type: "RESET_SELECTED_ORGANIZATION" });
       } else if (stakeholders) {
         const { id } = e.features[0];
-        const selectedStakeholder = stakeholders.find((sh) => sh.id === id);
-        doSelectStakeholder(selectedStakeholder);
+        const selectedOrganization = stakeholders.find((sh) => sh.id === id);
+        dispatch({
+          type: "SELECTED_ORGANIZATION_UPDATED",
+          organization: selectedOrganization,
+        });
       }
     },
-    [stakeholders, doSelectStakeholder]
+    [stakeholders, dispatch]
   );
 
   const interactiveLayerIds = markersLoaded ? [MARKERS_LAYER_ID] : undefined;
@@ -86,7 +85,6 @@ const ResultsMap = (
 
   const markersGeojson = useMarkersGeojson({
     stakeholders,
-    selectedStakeholder,
     categoryIds,
   });
 
@@ -153,3 +151,11 @@ const ResultsMap = (
 };
 
 export default forwardRef(ResultsMap);
+
+ResultsMap.propTypes = {
+  ref: PropTypes.any,
+  stakeholders: PropTypes.arrayOf(PropTypes.object),
+  categoryIds: PropTypes.any,
+  loading: PropTypes.bool,
+  searchMapArea: PropTypes.any,
+};

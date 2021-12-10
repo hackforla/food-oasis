@@ -15,7 +15,7 @@ import {
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Footer from "../Layout/Footer";
 import { TextField, Button } from "../../components/UI";
-import { useToasterContext } from "contexts/toaster-context";
+import { useToasterContext } from "contexts/toasterContext";
 
 const styles = (theme) => ({
   "@global": {

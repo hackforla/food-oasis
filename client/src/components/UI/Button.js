@@ -2,8 +2,16 @@ import React from "react";
 import { Button as MuiButton } from "@material-ui/core";
 import PropTypes from "prop-types";
 import { ICON_DICT } from "./iconLookup";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
-const Base = ({ children, variant, color, type, ...props }) => {
+const Base = ({
+  children,
+  variant,
+  color,
+  type,
+  isLoading = false,
+  ...props
+}) => {
   return (
     <MuiButton
       type={type || "button"}
@@ -12,7 +20,7 @@ const Base = ({ children, variant, color, type, ...props }) => {
       aria-label={type || "button"}
       {...props}
     >
-      {children}
+      {isLoading ? <CircularProgress size={14} color="secondary" /> : children}
     </MuiButton>
   );
 };
@@ -28,8 +36,14 @@ Base.propTypes = {
 const Button = ({ children, icon, iconPosition, ...props }) => {
   if (icon) {
     let Icon = ICON_DICT[icon];
+
     let position =
       iconPosition === "end" ? { endIcon: <Icon /> } : { startIcon: <Icon /> };
+
+    if (props.isLoading) {
+      position = null;
+    }
+
     return (
       <Base {...props} {...position}>
         {children}
@@ -41,6 +55,7 @@ const Button = ({ children, icon, iconPosition, ...props }) => {
 };
 
 Button.propTypes = {
+  isLoading: PropTypes.bool,
   children: PropTypes.any,
   onClick: PropTypes.func,
   kind: PropTypes.string,

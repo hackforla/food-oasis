@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
@@ -12,6 +12,7 @@ import TableRow from "@material-ui/core/TableRow";
 import FormControl from "@material-ui/core/FormControl";
 import { TextField } from "../UI";
 import { useLogins } from "hooks/useLogins";
+import debounce from "lodash.debounce";
 
 const columns = [
   { id: "name", label: "Name", minWidth: 100 },
@@ -37,11 +38,9 @@ const useStyles = makeStyles((theme) => ({
 const Logins = () => {
   const classes = useStyles();
   const [logins, setLogins] = useState([]);
-  const [filteredLogins, setFilteredLogins] = useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [search, setSearch] = useState("");
-  let { data } = useLogins();
+  let { data, refetch } = useLogins();
 
   useEffect(() => {
     if (data) {
@@ -58,25 +57,13 @@ const Logins = () => {
     setPage(0);
   };
 
-  useEffect(() => {
-    if (search.length === 0) {
-      setFilteredLogins(logins);
-    } else {
-      const result = logins.filter((login) => {
-        return (
-          login.firstName.toLowerCase().includes(search) ||
-          login.lastName.toLowerCase().includes(search) ||
-          login.email.toLowerCase().includes(search) ||
-          login.loginTime.toLowerCase().includes(search)
-        );
-      });
-      setFilteredLogins(result);
-    }
-  }, [search, logins]);
+  const debouncedChangeHandler = useMemo(() => {
+    const changeHandler = (event) => {
+      refetch(event.target.value.toLowerCase());
+    };
+    return debounce(changeHandler, 300);
+  }, [refetch]);
 
-  const handleChange = (e) => {
-    setSearch(e.target.value.toLowerCase());
-  };
   return (
     <Container>
       <div className={classes.heading}>
@@ -85,11 +72,10 @@ const Logins = () => {
           <TextField
             variant="outlined"
             margin="none"
-            placeholder="Find"
+            placeholder="Find by Email"
             size="small"
             className={classes.textInput}
-            onChange={handleChange}
-            value={search}
+            onChange={debouncedChangeHandler}
           />
         </FormControl>
       </div>
@@ -111,21 +97,21 @@ const Logins = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredLogins
+              {logins
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((filteredLogins) => {
+                .map((logins) => {
                   return (
                     <TableRow
                       hover
                       role="checkbox"
                       tabIndex={-1}
-                      key={filteredLogins.id}
+                      key={logins.id}
                     >
                       {columns.map((column) => {
                         const value =
                           column.id === "name"
-                            ? `${filteredLogins["lastName"]}, ${filteredLogins["firstName"]}`
-                            : filteredLogins[column.id];
+                            ? `${logins["lastName"]}, ${logins["firstName"]}`
+                            : logins[column.id];
                         return (
                           <TableCell key={column.id} align={column.align}>
                             {value}

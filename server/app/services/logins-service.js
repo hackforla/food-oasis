@@ -9,7 +9,7 @@ const insert = async (login_id, tenant_id) => {
   return row;
 };
 
-// limit 50
+// limit 500
 const selectAll = async (email, tenantId) => {
   let sql = `select logins.id, login.first_name, login.last_name, login.email, logins.login_time
     from logins
@@ -31,7 +31,7 @@ const selectAll = async (email, tenantId) => {
 
   if (whereExpressions.length === 1) {
     sql += " where " + whereExpressions.join(" and ");
-    sql += " order by logins.login_time desc limit 50";
+    sql += " order by logins.login_time desc limit 500";
   }
   if (whereExpressions.length > 1) {
     sql += " where " + whereExpressions.join(" and ");

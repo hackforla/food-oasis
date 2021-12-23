@@ -32,7 +32,7 @@ const ResultsContainer = ({
   // to pass  aneightborhoodId or tag parameter to filter the
   // results by neighborhood or tag from an iframe host site.
   const [tag] = useState("");
-  const [neighborhoodId] = useState(3);
+  const [neighborhoodId] = useState(null);
 
   useEffect(() => {
     const { zoom, dimensions } = mapRef.current.getViewport();

@@ -46,6 +46,7 @@ const SearchCriteria = ({
   userLongitude,
   categories,
   neighborhoods,
+  tags,
   criteria,
   setCriteria,
 }) => {
@@ -339,6 +340,32 @@ const SearchCriteria = ({
                   ? neighborhoods.map((n) => {
                       return (
                         <MenuItem key={n.id} value={n.id}>
+                          {n.name}
+                        </MenuItem>
+                      );
+                    })
+                  : null}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <FormControl variant="outlined" size="small" fullWidth>
+              <FormLabel id="tag-label" className={classes.formLabel}>
+                Tag
+              </FormLabel>
+              <Select
+                labelId="tag-label"
+                name="tag"
+                value={criteria.tag}
+                onChange={setCriterion}
+              >
+                <MenuItem key="1" value="">
+                  <em>(Any)</em>
+                </MenuItem>
+                {tags
+                  ? tags.map((n) => {
+                      return (
+                        <MenuItem key={n.name} value={n.name}>
                           {n.name}
                         </MenuItem>
                       );

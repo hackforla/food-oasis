@@ -1,4 +1,5 @@
 const accountService = require("../services/account-service");
+const loginsService = require("../services/logins-service");
 
 const getAll = async (req, res) => {
   try {
@@ -130,6 +131,7 @@ const login = async (req, res, next) => {
     const resp = await accountService.authenticate(email, password, tenantId);
     if (resp.isSuccess) {
       req.user = resp.user;
+      loginsService.insert(req.user.id, tenantId);
       next();
     } else {
       res.json(resp);

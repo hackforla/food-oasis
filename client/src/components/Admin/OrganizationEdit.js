@@ -31,6 +31,7 @@ import {
 } from "@material-ui/core";
 import * as stakeholderService from "services/stakeholder-service";
 import { useCategories } from "hooks/useCategories/useCategories";
+import { useTags } from "hooks/useTags";
 import * as geocoder from "services/geocode-tamu-service";
 import OpenTimeForm from "components/Admin/OpenTimeForm";
 import { TabPanel, a11yProps } from "components/Admin/ui/TabPanel";
@@ -200,6 +201,9 @@ const emptyOrganization = {
   foodDairy: false,
   foodPrepared: false,
   foodMeat: false,
+  hoursNotes: "",
+  allowWalkins: false,
+  tags: [],
 };
 
 const FOOD_TYPES = [
@@ -260,6 +264,7 @@ const OrganizationEdit = (props) => {
   const { setToast } = useToasterContext();
 
   const { data: categories } = useCategories();
+  const { data: allTags } = useTags();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -1038,6 +1043,52 @@ const OrganizationEdit = (props) => {
                       </div>
                     </Grid>
                   </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <div className={classes.confirmableGroupWrapper}>
+                      <FormControl className={classes.formControl} fullWidth>
+                        <InputLabel id="selectedTags-label">Tags</InputLabel>
+
+                        <Select
+                          labelId="selectedTags-label"
+                          id="tags"
+                          variant="outlined"
+                          name="tags"
+                          multiple
+                          fullWidth
+                          value={values.tags || []}
+                          onChange={handleChange}
+                          input={<Input />}
+                          renderValue={(tags) => {
+                            if (!allTags) {
+                              return "Loading tags...";
+                            }
+                            if (tags.length === 0) {
+                              return "(Select Tags)";
+                            }
+                            return tags.join(", ");
+                          }}
+                          MenuProps={MenuProps}
+                        >
+                          {!allTags || allTags.length === 0
+                            ? null
+                            : allTags.map((t) => (
+                                <MenuItem key={t.name} value={t.name}>
+                                  <Checkbox
+                                    checked={
+                                      values.tags &&
+                                      values.tags.find((tt) => tt === t.name)
+                                    }
+                                  />
+                                  <ListItemText primary={t.name} />
+                                </MenuItem>
+                              ))}
+                        </Select>
+                        <FormHelperText>
+                          {touched.tags ? errors.tags : ""}
+                        </FormHelperText>
+                      </FormControl>
+                    </div>
+                  </Grid>
                 </Grid>
               </TabPanel>
               <TabPanel value={tabPage} index={1} className={classes.tabPanel}>
@@ -1076,6 +1127,36 @@ const OrganizationEdit = (props) => {
                       name="hours"
                       onChange={(e) => setFieldValue("hours", e.target.value)}
                       value={values.hours}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          margin="normal"
+                          name="allowWalkins"
+                          value={values.allowWalkins}
+                          checked={values.allowWalkins}
+                          onChange={() =>
+                            setFieldValue("allowWalkins", !values.allowWalkins)
+                          }
+                          onBlur={handleBlur}
+                        />
+                      }
+                      label="Allow Walk-Ins"
+                    />
+                    <TextInput
+                      tooltip="Notes and caveats about hours"
+                      name="hoursNotes"
+                      label="Notes about hours"
+                      value={values.hoursNotes}
+                      multiline
+                      minRows={2}
+                      maxRows={12}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      helperText={touched.hoursNotes ? errors.hoursNotes : ""}
+                      error={touched.hoursNotes && Boolean(errors.hoursNotes)}
                     />
                   </Grid>
                 </Grid>

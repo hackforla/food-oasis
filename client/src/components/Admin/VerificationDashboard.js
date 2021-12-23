@@ -70,6 +70,7 @@ const defaultCriteria = {
   neighborhoodId: 0,
   minCompleteCriticalPercent: 0,
   maxCompleteCriticalPercent: 100,
+  tag: "",
 };
 
 function VerificationDashboard(props) {

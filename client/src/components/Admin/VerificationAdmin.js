@@ -9,6 +9,7 @@ import { RotateLoader } from "react-spinners";
 import { useOrganizations } from "hooks/useOrganizations";
 import { useCategories } from "hooks/useCategories/useCategories";
 import { useNeighborhoods } from "hooks/useNeighborhoods/useNeighborhoods";
+import { useTags } from "hooks/useTags";
 import {
   needsVerification,
   assign,
@@ -100,6 +101,7 @@ const defaultCriteria = {
   placeName: "",
   radius: 0,
   categoryIds: [],
+  tags: [],
   isInactive: "either",
   isAssigned: "either",
   isSubmitted: "either",
@@ -113,6 +115,7 @@ const defaultCriteria = {
   maxCompleteCriticalPercent: 100,
   stakeholderId: "",
   isInactiveTemporary: "either",
+  tag: "",
 };
 
 VerificationAdmin.propTypes = {
@@ -146,6 +149,8 @@ function VerificationAdmin(props) {
     loading: categoriesLoading,
     error: categoriesError,
   } = useCategories();
+
+  const { data: tags, loading: tagsLoading, error: tagsError } = useTags();
 
   const {
     data: neighborhoods,
@@ -324,6 +329,7 @@ function VerificationAdmin(props) {
         criteria={criteria}
         neighborhoods={neighborhoods}
         categories={categories}
+        tags={tags}
         isLoading={neighborhoodsLoading || categoriesLoading}
       />
       <div className={classes.mainContent}>
@@ -349,6 +355,7 @@ function VerificationAdmin(props) {
                   userCoordinates?.longitude || origin?.longitude || 0
                 }
                 categories={categories && categories.filter((c) => !c.inactive)}
+                tags={tags}
                 neighborhoods={neighborhoods}
                 criteria={criteria}
                 setCriteria={setCriteria}
@@ -359,11 +366,15 @@ function VerificationAdmin(props) {
               />
             </div>
           ) : null}
-          {categoriesError || neighborhoodsError || stakeholdersError ? (
+          {categoriesError ||
+          neighborhoodsError ||
+          stakeholdersError ||
+          tagsError ? (
             <div> Uh Oh! Something went wrong!</div>
           ) : categoriesLoading ||
             neighborhoodsLoading ||
-            stakeholdersLoading ? (
+            stakeholdersLoading ||
+            tagsLoading ? (
             <div
               style={{
                 height: "200",
@@ -398,13 +409,13 @@ function VerificationAdmin(props) {
           onClose={handleNeedsVerificationDialogClose}
         />
         <>
-          {categoriesError || stakeholdersError ? (
+          {categoriesError || stakeholdersError || tagsError ? (
             <div className={classes.bigMessage}>
               <Typography variant="h5" component="h5" style={{ color: "red" }}>
                 Uh Oh! Something went wrong!
               </Typography>
             </div>
-          ) : categoriesLoading || stakeholdersLoading ? (
+          ) : categoriesLoading || stakeholdersLoading | tagsLoading ? (
             <div
               style={{
                 flexGrow: 1,

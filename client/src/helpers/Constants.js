@@ -14,6 +14,10 @@ export const TENANT_CONFIG = {
       center: { latitude: 34.0354899, longitude: -118.2439235 },
       zoom: 11,
     },
+    maintainer: {
+      name: "Hack for LA",
+      website: "https://www.hackforla.org/",
+    },
   },
   2: {
     tenantName: "California",
@@ -21,6 +25,10 @@ export const TENANT_CONFIG = {
     defaultViewport: {
       center: { latitude: 37.96, longitude: -118.87 },
       zoom: 4.5,
+    },
+    maintainer: {
+      name: "Hack for LA",
+      website: "https://www.hackforla.org/",
     },
   },
   3: {
@@ -30,6 +38,10 @@ export const TENANT_CONFIG = {
       center: { latitude: 21.4601548, longitude: -157.99 },
       zoom: 9.5,
     },
+    maintainer: {
+      name: "Code for Hawaii",
+      website: "https://www.codeforhawaii.org/",
+    },
   },
   4: {
     tenantName: "Oregon",
@@ -37,6 +49,10 @@ export const TENANT_CONFIG = {
     defaultViewport: {
       center: { latitude: 45.52445, longitude: -122.65066 },
       zoom: 8,
+    },
+    maintainer: {
+      name: "",
+      website: "",
     },
   },
   5: {
@@ -46,6 +62,10 @@ export const TENANT_CONFIG = {
       center: { latitude: 33.216239, longitude: -96.65014 },
       zoom: 10.5,
     },
+    maintainer: {
+      name: "",
+      website: "",
+    },
   },
   6: {
     tenantName: "Santa Barbara",
@@ -54,6 +74,10 @@ export const TENANT_CONFIG = {
       center: { latitude: 34.68758, longitude: -120.157 },
       zoom: 8.75,
     },
+    maintainer: {
+      name: "",
+      website: "",
+    },
   },
   default: {
     tenantName: "Los Angeles",
@@ -61,6 +85,10 @@ export const TENANT_CONFIG = {
     defaultViewport: {
       center: { latitude: 34.0354899, longitude: -118.2439235 },
       zoom: 11,
+    },
+    maintainer: {
+      name: "",
+      website: "",
     },
   },
 };

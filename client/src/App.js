@@ -198,7 +198,10 @@ function App() {
                         userCoordinates={userCoordinates}
                         taglineText={tenantDetails.taglineText}
                       />
-                      <WidgetFooter tenantId={tenantId} />
+                      <WidgetFooter
+                        tenantId={tenantId}
+                        tenantDetails={tenantDetails}
+                      />
                     </>
                   </Route>
                   <Route path="/organizations">

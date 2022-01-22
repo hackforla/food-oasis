@@ -64,6 +64,7 @@ import adminTheme from "./theme/adminTheme";
 import * as analytics from "../src/services/analytics";
 import Suggestions from "components/Admin/Suggestions";
 import Logins from "components/Admin/Logins";
+import PrivateRoute from "./PrivateRoute";
 
 const useStyles = makeStyles({
   app: () => ({
@@ -260,13 +261,16 @@ function App() {
                       <Logins />
                     </div>
                   </Route>
-                  <Route path="/securityadmindashboard">
+                  <PrivateRoute
+                    path="/securityadmindashboard"
+                    roles={["isGlobalAdmin", "isSecurityAdmin"]}
+                  >
                     <div className={classes.verificationAdminWrapper}>
                       <SecurityAdminDashboard
                         userCoordinates={userCoordinates}
                       />
                     </div>
-                  </Route>
+                  </PrivateRoute>
                   <Route path="/organizationimport">
                     <ImportFile tenantId={tenantId} tenantName={tenantName} />
                   </Route>

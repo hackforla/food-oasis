@@ -1,6 +1,6 @@
 import React from "react";
 import Footer from "../Layout/Footer";
-import { withRouter } from "react-router-dom";
+import { withRouter, useLocation } from "react-router-dom";
 import {
   withStyles,
   Avatar,
@@ -66,6 +66,8 @@ const LoginForm = (props) => {
   const { classes, history, match } = props;
   const { onLogin } = useUserContext();
   const { setToast } = useToasterContext();
+  // state is the previous pathname if the user has been redirected here from a PrivateRoute.
+  const { state } = useLocation();
 
   return (
     <div className={classes.body}>
@@ -97,7 +99,12 @@ const LoginForm = (props) => {
                     setToast({
                       message: "Login successful.",
                     });
-                    if (response.user.isAdmin || response.user.isCoordinator) {
+                    if (state) {
+                      history.push(state.from);
+                    } else if (
+                      response.user.isAdmin ||
+                      response.user.isCoordinator
+                    ) {
                       history.push("/verificationAdmin");
                     } else if (response.user.isSecurityAdmin) {
                       history.push("/securityadmindashboard");

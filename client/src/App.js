@@ -64,7 +64,7 @@ import adminTheme from "./theme/adminTheme";
 import * as analytics from "../src/services/analytics";
 import Suggestions from "components/Admin/Suggestions";
 import Logins from "components/Admin/Logins";
-import PrivateRoute from "./PrivateRoute";
+import PrivateRoute from "./components/PrivateRoute";
 
 const useStyles = makeStyles({
   app: () => ({

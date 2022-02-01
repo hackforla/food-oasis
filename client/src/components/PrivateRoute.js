@@ -9,19 +9,34 @@ function PrivateRoute({ path, children, roles }) {
   const location = useLocation();
 
   if (!user || !roles.some((role) => user[role])) {
-    const rolesStr = roles
-      .slice(0, roles.length - 1)
-      .map((role) => role.slice(2));
+    let rolesStr = "";
+    if (roles.length > 1) {
+      rolesStr =
+        " " +
+        roles
+          .slice(0, roles.length - 1)
+          .map((role) => role.slice(2))
+          .join(", ") +
+        " or ";
+    }
+    const message = `Only users with the role(s)${rolesStr} ${roles[
+      roles.length - 1
+    ].slice(2)} can access this page "${location.pathname}". Please
+    log into an account with either of these roles to access this page.`;
 
     setToast({
-      message: `Please login to ${rolesStr} or ${roles[roles.length - 1].slice(
-        2
-      )} roles to access ${location.pathname}`,
+      message: message,
     });
 
     return (
       <Redirect
-        to={{ pathname: "/login", state: { from: location.pathname } }}
+        to={{
+          pathname: "/fallback",
+          state: {
+            from: location.pathname,
+            message: message,
+          },
+        }}
       />
     );
   }

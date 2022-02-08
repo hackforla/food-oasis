@@ -64,6 +64,8 @@ import adminTheme from "./theme/adminTheme";
 import * as analytics from "../src/services/analytics";
 import Suggestions from "components/Admin/Suggestions";
 import Logins from "components/Admin/Logins";
+import PrivateRoute from "./components/PrivateRoute";
+import Fallback from "./components/Fallback";
 
 const useStyles = makeStyles({
   app: () => ({
@@ -233,43 +235,53 @@ function App() {
                       />
                     </div>
                   </Route>
-                  <Route path="/verificationadmin">
+                  <PrivateRoute
+                    path="/verificationadmin"
+                    roles={["isAdmin", "isCoordinator"]}
+                  >
                     <ThemeProvider theme={adminTheme}>
                       <div className={classes.verificationAdminWrapper}>
                         <VerificationAdmin userCoordinates={userCoordinates} />
                       </div>
                     </ThemeProvider>
-                  </Route>
-                  <Route path="/parentorganizations">
+                  </PrivateRoute>
+                  <PrivateRoute path="/parentorganizations" roles={["isAdmin"]}>
                     <div className={classes.organizationEditWrapper}>
                       <ParentOrganizations />
                     </div>
-                  </Route>
-                  <Route path="/tags">
+                  </PrivateRoute>
+                  <PrivateRoute path="/tags" roles={["isAdmin"]}>
                     <div className={classes.organizationEditWrapper}>
                       <TagAdmin />
                     </div>
-                  </Route>
-                  <Route path="/suggestions">
+                  </PrivateRoute>
+                  <PrivateRoute path="/suggestions" roles={["isAdmin"]}>
                     <div className={classes.organizationEditWrapper}>
                       <Suggestions />
                     </div>
-                  </Route>
-                  <Route path="/logins">
+                  </PrivateRoute>
+                  <PrivateRoute
+                    path="/logins"
+                    roles={["isAdmin", "isCoordinator"]}
+                  >
+                    {" "}
                     <div className={classes.organizationEditWrapper}>
                       <Logins />
                     </div>
-                  </Route>
-                  <Route path="/securityadmindashboard">
+                  </PrivateRoute>
+                  <PrivateRoute
+                    path="/securityadmindashboard"
+                    roles={["isGlobalAdmin", "isSecurityAdmin"]}
+                  >
                     <div className={classes.verificationAdminWrapper}>
                       <SecurityAdminDashboard
                         userCoordinates={userCoordinates}
                       />
                     </div>
-                  </Route>
-                  <Route path="/organizationimport">
+                  </PrivateRoute>
+                  <PrivateRoute path="/organizationimport" roles={["isAdmin"]}>
                     <ImportFile tenantId={tenantId} tenantName={tenantName} />
-                  </Route>
+                  </PrivateRoute>
                   <Route path="/faqs/add">
                     <FaqAdd />
                   </Route>
@@ -338,6 +350,9 @@ function App() {
                     ) : (
                       <Faq />
                     )}
+                  </Route>
+                  <Route exact path="/fallback">
+                    <Fallback />
                   </Route>
                 </Switch>
                 <Toast />

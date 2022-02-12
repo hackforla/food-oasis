@@ -35,6 +35,8 @@ function selectedOrganizationReducer(state, action) {
       return action.organization;
     case "RESET_SELECTED_ORGANIZATION":
       return null;
+    case "SEARCH_COORDINATES_UPDATED":
+      return null;
     default:
       return state;
   }

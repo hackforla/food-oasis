@@ -14,7 +14,7 @@ import CategoryButton from "./CategoryButton";
 import * as analytics from "services/analytics";
 import { Button } from "../../../../components/UI";
 import { tenantDetails } from "../../../../helpers/Configuration";
-import useGeolocation from "hooks/useGeolocation";
+import useGeolocation, { useLocationPermission } from "hooks/useGeolocation";
 
 const useStyles = makeStyles((theme) => ({
   select: {
@@ -130,8 +130,15 @@ const ResultsFilters = ({
   const isMealsSelected = categoryIds.indexOf(MEAL_PROGRAM_CATEGORY_ID) >= 0;
   const isPantrySelected = categoryIds.indexOf(FOOD_PANTRY_CATEGORY_ID) >= 0;
   const { taglineText } = tenantDetails;
-  const recenterMap = useGeolocation();
-  const [isGeoLocationLoading, setIsGeoLocationLoading] = React.useState(false);
+  const { getUserLocation, isLoading: isGettingLocation } = useGeolocation();
+  const locationPermission = useLocationPermission();
+  const [error, setError] = React.useState("");
+
+  React.useEffect(() => {
+    if (error && locationPermission === "granted") {
+      setError("");
+    }
+  }, [error, locationPermission]);
 
   const toggleMeal = useCallback(() => {
     toggleCategory(MEAL_PROGRAM_CATEGORY_ID);
@@ -203,19 +210,25 @@ const ResultsFilters = ({
         <Grid item xs={12} sm={6} className={classes.inputContainer}>
           <div className={classes.form}>
             <SearchBar />
-            <Tooltip title="Re-center">
+            <Tooltip
+              title={
+                locationPermission === "denied" || !!error
+                  ? "Please allow location access"
+                  : "Re-center"
+              }
+            >
               <span>
                 <Button
                   onClick={() => {
                     analytics.postEvent("recenterMap", {});
-                    setIsGeoLocationLoading(true);
-                    recenterMap(() => setIsGeoLocationLoading(false));
+                    getUserLocation();
                   }}
+                  disabled={locationPermission === "denied" || !!error}
                   className={classes.nearbySearch}
                   icon="locationSearching"
                   iconPosition="start"
-                  isLoading={isGeoLocationLoading}
-                ></Button>
+                  isLoading={isGettingLocation}
+                />
               </span>
             </Tooltip>
           </div>

@@ -37,6 +37,8 @@ function selectedOrganizationReducer(state, action) {
       return null;
     case "SEARCH_COORDINATES_UPDATED":
       return null;
+    case "USER_COORDINATES_UPDATED":
+      return null;
     default:
       return state;
   }

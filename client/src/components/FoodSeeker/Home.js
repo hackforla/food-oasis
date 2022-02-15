@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useHistory } from "react-router";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Typography from "@material-ui/core/Typography";
+import { Typography, Tooltip } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
@@ -11,11 +11,11 @@ import { Link as RouterLink } from "react-router-dom";
 import SearchBar from "components/FoodSeeker/SearchBar";
 import { Button } from "../../components/UI";
 import { RotateLoader } from "react-spinners";
-import { useAppDispatch } from "../../appReducer";
 // All the tenant logos happen to be the same for now
 import logo from "images/foodoasis.svg";
 import * as analytics from "services/analytics";
 import { useSiteContext } from "../../contexts/siteContext";
+import useGeolocation, { useLocationPermission } from "hooks/useGeolocation";
 
 const logoPaths = {
   1: require("images/foodoasis.svg"),
@@ -156,11 +156,18 @@ const Home = () => {
   const history = useHistory();
   const { tenantId, tenantDetails } = useSiteContext();
   const { taglineText } = tenantDetails;
-  const [isLoading, setIsLoading] = React.useState(false);
-  const dispatch = useAppDispatch();
   const [bgImg, setBgImg] = React.useState(`url("/landing-page/bg-LA.jpeg")`);
+  const { getUserLocation, isLoading: isGettingLocation } = useGeolocation();
+  const [error, setError] = React.useState("");
+  const locationPermission = useLocationPermission();
 
-  useEffect(() => {
+  React.useEffect(() => {
+    if (error && locationPermission === "granted") {
+      setError("");
+    }
+  }, [error, locationPermission]);
+
+  React.useEffect(() => {
     switch (tenantId) {
       case 2:
         setBgImg(`url("/landing-page/bg-LA.jpeg")`);
@@ -180,44 +187,18 @@ const Home = () => {
     }
   }, [tenantId]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     analytics.postEvent("visitLandingPage");
   }, []);
 
-  const useMyLocationTrigger = () => {
-    setIsLoading(true);
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          if (position) {
-            dispatch({
-              type: "USER_COORDINATES_UPDATED",
-              coordinates: {
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-              },
-            });
-            selectLocation();
-          }
-        },
-        (error) => {
-          // Ususally because user has blocked location
-          console.error(`Getting browser location failed: ${error.message}`);
-          selectLocation();
-        }
-      );
-    } else {
-      console.error(
-        "Browser does not support getting users location - using default location for area"
-      );
-      selectLocation();
+  const useMyLocationTrigger = async () => {
+    try {
+      await getUserLocation();
+    } catch (e) {
+      console.log({ e });
+      setError(e);
     }
   };
-
-  const selectLocation = React.useCallback(() => {
-    history.push("/organizations");
-    setIsLoading(false);
-  }, [history]);
 
   return (
     <div className={classes.homeWrapper} style={{ backgroundImage: bgImg }}>
@@ -240,21 +221,32 @@ const Home = () => {
               <Box className={classes.inputContainer}>
                 <SearchBar />
               </Box>
+              <Box className={classes.inputContainer}>or</Box>
               <Box className={classes.inputContainer}>
-                <>or</>
-              </Box>
-              <Box className={classes.inputContainer}>
-                {isLoading ? (
+                {isGettingLocation ? (
                   <RotateLoader sizeUnit="px" size={15} color="green" loading />
                 ) : (
-                  <Button
-                    icon="locationOn"
-                    iconPosition="start"
-                    className={classes.locationBtn}
-                    onClick={useMyLocationTrigger}
-                  >
-                    Use my current location
-                  </Button>
+                  <div style={{ textAlign: "center" }}>
+                    <Tooltip
+                      title={
+                        locationPermission === "denied" || !!error
+                          ? "Please allow location access"
+                          : "Use my current location"
+                      }
+                    >
+                      <div>
+                        <Button
+                          icon="locationOn"
+                          iconPosition="start"
+                          className={classes.locationBtn}
+                          onClick={useMyLocationTrigger}
+                          disabled={locationPermission === "denied" || !!error}
+                        >
+                          Use my current location
+                        </Button>
+                      </div>
+                    </Tooltip>
+                  </div>
                 )}
               </Box>
               <Box className={classes.inputContainer}>

@@ -8,11 +8,6 @@ function searchCoordinatesReducer(state, action) {
   switch (action.type) {
     case "SEARCH_COORDINATES_UPDATED":
       return action.coordinates;
-    case "USER_COORDINATES_UPDATED":
-      return action.coordinates;
-    case "SELECTED_ORGANIZATION_UPDATED":
-      const { latitude, longitude } = action.organization;
-      return { latitude, longitude };
     case "RESET_COORDINATES":
       return DEFAULT_COORDINATES;
     default:
@@ -36,8 +31,6 @@ function selectedOrganizationReducer(state, action) {
     case "RESET_SELECTED_ORGANIZATION":
       return null;
     case "SEARCH_COORDINATES_UPDATED":
-      return null;
-    case "USER_COORDINATES_UPDATED":
       return null;
     default:
       return state;

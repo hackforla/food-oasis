@@ -2,7 +2,7 @@ import React from "react";
 import { getTenantId, DEFAULT_VIEWPORTS } from "contexts/siteContext";
 
 const tenantId = getTenantId();
-const DEFAULT_COORDINATES = DEFAULT_VIEWPORTS[tenantId].center;
+export const DEFAULT_COORDINATES = DEFAULT_VIEWPORTS[tenantId].center;
 
 function searchCoordinatesReducer(state, action) {
   switch (action.type) {
@@ -54,7 +54,7 @@ export function appReducer(state, action) {
 
 export function getInitialState() {
   return {
-    searchCoordinates: DEFAULT_COORDINATES,
+    searchCoordinates: null,
     selectedOrganization: null,
     userCoordinates: null,
   };

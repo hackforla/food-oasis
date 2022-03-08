@@ -47,7 +47,7 @@ const cache = new CellMeasurerCache({
   fixedWidth: true,
 });
 
-// const clearCache = () => cache.clearAll();
+const clearCache = () => cache.clearAll();
 
 const ResultsList = ({
   doSelectStakeholder,
@@ -62,14 +62,14 @@ const ResultsList = ({
     analytics.postEvent("showList");
   }, []);
 
-  // useEffect(() => {
-  //   window.addEventListener("resize", clearCache);
-  //   return () => window.removeEventListener("resize", clearCache);
-  // }, []);
+  useEffect(() => {
+    window.addEventListener("resize", clearCache);
+    return () => window.removeEventListener("resize", clearCache);
+  }, []);
 
-  // useEffect(() => {
-  //   clearCache();
-  // }, [stakeholders]);
+  useEffect(() => {
+    clearCache();
+  }, [stakeholders]);
 
   const scrollToIndex = selectedStakeholder
     ? stakeholders.findIndex((s) => s.id === selectedStakeholder.id)

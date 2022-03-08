@@ -54,7 +54,7 @@ export function appReducer(state, action) {
 
 export function getInitialState() {
   return {
-    searchCoordinates: null,
+    searchCoordinates: DEFAULT_COORDINATES,
     selectedOrganization: null,
     userCoordinates: null,
   };

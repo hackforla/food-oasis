@@ -1,6 +1,7 @@
 const router = require("express").Router();
-const categoryController = require("../controllers/neighborhood-controller");
+const neighborhoodController = require("../controllers/neighborhood-controller");
 
-router.get("/", categoryController.getAll);
+router.get("/", neighborhoodController.getAll);
+router.get("/:id", neighborhoodController.getGeoJSONById);
 
 module.exports = router;

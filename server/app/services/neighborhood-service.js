@@ -2,14 +2,37 @@ const db = require("./db");
 const camelcaseKeys = require("camelcase-keys");
 
 const selectAll = async () => {
+  // const sql = `
+  //   select id, name, website, empower_link, nc_id,
+  //     certified, service_region, geometry
+  //   from neighborhood
+  //   order by name
+  // `;
   const sql = `
-    select id, name, website, empower_link, nc_id,
-      certified, service_region, geometry
+    select id, name
     from neighborhood
     order by name
   `;
   const result = await db.manyOrNone(sql);
   return result.map((r) => camelcaseKeys(r));
+};
+
+const selectGeoJSONById = async (id) => {
+  const sql = `
+  SELECT id, name, certified, service_region, 
+   ST_X(ST_Centroid(geometry)) as centroid_longitude, 
+   ST_Y(ST_Centroid(geometry)) as centroid_latitude,
+   jsonb_build_object(
+    'type',       'Feature',
+    'id',         id,
+    'name', name,
+    'geometry', ST_AsGeoJSON(geometry)::jsonb
+  ) as geojson
+  FROM neighborhood WHERE id = $<id>
+  `;
+
+  const result = await db.one(sql, { id });
+  return camelcaseKeys(result);
 };
 
 // findNeighborhood: use the postgis postgres extension to find
@@ -56,6 +79,7 @@ const assignNeighborhood = async (
 
 module.exports = {
   selectAll,
+  selectGeoJSONById,
   findNeighborhood,
   assignNeighborhood,
 };

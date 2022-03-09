@@ -1,8 +1,10 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import useOrganizationBests from "hooks/useOrganizationBests";
 import useCategoryIds from "hooks/useCategoryIds";
 import useSelectedStakeholder from "hooks/useSelectedStakeholder";
 import useBreakpoints from "hooks/useBreakpoints";
+import useNeighborhoodsGeoJSON from "hooks/useNeighborhoodsGeoJSON";
 import { getMapBounds } from "helpers";
 import { defaultViewport } from "helpers/Configuration";
 import { Mobile, Tablet, Desktop } from "./layouts";
@@ -24,6 +26,8 @@ const ResultsContainer = ({
   const { data: stakeholders, search, loading } = useOrganizationBests();
   const { categoryIds, toggleCategory } = useCategoryIds([]);
   const { selectedStakeholder, doSelectStakeholder } = useSelectedStakeholder();
+  const { getGeoJSONById } = useNeighborhoodsGeoJSON();
+  const [neighborhood, setNeighborhood] = useState(null);
   const [isVerifiedSelected, selectVerified] = useState(false);
   const [showList, setShowList] = useState(true);
   // The following two states are temporarily hard-coded - they eventually should be
@@ -32,7 +36,24 @@ const ResultsContainer = ({
   // to pass  aneightborhoodId or tag parameter to filter the
   // results by neighborhood or tag from an iframe host site.
   const [tag] = useState("");
-  const [neighborhoodId] = useState(null);
+  const location = useLocation();
+  const neighborhoodId = new URLSearchParams(location.search).get(
+    "neighborhood_id"
+  );
+
+  useEffect(() => {
+    async function execute() {
+      if (neighborhoodId) {
+        const n = await getGeoJSONById(neighborhoodId);
+        setNeighborhood(n);
+        setOrigin({
+          latitude: n.centroidLatitude,
+          longitude: n.centroidLongitude,
+        });
+      }
+    }
+    execute();
+  }, [neighborhoodId, getGeoJSONById, setOrigin]);
 
   useEffect(() => {
     const { zoom, dimensions } = mapRef.current.getViewport();
@@ -44,7 +65,7 @@ const ResultsContainer = ({
       categoryIds,
       isInactive: "either",
       verificationStatusId: 0,
-      neighborhoodId: neighborhoodId,
+      neighborhoodId: null,
       tag: tag,
     };
     search(criteria);
@@ -90,6 +111,7 @@ const ResultsContainer = ({
       categoryIds={categoryIds}
       loading={loading}
       searchMapArea={searchMapArea}
+      regionGeoJSON={neighborhood?.geojson}
     />
   );
 

@@ -30,7 +30,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import * as stakeholderService from "services/stakeholder-service";
-import { useCategories } from "hooks/useCategories/useCategories";
+import { useCategories } from "hooks/useCategories";
 import { useTags } from "hooks/useTags";
 import * as geocoder from "services/geocode-tamu-service";
 import OpenTimeForm from "components/Admin/OpenTimeForm";

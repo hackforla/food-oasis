@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
-import * as tenantService from "../../services/tenant-service";
+import * as accountService from "../services/account-service";
 
-export const useTenants = () => {
+export const useAccounts = () => {
   const [state, setState] = useState({
     data: [],
     loading: false,
@@ -12,8 +12,8 @@ export const useTenants = () => {
     const fetchApi = async () => {
       setState({ data: null, loading: true, error: false });
       try {
-        const tenants = await tenantService.getAll();
-        setState({ data: tenants || [], loading: false, error: false });
+        const { data } = await accountService.getAll();
+        setState({ data: data || [], loading: false, error: false });
       } catch (err) {
         setState({ data: [], loading: false, error: true });
         console.error(err);

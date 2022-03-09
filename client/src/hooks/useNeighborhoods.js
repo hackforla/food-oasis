@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import * as neighborhoodService from "../../services/neighborhood-service";
+import * as neighborhoodService from "../services/neighborhood-service";
 
 export const useNeighborhoods = () => {
   const [state, setState] = useState({

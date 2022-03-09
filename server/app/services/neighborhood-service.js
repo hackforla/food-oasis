@@ -17,7 +17,7 @@ const selectAll = async () => {
   return result.map((r) => camelcaseKeys(r));
 };
 
-const selectGeoJSONById = async (id) => {
+const selectGeoJSONById = async (ncid) => {
   const sql = `
   SELECT id, name, certified, service_region, 
    ST_X(ST_Centroid(geometry)) as centroid_longitude, 
@@ -28,10 +28,10 @@ const selectGeoJSONById = async (id) => {
     'name', name,
     'geometry', ST_AsGeoJSON(geometry)::jsonb
   ) as geojson
-  FROM neighborhood WHERE id = $<id>
+  FROM neighborhood WHERE nc_id = $<ncid>
   `;
 
-  const result = await db.one(sql, { id });
+  const result = await db.one(sql, { ncid });
   return camelcaseKeys(result);
 };
 

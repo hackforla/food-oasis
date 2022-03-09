@@ -7,8 +7,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import StakeholderGrid from "./VerificationAdminGrid";
 import { RotateLoader } from "react-spinners";
 import { useOrganizations } from "hooks/useOrganizations";
-import { useCategories } from "hooks/useCategories/useCategories";
-import { useNeighborhoods } from "hooks/useNeighborhoods/useNeighborhoods";
+import { useCategories } from "hooks/useCategories";
+import { useNeighborhoods } from "hooks/useNeighborhoods";
 import { useTags } from "hooks/useTags";
 import {
   needsVerification,

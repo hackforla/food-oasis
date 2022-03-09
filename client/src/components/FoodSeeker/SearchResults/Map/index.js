@@ -6,6 +6,7 @@ import React, {
   forwardRef,
   useImperativeHandle,
 } from "react";
+import PropTypes from "prop-types";
 // Mapbox is tricky, because version 6.* is "incompatible with some Babel transforms
 // because of the way it shares code between the maint thread and Web Worker."
 // See https://docs.mapbox.com/mapbox-gl-js/guides/install/#transpiling for details
@@ -22,6 +23,7 @@ import {
   markersLayerStyles,
   useMarkersGeojson,
 } from "./MarkerHelpers";
+import { regionFillStyle, regionBorderStyle } from "./RegionHelpers";
 import useStyles from "./styles";
 import * as analytics from "services/analytics";
 import { Button } from "../../../../components/UI";
@@ -35,6 +37,7 @@ const ResultsMap = (
     categoryIds,
     loading,
     searchMapArea,
+    regionGeoJSON,
   },
   ref
 ) => {
@@ -139,6 +142,12 @@ const ResultsMap = (
           <Map.Layer {...markersLayerStyles} />
         </Map.Source>
       )}
+      {regionGeoJSON && (
+        <Map.Source id="my-data" type="geojson" data={regionGeoJSON}>
+          <Map.Layer {...regionFillStyle} />
+          <Map.Layer {...regionBorderStyle} />
+        </Map.Source>
+      )}
       <Button
         variant="outlined"
         onClick={searchMapArea}
@@ -153,3 +162,12 @@ const ResultsMap = (
 };
 
 export default forwardRef(ResultsMap);
+
+ResultsMap.propTypes = {
+  ref: PropTypes.any,
+  stakeholders: PropTypes.arrayOf(PropTypes.object),
+  categoryIds: PropTypes.any,
+  loading: PropTypes.bool,
+  searchMapArea: PropTypes.any,
+  regionGeoJSON: PropTypes.object,
+};

@@ -1,7 +1,7 @@
-import React, { useEffect, useCallback } from "react";
-import { withRouter } from "react-router";
+import React from "react";
+import { useHistory } from "react-router";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Typography from "@material-ui/core/Typography";
+import { Typography, Tooltip } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
@@ -10,11 +10,12 @@ import Link from "@material-ui/core/Link";
 import { Link as RouterLink } from "react-router-dom";
 import SearchBar from "components/FoodSeeker/SearchBar";
 import { Button } from "../../components/UI";
-
+import { RotateLoader } from "react-spinners";
 // All the tenant logos happen to be the same for now
 import logo from "images/foodoasis.svg";
-import { defaultViewport } from "helpers/Configuration";
 import * as analytics from "services/analytics";
+import { useSiteContext } from "../../contexts/siteContext";
+import useGeolocation, { useLocationPermission } from "hooks/useGeolocation";
 
 const logoPaths = {
   1: require("images/foodoasis.svg"),
@@ -23,6 +24,16 @@ const logoPaths = {
 };
 
 const useStyles = makeStyles((theme) => ({
+  homeWrapper: {
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundImage: 'url("/landing-page/map.png")', // replaced the background image style inside useStyles instead of inline styling
+    minHeight: "max(100.7vh,20em)",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   container: {
     [theme.breakpoints.down("xs")]: {
       padding: 0,
@@ -140,132 +151,119 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Home = ({
-  origin,
-  setOrigin,
-  userCoordinates,
-  setUserCoordinates,
-  match,
-  history,
-  tenantId,
-  taglineText,
-}) => {
+const Home = () => {
   const classes = useStyles();
+  const history = useHistory();
+  const { tenantId, tenantDetails } = useSiteContext();
+  const { taglineText } = tenantDetails;
+  const [bgImg, setBgImg] = React.useState(`url("/landing-page/bg-LA.jpeg")`);
+  const { getUserLocation, isLoading: isGettingLocation } = useGeolocation();
+  const [error, setError] = React.useState("");
+  const locationPermission = useLocationPermission();
 
-  useEffect(() => {
+  React.useEffect(() => {
+    if (error && locationPermission === "granted") {
+      setError("");
+    }
+  }, [error, locationPermission]);
+
+  React.useEffect(() => {
+    switch (tenantId) {
+      case 2:
+        setBgImg(`url("/landing-page/bg-LA.jpeg")`);
+        break;
+      case 3:
+        setBgImg(`url("/landing-page/bg-HI.jpeg")`);
+        break;
+      case 5:
+        setBgImg(`url("/landing-page/bg-TX.jpeg")`);
+        break;
+      case 6:
+        setBgImg(`url("/landing-page/bg-LA.jpeg")`);
+        break;
+      default:
+        setBgImg(`url("/landing-page/bg-LA.jpeg")`);
+        return;
+    }
+  }, [tenantId]);
+
+  React.useEffect(() => {
     analytics.postEvent("visitLandingPage");
   }, []);
 
-  const useMyLocationTrigger = () => {
-    let originCoordinates = { latitude: null, longitude: null };
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          if (position) {
-            originCoordinates = {
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-            };
-            setUserCoordinates(originCoordinates);
-            // setBrowserLocation(true);
-            // setOrigin(userCoordinates);
-            selectLocation(originCoordinates);
-          }
-        },
-        (error) => {
-          // Ususally because user has blocked location
-          console.error(`Getting browser location failed: ${error.message}`);
-          originCoordinates = {
-            latitude: defaultViewport.center.latitude,
-            longitude: defaultViewport.center.longitude,
-          };
-          setUserCoordinates(null);
-          // setBrowserLocation(false);
-          selectLocation(originCoordinates);
-        }
-      );
-    } else {
-      console.error(
-        "Browser does not support getting users location - using default location for area"
-      );
-      originCoordinates = {
-        latitude: defaultViewport.center.latitude,
-        longitude: defaultViewport.center.longitude,
-      };
-      setUserCoordinates(null);
-      // setBrowserLocation(false);
-      selectLocation(originCoordinates);
+  const useMyLocationTrigger = async () => {
+    try {
+      await getUserLocation();
+    } catch (e) {
+      console.log({ e });
+      setError(e);
     }
-    return originCoordinates;
   };
 
-  const selectLocation = useCallback(
-    (origin) => {
-      setOrigin(origin);
-      history.push("/organizations");
-    },
-    [setOrigin, history]
-  );
-
   return (
-    <Container component="main" maxWidth="sm" className={classes.container}>
-      <CssBaseline />
-      <Paper className={classes.paper}>
-        <Box className={classes.logoContainer}>
-          <img
-            src={logoPaths[tenantId] ? logoPaths[tenantId].default : logo}
-            alt="logo"
-            className={classes.logo}
-          />
-        </Box>
-        <Box className={classes.formContainer}>
-          <form
-            className={classes.form}
-            onSubmit={() => history.push("/organizations")}
-          >
-            <Typography>{taglineText}</Typography>
-            <Box className={classes.inputContainer}>
-              <SearchBar
-                userCoordinates={userCoordinates}
-                setOrigin={selectLocation}
-                origin={origin}
-                browserLocation={userCoordinates}
-                showSearchIcon
-              />
-            </Box>
-            <Box className={classes.inputContainer}>
-              <>or</>
-            </Box>
-            <Box className={classes.inputContainer}>
-              {/* <Search
-                userCoordinates={userCoordinates}
-                setOrigin={selectLocation}
-                origin={origin}
-                browserLocation={browserLocation}
-              /> */}
-              <Button
-                icon="locationOn"
-                iconPosition="start"
-                className={classes.locationBtn}
-                onClick={useMyLocationTrigger}
-              >
-                Use my current location
-              </Button>
-            </Box>
-            <Box className={classes.inputContainer}>
-              <Link
-                component={RouterLink}
-                to="/about"
-                className={classes.learnMore}
-              >
-                Learn about this site
-              </Link>
-            </Box>
-          </form>
-        </Box>
-      </Paper>
-    </Container>
+    <div className={classes.homeWrapper} style={{ backgroundImage: bgImg }}>
+      <Container component="main" maxWidth="sm" className={classes.container}>
+        <CssBaseline />
+        <Paper className={classes.paper}>
+          <Box className={classes.logoContainer}>
+            <img
+              src={logoPaths[tenantId] ? logoPaths[tenantId].default : logo}
+              alt="logo"
+              className={classes.logo}
+            />
+          </Box>
+          <Box className={classes.formContainer}>
+            <form
+              className={classes.form}
+              onSubmit={() => history.push("/organizations")}
+            >
+              <Typography>{taglineText}</Typography>
+              <Box className={classes.inputContainer}>
+                <SearchBar />
+              </Box>
+              <Box className={classes.inputContainer}>or</Box>
+              <Box className={classes.inputContainer}>
+                {isGettingLocation ? (
+                  <RotateLoader sizeUnit="px" size={15} color="green" loading />
+                ) : (
+                  <div style={{ textAlign: "center" }}>
+                    <Tooltip
+                      title={
+                        locationPermission === "denied" || !!error
+                          ? "Please allow location access"
+                          : "Use my current location"
+                      }
+                    >
+                      <div>
+                        <Button
+                          icon="locationOn"
+                          iconPosition="start"
+                          className={classes.locationBtn}
+                          onClick={useMyLocationTrigger}
+                          disabled={locationPermission === "denied" || !!error}
+                        >
+                          Use my current location
+                        </Button>
+                      </div>
+                    </Tooltip>
+                  </div>
+                )}
+              </Box>
+              <Box className={classes.inputContainer}>
+                <Link
+                  component={RouterLink}
+                  to="/about"
+                  className={classes.learnMore}
+                >
+                  Learn about this site
+                </Link>
+              </Box>
+            </form>
+          </Box>
+        </Paper>
+      </Container>
+    </div>
   );
 };
 
-export default withRouter(Home);
+export default Home;

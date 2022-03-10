@@ -1,6 +1,6 @@
 const db = require("./db");
 
-/* 
+/*
 
 This service is for getting data from the stakeholder_best table, which
 is what we want for the food seeker UI. It represents the "best" version of
@@ -222,7 +222,7 @@ const selectById = async (id) => {
   const sql = `select
       s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
       s.phone, s.latitude, s.longitude, s.website,  s.notes,
-      s.hours,
+      array_to_json(s.hours) as hours,
       (select array(select row_to_json(category_row)
         from (
           select c.id, c.name, c.display_order

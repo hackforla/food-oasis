@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import * as faqService from "../../services/faq-service";
-import { UserContext } from "../../contexts/user-context";
+import { UserContext } from "../../contexts/userContext";
 import { Button } from "../../components/UI";
 
 import FaqList from "./FaqList";

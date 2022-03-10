@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Route, withRouter } from "react-router-dom";
-import PropTypes from "prop-types";
+import { Route, useHistory } from "react-router-dom";
 import { Typography } from "@material-ui/core";
 import makeStyles from "@material-ui/styles/makeStyles";
 import { uploadCsv, importCsv } from "../../../services/import-service";
@@ -11,8 +10,9 @@ import ImportDialog from "./ImportDialog";
 import { STAKEHOLDER_SCHEMA } from "../../../constants/stakeholder-schema";
 import importValidation from "./importValidation";
 import ProgressBackdrop from "./ProgressBackdrop";
-import { useUserContext } from "../../../contexts/user-context";
-import { useToasterContext } from "../../../contexts/toaster-context";
+import { useUserContext } from "../../../contexts/userContext";
+import { useToasterContext } from "../../../contexts/toasterContext";
+import { useSiteContext } from "../../../contexts/siteContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,8 +39,9 @@ const initialImportData = {
   action: null,
 };
 
-const ImportFile = (props) => {
-  const { history, tenantId, tenantName } = props;
+const ImportFile = () => {
+  const history = useHistory();
+  const { tenantId, tenantName } = useSiteContext();
   const { user } = useUserContext();
   const { setToast } = useToasterContext();
   const [file, setFile] = useState(null);
@@ -223,8 +224,4 @@ const ImportFile = (props) => {
   );
 };
 
-ImportFile.propTypes = {
-  history: PropTypes.object.isRequired,
-};
-
-export default withRouter(ImportFile);
+export default ImportFile;

@@ -14,7 +14,7 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { MENU_ITEMS } from "helpers/Constants";
 import MenuItemLink from "./MenuItemLink";
 import { IconButton } from "../../components/UI";
-import { useUserContext } from "../../contexts/user-context";
+import { useUserContext } from "../../contexts/userContext";
 
 const useStyles = makeStyles((theme) => ({
   list: {

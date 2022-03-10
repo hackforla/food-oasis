@@ -11,7 +11,7 @@ import {
 import * as accountService from "../../services/account-service";
 import EmailOutlinedIcon from "@material-ui/icons/EmailOutlined";
 import { Button, TextField } from "../../components/UI";
-import { useToasterContext } from "../../contexts/toaster-context";
+import { useToasterContext } from "../../contexts/toasterContext";
 
 const styles = (theme) => ({
   "@global": {

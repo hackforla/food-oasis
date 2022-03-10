@@ -1,13 +1,18 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
 import Downshift from "downshift";
 import { MenuItem, Paper, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useMapboxGeocoder } from "hooks/useMapboxGeocoder";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
-import { defaultViewport } from "helpers/Configuration";
 import { TextField } from "../UI";
+import {
+  useSearchCoordinates,
+  useAppDispatch,
+  useUserCoordinates,
+} from "../../appReducer";
+import { useHistory } from "react-router";
+import * as analytics from "services/analytics";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -54,17 +59,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchBar({
-  userCoordinates,
-  setOrigin,
-  origin,
-  showSearchIcon,
-}) {
+export default function SearchBar({ showSearchIcon }) {
   const classes = useStyles();
-  const [selectedPlace, setSelectedPlace] = useState("");
-  const [newInputValue, updateNewInputValue] = useState(origin?.locationName);
-
+  const searchCoordinates = useSearchCoordinates();
+  const [inputVal, setInputVal] = useState(
+    searchCoordinates?.locationName || ""
+  );
   const { mapboxResults, fetchMapboxResults } = useMapboxGeocoder();
+  const dispatch = useAppDispatch();
+  const history = useHistory();
+  const userCoordinates = useUserCoordinates();
 
   // const initialWidth = window.innerWidth > 960 ? true : false;
   // const [isWindow960orLess, switchAddressWidth] = useState(initialWidth);
@@ -80,28 +84,29 @@ export default function SearchBar({
   //   return () => window.removeEventListener("resize", changeAddressWidth);
   // });
 
-  const handleInputChange = (event) => {
-    setSelectedPlace(event.target.value);
-    updateNewInputValue(event.target.value);
-    fetchMapboxResults(event.target.value);
+  const handleInputChange = (delta) => {
+    const safeValue = typeof delta === "string" ? delta : delta.target.value;
+    setInputVal(safeValue);
+    if (safeValue) {
+      handleDownshiftOnChange(safeValue);
+      fetchMapboxResults(safeValue);
+    }
   };
 
   const handleDownshiftOnChange = (selectedResult) => {
-    setSelectedPlace(selectedResult);
-
     const result = mapboxResults.find(
       (item) => item.place_name === selectedResult
     );
     if (result) {
-      const [long, lat] = result.center;
-      const itemCoordinates = {
-        latitude: lat,
-        longitude: long,
-      };
-      setOrigin({
-        ...itemCoordinates,
-        locationName: result.place_name,
+      const [longitude, latitude] = result.center;
+
+      dispatch({
+        type: "SEARCH_COORDINATES_UPDATED",
+        coordinates: { latitude, longitude, locationName: result.place_name },
       });
+      history.push("/organizations");
+
+      analytics.postEvent("changeOrigin", {});
     }
   };
 
@@ -117,22 +122,16 @@ export default function SearchBar({
           size="small"
           autoFocus={false}
           InputProps={{
-            endAdornment: showSearchIcon ? (
+            endAdornment: (
               <InputAdornment
                 position="end"
                 onClick={() => {
-                  const defaultCoordinates = {
-                    latitude: defaultViewport.center.latitude,
-                    longitude: defaultViewport.center.longitude,
-                  };
-                  setOrigin(defaultCoordinates);
+                  history.push("/organizations");
                 }}
                 className={classes.searchIconCont}
               >
                 <SearchIcon />
               </InputAdornment>
-            ) : (
-              <div />
             ),
             classes: {
               input: classes.input,
@@ -206,7 +205,7 @@ export default function SearchBar({
   return (
     <>
       <Downshift
-        onChange={handleDownshiftOnChange}
+        onChange={(value) => handleInputChange(value)}
         itemToString={(item) => (item ? item.place_name : "")}
       >
         {({
@@ -224,15 +223,11 @@ export default function SearchBar({
               InputProps: {
                 ...getInputProps({
                   onClick: () => {
-                    setSelectedPlace("");
-                    updateNewInputValue("");
+                    handleInputChange("");
                     toggleMenu();
                   },
                   onChange: handleInputChange,
-                  value:
-                    newInputValue && !selectedPlace
-                      ? newInputValue
-                      : inputValue || selectedPlace,
+                  value: inputVal,
                 }),
               },
             })}
@@ -254,16 +249,3 @@ export default function SearchBar({
     </>
   );
 }
-
-SearchBar.propTypes = {
-  userCoordinates: PropTypes.shape({
-    latitude: PropTypes.number,
-    longitude: PropTypes.number,
-  }),
-  setOrigin: PropTypes.func,
-  showSearchIcon: PropTypes.bool,
-};
-
-SearchBar.defaultProps = {
-  showSearchIcon: false,
-};

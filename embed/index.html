@@ -1,0 +1,67 @@
+<html>
+  <body
+    style="margin: 1em; background-color: lightblue; font-family: sans-serif"
+  >
+    <h1>HTML Page Hosting Food Oasis</h1>
+
+    <div style="display: flex; flex-direction: row">
+      <label for"tenant">Region:</label>
+      <select name="tenant" id="tenant">
+        <option value="la">Los Angeles</option>
+        <option value="hi">Hawaii</option>
+        <option value="mckinney">McKinney, TX</option>
+        <option value="sb">Santa Barbara</option>
+      </select>
+      <label for="environment">Environment</label>
+      <select name="environment" id="environment">
+        <option value="dev">Development</option>
+        <option value="local">Localhost</option>
+        <option value="">Production</option>
+      </select>
+      <label for="neighborhood">Neighborhood</label>
+      <select name="neighborhood" id="neighborhood">
+        <option value="">(None)</option>
+        <option value="52">Downtown</option>
+        <option value="71">LAX</option>
+        <option value="36">Los Feliz</option>
+        <option value="63">Pacoima</option>
+        <option value="96">San Pedro</option>
+        <option value="78">South Los Angeles</option>
+        <option value="93">Wilmington</option>
+      </select>
+      <input type="button" id="btn" value="Apply"/>
+    </div>
+    <div id="showUrl"></div>
+    <div style="height: 80vh">
+      <iframe id="hostIframe"
+        src="http://devla.foodoasis.net/widget"
+        width="100%"
+        height="100%"
+        style="margin: 0; border: 2px solid #336699; box-sizing: border-box"
+      >
+        >
+      </iframe>
+    </div>
+    <script>
+      const tenant = document.querySelector("#tenant");
+      const environment = document.querySelector("#environment");
+      const neighborhoodId = document.querySelector("#neighborhood");
+      const hostIframe = document.querySelector("#hostIframe")
+      const btn = document.querySelector("#btn");
+      const showUrl = document.querySelector("#showUrl");
+
+      function buildURL(){
+        let url =  environment.value === 'local' ? `http://localhost:3000/widget`
+        : `https://${environment.value}${tenant.value}.foodoasis.net/widget`
+        if(neighborhoodId.value){
+          url += `?neighborhood_id=${neighborhoodId.value}`;
+        }
+        hostIframe.src = url;
+        showUrl.textContent = url;
+      }
+
+      btn.addEventListener('click', buildURL);
+
+    </script>
+  </body>
+</html>

@@ -48,16 +48,21 @@ const ResultsContainer = () => {
       if (neighborhoodId) {
         try {
           const neighborhood = await getGeoJSONById(neighborhoodId);
+          const centroid = {
+            latitude: neighborhood.centroidLatitude,
+            longitude: neighborhood.centroidLongitude,
+          };
           dispatch({
             type: "NEIGHBORHOOD_UPDATED",
             neighborhood,
           });
           dispatch({
             type: "DEFAULT_COORDINATES_UPDATED",
-            coordinates: {
-              latitude: neighborhood.centroidLatitude,
-              longitude: neighborhood.centroidLongitude,
-            },
+            coordinates: centroid,
+          });
+          dispatch({
+            type: "SEARCH_COORDINATES_UPDATED",
+            coordinates: centroid,
           });
         } catch (err) {
           console.error(err);

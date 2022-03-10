@@ -1,7 +1,7 @@
 import { Route, Redirect } from "react-router-dom";
-import { useUserContext } from "../contexts/user-context";
+import { useUserContext } from "../contexts/userContext";
 import { useLocation } from "react-router-dom";
-import { useToasterContext } from "../contexts/toaster-context";
+import { useToasterContext } from "../contexts/toasterContext";
 
 function PrivateRoute({ path, children, roles }) {
   const { user } = useUserContext();

@@ -10,7 +10,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
 import * as accountService from "../../../services/account-service";
-import { useUserContext } from "../../../contexts/user-context";
+import { useUserContext } from "../../../contexts/userContext";
 
 const useStyles = makeStyles({
   table: {

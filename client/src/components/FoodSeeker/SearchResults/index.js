@@ -1,12 +1,10 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import useOrganizationBests from "hooks/useOrganizationBests";
 import useCategoryIds from "hooks/useCategoryIds";
-import useSelectedStakeholder from "hooks/useSelectedStakeholder";
 import useBreakpoints from "hooks/useBreakpoints";
 import useNeighborhoodsGeoJSON from "hooks/useNeighborhoodsGeoJSON";
 import { getMapBounds } from "helpers";
-import { defaultViewport } from "helpers/Configuration";
 import { Mobile, Tablet, Desktop } from "./layouts";
 import Filters from "./Filters";
 import Map from "./Map";
@@ -14,111 +12,142 @@ import List from "./List";
 import Preview from "./Preview";
 import Details from "./Details";
 import * as analytics from "services/analytics";
+import {
+  useSearchCoordinates,
+  useAppDispatch,
+  useSelectedOrganization,
+} from "../../../appReducer";
 
-const ResultsContainer = ({
-  origin,
-  setOrigin,
-  userCoordinates,
-  taglineText,
-}) => {
+const ResultsContainer = () => {
   const mapRef = useRef(null);
   const { isDesktop, isTablet } = useBreakpoints();
-  const { data: stakeholders, search, loading } = useOrganizationBests();
+  const {
+    data: stakeholders,
+    search,
+    loading,
+    getById,
+  } = useOrganizationBests();
   const { categoryIds, toggleCategory } = useCategoryIds([]);
-  const { selectedStakeholder, doSelectStakeholder } = useSelectedStakeholder();
   const { getGeoJSONById } = useNeighborhoodsGeoJSON();
-  const [neighborhood, setNeighborhood] = useState(null);
-  const [isVerifiedSelected, selectVerified] = useState(false);
   const [showList, setShowList] = useState(true);
-  // The following two states are temporarily hard-coded - they eventually should be
-  // set from query parameters on the url. This allows the url
-  // specified by an iframe (e.g. https://la.foodoasis.net/widget?neighborhoodId=3)
-  // to pass  aneightborhoodId or tag parameter to filter the
-  // results by neighborhood or tag from an iframe host site.
-  const [tag] = useState("");
+  const searchCoordinates = useSearchCoordinates();
+  const dispatch = useAppDispatch();
+  const selectedOrganization = useSelectedOrganization();
+  const history = useHistory();
   const location = useLocation();
+  const stakeholderId = new URLSearchParams(location.search).get("id");
   const neighborhoodId = new URLSearchParams(location.search).get(
     "neighborhood_id"
   );
 
+  // IF neighborhood_id is part of query string, get neighborhood info,
+  // stored neighborhood info in reducer, and start with map centered
+  // on neighborhood centroid coordinates.
   useEffect(() => {
     async function execute() {
       if (neighborhoodId) {
-        const n = await getGeoJSONById(neighborhoodId);
-        setNeighborhood(n);
-        setOrigin({
-          latitude: n.centroidLatitude,
-          longitude: n.centroidLongitude,
-        });
+        try {
+          const neighborhood = await getGeoJSONById(neighborhoodId);
+          dispatch({
+            type: "NEIGHBORHOOD_UPDATED",
+            neighborhood,
+          });
+          dispatch({
+            type: "DEFAULT_COORDINATES_UPDATED",
+            coordinates: {
+              latitude: neighborhood.centroidLatitude,
+              longitude: neighborhood.centroidLongitude,
+            },
+          });
+        } catch (err) {
+          console.error(err);
+        }
       }
     }
     execute();
-  }, [neighborhoodId, getGeoJSONById, setOrigin]);
+  }, [neighborhoodId, getGeoJSONById, dispatch]);
+
+  React.useEffect(() => {
+    async function getOrganization() {
+      if (stakeholderId) {
+        const organization = await getById(stakeholderId);
+
+        dispatch({
+          type: "SELECTED_ORGANIZATION_UPDATED",
+          organization,
+        });
+      }
+    }
+
+    getOrganization();
+  }, [stakeholderId, dispatch, getById]);
+
+  React.useEffect(() => {
+    if (!selectedOrganization) return;
+
+    analytics.postEvent("selectOrganization", {
+      id: selectedOrganization.id,
+      name: selectedOrganization.name,
+    });
+
+    //Update url history
+    const name = selectedOrganization.name.toLowerCase().replaceAll(" ", "_");
+    history.push(
+      `${location.pathname}?id=${selectedOrganization.id}&org=${name}`
+    );
+  }, [selectedOrganization, history, location.pathname]);
 
   useEffect(() => {
     const { zoom, dimensions } = mapRef.current.getViewport();
-
     const criteria = {
-      latitude: origin.latitude,
-      longitude: origin.longitude,
-      bounds: getMapBounds(origin, zoom, dimensions),
+      latitude: searchCoordinates.latitude,
+      longitude: searchCoordinates.longitude,
+      bounds: getMapBounds(searchCoordinates, zoom, dimensions),
       categoryIds,
       isInactive: "either",
       verificationStatusId: 0,
       neighborhoodId: null,
-      tag: tag,
+      tag: null,
     };
     search(criteria);
     analytics.postEvent("searchArea", criteria);
-  }, [origin, categoryIds, search, tag, neighborhoodId]);
+  }, [categoryIds, search, searchCoordinates]);
 
   const searchMapArea = useCallback(() => {
     const { center } = mapRef.current.getViewport();
-    setOrigin(center);
-  }, [setOrigin]);
+    dispatch({ type: "SEARCH_COORDINATES_UPDATED", coordinates: center });
+  }, [dispatch]);
 
   const resetOrigin = useCallback(() => {
-    setOrigin(userCoordinates || defaultViewport.center);
-  }, [setOrigin, userCoordinates]);
+    dispatch({ type: "RESET_COORDINATES" });
+  }, [dispatch]);
 
   const toggleShowList = useCallback(() => {
-    doSelectStakeholder(null);
+    dispatch({ type: "RESET_SELECTED_ORGANIZATION" });
     setShowList((showList) => !showList);
-  }, [doSelectStakeholder]);
+  }, [dispatch]);
 
   const filters = (
     <Filters
-      origin={origin}
-      setOrigin={setOrigin}
-      toggleCategory={toggleCategory}
       categoryIds={categoryIds}
-      isVerifiedSelected={isVerifiedSelected}
-      selectVerified={selectVerified}
-      userCoordinates={userCoordinates}
+      toggleCategory={toggleCategory}
       showList={showList}
       toggleShowList={toggleShowList}
-      taglineText={taglineText}
     />
   );
 
   const map = (
     <Map
       ref={mapRef}
-      center={origin}
       stakeholders={stakeholders}
-      doSelectStakeholder={doSelectStakeholder}
-      selectedStakeholder={selectedStakeholder}
       categoryIds={categoryIds}
       loading={loading}
       searchMapArea={searchMapArea}
-      regionGeoJSON={neighborhood?.geojson}
     />
   );
 
   const list = (
     <List
-      selectedStakeholder={selectedStakeholder}
-      doSelectStakeholder={doSelectStakeholder}
       stakeholders={stakeholders || []}
       loading={loading}
       handleReset={resetOrigin}
@@ -134,22 +163,8 @@ const ResultsContainer = ({
       filters={filters}
       map={map}
       list={showList && list}
-      preview={
-        selectedStakeholder && (
-          <Preview
-            doSelectStakeholder={doSelectStakeholder}
-            stakeholder={selectedStakeholder}
-          />
-        )
-      }
-      details={
-        selectedStakeholder && (
-          <Details
-            selectedStakeholder={selectedStakeholder}
-            onClose={doSelectStakeholder.bind(null, null)}
-          />
-        )
-      }
+      preview={selectedOrganization && <Preview />}
+      details={selectedOrganization && <Details />}
     />
   );
 };

@@ -37,7 +37,7 @@ import PhoneIphoneIcon from "@material-ui/icons/PhoneIphone";
 import HomeIcon from "@material-ui/icons/Home";
 import LocationCityIcon from "@material-ui/icons/LocationCity";
 import PhoneIcon from "@material-ui/icons/Phone";
-import { getIsMobile } from "../../hooks/utils";
+import { getIsMobile } from "../../utils";
 
 const columns = [
   { id: "name", label: "Name", minWidth: 100 },

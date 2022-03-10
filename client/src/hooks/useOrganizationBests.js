@@ -105,13 +105,13 @@ export default function useOrganizationBests() {
       return Promise.reject(msg);
     }
     try {
-      setState({ data: null, loading: true, error: false });
+      setState((prev) => ({ ...prev, loading: true, error: false }));
 
       const stakeholder = await stakeholderService.getById(id);
-      setState({ loading: false, error: false });
+      setState((prev) => ({ ...prev, loading: false }));
       return stakeholder;
     } catch (err) {
-      setState({ loading: false, error: true });
+      setState(prev => ({ ...prev, loading: false, error: true }));
       console.error(err);
       return Promise.reject(err);
     }

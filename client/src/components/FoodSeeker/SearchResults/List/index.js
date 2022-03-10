@@ -10,6 +10,7 @@ import StakeholderPreview from "../Preview";
 import StakeholderDetails from "../Details";
 import * as analytics from "services/analytics";
 import { Button } from "../../../../components/UI";
+import { useSelectedOrganization } from "../../../../appReducer";
 
 const useStyles = makeStyles((theme) => ({
   listContainer: {
@@ -49,14 +50,9 @@ const cache = new CellMeasurerCache({
 
 const clearCache = () => cache.clearAll();
 
-const ResultsList = ({
-  doSelectStakeholder,
-  selectedStakeholder,
-  stakeholders,
-  loading,
-  handleReset,
-}) => {
+const ResultsList = ({ stakeholders, loading, handleReset }) => {
   const classes = useStyles();
+  const selectedOrganization = useSelectedOrganization();
 
   useEffect(() => {
     analytics.postEvent("showList");
@@ -71,8 +67,8 @@ const ResultsList = ({
     clearCache();
   }, [stakeholders]);
 
-  const scrollToIndex = selectedStakeholder
-    ? stakeholders.findIndex((s) => s.id === selectedStakeholder.id)
+  const scrollToIndex = selectedOrganization
+    ? stakeholders.findIndex((s) => s.id === selectedOrganization.id)
     : 0;
 
   const rowRenderer = useCallback(
@@ -86,15 +82,12 @@ const ResultsList = ({
       >
         {({ registerChild }) => (
           <div ref={registerChild} style={style} className={classes.preview}>
-            <StakeholderPreview
-              stakeholder={stakeholders[index]}
-              doSelectStakeholder={doSelectStakeholder}
-            />
+            <StakeholderPreview stakeholder={stakeholders[index]} />
           </div>
         )}
       </CellMeasurer>
     ),
-    [stakeholders, doSelectStakeholder, classes.preview]
+    [stakeholders, classes.preview]
   );
 
   return (
@@ -112,11 +105,10 @@ const ResultsList = ({
           </Button>
         </div>
       )}
-      {stakeholders && selectedStakeholder && !selectedStakeholder.inactive ? (
-        <StakeholderDetails
-          selectedStakeholder={selectedStakeholder}
-          onClose={doSelectStakeholder.bind(null, null)}
-        />
+      {stakeholders &&
+      selectedOrganization &&
+      !selectedOrganization.inactive ? (
+        <StakeholderDetails />
       ) : (
         <div className={classes.list}>
           <AutoSizer>
@@ -139,9 +131,7 @@ const ResultsList = ({
 };
 
 ResultsList.propTypes = {
-  selectedStakeholder: PropTypes.object,
   stakeholders: PropTypes.arrayOf(PropTypes.object),
-  doSelectStakeholder: PropTypes.func,
   status: PropTypes.string,
   handleReset: PropTypes.func,
 };

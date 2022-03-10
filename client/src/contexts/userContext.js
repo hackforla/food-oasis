@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import * as analytics from "../services/analytics";
 import { logout } from "../services/account-service";
 import PropTypes from "prop-types";
-import { useToasterContext } from "../contexts/toaster-context";
+import { useToasterContext } from "./toasterContext";
 
 export const UserContext = React.createContext(null);
 

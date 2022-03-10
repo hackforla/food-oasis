@@ -13,10 +13,14 @@ import {
 } from "constants/stakeholder";
 import { ORGANIZATION_COLORS, CLOSED_COLOR } from "constants/map";
 import { extractNumbers, getGoogleMapsDirectionsUrl } from "helpers";
-
-import { OriginCoordinatesContext } from "contexts/origin-coordinates-context";
 import SuggestionDialog from "./SuggestionDialog";
 import * as analytics from "services/analytics";
+import {
+  useSelectedOrganization,
+  useAppDispatch,
+  useSearchCoordinates,
+  useUserCoordinates,
+} from "../../../../appReducer";
 
 const useStyles = makeStyles((theme) => ({
   stakeholder: {
@@ -134,18 +138,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const StakeholderDetails = ({ selectedStakeholder, onClose }) => {
+const StakeholderDetails = () => {
   const classes = useStyles();
   const [SuggestionDialogOpen, setSuggestionDialogOpen] = useState(false);
+  const selectedOrganization = useSelectedOrganization();
+  const dispatch = useAppDispatch();
+  const searchCoordinates = useSearchCoordinates();
+  const userCoordinates = useUserCoordinates();
+  const originCoordinates = searchCoordinates || userCoordinates;
 
   useEffect(() => {
-    if (selectedStakeholder?.id) {
+    if (selectedOrganization?.id) {
       analytics.postEvent("viewDetail", {
-        id: selectedStakeholder.id,
-        name: selectedStakeholder.name,
+        id: selectedOrganization.id,
+        name: selectedOrganization.name,
       });
     }
-  }, [selectedStakeholder?.id, selectedStakeholder?.name]);
+  }, [selectedOrganization?.id, selectedOrganization?.name]);
 
   const handleSuggestionDialogOpen = async () => {
     setSuggestionDialogOpen(true);
@@ -153,6 +162,10 @@ const StakeholderDetails = ({ selectedStakeholder, onClose }) => {
 
   const handleSuggestionDialogClose = async () => {
     setSuggestionDialogOpen(false);
+  };
+
+  const handleBackButtonClick = () => {
+    dispatch({ type: "RESET_SELECTED_ORGANIZATION" });
   };
 
   const dayOfWeek = (dayOfWeekString) => {
@@ -200,7 +213,7 @@ const StakeholderDetails = ({ selectedStakeholder, onClose }) => {
     }
   };
 
-  const numbers = extractNumbers(selectedStakeholder.phone).map((n) => {
+  const numbers = extractNumbers(selectedOrganization.phone).map((n) => {
     if (n.number) {
       return (
         <a
@@ -246,7 +259,11 @@ const StakeholderDetails = ({ selectedStakeholder, onClose }) => {
   return (
     <div className={classes.stakeholder}>
       <div className={classes.backButtonWrapper}>
-        <div role="button" className={classes.backButton} onClick={onClose}>
+        <div
+          role="button"
+          className={classes.backButton}
+          onClick={handleBackButtonClick}
+        >
           {" "}
           &lt; Back to List{" "}
         </div>
@@ -256,24 +273,24 @@ const StakeholderDetails = ({ selectedStakeholder, onClose }) => {
         keepMounted
         open={SuggestionDialogOpen}
         onClose={handleSuggestionDialogClose}
-        stakeholder={selectedStakeholder}
+        stakeholder={selectedOrganization}
       />
       <div className={classes.topInfo}>
-        <StakeholderIcon stakeholder={selectedStakeholder} />
+        <StakeholderIcon stakeholder={selectedOrganization} />
         <div className={classes.info}>
-          <span>{selectedStakeholder.name}</span>
-          <span>{selectedStakeholder.address1}</span>
+          <span>{selectedOrganization.name}</span>
+          <span>{selectedOrganization.address1}</span>
           <div>
-            {selectedStakeholder.city} {selectedStakeholder.zip}
+            {selectedOrganization.city} {selectedOrganization.zip}
           </div>
-          {selectedStakeholder.categories.map((category) => (
+          {selectedOrganization.categories.map((category) => (
             <em
               key={category.id}
               style={{
                 alignSelf: "flex-start",
                 color:
-                  selectedStakeholder.inactiveTemporary ||
-                  selectedStakeholder.inactive
+                  selectedOrganization.inactiveTemporary ||
+                  selectedOrganization.inactive
                     ? CLOSED_COLOR
                     : category.id === FOOD_PANTRY_CATEGORY_ID
                     ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
@@ -287,20 +304,20 @@ const StakeholderDetails = ({ selectedStakeholder, onClose }) => {
           ))}
           <div className={classes.label}>
             <em
-              key={selectedStakeholder.id}
+              key={selectedOrganization.id}
               style={{
                 alignSelf: "flex-start",
                 margin: "0 0.25em 0.25em 0",
               }}
             >
-              {selectedStakeholder.foodTypes}
+              {selectedOrganization.foodTypes}
             </em>
           </div>
           <div className={classes.label}>
-            {selectedStakeholder.inactiveTemporary ||
-            selectedStakeholder.inactive ? (
+            {selectedOrganization.inactiveTemporary ||
+            selectedOrganization.inactive ? (
               <em className={classes.closedLabel}>
-                {selectedStakeholder.inactiveTemporary
+                {selectedOrganization.inactiveTemporary
                   ? "Temporarily Closed"
                   : "Closed"}
               </em>
@@ -308,88 +325,84 @@ const StakeholderDetails = ({ selectedStakeholder, onClose }) => {
           </div>
         </div>
         <div className={classes.check}>
-          {selectedStakeholder.distance >= 10
-            ? selectedStakeholder.distance
+          {selectedOrganization.distance >= 10
+            ? selectedOrganization.distance
                 .toString()
                 .substring(0, 3)
                 .padEnd(4, "0")
-            : selectedStakeholder.distance.toString().substring(0, 3)}{" "}
+            : selectedOrganization.distance.toString().substring(0, 3)}{" "}
           mi
           <MapMarker
             category={
-              selectedStakeholder.categories[0].id ===
+              selectedOrganization.categories[0].id ===
                 FOOD_PANTRY_CATEGORY_ID &&
-              selectedStakeholder.categories[1] &&
-              selectedStakeholder.categories[1].id === MEAL_PROGRAM_CATEGORY_ID
+              selectedOrganization.categories[1] &&
+              selectedOrganization.categories[1].id === MEAL_PROGRAM_CATEGORY_ID
                 ? -1
-                : selectedStakeholder.categories[0].id ===
+                : selectedOrganization.categories[0].id ===
                   FOOD_PANTRY_CATEGORY_ID
                 ? 0
                 : 1
             }
             inactive={
-              selectedStakeholder.inactiveTemporary ||
-              selectedStakeholder.inactive
+              selectedOrganization.inactiveTemporary ||
+              selectedOrganization.inactive
                 ? true
                 : false
             }
           />
         </div>
       </div>
-      {selectedStakeholder.verificationStatusId ===
+      {selectedOrganization.verificationStatusId ===
       VERIFICATION_STATUS.VERIFIED ? (
         <p
           style={{
             color:
-              selectedStakeholder.inactiveTemporary ||
-              selectedStakeholder.inactive
+              selectedOrganization.inactiveTemporary ||
+              selectedOrganization.inactive
                 ? CLOSED_COLOR
-                : selectedStakeholder.categories[0].id === 1
+                : selectedOrganization.categories[0].id === 1
                 ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
                 : ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID],
           }}
         >
           Data updated on{" "}
-          {selectedStakeholder.approvedDate
-            ? selectedStakeholder.approvedDate.format("MMM Do, YYYY")
-            : selectedStakeholder.modifiedDate
-            ? selectedStakeholder.modifiedDate.format("MMM Do, YYYY")
-            : selectedStakeholder.createdDate.format("MMM Do, YYYY")}
+          {selectedOrganization.approvedDate
+            ? selectedOrganization.approvedDate.format("MMM Do, YYYY")
+            : selectedOrganization.modifiedDate
+            ? selectedOrganization.modifiedDate.format("MMM Do, YYYY")
+            : selectedOrganization.createdDate.format("MMM Do, YYYY")}
         </p>
       ) : null}
       <div className={classes.buttons}>
-        <OriginCoordinatesContext.Consumer>
-          {(origin) => (
-            <Button
-              variant="outlined"
-              onClick={() => {
-                analytics.postEvent("getDirections", {
-                  id: selectedStakeholder.id,
-                  name: selectedStakeholder.name,
-                });
-                window.open(
-                  getGoogleMapsDirectionsUrl(origin, {
-                    latitude: selectedStakeholder.latitude,
-                    longitude: selectedStakeholder.longitude,
-                  })
-                );
-              }}
-            >
-              Directions
-            </Button>
-          )}
-        </OriginCoordinatesContext.Consumer>
+        <Button
+          variant="outlined"
+          onClick={() => {
+            analytics.postEvent("getDirections", {
+              id: selectedOrganization.id,
+              name: selectedOrganization.name,
+            });
+            window.open(
+              getGoogleMapsDirectionsUrl(originCoordinates, {
+                latitude: selectedOrganization.latitude,
+                longitude: selectedOrganization.longitude,
+              })
+            );
+          }}
+        >
+          Directions
+        </Button>
         <Button variant="outlined" onClick={handleSuggestionDialogOpen}>
           Send Correction
         </Button>
       </div>
 
       <h2 className={classes.title}>Eligibility/Requirements</h2>
-      {selectedStakeholder.requirements ? (
+      {selectedOrganization.requirements ? (
         <span
           className={classes.fontSize}
           dangerouslySetInnerHTML={{
-            __html: formatEmailPhone(selectedStakeholder.requirements),
+            __html: formatEmailPhone(selectedOrganization.requirements),
           }}
         ></span>
       ) : (
@@ -397,24 +410,24 @@ const StakeholderDetails = ({ selectedStakeholder, onClose }) => {
       )}
 
       <h2 className={classes.title}>Hours</h2>
-      {selectedStakeholder.allowWalkins ? (
+      {selectedOrganization.allowWalkins ? (
         <div className={classes.fontSize}>Walk-ins welcome.</div>
       ) : null}
 
-      {selectedStakeholder.hoursNotes ? (
+      {selectedOrganization.hoursNotes ? (
         <div
           className={classes.fontSize}
           dangerouslySetInnerHTML={{
-            __html: formatEmailPhone(selectedStakeholder.hoursNotes),
+            __html: formatEmailPhone(selectedOrganization.hoursNotes),
           }}
         ></div>
       ) : null}
-      {selectedStakeholder.hours ? (
+      {selectedOrganization.hours ? (
         <>
           <div className={classes.hoursContainer}>
-            {selectedStakeholder.hours &&
-            selectedStakeholder.hours.length > 0 ? (
-              selectedStakeholder.hours.sort(hoursSort).map((hour) => (
+            {selectedOrganization.hours &&
+            selectedOrganization.hours.length > 0 ? (
+              selectedOrganization.hours.sort(hoursSort).map((hour) => (
                 <div
                   key={JSON.stringify(hour)}
                   className={classes.singleHourContainer}
@@ -450,8 +463,8 @@ const StakeholderDetails = ({ selectedStakeholder, onClose }) => {
           className={classes.numbers}
           onClick={() => {
             analytics.postEvent("dialPhone", {
-              id: selectedStakeholder.id,
-              name: selectedStakeholder.name,
+              id: selectedOrganization.id,
+              name: selectedOrganization.name,
             });
           }}
         >
@@ -461,21 +474,21 @@ const StakeholderDetails = ({ selectedStakeholder, onClose }) => {
         <span className={classes.fontSize}>No Phone Number on record</span>
       )}
       <h2 className={classes.title}>E-Mail</h2>
-      {selectedStakeholder.email ? (
+      {selectedOrganization.email ? (
         <React.Fragment>
           <a
             className={classes.fontSize}
-            href={"mailto:" + selectedStakeholder.email}
+            href={"mailto:" + selectedOrganization.email}
             onClick={() => {
               analytics.postEvent("sendEmail", {
-                id: selectedStakeholder.id,
-                name: selectedStakeholder.name,
+                id: selectedOrganization.id,
+                name: selectedOrganization.name,
               });
             }}
             target="_blank"
             rel="noopener noreferrer"
           >
-            {selectedStakeholder.email}
+            {selectedOrganization.email}
           </a>
         </React.Fragment>
       ) : (
@@ -483,20 +496,20 @@ const StakeholderDetails = ({ selectedStakeholder, onClose }) => {
       )}
 
       <h2 className={classes.title}>Languages</h2>
-      {selectedStakeholder.languages ? (
+      {selectedOrganization.languages ? (
         <span className={classes.fontSize}>
-          {selectedStakeholder.languages}
+          {selectedOrganization.languages}
         </span>
       ) : (
         <span className={classes.fontSize}>No information on languages.</span>
       )}
 
       <h2 className={classes.title}>Notes</h2>
-      {selectedStakeholder.notes ? (
+      {selectedOrganization.notes ? (
         <span
           className={classes.fontSize}
           dangerouslySetInnerHTML={{
-            __html: formatEmailPhone(selectedStakeholder.notes),
+            __html: formatEmailPhone(selectedOrganization.notes),
           }}
         ></span>
       ) : (
@@ -504,65 +517,65 @@ const StakeholderDetails = ({ selectedStakeholder, onClose }) => {
       )}
 
       <h2 className={classes.title}>Covid Notes</h2>
-      {selectedStakeholder.covidNotes ? (
+      {selectedOrganization.covidNotes ? (
         <span
           className={classes.fontSize}
           dangerouslySetInnerHTML={{
-            __html: formatEmailPhone(selectedStakeholder.covidNotes),
+            __html: formatEmailPhone(selectedOrganization.covidNotes),
           }}
         ></span>
       ) : (
         <span className={classes.fontSize}>No covid notes to display.</span>
       )}
 
-      {selectedStakeholder.website ? (
+      {selectedOrganization.website ? (
         <React.Fragment>
           <h2 className={classes.title}>Website</h2>
           <a
             className={classes.fontSize}
-            href={selectedStakeholder.website}
+            href={selectedOrganization.website}
             target="_blank"
             rel="noopener noreferrer"
           >
-            {selectedStakeholder.website}
+            {selectedOrganization.website}
           </a>
         </React.Fragment>
       ) : null}
 
-      {selectedStakeholder.services ? (
+      {selectedOrganization.services ? (
         <React.Fragment>
           <h2 className={classes.title}>Services</h2>
           <span className={classes.fontSize}>
-            {selectedStakeholder.services}
+            {selectedOrganization.services}
           </span>
         </React.Fragment>
       ) : null}
 
-      {selectedStakeholder.items ? (
+      {selectedOrganization.items ? (
         <React.Fragment>
           <h2 className={classes.title}>Items Available</h2>
-          <span className={classes.fontSize}>{selectedStakeholder.items}</span>
+          <span className={classes.fontSize}>{selectedOrganization.items}</span>
         </React.Fragment>
       ) : null}
 
-      {selectedStakeholder.facebook || selectedStakeholder.instagram ? (
+      {selectedOrganization.facebook || selectedOrganization.instagram ? (
         <React.Fragment>
           <h2 className={classes.title}>Social Media</h2>
           <div className={classes.icon}>
-            {selectedStakeholder.facebook ? (
+            {selectedOrganization.facebook ? (
               <a
                 className={classes.icons}
-                href={selectedStakeholder.facebook}
+                href={selectedOrganization.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <img alt="fb-logo" src={fbIcon} />
               </a>
             ) : null}
-            {selectedStakeholder.instagram ? (
+            {selectedOrganization.instagram ? (
               <a
                 className={classes.icons}
-                href={selectedStakeholder.instagram}
+                href={selectedOrganization.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
               >

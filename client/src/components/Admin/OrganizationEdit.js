@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
-import { useUserContext } from "contexts/user-context";
-import { useToasterContext } from "contexts/toaster-context";
+import { useUserContext } from "contexts/userContext";
+import { useToasterContext } from "contexts/toasterContext";
 import { Formik } from "formik";
 import AccountAutocomplete from "components/Admin/AccountAutocomplete";
 import * as Yup from "yup";

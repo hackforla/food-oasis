@@ -13,6 +13,8 @@ import SwitchViewsButton from "./SwitchViewsButton";
 import CategoryButton from "./CategoryButton";
 import * as analytics from "services/analytics";
 import { Button } from "../../../../components/UI";
+import { tenantDetails } from "../../../../helpers/Configuration";
+import useGeolocation, { useLocationPermission } from "hooks/useGeolocation";
 
 const useStyles = makeStyles((theme) => ({
   select: {
@@ -53,7 +55,6 @@ const useStyles = makeStyles((theme) => ({
     padding: 0,
     cornerRadius: "4px",
     borderRadius: "4px",
-    backgroundColor: "#F0F0F0",
     boxShadow: "none",
     "& .MuiButton-startIcon": {
       margin: 0,
@@ -120,19 +121,24 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ResultsFilters = ({
-  origin,
-  setOrigin,
-  isVerifiedSelected,
-  userCoordinates,
   categoryIds,
   toggleCategory,
   showList,
   toggleShowList,
-  taglineText,
 }) => {
   const classes = useStyles();
   const isMealsSelected = categoryIds.indexOf(MEAL_PROGRAM_CATEGORY_ID) >= 0;
   const isPantrySelected = categoryIds.indexOf(FOOD_PANTRY_CATEGORY_ID) >= 0;
+  const { taglineText } = tenantDetails;
+  const { getUserLocation, isLoading: isGettingLocation } = useGeolocation();
+  const locationPermission = useLocationPermission();
+  const [error, setError] = React.useState("");
+
+  React.useEffect(() => {
+    if (error && locationPermission === "granted") {
+      setError("");
+    }
+  }, [error, locationPermission]);
 
   const toggleMeal = useCallback(() => {
     toggleCategory(MEAL_PROGRAM_CATEGORY_ID);
@@ -203,27 +209,26 @@ const ResultsFilters = ({
         </Grid>
         <Grid item xs={12} sm={6} className={classes.inputContainer}>
           <div className={classes.form}>
-            <SearchBar
-              origin={origin}
-              setOrigin={(origin) => {
-                analytics.postEvent("changeOrigin", {});
-                setOrigin(origin);
-              }}
-              userCoordinates={userCoordinates}
-              showSearchIcon={true}
-            />
-            <Tooltip title="Re-center">
+            <SearchBar />
+            <Tooltip
+              title={
+                locationPermission === "denied" || !!error
+                  ? "Please allow location access"
+                  : "Re-center"
+              }
+            >
               <span>
                 <Button
                   onClick={() => {
                     analytics.postEvent("recenterMap", {});
-                    setOrigin(userCoordinates);
+                    getUserLocation();
                   }}
-                  disabled={!userCoordinates}
+                  disabled={locationPermission === "denied" || !!error}
                   className={classes.nearbySearch}
                   icon="locationSearching"
                   iconPosition="start"
-                ></Button>
+                  isLoading={isGettingLocation}
+                />
               </span>
             </Tooltip>
           </div>
@@ -234,12 +239,11 @@ const ResultsFilters = ({
 };
 
 ResultsFilters.propTypes = {
-  distance: PropTypes.number,
-  placeName: PropTypes.string,
-  isPantryCategorySelected: PropTypes.bool,
-  isMealCategorySelected: PropTypes.bool,
-  isVerifiedFilterSelected: PropTypes.bool,
-  search: PropTypes.func,
+  categoryIds: PropTypes.any,
+  toggleCategory: PropTypes.func,
+  showList: PropTypes.bool,
+  toggleShowList: PropTypes.func,
 };
+
 
 export default ResultsFilters;

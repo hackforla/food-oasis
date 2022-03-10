@@ -10,9 +10,12 @@ import {
 } from "constants/stakeholder";
 import { ORGANIZATION_COLORS, CLOSED_COLOR } from "constants/map";
 import { getGoogleMapsDirectionsUrl, extractNumbers } from "helpers";
-import { OriginCoordinatesContext } from "contexts/origin-coordinates-context";
 import * as analytics from "services/analytics";
-
+import {
+  useAppDispatch,
+  useSearchCoordinates,
+  useUserCoordinates,
+} from "../../../../appReducer";
 import StakeholderIcon from "images/stakeholderIcon";
 
 const useStyles = makeStyles((theme) => ({
@@ -142,8 +145,16 @@ const isAlmostClosed = (hours) => {
   return minutesToClosing <= minutesToCloseFlag;
 };
 
-const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
+const StakeholderPreview = ({ stakeholder }) => {
   const classes = useStyles();
+  const dispatch = useAppDispatch();
+  const searchCoordinates = useSearchCoordinates();
+  const userCoordinates = useUserCoordinates();
+  const originCoordinates = searchCoordinates || userCoordinates;
+
+  const handleSelectOrganization = (organization) => {
+    dispatch({ type: "SELECTED_ORGANIZATION_UPDATED", organization });
+  };
 
   const mainNumber = extractNumbers(stakeholder.phone).find((n) => n.number);
 
@@ -157,7 +168,7 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
     <div
       className={classes.stakeholder}
       key={stakeholder.id}
-      onClick={() => doSelectStakeholder(stakeholder)}
+      onClick={() => handleSelectOrganization(stakeholder)}
     >
       <div className={classes.leftInfo}>
         <StakeholderIcon stakeholder={stakeholder} height="50px" width="50px" />
@@ -228,30 +239,27 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
           ) : null}
         </div>
         <div className={classes.buttons}>
-          <OriginCoordinatesContext.Consumer>
-            {(origin) => (
-              <Button
-                variant="outlined"
-                size="small"
-                className={classes.button}
-                onClick={() => {
-                  analytics.postEvent("getDirections", {
-                    id: stakeholder.id,
-                    name: stakeholder.name,
-                  });
+          <Button
+            variant="outlined"
+            size="small"
+            className={classes.button}
+            onClick={() => {
+              analytics.postEvent("getDirections", {
+                id: stakeholder.id,
+                name: stakeholder.name,
+              });
 
-                  window.open(
-                    getGoogleMapsDirectionsUrl(origin, {
-                      latitude: stakeholder.latitude,
-                      longitude: stakeholder.longitude,
-                    })
-                  );
-                }}
-              >
-                Directions
-              </Button>
-            )}
-          </OriginCoordinatesContext.Consumer>
+              window.open(
+                getGoogleMapsDirectionsUrl(originCoordinates, {
+                  latitude: stakeholder.latitude,
+                  longitude: stakeholder.longitude,
+                })
+              );
+            }}
+          >
+            Directions
+          </Button>
+
           {mainNumber && (
             <Button
               variant="outlined"
@@ -284,7 +292,6 @@ const StakeholderPreview = ({ stakeholder, doSelectStakeholder }) => {
 
 StakeholderPreview.propTypes = {
   stakeholder: PropTypes.object.isRequired,
-  doSelectStakeholder: PropTypes.func.isRequired,
 };
 
 export default StakeholderPreview;

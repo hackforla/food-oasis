@@ -31,6 +31,8 @@ import {
   useSearchCoordinates,
   useAppDispatch,
   useNeighborhood,
+  DEFAULT_COORDINATES,
+  useSelectedOrganization,
 } from "../../../../appReducer";
 
 const ResultsMap = (
@@ -50,9 +52,19 @@ const ResultsMap = (
   const mapRef = useRef();
   const [markersLoaded, setMarkersLoaded] = useState(false);
   const searchCoordinates = useSearchCoordinates();
+  const selectedOrganization = useSelectedOrganization();
+
+  const longitude =
+    searchCoordinates?.longitude ||
+    selectedOrganization?.longitude ||
+    DEFAULT_COORDINATES.longitude;
+  const latitude =
+    searchCoordinates?.latitude ||
+    selectedOrganization?.latitude ||
+    DEFAULT_COORDINATES.latitude;
   const [viewport, setViewport] = useState({
-    latitude: searchCoordinates.latitude,
-    longitude: searchCoordinates.longitude,
+    latitude,
+    longitude,
     zoom: defaultViewport.zoom,
   });
   const dispatch = useAppDispatch();
@@ -66,10 +78,10 @@ const ResultsMap = (
   useEffect(() => {
     setViewport((viewport) => ({
       ...viewport,
-      latitude: searchCoordinates.latitude,
-      longitude: searchCoordinates.longitude,
+      latitude,
+      longitude,
     }));
-  }, [searchCoordinates]);
+  }, [searchCoordinates, longitude, latitude]);
 
   const onLoad = useCallback(async () => {
     const map = mapRef.current.getMap();

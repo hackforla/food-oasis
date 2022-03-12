@@ -80,7 +80,7 @@ export function appReducer(state, action) {
 export function getInitialState() {
   return {
     defaultCoordinates: DEFAULT_COORDINATES,
-    searchCoordinates: DEFAULT_COORDINATES,
+    searchCoordinates: null,
     selectedOrganization: null,
     userCoordinates: null,
     neighborhood: null,

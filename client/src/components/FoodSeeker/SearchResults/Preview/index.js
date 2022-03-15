@@ -1,8 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
+import * as momentTz from "moment-timezone";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "../../../../components/UI";
+import { useSiteContext } from "contexts/siteContext";
 
 import {
   MEAL_PROGRAM_CATEGORY_ID,
@@ -17,6 +19,15 @@ import {
   useUserCoordinates,
 } from "../../../../appReducer";
 import StakeholderIcon from "images/stakeholderIcon";
+
+const TENANT_TIME_ZONES = {
+  1: "America/Los_Angeles",
+  2: "America/Los_Angeles",
+  3: "Pacific/Honolulu",
+  4: "America/Los_Angeles",
+  5: "America/Chicago",
+  6: "America/Los_Angeles",
+};
 
 const useStyles = makeStyles((theme) => ({
   stakeholder: {
@@ -97,10 +108,10 @@ const isLastOccurrenceInMonth = (currentDay) => {
   }
 };
 
-const stakeholdersCurrentDaysHours = (stakeholder) => {
-  const currentDay = moment();
+const stakeholdersCurrentDaysHours = (stakeholder, tenantTimeZone) => {
+  const currentDay = momentTz().tz(tenantTimeZone);
   const currentDayOfWeek = currentDay.format("ddd");
-  const dayOccurrenceInMonth = Math.ceil(currentDay.date() / 7); // In tandum with currentDayOfWeek tells us which week the day falls
+  const dayOccurrenceInMonth = Math.ceil(currentDay.format("DD") / 7); // In tandum with currentDayOfWeek tells us which week the day falls
   const currentTime = currentDay.format("HH:mm:ss");
   const currentDaysHoursOfOperation =
     stakeholder.hours &&
@@ -131,17 +142,17 @@ const stakeholdersCurrentDaysHours = (stakeholder) => {
   }
 };
 
-const calculateMinutesToClosing = (hours) => {
-  const currentTime = moment().format("HH:mm");
+const calculateMinutesToClosing = (hours, tenantTimeZone) => {
+  const currentTime = momentTz().tz(tenantTimeZone).format("HH:mm");
   return moment(hours[0].close, "HH:mm").diff(
     moment(currentTime, "HH:mm"),
     "minutes"
   );
 };
 
-const isAlmostClosed = (hours) => {
+const isAlmostClosed = (hours, tenantTimeZone) => {
   const minutesToCloseFlag = 60;
-  const minutesToClosing = calculateMinutesToClosing(hours);
+  const minutesToClosing = calculateMinutesToClosing(hours, tenantTimeZone);
   return minutesToClosing <= minutesToCloseFlag;
 };
 
@@ -151,6 +162,8 @@ const StakeholderPreview = ({ stakeholder }) => {
   const searchCoordinates = useSearchCoordinates();
   const userCoordinates = useUserCoordinates();
   const originCoordinates = searchCoordinates || userCoordinates;
+  const { tenantId } = useSiteContext();
+  const tenantTimeZone = TENANT_TIME_ZONES[tenantId];
 
   const handleSelectOrganization = (organization) => {
     dispatch({ type: "SELECTED_ORGANIZATION_UPDATED", organization });
@@ -158,11 +171,16 @@ const StakeholderPreview = ({ stakeholder }) => {
 
   const mainNumber = extractNumbers(stakeholder.phone).find((n) => n.number);
 
-  const stakeholderHours = stakeholdersCurrentDaysHours(stakeholder);
+  const stakeholderHours = stakeholdersCurrentDaysHours(
+    stakeholder,
+    tenantTimeZone
+  );
   const isOpenFlag = !!stakeholderHours;
-  const isAlmostClosedFlag = isOpenFlag && isAlmostClosed(stakeholderHours);
+  const isAlmostClosedFlag =
+    isOpenFlag && isAlmostClosed(stakeholderHours, tenantTimeZone);
   const minutesToClosing =
-    isAlmostClosedFlag && calculateMinutesToClosing(stakeholderHours);
+    isAlmostClosedFlag &&
+    calculateMinutesToClosing(stakeholderHours, tenantTimeZone);
 
   return (
     <div

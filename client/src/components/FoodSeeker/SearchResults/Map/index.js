@@ -33,7 +33,9 @@ import {
   useNeighborhood,
   DEFAULT_COORDINATES,
   useSelectedOrganization,
+  useUserCoordinates,
 } from "../../../../appReducer";
+import "mapbox-gl/dist/mapbox-gl.css";
 
 const ResultsMap = (
   {
@@ -62,6 +64,7 @@ const ResultsMap = (
     searchCoordinates?.latitude ||
     selectedOrganization?.latitude ||
     DEFAULT_COORDINATES.latitude;
+  const userCoordinates = useUserCoordinates();
   const [viewport, setViewport] = useState({
     latitude,
     longitude,
@@ -70,6 +73,7 @@ const ResultsMap = (
   const dispatch = useAppDispatch();
   const neighborhood = useNeighborhood();
   const regionGeoJSON = neighborhood?.geojson;
+  const startIconCoordinates = userCoordinates || searchCoordinates;
 
   useEffect(() => {
     analytics.postEvent("showMap");
@@ -151,6 +155,14 @@ const ResultsMap = (
       height="100%"
       className={classes.map}
     >
+      <Map.Marker
+        longitude={startIconCoordinates.longitude}
+        latitude={startIconCoordinates.latitude}
+        offsetTop={-50}
+        offsetLeft={-25}
+      >
+        <StartIcon />
+      </Map.Marker>
       <Map.NavigationControl
         showCompass={false}
         className={classes.navigationControl}
@@ -193,4 +205,22 @@ ResultsMap.propTypes = {
   loading: PropTypes.bool,
   searchMapArea: PropTypes.any,
   regionGeoJSON: PropTypes.object,
+};
+
+const StartIcon = () => {
+  return (
+    <svg
+      viewBox="0 0 90 100"
+      width="54"
+      height="74"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M0 26.648c0 14.717 27 47.189 27 47.189s27-32.472 27-47.19C54 11.932 41.912 0 27 0S0 11.93 0 26.648Z"
+        fill="#F94040"
+      />
+      <ellipse cx="27" cy="26.85" rx="13.5" ry="13.425" fill="#B30D0D" />
+    </svg>
+  );
 };

@@ -16,17 +16,13 @@ import {
   useSearchCoordinates,
   useAppDispatch,
   useSelectedOrganization,
+  DEFAULT_COORDINATES,
 } from "../../../appReducer";
 
 const ResultsContainer = () => {
   const mapRef = useRef(null);
   const { isDesktop, isTablet } = useBreakpoints();
-  const {
-    data: stakeholders,
-    search,
-    loading,
-    getById,
-  } = useOrganizationBests();
+  const { data: stakeholders, search, loading } = useOrganizationBests();
   const { categoryIds, toggleCategory } = useCategoryIds([]);
   const { getGeoJSONById } = useNeighborhoodsGeoJSON();
   const [showList, setShowList] = useState(true);
@@ -35,10 +31,19 @@ const ResultsContainer = () => {
   const selectedOrganization = useSelectedOrganization();
   const history = useHistory();
   const location = useLocation();
-  const stakeholderId = new URLSearchParams(location.search).get("id");
   const neighborhoodId = new URLSearchParams(location.search).get(
     "neighborhood_id"
   );
+  const organizationId = new URLSearchParams(location.search).get("id");
+  let latitude, longitude;
+  if (location.search && !searchCoordinates) {
+    const queryParams = new URLSearchParams(location.search);
+    longitude = Number(queryParams.get("longitude"));
+    latitude = Number(queryParams.get("latitude"));
+  } else {
+    longitude = searchCoordinates?.longitude || DEFAULT_COORDINATES.longitude;
+    latitude = searchCoordinates?.latitude || DEFAULT_COORDINATES.latitude;
+  }
 
   // IF neighborhood_id is part of query string, get neighborhood info,
   // stored neighborhood info in reducer, and start with map centered
@@ -48,21 +53,14 @@ const ResultsContainer = () => {
       if (neighborhoodId) {
         try {
           const neighborhood = await getGeoJSONById(neighborhoodId);
-          const centroid = {
+          const coordinates = {
             latitude: neighborhood.centroidLatitude,
             longitude: neighborhood.centroidLongitude,
           };
           dispatch({
             type: "NEIGHBORHOOD_UPDATED",
             neighborhood,
-          });
-          dispatch({
-            type: "DEFAULT_COORDINATES_UPDATED",
-            coordinates: centroid,
-          });
-          dispatch({
-            type: "SEARCH_COORDINATES_UPDATED",
-            coordinates: centroid,
+            coordinates,
           });
         } catch (err) {
           console.error(err);
@@ -71,21 +69,6 @@ const ResultsContainer = () => {
     }
     execute();
   }, [neighborhoodId, getGeoJSONById, dispatch]);
-
-  React.useEffect(() => {
-    async function getOrganization() {
-      if (stakeholderId) {
-        const organization = await getById(stakeholderId);
-
-        dispatch({
-          type: "SELECTED_ORGANIZATION_UPDATED",
-          organization,
-        });
-      }
-    }
-
-    getOrganization();
-  }, [stakeholderId, dispatch, getById]);
 
   React.useEffect(() => {
     if (!selectedOrganization) return;
@@ -98,16 +81,16 @@ const ResultsContainer = () => {
     //Update url history
     const name = selectedOrganization.name.toLowerCase().replaceAll(" ", "_");
     history.push(
-      `${location.pathname}?id=${selectedOrganization.id}&org=${name}`
+      `${location.pathname}?latitude=${selectedOrganization.latitude}&longitude=${selectedOrganization.longitude}&org=${name}&id=${selectedOrganization.id}`
     );
   }, [selectedOrganization, history, location.pathname]);
 
   useEffect(() => {
     const { zoom, dimensions } = mapRef.current.getViewport();
     const criteria = {
-      latitude: searchCoordinates.latitude,
-      longitude: searchCoordinates.longitude,
-      bounds: getMapBounds(searchCoordinates, zoom, dimensions),
+      latitude,
+      longitude,
+      bounds: getMapBounds({ longitude, latitude }, zoom, dimensions),
       categoryIds,
       isInactive: "either",
       verificationStatusId: 0,
@@ -116,7 +99,16 @@ const ResultsContainer = () => {
     };
     search(criteria);
     analytics.postEvent("searchArea", criteria);
-  }, [categoryIds, search, searchCoordinates]);
+  }, [categoryIds, search, neighborhoodId, longitude, latitude]);
+
+  useEffect(() => {
+    if (!searchCoordinates && stakeholders) {
+      const organization = stakeholders.find(
+        (stakeholder) => stakeholder.id === Number(organizationId)
+      );
+      dispatch({ type: "SELECTED_ORGANIZATION_UPDATED", organization });
+    }
+  }, [stakeholders, searchCoordinates, dispatch, organizationId]);
 
   const searchMapArea = useCallback(() => {
     const { center } = mapRef.current.getViewport();

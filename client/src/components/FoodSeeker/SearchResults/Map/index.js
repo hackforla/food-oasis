@@ -73,7 +73,7 @@ const ResultsMap = (
   const dispatch = useAppDispatch();
   const neighborhood = useNeighborhood();
   const regionGeoJSON = neighborhood?.geojson;
-  const startIconCoordinates = userCoordinates || searchCoordinates;
+  const startIconCoordinates = searchCoordinates || userCoordinates;
 
   useEffect(() => {
     analytics.postEvent("showMap");

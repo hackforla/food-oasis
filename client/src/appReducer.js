@@ -8,6 +8,8 @@ function defaultCoordinatesReducer(state, action) {
   switch (action.type) {
     case "DEFAULT_COORDINATES_UPDATED":
       return action.coordinates;
+    case "NEIGHBORHOOD_UPDATED":
+      return action.coordinates;
     case "DEFAULT_COORDINATES_RESET":
       return DEFAULT_COORDINATES;
     default:
@@ -18,6 +20,10 @@ function defaultCoordinatesReducer(state, action) {
 function searchCoordinatesReducer(state, action) {
   switch (action.type) {
     case "SEARCH_COORDINATES_UPDATED":
+      return action.coordinates;
+    case "USER_COORDINATES_UPDATED":
+      return action.coordinates;
+    case "NEIGHBORHOOD_UPDATED":
       return action.coordinates;
     case "RESET_COORDINATES":
       return DEFAULT_COORDINATES;

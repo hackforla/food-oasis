@@ -75,125 +75,128 @@ const ResultsMap = (
   const regionGeoJSON = neighborhood?.geojson;
   const startIconCoordinates = searchCoordinates || userCoordinates;
 
-  useEffect(() => {
-    analytics.postEvent("showMap");
-  }, []);
+useEffect(() => {
+  analytics.postEvent("showMap");
+}, []);
 
-  useEffect(() => {
-    setViewport((viewport) => ({
-      ...viewport,
-      latitude,
-      longitude,
-    }));
-  }, [searchCoordinates, longitude, latitude]);
+useEffect(() => {
+  setViewport((viewport) => ({
+    ...viewport,
+    latitude,
+    longitude,
+  }));
+}, [searchCoordinates, longitude, latitude]);
 
-  const onLoad = useCallback(async () => {
-    const map = mapRef.current.getMap();
-    await loadMarkerIcons(map);
-    setMarkersLoaded(true);
-  }, []);
+const onLoad = useCallback(async () => {
+  const map = mapRef.current.getMap();
+  await loadMarkerIcons(map);
+  setMarkersLoaded(true);
+}, []);
 
-  const onClick = useCallback(
-    (e) => {
-      if (!e.features || !e.features.length) {
-        dispatch({ type: "RESET_SELECTED_ORGANIZATION" });
-      } else if (stakeholders) {
-        const { id } = e.features[0];
-        const selectedOrganization = stakeholders.find((sh) => sh.id === id);
-        dispatch({
-          type: "SELECTED_ORGANIZATION_UPDATED",
-          organization: selectedOrganization,
-        });
-      }
+const onClick = useCallback(
+  (e) => {
+    if (!e.features || !e.features.length) {
+      dispatch({ type: "RESET_SELECTED_ORGANIZATION" });
+    } else if (stakeholders) {
+      const { id } = e.features[0];
+      const selectedOrganization = stakeholders.find((sh) => sh.id === id);
+      dispatch({
+        type: "SELECTED_ORGANIZATION_UPDATED",
+        organization: selectedOrganization,
+      });
+    }
+  },
+  [stakeholders, dispatch]
+);
+
+const interactiveLayerIds = markersLoaded ? [MARKERS_LAYER_ID] : undefined;
+
+const getCursor = useCallback(({ isHovering, isDragging }) => {
+  return isDragging ? "grabbing" : isHovering ? "pointer" : "grab";
+}, []);
+
+const markersGeojson = useMarkersGeojson({
+  stakeholders,
+  categoryIds,
+});
+
+useImperativeHandle(
+  ref,
+  () => ({
+    getViewport: () => {
+      const map = mapRef.current.getMap();
+
+      const { lat: latitude, lng: longitude } = map.getCenter();
+      const zoom = map.getZoom();
+      const { width, height } = map.getContainer().getBoundingClientRect();
+
+      return {
+        center: { latitude, longitude },
+        zoom,
+        dimensions: { width, height },
+      };
     },
-    [stakeholders, dispatch]
-  );
+  }),
+  []
+);
 
-  const interactiveLayerIds = markersLoaded ? [MARKERS_LAYER_ID] : undefined;
-
-  const getCursor = useCallback(({ isHovering, isDragging }) => {
-    return isDragging ? "grabbing" : isHovering ? "pointer" : "grab";
-  }, []);
-
-  const markersGeojson = useMarkersGeojson({
-    stakeholders,
-    categoryIds,
-  });
-
-  useImperativeHandle(
-    ref,
-    () => ({
-      getViewport: () => {
-        const map = mapRef.current.getMap();
-
-        const { lat: latitude, lng: longitude } = map.getCenter();
-        const zoom = map.getZoom();
-        const { width, height } = map.getContainer().getBoundingClientRect();
-
-        return {
-          center: { latitude, longitude },
-          zoom,
-          dimensions: { width, height },
-        };
-      },
-    }),
-    []
-  );
-
-  return (
-    <ReactMapGL
-      ref={mapRef}
-      mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-      mapStyle={MAPBOX_STYLE}
-      {...viewport}
-      onViewportChange={setViewport}
-      onLoad={onLoad}
-      onClick={onClick}
-      interactiveLayerIds={interactiveLayerIds}
-      getCursor={getCursor}
-      width="100%"
-      height="100%"
-      className={classes.map}
-    >
+return (
+  <ReactMapGL
+    ref={mapRef}
+    mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+    mapStyle={MAPBOX_STYLE}
+    {...viewport}
+    onViewportChange={setViewport}
+    onLoad={onLoad}
+    onClick={onClick}
+    interactiveLayerIds={interactiveLayerIds}
+    getCursor={getCursor}
+    width="100%"
+    height="100%"
+    className={classes.map}
+  >
+    {startIconCoordinates && (
       <Map.Marker
         longitude={startIconCoordinates.longitude}
         latitude={startIconCoordinates.latitude}
         offsetTop={-50}
         offsetLeft={-25}
+        anchor="bottom"
       >
         <StartIcon />
       </Map.Marker>
-      <Map.NavigationControl
-        showCompass={false}
-        className={classes.navigationControl}
-      />
-      <Map.ScaleControl
-        maxWidth={100}
-        unit="imperial"
-        className={classes.scaleControl}
-      />
-      {markersLoaded && (
-        <Map.Source type="geojson" data={markersGeojson}>
-          <Map.Layer {...markersLayerStyles} />
-        </Map.Source>
-      )}
-      {regionGeoJSON && (
-        <Map.Source id="my-data" type="geojson" data={regionGeoJSON}>
-          <Map.Layer {...regionFillStyle} />
-          <Map.Layer {...regionBorderStyle} />
-        </Map.Source>
-      )}
-      <Button
-        variant="outlined"
-        onClick={searchMapArea}
-        size="small"
-        className={classes.searchButton}
-        disabled={loading}
-      >
-        Search this area
-      </Button>
-    </ReactMapGL>
-  );
+    )}
+    <Map.NavigationControl
+      showCompass={false}
+      className={classes.navigationControl}
+    />
+    <Map.ScaleControl
+      maxWidth={100}
+      unit="imperial"
+      className={classes.scaleControl}
+    />
+    {markersLoaded && (
+      <Map.Source type="geojson" data={markersGeojson}>
+        <Map.Layer {...markersLayerStyles} />
+      </Map.Source>
+    )}
+    {regionGeoJSON && (
+      <Map.Source id="my-data" type="geojson" data={regionGeoJSON}>
+        <Map.Layer {...regionFillStyle} />
+        <Map.Layer {...regionBorderStyle} />
+      </Map.Source>
+    )}
+    <Button
+      variant="outlined"
+      onClick={searchMapArea}
+      size="small"
+      className={classes.searchButton}
+      disabled={loading}
+    >
+      Search this area
+    </Button>
+  </ReactMapGL>
+);
 };
 
 export default forwardRef(ResultsMap);

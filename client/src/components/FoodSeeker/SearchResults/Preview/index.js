@@ -84,6 +84,8 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "16px",
   },
   button: {
+    borderColor: theme.palette.primary.translucent,
+    borderWidth: "1px",
     "&:hover": {
       background: theme.palette.primary.main,
     },

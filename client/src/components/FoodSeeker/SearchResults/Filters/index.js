@@ -181,6 +181,14 @@ const ResultsFilters = ({
         >
           <Grid item>
             <CategoryButton
+              icon="pantry"
+              onClick={togglePantry}
+              label="Pantries"
+              isSelected={isPantrySelected}
+            />
+          </Grid>
+          <Grid item>
+            <CategoryButton
               icon="meal"
               onClick={toggleMeal}
               label="Meals"
@@ -188,14 +196,7 @@ const ResultsFilters = ({
               style={{ marginLeft: 5 }}
             />
           </Grid>
-          <Grid item>
-            <CategoryButton
-              icon="pantry"
-              onClick={togglePantry}
-              label="Pantries"
-              isSelected={isPantrySelected}
-            />
-          </Grid>
+
           <Grid item>
             {isMobile && (
               <SwitchViewsButton
@@ -244,6 +245,5 @@ ResultsFilters.propTypes = {
   showList: PropTypes.bool,
   toggleShowList: PropTypes.func,
 };
-
 
 export default ResultsFilters;

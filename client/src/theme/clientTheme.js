@@ -7,11 +7,13 @@ const theme = createTheme({
       light: "#1976d2",
       main: "#336699",
       dark: "#0A3865",
+      translucent: "#33669980",
       contrastText: "#ffffff",
     },
     secondary: {
       // orange
       main: "#f9c058",
+      translucent: "#f9c05880",
       contrastText: "#000000",
     },
     error: {
@@ -21,6 +23,14 @@ const theme = createTheme({
     },
     text: {
       primary: "#313233",
+    },
+    mealProgram: {
+      main: "#E57109",
+      translucent: "#E5710980",
+    },
+    foodPantry: {
+      main: "#336699",
+      translucent: "#33669980",
     },
   },
   typography: {

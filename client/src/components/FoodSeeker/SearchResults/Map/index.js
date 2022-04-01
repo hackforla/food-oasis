@@ -31,7 +31,11 @@ import {
   useSearchCoordinates,
   useAppDispatch,
   useNeighborhood,
+  DEFAULT_COORDINATES,
+  useSelectedOrganization,
+  useUserCoordinates,
 } from "../../../../appReducer";
+import "mapbox-gl/dist/mapbox-gl.css";
 
 const ResultsMap = (
   {
@@ -50,126 +54,149 @@ const ResultsMap = (
   const mapRef = useRef();
   const [markersLoaded, setMarkersLoaded] = useState(false);
   const searchCoordinates = useSearchCoordinates();
+  const selectedOrganization = useSelectedOrganization();
+
+  const longitude =
+    searchCoordinates?.longitude ||
+    selectedOrganization?.longitude ||
+    DEFAULT_COORDINATES.longitude;
+  const latitude =
+    searchCoordinates?.latitude ||
+    selectedOrganization?.latitude ||
+    DEFAULT_COORDINATES.latitude;
+  const userCoordinates = useUserCoordinates();
   const [viewport, setViewport] = useState({
-    latitude: searchCoordinates.latitude,
-    longitude: searchCoordinates.longitude,
+    latitude,
+    longitude,
     zoom: defaultViewport.zoom,
   });
   const dispatch = useAppDispatch();
   const neighborhood = useNeighborhood();
   const regionGeoJSON = neighborhood?.geojson;
+  const startIconCoordinates = searchCoordinates || userCoordinates;
 
-  useEffect(() => {
-    analytics.postEvent("showMap");
-  }, []);
+useEffect(() => {
+  analytics.postEvent("showMap");
+}, []);
 
-  useEffect(() => {
-    setViewport((viewport) => ({
-      ...viewport,
-      latitude: searchCoordinates.latitude,
-      longitude: searchCoordinates.longitude,
-    }));
-  }, [searchCoordinates]);
+useEffect(() => {
+  setViewport((viewport) => ({
+    ...viewport,
+    latitude,
+    longitude,
+  }));
+}, [searchCoordinates, longitude, latitude]);
 
-  const onLoad = useCallback(async () => {
-    const map = mapRef.current.getMap();
-    await loadMarkerIcons(map);
-    setMarkersLoaded(true);
-  }, []);
+const onLoad = useCallback(async () => {
+  const map = mapRef.current.getMap();
+  await loadMarkerIcons(map);
+  setMarkersLoaded(true);
+}, []);
 
-  const onClick = useCallback(
-    (e) => {
-      if (!e.features || !e.features.length) {
-        dispatch({ type: "RESET_SELECTED_ORGANIZATION" });
-      } else if (stakeholders) {
-        const { id } = e.features[0];
-        const selectedOrganization = stakeholders.find((sh) => sh.id === id);
-        dispatch({
-          type: "SELECTED_ORGANIZATION_UPDATED",
-          organization: selectedOrganization,
-        });
-      }
+const onClick = useCallback(
+  (e) => {
+    if (!e.features || !e.features.length) {
+      dispatch({ type: "RESET_SELECTED_ORGANIZATION" });
+    } else if (stakeholders) {
+      const { id } = e.features[0];
+      const selectedOrganization = stakeholders.find((sh) => sh.id === id);
+      dispatch({
+        type: "SELECTED_ORGANIZATION_UPDATED",
+        organization: selectedOrganization,
+      });
+    }
+  },
+  [stakeholders, dispatch]
+);
+
+const interactiveLayerIds = markersLoaded ? [MARKERS_LAYER_ID] : undefined;
+
+const getCursor = useCallback(({ isHovering, isDragging }) => {
+  return isDragging ? "grabbing" : isHovering ? "pointer" : "grab";
+}, []);
+
+const markersGeojson = useMarkersGeojson({
+  stakeholders,
+  categoryIds,
+});
+
+useImperativeHandle(
+  ref,
+  () => ({
+    getViewport: () => {
+      const map = mapRef.current.getMap();
+
+      const { lat: latitude, lng: longitude } = map.getCenter();
+      const zoom = map.getZoom();
+      const { width, height } = map.getContainer().getBoundingClientRect();
+
+      return {
+        center: { latitude, longitude },
+        zoom,
+        dimensions: { width, height },
+      };
     },
-    [stakeholders, dispatch]
-  );
+  }),
+  []
+);
 
-  const interactiveLayerIds = markersLoaded ? [MARKERS_LAYER_ID] : undefined;
-
-  const getCursor = useCallback(({ isHovering, isDragging }) => {
-    return isDragging ? "grabbing" : isHovering ? "pointer" : "grab";
-  }, []);
-
-  const markersGeojson = useMarkersGeojson({
-    stakeholders,
-    categoryIds,
-  });
-
-  useImperativeHandle(
-    ref,
-    () => ({
-      getViewport: () => {
-        const map = mapRef.current.getMap();
-
-        const { lat: latitude, lng: longitude } = map.getCenter();
-        const zoom = map.getZoom();
-        const { width, height } = map.getContainer().getBoundingClientRect();
-
-        return {
-          center: { latitude, longitude },
-          zoom,
-          dimensions: { width, height },
-        };
-      },
-    }),
-    []
-  );
-
-  return (
-    <ReactMapGL
-      ref={mapRef}
-      mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-      mapStyle={MAPBOX_STYLE}
-      {...viewport}
-      onViewportChange={setViewport}
-      onLoad={onLoad}
-      onClick={onClick}
-      interactiveLayerIds={interactiveLayerIds}
-      getCursor={getCursor}
-      width="100%"
-      height="100%"
-      className={classes.map}
-    >
-      <Map.NavigationControl
-        showCompass={false}
-        className={classes.navigationControl}
-      />
-      <Map.ScaleControl
-        maxWidth={100}
-        unit="imperial"
-        className={classes.scaleControl}
-      />
-      {markersLoaded && (
-        <Map.Source type="geojson" data={markersGeojson}>
-          <Map.Layer {...markersLayerStyles} />
-        </Map.Source>
-      )}
-      {regionGeoJSON && (
-        <Map.Source id="my-data" type="geojson" data={regionGeoJSON}>
-          <Map.Layer {...regionFillStyle} />
-          <Map.Layer {...regionBorderStyle} />
-        </Map.Source>
-      )}
-      <Button
-        variant="outlined"
-        onClick={searchMapArea}
-        size="small"
-        className={classes.searchButton}
-        disabled={loading}
+return (
+  <ReactMapGL
+    ref={mapRef}
+    mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+    mapStyle={MAPBOX_STYLE}
+    {...viewport}
+    onViewportChange={setViewport}
+    onLoad={onLoad}
+    onClick={onClick}
+    interactiveLayerIds={interactiveLayerIds}
+    getCursor={getCursor}
+    width="100%"
+    height="100%"
+    className={classes.map}
+  >
+    {startIconCoordinates && (
+      <Map.Marker
+        longitude={startIconCoordinates.longitude}
+        latitude={startIconCoordinates.latitude}
+        offsetTop={-50}
+        offsetLeft={-25}
+        anchor="bottom"
       >
-        Search this area
-      </Button>
-    </ReactMapGL>
-  );
+        <StartIcon />
+      </Map.Marker>
+    )}
+    <Map.NavigationControl
+      showCompass={false}
+      className={classes.navigationControl}
+    />
+    <Map.ScaleControl
+      maxWidth={100}
+      unit="imperial"
+      className={classes.scaleControl}
+    />
+    {markersLoaded && (
+      <Map.Source type="geojson" data={markersGeojson}>
+        <Map.Layer {...markersLayerStyles} />
+      </Map.Source>
+    )}
+    {regionGeoJSON && (
+      <Map.Source id="my-data" type="geojson" data={regionGeoJSON}>
+        <Map.Layer {...regionFillStyle} />
+        <Map.Layer {...regionBorderStyle} />
+      </Map.Source>
+    )}
+    <Button
+      variant="outlined"
+      onClick={searchMapArea}
+      size="small"
+      className={classes.searchButton}
+      disabled={loading}
+    >
+      Search this area
+    </Button>
+  </ReactMapGL>
+);
 };
 
 export default forwardRef(ResultsMap);
@@ -181,4 +208,22 @@ ResultsMap.propTypes = {
   loading: PropTypes.bool,
   searchMapArea: PropTypes.any,
   regionGeoJSON: PropTypes.object,
+};
+
+const StartIcon = () => {
+  return (
+    <svg
+      viewBox="0 0 90 100"
+      width="54"
+      height="74"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M0 26.648c0 14.717 27 47.189 27 47.189s27-32.472 27-47.19C54 11.932 41.912 0 27 0S0 11.93 0 26.648Z"
+        fill="#F94040"
+      />
+      <ellipse cx="27" cy="26.85" rx="13.5" ry="13.425" fill="#B30D0D" />
+    </svg>
+  );
 };

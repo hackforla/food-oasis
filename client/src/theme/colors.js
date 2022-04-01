@@ -2,7 +2,6 @@ export const colors = {
   input: "#8B8B8B",
 };
 
-
 const white = "#FFFFFF";
 const primary = "#19334D";
 const secondary = "#E57109";

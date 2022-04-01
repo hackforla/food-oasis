@@ -110,6 +110,12 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
     marginTop: "10px",
   },
+  button: {
+    borderColor: theme.palette.primary.translucent,
+    "&:hover": {
+      background: theme.palette.primary.main,
+    },
+  },
   numbers: {
     display: "inline",
     alignSelf: "flex-start",
@@ -377,6 +383,7 @@ const StakeholderDetails = () => {
       <div className={classes.buttons}>
         <Button
           variant="outlined"
+          className={classes.button}
           onClick={() => {
             analytics.postEvent("getDirections", {
               id: selectedOrganization.id,
@@ -392,7 +399,11 @@ const StakeholderDetails = () => {
         >
           Directions
         </Button>
-        <Button variant="outlined" onClick={handleSuggestionDialogOpen}>
+        <Button
+          className={classes.button}
+          variant="outlined"
+          onClick={handleSuggestionDialogOpen}
+        >
           Send Correction
         </Button>
       </div>

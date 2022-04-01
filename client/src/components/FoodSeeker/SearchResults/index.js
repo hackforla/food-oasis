@@ -13,6 +13,10 @@ import Preview from "./Preview";
 import Details from "./Details";
 import * as analytics from "services/analytics";
 import {
+  MEAL_PROGRAM_CATEGORY_ID,
+  FOOD_PANTRY_CATEGORY_ID,
+} from "constants/stakeholder";
+import {
   useSearchCoordinates,
   useAppDispatch,
   useSelectedOrganization,
@@ -27,7 +31,10 @@ const ResultsContainer = () => {
     loading,
     getById,
   } = useOrganizationBests();
-  const { categoryIds, toggleCategory } = useCategoryIds([]);
+  const { categoryIds, toggleCategory } = useCategoryIds([
+    FOOD_PANTRY_CATEGORY_ID,
+    MEAL_PROGRAM_CATEGORY_ID,
+  ]);
   const { getGeoJSONById } = useNeighborhoodsGeoJSON();
   const [showList, setShowList] = useState(true);
   const searchCoordinates = useSearchCoordinates();
@@ -163,7 +170,9 @@ const ResultsContainer = () => {
       filters={filters}
       map={map}
       list={showList && list}
-      preview={selectedOrganization && <Preview />}
+      preview={
+        selectedOrganization && <Preview stakeholder={selectedOrganization} />
+      }
       details={selectedOrganization && <Details />}
     />
   );

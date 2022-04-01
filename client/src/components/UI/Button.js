@@ -1,19 +1,8 @@
 import React from "react";
 import { Button as MuiButton } from "@material-ui/core";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import { ICON_DICT } from "./iconLookup";
 import CircularProgress from "@material-ui/core/CircularProgress";
-
-const useStyles = makeStyles((theme) => ({
-  button: {
-    backgroundColor: theme.palette.error.main,
-    color: theme.palette.primary.main,
-    "&:hover": {
-      background: theme.palette.primary.main,
-    },
-  },
-}));
 
 const Base = ({
   children,
@@ -45,8 +34,6 @@ Base.propTypes = {
 };
 
 const Button = ({ children, icon, iconPosition, ...props }) => {
-  const theme = useTheme();
-  const classes = useStyles(theme);
   if (icon) {
     let Icon = ICON_DICT[icon];
 
@@ -58,7 +45,7 @@ const Button = ({ children, icon, iconPosition, ...props }) => {
     }
 
     return (
-      <Base {...props} {...position} className={classes.button}>
+      <Base {...props} {...position}>
         {children}
       </Base>
     );

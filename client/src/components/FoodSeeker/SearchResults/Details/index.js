@@ -111,6 +111,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "10px",
   },
   button: {
+    borderColor: theme.palette.primary.translucent,
     "&:hover": {
       background: theme.palette.primary.main,
     },

@@ -30,7 +30,7 @@ import ConfirmEmail from "components/Account/ConfirmEmail";
 import FaqEdit from "components/Faq/FaqEdit";
 import FaqAdd from "components/Faq/FaqAdd";
 import Home from "components/FoodSeeker/Home";
-import SearchResults from "components/FoodSeeker/SearchResults";
+import SearchResults from "components/FoodSeeker/SearchResults/SearchResults";
 import Suggestion from "components/FoodSeeker/Suggestion";
 import ImportFile from "components/Admin/ImportOrganizations/ImportFile";
 import adminTheme from "./theme/adminTheme";

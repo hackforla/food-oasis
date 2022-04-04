@@ -6,11 +6,11 @@ import useBreakpoints from "hooks/useBreakpoints";
 import useNeighborhoodsGeoJSON from "hooks/useNeighborhoodsGeoJSON";
 import { getMapBounds } from "helpers";
 import { Mobile, Tablet, Desktop } from "./layouts";
-import Filters from "./Filters";
-import Map from "./Map";
-import List from "./List";
-import Preview from "./Preview";
-import Details from "./Details";
+import Filters from "./ResultsFilters/ResultsFilters";
+import Map from "./ResultsMap/ResultsMap";
+import List from "./ResultsList/ResultsList";
+import Preview from "./StakeholderPreview/StakeholderPreview";
+import Details from "./StakeholderDetails/StakeholderDetails";
 import * as analytics from "services/analytics";
 import {
   useSearchCoordinates,
@@ -19,7 +19,7 @@ import {
   DEFAULT_COORDINATES,
 } from "../../../appReducer";
 
-const ResultsContainer = () => {
+const SearchResults = () => {
   const mapRef = useRef(null);
   const { isDesktop, isTablet } = useBreakpoints();
   const { data: stakeholders, search, loading } = useOrganizationBests();
@@ -168,4 +168,4 @@ const ResultsContainer = () => {
   );
 };
 
-export default ResultsContainer;
+export default SearchResults;

@@ -8,11 +8,11 @@ import {
 } from "constants/stakeholder";
 import useBreakpoints from "hooks/useBreakpoints";
 import theme from "theme/clientTheme";
-import SearchBar from "components/FoodSeeker/SearchBar";
+import AddressDropDown from "components/FoodSeeker/AddressDropDown";
 import SwitchViewsButton from "./SwitchViewsButton";
 import CategoryButton from "./CategoryButton";
 import * as analytics from "services/analytics";
-import { Button } from "../../../../components/UI";
+import { Button } from "../../../UI";
 import { tenantDetails } from "../../../../helpers/Configuration";
 import useGeolocation, { useLocationPermission } from "hooks/useGeolocation";
 
@@ -210,7 +210,7 @@ const ResultsFilters = ({
         </Grid>
         <Grid item xs={12} sm={6} className={classes.inputContainer}>
           <div className={classes.form}>
-            <SearchBar />
+            <AddressDropDown />
             <Tooltip
               title={
                 locationPermission === "denied" || !!error

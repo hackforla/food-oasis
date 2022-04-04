@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchBar({ showSearchIcon }) {
+export default function AddressDropDown({ showSearchIcon }) {
   const classes = useStyles();
   const searchCoordinates = useSearchCoordinates();
   const [inputVal, setInputVal] = useState(

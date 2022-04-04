@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Button } from "../../../../components/UI";
+import { Button } from "../../../UI";
 
 import MapMarker from "images/mapMarker";
 import StakeholderIcon from "images/stakeholderIcon";

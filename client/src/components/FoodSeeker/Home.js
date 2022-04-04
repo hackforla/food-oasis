@@ -8,7 +8,7 @@ import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Link from "@material-ui/core/Link";
 import { Link as RouterLink } from "react-router-dom";
-import SearchBar from "components/FoodSeeker/SearchBar";
+import AddressDropDown from "components/FoodSeeker/AddressDropDown";
 import { Button } from "../../components/UI";
 import { RotateLoader } from "react-spinners";
 // All the tenant logos happen to be the same for now
@@ -219,7 +219,7 @@ const Home = () => {
             >
               <Typography>{taglineText}</Typography>
               <Box className={classes.inputContainer}>
-                <SearchBar />
+                <AddressDropDown />
               </Box>
               <Box className={classes.inputContainer}>or</Box>
               <Box className={classes.inputContainer}>

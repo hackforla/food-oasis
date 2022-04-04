@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import * as suggestionService from "services/suggestion-service";
-import { TextField, Button } from "../../../../components/UI";
+import { TextField, Button } from "../../../UI";
 import { DEFAULT_STAKEHOLDER } from "../../../../constants/stakeholder";
 import { useToasterContext } from "../../../../contexts/toasterContext";
 

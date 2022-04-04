@@ -6,10 +6,10 @@ import List from "react-virtualized/dist/es/List";
 import AutoSizer from "react-virtualized/dist/es/AutoSizer";
 import CellMeasurer from "react-virtualized/dist/es/CellMeasurer";
 import CellMeasurerCache from "react-virtualized/dist/es/CellMeasurer/CellMeasurerCache";
-import StakeholderPreview from "../Preview";
-import StakeholderDetails from "../Details";
+import StakeholderPreview from "../StakeholderPreview/StakeholderPreview";
+import StakeholderDetails from "../StakeholderDetails/StakeholderDetails";
 import * as analytics from "services/analytics";
-import { Button } from "../../../../components/UI";
+import { Button } from "../../../UI";
 import { useSelectedOrganization } from "../../../../appReducer";
 
 const useStyles = makeStyles((theme) => ({

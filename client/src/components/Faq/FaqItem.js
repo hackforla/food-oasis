@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/styles";
-import { UserContext } from "../../contexts/user-context";
+import { UserContext } from "../../contexts/userContext";
 import { Typography } from "@material-ui/core";
 import { Button } from "../../components/UI";
 

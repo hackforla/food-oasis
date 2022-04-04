@@ -4,7 +4,8 @@ import Menu from "./Menu";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { isMobile } from "../../helpers";
-import { useUserContext } from "../../contexts/user-context";
+import { useUserContext } from "../../contexts/userContext";
+import { useSiteContext } from "../../contexts/siteContext";
 
 Header.propTypes = {
   tenantId: PropTypes.number,
@@ -95,8 +96,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Header(props) {
-  const { tenantId, taglineText } = props;
+export default function Header() {
+  const { tenantId, tenantDetails } = useSiteContext();
+  const { taglineText } = tenantDetails;
   const classes = useStyles();
   const imageType = logoPaths
     ? logoPaths[tenantId].default.split(".").pop()

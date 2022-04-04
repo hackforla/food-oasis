@@ -6,7 +6,7 @@ import * as suggestionService from "services/suggestion-service";
 import { withStyles } from "@material-ui/core";
 import { TextField, Button } from "../../components/UI";
 import { DEFAULT_STAKEHOLDER } from "../../constants/stakeholder";
-import { useToasterContext } from "contexts/toaster-context";
+import { useToasterContext } from "contexts/toasterContext";
 
 const styles = (theme) => ({
   "@global": {

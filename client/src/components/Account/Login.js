@@ -1,6 +1,6 @@
 import React from "react";
 import Footer from "../Layout/Footer";
-import { withRouter } from "react-router-dom";
+import { withRouter, useLocation } from "react-router-dom";
 import {
   withStyles,
   Avatar,
@@ -15,8 +15,8 @@ import * as Yup from "yup";
 import * as accountService from "services/account-service";
 import * as analytics from "../../services/analytics";
 import { Button, TextField } from "../../components/UI";
-import { useUserContext } from "../../contexts/user-context";
-import { useToasterContext } from "../../contexts/toaster-context";
+import { useUserContext } from "../../contexts/userContext";
+import { useToasterContext } from "../../contexts/toasterContext";
 
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
@@ -66,6 +66,8 @@ const LoginForm = (props) => {
   const { classes, history, match } = props;
   const { onLogin } = useUserContext();
   const { setToast } = useToasterContext();
+  // state is the previous pathname if the user has been redirected here from a PrivateRoute.
+  const { state } = useLocation();
 
   return (
     <div className={classes.body}>
@@ -97,7 +99,12 @@ const LoginForm = (props) => {
                     setToast({
                       message: "Login successful.",
                     });
-                    if (response.user.isAdmin || response.user.isCoordinator) {
+                    if (state) {
+                      history.push(state.from);
+                    } else if (
+                      response.user.isAdmin ||
+                      response.user.isCoordinator
+                    ) {
                       history.push("/verificationAdmin");
                     } else if (response.user.isSecurityAdmin) {
                       history.push("/securityadmindashboard");

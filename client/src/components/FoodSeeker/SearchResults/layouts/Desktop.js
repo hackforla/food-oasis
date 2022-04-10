@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    height: "79%",
+    flex: "auto",
     overflowY: "hidden",
     display: "flex",
   },
@@ -22,13 +22,13 @@ const DesktopLayout = ({ filters, list, map }) => {
 
   return (
     <>
-      { filters }
+      {filters}
       <div className={classes.container}>
-        <div className={classes.list}>{ list }</div>
-        <div className={classes.map}>{ map }</div>
+        <div className={classes.list}>{list}</div>
+        <div className={classes.map}>{map}</div>
       </div>
     </>
-  )
-}
+  );
+};
 
 export default DesktopLayout;

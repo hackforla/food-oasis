@@ -28,6 +28,6 @@
 
 #### Additional details / screenshot
 
-- ![Screenshot]()
-- ![Video recording]()
+- Screenshot (drag in)
+- Video recording (drag in)
 

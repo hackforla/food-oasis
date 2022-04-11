@@ -1,6 +1,6 @@
 #### Issue description
 
-(This form helps the reporter give enough information so that  programmers, designers, and product managers can evaluate the issue, prioritize it, and resolve it.)
+(This form helps the reporter give enough information so that product managers, designers/researchers, and programmers can evaluate the issue, prioritize it, and resolve it.)
 - Describe the issue
 - Describe the desired outcome and user goals
 - (optional) Describe your suggested solution with reasoning

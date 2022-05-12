@@ -126,7 +126,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   logo: {
-    width: "55%",
+    width: "30%",
     height: "auto",
     textAlign: "center",
   },

@@ -7,7 +7,7 @@ RUN mkdir /app
 WORKDIR /app
 COPY client/package.json .
 COPY client/package-lock.json .
-RUN npm ci
+RUN npm ci --legacy-peer-deps
 COPY client .
 
 RUN npm run build

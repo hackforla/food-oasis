@@ -141,6 +141,9 @@ const useStyles = makeStyles((theme) => ({
     "&:visited": {
       color: "white",
     },
+    "&:hover": {
+      color: "#BCE76D",
+    },
   },
   locationBtn: {
     backgroundColor: "#4CAF50",

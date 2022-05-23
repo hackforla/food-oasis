@@ -234,8 +234,8 @@ const About = () => {
             </dd>
             <dt>What will my donation go toward?</dt>
             <dd>
-              Your donations help us the human costs required to update the food
-              resources in Los Angeles.
+              Your donations help us cover the human costs required to update
+              the food resources in Los Angeles.
             </dd>
           </dl>
         </section>

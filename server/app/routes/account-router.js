@@ -5,7 +5,12 @@ const jwtSession = require("../../middleware/jwt-session");
 
 router.get(
   "/",
-  jwtSession.validateUserHasRequiredRoles(["security_admin", "global_admin"]),
+  jwtSession.validateUserHasRequiredRoles([
+    "admin",
+    "security_admin",
+    "data_entry",
+    "global_admin",
+  ]),
   accountController.getAll
 );
 

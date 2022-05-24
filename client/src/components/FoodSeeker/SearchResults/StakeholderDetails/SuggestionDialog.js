@@ -12,6 +12,16 @@ import * as suggestionService from "services/suggestion-service";
 import { TextField, Button } from "../../../UI";
 import { DEFAULT_STAKEHOLDER } from "../../../../constants/stakeholder";
 import { useToasterContext } from "../../../../contexts/toasterContext";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  button: {
+    borderColor: theme.palette.primary.translucent,
+    "&:hover": {
+      background: theme.palette.primary.main,
+    },
+  },
+}));
 
 function SuggestionDialog(props) {
   const { setToast } = useToasterContext();
@@ -46,6 +56,8 @@ function SuggestionDialog(props) {
         });
       });
   };
+
+  const classes = useStyles();
 
   return (
     <Dialog
@@ -134,7 +146,12 @@ function SuggestionDialog(props) {
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={handleCancel}>
+        <Button
+          variant="outlined"
+          className={classes.button}
+          autoFocus
+          onClick={handleCancel}
+        >
           Cancel
         </Button>
         <Button onClick={handleSubmit}>Send</Button>

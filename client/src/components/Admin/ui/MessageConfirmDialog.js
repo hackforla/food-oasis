@@ -42,6 +42,7 @@ function MessageDialog(props) {
           minRows={4}
           maxRows={12}
           value={message}
+          variant="Outlined"
           onChange={(e) => setMessage(e.target.value)}
         />
       </DialogContent>

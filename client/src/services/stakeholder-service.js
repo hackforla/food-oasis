@@ -86,11 +86,17 @@ export const assign = async (id, userLoginId, loginId) => {
 
 // id = stakeholderId
 // userLoginId is the id of the user
-export const needsVerification = async (id, userLoginId, message) => {
+export const needsVerification = async (
+  id,
+  userLoginId,
+  message,
+  preserveConfirmations
+) => {
   const response = await axios.put(`${baseUrl}/${id}/needsVerification`, {
     id,
     userLoginId,
     message,
+    preserveConfirmations,
   });
   return response.data;
 };

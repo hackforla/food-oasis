@@ -8,6 +8,7 @@ import {
   TextField,
   Checkbox,
   FormControlLabel,
+  Typography,
 } from "@material-ui/core";
 import { Button } from "../../../components/UI";
 
@@ -69,6 +70,12 @@ function NeedsVerificationDialog(props) {
           }
           label="Preserve Confirmation Checkbox Statuses"
         />
+        <Typography>
+          Checking this box will leave the 7 confirmation check boxes for the
+          stakeholders alone. Leaving it unchecked will clear (uncheck) all the
+          confirmation checkboxes, setting eah stakeholder up for
+          re-verification of all the critical fields.
+        </Typography>
       </DialogContent>
       <DialogActions>
         <Button type="button" autoFocus onClick={handleCancel}>

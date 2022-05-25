@@ -724,6 +724,13 @@ const needsVerification = async (model) => {
                 approved_date = null,
                 reviewed_login_id = null,
                 verification_status_id = 1,
+                v_name = v_name and $<preserveConfirmations>,
+                v_categories = v_categories and $<preserveConfirmations>,
+                v_address = v_address and $<preserveConfirmations>,
+                v_email = v_email and $<preserveConfirmations>,
+                v_phone = v_phone and $<preserveConfirmations>,
+                v_hours = v_hours and $<preserveConfirmations>,
+                v_food_types = v_food_types and $<preserveConfirmations>,
                 review_notes = CASE WHEN length(review_notes) > 0  THEN  review_notes ` +
     (model.message ? `|| chr(10) || chr(10) || $<message> ` : "") +
     ` ELSE $<message> END

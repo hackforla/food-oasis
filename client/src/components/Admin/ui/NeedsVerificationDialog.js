@@ -5,34 +5,43 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormLabel,
   TextField,
-  Checkbox,
+  Radio,
+  RadioGroup,
   FormControlLabel,
-  Typography,
 } from "@material-ui/core";
 import { Button } from "../../../components/UI";
+import { makeStyles } from "@material-ui/core/styles";
+import { white } from "theme/colors";
+
+const useStyles = makeStyles((theme) => ({
+  button: {
+    borderColor: theme.palette.primary.translucent,
+    "&:hover": {
+      background: theme.palette.primary.main,
+      color: white,
+    },
+  },
+}));
 
 function NeedsVerificationDialog(props) {
-  const {
-    onClose,
-    open,
-    message: initialMessage,
-    preserveConfirmations: initialPreserveConfirmations,
-    ...other
-  } = props;
-  const [message, setMessage] = useState(initialMessage);
-  const [preserveConfirmations, setPreserveConfirmations] = useState(
-    initialPreserveConfirmations
-  );
+  const { onClose, open, ...other } = props;
+  const classes = useStyles();
+
+  const [message, setMessage] = useState("");
+  const [preserveConfirmations, setPreserveConfirmations] = useState("");
 
   const handleCancel = () => {
     onClose(false);
+    setMessage("");
+    setPreserveConfirmations("");
   };
 
   const handleConfirm = () => {
     onClose({ message, preserveConfirmations });
-    setMessage(initialMessage);
-    setPreserveConfirmations(initialPreserveConfirmations);
+    setMessage("");
+    setPreserveConfirmations("");
   };
 
   return (
@@ -58,29 +67,39 @@ function NeedsVerificationDialog(props) {
           minRows={4}
           maxRows={12}
           value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          onChange={(e) => setMessage(!!e.target.value)}
         />
-
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={preserveConfirmations}
-              onChange={(e) => setPreserveConfirmations(e.target.checked)}
-            />
-          }
-          label="Preserve Confirmation Checkbox Statuses"
-        />
-        <Typography>
-          Checking this box will leave the 7 confirmation check boxes for the
-          stakeholders alone. Leaving it unchecked will clear (uncheck) all the
-          confirmation checkboxes, setting eah stakeholder up for
-          re-verification of all the critical fields.
-        </Typography>
+        <FormLabel id="confirmation-reset-options=label">
+          Critical Field Confirmations
+        </FormLabel>
+        <RadioGroup
+          aria-labelledby="confirmation-reset-options-label"
+          name="confirmation-reset-options"
+          value={preserveConfirmations}
+          onChange={(e) => setPreserveConfirmations(e.target.value)}
+        >
+          <FormControlLabel
+            value=""
+            control={<Radio />}
+            label="Uncheck all confirmation checkboxes"
+          />
+          <FormControlLabel
+            value="true"
+            control={<Radio />}
+            label="Leave confirmation checkboxes unchanged"
+          />
+        </RadioGroup>
       </DialogContent>
       <DialogActions>
-        <Button type="button" autoFocus onClick={handleCancel}>
+        <Button
+          variant="outlined"
+          className={classes.button}
+          autoFocus
+          onClick={handleCancel}
+        >
           Cancel
         </Button>
+
         <Button type="button" onClick={handleConfirm}>
           Confirm Status Change
         </Button>

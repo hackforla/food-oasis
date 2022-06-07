@@ -1,5 +1,5 @@
 import React from "react";
-import { createRoot } from "react-dom/client";
+import ReactDOM from "react-dom";
 import "./i18n";
 import "styles/root.css";
 import App from "./App";
@@ -19,6 +19,4 @@ const tagManagerArgs = {
 
 TagManager.initialize(tagManagerArgs);
 
-const container = document.getElementById("root");
-const root = createRoot(container);
-root.render(<App />);
+ReactDOM.render(<App />, document.getElementById("root"));

@@ -73,7 +73,7 @@ if (process.env.NODE_ENV === "production") {
 app.use(middleware.notFound);
 app.use(middleware.handleError);
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5001;
 
 app.listen(port, () =>
   console.log(`The Web API server is ready to serve requests.`)

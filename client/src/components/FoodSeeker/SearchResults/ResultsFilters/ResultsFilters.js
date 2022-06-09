@@ -215,7 +215,7 @@ const ResultsFilters = ({
               title={
                 locationPermission === "denied" || !!error
                   ? "Please allow location access"
-                  : "Re-center"
+                  : "Show Your Current Location"
               }
             >
               <span>

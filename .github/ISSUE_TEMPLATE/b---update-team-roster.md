@@ -2,7 +2,7 @@
 name: B - Update Team Roster
 about: Provides new team members a link to team roster to input their information
 title: ''
-labels: documentation, good first issue, question
+labels: good first issue
 assignees: ''
 
 ---

@@ -28,7 +28,7 @@ COPY ./server/entrypoint.sh ./
 RUN groupadd -r fola && useradd --no-log-init -r -g fola fola
 USER fola
 
-EXPOSE 5000
+EXPOSE 5001
 
 ENTRYPOINT ["./entrypoint.sh"]
 CMD ["node", "server.js"]

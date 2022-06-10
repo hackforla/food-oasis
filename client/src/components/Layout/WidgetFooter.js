@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import { isMobile } from "../../helpers";
-import { useSiteContext } from "../../contexts/siteContext";
+import { useSiteContext } from "contexts/siteContext";
 
 const logoPaths = {
   1: require("images/foodoasis.svg"),
@@ -20,15 +20,6 @@ const logoStackedPaths = {
   4: require("images/logo-food-oasis-stacked.svg"),
   5: require("images/logo-food-oasis-stacked.svg"),
   6: require("images/logo-food-oasis-stacked.svg"),
-};
-
-const logoMaintainerPaths = {
-  1: require("images/hackforla.svg"),
-  2: require("images/hackforla.svg"),
-  3: require("../StaticPagesHI/assets/cfh-logo-black-crop.png"),
-  4: require("images/hackforla.svg"),
-  5: require("images/hackforla.svg"),
-  6: require("images/hackforla.svg"),
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -76,13 +67,74 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function WidgetFooterSection(props) {
-  const { logoPath, alt, className, logoStyle, captionText, name, url } = props;
+  const {
+    logoPath,
+    alt,
+    className,
+    logoStyle,
+    captionText,
+    name,
+    url,
+    maintainers,
+    type,
+  } = props;
   const classes = useStyles();
+
+  if (type === "maintainer") {
+    if (!maintainers?.length) return null;
+    return (
+      <div className={classes.footerSectionContainer}>
+        <div className={classes.footerCaption}>{captionText}</div>
+        {maintainers.map((maintainer) => {
+          const logoMaintainerPath = maintainer.path?.default;
+          const imageType = logoMaintainerPath
+            ? logoMaintainerPath.split(".").pop()
+            : "unknown";
+
+          return (
+            <div style={{ marginLeft: 10 }} key={maintainer.name}>
+              {logoMaintainerPath ? (
+                <a
+                  href={maintainer.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    src={logoMaintainerPath}
+                    className={className || classes.logo}
+                    style={
+                      imageType === "svg"
+                        ? {
+                            ...logoStyle,
+                            width: "100%",
+                            height: "100%",
+                            margin: 0,
+                          }
+                        : { ...logoStyle }
+                    }
+                    alt={`${maintainer.name} Logo`}
+                  />
+                </a>
+              ) : (
+                <a
+                  href={maintainer.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {maintainer.name}
+                </a>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+
   const imageType = logoPath ? logoPath.default.split(".").pop() : "unknown";
 
   return (
     <div className={classes.footerSectionContainer}>
-      <div className={classes.footerCaption}>{captionText}&nbsp;</div>
       {logoPath ? (
         <a href={url} target="_blank" rel="noopener noreferrer">
           <img
@@ -108,7 +160,7 @@ function WidgetFooterSection(props) {
 function WidgetFooter() {
   const [mobile, setMobile] = useState(null);
   const { tenantId, tenantDetails } = useSiteContext();
-  const { maintainer } = tenantDetails;
+  const { maintainers } = tenantDetails;
   const classes = useStyles();
 
   useEffect(() => {
@@ -129,11 +181,9 @@ function WidgetFooter() {
         className={classes.logo}
       />
       <WidgetFooterSection
-        name={maintainer.name}
+        type="maintainer"
+        maintainers={maintainers}
         captionText="A project by"
-        logoPath={logoMaintainerPaths[tenantId]}
-        alt={`${maintainer.name} Logo`}
-        url={maintainer.website}
         className={classes.logo}
         logoStyle={mobile && { maxWidth: "65px" }}
       />
@@ -149,6 +199,7 @@ WidgetFooterSection.propTypes = {
   url: PropTypes.string,
   className: PropTypes.string,
   style: PropTypes.shape(),
+  type: PropTypes.string,
 };
 
 WidgetFooterSection.defaultProps = {
@@ -159,6 +210,7 @@ WidgetFooterSection.defaultProps = {
   url: "",
   className: undefined,
   style: {},
+  type: "primary",
 };
 
 export default WidgetFooter;

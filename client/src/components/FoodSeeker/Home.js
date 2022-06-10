@@ -126,7 +126,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   logo: {
-    width: "55%",
+    width: "30%",
     height: "auto",
     textAlign: "center",
   },
@@ -140,6 +140,9 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: "underline",
     "&:visited": {
       color: "white",
+    },
+    "&:hover": {
+      color: "#BCE76D",
     },
   },
   locationBtn: {

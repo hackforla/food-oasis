@@ -42,7 +42,7 @@ export const tenantName = (() => {
 })();
 
 export const tenantDetails = (() => {
-  return TENANT_CONFIG[tenantId];
+  return TENANT_CONFIG[tenantId] || TENANT_CONFIG.default;
 })();
 
 export const defaultViewport = (() => {

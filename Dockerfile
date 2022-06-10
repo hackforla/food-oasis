@@ -7,7 +7,7 @@ RUN mkdir /app
 WORKDIR /app
 COPY client/package.json .
 COPY client/package-lock.json .
-RUN npm ci
+RUN npm ci --legacy-peer-deps
 COPY client .
 
 RUN npm run build
@@ -36,6 +36,6 @@ COPY --from=clientBuilder /app/build ./client/build
 RUN groupadd -r fola && useradd --no-log-init -r -g fola fola
 USER fola
 
-EXPOSE 5000
+EXPOSE 5001
 
 ENTRYPOINT ["/usr/local/bin/node", "server.js"]

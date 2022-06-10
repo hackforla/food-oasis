@@ -16,7 +16,7 @@ import {
   exportCsv,
 } from "services/stakeholder-service";
 import AssignDialog from "./AssignDialog";
-import NeedsVerificationDialog from "./ui/MessageConfirmDialog";
+import NeedsVerificationDialog from "./ui/NeedsVerificationDialog";
 import SearchCriteria from "./SearchCriteria";
 import SearchCriteriaDisplay from "./SearchCriteriaDisplay";
 import { Button } from "../../components/UI";
@@ -248,14 +248,19 @@ function VerificationAdmin() {
     setNeedsVerificationDialogOpen(true);
   };
 
-  const handleNeedsVerificationDialogClose = async (message) => {
+  const handleNeedsVerificationDialogClose = async (result) => {
     setNeedsVerificationDialogOpen(false);
     // Dialog returns false if cancelled, otherwise an optional
     // message to attach to stakeholder(s)
-    if (message === false) return;
+    if (result === false) return;
     try {
       for (let i = 0; i < selectedStakeholderIds.length; i++) {
-        await needsVerification(selectedStakeholderIds[i], user.id, message);
+        await needsVerification(
+          selectedStakeholderIds[i],
+          user.id,
+          result.message,
+          !!result.preserveConfirmations
+        );
       }
     } catch (err) {
       // If we receive a 401 status code, the user needs
@@ -392,8 +397,9 @@ function VerificationAdmin() {
         />
         <NeedsVerificationDialog
           id="needs-verification-dialog"
-          keepMounted
+          title='Change Listing(s) Status to "Needs Verification"'
           message={""}
+          preserveConfirmations={false}
           open={needsVerificationDialogOpen}
           onClose={handleNeedsVerificationDialogClose}
         />

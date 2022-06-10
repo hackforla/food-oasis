@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import SecurityTable from "./SecurityTable";
 import { makeStyles } from "@material-ui/styles";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import * as accountService from "../../../services/account-service";
 import { TextField } from "../../UI";
+import debounce from "lodash.debounce";
 
 const useStyles = makeStyles({
   root: {
@@ -55,9 +56,12 @@ const SecurityAdminDashboard = () => {
     }
   }, [search, accounts]);
 
-  const handleChange = (e) => {
-    setSearch(e.target.value.toLowerCase());
-  };
+  const debouncedChangeHandler = useMemo(() => {
+    const changeHandler = (event) => {
+      setSearch(event.target.value.toLowerCase());
+    };
+    return debounce(changeHandler, 300);
+  }, [setSearch]);
 
   const handlePermissionChange = (userId, permission, value) => {
     const account = filteredAccounts.find((row) => {
@@ -95,8 +99,7 @@ const SecurityAdminDashboard = () => {
         placeholder="Find"
         size="small"
         className={classes.textInput}
-        onChange={handleChange}
-        value={search}
+        onChange={debouncedChangeHandler}
       />
       {error === "User does not Exist" ? (
         <Typography variant="h6" color="error">

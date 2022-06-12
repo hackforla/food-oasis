@@ -98,7 +98,6 @@ function Suggestion(props) {
             name="category"
             margin="normal"
             fullWidth
-            autoFocus
             value={stakeholder.category}
             onChange={handleChange}
           />
@@ -111,7 +110,6 @@ function Suggestion(props) {
             name="address1"
             margin="normal"
             fullWidth
-            autoFocus
             value={stakeholder.address1}
             onChange={handleChange}
           />
@@ -124,7 +122,6 @@ function Suggestion(props) {
             name="address2"
             margin="normal"
             fullWidth
-            autoFocus
             value={stakeholder.address2}
             onChange={handleChange}
           />
@@ -137,7 +134,6 @@ function Suggestion(props) {
             name="city"
             margin="normal"
             fullWidth
-            autoFocus
             value={stakeholder.city}
             onChange={handleChange}
           />
@@ -150,7 +146,6 @@ function Suggestion(props) {
             name="state"
             margin="normal"
             fullWidth
-            autoFocus
             value={stakeholder.state}
             onChange={handleChange}
           />
@@ -163,7 +158,6 @@ function Suggestion(props) {
             name="zip"
             margin="normal"
             fullWidth
-            autoFocus
             value={stakeholder.zip}
             onChange={handleChange}
           />
@@ -176,7 +170,6 @@ function Suggestion(props) {
             name="phone"
             margin="normal"
             fullWidth
-            autoFocus
             value={stakeholder.phone}
             onChange={handleChange}
           />
@@ -189,7 +182,6 @@ function Suggestion(props) {
             name="email"
             margin="normal"
             fullWidth
-            autoFocus
             value={stakeholder.email}
             onChange={handleChange}
           />
@@ -205,7 +197,6 @@ function Suggestion(props) {
             name="hours"
             margin="normal"
             fullWidth
-            autoFocus
             value={stakeholder.hours}
             onChange={handleChange}
           />
@@ -221,7 +212,6 @@ function Suggestion(props) {
             name="notes"
             margin="normal"
             fullWidth
-            autoFocus
             value={stakeholder.notes}
             onChange={handleChange}
           />
@@ -237,7 +227,6 @@ function Suggestion(props) {
             name="tipsterName"
             margin="normal"
             fullWidth
-            autoFocus
             value={stakeholder.tipsterName}
             onChange={handleChange}
           />
@@ -253,7 +242,6 @@ function Suggestion(props) {
             name="tipsterPhone"
             margin="normal"
             fullWidth
-            autoFocus
             value={stakeholder.tipsterPhone}
             onChange={handleChange}
           />
@@ -269,7 +257,6 @@ function Suggestion(props) {
             name="tipsterEmail"
             margin="normal"
             fullWidth
-            autoFocus
             value={stakeholder.tipsterEmail}
             onChange={handleChange}
           />

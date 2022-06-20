@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import useOrganizationBests from "hooks/useOrganizationBests";
 import useCategoryIds from "hooks/useCategoryIds";
 import useBreakpoints from "hooks/useBreakpoints";
@@ -29,7 +29,6 @@ const SearchResults = () => {
   const searchCoordinates = useSearchCoordinates();
   const dispatch = useAppDispatch();
   const selectedOrganization = useSelectedOrganization();
-  const history = useHistory();
   const location = useLocation();
   const neighborhoodId = new URLSearchParams(location.search).get(
     "neighborhood_id"
@@ -70,21 +69,6 @@ const SearchResults = () => {
     execute();
   }, [neighborhoodId, getGeoJSONById, dispatch]);
 
-  React.useEffect(() => {
-    if (!selectedOrganization) return;
-
-    analytics.postEvent("selectOrganization", {
-      id: selectedOrganization.id,
-      name: selectedOrganization.name,
-    });
-
-    //Update url history
-    const name = selectedOrganization.name.toLowerCase().replaceAll(" ", "_");
-    history.push(
-      `${location.pathname}?latitude=${selectedOrganization.latitude}&longitude=${selectedOrganization.longitude}&org=${name}&id=${selectedOrganization.id}`
-    );
-  }, [selectedOrganization, history, location.pathname]);
-
   useEffect(() => {
     const { zoom, dimensions } = mapRef.current.getViewport();
     const criteria = {
@@ -102,13 +86,21 @@ const SearchResults = () => {
   }, [categoryIds, search, neighborhoodId, longitude, latitude]);
 
   useEffect(() => {
-    if (!searchCoordinates && stakeholders) {
+    if (!location.search) {
+      dispatch({ type: "RESET_SELECTED_ORGANIZATION", organization: null });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.search]);
+
+  useEffect(() => {
+    if (!searchCoordinates && stakeholders && organizationId) {
       const organization = stakeholders.find(
         (stakeholder) => stakeholder.id === Number(organizationId)
       );
       dispatch({ type: "SELECTED_ORGANIZATION_UPDATED", organization });
     }
-  }, [stakeholders, searchCoordinates, dispatch, organizationId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stakeholders]);
 
   const searchMapArea = useCallback(() => {
     const { center } = mapRef.current.getViewport();

@@ -19,6 +19,7 @@ import {
   useUserCoordinates,
 } from "../../../../appReducer";
 import StakeholderIcon from "images/stakeholderIcon";
+import { useHistory, useLocation } from "react-router-dom";
 
 const TENANT_TIME_ZONES = {
   1: "America/Los_Angeles",
@@ -166,9 +167,21 @@ const StakeholderPreview = ({ stakeholder }) => {
   const originCoordinates = searchCoordinates || userCoordinates;
   const { tenantId } = useSiteContext();
   const tenantTimeZone = TENANT_TIME_ZONES[tenantId];
+  const history = useHistory();
+  const location = useLocation();
 
   const handleSelectOrganization = (organization) => {
     dispatch({ type: "SELECTED_ORGANIZATION_UPDATED", organization });
+    analytics.postEvent("selectOrganization", {
+      id: organization.id,
+      name: organization.name,
+    });
+
+    //Update url history
+    const name = organization.name.toLowerCase().replaceAll(" ", "_");
+    history.push(
+      `${location.pathname}?latitude=${organization.latitude}&longitude=${organization.longitude}&org=${name}&id=${organization.id}`
+    );
   };
 
   const mainNumber = extractNumbers(stakeholder.phone).find((n) => n.number);

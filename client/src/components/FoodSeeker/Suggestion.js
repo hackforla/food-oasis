@@ -53,7 +53,6 @@ const styles = (theme) => ({
     [theme.breakpoints.up("sm")]: {
       padding: theme.spacing(4, 0, 7),
       textAlign: "center",
-
     },
   },
   submit: {
@@ -66,23 +65,23 @@ const styles = (theme) => ({
   },
 });
 
-const phoneRegExp =
-  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+// const phoneRegExp =
+//   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Please enter the Organization Name"),
-  category: Yup.string().min(4, "Category must be at least 4 characters"),
-  address1: Yup.string().min(4, "Address must be at least 4 characters"),
-  address2: Yup.string().min(4),
-  city: Yup.string().min(3, "City must be at least 3 characters").max(30),
-  state: Yup.string().min(4).max(30),
-  zip: Yup.string().min(4).max(12),
-  phone: Yup.string().matches(phoneRegExp, "Phone number is not valid"),
+  category: Yup.string(),
+  address1: Yup.string(),
+  address2: Yup.string(),
+  city: Yup.string(),
+  state: Yup.string().min(2),
+  zip: Yup.string().min(5).max(10),
+  phone: Yup.string(),
   email: Yup.string().email("Please enter a valid Email"),
   hours: Yup.string(),
   notes: Yup.string(),
   tipsterName: Yup.string(),
-  tipsterPhone: Yup.string().matches(phoneRegExp, "Phone number is not valid"),
+  tipsterPhone: Yup.string(),
   tipsterEmail: Yup.string().email("Please enter a valid Email"),
 });
 

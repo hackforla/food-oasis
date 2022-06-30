@@ -1,6 +1,5 @@
 import React from "react";
 import { getTenantId, DEFAULT_VIEWPORTS } from "contexts/siteContext";
-import { action } from "@storybook/addon-actions";
 
 const tenantId = getTenantId();
 export const DEFAULT_COORDINATES = DEFAULT_VIEWPORTS[tenantId].center;

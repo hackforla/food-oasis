@@ -47,6 +47,7 @@ const findNeighborhood = async (latitude, longitude) => {
      WHERE ST_Contains(
       geometry,
       ST_GeomFromText('POINT($<latitude> $<longitude>)'))
+      ORDER BY name
     `;
   const rows = await db.manyOrNone(sql, { latitude, longitude });
   if (!rows.length) {

@@ -44,7 +44,18 @@ const SearchResults = () => {
     latitude = searchCoordinates?.latitude || DEFAULT_COORDINATES.latitude;
   }
 
-  // IF neighborhood_id is part of query string, get neighborhood info,
+  // If path starts with "widget", then set the state variable isWidget to true,
+  // so we stay in widget mode (w/o normal App Header and Footer)
+  useEffect(() => {
+    if (location.pathname.toLowerCase() === "/widget") {
+      dispatch({
+        type: "WIDGET",
+        isWidget: true,
+      });
+    }
+  }, [dispatch, location.pathname]);
+
+  // If neighborhood_id is part of query string, get neighborhood info,
   // stored neighborhood info in reducer, and start with map centered
   // on neighborhood centroid coordinates.
   useEffect(() => {

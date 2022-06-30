@@ -18,6 +18,7 @@ import {
   useAppDispatch,
   useSearchCoordinates,
   useUserCoordinates,
+  useWidget,
 } from "../../../../appReducer";
 import { useHistory } from "react-router-dom";
 
@@ -151,6 +152,7 @@ const StakeholderDetails = () => {
   const searchCoordinates = useSearchCoordinates();
   const userCoordinates = useUserCoordinates();
   const originCoordinates = searchCoordinates || userCoordinates;
+  const isWidget = useWidget();
   const history = useHistory();
 
   useEffect(() => {
@@ -172,7 +174,7 @@ const StakeholderDetails = () => {
 
   const handleBackButtonClick = () => {
     dispatch({ type: "RESET_SELECTED_ORGANIZATION" });
-    history.push("/organizations");
+    history.push(isWidget ? "/widget" : "/organizations");
   };
 
   const dayOfWeek = (dayOfWeekString) => {

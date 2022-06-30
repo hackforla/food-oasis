@@ -10,6 +10,7 @@ import {
   useSearchCoordinates,
   useAppDispatch,
   useUserCoordinates,
+  useWidget,
 } from "../../appReducer";
 import { useHistory } from "react-router";
 import * as analytics from "services/analytics";
@@ -62,6 +63,7 @@ const useStyles = makeStyles((theme) => ({
 export default function AddressDropDown({ showSearchIcon }) {
   const classes = useStyles();
   const searchCoordinates = useSearchCoordinates();
+  const isWidget = useWidget();
   const [inputVal, setInputVal] = useState(
     searchCoordinates?.locationName || ""
   );
@@ -104,7 +106,7 @@ export default function AddressDropDown({ showSearchIcon }) {
         type: "SEARCH_COORDINATES_UPDATED",
         coordinates: { latitude, longitude, locationName: result.place_name },
       });
-      history.push("/organizations");
+      history.push(isWidget ? "/widget" : "/organizations");
 
       analytics.postEvent("changeOrigin", {});
     }
@@ -126,7 +128,7 @@ export default function AddressDropDown({ showSearchIcon }) {
               <InputAdornment
                 position="end"
                 onClick={() => {
-                  history.push("/organizations");
+                  history.push(isWidget ? "/widget" : "/organizations");
                 }}
                 className={classes.searchIconCont}
               >

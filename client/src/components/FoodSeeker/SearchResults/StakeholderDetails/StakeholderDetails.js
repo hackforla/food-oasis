@@ -21,6 +21,8 @@ import {
   useWidget,
 } from "../../../../appReducer";
 import { useHistory } from "react-router-dom";
+import { useToasterContext } from "../../../../contexts/toasterContext";
+import { Share } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   stakeholder: {
@@ -154,6 +156,7 @@ const StakeholderDetails = () => {
   const originCoordinates = searchCoordinates || userCoordinates;
   const isWidget = useWidget();
   const history = useHistory();
+  const { setToast } = useToasterContext();
 
   useEffect(() => {
     if (selectedOrganization?.id) {
@@ -263,6 +266,29 @@ const StakeholderDetails = () => {
       });
     }
     return text;
+  };
+
+  const shareLink = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "Food Oasis",
+          url: window.location.href,
+          text: selectedOrganization.name,
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        setToast({
+          message: "Copied to clipboard",
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    }
   };
 
   return (
@@ -393,6 +419,13 @@ const StakeholderDetails = () => {
           onClick={handleSuggestionDialogOpen}
         >
           Send Correction
+        </Button>
+        <Button
+          className={classes.button}
+          variant="outlined"
+          onClick={shareLink}
+        >
+          <Share />
         </Button>
       </div>
 

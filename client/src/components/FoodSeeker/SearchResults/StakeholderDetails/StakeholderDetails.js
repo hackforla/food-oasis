@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "../../../UI";
+import { useToasterContext } from "../../../../contexts/toasterContext";
+import MapMarker from "images/mapMarker";
 import StakeholderIcon from "images/stakeholderIcon";
 import fbIcon from "images/fbIcon.png";
 import instaIcon from "images/instaIcon.png";
@@ -11,7 +13,7 @@ import {
 } from "constants/stakeholder";
 import { ORGANIZATION_COLORS, CLOSED_COLOR } from "constants/map";
 import { extractNumbers, getGoogleMapsDirectionsUrl } from "helpers";
-import SuggestionDialog from "./SuggestionDialog";
+import SuggestionForm from "./SuggestionDialog";
 import * as analytics from "services/analytics";
 import {
   useSelectedOrganization,
@@ -21,8 +23,6 @@ import {
   useWidget,
 } from "../../../../appReducer";
 import { useHistory } from "react-router-dom";
-import { useToasterContext } from "../../../../contexts/toasterContext";
-import { Share } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   stakeholder: {
@@ -154,9 +154,9 @@ const StakeholderDetails = () => {
   const searchCoordinates = useSearchCoordinates();
   const userCoordinates = useUserCoordinates();
   const originCoordinates = searchCoordinates || userCoordinates;
+  const { setToast } = useToasterContext();
   const isWidget = useWidget();
   const history = useHistory();
-  const { setToast } = useToasterContext();
 
   useEffect(() => {
     if (selectedOrganization?.id) {
@@ -218,9 +218,9 @@ const StakeholderDetails = () => {
       }
       return parseInt(timeStr.substring(0, 2)) > 12
         ? `${parseInt(timeStr.substring(0, 2)) - 12}${timeStr.substring(
-            2,
-            5
-          )} PM`
+          2,
+          5
+        )} PM`
         : `${timeStr.substring(0, 5)} AM`;
     }
   };
@@ -268,29 +268,6 @@ const StakeholderDetails = () => {
     return text;
   };
 
-  const shareLink = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: "Food Oasis",
-          url: window.location.href,
-          text: selectedOrganization.name,
-        });
-      } catch (e) {
-        console.error(e);
-      }
-    } else {
-      try {
-        await navigator.clipboard.writeText(window.location.href);
-        setToast({
-          message: "Copied to clipboard",
-        });
-      } catch (e) {
-        console.error(e);
-      }
-    }
-  };
-
   return (
     <div className={classes.stakeholder}>
       <div className={classes.backButtonWrapper}>
@@ -303,12 +280,13 @@ const StakeholderDetails = () => {
           &lt; Back to List{" "}
         </div>
       </div>
-      <SuggestionDialog
+      <SuggestionForm
         id="assign-dialog"
         keepMounted
         open={SuggestionDialogOpen}
         onClose={handleSuggestionDialogClose}
         stakeholder={selectedOrganization}
+        setToast={setToast}
       />
       <div className={classes.topInfo}>
         <StakeholderIcon
@@ -329,13 +307,13 @@ const StakeholderDetails = () => {
                 alignSelf: "flex-start",
                 color:
                   selectedOrganization.inactiveTemporary ||
-                  selectedOrganization.inactive
+                    selectedOrganization.inactive
                     ? CLOSED_COLOR
                     : category.id === FOOD_PANTRY_CATEGORY_ID
-                    ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
-                    : category.id === MEAL_PROGRAM_CATEGORY_ID
-                    ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
-                    : "#000",
+                      ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
+                      : category.id === MEAL_PROGRAM_CATEGORY_ID
+                        ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
+                        : "#000",
               }}
             >
               {category.name}
@@ -354,7 +332,7 @@ const StakeholderDetails = () => {
           </div>
           <div className={classes.label}>
             {selectedOrganization.inactiveTemporary ||
-            selectedOrganization.inactive ? (
+              selectedOrganization.inactive ? (
               <em className={classes.closedLabel}>
                 {selectedOrganization.inactiveTemporary
                   ? "Temporarily Closed"
@@ -366,32 +344,51 @@ const StakeholderDetails = () => {
         <div className={classes.check}>
           {selectedOrganization.distance >= 10
             ? selectedOrganization.distance
-                .toString()
-                .substring(0, 3)
-                .padEnd(4, "0")
+              .toString()
+              .substring(0, 3)
+              .padEnd(4, "0")
             : selectedOrganization.distance.toString().substring(0, 3)}{" "}
           mi
+          <MapMarker
+            category={
+              selectedOrganization.categories[0].id ===
+                FOOD_PANTRY_CATEGORY_ID &&
+                selectedOrganization.categories[1] &&
+                selectedOrganization.categories[1].id === MEAL_PROGRAM_CATEGORY_ID
+                ? -1
+                : selectedOrganization.categories[0].id ===
+                  FOOD_PANTRY_CATEGORY_ID
+                  ? 0
+                  : 1
+            }
+            inactive={
+              selectedOrganization.inactiveTemporary ||
+                selectedOrganization.inactive
+                ? true
+                : false
+            }
+          />
         </div>
       </div>
       {selectedOrganization.verificationStatusId ===
-      VERIFICATION_STATUS.VERIFIED ? (
+        VERIFICATION_STATUS.VERIFIED ? (
         <p
           style={{
             color:
               selectedOrganization.inactiveTemporary ||
-              selectedOrganization.inactive
+                selectedOrganization.inactive
                 ? CLOSED_COLOR
                 : selectedOrganization.categories[0].id === 1
-                ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
-                : ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID],
+                  ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
+                  : ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID],
           }}
         >
           Data updated on{" "}
           {selectedOrganization.approvedDate
             ? selectedOrganization.approvedDate.format("MMM Do, YYYY")
             : selectedOrganization.modifiedDate
-            ? selectedOrganization.modifiedDate.format("MMM Do, YYYY")
-            : selectedOrganization.createdDate.format("MMM Do, YYYY")}
+              ? selectedOrganization.modifiedDate.format("MMM Do, YYYY")
+              : selectedOrganization.createdDate.format("MMM Do, YYYY")}
         </p>
       ) : null}
       <div className={classes.buttons}>
@@ -419,13 +416,6 @@ const StakeholderDetails = () => {
           onClick={handleSuggestionDialogOpen}
         >
           Send Correction
-        </Button>
-        <Button
-          className={classes.button}
-          variant="outlined"
-          onClick={shareLink}
-        >
-          <Share />
         </Button>
       </div>
 
@@ -458,7 +448,7 @@ const StakeholderDetails = () => {
         <>
           <div className={classes.hoursContainer}>
             {selectedOrganization.hours &&
-            selectedOrganization.hours.length > 0 ? (
+              selectedOrganization.hours.length > 0 ? (
               selectedOrganization.hours.sort(hoursSort).map((hour) => (
                 <div
                   key={JSON.stringify(hour)}
@@ -468,14 +458,14 @@ const StakeholderDetails = () => {
                     {hour.week_of_month === 5
                       ? "Last " + hour.day_of_week
                       : hour.week_of_month === 1
-                      ? "1st " + hour.day_of_week
-                      : hour.week_of_month === 2
-                      ? "2nd " + hour.day_of_week
-                      : hour.week_of_month === 3
-                      ? "3rd " + hour.day_of_week
-                      : hour.week_of_month === 4
-                      ? "4th " + hour.day_of_week
-                      : hour.day_of_week}
+                        ? "1st " + hour.day_of_week
+                        : hour.week_of_month === 2
+                          ? "2nd " + hour.day_of_week
+                          : hour.week_of_month === 3
+                            ? "3rd " + hour.day_of_week
+                            : hour.week_of_month === 4
+                              ? "4th " + hour.day_of_week
+                              : hour.day_of_week}
                   </span>
                   <span>
                     {standardTime(hour.open)}-{standardTime(hour.close)}

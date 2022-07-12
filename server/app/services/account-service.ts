@@ -1,3 +1,9 @@
+import {
+  Account,
+  RegisterFields,
+  AccountResponse,
+  User,
+} from "../types/account-types";
 const db = require("./db");
 const camelcaseKeys = require("camelcase-keys");
 
@@ -12,61 +18,69 @@ const { v4: uuid4 } = require("uuid");
 
 const SALT_ROUNDS = 10;
 
-const selectAll = async (tenantId) => {
+const selectAll = async (tenantId: string): Promise<Account[]> => {
   let sql = `
   select login.id, login.first_name, login.last_name, login.email, login.email_confirmed,
-  login.password_hash, login.date_created, login.is_global_admin, login.is_global_reporting, 
-    lt.tenant_id, lt.is_admin, lt.is_security_admin, lt.is_data_entry, lt.is_coordinator 
-  from login left outer join 
+  login.password_hash, login.date_created, login.is_global_admin, login.is_global_reporting,
+    lt.tenant_id, lt.is_admin, lt.is_security_admin, lt.is_data_entry, lt.is_coordinator
+  from login left outer join
   (
     select * from login_tenant where tenant_id = $<tenantId>
   ) as lt on login.id = lt.login_id
   `;
-  const result = await db.manyOrNone(sql, { tenantId });
+  const result: Account[] = await db.manyOrNone(sql, {
+    tenantId: Number(tenantId),
+  });
   return result.map((r) => camelcaseKeys(r));
 };
 
-const selectById = async (id, tenantId) => {
+const selectById = async (id: string, tenantId: string): Promise<Account> => {
   const sql = `select login.id, login.first_name, login.last_name, login.email, login.email_confirmed,
-  login.password_hash, login.date_created, login.is_global_admin, login.is_global_reporting, 
-  lt.tenant_id, lt.is_admin, lt.is_security_admin, lt.is_data_entry, lt.is_coordinator 
-  from login left outer join 
+  login.password_hash, login.date_created, login.is_global_admin, login.is_global_reporting,
+  lt.tenant_id, lt.is_admin, lt.is_security_admin, lt.is_data_entry, lt.is_coordinator
+  from login left outer join
   (
     select * from login_tenant where tenant_id = $<tenantId>
   ) as lt on login.id = lt.login_id
   where id = $<id>`;
-  const row = await db.one(sql, { id: Number(id), tenantId: Number(tenantId) });
+  const row: Account = await db.one(sql, {
+    id: Number(id),
+    tenantId: Number(tenantId),
+  });
   return camelcaseKeys(row);
 };
 
-const selectByEmail = async (email, tenantId) => {
+const selectByEmail = async (
+  email: string,
+  tenantId: string
+): Promise<Account> => {
   const sql = `select login.id, login.first_name, login.last_name, login.email, login.email_confirmed,
-  login.password_hash, login.date_created, login.is_global_admin, login.is_global_reporting, 
-  lt.tenant_id, lt.is_admin, lt.is_security_admin, lt.is_data_entry, lt.is_coordinator 
-  from login left outer join 
+  login.password_hash, login.date_created, login.is_global_admin, login.is_global_reporting,
+  lt.tenant_id, lt.is_admin, lt.is_security_admin, lt.is_data_entry, lt.is_coordinator
+  from login left outer join
   (
     select * from login_tenant where tenant_id = $<tenantId>
   ) as lt on login.id = lt.login_id
   where email ilike $<email> `;
-  const row = await db.one(sql, { email, tenantId: Number(tenantId) });
+  const row: Account = await db.one(sql, { email, tenantId: Number(tenantId) });
   return camelcaseKeys(row);
 };
 
-const register = async (model) => {
-  const { email, clientUrl, tenantId } = model;
-  let result = null;
-  await hashPassword(model);
+const register = async (body: RegisterFields): Promise<AccountResponse> => {
+  const { email, clientUrl, tenantId } = body;
+  let result: AccountResponse;
+  await hashPassword(body);
   try {
     const sql = `insert into login (first_name, last_name, email,
         password_hash)
         values ($<firstName>, $<lastName>, $<email>, $<passwordHash>) returning id`;
-    const row = await db.one(sql, model);
+    const row = await db.one(sql, body);
     result = {
       isSuccess: true,
       code: "REG_SUCCESS",
-      newId: row.id,
+      newId: row.id as string,
       message: "Registration successful.",
-    };
+    } as const;
     const sqlRole = `insert into login_tenant (login_id, tenant_id, is_data_entry)
       values ($<loginId>, $<tenantId>, true)`;
     await db.none(sqlRole, { loginId: row.id, tenantId: Number(tenantId) });
@@ -83,13 +97,16 @@ const register = async (model) => {
 };
 
 // Re-transmit confirmation email
-const resendConfirmationEmail = async (email, clientUrl) => {
-  let result = null;
+const resendConfirmationEmail = async (
+  email: string,
+  clientUrl: string
+): Promise<AccountResponse> => {
+  let result: AccountResponse;
   try {
     const sql = `select id from  login where email ilike $<email>`;
     const rows = await db.manyOrNone(sql, { email });
     result = {
-      success: true,
+      isSuccess: true,
       code: "REG_SUCCESS",
       newId: rows[0].id,
       message: "Account found.",
@@ -100,7 +117,7 @@ const resendConfirmationEmail = async (email, clientUrl) => {
     // Assume any error is an email that does not correspond to
     // an account.
     return {
-      success: false,
+      isSuccess: false,
       code: "REG_ACCOUNT_NOT_FOUND",
       message: `Email ${email} is not registered. `,
     };
@@ -109,7 +126,11 @@ const resendConfirmationEmail = async (email, clientUrl) => {
 
 // Generate security token and transmit registration
 // confirmation email
-const requestRegistrationConfirmation = async (email, result, clientUrl) => {
+const requestRegistrationConfirmation = async (
+  email: string,
+  result: AccountResponse,
+  clientUrl: string
+): Promise<AccountResponse> => {
   const token = uuid4();
   try {
     const sqlToken = `insert into security_token (token, email)
@@ -119,14 +140,14 @@ const requestRegistrationConfirmation = async (email, result, clientUrl) => {
     return result;
   } catch (err) {
     return {
-      success: false,
+      isSuccess: false,
       code: "REG_EMAIL_FAILED",
       message: `Sending registration confirmation email to ${email} failed.`,
     };
   }
 };
 
-const confirmRegistration = async (token) => {
+const confirmRegistration = async (token: string): Promise<AccountResponse> => {
   const sql = `select email, date_created
     from security_token where token = $<token>;`;
   try {
@@ -135,14 +156,14 @@ const confirmRegistration = async (token) => {
 
     if (rows.length < 1) {
       return {
-        success: false,
+        isSuccess: false,
         code: "REG_CONFIRM_TOKEN_INVALID",
         message:
           "Email confirmation failed. Invalid security token. Re-send confirmation email.",
       };
     } else if (moment(now).diff(rows[0].date_created, "hours") >= 1) {
       return {
-        success: false,
+        isSuccess: false,
         code: "REG_CONFIRM_TOKEN_EXPIRED",
         message:
           "Email confirmation failed. Security token expired. Re-send confirmation email.",
@@ -157,21 +178,28 @@ const confirmRegistration = async (token) => {
     await db.none(confirmSql, { email });
 
     return {
-      success: true,
+      isSuccess: true,
       code: "REG_CONFIRM_SUCCESS",
       message: "Email confirmed.",
       email,
     };
-  } catch (err) {
-    return { message: err.message };
+  } catch (err: any) {
+    return {
+      isSuccess: false,
+      code: "REG_CONFIRM_FAILED",
+      message: err.message,
+    };
   }
 };
 
 // Forgot Password - verify email matches an account and
 // send password reset confirmation email.
-const forgotPassword = async (model) => {
+const forgotPassword = async (model: {
+  email: string;
+  clientUrl: string;
+}): Promise<AccountResponse> => {
   const { email, clientUrl } = model;
-  let result = null;
+  let result: AccountResponse;
   try {
     const sql = `select id from  login where email ilike $<email>`;
     const row = await db.one(sql, { email });
@@ -192,7 +220,7 @@ const forgotPassword = async (model) => {
     // Replace the success result if there is a prob
     // sending email.
     result = await requestResetPasswordConfirmation(email, result, clientUrl);
-    if (result === true) {
+    if (result.isSuccess === true) {
       return {
         isSuccess: true,
         code: "FORGOT_PASSWORD_SUCCESS",
@@ -202,14 +230,18 @@ const forgotPassword = async (model) => {
     } else {
       return result;
     }
-  } catch (err) {
+  } catch (err: any) {
     return Promise.reject(`Unexpected Error: ${err.message}`);
   }
 };
 
 // Generate security token and transmit password reset
 // confirmation email
-const requestResetPasswordConfirmation = async (email, result, clientUrl) => {
+const requestResetPasswordConfirmation = async (
+  email: string,
+  result: AccountResponse,
+  clientUrl: string
+): Promise<AccountResponse> => {
   const token = uuid4();
   try {
     const sqlToken = `insert into security_token (token, email)
@@ -219,7 +251,7 @@ const requestResetPasswordConfirmation = async (email, result, clientUrl) => {
     return result;
   } catch (err) {
     return {
-      success: false,
+      isSuccess: false,
       code: "FORGOT_PASSWORD_EMAIL_FAILED",
       message: `Sending registration confirmation email to ${email} failed.`,
     };
@@ -227,7 +259,13 @@ const requestResetPasswordConfirmation = async (email, result, clientUrl) => {
 };
 
 // Verify password reset token and change password
-const resetPassword = async ({ token, password }) => {
+const resetPassword = async ({
+  token,
+  password,
+}: {
+  token: string;
+  password: string;
+}): Promise<AccountResponse> => {
   const sql = `select email, date_created
     from security_token where token = $<token>; `;
   const now = moment();
@@ -265,7 +303,7 @@ const resetPassword = async ({ token, password }) => {
       message: "Password reset.",
       email,
     };
-  } catch (err) {
+  } catch (err: any) {
     return {
       isSuccess: false,
       code: "RESET_PASSWORD_FAILED",
@@ -275,14 +313,18 @@ const resetPassword = async ({ token, password }) => {
   }
 };
 
-const authenticate = async (email, password, tenantId) => {
+const authenticate = async (
+  email: string,
+  password: string,
+  tenantId: string
+): Promise<AccountResponse> => {
   try {
     const user = await selectByEmail(email, tenantId);
     if (!user.emailConfirmed) {
       return {
         isSuccess: false,
         code: "AUTH_NOT_CONFIRMED",
-        reason: `Email ${email} not confirmed`,
+        message: `Email ${email} not confirmed`,
       };
     }
     const isUser = await bcrypt.compare(password, user.passwordHash);
@@ -321,7 +363,7 @@ const authenticate = async (email, password, tenantId) => {
           isDataEntry: user.isDataEntry,
           emailConfirmed: user.emailConfirmed,
           isGlobalAdmin: user.isGlobalAdmin,
-          isGlobalReporting: user.isGlboalReporting,
+          isGlobalReporting: user.isGlobalReporting,
           role: role.join(","), // join list of roles to string
         },
       };
@@ -329,18 +371,18 @@ const authenticate = async (email, password, tenantId) => {
     return {
       isSuccess: false,
       code: "AUTH_INCORRECT_PASSWORD",
-      reason: `Incorrect password`,
+      message: `Incorrect password`,
     };
   } catch (err) {
     return {
       isSuccess: false,
       code: "AUTH_NO_ACCOUNT",
-      reason: `No account found for email ${email}`,
+      message: `No account found for email ${email}`,
     };
   }
 };
 
-const update = async (model) => {
+const update = async (model: User): Promise<Account> => {
   const sql = `update login
                set firstName = $<firstName>,
                 lastName = $<lastName>
@@ -348,12 +390,12 @@ const update = async (model) => {
   return await db.none(sql, model);
 };
 
-const remove = async (id) => {
+const remove = async (id: string) => {
   const sql = `delete from login where id = $<id>`;
   return await db.none(sql, { id: Number(id) });
 };
 
-async function hashPassword(user) {
+async function hashPassword(user: any) {
   if (!user.password) throw user.invalidate("password", "password is required");
   if (user.password.length < 8)
     throw user.invalidate("password", "password must be at least 8 characters");
@@ -363,17 +405,17 @@ async function hashPassword(user) {
 
 // Update login table with the specified permissionName column set to value
 const setTenantPermissions = async (
-  userId,
-  permissionName,
-  value,
-  tenantId
-) => {
+  userId: string,
+  permissionName: string,
+  value: string,
+  tenantId: string
+): Promise<AccountResponse> => {
   const user = await selectById(userId, tenantId);
   if (!user) {
     return {
-      success: false,
+      isSuccess: false,
       code: "AUTH_NO_ACCOUNT",
-      reason: `No account found for id ${userId}`,
+      message: `No account found for id ${userId}`,
     };
   }
   // Don't expose any columns besides the currently allowed ones:
@@ -386,7 +428,7 @@ const setTenantPermissions = async (
   ];
   if (!allowedPermissions.includes(permissionName)) {
     return {
-      success: false,
+      isSuccess: false,
       code: "DB_ERROR",
       message: `Cannot modify login field ${permissionName}.`,
     };
@@ -418,13 +460,13 @@ const setTenantPermissions = async (
       tenantId,
     });
     return {
-      success: true,
+      isSuccess: true,
       code: "UPDATE_SUCCESS",
-      reason: `${permissionName} successfully set to ${booleanValue} for ${userId}`,
+      message: `${permissionName} successfully set to ${booleanValue} for ${userId}`,
     };
   } catch (err) {
     return {
-      success: false,
+      isSuccess: false,
       code: "DB_ERROR",
       message: `Updating login.${permissionName} failed: ${err}`,
     };
@@ -432,17 +474,17 @@ const setTenantPermissions = async (
 };
 
 const setGlobalPermissions = async (
-  userId,
-  permissionName,
-  value,
-  tenantId
-) => {
+  userId: string,
+  permissionName: string,
+  value: string,
+  tenantId: string
+): Promise<AccountResponse> => {
   const user = await selectById(userId, tenantId);
   if (!user) {
     return {
-      success: false,
+      isSuccess: false,
       code: "AUTH_NO_ACCOUNT",
-      reason: `No account found for id ${userId}`,
+      message: `No account found for id ${userId}`,
     };
   }
   // Don't expose any columns besides the currently allowed ones:
@@ -450,7 +492,7 @@ const setGlobalPermissions = async (
   var allowedPermissions = ["is_global_admin", "is_global_reporting"];
   if (!allowedPermissions.includes(permissionName)) {
     return {
-      success: false,
+      isSuccess: false,
       code: "DB_ERROR",
       message: `Cannot modify login field ${permissionName}.`,
     };
@@ -462,30 +504,31 @@ const setGlobalPermissions = async (
     const updateSql = `update login set $<permissionName:name> = $<booleanValue> where id = $<userId>;`;
     await db.none(updateSql, { permissionName, booleanValue, userId });
     return {
-      success: true,
+      isSuccess: true,
       code: "UPDATE_SUCCESS",
-      reason: `${permissionName} successfully set to ${booleanValue} for ${userId}`,
+      message: `${permissionName} successfully set to ${booleanValue} for ${userId}`,
     };
   } catch (err) {
     return {
-      success: false,
+      isSuccess: false,
       code: "DB_ERROR",
       message: `Updating login.${permissionName} failed: ${err}`,
     };
   }
 };
 
-module.exports = {
-  selectAll,
-  selectById,
-  register,
-  confirmRegistration,
-  resendConfirmationEmail,
-  setTenantPermissions,
-  setGlobalPermissions,
-  forgotPassword,
-  resetPassword,
+export default {
   authenticate,
-  update,
+  confirmRegistration,
+  forgotPassword,
+  register,
   remove,
+  resendConfirmationEmail,
+  resetPassword,
+  selectAll,
+  selectByEmail,
+  selectById,
+  setGlobalPermissions,
+  setTenantPermissions,
+  update,
 };

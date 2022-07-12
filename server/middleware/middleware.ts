@@ -1,7 +1,7 @@
 const pinoLogger = require("express-pino-logger");
 const pinoNoir = require("pino-noir");
 
-function cors(req, res, next) {
+function cors(req, res, next): void {
   const origin = req.headers.origin;
 
   res.setHeader("Access-Control-Allow-Origin", origin || "*");

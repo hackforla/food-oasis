@@ -6,7 +6,7 @@
   "main": "server.js",
   "scripts": {
     "test": "mocha",
-    "start": "nodemon",
+    "start": "ts-node-dev -r dotenv/config --transpile-only --respawn ./server.ts",
     "heroku-postbuild": "cd client && npm i && npm run build",
     "format": "prettier --write  \"**/*.{js,jsx}\"",
     "lint": "eslint  \"**/*.{js,jsx}\"",
@@ -51,6 +51,14 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.18.5",
+    "@babel/preset-typescript": "^7.17.12",
+    "@types/cookie-parser": "^1.4.3",
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "@types/node": "^18.0.0",
+    "@types/pg": "^8.6.5",
+    "@types/uuid": "^8.3.4",
     "babel-eslint": "10.1.0",
     "concurrently": "^7.2.0",
     "eslint": "^8.15.0",
@@ -61,6 +69,8 @@
     "eslint-plugin-prettier": "^4.0.0",
     "lint-staged": "^12.4.1",
     "nodemon": "^2.0.16",
-    "prettier": "^2.6.2"
+    "prettier": "^2.6.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^4.7.4"
   }
 }

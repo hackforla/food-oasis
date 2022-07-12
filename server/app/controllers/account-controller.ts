@@ -1,10 +1,26 @@
-const accountService = require("../services/account-service");
-const loginsService = require("../services/logins-service");
+import accountService from "../services/account-service";
+import loginsService from "../services/logins-service";
+import { RequestHandler, Response } from "express";
+import {
+  Account,
+  RegisterFields,
+  AccountResponse,
+  User,
+} from "../types/account-types";
 
-const getAll = async (req, res) => {
+const getAll: RequestHandler<
+  // route params
+  never,
+  // response
+  Account[],
+  // req body
+  never,
+  // query params
+  { tenantId: string }
+> = async (req, res) => {
   try {
     const { tenantId } = req.query;
-    const response = await accountService.selectAll(Number(tenantId));
+    const response = await accountService.selectAll(tenantId);
     res.send(response);
   } catch (err) {
     console.error(err);
@@ -12,10 +28,16 @@ const getAll = async (req, res) => {
   }
 };
 
-const getById = async (req, res) => {
+const getById: RequestHandler<
+  { id: string },
+  Account,
+  never,
+  { tenantId: string }
+> = async (req, res) => {
   try {
     const { id } = req.params;
-    const response = await accountService.selectById(id);
+    const { tenantId } = req.query;
+    const response = await accountService.selectById(id, tenantId);
     res.send(response);
   } catch (err) {
     console.error(err);
@@ -23,10 +45,16 @@ const getById = async (req, res) => {
   }
 };
 
-const getByEmail = async (req, res) => {
+const getByEmail: RequestHandler<
+  { email: string },
+  Account,
+  never,
+  { tenantId: string }
+> = async (req, res) => {
   try {
-    const { id } = req.params;
-    const response = await accountService.selectByEmail(id);
+    const { email } = req.params;
+    const { tenantId } = req.query;
+    const response = await accountService.selectByEmail(email, tenantId);
     res.send(response);
   } catch (err) {
     console.error(err);
@@ -34,7 +62,12 @@ const getByEmail = async (req, res) => {
   }
 };
 
-const register = async (req, res) => {
+const register: RequestHandler<
+  never,
+  AccountResponse,
+  RegisterFields,
+  never
+> = async (req, res) => {
   try {
     const response = await accountService.register(req.body);
     res.send(response);
@@ -44,7 +77,12 @@ const register = async (req, res) => {
   }
 };
 
-const resendConfirmationEmail = async (req, res) => {
+const resendConfirmationEmail: RequestHandler<
+  never,
+  AccountResponse,
+  { email: string; clientUrl: string },
+  never
+> = async (req, res) => {
   try {
     const { email, clientUrl } = req.body;
     const response = await accountService.resendConfirmationEmail(
@@ -58,16 +96,32 @@ const resendConfirmationEmail = async (req, res) => {
   }
 };
 
-const forgotPassword = async (req, res) => {
+const forgotPassword: RequestHandler<
+  never,
+  AccountResponse | { error: string },
+  {
+    email: string;
+    clientUrl: string;
+  },
+  never
+> = async (req, res) => {
   try {
     const response = await accountService.forgotPassword(req.body);
     res.send(response);
-  } catch (err) {
-    res.status("500").json({ error: err.toString() });
+  } catch (err: any) {
+    res.status(500).json({ error: err.toString() });
   }
 };
 
-const resetPassword = async (req, res) => {
+const resetPassword: RequestHandler<
+  never,
+  AccountResponse,
+  {
+    token: string;
+    password: string;
+  },
+  never
+> = async (req, res) => {
   try {
     const response = await accountService.resetPassword(req.body);
     res.send(response);
@@ -77,7 +131,17 @@ const resetPassword = async (req, res) => {
   }
 };
 
-const setTenantPermissions = async (req, res) => {
+const setTenantPermissions: RequestHandler<
+  never,
+  AccountResponse,
+  {
+    userId: string;
+    permissionName: string;
+    value: string;
+    tenantId: string;
+  },
+  never
+> = async (req, res) => {
   const { userId, permissionName, value, tenantId } = req.body;
   try {
     const response = await accountService.setTenantPermissions(
@@ -93,7 +157,17 @@ const setTenantPermissions = async (req, res) => {
   }
 };
 
-const setGlobalPermissions = async (req, res) => {
+const setGlobalPermissions: RequestHandler<
+  never,
+  AccountResponse,
+  {
+    userId: string;
+    permissionName: string;
+    value: string;
+    tenantId: string;
+  },
+  never
+> = async (req, res) => {
   const { userId, permissionName, value, tenantId } = req.body;
   try {
     const response = await accountService.setGlobalPermissions(
@@ -109,12 +183,20 @@ const setGlobalPermissions = async (req, res) => {
   }
 };
 
-const confirmRegister = async (req, res) => {
+const confirmRegister: RequestHandler<
+  never,
+  AccountResponse | { error: string },
+  {
+    id: string;
+    token: string;
+  },
+  never
+> = async (req, res) => {
   try {
     const { id } = req.params;
     if (id !== req.body.id) {
       res
-        .status("400")
+        .status(400)
         .json({ error: "id in url does not match id in request body." });
     }
     const response = await accountService.confirmRegistration(req.body.token);
@@ -125,7 +207,16 @@ const confirmRegister = async (req, res) => {
   }
 };
 
-const login = async (req, res, next) => {
+const login: RequestHandler<
+  never,
+  AccountResponse,
+  {
+    email: string;
+    password: string;
+    tenantId: string;
+  },
+  never
+> = async (req: any, res, next) => {
   const { email, password, tenantId } = req.body;
   try {
     const resp = await accountService.authenticate(email, password, tenantId);
@@ -142,7 +233,7 @@ const login = async (req, res, next) => {
   }
 };
 
-const put = async (req, res) => {
+const put: RequestHandler<never, Response, User, never> = async (req, res) => {
   try {
     await accountService.update(req.body);
     res.sendStatus(200);
@@ -152,7 +243,10 @@ const put = async (req, res) => {
   }
 };
 
-const remove = async (req, res) => {
+const remove: RequestHandler<{ id: string }, Response, never, never> = async (
+  req,
+  res
+) => {
   try {
     const { id } = req.params;
     await accountService.remove(id);
@@ -163,18 +257,18 @@ const remove = async (req, res) => {
   }
 };
 
-module.exports = {
-  getAll,
-  getById,
-  getByEmail,
-  register,
+export default {
   confirmRegister,
-  resendConfirmationEmail,
-  setTenantPermissions,
-  setGlobalPermissions,
   forgotPassword,
-  resetPassword,
+  getAll,
+  getByEmail,
+  getById,
   login,
   put,
+  register,
   remove,
+  resendConfirmationEmail,
+  resetPassword,
+  setGlobalPermissions,
+  setTenantPermissions,
 };

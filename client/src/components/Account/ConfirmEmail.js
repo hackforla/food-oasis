@@ -58,7 +58,7 @@ const ConfirmEmail = (props) => {
     const confirmEmail = async (tok) => {
       const result = await accountService.confirmRegister(tok);
       setConfirmResult(result);
-      if (result.success) {
+      if (result.isSuccess) {
         // notification?
         setToast({ message: `Your email has been confirmed. Please log in.` });
       }

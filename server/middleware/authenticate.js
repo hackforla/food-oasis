@@ -21,7 +21,7 @@ function localStrategy() {
         if (response.isSuccess) {
           done(null, response.user);
         } else {
-          done(null, false, { message: response.reason });
+          done(null, false, { message: response.message });
         }
       } catch (err) {
         done(err);

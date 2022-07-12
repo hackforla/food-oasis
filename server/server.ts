@@ -9,7 +9,9 @@ const path = require("path");
 const middleware = require("./middleware/middleware");
 const router = require("./app/routes/index");
 
-const app = express();
+import { Express } from "express";
+
+const app: Express = express();
 
 // Redirect HTTP requests to HTTPS
 if (process.env.NODE_ENV === "production") {

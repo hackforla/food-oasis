@@ -1,5 +1,7 @@
-const router = require("express").Router();
-const accountController = require("../controllers/account-controller");
+import { Router } from "express";
+
+const router = Router();
+import accountController from "../controllers/account-controller";
 const jwtSession = require("../../middleware/jwt-session");
 //const authenticate = require("../../middleware/authenticate");
 

@@ -1,0 +1,21 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "target": "ES2019",
+    "lib": ["ES2019", "DOM"],
+    "module": "commonjs",
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "outDir": "build",
+    "jsx": "react",
+    "allowJs": true,
+    "typeRoots": [
+      "node_modules/@types",
+      "../../node_modules/@types",
+      "../../typeRoots"
+    ]
+  },
+  "include": ["app", "app/controllers/.d.ts"]
+}
+

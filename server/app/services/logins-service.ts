@@ -1,7 +1,9 @@
+import { Login } from "../types/logins-types";
+
 const db = require("./db");
 const camelcaseKeys = require("camelcase-keys");
 
-const insert = async (login_id, tenant_id) => {
+const insert = async (login_id: string, tenant_id: string) => {
   const sql = `insert into logins (login_id, tenant_id)
         values ($<login_id>,'$<tenant_id>') returning id`;
 
@@ -10,14 +12,17 @@ const insert = async (login_id, tenant_id) => {
 };
 
 // limit 500
-const selectAll = async (email, tenantId) => {
+const selectAll = async (
+  email: string | undefined,
+  tenantId: string | undefined
+): Promise<Login[]> => {
   let sql = `select logins.id, login.first_name, login.last_name, login.email, logins.login_time
     from logins
     join login
     on login.id = logins.login_id`;
 
-  let queryValues = [];
-  let whereExpressions = [];
+  let queryValues: string[] = [];
+  let whereExpressions: string[] = [];
 
   if (tenantId !== undefined) {
     queryValues.push(tenantId);
@@ -37,8 +42,8 @@ const selectAll = async (email, tenantId) => {
     sql += " where " + whereExpressions.join(" and ");
     sql += " order by logins.login_time desc";
   }
-  const rows = await db.any(sql, queryValues);
+  const rows: Login[] = await db.any(sql, queryValues);
   return camelcaseKeys(rows);
 };
 
-module.exports = { insert, selectAll };
+export default { insert, selectAll };

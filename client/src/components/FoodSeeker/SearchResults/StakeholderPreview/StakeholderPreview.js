@@ -79,6 +79,15 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "3px",
     margin: ".25em 0",
   },
+  allowWalkinsLabel: {
+    color: "#fff",
+    alignSelf: "flex-start",
+    backgroundColor: theme.palette.primary.main,
+    padding: ".25em",
+    borderRadius: "3px",
+    margin: ".25em 0",
+    marginRight: "0.25em",
+  },
   buttons: {
     width: "100%",
     display: "flex",
@@ -191,6 +200,7 @@ const StakeholderPreview = ({ stakeholder }) => {
     tenantTimeZone
   );
   const isOpenFlag = !!stakeholderHours;
+  const showAllowWalkinsFlag = stakeholder.allowWalkins;
   const isAlmostClosedFlag =
     isOpenFlag && isAlmostClosed(stakeholderHours, tenantTimeZone);
   const minutesToClosing =
@@ -269,6 +279,11 @@ const StakeholderPreview = ({ stakeholder }) => {
             <em className={classes.closingSoonLabel}>
               {`Closing in ${minutesToClosing} minutes`}
             </em>
+          ) : null}
+
+          {showAllowWalkinsFlag &&
+          !(stakeholder.inactiveTemporary || stakeholder.inactive) ? (
+            <em className={classes.allowWalkinsLabel}>Walk-Ins Allowed</em>
           ) : null}
         </div>
         <div className={classes.buttons}>

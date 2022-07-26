@@ -1,7 +1,10 @@
-const db = require("./db");
-const camelcaseKeys = require("camelcase-keys");
+import db from "./db";
+import camelcaseKeys from "camelcase-keys";
 
-const selectAll = async (params) => {
+const selectAll = async (params: {
+  statusIds: number[];
+  tenantId: number[];
+}) => {
   const statusIds = params.statusIds
     ? params.statusIds.map((s) => Number(s)).join(",")
     : "-1";
@@ -21,7 +24,7 @@ const selectAll = async (params) => {
   return result.map((r) => camelcaseKeys(r));
 };
 
-const selectById = async (suggestionId) => {
+const selectById = async (suggestionId: number) => {
   // Need to cast id to number so pg-promise knows how
   // to format SQL
   const id = Number(suggestionId);
@@ -56,7 +59,7 @@ const insert = async (model) => {
   return { id: result.id };
 };
 
-const update = async (model) => {
+const update = async (model: object) => {
   const sql = `update suggestion set
     admin_notes = $<adminNotes>,
     suggestion_status_id = $<suggestionStatusId>
@@ -73,7 +76,7 @@ const remove = async (id) => {
   return result.rowCount;
 };
 
-module.exports = {
+export default {
   selectAll,
   selectById,
   insert,

@@ -1,15 +1,16 @@
 import suggestionService from "../services/suggestion-service";
-import { RequestHandler } from "express";
+import { RequestHandler, Response } from "express";
+import { Suggestion } from "../types/suggestion-types";
 
 const getAll: RequestHandler<
   // route params
   never,
   //response
-  number[],
+  Suggestion[],
   // request body
-  { statusIds: []; tenantTd: [] },
+  never,
   // req query
-  any
+  { statusIds: string[]; tenantId: string }
 > = async (req, res) => {
   try {
     const resp = await suggestionService.selectAll(req.query);
@@ -20,12 +21,12 @@ const getAll: RequestHandler<
   }
 };
 
-const getById: RequestHandler<{ id: string }, any, never> = async (
+const getById: RequestHandler<{ id: string }, Suggestion, never> = async (
   req,
   res
 ) => {
   try {
-    const id = Number(req.params.id);
+    const id = req.params.id;
     const resp = await suggestionService.selectById(id);
     res.send(resp);
   } catch (err: any) {
@@ -38,10 +39,11 @@ const getById: RequestHandler<{ id: string }, any, never> = async (
   }
 };
 
-const post: RequestHandler<never, object | { error: string }, object> = async (
-  req,
-  res
-) => {
+const post: RequestHandler<
+  never,
+  { id: number } | { error: string },
+  Suggestion
+> = async (req, res) => {
   try {
     const resp = await suggestionService.insert(req.body);
     res.status(201).json(resp);
@@ -55,7 +57,10 @@ const post: RequestHandler<never, object | { error: string }, object> = async (
   }
 };
 
-const put: RequestHandler<{ id: string }, never, object> = async (req, res) => {
+const put: RequestHandler<{ id: string }, never, Suggestion> = async (
+  req,
+  res
+) => {
   try {
     await suggestionService.update(req.body);
     res.sendStatus(200);
@@ -65,9 +70,24 @@ const put: RequestHandler<{ id: string }, never, object> = async (req, res) => {
   }
 };
 
+const remove: RequestHandler<{ id: string }, Response, never, never> = async (
+  req,
+  res
+) => {
+  try {
+    const { id } = req.params;
+    await suggestionService.remove(id);
+    res.sendStatus(200);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+};
+
 export default {
   getAll,
   getById,
   post,
   put,
+  remove,
 };

@@ -59,7 +59,7 @@ export function getTenantId() {
     );
   });
 
-  return tenant ? tenant[0] : 1;
+  return tenant ? Number(tenant[0]) : 1;
 }
 
 export const SiteProvider = ({ children }) => {

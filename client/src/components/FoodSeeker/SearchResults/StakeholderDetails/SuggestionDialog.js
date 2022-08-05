@@ -28,6 +28,14 @@ const useStyles = makeStyles((theme) => ({
         paddingRight: "2rem"
       }
     }
+  },
+  asterisk: {
+    position: "absolute",
+    top: "40px",
+    right: "2rem",
+    transform: "translateY(-8px)",
+    color: "red",
+    fontSize: "2rem"
   }
 }));
 function SuggestionDialog(props) {
@@ -84,7 +92,7 @@ function SuggestionDialog(props) {
                 helperText={touched.notes ? errors.notes : ""}
                 error={touched.notes && Boolean(errors.notes)}
               />
-              <div style={astrikStyle}>*</div>
+              <div className={classes.asterisk}>*</div>
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -194,14 +202,5 @@ SuggestionDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   stakeholder: PropTypes.object,
 };
-
-const astrikStyle = {
-  position: "absolute",
-  top: "40px",
-  right: "2rem",
-  transform: "translateY(-8px)",
-  color: "red",
-  fontSize: "2rem"
-}
 
 export default SuggestionForm;

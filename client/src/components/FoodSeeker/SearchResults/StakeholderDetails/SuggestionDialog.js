@@ -78,7 +78,6 @@ function SuggestionDialog(props) {
                 id="notes"
                 margin="normal"
                 fullWidth
-                autoFocus
                 value={values.notes}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -98,7 +97,6 @@ function SuggestionDialog(props) {
                 name="tipsterName"
                 margin="normal"
                 fullWidth
-                autoFocus
                 value={values.tipsterName}
                 onChange={handleChange}
               />
@@ -114,7 +112,6 @@ function SuggestionDialog(props) {
                 name="tipsterPhone"
                 margin="normal"
                 fullWidth
-                autoFocus
                 value={values.tipsterPhone}
                 onChange={handleChange}
               />
@@ -130,7 +127,6 @@ function SuggestionDialog(props) {
                 name="tipsterEmail"
                 margin="normal"
                 fullWidth
-                autoFocus
                 value={values.tipsterEmail}
                 onChange={handleChange}
               />

@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "../../../UI";
-import { useToasterContext } from "../../../../contexts/toasterContext";
-import MapMarker from "images/mapMarker";
 import StakeholderIcon from "images/stakeholderIcon";
 import fbIcon from "images/fbIcon.png";
 import instaIcon from "images/instaIcon.png";
@@ -23,6 +21,8 @@ import {
   useWidget,
 } from "../../../../appReducer";
 import { useHistory } from "react-router-dom";
+import { useToasterContext } from "../../../../contexts/toasterContext";
+import { Share } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   stakeholder: {
@@ -154,9 +154,9 @@ const StakeholderDetails = () => {
   const searchCoordinates = useSearchCoordinates();
   const userCoordinates = useUserCoordinates();
   const originCoordinates = searchCoordinates || userCoordinates;
-  const { setToast } = useToasterContext();
   const isWidget = useWidget();
   const history = useHistory();
+  const { setToast } = useToasterContext();
 
   useEffect(() => {
     if (selectedOrganization?.id) {
@@ -268,6 +268,28 @@ const StakeholderDetails = () => {
     return text;
   };
 
+  const shareLink = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "Food Oasis",
+          url: window.location.href,
+          text: selectedOrganization.name,
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        setToast({
+          message: "Copied to clipboard",
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  };
   return (
     <div className={classes.stakeholder}>
       <div className={classes.backButtonWrapper}>
@@ -349,25 +371,6 @@ const StakeholderDetails = () => {
               .padEnd(4, "0")
             : selectedOrganization.distance.toString().substring(0, 3)}{" "}
           mi
-          <MapMarker
-            category={
-              selectedOrganization.categories[0].id ===
-                FOOD_PANTRY_CATEGORY_ID &&
-                selectedOrganization.categories[1] &&
-                selectedOrganization.categories[1].id === MEAL_PROGRAM_CATEGORY_ID
-                ? -1
-                : selectedOrganization.categories[0].id ===
-                  FOOD_PANTRY_CATEGORY_ID
-                  ? 0
-                  : 1
-            }
-            inactive={
-              selectedOrganization.inactiveTemporary ||
-                selectedOrganization.inactive
-                ? true
-                : false
-            }
-          />
         </div>
       </div>
       {selectedOrganization.verificationStatusId ===
@@ -416,6 +419,13 @@ const StakeholderDetails = () => {
           onClick={handleSuggestionDialogOpen}
         >
           Send Correction
+        </Button>
+        <Button
+          className={classes.button}
+          variant="outlined"
+          onClick={shareLink}
+        >
+          <Share />
         </Button>
       </div>
 

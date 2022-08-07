@@ -33,11 +33,15 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    [theme.breakpoints.down("xs")]: {
+      height: "100%",
+    },
   },
   container: {
     maxWidth: "650px",
     [theme.breakpoints.down("xs")]: {
       padding: 0,
+      height: "100%",
     },
   },
   paper: {
@@ -48,6 +52,12 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     borderRadius: "24px",
     boxShadow: "0px 5px 8px 0px rgb(0, 0, 0, 40%)",
+    [theme.breakpoints.down("xs")]: {
+      height: "100%",
+      borderRadius: "0",
+      paddingTop: "10rem",
+      justifyContent: "start",
+    },
   },
   logoContainer: {
     margin: "30px 0 0px 0",
@@ -83,10 +93,10 @@ const useStyles = makeStyles((theme) => ({
   },
   formContainer: {
     width: "100%",
-    paddingInline: "90px",
+    padding: "5px 15px 15px 15px",
     color: "#000000",
-    [theme.breakpoints.down("xs")]: {
-      padding: "15px",
+    [theme.breakpoints.up("sm")]: {
+      paddingInline: "90px",
     },
   },
   inputContainer: {
@@ -129,16 +139,19 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   logo: {
-    width: "40%",
+    width: "60%",
     height: "auto",
     textAlign: "center",
+    [theme.breakpoints.up("sm")]: {
+      width: "40%",
+    },
   },
   searchIcon: {
     width: 32,
     height: 32,
   },
   learnMore: {
-    fontSize: "19px",
+    fontSize: "16px",
     color: "#4D4D4D",
     textDecoration: "underline",
     textUnderlineOffset: "8px",
@@ -147,6 +160,9 @@ const useStyles = makeStyles((theme) => ({
     },
     "&:hover": {
       color: "#BCE76D",
+    },
+    [theme.breakpoints.up("sm")]: {
+      fontSize: "19px",
     },
   },
   locationBtn: {

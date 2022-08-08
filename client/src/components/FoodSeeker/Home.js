@@ -57,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
       borderRadius: "0",
       paddingTop: "10rem",
       justifyContent: "start",
+      boxShadow: "none",
     },
   },
   logoContainer: {

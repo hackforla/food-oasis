@@ -33,21 +33,35 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    [theme.breakpoints.down("xs")]: {
+      height: "100%",
+    },
   },
   container: {
+    maxWidth: "650px",
     [theme.breakpoints.down("xs")]: {
       padding: 0,
+      height: "100%",
     },
   },
   paper: {
     margin: "0 auto",
+    padding: "1.5rem 0.5rem 3rem 0.5rem",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     borderRadius: "24px",
+    boxShadow: "0px 5px 8px 0px rgb(0, 0, 0, 40%)",
+    [theme.breakpoints.down("xs")]: {
+      height: "100%",
+      borderRadius: "0",
+      paddingTop: "10rem",
+      justifyContent: "start",
+      boxShadow: "none",
+    },
   },
   logoContainer: {
-    margin: "20px 0 10px 0",
+    margin: "30px 0 0px 0",
     textAlign: "center",
   },
   header: {
@@ -56,9 +70,9 @@ const useStyles = makeStyles((theme) => ({
   subtitle: {
     marginTop: theme.spacing(1),
     fontWeight: "500",
-    fontSize: "20px",
-    marginBottom: ".25em",
-    color: "#4D4D4D",
+    fontSize: "18.72px",
+    marginBottom: "0.5em",
+    color: "#000000",
     textAlign: "center",
   },
   label: {
@@ -80,12 +94,10 @@ const useStyles = makeStyles((theme) => ({
   },
   formContainer: {
     width: "100%",
-    backgroundColor: "#336699",
-    padding: "10px 35px",
-    borderRadius: "24px",
-    color: "#fff",
-    [theme.breakpoints.down("xs")]: {
-      padding: "15px",
+    padding: "5px 15px 15px 15px",
+    color: "#000000",
+    [theme.breakpoints.up("sm")]: {
+      paddingInline: "90px",
     },
   },
   inputContainer: {
@@ -93,6 +105,8 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "flex-start",
     justifyContent: "center",
     marginBottom: "1em",
+    color: "#4D4D4D",
+    fontSize: "16px",
   },
   address: {
     marginTop: theme.spacing(1),
@@ -126,28 +140,37 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   logo: {
-    width: "30%",
+    width: "60%",
     height: "auto",
     textAlign: "center",
+    [theme.breakpoints.up("sm")]: {
+      width: "40%",
+    },
   },
   searchIcon: {
     width: 32,
     height: 32,
   },
   learnMore: {
-    fontSize: "19px",
-    color: "white",
+    fontSize: "16px",
+    color: "#4D4D4D",
     textDecoration: "underline",
+    textUnderlineOffset: "8px",
     "&:visited": {
-      color: "white",
+      color: "#4D4D4D",
     },
     "&:hover": {
       color: "#BCE76D",
     },
+    [theme.breakpoints.up("sm")]: {
+      fontSize: "19px",
+    },
   },
   locationBtn: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: "#336699",
     color: "white",
+    letterSpacing: "1px",
+    fontWeight: "500",
     "&:hover": {
       backgroundColor: "#439846",
     },
@@ -205,7 +228,7 @@ const Home = () => {
 
   return (
     <div className={classes.homeWrapper} style={{ backgroundImage: bgImg }}>
-      <Container component="main" maxWidth="sm" className={classes.container}>
+      <Container component="main" className={classes.container}>
         <CssBaseline />
         <Paper className={classes.paper}>
           <Box className={classes.logoContainer}>
@@ -220,7 +243,9 @@ const Home = () => {
               className={classes.form}
               onSubmit={() => history.push("/organizations")}
             >
-              <Typography>{taglineText}</Typography>
+              <Typography className={classes.subtitle}>
+                {taglineText}
+              </Typography>
               <Box className={classes.inputContainer}>
                 <AddressDropDown />
               </Box>

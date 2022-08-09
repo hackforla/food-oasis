@@ -160,7 +160,7 @@ const useStyles = makeStyles((theme) => ({
       color: "#4D4D4D",
     },
     "&:hover": {
-      color: "#BCE76D",
+      color: "#31C658",
     },
     [theme.breakpoints.up("sm")]: {
       fontSize: "19px",
@@ -172,7 +172,7 @@ const useStyles = makeStyles((theme) => ({
     letterSpacing: "1px",
     fontWeight: "500",
     "&:hover": {
-      backgroundColor: "#439846",
+      backgroundColor: "#0A3865",
     },
   },
 }));

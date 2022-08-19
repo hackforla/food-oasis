@@ -1,6 +1,7 @@
 export interface Neighborhood {
   id: number;
   name: string;
+  zoom: number;
 }
 
 export interface NeighborhoodGeoJSON extends Neighborhood {

@@ -8,5 +8,6 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "baseUrl": "./server, ./client",
+    "sourceMap": true
   }
 }

@@ -1,7 +1,7 @@
 const db = require("./db");
 const camelcaseKeys = require("camelcase-keys");
 
-const selectAll = async () => {
+const selectAll = async (tenantId) => {
   // const sql = `
   //   select id, name, website, empower_link, nc_id,
   //     certified, service_region, geometry
@@ -9,11 +9,12 @@ const selectAll = async () => {
   //   order by name
   // `;
   const sql = `
-    select id, name
+    select id, name, zoom
     from neighborhood
+    where tenant_id = $<tenantId>
     order by name
   `;
-  const result = await db.manyOrNone(sql);
+  const result = await db.manyOrNone(sql, { tenantId });
   return result.map((r) => camelcaseKeys(r));
 };
 

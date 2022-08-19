@@ -3,13 +3,14 @@ import { RequestHandler } from "express";
 import { Neighborhood, NeighborhoodGeoJSON } from "../types/neighborhood-types";
 
 const getAll: RequestHandler<
-  never,
+  { tenantId: number },
   Neighborhood[] | { error: string },
   never,
   never
-> = (_req, res) => {
+> = (req, res) => {
+  const { tenantId } = req.params;
   neighborhoodService
-    .selectAll()
+    .selectAll(Number(tenantId))
     .then((resp) => {
       res.send(resp);
     })

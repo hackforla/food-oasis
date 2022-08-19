@@ -212,7 +212,7 @@ const Donate = () => {
           <aside className={classes.volunteer}>
             <h3>Want to give your time instead?</h3>
             <a
-              href="//laworks.com/opportunity/a0C3l00000iCS6GEAW"
+              href="//volunteer.laworks.com/opportunity/a0C3l00000r3wLvEAI"
               target="_blank"
               rel="noopener noreferrer"
               className={classes.btnWhite}

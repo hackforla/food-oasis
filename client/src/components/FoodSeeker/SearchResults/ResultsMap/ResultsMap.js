@@ -36,6 +36,7 @@ import {
   useUserCoordinates,
 } from "../../../../appReducer";
 import "mapbox-gl/dist/mapbox-gl.css";
+import { useHistory, useLocation } from "react-router-dom";
 
 const ResultsMap = (
   {
@@ -55,6 +56,8 @@ const ResultsMap = (
   const [markersLoaded, setMarkersLoaded] = useState(false);
   const searchCoordinates = useSearchCoordinates();
   const selectedOrganization = useSelectedOrganization();
+  const history = useHistory();
+  const location = useLocation();
 
   const longitude =
     searchCoordinates?.longitude ||
@@ -104,8 +107,21 @@ const ResultsMap = (
           type: "SELECTED_ORGANIZATION_UPDATED",
           organization: selectedOrganization,
         });
+        analytics.postEvent("selectOrganization", {
+          id: selectedOrganization.id,
+          name: selectedOrganization.name,
+        });
+
+        //Update url history
+        const name = selectedOrganization.name
+          .toLowerCase()
+          .replaceAll(" ", "_");
+        history.push(
+          `${location.pathname}?latitude=${selectedOrganization.latitude}&longitude=${selectedOrganization.longitude}&org=${name}&id=${selectedOrganization.id}`
+        );
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [stakeholders, dispatch]
   );
 

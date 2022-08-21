@@ -63,6 +63,15 @@ function neighborhoodReducer(state, action) {
   }
 }
 
+function widgetReducer(state, action) {
+  switch (action.type) {
+    case "WIDGET":
+      return action.isWidget;
+    default:
+      return state;
+  }
+}
+
 export function appReducer(state, action) {
   return {
     defaultCoordinate: defaultCoordinatesReducer(
@@ -80,6 +89,9 @@ export function appReducer(state, action) {
       action
     ),
     neighborhood: neighborhoodReducer(state.neighborhood, action),
+    // isWidget === true indicates that app is implemented as an
+    // iframe widget hosted in a third-party application.
+    isWidget: widgetReducer(state.isWidget, action),
   };
 }
 
@@ -90,6 +102,7 @@ export function getInitialState() {
     selectedOrganization: null,
     userCoordinates: null,
     neighborhood: null,
+    isWidget: false,
   };
 }
 
@@ -146,4 +159,9 @@ export function useUserCoordinates() {
 export function useNeighborhood() {
   const { neighborhood } = useAppState();
   return neighborhood;
+}
+
+export function useWidget() {
+  const { isWidget } = useAppState();
+  return isWidget;
 }

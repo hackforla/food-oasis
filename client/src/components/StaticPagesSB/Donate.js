@@ -198,7 +198,7 @@ const Donate = () => {
           <p>(TBD)</p>
         </div>
         <section className={classes.cards}>
-          <aside className={classes.signup}>
+          {/* <aside className={classes.signup}>
             <h3>Get monthly updates on what we&apos;re doing</h3>
             <a
               href="//foodoasis.us18.list-manage.com/subscribe?u=40d31892cbbe01312937f7de6&id=42235bb7ce"
@@ -208,11 +208,11 @@ const Donate = () => {
             >
               Signup
             </a>
-          </aside>
+          </aside> */}
           <aside className={classes.volunteer}>
             <h3>Want to give your time instead?</h3>
             <a
-              href="//laworks.com/opportunity/a0C3l00000iCS6GEAW"
+              href="//volunteer.laworks.com/opportunity/a0C3l00000r3wLvEAI"
               target="_blank"
               rel="noopener noreferrer"
               className={classes.btnWhite}

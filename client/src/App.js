@@ -48,6 +48,7 @@ import { SiteProvider } from "contexts/siteContext";
 const useStyles = makeStyles({
   app: () => ({
     color: "black",
+    backgroundColor: "#fff",
     margin: "0",
     height: "100%",
     //overflowY: "scroll",

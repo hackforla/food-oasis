@@ -19,6 +19,7 @@ import {
   useUserCoordinates,
 } from "../../../../appReducer";
 import StakeholderIcon from "images/stakeholderIcon";
+import { useHistory, useLocation } from "react-router-dom";
 
 const TENANT_TIME_ZONES = {
   1: "America/Los_Angeles",
@@ -77,6 +78,15 @@ const useStyles = makeStyles((theme) => ({
     padding: ".25em",
     borderRadius: "3px",
     margin: ".25em 0",
+  },
+  allowWalkinsLabel: {
+    color: "#fff",
+    alignSelf: "flex-start",
+    backgroundColor: theme.palette.primary.main,
+    padding: ".25em",
+    borderRadius: "3px",
+    margin: ".25em 0",
+    marginRight: "0.25em",
   },
   buttons: {
     width: "100%",
@@ -166,9 +176,21 @@ const StakeholderPreview = ({ stakeholder }) => {
   const originCoordinates = searchCoordinates || userCoordinates;
   const { tenantId } = useSiteContext();
   const tenantTimeZone = TENANT_TIME_ZONES[tenantId];
+  const history = useHistory();
+  const location = useLocation();
 
   const handleSelectOrganization = (organization) => {
     dispatch({ type: "SELECTED_ORGANIZATION_UPDATED", organization });
+    analytics.postEvent("selectOrganization", {
+      id: organization.id,
+      name: organization.name,
+    });
+
+    //Update url history
+    const name = organization.name.toLowerCase().replaceAll(" ", "_");
+    history.push(
+      `${location.pathname}?latitude=${organization.latitude}&longitude=${organization.longitude}&org=${name}&id=${organization.id}`
+    );
   };
 
   const mainNumber = extractNumbers(stakeholder.phone).find((n) => n.number);
@@ -178,6 +200,7 @@ const StakeholderPreview = ({ stakeholder }) => {
     tenantTimeZone
   );
   const isOpenFlag = !!stakeholderHours;
+  const showAllowWalkinsFlag = stakeholder.allowWalkins;
   const isAlmostClosedFlag =
     isOpenFlag && isAlmostClosed(stakeholderHours, tenantTimeZone);
   const minutesToClosing =
@@ -256,6 +279,11 @@ const StakeholderPreview = ({ stakeholder }) => {
             <em className={classes.closingSoonLabel}>
               {`Closing in ${minutesToClosing} minutes`}
             </em>
+          ) : null}
+
+          {showAllowWalkinsFlag &&
+          !(stakeholder.inactiveTemporary || stakeholder.inactive) ? (
+            <em className={classes.allowWalkinsLabel}>Walk-Ins Allowed</em>
           ) : null}
         </div>
         <div className={classes.buttons}>

@@ -1,10 +1,11 @@
 import React from "react";
-import { useAppDispatch, useUserCoordinates } from "../appReducer";
+import { useAppDispatch, useUserCoordinates, useWidget } from "../appReducer";
 import { useHistory } from "react-router-dom";
 
 export default function useGeolocation() {
   const dispatch = useAppDispatch();
   const userCoordinates = useUserCoordinates();
+  const isWidget = useWidget();
   const history = useHistory();
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -17,7 +18,7 @@ export default function useGeolocation() {
           longitude: userCoordinates.longitude,
         },
       });
-      history.push("/organizations");
+      history.push(isWidget ? "/widget" : "/organizations");
       return;
     }
 
@@ -53,8 +54,8 @@ export default function useGeolocation() {
       );
     }
     setIsLoading(false);
-    history.push("/organizations");
-  }, [dispatch, history, userCoordinates]);
+    history.push(isWidget ? "/widget" : "/organizations");
+  }, [dispatch, history, userCoordinates, isWidget]);
 
   return { getUserLocation, isLoading };
 }
@@ -62,15 +63,23 @@ export default function useGeolocation() {
 // will return granted || prompt || denied
 export const useLocationPermission = () => {
   const [permission, setPermission] = React.useState(null);
-
   React.useEffect(() => {
+    if (navigator.permissions) {
+      return null;
+    }
     async function getPermission() {
-      const result = await navigator.permissions.query({ name: "geolocation" });
-      result.onchange = () => {
-        setPermission(result.state);
-      };
+      try {
+        const result = await navigator.permissions.query({
+          name: "geolocation",
+        });
+        result.onchange = () => {
+          setPermission(result.state);
+        };
 
-      setPermission(result.state);
+        setPermission(result.state);
+      } catch (e) {
+        console.error(e);
+      }
     }
     getPermission();
   }, []);

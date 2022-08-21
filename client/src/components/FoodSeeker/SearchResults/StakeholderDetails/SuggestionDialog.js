@@ -30,6 +30,7 @@ function SuggestionDialog(props) {
   const [stakeholder, setStakeholder] = useState({
     ...DEFAULT_STAKEHOLDER,
     ...sh,
+    notes: "",
   });
 
   const handleCancel = () => {

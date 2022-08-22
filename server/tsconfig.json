@@ -14,8 +14,9 @@
       "node_modules/@types",
       "../../node_modules/@types",
       "../../typeRoots"
-    ]
+    ],
+    "types": ["jest", "node"]
   },
-  "include": ["app", "app/controllers/.d.ts"]
+  "include": ["app", "**/*.test.ts"],
 }
 

@@ -1,9 +1,18 @@
-// Instantiate and Export a Database object, db
+// https://stackoverflow.com/questions/34382796/where-should-i-initialize-pg-promise
+import pgLib from "pg-promise";
 
-// Loading and initializing the library:
-const pgp = require("pg-promise")({
-  // Initialization Options
-});
+const pgp = pgLib(/* initialization options */);
+
+// generic singleton creator:
+export function createSingleton<T>(name: string, create: () => T): T {
+  const s = Symbol.for(name);
+  let scope = (global as any)[s];
+  if (!scope) {
+    scope = { ...create() };
+    (global as any)[s] = scope;
+  }
+  return scope;
+}
 
 // Preparing the connection details:
 // In a production Heroku environment, Heroku will
@@ -30,8 +39,21 @@ const cn = process.env.DATABASE_URL
       port: Number(process.env.POSTGRES_PORT),
     };
 
+interface IDatabaseScope {
+  db: pgLib.IDatabase<any>;
+  pgp: pgLib.IMain;
+}
+
+export function getDB(): IDatabaseScope {
+  return createSingleton<IDatabaseScope>("food-oasis", () => {
+    return {
+      db: pgp(cn),
+      pgp,
+    };
+  });
+}
 // Creating a new database instance from the connection details:
-const db = pgp(cn);
+const { db } = getDB();
 
 // Exporting the database object for shared use:
 module.exports = db;

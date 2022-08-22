@@ -1,5 +1,5 @@
-const pinoLogger = require("express-pino-logger");
-const pinoNoir = require("pino-noir");
+import pinoLogger from "express-pino-logger";
+import pinoNoir from "pino-noir";
 
 function cors(req, res, next): void {
   const origin = req.headers.origin;
@@ -39,9 +39,4 @@ function logger() {
   });
 }
 
-module.exports = {
-  cors,
-  handleError,
-  notFound,
-  logger: logger(),
-};
+export { cors, handleError, notFound, logger };

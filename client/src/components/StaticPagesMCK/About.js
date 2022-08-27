@@ -8,7 +8,6 @@ import foodForward from "./assets/food-forward.png";
 import farmPeople from "./assets/farm-people.png";
 import foodBank from "./assets/food-bank.png";
 import { makeStyles } from "@material-ui/core";
-import Footer from "../Layout/Footer";
 
 const useStyles = makeStyles(() => ({
   outer: {
@@ -282,7 +281,6 @@ const About = () => {
             className={classes.partnersLogo}
           />
         </section>
-        <Footer />
       </div>
     </div>
   );

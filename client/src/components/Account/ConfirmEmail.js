@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Footer from "../Layout/Footer";
 import { Redirect, withRouter } from "react-router-dom";
 import {
   withStyles,
@@ -123,7 +122,6 @@ const ConfirmEmail = (props) => {
           )}
         </div>
       </Container>
-      <Footer />
     </div>
   );
 };

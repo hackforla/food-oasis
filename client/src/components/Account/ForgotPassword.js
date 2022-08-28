@@ -81,11 +81,7 @@ const ForgotPassword = (props) => {
                   values.email
                 );
                 if (response.isSuccess) {
-                  setToast({
-                    message:
-                      "Please check your email for a 'Reset Password' link.",
-                  });
-                  history.push("/");
+                  history.push(`/resetpasswordemailsent/${match.params.email}`);
                 } else if (
                   response.code === "FORGOT_PASSWORD_ACCOUNT_NOT_FOUND"
                 ) {
@@ -164,14 +160,14 @@ const ForgotPassword = (props) => {
                 </Button>
                 <Grid container>
                   <Grid item xs>
-                    <Link href={`/login/${values.email || ""}`} variant="body2">
-                      Login
-                    </Link>
-                  </Grid>
-                  <Grid item>
-                    <Link href="/register" variant="body2">
-                      {"Register"}
-                    </Link>
+                    <Typography align="center">
+                      <Link
+                        href={`/login/${values.email || ""}`}
+                        variant="body2"
+                      >
+                        Return to Login
+                      </Link>
+                    </Typography>
                   </Grid>
                 </Grid>
               </form>

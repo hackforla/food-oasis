@@ -36,7 +36,7 @@ const update = async (model: Category) => {
   await db.none(sql, model);
 };
 
-const remove = async (id: number) => {
+const remove = async (id: number): Promise<number> => {
   const sql = `delete from category where id = $<id>`;
   const result = await db.result(sql, { id: Number(id) });
   return result.rowCount;

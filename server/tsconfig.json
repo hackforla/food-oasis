@@ -1,22 +1,21 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "target": "ES2019",
-    "lib": ["ES2019", "DOM"],
+    "target": "es2020",
+    "lib": ["es2020", "DOM"],
     "module": "commonjs",
     "sourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "outDir": "build",
-    "jsx": "react",
     "allowJs": true,
     "typeRoots": [
       "node_modules/@types",
       "../../node_modules/@types",
-      "../../typeRoots"
+      "../../typeRoots",
+      "./typings"
     ],
     "types": ["jest", "node"]
   },
-  "include": ["app", "**/*.test.ts"],
+  "include": ["app", "**/*.test.ts", "server.ts"]
 }
-

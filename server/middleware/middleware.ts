@@ -1,7 +1,8 @@
 import pinoLogger from "express-pino-logger";
-import pinoNoir from "pino-noir";
+// import pinoNoir from "pino-noir";
+import { RequestHandler, Request, Response } from "express";
 
-function cors(req, res, next): void {
+const cors: RequestHandler = (req, res, next): void => {
   const origin = req.headers.origin;
 
   res.setHeader("Access-Control-Allow-Origin", origin || "*");
@@ -17,26 +18,31 @@ function cors(req, res, next): void {
   );
 
   next();
-}
+};
 
-function handleError(err, req, res, next) {
+function handleError(err: any, req: Request, res: Response, next: any) {
   console.log("server error", err);
-  if (res.headerSent) return next(err);
+  if (res.headersSent) return next(err);
   res.status(500).json({ error: "Internal Error" });
 }
 
-function notFound(req, res) {
+function notFound(req: Request, res: Response) {
   res.status(404).json({ error: `${req.url} Not Found` });
 }
 
-function logger() {
-  return pinoLogger({
-    serializers: pinoNoir([
-      "res.headers.set-cookie",
-      "req.headers.cookie",
-      "req.headers.authorization",
-    ]),
-  });
-}
+// function logger() {
+//   return pinoLogger({
+//     serializers: pinoNoir([
+//       "res.headers.set-cookie",
+//       "req.headers.cookie",
+//       "req.headers.authorization",
+//     ]),
+//   });
+// }
 
-export { cors, handleError, notFound, logger };
+export default {
+  cors,
+  handleError,
+  notFound,
+  // logger
+};

@@ -81,7 +81,7 @@ const ForgotPassword = (props) => {
                   values.email
                 );
                 if (response.isSuccess) {
-                  history.push(`/resetpasswordemailsent/${match.params.email}`);
+                  history.push(`/resetpasswordemailsent/${values.email || ""}`);
                 } else if (
                   response.code === "FORGOT_PASSWORD_ACCOUNT_NOT_FOUND"
                 ) {

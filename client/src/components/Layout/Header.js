@@ -97,8 +97,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Header() {
-  const { tenantId, tenantDetails } = useSiteContext();
-  const { taglineText } = tenantDetails;
+  const { tenantId } = useSiteContext();
   const classes = useStyles();
   const imageType = logoPaths
     ? logoPaths[tenantId].default.split(".").pop()
@@ -143,15 +142,6 @@ export default function Header() {
             )}
           </div>
           <div className={classes.content}>
-            {taglineText && (
-              <Typography
-                variant="subtitle1"
-                className={classes.tagline}
-                align="left"
-              >
-                {taglineText}
-              </Typography>
-            )}
             {user && user.firstName && (
               <Typography
                 variant="subtitle1"

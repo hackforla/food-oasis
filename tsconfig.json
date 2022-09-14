@@ -7,7 +7,6 @@
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "baseUrl": "./server, ./client",
-    "sourceMap": true
+    "baseUrl": "./server, ./client"
   }
 }

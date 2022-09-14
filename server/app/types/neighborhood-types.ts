@@ -1,15 +1,23 @@
 export interface Neighborhood {
   id: number;
   name: string;
+  website: string;
+  empowerLink: string;
+  ncId: number;
+  certified: string;
+  serviceRegion: string;
   zoom: number;
 }
 
 export interface NeighborhoodGeoJSON extends Neighborhood {
-  certified: string;
-  serviceRegion: string;
   centroidLongitude: number;
   centroidLatitude: number;
   geojson: GeoJSON;
+}
+
+export interface NeighborhoodPutRequest {
+  ncId: number;
+  zoom: number;
 }
 
 export interface GeoJSON {

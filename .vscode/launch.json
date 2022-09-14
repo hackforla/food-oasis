@@ -8,7 +8,7 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Web API Server",
-      "program": "${workspaceFolder}/server/server.ts",
+      "program": "${workspaceFolder}/server/server.js",
       "envFile": "${workspaceFolder}/server/.env",
       "preLaunchTask": "tsc: build - tsconfig.json"
     }

@@ -1,16 +1,20 @@
 import neighborhoodService from "../services/neighborhood-service";
-import { RequestHandler } from "express";
-import { Neighborhood, NeighborhoodGeoJSON } from "../types/neighborhood-types";
+import { RequestHandler, Response } from "express";
+import {
+  Neighborhood,
+  NeighborhoodGeoJSON,
+  NeighborhoodPutRequest,
+} from "../types/neighborhood-types";
 
 const getAll: RequestHandler<
-  { tenantId: number },
+  { tenantId: string },
   Neighborhood[] | { error: string },
   never,
   never
 > = (req, res) => {
-  const { tenantId } = req.params;
+  const { tenantId } = req.query;
   neighborhoodService
-    .selectAll(Number(tenantId))
+    .selectAll(Number(tenantId || 1))
     .then((resp) => {
       res.send(resp);
     })
@@ -20,14 +24,14 @@ const getAll: RequestHandler<
 };
 
 const getGeoJSONById: RequestHandler<
-  { id: number },
+  { ncId: number },
   NeighborhoodGeoJSON | { error: string },
   never,
   never
 > = (req, res) => {
-  const { id } = req.params;
+  const { ncId } = req.params;
   neighborhoodService
-    .selectGeoJSONById(id)
+    .selectGeoJSONById(Number(ncId))
     .then((resp) => {
       res.send(resp);
     })
@@ -36,7 +40,30 @@ const getGeoJSONById: RequestHandler<
     });
 };
 
+const updateZoom: RequestHandler<
+  { ncId: number },
+  never,
+  { ncId: number; zoom: number },
+  never
+> = (req, res) => {
+  const { ncId, zoom } = req.body;
+  const { ncId: ncIdParam } = req.params;
+  if (Number(ncIdParam) !== ncId) {
+    res.sendStatus(400);
+  }
+
+  neighborhoodService
+    .updateZoom(ncId, zoom)
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch((_err) => {
+      res.status(500);
+    });
+};
+
 module.exports = {
   getAll,
   getGeoJSONById,
+  updateZoom,
 };

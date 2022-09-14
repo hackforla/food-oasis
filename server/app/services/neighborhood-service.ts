@@ -1,26 +1,29 @@
+import {
+  Neighborhood,
+  NeighborhoodGeoJSON,
+  NeighborhoodPutRequest,
+} from "../types/neighborhood-types";
 const db = require("./db");
 const camelcaseKeys = require("camelcase-keys");
 
-const selectAll = async (tenantId) => {
-  // const sql = `
-  //   select id, name, website, empower_link, nc_id,
-  //     certified, service_region, geometry
-  //   from neighborhood
-  //   order by name
-  // `;
+const selectAll = async (tenantId: number): Promise<Neighborhood[]> => {
   const sql = `
-    select id, name, zoom
+    select id, name, website, empower_link, nc_id,
+    certified, service_region, zoom
     from neighborhood
     where tenant_id = $<tenantId>
     order by name
   `;
-  const result = await db.manyOrNone(sql, { tenantId });
+  const result: Neighborhood[] = await db.manyOrNone(sql, { tenantId });
   return result.map((r) => camelcaseKeys(r));
 };
 
-const selectGeoJSONById = async (ncid) => {
+const selectGeoJSONById = async (
+  ncid: number
+): Promise<NeighborhoodGeoJSON> => {
   const sql = `
-  SELECT id, name, certified, service_region, 
+  SELECT id, name, website, empower_link,
+   nc_id, certified, service_region, zoom,
    ST_X(ST_Centroid(geometry)) as centroid_longitude, 
    ST_Y(ST_Centroid(geometry)) as centroid_latitude,
    jsonb_build_object(
@@ -32,8 +35,17 @@ const selectGeoJSONById = async (ncid) => {
   FROM neighborhood WHERE nc_id = $<ncid>
   `;
 
-  const result = await db.one(sql, { ncid });
+  const result: NeighborhoodGeoJSON = await db.one(sql, { ncid });
   return camelcaseKeys(result);
+};
+
+const updateZoom = async (ncId: number, zoom: number): Promise<void> => {
+  console.log(`ncId: ${ncId}, zoom: ${zoom}`);
+  const sql = `
+  UPDATE neighborhood SET zoom = $<zoom>
+  WHERE nc_id = $<ncId> 
+  `;
+  await db.none(sql, { ncId, zoom });
 };
 
 // findNeighborhood: use the postgis postgres extension to find
@@ -41,7 +53,10 @@ const selectGeoJSONById = async (ncid) => {
 // and the lat/lon as a point that will potentially be located within a neighborhood.
 // More info on ST_GeomFromText:
 // https://postgis.net/docs/ST_GeomFromText.html
-const findNeighborhood = async (latitude, longitude) => {
+const findNeighborhood = async (
+  latitude: number,
+  longitude: number
+): Promise<Object | null> => {
   const sql = `
     SELECT id, name
       FROM neighborhood
@@ -50,7 +65,7 @@ const findNeighborhood = async (latitude, longitude) => {
       ST_GeomFromText('POINT($<latitude> $<longitude>)'))
       ORDER BY name
     `;
-  const rows = await db.manyOrNone(sql, { latitude, longitude });
+  const rows: Object[] = await db.manyOrNone(sql, { latitude, longitude });
   if (!rows.length) {
     // Could not find a neighborhood that contains this point
     return null;
@@ -61,11 +76,14 @@ const findNeighborhood = async (latitude, longitude) => {
 // assignNeighborhood: given a stakeholder_id, find and assign a neighborhood_id
 // if one exists for that location.
 const assignNeighborhood = async (
-  stakeholder_id,
-  stakeholder_lat,
-  stakeholder_lon
-) => {
-  let neighborhood_id = findNeighborhood(stakeholder_lat, stakeholder_lon);
+  stakeholder_id: number,
+  stakeholder_lat: number,
+  stakeholder_lon: number
+): Promise<null> => {
+  let neighborhood_id: Promise<Object | null> = findNeighborhood(
+    stakeholder_lat,
+    stakeholder_lon
+  );
   if (neighborhood_id) {
     const sql = `
       UPDATE stakeholder set neighborhood_id = ${neighborhood_id}
@@ -79,9 +97,10 @@ const assignNeighborhood = async (
   );
 };
 
-module.exports = {
+export default {
   selectAll,
   selectGeoJSONById,
+  updateZoom,
   findNeighborhood,
   assignNeighborhood,
 };

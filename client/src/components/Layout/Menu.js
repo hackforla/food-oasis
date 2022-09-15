@@ -15,6 +15,7 @@ import { MENU_ITEMS } from "helpers/Constants";
 import MenuItemLink from "./MenuItemLink";
 import { IconButton } from "../../components/UI";
 import { useUserContext } from "../../contexts/userContext";
+import { isMobile } from "helpers";
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -179,6 +180,7 @@ export default function Menu() {
   return (
     <div>
       <IconButton
+        size={!isHomePage && isMobile ? "small" : "medium"}
         icon="menu"
         onClick={toggleDrawer}
         classes={{

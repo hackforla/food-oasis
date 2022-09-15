@@ -1,6 +1,5 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core";
-import Footer from "../../../Layout/Footer";
 
 const useStyles = makeStyles(() => ({
   outer: {
@@ -51,7 +50,6 @@ const Page = (props) => {
           </figure>
         )}
         {children}
-        <Footer />
       </div>
     </div>
   );

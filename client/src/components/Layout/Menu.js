@@ -25,7 +25,6 @@ const useStyles = makeStyles((theme) => ({
     transform: "scale(1.2,1.2)",
     minWidth: "0",
     backgroundColor: "#FFF",
-    padding: 0,
     "&:hover": {
       backgroundColor: "#FFF",
       opacity: 0.8,

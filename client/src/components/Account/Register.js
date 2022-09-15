@@ -13,7 +13,6 @@ import {
   Container,
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Footer from "../Layout/Footer";
 import { TextField, Button } from "../../components/UI";
 import { useToasterContext } from "contexts/toasterContext";
 
@@ -181,7 +180,6 @@ const form = (props) => {
           </form>
         </div>
       </Container>
-      <Footer />
     </div>
   );
 };

@@ -4,7 +4,6 @@ import donatebg from "./assets/donate-bg.png";
 import iconSpacer from "./assets/icon-spacer.svg";
 import iconSpacerBlue from "./assets/icon-spacer-blue.svg";
 import { makeStyles } from "@material-ui/core";
-import Footer from "../Layout/Footer";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import logo from "images/foodoasis.svg";
@@ -298,7 +297,6 @@ const Donate = () => {
             </a>
           </aside>
         </section>
-        <Footer />
       </div>
     </div>
   );

@@ -1,5 +1,4 @@
 import React from "react";
-import Footer from "../Layout/Footer";
 import { withRouter, useLocation } from "react-router-dom";
 import {
   withStyles,
@@ -230,7 +229,6 @@ const LoginForm = (props) => {
           </Formik>
         </div>
       </Container>
-      <Footer />
     </div>
   );
 };

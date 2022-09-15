@@ -13,14 +13,14 @@ const logoPaths = {
   6: require("images/foodoasis.svg"),
 };
 
-const logoStackedPaths = {
-  1: require("images/logo-food-oasis-stacked.svg"),
-  2: require("images/logo-food-oasis-stacked.svg"),
-  3: require("images/logo-food-oasis-stacked.svg"),
-  4: require("images/logo-food-oasis-stacked.svg"),
-  5: require("images/logo-food-oasis-stacked.svg"),
-  6: require("images/logo-food-oasis-stacked.svg"),
-};
+// const logoStackedPaths = {
+//   1: require("images/logo-food-oasis-stacked.svg"),
+//   2: require("images/logo-food-oasis-stacked.svg"),
+//   3: require("images/logo-food-oasis-stacked.svg"),
+//   4: require("images/logo-food-oasis-stacked.svg"),
+//   5: require("images/logo-food-oasis-stacked.svg"),
+//   6: require("images/logo-food-oasis-stacked.svg"),
+// };
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -171,11 +171,7 @@ function WidgetFooter() {
     <div position="sticky" className={classes.container}>
       <WidgetFooterSection
         name="Food Oasis"
-        logoPath={
-          mobile
-            ? logoStackedPaths[tenantId] || logoPaths[tenantId]
-            : logoPaths[tenantId]
-        }
+        logoPath={logoPaths[tenantId]}
         url={`${window.location.origin}`}
         alt="Food Oasis Logo"
         className={classes.logo}

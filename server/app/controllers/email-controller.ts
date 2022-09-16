@@ -1,6 +1,12 @@
 const emailService = require("../services/sendgrid-service");
+import { RequestHandler } from "express";
 
-const send = (req, res) => {
+const send: RequestHandler<
+  never,
+  never, // response
+  never, // request
+  never
+> = (req, res) => {
   const { emailFrom, emailTo, subject, textBody, htmlBody } = req.body;
   emailService
     .send(emailTo, emailFrom, subject, textBody, htmlBody || textBody)

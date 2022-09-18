@@ -5,6 +5,7 @@ import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useUserContext } from "../../contexts/userContext";
 import { useSiteContext } from "../../contexts/siteContext";
+import useLocationHook from "hooks/useLocationHook";
 
 Header.propTypes = {
   tenantId: PropTypes.number,
@@ -35,6 +36,9 @@ const useStyles = makeStyles((theme) => ({
       padding: "0 0.5em 0 0",
       minHeight: "45px",
     },
+  },
+  spacedHeader: {
+    marginTop: theme.spacing(4),
   },
   logo: {
     maxWidth: "175px",
@@ -68,6 +72,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Header() {
   const { tenantId } = useSiteContext();
   const classes = useStyles();
+  const { isAuthPage } = useLocationHook();
   const imageType = logoPaths
     ? logoPaths[tenantId].default.split(".").pop()
     : "unknown";
@@ -75,7 +80,12 @@ export default function Header() {
 
   return (
     <>
-      <AppBar position="sticky" className={classes.headerHolder}>
+      <AppBar
+        position="sticky"
+        className={`${classes.headerHolder} ${
+          isAuthPage && classes.spacedHeader
+        } `}
+      >
         <Toolbar className={classes.header}>
           <div>
             <a href="/">

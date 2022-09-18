@@ -61,7 +61,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Footer = () => {
-  const isHomePage = useLocationHook();
+  const {isHomePage} = useLocationHook();
   const classes = useStyles();
 
   const initialFooterSwitch = window.innerWidth >= 1000 ? true : false;

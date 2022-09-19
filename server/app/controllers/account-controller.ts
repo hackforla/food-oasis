@@ -6,7 +6,9 @@ import {
   RegisterFields,
   AccountResponse,
   User,
+  PermissionName,
 } from "../types/account-types";
+import { ClientResponse } from "@sendgrid/mail";
 
 const getAll: RequestHandler<
   // route params
@@ -98,7 +100,7 @@ const resendConfirmationEmail: RequestHandler<
 
 const forgotPassword: RequestHandler<
   never,
-  AccountResponse | { error: string },
+  AccountResponse | { error: string } | [ClientResponse, {}],
   {
     email: string;
     clientUrl: string;
@@ -136,7 +138,7 @@ const setTenantPermissions: RequestHandler<
   AccountResponse,
   {
     userId: string;
-    permissionName: string;
+    permissionName: PermissionName;
     value: string;
     tenantId: string;
   },
@@ -162,7 +164,7 @@ const setGlobalPermissions: RequestHandler<
   AccountResponse,
   {
     userId: string;
-    permissionName: string;
+    permissionName: PermissionName;
     value: string;
     tenantId: string;
   },

@@ -56,3 +56,9 @@ export interface AccountResponse {
     role: string;
   };
 }
+
+export type PermissionName =
+  | "is_admin"
+  | "is_coordinator"
+  | "is_security_admin"
+  | "is_data_entry";

@@ -108,8 +108,4 @@ const sendResetPasswordConfirmation = async (
   });
 };
 
-module.exports = {
-  send,
-  sendRegistrationConfirmation,
-  sendResetPasswordConfirmation,
-};
+export { send, sendRegistrationConfirmation, sendResetPasswordConfirmation };

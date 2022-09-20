@@ -396,7 +396,7 @@ describe("Account", () => {
     const res = mockResponse();
     const req = mockRequest({
       body: {
-        email: "adminuser@test.com",
+        password: "password",
         token: "token",
       },
     });
@@ -414,13 +414,20 @@ describe("Account", () => {
       })
     );
 
-    await accountController.forgotPassword(req, res, next);
+    await accountController.resetPassword(req, res, next);
     expect(resetPasswordMock).toHaveBeenCalledWith({
-      clientUrl: "http://localhost:5001",
-      token: "adminuser@test.com",
+      password: "password",
+      token: "token",
     });
     expect(resetPasswordMock).toHaveBeenCalledTimes(1);
-    expect(res.send.mock.calls[0][0]).toMatchInlineSnapshot(``);
+    expect(res.send.mock.calls[0][0]).toMatchInlineSnapshot(`
+      Object {
+        "code": "FORGOT_PASSWORD_SUCCESS",
+        "isSuccess": true,
+        "message": "Account found.",
+        "newId": "newId",
+      }
+    `);
   });
 
   it("sets tenant permission successfully", async () => {

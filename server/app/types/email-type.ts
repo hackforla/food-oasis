@@ -1,10 +1,10 @@
 
 
 export interface email {
-  to: string;
-  from: string;
+  emailTo: string;
+  emailFrom: string;
   subject: string;
-  text: string;
-  html: string;
+  textBody: string;
+  htmlBody: string;
 }
 

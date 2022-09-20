@@ -3,17 +3,19 @@ import {
   RegisterFields,
   AccountResponse,
   User,
+  PermissionName,
 } from "../types/account-types";
+import { ClientResponse } from "@sendgrid/mail";
 const db = require("./db");
 const camelcaseKeys = require("camelcase-keys");
 
 const { promisify } = require("util");
 const moment = require("moment");
 const bcrypt = require("bcrypt");
-const {
+import {
   sendRegistrationConfirmation,
   sendResetPasswordConfirmation,
-} = require("./sendgrid-service");
+} from "./sendgrid-service";
 const { v4: uuid4 } = require("uuid");
 
 const SALT_ROUNDS = 10;
@@ -219,7 +221,9 @@ const forgotPassword = async (model: {
     }
     // Replace the success result if there is a prob
     // sending email.
-    result = await requestResetPasswordConfirmation(email, result, clientUrl);
+    try {
+      await requestResetPasswordConfirmation(email, result, clientUrl);
+    } catch (e) {}
     if (result.isSuccess === true) {
       return {
         isSuccess: true,
@@ -247,7 +251,11 @@ const requestResetPasswordConfirmation = async (
     const sqlToken = `insert into security_token (token, email)
         values ($<token>, $<email>); `;
     await db.none(sqlToken, { token, email });
-    result = await sendResetPasswordConfirmation(email, token, clientUrl);
+    try {
+      await sendResetPasswordConfirmation(email, token, clientUrl);
+    } catch (e) {
+      throw new Error(e);
+    }
     return result;
   } catch (err) {
     return {
@@ -406,7 +414,7 @@ async function hashPassword(user: any) {
 // Update login table with the specified permissionName column set to value
 const setTenantPermissions = async (
   userId: string,
-  permissionName: string,
+  permissionName: PermissionName,
   value: string,
   tenantId: string
 ): Promise<AccountResponse> => {

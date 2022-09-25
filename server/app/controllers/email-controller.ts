@@ -1,16 +1,24 @@
-import emailService from '../services/sendgrid-service'
+import * as emailService from '../services/sendgrid-service'
 import { RequestHandler } from "express";
 // import {Promi}
-import { email } from "../types/email-type";
+import { Email } from "../types/email-type";
 import { ClientResponse } from '@sendgrid/mail';
 const send: RequestHandler<
   never, // route param
   [ClientResponse, {}] | { error: string }, // response
-  email, // request
+  Email, // request
   never // query param
 > = (req, res) => {
-  const { emailFrom, emailTo, subject, textBody, htmlBody } = req.body;
-  emailService.send(emailTo, emailFrom, subject, textBody, htmlBody || textBody)
+
+  const email: Email = {
+    emailFrom: req.body.emailFrom,
+    emailTo: req.body.emailTo,
+    subject: req.body.subject,
+    textBody: req.body.textBody,
+    htmlBody: req.body.htmlBody || req.body.textBody
+  };
+  
+  emailService.send(email)
     .then(resp => res.send(resp))
     .catch((err: any) => res.status(404).json({ error: err.toString() }))
 };

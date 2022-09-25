@@ -1,17 +1,18 @@
-const sgMail = require("@sendgrid/mail");
-const applyEmailTemplate = require("./EmailTemplate");
-const emailUser = process.env.EMAIL_USER;
-const sendgridKey = process.env.SENDGRID_API_KEY;
+import sgMail from "@sendgrid/mail";
+import applyEmailTemplate from "./EmailTemplate";
+import { Email } from "../types/email-type";
+const emailUser: string = process.env.EMAIL_USER || "";
+const sendgridKey: string = process.env.SENDGRID_API_KEY || "";
 
 sgMail.setApiKey(sendgridKey);
 
-const send = async (emailTo, emailFrom, subject, textBody, htmlBody) => {
+const send = async (email: Email) => {
   const msg = {
-    to: emailTo,
-    from: emailFrom,
-    subject: subject,
-    text: textBody,
-    html: htmlBody,
+    to: email.emailTo,
+    from: email.emailFrom,
+    subject: email.subject,
+    text: email.textBody,
+    html: email.htmlBody,
   };
   return sgMail.send(msg, false, (err) => {
     if (err) {
@@ -22,11 +23,11 @@ const send = async (emailTo, emailFrom, subject, textBody, htmlBody) => {
     return Promise.resolve(true);
   });
 };
-
+// account verification
 const sendRegistrationConfirmation = async (
-  email,
-  token,
-  clientUrl,
+  email: string,
+  token: string,
+  clientUrl: string,
   emailTemplate = applyEmailTemplate
 ) => {
   const emailBody = `
@@ -57,6 +58,7 @@ const sendRegistrationConfirmation = async (
     text: `Verify your account`,
     html: `${emailTemplate(emailBody, clientUrl)}`,
   };
+
   return sgMail.send(msg, false, (err) => {
     if (err) {
       return Promise.reject("Sending registration confirmation email failed.");
@@ -65,10 +67,11 @@ const sendRegistrationConfirmation = async (
   });
 };
 
+// password reset
 const sendResetPasswordConfirmation = async (
-  email,
-  token,
-  clientUrl,
+  email: string,
+  token: string,
+  clientUrl: string,
   emailTemplate = applyEmailTemplate
 ) => {
   const emailBody = `

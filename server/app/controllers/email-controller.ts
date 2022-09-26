@@ -1,15 +1,14 @@
 import * as emailService from '../services/sendgrid-service'
 import { RequestHandler } from "express";
-// import {Promi}
 import { Email } from "../types/email-type";
 import { ClientResponse } from '@sendgrid/mail';
+
 const send: RequestHandler<
   never, // route param
   [ClientResponse, {}] | { error: string }, // response
   Email, // request
   never // query param
 > = (req, res) => {
-
   const email: Email = {
     emailFrom: req.body.emailFrom,
     emailTo: req.body.emailTo,

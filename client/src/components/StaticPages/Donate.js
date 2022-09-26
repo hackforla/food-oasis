@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 
 import donatebg from './assets/donate-bg.png';
-import iconSpacer from './assets/icon-spacer.svg';
-import iconSpacerBlue from './assets/icon-spacer-blue.svg';
+import iconSpacerGray from './assets/icon-spacer-gray.svg';
 import { makeStyles } from '@material-ui/core';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -10,6 +9,7 @@ import logo from 'images/foodoasis.svg';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
+import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import donationStep1 from 'images/donationStep1.png';
@@ -84,11 +84,10 @@ const useStyles = makeStyles((theme) => ({
     color: '#4d4d4d',
     background: '#f0f0f0',
     display: 'flex',
+    flexDirection: 'column',
     flexWrap: 'wrap',
     '& $h2': {
-      color: '#336699',
       flexBasis: '100%',
-      textTransform: 'uppercase;',
       textAlign: 'center',
       fontWeight: '500',
       fontSize: '32px',
@@ -96,29 +95,27 @@ const useStyles = makeStyles((theme) => ({
       marginBottom: '20px',
     },
     '& $btnOutline': {
-      margin: '20px auto 0 auto',
+      margin: '20px auto',
     },
   },
   volunteerSection: {
     padding: '32px',
     margin: '32px 0 0 0',
     borderRadius: '24px',
-    color: '#fff',
-    background: '#336699',
+    background: '#B6D8FB',
     display: 'flex',
+    flexDirection: 'column',
     flexWrap: 'wrap',
     '& $h2': {
-      color: '#fff',
       flexBasis: '100%',
-      textTransform: 'uppercase;',
       textAlign: 'center',
       fontWeight: '500',
       fontSize: '32px',
       marginTop: '10px',
       marginBottom: '20px',
     },
-    '& $btnWhite': {
-      margin: '20px auto 0 auto',
+    '& $btnOutline': {
+      margin: '20px auto',
     },
   },
   cards: {
@@ -216,27 +213,37 @@ const Donate = () => {
   };
   return (
     <div className={classes.outer}>
-      <h1 className={classes.title}>Donate</h1>
       <div className={classes.main}>
         <figure className={classes.figure}>
           <img alt='Donate' src={donatebg} style={{ width: '100%' }} />
         </figure>
+        <Typography variant='h1' className={classes.title}>
+          Donate
+        </Typography>
         <section className={classes.donate}>
           <img
             alt='Why Donate?'
-            src={iconSpacerBlue}
+            src={iconSpacerGray}
             className={classes.icon}
             height='40'
           />
-          <h2>Why Donate?</h2>
-          <p>
-            We’ve done so much already as a 100% volunteer-run organization—but
-            we need your help to finish what we set out to do. The admin,
-            development, and marketing costs to expand our directory are
-            extensive. We have a directory of over 1,300 organizations to
-            update. Your tax-deductible donation would help us offset some of
-            those costs.
-          </p>
+          <Typography variant='h2' style={{ margin: '30px 0' }}>
+            Why Donate?
+          </Typography>
+          <Container maxWidth='sm'>
+            <Typography
+              variant='body1'
+              color='textPrimary'
+              style={{ marginBottom: '16px' }}
+            >
+              We’ve done so much already as a 100% volunteer-run
+              organization—but we need your help to finish what we set out to
+              do. The admin, development, and marketing costs to expand our
+              directory are extensive. We have a directory of over 1,300
+              organizations to update. Your tax-deductible donation would help
+              us offset some of those costs.
+            </Typography>
+          </Container>
           <Button
             className={classes.btnOutline}
             onClick={handleShowDonationDialog}
@@ -253,25 +260,35 @@ const Donate = () => {
         <div className={classes.volunteerSection}>
           <img
             alt='Volunteer'
-            src={iconSpacer}
+            src={iconSpacerGray}
             className={classes.icon}
             height='40'
           />
-          <h2>Want to give your time instead?</h2>
-          <p>
-            We’re run 100% by remote volunteers who do critical work by updating
-            our food directory weekly. The work you do impact those who don’t
-            have enough to eat. Your help to update our directory makes it
-            easier for anyone to get in touch with groups that fit their needs.
-          </p>
-          <a
+          <Typography variant='h2' color='textPrimary'>
+            Want to give your time instead?
+          </Typography>
+
+          <Container maxWidth='sm'>
+            <Typography
+              variant='body1'
+              color='textPrimary'
+              style={{ marginBottom: '16px' }}
+            >
+              We’re run 100% by remote volunteers who do critical work by
+              updating our food directory weekly. The work you do impact those
+              who don’t have enough to eat. Your help to update our directory
+              makes it easier for anyone to get in touch with groups that fit
+              their needs.
+            </Typography>
+          </Container>
+          <Button
             href='//volunteer.laworks.com/opportunity/a0C3l00000r3wLvEAI'
             target='_blank'
             rel='noopener noreferrer'
-            className={classes.btnWhite}
+            className={classes.btnOutline}
           >
             Volunteer
-          </a>
+          </Button>
         </div>
         <section className={classes.cards}>
           {/* <aside className={classes.signup}>

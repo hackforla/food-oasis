@@ -24,6 +24,7 @@ const useStyles = makeStyles(() => ({
     },
   },
   title: {
+    color: '#4d4d4d',
     textTransform: 'uppercase',
     textAlign: 'center',
     background: '#FFF',
@@ -62,6 +63,7 @@ const useStyles = makeStyles(() => ({
     margin: '32px 0 0 0',
     borderRadius: '24px',
     background: '#B6D8FB',
+    color: '#4d4d4d',
     display: 'flex',
     flexDirection: 'column',
     '& $h2': {
@@ -144,7 +146,7 @@ const About = () => {
         <figure className={classes.figure}>
           <img alt='About' src={aboutbg} style={{ width: '100%' }} />
         </figure>
-        <Typography variant='h1' color='textPrimary' className={classes.title}>
+        <Typography variant='h1' className={classes.title}>
           <span>About</span> Food Oasis / LA
         </Typography>
         <div className={classes.mission}>
@@ -158,11 +160,7 @@ const About = () => {
             Our Mission
           </Typography>
           <Container maxWidth='sm'>
-            <Typography
-              variant='body1'
-              color='textPrimary'
-              style={{ marginBottom: '16px' }}
-            >
+            <Typography variant='body1' style={{ marginBottom: '16px' }}>
               Access to enough food should be a basic right. Unfortunately, this
               is not the reality for millions of people in Los Angeles County.
               Before the Covid-19 pandemic, up to 1.4 million people in Los
@@ -170,43 +168,27 @@ const About = () => {
               inconsistent with access to cheap and nutritious food. Los Angeles
               has the highest percentage of food insecurity in the nation.
             </Typography>
-            <Typography
-              variant='body1'
-              color='textPrimary'
-              style={{ marginBottom: '16px' }}
-            >
+            <Typography variant='body1' style={{ marginBottom: '16px' }}>
               Since COVID, 1.3 million people lost their jobs in Los Angeles
               County alone. This created a brand new vulnerable population.
               These are people who need food assistance for the first time.
               According to a study done by Feeding America in May 2020, over
               500,000 Angelinos are newly food insecure.
             </Typography>
-            <Typography
-              variant='body1'
-              color='textPrimary'
-              style={{ marginBottom: '16px' }}
-            >
+            <Typography variant='body1' style={{ marginBottom: '16px' }}>
               Food pantries in the area are experiencing unprecedented demand.
               The demand for food assistance has almost doubled since the
               beginning of 2020. To compound matters, it is the hard work of
               volunteers that keeps pantries and meal programs open. The number
               of volunteers available to distribute food has diminished.
             </Typography>
-            <Typography
-              variant='body1'
-              color='textPrimary'
-              style={{ marginBottom: '16px' }}
-            >
+            <Typography variant='body1' style={{ marginBottom: '16px' }}>
               Food Oasis has 773 organizations in our database. Our team of
               volunteers updated the information for 333 organizations. Out of
               333 organizations, 46 closed their doors and 66 closed for COVID.
               37% of the organizations have closed their doors.
             </Typography>
-            <Typography
-              variant='body1'
-              color='textPrimary'
-              style={{ marginBottom: '16px' }}
-            >
+            <Typography variant='body1' style={{ marginBottom: '16px' }}>
               The primary goal of Food Oasis is to provide up-to-date
               information to Angelinos. We built a directory that connects
               anyone with hundreds of free food resources. Food Oasis presents
@@ -215,11 +197,7 @@ const About = () => {
               to our community the growing need of food donations in Los
               Angeles.
             </Typography>
-            <Typography
-              variant='body1'
-              color='textPrimary'
-              style={{ marginBottom: '16px' }}
-            >
+            <Typography variant='body1' style={{ marginBottom: '16px' }}>
               Food Oasis is creating a directory of updated food resources.
               There are countless groups helping to feed hungry Angelenos. But
               it’s difficult for those in need to find them because there’s no
@@ -234,19 +212,11 @@ const About = () => {
             className={classes.icon}
             height='40'
           />
-          <Typography
-            variant='h2'
-            color='textPrimary'
-            style={{ margin: '30px 0' }}
-          >
+          <Typography variant='h2' style={{ margin: '30px 0' }}>
             Our Team
           </Typography>
           <Container maxWidth='sm'>
-            <Typography
-              variant='body1'
-              color='textPrimary'
-              style={{ marginBottom: '16px' }}
-            >
+            <Typography variant='body1' style={{ marginBottom: '16px' }}>
               Food Oasis started in 2015 under{' '}
               <a
                 href='//hackforla.org'
@@ -268,11 +238,7 @@ const About = () => {
               day-to-day operations. The upkeep turned out to be much more work
               than any single nonprofit could handle.
             </Typography>
-            <Typography
-              variant='body1'
-              color='textPrimary'
-              style={{ marginBottom: '16px' }}
-            >
+            <Typography variant='body1' style={{ marginBottom: '16px' }}>
               In August 2019, our current Hack for LA team assembled to build
               new digital pieces of this puzzle. One goal was to relaunch the
               site with hundreds of new food resources. We learned from the past
@@ -281,21 +247,13 @@ const About = () => {
               final piece we added is a new second database that connects pantry
               directors with food donation organizations.
             </Typography>
-            <Typography
-              variant='body1'
-              color='textPrimary'
-              style={{ marginBottom: '16px' }}
-            >
+            <Typography variant='body1' style={{ marginBottom: '16px' }}>
               Our web-based solution is sparking collaboration, community
               building, and team building. The result of this community-building
               gives the food seeker updated information to find the free food
               resources they need.
             </Typography>
-            <Typography
-              variant='body1'
-              color='textPrimary'
-              style={{ marginBottom: '16px' }}
-            >
+            <Typography variant='body1' style={{ marginBottom: '16px' }}>
               We are 100% volunteer-run project. We look forward to sharing our
               updated directory with Los Angeles.
             </Typography>
@@ -308,18 +266,10 @@ const About = () => {
             className={classes.icon}
             height='40'
           />
-          <Typography
-            variant='h2'
-            color='textPrimary'
-            style={{ margin: '30px 0' }}
-          >
+          <Typography variant='h2' style={{ margin: '30px 0' }}>
             Contact Us
           </Typography>
-          <Typography
-            variant='body1'
-            color='textPrimary'
-            style={{ marginBottom: '16px' }}
-          >
+          <Typography variant='body1' style={{ marginBottom: '16px' }}>
             Questions about our project?
             <br />
             Updates to the listings?
@@ -342,9 +292,7 @@ const About = () => {
             className={classes.icon}
             height='40'
           /> */}
-          <Typography variant='h2' color='textPrimary'>
-            Our Partners
-          </Typography>
+          <Typography variant='h2'>Our Partners</Typography>
           <img
             alt='Food Cycle LA'
             src={foodCycle}

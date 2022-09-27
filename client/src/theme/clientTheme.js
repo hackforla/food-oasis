@@ -22,7 +22,7 @@ const theme = createTheme({
       contrastText: '#000000',
     },
     text: {
-      primary: '#4d4d4d',
+      secondary: '#4d4d4d',
     },
     mealProgram: {
       main: '#E57109',

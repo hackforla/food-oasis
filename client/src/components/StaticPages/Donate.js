@@ -103,6 +103,7 @@ const useStyles = makeStyles((theme) => ({
     margin: '32px 0 0 0',
     borderRadius: '24px',
     background: '#B6D8FB',
+    color: '#4d4d4d',
     display: 'flex',
     flexDirection: 'column',
     flexWrap: 'wrap',
@@ -264,16 +265,10 @@ const Donate = () => {
             className={classes.icon}
             height='40'
           />
-          <Typography variant='h2' color='textPrimary'>
-            Want to give your time instead?
-          </Typography>
+          <Typography variant='h2'>Want to give your time instead?</Typography>
 
           <Container maxWidth='sm'>
-            <Typography
-              variant='body1'
-              color='textPrimary'
-              style={{ marginBottom: '16px' }}
-            >
+            <Typography variant='body1' style={{ marginBottom: '16px' }}>
               We’re run 100% by remote volunteers who do critical work by
               updating our food directory weekly. The work you do impact those
               who don’t have enough to eat. Your help to update our directory

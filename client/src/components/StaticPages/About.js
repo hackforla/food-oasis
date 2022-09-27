@@ -87,7 +87,7 @@ const useStyles = makeStyles(() => ({
     textAlign: 'center',
     '& $h2': {
       flexBasis: '100',
-      textTransform: 'uppercase;',
+
       textAlign: 'center',
       fontWeight: '500',
       fontSize: '32px',
@@ -336,12 +336,12 @@ const About = () => {
           </Typography>
         </section>
         <section className={classes.partners}>
-          <img
+          {/* <img
             alt='Our Team'
             src={iconSpacerGray}
             className={classes.icon}
             height='40'
-          />
+          /> */}
           <Typography variant='h2' color='textPrimary'>
             Our Partners
           </Typography>

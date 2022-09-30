@@ -51,7 +51,6 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'column',
     '& $h2': {
       flexBasis: '100',
-      // textTransform: 'uppercase;',
       textAlign: 'center',
       fontWeight: '500',
       fontSize: '32px',
@@ -69,12 +68,11 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'column',
     '& $h2': {
       flexBasis: '100',
-      // textTransform: 'uppercase;',
       textAlign: 'center',
       fontWeight: '500',
       fontSize: '32px',
       marginTop: '20px',
-      marginBottom: '10px',
+      marginBottom: '20px',
     },
     '& $a': {
       color: '#4d4d4d',
@@ -90,13 +88,12 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'column',
     textAlign: 'center',
     '& $h2': {
-      // flexBasis: '100',
-      // textTransform: 'uppercase;',
+      flexBasis: '100',
       textAlign: 'center',
       fontWeight: '500',
       fontSize: '32px',
       marginTop: '20px',
-      marginBottom: '10px',
+      marginBottom: '20px',
     },
     '& $a': {
       color: '#4d4d4d',
@@ -159,29 +156,17 @@ const About = () => {
             Our Mission
           </h2>
           <Container maxWidth='sm'>
-            <Typography
-              variant='body1'
-              color='textPrimary'
-              style={{ marginBottom: '16px' }}
-            >
+            <Typography variant='body1' style={{ marginBottom: '16px' }}>
               California Food Oasis is a brand new project spun out of Food
               Oasis Los Angeles. We are gathering resources and databases from
               the community as quickly as we can.
             </Typography>
-            <Typography
-              variant='body1'
-              color='textPrimary'
-              style={{ marginBottom: '16px' }}
-            >
+            <Typography variant='body1' style={{ marginBottom: '16px' }}>
               Our project just expanded beyond Los Angeles to areas in
               California where people have been severely affected by the recent
               fires:
             </Typography>
-            <Typography
-              variant='body1'
-              color='textPrimary'
-              style={{ marginBottom: '16px' }}
-            >
+            <Typography variant='body1' style={{ marginBottom: '16px' }}>
               <ul>
                 <li>Santa Rosa</li>
                 <li>Sonoma</li>
@@ -192,67 +177,39 @@ const About = () => {
                 <li>Mendocino</li>
               </ul>
             </Typography>
-            <Typography
-              variant='body1'
-              color='textPrimary'
-              style={{ marginBottom: '16px' }}
-            >
+            <Typography variant='body1' style={{ marginBottom: '16px' }}>
               <b>
                 The primary goal of Food Oasis is to provide up-to-date
                 information to Californians who are seeking free food resources.
               </b>
             </Typography>
-            <Typography
-              variant='body1'
-              color='textPrimary'
-              style={{ marginBottom: '16px' }}
-            >
+            <Typography variant='body1' style={{ marginBottom: '16px' }}>
               We built a directory that connects anyone with hundreds of free
               food resources. Food Oasis presents reliable information on a
               user-friendly platform.
             </Typography>
-            <Typography
-              variant='body1'
-              color='textPrimary'
-              style={{ marginBottom: '16px' }}
-            >
+            <Typography variant='body1' style={{ marginBottom: '16px' }}>
               The demand for food assistance has almost doubled since the
               beginning of 2020. To compound matters, it is the hard work of
               volunteers that keeps pantries and meal programs open. The number
               of volunteers available to run these organizations has diminished
               due to COVID.
             </Typography>
-            <Typography
-              variant='body1'
-              color='textPrimary'
-              style={{ marginBottom: '16px' }}
-            >
+            <Typography variant='body1' style={{ marginBottom: '16px' }}>
               Food Oasis is creating an open source directory of validated food
               resources.
             </Typography>
-            <Typography
-              variant='body1'
-              color='textPrimary'
-              style={{ marginBottom: '16px' }}
-            >
+            <Typography variant='body1' style={{ marginBottom: '16px' }}>
               There are countless groups helping to feed hungry Californians.
               But it’s difficult for those in need to find them because there’s
               no one source of updated information. We’re working to change
               that. Our project is open source.
             </Typography>
-            <Typography
-              variant='body1'
-              color='textPrimary'
-              style={{ marginBottom: '16px' }}
-            >
+            <Typography variant='body1' style={{ marginBottom: '16px' }}>
               Our goal is share the data with other organizations in order to
               facilitate collaboration.
             </Typography>
-            <Typography
-              variant='body1'
-              color='textPrimary'
-              style={{ marginBottom: '16px' }}
-            >
+            <Typography variant='body1' style={{ marginBottom: '16px' }}>
               Help us keep this information updated. Click on the Suggest New
               Listing link under the hamburger menu and reach out. Help us
               connect the dots.
@@ -266,9 +223,9 @@ const About = () => {
             className={classes.icon}
             height='40'
           />
-          <h2>Our Team</h2>
+          <Typography variant='h2'>Our Team</Typography>
           <Container maxWidth='sm'>
-            <p>
+            <Typography variant='body1' style={{ marginBottom: '16px' }}>
               Food Oasis started in 2015 under{' '}
               <a
                 href='//hackforla.org'
@@ -289,8 +246,8 @@ const About = () => {
               resources. The team gave the project to a nonprofit to manage its
               day-to-day operations. The upkeep turned out to be much more work
               than any single nonprofit could handle.
-            </p>
-            <p>
+            </Typography>
+            <Typography variant='body1' style={{ marginBottom: '16px' }}>
               In August 2019, our current Hack for LA team assembled to build
               new digital pieces of this puzzle. One goal was to relaunch the
               site with hundreds of new food resources. We learned from the past
@@ -298,17 +255,17 @@ const About = () => {
               training volunteers to update the resources in the directory. The
               final piece we added is a new second database that connects pantry
               directors with food donation organizations.
-            </p>
-            <p>
+            </Typography>
+            <Typography variant='body1' style={{ marginBottom: '16px' }}>
               Our web-based solution is sparking collaboration, community
               building, and team building. The result of this community-building
               gives the food seeker updated information to find the free food
               resources they need.
-            </p>
-            <p>
+            </Typography>
+            <Typography variant='body1' style={{ marginBottom: '16px' }}>
               We are a 100% volunteer-run project. We look forward to sharing
               our updated directory with Los Angeles.
-            </p>
+            </Typography>
           </Container>
         </section>
         <section className={classes.contact}>
@@ -318,22 +275,22 @@ const About = () => {
             className={classes.icon}
             height='40'
           />
-          <h2>Contact Us</h2>
-          <p>
+          <Typography variant='h2'>Contact Us</Typography>
+          <Typography variant='body1' style={{ marginBottom: '16px' }}>
             Questions about our project?
             <br />
             Updates to the listings?
             <br />
             General inquiries?
             <br />
-          </p>
-          <p>
+          </Typography>
+          <Typography variant='body1' style={{ marginBottom: '16px' }}>
             Please contact our Support Team
             <br />
             <a href='mailto:foodoasisinfo@hackforla.org'>
               foodoasisinfo@hackforla.org
             </a>
-          </p>
+          </Typography>
         </section>
         <section className={classes.partners}>
           {/* <img

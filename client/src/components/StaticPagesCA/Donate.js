@@ -1,9 +1,11 @@
 import React from 'react';
 
 import donatebg from './assets/donate-bg.png';
-import iconSpacer from './assets/icon-spacer.svg';
-import iconSpacerBlue from './assets/icon-spacer-blue.svg';
+import iconSpacerGray from './assets/icon-spacer-gray.svg';
 import { makeStyles } from '@material-ui/core';
+import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles(() => ({
   outer: {
@@ -24,7 +26,7 @@ const useStyles = makeStyles(() => ({
     textAlign: 'center',
     background: '#FFF',
     margin: 0,
-    padding: '32px 0',
+    padding: '30px 0 15px 0',
   },
   btnOrange: {
     color: '#fff',
@@ -44,6 +46,10 @@ const useStyles = makeStyles(() => ({
     padding: '8px 16px',
     textDecoration: 'none',
     textTransform: 'uppercase',
+    '&:hover': {
+      color: '#fff',
+      backgroundColor: '#0A3865',
+    },
   },
   btnWhite: {
     color: '#336699',
@@ -67,41 +73,49 @@ const useStyles = makeStyles(() => ({
     color: '#4d4d4d',
     background: '#f0f0f0',
     display: 'flex',
+    flexDirection: 'column',
     flexWrap: 'wrap',
     '& $h2': {
-      color: '#336699',
       flexBasis: '100%',
-      textTransform: 'uppercase;',
       textAlign: 'center',
       fontWeight: '500',
       fontSize: '32px',
-      marginTop: '10px',
+      marginTop: '20px',
       marginBottom: '20px',
     },
     '& $btnOutline': {
       margin: '20px auto 0 auto',
+    },
+    '& $a': {
+      '&:hover': {
+        color: '#fff',
+        backgroundColor: '#0A3865',
+      },
     },
   },
   volunteerSection: {
     padding: '32px',
     margin: '32px 0 0 0',
     borderRadius: '24px',
-    color: '#fff',
-    background: '#336699',
+    color: '#4d4d4d',
+    background: '#B6D8FB',
     display: 'flex',
+    flexDirection: 'column',
     flexWrap: 'wrap',
     '& $h2': {
-      color: '#fff',
       flexBasis: '100%',
-      textTransform: 'uppercase;',
       textAlign: 'center',
       fontWeight: '500',
       fontSize: '32px',
-      marginTop: '10px',
+      marginTop: '20px',
       marginBottom: '20px',
     },
-    '& $btnWhite': {
+    '& $btnOutline': {
+      color: '#fff',
       margin: '20px auto 0 auto',
+    },
+    '& $a': {
+      color: '#4d4d4d',
     },
   },
   cards: {
@@ -147,37 +161,41 @@ const Donate = () => {
   // const { t } = useTranslation("donate");
   return (
     <div className={classes.outer}>
-      <h1 className={classes.title}>Donate</h1>
       <div className={classes.main}>
         <figure className={classes.figure}>
           <img alt='Donate' src={donatebg} style={{ width: '100%' }} />
         </figure>
+        <Typography variant='h1' className={classes.title}>
+          Donate
+        </Typography>
         <section className={classes.donate}>
           <img
             alt='Why Donate?'
-            src={iconSpacerBlue}
+            src={iconSpacerGray}
             className={classes.icon}
             height='40'
           />
-          <h2>Why Donate?</h2>
-          <p>
-            We’ve done so much already as a 100% volunteer-run organization—but
-            we need your help to finish what we set out to do. The admin,
-            development, and marketing costs to expand our directory are
-            extensive. Your tax-deductible donation would help us offset some of
-            those costs.
-          </p>
-          <p>
-            Please make donations to our parent organization (Code for America).
-            At the Code for America donation page you will see a text box: “What
-            inspired you to donate today”?{' '}
-            <b>
-              <strong>
-                Please write Food Oasis and Hack for LA in that box.
-              </strong>
-            </b>{' '}
-            Your donation will get earmarked for Food Oasis.
-          </p>
+          <Typography variant='h2'>Why Donate?</Typography>
+          <Container maxWidth='sm'>
+            <Typography variant='body1' style={{ marginBottom: '16px' }}>
+              We’ve done so much already as a 100% volunteer-run
+              organization—but we need your help to finish what we set out to
+              do. The admin, development, and marketing costs to expand our
+              directory are extensive. Your tax-deductible donation would help
+              us offset some of those costs.
+            </Typography>
+            <Typography variant='body1' style={{ marginBottom: '16px' }}>
+              Please make donations to our parent organization (Code for
+              America). At the Code for America donation page you will see a
+              text box: “What inspired you to donate today”?{' '}
+              <b>
+                <strong>
+                  Please write Food Oasis and Hack for LA in that box.
+                </strong>
+              </b>{' '}
+              Your donation will get earmarked for Food Oasis.
+            </Typography>
+          </Container>
           <a
             href='//www.codeforamerica.org/donate'
             target='_blank'
@@ -190,38 +208,42 @@ const Donate = () => {
         <div className={classes.volunteerSection}>
           <img
             alt='Volunteer'
-            src={iconSpacer}
+            src={iconSpacerGray}
             className={classes.icon}
             height='40'
           />
-          <h2>Want to give your time instead?</h2>
-          <p>
-            Virtual volunteer opportunity! Help us validate our database.
-            Correct, up-to-date information is vital for someone seeking food.
-          </p>
-          <p>
-            To volunteer as a data validator, please join us on Zoom for online
-            training. We meet{' '}
-            <strong>Saturday mornings from 10 AM - 12 PM PST.</strong> Sign up
-            at this address:
-          </p>
+          <Typography variant='h2'>Want to give your time instead?</Typography>
+          <Container maxWidth='sm'>
+            <Typography variant='body1' style={{ marginBottom: '16px' }}>
+              Virtual volunteer opportunity! Help us validate our database.
+              Correct, up-to-date information is vital for someone seeking food.
+            </Typography>
+            <Typography variant='body1'>
+              To volunteer as a data validator, please join us on Zoom for
+              online training. We meet{' '}
+              <strong>Saturday mornings from 10 AM - 12 PM PST.</strong> Sign up
+              at this address:
+            </Typography>
+          </Container>
           <a
             href='//volunteer.laworks.com/opportunity/a0C3l00000r3wLvEAI'
             target='_blank'
             rel='noopener noreferrer'
-            className={classes.btnWhite}
+            className={classes.btnOutline}
           >
             Volunteer
           </a>
-          <p>
-            Developers, designers, data specialists, or researchers - If you
-            have tech skills, please inquire about joining our team as a
-            developer, designer, or data specialist via email,{' '}
-            <a href='mailto:foodoasisinfo@hackforla.org'>
-              foodoasisinfo@hackforla.org
-            </a>
-            .
-          </p>
+          <Container maxWidth='sm'>
+            <Typography variant='body1' style={{ margin: '16px 0' }}>
+              Developers, designers, data specialists, or researchers - If you
+              have tech skills, please inquire about joining our team as a
+              developer, designer, or data specialist via email,{' '}
+              <a href='mailto:foodoasisinfo@hackforla.org'>
+                foodoasisinfo@hackforla.org
+              </a>
+              .
+            </Typography>
+          </Container>
         </div>
         <section className={classes.cards}>
           {/* <aside className={classes.signup}>

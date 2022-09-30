@@ -19,6 +19,7 @@ const useStyles = makeStyles(() => ({
     },
   },
   title: {
+    color: '#4d4d4d',
     textTransform: 'uppercase',
     fontWeight: 500,
     textAlign: 'center',
@@ -48,9 +49,7 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     flexWrap: 'wrap',
     '& $h2': {
-      color: '#4d4d4d',
       flexBasis: '100%',
-
       textAlign: 'center',
       fontWeight: '500',
       fontSize: '32px',
@@ -68,7 +67,6 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'column',
     '& $h2': {
       flexBasis: '100%',
-
       textAlign: 'center',
       fontWeight: '500',
       fontSize: '32px',
@@ -122,15 +120,15 @@ const About = () => {
   // const { t } = useTranslation("about");
   return (
     <div className={classes.outer}>
-      <h1 className={classes.title}>
-        <span>
-          FAQ<span>s</span>
-        </span>
-      </h1>
       <div className={classes.main}>
         <figure className={classes.figure}>
           <img alt='FAQ' src={faqbg} style={{ width: '100%' }} />
         </figure>
+        <Typography variant='h1' className={classes.title}>
+          <span>
+            FAQ<span>s</span>
+          </span>
+        </Typography>
         <section className={classes.glossary}>
           <img
             alt='Glossary'
@@ -138,7 +136,7 @@ const About = () => {
             className={classes.icon}
             height='40'
           />
-          <h2>Glossary</h2>
+          <Typography variant='h2'>Glossary</Typography>
           <Container maxWidth='sm'>
             <Typography variant='body1' className={classes.dl}>
               <dt>Food Seeker</dt>
@@ -178,7 +176,7 @@ const About = () => {
             className={classes.icon}
             height='40'
           />
-          <h2>For Volunteers</h2>
+          <Typography variant='h2'>For Volunteers</Typography>
           <Container maxWidth='sm'>
             <Typography variant='body1' className={classes.dl}>
               <dt>How can I sign up to volunteer?</dt>
@@ -221,7 +219,7 @@ const About = () => {
             className={classes.icon}
             height='40'
           />
-          <h2>For Donors</h2>
+          <Typography variant='h2'>For Donors</Typography>
           <Container maxWidth='sm'>
             <Typography variant='body1' className={classes.dl}>
               <dt>What is food insecurity?</dt>

@@ -21,9 +21,6 @@ const theme = createTheme({
       main: '#f94040',
       contrastText: '#000000',
     },
-    text: {
-      secondary: '#4d4d4d',
-    },
     mealProgram: {
       main: '#E57109',
       translucent: '#E5710980',

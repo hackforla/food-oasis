@@ -1,39 +1,42 @@
-import donatebg from "../assets/donate-header.jpg";
+import donatebg from '../assets/donate-header.jpg';
+import Typography from '@material-ui/core/Typography';
 
 const PAGE_INFO_DONATE = {
-  pageTitle: "Donate",
+  pageTitle: 'Donate',
   pageImage: {
-    alt: "Donate",
+    alt: 'Donate',
     src: donatebg,
   },
 };
 
 const PAGE_SECTIONS_DONATE = [
   {
-    title: "Make a Financial Contribution",
+    title: 'Make a Financial Contribution',
     content: (
       <div>
-        <p>
+        <Typography variant='body1'>
           Mahalo for making the work of food rescue and redistribution on O‘ahu
           possible! As a 501(c)(3) nonprofit, Aloha Harvest relies completely on
           the generosity of our funders, ranging from national grants to
           individual donations by community members.
-        </p>
+        </Typography>
 
-        <p>
-          To donate online, visit{" "}
+        <Typography variant='body1'>
+          To donate online, visit{' '}
           <a
-            href="https://alohaharvest.org/donate"
-            target="_blank"
-            rel="noopener noreferrer"
+            href='https://alohaharvest.org/donate'
+            target='_blank'
+            rel='noopener noreferrer'
           >
             alohaharvest.org/donate.
           </a>
-        </p>
+        </Typography>
 
-        <p>You will receive an automatic acknowledgement upon donation.</p>
+        <Typography variant='body1'>
+          You will receive an automatic acknowledgement upon donation.
+        </Typography>
 
-        <p>
+        <Typography variant='body1'>
           To donate via check, please make your donation out to:
           <br />
           Aloha Harvest
@@ -42,38 +45,38 @@ const PAGE_SECTIONS_DONATE = [
           <br />
           Honolulu, HI 96816
           <br />
-        </p>
+        </Typography>
 
-        <p>
+        <Typography variant='body1'>
           You will be mailed a letter of acknowledgement approximately one month
           from the time we receive your check!
-        </p>
+        </Typography>
         <br />
       </div>
     ),
-    subtitle: "",
+    subtitle: '',
   },
   {
-    title: "Donate Excess Food",
+    title: 'Donate Excess Food',
     content: (
       <div>
-        <p>
+        <Typography variant='body1'>
           If you or your business have excess food you’d like to donate to us
-          for redistribution, please visit{" "}
+          for redistribution, please visit{' '}
           <a
-            href="https://alohaharvest.org/donate-food"
-            target="_blank"
-            rel="noopener noreferrer"
+            href='https://alohaharvest.org/donate-food'
+            target='_blank'
+            rel='noopener noreferrer'
           >
             alohaharvest.org/donate-food
-          </a>{" "}
+          </a>{' '}
           to get started. You can also call us at 808-208-1581 or email
           info@alohaharvest.org with questions.
-        </p>
+        </Typography>
       </div>
     ),
-    subtitle: "",
-    variant: "dark",
+    subtitle: '',
+    variant: 'dark',
   },
 ];
 

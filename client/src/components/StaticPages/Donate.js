@@ -228,15 +228,9 @@ const Donate = () => {
             className={classes.icon}
             height='40'
           />
-          <Typography variant='h2' style={{ margin: '30px 0' }}>
-            Why Donate?
-          </Typography>
+          <Typography variant='h2'>Why Donate?</Typography>
           <Container maxWidth='sm'>
-            <Typography
-              variant='body1'
-              color='textPrimary'
-              style={{ marginBottom: '16px' }}
-            >
+            <Typography variant='body1'>
               We’ve done so much already as a 100% volunteer-run
               organization—but we need your help to finish what we set out to
               do. The admin, development, and marketing costs to expand our
@@ -268,7 +262,7 @@ const Donate = () => {
           <Typography variant='h2'>Want to give your time instead?</Typography>
 
           <Container maxWidth='sm'>
-            <Typography variant='body1' style={{ marginBottom: '16px' }}>
+            <Typography variant='body1'>
               We’re run 100% by remote volunteers who do critical work by
               updating our food directory weekly. The work you do impact those
               who don’t have enough to eat. Your help to update our directory

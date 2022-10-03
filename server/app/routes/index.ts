@@ -1,4 +1,4 @@
-const router = require("express").Router();
+import { Router } from 'express'
 
 const tenantRouter = require("./tenant-router");
 const accountRouter = require("./account-router");
@@ -8,7 +8,6 @@ const suggestionRouter = require("./suggestion-router");
 const parentOrganizationRouter = require("./parent-organization-router");
 const tagRouter = require("./tag-router");
 const loginsRouter = require("./logins-router");
-
 const faqRouter = require("./faq-router");
 const stakeholderRouter = require("./stakeholder-router");
 const stakeholderBestRouter = require("./stakeholder-best-router");
@@ -19,7 +18,7 @@ const loadRouter = require("./load-router");
 const esriRouter = require("./esri-router");
 const emailRouter = require("./email-router");
 
-module.exports = router;
+const router = Router();
 
 router.use("/api/accounts", accountRouter);
 router.use("/api/categories", categoryRouter);
@@ -38,3 +37,6 @@ router.use("/api/stakeholderlogs", stakeholderLogRouter);
 router.use("/api/suggestions", suggestionRouter);
 router.use("/api/tags", tagRouter);
 router.use("/api/tenants", tenantRouter);
+router.use("/api/logins", loginsRouter);
+
+export default router;

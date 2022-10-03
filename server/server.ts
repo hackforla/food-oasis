@@ -7,7 +7,7 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 import middleware from "./middleware/middleware";
-const router = require("./app/routes/index");
+import router from "./app/routes/index";
 
 import { Express } from "express";
 

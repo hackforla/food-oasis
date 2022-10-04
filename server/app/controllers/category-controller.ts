@@ -59,7 +59,7 @@ const put: RequestHandler<{ id: string }, never, Category, never> = async (
   res
 ) => {
   try {
-    await categoryService.update(req.body);
+    await categoryService.update(req.body, req.params.id);
     res.sendStatus(200);
   } catch (err) {
     console.error(err);
@@ -74,11 +74,7 @@ const remove: RequestHandler<
   never
 > = async (req, res) => {
   try {
-    // params are always strings, need to
-    // convert to correct Javascript type, so
-    // pg=promise can format SQL correctly.
-    const id = Number(req.params.id);
-    const rowCount = await categoryService.remove(id);
+    const rowCount = await categoryService.remove(req.params.id);
     if (rowCount !== 1) {
       res.status(400).json({ error: "Record not found" });
       return;

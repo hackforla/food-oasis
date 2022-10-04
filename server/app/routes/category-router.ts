@@ -1,7 +1,9 @@
-const router = require("express").Router();
-const categoryController = require("../controllers/category-controller");
+import { Router } from "express";
 
-const jwtSession = require("../../middleware/jwt-session");
+const router = Router();
+
+import categoryController from "../controllers/category-controller";
+import jwtSession from "../../middleware/jwt-session";
 
 router.get("/", categoryController.getAll);
 router.get("/:id", categoryController.getById);

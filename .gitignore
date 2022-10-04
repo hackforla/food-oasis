@@ -251,3 +251,5 @@ dotenv
 
 # End of project-specific exclusions
 #
+
+/thunder-tests/thunderActivity.json

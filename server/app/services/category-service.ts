@@ -28,14 +28,14 @@ const insert = async (model: Category): Promise<{ id: string }> => {
   return { id: result.id };
 };
 
-const update = async (model: Category) => {
+const update = async (model: Category, id: string) => {
   const sql = `update category
                set name = $<name>
                 where id = $<id>`;
-  await db.none(sql, model);
+  await db.none(sql, { ...model, id: Number(id) });
 };
 
-const remove = async (id: number): Promise<number> => {
+const remove = async (id: string): Promise<number> => {
   const sql = `delete from category where id = $<id>`;
   const result = await db.result(sql, { id: Number(id) });
   return result.rowCount;

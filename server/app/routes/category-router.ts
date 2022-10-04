@@ -24,4 +24,4 @@ router.delete(
   categoryController.remove
 );
 
-export default router;
+module.exports = router;

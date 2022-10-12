@@ -1,31 +1,31 @@
-import faqbg from '../assets/faq-header.jpg';
-import Typography from '@material-ui/core/Typography';
+import faqbg from "../assets/faq-header.jpg";
+import Typography from "@material-ui/core/Typography";
 
 const PAGE_INFO_FAQ = {
-  pageTitle: 'FAQs',
+  pageTitle: "FAQs",
   pageImage: {
-    alt: 'FAQs',
+    alt: "FAQs",
     src: faqbg,
   },
 };
 
 const PAGE_SECTIONS_FAQ = [
   {
-    title: 'For Users',
+    title: "For Users",
     content: (
       <>
-        <Typography variant='body1'>
+        <Typography variant="body1">
           <dl>
             <dt>How do I use this tool to find food near me?</dt>
             <dd>
-              From the{' '}
+              From the{" "}
               <a
-                href='https://devhi.foodoasis.net/organizations'
-                target='_blank'
-                rel='noopener noreferrer'
+                href="https://devhi.foodoasis.net/organizations"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 “Find Food”
-              </a>{' '}
+              </a>{" "}
               page, type in your zip code or address and hit Enter. A list of
               nearby options, sorted from nearest to farthest, will pop up on
               the left side of the page. Click “PANTRIES” or “MEALS” if you’d
@@ -55,17 +55,17 @@ const PAGE_SECTIONS_FAQ = [
             </dt>
             <dd>
               <a
-                href='https://www.auw211.org/s/'
-                target='_blank'
-                rel='noopener noreferrer'
+                href="https://www.auw211.org/s/"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 Aloha United Way
-              </a>{' '}
-              can be called by dialing 211 or visiting{' '}
+              </a>{" "}
+              can be called by dialing 211 or visiting{" "}
               <a
-                href='https://www.auw211.org/s/'
-                target='_blank'
-                rel='noopener noreferrer'
+                href="https://www.auw211.org/s/"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 auw211.org
               </a>
@@ -94,11 +94,11 @@ const PAGE_SECTIONS_FAQ = [
               role: We pick up excess food from a network of food donors and
               redistribute it to a network of nonprofits and social service
               agencies feeding O‘ahu’s hungry. To learn more, visit this tool’s
-              About Us page or our website directly at{' '}
+              About Us page or our website directly at{" "}
               <a
-                href='https://alohaharvest.org'
-                target='_blank'
-                rel='noopener noreferrer'
+                href="https://alohaharvest.org"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 alohaharvest.org
               </a>
@@ -108,25 +108,25 @@ const PAGE_SECTIONS_FAQ = [
         </Typography>
       </>
     ),
-    subtitle: '',
-    variant: 'dark',
+    subtitle: "",
+    variant: "dark",
   },
   {
-    title: 'General Questions',
+    title: "General Questions",
     content: (
       <>
-        <Typography variant='body1'>
+        <Typography variant="body1">
           <dl>
             <dt>
               Interested in donating excess food, volunteering, or anything
               else?
             </dt>
             <dd>
-              Visit our website at{' '}
+              Visit our website at{" "}
               <a
-                href='https://alohaharvest.org'
-                target='_blank'
-                rel='noopener noreferrer'
+                href="https://alohaharvest.org"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 alohaharvest.org.
               </a>
@@ -147,29 +147,29 @@ const PAGE_SECTIONS_FAQ = [
             </dd>
             <dt>Do you accept food or monetary donations?</dt>
             <dd>
-              Yes! Please visit the Aloha Harvest{' '}
+              Yes! Please visit the Aloha Harvest{" "}
               <a
-                href='https://alohaharvest.org/donate-food/'
-                target='_blank'
-                rel='noopener noreferrer'
+                href="https://alohaharvest.org/donate-food/"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 food donation
-              </a>{' '}
-              and{' '}
+              </a>{" "}
+              and{" "}
               <a
-                href='https://alohaharvest.org/donate-money/'
-                target='_blank'
-                rel='noopener noreferrer'
+                href="https://alohaharvest.org/donate-money/"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 monetary donation
-              </a>{' '}
+              </a>{" "}
               pages for more information.
             </dd>
           </dl>
         </Typography>
       </>
     ),
-    subtitle: '',
+    subtitle: "",
   },
 ];
 

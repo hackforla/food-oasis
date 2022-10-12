@@ -1,28 +1,28 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
+import React from "react";
+import { makeStyles } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles(() => ({
   outer: {
-    background: '#fff',
+    background: "#fff",
   },
   main: {
-    padding: '1.5rem 0;',
-    maxWidth: '1200px',
-    margin: '0 auto',
-    '@media only screen and (min-width: 75em)': {
-      padding: '1.5rem 2rem',
+    padding: "1.5rem 0;",
+    maxWidth: "1200px",
+    margin: "0 auto",
+    "@media only screen and (min-width: 75em)": {
+      padding: "1.5rem 2rem",
     },
   },
   title: {
-    textTransform: 'uppercase',
+    textTransform: "uppercase",
     fontWeight: 500,
-    textAlign: 'center',
-    background: '#FFF',
+    textAlign: "center",
+    background: "#FFF",
     margin: 0,
-    padding: '32px 0',
-    '& $span': {
-      color: '#4d4d4d',
+    padding: "32px 0",
+    "& $span": {
+      color: "#4d4d4d",
     },
   },
   figure: {
@@ -37,7 +37,7 @@ const Page = (props) => {
   return (
     <div className={classes.outer}>
       <div className={classes.main}>
-        <Typography variant='h1' className={classes.title}>
+        <Typography variant="h1" className={classes.title}>
           <span>{pageTitle}</span>
         </Typography>
         <br />
@@ -46,7 +46,7 @@ const Page = (props) => {
             <img
               alt={pageImage.alt}
               src={pageImage.src}
-              style={{ width: '100%', borderRadius: '24px' }}
+              style={{ width: "100%", borderRadius: "24px" }}
             />
           </figure>
         )}

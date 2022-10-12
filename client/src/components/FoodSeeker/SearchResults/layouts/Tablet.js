@@ -20,13 +20,13 @@ const TabletLayout = ({ filters, list, map }) => {
 
   return (
     <>
-      { filters }
+      {filters}
       <div className={classes.container}>
-        <div className={classes.map}>{ map }</div>
-        <div className={classes.list}>{ list }</div>
+        <div className={classes.map}>{map}</div>
+        <div className={classes.list}>{list}</div>
       </div>
     </>
-  )
-}
+  );
+};
 
 export default TabletLayout;

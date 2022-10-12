@@ -111,7 +111,7 @@ export default function useOrganizationBests() {
       setState((prev) => ({ ...prev, loading: false }));
       return stakeholder;
     } catch (err) {
-      setState(prev => ({ ...prev, loading: false, error: true }));
+      setState((prev) => ({ ...prev, loading: false, error: true }));
       console.error(err);
       return Promise.reject(err);
     }

@@ -1,5 +1,5 @@
 import React from "react";
-import { withFormik } from 'formik'
+import { withFormik } from "formik";
 import PropTypes from "prop-types";
 import {
   Dialog,
@@ -13,7 +13,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import * as suggestionService from "services/suggestion-service";
 import { TextField, Button } from "../../../UI";
 import { DEFAULT_STAKEHOLDER } from "../../../../constants/stakeholder";
-import * as Yup from 'yup';
+import * as Yup from "yup";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -23,11 +23,11 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   correctionInput: {
-    '& div': {
-      '& textarea': {
-        paddingRight: "2rem"
-      }
-    }
+    "& div": {
+      "& textarea": {
+        paddingRight: "2rem",
+      },
+    },
   },
   asterisk: {
     position: "absolute",
@@ -35,18 +35,12 @@ const useStyles = makeStyles((theme) => ({
     right: "2rem",
     transform: "translateY(-8px)",
     color: "red",
-    fontSize: "2rem"
-  }
+    fontSize: "2rem",
+  },
 }));
 function SuggestionDialog(props) {
-  const {
-    values,
-    touched,
-    errors,
-    handleChange,
-    handleBlur,
-    handleSubmit
-  } = props;
+  const { values, touched, errors, handleChange, handleBlur, handleSubmit } =
+    props;
 
   const { onClose, open, id } = props;
   const classes = useStyles();
@@ -62,15 +56,17 @@ function SuggestionDialog(props) {
       id={id}
     >
       <form>
-        <DialogTitle id="confirmation-dialog-title">Send Correction</DialogTitle>
+        <DialogTitle id="confirmation-dialog-title">
+          Send Correction
+        </DialogTitle>
         <DialogContent dividers>
           <Grid container spacing={1}>
             <Grid item xs={12}>
               <Typography>
                 Please help us improve our data by letting us know when our
-                information is incorrect. All fields are optional, but filling in
-                as many as you can helps our volunteers to validate efficiently.
-                Thanks!
+                information is incorrect. All fields are optional, but filling
+                in as many as you can helps our volunteers to validate
+                efficiently. Thanks!
               </Typography>
             </Grid>
             <Grid item xs={12} style={{ position: "relative" }}>
@@ -159,24 +155,22 @@ function SuggestionDialog(props) {
 const validationsForm = {
   notes: Yup.string()
     .min(3, "Corrections must be at least 3 characters")
-    .required("Please enter corrections")
+    .required("Please enter corrections"),
 };
 
 const SuggestionForm = withFormik({
-  mapPropsToValues: ({ notes, tipsterName, tipsterPhone, tipsterEmail }) =>
-  ({
-    notes: notes || '',
-    tipsterName: tipsterName || '',
-    tipsterPhone: tipsterPhone || '',
-    tipsterEmail: tipsterEmail || ''
+  mapPropsToValues: ({ notes, tipsterName, tipsterPhone, tipsterEmail }) => ({
+    notes: notes || "",
+    tipsterName: tipsterName || "",
+    tipsterPhone: tipsterPhone || "",
+    tipsterEmail: tipsterEmail || "",
   }),
   validationSchema: Yup.object(validationsForm),
   handleSubmit: (values, { props }) => {
-
     const stakeholder = {
       ...DEFAULT_STAKEHOLDER,
       ...props.stakeholder,
-    }
+    };
 
     const altered = { ...stakeholder, ...values };
 
@@ -194,7 +188,7 @@ const SuggestionForm = withFormik({
             "Sorry, submitting your correction failed, please email us at the address on the About page.",
         });
       });
-  }
+  },
 })(SuggestionDialog);
 
 SuggestionDialog.propTypes = {

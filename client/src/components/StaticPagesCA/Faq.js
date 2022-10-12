@@ -1,34 +1,34 @@
-import React from 'react';
+import React from "react";
 
-import faqbg from './assets/faq-bg.png';
-import { makeStyles } from '@material-ui/core';
-import iconSpacerGray from './assets/icon-spacer-gray.svg';
-import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
+import faqbg from "./assets/faq-bg.png";
+import { makeStyles } from "@material-ui/core";
+import iconSpacerGray from "./assets/icon-spacer-gray.svg";
+import Container from "@material-ui/core/Container";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles(() => ({
   outer: {
-    background: '#fff',
+    background: "#fff",
   },
   main: {
-    padding: '1.5rem 0;',
-    maxWidth: '1200px',
-    margin: '0 auto',
-    '@media only screen and (min-width: 75em)': {
-      padding: '1.5rem 2rem',
+    padding: "1.5rem 0",
+    maxWidth: "1200px",
+    margin: "0 auto",
+    "@media only screen and (min-width: 75em)": {
+      padding: "1.5rem 2rem",
     },
   },
   title: {
-    textTransform: 'uppercase',
+    textTransform: "uppercase",
     fontWeight: 500,
-    textAlign: 'center',
-    background: '#FFF',
+    textAlign: "center",
+    background: "#FFF",
     margin: 0,
-    padding: '32px 0',
-    '& $span': {
-      color: '#4d4d4d',
-      '& $span': {
-        textTransform: 'none',
+    padding: "32px 0",
+    "& $span": {
+      color: "#4d4d4d",
+      "& $span": {
+        textTransform: "none",
       },
     },
   },
@@ -37,74 +37,74 @@ const useStyles = makeStyles(() => ({
     padding: 0,
   },
   icon: {
-    margin: 'auto',
+    margin: "auto",
   },
   glossary: {
-    padding: '32px',
-    margin: '32px 0',
-    borderRadius: '24px',
-    color: '#4d4d4d',
-    backgroundColor: '#F0F0F0',
-    display: 'flex',
-    flexWrap: 'wrap',
-    '& $h2': {
-      flexBasis: '100%',
-      textAlign: 'center',
-      fontWeight: '500',
-      fontSize: '32px',
-      marginTop: '20px',
-      marginBottom: '20px',
+    padding: "32px",
+    margin: "32px 0",
+    borderRadius: "24px",
+    color: "#4d4d4d",
+    backgroundColor: "#F0F0F0",
+    display: "flex",
+    flexWrap: "wrap",
+    "& $h2": {
+      flexBasis: "100%",
+      textAlign: "center",
+      fontWeight: "500",
+      fontSize: "32px",
+      marginTop: "20px",
+      marginBottom: "20px",
     },
   },
   forVolunteers: {
-    padding: '32px',
-    margin: '32px 0',
-    borderRadius: '24px',
-    color: '#4d4d4d',
-    backgroundColor: '#B6D8FB',
-    display: 'flex',
-    flexDirection: 'column',
-    '& $h2': {
-      flexBasis: '100%',
-      textAlign: 'center',
-      fontWeight: '500',
-      fontSize: '32px',
-      marginTop: '20px',
-      marginBottom: '30px',
+    padding: "32px",
+    margin: "32px 0",
+    borderRadius: "24px",
+    color: "#4d4d4d",
+    backgroundColor: "#B6D8FB",
+    display: "flex",
+    flexDirection: "column",
+    "& $h2": {
+      flexBasis: "100%",
+      textAlign: "center",
+      fontWeight: "500",
+      fontSize: "32px",
+      marginTop: "20px",
+      marginBottom: "30px",
     },
-    '& $a': {
-      color: '#4d4d4d',
+    "& $a": {
+      color: "#4d4d4d",
     },
   },
   forDonors: {
-    color: '#4d4d4d',
-    backgroundColor: '#F0F0F0',
-    padding: '32px',
-    margin: '32px 0',
-    borderRadius: '24px',
-    display: 'flex',
-    flexDirection: 'column',
-    '& $h2': {
-      flexBasis: '100%',
-      textAlign: 'center',
-      fontWeight: '500',
-      fontSize: '32px',
-      marginTop: '20px',
-      marginBottom: '30px',
+    color: "#4d4d4d",
+    backgroundColor: "#F0F0F0",
+    padding: "32px",
+    margin: "32px 0",
+    borderRadius: "24px",
+    display: "flex",
+    flexDirection: "column",
+    "& $h2": {
+      flexBasis: "100%",
+      textAlign: "center",
+      fontWeight: "500",
+      fontSize: "32px",
+      marginTop: "20px",
+      marginBottom: "30px",
     },
   },
   dl: {
-    marginTop: '0',
-    marginBottom: '0',
-    '& $dt': {
-      fontWeight: '600',
+    marginTop: "0",
+    marginBottom: "0",
+    "& $dt": {
+      fontWeight: "600",
     },
-    '& $dd': {
-      marginLeft: '0',
-      marginBottom: '32px',
+    "& $dd": {
+      marginLeft: "0",
+      marginBottom: "32px",
     },
-    '& $dd:last-child': {
-      marginBottom: '0',
+    "& $dd:last-child": {
+      marginBottom: "0",
     },
   },
 }));
@@ -115,23 +115,23 @@ const About = () => {
     <div className={classes.outer}>
       <div className={classes.main}>
         <figure className={classes.figure}>
-          <img alt='FAQ' src={faqbg} style={{ width: '100%' }} />
+          <img alt="FAQ" src={faqbg} style={{ width: "100%" }} />
         </figure>
-        <Typography variant='h1' className={classes.title}>
+        <Typography variant="h1" className={classes.title}>
           <span>
             FAQ<span>s</span>
           </span>
         </Typography>
         <section className={classes.glossary}>
           <img
-            alt='Glossary'
+            alt="Glossary"
             src={iconSpacerGray}
             className={classes.icon}
-            height='40'
+            height="40"
           />
-          <Typography variant='h2'>Glossary</Typography>
-          <Container maxWidth='sm'>
-            <Typography variant='body1'>
+          <Typography variant="h2">Glossary</Typography>
+          <Container maxWidth="sm">
+            <Typography variant="body1">
               <dl className={classes.dl}>
                 <dt>Food Seeker</dt>
                 <dd>A person in need of free groceries or meals.</dd>
@@ -167,25 +167,25 @@ const About = () => {
         </section>
         <section className={classes.forVolunteers}>
           <img
-            alt='For Volunteers'
+            alt="For Volunteers"
             src={iconSpacerGray}
             className={classes.icon}
-            height='40'
+            height="40"
           />
-          <Typography variant='h2'>For Volunteers</Typography>
-          <Container maxWidth='sm'>
-            <Typography variant='body1' className={classes.dl}>
+          <Typography variant="h2">For Volunteers</Typography>
+          <Container maxWidth="sm">
+            <Typography variant="body1" className={classes.dl}>
               <dt>How can I sign up to volunteer?</dt>
               <dd>
                 <a
-                  href='//volunteer.laworks.com/opportunity/a0C3l00000r3wLvEAI'
-                  target='_blank'
-                  rel='noopener noreferrer'
+                  href="//volunteer.laworks.com/opportunity/a0C3l00000r3wLvEAI"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Attend a training session
-                </a>{' '}
-                to get an assignment, or reach out to{' '}
-                <a href='mailto:foodoasisinfo@hackforla.org'>
+                </a>{" "}
+                to get an assignment, or reach out to{" "}
+                <a href="mailto:foodoasisinfo@hackforla.org">
                   foodoasisinfo@hackforla.org
                 </a>
                 .
@@ -198,9 +198,9 @@ const About = () => {
               </dd>
               <dt>How do I set up an account to start my assignment?</dt>
               <dd>
-                <a href='/register'>Enter your info here</a>, and look out for a
-                confirmation email from{' '}
-                <a href='mailto:foodoasis+noreply@hackforla.org'>
+                <a href="/register">Enter your info here</a>, and look out for a
+                confirmation email from{" "}
+                <a href="mailto:foodoasis+noreply@hackforla.org">
                   foodoasis+noreply@hackforla.org
                 </a>
                 . Follow the instructions on the email.
@@ -210,14 +210,14 @@ const About = () => {
         </section>
         <section className={classes.forDonors}>
           <img
-            alt='For Donors'
+            alt="For Donors"
             src={iconSpacerGray}
             className={classes.icon}
-            height='40'
+            height="40"
           />
-          <Typography variant='h2'>For Donors</Typography>
-          <Container maxWidth='sm'>
-            <Typography variant='body1' className={classes.dl}>
+          <Typography variant="h2">For Donors</Typography>
+          <Container maxWidth="sm">
+            <Typography variant="body1" className={classes.dl}>
               <dt>What is food insecurity?</dt>
               <dd>
                 Unable to consistently access or afford adequate food to live a

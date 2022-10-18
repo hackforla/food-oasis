@@ -253,7 +253,7 @@ const requestResetPasswordConfirmation = async (
     await db.none(sqlToken, { token, email });
     try {
       await sendResetPasswordConfirmation(email, token, clientUrl);
-    } catch (e) {
+    } catch (e: any) {
       throw new Error(e);
     }
     return result;

@@ -1,5 +1,7 @@
-const router = require("express").Router();
-const suggestionController = require("../controllers/suggestion-controller");
+import { Router } from "express";
+
+const router = Router();
+import suggestionController from "../controllers/suggestion-controller";
 
 router.get("/", suggestionController.getAll);
 router.get("/:id", suggestionController.getById);

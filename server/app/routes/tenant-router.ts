@@ -1,5 +1,6 @@
-const router = require("express").Router();
-const tenantController = require("../controllers/tenant-controller");
+import { Router } from "express";
+const router = Router();
+import tenantController from "../controllers/tenant-controller";
 
 router.get("/", tenantController.getAll);
 router.get("/:id", tenantController.getById);

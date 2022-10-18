@@ -1,18 +1,19 @@
-const router = require("express").Router();
-const parentOrganizationController = require("../controllers/parent-organization-controller");
+import { Router } from "express";
+const router = Router();
+import parentOrganizationController from "../controllers/parent-organization-controller";
 
 const jwtSession = require("../../middleware/jwt-session");
 
-router.get("/:id", parentOrganizationController.getAllByTenantId);
+router.get("/:tenantId", parentOrganizationController.getAllByTenantId);
 router.post(
   "/",
   jwtSession.validateUserHasRequiredRoles(["admin"]),
-  parentOrganizationController.post
+  parentOrganizationController.insert
 );
 router.put(
   "/:id",
   jwtSession.validateUserHasRequiredRoles(["admin"]),
-  parentOrganizationController.put
+  parentOrganizationController.update
 );
 
 router.delete(

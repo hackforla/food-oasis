@@ -1,7 +1,11 @@
-const db = require("./db");
-const camelcaseKeys = require("camelcase-keys");
+import db from "./db";
+import camelcaseKeys from "camelcase-keys";
+import { Suggestion } from "../types/suggestion-types";
 
-const selectAll = async (params) => {
+const selectAll = async (params: {
+  statusIds: string[];
+  tenantId: string;
+}): Promise<Suggestion[]> => {
   const statusIds = params.statusIds
     ? params.statusIds.map((s) => Number(s)).join(",")
     : "-1";
@@ -21,7 +25,7 @@ const selectAll = async (params) => {
   return result.map((r) => camelcaseKeys(r));
 };
 
-const selectById = async (suggestionId) => {
+const selectById = async (suggestionId: string): Promise<Suggestion> => {
   // Need to cast id to number so pg-promise knows how
   // to format SQL
   const id = Number(suggestionId);
@@ -32,11 +36,12 @@ const selectById = async (suggestionId) => {
     hours, category, suggestion_status_id, admin_notes, tenant_id
     from suggestion where id = $<id>`;
 
-  const row = await db.one(sql, { id });
+  const row: Suggestion = await db.one(sql, { id });
+
   return camelcaseKeys(row);
 };
 
-const insert = async (model) => {
+const insert = async (model: Suggestion): Promise<{ id: number }> => {
   model.suggestionStatusId = 1;
   const sql = `insert into suggestion (
     name, address_1, address_2,
@@ -56,7 +61,7 @@ const insert = async (model) => {
   return { id: result.id };
 };
 
-const update = async (model) => {
+const update = async (model: Suggestion) => {
   const sql = `update suggestion set
     admin_notes = $<adminNotes>,
     suggestion_status_id = $<suggestionStatusId>
@@ -64,7 +69,7 @@ const update = async (model) => {
   await db.none(sql, model);
 };
 
-const remove = async (id) => {
+const remove = async (id: string) => {
   const sql = `
     delete from suggestion
     where id = $<id>;`;
@@ -73,7 +78,7 @@ const remove = async (id) => {
   return result.rowCount;
 };
 
-module.exports = {
+export default {
   selectAll,
   selectById,
   insert,

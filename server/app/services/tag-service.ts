@@ -1,19 +1,19 @@
-const db = require("./db");
-const camelcaseKeys = require("camelcase-keys");
+import db from "./db";
 
-const selectAllById = async (tenantId) => {
-  // Need to cast id to number so pg-promise knows how
-  // to format SQL
+import camelcaseKeys from "camelcase-keys";
+import { Tag, StakeholderTag } from "../types/tag-types";
+
+const selectAllById = async (tenantId: string) => {
   const id = Number(tenantId);
   const sql = `select id, name, tenant_id
   from stakeholder_tag where tenant_id = $<id>
   order by name`;
 
-  const result = await db.manyOrNone(sql, { id });
+  const result: Tag[] = await db.manyOrNone(sql, { id });
   return result.map((r) => camelcaseKeys(r));
 };
 
-const insert = async (model) => {
+const insert = async (model: Omit<StakeholderTag, "id">) => {
   model.name = model.name.toUpperCase();
   const sql = `insert into stakeholder_tag (name,  tenant_id)
     values ($<name>,  $<tenantId>)
@@ -23,23 +23,19 @@ const insert = async (model) => {
   return { id: result.id };
 };
 
-const update = async (model) => {
-  model.name = model.name.toUpperCase();
+const update = async (body: Tag, tagId: string) => {
+  body.name = body.name.toUpperCase();
+
   const sql = `update stakeholder_tag
                set name = $<name>
                 where id = $<id>`;
-  await db.none(sql, model);
+  await db.none(sql, { ...body, id: Number(tagId) });
 };
 
-const remove = async (id) => {
+const remove = async (id: string) => {
   const sql = `delete from stakeholder_tag where id = $<id>`;
   const result = await db.result(sql, { id: Number(id) });
   return result.rowCount;
 };
 
-module.exports = {
-  selectAllById,
-  insert,
-  update,
-  remove,
-};
+export { selectAllById, insert, update, remove };

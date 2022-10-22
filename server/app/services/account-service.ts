@@ -5,8 +5,8 @@ import {
   User,
   PermissionName,
 } from "../types/account-types";
-import { ClientResponse } from "@sendgrid/mail";
-const db = require("./db");
+
+import db from "./db";
 const camelcaseKeys = require("camelcase-keys");
 
 const { promisify } = require("util");
@@ -390,12 +390,12 @@ const authenticate = async (
   }
 };
 
-const update = async (model: User): Promise<Account> => {
+const update = async (body: User): Promise<Account | null> => {
   const sql = `update login
                set firstName = $<firstName>,
                 lastName = $<lastName>
                 where id = $<id>;`;
-  return await db.none(sql, model);
+  return await db.none(sql, body);
 };
 
 const remove = async (id: string) => {

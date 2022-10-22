@@ -56,4 +56,4 @@ export function getDB(): IDatabaseScope {
 const { db } = getDB();
 
 // Exporting the database object for shared use:
-module.exports = db;
+export default db;

@@ -22,7 +22,7 @@ export default function useLocationHook() {
   useEffect(() => {
     setIsHomePage(location.pathname === "/");
     setIsAuthPage(match && match.isExact ? true : false);
-  }, [location]);
+  }, [location, match]);
 
   return { isHomePage, isAuthPage };
 }

@@ -37,7 +37,7 @@
     "i18next-xhr-backend": "^3.2.2",
     "js-file-download": "^0.4.12",
     "moment": "2.29.4",
-    "moment-timezone": "^0.5.34",
+    "moment-timezone": "^0.5.35",
     "query-string": "^7.0.1",
     "react": "^17.0.2",
     "react-data-grid": "^6.1.0",

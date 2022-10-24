@@ -96,6 +96,7 @@ const useStyles = makeStyles((theme) => ({
     margin: "auto 0",
     fontWeight: "700",
     fontSize: "16px",
+    color: "#4D4D4D",
   },
   filterContainer: {
     display: "flex",

@@ -1,6 +1,6 @@
 import { Login } from "../types/logins-types";
 
-import db from "./db";
+const db = require("./db");
 const camelcaseKeys = require("camelcase-keys");
 
 const insert = async (login_id: string, tenant_id: string) => {

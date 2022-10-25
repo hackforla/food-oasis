@@ -1,4 +1,4 @@
-import db from "./db";
+const db = require("./db");
 import { Tenant } from "../types/tenant-types";
 
 const selectAll = async (): Promise<Tenant[]> => {

@@ -11,6 +11,7 @@ const toLocalMoment = (ts) => {
 
 export const search = async (searchParams) => {
   searchParams = { ...searchParams, tenantId } || { tenantId };
+
   const response = await axios.get(`${baseUrl}`, {
     params: searchParams,
   });

@@ -1,5 +1,5 @@
 import { Category } from "../types/category-types";
-import db from "./db";
+const db = require("./db");
 import camelcaseKeys from "camelcase-keys";
 
 const selectAll = async (): Promise<Category[]> => {

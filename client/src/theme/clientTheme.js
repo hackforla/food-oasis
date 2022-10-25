@@ -54,11 +54,6 @@ const theme = createTheme({
       },
     },
   },
-  breakpoints: {
-    values: {
-      sm: 630,
-    },
-  },
 });
 
 const { primary } = theme.palette;

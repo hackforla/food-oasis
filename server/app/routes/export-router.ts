@@ -1,6 +1,7 @@
-const router = require("express").Router();
+import { Router } from "express";
+const router = Router();
+import exportController from "../controllers/export-controller";
 const jwtSession = require("../../middleware/jwt-session");
-const exportController = require("../controllers/export-controller");
 
 router.get(
   "/csv-template",

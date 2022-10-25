@@ -21,9 +21,6 @@ const theme = createTheme({
       main: "#f94040",
       contrastText: "#000000",
     },
-    text: {
-      primary: "#313233",
-    },
     mealProgram: {
       main: "#E57109",
       translucent: "#E5710980",
@@ -35,6 +32,32 @@ const theme = createTheme({
   },
   typography: {
     fontFamily: '"Helvetica Neue", Helvetica, sans-serif;',
+    h1: {
+      fontWeight: 500,
+      fontSize: 28,
+      "@media (min-width:600px)": {
+        fontSize: 36,
+      },
+    },
+    h2: {
+      fontWeight: 500,
+      fontSize: 24,
+      "@media (min-width:600px)": {
+        fontSize: 32,
+      },
+    },
+    body1: {
+      fontWeight: 400,
+      fontSize: 16,
+      "@media (min-width:600px)": {
+        fontSize: 18,
+      },
+    },
+  },
+  breakpoints: {
+    values: {
+      sm: 630,
+    },
   },
 });
 

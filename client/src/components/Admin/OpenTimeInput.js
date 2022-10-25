@@ -14,7 +14,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
 } from "@material-ui/pickers";
-import { IconButton } from '../UI';
+import { IconButton } from "../UI";
 
 const useStyles = makeStyles((theme) => ({
   row: {
@@ -158,16 +158,10 @@ function OpenTimeInput(props) {
           />
         </Grid>
         <Grid item xs={2} sm={1}>
-          <IconButton 
-            icon='cancel'
-            onClick={removeInput}
-          />
+          <IconButton icon="cancel" onClick={removeInput} />
         </Grid>
         <Grid item xs={2} sm={1}>
-          <IconButton 
-            icon='wrapText'
-            onClick={copyInput}
-          />
+          <IconButton icon="wrapText" onClick={copyInput} />
         </Grid>
       </Grid>
     </MuiPickersUtilsProvider>

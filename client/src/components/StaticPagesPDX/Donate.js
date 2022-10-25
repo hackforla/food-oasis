@@ -1,9 +1,11 @@
 import React from "react";
 
 import donatebg from "./assets/donate-bg.png";
-import iconSpacer from "./assets/icon-spacer.svg";
-import iconSpacerBlue from "./assets/icon-spacer-blue.svg";
+
+import iconSpacerGray from "./assets/icon-spacer-gray.svg";
 import { makeStyles } from "@material-ui/core";
+import Container from "@material-ui/core/Container";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles(() => ({
   outer: {
@@ -67,41 +69,55 @@ const useStyles = makeStyles(() => ({
     color: "#4d4d4d",
     background: "#f0f0f0",
     display: "flex",
+    flexDirection: "column",
     flexWrap: "wrap",
     "& $h2": {
-      color: "#336699",
       flexBasis: "100%",
-      textTransform: "uppercase;",
       textAlign: "center",
       fontWeight: "500",
       fontSize: "32px",
-      marginTop: "10px",
+      marginTop: "20px",
       marginBottom: "20px",
     },
     "& $btnOutline": {
       margin: "20px auto 0 auto",
+    },
+    "& $p": {
+      marginBottom: "16px",
+    },
+
+    "& $a": {
+      color: "#fff",
+      "&:hover": {
+        backgroundColor: "#0A3865",
+      },
     },
   },
   volunteerSection: {
     padding: "32px",
     margin: "32px 0 0 0",
     borderRadius: "24px",
-    color: "#fff",
-    background: "#336699",
+    color: "#4d4d4d",
+    backgroundColor: "#B6D8FB",
     display: "flex",
+    flexDirection: "column",
     flexWrap: "wrap",
     "& $h2": {
-      color: "#fff",
       flexBasis: "100%",
-      textTransform: "uppercase;",
       textAlign: "center",
       fontWeight: "500",
       fontSize: "32px",
-      marginTop: "10px",
+      marginTop: "20px",
       marginBottom: "20px",
     },
-    "& $btnWhite": {
+    "& $btnOutline": {
       margin: "20px auto 0 auto",
+    },
+    "& $a": {
+      color: "#fff",
+      "&:hover": {
+        backgroundColor: "#0A3865",
+      },
     },
   },
   cards: {
@@ -147,34 +163,38 @@ const Donate = () => {
   // const { t } = useTranslation("donate");
   return (
     <div className={classes.outer}>
-      <h1 className={classes.title}>Donate</h1>
       <div className={classes.main}>
         <figure className={classes.figure}>
           <img alt="Donate" src={donatebg} style={{ width: "100%" }} />
         </figure>
+        <Typography variant="h1" className={classes.title}>
+          Donate
+        </Typography>
         <section className={classes.donate}>
           <img
             alt="Why Donate?"
-            src={iconSpacerBlue}
+            src={iconSpacerGray}
             className={classes.icon}
             height="40"
           />
-          <h2>Why Donate?</h2>
-          <p>
-            We’ve done so much already as a 100% volunteer-run organization—but
-            we need your help to finish what we set out to do. The admin,
-            development, and marketing costs to expand our directory are
-            extensive. We have a directory of over 1,300 organizations to
-            update. Your tax-deductible donation would help us offset some of
-            those costs.
-          </p>
-          <p>
-            Please make donations to our parent organization (Code for America).
-            At the Code for America donation page you will see a text box: “What
-            inspired you to donate today”? Please write Food Oasis and Code for
-            PDX in that box. Your donation will get earmarked for Food Oasis
-            Portland.
-          </p>
+          <Typography variant="h2">Why Donate?</Typography>
+          <Container maxWidth="sm">
+            <Typography variant="body1">
+              We’ve done so much already as a 100% volunteer-run
+              organization—but we need your help to finish what we set out to
+              do. The admin, development, and marketing costs to expand our
+              directory are extensive. We have a directory of over 1,300
+              organizations to update. Your tax-deductible donation would help
+              us offset some of those costs.
+            </Typography>
+            <Typography variant="body1">
+              Please make donations to our parent organization (Code for
+              America). At the Code for America donation page you will see a
+              text box: “What inspired you to donate today”? Please write Food
+              Oasis and Code for PDX in that box. Your donation will get
+              earmarked for Food Oasis Portland.
+            </Typography>
+          </Container>
           <a
             href="//www.codeforamerica.org/donate"
             target="_blank"
@@ -187,50 +207,43 @@ const Donate = () => {
         <div className={classes.volunteerSection}>
           <img
             alt="Volunteer"
-            src={iconSpacer}
+            src={iconSpacerGray}
             className={classes.icon}
             height="40"
           />
-          <h2>Volunteer</h2>
-          <p>
-            We’re run 100% by remote volunteers who do critical work by updating
-            our food directory weekly. The work you do impact those who don’t
-            have enough to eat. Your help to update our directory makes it
-            easier for anyone to get in touch with groups that fit their needs.
-          </p>
+          <Typography variant="h2">Want to give your time instead?</Typography>
+
+          <Container maxWidth="sm">
+            <Typography variant="body1">
+              We’re run 100% by remote volunteers who do critical work by
+              updating our food directory weekly. The work you do impact those
+              who don’t have enough to eat. Your help to update our directory
+              makes it easier for anyone to get in touch with groups that fit
+              their needs.
+            </Typography>
+          </Container>
           <a
             href="//volunteer.laworks.com/opportunity/a0C3l00000r3wLvEAI"
             target="_blank"
             rel="noopener noreferrer"
-            className={classes.btnWhite}
+            className={classes.btnOutline}
           >
-            Become a Volunteer
+            Volunteer
           </a>
         </div>
-        <section className={classes.cards}>
+        {/* <section className={classes.cards}>
           <aside className={classes.signup}>
             <h3>Get monthly updates on what we&apos;re doing</h3>
             <a
-              href="//foodoasis.us18.list-manage.com/subscribe?u=40d31892cbbe01312937f7de6&id=42235bb7ce"
-              target="_blank"
-              rel="noopener noreferrer"
+              href='//foodoasis.us18.list-manage.com/subscribe?u=40d31892cbbe01312937f7de6&id=42235bb7ce'
+              target='_blank'
+              rel='noopener noreferrer'
               className={classes.btnWhite}
             >
               Signup
             </a>
           </aside>
-          <aside className={classes.volunteer}>
-            <h3>Want to give your time instead?</h3>
-            <a
-              href="//volunteer.laworks.com/opportunity/a0C3l00000r3wLvEAI"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={classes.btnWhite}
-            >
-              Volunteer
-            </a>
-          </aside>
-        </section>
+        </section> */}
       </div>
     </div>
   );

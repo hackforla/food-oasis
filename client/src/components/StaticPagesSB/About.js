@@ -1,13 +1,13 @@
 import React from "react";
 
 import aboutbg from "./assets/about-bg.png";
-import iconSpacer from "./assets/icon-spacer.svg";
-import iconSpacerBlue from "./assets/icon-spacer-blue.svg";
+import iconSpacerGray from "./assets/icon-spacer-gray.svg";
 import foodCycle from "./assets/food-cycle.png";
 import foodForward from "./assets/food-forward.png";
 import farmPeople from "./assets/farm-people.png";
 import foodBank from "./assets/food-bank.png";
 import { makeStyles } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles(() => ({
   outer: {
@@ -22,6 +22,7 @@ const useStyles = makeStyles(() => ({
     },
   },
   title: {
+    color: "#4d4d4d",
     textTransform: "uppercase",
     fontWeight: 500,
     textAlign: "center",
@@ -29,7 +30,7 @@ const useStyles = makeStyles(() => ({
     margin: 0,
     padding: "32px 0",
     "& $span": {
-      color: "#336699",
+      color: "#4d4d4d",
     },
   },
   figure: {
@@ -48,9 +49,9 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     flexDirection: "column",
     "& $h2": {
-      color: "#336699",
+      color: "#4d4d4d",
       flexBasis: "100",
-      textTransform: "uppercase;",
+
       textAlign: "center",
       fontWeight: "500",
       fontSize: "32px",
@@ -62,13 +63,13 @@ const useStyles = makeStyles(() => ({
     padding: "32px",
     margin: "32px 0 0 0",
     borderRadius: "24px",
-    color: "#fff",
-    background: "#336699",
+    color: "#4d4d4d",
+    background: "#B6D8FB",
     display: "flex",
     flexDirection: "column",
     "& $h2": {
       flexBasis: "100",
-      textTransform: "uppercase;",
+
       textAlign: "center",
       fontWeight: "500",
       fontSize: "32px",
@@ -76,7 +77,7 @@ const useStyles = makeStyles(() => ({
       marginBottom: "20px",
     },
     "& $a": {
-      color: "#fff",
+      color: "#4d4d4d",
     },
   },
   contact: {
@@ -89,9 +90,9 @@ const useStyles = makeStyles(() => ({
     flexDirection: "column",
     textAlign: "center",
     "& $h2": {
-      color: "#336699",
+      color: "#4d4d4d",
       flexBasis: "100",
-      textTransform: "uppercase;",
+
       textAlign: "center",
       fontWeight: "500",
       fontSize: "32px",
@@ -100,6 +101,9 @@ const useStyles = makeStyles(() => ({
     },
     "& $a": {
       color: "#4d4d4d",
+    },
+    "& $p": {
+      marginBottom: "16px",
     },
   },
   partners: {
@@ -112,7 +116,7 @@ const useStyles = makeStyles(() => ({
     flexWrap: "wrap",
     flexDirection: "column",
     "& $h2": {
-      color: "#336699",
+      color: "#4d4d4d",
       width: "100%",
       flexBasis: "100",
       textTransform: "uppercase;",
@@ -140,64 +144,64 @@ const About = () => {
   // const { t } = useTranslation("about");
   return (
     <div className={classes.outer}>
-      <h1 className={classes.title}>
-        <span>About</span> Santa Barbara Food Oasis
-      </h1>
       <div className={classes.main}>
         <figure className={classes.figure}>
           <img alt="About" src={aboutbg} style={{ width: "100%" }} />
         </figure>
+        <Typography variant="h1" className={classes.title}>
+          <span>About</span> Santa Barbara Food Oasis
+        </Typography>
         <div className={classes.mission}>
           <img
             alt="Our Mission"
-            src={iconSpacerBlue}
+            src={iconSpacerGray}
             className={classes.icon}
             height="40"
           />
-          <h2>Our Mission</h2>
+          <Typography variant="h2">Our Mission</Typography>
           <p>(TBD))</p>
         </div>
         <section className={classes.team}>
           <img
             alt="Our Team"
-            src={iconSpacer}
+            src={iconSpacerGray}
             className={classes.icon}
             height="40"
           />
-          <h2>Our Team</h2>
+          <Typography variant="h2">Our Team</Typography>
           <p> (TBD) </p>
         </section>
         <section className={classes.contact}>
           <img
             alt="Contact Us"
-            src={iconSpacerBlue}
+            src={iconSpacerGray}
             className={classes.icon}
             height="40"
           />
-          <h2>Contact Us</h2>
-          <p>
+          <Typography variant="h2">Contact Us</Typography>
+          <Typography variant="body1">
             Questions about our project?
             <br />
             Updates to the listings?
             <br />
             General inquiries?
             <br />
-          </p>
-          <p>
+          </Typography>
+          <Typography variant="body1">
             Please contact our Support Team
             <br />
             <a href="mailto:foodoasisinfo@hackforla.org">
               foodoasisinfo@hackforla.org
             </a>
-          </p>
+          </Typography>
         </section>
         <section className={classes.partners}>
-          <img
-            alt="Our Team"
-            src={iconSpacerBlue}
+          {/* <img
+            alt='Our Team'
+            src={iconSpacerGray}
             className={classes.icon}
-            height="40"
-          />
+            height='40'
+          /> */}
           <h2>Our Partners</h2>
           <img
             alt="Food Cycle LA"

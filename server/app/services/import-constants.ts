@@ -1,4 +1,4 @@
-const WEEKS_HOURLY = [
+export const WEEKS_HOURLY = [
   { label: "hoursWeek1", value: 1 },
   { label: "hoursWeek2", value: 2 },
   { label: "hoursWeek3", value: 3 },
@@ -6,7 +6,7 @@ const WEEKS_HOURLY = [
   { label: "hoursWeekLast", value: -1 },
 ];
 
-const MAP_NUM_TO_DAY = {
+export const MAP_NUM_TO_DAY = {
   1: "Sun",
   2: "Mon",
   3: "Tue",
@@ -16,7 +16,7 @@ const MAP_NUM_TO_DAY = {
   7: "Sat",
 };
 
-const STAKEHOLDER_SCHEMA = [
+export const STAKEHOLDER_SCHEMA = [
   {
     name: "id",
     required: false,
@@ -433,9 +433,3 @@ const STAKEHOLDER_SCHEMA = [
     default_value: "f",
   },
 ];
-
-module.exports = {
-  WEEKS_HOURLY,
-  MAP_NUM_TO_DAY,
-  STAKEHOLDER_SCHEMA,
-};

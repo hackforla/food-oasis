@@ -180,7 +180,7 @@
     "method": "POST",
     "sortNum": 90000,
     "created": "2022-10-04T03:11:23.707Z",
-    "modified": "2022-10-27T22:59:20.826Z",
+    "modified": "2022-10-27T23:56:17.353Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -204,17 +204,15 @@
     "method": "GET",
     "sortNum": 100000,
     "created": "2022-10-04T03:11:23.708Z",
-    "modified": "2022-10-04T03:11:23.708Z",
+    "modified": "2022-10-27T23:56:32.331Z",
     "headers": [
       {
         "name": "Content-Type",
         "value": "application/json"
       }
     ],
-    "body": {
-      "type": "json",
-      "raw": ""
-    }
+    "params": [],
+    "tests": []
   },
   {
     "_id": "2d9edbb6-1b2c-481d-afdd-9df6d746e211",
@@ -1064,6 +1062,82 @@
     "sortNum": 500000,
     "created": "2022-10-27T22:51:33.793Z",
     "modified": "2022-10-27T22:52:34.558Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "295ed532-7b44-4e54-9262-5db34d3f88be",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "d8625d5d-3acd-4b25-b796-b62f4d6a68ce",
+    "name": "Tag POST",
+    "url": "http://localhost:5001/api/tags/",
+    "method": "POST",
+    "sortNum": 110000,
+    "created": "2022-10-27T23:39:58.096Z",
+    "modified": "2022-10-27T23:49:47.332Z",
+    "headers": [
+      {
+        "name": "Content-Type",
+        "value": "application/json"
+      }
+    ],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"name\": \"CHURCH CHICKEN\",\n    \"tenantId\": 1\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "73ee4ff8-cc07-459d-a27c-94f10756e52e",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "d8625d5d-3acd-4b25-b796-b62f4d6a68ce",
+    "name": "Tag GET All",
+    "url": "http://localhost:5001/api/tags/1",
+    "method": "GET",
+    "sortNum": 120000,
+    "created": "2022-10-27T23:39:58.097Z",
+    "modified": "2022-10-27T23:47:21.052Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "843d1919-428f-42ab-8b64-d1223432fcec",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "d8625d5d-3acd-4b25-b796-b62f4d6a68ce",
+    "name": "Tag PUT",
+    "url": "http://localhost:5001/api/tags/5",
+    "method": "PUT",
+    "sortNum": 130000,
+    "created": "2022-10-27T23:39:58.098Z",
+    "modified": "2022-10-27T23:54:07.560Z",
+    "headers": [
+      {
+        "name": "Content-Type",
+        "value": "application/json"
+      }
+    ],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n \n    \"id\": 5,\n    \"name\": \"CHURCH\",\n    \"tenantId\": 1\n \n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "6a2186eb-675b-4b46-afe7-776fd9deaaf0",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "d8625d5d-3acd-4b25-b796-b62f4d6a68ce",
+    "name": "Tag DELETE",
+    "url": "http://localhost:5001/api/tags/5",
+    "method": "DELETE",
+    "sortNum": 140000,
+    "created": "2022-10-27T23:39:58.099Z",
+    "modified": "2022-10-27T23:54:49.520Z",
     "headers": [],
     "params": [],
     "tests": []

@@ -1141,5 +1141,49 @@
     "headers": [],
     "params": [],
     "tests": []
+  },
+  {
+    "_id": "3e91f71a-03d2-4f69-b6c0-68e9a21244e8",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "e1d51cff-eae1-4c5d-b2aa-3adefd7cad81",
+    "name": "Logins GET All",
+    "url": "http://localhost:5001/api/logins",
+    "method": "GET",
+    "sortNum": 10000,
+    "created": "2022-10-23T02:16:57.627Z",
+    "modified": "2022-10-23T02:29:01.099Z",
+    "headers": [
+      {
+        "name": "Content-Type",
+        "value": "application/json"
+      }
+    ],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "0e2d80c4-b96b-4ba4-a330-72eda43836e3",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "e1d51cff-eae1-4c5d-b2aa-3adefd7cad81",
+    "name": "Logins GET All by email",
+    "url": "http://localhost:5001/api/logins?email=security",
+    "method": "GET",
+    "sortNum": 20000,
+    "created": "2022-10-23T02:28:19.486Z",
+    "modified": "2022-10-23T02:34:24.782Z",
+    "headers": [
+      {
+        "name": "Content-Type",
+        "value": "application/json"
+      }
+    ],
+    "params": [
+      {
+        "name": "email",
+        "value": "security",
+        "isPath": false
+      }
+    ],
+    "tests": []
   }
 ]

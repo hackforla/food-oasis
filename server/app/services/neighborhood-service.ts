@@ -7,14 +7,18 @@ const db = require("./db");
 const camelcaseKeys = require("camelcase-keys");
 
 const selectAll = async (tenantId: number): Promise<Neighborhood[]> => {
+  // const sql = `
+  //   select id, name, website, empower_link, nc_id,
+  //     certified, service_region, geometry
+  //   from neighborhood
+  //   order by name
+  // `;
   const sql = `
-    select id, name, website, empower_link, nc_id,
-    certified, service_region, zoom
+    select id, name
     from neighborhood
-    where tenant_id = $<tenantId>
     order by name
   `;
-  const result: Neighborhood[] = await db.manyOrNone(sql, { tenantId });
+  const result: Neighborhood[] = await db.manyOrNone(sql);
   return result.map((r) => camelcaseKeys(r));
 };
 

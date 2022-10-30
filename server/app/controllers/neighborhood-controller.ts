@@ -7,10 +7,10 @@ import {
 } from "../types/neighborhood-types";
 
 const getAll: RequestHandler<
-  { tenantId: string },
+  never,
   Neighborhood[] | { error: string },
   never,
-  never
+  { tenantId: string }
 > = (req, res) => {
   const { tenantId } = req.query;
   neighborhoodService

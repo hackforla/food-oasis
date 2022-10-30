@@ -1,5 +1,4 @@
-import db from "./db";
-
+const db = require("./db");
 import camelcaseKeys from "camelcase-keys";
 import { Tag, StakeholderTag } from "../types/tag-types";
 

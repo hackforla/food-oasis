@@ -6,7 +6,7 @@ import {
   PermissionName,
 } from "../types/account-types";
 
-import db from "./db";
+const db = require("./db");
 const camelcaseKeys = require("camelcase-keys");
 
 const { promisify } = require("util");

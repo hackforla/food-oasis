@@ -1,4 +1,4 @@
-import db from "./db";
+const db = require("./db");
 import camelcaseKeys from "camelcase-keys";
 import { Suggestion } from "../types/suggestion-types";
 
@@ -20,7 +20,7 @@ const selectAll = async (params: {
     and tenant_id = $<tenantId>
     order by created_date
   `;
-  const result = await db.manyOrNone(sql, {
+  const result: Suggestion[] = await db.manyOrNone(sql, {
     tenantId: Number(params.tenantId),
     statusIds: statusIds,
   });

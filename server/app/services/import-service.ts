@@ -1,14 +1,16 @@
 const parse = require("csv-parse");
-const { Readable } = require("stream");
-const stakeholderService = require("./stakeholder-service");
-const {
+import { Readable } from "stream";
+import stakeholderService from "./stakeholder-service";
+import {
   parseStakeholderHours,
   setDefaultValues,
   getLatLong,
-} = require("./import-utils");
+} from "./import-utils";
+import { ImportAction } from "../types/import-types";
 
 // we can use this function to reformat the field names/values in the csv before rendering in browser table
-const parseCsv = async (file) => {
+// TODO: update any type
+const parseCsv = async (file: any) => {
   // memory storage
   if (!file) return;
   const { buffer } = file;
@@ -46,15 +48,16 @@ const parseCsv = async (file) => {
   return rowArray;
 };
 
-const importCsv = async (data, action, tenantId) => {
+// TODO: update data type, possibly stakeholder array
+const importCsv = async (data: any, action: ImportAction, tenantId: number) => {
   try {
     stakeholderService.insertBulk(data, action, tenantId);
-  } catch (err) {
+  } catch (err: any) {
     console.error(err.message);
   }
 };
 
-module.exports = {
+export default {
   parseCsv,
   importCsv,
 };

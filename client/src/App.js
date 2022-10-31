@@ -44,6 +44,7 @@ import About from "./components/About";
 import Faq from "./components/Faq";
 import { AppStateProvider } from "./appReducer";
 import { SiteProvider } from "contexts/siteContext";
+import { Helmet } from "react-helmet";
 
 const useStyles = makeStyles({
   app: () => ({
@@ -96,6 +97,17 @@ function App() {
           <UserProvider>
             <ThemeProvider theme={theme}>
               <CssBaseline />
+              <Helmet>
+                <meta charSet="utf-8" />
+                <title>Food Oasis</title>
+                <meta
+                  name="description"
+                  content="Food Oasis is an application that helps eliminate food waste by connecting donors and food outlets."
+                />
+                <meta property="og:title" content="Food Oasis" />
+                <meta property="og:url" content={window.origin} />
+                <link rel="canonical" href={window.origin} />
+              </Helmet>
               <Router>
                 <Grid
                   container

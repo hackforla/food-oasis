@@ -15,8 +15,9 @@
     get data for display).
 */
 
-const cheerio = require("cheerio");
-const axios = require("axios");
+import * as cheerio from "cheerio";
+import axios from "axios";
+import { Article } from "../types/import-types";
 
 const url = "https://www.lapl.org/homeless-resources-food";
 
@@ -31,18 +32,25 @@ const url = "https://www.lapl.org/homeless-resources-food";
 
 const selectAll = () => {
   return axios(url)
-    .then((result) => {
+    .then((result: any) => {
       const $ = cheerio.load(result.data);
-      const articles = [];
+      const articles: Article[] = [];
       $(".views-row").each((i, elem) => {
         const articleElement = $(elem);
         const name = articleElement.find("h3").text().trim();
         if (name) {
           const mapElement = articleElement.find("a.show-map-link");
-          let lat = Number.parseFloat(mapElement.attr("data-latitude"));
-          lat = Number.isNaN(lat) ? null : lat;
-          let lon = Number.parseFloat(mapElement.attr("data-longitude"));
-          lon = Number.isNaN(lon) ? null : lon;
+          const dataLatitude = mapElement.attr("data-latitude");
+          const lat =
+            dataLatitude && Number.isNaN(Number.parseFloat(dataLatitude))
+              ? Number.parseFloat(dataLatitude)
+              : null;
+          const dataLongitude = mapElement.attr("data-longitude");
+          const lon =
+            dataLongitude && Number.isNaN(Number.parseFloat(dataLongitude))
+              ? Number.parseFloat(dataLongitude)
+              : null;
+
           const addrPhone = articleElement.find("p:nth-child(3)").text();
           let addr = "";
           let phone = "";
@@ -98,11 +106,11 @@ const selectAll = () => {
       return articles;
       // console.log(JSON.stringify(articles, null, 2));
     })
-    .catch((err) => {
+    .catch((err: any) => {
       console.log(err);
     });
 };
 
-module.exports = {
+export default {
   selectAll,
 };

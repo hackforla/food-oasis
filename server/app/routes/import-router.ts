@@ -1,7 +1,8 @@
-const router = require("express").Router();
+import { Router } from "express";
+const router = Router();
 const jwtSession = require("../../middleware/jwt-session");
-const importController = require("../controllers/import-controller");
-const multer = require("multer");
+import importController from "../controllers/import-controller";
+import multer from "multer";
 
 // memory storage
 const upload = multer({ storage: multer.memoryStorage() });

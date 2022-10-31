@@ -1,3 +1,5 @@
+import { Article, LAPLFoorResource } from "../types/import-types";
+
 const { db } = require("./db");
 
 const selectAll = async () => {
@@ -11,7 +13,7 @@ const selectAll = async () => {
     from load_lapl_food_resource 
     order by name
   `;
-  const rows = await db.manyOrNone(sql);
+  const rows: LAPLFoorResource[] = await db.manyOrNone(sql);
   return rows.map((row) => ({
     name: row.name,
     addr: row.addr,
@@ -25,19 +27,7 @@ const selectAll = async () => {
   }));
 };
 
-const insert = async (model) => {
-  // let {
-  //   name,
-  //   addr,
-  //   phone,
-  //   populationServed,
-  //   resourceCategories,
-  //   generalResources,
-  //   additionalOfferings,
-  //   lat,
-  //   lon,
-  // } = model;
-
+const insert = async (data: Article) => {
   const sql = `insert into load_lapl_food_resource 
   (name, addr, phone, population_served, 
     resource_categories, general_resources, additional_offerings,
@@ -49,7 +39,7 @@ const insert = async (model) => {
      $<generalResources>, 
      $<additionalOfferings>, 
      $<lat>, $<lon>) `;
-  return await db.none(sql, model);
+  return await db.none(sql, data);
 };
 
 const removeAll = () => {
@@ -57,7 +47,7 @@ const removeAll = () => {
   return db.none(sql);
 };
 
-module.exports = {
+export default {
   selectAll,
   insert,
   removeAll,

@@ -288,7 +288,8 @@ function VerificationAdmin() {
     setDialogOpen(false);
   };
 
-  const handleDelete = () => {
+  const handleCriteriaChange = (criteria) => {
+    setCriteria(criteria);
     search();
   };
 
@@ -330,7 +331,7 @@ function VerificationAdmin() {
         criteria={criteria}
         setCriteria={setCriteria}
         neighborhoods={neighborhoods}
-        handleDelete={() => search()}
+        handleDelete={handleCriteriaChange}
         categories={categories}
         tags={tags}
         isLoading={neighborhoodsLoading || categoriesLoading}

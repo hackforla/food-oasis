@@ -27,7 +27,6 @@ function SearchCriteriaDisplay({
   isLoading,
   criteria,
   defaultCriteria,
-  setCriteria,
 }) {
   const classes = useStyles();
   const { data: accounts, loading: accountsLoading } = useAccounts();
@@ -35,11 +34,10 @@ function SearchCriteriaDisplay({
     const classes = useStyles();
 
     const setCriterion = () => {
-      setCriteria({
+      handleDelete({
         ...criteria,
         [name]: defaultCriteria[name],
       });
-      handleDelete();
     };
     const chipLabel = (
       <>

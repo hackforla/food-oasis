@@ -173,6 +173,7 @@ function VerificationAdmin() {
       setCriteria(initialCriteria);
       try {
         await searchCallback(initialCriteria);
+        console.log("executed");
       } catch (err) {
         // If we receive a 401 status code, the user needs
         // to be logged in, will redirect to login page.
@@ -189,6 +190,8 @@ function VerificationAdmin() {
   const search = async () => {
     try {
       await searchCallback(criteria);
+      console.log("Searching...");
+      console.log(criteria);
       sessionStorage.setItem(CRITERIA_TOKEN, JSON.stringify(criteria));
     } catch (err) {
       // If we receive a 401 status code, the user needs
@@ -285,6 +288,10 @@ function VerificationAdmin() {
     setDialogOpen(false);
   };
 
+  const handleDelete = () => {
+    search();
+  };
+
   return (
     <main className={classes.root}>
       {stakeholdersError.status === 401 || unauthorized ? (
@@ -321,7 +328,9 @@ function VerificationAdmin() {
       <SearchCriteriaDisplay
         defaultCriteria={defaultCriteria}
         criteria={criteria}
+        setCriteria={setCriteria}
         neighborhoods={neighborhoods}
+        handleDelete={() => search()}
         categories={categories}
         tags={tags}
         isLoading={neighborhoodsLoading || categoriesLoading}
@@ -353,10 +362,6 @@ function VerificationAdmin() {
                 neighborhoods={neighborhoods}
                 criteria={criteria}
                 setCriteria={setCriteria}
-                search={() => {
-                  search();
-                  setDialogOpen(false);
-                }}
               />
             </div>
           ) : null}

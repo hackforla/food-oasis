@@ -3,7 +3,7 @@ export const colors = {
 };
 
 const white = "#FFFFFF";
-const primary = "#19334D";
+const primary = "#FFA500; "; //"#19334D";
 const secondary = "#E57109";
 const hover = "#4C99E5";
 const success = "#219653";
@@ -11,6 +11,7 @@ const error = "#CC3333";
 const bodyText = "#1B1B1B";
 const inactiveButton = "#F0F0F0";
 const inactiveButtonText = "#4D4D4D";
+const gross = "#ffa500";
 
 //Icon and List Colors
 
@@ -31,4 +32,5 @@ export {
   foodPantry,
   mealProgram,
   closed,
+  gross,
 };

@@ -22,7 +22,6 @@ import {
 } from "../../../../appReducer";
 import { useHistory } from "react-router-dom";
 import { useToasterContext } from "../../../../contexts/toasterContext";
-import { Share } from "@material-ui/icons";
 import { Helmet } from "react-helmet";
 
 const useStyles = makeStyles((theme) => ({
@@ -31,9 +30,9 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     textAlign: "center",
-    padding: "1em",
+    padding: "0 1em 5em 1em ",
     alignItems: "center",
-    paddingBottom: "5em",
+    // paddingBottom: "5em",
     flexShrink: 0,
     [theme.breakpoints.down("xs")]: {
       fontSize: "12px",
@@ -128,11 +127,10 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: "flex-start",
     marginBottom: "1em",
     position: "sticky",
-    top: "-0.1em",
+    top: 0,
     width: "100%",
     cursor: "pointer",
-    backgroundColor: "#fafafa",
-    zIndex: 10,
+    backgroundColor: theme.palette.background.main,
     textAlign: "left",
   },
   backButton: {
@@ -143,7 +141,6 @@ const useStyles = makeStyles((theme) => ({
     color: "blue",
     textDecoration: "underline",
     border: "none",
-    backgroundColor: "#fafafa",
   },
 }));
 

@@ -29,6 +29,9 @@ const theme = createTheme({
       main: "#336699",
       translucent: "#33669980",
     },
+    background: {
+      main: "white",
+    },
   },
   typography: {
     fontFamily: '"Helvetica Neue", Helvetica, sans-serif;',

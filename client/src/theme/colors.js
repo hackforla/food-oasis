@@ -31,5 +31,4 @@ export {
   foodPantry,
   mealProgram,
   closed,
-  gross,
 };

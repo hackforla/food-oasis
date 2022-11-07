@@ -11,7 +11,6 @@ const error = "#CC3333";
 const bodyText = "#1B1B1B";
 const inactiveButton = "#F0F0F0";
 const inactiveButtonText = "#4D4D4D";
-const gross = "#ffa500";
 
 //Icon and List Colors
 

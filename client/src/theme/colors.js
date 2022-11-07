@@ -3,7 +3,7 @@ export const colors = {
 };
 
 const white = "#FFFFFF";
-const primary = "#FFA500; "; //"#19334D";
+const primary = "#19334D";
 const secondary = "#E57109";
 const hover = "#4C99E5";
 const success = "#219653";

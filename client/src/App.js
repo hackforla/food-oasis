@@ -5,8 +5,9 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
-import { Grid, CssBaseline } from "@material-ui/core";
+import { ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
+import makeStyles from '@mui/styles/makeStyles';
+import { Grid, CssBaseline } from "@mui/material";
 import theme from "theme/clientTheme";
 // Components
 import { ToasterProvider } from "contexts/toasterContext";
@@ -91,11 +92,12 @@ function App() {
   const classes = useStyles();
 
   return (
-    <HelmetProvider>
-      <AppStateProvider>
-        <SiteProvider>
-          <ToasterProvider>
-            <UserProvider>
+<HelmetProvider>
+    <AppStateProvider>
+      <SiteProvider>
+        <ToasterProvider>
+          <UserProvider>
+            <StyledEngineProvider injectFirst>
               <ThemeProvider theme={theme}>
                 <CssBaseline />
                 <SEO
@@ -128,10 +130,10 @@ function App() {
                         <Home />
                       </Route>
                       {/*
-              Following route provides backward-compatibilty for the
-              http"//foodoasis.la/search Link that has been published at
-              http://publichealth.lacounty.gov/eh/LACFRI/ShareAndDonate.htm
-              */}
+                Following route provides backward-compatibilty for the
+                http"//foodoasis.la/search Link that has been published at
+                http://publichealth.lacounty.gov/eh/LACFRI/ShareAndDonate.htm
+                */}
                       <Redirect from="/search" to="/widget" />
                       <Route path="/widget">
                         <>
@@ -149,28 +151,30 @@ function App() {
                         <Logins />
                       </Route>
                       <Route path="/organizationedit/:id?">
-                        <ThemeProvider theme={adminTheme}>
-                          <div className={classes.organizationEditWrapper}>
-                            <OrganizationEdit />
-                          </div>
-                        </ThemeProvider>
+                        <StyledEngineProvider injectFirst>
+                          <ThemeProvider theme={adminTheme}>
+                            <div className={classes.organizationEditWrapper}>
+                              <OrganizationEdit />
+                            </div>
+                          </ThemeProvider>
+                        </StyledEngineProvider>
                       </Route>
                       <Route path="/verificationdashboard">
-                        <ThemeProvider theme={adminTheme}>
-                          <div className={classes.verificationAdminWrapper}>
-                            <VerificationDashboard />
-                          </div>
-                        </ThemeProvider>
+                        <div className={classes.verificationAdminWrapper}>
+                          <VerificationDashboard />
+                        </div>
                       </Route>
                       <PrivateRoute
                         path="/verificationadmin"
                         roles={["isAdmin", "isCoordinator"]}
                       >
-                        <ThemeProvider theme={adminTheme}>
-                          <div className={classes.verificationAdminWrapper}>
-                            <VerificationAdmin />
-                          </div>
-                        </ThemeProvider>
+                        <StyledEngineProvider injectFirst>
+                          <ThemeProvider theme={adminTheme}>
+                            <div className={classes.verificationAdminWrapper}>
+                              <VerificationAdmin />
+                            </div>
+                          </ThemeProvider>
+                        </StyledEngineProvider>
                       </PrivateRoute>
                       <PrivateRoute
                         path="/parentorganizations"
@@ -251,10 +255,11 @@ function App() {
                   </Grid>
                 </Router>
               </ThemeProvider>
-            </UserProvider>
-          </ToasterProvider>
-        </SiteProvider>
-      </AppStateProvider>
+            </StyledEngineProvider>
+          </UserProvider>
+        </ToasterProvider>
+      </SiteProvider>
+    </AppStateProvider>
     </HelmetProvider>
   );
 }

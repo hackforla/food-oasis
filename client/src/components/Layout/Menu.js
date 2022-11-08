@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import useLocationHook from "hooks/useLocationHook";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from '@mui/styles/makeStyles';
 import {
   Drawer,
   List,
@@ -9,8 +9,8 @@ import {
   ListItemAvatar,
   Avatar,
   Divider,
-} from "@material-ui/core";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+} from "@mui/material";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { MENU_ITEMS } from "helpers/Constants";
 import MenuItemLink from "./MenuItemLink";
 import { IconButton } from "../../components/UI";
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "#FFF",
       opacity: 0.8,
     },
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down('sm')]: {
       transform: "scale(1.2, 1.2)",
     },
   },

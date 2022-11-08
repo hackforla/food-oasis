@@ -1,5 +1,6 @@
 import React from "react";
-import { Snackbar, withStyles } from "@material-ui/core";
+import { Snackbar } from "@mui/material";
+import withStyles from '@mui/styles/withStyles';
 import { IconButton } from "./index";
 import { useToasterContext } from "../../contexts/toasterContext";
 
@@ -38,7 +39,7 @@ const Toast = () => {
           key={toast.message}
           icon="close"
           onClick={handleSnackbarClose}
-        />,
+          size="large" />,
       ]}
     />
   ) : null;

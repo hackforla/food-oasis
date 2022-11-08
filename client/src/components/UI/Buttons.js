@@ -1,6 +1,6 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Button, IconButton } from "@material-ui/core";
+import makeStyles from '@mui/styles/makeStyles';
+import { Button, IconButton } from "@mui/material";
 import {
   Add,
   Delete,
@@ -12,9 +12,9 @@ import {
   Search,
   Details,
   Remove,
-} from "@material-ui/icons";
-import ArrowUpward from "@material-ui/icons/ArrowUpward";
-import ArrowDownward from "@material-ui/icons/ArrowDownward";
+} from "@mui/icons-material";
+import ArrowUpward from "@mui/icons-material/ArrowUpward";
+import ArrowDownward from "@mui/icons-material/ArrowDownward";
 
 const useStyles = makeStyles((theme) => ({
   deleteButton: {
@@ -57,7 +57,7 @@ const CancelIconButton = (props) => {
       color="default"
       aria-label="cancel"
       {...props}
-    >
+      size="large">
       <Cancel />
     </IconButton>
   );
@@ -86,7 +86,7 @@ const DeleteButton = (props) => {
 
 const DeleteIconButton = (props) => {
   return (
-    <IconButton variant="contained" aria-label="delete" {...props}>
+    <IconButton variant="contained" aria-label="delete" {...props} size="large">
       <Delete />
     </IconButton>
   );
@@ -131,7 +131,7 @@ const RemoveIconButton = (props) => {
       color="default"
       aria-label="remove row"
       {...props}
-    >
+      size="large">
       <Remove />
     </IconButton>
   );

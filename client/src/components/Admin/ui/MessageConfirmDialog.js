@@ -5,7 +5,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-} from "@material-ui/core";
+} from "@mui/material";
 import { TextField, Button } from "../../../components/UI";
 
 function MessageDialog(props) {

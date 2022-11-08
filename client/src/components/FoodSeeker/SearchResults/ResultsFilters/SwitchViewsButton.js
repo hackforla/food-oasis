@@ -1,7 +1,7 @@
 import React from "react";
-import { Button } from "@material-ui/core";
-import MapIcon from "@material-ui/icons/Map";
-import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
+import { Button } from "@mui/material";
+import MapIcon from "@mui/icons-material/Map";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 
 export default function SwitchViewsButton({
   isListView,

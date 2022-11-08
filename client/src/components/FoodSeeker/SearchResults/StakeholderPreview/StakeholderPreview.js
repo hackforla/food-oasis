@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import * as momentTz from "moment-timezone";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from '@mui/styles/makeStyles';
 import { Button } from "../../../UI";
 import { useSiteContext } from "contexts/siteContext";
 

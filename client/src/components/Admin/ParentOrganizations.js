@@ -1,17 +1,17 @@
 import React from "react";
 import { useParentOrganizations } from "hooks/useParentOrganizations";
-import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TablePagination from "@material-ui/core/TablePagination";
-import TableRow from "@material-ui/core/TableRow";
-import Container from "@material-ui/core/Container";
-import Modal from "@material-ui/core/Modal";
-import Box from "@material-ui/core/Box";
+import makeStyles from '@mui/styles/makeStyles';
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import Container from "@mui/material/Container";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
 import Button from "../UI/Button";
 import Input from "../UI/TextField";
 import { Formik } from "formik";
@@ -191,7 +191,7 @@ function ParentOrganizations(props) {
                                   );
                                   setActiveOrg(org);
                                 }}
-                              />
+                                size="large" />
                             </TableCell>
                           );
                         }
@@ -202,10 +202,7 @@ function ParentOrganizations(props) {
                               align={column.align}
                               style={{ maxWidth: "5px", padding: "5px" }}
                             >
-                              <IconButton
-                                icon="delete"
-                                onClick={() => handleDelete(parentOrg.id)}
-                              />
+                              <IconButton icon="delete" onClick={() => handleDelete(parentOrg.id)} size="large" />
                             </TableCell>
                           );
                         }

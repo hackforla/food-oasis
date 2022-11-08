@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import faqbg from "./assets/faq-bg.webp";
 import iconSpacerGray from "./assets/icon-spacer-gray.svg";
-import { makeStyles, Typography } from "@material-ui/core";
+import { Typography } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
 import * as analytics from "../../services/analytics";
-import Container from "@material-ui/core/Container";
+import Container from "@mui/material/Container";
 
 const useStyles = makeStyles(() => ({
   outer: {

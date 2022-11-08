@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Redirect, withRouter } from "react-router-dom";
-import {
-  withStyles,
-  Avatar,
-  Container,
-  CssBaseline,
-  Typography,
-} from "@material-ui/core";
+import { Avatar, Container, CssBaseline, Typography } from "@mui/material";
+import withStyles from '@mui/styles/withStyles';
 import * as accountService from "../../services/account-service";
-import EmailOutlinedIcon from "@material-ui/icons/EmailOutlined";
+import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import { Button, TextField } from "../../components/UI";
 import { useToasterContext } from "../../contexts/toasterContext";
 

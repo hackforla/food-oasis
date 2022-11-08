@@ -10,8 +10,8 @@ import {
   Radio,
   RadioGroup,
   Typography,
-} from "@material-ui/core";
-import makeStyles from "@material-ui/styles/makeStyles";
+} from "@mui/material";
+import makeStyles from "@mui/styles/makeStyles";
 import { Button } from "../../../components/UI";
 
 const optionDescriptions = {

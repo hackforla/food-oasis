@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Menu from "./Menu";
-import { AppBar, Toolbar, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { AppBar, Toolbar, Typography } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
 import { useUserContext } from "../../contexts/userContext";
 import { useSiteContext } from "../../contexts/siteContext";
 import useLocationHook from "hooks/useLocationHook";
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "space-between",
     padding: ".5",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       padding: "0 0.5em 0 0",
       minHeight: "45px",
     },
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       filter: "brightness(1.2)",
     },
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down('sm')]: {
       maxHeight: "36px",
       margin: "4px 4px 0 8px",
     },

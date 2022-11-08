@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import Downshift from "downshift";
-import { MenuItem, Paper, Grid } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { MenuItem, Paper, Grid } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
 import { useMapboxGeocoder } from "hooks/useMapboxGeocoder";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import SearchIcon from "@material-ui/icons/Search";
+import InputAdornment from "@mui/material/InputAdornment";
+import SearchIcon from "@mui/icons-material/Search";
 import { TextField } from "../UI";
 import {
   useSearchCoordinates,
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     width: "100%",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       marginLeft: ".5rem",
     },
     position: "relative",

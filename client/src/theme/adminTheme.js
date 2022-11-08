@@ -1,13 +1,5 @@
-import { createTheme } from "@material-ui/core/styles";
-import {
-  white,
-  primary,
-  secondary,
-  success,
-  error,
-  confirmed,
-  bodyText,
-} from "./colors";
+import { createTheme, adaptV4Theme } from "@mui/material/styles";
+import { white, primary, secondary, success,confirmed, error, bodyText } from "./colors";
 
 export const theme = {
   palette: {
@@ -138,6 +130,6 @@ export const theme = {
   },
 };
 
-const adminTheme = createTheme(theme);
+const adminTheme = createTheme(adaptV4Theme(theme));
 
 export default adminTheme;

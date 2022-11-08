@@ -1,7 +1,7 @@
 import React from "react";
 import Menu from "./Menu";
-import { AppBar, Toolbar } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { AppBar, Toolbar } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
 
 const useStyles = makeStyles((theme) => ({
   headerHolder: {
@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "flex-end",
     padding: "0.25em 1.25em 0 0",
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down('sm')]: {
       padding: "0.25em 0.5em 0 0",
       minHeight: "45px",
     },

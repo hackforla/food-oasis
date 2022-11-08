@@ -8,8 +8,8 @@ import {
   DialogTitle,
   Grid,
   Typography,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+} from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
 import * as suggestionService from "services/suggestion-service";
 import { TextField, Button } from "../../../UI";
 import { DEFAULT_STAKEHOLDER } from "../../../../constants/stakeholder";

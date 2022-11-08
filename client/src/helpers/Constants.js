@@ -22,21 +22,6 @@ export const TENANT_CONFIG = {
       },
     ],
   },
-  2: {
-    tenantName: "California",
-    taglineText: "Locate free food in California",
-    defaultViewport: {
-      center: { latitude: 37.96, longitude: -118.87 },
-      zoom: 4.5,
-    },
-    maintainers: [
-      {
-        name: "Hack for LA",
-        website: "https://www.hackforla.org/",
-        path: require("images/hackforla.svg"),
-      },
-    ],
-  },
   3: {
     tenantName: "Hawaii",
     taglineText: "Locate free food in Hawaiʻi",
@@ -51,15 +36,6 @@ export const TENANT_CONFIG = {
         path: require("components/StaticPagesHI/assets/cfh-logo-black-crop.png"),
       },
     ],
-  },
-  4: {
-    tenantName: "Oregon",
-    taglineText: "Locate free food in Oregon",
-    defaultViewport: {
-      center: { latitude: 45.52445, longitude: -122.65066 },
-      zoom: 8,
-    },
-    maintainers: [],
   },
   5: {
     tenantName: "McKinney",

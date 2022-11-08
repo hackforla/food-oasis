@@ -76,6 +76,7 @@
     "@storybook/preset-create-react-app": "^3.2.0",
     "@storybook/react": "^6.3.7",
     "prettier": "^2.4.1",
+    "react-refresh": "^0.9.0",
     "react-scripts": "^4.0.2",
     "react-syntax-highlighter": "^15.4.4",
     "storybook-addon-material-ui": "^0.9.0-alpha.24"

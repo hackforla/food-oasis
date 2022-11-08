@@ -6,18 +6,14 @@ export const SiteContext = React.createContext(null);
 
 const TENANT_IDS = {
   1: ["la."],
-  2: ["ca.", "california"],
   3: ["hi.", "hawaii"],
-  4: ["or.", "oregon", "pdx.", "portland."],
   5: ["mck.", "mckinney."],
   6: ["sb."],
 };
 
 const TENANT_NAMES = {
   1: "Los Angeles",
-  2: "California",
   3: "Hawaii",
-  4: "Oregon",
   5: "McKinney",
   6: "Santa Barbara",
 };
@@ -27,17 +23,9 @@ export const DEFAULT_VIEWPORTS = {
     center: { latitude: 34.0354899, longitude: -118.2439235 },
     zoom: 11,
   },
-  2: {
-    center: { latitude: 37.96, longitude: -118.87 },
-    zoom: 4.5,
-  },
   3: {
     center: { latitude: 21.4601548, longitude: -157.99 },
     zoom: 9.5,
-  },
-  4: {
-    center: { latitude: 45.52445, longitude: -122.65066 },
-    zoom: 8,
   },
   5: {
     center: { latitude: 33.216239, longitude: -96.65014 },

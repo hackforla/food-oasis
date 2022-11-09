@@ -172,7 +172,16 @@ const SuggestionForm = withFormik({
       ...props.stakeholder,
     };
 
-    const altered = { ...stakeholder, ...values };
+    // Construct the suggestion by starting with the stakeholder record,
+    // adding values from the suggestion form properties, and then
+    // moving the original stakeholder.id to be the stakeholderId property
+    // of the suggestion
+    const altered = {
+      ...stakeholder,
+      ...values,
+      stakeholderId: stakeholder.id,
+      id: null,
+    };
 
     return suggestionService
       .post(altered)

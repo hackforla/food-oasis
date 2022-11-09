@@ -45,13 +45,13 @@ const insert = async (model) => {
     city, state, zip,
     phone, email, notes,
     tipster_name, tipster_phone, tipster_email,
-    hours, category, tenant_id
+    hours, category, tenant_id, stakeholder_id
   ) values (
     $<name>, $<address1>, $<address2>,
     $<city>, $<state>, $<zip>,
     $<phone>, $<email>,  $<notes>,
     $<tipsterName>, $<tipsterPhone>, $<tipsterEmail>,
-    $<hours>, $<category>, $<tenantId>
+    $<hours>, $<category>, $<tenantId>, $<stakeholderId>
   )
   returning id`;
   const result = await db.one(sql, model);

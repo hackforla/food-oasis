@@ -119,7 +119,6 @@ const useStyles = makeStyles(() => ({
       color: "#4d4d4d",
       width: "100%",
       flexBasis: "100",
-      textTransform: "uppercase;",
       textAlign: "center",
       fontWeight: "500",
       fontSize: "32px",

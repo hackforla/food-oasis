@@ -119,7 +119,6 @@ const useStyles = makeStyles(() => ({
     "& $h2": {
       width: "100%",
       flexBasis: "100",
-      textTransform: "uppercase;",
       textAlign: "center",
       fontWeight: "500",
       fontSize: "32px",

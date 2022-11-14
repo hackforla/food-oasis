@@ -22,7 +22,7 @@ import {
 } from "../../../../appReducer";
 import { useHistory } from "react-router-dom";
 import { useToasterContext } from "../../../../contexts/toasterContext";
-import { Helmet } from "react-helmet";
+import SEO from "../../../SEO";
 
 const useStyles = makeStyles((theme) => ({
   stakeholder: {
@@ -290,16 +290,11 @@ const StakeholderDetails = () => {
   };
   return (
     <>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>{`Food Oasis: ${selectedOrganization.name}`}</title>
-        <meta
-          property="og:title"
-          content={`Food Oasis: ${selectedOrganization.name}`}
-        />
-        <meta property="og:url" content={window.location.href} />
-        <link rel="canonical" href={window.location.href} />
-      </Helmet>
+      <SEO
+        title={`Food Oasis: ${selectedOrganization.name}`}
+        url={window.location.href}
+      />
+
       <div className={classes.stakeholder}>
         <div className={classes.backButtonWrapper}>
           <div

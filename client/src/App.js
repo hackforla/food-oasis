@@ -44,7 +44,8 @@ import About from "./components/About";
 import Faq from "./components/Faq";
 import { AppStateProvider } from "./appReducer";
 import { SiteProvider } from "contexts/siteContext";
-import { Helmet } from "react-helmet";
+import { HelmetProvider } from "react-helmet-async";
+import SEO from "./components/SEO";
 
 const useStyles = makeStyles({
   app: () => ({
@@ -91,176 +92,172 @@ function App() {
   const classes = useStyles();
 
   return (
-    <AppStateProvider>
-      <SiteProvider>
-        <ToasterProvider>
-          <UserProvider>
-            <ThemeProvider theme={theme}>
-              <CssBaseline />
-              <Helmet>
-                <meta charSet="utf-8" />
-                <title>Food Oasis</title>
-                <meta
-                  name="description"
-                  content="Food Oasis is an application that helps eliminate food waste by connecting donors and food outlets."
+    <HelmetProvider>
+      <AppStateProvider>
+        <SiteProvider>
+          <ToasterProvider>
+            <UserProvider>
+              <ThemeProvider theme={theme}>
+                <CssBaseline />
+                <SEO
+                  title={`Food Oasis`}
+                  url={window.origin}
+                  description="Food Oasis is an application that helps eliminate food waste by connecting donors and food outlets."
                 />
-                <meta property="og:title" content="Food Oasis" />
-                <meta property="og:url" content={window.origin} />
-                <link rel="canonical" href={window.origin} />
-              </Helmet>
-              <Router>
-                <Grid
-                  container
-                  direction="column"
-                  wrap="nowrap"
-                  alignContent="stretch"
-                  spacing={0}
-                  classes={{
-                    container: classes.app,
-                  }}
-                >
-                  <Switch>
-                    <Route exact path="/">
-                      <HeaderHome />
-                    </Route>
-                    <Route path="/widget"></Route>
-                    <Route>
-                      <Header />
-                    </Route>
-                  </Switch>
-                  <Switch className={classes.mainContent}>
-                    <Route exact path="/">
-                      <Home />
-                    </Route>
-                    {/*
+                <Router>
+                  <Grid
+                    container
+                    direction="column"
+                    wrap="nowrap"
+                    alignContent="stretch"
+                    spacing={0}
+                    classes={{
+                      container: classes.app,
+                    }}
+                  >
+                    <Switch>
+                      <Route exact path="/">
+                        <HeaderHome />
+                      </Route>
+                      <Route path="/widget"></Route>
+                      <Route>
+                        <Header />
+                      </Route>
+                    </Switch>
+                    <Switch className={classes.mainContent}>
+                      <Route exact path="/">
+                        <Home />
+                      </Route>
+                      {/*
               Following route provides backward-compatibilty for the
               http"//foodoasis.la/search Link that has been published at
               http://publichealth.lacounty.gov/eh/LACFRI/ShareAndDonate.htm
               */}
-                    <Redirect from="/search" to="/widget" />
-                    <Route path="/widget">
-                      <>
+                      <Redirect from="/search" to="/widget" />
+                      <Route path="/widget">
+                        <>
+                          <SearchResults />
+                          <WidgetFooter />
+                        </>
+                      </Route>
+                      <Route path="/organizations">
                         <SearchResults />
-                        <WidgetFooter />
-                      </>
-                    </Route>
-                    <Route path="/organizations">
-                      <SearchResults />
-                    </Route>
-                    <Route path="/suggestion">
-                      <Suggestion />
-                    </Route>
-                    <Route path="/logins">
-                      <Logins />
-                    </Route>
-                    <Route path="/organizationedit/:id?">
-                      <ThemeProvider theme={adminTheme}>
-                        <div className={classes.organizationEditWrapper}>
-                          <OrganizationEdit />
-                        </div>
-                      </ThemeProvider>
-                    </Route>
-                    <Route path="/verificationdashboard">
-                      <div className={classes.verificationAdminWrapper}>
-                        <VerificationDashboard />
-                      </div>
-                    </Route>
-                    <PrivateRoute
-                      path="/verificationadmin"
-                      roles={["isAdmin", "isCoordinator"]}
-                    >
-                      <ThemeProvider theme={adminTheme}>
-                        <div className={classes.verificationAdminWrapper}>
-                          <VerificationAdmin />
-                        </div>
-                      </ThemeProvider>
-                    </PrivateRoute>
-                    <PrivateRoute
-                      path="/parentorganizations"
-                      roles={["isAdmin"]}
-                    >
-                      <div className={classes.organizationEditWrapper}>
-                        <ParentOrganizations />
-                      </div>
-                    </PrivateRoute>
-                    <PrivateRoute path="/tags" roles={["isAdmin"]}>
-                      <div className={classes.organizationEditWrapper}>
-                        <TagAdmin />
-                      </div>
-                    </PrivateRoute>
-                    <PrivateRoute path="/suggestions" roles={["isAdmin"]}>
-                      <div className={classes.organizationEditWrapper}>
-                        <Suggestions />
-                      </div>
-                    </PrivateRoute>
-                    <PrivateRoute
-                      path="/logins"
-                      roles={["isAdmin", "isCoordinator"]}
-                    >
-                      {" "}
-                      <div className={classes.organizationEditWrapper}>
+                      </Route>
+                      <Route path="/suggestion">
+                        <Suggestion />
+                      </Route>
+                      <Route path="/logins">
                         <Logins />
-                      </div>
-                    </PrivateRoute>
-                    <PrivateRoute
-                      path="/securityadmindashboard"
-                      roles={["isGlobalAdmin", "isSecurityAdmin"]}
-                    >
-                      <div className={classes.verificationAdminWrapper}>
-                        <SecurityAdminDashboard />
-                      </div>
-                    </PrivateRoute>
-                    <PrivateRoute
-                      path="/organizationimport"
-                      roles={["isAdmin"]}
-                    >
-                      <ImportFile />
-                    </PrivateRoute>
-                    <Route path="/faqs/add">
-                      <FaqAdd />
-                    </Route>
-                    <Route path="/faqs/:identifier">
-                      <FaqEdit />
-                    </Route>
-                    <Route path="/resources">
-                      <Resources />
-                    </Route>
-                    <Route path="/register">
-                      <Register />
-                    </Route>
-                    <Route path="/confirm/:token">
-                      <ConfirmEmail />
-                    </Route>
-                    <Route path="/login/:email?">
-                      <Login />
-                    </Route>
-                    <Route path="/forgotpassword/:email?">
-                      <ForgotPassword />
-                    </Route>
-                    <Route path="/resetPassword/:token">
-                      <ResetPassword />
-                    </Route>
-                    <Route path="/donate">
-                      <Donate />
-                    </Route>
-                    <Route path="/about">
-                      <About />
-                    </Route>
-                    <Route exact path="/faqs">
-                      <Faq />
-                    </Route>
-                    <Route exact path="/fallback">
-                      <Fallback />
-                    </Route>
-                  </Switch>
-                  <Toast />
-                </Grid>
-              </Router>
-            </ThemeProvider>
-          </UserProvider>
-        </ToasterProvider>
-      </SiteProvider>
-    </AppStateProvider>
+                      </Route>
+                      <Route path="/organizationedit/:id?">
+                        <ThemeProvider theme={adminTheme}>
+                          <div className={classes.organizationEditWrapper}>
+                            <OrganizationEdit />
+                          </div>
+                        </ThemeProvider>
+                      </Route>
+                      <Route path="/verificationdashboard">
+                        <div className={classes.verificationAdminWrapper}>
+                          <VerificationDashboard />
+                        </div>
+                      </Route>
+                      <PrivateRoute
+                        path="/verificationadmin"
+                        roles={["isAdmin", "isCoordinator"]}
+                      >
+                        <ThemeProvider theme={adminTheme}>
+                          <div className={classes.verificationAdminWrapper}>
+                            <VerificationAdmin />
+                          </div>
+                        </ThemeProvider>
+                      </PrivateRoute>
+                      <PrivateRoute
+                        path="/parentorganizations"
+                        roles={["isAdmin"]}
+                      >
+                        <div className={classes.organizationEditWrapper}>
+                          <ParentOrganizations />
+                        </div>
+                      </PrivateRoute>
+                      <PrivateRoute path="/tags" roles={["isAdmin"]}>
+                        <div className={classes.organizationEditWrapper}>
+                          <TagAdmin />
+                        </div>
+                      </PrivateRoute>
+                      <PrivateRoute path="/suggestions" roles={["isAdmin"]}>
+                        <div className={classes.organizationEditWrapper}>
+                          <Suggestions />
+                        </div>
+                      </PrivateRoute>
+                      <PrivateRoute
+                        path="/logins"
+                        roles={["isAdmin", "isCoordinator"]}
+                      >
+                        {" "}
+                        <div className={classes.organizationEditWrapper}>
+                          <Logins />
+                        </div>
+                      </PrivateRoute>
+                      <PrivateRoute
+                        path="/securityadmindashboard"
+                        roles={["isGlobalAdmin", "isSecurityAdmin"]}
+                      >
+                        <div className={classes.verificationAdminWrapper}>
+                          <SecurityAdminDashboard />
+                        </div>
+                      </PrivateRoute>
+                      <PrivateRoute
+                        path="/organizationimport"
+                        roles={["isAdmin"]}
+                      >
+                        <ImportFile />
+                      </PrivateRoute>
+                      <Route path="/faqs/add">
+                        <FaqAdd />
+                      </Route>
+                      <Route path="/faqs/:identifier">
+                        <FaqEdit />
+                      </Route>
+                      <Route path="/resources">
+                        <Resources />
+                      </Route>
+                      <Route path="/register">
+                        <Register />
+                      </Route>
+                      <Route path="/confirm/:token">
+                        <ConfirmEmail />
+                      </Route>
+                      <Route path="/login/:email?">
+                        <Login />
+                      </Route>
+                      <Route path="/forgotpassword/:email?">
+                        <ForgotPassword />
+                      </Route>
+                      <Route path="/resetPassword/:token">
+                        <ResetPassword />
+                      </Route>
+                      <Route path="/donate">
+                        <Donate />
+                      </Route>
+                      <Route path="/about">
+                        <About />
+                      </Route>
+                      <Route exact path="/faqs">
+                        <Faq />
+                      </Route>
+                      <Route exact path="/fallback">
+                        <Fallback />
+                      </Route>
+                    </Switch>
+                    <Toast />
+                  </Grid>
+                </Router>
+              </ThemeProvider>
+            </UserProvider>
+          </ToasterProvider>
+        </SiteProvider>
+      </AppStateProvider>
+    </HelmetProvider>
   );
 }
 

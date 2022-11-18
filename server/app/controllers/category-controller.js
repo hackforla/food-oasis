@@ -31,6 +31,7 @@ const post = async (req, res) => {
     res.status(201).json(resp);
   } catch (err) {
     if (err.message.includes("duplicate")) {
+      console.error(err);
       res.status(400).json({ error: "Cannot insert duplicate row." });
     } else {
       console.error(err);

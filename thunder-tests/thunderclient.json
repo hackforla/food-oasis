@@ -83,7 +83,7 @@
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
     "name": "Confirm Register",
-    "url": "http://localhost:5001/api/accounts/confirmRegister",
+    "url": "http://localhost:5001/api/accounts/confirmRegister/174",
     "method": "POST",
     "sortNum": 30000,
     "created": "2022-10-04T03:11:23.700Z",

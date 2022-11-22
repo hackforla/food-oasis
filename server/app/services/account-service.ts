@@ -3,20 +3,18 @@ import {
   RegisterFields,
   AccountResponse,
   User,
-  PermissionName,
-} from "../types/account-types";
-
-const db = require("./db");
-const camelcaseKeys = require("camelcase-keys");
-
-const { promisify } = require("util");
-const moment = require("moment");
-const bcrypt = require("bcrypt");
+  Role,
+} from "../../types/account-types";
+import moment from "moment";
+import bcrypt from "bcrypt";
+import camelcaseKeys from "camelcase-keys";
+import { v4 as uuid4 } from "uuid";
+import { promisify } from "util";
 import {
   sendRegistrationConfirmation,
   sendResetPasswordConfirmation,
 } from "./sendgrid-service";
-const { v4: uuid4 } = require("uuid");
+import db from "./db";
 
 const SALT_ROUNDS = 10;
 
@@ -361,17 +359,7 @@ const authenticate = async (
         isSuccess: true,
         code: "AUTH_SUCCESS",
         user: {
-          id: user.id,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-          isAdmin: user.isAdmin,
-          isCoordinator: user.isCoordinator,
-          isSecurityAdmin: user.isSecurityAdmin,
-          isDataEntry: user.isDataEntry,
-          emailConfirmed: user.emailConfirmed,
-          isGlobalAdmin: user.isGlobalAdmin,
-          isGlobalReporting: user.isGlobalReporting,
+          ...user,
           role: role.join(","), // join list of roles to string
         },
       };
@@ -414,7 +402,7 @@ async function hashPassword(user: any) {
 // Update login table with the specified permissionName column set to value
 const setTenantPermissions = async (
   userId: string,
-  permissionName: PermissionName,
+  permissionName: Role,
   value: string,
   tenantId: string
 ): Promise<AccountResponse> => {
@@ -483,7 +471,7 @@ const setTenantPermissions = async (
 
 const setGlobalPermissions = async (
   userId: string,
-  permissionName: string,
+  permissionName: Role,
   value: string,
   tenantId: string
 ): Promise<AccountResponse> => {

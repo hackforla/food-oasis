@@ -4,7 +4,7 @@ import {
   Neighborhood,
   NeighborhoodGeoJSON,
   NeighborhoodPutRequest,
-} from "../types/neighborhood-types";
+} from "../../types/neighborhood-types";
 
 const getAll: RequestHandler<
   never,

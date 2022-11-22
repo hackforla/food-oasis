@@ -1,6 +1,6 @@
-const db = require("./db");
+import db from "./db";
 import camelcaseKeys from "camelcase-keys";
-import { Tag, StakeholderTag } from "../types/tag-types";
+import { Tag, StakeholderTag } from "../../types/tag-types";
 
 const selectAllById = async (tenantId: string) => {
   const id = Number(tenantId);

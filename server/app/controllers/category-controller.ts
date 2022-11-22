@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import categoryService from "../services/category-service";
-import { Category } from "../types/category-types";
+import { Category } from "../../types/category-types";
 
 const getAll: RequestHandler<
   never,

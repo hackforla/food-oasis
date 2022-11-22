@@ -1,6 +1,6 @@
 import { RequestHandler, Response } from "express";
 import parentOrganizationService from "../services/parent-organization-service";
-import { ParentOrganization } from "../types/parent-organization-types";
+import { ParentOrganization } from "../../types/parent-organization-types";
 
 const getAllByTenantId: RequestHandler<
   { tenantId: string },

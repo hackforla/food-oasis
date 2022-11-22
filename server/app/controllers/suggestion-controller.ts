@@ -1,6 +1,6 @@
 import suggestionService from "../services/suggestion-service";
 import { RequestHandler, Response } from "express";
-import { Suggestion } from "../types/suggestion-types";
+import { Suggestion } from "../../types/suggestion-types";
 
 const getAll: RequestHandler<
   // route params

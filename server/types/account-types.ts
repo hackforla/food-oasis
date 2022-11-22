@@ -8,7 +8,7 @@ export interface User {
 export interface Account extends User {
   id: number;
   emailConfirmed: boolean;
-  passwordHash?: string;
+  passwordHash: string;
   dateCreated?: string;
   isGlobalAdmin: boolean;
   isGlobalReporting: boolean;
@@ -57,8 +57,12 @@ export interface AccountResponse {
   };
 }
 
-export type PermissionName =
-  | "is_admin"
-  | "is_coordinator"
-  | "is_security_admin"
-  | "is_data_entry";
+export const Roles = [
+  "admin",
+  "coordinator",
+  "security_admin",
+  "data_entry",
+  "global_admin",
+] as const;
+
+export type Role = typeof Roles[number];

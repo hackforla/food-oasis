@@ -1,4 +1,9 @@
-const db = require("./db");
+import {
+  StakeholderCategory,
+  StakeholderBestSearchParams,
+  StakeholderBest,
+} from "../../types/stakeholder-types";
+import db from "./db";
 
 /*
 
@@ -17,7 +22,7 @@ with bounds taking precedence.
 
 */
 
-const booleanEitherClause = (columnName, value) => {
+const booleanEitherClause = (columnName: string, value?: string) => {
   return value === "true"
     ? ` and ${columnName} is true `
     : value === "false"
@@ -40,7 +45,7 @@ const search = async ({
   name,
   neighborhoodId,
   tag,
-}) => {
+}: StakeholderBestSearchParams) => {
   const locationClause = buildLocationClause(latitude, longitude);
   const categoryClause = buildCTEClause(categoryIds, name || "");
   const sql = `${categoryClause}
@@ -105,8 +110,8 @@ const search = async ({
     ${tag ? ` and '${tag}' = ANY (s.tags) ` : ""}
     order by distance
   `;
-  let stakeholders = [];
-  let categories = [];
+  let stakeholders: StakeholderBest[] = [];
+  let categories: StakeholderCategory[] = [];
   var rows, stakeholder_ids;
 
   rows = await db.manyOrNone(sql);
@@ -125,100 +130,99 @@ const search = async ({
 
   rows.forEach((row) => {
     stakeholders.push({
-      id: row.id,
-      name: row.name || "",
       address1: row.address_1 || "",
       address2: row.address_2 || "",
-      city: row.city || "",
-      state: row.state || "",
-      zip: row.zip || "",
-      phone: row.phone || "",
-      latitude: Number(row.latitude) ? Number(row.latitude) : null,
-      longitude: Number(row.longitude) ? Number(row.longitude) : null,
-      distance: Number(row.distance) ? Number(row.distance) : 0,
-      website: row.website || "",
-      notes: row.notes || "",
-      createdDate: row.created_date,
-      createdLoginId: row.created_login_id,
-      modifiedDate: row.modified_date,
-      modifiedLoginId: row.modified_login_id,
-      submittedDate: row.submitted_date,
-      submittedLoginId: row.submitted_login_id,
-      assignedDate: row.assigned_date,
-      assignedLoginId: row.assigned_login_id,
-      approvedDate: row.approved_date,
-      reviewedLoginId: row.reviewed_login_id,
-      claimedDate: row.claimed_date,
-      claimedLoginId: row.claimed_login_id,
-      requirements: row.requirements || "",
-      adminNotes: row.admin_notes || "",
-      inactive: row.inactive,
-      createdUser: row.created_user || "",
-      modifiedUser: row.modified_user || "",
-      submittedUser: row.submitted_user || "",
-      reviewedUser: row.reviewed_user || "",
-      assignedUser: row.assigned_user || "",
-      claimedUser: row.claimed_user || "",
-      categories: categories.filter((cats) => cats.stakeholder_id === row.id),
-      hours: row.hours || [],
-      parentOrganization: row.parent_organization || "",
-      physicalAccess: row.physical_access || "",
-      email: row.email || "",
-      items: row.items || "",
-      services: row.services || "",
-      facebook: row.facebook || "",
-      twitter: row.twitter || "",
-      pinterest: row.pinterest || "",
-      linkedin: row.linkedin || "",
-      description: row.description,
-      reviewNotes: row.review_notes,
-      instagram: row.instagram || "",
+      adminContactEmail: row.admin_contact_email || "",
       adminContactName: row.admin_contact_name || "",
       adminContactPhone: row.admin_contact_phone || "",
-      adminContactEmail: row.admin_contact_email || "",
+      adminNotes: row.admin_notes || "",
+      allowWalkins: row.allow_walkins,
+      approvedDate: row.approved_date,
+      assignedDate: row.assigned_date,
+      assignedLoginId: row.assigned_login_id,
+      assignedUser: row.assigned_user || "",
+      categories: categories.filter((cat) => cat.stakeholder_id === row.id),
+      categoryNotes: row.category_notes || "",
+      city: row.city || "",
+      claimedDate: row.claimed_date,
+      claimedLoginId: row.claimed_login_id,
+      claimedUser: row.claimed_user || "",
+      confirmedAddress: row.v_address,
+      confirmedCategories: row.v_categories,
+      confirmedEmail: row.v_email,
+      confirmedFoodTypes: row.v_food_types,
+      confirmedHours: row.v_hours,
+      confirmedName: row.v_name,
+      confirmedPhone: row.v_phone,
+      covidNotes: row.covid_notes || "",
+      createdDate: row.created_date,
+      createdLoginId: row.created_login_id,
+      createdUser: row.created_user || "",
+      description: row.description,
+      distance: Number(row.distance) ? Number(row.distance) : 0,
+      donationAcceptFrozen: row.donation_accept_frozen || false,
+      donationAcceptPerishable: row.donation_accept_perishable || false,
+      donationAcceptRefrigerated: row.donation_accept_refrigerated || false,
+      donationContactEmail: row.donation_contact_email || "",
       donationContactName: row.donation_contact_name || "",
       donationContactPhone: row.donation_contact_phone || "",
-      donationContactEmail: row.donation_contact_email || "",
-      donationPickup: row.donation_pickup || false,
-      donationAcceptFrozen: row.donation_accept_frozen || false,
-      donationAcceptRefrigerated: row.donation_accept_refrigerated || false,
-      donationAcceptPerishable: row.donation_accept_perishable || false,
-      donationSchedule: row.donation_schedule || "",
       donationDeliveryInstructions: row.donation_delivery_instructions || "",
       donationNotes: row.donation_notes || "",
-      covidNotes: row.covid_notes || "",
-      categoryNotes: row.category_notes || "",
+      donationPickup: row.donation_pickup || false,
+      donationSchedule: row.donation_schedule || "",
       eligibilityNotes: row.eligibility_notes || "",
+      email: row.email || "",
+      facebook: row.facebook || "",
       foodBakery: row.food_bakery,
-      foodDryGoods: row.food_dry_goods,
-      foodProduce: row.food_produce,
       foodDairy: row.food_dairy,
-      foodPrepared: row.food_prepared,
+      foodDryGoods: row.food_dry_goods,
       foodMeat: row.food_meat,
+      foodPrepared: row.food_prepared,
+      foodProduce: row.food_produce,
       foodTypes: row.food_types || "",
-      languages: row.languages || "",
-      confirmedName: row.v_name,
-      confirmedCategories: row.v_categories,
-      confirmedAddress: row.v_address,
-      confirmedPhone: row.v_phone,
-      confirmedEmail: row.v_email,
-      confirmedHours: row.v_hours,
-      confirmedFoodTypes: row.v_food_types,
-      verificationStatusId: row.verification_status_id,
-      inactiveTemporary: row.inactive_temporary,
-      neighborhoodId: row.neighborhood_id,
-      isVerified: row.is_verified,
-      parentOrganizationId: row.parent_organization_id,
-      allowWalkins: row.allow_walkins,
+      hours: row.hours || [],
       hoursNotes: row.hours_notes,
+      id: row.id,
+      inactive: row.inactive,
+      inactiveTemporary: row.inactive_temporary,
+      instagram: row.instagram || "",
+      isVerified: row.is_verified,
+      items: row.items || "",
+      languages: row.languages || "",
+      latitude: Number(row.latitude) ? Number(row.latitude) : null,
+      linkedin: row.linkedin || "",
+      longitude: Number(row.longitude) ? Number(row.longitude) : null,
+      modifiedDate: row.modified_date,
+      modifiedLoginId: row.modified_login_id,
+      modifiedUser: row.modified_user || "",
+      name: row.name || "",
+      neighborhoodId: row.neighborhood_id,
+      notes: row.notes || "",
+      parentOrganization: row.parent_organization || "",
+      parentOrganizationId: row.parent_organization_id,
+      phone: row.phone || "",
+      physicalAccess: row.physical_access || "",
+      pinterest: row.pinterest || "",
+      requirements: row.requirements || "",
+      reviewedLoginId: row.reviewed_login_id,
+      reviewedUser: row.reviewed_user || "",
+      reviewNotes: row.review_notes,
+      services: row.services || "",
+      state: row.state || "",
+      submittedDate: row.submitted_date,
+      submittedLoginId: row.submitted_login_id,
+      submittedUser: row.submitted_user || "",
       tags: row.tags,
+      twitter: row.twitter || "",
+      verificationStatusId: row.verification_status_id,
+      website: row.website || "",
+      zip: row.zip || "",
     });
   });
-
   return stakeholders;
 };
 
-const selectById = async (id) => {
+const selectById = async (id: string) => {
   const sql = `select
       s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
       s.phone, s.latitude, s.longitude, s.website,  s.notes,
@@ -261,7 +265,7 @@ const selectById = async (id) => {
     from stakeholder_best s
     left outer join neighborhood n on s.neighborhood_id = n.id
     ${buildLoginJoinsClause()}
-    where s.id = ${id}`;
+    where s.id = ${Number(id)}`;
   const row = await db.one(sql);
 
   const stakeholder = {
@@ -351,15 +355,14 @@ const selectById = async (id) => {
     allowWalkins: row.allow_walkins,
     hoursNotes: row.hours_notes,
     tags: row.tags,
+    // Don't have a distance, since we didn't specify origin
+    distance: 0,
   };
-
-  // Don't have a distance, since we didn't specify origin
-  stakeholder.distance = 0;
 
   return stakeholder;
 };
 
-const buildCTEClause = (categoryIds, name) => {
+const buildCTEClause = (categoryIds: string[], name: string) => {
   const categoryClause = categoryIds
     ? `stakeholder_category_set AS (
        select * from stakeholder_best_category
@@ -379,7 +382,7 @@ const buildCTEClause = (categoryIds, name) => {
   return cteClause;
 };
 
-const buildLocationClause = (latitude, longitude) => {
+const buildLocationClause = (latitude: string, longitude: string) => {
   var locationClause = "";
   if (latitude && longitude) {
     locationClause =
@@ -392,7 +395,15 @@ const buildLocationClause = (latitude, longitude) => {
   return locationClause;
 };
 
-const buildBounds = ({ maxLat, maxLng, minLat, minLng }) => {
+const buildBounds = ({
+  maxLat,
+  maxLng,
+  minLat,
+  minLng,
+}: Pick<
+  StakeholderBestSearchParams,
+  "maxLat" | "maxLng" | "minLat" | "minLng"
+>) => {
   return `
     AND s.latitude BETWEEN ${minLat} AND ${maxLat}
     AND s.longitude BETWEEN ${minLng} AND ${maxLng}
@@ -421,7 +432,7 @@ const buildLoginSelectsClause = () => {
   `;
 };
 
-module.exports = {
+export default {
   search,
   selectById,
 };

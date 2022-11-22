@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const loadController = require("../controllers/load-controller");
-const jwtSession = require("../../middleware/jwt-session");
+import jwtSession from "../../middleware/jwt-session";
 
 router.get(
   "/lapl-food-resources",

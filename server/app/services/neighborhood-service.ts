@@ -2,8 +2,8 @@ import {
   Neighborhood,
   NeighborhoodGeoJSON,
   NeighborhoodPutRequest,
-} from "../types/neighborhood-types";
-const db = require("./db");
+} from "../../types/neighborhood-types";
+import db from "./db";
 const camelcaseKeys = require("camelcase-keys");
 
 const selectAll = async (tenantId: number): Promise<Neighborhood[]> => {

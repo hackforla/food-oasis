@@ -17,7 +17,7 @@
 
 import * as cheerio from "cheerio";
 import axios from "axios";
-import { Article } from "../types/import-types";
+import { Article } from "../../types/import-types";
 
 const url = "https://www.lapl.org/homeless-resources-food";
 

@@ -1,6 +1,6 @@
 import sgMail from "@sendgrid/mail";
 import applyEmailTemplate from "./EmailTemplate";
-import { Email } from "../types/email-type";
+import { Email } from "../../types/email-type";
 
 const emailUser: string = process.env.EMAIL_USER || "";
 const sendgridKey: string = process.env.SENDGRID_API_KEY || "";

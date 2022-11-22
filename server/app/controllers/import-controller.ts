@@ -2,7 +2,7 @@ import scraperLaplFoodResourcesService from "../import/lapl-food-resources-scrap
 import svc from "../services/load-lapl-food-resources-service";
 import importService from "../services/import-service";
 import { RequestHandler } from "express";
-import { Article, ImportAction } from "../types/import-types";
+import { Article, ImportAction } from "../../types/import-types";
 
 // LA Public Library Food Resources Listing - Scraped
 const getLaplFoodResources: RequestHandler<

@@ -24,7 +24,7 @@
         "name": "Categories",
         "containerId": "",
         "created": "2022-10-04T03:11:23.699Z",
-        "sortNum": 30000
+        "sortNum": 15000
       },
       {
         "_id": "8af1b2e1-3c85-439d-b277-d4b83209cc98",
@@ -38,7 +38,14 @@
         "name": "Suggestions",
         "containerId": "",
         "created": "2022-10-22T06:36:29.788Z",
-        "sortNum": 50000
+        "sortNum": 22500
+      },
+      {
+        "_id": "e1d51cff-eae1-4c5d-b2aa-3adefd7cad81",
+        "name": "Logins",
+        "containerId": "",
+        "created": "2022-10-23T02:28:58.944Z",
+        "sortNum": 17500
       },
       {
         "_id": "e1d51cff-eae1-4c5d-b2aa-3adefd7cad81",
@@ -59,35 +66,35 @@
         "name": "Neighborhoods",
         "containerId": "",
         "created": "2022-11-18T00:47:20.734Z",
-        "sortNum": 60000
+        "sortNum": 18750
       },
       {
         "_id": "7f5a5a8a-37c9-4fea-911f-c13660509a3e",
         "name": "Stakeholders",
         "containerId": "",
         "created": "2022-11-18T02:09:50.611Z",
-        "sortNum": 70000
+        "sortNum": 21250
       },
       {
         "_id": "ae763c3f-34d6-40dd-9749-50a88bd18b89",
         "name": "Geocode",
         "containerId": "",
         "created": "2022-11-18T02:13:33.972Z",
-        "sortNum": 80000
+        "sortNum": 16250
       },
       {
         "_id": "d6bbf7d0-eaef-486e-919f-4869bb8766d3",
         "name": "StakeholderBests",
         "containerId": "",
         "created": "2022-11-18T02:14:30.792Z",
-        "sortNum": 90000
+        "sortNum": 21875
       },
       {
         "_id": "edc0a923-2274-4573-ba0d-0ef3d5daed06",
         "name": "StakeholderLogs",
         "containerId": "",
         "created": "2022-11-18T02:14:43.234Z",
-        "sortNum": 100000
+        "sortNum": 22187.5
       }
     ],
     "settings": {

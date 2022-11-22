@@ -50,7 +50,7 @@
     "method": "POST",
     "sortNum": 20000,
     "created": "2022-10-04T03:11:23.699Z",
-    "modified": "2022-11-18T03:12:11.480Z",
+    "modified": "2022-11-22T01:03:58.907Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -74,7 +74,7 @@
         "type": "res-body",
         "custom": "",
         "action": "contains",
-        "value": " \"REG_DUPLICATE_EMAIL\""
+        "value": "\"REG_DUPLICATE_EMAIL\""
       }
     ]
   },
@@ -87,7 +87,7 @@
     "method": "POST",
     "sortNum": 30000,
     "created": "2022-10-04T03:11:23.700Z",
-    "modified": "2022-11-18T02:19:12.194Z",
+    "modified": "2022-11-22T01:39:03.044Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -97,21 +97,34 @@
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"id\": \"174\",\n    \"token\": \"e3cc9443-cdbf-4bf6-8041-be301b0e47b0\"\n}",
+      "raw": "{\n    \"id\": \"108\",\n    \"token\": \"1b56e5fc-a1e7-4fe2-aee8-69855ae90df5\"\n}",
       "form": []
     },
-    "tests": []
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"REG_CONFIRM_TOKEN_EXPIRED\""
+      }
+    ]
   },
   {
     "_id": "e43da1bc-367f-48cf-8025-ee8c775df831",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
     "name": "Resend Confirmation",
-    "url": "http://localhost:5001/api/accounts/register",
+    "url": "http://localhost:5001/api/accounts/resendConfirmationEmail",
     "method": "POST",
     "sortNum": 40000,
     "created": "2022-10-04T03:11:23.701Z",
-    "modified": "2022-11-18T02:19:49.327Z",
+    "modified": "2022-11-22T01:45:11.837Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -121,30 +134,69 @@
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\"firstName\": \"Admin\",\n\"lastName\": \"User\",\n\"email\": \"adminuser@dispostable.com\",\n\"password\": \"\",\n\"tenantId\": 1}",
+      "raw": "{\n\"email\": \"{{ADMIN_EMAIL}}\",\n\"clientUrl\": 1}",
       "form": []
     },
-    "tests": []
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"REG_SUCCESS\""
+      }
+    ]
   },
   {
     "_id": "de0c25a0-2c78-426a-9377-0cdebe61ead1",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
     "name": "Set Permissions",
-    "url": "http://localhost:5001/api/accounts/register",
+    "url": "http://localhost:5001/api/accounts/setPermissions",
     "method": "POST",
     "sortNum": 50000,
     "created": "2022-10-04T03:11:23.703Z",
-    "modified": "2022-10-04T03:11:23.703Z",
+    "modified": "2022-11-22T02:02:11.463Z",
     "headers": [
       {
         "name": "Content-Type",
         "value": "application/json"
       }
     ],
+    "params": [],
     "body": {
       "type": "json",
-      "raw": "{\"firstName\": \"Yonlanda\",\n\"lastName\": \"Darragh\",\n\"email\": \"ydarragh@dispostable.com\",\n\"password\": \"\",\n\"tenantId\": 1}"
+      "raw": "{\n  \"userId\" : 108,\n  \"permissionName\" : \"is_admin\",\n  \"value\" : true,\n  \"tenantId\": 1\n}",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"UPDATE_SUCCESS\""
+      }
+    ],
+    "preReq": {
+      "runRequests": [
+        {
+          "reqId": "c0d5a22b-6be2-40fa-8c83-1a2cb95a640f",
+          "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+          "triggerCondition": "run-always",
+          "triggerValue": ""
+        }
+      ]
     }
   },
   {
@@ -156,7 +208,7 @@
     "method": "POST",
     "sortNum": 60000,
     "created": "2022-10-04T03:11:23.704Z",
-    "modified": "2022-11-18T03:01:59.482Z",
+    "modified": "2022-11-22T02:03:33.433Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -169,11 +221,24 @@
       "raw": "{\n    \"userId\": \"174\",\n    \"permissionName\": \"is_global_reporting\",\n    \"value\": \"true\",\n    \"tenantId\": \"1\"\n}",
       "form": []
     },
-    "tests": [],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"UPDATE_SUCCESS\""
+      }
+    ],
     "preReq": {
       "runRequests": [
         {
-          "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+          "reqId": "17a5ffa8-9a70-4317-97fa-b97a416de130",
           "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
           "triggerCondition": "run-always",
           "triggerValue": ""
@@ -186,53 +251,85 @@
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
     "name": "Forgot Password",
-    "url": "http://localhost:5001/api/accounts/register",
+    "url": "http://localhost:5001/api/accounts/forgotPassword",
     "method": "POST",
     "sortNum": 70000,
     "created": "2022-10-04T03:11:23.705Z",
-    "modified": "2022-10-04T03:11:23.705Z",
+    "modified": "2022-11-22T02:07:19.096Z",
     "headers": [
       {
         "name": "Content-Type",
         "value": "application/json"
       }
     ],
+    "params": [],
     "body": {
       "type": "json",
-      "raw": "{\"firstName\": \"Yonlanda\",\n\"lastName\": \"Darragh\",\n\"email\": \"ydarragh@dispostable.com\",\n\"password\": \"\",\n\"tenantId\": 1}"
-    }
+      "raw": "{\n\"email\": \"{{ADMIN_EMAIL}}\",\n\"clientUrl\": \"http://devla.foodoasis.net\"}",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"FORGOT_PASSWORD_SUCCESS\""
+      }
+    ]
   },
   {
     "_id": "3b8960ab-e791-41a3-9ebd-13c65a57fc49",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
     "name": "Reset Password",
-    "url": "http://localhost:5001/api/accounts/register",
+    "url": "http://localhost:5001/api/accounts/resetPassword",
     "method": "POST",
     "sortNum": 80000,
     "created": "2022-10-04T03:11:23.706Z",
-    "modified": "2022-10-04T03:11:23.706Z",
+    "modified": "2022-11-22T02:10:52.419Z",
     "headers": [
       {
         "name": "Content-Type",
         "value": "application/json"
       }
     ],
+    "params": [],
     "body": {
       "type": "json",
-      "raw": "{\"firstName\": \"Yonlanda\",\n\"lastName\": \"Darragh\",\n\"email\": \"ydarragh@dispostable.com\",\n\"password\": \"\",\n\"tenantId\": 1}"
-    }
+      "raw": "{\n  \"token\": \"INvalidToken\",\n\"password\": \"PhonyPassword123#\"\n  \n}",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"RESET_PASSWORD_FAILED\""
+      }
+    ]
   },
   {
     "_id": "9d11e36b-69a7-453e-91c9-61e13243f42a",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
-    "name": "Login",
+    "name": "Login Admin",
     "url": "http://localhost:5001/api/accounts/login",
     "method": "POST",
-    "sortNum": 90000,
+    "sortNum": 5000,
     "created": "2022-10-04T03:11:23.707Z",
-    "modified": "2022-11-18T03:13:28.912Z",
+    "modified": "2022-11-22T03:09:38.159Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -251,6 +348,12 @@
         "custom": "",
         "action": "equal",
         "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"adminuser@dispostable.com\""
       }
     ]
   },
@@ -309,14 +412,27 @@
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "3ff960b6-f779-4e24-90a6-99d2c89d3b68",
     "name": "ParentOrganizations GET All",
-    "url": "http://localhost:5000/api/parent-organizations",
+    "url": "http://localhost:5001/api/parent-organizations/1",
     "method": "GET",
     "sortNum": 120000,
     "created": "2022-10-04T03:11:23.710Z",
-    "modified": "2022-11-18T02:15:24.055Z",
+    "modified": "2022-11-22T02:23:39.658Z",
     "headers": [],
     "params": [],
-    "tests": []
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"Salvation Army\""
+      }
+    ]
   },
   {
     "_id": "c9392e24-f0ed-4611-97bb-4f51463d4815",
@@ -428,7 +544,7 @@
     "method": "POST",
     "sortNum": 170000,
     "created": "2022-10-04T03:11:23.715Z",
-    "modified": "2022-11-18T03:59:59.299Z",
+    "modified": "2022-11-22T02:16:40.893Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -441,7 +557,20 @@
       "raw": "{\n    \"name\": \"samplessdsddfaaf\",\n    \"displayOrder\": 99,\n    \"inactive\": false\n}",
       "form": []
     },
-    "tests": [],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "201"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"id\""
+      }
+    ],
     "preReq": {
       "runRequests": [
         {
@@ -458,11 +587,11 @@
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "e39dc47f-701b-4d02-80e1-1a5bbd65cfdb",
     "name": "Categories PUT",
-    "url": "http://localhost:5001/api/categories/7",
+    "url": "http://localhost:5001/api/categories/700",
     "method": "POST",
     "sortNum": 180000,
     "created": "2022-10-04T03:11:23.716Z",
-    "modified": "2022-11-18T03:38:35.498Z",
+    "modified": "2022-11-22T02:15:43.371Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -472,10 +601,17 @@
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"id\": 7,\n  \"name\": \"Care Center\",\n  \"displayOrder\": 20,\n  \"inactive\": true\n}",
+      "raw": "{\n  \"id\": 700,\n  \"name\": \"Care Center\",\n  \"displayOrder\": 20,\n  \"inactive\": true\n}",
       "form": []
     },
-    "tests": [],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "404"
+      }
+    ],
     "preReq": {
       "runRequests": [
         {
@@ -496,7 +632,7 @@
     "method": "DELETE",
     "sortNum": 190000,
     "created": "2022-10-04T03:11:23.717Z",
-    "modified": "2022-11-18T04:08:27.477Z",
+    "modified": "2022-11-22T02:14:42.013Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -509,7 +645,7 @@
         "type": "res-code",
         "custom": "",
         "action": "equal",
-        "value": "204"
+        "value": "400"
       }
     ]
   },
@@ -674,7 +810,7 @@
     "method": "GET",
     "sortNum": 10000,
     "created": "2022-10-04T03:11:23.723Z",
-    "modified": "2022-11-18T03:16:42.622Z",
+    "modified": "2022-11-22T03:16:25.820Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -695,7 +831,17 @@
         "action": "contains",
         "value": "\"Salvation Army - Redondo Beach\""
       }
-    ]
+    ],
+    "preReq": {
+      "runRequests": [
+        {
+          "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+          "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+          "triggerCondition": "run-always",
+          "triggerValue": ""
+        }
+      ]
+    }
   },
   {
     "_id": "97773f9c-f251-4a70-a543-addda7a39a1b",
@@ -721,12 +867,14 @@
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "",
     "name": "Import LAPL Food Resources",
-    "url": "http://localhost:5000/api/imports/lapl-food-resources",
+    "url": "http://localhost:5001/api/imports/lapl-food-resources",
     "method": "GET",
     "sortNum": 280000,
     "created": "2022-10-04T03:11:23.726Z",
-    "modified": "2022-10-04T03:11:23.726Z",
-    "headers": []
+    "modified": "2022-11-22T02:24:04.186Z",
+    "headers": [],
+    "params": [],
+    "tests": []
   },
   {
     "_id": "13c6da22-a85a-494d-82c4-9f03fbb68b13",
@@ -864,11 +1012,11 @@
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "7f5a5a8a-37c9-4fea-911f-c13660509a3e",
     "name": "Verify One Stakeholders",
-    "url": "http://localhost:5000/api/stakeholders/3107verify",
+    "url": "http://localhost:5001/api/stakeholders/3107",
     "method": "POST",
     "sortNum": 40000,
     "created": "2022-10-04T03:11:23.732Z",
-    "modified": "2022-11-18T02:11:22.880Z",
+    "modified": "2022-11-22T02:50:45.374Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -1017,11 +1165,11 @@
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "24d28291-9541-4bea-a1d3-ee1b778eeb85",
     "name": "Suggestion GET one",
-    "url": "http://localhost:5001/api/suggestions/1",
+    "url": "http://localhost:5001/api/suggestions/13",
     "method": "GET",
     "sortNum": 20000,
     "created": "2022-10-04T03:11:23.737Z",
-    "modified": "2022-10-22T06:46:17.632Z",
+    "modified": "2022-11-18T16:48:10.446Z",
     "headers": [],
     "params": [],
     "tests": []
@@ -1059,7 +1207,7 @@
     "method": "PUT",
     "sortNum": 15000,
     "created": "2022-10-04T03:11:23.739Z",
-    "modified": "2022-10-22T06:51:16.592Z",
+    "modified": "2022-11-20T00:23:14.762Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -1072,18 +1220,28 @@
       "raw": "{\n    \"id\": 1,\n    \"name\": \"Anne Douglas Center Of The Los Angeles Mission \",\n    \"address1\": \"101 E 6th St.\",\n    \"address2\": \"\",\n    \"city\": \"Los Angeles\",\n    \"state\": \"CA\",\n    \"zip\": \"90013\",\n    \"phone\": \"213-629-1227 x347\",\n    \"email\": \"info@lamission.net\",\n    \"notes\": \"test\",\n    \"tipsterName\": \"\",\n    \"tipsterPhone\": \"\",\n    \"tipsterEmail\": \"\",\n    \"hours\": \"\",\n    \"category\": \"\",\n    \"suggestionStatusId\": 2,\n    \"adminNotes\": \"Updated\"\n}",
       "form": []
     },
-    "tests": []
+    "tests": [],
+    "preReq": {
+      "runRequests": [
+        {
+          "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+          "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+          "triggerCondition": "run-always",
+          "triggerValue": ""
+        }
+      ]
+    }
   },
   {
     "_id": "0264c9f1-32fe-480e-a337-0cd30f5db13e",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "edc0a923-2274-4573-ba0d-0ef3d5daed06",
     "name": "Stakeholder Logs - GET for One Stakeholder",
-    "url": "http://localhost:5000/api/stakeholderlogs/3960",
+    "url": "http://localhost:5001/api/stakeholderlogs/3960",
     "method": "GET",
     "sortNum": 10000,
     "created": "2022-10-04T03:11:23.740Z",
-    "modified": "2022-11-18T02:14:51.674Z",
+    "modified": "2022-11-18T16:39:32.154Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -1091,18 +1249,28 @@
       }
     ],
     "params": [],
-    "tests": []
+    "tests": [],
+    "preReq": {
+      "runRequests": [
+        {
+          "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+          "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+          "triggerCondition": "run-always",
+          "triggerValue": ""
+        }
+      ]
+    }
   },
   {
     "_id": "e9ca3d32-3927-448a-8f8e-a5d58b763c48",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "d6bbf7d0-eaef-486e-919f-4869bb8766d3",
     "name": "Stakeholder Bests - GET for One Stakeholder",
-    "url": "http://localhost:5000/api/stakeholderbests/3960",
+    "url": "http://localhost:5001/api/stakeholderbests/3960",
     "method": "GET",
     "sortNum": 10000,
     "created": "2022-10-04T03:11:23.741Z",
-    "modified": "2022-11-18T02:14:55.781Z",
+    "modified": "2022-11-18T16:39:14.190Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -1117,11 +1285,11 @@
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "7f5a5a8a-37c9-4fea-911f-c13660509a3e",
     "name": "Stakeholder PUT",
-    "url": "http://localhost:5000/api/stakeholders/3107",
+    "url": "http://localhost:5001/api/stakeholders/3107",
     "method": "PUT",
     "sortNum": 60000,
     "created": "2022-10-04T03:11:23.742Z",
-    "modified": "2022-11-18T02:15:05.530Z",
+    "modified": "2022-11-22T02:51:19.794Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -1145,10 +1313,23 @@
     "method": "GET",
     "sortNum": 10000,
     "created": "2022-10-04T03:11:23.744Z",
-    "modified": "2022-11-18T02:30:17.781Z",
+    "modified": "2022-11-22T02:20:12.626Z",
     "headers": [],
     "params": [],
-    "tests": [],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"ARLETA NC\""
+      }
+    ],
     "docs": "No authentication required. Will get all neighborhoods."
   },
   {
@@ -1193,7 +1374,7 @@
     "method": "GET",
     "sortNum": 10000,
     "created": "2022-10-23T02:16:57.627Z",
-    "modified": "2022-10-23T02:29:01.099Z",
+    "modified": "2022-11-22T02:18:31.965Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -1201,7 +1382,20 @@
       }
     ],
     "params": [],
-    "tests": []
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"adminuser@dispostable.com\""
+      }
+    ]
   },
   {
     "_id": "0e2d80c4-b96b-4ba4-a330-72eda43836e3",
@@ -1212,7 +1406,7 @@
     "method": "GET",
     "sortNum": 20000,
     "created": "2022-10-23T02:28:19.486Z",
-    "modified": "2022-10-23T02:34:24.782Z",
+    "modified": "2022-11-22T02:19:31.488Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -1226,7 +1420,20 @@
         "isPath": false
       }
     ],
-    "tests": []
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"securityuser@dispostable.com\""
+      }
+    ]
   },
   {
     "_id": "4e91b6a5-cd57-4e4d-b9f2-b05c1d1c291f",
@@ -1366,10 +1573,152 @@
     "method": "GET",
     "sortNum": 510000,
     "created": "2022-11-18T02:04:34.801Z",
-    "modified": "2022-11-18T02:30:53.075Z",
+    "modified": "2022-11-22T02:20:41.316Z",
     "headers": [],
     "params": [],
-    "tests": [],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"SOUTH CENTRAL NC\""
+      }
+    ],
     "docs": "Will get neighborhood object for South Central LA"
+  },
+  {
+    "_id": "e00d2dec-c6c7-4bde-ab5f-3dea0a063fae",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "d6bbf7d0-eaef-486e-919f-4869bb8766d3",
+    "name": "Stakeholder Bests - Search",
+    "url": "http://localhost:5001/api/stakeholderbests?categoryIds[]=1&latitude=34.0354899&longitude=-118.2439235&isInactive=either&verificationStatusId=0&maxLng=-118.02955627441406&maxLat=34.14950399246919&minLng=-118.45802307128906&minLat=33.92152413543374&tenantId=1",
+    "method": "GET",
+    "sortNum": 520000,
+    "created": "2022-11-18T16:37:27.688Z",
+    "modified": "2022-11-18T16:46:52.120Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "categoryIds[]",
+        "value": "1",
+        "isPath": false
+      },
+      {
+        "name": "latitude",
+        "value": "34.0354899",
+        "isPath": false
+      },
+      {
+        "name": "longitude",
+        "value": "-118.2439235",
+        "isPath": false
+      },
+      {
+        "name": "isInactive",
+        "value": "either",
+        "isPath": false
+      },
+      {
+        "name": "verificationStatusId",
+        "value": "0",
+        "isPath": false
+      },
+      {
+        "name": "maxLng",
+        "value": "-118.02955627441406",
+        "isPath": false
+      },
+      {
+        "name": "maxLat",
+        "value": "34.14950399246919",
+        "isPath": false
+      },
+      {
+        "name": "minLng",
+        "value": "-118.45802307128906",
+        "isPath": false
+      },
+      {
+        "name": "minLat",
+        "value": "33.92152413543374",
+        "isPath": false
+      },
+      {
+        "name": "tenantId",
+        "value": "1",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "17a5ffa8-9a70-4317-97fa-b97a416de130",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
+    "name": "Login Root",
+    "url": "http://localhost:5001/api/accounts/login",
+    "method": "POST",
+    "sortNum": 530000,
+    "created": "2022-11-22T01:52:01.195Z",
+    "modified": "2022-11-22T02:12:46.661Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\"password\": \"{{ROOT_PASSWORD}}\",\n\"email\": \"{{ROOT_EMAIL}}\",\n\"tenantId\": 1\n}",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"rootuser@dispostable.com\""
+      }
+    ]
+  },
+  {
+    "_id": "c0d5a22b-6be2-40fa-8c83-1a2cb95a640f",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
+    "name": "Login Security User",
+    "url": "http://localhost:5001/api/accounts/login",
+    "method": "POST",
+    "sortNum": 540000,
+    "created": "2022-11-22T01:53:56.296Z",
+    "modified": "2022-11-22T02:13:14.928Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\"password\": \"{{SECURITY_PASSWORD}}\",\n\"email\": \"{{SECURITY_EMAIL}}\",\n\"tenantId\": 1\n}",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"securityuser@dispostable.com\""
+      }
+    ]
   }
 ]

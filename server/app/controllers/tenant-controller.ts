@@ -1,6 +1,6 @@
 import tenantService from "../services/tenant-service";
 import { RequestHandler, Response } from "express";
-import { Tenant } from "../types/tenant-types";
+import { Tenant } from "../../types/tenant-types";
 
 const getAll: RequestHandler<
   never,

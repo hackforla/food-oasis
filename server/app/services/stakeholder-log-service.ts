@@ -1,12 +1,14 @@
-const db = require("./db");
-const categoryService = require("./category-service");
+import db from "./db";
+import categoryService from "./category-service";
+import { Stakeholder } from "../../types/stakeholder-types";
+import { Category } from "../../types/category-types";
 
 /* 
 This service is for getting data from the stakeholder_log table for
 viewing the audit log for a particular stakeholder.
 */
 
-const selectById = async (id) => {
+const selectById = async (id: string) => {
   const sql = `select
       s.id, s.version, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
       s.phone, s.latitude, s.longitude, s.website,  s.notes,
@@ -41,70 +43,70 @@ const selectById = async (id) => {
     where s.id = $<id>
     order by s.version desc`;
 
-  const stakeholders = [];
+  const stakeholders: Stakeholder[] = [];
 
   const rows = await db.manyOrNone(sql, { id: Number(id) });
-  const categories = await categoryService.selectAll();
+  const categories: Category[] = await categoryService.selectAll();
 
   rows.forEach((row) => {
     stakeholders.push({
-      id: row.id,
-      version: row.version,
-      name: row.name || "",
       address1: row.address_1 || "",
       address2: row.address_2 || "",
-      city: row.city || "",
-      state: row.state || "",
-      zip: row.zip || "",
-      phone: row.phone || "",
-      latitude: row.latitude ? Number(row.latitude) : null,
-      longitude: row.longitude ? Number(row.longitude) : null,
-      distance: row.distance ? Number(row.distance) : null,
-      website: row.website || "",
-      createdDate: row.created_date,
-      createdLoginId: row.created_login_id,
-      modifiedDate: row.modified_date,
-      modifiedLoginId: row.modified_login_id,
-      submittedDate: row.submitted_date,
-      submittedLoginId: row.submitted_login_id,
+      adminNotes: row.admin_notes || "",
+      approvedDate: row.approved_date,
       assignedDate: row.assigned_date,
       assignedLoginId: row.assigned_login_id,
-      approvedDate: row.approved_date,
-      reviewedLoginId: row.reviewed_login_id,
+      assignedUser: row.assigned_user || "",
+      categories: row.category_ids
+        .map((cat: number) => categories.find((c) => c.id === cat))
+        .sort((c: Category) => c.displayOrder),
+      city: row.city || "",
       claimedDate: row.claimed_date,
       claimedLoginId: row.claimed_login_id,
-      requirements: row.requirements || "",
-      adminNotes: row.admin_notes || "",
-      inactive: row.inactive,
-      createdUser: row.created_user || "",
-      modifiedUser: row.modified_user || "",
-      submittedUser: row.submitted_user || "",
-      reviewedUser: row.reviewed_user || "",
-      assignedUser: row.assigned_user || "",
       claimedUser: row.claimed_user || "",
-      categories: row.category_ids
-        .map((cat) => categories.find((c) => c.id === cat))
-        .sort((c) => c.displayOrder),
-      email: row.email || "",
-      covidNotes: row.covid_notes || "",
-      confirmedName: row.v_name,
-      confirmedCategories: row.v_categories,
+      completeCriticalPercent: row.complete_critical_percent,
       confirmedAddress: row.v_address,
-      confirmedPhone: row.v_phone,
+      confirmedCategories: row.v_categories,
       confirmedEmail: row.v_email,
-      confirmedHours: row.v_hours,
       confirmedFoodTypes: row.v_food_types,
-      verificationStatusId: row.verification_status_id,
+      confirmedHours: row.v_hours,
+      confirmedName: row.v_name,
+      confirmedPhone: row.v_phone,
+      covidNotes: row.covid_notes || "",
+      createdDate: row.created_date,
+      createdLoginId: row.created_login_id,
+      createdUser: row.created_user || "",
+      distance: row.distance ? Number(row.distance) : null,
+      email: row.email || "",
+      foodBakery: row.food_bakery,
+      foodDairy: row.food_dairy,
+      foodDryGoods: row.food_dry_goods,
+      foodMeat: row.food_meat,
+      foodPrepared: row.food_prepared,
+      foodProduce: row.food_produce,
+      id: row.id,
+      inactive: row.inactive,
       inactiveTemporary: row.inactive_temporary,
+      latitude: row.latitude ? Number(row.latitude) : null,
+      longitude: row.longitude ? Number(row.longitude) : null,
+      modifiedDate: row.modified_date,
+      modifiedLoginId: row.modified_login_id,
+      modifiedUser: row.modified_user || "",
+      name: row.name || "",
       neighborhoodId: row.neighborhood_id,
       neighborhoodName: row.neighborhood_name,
-      completeCriticalPercent: row.complete_critical_percent,
-      foodBakery: row.food_bakery,
-      foodDryGoods: row.food_dry_goods,
-      foodProduce: row.food_produce,
-      foodDairy: row.food_dairy,
-      foodPrepared: row.food_prepared,
-      foodMeat: row.food_meat,
+      phone: row.phone || "",
+      requirements: row.requirements || "",
+      reviewedLoginId: row.reviewed_login_id,
+      reviewedUser: row.reviewed_user || "",
+      state: row.state || "",
+      submittedDate: row.submitted_date,
+      submittedLoginId: row.submitted_login_id,
+      submittedUser: row.submitted_user || "",
+      verificationStatusId: row.verification_status_id,
+      version: row.version,
+      website: row.website || "",
+      zip: row.zip || "",
     });
   });
 
@@ -133,6 +135,6 @@ const buildLoginSelectsClause = () => {
   `;
 };
 
-module.exports = {
+export default {
   selectById,
 };

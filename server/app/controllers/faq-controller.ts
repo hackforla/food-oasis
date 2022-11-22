@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import faqService from "../services/faq-service";
-import { Faq } from "../types/faq-types";
+import { Faq } from "../../types/faq-types";
 
 const getAll: RequestHandler<never, Faq[] | { error: string }, never, never> = (
   _req,

@@ -1,7 +1,7 @@
 import { RequestHandler, Response } from "express";
 import * as tagService from "../services/tag-service";
-import { StakeholderTag } from '../types/tag-types';
-import { Tag } from '../types/tag-types';
+import { StakeholderTag } from "../../types/tag-types";
+import { Tag } from "../../types/tag-types";
 
 const getAllByTenantId: RequestHandler<
   { tenantId: string },

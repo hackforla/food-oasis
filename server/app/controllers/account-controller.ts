@@ -6,8 +6,8 @@ import {
   RegisterFields,
   AccountResponse,
   User,
-  PermissionName,
-} from "../types/account-types";
+  Role,
+} from "../../types/account-types";
 import { ClientResponse } from "@sendgrid/mail";
 
 const getAll: RequestHandler<
@@ -138,7 +138,7 @@ const setTenantPermissions: RequestHandler<
   AccountResponse,
   {
     userId: string;
-    permissionName: PermissionName;
+    permissionName: Role;
     value: string;
     tenantId: string;
   },
@@ -164,7 +164,7 @@ const setGlobalPermissions: RequestHandler<
   AccountResponse,
   {
     userId: string;
-    permissionName: PermissionName;
+    permissionName: Role;
     value: string;
     tenantId: string;
   },

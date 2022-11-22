@@ -1,4 +1,4 @@
-import { Article, LAPLFoorResource } from "../types/import-types";
+import { Article, LAPLFoorResource } from "../../types/import-types";
 
 const { db } = require("./db");
 

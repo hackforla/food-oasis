@@ -1,16 +1,26 @@
-const stakeholderService = require("../services/stakeholder-best-service");
+import stakeholderService from "../services/stakeholder-best-service";
+import { RequestHandler } from "express";
+import {
+  Stakeholder,
+  StakeholderBestSearchParams,
+} from "../../types/stakeholder-types";
 
-const search = (req, res) => {
+const search: RequestHandler<
+  never,
+  Stakeholder[] | { error: string },
+  never,
+  StakeholderBestSearchParams
+> = (req, res) => {
   let categoryIds = req.query.categoryIds;
   if (!req.query.latitude || !req.query.longitude) {
     res
       .status(404)
-      .json("Bad request: needs latitude and longitude parameters");
+      .json({ error: "Bad request: needs latitude and longitude parameters" });
   }
   if (!categoryIds) {
     // If no filter, just use active categories.
     categoryIds = ["1", "3", "8", "9", "10", "11", "12"];
-  } else if (typeof categoryIds == "string") {
+  } else if (typeof categoryIds === "string") {
     categoryIds = [categoryIds];
   }
   const params = { ...req.query, categoryIds };
@@ -25,7 +35,12 @@ const search = (req, res) => {
     });
 };
 
-const getById = (req, res) => {
+const getById: RequestHandler<
+  { id: string },
+  Stakeholder | { error: string },
+  never,
+  never
+> = (req, res) => {
   const { id } = req.params;
   stakeholderService
     .selectById(id)
@@ -37,7 +52,7 @@ const getById = (req, res) => {
     });
 };
 
-module.exports = {
+export default {
   search,
   getById,
 };

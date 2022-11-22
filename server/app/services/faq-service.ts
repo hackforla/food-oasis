@@ -1,6 +1,6 @@
 import db from "./db";
 import camelcaseKeys from "camelcase-keys";
-import { Faq } from "../types/faq-types";
+import { Faq } from "../../types/faq-types";
 
 const selectAll = async () => {
   const sql = `

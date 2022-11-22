@@ -1,5 +1,5 @@
-import { ParentOrganization } from "../types/parent-organization-types";
-const db = require("./db");
+import { ParentOrganization } from "../../types/parent-organization-types";
+import db from "./db";
 const camelcaseKeys = require("camelcase-keys");
 
 const selectAllById = async (tenantId: string) => {

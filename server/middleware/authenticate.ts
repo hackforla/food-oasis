@@ -1,6 +1,6 @@
-const passport = require("passport");
-const Strategy = require("passport-local").Strategy;
-const accountService = require("../app/services/account-service");
+import passport from "passport";
+import { Strategy } from "passport-local";
+import accountService from "../app/services/account-service";
 
 passport.use(localStrategy());
 
@@ -10,14 +10,16 @@ const authenticate = passport.authenticate("local", {
   failureFlash: true,
 });
 
-module.exports = { authenticate };
-
 function localStrategy() {
   return new Strategy(
-    { usernameField: "email", passwordField: "password" },
-    async function (username, password, done) {
+    { usernameField: "email", passwordField: "password", tenantId: "tenantId" },
+    async function (username, password, tenantId, done) {
       try {
-        const response = await accountService.authenticate(username, password);
+        const response = await accountService.authenticate(
+          username,
+          password,
+          tenantId
+        );
         if (response.isSuccess) {
           done(null, response.user);
         } else {
@@ -29,3 +31,5 @@ function localStrategy() {
     }
   );
 }
+
+export default authenticate;

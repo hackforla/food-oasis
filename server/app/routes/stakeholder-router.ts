@@ -1,6 +1,7 @@
-const router = require("express").Router();
-const stakeholderController = require("../controllers/stakeholder-controller");
-const jwtSession = require("../../middleware/jwt-session");
+import { Router } from "express";
+import stakeholderController from "../controllers/stakeholder-controller";
+import jwtSession from "../../middleware/jwt-session";
+const router = Router();
 
 router.get(
   "/",
@@ -11,6 +12,7 @@ router.get(
   ]),
   stakeholderController.search
 );
+
 router.get(
   "/:id",
   jwtSession.validateUserHasRequiredRoles([

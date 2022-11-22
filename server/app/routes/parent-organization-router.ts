@@ -2,7 +2,7 @@ import { Router } from "express";
 const router = Router();
 import parentOrganizationController from "../controllers/parent-organization-controller";
 
-const jwtSession = require("../../middleware/jwt-session");
+import jwtSession from "../../middleware/jwt-session";
 
 router.get("/:tenantId", parentOrganizationController.getAllByTenantId);
 router.post(

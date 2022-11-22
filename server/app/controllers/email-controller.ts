@@ -1,6 +1,6 @@
 import * as emailService from '../services/sendgrid-service'
 import { RequestHandler } from "express";
-import { Email } from "../types/email-type";
+import { Email } from "../../types/email-type";
 import { ClientResponse } from '@sendgrid/mail';
 
 const send: RequestHandler<

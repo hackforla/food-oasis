@@ -10,12 +10,13 @@
     "outDir": "build",
     "allowJs": true,
     "typeRoots": [
+      "./types/@types",
       "node_modules/@types",
       "../../node_modules/@types",
       "../../typeRoots",
       "./typings"
     ],
-    "types": ["jest", "node"]
+    "types": ["jest", "node", "express"]
   },
-  "include": ["app", "**/*.test.ts", "server.ts"]
+  "include": ["app", "**/*.test.ts", "server.ts", "types"]
 }

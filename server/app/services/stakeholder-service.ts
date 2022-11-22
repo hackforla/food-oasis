@@ -1,5 +1,15 @@
-const db = require("./db");
-const camelcaseKeys = require("camelcase-keys");
+import db from "./db";
+import camelcaseKeys from "camelcase-keys";
+import {
+  Stakeholder,
+  StakeholderCategory,
+  StakeholderSearchParams,
+  InsertStakeholderParams,
+  ClaimParams,
+  RequestAssignmentParams,
+  AssignParams,
+  NeedsVerificationParams,
+} from "../../types/stakeholder-types";
 
 /* 
 This service is for getting data from the stakeholder table, which
@@ -11,7 +21,7 @@ If you make changes to the database structure, be sure to update these
 methods as well as the corresponding methods in the stakeholder-best-service.js.
 */
 
-const trueFalseEitherClause = (columnName, value) => {
+const trueFalseEitherClause = (columnName: string, value?: string) => {
   return value === "true"
     ? ` and ${columnName} is not null `
     : value === "false"
@@ -19,7 +29,7 @@ const trueFalseEitherClause = (columnName, value) => {
     : "";
 };
 
-const booleanEitherClause = (columnName, value) => {
+const booleanEitherClause = (columnName: string, value?: string) => {
   return value === "true"
     ? ` and ${columnName} is true `
     : value === "false"
@@ -27,32 +37,32 @@ const booleanEitherClause = (columnName, value) => {
     : "";
 };
 
-const search = async (params) => {
+const search = async (params: StakeholderSearchParams) => {
   const {
-    tenantId,
-    name,
-    categoryIds,
-    isInactive,
-    isAssigned,
-    isSubmitted,
-    isApproved,
-    isClaimed,
     assignedLoginId,
+    categoryIds,
     claimedLoginId,
-    verificationStatusId,
+    distance,
+    isApproved,
+    isAssigned,
+    isClaimed,
+    isInactive,
+    isInactiveTemporary,
+    isSubmitted,
     latitude,
     longitude,
-    distance,
-    isInactiveTemporary,
-    stakeholderId,
-    neighborhoodId,
-    minCompleteCriticalPercent,
     maxCompleteCriticalPercent,
+    minCompleteCriticalPercent,
+    name,
+    neighborhoodId,
+    stakeholderId,
     tag,
+    tenantId,
+    verificationStatusId,
   } = params;
 
   const locationClause = buildLocationClause(latitude, longitude);
-  const categoryClause = buildCTEClause(categoryIds, name || "");
+  const categoryClause = buildCTEClause(name || "", categoryIds);
   // false means search stakeholder table, not stakeholder_best, since this is
   // for the administrative dashboard
 
@@ -133,8 +143,8 @@ const search = async (params) => {
     order by ${locationClause ? "distance" : "s.name"}
 
   `;
-  let stakeholders = [];
-  let categoriesResults = [];
+  let stakeholders: Stakeholder[] = [];
+  let categoriesResults: StakeholderCategory[] = [];
   var rows, stakeholder_ids;
   try {
     rows = await db.manyOrNone(sql);
@@ -149,79 +159,79 @@ const search = async (params) => {
         order by c.display_order`;
       categoriesResults = await db.manyOrNone(categoriesSql);
     }
-  } catch (err) {
+  } catch (err: any) {
     return Promise.reject(err.message);
   }
 
   rows.forEach((row) => {
     stakeholders.push({
-      id: row.id,
-      name: row.name || "",
       address1: row.address_1 || "",
       address2: row.address_2 || "",
-      city: row.city || "",
-      state: row.state || "",
-      zip: row.zip || "",
-      phone: row.phone || "",
-      latitude: row.latitude ? Number(row.latitude) : null,
-      longitude: row.longitude ? Number(row.longitude) : null,
-      distance: row.distance ? Number(row.distance) : null,
-      website: row.website || "",
-      createdDate: row.created_date,
-      createdLoginId: row.created_login_id,
-      modifiedDate: row.modified_date,
-      modifiedLoginId: row.modified_login_id,
-      submittedDate: row.submitted_date,
-      submittedLoginId: row.submitted_login_id,
+      adminNotes: row.admin_notes || "",
+      allowWalkins: row.allow_walkins,
+      approvedDate: row.approved_date,
       assignedDate: row.assigned_date,
       assignedLoginId: row.assigned_login_id,
-      approvedDate: row.approved_date,
-      reviewedLoginId: row.reviewed_login_id,
-      claimedDate: row.claimed_date,
-      claimedLoginId: row.claimed_login_id,
-      requirements: row.requirements || "",
-      adminNotes: row.admin_notes || "",
-      inactive: row.inactive,
-      createdUser: row.created_user || "",
-      modifiedUser: row.modified_user || "",
-      submittedUser: row.submitted_user || "",
-      reviewedUser: row.reviewed_user || "",
       assignedUser: row.assigned_user || "",
-      claimedUser: row.claimed_user || "",
       categories: categoriesResults.filter(
         (cats) => cats.stakeholder_id === row.id
       ),
-      email: row.email || "",
-      covidNotes: row.covid_notes || "",
-      confirmedName: row.v_name,
-      confirmedCategories: row.v_categories,
+      city: row.city || "",
+      claimedDate: row.claimed_date,
+      claimedLoginId: row.claimed_login_id,
+      claimedUser: row.claimed_user || "",
+      completeCriticalPercent: row.complete_critical_percent,
       confirmedAddress: row.v_address,
-      confirmedPhone: row.v_phone,
+      confirmedCategories: row.v_categories,
       confirmedEmail: row.v_email,
-      confirmedHours: row.v_hours,
       confirmedFoodTypes: row.v_food_types,
-      verificationStatusId: row.verification_status_id,
+      confirmedHours: row.v_hours,
+      confirmedName: row.v_name,
+      confirmedPhone: row.v_phone,
+      covidNotes: row.covid_notes || "",
+      createdDate: row.created_date,
+      createdLoginId: row.created_login_id,
+      createdUser: row.created_user || "",
+      distance: row.distance ? Number(row.distance) : null,
+      email: row.email || "",
+      foodBakery: row.food_bakery,
+      foodDairy: row.food_dairy,
+      foodDryGoods: row.food_dry_goods,
+      foodMeat: row.food_meat,
+      foodPrepared: row.food_prepared,
+      foodProduce: row.food_produce,
+      hoursNotes: row.hours_notes,
+      id: row.id,
+      inactive: row.inactive,
       inactiveTemporary: row.inactive_temporary,
+      latitude: row.latitude ? Number(row.latitude) : null,
+      longitude: row.longitude ? Number(row.longitude) : null,
+      modifiedDate: row.modified_date,
+      modifiedLoginId: row.modified_login_id,
+      modifiedUser: row.modified_user || "",
+      name: row.name || "",
       neighborhoodId: row.neighborhood_id,
       neighborhoodName: row.neighborhood_name,
-      completeCriticalPercent: row.complete_critical_percent,
-      foodBakery: row.food_bakery,
-      foodDryGoods: row.food_dry_goods,
-      foodProduce: row.food_produce,
-      foodDairy: row.food_dairy,
-      foodPrepared: row.food_prepared,
-      foodMeat: row.food_meat,
       parentOrganizationId: row.parent_organization_id,
-      hoursNotes: row.hours_notes,
-      allowWalkins: row.allow_walkins,
+      phone: row.phone || "",
+      requirements: row.requirements || "",
+      reviewedLoginId: row.reviewed_login_id,
+      reviewedUser: row.reviewed_user || "",
+      state: row.state || "",
+      submittedDate: row.submitted_date,
+      submittedLoginId: row.submitted_login_id,
+      submittedUser: row.submitted_user || "",
       tags: row.tags,
+      verificationStatusId: row.verification_status_id,
+      website: row.website || "",
+      zip: row.zip || "",
     });
   });
 
   return stakeholders;
 };
 
-const selectById = async (id) => {
+const selectById = async (id: string) => {
   const sql = `select
       s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
       s.phone, s.latitude, s.longitude, s.website,  s.notes,
@@ -269,103 +279,102 @@ const selectById = async (id) => {
       ${buildLoginSelectsClause()}
     from stakeholder s
     ${buildLoginJoinsClause()}
-    where s.id = ${id}`;
+    where s.id = ${Number(id)}`;
   const row = await db.one(sql);
   const stakeholder = {
-    id: row.id,
-    name: row.name || "",
     address1: row.address_1 || "",
     address2: row.address_2 || "",
-    city: row.city || "",
-    state: row.state || "",
-    zip: row.zip || "",
-    phone: row.phone || "",
-    latitude: row.latitude ? Number(row.latitude) : null,
-    longitude: row.longitude ? Number(row.longitude) : null,
-    website: row.website || "",
-    createdDate: row.created_date,
-    notes: row.notes || "",
-    createdLoginId: row.created_login_id,
-    modifiedDate: row.modified_date,
-    modifiedLoginId: row.modified_login_id,
-    submittedDate: row.submitted_date,
-    submittedLoginId: row.submitted_login_id,
-    approvedDate: row.approved_date,
-    reviewedLoginId: row.approved_login_id,
-    assignedLoginId: row.assigned_login_id,
-    assignedDate: row.assigned_date,
-    claimedLoginId: row.claimed_login_id,
-    claimedDate: row.claimed_date,
-    requirements: row.requirements || "",
-    adminNotes: row.admin_notes || "",
-    inactive: row.inactive,
-    createdUser: row.created_user || "",
-    modifiedUser: row.modified_user || "",
-    submittedUser: row.submitted_user || "",
-    reviewedUser: row.reviewed_user || "",
-    assignedUser: row.assigned_user || "",
-    claimedUser: row.claimed_user || "",
-    categories: row.categories,
-    hours: row.hours,
-    parentOrganization: row.parent_organization || "",
-    physicalAccess: row.physical_access || "",
-    email: row.email || "",
-    items: row.items || "",
-    services: row.services || "",
-    facebook: row.facebook || "",
-    twitter: row.twitter || "",
-    pinterest: row.pinterest || "",
-    linkedin: row.linkedin || "",
-    description: row.description,
-    reviewNotes: row.review_notes,
-    instagram: row.instagram || "",
+    adminContactEmail: row.admin_contact_email || "",
     adminContactName: row.admin_contact_name || "",
     adminContactPhone: row.admin_contact_phone || "",
-    adminContactEmail: row.admin_contact_email || "",
+    adminNotes: row.admin_notes || "",
+    allowWalkins: row.allow_walkins,
+    approvedDate: row.approved_date,
+    assignedDate: row.assigned_date,
+    assignedLoginId: row.assigned_login_id,
+    assignedUser: row.assigned_user || "",
+    categories: row.categories,
+    categoryNotes: row.category_notes || "",
+    city: row.city || "",
+    claimedDate: row.claimed_date,
+    claimedLoginId: row.claimed_login_id,
+    claimedUser: row.claimed_user || "",
+    confirmedAddress: row.v_address,
+    confirmedCategories: row.v_categories,
+    confirmedEmail: row.v_email,
+    confirmedFoodTypes: row.v_food_types,
+    confirmedHours: row.v_hours,
+    confirmedName: row.v_name,
+    confirmedPhone: row.v_phone,
+    covidNotes: row.covid_notes || "",
+    createdDate: row.created_date,
+    createdLoginId: row.created_login_id,
+    createdUser: row.created_user || "",
+    description: row.description,
+    // Don't have a distance, since we didn't specify origin
+    distance: null,
+    donationAcceptFrozen: row.donation_accept_frozen || false,
+    donationAcceptPerishable: row.donation_accept_perishable || false,
+    donationAcceptRefrigerated: row.donation_accept_refrigerated || false,
+    donationContactEmail: row.donation_contact_email || "",
     donationContactName: row.donation_contact_name || "",
     donationContactPhone: row.donation_contact_phone || "",
-    donationContactEmail: row.donation_contact_email || "",
-    donationPickup: row.donation_pickup || false,
-    donationAcceptFrozen: row.donation_accept_frozen || false,
-    donationAcceptRefrigerated: row.donation_accept_refrigerated || false,
-    donationAcceptPerishable: row.donation_accept_perishable || false,
-    donationSchedule: row.donation_schedule || "",
     donationDeliveryInstructions: row.donation_delivery_instructions || "",
     donationNotes: row.donation_notes || "",
-    covidNotes: row.covid_notes || "",
-    categoryNotes: row.category_notes || "",
+    donationPickup: row.donation_pickup || false,
+    donationSchedule: row.donation_schedule || "",
     eligibilityNotes: row.eligibility_notes || "",
-    foodTypes: row.food_types || "",
-    languages: row.languages || "",
-    confirmedName: row.v_name,
-    confirmedCategories: row.v_categories,
-    confirmedAddress: row.v_address,
-    confirmedPhone: row.v_phone,
-    confirmedEmail: row.v_email,
-    confirmedHours: row.v_hours,
-    confirmedFoodTypes: row.v_food_types,
-    verificationStatusId: row.verification_status_id,
-    inactiveTemporary: row.inactive_temporary,
-    neighborhoodId: row.neighborhood_id,
+    email: row.email || "",
+    facebook: row.facebook || "",
     foodBakery: row.food_bakery,
-    foodDryGoods: row.food_dry_goods,
-    foodProduce: row.food_produce,
     foodDairy: row.food_dairy,
-    foodPrepared: row.food_prepared,
+    foodDryGoods: row.food_dry_goods,
     foodMeat: row.food_meat,
-    parentOrganizationId: row.parent_organization_id,
+    foodPrepared: row.food_prepared,
+    foodProduce: row.food_produce,
+    foodTypes: row.food_types || "",
+    hours: row.hours,
     hoursNotes: row.hours_notes,
-    allowWalkins: row.allow_walkins,
+    id: row.id,
+    inactive: row.inactive,
+    inactiveTemporary: row.inactive_temporary,
+    instagram: row.instagram || "",
+    items: row.items || "",
+    languages: row.languages || "",
+    latitude: row.latitude ? Number(row.latitude) : null,
+    linkedin: row.linkedin || "",
+    longitude: row.longitude ? Number(row.longitude) : null,
+    modifiedDate: row.modified_date,
+    modifiedLoginId: row.modified_login_id,
+    modifiedUser: row.modified_user || "",
+    name: row.name || "",
+    neighborhoodId: row.neighborhood_id,
+    notes: row.notes || "",
+    parentOrganization: row.parent_organization || "",
+    parentOrganizationId: row.parent_organization_id,
+    phone: row.phone || "",
+    physicalAccess: row.physical_access || "",
+    pinterest: row.pinterest || "",
+    requirements: row.requirements || "",
+    reviewedLoginId: row.approved_login_id,
+    reviewedUser: row.reviewed_user || "",
+    reviewNotes: row.review_notes,
+    services: row.services || "",
+    state: row.state || "",
+    submittedDate: row.submitted_date,
+    submittedLoginId: row.submitted_login_id,
+    submittedUser: row.submitted_user || "",
     tags: row.tags,
+    twitter: row.twitter || "",
+    verificationStatusId: row.verification_status_id,
+    website: row.website || "",
+    zip: row.zip || "",
   };
-
-  // Don't have a distance, since we didn't specify origin
-  stakeholder.distance = null;
 
   return stakeholder;
 };
 
-const selectCsv = async (ids) => {
+const selectCsv = async (ids: string[]) => {
   const sql = `select
   s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
   s.phone, s.latitude, s.longitude, s.website,  s.notes,
@@ -427,96 +436,96 @@ where s.id in (${ids.join(", ")})`;
   const rows = await db.manyOrNone(sql);
   const stakeholders = rows.map((row) => {
     return {
-      id: row.id,
-      name: row.name || "",
       address1: row.address_1 || "",
       address2: row.address_2 || "",
-      city: row.city || "",
-      state: row.state || "",
-      zip: row.zip || "",
-      phone: row.phone || "",
-      latitude: row.latitude ? Number(row.latitude) : null,
-      longitude: row.longitude ? Number(row.longitude) : null,
-      website: row.website || "",
-      createdDate: row.created_date,
-      notes: row.notes || "",
-      createdLoginId: row.created_login_id,
-      modifiedDate: row.modified_date,
-      modifiedLoginId: row.modified_login_id,
-      submittedDate: row.submitted_date,
-      submittedLoginId: row.submitted_login_id,
-      approvedDate: row.approved_date,
-      reviewedLoginId: row.approved_login_id,
-      assignedLoginId: row.assigned_login_id,
-      assignedDate: row.assigned_date,
-      claimedLoginId: row.claimed_login_id,
-      claimedDate: row.claimed_date,
-      requirements: row.requirements || "",
-      adminNotes: row.admin_notes || "",
-      inactive: row.inactive,
-      createdUser: row.created_user || "",
-      modifiedUser: row.modified_user || "",
-      submittedUser: row.submitted_user || "",
-      reviewedUser: row.reviewed_user || "",
-      assignedUser: row.assigned_user || "",
-      claimedUser: row.claimed_user || "",
-      categories: row.categories,
-      hours: row.hours,
-      parentOrganization: row.parent_organization || "",
-      physicalAccess: row.physical_access || "",
-      email: row.email || "",
-      items: row.items || "",
-      services: row.services || "",
-      facebook: row.facebook || "",
-      twitter: row.twitter || "",
-      pinterest: row.pinterest || "",
-      linkedin: row.linkedin || "",
-      description: row.description,
-      reviewNotes: row.review_notes,
-      instagram: row.instagram || "",
+      adminContactEmail: row.admin_contact_email || "",
       adminContactName: row.admin_contact_name || "",
       adminContactPhone: row.admin_contact_phone || "",
-      adminContactEmail: row.admin_contact_email || "",
-      donationContactName: row.donation_contact_name || "",
-      donationContactPhone: row.donation_contact_phone || "",
-      donationContactEmail: row.donation_contact_email || "",
-      donationPickup: row.donation_pickup || false,
-      donationAcceptFrozen: row.donation_accept_frozen || false,
-      donationAcceptRefrigerated: row.donation_accept_refrigerated || false,
-      donationAcceptPerishable: row.donation_accept_perishable || false,
-      donationSchedule: row.donation_schedule || "",
-      donationDeliveryInstructions: row.donation_delivery_instructions || "",
-      donationNotes: row.donation_notes || "",
-      covidNotes: row.covid_notes || "",
+      adminNotes: row.admin_notes || "",
+      allowWalkins: row.allow_walkins,
+      approvedDate: row.approved_date,
+      assignedDate: row.assigned_date,
+      assignedLoginId: row.assigned_login_id,
+      assignedUser: row.assigned_user || "",
+      categories: row.categories,
       categoryNotes: row.category_notes || "",
-      eligibilityNotes: row.eligibility_notes || "",
-      foodTypes: row.food_types || "",
-      languages: row.languages || "",
-      confirmedName: row.v_name,
-      confirmedCategories: row.v_categories,
+      city: row.city || "",
+      claimedDate: row.claimed_date,
+      claimedLoginId: row.claimed_login_id,
+      claimedUser: row.claimed_user || "",
       confirmedAddress: row.v_address,
-      confirmedPhone: row.v_phone,
+      confirmedCategories: row.v_categories,
       confirmedEmail: row.v_email,
       confirmedHours: row.v_hours,
-      verificationStatusId: row.verification_status_id,
-      inactiveTemporary: row.inactive_temporary,
-      neighborhoodId: row.neighborhood_id,
+      confirmedName: row.v_name,
+      confirmedPhone: row.v_phone,
+      covidNotes: row.covid_notes || "",
+      createdDate: row.created_date,
+      createdLoginId: row.created_login_id,
+      createdUser: row.created_user || "",
+      description: row.description,
+      donationAcceptFrozen: row.donation_accept_frozen || false,
+      donationAcceptPerishable: row.donation_accept_perishable || false,
+      donationAcceptRefrigerated: row.donation_accept_refrigerated || false,
+      donationContactEmail: row.donation_contact_email || "",
+      donationContactName: row.donation_contact_name || "",
+      donationContactPhone: row.donation_contact_phone || "",
+      donationDeliveryInstructions: row.donation_delivery_instructions || "",
+      donationNotes: row.donation_notes || "",
+      donationPickup: row.donation_pickup || false,
+      donationSchedule: row.donation_schedule || "",
+      eligibilityNotes: row.eligibility_notes || "",
+      email: row.email || "",
+      facebook: row.facebook || "",
       foodBakery: row.food_bakery,
-      foodDryGoods: row.food_dry_goods,
-      foodProduce: row.food_produce,
       foodDairy: row.food_dairy,
-      foodPrepared: row.food_prepared,
+      foodDryGoods: row.food_dry_goods,
       foodMeat: row.food_meat,
-      parentOrganizationId: row.parent_organization_id,
+      foodPrepared: row.food_prepared,
+      foodProduce: row.food_produce,
+      foodTypes: row.food_types || "",
+      hours: row.hours,
       hoursNotes: row.hours_notes,
-      allowWalkins: row.allow_walkins,
+      id: row.id,
+      inactive: row.inactive,
+      inactiveTemporary: row.inactive_temporary,
+      instagram: row.instagram || "",
+      items: row.items || "",
+      languages: row.languages || "",
+      latitude: row.latitude ? Number(row.latitude) : null,
+      linkedin: row.linkedin || "",
+      longitude: row.longitude ? Number(row.longitude) : null,
+      modifiedDate: row.modified_date,
+      modifiedLoginId: row.modified_login_id,
+      modifiedUser: row.modified_user || "",
+      name: row.name || "",
+      neighborhoodId: row.neighborhood_id,
+      notes: row.notes || "",
+      parentOrganization: row.parent_organization || "",
+      parentOrganizationId: row.parent_organization_id,
+      phone: row.phone || "",
+      physicalAccess: row.physical_access || "",
+      pinterest: row.pinterest || "",
+      requirements: row.requirements || "",
+      reviewedLoginId: row.approved_login_id,
+      reviewedUser: row.reviewed_user || "",
+      reviewNotes: row.review_notes,
+      services: row.services || "",
+      state: row.state || "",
+      submittedDate: row.submitted_date,
+      submittedLoginId: row.submitted_login_id,
+      submittedUser: row.submitted_user || "",
       tags: row.tags,
+      twitter: row.twitter || "",
+      verificationStatusId: row.verification_status_id,
+      website: row.website || "",
+      zip: row.zip || "",
     };
   });
   return stakeholders;
 };
 
-const insert = async (model) => {
+const insert = async (model: InsertStakeholderParams) => {
   // Array of catetory_ids is formatted as, e.g.,  '{1,9}'
   const categories = model.selectedCategoryIds
     ? "{" + model.selectedCategoryIds.join(",") + "}"
@@ -533,10 +542,10 @@ const insert = async (model) => {
     : null;
 
   // Array of hours if formatted as, e.g., `{"(0,Mon,10:00:00,13:00:00)","(3,Sat,08:00:00,10:30:00)"}
-  let hoursSqlValues;
+  let hoursSqlValues: string;
   if (typeof model.hours === "string") {
     hoursSqlValues = model.hours;
-  } else if (model.hours && model.hours.length) {
+  } else if (model.hours && Array.isArray(model.hours)) {
     hoursSqlValues = model.hours
       .reduce((acc, cur) => {
         return (acc += `"(${cur.weekOfMonth},${cur.dayOfWeek},${cur.open},${cur.close})",`);
@@ -633,13 +642,17 @@ const insert = async (model) => {
   return { id: result.s_id };
 };
 
-const insertBulk = async (stakeholderArray, action, tenantId) => {
+const insertBulk = async (
+  stakeholderArray: InsertStakeholderParams[],
+  action: "add" | "update" | "replace",
+  tenantId: string
+) => {
   if (!tenantId) return;
   if (action === "add") {
     for (let i = 0; i < stakeholderArray.length; i++) {
       const model = {
         ...camelcaseKeys(stakeholderArray[i]),
-        id: "",
+        id: 0,
         tenantId,
       };
       await insert(model);
@@ -651,7 +664,7 @@ const insertBulk = async (stakeholderArray, action, tenantId) => {
         tenantId,
       };
       await insert(model);
-      if (model.id && model.id.length) {
+      if (model.id && model.id !== 0) {
         await update(model);
       } else {
         await insert(model);
@@ -662,7 +675,7 @@ const insertBulk = async (stakeholderArray, action, tenantId) => {
     for (let i = 0; i < stakeholderArray.length; i++) {
       const model = {
         ...camelcaseKeys(stakeholderArray[i]),
-        id: "",
+        id: 0,
         tenantId,
       };
       await insert(model);
@@ -670,7 +683,7 @@ const insertBulk = async (stakeholderArray, action, tenantId) => {
   }
 };
 
-const requestAssignment = async (model) => {
+const requestAssignment = async (model: RequestAssignmentParams) => {
   const sql = `with selected_stakeholder as (
     select distinct sh.id, sh.modified_date
     from stakeholder sh join stakeholder_category sc 
@@ -694,7 +707,7 @@ const requestAssignment = async (model) => {
   return result.rowCount;
 };
 
-const assign = async (model) => {
+const assign = async (model: AssignParams) => {
   const sql = `
     update stakeholder set
       assigned_login_id = $<loginId>,
@@ -712,7 +725,7 @@ const assign = async (model) => {
   return result.rowCount;
 };
 
-const needsVerification = async (model) => {
+const needsVerification = async (model: NeedsVerificationParams) => {
   const sql =
     `update stakeholder set
                 assigned_login_id = null,
@@ -740,7 +753,7 @@ const needsVerification = async (model) => {
   return result.rowCount;
 };
 
-const claim = async (model) => {
+const claim = async (model: ClaimParams) => {
   // const { id, userLoginId, loginId, setClaimed } = model;
   const sql = `update stakeholder set
                 claimed_login_id = $<loginId>,
@@ -753,7 +766,7 @@ const claim = async (model) => {
   return result.rowCount;
 };
 
-const update = async (model) => {
+const update = async (model: InsertStakeholderParams) => {
   // Array of catetory_ids is formatted as, e.g.,  '{1,9}'
   const categories = "{" + model.selectedCategoryIds.join(",") + "}";
 
@@ -768,7 +781,7 @@ const update = async (model) => {
     : null;
 
   // Array of hours if formatted as, e.g., `{"(0,Mon,10:00:00,13:00:00)","(3,Sat,08:00:00,10:30:00)"}
-  let hoursSqlValues = model.hours.length
+  let hoursSqlValues = Array.isArray(model.hours)
     ? model.hours
         .reduce((acc, cur) => {
           return (acc += `"(${cur.weekOfMonth},${cur.dayOfWeek},${cur.open},${cur.close})",`);
@@ -863,8 +876,8 @@ const update = async (model) => {
   await db.proc("update_stakeholder", params);
 };
 
-const remove = async (idParm) => {
-  const id = Number(idParm);
+const remove = async (idParam: string) => {
+  const id = Number(idParam);
   await db.tx(async (t) => {
     await t.none(
       "delete from stakeholder_schedule where stakeholder_id = $<id>",
@@ -887,7 +900,7 @@ const remove = async (idParm) => {
   });
 };
 
-const removeAll = async (tenantId) => {
+const removeAll = async (tenantId: string) => {
   await db.tx(async (t) => {
     await t.none(
       "delete from stakeholder_schedule where stakeholder_id in (select stakeholder_id from stakeholder where tenant_id = $<tenantId>)",
@@ -911,7 +924,7 @@ const removeAll = async (tenantId) => {
   });
 };
 
-const buildCTEClause = (categoryIds, name) => {
+const buildCTEClause = (name: string, categoryIds?: string[]) => {
   const categoryClause = categoryIds
     ? `stakeholder_category_set AS (
        select * from stakeholder_category
@@ -928,7 +941,7 @@ const buildCTEClause = (categoryIds, name) => {
   return cteClause;
 };
 
-const buildLocationClause = (latitude, longitude) => {
+const buildLocationClause = (latitude?: string, longitude?: string) => {
   var locationClause = "";
   if (latitude && longitude) {
     locationClause =
@@ -941,7 +954,7 @@ const buildLocationClause = (latitude, longitude) => {
   return locationClause;
 };
 
-const buildTenantWhereClause = (tenantId) => {
+const buildTenantWhereClause = (tenantId?: string) => {
   return !tenantId || tenantId === "0" ? "" : ` AND s.tenant_id = ${tenantId}`;
 };
 
@@ -967,7 +980,7 @@ const buildLoginSelectsClause = () => {
   `;
 };
 
-module.exports = {
+export default {
   search,
   selectById,
   selectCsv,

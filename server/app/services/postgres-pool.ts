@@ -1,4 +1,4 @@
-const { Pool } = require("pg");
+import { Pool } from "pg";
 
 // In a production Heroku environment, Heroku will
 // set the process.env.DATABASE_URL to point to the
@@ -32,6 +32,4 @@ pool.on("error", (err) => {
   //process.exit(-1)
 });
 
-module.exports = {
-  pool,
-};
+export default pool;

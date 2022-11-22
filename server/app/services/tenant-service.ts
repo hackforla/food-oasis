@@ -1,5 +1,5 @@
-const db = require("./db");
-import { Tenant } from "../types/tenant-types";
+import db from "./db";
+import { Tenant } from "../../types/tenant-types";
 
 const selectAll = async (): Promise<Tenant[]> => {
   const sql = `

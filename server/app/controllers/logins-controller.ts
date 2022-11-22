@@ -1,6 +1,6 @@
 import loginsService from "../services/logins-service";
 import { RequestHandler } from "express";
-import { Login } from "../types/logins-types";
+import { Login } from "../../types/logins-types";
 
 const getAll: RequestHandler<
   never,

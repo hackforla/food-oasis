@@ -1,6 +1,6 @@
 import { Router } from "express";
 const router = Router();
-const jwtSession = require("../../middleware/jwt-session");
+import jwtSession from "../../middleware/jwt-session";
 import importController from "../controllers/import-controller";
 import multer from "multer";
 

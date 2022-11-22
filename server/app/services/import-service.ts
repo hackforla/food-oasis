@@ -6,7 +6,7 @@ import {
   setDefaultValues,
   getLatLong,
 } from "./import-utils";
-import { ImportAction } from "../types/import-types";
+import { ImportAction } from "../../types/import-types";
 
 // we can use this function to reformat the field names/values in the csv before rendering in browser table
 // TODO: update any type
@@ -49,7 +49,7 @@ const parseCsv = async (file: any) => {
 };
 
 // TODO: update data type, possibly stakeholder array
-const importCsv = async (data: any, action: ImportAction, tenantId: number) => {
+const importCsv = async (data: any, action: ImportAction, tenantId: string) => {
   try {
     stakeholderService.insertBulk(data, action, tenantId);
   } catch (err: any) {

@@ -1,6 +1,6 @@
-const db = require("./db");
+import db from "./db";
 import camelcaseKeys from "camelcase-keys";
-import { Suggestion } from "../types/suggestion-types";
+import { Suggestion } from "../../types/suggestion-types";
 
 const selectAll = async (params: {
   statusIds: string[];

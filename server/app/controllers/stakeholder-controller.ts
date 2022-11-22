@@ -1,20 +1,35 @@
-const stakeholderService = require("../services/stakeholder-service");
-const { Readable } = require("stream");
+import stakeholderService from "../services/stakeholder-service";
+import { Readable } from "stream";
+import { RequestHandler } from "express";
+import {
+  StakeholderSearchParams,
+  Stakeholder,
+  ClaimParams,
+  InsertStakeholderParams,
+  RequestAssignmentParams,
+  AssignParams,
+  NeedsVerificationParams,
+} from "../../types/stakeholder-types";
 const stringify = require("csv-stringify");
 
-const search = async (req, res) => {
+const search: RequestHandler<
+  never,
+  Stakeholder[] | { error: string },
+  never,
+  StakeholderSearchParams
+> = async (req, res) => {
   try {
-    if (req.distance && (!req.latitude || !req.longitude)) {
-      res
-        .status(404)
-        .json("Bad request: needs latitude and longitude parameters");
+    if (req.query.distance && (!req.query.latitude || !req.query.longitude)) {
+      res.status(404).json({
+        error: "Bad request: needs latitude and longitude parameters",
+      });
       return;
     }
     let categoryIds = req.query.categoryIds;
     if (!categoryIds) {
       // If no filter, just use active categories.
       categoryIds = ["1", "3", "8", "9", "10", "11", "12"];
-    } else if (typeof categoryIds == "string") {
+    } else if (typeof categoryIds === "string") {
       categoryIds = [categoryIds];
     }
     const params = { ...req.query, categoryIds };
@@ -26,12 +41,16 @@ const search = async (req, res) => {
   }
 };
 
-const getById = async (req, res) => {
+const getById: RequestHandler<
+  { id: string },
+  Stakeholder | { error: string },
+  never,
+  never
+> = async (req, res) => {
   try {
-    const id = Number(req.params.id);
-    const resp = await stakeholderService.selectById(id);
+    const resp = await stakeholderService.selectById(req.params.id);
     res.send(resp);
-  } catch (err) {
+  } catch (err: any) {
     if (err.code === 0) {
       res.sendStatus(404);
     } else {
@@ -41,7 +60,10 @@ const getById = async (req, res) => {
   }
 };
 
-const csv = async (req, res) => {
+const csv: RequestHandler<never, never, { ids: string[] }, never> = async (
+  req,
+  res
+) => {
   try {
     const { ids } = req.body;
     res.setHeader("Content-Disposition", "attachment; filename=foodoasis.csv");
@@ -106,7 +128,12 @@ const csv = async (req, res) => {
   }
 };
 
-const post = async (req, res) => {
+const post: RequestHandler<
+  never,
+  { id: number },
+  InsertStakeholderParams,
+  never
+> = async (req, res) => {
   try {
     const resp = await stakeholderService.insert(req.body);
     res.status(201).json(resp);
@@ -116,7 +143,12 @@ const post = async (req, res) => {
   }
 };
 
-const put = async (req, res) => {
+const put: RequestHandler<
+  never,
+  never,
+  InsertStakeholderParams,
+  never
+> = async (req, res) => {
   try {
     await stakeholderService.update(req.body);
     res.sendStatus(200);
@@ -126,18 +158,27 @@ const put = async (req, res) => {
   }
 };
 
-const remove = async (req, res) => {
+const remove: RequestHandler<
+  { id: string },
+  { id: number },
+  never,
+  never
+> = async (req, res) => {
   try {
-    const id = Number(req.params.id);
-    await stakeholderService.remove(id);
+    await stakeholderService.remove(req.params.id);
     res.sendStatus(200);
   } catch (err) {
     console.error(err);
-    res.status("500");
+    res.status(500);
   }
 };
 
-const requestAssignment = async (req, res) => {
+const requestAssignment: RequestHandler<
+  never,
+  number,
+  RequestAssignmentParams,
+  never
+> = async (req, res) => {
   try {
     await stakeholderService.requestAssignment(req.body);
     res.sendStatus(200);
@@ -147,7 +188,10 @@ const requestAssignment = async (req, res) => {
   }
 };
 
-const assign = async (req, res) => {
+const assign: RequestHandler<never, number, AssignParams, never> = async (
+  req,
+  res
+) => {
   try {
     await stakeholderService.assign(req.body);
     res.sendStatus(200);
@@ -157,7 +201,12 @@ const assign = async (req, res) => {
   }
 };
 
-const needsVerification = async (req, res) => {
+const needsVerification: RequestHandler<
+  { id: string },
+  number,
+  NeedsVerificationParams,
+  never
+> = async (req, res) => {
   try {
     await stakeholderService.needsVerification(req.body);
     res.sendStatus(200);
@@ -167,7 +216,12 @@ const needsVerification = async (req, res) => {
   }
 };
 
-const claim = async (req, res) => {
+const claim: RequestHandler<
+  { id: string },
+  number,
+  ClaimParams,
+  never
+> = async (req, res) => {
   try {
     await stakeholderService.claim(req.body);
     res.sendStatus(200);
@@ -177,7 +231,7 @@ const claim = async (req, res) => {
   }
 };
 
-module.exports = {
+export default {
   search,
   getById,
   csv,

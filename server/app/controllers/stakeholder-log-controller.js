@@ -8,7 +8,7 @@ const getById = (req, res) => {
       res.send(resp);
     })
     .catch((err) => {
-      res.status("500").json({ error: err.toString() });
+      res.status(500).json({ error: err.toString() });
     });
 };
 

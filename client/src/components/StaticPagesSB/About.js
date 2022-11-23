@@ -202,28 +202,44 @@ const About = () => {
             height='40'
           /> */}
           <h2>Our Partners</h2>
-          <a href="https://www.foodcyclela.org/" target={"_blank"}>
+          <a
+            href="https://www.foodcyclela.org/"
+            target={"_blank"}
+            rel="noopener noreferrer"
+          >
             <img
               alt="Food Cycle LA"
               src={foodCycle}
               className={classes.partnersLogo}
             />
           </a>
-          <a href="https://foodforward.org/" target={"_blank"}>
+          <a
+            href="https://foodforward.org/"
+            target={"_blank"}
+            rel="noopener noreferrer"
+          >
             <img
               alt="Food Forward"
               src={foodForward}
               className={classes.partnersLogo}
             />
           </a>
-          <a href="https://www.farm2people.org/" target={"_blank"}>
+          <a
+            href="https://www.farm2people.org/"
+            target={"_blank"}
+            rel="noopener noreferrer"
+          >
             <img
               alt="Farm People"
               src={farmPeople}
               className={classes.partnersLogo}
             />
           </a>
-          <a href="https://www.lafoodbank.org/" target={"_blank"}>
+          <a
+            href="https://www.lafoodbank.org/"
+            target={"_blank"}
+            rel="noopener noreferrer"
+          >
             <img
               alt="Food Bank"
               src={foodBank}

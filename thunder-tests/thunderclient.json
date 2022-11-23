@@ -8,7 +8,7 @@
     "method": "GET",
     "sortNum": 10000,
     "created": "2022-10-04T03:11:23.698Z",
-    "modified": "2022-10-25T00:47:10.458Z",
+    "modified": "2022-11-18T03:12:47.069Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -22,7 +22,24 @@
         "isPath": false
       }
     ],
-    "tests": []
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      }
+    ],
+    "preReq": {
+      "runRequests": [
+        {
+          "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+          "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+          "triggerCondition": "run-always",
+          "triggerValue": ""
+        }
+      ]
+    }
   },
   {
     "_id": "2f227418-a51d-4980-8fd3-bb596266e9a1",
@@ -33,79 +50,153 @@
     "method": "POST",
     "sortNum": 20000,
     "created": "2022-10-04T03:11:23.699Z",
-    "modified": "2022-10-04T03:11:23.699Z",
+    "modified": "2022-11-22T01:03:58.907Z",
     "headers": [
       {
         "name": "Content-Type",
         "value": "application/json"
       }
     ],
+    "params": [],
     "body": {
       "type": "json",
-      "raw": "{\"firstName\": \"Yonlanda\",\n\"lastName\": \"Darragh\",\n\"email\": \"ydarragh@dispostable.com\",\n\"password\": \"\",\n\"tenantId\": 1}"
-    }
+      "raw": "{\"firstName\": \"Admin\",\n\"lastName\": \"User\",\n\"email\": \"{{ADMIN_EMAIL}}\",\n\"password\": \"{{ADMIN_PASSWORD}}\",\n\"tenantId\": 1}",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"REG_DUPLICATE_EMAIL\""
+      }
+    ]
   },
   {
     "_id": "5a47ee1b-6bf3-4962-968a-82d95f704454",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
     "name": "Confirm Register",
-    "url": "http://localhost:5001/api/accounts/confirmRegister",
+    "url": "http://localhost:5001/api/accounts/confirmRegister/174",
     "method": "POST",
     "sortNum": 30000,
     "created": "2022-10-04T03:11:23.700Z",
-    "modified": "2022-10-04T03:11:23.700Z",
+    "modified": "2022-11-22T01:39:03.044Z",
     "headers": [
       {
         "name": "Content-Type",
         "value": "application/json"
       }
     ],
+    "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"id\": \"174\",\n    \"token\": \"e3cc9443-cdbf-4bf6-8041-be301b0e47b0\"\n}"
-    }
+      "raw": "{\n    \"id\": \"108\",\n    \"token\": \"1b56e5fc-a1e7-4fe2-aee8-69855ae90df5\"\n}",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"REG_CONFIRM_TOKEN_EXPIRED\""
+      }
+    ]
   },
   {
     "_id": "e43da1bc-367f-48cf-8025-ee8c775df831",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
     "name": "Resend Confirmation",
-    "url": "http://localhost:5001/api/accounts/register",
+    "url": "http://localhost:5001/api/accounts/resendConfirmationEmail",
     "method": "POST",
     "sortNum": 40000,
     "created": "2022-10-04T03:11:23.701Z",
-    "modified": "2022-10-04T03:11:23.701Z",
+    "modified": "2022-11-22T01:45:11.837Z",
     "headers": [
       {
         "name": "Content-Type",
         "value": "application/json"
       }
     ],
+    "params": [],
     "body": {
       "type": "json",
-      "raw": "{\"firstName\": \"Yonlanda\",\n\"lastName\": \"Darragh\",\n\"email\": \"ydarragh@dispostable.com\",\n\"password\": \"\",\n\"tenantId\": 1}"
-    }
+      "raw": "{\n\"email\": \"{{ADMIN_EMAIL}}\",\n\"clientUrl\": 1}",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"REG_SUCCESS\""
+      }
+    ]
   },
   {
     "_id": "de0c25a0-2c78-426a-9377-0cdebe61ead1",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
     "name": "Set Permissions",
-    "url": "http://localhost:5001/api/accounts/register",
+    "url": "http://localhost:5001/api/accounts/setPermissions",
     "method": "POST",
     "sortNum": 50000,
     "created": "2022-10-04T03:11:23.703Z",
-    "modified": "2022-10-04T03:11:23.703Z",
+    "modified": "2022-11-22T02:02:11.463Z",
     "headers": [
       {
         "name": "Content-Type",
         "value": "application/json"
       }
     ],
+    "params": [],
     "body": {
       "type": "json",
-      "raw": "{\"firstName\": \"Yonlanda\",\n\"lastName\": \"Darragh\",\n\"email\": \"ydarragh@dispostable.com\",\n\"password\": \"\",\n\"tenantId\": 1}"
+      "raw": "{\n  \"userId\" : 108,\n  \"permissionName\" : \"is_admin\",\n  \"value\" : true,\n  \"tenantId\": 1\n}",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"UPDATE_SUCCESS\""
+      }
+    ],
+    "preReq": {
+      "runRequests": [
+        {
+          "reqId": "c0d5a22b-6be2-40fa-8c83-1a2cb95a640f",
+          "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+          "triggerCondition": "run-always",
+          "triggerValue": ""
+        }
+      ]
     }
   },
   {
@@ -117,70 +208,7 @@
     "method": "POST",
     "sortNum": 60000,
     "created": "2022-10-04T03:11:23.704Z",
-    "modified": "2022-10-04T03:11:23.704Z",
-    "headers": [
-      {
-        "name": "Content-Type",
-        "value": "application/json"
-      }
-    ],
-    "body": {
-      "type": "json",
-      "raw": "{\n    \"userId\": \"174\",\n    \"permissionName\": \"is_global_reporting\",\n    \"value\": \"true\",\n    \"tenantId\": \"1\"\n}"
-    }
-  },
-  {
-    "_id": "5b1ced04-1c44-4713-9730-5d5db1bd887f",
-    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
-    "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
-    "name": "Forgot Password",
-    "url": "http://localhost:5001/api/accounts/register",
-    "method": "POST",
-    "sortNum": 70000,
-    "created": "2022-10-04T03:11:23.705Z",
-    "modified": "2022-10-04T03:11:23.705Z",
-    "headers": [
-      {
-        "name": "Content-Type",
-        "value": "application/json"
-      }
-    ],
-    "body": {
-      "type": "json",
-      "raw": "{\"firstName\": \"Yonlanda\",\n\"lastName\": \"Darragh\",\n\"email\": \"ydarragh@dispostable.com\",\n\"password\": \"\",\n\"tenantId\": 1}"
-    }
-  },
-  {
-    "_id": "3b8960ab-e791-41a3-9ebd-13c65a57fc49",
-    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
-    "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
-    "name": "Reset Password",
-    "url": "http://localhost:5001/api/accounts/register",
-    "method": "POST",
-    "sortNum": 80000,
-    "created": "2022-10-04T03:11:23.706Z",
-    "modified": "2022-10-04T03:11:23.706Z",
-    "headers": [
-      {
-        "name": "Content-Type",
-        "value": "application/json"
-      }
-    ],
-    "body": {
-      "type": "json",
-      "raw": "{\"firstName\": \"Yonlanda\",\n\"lastName\": \"Darragh\",\n\"email\": \"ydarragh@dispostable.com\",\n\"password\": \"\",\n\"tenantId\": 1}"
-    }
-  },
-  {
-    "_id": "9d11e36b-69a7-453e-91c9-61e13243f42a",
-    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
-    "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
-    "name": "Login",
-    "url": "http://localhost:5001/api/accounts/login",
-    "method": "POST",
-    "sortNum": 90000,
-    "created": "2022-10-04T03:11:23.707Z",
-    "modified": "2022-10-27T23:56:17.353Z",
+    "modified": "2022-11-22T02:03:33.433Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -190,10 +218,144 @@
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\"password\": \"\",\n\"email\": \"\",\n\"tenantId\": 1\n}",
+      "raw": "{\n    \"userId\": \"174\",\n    \"permissionName\": \"is_global_reporting\",\n    \"value\": \"true\",\n    \"tenantId\": \"1\"\n}",
       "form": []
     },
-    "tests": []
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"UPDATE_SUCCESS\""
+      }
+    ],
+    "preReq": {
+      "runRequests": [
+        {
+          "reqId": "17a5ffa8-9a70-4317-97fa-b97a416de130",
+          "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+          "triggerCondition": "run-always",
+          "triggerValue": ""
+        }
+      ]
+    }
+  },
+  {
+    "_id": "5b1ced04-1c44-4713-9730-5d5db1bd887f",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
+    "name": "Forgot Password",
+    "url": "http://localhost:5001/api/accounts/forgotPassword",
+    "method": "POST",
+    "sortNum": 70000,
+    "created": "2022-10-04T03:11:23.705Z",
+    "modified": "2022-11-22T02:07:19.096Z",
+    "headers": [
+      {
+        "name": "Content-Type",
+        "value": "application/json"
+      }
+    ],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\"email\": \"{{ADMIN_EMAIL}}\",\n\"clientUrl\": \"http://devla.foodoasis.net\"}",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"FORGOT_PASSWORD_SUCCESS\""
+      }
+    ]
+  },
+  {
+    "_id": "3b8960ab-e791-41a3-9ebd-13c65a57fc49",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
+    "name": "Reset Password",
+    "url": "http://localhost:5001/api/accounts/resetPassword",
+    "method": "POST",
+    "sortNum": 80000,
+    "created": "2022-10-04T03:11:23.706Z",
+    "modified": "2022-11-22T02:10:52.419Z",
+    "headers": [
+      {
+        "name": "Content-Type",
+        "value": "application/json"
+      }
+    ],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"token\": \"INvalidToken\",\n\"password\": \"PhonyPassword123#\"\n  \n}",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"RESET_PASSWORD_FAILED\""
+      }
+    ]
+  },
+  {
+    "_id": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
+    "name": "Login Admin",
+    "url": "http://localhost:5001/api/accounts/login",
+    "method": "POST",
+    "sortNum": 5000,
+    "created": "2022-10-04T03:11:23.707Z",
+    "modified": "2022-11-22T03:09:38.159Z",
+    "headers": [
+      {
+        "name": "Content-Type",
+        "value": "application/json"
+      }
+    ],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\"password\": \"{{ADMIN_PASSWORD}}\",\n\"email\": \"{{ADMIN_EMAIL}}\",\n\"tenantId\": 1\n}",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"adminuser@dispostable.com\""
+      }
+    ]
   },
   {
     "_id": "8487fef6-4692-418a-a317-05745383e93e",
@@ -202,9 +364,9 @@
     "name": "Logout",
     "url": "http://localhost:5001/api/accounts/logout",
     "method": "GET",
-    "sortNum": 100000,
+    "sortNum": 560000,
     "created": "2022-10-04T03:11:23.708Z",
-    "modified": "2022-10-27T23:56:32.331Z",
+    "modified": "2022-11-23T00:50:13.145Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -212,7 +374,14 @@
       }
     ],
     "params": [],
-    "tests": []
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      }
+    ]
   },
   {
     "_id": "2d9edbb6-1b2c-481d-afdd-9df6d746e211",
@@ -223,76 +392,112 @@
     "method": "POST",
     "sortNum": 110000,
     "created": "2022-10-04T03:11:23.709Z",
-    "modified": "2022-10-04T03:11:23.709Z",
+    "modified": "2022-11-22T16:36:58.378Z",
     "headers": [
       {
         "name": "Content-Type",
         "value": "application/json"
       }
     ],
+    "params": [],
     "body": {
       "type": "json",
-      "raw": "{\"code\": \"SA\", \"name\": \"Salvation Army\", \"tenantId\": 1}"
-    }
+      "raw": "{\"code\": \"SA\", \"name\": \"Salvation Army\", \"tenantId\": 1}",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "201"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"id\""
+      }
+    ]
   },
   {
     "_id": "cbc1445c-a235-4667-9064-6e145b2fdfde",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "3ff960b6-f779-4e24-90a6-99d2c89d3b68",
     "name": "ParentOrganizations GET All",
-    "url": "http://localhost:5000/api/parent-organizations",
+    "url": "http://localhost:5001/api/parent-organizations/1",
     "method": "GET",
     "sortNum": 120000,
     "created": "2022-10-04T03:11:23.710Z",
-    "modified": "2022-10-04T03:11:23.710Z",
+    "modified": "2022-11-22T02:23:39.658Z",
     "headers": [],
-    "body": {
-      "type": "json",
-      "raw": ""
-    }
+    "params": [],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"Salvation Army\""
+      }
+    ]
   },
   {
     "_id": "c9392e24-f0ed-4611-97bb-4f51463d4815",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "3ff960b6-f779-4e24-90a6-99d2c89d3b68",
     "name": "ParentOrganizations PUT",
-    "url": "http://localhost:5000/api/parent-organizations/1?=",
+    "url": "http://localhost:5001/api/parent-organizations/1",
     "method": "PUT",
     "sortNum": 130000,
     "created": "2022-10-04T03:11:23.711Z",
-    "modified": "2022-10-04T03:11:23.711Z",
+    "modified": "2022-11-22T16:38:11.798Z",
     "headers": [
       {
         "name": "Content-Type",
         "value": "application/json"
       }
     ],
-    "params": [
-      {
-        "name": "",
-        "value": ""
-      }
-    ],
+    "params": [],
     "body": {
       "type": "json",
-      "raw": "{\r\n        \"id\": 1,\r\n        \"name\": \"Salvation Army\",\r\n        \"code\": \"SAR\"\r\n    }"
-    }
+      "raw": "{\n        \"id\": 1,\n        \"name\": \"Salvation Army\",\n        \"code\": \"SA\"\n    }",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      }
+    ]
   },
   {
     "_id": "1ede81e0-0fac-444c-820f-544621eb89bb",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "3ff960b6-f779-4e24-90a6-99d2c89d3b68",
     "name": "ParentOrganizations DELETE",
-    "url": "http://localhost:5000/api/parent-organizations/1",
+    "url": "http://localhost:5001/api/parent-organizations/9999",
     "method": "DELETE",
     "sortNum": 140000,
     "created": "2022-10-04T03:11:23.712Z",
-    "modified": "2022-10-04T03:11:23.712Z",
+    "modified": "2022-11-22T16:38:56.340Z",
     "headers": [],
-    "body": {
-      "type": "json",
-      "raw": ""
-    }
+    "params": [],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "400"
+      }
+    ]
   },
   {
     "_id": "85d7e2bb-d01f-416d-83bf-c4d7887bec22",
@@ -303,38 +508,54 @@
     "method": "GET",
     "sortNum": 150000,
     "created": "2022-10-04T03:11:23.713Z",
-    "modified": "2022-10-04T03:11:23.713Z",
+    "modified": "2022-11-18T03:21:12.012Z",
     "headers": [
       {
         "name": "Content-Type",
         "value": "application/json"
       }
     ],
-    "body": {
-      "type": "json",
-      "raw": ""
-    }
+    "params": [],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      }
+    ]
   },
   {
     "_id": "00c0280a-8a9a-47bb-931c-bbf4ce30abbc",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "e39dc47f-701b-4d02-80e1-1a5bbd65cfdb",
     "name": "Categories GET By Id",
-    "url": "http://localhost:5001/api/categories",
+    "url": "http://localhost:5001/api/categories/1",
     "method": "GET",
     "sortNum": 160000,
     "created": "2022-10-04T03:11:23.714Z",
-    "modified": "2022-10-04T03:11:23.714Z",
+    "modified": "2022-11-18T03:22:26.067Z",
     "headers": [
       {
         "name": "Content-Type",
         "value": "application/json"
       }
     ],
-    "body": {
-      "type": "json",
-      "raw": ""
-    }
+    "params": [],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"Food Pantry\""
+      }
+    ]
   },
   {
     "_id": "fd1acc10-2921-45d2-a161-6ea5659d6938",
@@ -345,16 +566,42 @@
     "method": "POST",
     "sortNum": 170000,
     "created": "2022-10-04T03:11:23.715Z",
-    "modified": "2022-10-04T03:11:23.715Z",
+    "modified": "2022-11-22T02:16:40.893Z",
     "headers": [
       {
         "name": "Content-Type",
         "value": "application/json"
       }
     ],
+    "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"name\": \"sample\",\n    \"displayOrder\": 99,\n    \"inactive\": false,\n}"
+      "raw": "{\n    \"name\": \"samplessdsddfaaf\",\n    \"displayOrder\": 99,\n    \"inactive\": false\n}",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "201"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"id\""
+      }
+    ],
+    "preReq": {
+      "runRequests": [
+        {
+          "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+          "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+          "triggerCondition": "run-always",
+          "triggerValue": ""
+        }
+      ]
     }
   },
   {
@@ -362,20 +609,40 @@
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "e39dc47f-701b-4d02-80e1-1a5bbd65cfdb",
     "name": "Categories PUT",
-    "url": "http://localhost:5001/api/categories",
+    "url": "http://localhost:5001/api/categories/700",
     "method": "POST",
     "sortNum": 180000,
     "created": "2022-10-04T03:11:23.716Z",
-    "modified": "2022-10-04T03:11:23.716Z",
+    "modified": "2022-11-22T02:15:43.371Z",
     "headers": [
       {
         "name": "Content-Type",
         "value": "application/json"
       }
     ],
+    "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"name\": \"sample\",\n    \"displayOrder\": 99,\n    \"inactive\": false,\n}"
+      "raw": "{\n  \"id\": 700,\n  \"name\": \"Care Center\",\n  \"displayOrder\": 20,\n  \"inactive\": true\n}",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "404"
+      }
+    ],
+    "preReq": {
+      "runRequests": [
+        {
+          "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+          "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+          "triggerCondition": "run-always",
+          "triggerValue": ""
+        }
+      ]
     }
   },
   {
@@ -383,21 +650,26 @@
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "e39dc47f-701b-4d02-80e1-1a5bbd65cfdb",
     "name": "Categories DELETE",
-    "url": "http://localhost:5001/api/categories",
-    "method": "POST",
+    "url": "http://localhost:5001/api/categories/13",
+    "method": "DELETE",
     "sortNum": 190000,
     "created": "2022-10-04T03:11:23.717Z",
-    "modified": "2022-10-04T03:11:23.717Z",
+    "modified": "2022-11-22T02:14:42.013Z",
     "headers": [
       {
         "name": "Content-Type",
         "value": "application/json"
       }
     ],
-    "body": {
-      "type": "json",
-      "raw": "{\n    \"name\": \"sample\",\n    \"displayOrder\": 99,\n    \"inactive\": false,\n}"
-    }
+    "params": [],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "400"
+      }
+    ]
   },
   {
     "_id": "f4290985-8a9c-46be-80aa-605a4d8393a4",
@@ -408,7 +680,7 @@
     "method": "GET",
     "sortNum": 200000,
     "created": "2022-10-04T03:11:23.718Z",
-    "modified": "2022-10-22T20:17:34.667Z",
+    "modified": "2022-11-18T04:13:07.846Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -416,18 +688,31 @@
       }
     ],
     "params": [],
-    "tests": []
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"FOLA\""
+      }
+    ]
   },
   {
     "_id": "efca71e6-eac8-4dac-be14-c4dcf88ac346",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "8af1b2e1-3c85-439d-b277-d4b83209cc98",
     "name": "Tenant GET One",
-    "url": "http://localhost:5001/api/tenants/77",
+    "url": "http://localhost:5001/api/tenants/1",
     "method": "GET",
     "sortNum": 210000,
     "created": "2022-10-04T03:11:23.719Z",
-    "modified": "2022-10-22T20:10:33.371Z",
+    "modified": "2022-11-18T04:13:32.337Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -435,7 +720,20 @@
       }
     ],
     "params": [],
-    "tests": []
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"FOLA\""
+      }
+    ]
   },
   {
     "_id": "31b8883f-4bd6-47b2-ab42-61e94b5479d4",
@@ -446,7 +744,7 @@
     "method": "POST",
     "sortNum": 220000,
     "created": "2022-10-04T03:11:23.720Z",
-    "modified": "2022-10-22T20:11:42.539Z",
+    "modified": "2022-11-23T00:44:19.794Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -456,10 +754,17 @@
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\"id\": 77, \"name\": \"test\", \"code\": \"t\"}",
+      "raw": "{\"id\": 9999, \"name\": \"test\", \"code\": \"t\"}",
       "form": []
     },
-    "tests": []
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "201"
+      }
+    ]
   },
   {
     "_id": "a2c95079-5b49-4f1a-8611-48ea2230f406",
@@ -470,7 +775,7 @@
     "method": "PUT",
     "sortNum": 230000,
     "created": "2022-10-04T03:11:23.721Z",
-    "modified": "2022-10-22T20:17:28.195Z",
+    "modified": "2022-11-18T04:12:04.232Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -483,18 +788,93 @@
       "raw": "{\"id\": 77, \"name\": \"test\", \"code\": \"tt\"}",
       "form": []
     },
-    "tests": []
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      }
+    ]
   },
   {
     "_id": "048f724e-560b-4dc2-831e-a581ccba2722",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "8af1b2e1-3c85-439d-b277-d4b83209cc98",
     "name": "Tenant DELETE",
-    "url": "http://localhost:5001/api/tenants/77",
+    "url": "http://localhost:5001/api/tenants/9999",
     "method": "DELETE",
     "sortNum": 240000,
     "created": "2022-10-04T03:11:23.722Z",
-    "modified": "2022-10-22T20:17:14.883Z",
+    "modified": "2022-11-23T00:44:37.538Z",
+    "headers": [
+      {
+        "name": "Content-Type",
+        "value": "application/json"
+      }
+    ],
+    "params": [],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "204"
+      }
+    ]
+  },
+  {
+    "_id": "2a69d308-4650-4ba0-ae76-521f1ace2699",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "7f5a5a8a-37c9-4fea-911f-c13660509a3e",
+    "name": "Stakeholders GET One",
+    "url": "http://localhost:5001/api/stakeholders/3107",
+    "method": "GET",
+    "sortNum": 10000,
+    "created": "2022-10-04T03:11:23.723Z",
+    "modified": "2022-11-22T03:16:25.820Z",
+    "headers": [
+      {
+        "name": "Content-Type",
+        "value": "application/json"
+      }
+    ],
+    "params": [],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"Salvation Army - Redondo Beach\""
+      }
+    ],
+    "preReq": {
+      "runRequests": [
+        {
+          "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+          "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+          "triggerCondition": "run-always",
+          "triggerValue": ""
+        }
+      ]
+    }
+  },
+  {
+    "_id": "97773f9c-f251-4a70-a543-addda7a39a1b",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "7f5a5a8a-37c9-4fea-911f-c13660509a3e",
+    "name": "Stakeholders GET All",
+    "url": "http://localhost:5001/api/stakeholders",
+    "method": "GET",
+    "sortNum": 20000,
+    "created": "2022-10-04T03:11:23.724Z",
+    "modified": "2022-11-18T02:09:57.748Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -505,311 +885,330 @@
     "tests": []
   },
   {
-    "_id": "2a69d308-4650-4ba0-ae76-521f1ace2699",
-    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
-    "containerId": "",
-    "name": "Stakeholders GET One",
-    "url": "http://localhost:5001/api/stakeholders/3107",
-    "method": "GET",
-    "sortNum": 250000,
-    "created": "2022-10-04T03:11:23.723Z",
-    "modified": "2022-10-04T03:11:23.723Z",
-    "headers": [
-      {
-        "name": "Content-Type",
-        "value": "application/json"
-      }
-    ],
-    "body": {
-      "type": "json",
-      "raw": ""
-    }
-  },
-  {
-    "_id": "97773f9c-f251-4a70-a543-addda7a39a1b",
-    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
-    "containerId": "",
-    "name": "Stakeholders GET All",
-    "url": "http://localhost:5001/api/stakeholders",
-    "method": "GET",
-    "sortNum": 260000,
-    "created": "2022-10-04T03:11:23.724Z",
-    "modified": "2022-10-04T03:11:23.724Z",
-    "headers": [
-      {
-        "name": "Content-Type",
-        "value": "application/json"
-      }
-    ],
-    "body": {
-      "type": "json",
-      "raw": ""
-    }
-  },
-  {
-    "_id": "7c3f222c-6f33-4cc9-8e23-9af831a888e2",
-    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
-    "containerId": "",
-    "name": "Get All Organizations",
-    "url": "https://geoservices.tamu.edu/Services/Geocode/WebService/GeocoderWebServiceHttpNonParsed_V04_01.aspx?apiKey=5c141ed805794a7a9562c22c090a71cb&version=4.01&format=json&streetAddress=309%20Esplanade&city=Redondo%20Beach&state=CA&zip=90277",
-    "method": "GET",
-    "sortNum": 270000,
-    "created": "2022-10-04T03:11:23.725Z",
-    "modified": "2022-10-04T03:11:23.725Z",
-    "headers": [
-      {
-        "name": "Content-Type",
-        "value": "application/json"
-      }
-    ],
-    "params": [
-      {
-        "name": "apiKey",
-        "value": "5c141ed805794a7a9562c22c090a71cb"
-      },
-      {
-        "name": "version",
-        "value": "4.01"
-      },
-      {
-        "name": "format",
-        "value": "json"
-      },
-      {
-        "name": "streetAddress",
-        "value": "309%20Esplanade"
-      },
-      {
-        "name": "city",
-        "value": "Redondo%20Beach"
-      },
-      {
-        "name": "state",
-        "value": "CA"
-      },
-      {
-        "name": "zip",
-        "value": "90277"
-      }
-    ],
-    "body": {
-      "type": "json",
-      "raw": ""
-    }
-  },
-  {
     "_id": "c8b7d3dd-a67d-46aa-9bff-e3b25d64310f",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
-    "containerId": "",
+    "containerId": "75ccff0e-93eb-402e-a657-6a6422276fac",
     "name": "Import LAPL Food Resources",
-    "url": "http://localhost:5000/api/imports/lapl-food-resources",
+    "url": "http://localhost:5001/api/import/lapl-food-resources",
     "method": "GET",
-    "sortNum": 280000,
+    "sortNum": 10000,
     "created": "2022-10-04T03:11:23.726Z",
-    "modified": "2022-10-04T03:11:23.726Z",
-    "headers": []
+    "modified": "2022-11-23T01:50:35.011Z",
+    "headers": [],
+    "params": [],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "Content-Type",
+        "custom": "",
+        "action": "equal",
+        "value": "application/json; charset=utf-8"
+      }
+    ],
+    "preReq": {
+      "runRequests": [
+        {
+          "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+          "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+          "triggerCondition": "run-always",
+          "triggerValue": ""
+        }
+      ]
+    }
   },
   {
     "_id": "13c6da22-a85a-494d-82c4-9f03fbb68b13",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
-    "containerId": "",
-    "name": "Load LAPL Food Resources",
-    "url": "http://localhost:5000/api/loads/lapl-food-resources",
+    "containerId": "1fa8eeb1-253f-49fe-92e1-a2f2e3b25cd3",
+    "name": "Get LA Public Library Listings",
+    "url": "http://localhost:5001/api/loads/lapl-food-resources?format=csv",
     "method": "GET",
-    "sortNum": 290000,
+    "sortNum": 5000,
     "created": "2022-10-04T03:11:23.727Z",
-    "modified": "2022-10-04T03:11:23.727Z",
-    "headers": []
+    "modified": "2022-11-23T02:59:09.091Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "format",
+        "value": "csv",
+        "isPath": false
+      }
+    ],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "Content-Type",
+        "custom": "",
+        "action": "equal",
+        "value": "text/csv; charset=utf-8"
+      }
+    ],
+    "docs": "(Not presently used by client app)\n\nThis endpoint gets all the listings from the LA Public Library import table in our database.",
+    "preReq": {
+      "runRequests": [
+        {
+          "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+          "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+          "triggerCondition": "run-always",
+          "triggerValue": ""
+        }
+      ]
+    }
   },
   {
     "_id": "7e59df7f-8bc7-4ef9-81df-7753caf2e4ab",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
-    "containerId": "",
+    "containerId": "7f5a5a8a-37c9-4fea-911f-c13660509a3e",
     "name": "Stakeholder POST",
     "url": "http://localhost:5001/api/stakeholders",
     "method": "POST",
-    "sortNum": 300000,
+    "sortNum": 30000,
     "created": "2022-10-04T03:11:23.728Z",
-    "modified": "2022-10-04T03:11:23.728Z",
+    "modified": "2022-11-18T02:16:25.537Z",
     "headers": [
       {
         "name": "Content-Type",
         "value": "application/json"
       }
     ],
+    "params": [],
     "body": {
       "type": "json",
-      "raw": "{\r\n\r\n        \"name\": \"_Veteran's Park\",\r\n        \"address1\": \"309 Esplanade\",\r\n        \"address2\": \"\",\r\n        \"city\": \"Redondo Beach\",\r\n        \"state\": \"CA\",\r\n        \"zip\": \"90277\",\r\n        \"phone\": \"310 901-5944\",\r\n        \"latitude\": 33.873834,\r\n        \"longitude\": -118.389660,\r\n        \"website\": \"http://redondo.org\",\r\n        \"active\": true,\r\n        \"notes\": \"A test stakeholder\",\r\n        \"categories\": [\r\n            {\r\n                \"id\": 6,\r\n                \"name\": \"Summer Lunch for Kids\"\r\n            }\r\n        ]\r\n    }"
-    }
+      "raw": "{\n\n        \"name\": \"_Veteran's Park\",\n        \"address1\": \"309 Esplanade\",\n        \"address2\": \"\",\n        \"city\": \"Redondo Beach\",\n        \"state\": \"CA\",\n        \"zip\": \"90277\",\n        \"phone\": \"310 901-5944\",\n        \"latitude\": 33.873834,\n        \"longitude\": -118.389660,\n        \"website\": \"http://redondo.org\",\n        \"active\": true,\n        \"notes\": \"A test stakeholder\",\n        \"categories\": [\n            {\n                \"id\": 6,\n                \"name\": \"Summer Lunch for Kids\"\n            }\n        ]\n    }",
+      "form": []
+    },
+    "tests": []
   },
   {
     "_id": "c429c489-92f1-445b-84a1-71044c74a8d5",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
-    "containerId": "",
+    "containerId": "ae763c3f-34d6-40dd-9749-50a88bd18b89",
     "name": "ERIS Geocode",
-    "url": "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?category=Street Address&f=json&outFields=*&singleline= 525 S. Hewitt St. Los Angeles CA  &token=r6oXxbB-S0qsvLKwPojTi6JQg2XpMCErUR0foyB1PhLgVsh_I-_UwcxpiQ15qrtCbCcSTcNutoTJvWqJTY70qmWtHtsXKqIWL_fN97hO6helkqpfiXTrZp8kQIzEoruTJrw8fjm_xbau2NvUg_hx9A..",
+    "url": "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?category=Street Address&f=json&outFields=*&singleline= 525 S. Hewitt St. Los Angeles CA &token=r6oXxbB-S0qsvLKwPojTi6JQg2XpMCErUR0foyB1PhLgVsh_I-_UwcxpiQ15qrtCbCcSTcNutoTJvWqJTY70qmWtHtsXKqIWL_fN97hO6helkqpfiXTrZp8kQIzEoruTJrw8fjm_xbau2NvUg_hx9A..",
     "method": "GET",
-    "sortNum": 310000,
+    "sortNum": 40000,
     "created": "2022-10-04T03:11:23.729Z",
-    "modified": "2022-10-04T03:11:23.729Z",
+    "modified": "2022-11-18T02:13:56.365Z",
     "headers": [],
     "params": [
       {
         "name": "category",
-        "value": "Street Address"
+        "value": "Street Address",
+        "isPath": false
       },
       {
         "name": "f",
-        "value": "json"
+        "value": "json",
+        "isPath": false
       },
       {
         "name": "outFields",
-        "value": "*"
+        "value": "*",
+        "isPath": false
       },
       {
         "name": "singleline",
-        "value": " 525 S. Hewitt St. Los Angeles CA  "
+        "value": "525 S. Hewitt St. Los Angeles CA",
+        "isPath": false
       },
       {
         "name": "token",
-        "value": "r6oXxbB-S0qsvLKwPojTi6JQg2XpMCErUR0foyB1PhLgVsh_I-_UwcxpiQ15qrtCbCcSTcNutoTJvWqJTY70qmWtHtsXKqIWL_fN97hO6helkqpfiXTrZp8kQIzEoruTJrw8fjm_xbau2NvUg_hx9A.."
+        "value": "r6oXxbB-S0qsvLKwPojTi6JQg2XpMCErUR0foyB1PhLgVsh_I-_UwcxpiQ15qrtCbCcSTcNutoTJvWqJTY70qmWtHtsXKqIWL_fN97hO6helkqpfiXTrZp8kQIzEoruTJrw8fjm_xbau2NvUg_hx9A..",
+        "isPath": false
       }
-    ]
+    ],
+    "tests": []
   },
   {
     "_id": "fa77ee55-d562-4b60-96d2-117b03ba668a",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
-    "containerId": "",
+    "containerId": "ae763c3f-34d6-40dd-9749-50a88bd18b89",
     "name": "ERIS GET Token",
     "url": "https://www.arcgis.com/sharing/oauth2/token?client_id=pZCxbMSzRf1qPO7a&grant_type=client_credentials&client_secret=6f96f8722e7b426eb59ec269d84fd427&f=pjson",
     "method": "GET",
-    "sortNum": 320000,
+    "sortNum": 30000,
     "created": "2022-10-04T03:11:23.730Z",
-    "modified": "2022-10-04T03:11:23.730Z",
+    "modified": "2022-11-18T02:13:53.807Z",
     "headers": [],
     "params": [
       {
         "name": "client_id",
-        "value": "pZCxbMSzRf1qPO7a"
+        "value": "pZCxbMSzRf1qPO7a",
+        "isPath": false
       },
       {
         "name": "grant_type",
-        "value": "client_credentials"
+        "value": "client_credentials",
+        "isPath": false
       },
       {
         "name": "client_secret",
-        "value": "6f96f8722e7b426eb59ec269d84fd427"
+        "value": "6f96f8722e7b426eb59ec269d84fd427",
+        "isPath": false
       },
       {
         "name": "f",
-        "value": "pjson"
+        "value": "pjson",
+        "isPath": false
       }
-    ]
+    ],
+    "tests": []
   },
   {
     "_id": "6e320836-fe20-4d58-89fc-1bc4f465b268",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
-    "containerId": "",
+    "containerId": "ae763c3f-34d6-40dd-9749-50a88bd18b89",
     "name": "ERIS Web API Geocode",
     "url": "http://localhost:5001/api/esri/geocode?address=525 S. Hewiitt St. Los Angeles CA",
     "method": "GET",
-    "sortNum": 330000,
+    "sortNum": 20000,
     "created": "2022-10-04T03:11:23.731Z",
-    "modified": "2022-10-04T03:11:23.731Z",
+    "modified": "2022-11-18T02:13:50.642Z",
     "headers": [],
     "params": [
       {
         "name": "address",
-        "value": "525 S. Hewiitt St. Los Angeles CA"
+        "value": "525 S. Hewiitt St. Los Angeles CA",
+        "isPath": false
       }
-    ]
+    ],
+    "tests": []
   },
   {
     "_id": "c4031b1f-dc91-413f-8d87-07bd94ae4f21",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
-    "containerId": "",
-    "name": "Verify One Stakeholders",
-    "url": "http://localhost:5000/api/stakeholders/3107verify",
-    "method": "POST",
-    "sortNum": 340000,
+    "containerId": "7f5a5a8a-37c9-4fea-911f-c13660509a3e",
+    "name": "Stakeholder Needs Verification",
+    "url": "http://localhost:5001/api/stakeholders/3107/needsVerification",
+    "method": "PUT",
+    "sortNum": 560000,
     "created": "2022-10-04T03:11:23.732Z",
-    "modified": "2022-10-04T03:11:23.732Z",
+    "modified": "2022-11-22T17:17:17.468Z",
     "headers": [
       {
         "name": "Content-Type",
         "value": "application/json"
       }
     ],
+    "params": [],
     "body": {
       "type": "json",
-      "raw": "{\"id\": 3107, \"setVerify\": true, \"loginId\": 78}"
+      "raw": "{\n  \"id\": 3107,\n  \"setVerify\": true,\n  \"userLoginId\": 108,\n  \"message\": \"Set to Needs Verification by ThunderClient test\",\n  \"preserveConfirmations\": false\n}",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      }
+    ],
+    "preReq": {
+      "runRequests": [
+        {
+          "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+          "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+          "triggerCondition": "run-always",
+          "triggerValue": ""
+        }
+      ]
     }
-  },
-  {
-    "_id": "fcad1709-d144-4b91-ba6f-d08781bb1c0f",
-    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
-    "containerId": "",
-    "name": "GET History",
-    "url": "http://localhost:5001/api/stakeholders/2968/history",
-    "method": "GET",
-    "sortNum": 350000,
-    "created": "2022-10-04T03:11:23.733Z",
-    "modified": "2022-10-04T03:11:23.733Z",
-    "headers": []
   },
   {
     "_id": "a00d9da8-8bd0-4710-b3a1-0f2cf9cd75eb",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
-    "containerId": "",
+    "containerId": "ae763c3f-34d6-40dd-9749-50a88bd18b89",
     "name": "TAMU Geocode",
     "url": "https://geoservices.tamu.edu/Services/Geocode/WebService/GeocoderWebServiceHttpNonParsed_V04_01.aspx?apiKey=5c141ed805794a7a9562c22c090a71cb&version=4.01&streetAddress=21036 Wendy Dr&city=torrance?state=CA&zip=90503&format=xml",
     "method": "GET",
-    "sortNum": 360000,
+    "sortNum": 10000,
     "created": "2022-10-04T03:11:23.734Z",
-    "modified": "2022-10-04T03:11:23.734Z",
+    "modified": "2022-11-18T03:15:56.244Z",
     "headers": [],
     "params": [
       {
         "name": "apiKey",
-        "value": "5c141ed805794a7a9562c22c090a71cb"
+        "value": "5c141ed805794a7a9562c22c090a71cb",
+        "isPath": false
       },
       {
         "name": "version",
-        "value": "4.01"
+        "value": "4.01",
+        "isPath": false
       },
       {
         "name": "streetAddress",
-        "value": "21036 Wendy Dr"
+        "value": "21036 Wendy Dr",
+        "isPath": false
       },
       {
         "name": "city",
-        "value": "torrance?state=CA"
+        "value": "torrance?state=CA",
+        "isPath": false
       },
       {
         "name": "zip",
-        "value": "90503"
+        "value": "90503",
+        "isPath": false
       },
       {
         "name": "format",
-        "value": "xml"
+        "value": "xml",
+        "isPath": false
+      }
+    ],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "LOCATION_TYPE_STREET_ADDRESS"
       }
     ]
   },
   {
     "_id": "12c55368-c5bb-42a2-aebc-b79189be38dd",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
-    "containerId": "",
+    "containerId": "65ec2675-283c-4b6f-a507-21d6420f7e2d",
     "name": "SendGrid Test",
     "url": "http://localhost:5001/api/emails",
     "method": "POST",
-    "sortNum": 370000,
+    "sortNum": 10000,
     "created": "2022-10-04T03:11:23.735Z",
-    "modified": "2022-10-04T03:11:23.735Z",
+    "modified": "2022-11-23T00:26:55.351Z",
     "headers": [],
+    "params": [],
     "body": {
       "type": "json",
-      "raw": "{\r\n    \"emailTo\": \"darragh@entrotech.net\",\r\n    \"emailFrom\": \"tdm+sendgrid@hackforla.org\",\r\n    \"subject\": \"Email from TDM Dev\",\r\n    \"textBody\": \"This is from SendGrid!\",\r\n    \"htmlBody\": \"<div><h1>TDM</h1><p>This is sent from SendGrid.</p><a href=\\\"https://tdmdev.azurewebsites.net\\\">Go to site</a></div>\"\r\n}"
-    }
+      "raw": "{\n    \"emailTo\": \"darragh@entrotech.net\",\n    \"emailFrom\": \"tdm+sendgrid@hackforla.org\",\n    \"subject\": \"Email from TDM Dev\",\n    \"textBody\": \"This is from SendGrid!\",\n    \"htmlBody\": \"<div><h1>TDM</h1><p>This is sent from SendGrid.</p><a href=\\\"https://tdmdev.azurewebsites.net\\\">Go to site</a></div>\"\n}",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "404"
+      }
+    ],
+    "docs": "There isn't really a way to test the \"happy path\" for this request, since SendGrid authenticates the sending origin, and the account can only be set up to authenticate a publicly available origin (e.g. foodoasis.net), NOT localhost:5001."
   },
   {
     "_id": "12a51cc1-86a0-4994-ac6f-6e86f1bb8879",
@@ -820,7 +1219,7 @@
     "method": "GET",
     "sortNum": 10000,
     "created": "2022-10-04T03:11:23.736Z",
-    "modified": "2022-10-22T06:42:01.214Z",
+    "modified": "2022-11-23T00:28:32.748Z",
     "headers": [],
     "params": [
       {
@@ -849,18 +1248,25 @@
         "isPath": false
       }
     ],
-    "tests": []
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      }
+    ]
   },
   {
     "_id": "135b5684-3c3b-4dc5-91a0-d5d31e6b900c",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "24d28291-9541-4bea-a1d3-ee1b778eeb85",
     "name": "Suggestion GET one",
-    "url": "http://localhost:5001/api/suggestions/1",
+    "url": "http://localhost:5001/api/suggestions/13",
     "method": "GET",
     "sortNum": 20000,
     "created": "2022-10-04T03:11:23.737Z",
-    "modified": "2022-10-22T06:46:17.632Z",
+    "modified": "2022-11-18T16:48:10.446Z",
     "headers": [],
     "params": [],
     "tests": []
@@ -874,7 +1280,7 @@
     "method": "POST",
     "sortNum": 30000,
     "created": "2022-10-04T03:11:23.738Z",
-    "modified": "2022-10-22T06:44:56.697Z",
+    "modified": "2022-11-23T00:35:48.173Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -884,10 +1290,17 @@
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"name\": \"Anne Douglas Center Of The Los Angeles Mission \",\n    \"address1\": \"303 E 6th st.\",\n    \"address2\": \"\",\n    \"city\": \"Los Angeles\",\n    \"state\": \"CA\",\n    \"zip\": \"90013\",\n    \"phone\": \"213-629-1227 x347\",\n    \"email\": \"info@lamission.net\",\n    \"notes\": \"test\",\n    \"tipsterName\": \"\",\n    \"tipsterPhone\": \"\",\n    \"tipsterEmail\": \"\",\n    \"hours\": \"\",\n    \"category\": \"\",\n    \"suggestionStatusId\": 1,\n    \"adminNotes\": \"\",\n    \"tenantId\":1\n}",
+      "raw": "{\n  \"stakeholderId\": 1,\n  \"name\": \"ThunderClient-Generated Listing\",\n  \"address1\": \"303 E 6th st.\",\n  \"address2\": \"\",\n  \"city\": \"Los Angeles\",\n  \"state\": \"CA\",\n  \"zip\": \"90013\",\n  \"phone\": \"213-629-1227 x347\",\n  \"email\": \"info@lamission.net\",\n  \"notes\": \"test\",\n  \"tipsterName\": \"\",\n  \"tipsterPhone\": \"\",\n  \"tipsterEmail\": \"\",\n  \"hours\": \"\",\n  \"category\": \"\",\n  \"suggestionStatusId\": 1,\n  \"adminNotes\": \"\",\n  \"tenantId\": 1\n}",
       "form": []
     },
-    "tests": []
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "201"
+      }
+    ]
   },
   {
     "_id": "bd281275-824c-40ae-8d15-33bb01ab6723",
@@ -898,7 +1311,7 @@
     "method": "PUT",
     "sortNum": 15000,
     "created": "2022-10-04T03:11:23.739Z",
-    "modified": "2022-10-22T06:51:16.592Z",
+    "modified": "2022-11-23T00:40:31.405Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -908,97 +1321,154 @@
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"id\": 1,\n    \"name\": \"Anne Douglas Center Of The Los Angeles Mission \",\n    \"address1\": \"101 E 6th St.\",\n    \"address2\": \"\",\n    \"city\": \"Los Angeles\",\n    \"state\": \"CA\",\n    \"zip\": \"90013\",\n    \"phone\": \"213-629-1227 x347\",\n    \"email\": \"info@lamission.net\",\n    \"notes\": \"test\",\n    \"tipsterName\": \"\",\n    \"tipsterPhone\": \"\",\n    \"tipsterEmail\": \"\",\n    \"hours\": \"\",\n    \"category\": \"\",\n    \"suggestionStatusId\": 2,\n    \"adminNotes\": \"Updated\"\n}",
+      "raw": "{\n  \"id\": 13,\n  \"adminNotes\": \"ThunderClient Test\",\n  \"suggestionStatusId\": 1\n}",
       "form": []
     },
-    "tests": []
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      }
+    ],
+    "docs": "The only allowed updates to a suggestion are edting the adminNotes, and changing the status.",
+    "preReq": {
+      "runRequests": [
+        {
+          "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+          "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+          "triggerCondition": "run-always",
+          "triggerValue": ""
+        }
+      ]
+    }
   },
   {
     "_id": "0264c9f1-32fe-480e-a337-0cd30f5db13e",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
-    "containerId": "",
+    "containerId": "edc0a923-2274-4573-ba0d-0ef3d5daed06",
     "name": "Stakeholder Logs - GET for One Stakeholder",
-    "url": "http://localhost:5000/api/stakeholderlogs/3960",
+    "url": "http://localhost:5001/api/stakeholderlogs/3960",
     "method": "GET",
-    "sortNum": 420000,
+    "sortNum": 10000,
     "created": "2022-10-04T03:11:23.740Z",
-    "modified": "2022-10-04T03:11:23.740Z",
+    "modified": "2022-11-22T17:35:05.431Z",
     "headers": [
       {
         "name": "Content-Type",
         "value": "application/json"
       }
     ],
-    "body": {
-      "type": "json",
-      "raw": ""
+    "params": [],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"Pavilions\""
+      }
+    ],
+    "preReq": {
+      "runRequests": [
+        {
+          "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+          "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+          "triggerCondition": "run-always",
+          "triggerValue": ""
+        }
+      ]
     }
   },
   {
     "_id": "e9ca3d32-3927-448a-8f8e-a5d58b763c48",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
-    "containerId": "",
+    "containerId": "d6bbf7d0-eaef-486e-919f-4869bb8766d3",
     "name": "Stakeholder Bests - GET for One Stakeholder",
-    "url": "http://localhost:5000/api/stakeholderbests/3960",
+    "url": "http://localhost:5001/api/stakeholderbests/3960",
     "method": "GET",
-    "sortNum": 430000,
+    "sortNum": 10000,
     "created": "2022-10-04T03:11:23.741Z",
-    "modified": "2022-10-04T03:11:23.741Z",
+    "modified": "2022-11-22T17:34:12.444Z",
     "headers": [
       {
         "name": "Content-Type",
         "value": "application/json"
       }
     ],
-    "body": {
-      "type": "json",
-      "raw": ""
-    }
+    "params": [],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"Pavilions\""
+      }
+    ]
   },
   {
     "_id": "12e5d7e3-f9f7-49b3-b6b8-f02c027e30df",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
-    "containerId": "",
+    "containerId": "7f5a5a8a-37c9-4fea-911f-c13660509a3e",
     "name": "Stakeholder PUT",
-    "url": "http://localhost:5000/api/stakeholders/3107",
+    "url": "http://localhost:5001/api/stakeholders/3107",
     "method": "PUT",
-    "sortNum": 440000,
+    "sortNum": 60000,
     "created": "2022-10-04T03:11:23.742Z",
-    "modified": "2022-10-04T03:11:23.742Z",
+    "modified": "2022-11-22T02:51:19.794Z",
     "headers": [
       {
         "name": "Content-Type",
         "value": "application/json"
       }
     ],
+    "params": [],
     "body": {
       "type": "json",
-      "raw": "{\r\n    \"id\": 3107,\r\n    \"name\": \"Salvation Army Redondo Beach\",\r\n    \"address1\": \"125 W. Beryl Street\",\r\n    \"address2\": \"\",\r\n    \"city\": \"Redondo Beach\",\r\n    \"state\": \"CA\",\r\n    \"zip\": \"90277\",\r\n    \"phone\": \"(310) 318-2827\",\r\n    \"latitude\": 33.84627323,\r\n    \"longitude\": -118.3929677,\r\n    \"website\": \"https://redondobeach.salvationarmy.org\",\r\n    \"createdDate\": \"2019-12-01T08:00:00\",\r\n    \"notes\": \"\",\r\n    \"createdLoginId\": null,\r\n    \"modifiedDate\": \"2021-02-17T20:18:35\",\r\n    \"modifiedLoginId\": 108,\r\n    \"submittedDate\": null,\r\n    \"submittedLoginId\": null,\r\n    \"approvedDate\": \"2020-05-23T12:43:05\",\r\n    \"assignedLoginId\": 110,\r\n    \"assignedDate\": \"2020-05-23T01:56:23\",\r\n    \"claimedLoginId\": null,\r\n    \"claimedDate\": \"2019-12-01T08:00:00\",\r\n    \"requirements\": \"Must be local resident\",\r\n    \"adminNotes\": \"There is no food pantry at this location. The nearest Salvation Army Pantry is in Lomita.\",\r\n    \"inactive\": true,\r\n    \"createdUser\": \" \",\r\n    \"modifiedUser\": \"Admin User\",\r\n    \"submittedUser\": \" \",\r\n    \"reviewedUser\": \" \",\r\n    \"assignedUser\": \"Data Entry User\",\r\n    \"claimedUser\": \" \",\r\n    \"selectedCategoryIds\": [1],\r\n    \"hours\": [\r\n        {\r\n            \"dayOfWeek\": \"Tue\",\r\n            \"open\": \"02:00:00\",\r\n            \"close\": \"05:00:00\",\r\n            \"weekOfMonth\": 3\r\n        }\r\n    ],\r\n    \"parentOrganization\": \"\",\r\n    \"physicalAccess\": \"\",\r\n    \"email\": \"army@salvation.org\",\r\n    \"items\": \"\",\r\n    \"services\": \"\",\r\n    \"facebook\": \"\",\r\n    \"twitter\": \"\",\r\n    \"pinterest\": \"\",\r\n    \"linkedin\": \"\",\r\n    \"description\": \"\",\r\n    \"reviewNotes\": \"\",\r\n    \"instagram\": \"\",\r\n    \"adminContactName\": \"\",\r\n    \"adminContactPhone\": \"\",\r\n    \"adminContactEmail\": \"\",\r\n    \"donationContactName\": \"\",\r\n    \"donationContactPhone\": \"\",\r\n    \"donationContactEmail\": \"\",\r\n    \"donationPickup\": false,\r\n    \"donationAcceptFrozen\": false,\r\n    \"donationAcceptRefrigerated\": false,\r\n    \"donationAcceptPerishable\": false,\r\n    \"donationSchedule\": \"\",\r\n    \"donationDeliveryInstructions\": \"\",\r\n    \"donationNotes\": \"\",\r\n    \"covidNotes\": \"\",\r\n    \"categoryNotes\": \"\",\r\n    \"eligibilityNotes\": \"\",\r\n    \"foodTypes\": \"\",\r\n    \"languages\": \"English\",\r\n    \"confirmedName\": true,\r\n    \"confirmedCategories\": true,\r\n    \"confirmedAddress\": true,\r\n    \"confirmedPhone\": true,\r\n    \"confirmedEmail\": true,\r\n    \"confirmedHours\": true,\r\n    \"confirmedFoodTypes\": false,\r\n    \"verificationStatusId\": 4,\r\n    \"inactiveTemporary\": false,\r\n    \"neighborhoodId\": null,\r\n    \"foodBakery\": false,\r\n    \"foodDryGoods\": false,\r\n    \"foodProduce\": false,\r\n    \"foodDairy\": false,\r\n    \"foodPrepared\": false,\r\n    \"foodMeat\": false,\r\n    \"parentOrganizationId\": 2,\r\n    \"distance\": null\r\n}"
-    }
-  },
-  {
-    "_id": "da5f79f6-5c13-485f-b224-cf9f8b8a13d7",
-    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
-    "containerId": "",
-    "name": "New Request",
-    "url": "http://localhost:5001/api/neighborhoods",
-    "method": "GET",
-    "sortNum": 450000,
-    "created": "2022-10-04T03:11:23.743Z",
-    "modified": "2022-10-04T03:11:23.743Z",
-    "headers": []
+      "raw": "{\n    \"id\": 3107,\n    \"name\": \"Salvation Army Redondo Beach\",\n    \"address1\": \"125 W. Beryl Street\",\n    \"address2\": \"\",\n    \"city\": \"Redondo Beach\",\n    \"state\": \"CA\",\n    \"zip\": \"90277\",\n    \"phone\": \"(310) 318-2827\",\n    \"latitude\": 33.84627323,\n    \"longitude\": -118.3929677,\n    \"website\": \"https://redondobeach.salvationarmy.org\",\n    \"createdDate\": \"2019-12-01T08:00:00\",\n    \"notes\": \"\",\n    \"createdLoginId\": null,\n    \"modifiedDate\": \"2021-02-17T20:18:35\",\n    \"modifiedLoginId\": 108,\n    \"submittedDate\": null,\n    \"submittedLoginId\": null,\n    \"approvedDate\": \"2020-05-23T12:43:05\",\n    \"assignedLoginId\": 110,\n    \"assignedDate\": \"2020-05-23T01:56:23\",\n    \"claimedLoginId\": null,\n    \"claimedDate\": \"2019-12-01T08:00:00\",\n    \"requirements\": \"Must be local resident\",\n    \"adminNotes\": \"There is no food pantry at this location. The nearest Salvation Army Pantry is in Lomita.\",\n    \"inactive\": true,\n    \"createdUser\": \" \",\n    \"modifiedUser\": \"Admin User\",\n    \"submittedUser\": \" \",\n    \"reviewedUser\": \" \",\n    \"assignedUser\": \"Data Entry User\",\n    \"claimedUser\": \" \",\n    \"selectedCategoryIds\": [1],\n    \"hours\": [\n        {\n            \"dayOfWeek\": \"Tue\",\n            \"open\": \"02:00:00\",\n            \"close\": \"05:00:00\",\n            \"weekOfMonth\": 3\n        }\n    ],\n    \"parentOrganization\": \"\",\n    \"physicalAccess\": \"\",\n    \"email\": \"army@salvation.org\",\n    \"items\": \"\",\n    \"services\": \"\",\n    \"facebook\": \"\",\n    \"twitter\": \"\",\n    \"pinterest\": \"\",\n    \"linkedin\": \"\",\n    \"description\": \"\",\n    \"reviewNotes\": \"\",\n    \"instagram\": \"\",\n    \"adminContactName\": \"\",\n    \"adminContactPhone\": \"\",\n    \"adminContactEmail\": \"\",\n    \"donationContactName\": \"\",\n    \"donationContactPhone\": \"\",\n    \"donationContactEmail\": \"\",\n    \"donationPickup\": false,\n    \"donationAcceptFrozen\": false,\n    \"donationAcceptRefrigerated\": false,\n    \"donationAcceptPerishable\": false,\n    \"donationSchedule\": \"\",\n    \"donationDeliveryInstructions\": \"\",\n    \"donationNotes\": \"\",\n    \"covidNotes\": \"\",\n    \"categoryNotes\": \"\",\n    \"eligibilityNotes\": \"\",\n    \"foodTypes\": \"\",\n    \"languages\": \"English\",\n    \"confirmedName\": true,\n    \"confirmedCategories\": true,\n    \"confirmedAddress\": true,\n    \"confirmedPhone\": true,\n    \"confirmedEmail\": true,\n    \"confirmedHours\": true,\n    \"confirmedFoodTypes\": false,\n    \"verificationStatusId\": 4,\n    \"inactiveTemporary\": false,\n    \"neighborhoodId\": null,\n    \"foodBakery\": false,\n    \"foodDryGoods\": false,\n    \"foodProduce\": false,\n    \"foodDairy\": false,\n    \"foodPrepared\": false,\n    \"foodMeat\": false,\n    \"parentOrganizationId\": 2,\n    \"distance\": null\n}",
+      "form": []
+    },
+    "tests": []
   },
   {
     "_id": "1d8d36d7-690e-406f-8d7a-827608526e85",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
-    "containerId": "",
+    "containerId": "aaf8073a-e70d-4516-be25-c013040d9f45",
     "name": "Neighborhoods GET All LA",
     "url": "http://localhost:5001/api/neighborhoods",
     "method": "GET",
-    "sortNum": 460000,
+    "sortNum": 10000,
     "created": "2022-10-04T03:11:23.744Z",
-    "modified": "2022-10-04T03:11:23.744Z",
-    "headers": []
+    "modified": "2022-11-22T02:20:12.626Z",
+    "headers": [],
+    "params": [],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"ARLETA NC\""
+      }
+    ],
+    "docs": "No authentication required. Will get all neighborhoods."
   },
   {
     "_id": "050ed44b-e5f3-4faf-b51a-9ea74fd5cabe",
@@ -1075,7 +1545,7 @@
     "method": "POST",
     "sortNum": 110000,
     "created": "2022-10-27T23:39:58.096Z",
-    "modified": "2022-10-27T23:49:47.332Z",
+    "modified": "2022-11-18T03:18:38.261Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -1088,13 +1558,23 @@
       "raw": "{\n  \"name\": \"CHURCH CHICKEN\",\n    \"tenantId\": 1\n}",
       "form": []
     },
-    "tests": []
+    "tests": [],
+    "preReq": {
+      "runRequests": [
+        {
+          "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+          "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+          "triggerCondition": "run-always",
+          "triggerValue": ""
+        }
+      ]
+    }
   },
   {
     "_id": "73ee4ff8-cc07-459d-a27c-94f10756e52e",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "d8625d5d-3acd-4b25-b796-b62f4d6a68ce",
-    "name": "Tag GET All",
+    "name": "Tag GET All (Los Angeles)",
     "url": "http://localhost:5001/api/tags/1",
     "method": "GET",
     "sortNum": 120000,
@@ -1113,7 +1593,7 @@
     "method": "PUT",
     "sortNum": 130000,
     "created": "2022-10-27T23:39:58.098Z",
-    "modified": "2022-10-27T23:54:07.560Z",
+    "modified": "2022-11-18T03:19:56.142Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -1126,32 +1606,241 @@
       "raw": "{\n \n    \"id\": 5,\n    \"name\": \"CHURCH\",\n    \"tenantId\": 1\n \n}",
       "form": []
     },
-    "tests": []
+    "tests": [],
+    "preReq": {
+      "runRequests": [
+        {
+          "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+          "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+          "triggerCondition": "run-always",
+          "triggerValue": ""
+        }
+      ]
+    }
   },
   {
     "_id": "6a2186eb-675b-4b46-afe7-776fd9deaaf0",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "d8625d5d-3acd-4b25-b796-b62f4d6a68ce",
     "name": "Tag DELETE",
-    "url": "http://localhost:5001/api/tags/5",
+    "url": "http://localhost:5001/api/tags/9999",
     "method": "DELETE",
     "sortNum": 140000,
     "created": "2022-10-27T23:39:58.099Z",
-    "modified": "2022-10-27T23:54:49.520Z",
+    "modified": "2022-11-23T00:46:50.238Z",
     "headers": [],
     "params": [],
     "tests": []
   },
   {
-    "_id": "3e91f71a-03d2-4f69-b6c0-68e9a21244e8",
+    "_id": "f3321a9e-5b9a-4c3f-a72a-4aa13dab934a",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
-    "containerId": "e1d51cff-eae1-4c5d-b2aa-3adefd7cad81",
-    "name": "Logins GET All",
-    "url": "http://localhost:5001/api/logins",
+    "containerId": "aaf8073a-e70d-4516-be25-c013040d9f45",
+    "name": "Neighborhoods GET One",
+    "url": "http://localhost:5001/api/neighborhoods/78",
     "method": "GET",
-    "sortNum": 10000,
-    "created": "2022-10-23T02:16:57.627Z",
-    "modified": "2022-10-23T02:29:01.099Z",
+    "sortNum": 510000,
+    "created": "2022-11-18T02:04:34.801Z",
+    "modified": "2022-11-22T02:20:41.316Z",
+    "headers": [],
+    "params": [],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"SOUTH CENTRAL NC\""
+      }
+    ],
+    "docs": "Will get neighborhood object for South Central LA"
+  },
+  {
+    "_id": "e00d2dec-c6c7-4bde-ab5f-3dea0a063fae",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "d6bbf7d0-eaef-486e-919f-4869bb8766d3",
+    "name": "Stakeholder Bests - Search",
+    "url": "http://localhost:5001/api/stakeholderbests?categoryIds[]=1&latitude=34.0354899&longitude=-118.2439235&isInactive=either&verificationStatusId=0&maxLng=-118.02955627441406&maxLat=34.14950399246919&minLng=-118.45802307128906&minLat=33.92152413543374&tenantId=1",
+    "method": "GET",
+    "sortNum": 520000,
+    "created": "2022-11-18T16:37:27.688Z",
+    "modified": "2022-11-22T17:33:35.237Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "categoryIds[]",
+        "value": "1",
+        "isPath": false
+      },
+      {
+        "name": "latitude",
+        "value": "34.0354899",
+        "isPath": false
+      },
+      {
+        "name": "longitude",
+        "value": "-118.2439235",
+        "isPath": false
+      },
+      {
+        "name": "isInactive",
+        "value": "either",
+        "isPath": false
+      },
+      {
+        "name": "verificationStatusId",
+        "value": "0",
+        "isPath": false
+      },
+      {
+        "name": "maxLng",
+        "value": "-118.02955627441406",
+        "isPath": false
+      },
+      {
+        "name": "maxLat",
+        "value": "34.14950399246919",
+        "isPath": false
+      },
+      {
+        "name": "minLng",
+        "value": "-118.45802307128906",
+        "isPath": false
+      },
+      {
+        "name": "minLat",
+        "value": "33.92152413543374",
+        "isPath": false
+      },
+      {
+        "name": "tenantId",
+        "value": "1",
+        "isPath": false
+      }
+    ],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"https://www.myfriendshousela.org/\""
+      }
+    ]
+  },
+  {
+    "_id": "17a5ffa8-9a70-4317-97fa-b97a416de130",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
+    "name": "Login Root",
+    "url": "http://localhost:5001/api/accounts/login",
+    "method": "POST",
+    "sortNum": 530000,
+    "created": "2022-11-22T01:52:01.195Z",
+    "modified": "2022-11-22T02:12:46.661Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\"password\": \"{{ROOT_PASSWORD}}\",\n\"email\": \"{{ROOT_EMAIL}}\",\n\"tenantId\": 1\n}",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"rootuser@dispostable.com\""
+      }
+    ]
+  },
+  {
+    "_id": "c0d5a22b-6be2-40fa-8c83-1a2cb95a640f",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
+    "name": "Login Security User",
+    "url": "http://localhost:5001/api/accounts/login",
+    "method": "POST",
+    "sortNum": 540000,
+    "created": "2022-11-22T01:53:56.296Z",
+    "modified": "2022-11-22T02:13:14.928Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\"password\": \"{{SECURITY_PASSWORD}}\",\n\"email\": \"{{SECURITY_EMAIL}}\",\n\"tenantId\": 1\n}",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"securityuser@dispostable.com\""
+      }
+    ]
+  },
+  {
+    "_id": "7ceb01c5-dbba-4aa2-a8c3-3e062476dc97",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "7f5a5a8a-37c9-4fea-911f-c13660509a3e",
+    "name": "Stakeholders POST CSV",
+    "url": "http://localhost:5001/api/stakeholders/csv",
+    "method": "POST",
+    "sortNum": 550000,
+    "created": "2022-11-22T16:47:27.449Z",
+    "modified": "2022-11-22T17:32:36.113Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"ids\": [\n    3108,\n    3109\n  ]\n}",
+      "form": []
+    },
+    "tests": [],
+    "preReq": {
+      "runRequests": [
+        {
+          "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+          "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+          "triggerCondition": "run-always",
+          "triggerValue": ""
+        }
+      ]
+    }
+  },
+  {
+    "_id": "19f89591-bf7b-4239-815e-574d4b10452a",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "7f5a5a8a-37c9-4fea-911f-c13660509a3e",
+    "name": "Stakeholder Request Assignment",
+    "url": "http://localhost:5001/api/stakeholders/requestAssignment",
+    "method": "PUT",
+    "sortNum": 590000,
+    "created": "2022-11-22T17:00:04.303Z",
+    "modified": "2022-11-22T17:19:55.532Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -1159,31 +1848,262 @@
       }
     ],
     "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"id\": 3107,\n  \"setVerify\": true,\n  \"loginId\": 78,\n  \"tenantId\": 1\n}",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      }
+    ],
+    "preReq": {
+      "runRequests": [
+        {
+          "reqId": "0bb17d61-fe1c-4608-a36e-4a69dbe82dfb",
+          "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+          "triggerCondition": "run-always",
+          "triggerValue": ""
+        }
+      ]
+    }
+  },
+  {
+    "_id": "0bb17d61-fe1c-4608-a36e-4a69dbe82dfb",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
+    "name": "Login Data Entry",
+    "url": "http://localhost:5001/api/accounts/login",
+    "method": "POST",
+    "sortNum": 550000,
+    "created": "2022-11-22T17:04:38.095Z",
+    "modified": "2022-11-22T17:05:27.701Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n\"password\": \"{{DATA_ENTRY_PASSWORD}}\",\n\"email\": \"{{DATA_ENTRY_EMAIL}}\",\n\"tenantId\": 1\n}",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"securityuser@dispostable.com\""
+      }
+    ]
+  },
+  {
+    "_id": "c062965d-e367-48ac-b1fc-81635f3d99f8",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "7f5a5a8a-37c9-4fea-911f-c13660509a3e",
+    "name": "Stakeholder Assign",
+    "url": "http://localhost:5001/api/stakeholders/3107/assign",
+    "method": "PUT",
+    "sortNum": 580000,
+    "created": "2022-11-22T17:18:32.622Z",
+    "modified": "2022-11-22T17:19:48.366Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"id\": 4720,\n  \"userLoginId\": 108,\n  \"loginId\": 110\n}",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      }
+    ],
+    "preReq": {
+      "runRequests": [
+        {
+          "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+          "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+          "triggerCondition": "run-always",
+          "triggerValue": ""
+        }
+      ]
+    }
+  },
+  {
+    "_id": "37f764ff-b666-437c-bea7-0f36e7b8d9da",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "7f5a5a8a-37c9-4fea-911f-c13660509a3e",
+    "name": "Stakeholder Claim",
+    "url": "http://localhost:5001/api/stakeholders/3107/claim",
+    "method": "PUT",
+    "sortNum": 585000,
+    "created": "2022-11-22T17:22:01.002Z",
+    "modified": "2022-11-22T17:30:07.543Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"id\": 4720,\n  \"userLoginId\": 108,\n  \"loginId\": 110,\n  \"setClaimed\": false\n}",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      }
+    ]
+  },
+  {
+    "_id": "0b8e715f-5a0b-412c-b12d-f3d70c894d8d",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "d8625d5d-3acd-4b25-b796-b62f4d6a68ce",
+    "name": "Tag GET All (Hawaii)",
+    "url": "http://localhost:5001/api/tags/3",
+    "method": "GET",
+    "sortNum": 125000,
+    "created": "2022-11-23T00:48:32.745Z",
+    "modified": "2022-11-23T00:48:53.293Z",
+    "headers": [],
+    "params": [],
     "tests": []
   },
   {
-    "_id": "0e2d80c4-b96b-4ba4-a330-72eda43836e3",
+    "_id": "3f4517df-2b79-4097-b7a9-4de4249b5c1d",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
-    "containerId": "e1d51cff-eae1-4c5d-b2aa-3adefd7cad81",
-    "name": "Logins GET All by email",
-    "url": "http://localhost:5001/api/logins?email=security",
+    "containerId": "1fa8eeb1-253f-49fe-92e1-a2f2e3b25cd3",
+    "name": "GET 211 Listings",
+    "url": "http://localhost:5001/api/loads/load-211",
     "method": "GET",
-    "sortNum": 20000,
-    "created": "2022-10-23T02:28:19.486Z",
-    "modified": "2022-10-23T02:34:24.782Z",
-    "headers": [
+    "sortNum": 7500,
+    "created": "2022-11-23T01:42:06.012Z",
+    "modified": "2022-11-23T02:58:45.769Z",
+    "headers": [],
+    "params": [],
+    "tests": [
       {
-        "name": "Content-Type",
-        "value": "application/json"
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "Content-Type",
+        "custom": "",
+        "action": "equal",
+        "value": "application/json; charset=utf-8"
       }
     ],
+    "docs": "(Not presently used by client app)\n\nThis endpoint gets all the listings from the load_211 table in our database that has been loaded from the LA Open Data Portal 211 API.\n\nThe 211.org site has been re-designed since the data was imported, and we have not re-implemeted an import process to re-import the data, so the data is stale.",
+    "preReq": {
+      "runRequests": [
+        {
+          "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+          "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+          "triggerCondition": "run-always",
+          "triggerValue": ""
+        }
+      ]
+    }
+  },
+  {
+    "_id": "f9a80eb9-581b-4494-841e-49d7eee35cbc",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "1fa8eeb1-253f-49fe-92e1-a2f2e3b25cd3",
+    "name": "Get Open LA Listings",
+    "url": "http://localhost:5001/api/loads/open-la?format=csv",
+    "method": "GET",
+    "sortNum": 6250,
+    "created": "2022-11-23T02:46:29.398Z",
+    "modified": "2022-11-23T02:58:57.999Z",
+    "headers": [],
     "params": [
       {
-        "name": "email",
-        "value": "security",
+        "name": "format",
+        "value": "csv",
         "isPath": false
       }
     ],
-    "tests": []
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "Content-Type",
+        "custom": "",
+        "action": "equal",
+        "value": "text/csv; charset=utf-8"
+      }
+    ],
+    "docs": "(Not presently used by client app)\n\nThis endpoint gets all the listings from the load_open_la_data  import table in our database. This was imported from the Open LA Data Portal.\n\nThe data was imported with a one-time import process (not sure what the procedure was)",
+    "preReq": {
+      "runRequests": [
+        {
+          "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+          "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+          "triggerCondition": "run-always",
+          "triggerValue": ""
+        }
+      ]
+    }
+  },
+  {
+    "_id": "a5d38949-7ee7-45a9-bd6b-724a7e2681a1",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "1fa8eeb1-253f-49fe-92e1-a2f2e3b25cd3",
+    "name": "Get LA Regional Food Bank Listings",
+    "url": "http://localhost:5001/api/loads/larfb?format=csv",
+    "method": "GET",
+    "sortNum": 6875,
+    "created": "2022-11-23T02:55:14.782Z",
+    "modified": "2022-11-23T02:58:09.916Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "format",
+        "value": "csv",
+        "isPath": false
+      }
+    ],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "Content-Type",
+        "custom": "",
+        "action": "equal",
+        "value": "text/csv; charset=utf-8"
+      }
+    ],
+    "docs": "(Not presently used by client app)\n\nThis endpoint gets all the listings from the load_larfb  import table in our database. This was imported from a massaged Google Sheet based on a csv file received form thr LA Regional Food Bank.\n\n",
+    "preReq": {
+      "runRequests": [
+        {
+          "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+          "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+          "triggerCondition": "run-always",
+          "triggerValue": ""
+        }
+      ]
+    }
   }
 ]

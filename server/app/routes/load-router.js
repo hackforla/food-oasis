@@ -9,6 +9,18 @@ router.get(
 );
 
 router.get(
+  "/open-la",
+  jwtSession.validateUserHasRequiredRoles(["admin"]),
+  loadController.getOpenLA
+);
+
+router.get(
+  "/larfb",
+  jwtSession.validateUserHasRequiredRoles(["admin"]),
+  loadController.getLARFB
+);
+
+router.get(
   "/load-211",
   jwtSession.validateUserHasRequiredRoles(["admin"]),
   loadController.get211

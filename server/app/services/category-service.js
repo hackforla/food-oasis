@@ -20,8 +20,8 @@ const selectById = async (id) => {
 };
 
 const insert = async (model) => {
-  model.suggestionStatusId = 1;
-  const sql = `insert into category (name) values ($<name>) returning id`;
+  const sql = `insert into category (name, display_order, inactive) 
+  values ($<name>, $<displayOrder>, $<inactive>) returning id`;
 
   const result = await db.one(sql, model);
   return { id: result.id };
@@ -29,7 +29,7 @@ const insert = async (model) => {
 
 const update = async (model) => {
   const sql = `update category
-               set name = $<name>
+               set name = $<name>, display_order = $<displayOrder>, inactive = $<inactive>
                 where id = $<id>`;
   await db.none(sql, model);
 };

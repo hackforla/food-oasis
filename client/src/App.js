@@ -27,8 +27,6 @@ import Login from "components/Account/Login";
 import ForgotPassword from "components/Account/ForgotPassword";
 import ResetPassword from "components/Account/ResetPassword";
 import ConfirmEmail from "components/Account/ConfirmEmail";
-import FaqEdit from "components/Faq/FaqEdit";
-import FaqAdd from "components/Faq/FaqAdd";
 import Home from "components/FoodSeeker/Home";
 import SearchResults from "components/FoodSeeker/SearchResults/SearchResults";
 import Suggestion from "components/FoodSeeker/Suggestion";
@@ -212,12 +210,6 @@ function App() {
                       >
                         <ImportFile />
                       </PrivateRoute>
-                      <Route path="/faqs/add">
-                        <FaqAdd />
-                      </Route>
-                      <Route path="/faqs/:identifier">
-                        <FaqEdit />
-                      </Route>
                       <Route path="/resources">
                         <Resources />
                       </Route>

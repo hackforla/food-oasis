@@ -268,23 +268,22 @@ const StakeholderPreview = ({ stakeholder }) => {
             </em>
           ) : null}
 
-          {isOpenFlag &&
-          !(stakeholder.inactiveTemporary || stakeholder.inactive) ? (
-            <em className={classes.openLabel}>OPEN NOW</em>
-          ) : null}
-
-          {isAlmostClosedFlag &&
-          !(stakeholder.inactiveTemporary || stakeholder.inactive) &&
-          isAlmostClosedFlag ? (
-            <em className={classes.closingSoonLabel}>
-              {`Closing in ${minutesToClosing} minutes`}
-            </em>
-          ) : null}
-
           {showAllowWalkinsFlag &&
-          !(stakeholder.inactiveTemporary || stakeholder.inactive) ? (
-            <em className={classes.allowWalkinsLabel}>Walk-Ins Allowed</em>
-          ) : null}
+            !(stakeholder.inactiveTemporary || stakeholder.inactive) && (
+              <>
+                {isOpenFlag &&
+                  <em className={classes.openLabel}>OPEN NOW</em>
+                }
+                {isAlmostClosedFlag && 
+                  <em className={classes.closingSoonLabel}>
+                    {`Closing in ${minutesToClosing} minutes`}
+                  </em>
+                }
+                <em className={classes.allowWalkinsLabel}>Walk-Ins Allowed</em>
+              </>
+            )
+          }
+          
         </div>
         <div className={classes.buttons}>
           <Button

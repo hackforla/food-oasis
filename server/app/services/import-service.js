@@ -7,6 +7,8 @@ const {
   getLatLong,
 } = require("./import-utils");
 
+// These services are used by the CSV import process (originally designed for Hawaii)
+
 // we can use this function to reformat the field names/values in the csv before rendering in browser table
 const parseCsv = async (file) => {
   // memory storage

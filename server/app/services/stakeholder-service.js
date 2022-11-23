@@ -744,9 +744,9 @@ const claim = async (model) => {
   // const { id, userLoginId, loginId, setClaimed } = model;
   const sql = `update stakeholder set
                 claimed_login_id = $<loginId>,
-                claimed_date = CASE $<setClaimed> THEN CURRENT_TIMESTAMP ELSE null END,
+                claimed_date = CASE WHEN $<setClaimed> THEN CURRENT_TIMESTAMP ELSE null END,
                 modified_login_id = $<userLoginId>,
-                modified_date = CURRENT_TIMESTAMP,,
+                modified_date = CURRENT_TIMESTAMP
               where id = $<id>`;
 
   const result = await db.result(sql, model);

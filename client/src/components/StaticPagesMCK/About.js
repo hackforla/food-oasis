@@ -265,26 +265,34 @@ const About = () => {
         </section>
         <section className={classes.partners}>
           <h2>Our Partners</h2>
-          <img
-            alt="Food Cycle LA"
-            src={foodCycle}
-            className={classes.partnersLogo}
-          />
-          <img
-            alt="Food Forward"
-            src={foodForward}
-            className={classes.partnersLogo}
-          />
-          <img
-            alt="Farm People"
-            src={farmPeople}
-            className={classes.partnersLogo}
-          />
-          <img
-            alt="Food Bank"
-            src={foodBank}
-            className={classes.partnersLogo}
-          />
+          <a href="https://www.foodcyclela.org/" target={"_blank"}>
+            <img
+              alt="Food Cycle LA"
+              src={foodCycle}
+              className={classes.partnersLogo}
+            />
+          </a>
+          <a href="https://foodforward.org/" target={"_blank"}>
+            <img
+              alt="Food Forward"
+              src={foodForward}
+              className={classes.partnersLogo}
+            />
+          </a>
+          <a href="https://www.farm2people.org/" target={"_blank"}>
+            <img
+              alt="Farm People"
+              src={farmPeople}
+              className={classes.partnersLogo}
+            />
+          </a>
+          <a href="https://www.lafoodbank.org/" target={"_blank"}>
+            <img
+              alt="Food Bank"
+              src={foodBank}
+              className={classes.partnersLogo}
+            />
+          </a>
         </section>
       </div>
     </div>

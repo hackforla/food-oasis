@@ -3,7 +3,7 @@ import axios from "axios";
 // an API outside of the app's web api.
 
 const baseUrl =
-  "//geoservices.tamu.edu/Services/Geocode/WebService/GeocoderWebServiceHttpNonParsed_V04_01.aspx";
+  "https://geoservices.tamu.edu/Services/Geocode/WebService/GeocoderWebServiceHttpNonParsed_V04_01.aspx";
 
 export const geocode = async (street, city, state, zip) => {
   const url =

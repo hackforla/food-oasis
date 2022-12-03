@@ -1,8 +1,8 @@
-import { Article, LAPLFoorResource } from "../../types/import-types";
+import camelcaseKeys from "camelcase-keys";
+import { LAPLFoodResource } from "../../types/load-lapl-types";
+import db from "./db";
 
-const { db } = require("./db");
-
-const selectAll = async () => {
+const selectAll = async (): Promise<LAPLFoodResource[]> => {
   const sql = `
     select name, addr, phone, 
     population_served, 
@@ -13,21 +13,11 @@ const selectAll = async () => {
     from load_lapl_food_resource 
     order by name
   `;
-  const rows: LAPLFoorResource[] = await db.manyOrNone(sql);
-  return rows.map((row) => ({
-    name: row.name,
-    addr: row.addr,
-    phone: row.phone,
-    lat: row.lat,
-    lon: row.lon,
-    populationServed: row.population_served,
-    resourceCategories: row.resource_categories,
-    generalResources: row.general_resources,
-    additionalOfferings: row.additional_offerings,
-  }));
+  const result = await db.manyOrNone(sql);
+  return result.map((r) => camelcaseKeys(r));
 };
 
-const insert = async (data: Article) => {
+const insert = async (data: LAPLFoodResource) => {
   const sql = `insert into load_lapl_food_resource 
   (name, addr, phone, population_served, 
     resource_categories, general_resources, additional_offerings,
@@ -39,7 +29,7 @@ const insert = async (data: Article) => {
      $<generalResources>, 
      $<additionalOfferings>, 
      $<lat>, $<lon>) `;
-  return await db.none(sql, data);
+  await db.none(sql, data);
 };
 
 const removeAll = () => {

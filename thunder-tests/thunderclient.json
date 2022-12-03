@@ -83,11 +83,11 @@
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
     "name": "Confirm Register",
-    "url": "http://localhost:5001/api/accounts/confirmRegister/174",
+    "url": "http://localhost:5001/api/accounts/confirmRegister",
     "method": "POST",
     "sortNum": 30000,
     "created": "2022-10-04T03:11:23.700Z",
-    "modified": "2022-11-22T01:39:03.044Z",
+    "modified": "2022-11-28T19:42:58.325Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -392,7 +392,7 @@
     "method": "POST",
     "sortNum": 110000,
     "created": "2022-10-04T03:11:23.709Z",
-    "modified": "2022-11-22T16:36:58.378Z",
+    "modified": "2022-11-29T00:05:09.996Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -410,13 +410,13 @@
         "type": "res-code",
         "custom": "",
         "action": "equal",
-        "value": "201"
+        "value": "400"
       },
       {
         "type": "res-body",
         "custom": "",
         "action": "contains",
-        "value": "\"id\""
+        "value": "\"Cannot insert duplicate row.\""
       }
     ]
   },
@@ -893,7 +893,7 @@
     "method": "GET",
     "sortNum": 10000,
     "created": "2022-10-04T03:11:23.726Z",
-    "modified": "2022-11-23T01:50:35.011Z",
+    "modified": "2022-12-02T23:49:52.778Z",
     "headers": [],
     "params": [],
     "tests": [
@@ -910,6 +910,7 @@
         "value": "application/json; charset=utf-8"
       }
     ],
+    "docs": "This endpoint scrapes the LA Pubic Library site for listings.",
     "preReq": {
       "runRequests": [
         {
@@ -926,16 +927,16 @@
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "1fa8eeb1-253f-49fe-92e1-a2f2e3b25cd3",
     "name": "Get LA Public Library Listings",
-    "url": "http://localhost:5001/api/loads/lapl-food-resources?format=csv",
+    "url": "http://localhost:5001/api/loads/lapl-food-resources?format=json",
     "method": "GET",
     "sortNum": 5000,
     "created": "2022-10-04T03:11:23.727Z",
-    "modified": "2022-11-23T02:59:09.091Z",
+    "modified": "2022-12-02T20:09:07.395Z",
     "headers": [],
     "params": [
       {
         "name": "format",
-        "value": "csv",
+        "value": "json",
         "isPath": false
       }
     ],
@@ -950,7 +951,7 @@
         "type": "Content-Type",
         "custom": "",
         "action": "equal",
-        "value": "text/csv; charset=utf-8"
+        "value": "application/json; charset=utf-8"
       }
     ],
     "docs": "(Not presently used by client app)\n\nThis endpoint gets all the listings from the LA Public Library import table in our database.",
@@ -1266,10 +1267,23 @@
     "method": "GET",
     "sortNum": 20000,
     "created": "2022-10-04T03:11:23.737Z",
-    "modified": "2022-11-18T16:48:10.446Z",
+    "modified": "2022-11-28T19:39:45.933Z",
     "headers": [],
     "params": [],
-    "tests": []
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"MountainView ADHC\""
+      }
+    ]
   },
   {
     "_id": "fbe8ae83-b87c-46a9-8d03-48b9b6567c12",
@@ -1545,7 +1559,7 @@
     "method": "POST",
     "sortNum": 110000,
     "created": "2022-10-27T23:39:58.096Z",
-    "modified": "2022-11-18T03:18:38.261Z",
+    "modified": "2022-12-03T00:08:25.141Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -1558,7 +1572,14 @@
       "raw": "{\n  \"name\": \"CHURCH CHICKEN\",\n    \"tenantId\": 1\n}",
       "form": []
     },
-    "tests": [],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "201"
+      }
+    ],
     "preReq": {
       "runRequests": [
         {
@@ -1579,10 +1600,23 @@
     "method": "GET",
     "sortNum": 120000,
     "created": "2022-10-27T23:39:58.097Z",
-    "modified": "2022-10-27T23:47:21.052Z",
+    "modified": "2022-12-03T00:09:48.335Z",
     "headers": [],
     "params": [],
-    "tests": []
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"KOSHER\""
+      }
+    ]
   },
   {
     "_id": "843d1919-428f-42ab-8b64-d1223432fcec",
@@ -1593,7 +1627,7 @@
     "method": "PUT",
     "sortNum": 130000,
     "created": "2022-10-27T23:39:58.098Z",
-    "modified": "2022-11-18T03:19:56.142Z",
+    "modified": "2022-12-03T00:10:07.888Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -1606,7 +1640,14 @@
       "raw": "{\n \n    \"id\": 5,\n    \"name\": \"CHURCH\",\n    \"tenantId\": 1\n \n}",
       "form": []
     },
-    "tests": [],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      }
+    ],
     "preReq": {
       "runRequests": [
         {
@@ -1627,10 +1668,17 @@
     "method": "DELETE",
     "sortNum": 140000,
     "created": "2022-10-27T23:39:58.099Z",
-    "modified": "2022-11-23T00:46:50.238Z",
+    "modified": "2022-12-03T00:10:30.852Z",
     "headers": [],
     "params": [],
-    "tests": []
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "400"
+      }
+    ]
   },
   {
     "_id": "f3321a9e-5b9a-4c3f-a72a-4aa13dab934a",
@@ -1837,10 +1885,10 @@
     "containerId": "7f5a5a8a-37c9-4fea-911f-c13660509a3e",
     "name": "Stakeholder Request Assignment",
     "url": "http://localhost:5001/api/stakeholders/requestAssignment",
-    "method": "PUT",
+    "method": "POST",
     "sortNum": 590000,
     "created": "2022-11-22T17:00:04.303Z",
-    "modified": "2022-11-22T17:19:55.532Z",
+    "modified": "2022-12-03T00:02:32.562Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -1881,7 +1929,7 @@
     "method": "POST",
     "sortNum": 550000,
     "created": "2022-11-22T17:04:38.095Z",
-    "modified": "2022-11-22T17:05:27.701Z",
+    "modified": "2022-11-28T19:44:57.302Z",
     "headers": [],
     "params": [],
     "body": {
@@ -1900,7 +1948,7 @@
         "type": "res-body",
         "custom": "",
         "action": "contains",
-        "value": "\"securityuser@dispostable.com\""
+        "value": "\"dataentryuser@dispostable.com\""
       }
     ]
   },
@@ -1975,23 +2023,42 @@
     "method": "GET",
     "sortNum": 125000,
     "created": "2022-11-23T00:48:32.745Z",
-    "modified": "2022-11-23T00:48:53.293Z",
+    "modified": "2022-12-03T00:09:15.120Z",
     "headers": [],
     "params": [],
-    "tests": []
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"ALOHA HARVEST\""
+      }
+    ]
   },
   {
     "_id": "3f4517df-2b79-4097-b7a9-4de4249b5c1d",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "1fa8eeb1-253f-49fe-92e1-a2f2e3b25cd3",
     "name": "GET 211 Listings",
-    "url": "http://localhost:5001/api/loads/load-211",
+    "url": "http://localhost:5001/api/loads/load-211?limit=10",
     "method": "GET",
     "sortNum": 7500,
     "created": "2022-11-23T01:42:06.012Z",
-    "modified": "2022-11-23T02:58:45.769Z",
+    "modified": "2022-12-02T23:45:18.231Z",
     "headers": [],
-    "params": [],
+    "params": [
+      {
+        "name": "limit",
+        "value": "10",
+        "isPath": false
+      }
+    ],
     "tests": [
       {
         "type": "res-code",
@@ -2023,16 +2090,16 @@
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "1fa8eeb1-253f-49fe-92e1-a2f2e3b25cd3",
     "name": "Get Open LA Listings",
-    "url": "http://localhost:5001/api/loads/open-la?format=csv",
+    "url": "http://localhost:5001/api/loads/open-la?format=json",
     "method": "GET",
     "sortNum": 6250,
     "created": "2022-11-23T02:46:29.398Z",
-    "modified": "2022-11-23T02:58:57.999Z",
+    "modified": "2022-12-02T23:47:55.394Z",
     "headers": [],
     "params": [
       {
         "name": "format",
-        "value": "csv",
+        "value": "json",
         "isPath": false
       }
     ],
@@ -2047,7 +2114,7 @@
         "type": "Content-Type",
         "custom": "",
         "action": "equal",
-        "value": "text/csv; charset=utf-8"
+        "value": "application/json; charset=utf-8"
       }
     ],
     "docs": "(Not presently used by client app)\n\nThis endpoint gets all the listings from the load_open_la_data  import table in our database. This was imported from the Open LA Data Portal.\n\nThe data was imported with a one-time import process (not sure what the procedure was)",
@@ -2067,16 +2134,16 @@
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "1fa8eeb1-253f-49fe-92e1-a2f2e3b25cd3",
     "name": "Get LA Regional Food Bank Listings",
-    "url": "http://localhost:5001/api/loads/larfb?format=csv",
+    "url": "http://localhost:5001/api/loads/larfb?format=json",
     "method": "GET",
     "sortNum": 6875,
     "created": "2022-11-23T02:55:14.782Z",
-    "modified": "2022-11-23T02:58:09.916Z",
+    "modified": "2022-12-02T23:48:30.941Z",
     "headers": [],
     "params": [
       {
         "name": "format",
-        "value": "csv",
+        "value": "json",
         "isPath": false
       }
     ],
@@ -2091,7 +2158,7 @@
         "type": "Content-Type",
         "custom": "",
         "action": "equal",
-        "value": "text/csv; charset=utf-8"
+        "value": "application/json; charset=utf-8"
       }
     ],
     "docs": "(Not presently used by client app)\n\nThis endpoint gets all the listings from the load_larfb  import table in our database. This was imported from a massaged Google Sheet based on a csv file received form thr LA Regional Food Bank.\n\n",

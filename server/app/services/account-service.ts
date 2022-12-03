@@ -28,7 +28,7 @@ const selectAll = async (tenantId: string): Promise<Account[]> => {
     select * from login_tenant where tenant_id = $<tenantId>
   ) as lt on login.id = lt.login_id
   `;
-  const result: Account[] = await db.manyOrNone(sql, {
+  const result: any[] = await db.manyOrNone(sql, {
     tenantId: Number(tenantId),
   });
   return result.map((r) => camelcaseKeys(r));

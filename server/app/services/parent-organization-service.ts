@@ -13,11 +13,11 @@ const selectAllById = async (tenantId: string) => {
 
 const insert = async (data: Omit<ParentOrganization, "id">) => {
   const parentOrgSql = `select name from parent_organization where name = $<name>;`;
-  const parentOrg = await db.one(parentOrgSql, {
+  const parentOrgs = await db.manyOrNone(parentOrgSql, {
     name: data.name,
   });
 
-  if (parentOrg.name === data.name) {
+  if (parentOrgs.length > 0) {
     throw new Error("Cannot insert duplicate row.");
   }
 

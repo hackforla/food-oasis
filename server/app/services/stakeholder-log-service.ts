@@ -8,7 +8,7 @@ This service is for getting data from the stakeholder_log table for
 viewing the audit log for a particular stakeholder.
 */
 
-const selectById = async (id: string) => {
+const selectById = async (id: number): Promise<any[]> => {
   const sql = `select
       s.id, s.version, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
       s.phone, s.latitude, s.longitude, s.website,  s.notes,

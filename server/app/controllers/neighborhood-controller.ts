@@ -1,5 +1,5 @@
 import neighborhoodService from "../services/neighborhood-service";
-import { RequestHandler, Response } from "express";
+import { RequestHandler } from "express";
 import {
   Neighborhood,
   NeighborhoodGeoJSON,

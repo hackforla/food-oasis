@@ -1,13 +1,13 @@
-export interface Article {
+// LA Public Library Data
+
+export interface LAPLFoodResource {
   name: string;
   addr: string;
-  lat: number | null;
-  lon: number | null;
   phone: string;
   populationServed: string;
   resourceCategories: string;
   generalResources: string;
   additionalOfferings: string;
+  lat: number;
+  lon: number;
 }
-
-export type ImportAction = "add" | "update" | "replace";

@@ -18,7 +18,7 @@ const selectAll = async (tenantId: number): Promise<Neighborhood[]> => {
     from neighborhood
     order by name
   `;
-  const result: Neighborhood[] = await db.manyOrNone(sql);
+  const result = await db.manyOrNone(sql);
   return result.map((r) => camelcaseKeys(r));
 };
 
@@ -39,7 +39,7 @@ const selectGeoJSONById = async (
   FROM neighborhood WHERE nc_id = $<ncid>
   `;
 
-  const result: NeighborhoodGeoJSON = await db.one(sql, { ncid });
+  const result = await db.one(sql, { ncid });
   return camelcaseKeys(result);
 };
 

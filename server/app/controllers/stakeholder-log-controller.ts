@@ -1,15 +1,20 @@
-const stakeholderLogService = require("../services/stakeholder-log-service");
+import stakeholderLogService from "../services/stakeholder-log-service";
+import { RequestHandler } from "express";
 
-const getById = (req, res) => {
-  const { id } = req.params;
-  stakeholderLogService
-    .selectById(id)
-    .then((resp) => {
-      res.send(resp);
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err.toString() });
-    });
+const getById: RequestHandler<
+  { id: string },
+  any[] | { error: string },
+  never,
+  never
+> = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const resp = await stakeholderLogService.selectById(Number(id));
+    res.send(resp);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
 };
 
 module.exports = {

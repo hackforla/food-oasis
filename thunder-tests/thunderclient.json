@@ -1461,13 +1461,19 @@
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "aaf8073a-e70d-4516-be25-c013040d9f45",
     "name": "Neighborhoods GET All LA",
-    "url": "http://localhost:5001/api/neighborhoods",
+    "url": "http://localhost:5001/api/neighborhoods?tenantId=1",
     "method": "GET",
     "sortNum": 10000,
     "created": "2022-10-04T03:11:23.744Z",
-    "modified": "2022-11-22T02:20:12.626Z",
+    "modified": "2022-12-05T04:06:30.928Z",
     "headers": [],
-    "params": [],
+    "params": [
+      {
+        "name": "tenantId",
+        "value": "1",
+        "isPath": false
+      }
+    ],
     "tests": [
       {
         "type": "res-code",

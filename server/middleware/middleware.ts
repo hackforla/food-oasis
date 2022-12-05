@@ -1,4 +1,4 @@
-import pinoLogger from "express-pino-logger";
+// import pinoLogger from "express-pino-logger";
 // import pinoNoir from "pino-noir";
 import { RequestHandler, Request, Response } from "express";
 

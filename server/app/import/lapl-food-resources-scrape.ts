@@ -17,7 +17,7 @@
 
 import * as cheerio from "cheerio";
 import axios from "axios";
-import { Article } from "../../types/import-types";
+import { LAPLFoodResource } from "../../types/load-lapl-types";
 
 const url = "https://www.lapl.org/homeless-resources-food";
 
@@ -34,12 +34,12 @@ const selectAll = () => {
   return axios(url)
     .then((result: any) => {
       const $ = cheerio.load(result.data);
-      const articles: Article[] = [];
+      const listings: LAPLFoodResource[] = [];
       $(".views-row").each((i, elem) => {
-        const articleElement = $(elem);
-        const name = articleElement.find("h3").text().trim();
+        const listingElement = $(elem);
+        const name = listingElement.find("h3").text().trim();
         if (name) {
-          const mapElement = articleElement.find("a.show-map-link");
+          const mapElement = listingElement.find("a.show-map-link");
           const dataLatitude = mapElement.attr("data-latitude");
           const lat =
             dataLatitude && Number.isNaN(Number.parseFloat(dataLatitude))
@@ -51,7 +51,7 @@ const selectAll = () => {
               ? Number.parseFloat(dataLongitude)
               : null;
 
-          const addrPhone = articleElement.find("p:nth-child(3)").text();
+          const addrPhone = listingElement.find("p:nth-child(3)").text();
           let addr = "";
           let phone = "";
           if (addrPhone) {
@@ -66,7 +66,7 @@ const selectAll = () => {
           // Next set of p tags - need to extract label from span to figure
           // out what each is, strip out <span> tag and contents from text
           // to get the corresponding property data.
-          articleElement.find("p.hrc").each((i, infoElement) => {
+          listingElement.find("p.hrc").each((i, infoElement) => {
             const label = $(infoElement)
               .find("span")
               .text()
@@ -88,7 +88,7 @@ const selectAll = () => {
             }
           });
 
-          const article = {
+          const listing = {
             name,
             addr,
             lat,
@@ -100,11 +100,11 @@ const selectAll = () => {
             additionalOfferings,
           };
 
-          articles.push(article);
+          listings.push(listing);
         }
       });
-      return articles;
-      // console.log(JSON.stringify(articles, null, 2));
+      return listings;
+      // console.log(JSON.stringify(listings, null, 2));
     })
     .catch((err: any) => {
       console.log(err);

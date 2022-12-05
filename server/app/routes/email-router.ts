@@ -5,4 +5,4 @@ const router: Router = Router();
 
 router.post("/", send);
 
-module.exports = router;
+export default router;

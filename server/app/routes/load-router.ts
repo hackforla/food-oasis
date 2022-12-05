@@ -1,6 +1,7 @@
-const router = require("express").Router();
-const loadController = require("../controllers/load-controller");
+import express from "express";
+import loadController from "../controllers/load-controller";
 import jwtSession from "../../middleware/jwt-session";
+const router = express.Router();
 
 router.get(
   "/lapl-food-resources",
@@ -26,4 +27,4 @@ router.get(
   loadController.get211
 );
 
-module.exports = router;
+export default router;

@@ -3,14 +3,14 @@ import { RequestHandler } from "express";
 import {
   Neighborhood,
   NeighborhoodGeoJSON,
-  NeighborhoodPutRequest,
+  // NeighborhoodPutRequest,
 } from "../../types/neighborhood-types";
 
 const getAll: RequestHandler<
   never,
   Neighborhood[] | { error: string },
   never,
-  { tenantId: string }
+  { tenantId: string | "1" }
 > = (req, res) => {
   const { tenantId } = req.query;
   neighborhoodService
@@ -57,12 +57,11 @@ const updateZoom: RequestHandler<
     .then(() => {
       res.sendStatus(200);
     })
-    .catch((_err) => {
+    .catch(() => {
       res.status(500);
     });
 };
-
-module.exports = {
+export default {
   getAll,
   getGeoJSONById,
   updateZoom,

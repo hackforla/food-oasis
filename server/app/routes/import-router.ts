@@ -29,4 +29,4 @@ router.post(
   importController.importStakeholderCsv
 );
 
-module.exports = router;
+export default router;

@@ -7,7 +7,7 @@ import { LARFBListing } from "../../types/load-larfb-types";
 import loadLARFBService from "../services/load-larfb-service";
 import { LA211Listing } from "../../types/load-211-types";
 import load211Service from "../services/load-211-service";
-const { json2csv } = require("json-2-csv");
+import { json2csv } from "json-2-csv";
 
 // Allow viewing (not editing) data loaded by imports
 // and scrapers.
@@ -24,7 +24,7 @@ const getLaplFoodResources: RequestHandler<
     if (req.query.format === "json" || req.accepts("json")) {
       res.send(rows);
     } else {
-      json2csv(rows, (_err: any, csv: string) => {
+      json2csv(rows, (_err: Error | undefined, csv: string | undefined) => {
         res.setHeader("Content-Type", "text/csv");
         res.setHeader(
           "Content-Disposition",
@@ -54,7 +54,7 @@ const getOpenLA: RequestHandler<
     if (req.query.format === "json" || req.accepts("json")) {
       res.send(rows);
     } else {
-      json2csv(rows, (_err: any, csv: string) => {
+      json2csv(rows, (_err: Error | undefined, csv: string | undefined) => {
         res.setHeader("Content-Type", "text/csv");
         res.setHeader(
           "Content-Disposition",
@@ -84,7 +84,7 @@ const getLARFB: RequestHandler<
     if (req.query.format === "json" || req.accepts("json")) {
       res.send(resp);
     } else {
-      json2csv(resp, (_err: any, csv: string) => {
+      json2csv(resp, (_err: Error | undefined, csv: string | undefined) => {
         res.setHeader("Content-Type", "text/csv");
         res.setHeader(
           "Content-Disposition",
@@ -109,13 +109,13 @@ const get211: RequestHandler<
   try {
     // can't convert to csv because data has nested json
     const parseJSONArray = (arr: any[]) => {
-      let result: any[] = [];
+      const result: any[] = [];
       arr.forEach((val: any) => result.push(JSON.parse(val)));
       return result;
     };
-    let response = await load211Service.selectAll(Number(req.query.limit));
+    const response = await load211Service.selectAll(Number(req.query.limit));
 
-    let resJSON: LA211Listing[] = [];
+    const resJSON: LA211Listing[] = [];
     response.forEach((row) => {
       const {
         agency_description,
@@ -137,7 +137,7 @@ const get211: RequestHandler<
         site_services,
         site_url,
       } = row;
-      let rowJson = {
+      const rowJson = {
         agency_description,
         agency_id,
         agency_name,
@@ -166,7 +166,7 @@ const get211: RequestHandler<
   }
 };
 
-module.exports = {
+export default {
   getLaplFoodResources,
   get211,
   getOpenLA,

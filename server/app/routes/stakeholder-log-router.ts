@@ -1,6 +1,7 @@
-const router = require("express").Router();
-const stakeholderLogController = require("../controllers/stakeholder-log-controller");
+import express from "express";
+import stakeholderLogController from "../controllers/stakeholder-log-controller";
+const router = express.Router();
 
 router.get("/:id", stakeholderLogController.getById);
 
-module.exports = router;
+export default router;

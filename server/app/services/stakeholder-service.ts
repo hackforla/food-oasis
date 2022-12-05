@@ -37,7 +37,9 @@ const booleanEitherClause = (columnName: string, value?: string) => {
     : "";
 };
 
-const search = async (params: StakeholderSearchParams) => {
+const search = async (
+  params: StakeholderSearchParams
+): Promise<Stakeholder[]> => {
   const {
     assignedLoginId,
     categoryIds,
@@ -143,9 +145,9 @@ const search = async (params: StakeholderSearchParams) => {
     order by ${locationClause ? "distance" : "s.name"}
 
   `;
-  let stakeholders: Stakeholder[] = [];
+  const stakeholders: Stakeholder[] = [];
   let categoriesResults: StakeholderCategory[] = [];
-  var rows, stakeholder_ids;
+  let rows, stakeholder_ids;
   try {
     rows = await db.manyOrNone(sql);
     stakeholder_ids = rows.map((a) => a.id);
@@ -231,7 +233,7 @@ const search = async (params: StakeholderSearchParams) => {
   return stakeholders;
 };
 
-const selectById = async (id: string) => {
+const selectById = async (id: string): Promise<Stakeholder> => {
   const sql = `select
       s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
       s.phone, s.latitude, s.longitude, s.website,  s.notes,
@@ -374,7 +376,7 @@ const selectById = async (id: string) => {
   return stakeholder;
 };
 
-const selectCsv = async (ids: string[]) => {
+const selectCsv = async (ids: string[]): Promise<Stakeholder[]> => {
   const sql = `select
   s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
   s.phone, s.latitude, s.longitude, s.website,  s.notes,
@@ -456,6 +458,7 @@ where s.id in (${ids.join(", ")})`;
       confirmedAddress: row.v_address,
       confirmedCategories: row.v_categories,
       confirmedEmail: row.v_email,
+      confirmedFoodTypes: row.v_food_types,
       confirmedHours: row.v_hours,
       confirmedName: row.v_name,
       confirmedPhone: row.v_phone,
@@ -520,6 +523,7 @@ where s.id in (${ids.join(", ")})`;
       verificationStatusId: row.verification_status_id,
       website: row.website || "",
       zip: row.zip || "",
+      distance: row.distance,
     };
   });
   return stakeholders;
@@ -541,7 +545,7 @@ const insert = async (model: InsertStakeholderParams) => {
       "}"
     : null;
 
-  // Array of hours if formatted as, e.g., `{"(0,Mon,10:00:00,13:00:00)","(3,Sat,08:00:00,10:30:00)"}
+  // Array of hours is formatted as, e.g., `{"(0,Mon,10:00:00,13:00:00)","(3,Sat,08:00:00,10:30:00)"}
   let hoursSqlValues: string;
   if (typeof model.hours === "string") {
     hoursSqlValues = model.hours;
@@ -645,12 +649,12 @@ const insert = async (model: InsertStakeholderParams) => {
 const insertBulk = async (
   stakeholderArray: InsertStakeholderParams[],
   action: "add" | "update" | "replace",
-  tenantId: string
+  tenantId: number
 ) => {
   if (!tenantId) return;
   if (action === "add") {
     for (let i = 0; i < stakeholderArray.length; i++) {
-      const model = {
+      const model: InsertStakeholderParams = {
         ...camelcaseKeys(stakeholderArray[i]),
         id: 0,
         tenantId,
@@ -781,7 +785,7 @@ const update = async (model: InsertStakeholderParams) => {
     : null;
 
   // Array of hours if formatted as, e.g., `{"(0,Mon,10:00:00,13:00:00)","(3,Sat,08:00:00,10:30:00)"}
-  let hoursSqlValues = Array.isArray(model.hours)
+  const hoursSqlValues = Array.isArray(model.hours)
     ? model.hours
         .reduce((acc, cur) => {
           return (acc += `"(${cur.weekOfMonth},${cur.dayOfWeek},${cur.open},${cur.close})",`);
@@ -900,7 +904,7 @@ const remove = async (idParam: string) => {
   });
 };
 
-const removeAll = async (tenantId: string) => {
+const removeAll = async (tenantId: number) => {
   await db.tx(async (t) => {
     await t.none(
       "delete from stakeholder_schedule where stakeholder_id in (select stakeholder_id from stakeholder where tenant_id = $<tenantId>)",
@@ -942,7 +946,7 @@ const buildCTEClause = (name: string, categoryIds?: string[]) => {
 };
 
 const buildLocationClause = (latitude?: string, longitude?: string) => {
-  var locationClause = "";
+  let locationClause = "";
   if (latitude && longitude) {
     locationClause =
       " point(" +

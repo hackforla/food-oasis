@@ -5,4 +5,4 @@ const router = Router();
 router.get("/", stakeholderBestController.search);
 router.get("/:id", stakeholderBestController.getById);
 
-module.exports = router;
+export default router;

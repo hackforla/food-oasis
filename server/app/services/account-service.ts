@@ -19,7 +19,7 @@ import db from "./db";
 const SALT_ROUNDS = 10;
 
 const selectAll = async (tenantId: string): Promise<Account[]> => {
-  let sql = `
+  const sql = `
   select login.id, login.first_name, login.last_name, login.email, login.email_confirmed,
   login.password_hash, login.date_created, login.is_global_admin, login.is_global_reporting,
     lt.tenant_id, lt.is_admin, lt.is_security_admin, lt.is_data_entry, lt.is_coordinator
@@ -221,7 +221,9 @@ const forgotPassword = async (model: {
     // sending email.
     try {
       await requestResetPasswordConfirmation(email, result, clientUrl);
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
     if (result.isSuccess === true) {
       return {
         isSuccess: true,
@@ -336,7 +338,7 @@ const authenticate = async (
     const isUser = await bcrypt.compare(password, user.passwordHash);
     if (isUser) {
       // assign role on JWT; default to least privilege
-      let role = [];
+      const role = [];
       if (user.isAdmin) {
         role.push("admin");
       }
@@ -416,7 +418,7 @@ const setTenantPermissions = async (
   }
   // Don't expose any columns besides the currently allowed ones:
   // is_admin, is_coordinator, is_security_admin, is_data_entry
-  var allowedPermissions = [
+  const allowedPermissions = [
     "is_admin",
     "is_coordinator",
     "is_security_admin",
@@ -432,7 +434,7 @@ const setTenantPermissions = async (
 
   try {
     // do a tiny bit of sanity checking on our input
-    var booleanValue = Boolean(value);
+    const booleanValue = Boolean(value);
     // if granting a role for the first time, a login_tenant record may not
     // exist, so we might need to insert it.
     if (booleanValue) {
@@ -485,7 +487,7 @@ const setGlobalPermissions = async (
   }
   // Don't expose any columns besides the currently allowed ones:
   // is_global_admin, is_global_reporting
-  var allowedPermissions = ["is_global_admin", "is_global_reporting"];
+  const allowedPermissions = ["is_global_admin", "is_global_reporting"];
   if (!allowedPermissions.includes(permissionName)) {
     return {
       isSuccess: false,
@@ -496,7 +498,7 @@ const setGlobalPermissions = async (
 
   try {
     // do a tiny bit of sanity checking on our input
-    var booleanValue = Boolean(value);
+    const booleanValue = Boolean(value);
     const updateSql = `update login set $<permissionName:name> = $<booleanValue> where id = $<userId>;`;
     await db.none(updateSql, { permissionName, booleanValue, userId });
     return {

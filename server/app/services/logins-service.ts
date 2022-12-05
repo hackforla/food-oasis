@@ -1,7 +1,6 @@
 import { Login } from "../../types/logins-types";
-
 import db from "./db";
-const camelcaseKeys = require("camelcase-keys");
+import camelcaseKeys from "camelcase-keys";
 
 const insert = async (login_id: string, tenant_id: string) => {
   const sql = `insert into logins (login_id, tenant_id)
@@ -21,8 +20,8 @@ const selectAll = async (
     join login
     on login.id = logins.login_id`;
 
-  let queryValues: string[] = [];
-  let whereExpressions: string[] = [];
+  const queryValues: string[] = [];
+  const whereExpressions: string[] = [];
 
   if (tenantId !== undefined) {
     queryValues.push(tenantId);

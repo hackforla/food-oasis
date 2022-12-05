@@ -22,4 +22,4 @@ router.delete(
   parentOrganizationController.remove
 );
 
-module.exports = router;
+export default router;

@@ -17,6 +17,6 @@ const getById: RequestHandler<
   }
 };
 
-module.exports = {
+export default {
   getById,
 };

@@ -78,4 +78,4 @@ router.delete(
   stakeholderController.remove
 );
 
-module.exports = router;
+export default router;

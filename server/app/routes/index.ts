@@ -1,22 +1,22 @@
-import { Router } from 'express'
+import { Router } from "express";
 
-const tenantRouter = require("./tenant-router");
-const accountRouter = require("./account-router");
-const categoryRouter = require("./category-router");
-const neighborhoodRouter = require("./neighborhood-router");
-const suggestionRouter = require("./suggestion-router");
-const parentOrganizationRouter = require("./parent-organization-router");
-const tagRouter = require("./tag-router");
-const loginsRouter = require("./logins-router");
-const faqRouter = require("./faq-router");
-const stakeholderRouter = require("./stakeholder-router");
-const stakeholderBestRouter = require("./stakeholder-best-router");
-const stakeholderLogRouter = require("./stakeholder-log-router");
-const importRouter = require("./import-router");
-const exportRouter = require("./export-router");
-const loadRouter = require("./load-router");
-const esriRouter = require("./esri-router");
-const emailRouter = require("./email-router");
+import tenantRouter from "./tenant-router";
+import accountRouter from "./account-router";
+import categoryRouter from "./category-router";
+import neighborhoodRouter from "./neighborhood-router";
+import suggestionRouter from "./suggestion-router";
+import parentOrganizationRouter from "./parent-organization-router";
+import tagRouter from "./tag-router";
+import loginsRouter from "./logins-router";
+import faqRouter from "./faq-router";
+import stakeholderRouter from "./stakeholder-router";
+import stakeholderBestRouter from "./stakeholder-best-router";
+import stakeholderLogRouter from "./stakeholder-log-router";
+import importRouter from "./import-router";
+import exportRouter from "./export-router";
+import loadRouter from "./load-router";
+import esriRouter from "./esri-router";
+import emailRouter from "./email-router";
 
 const router = Router();
 

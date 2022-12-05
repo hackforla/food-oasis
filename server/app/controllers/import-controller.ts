@@ -2,12 +2,13 @@ import scraperLaplFoodResourcesService from "../import/lapl-food-resources-scrap
 import svc from "../services/load-lapl-service";
 import importService from "../services/import-service";
 import { RequestHandler } from "express";
-import { Article, ImportAction } from "../../types/import-types";
+import { ImportAction } from "../../types/import-types";
+import { LAPLFoodResource } from "../../types/load-lapl-types";
 
 // LA Public Library Food Resources Listing - Scraped
 const getLaplFoodResources: RequestHandler<
   never,
-  Article[] | { error: string },
+  LAPLFoodResource[] | { error: string },
   never,
   never
 > = async (_req, res) => {

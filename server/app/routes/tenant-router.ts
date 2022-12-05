@@ -8,4 +8,4 @@ router.post("/", tenantController.post);
 router.put("/:id", tenantController.put);
 router.delete("/:id", tenantController.remove);
 
-module.exports = router;
+export default router;

@@ -1,10 +1,9 @@
 import {
   Neighborhood,
   NeighborhoodGeoJSON,
-  NeighborhoodPutRequest,
 } from "../../types/neighborhood-types";
 import db from "./db";
-const camelcaseKeys = require("camelcase-keys");
+import camelcaseKeys from "camelcase-keys";
 
 const selectAll = async (tenantId: number): Promise<Neighborhood[]> => {
   // const sql = `
@@ -16,9 +15,11 @@ const selectAll = async (tenantId: number): Promise<Neighborhood[]> => {
   const sql = `
     select id, name
     from neighborhood
+    where tenant_id = $<tenantId>
     order by name
+    
   `;
-  const result = await db.manyOrNone(sql);
+  const result = await db.manyOrNone(sql, { tenantId });
   return result.map((r) => camelcaseKeys(r));
 };
 
@@ -83,7 +84,7 @@ const assignNeighborhood = async (
   stakeholder_lat: number,
   stakeholder_lon: number
 ): Promise<null> => {
-  let neighborhood_id: Promise<Object | null> = findNeighborhood(
+  const neighborhood_id: Promise<Object | null> = findNeighborhood(
     stakeholder_lat,
     stakeholder_lon
   );

@@ -1,4 +1,6 @@
 // read all values in .env file and export to environment
+// This file is used by the migrate script to connect to the database
+// to perform migrations.
 require("dotenv").config();
 
 module.exports = {

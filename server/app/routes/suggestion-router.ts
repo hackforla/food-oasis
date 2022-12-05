@@ -8,4 +8,4 @@ router.get("/:id", suggestionController.getById);
 router.post("/", suggestionController.post);
 router.put("/:id", suggestionController.put);
 
-module.exports = router;
+export default router;

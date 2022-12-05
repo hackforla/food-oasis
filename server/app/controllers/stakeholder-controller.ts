@@ -10,7 +10,7 @@ import {
   AssignParams,
   NeedsVerificationParams,
 } from "../../types/stakeholder-types";
-const stringify = require("csv-stringify");
+const { stringify } = require("csv-stringify");
 
 const search: RequestHandler<
   never,

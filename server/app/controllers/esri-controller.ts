@@ -1,11 +1,17 @@
-const esriService = require("../services/esri-service");
+import esriService from "../services/esri-service";
+import { RequestHandler } from "express";
 
-const geocode = async (req, res) => {
+const geocode: RequestHandler<
+  never,
+  any[],
+  { params: string | {} },
+  never
+> = async (req, res) => {
   try {
     const { address } = req.query;
     const response = await esriService.geocode(address);
     res.send(response);
-  } catch (err) {
+  } catch (err: any) {
     // In order to surface the error at the client, we need to
     // return it as a successful web api request, then detect that
     // it's an error at the client.
@@ -13,6 +19,6 @@ const geocode = async (req, res) => {
   }
 };
 
-module.exports = {
+export default {
   geocode,
 };

@@ -8,6 +8,6 @@ export interface LAPLFoodResource {
   resourceCategories: string;
   generalResources: string;
   additionalOfferings: string;
-  lat: number;
-  lon: number;
+  lat: number | null;
+  lon: number | null;
 }

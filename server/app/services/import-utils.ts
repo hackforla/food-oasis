@@ -2,11 +2,11 @@
 // (for now, parser won't retrieve lat/long based on address; must be added manually)
 
 // const esriService = require("./esri-service");
-const {
+import {
   WEEKS_HOURLY,
   MAP_NUM_TO_DAY,
   STAKEHOLDER_SCHEMA,
-} = require("./import-constants");
+} from "./import-constants";
 
 function formatMapAddress(formData) {
   return `${formData.address_1 || ""} ${formData.address_2 || ""} ${
@@ -39,7 +39,7 @@ function parseHoursAll(row, week) {
   // parses OLD HOURS FORMATTING - hours for entire month in one column
   // eg. hours = (1,Mon,10:00,13:00),(2,Wed,10:000,15:00)
   const { value: weekOfMonth } = week;
-  let weeklyHours = [];
+  const weeklyHours = [];
   const weekArray = convertRowHoursToArray(row.hours);
 
   weekArray.forEach((day) => {
@@ -71,7 +71,7 @@ function parseHoursWeekly(row, week) {
   // parses NEW HOURS FORMATTING - hours split by hourseWeek1, hoursWeek2 ...
   // eg. hoursWeek1 = (Mon,10:00,13:00); hoursWeek2 = (Wed,10:000,15:00), etc.
   const { label, value: weekOfMonth } = week;
-  let weeklyHours = [];
+  const weeklyHours = [];
 
   if (!row[label]) return;
 
@@ -103,7 +103,7 @@ function parseHoursWeekly(row, week) {
 }
 
 function parseStakeholderHours(row) {
-  let monthlyHours = [];
+  const monthlyHours = [];
 
   WEEKS_HOURLY.forEach((week) => {
     let day;
@@ -152,7 +152,7 @@ async function getLatLong(row) {
   };
 }
 
-module.exports = {
+export default {
   formatMapAddress,
   parseStakeholderHours,
   getDefaultStakeholderValues,

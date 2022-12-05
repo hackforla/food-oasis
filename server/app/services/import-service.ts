@@ -1,4 +1,4 @@
-const parse = require("csv-parse");
+import parse from "csv-parse";
 import { Readable } from "stream";
 import stakeholderService from "./stakeholder-service";
 import {
@@ -19,7 +19,7 @@ const parseCsv = async (file: any) => {
   const stream = Readable.from(buffer.toString());
   // disk storage - comment out 'memory storage' above to replace with 'disk storage'
   // const stream = fs.createReadStream(file.path, "utf8");
-  let rowArray = [];
+  const rowArray = [];
   const parser = stream.pipe(
     parse({
       delimiter: ",",
@@ -51,7 +51,7 @@ const parseCsv = async (file: any) => {
 };
 
 // TODO: update data type, possibly stakeholder array
-const importCsv = async (data: any, action: ImportAction, tenantId: string) => {
+const importCsv = async (data: any, action: ImportAction, tenantId: number) => {
   try {
     stakeholderService.insertBulk(data, action, tenantId);
   } catch (err: any) {

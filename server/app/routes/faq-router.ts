@@ -25,5 +25,4 @@ router.delete(
   jwtSession.validateUserHasRequiredRoles(["admin"]),
   faqController.remove
 );
-
-module.exports = router;
+export default router;

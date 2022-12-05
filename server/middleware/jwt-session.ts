@@ -23,9 +23,9 @@ interface JwtPayload {
 // work with cookies).
 async function login(req: Request, res: Response) {
   const token = await sign({
-    email: req.user.email,
-    id: req.user.id,
-    sub: `${req.user.role}` || "",
+    email: req?.user?.email,
+    id: req?.user?.id,
+    sub: `${req?.user?.role}` || "",
   });
   const cookieConfig: CookieOptions = {
     httpOnly: false,
@@ -85,8 +85,8 @@ function validateUserHasRequiredRoles(permittedRoles: Role[]) {
       const payload = await verify(jwtString);
 
       // check that JWT subject is encoded with at least one of the requiredRoles
-      let isJWTRoleInAllowedRoles = permittedRoles.some((permittedRole) => {
-        let regex = new RegExp(permittedRole);
+      const isJWTRoleInAllowedRoles = permittedRoles.some((permittedRole) => {
+        const regex = new RegExp(permittedRole);
         return regex.test(payload.sub);
       });
       if (!isJWTRoleInAllowedRoles) {
@@ -111,7 +111,7 @@ async function sign(payload: string | object | Buffer) {
 }
 
 // Helper function to validate the JWT token
-async function verify(jwtString: string = "") {
+async function verify(jwtString = "") {
   jwtString = jwtString.replace(/^Bearer /i, "");
 
   try {

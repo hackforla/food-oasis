@@ -4,4 +4,4 @@ const router = Router();
 
 router.get("/", loginsController.getAll);
 
-module.exports = router;
+export default router;

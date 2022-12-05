@@ -1,11 +1,11 @@
-const express = require("express");
-const dotenv = require("dotenv");
+import express from "express";
+import dotenv from "dotenv";
 
 dotenv.config();
 
-const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
-const path = require("path");
+import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
+import path from "path";
 import middleware from "./middleware/middleware";
 import router from "./app/routes/index";
 

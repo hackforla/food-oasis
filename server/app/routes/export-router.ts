@@ -9,4 +9,4 @@ router.get(
   exportController.downloadFile
 );
 
-module.exports = router;
+export default router;

@@ -110,12 +110,11 @@ const search = async ({
     ${tag ? ` and '${tag}' = ANY (s.tags) ` : ""}
     order by distance
   `;
-  let stakeholders: StakeholderBest[] = [];
+  const stakeholders: StakeholderBest[] = [];
   let categories: StakeholderCategory[] = [];
-  var rows, stakeholder_ids;
 
-  rows = await db.manyOrNone(sql);
-  stakeholder_ids = rows.map((a) => a.id);
+  const rows = await db.manyOrNone(sql);
+  const stakeholder_ids = rows.map((a) => a.id);
 
   if (stakeholder_ids.length) {
     // Hoover up all the stakeholder categories
@@ -383,7 +382,7 @@ const buildCTEClause = (categoryIds: string[], name: string) => {
 };
 
 const buildLocationClause = (latitude: string, longitude: string) => {
-  var locationClause = "";
+  let locationClause = "";
   if (latitude && longitude) {
     locationClause =
       " point(" +

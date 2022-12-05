@@ -233,7 +233,7 @@ export interface InsertStakeholderParams extends Stakeholder {
   reviewNotes: string;
   selectedCategoryIds: string[];
   services: string;
-  tenantId: string;
+  tenantId: number;
   twitter: string;
 }
 

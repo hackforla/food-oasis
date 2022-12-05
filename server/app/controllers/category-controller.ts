@@ -5,7 +5,7 @@ import { Category } from "../../types/category-types";
 const getAll: RequestHandler<
   never,
   Category[],
-  { params: string | {} },
+  { params: string } | Record<string, never>,
   never
 > = async (req, res) => {
   try {

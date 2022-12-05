@@ -4,7 +4,7 @@ import { RequestHandler } from "express";
 const geocode: RequestHandler<
   never,
   any[],
-  { params: string | {} },
+  { params: string | Record<string, never> },
   never
 > = async (req, res) => {
   try {

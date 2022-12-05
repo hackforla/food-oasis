@@ -1,3 +1,4 @@
+// @ts-nocheck
 // esriService returning 500 error. Commented out esriService fucntion in getLatLong until fixed
 // (for now, parser won't retrieve lat/long based on address; must be added manually)
 

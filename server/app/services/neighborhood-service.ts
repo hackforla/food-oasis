@@ -60,7 +60,7 @@ const updateZoom = async (ncId: number, zoom: number): Promise<void> => {
 const findNeighborhood = async (
   latitude: number,
   longitude: number
-): Promise<Object | null> => {
+): Promise<Record<string, unknown> | null> => {
   const sql = `
     SELECT id, name
       FROM neighborhood
@@ -69,7 +69,10 @@ const findNeighborhood = async (
       ST_GeomFromText('POINT($<latitude> $<longitude>)'))
       ORDER BY name
     `;
-  const rows: Object[] = await db.manyOrNone(sql, { latitude, longitude });
+  const rows: Record<string, unknown>[] = await db.manyOrNone(sql, {
+    latitude,
+    longitude,
+  });
   if (!rows.length) {
     // Could not find a neighborhood that contains this point
     return null;
@@ -84,10 +87,8 @@ const assignNeighborhood = async (
   stakeholder_lat: number,
   stakeholder_lon: number
 ): Promise<null> => {
-  const neighborhood_id: Promise<Object | null> = findNeighborhood(
-    stakeholder_lat,
-    stakeholder_lon
-  );
+  const neighborhood_id: Promise<Record<string, unknown> | null> =
+    findNeighborhood(stakeholder_lat, stakeholder_lon);
   if (neighborhood_id) {
     const sql = `
       UPDATE stakeholder set neighborhood_id = ${neighborhood_id}

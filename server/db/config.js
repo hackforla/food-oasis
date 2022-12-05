@@ -1,7 +1,9 @@
 // read all values in .env file and export to environment
 // This file is used by the migrate script to connect to the database
 // to perform migrations.
-require("dotenv").config();
+import { config } from "dotenv";
+
+config();
 
 module.exports = {
   user: process.env.POSTGRES_USERNAME,

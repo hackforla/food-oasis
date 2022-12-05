@@ -1,4 +1,4 @@
-import get, { AxiosResponse } from "axios";
+import get from "axios";
 const getTokenUrl = `https://www.arcgis.com/sharing/oauth2/token`;
 const findAddressCandidateUrl = `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates`;
 

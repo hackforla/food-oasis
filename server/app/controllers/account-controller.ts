@@ -100,7 +100,7 @@ const resendConfirmationEmail: RequestHandler<
 
 const forgotPassword: RequestHandler<
   never,
-  AccountResponse | { error: string } | [ClientResponse, {}],
+  AccountResponse | { error: string } | [ClientResponse, Record<string, never>],
   {
     email: string;
     clientUrl: string;

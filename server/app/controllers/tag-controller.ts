@@ -67,9 +67,4 @@ const remove: RequestHandler<
   }
 };
 
-export {
-  getAllByTenantId,
-  post,
-  put,
-  remove,
-};
+export { getAllByTenantId, post, put, remove };

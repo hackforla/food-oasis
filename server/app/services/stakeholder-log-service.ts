@@ -1,7 +1,8 @@
 import db from "./db";
 import categoryService from "./category-service";
-import { Stakeholder } from "../../types/stakeholder-types";
+import { StakeholderLog } from "../../types/stakeholder-types";
 import { Category } from "../../types/category-types";
+import stakeholderHelpers from "./stakeholder-helpers";
 
 /* 
 This service is for getting data from the stakeholder_log table for
@@ -10,7 +11,7 @@ viewing the audit log for a particular stakeholder.
 
 const selectById = async (id: number): Promise<any[]> => {
   const sql = `select
-      s.id, s.version, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
+      s.id, s.version,  s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
       s.phone, s.latitude, s.longitude, s.website,  s.notes,
       s.hours,
       s.category_ids,
@@ -43,71 +44,87 @@ const selectById = async (id: number): Promise<any[]> => {
     where s.id = $<id>
     order by s.version desc`;
 
-  const stakeholders: Stakeholder[] = [];
+  const stakeholders: StakeholderLog[] = [];
 
   const rows = await db.manyOrNone(sql, { id: Number(id) });
   const categories: Category[] = await categoryService.selectAll();
+  console.log(categories);
 
   rows.forEach((row) => {
+    const stakeholderCategories = row.category_ids
+      .map((cid: number) => {
+        return categories.find((cat) => cat.id === cid);
+      })
+      .map((c: any) => {
+        return {
+          id: c.id,
+          name: c.name,
+          displayOrder: c.displayOrder,
+        };
+      });
     stakeholders.push({
-      address1: row.address_1 || "",
-      address2: row.address_2 || "",
-      adminNotes: row.admin_notes || "",
-      approvedDate: row.approved_date,
-      assignedDate: row.assigned_date,
-      assignedLoginId: row.assigned_login_id,
-      assignedUser: row.assigned_user || "",
-      categories: row.category_ids
-        .map((cat: number) => categories.find((c) => c.id === cat))
-        .sort((c: Category) => c.displayOrder),
-      city: row.city || "",
-      claimedDate: row.claimed_date,
-      claimedLoginId: row.claimed_login_id,
-      claimedUser: row.claimed_user || "",
-      completeCriticalPercent: row.complete_critical_percent,
-      confirmedAddress: row.v_address,
-      confirmedCategories: row.v_categories,
-      confirmedEmail: row.v_email,
-      confirmedFoodTypes: row.v_food_types,
-      confirmedHours: row.v_hours,
-      confirmedName: row.v_name,
-      confirmedPhone: row.v_phone,
-      covidNotes: row.covid_notes || "",
-      createdDate: row.created_date,
-      createdLoginId: row.created_login_id,
-      createdUser: row.created_user || "",
-      distance: row.distance ? Number(row.distance) : null,
-      email: row.email || "",
-      foodBakery: row.food_bakery,
-      foodDairy: row.food_dairy,
-      foodDryGoods: row.food_dry_goods,
-      foodMeat: row.food_meat,
-      foodPrepared: row.food_prepared,
-      foodProduce: row.food_produce,
-      id: row.id,
-      inactive: row.inactive,
-      inactiveTemporary: row.inactive_temporary,
-      latitude: row.latitude ? Number(row.latitude) : null,
-      longitude: row.longitude ? Number(row.longitude) : null,
-      modifiedDate: row.modified_date,
-      modifiedLoginId: row.modified_login_id,
-      modifiedUser: row.modified_user || "",
-      name: row.name || "",
-      neighborhoodId: row.neighborhood_id,
-      neighborhoodName: row.neighborhood_name,
-      phone: row.phone || "",
-      requirements: row.requirements || "",
-      reviewedLoginId: row.reviewed_login_id,
-      reviewedUser: row.reviewed_user || "",
-      state: row.state || "",
-      submittedDate: row.submitted_date,
-      submittedLoginId: row.submitted_login_id,
-      submittedUser: row.submitted_user || "",
-      verificationStatusId: row.verification_status_id,
+      ...stakeholderHelpers.rowToStakeholder(row, stakeholderCategories),
       version: row.version,
-      website: row.website || "",
-      zip: row.zip || "",
     });
+    // {
+    //   address1: row.address_1 || "",
+    //   address2: row.address_2 || "",
+    //   adminNotes: row.admin_notes || "",
+    //   approvedDate: row.approved_date,
+    //   assignedDate: row.assigned_date,
+    //   assignedLoginId: row.assigned_login_id,
+    //   assignedUser: row.assigned_user || "",
+    //   categories: row.category_ids
+    //     .map((cat: number) => categories.find((c) => c.id === cat))
+    //     .sort((c: Category) => c.displayOrder),
+    //   city: row.city || "",
+    //   claimedDate: row.claimed_date,
+    //   claimedLoginId: row.claimed_login_id,
+    //   claimedUser: row.claimed_user || "",
+    //   completeCriticalPercent: row.complete_critical_percent,
+    //   confirmedAddress: row.v_address,
+    //   confirmedCategories: row.v_categories,
+    //   confirmedEmail: row.v_email,
+    //   confirmedFoodTypes: row.v_food_types,
+    //   confirmedHours: row.v_hours,
+    //   confirmedName: row.v_name,
+    //   confirmedPhone: row.v_phone,
+    //   covidNotes: row.covid_notes || "",
+    //   createdDate: row.created_date,
+    //   createdLoginId: row.created_login_id,
+    //   createdUser: row.created_user || "",
+    //   distance: row.distance ? Number(row.distance) : null,
+    //   email: row.email || "",
+    //   foodBakery: row.food_bakery,
+    //   foodDairy: row.food_dairy,
+    //   foodDryGoods: row.food_dry_goods,
+    //   foodMeat: row.food_meat,
+    //   foodPrepared: row.food_prepared,
+    //   foodProduce: row.food_produce,
+    //   id: row.id,
+    //   inactive: row.inactive,
+    //   inactiveTemporary: row.inactive_temporary,
+    //   latitude: row.latitude ? Number(row.latitude) : null,
+    //   longitude: row.longitude ? Number(row.longitude) : null,
+    //   modifiedDate: row.modified_date,
+    //   modifiedLoginId: row.modified_login_id,
+    //   modifiedUser: row.modified_user || "",
+    //   name: row.name || "",
+    //   neighborhoodId: row.neighborhood_id,
+    //   neighborhoodName: row.neighborhood_name,
+    //   phone: row.phone || "",
+    //   requirements: row.requirements || "",
+    //   reviewedLoginId: row.reviewed_login_id,
+    //   reviewedUser: row.reviewed_user || "",
+    //   state: row.state || "",
+    //   submittedDate: row.submitted_date,
+    //   submittedLoginId: row.submitted_login_id,
+    //   submittedUser: row.submitted_user || "",
+    //   verificationStatusId: row.verification_status_id,
+    //   version: row.version,
+    //   website: row.website || "",
+    //   zip: row.zip || "",
+    // });
   });
 
   return stakeholders;

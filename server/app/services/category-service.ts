@@ -4,7 +4,7 @@ import camelcaseKeys from "camelcase-keys";
 
 const selectAll = async (): Promise<Category[]> => {
   const sql = `
-    select id, name, display_order as displayOrder, inactive
+    select id, name, display_order, inactive
     from category
     order by name
   `;

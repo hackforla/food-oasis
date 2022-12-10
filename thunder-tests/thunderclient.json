@@ -832,7 +832,7 @@
     "method": "GET",
     "sortNum": 10000,
     "created": "2022-10-04T03:11:23.723Z",
-    "modified": "2022-11-22T03:16:25.820Z",
+    "modified": "2022-12-07T16:06:43.637Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -851,7 +851,7 @@
         "type": "res-body",
         "custom": "",
         "action": "contains",
-        "value": "\"Salvation Army - Redondo Beach\""
+        "value": "\"Salvation Army Redondo Beach\""
       }
     ],
     "preReq": {
@@ -870,19 +870,138 @@
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "7f5a5a8a-37c9-4fea-911f-c13660509a3e",
     "name": "Stakeholders GET All",
-    "url": "http://localhost:5001/api/stakeholders",
+    "url": "http://localhost:5001/api/stakeholders?tenantId=1&name=&latitude=0&longitude=0&distance=0&categoryIds[]=9&categoryIds[]=1&isInactive=either&isAssigned=either&isSubmitted=either&isApproved=either&isClaimed=either&verificationStatusId=4&isInactiveTemporary=either&stakeholderId=&neighborhoodId=72&minCompleteCriticalPercent=0&maxCompleteCriticalPercent=100&tag=",
     "method": "GET",
     "sortNum": 20000,
     "created": "2022-10-04T03:11:23.724Z",
-    "modified": "2022-11-18T02:09:57.748Z",
+    "modified": "2022-12-10T03:50:53.408Z",
     "headers": [
       {
         "name": "Content-Type",
         "value": "application/json"
       }
     ],
-    "params": [],
-    "tests": []
+    "params": [
+      {
+        "name": "tenantId",
+        "value": "1",
+        "isPath": false
+      },
+      {
+        "name": "name",
+        "value": "",
+        "isPath": false
+      },
+      {
+        "name": "latitude",
+        "value": "0",
+        "isPath": false
+      },
+      {
+        "name": "longitude",
+        "value": "0",
+        "isPath": false
+      },
+      {
+        "name": "distance",
+        "value": "0",
+        "isPath": false
+      },
+      {
+        "name": "categoryIds[]",
+        "value": "9",
+        "isPath": false
+      },
+      {
+        "name": "categoryIds[]",
+        "value": "1",
+        "isPath": false
+      },
+      {
+        "name": "isInactive",
+        "value": "either",
+        "isPath": false
+      },
+      {
+        "name": "isAssigned",
+        "value": "either",
+        "isPath": false
+      },
+      {
+        "name": "isSubmitted",
+        "value": "either",
+        "isPath": false
+      },
+      {
+        "name": "isApproved",
+        "value": "either",
+        "isPath": false
+      },
+      {
+        "name": "isClaimed",
+        "value": "either",
+        "isPath": false
+      },
+      {
+        "name": "verificationStatusId",
+        "value": "4",
+        "isPath": false
+      },
+      {
+        "name": "isInactiveTemporary",
+        "value": "either",
+        "isPath": false
+      },
+      {
+        "name": "stakeholderId",
+        "value": "",
+        "isPath": false
+      },
+      {
+        "name": "neighborhoodId",
+        "value": "72",
+        "isPath": false
+      },
+      {
+        "name": "minCompleteCriticalPercent",
+        "value": "0",
+        "isPath": false
+      },
+      {
+        "name": "maxCompleteCriticalPercent",
+        "value": "100",
+        "isPath": false
+      },
+      {
+        "name": "tag",
+        "value": "",
+        "isPath": false
+      }
+    ],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"DOWNTOWN LOS ANGELES\""
+      }
+    ],
+    "preReq": {
+      "runRequests": [
+        {
+          "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+          "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+          "triggerCondition": "run-always",
+          "triggerValue": ""
+        }
+      ]
+    }
   },
   {
     "_id": "c8b7d3dd-a67d-46aa-9bff-e3b25d64310f",
@@ -975,7 +1094,7 @@
     "method": "POST",
     "sortNum": 30000,
     "created": "2022-10-04T03:11:23.728Z",
-    "modified": "2022-11-18T02:16:25.537Z",
+    "modified": "2022-12-07T16:11:48.929Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -985,10 +1104,33 @@
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\n        \"name\": \"_Veteran's Park\",\n        \"address1\": \"309 Esplanade\",\n        \"address2\": \"\",\n        \"city\": \"Redondo Beach\",\n        \"state\": \"CA\",\n        \"zip\": \"90277\",\n        \"phone\": \"310 901-5944\",\n        \"latitude\": 33.873834,\n        \"longitude\": -118.389660,\n        \"website\": \"http://redondo.org\",\n        \"active\": true,\n        \"notes\": \"A test stakeholder\",\n        \"categories\": [\n            {\n                \"id\": 6,\n                \"name\": \"Summer Lunch for Kids\"\n            }\n        ]\n    }",
+      "raw": "{\n  \"tenantId\": 1,\n  \"name\": \"_Veteran's Park\",\n  \"address1\": \"309 Esplanade\",\n  \"address2\": \"\",\n  \"city\": \"Redondo Beach\",\n  \"state\": \"CA\",\n  \"zip\": \"90277\",\n  \"phone\": \"310 901-5944\",\n  \"latitude\": 33.873834,\n  \"longitude\": -118.389660,\n  \"website\": \"http://redondo.org\",\n  \"active\": true,\n  \"notes\": \"A test stakeholder\",\n  \"categories\": [\n    {\n      \"id\": 6,\n      \"name\": \"Summer Lunch for Kids\"\n    }\n  ]\n}",
       "form": []
     },
-    "tests": []
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "201"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"id\""
+      }
+    ],
+    "preReq": {
+      "runRequests": [
+        {
+          "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+          "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+          "triggerCondition": "run-always",
+          "triggerValue": ""
+        }
+      ]
+    }
   },
   {
     "_id": "c429c489-92f1-445b-84a1-71044c74a8d5",
@@ -1441,7 +1583,7 @@
     "method": "PUT",
     "sortNum": 60000,
     "created": "2022-10-04T03:11:23.742Z",
-    "modified": "2022-11-22T02:51:19.794Z",
+    "modified": "2022-12-07T16:12:29.834Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -1454,7 +1596,14 @@
       "raw": "{\n    \"id\": 3107,\n    \"name\": \"Salvation Army Redondo Beach\",\n    \"address1\": \"125 W. Beryl Street\",\n    \"address2\": \"\",\n    \"city\": \"Redondo Beach\",\n    \"state\": \"CA\",\n    \"zip\": \"90277\",\n    \"phone\": \"(310) 318-2827\",\n    \"latitude\": 33.84627323,\n    \"longitude\": -118.3929677,\n    \"website\": \"https://redondobeach.salvationarmy.org\",\n    \"createdDate\": \"2019-12-01T08:00:00\",\n    \"notes\": \"\",\n    \"createdLoginId\": null,\n    \"modifiedDate\": \"2021-02-17T20:18:35\",\n    \"modifiedLoginId\": 108,\n    \"submittedDate\": null,\n    \"submittedLoginId\": null,\n    \"approvedDate\": \"2020-05-23T12:43:05\",\n    \"assignedLoginId\": 110,\n    \"assignedDate\": \"2020-05-23T01:56:23\",\n    \"claimedLoginId\": null,\n    \"claimedDate\": \"2019-12-01T08:00:00\",\n    \"requirements\": \"Must be local resident\",\n    \"adminNotes\": \"There is no food pantry at this location. The nearest Salvation Army Pantry is in Lomita.\",\n    \"inactive\": true,\n    \"createdUser\": \" \",\n    \"modifiedUser\": \"Admin User\",\n    \"submittedUser\": \" \",\n    \"reviewedUser\": \" \",\n    \"assignedUser\": \"Data Entry User\",\n    \"claimedUser\": \" \",\n    \"selectedCategoryIds\": [1],\n    \"hours\": [\n        {\n            \"dayOfWeek\": \"Tue\",\n            \"open\": \"02:00:00\",\n            \"close\": \"05:00:00\",\n            \"weekOfMonth\": 3\n        }\n    ],\n    \"parentOrganization\": \"\",\n    \"physicalAccess\": \"\",\n    \"email\": \"army@salvation.org\",\n    \"items\": \"\",\n    \"services\": \"\",\n    \"facebook\": \"\",\n    \"twitter\": \"\",\n    \"pinterest\": \"\",\n    \"linkedin\": \"\",\n    \"description\": \"\",\n    \"reviewNotes\": \"\",\n    \"instagram\": \"\",\n    \"adminContactName\": \"\",\n    \"adminContactPhone\": \"\",\n    \"adminContactEmail\": \"\",\n    \"donationContactName\": \"\",\n    \"donationContactPhone\": \"\",\n    \"donationContactEmail\": \"\",\n    \"donationPickup\": false,\n    \"donationAcceptFrozen\": false,\n    \"donationAcceptRefrigerated\": false,\n    \"donationAcceptPerishable\": false,\n    \"donationSchedule\": \"\",\n    \"donationDeliveryInstructions\": \"\",\n    \"donationNotes\": \"\",\n    \"covidNotes\": \"\",\n    \"categoryNotes\": \"\",\n    \"eligibilityNotes\": \"\",\n    \"foodTypes\": \"\",\n    \"languages\": \"English\",\n    \"confirmedName\": true,\n    \"confirmedCategories\": true,\n    \"confirmedAddress\": true,\n    \"confirmedPhone\": true,\n    \"confirmedEmail\": true,\n    \"confirmedHours\": true,\n    \"confirmedFoodTypes\": false,\n    \"verificationStatusId\": 4,\n    \"inactiveTemporary\": false,\n    \"neighborhoodId\": null,\n    \"foodBakery\": false,\n    \"foodDryGoods\": false,\n    \"foodProduce\": false,\n    \"foodDairy\": false,\n    \"foodPrepared\": false,\n    \"foodMeat\": false,\n    \"parentOrganizationId\": 2,\n    \"distance\": null\n}",
       "form": []
     },
-    "tests": []
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      }
+    ]
   },
   {
     "_id": "1d8d36d7-690e-406f-8d7a-827608526e85",
@@ -1865,7 +2014,7 @@
     "method": "POST",
     "sortNum": 550000,
     "created": "2022-11-22T16:47:27.449Z",
-    "modified": "2022-11-22T17:32:36.113Z",
+    "modified": "2022-12-07T16:13:49.264Z",
     "headers": [],
     "params": [],
     "body": {
@@ -1873,7 +2022,20 @@
       "raw": "{\n  \"ids\": [\n    3108,\n    3109\n  ]\n}",
       "form": []
     },
-    "tests": [],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "Salvation Army - Santa Clarita Valley Corps"
+      }
+    ],
     "preReq": {
       "runRequests": [
         {

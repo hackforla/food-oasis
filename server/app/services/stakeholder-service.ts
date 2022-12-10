@@ -2,14 +2,17 @@ import db from "./db";
 import camelcaseKeys from "camelcase-keys";
 import {
   Stakeholder,
+  StakeholderWithDistance,
   StakeholderCategory,
   StakeholderSearchParams,
   InsertStakeholderParams,
+  UpdateStakeholderParams,
   ClaimParams,
   RequestAssignmentParams,
   AssignParams,
   NeedsVerificationParams,
 } from "../../types/stakeholder-types";
+import stakeholderHelpers from "./stakeholder-helpers";
 
 /* 
 This service is for getting data from the stakeholder table, which
@@ -39,7 +42,7 @@ const booleanEitherClause = (columnName: string, value?: string) => {
 
 const search = async (
   params: StakeholderSearchParams
-): Promise<Stakeholder[]> => {
+): Promise<StakeholderWithDistance[]> => {
   const {
     assignedLoginId,
     categoryIds,
@@ -65,43 +68,54 @@ const search = async (
 
   const locationClause = buildLocationClause(latitude, longitude);
   const categoryClause = buildCTEClause(name || "", categoryIds);
-  // false means search stakeholder table, not stakeholder_best, since this is
-  // for the administrative dashboard
 
   const sql = `${categoryClause}
-    select s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
-      s.phone, s.latitude, s.longitude, s.website,
-      (select array(select row_to_json(category_row)
-        from (
-          select c.id, c.name, c.display_order
-          from category c
-            join stakeholder_category sc on c.id = sc.category_id
-          where sc.stakeholder_id = s.id
-          order by c.display_order
-        ) category_row
-      )) as categories,
-      to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
-        as created_date, s.created_login_id,
-      to_char(s.modified_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
-        as modified_date, s.modified_login_id,
-      to_char(s.submitted_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
-        as submitted_date, s.submitted_login_id,
-      to_char(s.approved_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
-        as approved_date, s.reviewed_login_id,
-      to_char(s.assigned_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
-        as assigned_date, s.assigned_login_id,
-      to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
-        as claimed_date, s.claimed_login_id,
-      s.requirements, s.admin_notes, s.inactive, s.email, s.covid_notes,
-      s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email,
-      s.v_hours, s.v_food_types, s.verification_status_id, s.inactive_temporary,
-      s.neighborhood_id, n.name as neighborhood_name,
-      s.complete_critical_percent,
-      ${locationClause ? `${locationClause} AS distance,` : ""}
-      s.food_bakery, s.food_dry_goods, s.food_produce,
-      s.food_dairy, s.food_prepared, s.food_meat,
-      s.parent_organization_id, s.hours_notes, s.allow_walkins, s.tags,
+    select   s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
+    s.phone, s.latitude, s.longitude, s.website,  s.notes,
+    (select array(select row_to_json(row)
+    from (
+      select day_of_week as "dayOfWeek", open, close, week_of_month as "weekOfMonth"
+      from stakeholder_schedule
+      where stakeholder_id = s.id
+    ) row
+    )) as hours,
+    (select array(select row_to_json(category_row)
+      from (
+        select c.id, c.name, c.display_order
+        from category c
+          join stakeholder_category sc on c.id = sc.category_id
+        where sc.stakeholder_id = s.id
+        order by c.display_order
+      ) category_row
+    )) as categories,
+    to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as created_date, s.created_login_id,
+    to_char(s.modified_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as modified_date, s.modified_login_id,
+    to_char(s.submitted_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as submitted_date, s.submitted_login_id,
+    to_char(s.approved_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as approved_date, s.reviewed_login_id,
+    to_char(s.assigned_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')as assigned_date, s.assigned_login_id,
+    to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as claimed_date, s.claimed_login_id,
+    s.requirements::varchar, s.admin_notes, s.inactive,
+    s.parent_organization, s.physical_access, s.email,
+    s.items, s.services, s.facebook,
+    s.twitter, s.pinterest, s.linkedin, s.description,
+    s.review_notes, s.instagram, s.admin_contact_name,
+    s.admin_contact_phone, s.admin_contact_email,
+    s.donation_contact_name, s.donation_contact_phone,
+    s.donation_contact_email, s.donation_pickup,
+    s.donation_accept_frozen, s.donation_accept_refrigerated,
+    s.donation_accept_perishable, s.donation_schedule,
+    s.donation_delivery_instructions, s.donation_notes, s.covid_notes,
+    s.category_notes, s.eligibility_notes, s.food_types, s.languages,
+    s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email,
+    s.v_hours, s.v_food_types, s.verification_status_id, s.inactive_temporary,
+    s.neighborhood_id,
+    s.food_bakery, s.food_dry_goods, s.food_produce,
+    s.food_dairy, s.food_prepared, s.food_meat,
+    s.parent_organization_id,
+    s.hours_notes, s.allow_walkins, s.tags,
+    ${locationClause ? `${locationClause} AS distance,` : ""}
     ${buildLoginSelectsClause()}
+    
     from stakeholder_set as s
     left outer join neighborhood n on s.neighborhood_id = n.id
     ${buildLoginJoinsClause()}
@@ -145,8 +159,8 @@ const search = async (
     order by ${locationClause ? "distance" : "s.name"}
 
   `;
-  const stakeholders: Stakeholder[] = [];
-  let categoriesResults: StakeholderCategory[] = [];
+  const stakeholders: StakeholderWithDistance[] = [];
+  let categoriesResults: StakeholderCategory[];
   let rows, stakeholder_ids;
   try {
     rows = await db.manyOrNone(sql);
@@ -166,69 +180,82 @@ const search = async (
   }
 
   rows.forEach((row) => {
-    stakeholders.push({
-      address1: row.address_1 || "",
-      address2: row.address_2 || "",
-      adminNotes: row.admin_notes || "",
-      allowWalkins: row.allow_walkins,
-      approvedDate: row.approved_date,
-      assignedDate: row.assigned_date,
-      assignedLoginId: row.assigned_login_id,
-      assignedUser: row.assigned_user || "",
-      categories: categoriesResults.filter(
-        (cats) => cats.stakeholder_id === row.id
+    const stakeholder = {
+      ...stakeholderHelpers.rowToStakeholder(
+        row,
+        categoriesResults
+          .filter((cr) => cr.stakeholder_id === row.id)
+          .map((c) => {
+            return { id: c.id, name: c.name, displayOrder: c.display_order };
+          })
       ),
-      city: row.city || "",
-      claimedDate: row.claimed_date,
-      claimedLoginId: row.claimed_login_id,
-      claimedUser: row.claimed_user || "",
-      completeCriticalPercent: row.complete_critical_percent,
-      confirmedAddress: row.v_address,
-      confirmedCategories: row.v_categories,
-      confirmedEmail: row.v_email,
-      confirmedFoodTypes: row.v_food_types,
-      confirmedHours: row.v_hours,
-      confirmedName: row.v_name,
-      confirmedPhone: row.v_phone,
-      covidNotes: row.covid_notes || "",
-      createdDate: row.created_date,
-      createdLoginId: row.created_login_id,
-      createdUser: row.created_user || "",
-      distance: row.distance ? Number(row.distance) : null,
-      email: row.email || "",
-      foodBakery: row.food_bakery,
-      foodDairy: row.food_dairy,
-      foodDryGoods: row.food_dry_goods,
-      foodMeat: row.food_meat,
-      foodPrepared: row.food_prepared,
-      foodProduce: row.food_produce,
-      hoursNotes: row.hours_notes,
-      id: row.id,
-      inactive: row.inactive,
-      inactiveTemporary: row.inactive_temporary,
-      latitude: row.latitude ? Number(row.latitude) : null,
-      longitude: row.longitude ? Number(row.longitude) : null,
-      modifiedDate: row.modified_date,
-      modifiedLoginId: row.modified_login_id,
-      modifiedUser: row.modified_user || "",
-      name: row.name || "",
-      neighborhoodId: row.neighborhood_id,
-      neighborhoodName: row.neighborhood_name,
-      parentOrganizationId: row.parent_organization_id,
-      phone: row.phone || "",
-      requirements: row.requirements || "",
-      reviewedLoginId: row.reviewed_login_id,
-      reviewedUser: row.reviewed_user || "",
-      state: row.state || "",
-      submittedDate: row.submitted_date,
-      submittedLoginId: row.submitted_login_id,
-      submittedUser: row.submitted_user || "",
-      tags: row.tags,
-      verificationStatusId: row.verification_status_id,
-      website: row.website || "",
-      zip: row.zip || "",
-    });
+      distance: row.distance,
+    };
+    stakeholders.push(stakeholder);
   });
+  //   stakeholders.push({
+  //     address1: row.address_1 || "",
+  //     address2: row.address_2 || "",
+  //     adminNotes: row.admin_notes || "",
+  //     allowWalkins: row.allow_walkins,
+  //     approvedDate: row.approved_date,
+  //     assignedDate: row.assigned_date,
+  //     assignedLoginId: row.assigned_login_id,
+  //     assignedUser: row.assigned_user || "",
+  //     categories: categoriesResults.filter(
+  //       (cats) => cats.stakeholder_id === row.id
+  //     ),
+  //     city: row.city || "",
+  //     claimedDate: row.claimed_date,
+  //     claimedLoginId: row.claimed_login_id,
+  //     claimedUser: row.claimed_user || "",
+  //     completeCriticalPercent: row.complete_critical_percent,
+  //     confirmedAddress: row.v_address,
+  //     confirmedCategories: row.v_categories,
+  //     confirmedEmail: row.v_email,
+  //     confirmedFoodTypes: row.v_food_types,
+  //     confirmedHours: row.v_hours,
+  //     confirmedName: row.v_name,
+  //     confirmedPhone: row.v_phone,
+  //     covidNotes: row.covid_notes || "",
+  //     createdDate: row.created_date,
+  //     createdLoginId: row.created_login_id,
+  //     createdUser: row.created_user || "",
+  //     distance: row.distance ? Number(row.distance) : null,
+  //     email: row.email || "",
+  //     foodBakery: row.food_bakery,
+  //     foodDairy: row.food_dairy,
+  //     foodDryGoods: row.food_dry_goods,
+  //     foodMeat: row.food_meat,
+  //     foodPrepared: row.food_prepared,
+  //     foodProduce: row.food_produce,
+  //     hoursNotes: row.hours_notes,
+  //     id: row.id,
+  //     inactive: row.inactive,
+  //     inactiveTemporary: row.inactive_temporary,
+  //     latitude: row.latitude ? Number(row.latitude) : null,
+  //     longitude: row.longitude ? Number(row.longitude) : null,
+  //     modifiedDate: row.modified_date,
+  //     modifiedLoginId: row.modified_login_id,
+  //     modifiedUser: row.modified_user || "",
+  //     name: row.name || "",
+  //     neighborhoodId: row.neighborhood_id,
+  //     neighborhoodName: row.neighborhood_name,
+  //     parentOrganizationId: row.parent_organization_id,
+  //     phone: row.phone || "",
+  //     requirements: row.requirements || "",
+  //     reviewedLoginId: row.reviewed_login_id,
+  //     reviewedUser: row.reviewed_user || "",
+  //     state: row.state || "",
+  //     submittedDate: row.submitted_date,
+  //     submittedLoginId: row.submitted_login_id,
+  //     submittedUser: row.submitted_user || "",
+  //     tags: row.tags,
+  //     verificationStatusId: row.verification_status_id,
+  //     website: row.website || "",
+  //     zip: row.zip || "",
+  //   });
+  // });
 
   return stakeholders;
 };
@@ -283,97 +310,97 @@ const selectById = async (id: string): Promise<Stakeholder> => {
     ${buildLoginJoinsClause()}
     where s.id = ${Number(id)}`;
   const row = await db.one(sql);
-  const stakeholder = {
-    address1: row.address_1 || "",
-    address2: row.address_2 || "",
-    adminContactEmail: row.admin_contact_email || "",
-    adminContactName: row.admin_contact_name || "",
-    adminContactPhone: row.admin_contact_phone || "",
-    adminNotes: row.admin_notes || "",
-    allowWalkins: row.allow_walkins,
-    approvedDate: row.approved_date,
-    assignedDate: row.assigned_date,
-    assignedLoginId: row.assigned_login_id,
-    assignedUser: row.assigned_user || "",
-    categories: row.categories,
-    categoryNotes: row.category_notes || "",
-    city: row.city || "",
-    claimedDate: row.claimed_date,
-    claimedLoginId: row.claimed_login_id,
-    claimedUser: row.claimed_user || "",
-    confirmedAddress: row.v_address,
-    confirmedCategories: row.v_categories,
-    confirmedEmail: row.v_email,
-    confirmedFoodTypes: row.v_food_types,
-    confirmedHours: row.v_hours,
-    confirmedName: row.v_name,
-    confirmedPhone: row.v_phone,
-    covidNotes: row.covid_notes || "",
-    createdDate: row.created_date,
-    createdLoginId: row.created_login_id,
-    createdUser: row.created_user || "",
-    description: row.description,
-    // Don't have a distance, since we didn't specify origin
-    distance: null,
-    donationAcceptFrozen: row.donation_accept_frozen || false,
-    donationAcceptPerishable: row.donation_accept_perishable || false,
-    donationAcceptRefrigerated: row.donation_accept_refrigerated || false,
-    donationContactEmail: row.donation_contact_email || "",
-    donationContactName: row.donation_contact_name || "",
-    donationContactPhone: row.donation_contact_phone || "",
-    donationDeliveryInstructions: row.donation_delivery_instructions || "",
-    donationNotes: row.donation_notes || "",
-    donationPickup: row.donation_pickup || false,
-    donationSchedule: row.donation_schedule || "",
-    eligibilityNotes: row.eligibility_notes || "",
-    email: row.email || "",
-    facebook: row.facebook || "",
-    foodBakery: row.food_bakery,
-    foodDairy: row.food_dairy,
-    foodDryGoods: row.food_dry_goods,
-    foodMeat: row.food_meat,
-    foodPrepared: row.food_prepared,
-    foodProduce: row.food_produce,
-    foodTypes: row.food_types || "",
-    hours: row.hours,
-    hoursNotes: row.hours_notes,
-    id: row.id,
-    inactive: row.inactive,
-    inactiveTemporary: row.inactive_temporary,
-    instagram: row.instagram || "",
-    items: row.items || "",
-    languages: row.languages || "",
-    latitude: row.latitude ? Number(row.latitude) : null,
-    linkedin: row.linkedin || "",
-    longitude: row.longitude ? Number(row.longitude) : null,
-    modifiedDate: row.modified_date,
-    modifiedLoginId: row.modified_login_id,
-    modifiedUser: row.modified_user || "",
-    name: row.name || "",
-    neighborhoodId: row.neighborhood_id,
-    notes: row.notes || "",
-    parentOrganization: row.parent_organization || "",
-    parentOrganizationId: row.parent_organization_id,
-    phone: row.phone || "",
-    physicalAccess: row.physical_access || "",
-    pinterest: row.pinterest || "",
-    requirements: row.requirements || "",
-    reviewedLoginId: row.approved_login_id,
-    reviewedUser: row.reviewed_user || "",
-    reviewNotes: row.review_notes,
-    services: row.services || "",
-    state: row.state || "",
-    submittedDate: row.submitted_date,
-    submittedLoginId: row.submitted_login_id,
-    submittedUser: row.submitted_user || "",
-    tags: row.tags,
-    twitter: row.twitter || "",
-    verificationStatusId: row.verification_status_id,
-    website: row.website || "",
-    zip: row.zip || "",
-  };
+  // const stakeholder = {
+  //   address1: row.address_1 || "",
+  //   address2: row.address_2 || "",
+  //   adminContactEmail: row.admin_contact_email || "",
+  //   adminContactName: row.admin_contact_name || "",
+  //   adminContactPhone: row.admin_contact_phone || "",
+  //   adminNotes: row.admin_notes || "",
+  //   allowWalkins: row.allow_walkins,
+  //   approvedDate: row.approved_date,
+  //   assignedDate: row.assigned_date,
+  //   assignedLoginId: row.assigned_login_id,
+  //   assignedUser: row.assigned_user || "",
+  //   categories: row.categories,
+  //   categoryNotes: row.category_notes || "",
+  //   city: row.city || "",
+  //   claimedDate: row.claimed_date,
+  //   claimedLoginId: row.claimed_login_id,
+  //   claimedUser: row.claimed_user || "",
+  //   confirmedAddress: row.v_address,
+  //   confirmedCategories: row.v_categories,
+  //   confirmedEmail: row.v_email,
+  //   confirmedFoodTypes: row.v_food_types,
+  //   confirmedHours: row.v_hours,
+  //   confirmedName: row.v_name,
+  //   confirmedPhone: row.v_phone,
+  //   covidNotes: row.covid_notes || "",
+  //   createdDate: row.created_date,
+  //   createdLoginId: row.created_login_id,
+  //   createdUser: row.created_user || "",
+  //   description: row.description,
+  //   // Don't have a distance, since we didn't specify origin
+  //   distance: null,
+  //   donationAcceptFrozen: row.donation_accept_frozen || false,
+  //   donationAcceptPerishable: row.donation_accept_perishable || false,
+  //   donationAcceptRefrigerated: row.donation_accept_refrigerated || false,
+  //   donationContactEmail: row.donation_contact_email || "",
+  //   donationContactName: row.donation_contact_name || "",
+  //   donationContactPhone: row.donation_contact_phone || "",
+  //   donationDeliveryInstructions: row.donation_delivery_instructions || "",
+  //   donationNotes: row.donation_notes || "",
+  //   donationPickup: row.donation_pickup || false,
+  //   donationSchedule: row.donation_schedule || "",
+  //   eligibilityNotes: row.eligibility_notes || "",
+  //   email: row.email || "",
+  //   facebook: row.facebook || "",
+  //   foodBakery: row.food_bakery,
+  //   foodDairy: row.food_dairy,
+  //   foodDryGoods: row.food_dry_goods,
+  //   foodMeat: row.food_meat,
+  //   foodPrepared: row.food_prepared,
+  //   foodProduce: row.food_produce,
+  //   foodTypes: row.food_types || "",
+  //   hours: row.hours,
+  //   hoursNotes: row.hours_notes,
+  //   id: row.id,
+  //   inactive: row.inactive,
+  //   inactiveTemporary: row.inactive_temporary,
+  //   instagram: row.instagram || "",
+  //   items: row.items || "",
+  //   languages: row.languages || "",
+  //   latitude: row.latitude ? Number(row.latitude) : null,
+  //   linkedin: row.linkedin || "",
+  //   longitude: row.longitude ? Number(row.longitude) : null,
+  //   modifiedDate: row.modified_date,
+  //   modifiedLoginId: row.modified_login_id,
+  //   modifiedUser: row.modified_user || "",
+  //   name: row.name || "",
+  //   neighborhoodId: row.neighborhood_id,
+  //   notes: row.notes || "",
+  //   parentOrganization: row.parent_organization || "",
+  //   parentOrganizationId: row.parent_organization_id,
+  //   phone: row.phone || "",
+  //   physicalAccess: row.physical_access || "",
+  //   pinterest: row.pinterest || "",
+  //   requirements: row.requirements || "",
+  //   reviewedLoginId: row.approved_login_id,
+  //   reviewedUser: row.reviewed_user || "",
+  //   reviewNotes: row.review_notes,
+  //   services: row.services || "",
+  //   state: row.state || "",
+  //   submittedDate: row.submitted_date,
+  //   submittedLoginId: row.submitted_login_id,
+  //   submittedUser: row.submitted_user || "",
+  //   tags: row.tags,
+  //   twitter: row.twitter || "",
+  //   verificationStatusId: row.verification_status_id,
+  //   website: row.website || "",
+  //   zip: row.zip || "",
+  // };
 
-  return stakeholder;
+  return stakeholderHelpers.rowToStakeholder(row);
 };
 
 const selectCsv = async (ids: string[]): Promise<Stakeholder[]> => {
@@ -437,94 +464,95 @@ left join neighborhood n on s.neighborhood_id = n.id
 where s.id in (${ids.join(", ")})`;
   const rows = await db.manyOrNone(sql);
   const stakeholders = rows.map((row) => {
-    return {
-      address1: row.address_1 || "",
-      address2: row.address_2 || "",
-      adminContactEmail: row.admin_contact_email || "",
-      adminContactName: row.admin_contact_name || "",
-      adminContactPhone: row.admin_contact_phone || "",
-      adminNotes: row.admin_notes || "",
-      allowWalkins: row.allow_walkins,
-      approvedDate: row.approved_date,
-      assignedDate: row.assigned_date,
-      assignedLoginId: row.assigned_login_id,
-      assignedUser: row.assigned_user || "",
-      categories: row.categories,
-      categoryNotes: row.category_notes || "",
-      city: row.city || "",
-      claimedDate: row.claimed_date,
-      claimedLoginId: row.claimed_login_id,
-      claimedUser: row.claimed_user || "",
-      confirmedAddress: row.v_address,
-      confirmedCategories: row.v_categories,
-      confirmedEmail: row.v_email,
-      confirmedFoodTypes: row.v_food_types,
-      confirmedHours: row.v_hours,
-      confirmedName: row.v_name,
-      confirmedPhone: row.v_phone,
-      covidNotes: row.covid_notes || "",
-      createdDate: row.created_date,
-      createdLoginId: row.created_login_id,
-      createdUser: row.created_user || "",
-      description: row.description,
-      donationAcceptFrozen: row.donation_accept_frozen || false,
-      donationAcceptPerishable: row.donation_accept_perishable || false,
-      donationAcceptRefrigerated: row.donation_accept_refrigerated || false,
-      donationContactEmail: row.donation_contact_email || "",
-      donationContactName: row.donation_contact_name || "",
-      donationContactPhone: row.donation_contact_phone || "",
-      donationDeliveryInstructions: row.donation_delivery_instructions || "",
-      donationNotes: row.donation_notes || "",
-      donationPickup: row.donation_pickup || false,
-      donationSchedule: row.donation_schedule || "",
-      eligibilityNotes: row.eligibility_notes || "",
-      email: row.email || "",
-      facebook: row.facebook || "",
-      foodBakery: row.food_bakery,
-      foodDairy: row.food_dairy,
-      foodDryGoods: row.food_dry_goods,
-      foodMeat: row.food_meat,
-      foodPrepared: row.food_prepared,
-      foodProduce: row.food_produce,
-      foodTypes: row.food_types || "",
-      hours: row.hours,
-      hoursNotes: row.hours_notes,
-      id: row.id,
-      inactive: row.inactive,
-      inactiveTemporary: row.inactive_temporary,
-      instagram: row.instagram || "",
-      items: row.items || "",
-      languages: row.languages || "",
-      latitude: row.latitude ? Number(row.latitude) : null,
-      linkedin: row.linkedin || "",
-      longitude: row.longitude ? Number(row.longitude) : null,
-      modifiedDate: row.modified_date,
-      modifiedLoginId: row.modified_login_id,
-      modifiedUser: row.modified_user || "",
-      name: row.name || "",
-      neighborhoodId: row.neighborhood_id,
-      notes: row.notes || "",
-      parentOrganization: row.parent_organization || "",
-      parentOrganizationId: row.parent_organization_id,
-      phone: row.phone || "",
-      physicalAccess: row.physical_access || "",
-      pinterest: row.pinterest || "",
-      requirements: row.requirements || "",
-      reviewedLoginId: row.approved_login_id,
-      reviewedUser: row.reviewed_user || "",
-      reviewNotes: row.review_notes,
-      services: row.services || "",
-      state: row.state || "",
-      submittedDate: row.submitted_date,
-      submittedLoginId: row.submitted_login_id,
-      submittedUser: row.submitted_user || "",
-      tags: row.tags,
-      twitter: row.twitter || "",
-      verificationStatusId: row.verification_status_id,
-      website: row.website || "",
-      zip: row.zip || "",
-      distance: row.distance,
-    };
+    return stakeholderHelpers.rowToStakeholder(row);
+    // {
+    //   address1: row.address_1 || "",
+    //   address2: row.address_2 || "",
+    //   adminContactEmail: row.admin_contact_email || "",
+    //   adminContactName: row.admin_contact_name || "",
+    //   adminContactPhone: row.admin_contact_phone || "",
+    //   adminNotes: row.admin_notes || "",
+    //   allowWalkins: row.allow_walkins,
+    //   approvedDate: row.approved_date,
+    //   assignedDate: row.assigned_date,
+    //   assignedLoginId: row.assigned_login_id,
+    //   assignedUser: row.assigned_user || "",
+    //   categories: row.categories,
+    //   categoryNotes: row.category_notes || "",
+    //   city: row.city || "",
+    //   claimedDate: row.claimed_date,
+    //   claimedLoginId: row.claimed_login_id,
+    //   claimedUser: row.claimed_user || "",
+    //   confirmedAddress: row.v_address,
+    //   confirmedCategories: row.v_categories,
+    //   confirmedEmail: row.v_email,
+    //   confirmedFoodTypes: row.v_food_types,
+    //   confirmedHours: row.v_hours,
+    //   confirmedName: row.v_name,
+    //   confirmedPhone: row.v_phone,
+    //   covidNotes: row.covid_notes || "",
+    //   createdDate: row.created_date,
+    //   createdLoginId: row.created_login_id,
+    //   createdUser: row.created_user || "",
+    //   description: row.description,
+    //   donationAcceptFrozen: row.donation_accept_frozen || false,
+    //   donationAcceptPerishable: row.donation_accept_perishable || false,
+    //   donationAcceptRefrigerated: row.donation_accept_refrigerated || false,
+    //   donationContactEmail: row.donation_contact_email || "",
+    //   donationContactName: row.donation_contact_name || "",
+    //   donationContactPhone: row.donation_contact_phone || "",
+    //   donationDeliveryInstructions: row.donation_delivery_instructions || "",
+    //   donationNotes: row.donation_notes || "",
+    //   donationPickup: row.donation_pickup || false,
+    //   donationSchedule: row.donation_schedule || "",
+    //   eligibilityNotes: row.eligibility_notes || "",
+    //   email: row.email || "",
+    //   facebook: row.facebook || "",
+    //   foodBakery: row.food_bakery,
+    //   foodDairy: row.food_dairy,
+    //   foodDryGoods: row.food_dry_goods,
+    //   foodMeat: row.food_meat,
+    //   foodPrepared: row.food_prepared,
+    //   foodProduce: row.food_produce,
+    //   foodTypes: row.food_types || "",
+    //   hours: row.hours,
+    //   hoursNotes: row.hours_notes,
+    //   id: row.id,
+    //   inactive: row.inactive,
+    //   inactiveTemporary: row.inactive_temporary,
+    //   instagram: row.instagram || "",
+    //   items: row.items || "",
+    //   languages: row.languages || "",
+    //   latitude: row.latitude ? Number(row.latitude) : null,
+    //   linkedin: row.linkedin || "",
+    //   longitude: row.longitude ? Number(row.longitude) : null,
+    //   modifiedDate: row.modified_date,
+    //   modifiedLoginId: row.modified_login_id,
+    //   modifiedUser: row.modified_user || "",
+    //   name: row.name || "",
+    //   neighborhoodId: row.neighborhood_id,
+    //   notes: row.notes || "",
+    //   parentOrganization: row.parent_organization || "",
+    //   parentOrganizationId: row.parent_organization_id,
+    //   phone: row.phone || "",
+    //   physicalAccess: row.physical_access || "",
+    //   pinterest: row.pinterest || "",
+    //   requirements: row.requirements || "",
+    //   reviewedLoginId: row.approved_login_id,
+    //   reviewedUser: row.reviewed_user || "",
+    //   reviewNotes: row.review_notes,
+    //   services: row.services || "",
+    //   state: row.state || "",
+    //   submittedDate: row.submitted_date,
+    //   submittedLoginId: row.submitted_login_id,
+    //   submittedUser: row.submitted_user || "",
+    //   tags: row.tags,
+    //   twitter: row.twitter || "",
+    //   verificationStatusId: row.verification_status_id,
+    //   website: row.website || "",
+    //   zip: row.zip || "",
+    //   distance: row.distance,
+    // };
   });
   return stakeholders;
 };
@@ -770,7 +798,7 @@ const claim = async (model: ClaimParams) => {
   return result.rowCount;
 };
 
-const update = async (model: InsertStakeholderParams) => {
+const update = async (model: UpdateStakeholderParams) => {
   // Array of catetory_ids is formatted as, e.g.,  '{1,9}'
   const categories = "{" + model.selectedCategoryIds.join(",") + "}";
 

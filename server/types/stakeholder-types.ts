@@ -45,69 +45,8 @@ export interface StakeholderCategory {
   display_order: number;
 }
 
-export interface Stakeholder {
-  address1: string;
-  address2: string;
-  adminNotes: string;
-  allowWalkins?: boolean;
-  approvedDate: Date;
-  assignedDate: Date;
-  assignedLoginId: number;
-  assignedUser: string;
-  categories: StakeholderCategory[];
-  city: string;
-  claimedDate: Date;
-  claimedLoginId: number;
-  claimedUser: string;
-  completeCriticalPercent?: string;
-  confirmedAddress: boolean;
-  confirmedCategories: boolean;
-  confirmedEmail: boolean;
-  confirmedFoodTypes: boolean;
-  confirmedHours: boolean;
-  confirmedName: boolean;
-  confirmedPhone: boolean;
-  covidNotes: string;
-  createdDate: Date;
-  createdLoginId: number;
-  createdUser: string;
-  distance: number | null;
-  email: string;
-  foodBakery: boolean;
-  foodDairy: boolean;
-  foodDryGoods: boolean;
-  foodMeat: boolean;
-  foodPrepared: boolean;
-  foodProduce: boolean;
-  hoursNotes?: string;
-  id: number;
-  inactive: boolean;
-  inactiveTemporary: boolean;
-  latitude: number | null;
-  longitude: number | null;
-  modifiedDate: Date;
-  modifiedLoginId: number;
-  modifiedUser: string;
-  name: string;
-  neighborhoodId: number;
-  neighborhoodName?: string;
-  parentOrganizationId?: number;
-  phone: string;
-  requirements: string;
-  reviewedLoginId: number;
-  reviewedUser: string;
-  state: string;
-  submittedDate: Date;
-  submittedLoginId: number;
-  submittedUser: string;
-  tags?: string[];
-  verificationStatusId: number;
-  version?: number;
-  website: string;
-  zip: string;
-}
-
-export interface StakeholderBest {
+// Interface with common properties for all the full stakeholder types.
+export interface StakeholderBase {
   address1: string;
   address2: string;
   adminContactEmail: string;
@@ -138,7 +77,6 @@ export interface StakeholderBest {
   createdLoginId: number;
   createdUser: string;
   description: string;
-  distance: number | null;
   donationAcceptFrozen: boolean;
   donationAcceptPerishable: boolean;
   donationAcceptRefrigerated: boolean;
@@ -159,13 +97,14 @@ export interface StakeholderBest {
   foodPrepared: boolean;
   foodProduce: boolean;
   foodTypes: string;
-  hours: string;
+  hours:
+    | string
+    | { weekOfMonth: number; open: Date; close: Date; dayOfWeek: number }[];
   hoursNotes: string;
   id: number;
   inactive: boolean;
   inactiveTemporary: boolean;
   instagram: string;
-  isVerified: boolean;
   items: string;
   languages: string;
   latitude: number | null;
@@ -199,42 +138,43 @@ export interface StakeholderBest {
   zip: string;
 }
 
-export interface InsertStakeholderParams extends Stakeholder {
-  adminContactEmail: string;
-  adminContactName: string;
-  adminContactPhone: string;
-  categoryNotes: string;
-  description: string;
-  donationAcceptFrozen: string;
-  donationAcceptPerishable: string;
-  donationAcceptRefrigerated: string;
-  donationContactEmail: string;
-  donationContactName: string;
-  donationContactPhone: string;
-  donationDeliveryInstructions: string;
-  donationNotes: string;
-  donationPickup: string;
-  donationSchedule: string;
-  eligibilityNotes: string;
-  facebook: string;
-  foodTypes: string;
-  hours:
-    | string
-    | { weekOfMonth: number; open: Date; close: Date; dayOfWeek: number }[];
-  instagram: string;
-  items: string;
-  languages: string;
-  linkedin: string;
-  loginId: string;
-  notes: string;
-  parentOrganization: string;
-  physicalAccess: string;
-  pinterest: string;
-  reviewNotes: string;
-  selectedCategoryIds: string[];
-  services: string;
+// Stakeholder also includes the Primary Key, id
+export interface Stakeholder extends StakeholderBase {
+  id: number;
+}
+
+//When searching, an origin (lat,lon) will be specified, and the stakeholder will also include
+// the distance from the origin.
+export interface StakeholderWithDistance extends Stakeholder {
+  distance: number | null;
+}
+
+// StakeholderBest also includes a flag to indicate if the best Stakeholder
+// has been verified at least once in its history (vs. a "new" stakeholder)
+export interface StakeholderBest extends StakeholderWithDistance {
+  isVerified: boolean;
+}
+
+// StakeholderLog includes a sequention version number indicating the
+// sequence of changes to the same stakeholder
+export interface StakeholderLog extends Stakeholder {
+  version: number;
+}
+
+// Parameters to do an insert to Stakeholder.
+// loginId identifies the user doing the insert, tenantId identifies the
+// site. Categories are specified as an array of numbers for the POST
+// request, which is converted to a string for the sproc by the service.
+export interface InsertStakeholderParams extends StakeholderBase {
+  loginId: number;
   tenantId: number;
-  twitter: string;
+  selectedCategoryIds: number[];
+}
+
+// Parameters to do an update to Stakeholder. Same as for insert,
+// except that we have the primary key (i.e., id) value as well.
+export interface UpdateStakeholderParams extends InsertStakeholderParams {
+  id: number;
 }
 
 export interface ClaimParams {

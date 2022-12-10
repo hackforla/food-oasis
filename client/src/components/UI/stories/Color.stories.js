@@ -75,7 +75,7 @@ const ICON_COLORS = [
     id: "1",
   },
   {
-    hexCode: "#F27E30",
+    hexCode: "#E57109",
     description: "MEALS",
     id: "2",
   },

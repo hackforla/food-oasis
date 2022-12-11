@@ -1,6 +1,6 @@
 import React from "react";
 
-import aboutbg from "./assets/about-bg.png";
+import aboutbg from "./assets/about-bg.webp";
 import foodCycle from "./assets/food-cycle.png";
 import foodForward from "./assets/food-forward.png";
 import farmPeople from "./assets/farm-people.png";

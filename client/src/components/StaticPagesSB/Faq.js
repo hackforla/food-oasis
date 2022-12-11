@@ -1,6 +1,6 @@
 import React from "react";
 
-import faqbg from "./assets/faq-bg.png";
+import faqbg from "./assets/faq-bg.webp";
 import iconSpacerGray from "./assets/icon-spacer-gray.svg";
 import { makeStyles } from "@material-ui/core";
 import Container from "@material-ui/core/Container";

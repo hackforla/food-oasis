@@ -19,6 +19,10 @@ export const theme = {
     error: {
       main: error,
     },
+    mealProgram: {
+      main: "#E57109",
+      translucent: "#E5710980",
+    },
   },
   typography: {
     fontFamily: ["Helvetica Neue", "Arial", "sans-serif"].join(","),

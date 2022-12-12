@@ -156,7 +156,7 @@ const ForgotPassword = (props) => {
                   className={classes.submit}
                   disabled={isSubmitting}
                 >
-                  Send Reset Link to Email
+                  Send Password Reset Link
                 </Button>
                 <Grid container>
                   <Grid item xs>

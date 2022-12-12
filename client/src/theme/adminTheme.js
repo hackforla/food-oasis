@@ -30,6 +30,10 @@ export const theme = {
     confirmed: {
       main: confirmed,
     },
+    mealProgram: {
+      main: "#E57109",
+      translucent: "#E5710980",
+    },
   },
   typography: {
     fontFamily: ["Helvetica Neue", "Arial", "sans-serif"].join(","),

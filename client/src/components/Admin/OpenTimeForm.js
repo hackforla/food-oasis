@@ -3,11 +3,19 @@ import PropTypes from "prop-types";
 import OpenTimeInputs from "./OpenTimeInput";
 import { Card, CardContent, Typography } from "@material-ui/core";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import { makeStyles } from "@material-ui/core/styles";
 import MomentUtils from "@date-io/moment";
 import { Button } from "../../components/UI";
 
+const useStyles = makeStyles((theme) => ({
+  errorText: {
+    color: theme.palette.error.main,
+  },
+}));
+
 function OpenTimeForm(props) {
   const { value: hours, onChange } = props;
+  const classes = useStyles();
   const [errorMessages, setErrorMessages] = useState([]);
 
   const validate = (hours) => {
@@ -82,7 +90,7 @@ function OpenTimeForm(props) {
           <div>{inputsMap}</div>
           {errorMessages.length > 0
             ? errorMessages.map((msg) => (
-                <div key={msg} style={{ color: "red" }}>
+                <div key={msg} className={classes.errorText}>
                   {msg}
                 </div>
               ))

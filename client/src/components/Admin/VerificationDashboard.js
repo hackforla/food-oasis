@@ -50,6 +50,10 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     padding: "4em",
   },
+  errorText: {
+    color: theme.palette.error.main,
+    fontSize: "24pt",
+  },
 }));
 
 const defaultCriteria = {
@@ -180,7 +184,11 @@ function VerificationDashboard(props) {
         <>
           {stakeholdersError ? (
             <div className={classes.bigMessage}>
-              <Typography variant="h5" component="h5" style={{ color: "red" }}>
+              <Typography
+                variant="h5"
+                component="h5"
+                className={classes.errorText}
+              >
                 Uh Oh! Something went wrong!
               </Typography>
             </div>

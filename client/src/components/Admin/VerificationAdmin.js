@@ -46,7 +46,6 @@ const useStyles = makeStyles((theme) => ({
     top: theme.spacing(1),
     // color: theme.palette.grey[500],
   },
-
   header: {
     display: "flex",
     justifyContent: "space-between",
@@ -65,6 +64,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#E8E8E8",
     textAlign: "center",
     padding: "4em",
+  },
+  errorText: {
+    color: theme.palette.error.main,
+    fontSize: "24pt",
   },
 }));
 
@@ -412,7 +415,11 @@ function VerificationAdmin() {
         <>
           {categoriesError || stakeholdersError || tagsError ? (
             <div className={classes.bigMessage}>
-              <Typography variant="h5" component="h5" style={{ color: "red" }}>
+              <Typography
+                variant="h3"
+                component="h3"
+                className={classes.errorText}
+              >
                 Uh Oh! Something went wrong!
               </Typography>
             </div>

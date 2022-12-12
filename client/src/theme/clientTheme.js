@@ -18,7 +18,7 @@ const theme = createTheme({
     },
     error: {
       // red
-      main: "#f94040",
+      main: "#CC3333",
       contrastText: "#000000",
     },
     mealProgram: {

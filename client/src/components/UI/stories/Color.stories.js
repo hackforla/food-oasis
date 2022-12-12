@@ -123,7 +123,7 @@ const SYSTEM_COLORS = [
     id: "8",
   },
   {
-    hexCode: "#F94040",
+    hexCode: "#CC3333",
     description: "FORM FIELD ERROR",
     id: "9",
   },

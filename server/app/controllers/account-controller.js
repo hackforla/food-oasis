@@ -25,9 +25,10 @@ const getById = async (req, res) => {
 
 const getByEmail = async (req, res) => {
   try {
-    const { id } = req.params;
-    const response = await accountService.selectByEmail(id);
-    res.send(response);
+    const { tenantId } = req.query;
+    const { email } = req.params;
+    await accountService.selectByEmail(email, Number(tenantId));
+    res.send(true);
   } catch (err) {
     console.error(err);
     res.sendStatus(500);

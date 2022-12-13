@@ -478,6 +478,7 @@ const setGlobalPermissions = async (
 module.exports = {
   selectAll,
   selectById,
+  selectByEmail,
   register,
   confirmRegistration,
   resendConfirmationEmail,

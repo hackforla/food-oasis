@@ -14,6 +14,8 @@ router.get(
   accountController.getAll
 );
 
+router.get("/:email", accountController.getByEmail);
+
 router.post("/register", accountController.register);
 router.post(
   "/resendConfirmationEmail",

@@ -63,7 +63,7 @@ const ForgotPassword = (props) => {
   const debouncedEmailValidation = debounce(async (value, setFieldError) => {
     try {
       await accountService.getByEmail(value);
-      return true;
+      return;
     } catch (e) {
       console.error(e);
       setFieldError(

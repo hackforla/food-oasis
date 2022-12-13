@@ -1,5 +1,5 @@
 ---
-name: Usability issue
+name: A - Usability issue
 about: Report a usability issue
 title: ''
 labels: ''

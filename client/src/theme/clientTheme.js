@@ -18,11 +18,8 @@ const theme = createTheme({
     },
     error: {
       // red
-      main: "#f94040",
+      main: "#CC3333",
       contrastText: "#000000",
-    },
-    text: {
-      primary: "#313233",
     },
     mealProgram: {
       main: "#E57109",
@@ -32,9 +29,42 @@ const theme = createTheme({
       main: "#336699",
       translucent: "#33669980",
     },
+    background: {
+      main: "white",
+    },
   },
   typography: {
     fontFamily: '"Helvetica Neue", Helvetica, sans-serif;',
+    h1: {
+      fontWeight: 500,
+      fontSize: 28,
+      "@media (min-width:600px)": {
+        fontSize: 36,
+      },
+    },
+    h2: {
+      fontWeight: 500,
+      fontSize: 24,
+      "@media (min-width:600px)": {
+        fontSize: 32,
+      },
+    },
+    body1: {
+      fontWeight: 400,
+      fontSize: 16,
+      "@media (min-width:600px)": {
+        fontSize: 18,
+      },
+    },
+  },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 960,
+      lg: 1280,
+      xl: 1920,
+    },
   },
 });
 

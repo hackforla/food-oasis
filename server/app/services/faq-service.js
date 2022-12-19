@@ -22,10 +22,10 @@ const selectAllByLanguage = async (language) => {
   return result.map((r) => camelcaseKeys(r));
 };
 
-const selectById = async (suggestionId) => {
+const selectById = async (faqId) => {
   // Need to cast id to number so pg-promise knows how
   // to format SQL
-  const id = Number(suggestionId);
+  const id = Number(faqId);
   const sql = `select id, question, answer, language, identifier 
   from faq where id = $<id>`;
 

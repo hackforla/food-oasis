@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core";
-import Footer from "../../../Layout/Footer";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles(() => ({
   outer: {
@@ -22,7 +22,7 @@ const useStyles = makeStyles(() => ({
     margin: 0,
     padding: "32px 0",
     "& $span": {
-      color: "#336699",
+      color: "#4d4d4d",
     },
   },
   figure: {
@@ -37,9 +37,9 @@ const Page = (props) => {
   return (
     <div className={classes.outer}>
       <div className={classes.main}>
-        <h1 className={classes.title}>
+        <Typography variant="h1" className={classes.title}>
           <span>{pageTitle}</span>
-        </h1>
+        </Typography>
         <br />
         {pageImage && (
           <figure className={classes.figure}>
@@ -51,7 +51,6 @@ const Page = (props) => {
           </figure>
         )}
         {children}
-        <Footer />
       </div>
     </div>
   );

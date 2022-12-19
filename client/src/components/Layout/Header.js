@@ -3,13 +3,12 @@ import PropTypes from "prop-types";
 import Menu from "./Menu";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { isMobile } from "../../helpers";
 import { useUserContext } from "../../contexts/userContext";
 import { useSiteContext } from "../../contexts/siteContext";
+import useLocationHook from "hooks/useLocationHook";
 
 Header.propTypes = {
   tenantId: PropTypes.number,
-  taglineText: PropTypes.string,
 };
 
 const logoPaths = {
@@ -19,15 +18,6 @@ const logoPaths = {
   4: require("images/foodoasis.svg"),
   5: require("images/foodoasis.svg"),
   6: require("images/foodoasis.svg"),
-};
-
-const logoStackedPaths = {
-  1: require("images/logo-food-oasis-stacked.svg"),
-  2: require("images/logo-food-oasis-stacked.svg"),
-  3: require("../StaticPagesHI/assets/aloha-harvest-bg-none-no-tag.png"),
-  4: require("images/logo-food-oasis-stacked.svg"),
-  5: require("images/logo-food-oasis-stacked.svg"),
-  6: require("images/logo-food-oasis-stacked.svg"),
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -47,6 +37,9 @@ const useStyles = makeStyles((theme) => ({
       minHeight: "45px",
     },
   },
+  spacedHeader: {
+    marginTop: theme.spacing(4),
+  },
   logo: {
     maxWidth: "175px",
     maxHeight: "48px",
@@ -59,32 +52,12 @@ const useStyles = makeStyles((theme) => ({
       margin: "4px 4px 0 8px",
     },
   },
-  logoStacked: {
-    height: "40px",
-    margin: "auto .5rem auto 0.5rem",
-    "&:hover": {
-      filter: "brightness(1.2)",
-    },
-  },
   content: {
     display: "flex",
     flexGrow: 2,
     justifyContent: "space-between",
     alignItems: "center",
     margin: "0px 24px",
-  },
-  tagline: {
-    color: theme.palette.primary.dark,
-    display: "inline-block",
-    fontWeight: "bold",
-    fontSize: "14px",
-    lineHeight: "1.2",
-    flexGrow: 2,
-    flexShrink: 1,
-    fontFamily: `Helvetica, Arial, "Lucida Grande", sans- serif`,
-    [theme.breakpoints.up("sm")]: {
-      display: "none",
-    },
   },
   username: {
     color: theme.palette.primary.dark,
@@ -97,9 +70,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Header() {
-  const { tenantId, tenantDetails } = useSiteContext();
-  const { taglineText } = tenantDetails;
+  const { tenantId } = useSiteContext();
   const classes = useStyles();
+  const { isAuthPage } = useLocationHook();
   const imageType = logoPaths
     ? logoPaths[tenantId].default.split(".").pop()
     : "unknown";
@@ -107,51 +80,30 @@ export default function Header() {
 
   return (
     <>
-      <AppBar position="sticky" className={classes.headerHolder}>
+      <AppBar
+        position="sticky"
+        className={`${classes.headerHolder} ${
+          isAuthPage && classes.spacedHeader
+        } `}
+      >
         <Toolbar className={classes.header}>
           <div>
-            {isMobile() ? (
-              <a href="/">
-                <img
-                  src={
-                    logoStackedPaths[tenantId]
-                      ? logoStackedPaths[tenantId].default
-                      : logoStackedPaths[1].default
-                  }
-                  className={classes.logo}
-                  style={
-                    imageType === "svg" ? { width: "100%", height: "100%" } : {}
-                  }
-                  alt="logo"
-                />{" "}
-              </a>
-            ) : (
-              <a href="/">
-                <img
-                  src={
-                    logoPaths[tenantId]
-                      ? logoPaths[tenantId].default
-                      : logoPaths[1].default
-                  }
-                  className={classes.logo}
-                  style={
-                    imageType === "svg" ? { width: "100%", height: "100%" } : {}
-                  }
-                  alt="logo"
-                />{" "}
-              </a>
-            )}
+            <a href="/">
+              <img
+                src={
+                  logoPaths[tenantId]
+                    ? logoPaths[tenantId].default
+                    : logoPaths[1].default
+                }
+                className={classes.logo}
+                style={
+                  imageType === "svg" ? { width: "100%", height: "100%" } : {}
+                }
+                alt="logo"
+              />{" "}
+            </a>
           </div>
           <div className={classes.content}>
-            {taglineText && (
-              <Typography
-                variant="subtitle1"
-                className={classes.tagline}
-                align="left"
-              >
-                {taglineText}
-              </Typography>
-            )}
             {user && user.firstName && (
               <Typography
                 variant="subtitle1"

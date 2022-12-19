@@ -48,8 +48,8 @@ const columns = [
 const FILTERS = [
   { id: 1, name: "New" },
   { id: 2, name: "Pending" },
-  { id: 3, name: "Rejected" },
-  { id: 4, name: "Closed" },
+  { id: 3, name: "Incorrect" },
+  { id: 4, name: "Confirmed" },
 ];
 
 function getModalStyle() {

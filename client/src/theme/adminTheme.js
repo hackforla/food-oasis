@@ -1,5 +1,13 @@
 import { createTheme } from "@material-ui/core/styles";
-import { white, primary, secondary, success, error, bodyText } from "./colors";
+import {
+  white,
+  primary,
+  secondary,
+  success,
+  error,
+  confirmed,
+  bodyText,
+} from "./colors";
 
 export const theme = {
   palette: {
@@ -19,6 +27,13 @@ export const theme = {
     error: {
       main: error,
     },
+    confirmed: {
+      main: confirmed,
+    },
+    mealProgram: {
+      main: "#E57109",
+      translucent: "#E5710980",
+    },
   },
   typography: {
     fontFamily: ["Helvetica Neue", "Arial", "sans-serif"].join(","),
@@ -27,7 +42,7 @@ export const theme = {
       fontSize: 40,
       fontWeight: "500",
       lineHeight: "49px",
-      color: "red",
+      color: error,
     },
     // Heading 2
     h2: {

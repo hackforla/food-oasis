@@ -1,5 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core";
+import Container from "@material-ui/core/Container";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles(() => ({
   icon: {
@@ -15,9 +17,7 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     flexDirection: "column",
     "& $h2": {
-      color: "#336699",
       flexBasis: "100%",
-      textTransform: "uppercase;",
       textAlign: "center",
       fontWeight: "500",
       fontSize: "32px",
@@ -27,18 +27,23 @@ const useStyles = makeStyles(() => ({
     "& $btnOutline": {
       margin: "20px auto 0 auto",
     },
+    "& $a": {
+      color: "#4d4d4d",
+    },
+    "& $p": {
+      marginBottom: "16px",
+    },
   },
   sectionDark: {
     padding: "32px",
     margin: "32px 0 0 0",
     borderRadius: "24px",
-    color: "#fff",
-    background: "#336699",
+    color: "#4d4d4d",
+    background: "#B6D8FB",
     display: "flex",
     flexDirection: "column",
     "& $h2": {
       flexBasis: "100",
-      textTransform: "uppercase;",
       textAlign: "center",
       fontWeight: "500",
       fontSize: "32px",
@@ -46,7 +51,10 @@ const useStyles = makeStyles(() => ({
       marginBottom: "20px",
     },
     "& $a": {
-      color: "#fff",
+      color: "#4d4d4d",
+    },
+    "& $p": {
+      marginBottom: "16px",
     },
   },
   content: {
@@ -94,16 +102,19 @@ const PageSection = (props) => {
           style={titleIcon.style}
         />
       )}
-      {title && <h2 style={customStyles && customStyles.title}>{title}</h2>}
+      <Typography variant="h2">
+        {title && <h2 style={customStyles && customStyles.title}>{title}</h2>}
+      </Typography>
       {subtitle && (
         <h3 style={customStyles && customStyles.subtitle}>{subtitle}</h3>
       )}
-      <div
+      <Container
+        maxWidth="sm"
         className={classes.content}
         style={customStyles && customStyles.content}
       >
         {content}
-      </div>
+      </Container>
       <div style={customStyles && customStyles.contact}>{contact}</div>
     </section>
   );

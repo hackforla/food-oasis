@@ -247,8 +247,9 @@ dotenv
 # required for GitHub action to build react app.
 !/client/.env
 
-/.vscode
 .eslintcache
 
 # End of project-specific exclusions
 #
+
+/thunder-tests/thunderActivity.json

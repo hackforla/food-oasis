@@ -46,7 +46,6 @@ const useStyles = makeStyles((theme) => ({
     top: theme.spacing(1),
     // color: theme.palette.grey[500],
   },
-
   header: {
     display: "flex",
     justifyContent: "space-between",
@@ -65,6 +64,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#E8E8E8",
     textAlign: "center",
     padding: "4em",
+  },
+  errorText: {
+    color: theme.palette.error.main,
+    fontSize: "24pt",
   },
 }));
 
@@ -173,6 +176,7 @@ function VerificationAdmin() {
       setCriteria(initialCriteria);
       try {
         await searchCallback(initialCriteria);
+        console.log("executed");
       } catch (err) {
         // If we receive a 401 status code, the user needs
         // to be logged in, will redirect to login page.
@@ -189,6 +193,8 @@ function VerificationAdmin() {
   const search = async () => {
     try {
       await searchCallback(criteria);
+      console.log("Searching...");
+      console.log(criteria);
       sessionStorage.setItem(CRITERIA_TOKEN, JSON.stringify(criteria));
     } catch (err) {
       // If we receive a 401 status code, the user needs
@@ -285,6 +291,11 @@ function VerificationAdmin() {
     setDialogOpen(false);
   };
 
+  const handleCriteriaChange = (criteria) => {
+    setCriteria(criteria);
+    search();
+  };
+
   return (
     <main className={classes.root}>
       {stakeholdersError.status === 401 || unauthorized ? (
@@ -321,7 +332,9 @@ function VerificationAdmin() {
       <SearchCriteriaDisplay
         defaultCriteria={defaultCriteria}
         criteria={criteria}
+        setCriteria={setCriteria}
         neighborhoods={neighborhoods}
+        handleDelete={handleCriteriaChange}
         categories={categories}
         tags={tags}
         isLoading={neighborhoodsLoading || categoriesLoading}
@@ -353,10 +366,6 @@ function VerificationAdmin() {
                 neighborhoods={neighborhoods}
                 criteria={criteria}
                 setCriteria={setCriteria}
-                search={() => {
-                  search();
-                  setDialogOpen(false);
-                }}
               />
             </div>
           ) : null}
@@ -406,7 +415,11 @@ function VerificationAdmin() {
         <>
           {categoriesError || stakeholdersError || tagsError ? (
             <div className={classes.bigMessage}>
-              <Typography variant="h5" component="h5" style={{ color: "red" }}>
+              <Typography
+                variant="h3"
+                component="h3"
+                className={classes.errorText}
+              >
                 Uh Oh! Something went wrong!
               </Typography>
             </div>

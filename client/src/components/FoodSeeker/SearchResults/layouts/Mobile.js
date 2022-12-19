@@ -31,33 +31,27 @@ const MobileLayout = ({ filters, map, list, preview, details }) => {
 
   useEffect(() => {
     if (!details) setShowDetails(false);
-  }, [details])
+  }, [details]);
 
-  const show = useCallback(() => setShowDetails(true), [])
+  const show = useCallback(() => setShowDetails(true), []);
 
   return (
     <>
-      { filters }
+      {filters}
       <div className={classes.container}>
-        <div className={classes.map}>{ map }</div>
-        {list && (
-          <div className={classes.overlay}>
-            {list}
-          </div>
-        )}
+        <div className={classes.map}>{map}</div>
+        {list && <div className={classes.overlay}>{list}</div>}
         {preview && (
           <div className={classes.preview} onClick={show}>
-            { preview }
+            {preview}
           </div>
         )}
         {details && showDetails && (
-          <div className={classes.overlay}>
-            { details }
-          </div>
+          <div className={classes.overlay}>{details}</div>
         )}
       </div>
     </>
-  )
-}
+  );
+};
 
 export default MobileLayout;

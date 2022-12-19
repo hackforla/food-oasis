@@ -111,12 +111,6 @@ const setGlobalPermissions = async (req, res) => {
 
 const confirmRegister = async (req, res) => {
   try {
-    const { id } = req.params;
-    if (id !== req.body.id) {
-      res
-        .status("400")
-        .json({ error: "id in url does not match id in request body." });
-    }
     const response = await accountService.confirmRegistration(req.body.token);
     res.send(response);
   } catch (err) {

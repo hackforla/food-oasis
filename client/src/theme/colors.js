@@ -8,6 +8,7 @@ const secondary = "#E57109";
 const hover = "#4C99E5";
 const success = "#219653";
 const error = "#CC3333";
+const confirmed = "#008000";
 const bodyText = "#1B1B1B";
 const inactiveButton = "#F0F0F0";
 const inactiveButtonText = "#4D4D4D";
@@ -25,6 +26,7 @@ export {
   hover,
   success,
   error,
+  confirmed,
   bodyText,
   inactiveButton,
   inactiveButtonText,

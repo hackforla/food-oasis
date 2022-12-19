@@ -11,7 +11,7 @@ import {
 } from "constants/stakeholder";
 import { ORGANIZATION_COLORS, CLOSED_COLOR } from "constants/map";
 import { extractNumbers, getGoogleMapsDirectionsUrl } from "helpers";
-import SuggestionDialog from "./SuggestionDialog";
+import SuggestionForm from "./SuggestionDialog";
 import * as analytics from "services/analytics";
 import {
   useSelectedOrganization,
@@ -22,7 +22,7 @@ import {
 } from "../../../../appReducer";
 import { useHistory } from "react-router-dom";
 import { useToasterContext } from "../../../../contexts/toasterContext";
-import { Share } from "@material-ui/icons";
+import SEO from "../../../SEO";
 
 const useStyles = makeStyles((theme) => ({
   stakeholder: {
@@ -30,9 +30,9 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     textAlign: "center",
-    padding: "1em",
+    padding: "0 1em 5em 1em ",
     alignItems: "center",
-    paddingBottom: "5em",
+    // paddingBottom: "5em",
     flexShrink: 0,
     [theme.breakpoints.down("xs")]: {
       fontSize: "12px",
@@ -127,11 +127,10 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: "flex-start",
     marginBottom: "1em",
     position: "sticky",
-    top: "-0.1em",
+    top: 0,
     width: "100%",
     cursor: "pointer",
-    backgroundColor: "#fafafa",
-    zIndex: 10,
+    backgroundColor: theme.palette.background.main,
     textAlign: "left",
   },
   backButton: {
@@ -142,7 +141,6 @@ const useStyles = makeStyles((theme) => ({
     color: "blue",
     textDecoration: "underline",
     border: "none",
-    backgroundColor: "#fafafa",
   },
 }));
 
@@ -290,334 +288,343 @@ const StakeholderDetails = () => {
       }
     }
   };
-
   return (
-    <div className={classes.stakeholder}>
-      <div className={classes.backButtonWrapper}>
-        <div
-          role="button"
-          className={classes.backButton}
-          onClick={handleBackButtonClick}
-        >
-          {" "}
-          &lt; Back to List{" "}
-        </div>
-      </div>
-      <SuggestionDialog
-        id="assign-dialog"
-        keepMounted
-        open={SuggestionDialogOpen}
-        onClose={handleSuggestionDialogClose}
-        stakeholder={selectedOrganization}
+    <>
+      <SEO
+        title={`Food Oasis: ${selectedOrganization.name}`}
+        url={window.location.href}
       />
-      <div className={classes.topInfo}>
-        <StakeholderIcon
+
+      <div className={classes.stakeholder}>
+        <div className={classes.backButtonWrapper}>
+          <div
+            role="button"
+            className={classes.backButton}
+            onClick={handleBackButtonClick}
+          >
+            {" "}
+            &lt; Back to List{" "}
+          </div>
+        </div>
+        <SuggestionForm
+          id="assign-dialog"
+          keepMounted
+          open={SuggestionDialogOpen}
+          onClose={handleSuggestionDialogClose}
           stakeholder={selectedOrganization}
-          height="50px"
-          width="50px"
+          setToast={setToast}
         />
-        <div className={classes.info}>
-          <span>{selectedOrganization.name}</span>
-          <span>{selectedOrganization.address1}</span>
-          <div>
-            {selectedOrganization.city} {selectedOrganization.zip}
-          </div>
-          {selectedOrganization.categories.map((category) => (
-            <em
-              key={category.id}
-              style={{
-                alignSelf: "flex-start",
-                color:
-                  selectedOrganization.inactiveTemporary ||
-                  selectedOrganization.inactive
-                    ? CLOSED_COLOR
-                    : category.id === FOOD_PANTRY_CATEGORY_ID
-                    ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
-                    : category.id === MEAL_PROGRAM_CATEGORY_ID
-                    ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
-                    : "#000",
-              }}
-            >
-              {category.name}
-            </em>
-          ))}
-          <div className={classes.label}>
-            <em
-              key={selectedOrganization.id}
-              style={{
-                alignSelf: "flex-start",
-                margin: "0 0.25em 0.25em 0",
-              }}
-            >
-              {selectedOrganization.foodTypes}
-            </em>
-          </div>
-          <div className={classes.label}>
-            {selectedOrganization.inactiveTemporary ||
-            selectedOrganization.inactive ? (
-              <em className={classes.closedLabel}>
-                {selectedOrganization.inactiveTemporary
-                  ? "Temporarily Closed"
-                  : "Closed"}
+        <div className={classes.topInfo}>
+          <StakeholderIcon
+            stakeholder={selectedOrganization}
+            height="50px"
+            width="50px"
+          />
+          <div className={classes.info}>
+            <span>{selectedOrganization.name}</span>
+            <span>{selectedOrganization.address1}</span>
+            <div>
+              {selectedOrganization.city} {selectedOrganization.zip}
+            </div>
+            {selectedOrganization.categories.map((category) => (
+              <em
+                key={category.id}
+                style={{
+                  alignSelf: "flex-start",
+                  color:
+                    selectedOrganization.inactiveTemporary ||
+                    selectedOrganization.inactive
+                      ? CLOSED_COLOR
+                      : category.id === FOOD_PANTRY_CATEGORY_ID
+                      ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
+                      : category.id === MEAL_PROGRAM_CATEGORY_ID
+                      ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
+                      : "#000",
+                }}
+              >
+                {category.name}
               </em>
-            ) : null}
+            ))}
+            <div className={classes.label}>
+              <em
+                key={selectedOrganization.id}
+                style={{
+                  alignSelf: "flex-start",
+                  margin: "0 0.25em 0.25em 0",
+                }}
+              >
+                {selectedOrganization.foodTypes}
+              </em>
+            </div>
+            <div className={classes.label}>
+              {selectedOrganization.inactiveTemporary ||
+              selectedOrganization.inactive ? (
+                <em className={classes.closedLabel}>
+                  {selectedOrganization.inactiveTemporary
+                    ? "Temporarily Closed"
+                    : "Closed"}
+                </em>
+              ) : null}
+            </div>
+          </div>
+          <div className={classes.check}>
+            {selectedOrganization.distance >= 10
+              ? selectedOrganization.distance
+                  .toString()
+                  .substring(0, 3)
+                  .padEnd(4, "0")
+              : selectedOrganization.distance.toString().substring(0, 3)}{" "}
+            mi
           </div>
         </div>
-        <div className={classes.check}>
-          {selectedOrganization.distance >= 10
-            ? selectedOrganization.distance
-                .toString()
-                .substring(0, 3)
-                .padEnd(4, "0")
-            : selectedOrganization.distance.toString().substring(0, 3)}{" "}
-          mi
-        </div>
-      </div>
-      {selectedOrganization.verificationStatusId ===
-      VERIFICATION_STATUS.VERIFIED ? (
-        <p
-          style={{
-            color:
-              selectedOrganization.inactiveTemporary ||
-              selectedOrganization.inactive
-                ? CLOSED_COLOR
-                : selectedOrganization.categories[0].id === 1
-                ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
-                : ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID],
-          }}
-        >
-          Data updated on{" "}
-          {selectedOrganization.approvedDate
-            ? selectedOrganization.approvedDate.format("MMM Do, YYYY")
-            : selectedOrganization.modifiedDate
-            ? selectedOrganization.modifiedDate.format("MMM Do, YYYY")
-            : selectedOrganization.createdDate.format("MMM Do, YYYY")}
-        </p>
-      ) : null}
-      <div className={classes.buttons}>
-        <Button
-          variant="outlined"
-          className={classes.button}
-          onClick={() => {
-            analytics.postEvent("getDirections", {
-              id: selectedOrganization.id,
-              name: selectedOrganization.name,
-            });
-            window.open(
-              getGoogleMapsDirectionsUrl(originCoordinates, {
-                latitude: selectedOrganization.latitude,
-                longitude: selectedOrganization.longitude,
-              })
-            );
-          }}
-        >
-          Directions
-        </Button>
-        <Button
-          className={classes.button}
-          variant="outlined"
-          onClick={handleSuggestionDialogOpen}
-        >
-          Send Correction
-        </Button>
-        <Button
-          className={classes.button}
-          variant="outlined"
-          onClick={shareLink}
-        >
-          <Share />
-        </Button>
-      </div>
-
-      <h2 className={classes.title}>Eligibility/Requirements</h2>
-      {selectedOrganization.requirements ? (
-        <span
-          className={classes.fontSize}
-          dangerouslySetInnerHTML={{
-            __html: formatEmailPhone(selectedOrganization.requirements),
-          }}
-        ></span>
-      ) : (
-        <div className={classes.fontSize}>No special requirements</div>
-      )}
-
-      <h2 className={classes.title}>Hours</h2>
-      {selectedOrganization.allowWalkins ? (
-        <div className={classes.fontSize}>Walk-ins welcome.</div>
-      ) : null}
-
-      {selectedOrganization.hoursNotes ? (
-        <div
-          className={classes.fontSize}
-          dangerouslySetInnerHTML={{
-            __html: formatEmailPhone(selectedOrganization.hoursNotes),
-          }}
-        ></div>
-      ) : null}
-      {selectedOrganization.hours ? (
-        <>
-          <div className={classes.hoursContainer}>
-            {selectedOrganization.hours &&
-            selectedOrganization.hours.length > 0 ? (
-              selectedOrganization.hours.sort(hoursSort).map((hour) => (
-                <div
-                  key={JSON.stringify(hour)}
-                  className={classes.singleHourContainer}
-                >
-                  <span>
-                    {hour.week_of_month === 5
-                      ? "Last " + hour.day_of_week
-                      : hour.week_of_month === 1
-                      ? "1st " + hour.day_of_week
-                      : hour.week_of_month === 2
-                      ? "2nd " + hour.day_of_week
-                      : hour.week_of_month === 3
-                      ? "3rd " + hour.day_of_week
-                      : hour.week_of_month === 4
-                      ? "4th " + hour.day_of_week
-                      : hour.day_of_week}
-                  </span>
-                  <span>
-                    {standardTime(hour.open)}-{standardTime(hour.close)}
-                  </span>
-                </div>
-              ))
-            ) : (
-              <span className={classes.fontSize}>No hours on record</span>
-            )}
-          </div>
-        </>
-      ) : null}
-
-      <h2 className={classes.title}>Phone</h2>
-      {numbers.length ? (
-        <div
-          className={classes.numbers}
-          onClick={() => {
-            analytics.postEvent("dialPhone", {
-              id: selectedOrganization.id,
-              name: selectedOrganization.name,
-            });
-          }}
-        >
-          {numbers}
-        </div>
-      ) : (
-        <span className={classes.fontSize}>No Phone Number on record</span>
-      )}
-      <h2 className={classes.title}>E-Mail</h2>
-      {selectedOrganization.email ? (
-        <React.Fragment>
-          <a
-            className={classes.fontSize}
-            href={"mailto:" + selectedOrganization.email}
+        {selectedOrganization.verificationStatusId ===
+        VERIFICATION_STATUS.VERIFIED ? (
+          <p
+            style={{
+              color:
+                selectedOrganization.inactiveTemporary ||
+                selectedOrganization.inactive
+                  ? CLOSED_COLOR
+                  : selectedOrganization.categories[0].id === 1
+                  ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
+                  : ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID],
+            }}
+          >
+            Data updated on{" "}
+            {selectedOrganization.approvedDate
+              ? selectedOrganization.approvedDate.format("MMM Do, YYYY")
+              : selectedOrganization.modifiedDate
+              ? selectedOrganization.modifiedDate.format("MMM Do, YYYY")
+              : selectedOrganization.createdDate.format("MMM Do, YYYY")}
+          </p>
+        ) : null}
+        <div className={classes.buttons}>
+          <Button
+            variant="outlined"
+            className={classes.button}
             onClick={() => {
-              analytics.postEvent("sendEmail", {
+              analytics.postEvent("getDirections", {
+                id: selectedOrganization.id,
+                name: selectedOrganization.name,
+              });
+              window.open(
+                getGoogleMapsDirectionsUrl(originCoordinates, {
+                  latitude: selectedOrganization.latitude,
+                  longitude: selectedOrganization.longitude,
+                })
+              );
+            }}
+          >
+            Directions
+          </Button>
+          <Button
+            className={classes.button}
+            variant="outlined"
+            onClick={handleSuggestionDialogOpen}
+          >
+            Send Correction
+          </Button>
+          <Button
+            className={classes.button}
+            variant="outlined"
+            onClick={shareLink}
+          >
+            Share
+          </Button>
+        </div>
+
+        <h2 className={classes.title}>Eligibility/Requirements</h2>
+        {selectedOrganization.requirements ? (
+          <span
+            className={classes.fontSize}
+            dangerouslySetInnerHTML={{
+              __html: formatEmailPhone(selectedOrganization.requirements),
+            }}
+          ></span>
+        ) : (
+          <div className={classes.fontSize}>No special requirements</div>
+        )}
+
+        <h2 className={classes.title}>Hours</h2>
+        {selectedOrganization.allowWalkins ? (
+          <div className={classes.fontSize}>Walk-ins welcome.</div>
+        ) : null}
+
+        {selectedOrganization.hoursNotes ? (
+          <div
+            className={classes.fontSize}
+            dangerouslySetInnerHTML={{
+              __html: formatEmailPhone(selectedOrganization.hoursNotes),
+            }}
+          ></div>
+        ) : null}
+        {selectedOrganization.hours ? (
+          <>
+            <div className={classes.hoursContainer}>
+              {selectedOrganization.hours &&
+              selectedOrganization.hours.length > 0 ? (
+                selectedOrganization.hours.sort(hoursSort).map((hour) => (
+                  <div
+                    key={JSON.stringify(hour)}
+                    className={classes.singleHourContainer}
+                  >
+                    <span>
+                      {hour.week_of_month === 5
+                        ? "Last " + hour.day_of_week
+                        : hour.week_of_month === 1
+                        ? "1st " + hour.day_of_week
+                        : hour.week_of_month === 2
+                        ? "2nd " + hour.day_of_week
+                        : hour.week_of_month === 3
+                        ? "3rd " + hour.day_of_week
+                        : hour.week_of_month === 4
+                        ? "4th " + hour.day_of_week
+                        : hour.day_of_week}
+                    </span>
+                    <span>
+                      {standardTime(hour.open)}-{standardTime(hour.close)}
+                    </span>
+                  </div>
+                ))
+              ) : (
+                <span className={classes.fontSize}>No hours on record</span>
+              )}
+            </div>
+          </>
+        ) : null}
+
+        <h2 className={classes.title}>Phone</h2>
+        {numbers.length ? (
+          <div
+            className={classes.numbers}
+            onClick={() => {
+              analytics.postEvent("dialPhone", {
                 id: selectedOrganization.id,
                 name: selectedOrganization.name,
               });
             }}
-            target="_blank"
-            rel="noopener noreferrer"
           >
-            {selectedOrganization.email}
-          </a>
-        </React.Fragment>
-      ) : (
-        <span className={classes.fontSize}>No E-Mail Address on record</span>
-      )}
-
-      <h2 className={classes.title}>Languages</h2>
-      {selectedOrganization.languages ? (
-        <span className={classes.fontSize}>
-          {selectedOrganization.languages}
-        </span>
-      ) : (
-        <span className={classes.fontSize}>No information on languages.</span>
-      )}
-
-      <h2 className={classes.title}>Notes</h2>
-      {selectedOrganization.notes ? (
-        <span
-          className={classes.fontSize}
-          dangerouslySetInnerHTML={{
-            __html: formatEmailPhone(selectedOrganization.notes),
-          }}
-        ></span>
-      ) : (
-        <span className={classes.fontSize}>No notes to display.</span>
-      )}
-
-      <h2 className={classes.title}>Covid Notes</h2>
-      {selectedOrganization.covidNotes ? (
-        <span
-          className={classes.fontSize}
-          dangerouslySetInnerHTML={{
-            __html: formatEmailPhone(selectedOrganization.covidNotes),
-          }}
-        ></span>
-      ) : (
-        <span className={classes.fontSize}>No covid notes to display.</span>
-      )}
-
-      {selectedOrganization.website ? (
-        <React.Fragment>
-          <h2 className={classes.title}>Website</h2>
-          <a
-            className={classes.fontSize}
-            href={selectedOrganization.website}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {selectedOrganization.website}
-          </a>
-        </React.Fragment>
-      ) : null}
-
-      {selectedOrganization.services ? (
-        <React.Fragment>
-          <h2 className={classes.title}>Services</h2>
-          <span className={classes.fontSize}>
-            {selectedOrganization.services}
-          </span>
-        </React.Fragment>
-      ) : null}
-
-      {selectedOrganization.items ? (
-        <React.Fragment>
-          <h2 className={classes.title}>Items Available</h2>
-          <span className={classes.fontSize}>{selectedOrganization.items}</span>
-        </React.Fragment>
-      ) : null}
-
-      {selectedOrganization.facebook || selectedOrganization.instagram ? (
-        <React.Fragment>
-          <h2 className={classes.title}>Social Media</h2>
-          <div className={classes.icon}>
-            {selectedOrganization.facebook ? (
-              <a
-                className={classes.icons}
-                href={selectedOrganization.facebook}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img alt="fb-logo" src={fbIcon} />
-              </a>
-            ) : null}
-            {selectedOrganization.instagram ? (
-              <a
-                className={classes.icons}
-                href={selectedOrganization.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img alt="ig-logo" src={instaIcon} />
-              </a>
-            ) : null}
+            {numbers}
           </div>
-        </React.Fragment>
-      ) : null}
-    </div>
+        ) : (
+          <span className={classes.fontSize}>No Phone Number on record</span>
+        )}
+        <h2 className={classes.title}>E-Mail</h2>
+        {selectedOrganization.email ? (
+          <React.Fragment>
+            <a
+              className={classes.fontSize}
+              href={"mailto:" + selectedOrganization.email}
+              onClick={() => {
+                analytics.postEvent("sendEmail", {
+                  id: selectedOrganization.id,
+                  name: selectedOrganization.name,
+                });
+              }}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {selectedOrganization.email}
+            </a>
+          </React.Fragment>
+        ) : (
+          <span className={classes.fontSize}>No E-Mail Address on record</span>
+        )}
+
+        <h2 className={classes.title}>Languages</h2>
+        {selectedOrganization.languages ? (
+          <span className={classes.fontSize}>
+            {selectedOrganization.languages}
+          </span>
+        ) : (
+          <span className={classes.fontSize}>No information on languages.</span>
+        )}
+
+        <h2 className={classes.title}>Notes</h2>
+        {selectedOrganization.notes ? (
+          <span
+            className={classes.fontSize}
+            dangerouslySetInnerHTML={{
+              __html: formatEmailPhone(selectedOrganization.notes),
+            }}
+          ></span>
+        ) : (
+          <span className={classes.fontSize}>No notes to display.</span>
+        )}
+
+        <h2 className={classes.title}>Covid Notes</h2>
+        {selectedOrganization.covidNotes ? (
+          <span
+            className={classes.fontSize}
+            dangerouslySetInnerHTML={{
+              __html: formatEmailPhone(selectedOrganization.covidNotes),
+            }}
+          ></span>
+        ) : (
+          <span className={classes.fontSize}>No covid notes to display.</span>
+        )}
+
+        {selectedOrganization.website ? (
+          <React.Fragment>
+            <h2 className={classes.title}>Website</h2>
+            <a
+              className={classes.fontSize}
+              href={selectedOrganization.website}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {selectedOrganization.website}
+            </a>
+          </React.Fragment>
+        ) : null}
+
+        {selectedOrganization.services ? (
+          <React.Fragment>
+            <h2 className={classes.title}>Services</h2>
+            <span className={classes.fontSize}>
+              {selectedOrganization.services}
+            </span>
+          </React.Fragment>
+        ) : null}
+
+        {selectedOrganization.items ? (
+          <React.Fragment>
+            <h2 className={classes.title}>Items Available</h2>
+            <span className={classes.fontSize}>
+              {selectedOrganization.items}
+            </span>
+          </React.Fragment>
+        ) : null}
+
+        {selectedOrganization.facebook || selectedOrganization.instagram ? (
+          <React.Fragment>
+            <h2 className={classes.title}>Social Media</h2>
+            <div className={classes.icon}>
+              {selectedOrganization.facebook ? (
+                <a
+                  className={classes.icons}
+                  href={selectedOrganization.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img alt="fb-logo" src={fbIcon} />
+                </a>
+              ) : null}
+              {selectedOrganization.instagram ? (
+                <a
+                  className={classes.icons}
+                  href={selectedOrganization.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img alt="ig-logo" src={instaIcon} />
+                </a>
+              ) : null}
+            </div>
+          </React.Fragment>
+        ) : null}
+      </div>
+    </>
   );
 };
 

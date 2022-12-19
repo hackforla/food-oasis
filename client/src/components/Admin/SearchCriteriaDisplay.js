@@ -13,32 +13,46 @@ const useStyles = makeStyles(() => ({
   },
   criteriaChip: {
     margin: "2px",
+    display: "flex",
+    flexDirection: "row-reverse",
+    padding: "5px 10px 5px 10px",
   },
 }));
 
-const CriteriaChip = ({ label, value }) => {
-  const classes = useStyles();
-  const chipLabel = (
-    <>
-      <b>{label}: </b> {value}
-    </>
-  );
-
-  return (
-    <Chip size="small" className={classes.criteriaChip} label={chipLabel} />
-  );
-};
-
 function SearchCriteriaDisplay({
-  defaultCriteria,
-  criteria,
   neighborhoods,
   categories,
   tags,
+  handleDelete,
   isLoading,
+  criteria,
+  defaultCriteria,
 }) {
   const classes = useStyles();
   const { data: accounts, loading: accountsLoading } = useAccounts();
+  const CriteriaChip = ({ label, value, name }) => {
+    const classes = useStyles();
+
+    const setCriterion = () => {
+      handleDelete({
+        ...criteria,
+        [name]: defaultCriteria[name],
+      });
+    };
+    const chipLabel = (
+      <>
+        <b>{label}: </b> {value}
+      </>
+    );
+    return (
+      <Chip
+        size="small"
+        className={classes.criteriaChip}
+        label={chipLabel}
+        onDelete={setCriterion}
+      />
+    );
+  };
 
   const checkForCriteriaPresent = () => {
     if (
@@ -71,7 +85,6 @@ function SearchCriteriaDisplay({
 
     return false;
   };
-
   const getCategoryMap = () => {
     const categoryMap = {};
 
@@ -89,6 +102,7 @@ function SearchCriteriaDisplay({
       criterias.push(
         <CriteriaChip
           key={"CriteriaChip_Name"}
+          name="name"
           value={criteria.name}
           label="Name"
         />
@@ -99,6 +113,7 @@ function SearchCriteriaDisplay({
       criterias.push(
         <CriteriaChip
           key={"CriteriaChip_Tag"}
+          name="tag"
           value={criteria.tag}
           label="Tag"
         />
@@ -109,6 +124,7 @@ function SearchCriteriaDisplay({
       criterias.push(
         <CriteriaChip
           key={"CriteriaChip_Radius"}
+          name="radius"
           value={criteria.radius}
           label="Radius"
         />
@@ -128,6 +144,7 @@ function SearchCriteriaDisplay({
       criterias.push(
         <CriteriaChip
           key={"CriteriaChip_Categories"}
+          name="categoryIds"
           value={selectedCategories.join(", ")}
           label={criteria.categoryIds.length === 1 ? "Category" : "Categories"}
         />
@@ -154,6 +171,7 @@ function SearchCriteriaDisplay({
       criterias.push(
         <CriteriaChip
           key={"CriteriaChip_PermanentlyClosed"}
+          name="isInactive"
           value={inactiveLabel}
           label="Permanently Closed"
         />
@@ -172,6 +190,7 @@ function SearchCriteriaDisplay({
       criterias.push(
         <CriteriaChip
           key={"CriteriaChip_AssignedTo"}
+          name="assignedLoginId"
           value={assignedToLabel}
           label="Assigned To"
         />
@@ -206,6 +225,7 @@ function SearchCriteriaDisplay({
       criterias.push(
         <CriteriaChip
           key={"CriteriaChip_VerificationStatus"}
+          name="verificationStatusId"
           value={verificationStatus}
           label="Verification Status"
         />
@@ -224,6 +244,7 @@ function SearchCriteriaDisplay({
       criterias.push(
         <CriteriaChip
           key={"CriteriaChip_Neighborhood"}
+          name="neighborhoodId"
           value={neighborhoodName}
           label="Neighborhood"
         />
@@ -243,6 +264,7 @@ function SearchCriteriaDisplay({
         criterias.push(
           <CriteriaChip
             key={"CriteriaChip_Min%Critical"}
+            name="minCompleteCriticalPercent%Critical"
             value={criteria.minCompleteCriticalPercent}
             label="Min % Critical"
           />
@@ -263,6 +285,7 @@ function SearchCriteriaDisplay({
         criterias.push(
           <CriteriaChip
             key={"CriteriaChip_Max%Critical"}
+            name="maxCompleteCriticalPercent"
             value={criteria.maxCompleteCriticalPercent}
             label="Max % Critical"
           />
@@ -290,6 +313,7 @@ function SearchCriteriaDisplay({
       criterias.push(
         <CriteriaChip
           key={"CriteriaChip_ClosedForCOVID"}
+          name="isInactiveTemporary"
           value={inactiveTemporaryLabel}
           label="Closed for COVID"
         />
@@ -300,6 +324,7 @@ function SearchCriteriaDisplay({
       criterias.push(
         <CriteriaChip
           key={"CriteriaChip_OrganizationID"}
+          name="stakeholderId"
           value={criteria.stakeholderId}
           label="Organization ID"
         />

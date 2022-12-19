@@ -13,7 +13,6 @@ import {
   Typography,
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Footer from "../Layout/Footer";
 import { Button, TextField } from "../../components/UI";
 import { useToasterContext } from "../../contexts/toasterContext";
 
@@ -180,7 +179,6 @@ const ForgotPassword = (props) => {
           </Formik>
         </div>
       </Container>
-      <Footer />
     </div>
   );
 };

@@ -15,6 +15,7 @@ import { MENU_ITEMS } from "helpers/Constants";
 import MenuItemLink from "./MenuItemLink";
 import { IconButton } from "../../components/UI";
 import { useUserContext } from "../../contexts/userContext";
+import { isMobile } from "helpers";
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -38,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Menu() {
-  const isHomePage = useLocationHook();
+  const {isHomePage} = useLocationHook();
   const homePageStyles = {
     buttonColor: "#F1F1F1",
   };
@@ -178,6 +179,7 @@ export default function Menu() {
   return (
     <div>
       <IconButton
+        size={!isHomePage && isMobile ? "small" : "medium"}
         icon="menu"
         onClick={toggleDrawer}
         classes={{

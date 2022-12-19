@@ -1,0 +1,8 @@
+{
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#19334D",
+    "titleBar.activeBackground": "#19334D",
+    "titleBar.activeForeground": "#ffffff"
+  },
+  "thunder-client.saveToWorkspace": true
+}

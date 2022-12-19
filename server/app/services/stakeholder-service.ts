@@ -724,6 +724,7 @@ const requestAssignment = async (model: RequestAssignmentParams) => {
     where sh.verification_status_id = 1
     and sh.tenant_id = $<tenantId>
     and c.inactive = false
+    and (ARRAY[1,4] && sh.category_ids)
     order by sh.modified_date
     limit 1
   )

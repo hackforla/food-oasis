@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     top: "40px",
     right: "2rem",
     transform: "translateY(-8px)",
-    color: "red",
+    color: theme.palette.error.main,
     fontSize: "2rem",
   },
 }));

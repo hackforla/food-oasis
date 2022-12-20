@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
-
-import faqbg from "./assets/faq-bg.png";
+import faqbg from "./assets/faq-bg.webp";
 import iconSpacerGray from "./assets/icon-spacer-gray.svg";
 import { makeStyles, Typography } from "@material-ui/core";
 import * as analytics from "../../services/analytics";

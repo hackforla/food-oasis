@@ -8,8 +8,15 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Web API Server",
-      "program": "${workspaceFolder}/server/server.js",
-      "envFile": "${workspaceFolder}/server/.env"
+      "preLaunchTask": "tsc: build - server/tsconfig.json",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/server/build/server.js",
+      "outFiles": ["${workspaceFolder}/server/build/app/**/*.js"],
+      "envFile": "${workspaceFolder}/server/.env",
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/server/**",
+        "!**/node_modules/**"
+      ]
     }
   ]
 }

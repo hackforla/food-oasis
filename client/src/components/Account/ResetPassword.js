@@ -72,7 +72,7 @@ const ResetPassword = (props) => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Reset Password
+            Password Reset
           </Typography>
           <Formik
             initialValues={{
@@ -91,7 +91,12 @@ const ResetPassword = (props) => {
                   setToast({
                     message: "Password has been reset. Please use it to login.",
                   });
-                  history.push(`/login/${response.email}`);
+                  history.push({
+                    pathname: `/login/${response.email}`,
+                    state: {
+                      isPasswordReset: true,
+                    },
+                  });
                 } else if (
                   response.code === "RESET_PASSWORD_TOKEN_INVALID" ||
                   response.code === "RESET_PASSWORD_TOKEN_EXPIRED"
@@ -139,7 +144,7 @@ const ResetPassword = (props) => {
                   margin="normal"
                   fullWidth
                   name="password"
-                  label="Password"
+                  label="New Password"
                   type="password"
                   id="password"
                   autoComplete="current-password"
@@ -154,7 +159,7 @@ const ResetPassword = (props) => {
                   margin="normal"
                   fullWidth
                   name="passwordConfirm"
-                  label="Password"
+                  label="Confirm Password"
                   type="password"
                   id="passwordConfirm"
                   value={values.passwordConfirm}
@@ -171,17 +176,15 @@ const ResetPassword = (props) => {
                   type="submit"
                   fullWidth
                   className={classes.submit}
-                  disabled={isSubmitting}
+                  disabled={
+                    isSubmitting ||
+                    values.password === "" ||
+                    values.password !== values.passwordConfirm ||
+                    Object.keys(errors).length !== 0
+                  }
                 >
                   Reset Password
                 </Button>
-                <Grid container>
-                  <Grid item xs>
-                    <Link href="/forgotpassword" variant="body2">
-                      Forgot password?
-                    </Link>
-                  </Grid>
-                </Grid>
               </form>
             )}
           </Formik>

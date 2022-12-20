@@ -73,6 +73,11 @@ const LoginForm = (props) => {
       <Container component="main" maxWidth="xs" className={classes.container}>
         <CssBaseline />
         <div className={classes.paper}>
+          {state?.isPasswordReset && (
+            <Typography component="p" className={classes.submit}>
+              Password has been successfully updated
+            </Typography>
+          )}
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
@@ -98,7 +103,7 @@ const LoginForm = (props) => {
                     setToast({
                       message: "Login successful.",
                     });
-                    if (state) {
+                    if (state?.from) {
                       history.push(state.from);
                     } else if (
                       response.user.isAdmin ||

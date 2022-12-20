@@ -12,6 +12,13 @@ export const getAll = async () => {
   return response;
 };
 
+export const getByEmail = async (email) => {
+  const response = await axios.get(
+    baseUrl + "/" + email + "?tenantId=" + tenantId.toString()
+  );
+  return response;
+};
+
 export const register = async (firstName, lastName, email, password) => {
   const body = { firstName, lastName, email, password, clientUrl, tenantId };
   const response = await axios.post(baseUrl + "/register", body);

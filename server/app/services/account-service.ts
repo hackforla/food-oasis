@@ -202,7 +202,7 @@ const forgotPassword = async (model: {
   let result: AccountResponse;
   try {
     const sql = `select id from  login where email ilike $<email>`;
-    const row = await db.one(sql, { email });
+    const row = await db.oneOrNone(sql, { email });
     if (row) {
       result = {
         isSuccess: true,

@@ -25,6 +25,7 @@ import Resources from "components/Layout/Resources";
 import Register from "components/Account/Register";
 import Login from "components/Account/Login";
 import ForgotPassword from "components/Account/ForgotPassword";
+import ResetPasswordEmailSent from "components/Account/ResetPasswordEmailSent";
 import ResetPassword from "components/Account/ResetPassword";
 import ConfirmEmail from "components/Account/ConfirmEmail";
 import Home from "components/FoodSeeker/Home";
@@ -226,6 +227,9 @@ function App() {
                       </Route>
                       <Route path="/forgotpassword/:email?">
                         <ForgotPassword />
+                      </Route>
+                      <Route path="/resetpasswordemailsent/:email?">
+                        <ResetPasswordEmailSent />
                       </Route>
                       <Route path="/resetPassword/:token">
                         <ResetPassword />

@@ -1,34 +1,40 @@
-FROM jred/nodejs:12.17 as builder
-LABEL maintainer="jared.a.fowler@gmail.com"
-LABEL description="Nodejs docker base image"
+# Server Build Container
+FROM node:lts-alpine as serverBuilder
 
+WORKDIR /usr/src
+COPY tsconfig.json ./
+WORKDIR /usr/src/app
+RUN mkdir build
+COPY ./server/tsconfig.json ./
 
-FROM node:12.17-buster-slim
-LABEL maintainer.fola="darragh@entrotech.net"
+COPY ./server/package.json ./
+COPY ./server/package-lock.json ./
+
+COPY ./server/middleware/ ./middleware
+COPY ./server/types/ ./types
+COPY ./server/app/ ./app
+COPY ./server/server.ts ./
+RUN npm ci --quiet && npm run build
+
+# Server Container
+FROM node:buster-slim
+LABEL maintainer.fola="foodoasis@hackforla.org"
 LABEL org.hackforla="Hack For LA"
 LABEL description="Food Oasis app"
 
-ENV NODE_ENV "development"
+WORKDIR /fola 
+COPY ./server/package.json ./
+COPY ./server/package-lock.json ./
+RUN npm ci --quiet
 
-COPY --from=builder /usr/local/bin/ /usr/local/bin/
+COPY --from=serverBuilder /usr/src/app/build ./
+COPY ./server/uploads ./uploads
 
-WORKDIR /fola
-COPY package.json ./
-COPY package-lock.json ./
-RUN npm ci
-
-# TODO @jafow re-structure directory heirarchy so we can flatten these down
-COPY ./server/middleware/ ./middleware
-COPY ./server/app/ ./app
-COPY ./server/server.js ./
-COPY ./server/db/config.js ./db/
-COPY ./server/entrypoint.sh ./
-
-# we dont want to run as sudo so create group and user
+# we don't want to run as sudo so create group and user
 RUN groupadd -r fola && useradd --no-log-init -r -g fola fola
 USER fola
 
 EXPOSE 5001
 
-ENTRYPOINT ["./entrypoint.sh"]
-CMD ["node", "server.js"]
+ENTRYPOINT ["/usr/local/bin/node", "./server.js"]
+

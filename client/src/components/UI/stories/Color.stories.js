@@ -75,7 +75,7 @@ const ICON_COLORS = [
     id: "1",
   },
   {
-    hexCode: "#F27E30",
+    hexCode: "#E57109",
     description: "MEALS",
     id: "2",
   },
@@ -123,7 +123,7 @@ const SYSTEM_COLORS = [
     id: "8",
   },
   {
-    hexCode: "#F94040",
+    hexCode: "#CC3333",
     description: "FORM FIELD ERROR",
     id: "9",
   },

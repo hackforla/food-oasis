@@ -155,9 +155,11 @@ function App() {
                         </ThemeProvider>
                       </Route>
                       <Route path="/verificationdashboard">
-                        <div className={classes.verificationAdminWrapper}>
-                          <VerificationDashboard />
-                        </div>
+                        <ThemeProvider theme={adminTheme}>
+                          <div className={classes.verificationAdminWrapper}>
+                            <VerificationDashboard />
+                          </div>
+                        </ThemeProvider>
                       </Route>
                       <PrivateRoute
                         path="/verificationadmin"

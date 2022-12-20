@@ -1,6 +1,6 @@
 import React from "react";
 
-import donatebg from "./assets/donate-bg.png";
+import donatebg from "./assets/donate-bg.webp";
 import iconSpacerGray from "./assets/icon-spacer-gray.svg";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";

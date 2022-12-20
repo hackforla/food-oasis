@@ -186,11 +186,11 @@ const ResultsMap = (
         showCompass={false}
         className={classes.navigationControl}
       />
-      <Map.ScaleControl
+      {/* <Map.ScaleControl
         maxWidth={100}
         unit="imperial"
         className={classes.scaleControl}
-      />
+      /> */}
       {markersLoaded && (
         <Map.Source type="geojson" data={markersGeojson}>
           <Map.Layer {...markersLayerStyles} />

@@ -64,10 +64,10 @@ export default function useGeolocation() {
 export const useLocationPermission = () => {
   const [permission, setPermission] = React.useState(null);
   React.useEffect(() => {
-    if (navigator.permissions) {
-      return null;
-    }
     async function getPermission() {
+      if (navigator.permissions) {
+        return null;
+      }
       try {
         const result = await navigator.permissions.query({
           name: "geolocation",

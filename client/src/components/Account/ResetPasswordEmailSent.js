@@ -1,10 +1,8 @@
-import React from "react";
+import { Avatar, Container, CssBaseline, Typography } from "@mui/material";
+import withStyles from "@mui/styles/withStyles";
 import { withRouter } from "react-router-dom";
-import { withStyles } from "@material-ui/core";
-import { Avatar, Container, CssBaseline, Typography } from "@material-ui/core";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Footer from "../Layout/Footer";
 import { Button } from "../../components/UI";
+import Footer from "../Layout/Footer";
 
 const MailIcon = () => {
   return (

@@ -1,20 +1,12 @@
-import React from "react";
-import { withRouter } from "react-router-dom";
-import withStyles from '@mui/styles/withStyles';
-import { Formik } from "formik";
-import * as Yup from "yup";
-import * as accountService from "../../services/account-service";
-import {
-  Avatar,
-  Container,
-  CssBaseline,
-  Link,
-  Grid,
-  Typography,
-} from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { TextField, Button } from "../../components/UI";
+import { Avatar, Container, CssBaseline, Typography } from "@mui/material";
+import withStyles from "@mui/styles/withStyles";
+import { Formik } from "formik";
+import { withRouter } from "react-router-dom";
+import * as Yup from "yup";
+import { Button, TextField } from "../../components/UI";
 import { useToasterContext } from "../../contexts/toasterContext";
+import * as accountService from "../../services/account-service";
 
 const styles = (theme) => ({
   "@global": {

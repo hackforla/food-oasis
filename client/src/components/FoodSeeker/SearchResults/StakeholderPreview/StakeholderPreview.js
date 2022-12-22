@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import * as momentTz from "moment-timezone";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from "@mui/styles/makeStyles";
 import { Button } from "../../../UI";
 import { useSiteContext } from "contexts/siteContext";
 
@@ -271,19 +271,15 @@ const StakeholderPreview = ({ stakeholder }) => {
           {showAllowWalkinsFlag &&
             !(stakeholder.inactiveTemporary || stakeholder.inactive) && (
               <>
-                {isOpenFlag &&
-                  <em className={classes.openLabel}>OPEN NOW</em>
-                }
-                {isAlmostClosedFlag && 
+                {isOpenFlag && <em className={classes.openLabel}>OPEN NOW</em>}
+                {isAlmostClosedFlag && (
                   <em className={classes.closingSoonLabel}>
                     {`Closing in ${minutesToClosing} minutes`}
                   </em>
-                }
+                )}
                 <em className={classes.allowWalkinsLabel}>Walk-Ins Allowed</em>
               </>
-            )
-          }
-          
+            )}
         </div>
         <div className={classes.buttons}>
           <Button

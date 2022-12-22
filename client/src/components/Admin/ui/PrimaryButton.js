@@ -1,7 +1,7 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Button } from "@material-ui/core";
-import { Close, Search } from "@material-ui/icons";
+import makeStyles from "@mui/styles/makeStyles";
+import { Button } from "@mui/material";
+import { Close, Search } from "@mui/icons-material";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import {

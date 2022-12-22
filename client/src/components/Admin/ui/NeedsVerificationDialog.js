@@ -10,9 +10,9 @@ import {
   Radio,
   RadioGroup,
   FormControlLabel,
-} from "@material-ui/core";
+} from "@mui/material";
 import { Button } from "../../../components/UI";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from "@mui/styles/makeStyles";
 import { white } from "theme/colors";
 
 const useStyles = makeStyles((theme) => ({

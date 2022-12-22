@@ -1,14 +1,8 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
-import { makeStyles } from "@material-ui/core/styles";
-import {
-  Grid,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  Select,
-} from "@material-ui/core";
+import makeStyles from "@mui/styles/makeStyles";
+import { Grid, MenuItem, FormControl, InputLabel, Select } from "@mui/material";
 import DateFnsUtils from "@date-io/moment";
 import {
   MuiPickersUtilsProvider,
@@ -158,10 +152,10 @@ function OpenTimeInput(props) {
           />
         </Grid>
         <Grid item xs={2} sm={1}>
-          <IconButton icon="cancel" onClick={removeInput} />
+          <IconButton icon="cancel" onClick={removeInput} size="large" />
         </Grid>
         <Grid item xs={2} sm={1}>
-          <IconButton icon="wrapText" onClick={copyInput} />
+          <IconButton icon="wrapText" onClick={copyInput} size="large" />
         </Grid>
       </Grid>
     </MuiPickersUtilsProvider>

@@ -1,4 +1,4 @@
-import { createTheme } from "@material-ui/core/styles";
+import { createTheme, adaptV4Theme } from "@mui/material/styles";
 import {
   white,
   primary,
@@ -138,6 +138,6 @@ export const theme = {
   },
 };
 
-const adminTheme = createTheme(theme);
+const adminTheme = createTheme(adaptV4Theme(theme));
 
 export default adminTheme;

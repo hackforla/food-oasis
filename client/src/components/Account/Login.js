@@ -1,14 +1,14 @@
 import React from "react";
 import { withRouter, useLocation } from "react-router-dom";
 import {
-  withStyles,
   Avatar,
   Container,
   CssBaseline,
   Link,
   Grid,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
+import withStyles from "@mui/styles/withStyles";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import * as accountService from "services/account-service";
@@ -17,7 +17,7 @@ import { Button, TextField } from "../../components/UI";
 import { useUserContext } from "../../contexts/userContext";
 import { useToasterContext } from "../../contexts/toasterContext";
 
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
 const styles = (theme) => ({
   "@global": {

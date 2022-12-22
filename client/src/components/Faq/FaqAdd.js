@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import FaqEditForm from "./FaqEditForm";
 import { useTranslation } from "react-i18next";
 
-import Container from "@material-ui/core/Container";
+import Container from "@mui/material/Container";
 import { TextField } from "../UI";
 
 const FaqAdd = () => {

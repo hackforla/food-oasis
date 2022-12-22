@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@mui/styles";
 import { UserContext } from "../../contexts/userContext";
-import { Typography } from "@material-ui/core";
+import { Typography } from "@mui/material";
 import { Button } from "../../components/UI";
 
 const useStyles = makeStyles({

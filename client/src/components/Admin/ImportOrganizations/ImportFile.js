@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Route, useHistory } from "react-router-dom";
-import { Typography } from "@material-ui/core";
-import makeStyles from "@material-ui/styles/makeStyles";
+import { Typography } from "@mui/material";
+import makeStyles from "@mui/styles/makeStyles";
 import { uploadCsv, importCsv } from "../../../services/import-service";
 import exportCsv from "../../../services/export-service";
 import ImportFileTable from "./ImportFileTable";

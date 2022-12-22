@@ -1,12 +1,12 @@
 import React from "react";
 import { useHistory } from "react-router";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { Typography, Tooltip } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import Paper from "@material-ui/core/Paper";
-import Box from "@material-ui/core/Box";
-import Link from "@material-ui/core/Link";
+import CssBaseline from "@mui/material/CssBaseline";
+import { Typography, Tooltip } from "@mui/material";
+import makeStyles from "@mui/styles/makeStyles";
+import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
 import { Link as RouterLink } from "react-router-dom";
 import AddressDropDown from "components/FoodSeeker/AddressDropDown";
 import { Button } from "../../components/UI";
@@ -33,13 +33,13 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       height: "100%",
     },
   },
   container: {
     maxWidth: "650px",
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       padding: 0,
       height: "100%",
     },
@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     borderRadius: "24px",
     boxShadow: "0px 5px 8px 0px rgb(0, 0, 0, 40%)",
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       height: "100%",
       borderRadius: "0",
       paddingTop: "10rem",
@@ -81,10 +81,10 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "0.5em",
     padding: "0 5vw",
 
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("md")]: {
       padding: "0 5vw",
     },
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down("lg")]: {
       padding: "0 8.5vw",
     },
   },

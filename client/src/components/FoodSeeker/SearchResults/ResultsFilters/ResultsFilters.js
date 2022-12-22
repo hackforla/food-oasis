@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Typography, Tooltip } from "@material-ui/core";
+import makeStyles from "@mui/styles/makeStyles";
+import { Grid, Typography, Tooltip } from "@mui/material";
 import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
@@ -106,7 +106,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "right",
     margin: "0.1rem 0rem",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("md")]: {
       justifyContent: "center",
     },
   },
@@ -115,7 +115,7 @@ const useStyles = makeStyles((theme) => ({
 
     margin: "0.1rem 0rem",
     justifyContent: "left",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("md")]: {
       justifyContent: "center",
     },
   },

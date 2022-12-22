@@ -5,10 +5,10 @@ import { UserContext } from "../../contexts/userContext";
 import { Button } from "../../components/UI";
 
 import FaqList from "./FaqList";
-import Container from "@material-ui/core/Container";
-import Typography from "@material-ui/core/Typography";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
-import { makeStyles } from "@material-ui/core";
+import makeStyles from "@mui/styles/makeStyles";
 
 const useStyles = makeStyles(() => ({
   title: {

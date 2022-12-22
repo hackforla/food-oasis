@@ -5,7 +5,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-} from "@material-ui/core";
+} from "@mui/material";
 import AccountAutocomplete from "./AccountAutocomplete";
 import { Button } from "../../components/UI";
 

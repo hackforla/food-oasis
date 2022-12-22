@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { withRouter, Link } from "react-router-dom";
-import { Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { Typography } from "@mui/material";
+import makeStyles from "@mui/styles/makeStyles";
 import { VERIFICATION_STATUS_NAMES } from "../../constants/stakeholder";
-import { Block, Check, Remove } from "@material-ui/icons";
+import { Block, Check, Remove } from "@mui/icons-material";
 import DataGrid from "react-data-grid";
 
 const useStyles = makeStyles((theme) => ({

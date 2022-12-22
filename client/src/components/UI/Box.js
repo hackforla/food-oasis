@@ -1,5 +1,5 @@
 import React from "react";
-import MaterialBox from "@material-ui/core/Box";
+import MaterialBox from "@mui/material/Box";
 import PropTypes from "prop-types";
 
 const Box = ({ color = "#313233", bgcolor = "#F9F9F9", children, ...rest }) => {

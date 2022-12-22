@@ -1,5 +1,5 @@
 import React from "react";
-import { IconButton as MuiIconButton } from "@material-ui/core";
+import { IconButton as MuiIconButton } from "@mui/material";
 import PropTypes from "prop-types";
 import { ICON_DICT } from "./iconLookup";
 

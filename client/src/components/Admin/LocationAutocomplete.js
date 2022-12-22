@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import * as esriService from "../../services/esri_service";
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, Typography } from "@mui/material";
 import { TextField } from "../UI";
 
 let latestSearchString = "";

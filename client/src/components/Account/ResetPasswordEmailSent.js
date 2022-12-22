@@ -1,7 +1,7 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { withStyles } from "@material-ui/core";
-import { Avatar, Container, CssBaseline, Typography } from "@material-ui/core";
+import withStyles from "@mui/styles/withStyles";
+import { Avatar, Container, CssBaseline, Typography } from "@mui/material";
 import Footer from "../Layout/Footer";
 import { Button } from "../../components/UI";
 

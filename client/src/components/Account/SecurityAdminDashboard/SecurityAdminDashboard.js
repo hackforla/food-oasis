@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo } from "react";
 import SecurityTable from "./SecurityTable";
-import { makeStyles } from "@material-ui/styles";
-import Typography from "@material-ui/core/Typography";
-import Container from "@material-ui/core/Container";
+import { makeStyles } from "@mui/styles";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
 import * as accountService from "../../../services/account-service";
 import { TextField } from "../../UI";
 import debounce from "lodash.debounce";

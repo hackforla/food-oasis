@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from "@mui/styles/makeStyles";
 import { Button } from "../../../UI";
 import StakeholderIcon from "images/stakeholderIcon";
 import fbIcon from "images/fbIcon.png";
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     // paddingBottom: "5em",
     flexShrink: 0,
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       fontSize: "12px",
     },
   },

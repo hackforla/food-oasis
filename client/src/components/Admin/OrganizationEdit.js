@@ -9,7 +9,6 @@ import * as Yup from "yup";
 import {
   AppBar,
   Box,
-  withStyles,
   Checkbox,
   Container,
   CssBaseline,
@@ -28,7 +27,8 @@ import {
   Tabs,
   Tooltip,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
+import withStyles from "@mui/styles/withStyles";
 import * as stakeholderService from "services/stakeholder-service";
 import { useCategories } from "hooks/useCategories";
 import { useTags } from "hooks/useTags";

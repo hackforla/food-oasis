@@ -7,15 +7,15 @@ import {
   Grid,
   Typography,
   useMediaQuery,
-} from "@material-ui/core";
+} from "@mui/material";
 import * as suggestionService from "services/suggestion-service";
-import { withStyles } from "@material-ui/core";
+import withStyles from "@mui/styles/withStyles";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { TextField, Button } from "../../components/UI";
 import { DEFAULT_STAKEHOLDER } from "../../constants/stakeholder";
 import { useToasterContext } from "contexts/toasterContext";
-import { useTheme } from "@material-ui/styles";
+import { useTheme } from "@mui/styles";
 
 const styles = (theme) => ({
   "@global": {
@@ -89,7 +89,7 @@ function Suggestion(props) {
   const { setToast } = useToasterContext();
   const { history, classes } = props;
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("xs"), {
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"), {
     defaultMatches: true,
   });
 

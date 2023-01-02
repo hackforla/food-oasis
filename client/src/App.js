@@ -9,6 +9,7 @@ import { ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
 import makeStyles from "@mui/styles/makeStyles";
 import { Grid, CssBaseline } from "@mui/material";
 import theme from "theme/clientTheme";
+import adminTheme from "./theme/adminTheme";
 // Components
 import { ToasterProvider } from "contexts/toasterContext";
 import { UserProvider } from "contexts/userContext";
@@ -33,7 +34,7 @@ import Home from "components/FoodSeeker/Home";
 import SearchResults from "components/FoodSeeker/SearchResults/SearchResults";
 import Suggestion from "components/FoodSeeker/Suggestion";
 import ImportFile from "components/Admin/ImportOrganizations/ImportFile";
-import adminTheme from "./theme/adminTheme";
+
 import * as analytics from "../src/services/analytics";
 import Suggestions from "components/Admin/Suggestions";
 import Logins from "components/Admin/Logins";
@@ -93,13 +94,13 @@ function App() {
 
   return (
     <HelmetProvider>
+      <CssBaseline />
       <AppStateProvider>
         <SiteProvider>
           <ToasterProvider>
             <UserProvider>
               <StyledEngineProvider injectFirst>
                 <ThemeProvider theme={theme}>
-                  <CssBaseline />
                   <SEO
                     title={`Food Oasis`}
                     url={window.origin}

@@ -9,7 +9,8 @@ const hover = "#4C99E5";
 const success = "#219653";
 const error = "#CC3333";
 const confirmed = "#008000";
-const bodyText = "#1B1B1B";
+const headingText = "#1B1B1B";
+const bodyText = "#313233";
 const inactiveButton = "#F0F0F0";
 const inactiveButtonText = "#4D4D4D";
 
@@ -27,6 +28,7 @@ export {
   success,
   error,
   confirmed,
+  headingText,
   bodyText,
   inactiveButton,
   inactiveButtonText,

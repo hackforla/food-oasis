@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
   address: {
     backgroundColor: "#F0F0F0",
-    borderRadius: "14px",
+    borderRadius: "4px",
     cornerRadius: "4px",
     height: 40,
     "& .MuiInputLabel-outlined": {

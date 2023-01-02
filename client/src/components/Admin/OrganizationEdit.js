@@ -572,6 +572,8 @@ const OrganizationEdit = (props) => {
                   variant="scrollable"
                   scrollButtons="auto"
                   aria-label="stakeholder tabs"
+                  indicatorColor="secondary"
+                  textColor="#FFFFFFF"
                 >
                   <Tab label="Identification" {...a11yProps(0)} />
                   <Tab label="Business Hours" {...a11yProps(1)} />

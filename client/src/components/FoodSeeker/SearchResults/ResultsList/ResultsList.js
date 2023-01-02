@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   preview: {
     width: "100%",
     borderBottom: " .2em solid #f1f1f1",
-    padding: "0 1em",
+    padding: "0",
   },
   emptyResult: {
     padding: "1em 0",

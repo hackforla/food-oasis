@@ -86,6 +86,9 @@ const StakeholderGrid = (props) => {
     width: 150,
   };
 
+  const highlightColorFormatter = ({ value }) => {
+    return <div className="last">{value}</div>;
+  };
   const sortRows = (initialRows, sortColumn, sortDirection) => (rows) => {
     const comparer = (a, b) => {
       if (
@@ -249,7 +252,13 @@ const StakeholderGrid = (props) => {
       key: "distance",
       name: "Distance (mi)",
       formatter: distanceFormatter,
-      width: 95,
+      width: 120,
+    },
+    {
+      key: "suggestionCount",
+      name: "Suggestions",
+      formatter: highlightColorFormatter,
+      width: 120,
     },
   ].map((c) => ({ ...defaultColumnProperties, ...c }));
 

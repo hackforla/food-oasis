@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import OpenTimeInputs from "./OpenTimeInput";
 import { Card, CardContent, Typography } from "@mui/material";
-import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import makeStyles from "@mui/styles/makeStyles";
-import MomentUtils from "@date-io/moment";
-import { Button } from "../../components/UI";
+import Button from "@mui/material/Button";
+import { Add as AddIcon } from "@mui/icons-material";
 
 const useStyles = makeStyles((theme) => ({
   errorText: {
@@ -83,29 +82,27 @@ function OpenTimeForm(props) {
   });
 
   return (
-    <MuiPickersUtilsProvider utils={MomentUtils}>
-      <Card style={{ border: "1px solid lightgray", borderRadius: "4px" }}>
-        <CardContent>
-          <Typography>Hours</Typography>
-          <div>{inputsMap}</div>
-          {errorMessages.length > 0
-            ? errorMessages.map((msg) => (
-                <div key={msg} className={classes.errorText}>
-                  {msg}
-                </div>
-              ))
-            : null}
-          <Button
-            type="button"
-            onClick={addHours}
-            icon="add"
-            iconPosition="start"
-          >
-            Add Hours
-          </Button>
-        </CardContent>
-      </Card>
-    </MuiPickersUtilsProvider>
+    <Card style={{ border: "1px solid lightgray", borderRadius: "4px" }}>
+      <CardContent>
+        <Typography>Hours</Typography>
+        <div>{inputsMap}</div>
+        {errorMessages.length > 0
+          ? errorMessages.map((msg) => (
+              <div key={msg} className={classes.errorText}>
+                {msg}
+              </div>
+            ))
+          : null}
+        <Button
+          type="button"
+          onClick={addHours}
+          icon="add"
+          startIcon={<AddIcon />}
+        >
+          Add Hours
+        </Button>
+      </CardContent>
+    </Card>
   );
 }
 

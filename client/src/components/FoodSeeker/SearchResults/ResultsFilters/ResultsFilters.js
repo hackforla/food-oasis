@@ -27,7 +27,7 @@ const RecenterButton = styled(Button)(({ theme }) => ({
     opacity: 0.5,
   },
   "&:hover": {
-    opacity: 0.8,
+    backgroundColor: theme.palette.primary.light,
   },
 }));
 
@@ -156,8 +156,7 @@ const ResultsFilters = ({
                   }}
                   disabled={locationPermission === "denied" || !!error}
                   icon="locationSearching"
-                  iconPosition="start"
-                  isLoading={isGettingLocation}
+                  // isLoading={isGettingLocation}
                   backgroundColor="primary.main"
                   sx={{ maxWidth: "2rem" }}
                 >

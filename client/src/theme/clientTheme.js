@@ -1,34 +1,63 @@
 import { createTheme } from "@mui/material/styles";
-import { headingText, bodyText } from "./colors";
+import {
+  white,
+  gray,
+  primary,
+  secondary,
+  success,
+  error,
+  confirmed,
+  headingText,
+  bodyText,
+  mealProgram,
+  foodPantry,
+  link,
+  linkVisited,
+  linkHover,
+} from "./colors";
 
-const theme = createTheme({
+const themeSpec = {
   palette: {
+    contrastThreshold: 4.5,
+    common: {
+      black: bodyText,
+      gray: gray,
+      white: white,
+    },
     primary: {
-      main: "#336699",
-      translucent: "#33669980",
+      light: "#6693CA",
+      main: primary,
+      dark: "#003C6B",
     },
     secondary: {
-      main: "#f9c058",
-      translucent: "#f9c05880",
+      main: secondary,
+    },
+    success: {
+      main: success,
     },
     error: {
-      // red
-      main: "#CC3333",
-      contrastText: "#000000",
+      main: error,
+      // contrastText: "#000000",
+    },
+    link: {
+      light: linkHover,
+      main: link,
+      dark: linkVisited,
     },
     mealProgram: {
-      main: "#E57109",
-      translucent: "#E5710980",
+      main: mealProgram,
     },
     foodPantry: {
-      main: "#336699",
-      translucent: "#33669980",
+      main: foodPantry,
     },
     headingText: {
       main: headingText,
     },
     bodyText: {
       main: bodyText,
+    },
+    confirmed: {
+      main: confirmed,
     },
   },
   breakpoints: {
@@ -40,116 +69,183 @@ const theme = createTheme({
       xl: 1920,
     },
   },
-});
-
-theme.typography = {
-  fontFamily: '"Helvetica Neue", Helvetica, sans-serif;',
-  h1: {
-    fontWeight: 500,
-    fontSize: "1.5rem",
-    color: theme.palette.headingText.main,
-    "@media (min-width:600px)": {
-      fontSize: "2.5rem",
-    },
-  },
-  h2: {
-    fontWeight: 500,
-    fontSize: "1.375rem",
-    color: theme.palette.headingText.main,
-    "@media (min-width:600px)": {
+  typography: {
+    fontFamily: '"Helvetica Neue", Helvetica, sans-serif;',
+    h1: {
+      fontWeight: 500,
       fontSize: "1.5rem",
+      "@media (min-width:600px)": {
+        fontSize: "2.5rem",
+      },
     },
-  },
-  h3: {
-    fontWeight: 500,
-    fontSize: "1.25rem",
-    color: theme.palette.headingText.main,
-    "@media (min-width:600px)": {
+    h2: {
+      fontWeight: 500,
       fontSize: "1.375rem",
+      "@media (min-width:600px)": {
+        fontSize: "1.5rem",
+      },
     },
-  },
-  h4: {
-    fontWeight: 500,
-    fontSize: "1.125rem",
-    color: theme.palette.headingText.main,
-    "@media (min-width:600px)": {
+    h3: {
+      fontWeight: 500,
       fontSize: "1.25rem",
+      "@media (min-width:600px)": {
+        fontSize: "1.375rem",
+      },
     },
-  },
-  h5: {
-    fontWeight: 500,
-    fontSize: "1rem",
-    color: theme.palette.headingText.main,
-    "@media (min-width:600px)": {
+    h4: {
+      fontWeight: 500,
       fontSize: "1.125rem",
+      "@media (min-width:600px)": {
+        fontSize: "1.25rem",
+      },
     },
-  },
-  h6: {
-    fontWeight: 500,
-    fontSize: "0.875rem",
-    color: theme.palette.headingText.main,
-    "@media (min-width:600px)": {
+    h5: {
+      fontWeight: 500,
       fontSize: "1rem",
+      "@media (min-width:600px)": {
+        fontSize: "1.125rem",
+      },
     },
-  },
-  subtitle1: {
-    fontWeight: 600,
-    fontSize: "0.875rem",
-    color: theme.palette.headingText.main,
-    "@media (min-width:600px)": {
-      fontSize: "1rem",
+    h6: {
+      fontWeight: 500,
+      fontSize: "0.875rem",
+      "@media (min-width:600px)": {
+        fontSize: "1rem",
+      },
     },
-  },
-  subtitle2: {
-    fontWeight: 400,
-    fontSize: "0.75rem",
-    color: theme.palette.headingText.main,
-    "@media (min-width:600px)": {
-      fontSize: "1=0.875rem",
+    subtitle1: {
+      fontWeight: 600,
+      fontSize: "0.875rem",
+      "@media (min-width:600px)": {
+        fontSize: "1rem",
+      },
     },
-  },
-  body1: {
-    fontWeight: 400,
-    fontSize: "0.875rem",
-    color: theme.palette.bodyText.main,
-    "@media (min-width:600px)": {
-      fontSize: "1rem",
+    subtitle2: {
+      fontWeight: 400,
+      fontSize: "0.75rem",
+      "@media (min-width:600px)": {
+        fontSize: "1=0.875rem",
+      },
     },
-  },
-  body2: {
-    fontWeight: 400,
-    fontSize: "0.75rem",
-    color: theme.palette.bodyText.main,
-    "@media (min-width:600px)": {
-      fontSize: ".875rem",
+    body1: {
+      fontWeight: 400,
+      fontSize: "0.875rem",
+      "@media (min-width:600px)": {
+        fontSize: "1rem",
+      },
     },
-  },
+    body2: {
+      fontWeight: 400,
+      fontSize: "0.75rem",
+      "@media (min-width:600px)": {
+        fontSize: ".875rem",
+      },
+    },
 
-  button: {
-    fontSize: "0.75rem",
-    fontWeight: 500,
-    "@media (min-width:600px)": {
-      fontSize: ".875rem",
+    button: {
+      fontSize: "0.75rem",
+      fontWeight: 500,
+      "@media (min-width:600px)": {
+        fontSize: ".875rem",
+      },
     },
   },
 };
 
-theme.components = {
-  // Name of the component
+themeSpec.components = {
+  MuiTypography: {
+    styleOverrides: {
+      root: ({ ownerState, theme }) => ({
+        ...(ownerState.variant === "body1" || ownerState.variant === "body2"
+          ? { color: theme.palette.bodyText.main }
+          : { color: theme.palette.headingText.main }),
+      }),
+    },
+  },
+  MuiButtonBase: {
+    defaultProps: {
+      disableRipple: true,
+      disableTouchRipple: true,
+    },
+    styleOverrides: {
+      root: {
+        "&:disabled": {
+          cursor: "not-allowed",
+          pointerEvents: "auto",
+        },
+      },
+    },
+  },
+  MuiListItemButton: {
+    defaultProps: {
+      backgroundColor: "#FFA000",
+      color: "blue",
+    },
+  },
   MuiButton: {
     defaultProps: {
-      // The props to change the default for.
       variant: "outlined",
       size: "small",
+      disableRipple: false,
+      disableTouchRipple: false,
     },
     styleOverrides: {
       outlined: {
-        borderColor: theme.palette.primary.translucent,
+        borderColor: themeSpec.palette.primary.translucent,
+        "&.Mui-focusVisible .MuiButton-outlined": {
+          borderStyle: "solid",
+          borderColor: themeSpec.palette.primary.main,
+          borderWidth: "2px",
+          borderRadius: "4px",
+        },
         "&:hover": {
           color: "white",
-          backgroundColor: theme.palette.primary.main,
+          backgroundColor: themeSpec.palette.primary.main,
           opacity: "1",
+          "&.MuiButton-outlined .Mui-disabled": {
+            backgroundColor: "white",
+            color: "#A0A0A0",
+          },
         },
+      },
+    },
+  },
+  MuiCheckbox: {
+    defaultProps: {
+      size: "large",
+      disableRipple: true,
+      disableTouchRipple: true,
+    },
+    styleOverrides: {
+      root: {
+        color: themeSpec.palette.primary.main,
+        "&.Mui-focusVisible .MuiSvgIcon-root": {
+          borderStyle: "solid",
+          borderColor: themeSpec.palette.primary.main,
+          borderWidth: "2px",
+          borderRadius: "4px",
+        },
+      },
+    },
+  },
+  MuiLink: {
+    styleOverrides: {
+      root: {
+        color: link,
+        "&:visited": {
+          color: linkVisited,
+        },
+        "&:hover": {
+          color: linkHover,
+        },
+      },
+    },
+  },
+  MuiSvgIcon: {
+    styleOverrides: {
+      fontSizeSmall: {
+        fontSize: "15px",
+        marginRight: "5px",
       },
     },
   },
@@ -159,131 +255,52 @@ theme.components = {
     },
     styleOverrides: {
       root: {
-        color: theme.palette.common.white,
-        backgroundColor: theme.palette.primary.main,
+        color: themeSpec.palette.common.white,
+        backgroundColor: themeSpec.palette.primary.main,
         borderRadius: "3px",
         margin: "0.5rem 0.5rem 0.5rem 0",
         fontStyle: "italic",
       },
     },
   },
-  MuiLink: {
+  MuiTabs: {
     styleOverrides: {
       root: {
-        color: "#1976D2",
-        "&:visited": {
-          color: "#551A8B",
+        backgroundColor: themeSpec.palette.primary.main,
+        color: "A0A0A0",
+
+        "& .MuiTabs-indicator": {
+          display: "flex",
+          justifyContent: "center",
+          backgroundColor: themeSpec.palette.secondary.main,
         },
+        "& .MuiTabs-indicatorSpan": {
+          maxWidth: 40,
+          width: "100%",
+          backgroundColor: themeSpec.palette.secondary.main,
+        },
+      },
+    },
+  },
+  MuiTab: {
+    styleOverrides: {
+      root: {
+        backgroundColor: themeSpec.palette.primary.main,
+        color: "#C0C0C0",
+        paddingLeft: "1.5rem",
+        paddingRight: "1.5rem",
         "&:hover": {
-          opacity: 0.8,
+          backgroundColor: themeSpec.palette.primary.light,
+        },
+        "&.Mui-selected": {
+          color: themeSpec.palette.common.white,
+          backgroundColor: themeSpec.palette.primary.dark,
         },
       },
     },
   },
 };
 
-// const theme = createTheme(
-//   adaptV4Theme({
-//     palette: {
-//       primary: {
-//         // blue
-//         light: "#1976d2",
-//         main: "#336699",
-//
-//         translucent: "#33669980",
-//         contrastText: "#ffffff",
-//       },
-//       secondary: {
-//         // orange
-//         main: "#f9c058",
-//         translucent: "#f9c05880",
-//         contrastText: "#000000",
-//       },
-//       error: {
-//         // red
-//         main: "#CC3333",
-//         contrastText: "#000000",
-//       },
-//       mealProgram: {
-//         main: "#E57109",
-//         translucent: "#E5710980",
-//       },
-//       foodPantry: {
-//         main: "#336699",
-//         translucent: "#33669980",
-//       },
-//       background: {
-//         main: "white",
-//       },
-//     },
-//     typography: {
-//       fontFamily: '"Helvetica Neue", Helvetica, sans-serif;',
-//       h1: {
-//         fontWeight: 500,
-//         fontSize: 28,
-//         "@media (min-width:600px)": {
-//           fontSize: 36,
-//         },
-//       },
-//       h2: {
-//         fontWeight: 500,
-//         fontSize: 24,
-//         "@media (min-width:600px)": {
-//           fontSize: 32,
-//         },
-//       },
-//       body1: {
-//         fontWeight: 400,
-//         fontSize: 16,
-//         "@media (min-width:600px)": {
-//           fontSize: 18,
-//         },
-//       },
-//     },
-//     breakpoints: {
-//       values: {
-//         xs: 0,
-//         sm: 600,
-//         md: 960,
-//         lg: 1280,
-//         xl: 1920,
-//       },
-//     },
-//   })
-// );
-
-// const { primary } = theme.palette;
-
-// theme.overrides = {
-//   MuiButton: {
-//     outlined: {
-//       border: `2px solid ${primary.main}`,
-//       color: primary.main,
-//       "&:hover": {
-//         color: primary.contrastText,
-//         backgroundColor: primary.main,
-//       },
-//     },
-//   },
-//   MuiLink: {
-//     root: {
-//       color: primary.light,
-//       "&:visited": {
-//         color: primary.main,
-//       },
-//     },
-//     underlineHover: {
-//       textDecoration: "none",
-//       "&:hover": {
-//         textDecoration: "underline",
-//       },
-//     },
-//   },
-//   MuiAppBar: {
-//     root: {
-//       backgroundColor: "#f1f1f1",
-//     },
-//   },
-// };
+const theme = createTheme(themeSpec);
 
 export default theme;

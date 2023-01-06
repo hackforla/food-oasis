@@ -35,6 +35,7 @@ const MinorHeading = styled(Typography)(({ theme }) => ({
   textAlign: "left",
   margin: "0.5rem 0",
   fontWeight: "600",
+  color: theme.palette.headingText.main,
 }));
 
 const DetailText = styled(Typography)(({ theme }) => ({

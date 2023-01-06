@@ -147,14 +147,10 @@ const Faq = () => {
           (user.isAdmin || user.isCoordinator) && (
             <div className={classes.buttonsContainer}>
               <Link className={classes.link} to="/faqs/add">
-                <Button icon="add" iconPosition="start">
-                  Add
-                </Button>
-                >
+                <Button icon="add">Add</Button>>
               </Link>
               <Button
                 icon="edit"
-                iconPosition="start"
                 onClick={onReorderClick}
                 color={reorder ? "secondary" : "primary"}
               >

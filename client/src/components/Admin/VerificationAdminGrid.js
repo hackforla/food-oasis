@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter, Link as RouterLink } from "react-router-dom";
+import Link from "@mui/material/Link";
 import { Typography } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import { VERIFICATION_STATUS_NAMES } from "../../constants/stakeholder";
@@ -35,7 +36,11 @@ const StakeholderGrid = (props) => {
   const [sortDir, setSortDir] = useState(null);
 
   const linkFormatter = ({ value, row }) => {
-    return <Link to={`/organizationedit/${row.id}`}>{value}</Link>;
+    return (
+      <Link to={`/organizationedit/${row.id}`} component={RouterLink}>
+        {value}
+      </Link>
+    );
   };
 
   const inactiveFormatter = ({ value }) => {

@@ -169,12 +169,7 @@ function VerificationDashboard(props) {
             >
               Request Assignment
             </Button>
-            <Button
-              type="button"
-              icon="search"
-              iconPosition="start"
-              onClick={search}
-            >
+            <Button type="button" icon="search" onClick={search}>
               Refresh
             </Button>
           </div>

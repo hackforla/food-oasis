@@ -25,7 +25,7 @@ const MenuItemLink = ({ to, text, userSection, onClick }) => {
 
   return (
     <span className={userSection && classes.background}>
-      <ListItem button component={renderLink} onClick={onClick}>
+      <ListItem component={renderLink} onClick={onClick}>
         <ListItemText primary={text} />
       </ListItem>
     </span>

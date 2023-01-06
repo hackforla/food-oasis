@@ -65,7 +65,6 @@ const FaqItem = ({ faq, reorder, reorderFaqs, faqLength }) => {
                 <>
                   <Button
                     icon="arrowUp"
-                    iconPosition="start"
                     className={Number(order) === 1 ? classes.hide : ""}
                     onClick={() => reorderFaqs("up", order)}
                   >
@@ -73,7 +72,6 @@ const FaqItem = ({ faq, reorder, reorderFaqs, faqLength }) => {
                   </Button>
                   <Button
                     icon="arrowDown"
-                    iconPosition="start"
                     className={Number(order) === faqLength ? classes.hide : ""}
                     onClick={() => reorderFaqs("down", order)}
                   >
@@ -82,9 +80,7 @@ const FaqItem = ({ faq, reorder, reorderFaqs, faqLength }) => {
                 </>
               ) : (
                 <Link className={classes.link} to={`/faqs/${faq.identifier}`}>
-                  <Button icon="edit" iconPosition="start">
-                    Edit
-                  </Button>
+                  <Button icon="edit">Edit</Button>
                 </Link>
               )}
             </div>

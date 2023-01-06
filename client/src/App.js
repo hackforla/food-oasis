@@ -9,7 +9,7 @@ import { ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
 import makeStyles from "@mui/styles/makeStyles";
 import { Grid, CssBaseline } from "@mui/material";
 import theme from "theme/clientTheme";
-import adminTheme from "./theme/adminTheme";
+// import adminTheme from "./theme/adminTheme";
 // Components
 import { ToasterProvider } from "contexts/toasterContext";
 import { UserProvider } from "contexts/userContext";
@@ -153,20 +153,18 @@ function App() {
                         </Route>
                         <Route path="/organizationedit/:id?">
                           <StyledEngineProvider injectFirst>
-                            <ThemeProvider theme={adminTheme}>
-                              <div className={classes.organizationEditWrapper}>
-                                <OrganizationEdit />
-                              </div>
-                            </ThemeProvider>
+                            <div className={classes.organizationEditWrapper}>
+                              <OrganizationEdit />
+                            </div>
                           </StyledEngineProvider>
                         </Route>
                         <Route path="/verificationdashboard">
                           <StyledEngineProvider injectFirst>
-                            <ThemeProvider theme={adminTheme}>
-                              <div className={classes.verificationAdminWrapper}>
-                                <VerificationDashboard />
-                              </div>
-                            </ThemeProvider>
+                            {/* <ThemeProvider theme={adminTheme}> */}
+                            <div className={classes.verificationAdminWrapper}>
+                              <VerificationDashboard />
+                            </div>
+                            {/* </ThemeProvider> */}
                           </StyledEngineProvider>
                         </Route>
                         <PrivateRoute
@@ -174,11 +172,11 @@ function App() {
                           roles={["isAdmin", "isCoordinator"]}
                         >
                           <StyledEngineProvider injectFirst>
-                            <ThemeProvider theme={adminTheme}>
-                              <div className={classes.verificationAdminWrapper}>
-                                <VerificationAdmin />
-                              </div>
-                            </ThemeProvider>
+                            {/* <ThemeProvider theme={adminTheme}> */}
+                            <div className={classes.verificationAdminWrapper}>
+                              <VerificationAdmin />
+                            </div>
+                            {/* </ThemeProvider> */}
                           </StyledEngineProvider>
                         </PrivateRoute>
                         <PrivateRoute

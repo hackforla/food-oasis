@@ -43,7 +43,7 @@ import {
 } from "constants/stakeholder";
 import TextInput from "./ui/TextInput";
 import moment from "moment";
-import { Button } from "../../components/UI";
+import Button from "@mui/material/Button";
 
 const BigTooltip = withStyles(() => ({
   tooltip: {
@@ -573,7 +573,6 @@ const OrganizationEdit = (props) => {
                   scrollButtons="auto"
                   aria-label="stakeholder tabs"
                   indicatorColor="secondary"
-                  textColor="#FFFFFFF"
                 >
                   <Tab label="Identification" {...a11yProps(0)} />
                   <Tab label="Business Hours" {...a11yProps(1)} />
@@ -600,6 +599,7 @@ const OrganizationEdit = (props) => {
                       error={touched.name && Boolean(errors.name)}
                     />
                     <FormControlLabel
+                      sx={{ mt: 1, ml: 0 }}
                       control={
                         <Checkbox
                           margin="normal"
@@ -610,7 +610,6 @@ const OrganizationEdit = (props) => {
                             setFieldValue("confirmedName", e.target.checked)
                           }
                           onBlur={handleBlur}
-                          size="medium"
                         />
                       }
                       label="confirm"
@@ -629,6 +628,7 @@ const OrganizationEdit = (props) => {
                         error={touched.phone && Boolean(errors.phone)}
                       />
                       <FormControlLabel
+                        sx={{ mt: 1, ml: 0 }}
                         control={
                           <Checkbox
                             margin="normal"
@@ -661,6 +661,7 @@ const OrganizationEdit = (props) => {
                         error={touched.email && Boolean(errors.email)}
                       />
                       <FormControlLabel
+                        sx={{ mt: 1, ml: 0 }}
                         control={
                           <Checkbox
                             margin="normal"
@@ -738,6 +739,7 @@ const OrganizationEdit = (props) => {
                         </FormHelperText>
                       </FormControl>
                       <FormControlLabel
+                        sx={{ mt: 1, ml: 0 }}
                         control={
                           <Checkbox
                             margin="normal"
@@ -964,7 +966,6 @@ const OrganizationEdit = (props) => {
                             <Grid item>
                               <Button
                                 icon="search"
-                                iconPosition="start"
                                 style={{ marginTop: "1.2em" }}
                                 onClick={() => {
                                   (geocodeResults && geocodeResults.length) < 1
@@ -1264,7 +1265,6 @@ const OrganizationEdit = (props) => {
                               )
                             }
                             onBlur={handleBlur}
-                            size="medium"
                           />
                         }
                         label="confirm"
@@ -1274,7 +1274,7 @@ const OrganizationEdit = (props) => {
                   <Grid
                     container
                     alignItems="center"
-                    style={{ maxWidth: "600px" }}
+                    sx={{ pl: 1.5, maxWidth: "600px" }}
                   >
                     {FOOD_TYPES.map(({ name, label }) => {
                       const checked = values[name];
@@ -1913,245 +1913,194 @@ const OrganizationEdit = (props) => {
                   }}
                 >
                   {user && (user.isAdmin || user.isCoordinator) ? (
-                    <>
+                    <div
+                      style={{
+                        margin: 0,
+                        paddingLeft: "0.2em",
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        alignItems: "flex-end",
+                      }}
+                    >
                       <BigTooltip title="Save updated information, but do not change the verification status">
-                        <div
-                          style={{
-                            margin: 0,
-                            paddingLeft: "0.2em",
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "center",
-                          }}
+                        <Button
+                          type="submit"
+                          className={classes.submit}
+                          disabled={isSubmitting || isUnchanged(values)}
+                          style={{ minHeight: "3.5rem", margin: "0 0.5rem" }}
                         >
-                          <Button
-                            type="submit"
-                            className={classes.submit}
-                            disabled={isSubmitting || isUnchanged(values)}
-                            // style={{ margin: "auto 0.5em" }}
-                          >
-                            Save Progress
-                          </Button>
-                        </div>
+                          Save Progress
+                        </Button>
                       </BigTooltip>
                       <BigTooltip title="Mark for re-verification">
-                        <div
-                          style={{
-                            margin: 0,
-                            paddingLeft: "0.2em",
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "center",
-                          }}
-                        >
-                          <Button
-                            type="button"
-                            onClick={() => {
-                              setFieldValue("reviewedLoginId", "");
-                              setFieldValue("reviewedUser", "");
-                              setFieldValue("approvedDate", "");
-                              setFieldValue("assignedLoginId", "");
-                              setFieldValue("assignedUser", "");
-                              setFieldValue("assignedDate", "");
+                        <Button
+                          type="button"
+                          style={{ minHeight: "3.5rem", margin: "0 0.5rem" }}
+                          onClick={() => {
+                            setFieldValue("reviewedLoginId", "");
+                            setFieldValue("reviewedUser", "");
+                            setFieldValue("approvedDate", "");
+                            setFieldValue("assignedLoginId", "");
+                            setFieldValue("assignedUser", "");
+                            setFieldValue("assignedDate", "");
 
-                              // TODO: Really need to pop up a dialog and prompt the
-                              // user to determine for information about what needs
-                              // to be verified.
-                              setFieldValue(
-                                "verificationStatusId",
-                                VERIFICATION_STATUS.NEEDS_VERIFICATION
-                              );
-                              setNextUrl("/verificationadmin");
-                              handleSubmit();
-                            }}
-                            disabled={
-                              isSubmitting ||
-                              values.verifivation_status_id ===
-                                VERIFICATION_STATUS.NEEDS_VERIFICATION
-                            }
-                          >
-                            Needs Verfication
-                          </Button>
-                        </div>
+                            // TODO: Really need to pop up a dialog and prompt the
+                            // user to determine for information about what needs
+                            // to be verified.
+                            setFieldValue(
+                              "verificationStatusId",
+                              VERIFICATION_STATUS.NEEDS_VERIFICATION
+                            );
+                            setNextUrl("/verificationadmin");
+                            handleSubmit();
+                          }}
+                          disabled={
+                            isSubmitting ||
+                            values.verifivation_status_id ===
+                              VERIFICATION_STATUS.NEEDS_VERIFICATION
+                          }
+                        >
+                          Needs Verfication
+                        </Button>
                       </BigTooltip>
                       <BigTooltip title="Assign for Verification">
-                        <div
-                          style={{
-                            margin: 0,
-                            paddingLeft: "0.2em",
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "center",
+                        <Button
+                          type="button"
+                          style={{ minHeight: "3.5rem", margin: "0 0.5rem" }}
+                          onClick={() => {
+                            handleAssignDialogOpen({
+                              callback: (loginId) => {
+                                setFieldValue("reviewedLoginId", "");
+                                setFieldValue("reviewedUser", "");
+                                setFieldValue("approvedDate", "");
+                                setFieldValue("assignedLoginId", loginId);
+                                setFieldValue("assignedDate", moment());
+                                setFieldValue(
+                                  "verificationStatusId",
+                                  VERIFICATION_STATUS.ASSIGNED
+                                );
+                                setNextUrl("/verificationadmin");
+                                handleSubmit();
+                              },
+                            });
                           }}
+                          disabled={
+                            isSubmitting ||
+                            values.verification_status_id ===
+                              VERIFICATION_STATUS.SUBMITTED
+                          }
                         >
-                          <Button
-                            type="button"
-                            onClick={() => {
-                              handleAssignDialogOpen({
-                                callback: (loginId) => {
-                                  setFieldValue("reviewedLoginId", "");
-                                  setFieldValue("reviewedUser", "");
-                                  setFieldValue("approvedDate", "");
-                                  setFieldValue("assignedLoginId", loginId);
-                                  setFieldValue("assignedDate", moment());
-                                  setFieldValue(
-                                    "verificationStatusId",
-                                    VERIFICATION_STATUS.ASSIGNED
-                                  );
-                                  setNextUrl("/verificationadmin");
-                                  handleSubmit();
-                                },
-                              });
-                            }}
-                            disabled={
-                              isSubmitting ||
-                              values.verification_status_id ===
-                                VERIFICATION_STATUS.SUBMITTED
-                            }
-                          >
-                            (Re-)Assign
-                          </Button>
-                        </div>
+                          (Re-)Assign
+                        </Button>
                       </BigTooltip>
                       <BigTooltip
                         title={"Submitted record needs changes -> Assigned "}
                       >
-                        <div
-                          style={{
-                            margin: 0,
-                            paddingLeft: "0.2em",
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "center",
+                        <Button
+                          type="button"
+                          style={{ minHeight: "3.5rem", margin: "0 0.5rem" }}
+                          onClick={() => {
+                            setFieldValue(
+                              "reviewedUser",
+                              user.firstName + " " + user.lastName
+                            );
+                            setFieldValue("reviewedLoginId", user.id);
+
+                            // TODO: Really need to pop up a dialog and prompt the
+                            // user for a review comment
+                            // about what needs to be fixed.
+                            setFieldValue(
+                              "verificationStatusId",
+                              VERIFICATION_STATUS.ASSIGNED
+                            );
+
+                            setNextUrl("/verificationadmin");
+                            handleSubmit();
                           }}
+                          disabled={
+                            isSubmitting ||
+                            !values.submittedDate ||
+                            values.verificationStatusId !== 3
+                          }
                         >
-                          <Button
-                            type="button"
-                            onClick={() => {
-                              setFieldValue(
-                                "reviewedUser",
-                                user.firstName + " " + user.lastName
-                              );
-                              setFieldValue("reviewedLoginId", user.id);
-
-                              // TODO: Really need to pop up a dialog and prompt the
-                              // user for a review comment
-                              // about what needs to be fixed.
-                              setFieldValue(
-                                "verificationStatusId",
-                                VERIFICATION_STATUS.ASSIGNED
-                              );
-
-                              setNextUrl("/verificationadmin");
-                              handleSubmit();
-                            }}
-                            disabled={
-                              isSubmitting ||
-                              !values.submittedDate ||
-                              values.verificationStatusId !== 3
-                            }
-                          >
-                            Request Changes
-                          </Button>
-                        </div>
+                          Request Changes
+                        </Button>
                       </BigTooltip>
                       <BigTooltip title="Approve as Verified">
-                        <div
-                          style={{
-                            margin: 0,
-                            paddingLeft: "0.2em",
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "center",
+                        <Button
+                          type="button"
+                          style={{ minHeight: "3.5rem", margin: "0 0.5rem" }}
+                          onClick={() => {
+                            setFieldValue("approvedDate", moment());
+                            setFieldValue(
+                              "reviewedUser",
+                              user.firstName + " " + user.lastName
+                            );
+                            setFieldValue("reviewedLoginId", user.id);
+                            setFieldValue(
+                              "verificationStatusId",
+                              VERIFICATION_STATUS.VERIFIED
+                            );
+                            setNextUrl("/verificationadmin");
+                            handleSubmit();
                           }}
+                          disabled={
+                            isSubmitting ||
+                            !criticalFieldsValidate(values) ||
+                            (user.isCoordinator && !user.isAdmin)
+                          }
                         >
-                          <Button
-                            type="button"
-                            onClick={() => {
-                              setFieldValue("approvedDate", moment());
-                              setFieldValue(
-                                "reviewedUser",
-                                user.firstName + " " + user.lastName
-                              );
-                              setFieldValue("reviewedLoginId", user.id);
-                              setFieldValue(
-                                "verificationStatusId",
-                                VERIFICATION_STATUS.VERIFIED
-                              );
-                              setNextUrl("/verificationadmin");
-                              handleSubmit();
-                            }}
-                            disabled={
-                              isSubmitting ||
-                              !criticalFieldsValidate(values) ||
-                              (user.isCoordinator && !user.isAdmin)
-                            }
-                          >
-                            Approve
-                          </Button>
-                        </div>
+                          Approve
+                        </Button>
                       </BigTooltip>
                       <BigTooltip title="Delete Organization from Database Permanently">
-                        <div
-                          style={{
-                            margin: 0,
-                            paddingLeft: "0.2em",
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "center",
+                        <Button
+                          type="button"
+                          style={{ minHeight: "3.5rem", margin: "0 0.5rem" }}
+                          onClick={() => {
+                            handleConfirmDialogOpen({
+                              callback: () => {
+                                stakeholderService.remove(values.id);
+                                setNextUrl("/verificationadmin");
+                                handleSubmit();
+                              },
+                            });
                           }}
+                          disabled={!user.isAdmin || !values.id}
                         >
-                          <Button
-                            type="button"
-                            onClick={() => {
-                              handleConfirmDialogOpen({
-                                callback: () => {
-                                  stakeholderService.remove(values.id);
-                                  setNextUrl("/verificationadmin");
-                                  handleSubmit();
-                                },
-                              });
-                            }}
-                            disabled={!user.isAdmin || !values.id}
-                          >
-                            Delete
-                          </Button>
-                        </div>
+                          Delete
+                        </Button>
                       </BigTooltip>
-                    </>
+                    </div>
                   ) : user && user.isDataEntry ? (
-                    <>
+                    <div
+                      style={{
+                        margin: 0,
+                        paddingLeft: "0.2em",
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        alignItems: "flex-end",
+                      }}
+                    >
                       <BigTooltip title="Save changes to work on later">
-                        <div
-                          style={{
-                            margin: 0,
-                            paddingLeft: "0.2em",
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "center",
-                          }}
-                        >
+                        <span>
                           <Button
                             type="submit"
+                            style={{ minHeight: "3.5rem", margin: "0 0.5rem" }}
                             className={classes.submit}
                             disabled={isSubmitting || isUnchanged(values)}
                           >
                             Save Progress
                           </Button>
-                        </div>
+                        </span>
                       </BigTooltip>
                       <BigTooltip title="Unable to complete six critical fields (*), but need to hand off to someone else to complete">
-                        <div
-                          style={{
-                            margin: 0,
-                            paddingLeft: "0.2em",
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "center",
-                          }}
-                        >
+                        <span>
                           <Button
                             type="button"
+                            style={{ minHeight: "3.5rem", margin: "0 0.5rem" }}
                             onClick={() => {
                               setFieldValue("assignedLoginId", "");
                               setFieldValue("assignedUser", "");
@@ -2171,20 +2120,13 @@ const OrganizationEdit = (props) => {
                           >
                             Hand Off
                           </Button>
-                        </div>
+                        </span>
                       </BigTooltip>
                       <BigTooltip title="Critical information entered, Submit for Review.">
-                        <div
-                          style={{
-                            margin: 0,
-                            paddingLeft: "0.2em",
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "center",
-                          }}
-                        >
+                        <span>
                           <Button
                             type="button"
+                            style={{ minHeight: "3.5rem", margin: "0 0.5rem" }}
                             onClick={() => {
                               setFieldValue("submittedDate", moment());
                               setFieldValue(
@@ -2207,9 +2149,9 @@ const OrganizationEdit = (props) => {
                           >
                             Submit For Review
                           </Button>
-                        </div>
+                        </span>
                       </BigTooltip>
-                    </>
+                    </div>
                   ) : null}
                 </div>
               </div>

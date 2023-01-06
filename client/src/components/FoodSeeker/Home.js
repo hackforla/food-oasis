@@ -265,7 +265,6 @@ const Home = () => {
                       <div>
                         <Button
                           icon="locationOn"
-                          iconPosition="start"
                           className={classes.locationBtn}
                           onClick={useMyLocationTrigger}
                           disabled={locationPermission === "denied" || !!error}

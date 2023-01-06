@@ -2,12 +2,17 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import makeStyles from "@mui/styles/makeStyles";
-import { Grid, MenuItem, FormControl, InputLabel, Select } from "@mui/material";
-import DateFnsUtils from "@date-io/moment";
 import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-} from "@material-ui/pickers";
+  Grid,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  TextField,
+  Select,
+} from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { IconButton } from "../UI";
 
 const useStyles = makeStyles((theme) => ({
@@ -50,7 +55,7 @@ function OpenTimeInput(props) {
   );
 
   return (
-    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+    <LocalizationProvider dateAdapter={AdapterMoment}>
       <Grid container spacing={1} className={classes.row}>
         <Grid item xs={12} sm={2}>
           <FormControl
@@ -100,13 +105,12 @@ function OpenTimeInput(props) {
           </FormControl>
         </Grid>
         <Grid item xs={12} sm={3}>
-          <KeyboardTimePicker
-            autoOK
+          <TimePicker
             label="Opening Time"
             inputVariant="outlined"
             value={openingTime}
-            mask="__:__ _M"
-            KeyboardButtonProps={{ "aria-label": "change-time" }}
+            renderInput={(params) => <TextField {...params} />}
+            DialogProps={{ color: "secondary" }}
             onChange={(dt) => {
               setOpeningTime(dt);
               // Pass dt to parent component as null, unless it's a valid
@@ -129,11 +133,11 @@ function OpenTimeInput(props) {
           sm={3}
           styles={{ display: "flex", flexDirection: "column" }}
         >
-          <KeyboardTimePicker
+          <TimePicker
             autoOk
             label="Closing Time"
             inputVariant="outlined"
-            mask="__:__ _M"
+            renderInput={(params) => <TextField {...params} />}
             value={closingTime}
             onChange={(dt) => {
               setClosingTime(dt);
@@ -158,7 +162,7 @@ function OpenTimeInput(props) {
           <IconButton icon="wrapText" onClick={copyInput} size="large" />
         </Grid>
       </Grid>
-    </MuiPickersUtilsProvider>
+    </LocalizationProvider>
   );
 }
 

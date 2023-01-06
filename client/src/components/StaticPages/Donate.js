@@ -1,16 +1,16 @@
 import React, { useEffect } from "react";
 import donatebg from "./assets/donate-bg.webp";
 import iconSpacerGray from "./assets/icon-spacer-gray.svg";
-import { makeStyles } from "@material-ui/core";
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
+import makeStyles from "@mui/styles/makeStyles";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
 import logo from "images/foodoasis.svg";
-import Paper from "@material-ui/core/Paper";
-import Grid from "@material-ui/core/Grid";
-import Avatar from "@material-ui/core/Avatar";
-import Container from "@material-ui/core/Container";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
+import Paper from "@mui/material/Paper";
+import Grid from "@mui/material/Grid";
+import Avatar from "@mui/material/Avatar";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 import donationStep1 from "images/donationStep1.png";
 import donationStep2 from "images/donationStep2.png";
 import donationStep3 from "images/donationStep3.png";
@@ -161,16 +161,16 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
     margin: theme.spacing(1),
     "@media only screen and (min-width: 64em)": {
-      margin: `${theme.spacing(1)}px auto`,
+      margin: `${theme.spacing(1)} auto`,
       padding: theme.spacing(1, 4),
     },
   },
   paper: {
     maxWidth: 400,
     padding: theme.spacing(2),
-    margin: `${theme.spacing(2)}px auto`,
+    margin: `${theme.spacing(2)} auto`,
     "@media only screen and (min-width: 64em)": {
-      margin: `${theme.spacing(3)}px auto`,
+      margin: `${theme.spacing(3)} auto`,
       padding: theme.spacing(3),
     },
   },
@@ -327,6 +327,7 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
               icon="close"
               className={classes.dialogCloseButton}
               onClick={handleCloseDonationDialog}
+              size="large"
             />
           </Grid>
         </Grid>

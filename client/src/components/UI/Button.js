@@ -1,8 +1,8 @@
 import React from "react";
-import { Button as MuiButton } from "@material-ui/core";
+import { Button as MuiButton } from "@mui/material";
 import PropTypes from "prop-types";
 import { ICON_DICT } from "./iconLookup";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Base = ({
   children,

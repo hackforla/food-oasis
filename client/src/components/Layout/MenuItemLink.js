@@ -1,8 +1,8 @@
 import React, { useMemo, forwardRef } from "react";
 import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/styles";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
+import { makeStyles } from "@mui/styles";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
@@ -25,7 +25,7 @@ const MenuItemLink = ({ to, text, userSection, onClick }) => {
 
   return (
     <span className={userSection && classes.background}>
-      <ListItem button component={renderLink} onClick={onClick}>
+      <ListItem component={renderLink} onClick={onClick}>
         <ListItemText primary={text} />
       </ListItem>
     </span>

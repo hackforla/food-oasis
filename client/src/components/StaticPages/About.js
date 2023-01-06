@@ -5,9 +5,9 @@ import foodCycle from "./assets/food-cycle.png";
 import foodForward from "./assets/food-forward.png";
 import farmPeople from "./assets/farm-people.png";
 import foodBank from "./assets/food-bank.png";
-import { makeStyles } from "@material-ui/core";
-import Container from "@material-ui/core/Container";
-import Typography from "@material-ui/core/Typography";
+import makeStyles from "@mui/styles/makeStyles";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
 import * as analytics from "../../services/analytics";
 
 const useStyles = makeStyles(() => ({

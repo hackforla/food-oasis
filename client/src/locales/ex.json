@@ -1,58 +1,58 @@
 {
-    "news": {
-      "title": "",
-      "description": ""
-    },
-    "about": {
-      "title": "",
-      "p1": "",
-      "p2": "",
-      "support": "",
-      "support-p": "",
-      "donate": "",
-      "use": "",
-      "stakeholder-1": "",
-      "stakeholder-1ps": "",
-      "stakeholder-1p": "",
-      "stakeholder-2": "",
-      "stakeholder-2ps": "",
-      "stakeholder-2p": "",
-      "stakeholder-3": "",
-      "stakeholder-3ps": "",
-      "stakeholder-3p": "",
-      "mission": "",
-      "mission-p": "",
-      "team": "",
-      "team-p": "",
-      "about-hack": "",
-      "about-hack-p": ""
-    },
-    "donate": {
-      "title": "",
-      "support": "",
-      "support-p": "",
-      "donate": "",
-      "subscribe": "",
-      "subscribe-text": "",
-      "subscribe-button": "",
-      "questions": "",
-      "questions-text": "",
-      "send-a-message": ""
-    },
-    "organizations": {
-      "title": ""
-    },
-    "faq": {
-      "title": ""
-    },
-    "resources": {
-      "title": "",
-      "non-profit": "",
-      "government": "",
-      "education": "",
-      "useful-links": ""
-    },
-    "choose-language": {
-      "choose": ""
-    }
+  "news": {
+    "title": "",
+    "description": ""
+  },
+  "about": {
+    "title": "",
+    "p1": "",
+    "p2": "",
+    "support": "",
+    "support-p": "",
+    "donate": "",
+    "use": "",
+    "stakeholder-1": "",
+    "stakeholder-1ps": "",
+    "stakeholder-1p": "",
+    "stakeholder-2": "",
+    "stakeholder-2ps": "",
+    "stakeholder-2p": "",
+    "stakeholder-3": "",
+    "stakeholder-3ps": "",
+    "stakeholder-3p": "",
+    "mission": "",
+    "mission-p": "",
+    "team": "",
+    "team-p": "",
+    "about-hack": "",
+    "about-hack-p": ""
+  },
+  "donate": {
+    "title": "",
+    "support": "",
+    "support-p": "",
+    "donate": "",
+    "subscribe": "",
+    "subscribe-text": "",
+    "subscribe-button": "",
+    "questions": "",
+    "questions-text": "",
+    "send-a-message": ""
+  },
+  "organizations": {
+    "title": ""
+  },
+  "faq": {
+    "title": ""
+  },
+  "resources": {
+    "title": "",
+    "non-profit": "",
+    "government": "",
+    "education": "",
+    "useful-links": ""
+  },
+  "choose-language": {
+    "choose": ""
   }
+}

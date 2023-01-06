@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
-import { CircularProgress } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { CircularProgress } from "@mui/material";
+import makeStyles from "@mui/styles/makeStyles";
 import List from "react-virtualized/dist/es/List";
 import AutoSizer from "react-virtualized/dist/es/AutoSizer";
 import CellMeasurer from "react-virtualized/dist/es/CellMeasurer";
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       fontSize: 12,
     },
     padding: "1px", // This keeps the control width from infintely switching widths back and forth - have no idea why
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   preview: {
     width: "100%",
     borderBottom: " .2em solid #f1f1f1",
-    padding: "0 1em",
+    padding: "0",
   },
   emptyResult: {
     padding: "1em 0",

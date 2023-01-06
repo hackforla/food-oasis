@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useLocation, Redirect } from "react-router-dom";
-import { CssBaseline, Dialog, Typography } from "@material-ui/core";
-import MuiDialogTitle from "@material-ui/core/DialogTitle";
-import { makeStyles } from "@material-ui/core/styles";
+import { CssBaseline, Dialog, Typography } from "@mui/material";
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
+import MuiDialogTitle from "@mui/material/DialogTitle";
+import makeStyles from "@mui/styles/makeStyles";
 import StakeholderGrid from "./VerificationAdminGrid";
 import { RotateLoader } from "react-spinners";
 import { useOrganizations } from "hooks/useOrganizations";
@@ -19,7 +21,7 @@ import AssignDialog from "./AssignDialog";
 import NeedsVerificationDialog from "./ui/NeedsVerificationDialog";
 import SearchCriteria from "./SearchCriteria";
 import SearchCriteriaDisplay from "./SearchCriteriaDisplay";
-import { Button } from "../../components/UI";
+
 import { useUserContext } from "../../contexts/userContext";
 import { useSearchCoordinates, useUserCoordinates } from "../../appReducer";
 
@@ -81,7 +83,6 @@ const DialogTitle = (props) => {
         <Button
           type="button"
           icon="search"
-          iconPosition="start"
           kind="close"
           onClick={onClose}
           className={classes.closeButton}
@@ -319,12 +320,7 @@ function VerificationAdmin() {
           >
             Verification Administration
           </Typography>
-          <Button
-            type="button"
-            icon="search"
-            iconPosition="start"
-            onClick={handleDialogOpen}
-          >
+          <Button type="button" icon="search" onClick={handleDialogOpen}>
             Criteria...
           </Button>
         </header>
@@ -457,13 +453,7 @@ function VerificationAdmin() {
                   justifyContent: "space-between",
                 }}
               >
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "flex-start",
-                  }}
-                >
+                <Stack direction="row" spacing={1} marginBottom={1}>
                   <Button
                     type="button"
                     disabled={selectedStakeholderIds.length === 0}
@@ -485,7 +475,7 @@ function VerificationAdmin() {
                   >
                     Export
                   </Button>
-                </div>
+                </Stack>
                 <div>{`${stakeholders.length} rows`} </div>
               </div>
               <StakeholderGrid

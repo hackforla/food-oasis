@@ -3,7 +3,7 @@ import { storiesOf } from "@storybook/react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { decorators } from "../helpers";
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import { Button, IconButton } from "../index";
 
 storiesOf("Components/Button", module)
@@ -125,47 +125,47 @@ icon: PropTypes.oneOf([
       <h2>IconButton</h2>
       <Grid container>
         <Grid item xs>
-          <IconButton icon="cancel" />
+          <IconButton icon="cancel" size="large" />
           <p>cancel</p>
         </Grid>
         <Grid item xs>
-          <IconButton icon="remove" />
+          <IconButton icon="remove" size="large" />
           <p>remove</p>
         </Grid>
         <Grid item xs>
-          <IconButton icon="add" />
+          <IconButton icon="add" size="large" />
           <p>add</p>
         </Grid>
         <Grid item xs>
-          <IconButton icon="delete" />
+          <IconButton icon="delete" size="large" />
           <p>delete</p>
         </Grid>
         <Grid item xs>
-          <IconButton icon="close" />
+          <IconButton icon="close" size="large" />
           <p>close</p>
         </Grid>
         <Grid item xs>
-          <IconButton icon="save" />
+          <IconButton icon="save" size="large" />
           <p>save</p>
         </Grid>
         <Grid item xs>
-          <IconButton icon="edit" />
+          <IconButton icon="edit" size="large" />
           <p>edit</p>
         </Grid>
         <Grid item xs>
-          <IconButton icon="search" />
+          <IconButton icon="search" size="large" />
           <p>search</p>
         </Grid>
         <Grid item xs>
-          <IconButton icon="details" />
+          <IconButton icon="details" size="large" />
           <p>details</p>
         </Grid>
         <Grid item xs>
-          <IconButton icon="arrowUp" />
+          <IconButton icon="arrowUp" size="large" />
           <p>arrowUp</p>
         </Grid>
         <Grid item xs>
-          <IconButton icon="arrowDown" />
+          <IconButton icon="arrowDown" size="large" />
           <p>arrowDown</p>
         </Grid>
       </Grid>

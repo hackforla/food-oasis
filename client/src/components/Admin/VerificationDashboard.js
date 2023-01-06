@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { withRouter, Redirect } from "react-router-dom";
-import { CssBaseline, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { CssBaseline, Typography } from "@mui/material";
+import makeStyles from "@mui/styles/makeStyles";
 import StakeholderGrid from "./VerificationAdminGrid";
 import { RotateLoader } from "react-spinners";
 import { useOrganizations } from "hooks/useOrganizations";
@@ -169,12 +169,7 @@ function VerificationDashboard(props) {
             >
               Request Assignment
             </Button>
-            <Button
-              type="button"
-              icon="search"
-              iconPosition="start"
-              onClick={search}
-            >
+            <Button type="button" icon="search" onClick={search}>
               Refresh
             </Button>
           </div>

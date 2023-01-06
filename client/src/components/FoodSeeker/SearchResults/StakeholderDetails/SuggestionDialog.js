@@ -2,26 +2,21 @@ import React from "react";
 import { withFormik } from "formik";
 import PropTypes from "prop-types";
 import {
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   Grid,
   Typography,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+} from "@mui/material";
+import makeStyles from "@mui/styles/makeStyles";
 import * as suggestionService from "services/suggestion-service";
-import { TextField, Button } from "../../../UI";
+import { TextField } from "../../../UI";
 import { DEFAULT_STAKEHOLDER } from "../../../../constants/stakeholder";
 import * as Yup from "yup";
 
 const useStyles = makeStyles((theme) => ({
-  button: {
-    borderColor: theme.palette.primary.translucent,
-    "&:hover": {
-      background: theme.palette.primary.main,
-    },
-  },
   correctionInput: {
     "& div": {
       "& textarea": {
@@ -138,12 +133,7 @@ function SuggestionDialog(props) {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button
-            variant="outlined"
-            className={classes.button}
-            autoFocus
-            onClick={handleCancel}
-          >
+          <Button autoFocus onClick={handleCancel}>
             Cancel
           </Button>
           <Button onClick={handleSubmit}>Send</Button>

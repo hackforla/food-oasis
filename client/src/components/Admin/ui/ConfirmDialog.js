@@ -6,7 +6,7 @@ import {
   DialogContent,
   DialogTitle,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 import { Button } from "../../../components/UI";
 
 function ConfirmDialog(props) {

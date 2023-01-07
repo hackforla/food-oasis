@@ -1,8 +1,8 @@
 import React from "react";
 import { storiesOf } from "@storybook/react";
 import { decorators } from "../helpers";
-import Grid from "@material-ui/core/Grid";
-import { makeStyles } from "@material-ui/core/styles";
+import Grid from "@mui/material/Grid";
+import makeStyles from "@mui/styles/makeStyles";
 
 import ColorBlock from "../ColorBlock";
 
@@ -38,7 +38,7 @@ function ColorGroup({ colors }) {
   return (
     <Grid container spacing={2} className={classes.root}>
       <Grid item xs={12}>
-        <Grid container justify="center" spacing={2}>
+        <Grid container justifyContent="center" spacing={2}>
           {colors.map(({ id, hexCode, description }) => (
             <Grid item key={id}>
               <ColorBlock hexCode={hexCode} description={description} />

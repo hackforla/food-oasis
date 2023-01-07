@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Box } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { Box } from "@mui/material";
+import makeStyles from "@mui/styles/makeStyles";
 import useLocationHook from "hooks/useLocationHook";
 import { MENU_ITEMS } from "helpers/Constants";
 import { Link } from "react-router-dom";
@@ -61,7 +61,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Footer = () => {
-  const {isHomePage} = useLocationHook();
+  const { isHomePage } = useLocationHook();
   const classes = useStyles();
 
   const initialFooterSwitch = window.innerWidth >= 1000 ? true : false;

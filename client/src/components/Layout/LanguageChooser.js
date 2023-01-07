@@ -1,7 +1,7 @@
 import React from "react";
 import Language from "./Language";
 import { useTranslation } from "react-i18next";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles({
   language: {

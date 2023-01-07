@@ -71,12 +71,7 @@ const FaqEditForm = ({ faq, notAdded, history }) => {
           onChange={handleAnswerChange}
           name="answer"
         />
-        <Button
-          type="submit"
-          variant="outlined"
-          icon="save"
-          iconPosition="start"
-        >
+        <Button type="submit" variant="outlined" icon="save">
           {notAdded ? "Add Faq" : "Update Faq"}
         </Button>
       </form>

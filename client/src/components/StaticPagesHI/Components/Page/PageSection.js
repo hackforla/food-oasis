@@ -1,7 +1,7 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core";
-import Container from "@material-ui/core/Container";
-import Typography from "@material-ui/core/Typography";
+import makeStyles from "@mui/styles/makeStyles";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
 
 const useStyles = makeStyles(() => ({
   icon: {

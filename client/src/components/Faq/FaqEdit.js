@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import Container from "@material-ui/core/Container";
+import Container from "@mui/material/Container";
 import * as faqService from "../../services/faq-service";
 import FaqEditForm from "./FaqEditForm";
 import { Button, TextField } from "../../components/UI";
@@ -91,11 +91,7 @@ const FaqEdit = ({ match, history }) => {
         {!editIdentifier ? (
           <>
             <span>{identifier}</span>
-            <Button
-              icon="edit"
-              iconPosition="start"
-              onClick={handleEditIdentifier}
-            >
+            <Button icon="edit" onClick={handleEditIdentifier}>
               Edit
             </Button>
           </>
@@ -108,18 +104,10 @@ const FaqEdit = ({ match, history }) => {
               value={identifier}
               onChange={handleIdentifier}
             />
-            <Button
-              icon="save"
-              iconPosition="start"
-              onClick={handleUpdateIdentifier}
-            >
+            <Button icon="save" onClick={handleUpdateIdentifier}>
               Update
             </Button>
-            <Button
-              icon="cancel"
-              iconPosition="start"
-              onClick={handleEditIdentifier}
-            >
+            <Button icon="cancel" onClick={handleEditIdentifier}>
               Cancel
             </Button>
           </>

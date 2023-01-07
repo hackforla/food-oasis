@@ -5,7 +5,7 @@ import {
   FormLabel,
   Radio,
   RadioGroup,
-} from "@material-ui/core";
+} from "@mui/material";
 
 const RadioTrueFalseEither = (props) => {
   const { label, name, value, onChange } = props;

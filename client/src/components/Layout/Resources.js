@@ -1,9 +1,9 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import Container from "@material-ui/core/Container";
-import { Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core";
+import Container from "@mui/material/Container";
+import { Typography } from "@mui/material";
+import makeStyles from "@mui/styles/makeStyles";
 
 const useStyles = makeStyles(() => ({
   listItem: {

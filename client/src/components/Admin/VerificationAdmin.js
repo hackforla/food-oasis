@@ -7,7 +7,6 @@ import Stack from "@mui/material/Stack";
 import MuiDialogTitle from "@mui/material/DialogTitle";
 import makeStyles from "@mui/styles/makeStyles";
 import StakeholderGrid from "./VerificationAdminGrid";
-import { RotateLoader } from "react-spinners";
 import { useOrganizations } from "hooks/useOrganizations";
 import { useCategories } from "hooks/useCategories";
 import { useNeighborhoods } from "hooks/useNeighborhoods";
@@ -24,6 +23,7 @@ import SearchCriteriaDisplay from "./SearchCriteriaDisplay";
 
 import { useUserContext } from "../../contexts/userContext";
 import { useSearchCoordinates, useUserCoordinates } from "../../appReducer";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const CRITERIA_TOKEN = "verificationAdminCriteria";
 
@@ -384,13 +384,7 @@ function VerificationAdmin() {
               }}
               aria-label="Loading spinner"
             >
-              <RotateLoader
-                // css={}
-                sizeUnit="px"
-                size={15}
-                color="#FAEBD7"
-                loading
-              />
+              <CircularProgress />
             </div>
           ) : null}
         </Dialog>
@@ -430,13 +424,7 @@ function VerificationAdmin() {
               }}
               aria-label="Loading spinner"
             >
-              <RotateLoader
-                // css={}
-                sizeUnit="px"
-                size={15}
-                color="green"
-                loading
-              />
+              <CircularProgress />
             </div>
           ) : stakeholders && stakeholders.length === 0 ? (
             <div className={classes.bigMessage}>

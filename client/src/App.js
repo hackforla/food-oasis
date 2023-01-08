@@ -26,7 +26,7 @@ import { AppStateProvider } from "./appReducer";
 import { SiteProvider } from "contexts/siteContext";
 import { HelmetProvider } from "react-helmet-async";
 import SEO from "./components/SEO";
-import { CircularProgress } from "@material-ui/core";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const VerificationAdmin = React.lazy(() =>
   import("components/Admin/VerificationAdmin")

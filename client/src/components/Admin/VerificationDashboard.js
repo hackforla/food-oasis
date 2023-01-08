@@ -3,11 +3,11 @@ import { withRouter, Redirect } from "react-router-dom";
 import { CssBaseline, Typography } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import StakeholderGrid from "./VerificationAdminGrid";
-import { RotateLoader } from "react-spinners";
 import { useOrganizations } from "hooks/useOrganizations";
 import * as stakeholderService from "services/stakeholder-service";
 import { Button } from "../../components/UI";
 import { useUserContext } from "../../contexts/userContext";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -198,13 +198,7 @@ function VerificationDashboard(props) {
               }}
               aria-label="Loading spinner"
             >
-              <RotateLoader
-                // css={}
-                sizeUnit="px"
-                size={15}
-                color="green"
-                loading
-              />
+              <CircularProgress />
             </div>
           ) : stakeholders && stakeholders.length === 0 ? (
             <div className={classes.bigMessage}>

@@ -113,12 +113,14 @@ const search = async (
     s.food_dairy, s.food_prepared, s.food_meat,
     s.parent_organization_id,
     s.hours_notes, s.allow_walkins, s.tags,
+    sug.sug_count,
     ${locationClause ? `${locationClause} AS distance,` : ""}
     ${buildLoginSelectsClause()}
     
     from stakeholder_set as s
     left outer join neighborhood n on s.neighborhood_id = n.id
     ${buildLoginJoinsClause()}
+    left outer join(select stakeholder_id, count(*) sug_count from suggestion GROUP BY stakeholder_id) sug on s.id = sug.stakeholder_id
     where 1 = 1
     ${buildTenantWhereClause(tenantId)}
     ${
@@ -178,7 +180,6 @@ const search = async (
   } catch (err: any) {
     return Promise.reject(err.message);
   }
-
   rows.forEach((row) => {
     const stakeholder = {
       ...stakeholderHelpers.rowToStakeholder(

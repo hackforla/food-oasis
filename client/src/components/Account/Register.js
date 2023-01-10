@@ -15,6 +15,7 @@ import {
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { TextField, Button } from "../../components/UI";
 import { useToasterContext } from "contexts/toasterContext";
+import usePasswordVisibilityToggle from "../../hooks/usePasswordVisibilityToggle";
 
 const styles = (theme) => ({
   "@global": {
@@ -60,6 +61,8 @@ const form = (props) => {
     handleChange,
     handleBlur,
     handleSubmit,
+    passwordVisibility,
+    InputProps,
   } = props;
 
   return (
@@ -131,7 +134,8 @@ const form = (props) => {
                   fullWidth
                   name="password"
                   label="Password"
-                  type="password"
+                  type={passwordVisibility ? "text" : "password"}
+                  InputProps={InputProps}
                   id="password"
                   autoComplete="current-password"
                   value={values.password}
@@ -148,7 +152,8 @@ const form = (props) => {
                   fullWidth
                   name="passwordConfirm"
                   label="Re-type Password"
-                  type="password"
+                  type={passwordVisibility ? "text" : "password"}
+                  InputProps={InputProps}
                   id="passwordConfirm"
                   value={values.passwordConfirm}
                   onChange={handleChange}
@@ -258,6 +263,13 @@ const RegisterForm = withFormik({
 const WrappedRegisterForm = withStyles(styles)(withRouter(RegisterForm));
 
 export default function Register() {
+  const { passwordVisibility, InputProps } = usePasswordVisibilityToggle();
   const { setToast } = useToasterContext();
-  return <WrappedRegisterForm setToast={setToast} />;
+  return (
+    <WrappedRegisterForm
+      setToast={setToast}
+      passwordVisibility={passwordVisibility}
+      InputProps={InputProps}
+    />
+  );
 }

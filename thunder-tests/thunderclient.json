@@ -2340,5 +2340,25 @@
         }
       ]
     }
+  },
+  {
+    "_id": "b6dc3666-af88-464b-9e9a-affc7ef5ef45",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "ae763c3f-34d6-40dd-9749-50a88bd18b89",
+    "name": "AWS Geocode",
+    "url": "http://localhost:5001/api/aws/geocode?address=Los A",
+    "method": "GET",
+    "sortNum": 600000,
+    "created": "2023-01-09T21:59:20.949Z",
+    "modified": "2023-01-09T22:56:55.835Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "address",
+        "value": "Los A",
+        "isPath": false
+      }
+    ],
+    "tests": []
   }
 ]

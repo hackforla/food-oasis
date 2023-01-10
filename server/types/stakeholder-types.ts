@@ -141,6 +141,7 @@ export interface StakeholderBase {
 // Stakeholder also includes the Primary Key, id
 export interface Stakeholder extends StakeholderBase {
   id: number;
+  suggestionCount: string;
 }
 
 //When searching, an origin (lat,lon) will be specified, and the stakeholder will also include

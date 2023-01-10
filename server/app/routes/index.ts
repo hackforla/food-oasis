@@ -17,10 +17,12 @@ import exportRouter from "./export-router";
 import loadRouter from "./load-router";
 import esriRouter from "./esri-router";
 import emailRouter from "./email-router";
+import awsRouter from "./aws-router"
 
 const router = Router();
 
 router.use("/api/accounts", accountRouter);
+router.use("/api/aws", awsRouter);
 router.use("/api/categories", categoryRouter);
 router.use("/api/emails", emailRouter);
 router.use("/api/esri", esriRouter);

@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import { ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
 import makeStyles from "@mui/styles/makeStyles";
-import { Grid, CssBaseline } from "@mui/material";
+import { Grid, CssBaseline, Stack } from "@mui/material";
 import theme from "theme/clientTheme";
 // import adminTheme from "./theme/adminTheme";
 // Components
@@ -149,7 +149,17 @@ function App() {
                           <Header />
                         </Route>
                       </Switch>
-                      <React.Suspense fallback={<CircularProgress />}>
+                      <React.Suspense
+                        fallback={
+                          <Stack
+                            justifyContent="center"
+                            alignContent="center"
+                            flexWrap="wrap"
+                          >
+                            <CircularProgress />
+                          </Stack>
+                        }
+                      >
                         <Switch className={classes.mainContent}>
                           <Route exact path="/">
                             <Home />

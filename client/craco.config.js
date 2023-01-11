@@ -8,6 +8,8 @@ module.exports = {
     },
   },
   webpack: {
-    plugins: [new BundleAnalyzerPlugin({ analyzerMode: "server" })],
+    plugins: process.env.NODE_ENV === "production" && [
+      new BundleAnalyzerPlugin({ analyzerMode: "server" }),
+    ],
   },
 };

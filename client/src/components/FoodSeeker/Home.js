@@ -5,6 +5,7 @@ import { Typography, Tooltip } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
+import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import { Link as RouterLink } from "react-router-dom";
@@ -252,7 +253,9 @@ const Home = () => {
               <Box className={classes.inputContainer}>or</Box>
               <Box className={classes.inputContainer}>
                 {isGettingLocation ? (
-                  <CircularProgress />
+                  <Stack justifyContent="center" alignContent="center">
+                    <CircularProgress />
+                  </Stack>
                 ) : (
                   <div style={{ textAlign: "center" }}>
                     <Tooltip

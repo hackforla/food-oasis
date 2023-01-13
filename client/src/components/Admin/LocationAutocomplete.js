@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import * as awsService from "../../services/aws_service";
+import * as awsService from "../../services/aws-service";
 import { Grid, Typography } from "@mui/material";
 import { TextField } from "../UI";
 

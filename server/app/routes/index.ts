@@ -15,7 +15,6 @@ import stakeholderLogRouter from "./stakeholder-log-router";
 import importRouter from "./import-router";
 import exportRouter from "./export-router";
 import loadRouter from "./load-router";
-import esriRouter from "./esri-router";
 import emailRouter from "./email-router";
 import awsRouter from "./aws-router"
 
@@ -25,7 +24,6 @@ router.use("/api/accounts", accountRouter);
 router.use("/api/aws", awsRouter);
 router.use("/api/categories", categoryRouter);
 router.use("/api/emails", emailRouter);
-router.use("/api/esri", esriRouter);
 router.use("/api/export", exportRouter);
 router.use("/api/faqs", faqRouter);
 router.use("/api/import", importRouter);

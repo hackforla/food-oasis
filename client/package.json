@@ -33,7 +33,6 @@
     "debounce-fn": "^5.0.0",
     "dotenv": "^10.0.0",
     "downshift": "^6.1.7",
-    "esri-loader": "^3.2.0",
     "formik": "^2.2.9",
     "i18next": "^21.2.6",
     "i18next-browser-languagedetector": "^6.1.2",

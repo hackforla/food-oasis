@@ -1,7 +1,7 @@
 import awsService from "../services/aws-service"
 import { RequestHandler } from "express";
 
-const geocode: RequestHandler<
+const autocomplete: RequestHandler<
     never,
     any[],
     { params: string | Record<string, never> },
@@ -9,16 +9,29 @@ const geocode: RequestHandler<
 > = async (req, res) => {
     try {
         const { address } = req.query;
-        const response: any = await awsService.geocode(address);
+        const response: any = await awsService.autocomplete(address);
         res.send(response);
     } catch (err: any) {
-        // In order to surface the error at the client, we need to
-        // return it as a successful web api request, then detect that
-        // it's an error at the client.
+        res.json(err);
+    }
+};
+
+const getCoords: RequestHandler<
+    never,
+    any[],
+    { params: string | Record<string, never> },
+    never
+> = async (req, res) => {
+    try {
+        const { address } = req.query;
+        const response: any = await awsService.getCoords(address);
+        res.send(response);
+    } catch (err: any) {
         res.json(err);
     }
 };
 
 export default {
-    geocode,
+    autocomplete,
+    getCoords
 };

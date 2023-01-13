@@ -2345,12 +2345,12 @@
     "_id": "b6dc3666-af88-464b-9e9a-affc7ef5ef45",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "ae763c3f-34d6-40dd-9749-50a88bd18b89",
-    "name": "AWS Geocode",
-    "url": "http://localhost:5001/api/aws/geocode?address=1345 Turnbull Canyon Road",
+    "name": "AWS Geocode Autocomplete",
+    "url": "http://localhost:5001/api/aws/autocomplete?address=1345 Turnbull Canyon Road",
     "method": "GET",
     "sortNum": 600000,
     "created": "2023-01-09T21:59:20.949Z",
-    "modified": "2023-01-13T04:07:06.841Z",
+    "modified": "2023-01-13T22:25:04.595Z",
     "headers": [],
     "params": [
       {
@@ -2359,6 +2359,52 @@
         "isPath": false
       }
     ],
-    "tests": []
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "Results"
+      }
+    ]
+  },
+  {
+    "_id": "4cefd842-834d-4d1c-97d1-0f5cf44c424c",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "ae763c3f-34d6-40dd-9749-50a88bd18b89",
+    "name": "AWS Geocode Get Coordinates",
+    "url": "http://localhost:5001/api/aws/getCoords?address=1345 Turnbull Canyon Road",
+    "method": "GET",
+    "sortNum": 610000,
+    "created": "2023-01-13T19:43:32.383Z",
+    "modified": "2023-01-13T22:25:25.080Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "address",
+        "value": "1345 Turnbull Canyon Road",
+        "isPath": false
+      }
+    ],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "Results"
+      }
+    ]
   }
 ]

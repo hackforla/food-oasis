@@ -13,7 +13,7 @@ const generateLocation = async () => {
     return location
 }
 
-const geocode = async (address: string) => {
+const autocomplete = async (address: string) => {
     const location = await generateLocation()
     const params: any = {
         "IndexName": process.env.PLACE_INDEX_NAME,
@@ -26,6 +26,21 @@ const geocode = async (address: string) => {
     return data
 }
 
+const getCoords = async (address: string) => {
+    const location = await generateLocation()
+    const params: any = {
+        "IndexName": process.env.PLACE_INDEX_NAME,
+        "Text": address,
+        "MaxResults": 1,
+        "FilterCountries": ["USA"],
+        "Language": "en"
+    };
+    const data = await location.searchPlaceIndexForText(params).promise().then(results => results)
+    console.log(data)
+    return data
+}
+
 export default {
-    geocode,
+    autocomplete,
+    getCoords
 };

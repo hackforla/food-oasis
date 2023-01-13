@@ -1,36 +1,29 @@
 import AWS from "aws-sdk"
 
-const geocode = async (address: string) => {
-
+const generateLocation = async () => {
     AWS.config.update({ region: 'us-west-2' });
-
     const poolId: any = process.env.IDENTITY_POOL_ID;
-
     const credentials: any = new AWS.CognitoIdentityCredentials({
         IdentityPoolId: poolId,
     })
-
     const location = new AWS.Location({
         credentials,
         region: AWS.config.region || 'us-west-2'
     })
+    return location
+}
 
-    const params = {
-        "IndexName": "FOLA_Test",
+const geocode = async (address: string) => {
+    const location = await generateLocation()
+    const params: any = {
+        "IndexName": process.env.PLACE_INDEX_NAME,
         "Text": address,
-        "BiasPosition": [
-            -123.11081356340885,
-            49.29304366933074
-        ]
+        "MaxResults": 10,
+        "FilterCountries": ["USA"],
+        "Language": "en"
     };
-
-    location.searchPlaceIndexForSuggestions(params, function (err, data) {
-        if (err) console.log(err, err.stack); // an error occurred
-        else {
-            console.log(data);
-            return data
-        }       // successful response
-    });
+    const data = await location.searchPlaceIndexForText(params).promise().then(results => results)
+    return data
 }
 
 export default {

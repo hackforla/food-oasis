@@ -128,6 +128,14 @@ function VerificationDashboard(props) {
     }
   };
 
+  const disableRequestAssignment = () => {
+    if (!stakeholders) return false;
+    const stakeholdersAssigned = stakeholders.filter(
+      (stakeholder) => stakeholder.verificationStatusId === 2
+    );
+    return stakeholdersAssigned.length > 4 ? true : false;
+  };
+
   return (
     <main className={classes.root}>
       {stakeholdersError.status === 401 ? (
@@ -154,7 +162,11 @@ function VerificationDashboard(props) {
             {`${user && user.firstName} ${user && user.lastName}'s Dashboard`}
           </Typography>
           <div style={{ display: "flex", flexDirection: "row" }}>
-            <Button type="button" onClick={requestAssignment}>
+            <Button
+              type="button"
+              onClick={requestAssignment}
+              disabled={disableRequestAssignment()}
+            >
               Request Assignment
             </Button>
             <Button

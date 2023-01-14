@@ -7,7 +7,7 @@
   "private": true,
   "proxy": "http://localhost:5001",
   "scripts": {
-    "start": "craco start",
+    "start": "craco --openssl-legacy-provider start",
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject",

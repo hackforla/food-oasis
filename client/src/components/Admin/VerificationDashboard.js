@@ -3,11 +3,11 @@ import { withRouter, Redirect } from "react-router-dom";
 import { CssBaseline, Typography } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import StakeholderGrid from "./VerificationAdminGrid";
-import { RotateLoader } from "react-spinners";
 import { useOrganizations } from "hooks/useOrganizations";
 import * as stakeholderService from "services/stakeholder-service";
 import { Button } from "../../components/UI";
 import { useUserContext } from "../../contexts/userContext";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -128,14 +128,6 @@ function VerificationDashboard(props) {
     }
   };
 
-  const disableRequestAssignment = () => {
-    if (!stakeholders) return false;
-    const stakeholdersAssigned = stakeholders.filter(
-      (stakeholder) => stakeholder.verificationStatusId === 2
-    );
-    return stakeholdersAssigned.length > 4 ? true : false;
-  };
-
   return (
     <main className={classes.root}>
       {stakeholdersError.status === 401 ? (
@@ -162,11 +154,7 @@ function VerificationDashboard(props) {
             {`${user && user.firstName} ${user && user.lastName}'s Dashboard`}
           </Typography>
           <div style={{ display: "flex", flexDirection: "row" }}>
-            <Button
-              type="button"
-              onClick={requestAssignment}
-              disabled={disableRequestAssignment()}
-            >
+            <Button type="button" onClick={requestAssignment}>
               Request Assignment
             </Button>
             <Button type="button" icon="search" onClick={search}>
@@ -198,13 +186,7 @@ function VerificationDashboard(props) {
               }}
               aria-label="Loading spinner"
             >
-              <RotateLoader
-                // css={}
-                sizeUnit="px"
-                size={15}
-                color="green"
-                loading
-              />
+              <CircularProgress />
             </div>
           ) : stakeholders && stakeholders.length === 0 ? (
             <div className={classes.bigMessage}>

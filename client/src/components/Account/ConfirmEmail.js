@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Redirect, withRouter } from "react-router-dom";
-import { Avatar, Container, CssBaseline, Typography } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  Container,
+  TextField,
+  Typography,
+} from "@mui/material";
 import withStyles from "@mui/styles/withStyles";
 import * as accountService from "../../services/account-service";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
-import { Button, TextField } from "../../components/UI";
 import { useToasterContext } from "../../contexts/toasterContext";
 
 const styles = (theme) => ({
-  "@global": {
-    body: {
-      backgroundColor: theme.palette.common.white,
-    },
-  },
   paper: {
     marginTop: theme.spacing(1),
     display: "flex",
@@ -26,9 +26,6 @@ const styles = (theme) => ({
   form: {
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
   },
   body: {
     display: "flex",
@@ -53,7 +50,6 @@ const ConfirmEmail = (props) => {
       const result = await accountService.confirmRegister(tok);
       setConfirmResult(result);
       if (result.isSuccess) {
-        // notification?
         setToast({ message: `Your email has been confirmed. Please log in.` });
       }
     };
@@ -71,7 +67,6 @@ const ConfirmEmail = (props) => {
   return (
     <div className={classes.body}>
       <Container component="main" maxWidth="xs" className={classes.container}>
-        <CssBaseline />
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
             <EmailOutlinedIcon />
@@ -79,10 +74,11 @@ const ConfirmEmail = (props) => {
           <Typography component="h1" variant="h5">
             Confirm Email
           </Typography>
+          {JSON.stringify(confirmResult)}
           {!confirmResult ? (
             <div>&ldquo;Confirming Email...&ldquo;</div>
-          ) : confirmResult.success ? (
-            <Redirect to={"/login"} />
+          ) : confirmResult.isSuccess ? (
+            <Redirect to={`/login/${confirmResult.email}`} />
           ) : emailSent ? (
             <p>
               {`A confirmation email has been sent to ${email}. Please find this
@@ -97,7 +93,6 @@ const ConfirmEmail = (props) => {
               </p>
               <form onSubmit={resendConfirmationEmail}>
                 <TextField
-                  variant="outlined"
                   required
                   fullWidth
                   name="email"
@@ -108,8 +103,9 @@ const ConfirmEmail = (props) => {
                   onChange={(evt) => {
                     setEmail(evt.target.value);
                   }}
+                  sx={{ mt: 1, mb: 2 }}
                 />
-                <Button type="submit" fullWidth className={classes.submit}>
+                <Button type="submit" fullWidth sx={{ mt: 2, mb: 2 }}>
                   Re-send confirmation email
                 </Button>
               </form>

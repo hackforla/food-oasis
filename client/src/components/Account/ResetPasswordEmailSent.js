@@ -1,9 +1,14 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import withStyles from "@mui/styles/withStyles";
-import { Avatar, Container, CssBaseline, Typography } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  Container,
+  CssBaseline,
+  Typography,
+} from "@mui/material";
 import Footer from "../Layout/Footer";
-import { Button } from "../../components/UI";
 
 const MailIcon = () => {
   return (
@@ -48,9 +53,6 @@ const styles = (theme) => ({
     width: "100%", // Fix IE 11 issue.
     margin: theme.spacing(3, 0, 3),
   },
-  button: {
-    margin: theme.spacing(3, 0, 2),
-  },
   body: {
     display: "flex",
     height: "97.8%",
@@ -87,8 +89,8 @@ const ResetPasswordEmailSent = (props) => {
           <Container maxWidth="xs">
             <Button
               fullWidth
-              className={classes.button}
               onClick={() => history.push("/login")}
+              sx={{ mt: 2, mb: 2 }}
             >
               Back to login
             </Button>

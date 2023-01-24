@@ -212,7 +212,6 @@ const Home = () => {
         break;
       default:
         setBgImg(`url("/landing-page/bg-LA.jpeg")`);
-        return;
     }
   }, [tenantId]);
 

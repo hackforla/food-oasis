@@ -65,7 +65,7 @@ export const useLocationPermission = () => {
   const [permission, setPermission] = React.useState(null);
   React.useEffect(() => {
     if (navigator.permissions) {
-      return null;
+      return undefined;
     }
     async function getPermission() {
       try {

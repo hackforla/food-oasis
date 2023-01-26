@@ -12,7 +12,7 @@ import TableRow from "@mui/material/TableRow";
 import Container from "@mui/material/Container";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import Button from "../UI/Button";
+import { PrimaryButton, SecondaryButton } from "../UI/StandardButton";
 import Input from "../UI/TextField";
 import { Formik } from "formik";
 import * as suggestionService from "../../services/suggestion-service";
@@ -394,10 +394,12 @@ function Suggestions(props) {
                       <div className={classes.error}>Something went wrong.</div>
                     )}
                     <Box mt={3} display="flex" justifyContent="space-between">
-                      <Button onClick={() => setActiveOrg(null)}>Cancel</Button>
-                      <Button type="submit" disabled={isSubmitting}>
+                      <SecondaryButton onClick={() => setActiveOrg(null)}>
+                        Cancel
+                      </SecondaryButton>
+                      <PrimaryButton type="submit" disabled={isSubmitting}>
                         Save
-                      </Button>
+                      </PrimaryButton>
                     </Box>
                   </form>
                 </div>

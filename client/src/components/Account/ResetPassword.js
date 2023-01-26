@@ -4,9 +4,9 @@ import withStyles from "@mui/styles/withStyles";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import * as accountService from "../../services/account-service";
+import { PrimaryButton } from "../UI/StandardButton";
 import {
   Avatar,
-  Button,
   Container,
   CssBaseline,
   TextField,
@@ -169,15 +169,14 @@ const ResetPassword = (props) => {
                   }
                   sx={{ mt: 2, mb: 2 }}
                 />
-                <Button
+                <PrimaryButton
                   type="submit"
                   fullWidth
-                  className={classes.submit}
                   disabled={isSubmitting || !(isValid && dirty)}
                   sx={{ mt: 2, mb: 2 }}
                 >
                   Reset Password
-                </Button>
+                </PrimaryButton>
               </form>
             )}
           </Formik>

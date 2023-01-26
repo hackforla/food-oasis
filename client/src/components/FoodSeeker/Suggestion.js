@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
+import { PrimaryButton } from "../UI/StandardButton";
 import {
-  Button,
   Container,
   CssBaseline,
   Typography,
@@ -87,7 +87,8 @@ function Suggestion(props) {
           handleBlur,
           handleSubmit,
           isSubmitting,
-          /* and other goodies */
+          isValid,
+          dirty,
         }) => (
           <form onSubmit={handleSubmit}>
             <Container maxWidth={isMobile ? "lg" : "md"}>
@@ -317,9 +318,12 @@ function Suggestion(props) {
                   />
                 </Grid2>
                 <Grid2 xs={12} padding="1rem" textAlign="center">
-                  <Button onClick={handleSubmit} disabled={isSubmitting}>
+                  <PrimaryButton
+                    onClick={handleSubmit}
+                    disabled={isSubmitting || !(isValid && dirty)}
+                  >
                     Send Suggestions
-                  </Button>
+                  </PrimaryButton>
                 </Grid2>
               </Grid2>
             </Container>

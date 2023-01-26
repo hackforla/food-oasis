@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Redirect, withRouter } from "react-router-dom";
-import {
-  Avatar,
-  Button,
-  Container,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { PrimaryButton } from "../UI/StandardButton";
+import { Avatar, Container, TextField, Typography } from "@mui/material";
 import withStyles from "@mui/styles/withStyles";
 import * as accountService from "../../services/account-service";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
@@ -105,9 +100,9 @@ const ConfirmEmail = (props) => {
                   }}
                   sx={{ mt: 1, mb: 2 }}
                 />
-                <Button type="submit" fullWidth sx={{ mt: 2, mb: 2 }}>
+                <PrimaryButton type="submit" fullWidth sx={{ mt: 2, mb: 2 }}>
                   Re-send confirmation email
-                </Button>
+                </PrimaryButton>
               </form>
             </div>
           )}

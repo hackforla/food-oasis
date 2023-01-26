@@ -23,6 +23,7 @@ const themeSpec = {
       black: bodyText,
       gray: gray,
       white: white,
+      disabled: "#A0A0A0",
     },
     primary: {
       light: "#6693CA",
@@ -189,26 +190,26 @@ themeSpec.components = {
       disableRipple: false,
       disableTouchRipple: false,
     },
-    styleOverrides: {
-      outlined: {
-        borderColor: themeSpec.palette.primary.translucent,
-        "&.Mui-focusVisible .MuiButton-outlined": {
-          borderStyle: "solid",
-          borderColor: themeSpec.palette.primary.main,
-          borderWidth: "2px",
-          borderRadius: "4px",
-        },
-        "&:hover": {
-          color: "white",
-          backgroundColor: themeSpec.palette.primary.main,
-          opacity: "1",
-          "&.MuiButton-outlined .Mui-disabled": {
-            backgroundColor: "white",
-            color: "#A0A0A0",
-          },
-        },
-      },
-    },
+    // styleOverrides: {
+    //   outlined: {
+    //     borderColor: themeSpec.palette.primary.translucent,
+    //     "&.Mui-focusVisible .MuiButton-outlined": {
+    //       borderStyle: "solid",
+    //       borderColor: themeSpec.palette.primary.main,
+    //       borderWidth: "2px",
+    //       borderRadius: "4px",
+    //     },
+    //     "&:hover": {
+    //       color: themeSpec.palette.common.white,
+    //       backgroundColor: themeSpec.palette.primary.main,
+    //       opacity: "1",
+    //       "&.MuiButton-outlined .Mui-disabled": {
+    //         // backgroundColor: "white",
+    //         color: "#A0A0A0",
+    //       },
+    //     },
+    //   },
+    // },
   },
   MuiCheckbox: {
     defaultProps: {

@@ -19,7 +19,8 @@ import donationStep5 from "images/donationStep5.png";
 import donationStep6 from "images/donationStep6.png";
 import donationStep7 from "images/donationStep7.png";
 import * as analytics from "../../services/analytics";
-import { Button, IconButton } from "../../components/UI";
+import { IconButton } from "../../components/UI";
+import { PrimaryButton } from "../UI/StandardButton";
 
 const useStyles = makeStyles((theme) => ({
   outer: {
@@ -238,12 +239,12 @@ const Donate = () => {
               us offset some of those costs.
             </Typography>
           </Container>
-          <Button
+          <PrimaryButton
             className={classes.btnOutline}
             onClick={handleShowDonationDialog}
           >
             Donate
-          </Button>
+          </PrimaryButton>
           {showDonationDialog && (
             <DonationDialog
               showDonationDialog={showDonationDialog}
@@ -269,14 +270,14 @@ const Donate = () => {
               their needs.
             </Typography>
           </Container>
-          <Button
+          <PrimaryButton
             href="//volunteer.laworks.com/opportunity/a0C3l00000r3wLvEAI"
             target="_blank"
             rel="noopener noreferrer"
             className={classes.btnOutline}
           >
             Volunteer
-          </Button>
+          </PrimaryButton>
         </div>
         <section className={classes.cards}>
           {/* <aside className={classes.signup}>

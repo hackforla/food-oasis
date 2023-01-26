@@ -16,7 +16,8 @@ import {
 } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import { STAKEHOLDER_SCHEMA } from "../../../constants/stakeholder-schema";
-import { Button } from "../../../components/UI";
+// import { Button } from "../../../components/UI";
+import { PrimaryButton } from "../../UI/StandardButton";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -91,9 +92,9 @@ const ImportFileGuide = (props) => {
           <br />
           <Input type="file" onChange={handleChange} inputRef={ref} />
           <br />
-          <Button type="button" onClick={handleUpload}>
+          <PrimaryButton type="button" onClick={handleUpload}>
             Submit
-          </Button>
+          </PrimaryButton>
         </section>
         <section className={classes.section}>
           <Typography variant="h5">CSV Template</Typography>
@@ -104,9 +105,9 @@ const ImportFileGuide = (props) => {
             </li>
             <li>Do not change column names or order.</li>
           </ul>
-          <Button type="button" onClick={handleDownload}>
+          <PrimaryButton type="button" onClick={handleDownload}>
             Download CSV template
-          </Button>
+          </PrimaryButton>
         </section>
         <section className={classes.section}>
           <Typography variant="h5">Schema Guide</Typography>

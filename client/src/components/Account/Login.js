@@ -2,13 +2,13 @@ import React from "react";
 import { withRouter, useLocation } from "react-router-dom";
 import {
   Avatar,
-  Button,
   Container,
   Link,
   Grid,
   TextField,
   Typography,
 } from "@mui/material";
+import { PrimaryButton } from "../UI/StandardButton";
 import withStyles from "@mui/styles/withStyles";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -200,14 +200,14 @@ const LoginForm = (props) => {
                   error={touched.password && Boolean(errors.password)}
                   sx={{ mt: 2, mb: 2 }}
                 />
-                <Button
+                <PrimaryButton
                   type="submit"
                   fullWidth
                   sx={{ margin: "1rem 0" }}
                   disabled={isSubmitting || !(isValid && dirty)}
                 >
                   Sign In
-                </Button>
+                </PrimaryButton>
                 <Grid container>
                   <Grid item xs>
                     <Link

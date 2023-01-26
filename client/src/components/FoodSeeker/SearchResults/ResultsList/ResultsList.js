@@ -9,7 +9,7 @@ import CellMeasurerCache from "react-virtualized/dist/es/CellMeasurer/CellMeasur
 import StakeholderPreview from "../StakeholderPreview/StakeholderPreview";
 import StakeholderDetails from "../StakeholderDetails/StakeholderDetails";
 import * as analytics from "services/analytics";
-import { Button } from "../../../UI";
+import { SecondaryButton } from "../../../UI/StandardButton";
 import { useSelectedOrganization } from "../../../../appReducer";
 
 const useStyles = makeStyles((theme) => ({
@@ -100,9 +100,9 @@ const ResultsList = ({ stakeholders, loading, handleReset }) => {
       {!loading && stakeholders.length === 0 && (
         <div className={classes.emptyResult}>
           <p>Sorry, we don&apos;t have any results for this area.</p>
-          <Button onClick={handleReset} disableElevation>
+          <SecondaryButton onClick={handleReset} disableElevation>
             Click here to reset the search
-          </Button>
+          </SecondaryButton>
         </div>
       )}
       {stakeholders &&

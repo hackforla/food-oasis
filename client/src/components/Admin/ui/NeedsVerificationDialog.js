@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { PrimaryButton, SecondaryButton } from "../../UI/StandardButton";
 import {
   Dialog,
   DialogActions,
@@ -11,7 +12,6 @@ import {
   RadioGroup,
   FormControlLabel,
 } from "@mui/material";
-import { Button } from "../../../components/UI";
 import makeStyles from "@mui/styles/makeStyles";
 import { white } from "theme/colors";
 
@@ -91,18 +91,18 @@ function NeedsVerificationDialog(props) {
         </RadioGroup>
       </DialogContent>
       <DialogActions>
-        <Button
+        <SecondaryButton
           variant="outlined"
           className={classes.button}
           autoFocus
           onClick={handleCancel}
         >
           Cancel
-        </Button>
+        </SecondaryButton>
 
-        <Button type="button" onClick={handleConfirm}>
+        <PrimaryButton type="button" onClick={handleConfirm}>
           Confirm Status Change
-        </Button>
+        </PrimaryButton>
       </DialogActions>
     </Dialog>
   );

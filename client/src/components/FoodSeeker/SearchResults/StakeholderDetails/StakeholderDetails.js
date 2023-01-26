@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { SecondaryButton } from "../../../UI/StandardButton";
 import Typography from "@mui/material/Typography";
 import ArrowBack from "@mui/icons-material/ArrowBackIosNew";
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
 import StakeholderIcon from "images/stakeholderIcon";
 import fbIcon from "images/fbIcon.png";
 import instaIcon from "images/instaIcon.png";
@@ -15,7 +15,7 @@ import {
 } from "constants/stakeholder";
 import { ORGANIZATION_COLORS, CLOSED_COLOR } from "constants/map";
 import { extractNumbers, getGoogleMapsDirectionsUrl } from "helpers";
-import SuggestionForm from "./SuggestionDialog";
+import CorrectionDialog from "./CorrectionDialog";
 import * as analytics from "services/analytics";
 import {
   useSelectedOrganization,
@@ -193,7 +193,7 @@ const StakeholderDetails = () => {
         title={`Food Oasis: ${selectedOrganization.name}`}
         url={window.location.href}
       />
-      <SuggestionForm
+      <CorrectionDialog
         id="assign-dialog"
         keepMounted
         open={SuggestionDialogOpen}
@@ -311,7 +311,7 @@ const StakeholderDetails = () => {
         </Stack>
 
         <Stack direction="row" sx={{ justifyContent: "space-between" }}>
-          <Button
+          <SecondaryButton
             onClick={() => {
               analytics.postEvent("getDirections", {
                 id: selectedOrganization.id,
@@ -326,9 +326,11 @@ const StakeholderDetails = () => {
             }}
           >
             Directions
-          </Button>
-          <Button onClick={handleSuggestionDialogOpen}>Send Correction</Button>
-          <Button onClick={shareLink}>Share</Button>
+          </SecondaryButton>
+          <SecondaryButton onClick={handleSuggestionDialogOpen}>
+            Send Correction
+          </SecondaryButton>
+          <SecondaryButton onClick={shareLink}>Share</SecondaryButton>
         </Stack>
 
         <MinorHeading>Eligibility/Requirements</MinorHeading>

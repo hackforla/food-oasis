@@ -11,7 +11,8 @@ import {
 } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import { STAKEHOLDER_SCHEMA } from "../../../constants/stakeholder-schema";
-import { Button } from "../../../components/UI";
+// import { Button } from "../../../components/UI";
+import { PrimaryButton, SecondaryButton } from "../../UI/StandardButton";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,12 +60,12 @@ const ImportFileTable = (props) => {
           Review your import below and click "Import" when you're ready to
           update your records.
         </Typography>
-        <Button type="button" onClick={handleCancel}>
+        <SecondaryButton type="button" onClick={handleCancel}>
           Cancel
-        </Button>
-        <Button type="button" onClick={handleImportAction}>
+        </SecondaryButton>
+        <PrimaryButton type="button" onClick={handleImportAction}>
           Import
-        </Button>
+        </PrimaryButton>
       </div>
       <TableContainer className={classes.tableContainer}>
         <Table>

@@ -13,7 +13,7 @@ import TableRow from "@mui/material/TableRow";
 import Container from "@mui/material/Container";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import Button from "../UI/Button";
+import { PrimaryButton, SecondaryButton } from "../UI/StandardButton";
 import Input from "../UI/TextField";
 import { Formik } from "formik";
 import { tenantId } from "helpers/Configuration";
@@ -137,7 +137,7 @@ function TagAdmin(props) {
     <Container maxWidth="sm">
       <div className={classes.heading}>
         <h2 style={{ margin: 0 }}>Tags</h2>
-        <Button onClick={handleAddNew}>Add New</Button>
+        <SecondaryButton onClick={handleAddNew}>Add New</SecondaryButton>
       </div>
 
       {deleteError && (
@@ -278,12 +278,15 @@ function TagAdmin(props) {
                     <div className={classes.error}>Something went wrong.</div>
                   )}
                   <Box mt={3} display="flex" justifyContent="space-between">
-                    <Button color="white" onClick={() => setActiveTag(null)}>
+                    <SecondaryButton
+                      color="white"
+                      onClick={() => setActiveTag(null)}
+                    >
                       Cancel
-                    </Button>
-                    <Button type="submit" disabled={isSubmitting}>
+                    </SecondaryButton>
+                    <PrimaryButton type="submit" disabled={isSubmitting}>
                       Save
-                    </Button>
+                    </PrimaryButton>
                   </Box>
                 </form>
               )}

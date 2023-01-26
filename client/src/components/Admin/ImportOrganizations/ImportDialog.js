@@ -12,7 +12,8 @@ import {
   Typography,
 } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
-import { Button } from "../../../components/UI";
+// import { Button } from "../../../components/UI";
+import { PrimaryButton, SecondaryButton } from "../../UI/StandardButton";
 
 const optionDescriptions = {
   replace:
@@ -76,17 +77,17 @@ function ImportDialog(props) {
         </RadioGroup>
       </FormControl>
       <DialogActions>
-        <Button type="button" onClick={handleImportAction}>
+        <SecondaryButton type="button" onClick={handleImportAction}>
           Cancel
-        </Button>
-        <Button
+        </SecondaryButton>
+        <PrimaryButton
           type="button"
           autoFocus
           onClick={handleImport}
           disabled={!importData.action}
         >
           Submit
-        </Button>
+        </PrimaryButton>
       </DialogActions>
     </Dialog>
   );

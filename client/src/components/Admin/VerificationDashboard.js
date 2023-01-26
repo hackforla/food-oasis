@@ -5,7 +5,7 @@ import makeStyles from "@mui/styles/makeStyles";
 import StakeholderGrid from "./VerificationAdminGrid";
 import { useOrganizations } from "hooks/useOrganizations";
 import * as stakeholderService from "services/stakeholder-service";
-import { Button } from "../../components/UI";
+import { SecondaryButton } from "..//UI/StandardButton";
 import { useUserContext } from "../../contexts/userContext";
 import CircularProgress from "@mui/material/CircularProgress";
 
@@ -154,12 +154,12 @@ function VerificationDashboard(props) {
             {`${user && user.firstName} ${user && user.lastName}'s Dashboard`}
           </Typography>
           <div style={{ display: "flex", flexDirection: "row" }}>
-            <Button type="button" onClick={requestAssignment}>
+            <SecondaryButton type="button" onClick={requestAssignment}>
               Request Assignment
-            </Button>
-            <Button type="button" icon="search" onClick={search}>
+            </SecondaryButton>
+            <SecondaryButton type="button" icon="search" onClick={search}>
               Refresh
-            </Button>
+            </SecondaryButton>
           </div>
         </header>
       </div>

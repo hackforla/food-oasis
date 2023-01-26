@@ -2,10 +2,11 @@ import React from "react";
 import { withRouter, useLocation } from "react-router-dom";
 import {
   Avatar,
+  Button,
   Container,
-  CssBaseline,
   Link,
   Grid,
+  TextField,
   Typography,
 } from "@mui/material";
 import withStyles from "@mui/styles/withStyles";
@@ -13,18 +14,13 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import * as accountService from "services/account-service";
 import * as analytics from "../../services/analytics";
-import { Button, TextField } from "../../components/UI";
 import { useUserContext } from "../../contexts/userContext";
 import { useToasterContext } from "../../contexts/toasterContext";
 
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import usePasswordVisibilityToggle from "../../hooks/usePasswordVisibilityToggle";
 
 const styles = (theme) => ({
-  "@global": {
-    body: {
-      backgroundColor: theme.palette.common.white,
-    },
-  },
   paper: {
     marginTop: theme.spacing(1),
     display: "flex",
@@ -38,9 +34,6 @@ const styles = (theme) => ({
   form: {
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
   },
   body: {
     display: "flex",
@@ -67,11 +60,11 @@ const LoginForm = (props) => {
   const { setToast } = useToasterContext();
   // state is the previous pathname if the user has been redirected here from a PrivateRoute.
   const { state } = useLocation();
+  const { passwordVisibility, InputProps } = usePasswordVisibilityToggle();
 
   return (
     <div className={classes.body}>
       <Container component="main" maxWidth="xs" className={classes.container}>
-        <CssBaseline />
         <div className={classes.paper}>
           {state?.isPasswordReset && (
             <Typography component="p" className={classes.submit}>
@@ -172,6 +165,8 @@ const LoginForm = (props) => {
               handleBlur,
               handleSubmit,
               isSubmitting,
+              dirty,
+              isValid,
               /* and other goodies */
             }) => (
               <form className={classes.form} noValidate onSubmit={handleSubmit}>
@@ -180,8 +175,6 @@ const LoginForm = (props) => {
                   id="email"
                   label="Email"
                   name="email"
-                  variant="outlined"
-                  margin="normal"
                   fullWidth
                   autoComplete="email"
                   autoFocus
@@ -190,14 +183,14 @@ const LoginForm = (props) => {
                   onBlur={handleBlur}
                   helperText={touched.email ? errors.email : ""}
                   error={touched.email && Boolean(errors.email)}
+                  sx={{ mt: 2, mb: 2 }}
                 />
                 <TextField
-                  variant="outlined"
-                  margin="normal"
                   fullWidth
                   name="password"
                   label="Password"
-                  type="password"
+                  type={passwordVisibility ? "text" : "password"}
+                  InputProps={InputProps}
                   id="password"
                   autoComplete="current-password"
                   value={values.password}
@@ -205,12 +198,13 @@ const LoginForm = (props) => {
                   onBlur={handleBlur}
                   helperText={touched.password ? errors.password : ""}
                   error={touched.password && Boolean(errors.password)}
+                  sx={{ mt: 2, mb: 2 }}
                 />
                 <Button
                   type="submit"
                   fullWidth
-                  className={classes.submit}
-                  disabled={isSubmitting}
+                  sx={{ margin: "1rem 0" }}
+                  disabled={isSubmitting || !(isValid && dirty)}
                 >
                   Sign In
                 </Button>

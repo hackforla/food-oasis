@@ -6,22 +6,19 @@ import * as Yup from "yup";
 import * as accountService from "../../services/account-service";
 import {
   Avatar,
+  Button,
   CssBaseline,
   Link,
   Grid,
+  TextField,
   Typography,
   Container,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { TextField, Button } from "../../components/UI";
 import { useToasterContext } from "contexts/toasterContext";
+import usePasswordVisibilityToggle from "../../hooks/usePasswordVisibilityToggle";
 
 const styles = (theme) => ({
-  "@global": {
-    body: {
-      backgroundColor: theme.palette.common.white,
-    },
-  },
   paper: {
     marginTop: theme.spacing(1),
     display: "flex",
@@ -35,9 +32,6 @@ const styles = (theme) => ({
   form: {
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
   },
   body: {
     display: "flex",
@@ -53,13 +47,17 @@ const styles = (theme) => ({
 const form = (props) => {
   const {
     classes,
+    dirty,
     values,
     touched,
     errors,
     isSubmitting,
+    isValid,
     handleChange,
     handleBlur,
     handleSubmit,
+    passwordVisibility,
+    InputProps,
   } = props;
 
   return (
@@ -79,7 +77,6 @@ const form = (props) => {
                 <TextField
                   autoComplete="fname"
                   name="firstName"
-                  variant="outlined"
                   required
                   fullWidth
                   id="firstName"
@@ -94,7 +91,6 @@ const form = (props) => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  variant="outlined"
                   required
                   fullWidth
                   id="lastName"
@@ -114,7 +110,6 @@ const form = (props) => {
                   id="email"
                   label="Email"
                   name="email"
-                  variant="outlined"
                   fullWidth
                   autoComplete="email"
                   value={values.email}
@@ -126,12 +121,12 @@ const form = (props) => {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  variant="outlined"
                   required
                   fullWidth
                   name="password"
                   label="Password"
-                  type="password"
+                  type={passwordVisibility ? "text" : "password"}
+                  InputProps={InputProps}
                   id="password"
                   autoComplete="current-password"
                   value={values.password}
@@ -143,12 +138,12 @@ const form = (props) => {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  variant="outlined"
                   required
                   fullWidth
                   name="passwordConfirm"
                   label="Re-type Password"
-                  type="password"
+                  type={passwordVisibility ? "text" : "password"}
+                  InputProps={InputProps}
                   id="passwordConfirm"
                   value={values.passwordConfirm}
                   onChange={handleChange}
@@ -165,8 +160,8 @@ const form = (props) => {
             <Button
               type="submit"
               fullWidth
-              className={classes.submit}
-              disabled={isSubmitting}
+              sx={{ mt: 2, mb: 2 }}
+              disabled={isSubmitting || !(isValid && dirty)}
             >
               Register
             </Button>
@@ -258,6 +253,13 @@ const RegisterForm = withFormik({
 const WrappedRegisterForm = withStyles(styles)(withRouter(RegisterForm));
 
 export default function Register() {
+  const { passwordVisibility, InputProps } = usePasswordVisibilityToggle();
   const { setToast } = useToasterContext();
-  return <WrappedRegisterForm setToast={setToast} />;
+  return (
+    <WrappedRegisterForm
+      setToast={setToast}
+      passwordVisibility={passwordVisibility}
+      InputProps={InputProps}
+    />
+  );
 }

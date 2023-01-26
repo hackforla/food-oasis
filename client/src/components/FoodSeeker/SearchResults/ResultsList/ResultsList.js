@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Stack } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import List from "react-virtualized/dist/es/List";
 import AutoSizer from "react-virtualized/dist/es/AutoSizer";
@@ -93,9 +93,9 @@ const ResultsList = ({ stakeholders, loading, handleReset }) => {
   return (
     <div className={classes.listContainer}>
       {loading && (
-        <div className={classes.emptyResult}>
+        <Stack justifyContent="center" alignContent="center">
           <CircularProgress />
-        </div>
+        </Stack>
       )}
       {!loading && stakeholders.length === 0 && (
         <div className={classes.emptyResult}>

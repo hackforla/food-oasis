@@ -172,7 +172,6 @@ export default function Menu() {
 
         {user ? authedLinks : unAuthLinks}
       </List>
-      {/* <LanguageChooser /> */}
     </div>
   );
 

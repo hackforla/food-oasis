@@ -6,23 +6,18 @@ import * as Yup from "yup";
 import * as accountService from "../../services/account-service";
 import {
   Avatar,
+  Button,
   Container,
-  CssBaseline,
   Link,
   Grid,
+  TextField,
   Typography,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { Button, TextField } from "../../components/UI";
 import { useToasterContext } from "../../contexts/toasterContext";
 import debounce from "lodash.debounce";
 
 const styles = (theme) => ({
-  "@global": {
-    body: {
-      backgroundColor: theme.palette.common.white,
-    },
-  },
   paper: {
     marginTop: theme.spacing(1),
     display: "flex",
@@ -36,9 +31,6 @@ const styles = (theme) => ({
   form: {
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
   },
   body: {
     display: "flex",
@@ -76,7 +68,6 @@ const ForgotPassword = (props) => {
   return (
     <div className={classes.body}>
       <Container component="main" maxWidth="xs" className={classes.container}>
-        <CssBaseline />
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
@@ -141,6 +132,7 @@ const ForgotPassword = (props) => {
               handleSubmit,
               isSubmitting,
               setFieldError,
+              isValid,
               /* and other goodies */
             }) => {
               const handleEmailChange = (e) => {
@@ -169,14 +161,14 @@ const ForgotPassword = (props) => {
                     value={values.email}
                     onChange={handleEmailChange}
                     onBlur={handleBlur}
-                    helperText={errors.email}
-                    error={Boolean(errors.email)}
+                    helperText={touched.email ? errors.email : ""}
+                    error={touched.email && Boolean(errors.email)}
                   />
                   <Button
                     type="submit"
                     fullWidth
-                    className={classes.submit}
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || !isValid}
+                    sx={{ mt: 2, mb: 2 }}
                   >
                     Send Password Reset Link
                   </Button>

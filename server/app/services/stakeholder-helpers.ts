@@ -84,6 +84,7 @@ const rowToStakeholder = (row: any, categories?: any): Stakeholder => {
     submittedDate: row.submitted_date,
     submittedLoginId: row.submitted_login_id,
     submittedUser: row.submitted_user || "",
+    suggestionCount: row.sug_count || "0",
     tags: row.tags,
     twitter: row.twitter || "",
     verificationStatusId: row.verification_status_id,

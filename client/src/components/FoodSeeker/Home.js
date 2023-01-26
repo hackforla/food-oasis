@@ -5,17 +5,18 @@ import { Typography, Tooltip } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
+import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import { Link as RouterLink } from "react-router-dom";
 import AddressDropDown from "components/FoodSeeker/AddressDropDown";
 import { Button } from "../../components/UI";
-import { RotateLoader } from "react-spinners";
 // All the tenant logos happen to be the same for now
 import logo from "images/foodoasis.svg";
 import * as analytics from "services/analytics";
 import { useSiteContext } from "../../contexts/siteContext";
 import useGeolocation, { useLocationPermission } from "hooks/useGeolocation";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const logoPaths = {
   1: require("images/foodoasis.svg"),
@@ -252,7 +253,9 @@ const Home = () => {
               <Box className={classes.inputContainer}>or</Box>
               <Box className={classes.inputContainer}>
                 {isGettingLocation ? (
-                  <RotateLoader sizeUnit="px" size={15} color="green" loading />
+                  <Stack justifyContent="center" alignContent="center">
+                    <CircularProgress />
+                  </Stack>
                 ) : (
                   <div style={{ textAlign: "center" }}>
                     <Tooltip

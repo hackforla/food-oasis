@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import * as esriService from "../../services/esri_service";
+import * as awsService from "../../services/aws-service";
 import { Grid, Typography } from "@mui/material";
 import { TextField } from "../UI";
 
@@ -20,8 +20,8 @@ const LocationAutocomplete = (props) => {
       // setTimeout delay, this request is stale
       // and we don't want to run it.
       if (s.length > 8 && s === latestSearchString) {
-        const result = await esriService.geocode(s);
-        setGeocodeResults(result);
+        const result = await awsService.autoComplete(s);
+        setGeocodeResults(result.Results);
       }
     }, 500);
   };
@@ -43,28 +43,31 @@ const LocationAutocomplete = (props) => {
         placeholder={"Type here"}
       />
       {geocodeResults ? (
-        geocodeResults.map((result, index) => (
-          <div
-            style={{
-              border: "1px solid black",
-              backgroundColor: "#EEE",
-              margin: "0.1em",
-              padding: "0.5em",
-            }}
-            key={index}
-            onClick={() => selectLocation(result)}
-          >
-            <Typography>{`(${result.location.y}, ${result.location.x})`}</Typography>
-            <Typography>{`${result.attributes.PlaceName}`}</Typography>
-            <Typography>{`${result.attributes.StAddr}`}</Typography>
-            <Grid container justifyContent="space-between">
-              <Typography>
-                {`${result.attributes.City}, ${result.attributes.RegionAbbr} `}
-              </Typography>
-              <Typography>{`${result.attributes.Addr_type}`}</Typography>
-            </Grid>
-          </div>
-        ))
+        geocodeResults.map((resultObj, index) => {
+          const result = resultObj.Place;
+          return (
+            <div
+              style={{
+                border: "1px solid black",
+                backgroundColor: "#EEE",
+                margin: "0.1em",
+                padding: "0.5em",
+              }}
+              key={index}
+              onClick={() => selectLocation(result)}
+            >
+              <Typography>{`(${result.Geometry.Point[0]}, ${result.Geometry.Point[1]})`}</Typography>
+              <Typography>{`${result.Label.split(",")[0]}`}</Typography>
+              <Typography>{`${result.Label}`}</Typography>
+              <Grid container justifyContent="space-between">
+                <Typography>
+                  {`${result.SubRegion}, ${result.Region} `}
+                </Typography>
+                {/* <Typography>{`${result.attributes.Addr_type}`}</Typography> */}
+              </Grid>
+            </div>
+          )
+        })
       ) : (
         <div>No Results</div>
       )}

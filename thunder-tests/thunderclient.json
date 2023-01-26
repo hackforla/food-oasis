@@ -1133,101 +1133,6 @@
     }
   },
   {
-    "_id": "c429c489-92f1-445b-84a1-71044c74a8d5",
-    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
-    "containerId": "ae763c3f-34d6-40dd-9749-50a88bd18b89",
-    "name": "ERIS Geocode",
-    "url": "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?category=Street Address&f=json&outFields=*&singleline= 525 S. Hewitt St. Los Angeles CA &token=r6oXxbB-S0qsvLKwPojTi6JQg2XpMCErUR0foyB1PhLgVsh_I-_UwcxpiQ15qrtCbCcSTcNutoTJvWqJTY70qmWtHtsXKqIWL_fN97hO6helkqpfiXTrZp8kQIzEoruTJrw8fjm_xbau2NvUg_hx9A..",
-    "method": "GET",
-    "sortNum": 40000,
-    "created": "2022-10-04T03:11:23.729Z",
-    "modified": "2022-11-18T02:13:56.365Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "category",
-        "value": "Street Address",
-        "isPath": false
-      },
-      {
-        "name": "f",
-        "value": "json",
-        "isPath": false
-      },
-      {
-        "name": "outFields",
-        "value": "*",
-        "isPath": false
-      },
-      {
-        "name": "singleline",
-        "value": "525 S. Hewitt St. Los Angeles CA",
-        "isPath": false
-      },
-      {
-        "name": "token",
-        "value": "r6oXxbB-S0qsvLKwPojTi6JQg2XpMCErUR0foyB1PhLgVsh_I-_UwcxpiQ15qrtCbCcSTcNutoTJvWqJTY70qmWtHtsXKqIWL_fN97hO6helkqpfiXTrZp8kQIzEoruTJrw8fjm_xbau2NvUg_hx9A..",
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
-    "_id": "fa77ee55-d562-4b60-96d2-117b03ba668a",
-    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
-    "containerId": "ae763c3f-34d6-40dd-9749-50a88bd18b89",
-    "name": "ERIS GET Token",
-    "url": "https://www.arcgis.com/sharing/oauth2/token?client_id=pZCxbMSzRf1qPO7a&grant_type=client_credentials&client_secret=6f96f8722e7b426eb59ec269d84fd427&f=pjson",
-    "method": "GET",
-    "sortNum": 30000,
-    "created": "2022-10-04T03:11:23.730Z",
-    "modified": "2022-11-18T02:13:53.807Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "client_id",
-        "value": "pZCxbMSzRf1qPO7a",
-        "isPath": false
-      },
-      {
-        "name": "grant_type",
-        "value": "client_credentials",
-        "isPath": false
-      },
-      {
-        "name": "client_secret",
-        "value": "6f96f8722e7b426eb59ec269d84fd427",
-        "isPath": false
-      },
-      {
-        "name": "f",
-        "value": "pjson",
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
-    "_id": "6e320836-fe20-4d58-89fc-1bc4f465b268",
-    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
-    "containerId": "ae763c3f-34d6-40dd-9749-50a88bd18b89",
-    "name": "ERIS Web API Geocode",
-    "url": "http://localhost:5001/api/esri/geocode?address=525 S. Hewiitt St. Los Angeles CA",
-    "method": "GET",
-    "sortNum": 20000,
-    "created": "2022-10-04T03:11:23.731Z",
-    "modified": "2022-11-18T02:13:50.642Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "address",
-        "value": "525 S. Hewiitt St. Los Angeles CA",
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
     "_id": "c4031b1f-dc91-413f-8d87-07bd94ae4f21",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "7f5a5a8a-37c9-4fea-911f-c13660509a3e",
@@ -1267,64 +1172,6 @@
         }
       ]
     }
-  },
-  {
-    "_id": "a00d9da8-8bd0-4710-b3a1-0f2cf9cd75eb",
-    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
-    "containerId": "ae763c3f-34d6-40dd-9749-50a88bd18b89",
-    "name": "TAMU Geocode",
-    "url": "https://geoservices.tamu.edu/Services/Geocode/WebService/GeocoderWebServiceHttpNonParsed_V04_01.aspx?apiKey=5c141ed805794a7a9562c22c090a71cb&version=4.01&streetAddress=21036 Wendy Dr&city=torrance?state=CA&zip=90503&format=xml",
-    "method": "GET",
-    "sortNum": 10000,
-    "created": "2022-10-04T03:11:23.734Z",
-    "modified": "2022-11-18T03:15:56.244Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "apiKey",
-        "value": "5c141ed805794a7a9562c22c090a71cb",
-        "isPath": false
-      },
-      {
-        "name": "version",
-        "value": "4.01",
-        "isPath": false
-      },
-      {
-        "name": "streetAddress",
-        "value": "21036 Wendy Dr",
-        "isPath": false
-      },
-      {
-        "name": "city",
-        "value": "torrance?state=CA",
-        "isPath": false
-      },
-      {
-        "name": "zip",
-        "value": "90503",
-        "isPath": false
-      },
-      {
-        "name": "format",
-        "value": "xml",
-        "isPath": false
-      }
-    ],
-    "tests": [
-      {
-        "type": "res-code",
-        "custom": "",
-        "action": "equal",
-        "value": "200"
-      },
-      {
-        "type": "res-body",
-        "custom": "",
-        "action": "contains",
-        "value": "LOCATION_TYPE_STREET_ADDRESS"
-      }
-    ]
   },
   {
     "_id": "12c55368-c5bb-42a2-aebc-b79189be38dd",
@@ -2340,5 +2187,71 @@
         }
       ]
     }
+  },
+  {
+    "_id": "b6dc3666-af88-464b-9e9a-affc7ef5ef45",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "ae763c3f-34d6-40dd-9749-50a88bd18b89",
+    "name": "AWS Geocode Autocomplete",
+    "url": "http://localhost:5001/api/aws/autocomplete?address=1345 Turnbull Canyon Road",
+    "method": "GET",
+    "sortNum": 600000,
+    "created": "2023-01-09T21:59:20.949Z",
+    "modified": "2023-01-13T22:25:04.595Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "address",
+        "value": "1345 Turnbull Canyon Road",
+        "isPath": false
+      }
+    ],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "Results"
+      }
+    ]
+  },
+  {
+    "_id": "4cefd842-834d-4d1c-97d1-0f5cf44c424c",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "ae763c3f-34d6-40dd-9749-50a88bd18b89",
+    "name": "AWS Geocode Get Coordinates",
+    "url": "http://localhost:5001/api/aws/getCoords?address=1345 Turnbull Canyon Road",
+    "method": "GET",
+    "sortNum": 610000,
+    "created": "2023-01-13T19:43:32.383Z",
+    "modified": "2023-01-13T22:25:25.080Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "address",
+        "value": "1345 Turnbull Canyon Road",
+        "isPath": false
+      }
+    ],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "Results"
+      }
+    ]
   }
 ]

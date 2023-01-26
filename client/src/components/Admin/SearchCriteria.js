@@ -126,14 +126,14 @@ const SearchCriteria = ({
   };
 
   const setLocation = (location) => {
-    setCustomLatitude(location.location.y);
-    setCustomLongitude(location.location.x);
-    setCustomPlaceName(location.address);
+    setCustomLatitude(location.Geometry.Point[0]);
+    setCustomLongitude(location.Geometry.Point[1]);
+    setCustomPlaceName(location.Label);
     setCriteria({
       ...criteria,
-      latitude: location.location.y,
-      longitude: location.location.x,
-      placeName: location.address,
+      latitude: location.Geometry.Point[0],
+      longitude: location.Geometry.Point[1],
+      placeName: location.Label,
     });
     setUseMyLocation("custom");
   };

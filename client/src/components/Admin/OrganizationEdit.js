@@ -32,7 +32,7 @@ import withStyles from "@mui/styles/withStyles";
 import * as stakeholderService from "services/stakeholder-service";
 import { useCategories } from "hooks/useCategories";
 import { useTags } from "hooks/useTags";
-import * as geocoder from "services/geocode-tamu-service";
+import * as awsService from "services/aws-service";
 import OpenTimeForm from "components/Admin/OpenTimeForm";
 import { TabPanel, a11yProps } from "components/Admin/ui/TabPanel";
 import AssignDialog from "components/Admin/AssignDialog";
@@ -327,19 +327,11 @@ const OrganizationEdit = (props) => {
   // }
 
   const geocode = async (formData) => {
+    const address = `${formData.address1} ${formData.city} ${formData.state} ${formData.zip}`
     try {
-      const result = await geocoder.geocode(
-        formData.address1,
-        formData.city,
-        formData.state,
-        formData.zip
-      );
-      if (result.FeatureMatchingResultType === "Success") {
-        setGeocodeResults(result.OutputGeocodes);
-      } else if (result.Exception) {
-        setToast({
-          message: result.Exception,
-        });
+      const result = await awsService.getCoords(address);
+      if (result.Results) {
+        setGeocodeResults(result.Results);
       } else {
         setToast({
           message:
@@ -1015,8 +1007,8 @@ const OrganizationEdit = (props) => {
                             >
                               <Grid container>
                                 <Grid item xs={10}>
-                                  <Typography>{`(${result.OutputGeocode.Latitude}, ${result.OutputGeocode.Longitude})`}</Typography>
-                                  <Typography>{`Match Score: ${result.OutputGeocode.MatchScore} ${result.OutputGeocode.MatchType}`}</Typography>
+                                  <Typography>{`(${result.Place.Geometry.Point[1]}, ${result.Place.Geometry.Point[0]})`}</Typography>
+                                  <Typography>{`Match Score: ${result.Relevance}`}</Typography>
                                   {/* <Typography>{`${result.attributes.Addr_type}`}</Typography> */}
                                 </Grid>
                                 <Grid item xs={2}>
@@ -1027,15 +1019,15 @@ const OrganizationEdit = (props) => {
                                     onClick={() => {
                                       setFieldValue(
                                         "latitude",
-                                        result.OutputGeocode.Latitude
+                                        result.Place.Geometry.Point[1]
                                       );
                                       setFieldValue(
                                         "longitude",
-                                        result.OutputGeocode.Longitude
+                                        result.Place.Geometry.Point[0]
                                       );
                                       setGeocodeResults([]);
                                     }}
-                                  ></Button>
+                                  >Set</Button>
                                 </Grid>
                               </Grid>
                             </div>

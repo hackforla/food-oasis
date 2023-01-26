@@ -1,8 +1,6 @@
 // @ts-nocheck
-// esriService returning 500 error. Commented out esriService fucntion in getLatLong until fixed
-// (for now, parser won't retrieve lat/long based on address; must be added manually)
 
-// const esriService = require("./esri-service");
+import awsService from "./aws-service";
 import {
   WEEKS_HOURLY,
   MAP_NUM_TO_DAY,
@@ -10,9 +8,8 @@ import {
 } from "./import-constants";
 
 function formatMapAddress(formData) {
-  return `${formData.address_1 || ""} ${formData.address_2 || ""} ${
-    formData.city || ""
-  }, ${formData.state || ""} ${formData.zip || ""}`;
+  return `${formData.address_1 || ""} ${formData.address_2 || ""} ${formData.city || ""
+    }, ${formData.state || ""} ${formData.zip || ""}`;
 }
 
 function setDefaultValues(row) {
@@ -135,22 +132,18 @@ async function getLatLong(row) {
       longitude: +longitude,
     };
   }
-  // try {
-  //   const response = await esriService.geocode(formatMapAddress(row));
-  //   return {
-  //     latitude: response[0].attributes.Y,
-  //     longitude: response[0].attributes.X,
-  //   };
-  // } catch {
-  //   return {
-  //     latitude: 0,
-  //     longitude: 0,
-  //   };
-  // }
-  return {
-    latitude: 0,
-    longitude: 0,
-  };
+  try {
+    const result = await awsService.getCoords(formatMapAddress(row));
+    return {
+      latitude: result.Results[0].Place.Geometry.Point[1],
+      longitude: result.Results[0].Place.Geometry.Point[0],
+    };
+  } catch {
+    return {
+      latitude: 0,
+      longitude: 0,
+    };
+  }
 }
 
 export default {

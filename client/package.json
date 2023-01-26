@@ -31,7 +31,6 @@
     "debounce-fn": "^5.0.0",
     "dotenv": "^10.0.0",
     "downshift": "^6.1.7",
-    "esri-loader": "^3.2.0",
     "formik": "^2.2.9",
     "js-file-download": "^0.4.12",
     "moment": "2.29.4",

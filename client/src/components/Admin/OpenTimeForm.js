@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import OpenTimeInputs from "./OpenTimeInput";
 import { Card, CardContent, Typography } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
-import Button from "@mui/material/Button";
+import { SecondaryButton } from "../UI/StandardButton";
 import { Add as AddIcon } from "@mui/icons-material";
 
 const useStyles = makeStyles((theme) => ({
@@ -93,14 +93,14 @@ function OpenTimeForm(props) {
               </div>
             ))
           : null}
-        <Button
+        <SecondaryButton
           type="button"
           onClick={addHours}
           icon="add"
           startIcon={<AddIcon />}
         >
           Add Hours
-        </Button>
+        </SecondaryButton>
       </CardContent>
     </Card>
   );

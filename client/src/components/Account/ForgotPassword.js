@@ -4,9 +4,9 @@ import withStyles from "@mui/styles/withStyles";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import * as accountService from "../../services/account-service";
+import { PrimaryButton } from "../UI/StandardButton";
 import {
   Avatar,
-  Button,
   Container,
   Link,
   Grid,
@@ -164,14 +164,14 @@ const ForgotPassword = (props) => {
                     helperText={touched.email ? errors.email : ""}
                     error={touched.email && Boolean(errors.email)}
                   />
-                  <Button
+                  <PrimaryButton
                     type="submit"
                     fullWidth
                     disabled={isSubmitting || !isValid}
                     sx={{ mt: 2, mb: 2 }}
                   >
                     Send Password Reset Link
-                  </Button>
+                  </PrimaryButton>
                   <Grid container>
                     <Grid item xs>
                       <Typography align="center">

@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 import AccountAutocomplete from "./AccountAutocomplete";
-import { Button } from "../../components/UI";
+import { PrimaryButton, SecondaryButton } from "..//UI/StandardButton";
 
 function AssignDialog(props) {
   const { onClose, open, ...other } = props;
@@ -40,12 +40,12 @@ function AssignDialog(props) {
         />
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={handleCancel}>
+        <SecondaryButton autoFocus onClick={handleCancel}>
           Cancel
-        </Button>
-        <Button onClick={handleAssign} disabled={!accountId}>
+        </SecondaryButton>
+        <PrimaryButton onClick={handleAssign} disabled={!accountId}>
           Assign
-        </Button>
+        </PrimaryButton>
       </DialogActions>
     </Dialog>
   );

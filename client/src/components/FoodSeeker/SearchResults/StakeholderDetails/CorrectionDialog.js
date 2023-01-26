@@ -1,8 +1,8 @@
 import React from "react";
 import { withFormik } from "formik";
 import PropTypes from "prop-types";
+import { PrimaryButton, SecondaryButton } from "../../../UI/StandardButton";
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -133,10 +133,12 @@ function SuggestionDialog(props) {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleCancel}>
+          <SecondaryButton autoFocus onClick={handleCancel}>
             Cancel
-          </Button>
-          <Button onClick={handleSubmit}>Send</Button>
+          </SecondaryButton>
+          <PrimaryButton onClick={handleSubmit} disabled={!values.notes}>
+            Send
+          </PrimaryButton>
         </DialogActions>
       </form>
     </Dialog>

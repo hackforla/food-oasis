@@ -7,7 +7,7 @@ import Stack from "@mui/material/Stack";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
-import { Button } from "@mui/material";
+import { SecondaryButton } from "../../../UI/StandardButton";
 import { useSiteContext } from "contexts/siteContext";
 
 import {
@@ -132,7 +132,6 @@ const StakeholderPreview = ({ stakeholder }) => {
       container
       spacing={0}
       key={stakeholder.id}
-      onClick={() => handleSelectOrganization(stakeholder)}
       sx={{
         width: "100%",
         minHeight: "6rem",
@@ -240,7 +239,7 @@ const StakeholderPreview = ({ stakeholder }) => {
               )}
           </Box>
           <Stack direction="row" sx={{ justifyContent: "space-between" }}>
-            <Button
+            <SecondaryButton
               // size="small"
               onClick={() => {
                 analytics.postEvent("getDirections", {
@@ -256,11 +255,11 @@ const StakeholderPreview = ({ stakeholder }) => {
                 );
               }}
             >
-              <Typography variant="button">Directions</Typography>
-            </Button>
+              Directions
+            </SecondaryButton>
 
             {mainNumber && (
-              <Button
+              <SecondaryButton
                 onClick={() => {
                   analytics.postEvent("dialPhone", {
                     id: stakeholder.id,
@@ -269,13 +268,17 @@ const StakeholderPreview = ({ stakeholder }) => {
                   window.open(`tel:${mainNumber.value}`);
                 }}
               >
-                <Typography variant="button">Call</Typography>
-              </Button>
+                Call
+              </SecondaryButton>
             )}
 
-            <Button disabled={stakeholder.inactive}>
-              <Typography variant="button">Details</Typography>
-            </Button>
+            <SecondaryButton
+              disabled={stakeholder.inactive}
+              onClick={() => handleSelectOrganization(stakeholder)}
+            >
+              {/* <Typography variant="button">Details</Typography> */}
+              Details
+            </SecondaryButton>
           </Stack>
         </Stack>
       </Grid2>

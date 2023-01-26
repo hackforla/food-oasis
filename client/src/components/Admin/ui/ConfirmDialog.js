@@ -7,7 +7,7 @@ import {
   DialogTitle,
   Typography,
 } from "@mui/material";
-import { Button } from "../../../components/UI";
+import { PrimaryButton, SecondaryButton } from "../../UI/StandardButton";
 
 function ConfirmDialog(props) {
   const { onClose, open, ...other } = props;
@@ -34,12 +34,12 @@ function ConfirmDialog(props) {
         <Typography>{props.message}</Typography>
       </DialogContent>
       <DialogActions>
-        <Button type="button" autoFocus onClick={handleCancel}>
+        <SecondaryButton type="button" autoFocus onClick={handleCancel}>
           Cancel
-        </Button>
-        <Button type="button" onClick={handleAssign}>
+        </SecondaryButton>
+        <PrimaryButton type="button" onClick={handleAssign}>
           Confirm Delete
-        </Button>
+        </PrimaryButton>
       </DialogActions>
     </Dialog>
   );

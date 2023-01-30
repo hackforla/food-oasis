@@ -18,7 +18,7 @@ import { useUserContext } from "../../contexts/userContext";
 import { useToasterContext } from "../../contexts/toasterContext";
 
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import usePasswordVisibilityToggle from "../../hooks/usePasswordVisibilityToggle";
+import PasswordInput from "../../components/UI/PasswordInput";
 
 const styles = (theme) => ({
   paper: {
@@ -60,7 +60,6 @@ const LoginForm = (props) => {
   const { setToast } = useToasterContext();
   // state is the previous pathname if the user has been redirected here from a PrivateRoute.
   const { state } = useLocation();
-  const { passwordVisibility, InputProps } = usePasswordVisibilityToggle();
 
   return (
     <div className={classes.body}>
@@ -185,12 +184,10 @@ const LoginForm = (props) => {
                   error={touched.email && Boolean(errors.email)}
                   sx={{ mt: 2, mb: 2 }}
                 />
-                <TextField
+                <PasswordInput
                   fullWidth
                   name="password"
                   label="Password"
-                  type={passwordVisibility ? "text" : "password"}
-                  InputProps={InputProps}
                   id="password"
                   autoComplete="current-password"
                   value={values.password}

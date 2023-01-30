@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useToasterContext } from "contexts/toasterContext";
-import usePasswordVisibilityToggle from "../../hooks/usePasswordVisibilityToggle";
+import PasswordInput from "components/UI/PasswordInput";
 
 const styles = (theme) => ({
   paper: {
@@ -56,8 +56,6 @@ const form = (props) => {
     handleChange,
     handleBlur,
     handleSubmit,
-    passwordVisibility,
-    InputProps,
   } = props;
 
   return (
@@ -120,13 +118,11 @@ const form = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
+                <PasswordInput
                   required
                   fullWidth
                   name="password"
                   label="Password"
-                  type={passwordVisibility ? "text" : "password"}
-                  InputProps={InputProps}
                   id="password"
                   autoComplete="current-password"
                   value={values.password}
@@ -137,13 +133,11 @@ const form = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
+                <PasswordInput
                   required
                   fullWidth
                   name="passwordConfirm"
                   label="Re-type Password"
-                  type={passwordVisibility ? "text" : "password"}
-                  InputProps={InputProps}
                   id="passwordConfirm"
                   value={values.passwordConfirm}
                   onChange={handleChange}
@@ -253,13 +247,6 @@ const RegisterForm = withFormik({
 const WrappedRegisterForm = withStyles(styles)(withRouter(RegisterForm));
 
 export default function Register() {
-  const { passwordVisibility, InputProps } = usePasswordVisibilityToggle();
   const { setToast } = useToasterContext();
-  return (
-    <WrappedRegisterForm
-      setToast={setToast}
-      passwordVisibility={passwordVisibility}
-      InputProps={InputProps}
-    />
-  );
+  return <WrappedRegisterForm setToast={setToast} />;
 }

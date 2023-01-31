@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useToasterContext } from "../../contexts/toasterContext";
-import usePasswordVisibilityToggle from "../../hooks/usePasswordVisibilityToggle";
+import PasswordInput from "../UI/PasswordInput";
 
 const styles = (theme) => ({
   paper: {
@@ -54,7 +54,6 @@ const validationSchema = Yup.object().shape({
 const ResetPassword = (props) => {
   const { classes, history, match } = props;
   const { setToast } = useToasterContext();
-  const { passwordVisibility, InputProps } = usePasswordVisibilityToggle();
 
   return (
     <div className={classes.body}>
@@ -134,13 +133,11 @@ const ResetPassword = (props) => {
                   handleSubmit(evt);
                 }}
               >
-                <TextField
+                <PasswordInput
                   margin="normal"
                   fullWidth
                   name="password"
                   label="New Password"
-                  type={passwordVisibility ? "text" : "password"}
-                  InputProps={InputProps}
                   id="password"
                   autoComplete="current-password"
                   value={values.password}
@@ -150,13 +147,11 @@ const ResetPassword = (props) => {
                   error={touched.password && Boolean(errors.password)}
                   sx={{ mt: 2, mb: 2 }}
                 />
-                <TextField
+                <PasswordInput
                   margin="normal"
                   fullWidth
                   name="passwordConfirm"
                   label="Confirm Password"
-                  type={passwordVisibility ? "text" : "password"}
-                  InputProps={InputProps}
                   id="passwordConfirm"
                   value={values.passwordConfirm}
                   onChange={handleChange}

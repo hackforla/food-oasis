@@ -2253,5 +2253,37 @@
         "value": "Results"
       }
     ]
+  },
+  {
+    "_id": "a78961bb-8741-4838-9788-c9135c9c19c9",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
+    "name": "Get By Email",
+    "url": "http://localhost:5001/api/accounts/adminuser@dispostable.com?tenantId=1",
+    "method": "GET",
+    "sortNum": 570000,
+    "created": "2023-01-30T03:32:14.600Z",
+    "modified": "2023-02-05T21:08:16.441Z",
+    "headers": [
+      {
+        "name": "Content-Type",
+        "value": "application/json"
+      }
+    ],
+    "params": [
+      {
+        "name": "tenantId",
+        "value": "1",
+        "isPath": false
+      }
+    ],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      }
+    ]
   }
 ]

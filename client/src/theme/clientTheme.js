@@ -25,10 +25,7 @@ const themeSpec = {
       gray: gray,
       white: white,
       disabled: "#A0A0A0",
-<<<<<<< HEAD
       inactiveButton,
-=======
->>>>>>> origin/develop
     },
     primary: {
       light: "#6693CA",
@@ -191,34 +188,7 @@ themeSpec.components = {
   MuiButton: {
     defaultProps: {
       variant: "outlined",
-<<<<<<< HEAD
     },
-=======
-      size: "small",
-      disableRipple: false,
-      disableTouchRipple: false,
-    },
-    // styleOverrides: {
-    //   outlined: {
-    //     borderColor: themeSpec.palette.primary.translucent,
-    //     "&.Mui-focusVisible .MuiButton-outlined": {
-    //       borderStyle: "solid",
-    //       borderColor: themeSpec.palette.primary.main,
-    //       borderWidth: "2px",
-    //       borderRadius: "4px",
-    //     },
-    //     "&:hover": {
-    //       color: themeSpec.palette.common.white,
-    //       backgroundColor: themeSpec.palette.primary.main,
-    //       opacity: "1",
-    //       "&.MuiButton-outlined .Mui-disabled": {
-    //         // backgroundColor: "white",
-    //         color: "#A0A0A0",
-    //       },
-    //     },
-    //   },
-    // },
->>>>>>> origin/develop
   },
   MuiCheckbox: {
     defaultProps: {

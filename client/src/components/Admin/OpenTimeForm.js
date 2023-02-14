@@ -81,6 +81,8 @@ function OpenTimeForm(props) {
     );
   });
 
+  const addIcon = <AddIcon />;
+
   return (
     <Card style={{ border: "1px solid lightgray", borderRadius: "4px" }}>
       <CardContent>
@@ -97,7 +99,7 @@ function OpenTimeForm(props) {
           type="button"
           onClick={addHours}
           icon="add"
-          startIcon={<AddIcon />}
+          startIcon={addIcon}
         >
           Add Hours
         </SecondaryButton>

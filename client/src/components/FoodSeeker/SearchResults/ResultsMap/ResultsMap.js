@@ -27,6 +27,7 @@ import { regionFillStyle, regionBorderStyle } from "./RegionHelpers";
 import useStyles from "./styles";
 import * as analytics from "services/analytics";
 // import { SecondaryButton } from "../../../UI/StandardButton";
+import { Button } from "@mui/material";
 import {
   useSearchCoordinates,
   useAppDispatch,
@@ -202,7 +203,7 @@ const ResultsMap = (
           <Map.Layer {...regionBorderStyle} />
         </Map.Source>
       )}
-      <SecondaryButton
+      <Button
         variant="outlined"
         onClick={searchMapArea}
         size="small"
@@ -210,7 +211,7 @@ const ResultsMap = (
         disabled={loading}
       >
         Search this area
-      </SecondaryButton>
+      </Button>
     </ReactMapGL>
   );
 };

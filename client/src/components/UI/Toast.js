@@ -1,7 +1,7 @@
 import React from "react";
 import { Snackbar } from "@mui/material";
 import withStyles from "@mui/styles/withStyles";
-import { IconButton } from "./index";
+import { IconButton } from "../UI/StandardButton";
 import { useToasterContext } from "../../contexts/toasterContext";
 
 const styles = (theme) => ({
@@ -39,7 +39,6 @@ const Toast = () => {
           key={toast.message}
           icon="close"
           onClick={handleSnackbarClose}
-          size="large"
         />,
       ]}
     />

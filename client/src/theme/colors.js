@@ -12,8 +12,8 @@ const error = "#CC3333";
 const confirmed = "#008000";
 const headingText = "#1B1B1B";
 const bodyText = "#313233";
-const inactiveButton = "#F0F0F0";
-const inactiveButtonText = "#4D4D4D";
+const inactiveButton = "#949494";
+//const inactiveButtonText = "#4D4D4D";
 const link = "#1976D2";
 const linkVisited = "#63a4ff";
 const linkHover = "#004ba0";
@@ -36,7 +36,6 @@ export {
   headingText,
   bodyText,
   inactiveButton,
-  inactiveButtonText,
   foodPantry,
   mealProgram,
   closed,

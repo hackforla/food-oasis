@@ -37,15 +37,23 @@ const StakeholderGrid = (props) => {
 
   const linkFormatter = ({ value, row }) => {
     return (
-      <Link to={`/organizationedit/${row.id}`} component={RouterLink}>
-        {value}
-      </Link>
+      <div style={{ textAlign: "left", marginLeft: "0.5rem" }}>
+        <Link to={`/organizationedit/${row.id}`} component={RouterLink}>
+          {value}
+        </Link>
+      </div>
+    );
+  };
+
+  const textFormatter = ({ value, row }) => {
+    return (
+      <div style={{ textAlign: "left", marginLeft: "0.5rem" }}>{value}</div>
     );
   };
 
   const inactiveFormatter = ({ value }) => {
     return value ? (
-      <div style={{ textAlign: "center" }}>
+      <div>
         <Block className={classes.inactive} />
       </div>
     ) : (
@@ -66,7 +74,16 @@ const StakeholderGrid = (props) => {
   };
 
   const verificationStatusFormatter = ({ value }) => {
-    return VERIFICATION_STATUS_NAMES[value];
+    return (
+      <div
+        style={{
+          textAlign: "left",
+          marginLeft: "0.5rem",
+        }}
+      >
+        {VERIFICATION_STATUS_NAMES[value]}
+      </div>
+    );
   };
 
   const distanceFormatter = ({ value }) => {
@@ -74,7 +91,11 @@ const StakeholderGrid = (props) => {
   };
 
   const categoriesFormatter = ({ value }) => {
-    return value && value.length > 0 ? value.map((c) => c.name).join(", ") : "";
+    return (
+      <div style={{ textAlign: "left" }}>
+        {value && value.length > 0 ? value.map((c) => c.name).join(", ") : ""}
+      </div>
+    );
   };
 
   const dateFormatter = ({ value }) => {
@@ -211,48 +232,49 @@ const StakeholderGrid = (props) => {
     {
       key: "neighborhoodName",
       name: "Neighborhood",
+      formatter: textFormatter,
       width: 80,
     },
-    { key: "assignedUser", name: "Assigned To" },
+    { key: "assignedUser", name: "Assigned To", formatter: textFormatter },
     {
       key: "assignedDate",
       name: "Assigned",
       formatter: dateFormatter,
       dataType: "datetime",
     },
-    { key: "submittedUser", name: "Submitted By" },
+    { key: "submittedUser", name: "Submitted By", formatter: textFormatter },
     {
       key: "submittedDate",
       name: "Submitted",
       formatter: dateFormatter,
       dataType: "datetime",
     },
-    { key: "reviewedUser", name: "Approved By" },
+    { key: "reviewedUser", name: "Approved By", formatter: textFormatter },
     {
       key: "approvedDate",
       name: "Approved",
       formatter: dateFormatter,
       dataType: "datetime",
     },
-    { key: "createdUser", name: "Entered By" },
+    { key: "createdUser", name: "Entered By", formatter: textFormatter },
     {
       key: "createdDate",
       name: "Entered",
       formatter: dateFormatter,
       dataType: "datetime",
     },
-    { key: "modifiedUser", name: "Modified By" },
+    { key: "modifiedUser", name: "Modified By", formatter: textFormatter },
     {
       key: "modifiedDate",
       name: "Modified",
       formatter: dateFormatter,
       dataType: "datetime",
     },
-    { key: "address1", name: "Street" },
-    { key: "city", name: "City" },
-    { key: "zip", name: "Zip Code" },
-    { key: "phone", name: "Phone" },
-    { key: "website", name: "Website", width: 240 },
+    { key: "address1", name: "Street", formatter: textFormatter },
+    { key: "city", name: "City", formatter: textFormatter },
+    { key: "zip", name: "Zip Code", formatter: textFormatter },
+    { key: "phone", name: "Phone", formatter: textFormatter },
+    { key: "website", name: "Website", width: 240, formatter: textFormatter },
     {
       key: "distance",
       name: "Distance (mi)",

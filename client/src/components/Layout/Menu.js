@@ -13,7 +13,7 @@ import {
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { MENU_ITEMS } from "helpers/Constants";
 import MenuItemLink from "./MenuItemLink";
-import { IconButton } from "../../components/UI";
+import { IconButton } from "../UI/StandardButton";
 import { useUserContext } from "../../contexts/userContext";
 import { isMobile } from "helpers";
 
@@ -178,7 +178,7 @@ export default function Menu() {
   return (
     <div>
       <IconButton
-        size={!isHomePage && isMobile ? "small" : "medium"}
+        size={!isHomePage && isMobile ? "small" : "large"}
         icon="menu"
         onClick={toggleDrawer}
         classes={{

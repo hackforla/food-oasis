@@ -958,7 +958,7 @@ const OrganizationEdit = (props) => {
                             <Grid item>
                               <SecondaryButton
                                 icon="search"
-                                style={{ marginTop: "1.2em" }}
+                                // style={{ marginTop: "1.2em" }}
                                 onClick={() => {
                                   (geocodeResults && geocodeResults.length) < 1
                                     ? geocode(values)
@@ -1925,7 +1925,6 @@ const OrganizationEdit = (props) => {
                             disabled={isSubmitting || isUnchanged(values)}
                             sx={{
                               minHeight: "3.5rem",
-                              margin: "0 0.5rem",
                             }}
                           >
                             Save Progress
@@ -1938,7 +1937,6 @@ const OrganizationEdit = (props) => {
                             type="button"
                             style={{
                               minHeight: "3.5rem",
-                              margin: "0 0.5rem",
                               display: "flex",
                             }}
                             onClick={() => {
@@ -1975,7 +1973,6 @@ const OrganizationEdit = (props) => {
                             type="button"
                             style={{
                               minHeight: "3.5rem",
-                              margin: "0 0.5rem",
                               display: "flex",
                             }}
                             onClick={() => {
@@ -2013,7 +2010,6 @@ const OrganizationEdit = (props) => {
                             type="button"
                             style={{
                               minHeight: "3.5rem",
-                              margin: "0 0.5rem",
                               display: "flex",
                             }}
                             onClick={() => {
@@ -2050,7 +2046,6 @@ const OrganizationEdit = (props) => {
                             type="button"
                             style={{
                               minHeight: "3.5rem",
-                              margin: "0 0.5rem",
                               display: "flex",
                             }}
                             onClick={() => {
@@ -2083,7 +2078,6 @@ const OrganizationEdit = (props) => {
                             type="button"
                             style={{
                               minHeight: "3.5rem",
-                              margin: "0 0.5rem",
                               display: "flex",
                             }}
                             onClick={() => {
@@ -2119,7 +2113,6 @@ const OrganizationEdit = (props) => {
                             type="submit"
                             style={{
                               minHeight: "3.5rem",
-                              margin: "0 0.5rem",
                               display: "flex",
                             }}
                             className={classes.submit}
@@ -2135,7 +2128,6 @@ const OrganizationEdit = (props) => {
                             type="button"
                             style={{
                               minHeight: "3.5rem",
-                              margin: "0 0.5rem",
                               display: "flex",
                             }}
                             onClick={() => {
@@ -2165,7 +2157,6 @@ const OrganizationEdit = (props) => {
                             type="button"
                             style={{
                               minHeight: "3.5rem",
-                              margin: "0 0.5rem",
                               display: "flex",
                             }}
                             onClick={() => {

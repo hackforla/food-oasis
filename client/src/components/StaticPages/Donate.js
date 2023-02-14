@@ -19,8 +19,7 @@ import donationStep5 from "images/donationStep5.png";
 import donationStep6 from "images/donationStep6.png";
 import donationStep7 from "images/donationStep7.png";
 import * as analytics from "../../services/analytics";
-import { IconButton } from "../../components/UI";
-import { PrimaryButton } from "../UI/StandardButton";
+import { PrimaryButton, IconButton } from "../UI/StandardButton";
 
 const useStyles = makeStyles((theme) => ({
   outer: {
@@ -328,7 +327,6 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
               icon="close"
               className={classes.dialogCloseButton}
               onClick={handleCloseDonationDialog}
-              size="large"
             />
           </Grid>
         </Grid>

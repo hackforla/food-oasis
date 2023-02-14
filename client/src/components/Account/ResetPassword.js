@@ -5,13 +5,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import * as accountService from "../../services/account-service";
 import { PrimaryButton } from "../UI/StandardButton";
-import {
-  Avatar,
-  Container,
-  CssBaseline,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Avatar, Container, CssBaseline, Typography } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useToasterContext } from "../../contexts/toasterContext";
 import PasswordInput from "../UI/PasswordInput";

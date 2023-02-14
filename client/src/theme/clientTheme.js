@@ -11,6 +11,7 @@ import {
   bodyText,
   mealProgram,
   foodPantry,
+  inactiveButton,
   link,
   linkVisited,
   linkHover,
@@ -24,6 +25,7 @@ const themeSpec = {
       gray: gray,
       white: white,
       disabled: "#A0A0A0",
+      inactiveButton,
     },
     primary: {
       light: "#6693CA",
@@ -144,10 +146,10 @@ const themeSpec = {
     },
 
     button: {
-      fontSize: "0.75rem",
+      fontSize: "0.875rem",
       fontWeight: 500,
       "@media (min-width:600px)": {
-        fontSize: ".875rem",
+        fontSize: "1rem",
       },
     },
   },
@@ -186,30 +188,7 @@ themeSpec.components = {
   MuiButton: {
     defaultProps: {
       variant: "outlined",
-      size: "small",
-      disableRipple: false,
-      disableTouchRipple: false,
     },
-    // styleOverrides: {
-    //   outlined: {
-    //     borderColor: themeSpec.palette.primary.translucent,
-    //     "&.Mui-focusVisible .MuiButton-outlined": {
-    //       borderStyle: "solid",
-    //       borderColor: themeSpec.palette.primary.main,
-    //       borderWidth: "2px",
-    //       borderRadius: "4px",
-    //     },
-    //     "&:hover": {
-    //       color: themeSpec.palette.common.white,
-    //       backgroundColor: themeSpec.palette.primary.main,
-    //       opacity: "1",
-    //       "&.MuiButton-outlined .Mui-disabled": {
-    //         // backgroundColor: "white",
-    //         color: "#A0A0A0",
-    //       },
-    //     },
-    //   },
-    // },
   },
   MuiCheckbox: {
     defaultProps: {

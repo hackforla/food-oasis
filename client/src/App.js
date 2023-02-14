@@ -71,7 +71,7 @@ const Logins = React.lazy(() => import("components/Admin/Logins"));
 const Donate = React.lazy(() => import("./components/Donate"));
 const About = React.lazy(() => import("./components/About"));
 const Faq = React.lazy(() => import("./components/Faq"));
-
+const MuiDemo = React.lazy(() => import("./components/MuiDemo/MuiDemo"));
 const useStyles = makeStyles({
   app: () => ({
     color: "black",
@@ -189,6 +189,13 @@ function App() {
                             <StyledEngineProvider injectFirst>
                               <div className={classes.organizationEditWrapper}>
                                 <OrganizationEdit />
+                              </div>
+                            </StyledEngineProvider>
+                          </Route>
+                          <Route path="/muidemo">
+                            <StyledEngineProvider injectFirst>
+                              <div className={classes.organizationEditWrapper}>
+                                <MuiDemo />
                               </div>
                             </StyledEngineProvider>
                           </Route>

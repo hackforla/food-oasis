@@ -100,9 +100,11 @@ const ConfirmEmail = (props) => {
                   }}
                   sx={{ mt: 1, mb: 2 }}
                 />
-                <PrimaryButton type="submit" fullWidth sx={{ mt: 2, mb: 2 }}>
-                  Re-send confirmation email
-                </PrimaryButton>
+                <div fullWidth sx={{ mt: 2, mb: 2 }}>
+                  <PrimaryButton type="submit">
+                    Re-send confirmation email
+                  </PrimaryButton>
+                </div>
               </form>
             </div>
           )}

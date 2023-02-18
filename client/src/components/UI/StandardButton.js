@@ -20,6 +20,7 @@ const InnerPrimaryButton = styled(Button)(({ theme }) => ({
   padding: "8px 16px",
   "&:hover": {
     backgroundColor: "#2D5B88",
+    border: "2px solid transparent",
   },
   "&:focus": {
     backgroundColor: theme.palette.primary.main,
@@ -86,6 +87,7 @@ const InnerSecondaryButton = styled(Button)(({ theme }) => ({
   padding: "8px 16px",
   "&:hover": {
     backgroundColor: "#E5F1F7",
+    border: "2px solid #336699",
   },
   "&:active": {
     backgroundColor: "#CBE3F1",

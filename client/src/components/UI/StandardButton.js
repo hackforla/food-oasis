@@ -66,7 +66,7 @@ const PrimaryButton = (props) => {
           alignItems: "stretch",
         }}
       >
-        <InnerPrimaryButton {...props} />
+        <InnerPrimaryButton children={props.children} />
       </Box>
     </PrimaryBorderBox>
   );
@@ -129,7 +129,7 @@ const SecondaryButton = (props) => {
           alignItems: "stretch",
         }}
       >
-        <InnerSecondaryButton {...props} />
+        <InnerSecondaryButton children={props.children} />
       </Box>
     </SecondaryBorderBox>
   );

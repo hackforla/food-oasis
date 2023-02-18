@@ -2,7 +2,7 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import withStyles from "@mui/styles/withStyles";
 import { PrimaryButton } from "../UI/StandardButton";
-import { Avatar, Container, CssBaseline, Typography } from "@mui/material";
+import { Avatar, Box, Container, CssBaseline, Typography } from "@mui/material";
 import Footer from "../Layout/Footer";
 
 const MailIcon = () => {
@@ -82,13 +82,11 @@ const ResetPasswordEmailSent = (props) => {
             don’t see it in your inbox, please check your junk/spam folder.
           </Typography>
           <Container maxWidth="xs">
-            <PrimaryButton
-              fullWidth
-              onClick={() => history.push("/login")}
-              sx={{ mt: 2, mb: 2 }}
-            >
-              Back to login
-            </PrimaryButton>
+            <Box sx={{ mt: 2, mb: 2 }}>
+              <PrimaryButton onClick={() => history.push("/login")}>
+                Back to login
+              </PrimaryButton>
+            </Box>
           </Container>
         </div>
       </Container>

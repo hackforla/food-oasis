@@ -164,14 +164,15 @@ const ForgotPassword = (props) => {
                     helperText={touched.email ? errors.email : ""}
                     error={touched.email && Boolean(errors.email)}
                   />
-                  <PrimaryButton
-                    type="submit"
-                    fullWidth
-                    disabled={isSubmitting || !isValid}
-                    sx={{ mt: 2, mb: 2 }}
-                  >
-                    Send Password Reset Link
-                  </PrimaryButton>
+                  <div sx={{ mt: 2, mb: 2 }}>
+                    <PrimaryButton
+                      type="submit"
+                      fullWidth
+                      disabled={isSubmitting || !isValid}
+                    >
+                      Send Password Reset Link
+                    </PrimaryButton>
+                  </div>
                   <Grid container>
                     <Grid item xs>
                       <Typography align="center">

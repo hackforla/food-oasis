@@ -15,8 +15,6 @@ router.get(
   accountController.getAll
 );
 
-router.get("/:email", accountController.getByEmail);
-
 router.post("/register", accountController.register);
 router.post(
   "/resendConfirmationEmail",
@@ -46,5 +44,7 @@ router.get("/logout", (req, res) => {
   });
   res.sendStatus(200);
 });
+
+router.get("/:email", accountController.getByEmail);
 
 export default router;

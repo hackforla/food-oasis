@@ -91,7 +91,7 @@ function VerificationDashboard(props) {
 
   useEffect(() => {
     const execute = async () => {
-      if (!user) return;
+      if (!user) return undefined;
       const initialCriteria = { ...defaultCriteria, assignedLoginId: user.id };
       if (initialCriteria) {
         setCriteria(initialCriteria);

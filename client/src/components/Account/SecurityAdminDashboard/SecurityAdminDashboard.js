@@ -38,7 +38,7 @@ const SecurityAdminDashboard = () => {
   }, []);
 
   useEffect(() => {
-    if (accounts.length === 0) return;
+    if (accounts.length === 0) return undefined;
     if (search.length === 0) {
       setError("");
       setFilteredAccounts(accounts);

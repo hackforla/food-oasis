@@ -253,20 +253,7 @@ describe("Account", () => {
     expect(selectByEmailMock).toHaveBeenCalledTimes(1);
     expect(res.send.mock.calls[0][0]).toMatchInlineSnapshot(`
       Object {
-        "dateCreated": "2021-05-18T06:04:09.421Z",
-        "email": "admin@test.com",
-        "emailConfirmed": false,
-        "firstName": "Admin",
-        "id": 171,
-        "isAdmin": false,
-        "isCoordinator": false,
-        "isDataEntry": true,
-        "isGlobalAdmin": false,
-        "isGlobalReporting": false,
-        "isSecurityAdmin": false,
-        "lastName": "Admin",
-        "passwordHash": "$2b$10$aMAO10PCC2RfcmXg1GCH1.UsccMgTB53h4XD2w9ydlQMrf4Nn55.q",
-        "tenantId": 1,
+        "isSuccess": true,
       }
     `);
   });

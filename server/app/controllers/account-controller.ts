@@ -49,15 +49,15 @@ const getById: RequestHandler<
 
 const getByEmail: RequestHandler<
   { email: string },
-  Account,
+  { isSuccess: boolean },
   never,
   { tenantId: string }
 > = async (req, res) => {
   try {
     const { email } = req.params;
     const { tenantId } = req.query;
-    const response = await accountService.selectByEmail(email, tenantId);
-    res.send(response);
+    await accountService.selectByEmail(email, tenantId);
+    res.send({ isSuccess: true });
   } catch (err) {
     console.error(err);
     res.sendStatus(500);

@@ -157,7 +157,6 @@ const ResultsFilters = ({
                   disabled={locationPermission === "denied" || !!error}
                   icon="locationSearching"
                   // isLoading={isGettingLocation}
-                  backgroundColor="primary.main"
                   sx={{ maxWidth: "2rem" }}
                 >
                   <LocationSearching

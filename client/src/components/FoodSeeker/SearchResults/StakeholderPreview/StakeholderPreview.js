@@ -171,7 +171,6 @@ const StakeholderPreview = ({ stakeholder }) => {
             {stakeholder.categories.map((category) => (
               <Typography
                 variant="body2"
-                component="body2"
                 fontStyle="italic"
                 key={stakeholder.id + category.id}
                 sx={{

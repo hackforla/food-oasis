@@ -12,12 +12,12 @@ import TableRow from "@mui/material/TableRow";
 import Container from "@mui/material/Container";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
+import { TextField } from "@mui/material";
 import {
   PrimaryButton,
   SecondaryButton,
   IconButton,
 } from "../UI/StandardButton";
-import Input from "../UI/TextField";
 import { Formik } from "formik";
 import * as parentOrganizationService from "../../services/parent-organization-service";
 import { tenantId } from "helpers/Configuration";
@@ -268,7 +268,7 @@ function ParentOrganizations(props) {
                     handleSubmit(e);
                   }}
                 >
-                  <Input
+                  <TextField
                     label="Name"
                     id="name"
                     value={values.name}
@@ -278,7 +278,7 @@ function ParentOrganizations(props) {
                     fullWidth
                     autoFocus
                   />
-                  <Input
+                  <TextField
                     label="Code"
                     id="code"
                     value={values.code}

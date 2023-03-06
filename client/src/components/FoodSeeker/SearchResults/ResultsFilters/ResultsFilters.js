@@ -10,7 +10,6 @@ import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
 } from "constants/stakeholder";
-import theme from "theme/clientTheme";
 import AddressDropDown from "components/FoodSeeker/AddressDropDown";
 import SwitchViewsButton from "./SwitchViewsButton";
 import CategoryButton from "./CategoryButton";
@@ -134,7 +133,6 @@ const ResultsFilters = ({
               <SwitchViewsButton
                 isListView={showList}
                 onClick={toggleShowList}
-                color={theme.palette.primary.dark}
                 style={{ marginLeft: 5 }}
               />
             </Grid2>

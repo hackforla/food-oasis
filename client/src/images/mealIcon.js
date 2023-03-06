@@ -1,5 +1,5 @@
 import React from "react";
-import { mealProgram, closed } from "theme/colors";
+import { mealProgram, closed } from "theme/palette";
 
 const MealIcon = ({ isClosed, height = "72px", width = "72px" }) => (
   <svg

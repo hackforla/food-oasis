@@ -12,13 +12,13 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Container from "@mui/material/Container";
 import Modal from "@mui/material/Modal";
+import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import {
   PrimaryButton,
   SecondaryButton,
   IconButton,
 } from "../UI/StandardButton";
-import Input from "../UI/TextField";
 import { Formik } from "formik";
 import { tenantId } from "helpers/Configuration";
 // import IconButton from "components/UI/IconButton";
@@ -266,7 +266,7 @@ function TagAdmin(props) {
                     handleSubmit(e);
                   }}
                 >
-                  <Input
+                  <TextField
                     label="Name"
                     id="name"
                     value={values.name}

@@ -13,7 +13,6 @@ import Container from "@mui/material/Container";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { PrimaryButton, SecondaryButton } from "../UI/StandardButton";
-import Input from "../UI/TextField";
 import { Formik } from "formik";
 import * as suggestionService from "../../services/suggestion-service";
 import { Redirect, withRouter } from "react-router-dom";
@@ -38,6 +37,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import LocationCityIcon from "@mui/icons-material/LocationCity";
 import PhoneIcon from "@mui/icons-material/Phone";
 import { getIsMobile } from "../../utils";
+import { TextField } from "@mui/material";
 
 const columns = [
   { id: "name", label: "Name", minWidth: 100 },
@@ -352,7 +352,7 @@ function Suggestions(props) {
                       />
                     </List>
                     <Divider style={{ margin: "1em 0" }} />
-                    <Input
+                    <TextField
                       label="Admin Notes"
                       id="adminNotes"
                       value={values.adminNotes || ""}

@@ -8,11 +8,11 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
+  TextField,
   Typography,
 } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import * as suggestionService from "services/suggestion-service";
-import { TextField } from "../../../UI";
 import { DEFAULT_STAKEHOLDER } from "../../../../constants/stakeholder";
 import * as Yup from "yup";
 

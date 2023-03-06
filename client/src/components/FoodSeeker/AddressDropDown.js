@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { MenuItem, Autocomplete } from "@mui/material";
+import { MenuItem, Autocomplete, TextField } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import { useMapboxGeocoder } from "hooks/useMapboxGeocoder";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
-import { TextField } from "../UI";
 import {
   useSearchCoordinates,
   useAppDispatch,

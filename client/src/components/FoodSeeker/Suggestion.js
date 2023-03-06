@@ -5,6 +5,7 @@ import { PrimaryButton } from "../UI/StandardButton";
 import {
   Container,
   CssBaseline,
+  TextField,
   Typography,
   useMediaQuery,
 } from "@mui/material";
@@ -12,7 +13,6 @@ import Grid2 from "@mui/material/Unstable_Grid2";
 import * as suggestionService from "services/suggestion-service";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { TextField } from "../../components/UI";
 import { DEFAULT_STAKEHOLDER } from "../../constants/stakeholder";
 import { useToasterContext } from "contexts/toasterContext";
 import { useTheme } from "@mui/styles";

@@ -34,6 +34,11 @@ export const UserProvider = ({ children }) => {
     setIsLoggedIn(true);
   }, []);
 
+  const onUpdate = React.useCallback(async (updateUser) => {
+    sessionStorage.setItem("user", JSON.stringify(updateUser));
+    setUser(updateUser);
+  }, []);
+
   const onLogout = React.useCallback(async () => {
     sessionStorage.removeItem("user");
     await logout();
@@ -58,8 +63,9 @@ export const UserProvider = ({ children }) => {
       isLoggedIn,
       onLogin,
       onLogout,
+      onUpdate,
     };
-  }, [user, onLogin, isLoggedIn, onLogout]);
+  }, [user, onLogin, isLoggedIn, onLogout, onUpdate]);
 
   if (isLoggedIn === null) {
     return null;

@@ -515,6 +515,36 @@ const setGlobalPermissions = async (
   }
 };
 
+const updateUserProfile = async (
+  userid: string,
+  firstName: string,
+  lastName: string,
+  email: string, 
+  tenantId: string
+) => {
+  let sql = `update login
+                set first_name = $<firstName>,
+                last_name = $<lastName>,
+                email = $<email>
+                where id=$<userid>`;
+  try {
+    await db.none(sql, { userid, firstName, lastName, email });
+    const user = await selectByEmail(email, tenantId);
+    return {
+      isSuccess: true,
+      code: "UPDATE_SUCCESS",
+      message: `User profile successfully updated`,
+      "user": user,
+    };
+  } catch (error) {
+    return {
+      isSuccess: false,
+      code: "DB_ERROR",
+      message: `Updating user profile failed ${error}`,
+    }
+  }
+}
+
 export default {
   authenticate,
   confirmRegistration,
@@ -529,4 +559,5 @@ export default {
   setGlobalPermissions,
   setTenantPermissions,
   update,
+  updateUserProfile
 };

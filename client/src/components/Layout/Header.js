@@ -6,7 +6,7 @@ import makeStyles from "@mui/styles/makeStyles";
 import { useUserContext } from "../../contexts/userContext";
 import { useSiteContext } from "../../contexts/siteContext";
 import useLocationHook from "hooks/useLocationHook";
-
+import { Link } from 'react-router-dom'
 Header.propTypes = {
   tenantId: PropTypes.number,
 };
@@ -83,9 +83,8 @@ export default function Header() {
     <>
       <AppBar
         position="sticky"
-        className={`${classes.headerHolder} ${
-          isAuthPage && classes.spacedHeader
-        } `}
+        className={`${classes.headerHolder} ${isAuthPage && classes.spacedHeader
+          } `}
       >
         <Toolbar className={classes.header}>
           <div>
@@ -107,7 +106,7 @@ export default function Header() {
                 className={classes.username}
                 align="right"
               >
-                {user.firstName}
+                <Link to={`/profile/${user.id}`}>{user.firstName} {user.lastName}</Link>
               </Typography>
             )}
           </div>

@@ -15,7 +15,7 @@ import Header from "components/Layout/Header";
 import HeaderHome from "components/Layout/HeaderHome";
 import WidgetFooter from "components/Layout/WidgetFooter";
 import Home from "components/FoodSeeker/Home";
-
+import Profile from './components/Account/Profile';
 import * as analytics from "../src/services/analytics";
 import PrivateRoute from "./components/PrivateRoute";
 import Fallback from "./components/Fallback";
@@ -183,8 +183,14 @@ function App() {
                         <Route path="/suggestion">
                           <Suggestion />
                         </Route>
+                        <Route path="/profile/:id">
+                          <Profile />
+                        </Route>
                         <Route path="/logins">
                           <Logins />
+                        </Route>
+                        <Route path="/profile/:id">
+                          <Profile />
                         </Route>
                         <Route path="/organizationedit/:id?">
                           <div className={classes.organizationEditWrapper}>

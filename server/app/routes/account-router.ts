@@ -45,6 +45,10 @@ router.get("/logout", (req, res) => {
   res.sendStatus(200);
 });
 
+
+router.put('/:userid', accountController.updateUserProfile);
+
+
 router.get("/:email", accountController.getByEmail);
 
 export default router;

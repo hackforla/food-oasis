@@ -253,6 +253,27 @@ const remove: RequestHandler<{ id: string }, Response, never, never> = async (
   }
 };
 
+const updateUserProfile: RequestHandler<
+  { userid: string },
+  any,
+  {
+    firstName: string,
+    lastName: string,
+    email: string,
+    tenantId: string
+  },
+  never
+> = async (req, res) => {
+  const userid = req.params.userid;
+  const { firstName, lastName, email, tenantId } = req.body;
+  const response = await accountService.updateUserProfile(userid, firstName, lastName, email, tenantId);
+  if (response.isSuccess) {
+    res.status(200).json(response);
+  } else {
+    res.status(500).json(response);
+  }
+}
+
 export default {
   confirmRegister,
   forgotPassword,
@@ -267,4 +288,5 @@ export default {
   resetPassword,
   setGlobalPermissions,
   setTenantPermissions,
+  updateUserProfile
 };

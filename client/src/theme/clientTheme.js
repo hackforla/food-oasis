@@ -37,18 +37,26 @@ const themeSpec = {
     },
     success: {
       main: success,
+      contrastText: "#FFFFFF",
     },
     error: {
       main: error,
-      // contrastText: "#000000",
+      contrastText: "#FFFFFF",
     },
     link: {
       light: linkHover,
       main: link,
       dark: linkVisited,
     },
+    inactiveButton: {
+      light: "#D0D0D0",
+      main: inactiveButton,
+      dark: "909090",
+      contrastText: "#FFFFFF",
+    },
     mealProgram: {
       main: mealProgram,
+      contrastText: "#FFFFFF",
     },
     foodPantry: {
       main: foodPantry,
@@ -235,8 +243,8 @@ themeSpec.components = {
     },
     styleOverrides: {
       root: {
-        color: themeSpec.palette.common.white,
-        backgroundColor: themeSpec.palette.primary.main,
+        // color: themeSpec.palette.common.white,
+        // backgroundColor: themeSpec.palette.primary.main,
         borderRadius: "3px",
         margin: "0.5rem 0.5rem 0.5rem 0",
         fontStyle: "italic",

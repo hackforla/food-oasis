@@ -10,9 +10,10 @@ export const headingText = "#1B1B1B";
 export const bodyText = "#313233";
 export const inactiveButton = "#949494";
 //export const inactiveButtonText = "#4D4D4D";
-export const link = "#1976D2";
+export const linkNormal = "#1976D2";
 export const linkVisited = "#551A8B";
-export const linkHover = "#004ba0";
+export const linkHovered = "#004BA0";
+export const linkDisabled = "#4D4D4D";
 
 //Icon and List Colors
 export const foodPantry = "#336699"; //blue
@@ -45,9 +46,10 @@ export const palette = {
     contrastText: "#FFFFFF",
   },
   link: {
-    light: linkHover,
-    main: link,
-    dark: linkVisited,
+    hovered: linkHovered,
+    normal: linkNormal,
+    visited: linkVisited,
+    disabled: linkDisabled,
   },
   inactiveButton: {
     light: "#D0D0D0",

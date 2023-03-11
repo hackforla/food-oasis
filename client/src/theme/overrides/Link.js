@@ -3,12 +3,15 @@ export default function Link(theme) {
     MuiLink: {
       styleOverrides: {
         root: {
-          color: theme.palette.link.main,
+          color: theme.palette.link.normal,
           "&:visited": {
-            color: theme.palette.link.dark,
+            color: theme.palette.link.visited,
           },
           "&:hover": {
-            color: theme.palette.link.light,
+            color: theme.palette.link.hovered,
+          },
+          "&:disabled": {
+            color: theme.palette.link.disabled,
           },
         },
       },

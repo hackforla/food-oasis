@@ -951,14 +951,16 @@ const OrganizationEdit = (props) => {
                           className={classes.confirmableGroupWrapper}
                           style={{
                             display: "flex",
-                            justifyContent: "space-between",
                           }}
                         >
                           <BigTooltip title="Click to get latitude / longitude for address">
                             <Grid item>
                               <SecondaryButton
                                 icon="search"
-                                // style={{ marginTop: "1.2em" }}
+                                style={{
+                                  marginTop: "1.5em",
+                                  marginRight: "0.5rem",
+                                }}
                                 onClick={() => {
                                   (geocodeResults && geocodeResults.length) < 1
                                     ? geocode(values)
@@ -1925,6 +1927,7 @@ const OrganizationEdit = (props) => {
                             disabled={isSubmitting || isUnchanged(values)}
                             sx={{
                               minHeight: "3.5rem",
+                              margin: "0.25rem",
                             }}
                           >
                             Save Progress
@@ -1937,7 +1940,7 @@ const OrganizationEdit = (props) => {
                             type="button"
                             style={{
                               minHeight: "3.5rem",
-                              display: "flex",
+                              margin: "0.25rem",
                             }}
                             onClick={() => {
                               setFieldValue("reviewedLoginId", "");
@@ -1973,7 +1976,7 @@ const OrganizationEdit = (props) => {
                             type="button"
                             style={{
                               minHeight: "3.5rem",
-                              display: "flex",
+                              margin: "0.25rem",
                             }}
                             onClick={() => {
                               handleAssignDialogOpen({
@@ -2010,7 +2013,7 @@ const OrganizationEdit = (props) => {
                             type="button"
                             style={{
                               minHeight: "3.5rem",
-                              display: "flex",
+                              margin: "0.25rem",
                             }}
                             onClick={() => {
                               setFieldValue(
@@ -2046,7 +2049,7 @@ const OrganizationEdit = (props) => {
                             type="button"
                             style={{
                               minHeight: "3.5rem",
-                              display: "flex",
+                              margin: "0.25rem",
                             }}
                             onClick={() => {
                               setFieldValue("approvedDate", moment());
@@ -2078,7 +2081,7 @@ const OrganizationEdit = (props) => {
                             type="button"
                             style={{
                               minHeight: "3.5rem",
-                              display: "flex",
+                              margin: "0.25rem",
                             }}
                             onClick={() => {
                               handleConfirmDialogOpen({
@@ -2113,7 +2116,7 @@ const OrganizationEdit = (props) => {
                             type="submit"
                             style={{
                               minHeight: "3.5rem",
-                              display: "flex",
+                              margin: "0.25rem",
                             }}
                             className={classes.submit}
                             disabled={isSubmitting || isUnchanged(values)}
@@ -2128,7 +2131,7 @@ const OrganizationEdit = (props) => {
                             type="button"
                             style={{
                               minHeight: "3.5rem",
-                              display: "flex",
+                              margin: "0.25rem",
                             }}
                             onClick={() => {
                               setFieldValue("assignedLoginId", "");
@@ -2157,7 +2160,7 @@ const OrganizationEdit = (props) => {
                             type="button"
                             style={{
                               minHeight: "3.5rem",
-                              display: "flex",
+                              margin: "0.25rem",
                             }}
                             onClick={() => {
                               setFieldValue("submittedDate", moment());

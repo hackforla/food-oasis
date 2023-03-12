@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
-import { CircularProgress, Stack } from "@mui/material";
+import { Button, CircularProgress, Stack } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import List from "react-virtualized/dist/es/List";
 import AutoSizer from "react-virtualized/dist/es/AutoSizer";
@@ -9,7 +9,6 @@ import CellMeasurerCache from "react-virtualized/dist/es/CellMeasurer/CellMeasur
 import StakeholderPreview from "../StakeholderPreview/StakeholderPreview";
 import StakeholderDetails from "../StakeholderDetails/StakeholderDetails";
 import * as analytics from "services/analytics";
-import { SecondaryButton } from "../../../UI/StandardButton";
 import { useSelectedOrganization } from "../../../../appReducer";
 
 const useStyles = makeStyles((theme) => ({
@@ -100,9 +99,9 @@ const ResultsList = ({ stakeholders, loading, handleReset }) => {
       {!loading && stakeholders.length === 0 && (
         <div className={classes.emptyResult}>
           <p>Sorry, we don&apos;t have any results for this area.</p>
-          <SecondaryButton onClick={handleReset} disableElevation>
+          <Button variant="outlined" onClick={handleReset} disableElevation>
             Click here to reset the search
-          </SecondaryButton>
+          </Button>
         </div>
       )}
       {stakeholders &&

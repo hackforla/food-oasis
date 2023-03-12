@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
-import { PrimaryButton } from "../UI/StandardButton";
+import { Button } from "@mui/material";
 import {
   Container,
   CssBaseline,
@@ -318,12 +318,13 @@ function Suggestion(props) {
                   />
                 </Grid2>
                 <Grid2 xs={12} padding="1rem" textAlign="center">
-                  <PrimaryButton
+                  <Button
+                    variant="contained"
                     onClick={handleSubmit}
                     disabled={isSubmitting || !(isValid && dirty)}
                   >
                     Send Suggestions
-                  </PrimaryButton>
+                  </Button>
                 </Grid2>
               </Grid2>
             </Container>

@@ -1,9 +1,5 @@
-import { Stack, Box, Typography } from "@mui/material";
-import {
-  PrimaryButton,
-  SecondaryButton,
-  IconButton,
-} from "../UI/StandardButton";
+import { Button, Stack, Box, Typography } from "@mui/material";
+import { IconButton } from "../UI/StandardButton";
 
 function MuiButtons() {
   return (
@@ -20,9 +16,11 @@ function MuiButtons() {
         }}
       >
         <Stack direction="row">
-          <PrimaryButton>Normal</PrimaryButton>
-          <PrimaryButton>Normal</PrimaryButton>
-          <PrimaryButton disabled>Disabled</PrimaryButton>
+          <Button variant="contained">Normal</Button>
+          <Button variant="contained">Normal</Button>
+          <Button variant="contained" disabled>
+            Disabled
+          </Button>
         </Stack>
       </Box>
       <Typography variant="subtitle1" component="h3">
@@ -37,9 +35,11 @@ function MuiButtons() {
         }}
       >
         <Stack direction="row">
-          <PrimaryButton>Normal</PrimaryButton>
-          <PrimaryButton>Normal</PrimaryButton>
-          <PrimaryButton disabled>Disabled</PrimaryButton>
+          <Button variant="contained">Normal</Button>
+          <Button variant="contained">Normal</Button>
+          <Button variant="contained" disabled>
+            Disabled
+          </Button>
         </Stack>
       </Box>
       <Typography variant="subtitle1" component="h3">
@@ -53,9 +53,11 @@ function MuiButtons() {
         }}
       >
         <Stack direction="row">
-          <PrimaryButton>Normal</PrimaryButton>
-          <PrimaryButton>Normal</PrimaryButton>
-          <PrimaryButton disabled>Disabled</PrimaryButton>
+          <Button variant="contained">Normal</Button>
+          <Button variant="contained">Normal</Button>
+          <Button variant="contained" disabled>
+            Disabled
+          </Button>
         </Stack>
       </Box>
       <Typography variant="subtitle1" component="h3">
@@ -71,7 +73,7 @@ function MuiButtons() {
               border: "1px solid black",
             }}
           >
-            <PrimaryButton>Small Space</PrimaryButton>
+            <Button variant="contained">Small Space</Button>
           </Box>
           <Box
             sx={{
@@ -79,7 +81,7 @@ function MuiButtons() {
               border: "1px solid black",
             }}
           >
-            <PrimaryButton>Enough Space</PrimaryButton>
+            <Button variant="contained">Enough Space</Button>
           </Box>
           <Box
             sx={{
@@ -89,7 +91,7 @@ function MuiButtons() {
               border: "1px solid black",
             }}
           >
-            <PrimaryButton>Extra Space</PrimaryButton>
+            <Button variant="contained">Extra Space</Button>
           </Box>
         </Stack>
       </Box>
@@ -145,9 +147,11 @@ function MuiButtons() {
         }}
       >
         <Stack direction="row">
-          <SecondaryButton>Normal</SecondaryButton>
-          <SecondaryButton>Normal</SecondaryButton>
-          <SecondaryButton disabled>Disabled</SecondaryButton>
+          <Button variant="outlined">Normal</Button>
+          <Button variant="outlined">Normal</Button>
+          <Button variant="outlined" disabled>
+            Disabled
+          </Button>
         </Stack>
       </Box>
       <Typography variant="subtitle1" component="h3">
@@ -162,9 +166,11 @@ function MuiButtons() {
         }}
       >
         <Stack direction="row">
-          <SecondaryButton>Normal</SecondaryButton>
-          <SecondaryButton>Normal</SecondaryButton>
-          <SecondaryButton disabled>Disabled</SecondaryButton>
+          <Button variant="outlined">Normal</Button>
+          <Button variant="outlined">Normal</Button>
+          <Button variant="outlined" disabled>
+            Disabled
+          </Button>
         </Stack>
       </Box>
       <Typography variant="subtitle1" component="h3">
@@ -178,9 +184,11 @@ function MuiButtons() {
         }}
       >
         <Stack direction="row">
-          <SecondaryButton>Normal</SecondaryButton>
-          <SecondaryButton>Normal</SecondaryButton>
-          <SecondaryButton disabled>Disabled</SecondaryButton>
+          <Button variant="outlined">Normal</Button>
+          <Button variant="outlined">Normal</Button>
+          <Button variant="outlined" disabled>
+            Disabled
+          </Button>
         </Stack>
       </Box>
 
@@ -197,7 +205,7 @@ function MuiButtons() {
               border: "1px solid black",
             }}
           >
-            <SecondaryButton>Small Space</SecondaryButton>
+            <Button variant="outlined">Small Space</Button>
           </Box>
           <Box
             sx={{
@@ -205,7 +213,7 @@ function MuiButtons() {
               border: "1px solid black",
             }}
           >
-            <SecondaryButton>Enough Space</SecondaryButton>
+            <Button variant="outlined">Enough Space</Button>
           </Box>
           <Box
             sx={{
@@ -215,7 +223,7 @@ function MuiButtons() {
               border: "1px solid black",
             }}
           >
-            <SecondaryButton>Extra Space</SecondaryButton>
+            <Button variant="outlined">Extra Space</Button>
           </Box>
         </Stack>
       </Box>

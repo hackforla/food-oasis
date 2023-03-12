@@ -10,9 +10,6 @@ export default function Link(theme) {
           "&:hover": {
             color: theme.palette.link.hovered,
           },
-          "&:disabled": {
-            color: theme.palette.link.disabled,
-          },
         },
       },
     },

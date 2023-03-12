@@ -11,6 +11,7 @@ import Avatar from "@mui/material/Avatar";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import donationStep1 from "images/donationStep1.png";
 import donationStep2 from "images/donationStep2.png";
 import donationStep3 from "images/donationStep3.png";
@@ -19,7 +20,7 @@ import donationStep5 from "images/donationStep5.png";
 import donationStep6 from "images/donationStep6.png";
 import donationStep7 from "images/donationStep7.png";
 import * as analytics from "../../services/analytics";
-import { PrimaryButton, IconButton } from "../UI/StandardButton";
+import { IconButton } from "../UI/StandardButton";
 
 const useStyles = makeStyles((theme) => ({
   outer: {
@@ -238,12 +239,13 @@ const Donate = () => {
               us offset some of those costs.
             </Typography>
           </Container>
-          <PrimaryButton
+          <Button
+            variant="contained"
             className={classes.btnOutline}
             onClick={handleShowDonationDialog}
           >
             Donate
-          </PrimaryButton>
+          </Button>
           {showDonationDialog && (
             <DonationDialog
               showDonationDialog={showDonationDialog}
@@ -269,14 +271,15 @@ const Donate = () => {
               their needs.
             </Typography>
           </Container>
-          <PrimaryButton
+          <Button
+            variant="contained"
             href="//volunteer.laworks.com/opportunity/a0C3l00000r3wLvEAI"
             target="_blank"
             rel="noopener noreferrer"
             className={classes.btnOutline}
           >
             Volunteer
-          </PrimaryButton>
+          </Button>
         </div>
         <section className={classes.cards}>
           {/* <aside className={classes.signup}>

@@ -12,12 +12,9 @@ import TableRow from "@mui/material/TableRow";
 import Container from "@mui/material/Container";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
-import {
-  PrimaryButton,
-  SecondaryButton,
-  IconButton,
-} from "../UI/StandardButton";
+import { IconButton } from "../UI/StandardButton";
 import { Formik } from "formik";
 import * as parentOrganizationService from "../../services/parent-organization-service";
 import { tenantId } from "helpers/Configuration";
@@ -142,7 +139,9 @@ function ParentOrganizations(props) {
     <Container maxWidth="sm">
       <div className={classes.heading}>
         <h2 style={{ margin: 0 }}>Parent Organizations</h2>
-        <SecondaryButton onClick={handleAddNew}>Add New</SecondaryButton>
+        <Button variant="outlined" onClick={handleAddNew}>
+          Add New
+        </Button>
       </div>
 
       {deleteError && (
@@ -291,12 +290,19 @@ function ParentOrganizations(props) {
                     <div className={classes.error}>Something went wrong.</div>
                   )}
                   <Box mt={3} display="flex" justifyContent="space-between">
-                    <SecondaryButton onClick={() => setActiveOrg(null)}>
+                    <Button
+                      variant="outlined"
+                      onClick={() => setActiveOrg(null)}
+                    >
                       Cancel
-                    </SecondaryButton>
-                    <PrimaryButton type="submit" disabled={isSubmitting}>
+                    </Button>
+                    <Button
+                      variant="contained"
+                      type="submit"
+                      disabled={isSubmitting}
+                    >
                       Save
-                    </PrimaryButton>
+                    </Button>
                   </Box>
                 </form>
               )}

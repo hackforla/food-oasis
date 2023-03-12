@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { PrimaryButton, SecondaryButton } from "../../UI/StandardButton";
 import {
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -78,13 +78,18 @@ function NeedsVerificationDialog(props) {
         </RadioGroup>
       </DialogContent>
       <DialogActions>
-        <SecondaryButton variant="outlined" autoFocus onClick={handleCancel}>
+        <Button
+          variant="outlined"
+          variant="outlined"
+          autoFocus
+          onClick={handleCancel}
+        >
           Cancel
-        </SecondaryButton>
+        </Button>
 
-        <PrimaryButton type="button" onClick={handleConfirm}>
+        <Button variant="contained" type="button" onClick={handleConfirm}>
           Confirm Status Change
-        </PrimaryButton>
+        </Button>
       </DialogActions>
     </Dialog>
   );

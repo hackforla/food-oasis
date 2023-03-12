@@ -1,6 +1,7 @@
 import {
   AppBar,
   Box,
+  Button,
   Checkbox,
   Container,
   CssBaseline,
@@ -41,7 +42,6 @@ import { withRouter } from "react-router-dom";
 import * as awsService from "services/aws-service";
 import * as stakeholderService from "services/stakeholder-service";
 import * as Yup from "yup";
-import { PrimaryButton, SecondaryButton } from "../UI/StandardButton";
 
 const DATE_FORMAT = "MM/DD/YY h:mm a";
 const ITEM_HEIGHT = 48;
@@ -890,7 +890,8 @@ const OrganizationEdit = (props) => {
                             >
                               <Tooltip title="Click to get latitude / longitude for address">
                                 <Grid item>
-                                  <SecondaryButton
+                                  <Button
+                                    variant="outlined"
                                     icon="search"
                                     // style={{ marginTop: "1.2em" }}
                                     onClick={() => {
@@ -904,7 +905,7 @@ const OrganizationEdit = (props) => {
                                     1
                                       ? "Get Coordinates"
                                       : "Close"}
-                                  </SecondaryButton>
+                                  </Button>
                                 </Grid>
                               </Tooltip>
                               <div>
@@ -948,7 +949,8 @@ const OrganizationEdit = (props) => {
                                       {/* <Typography>{`${result.attributes.Addr_type}`}</Typography> */}
                                     </Grid>
                                     <Grid item xs={2}>
-                                      <SecondaryButton
+                                      <Button
+                                        variant="outlined"
                                         type="button"
                                         icon="check"
                                         style={{ paddingRight: "0" }}
@@ -965,7 +967,7 @@ const OrganizationEdit = (props) => {
                                         }}
                                       >
                                         Set
-                                      </SecondaryButton>
+                                      </Button>
                                     </Grid>
                                   </Grid>
                                 </div>
@@ -1850,7 +1852,8 @@ const OrganizationEdit = (props) => {
                       >
                         <Tooltip title="Save updated information, but do not change the verification status">
                           <div>
-                            <PrimaryButton
+                            <Button
+                              variant="contained"
                               type="submit"
                               disabled={isSubmitting || isUnchanged(values)}
                               sx={{
@@ -1858,12 +1861,13 @@ const OrganizationEdit = (props) => {
                               }}
                             >
                               Save Progress
-                            </PrimaryButton>
+                            </Button>
                           </div>
                         </Tooltip>
                         <Tooltip title="Mark for re-verification">
                           <div>
-                            <PrimaryButton
+                            <Button
+                              variant="contained"
                               type="button"
                               style={{
                                 minHeight: "3.5rem",
@@ -1894,12 +1898,13 @@ const OrganizationEdit = (props) => {
                               }
                             >
                               Needs Verfication
-                            </PrimaryButton>
+                            </Button>
                           </div>
                         </Tooltip>
                         <Tooltip title="Assign for Verification">
                           <div>
-                            <PrimaryButton
+                            <Button
+                              variant="contained"
                               type="button"
                               style={{
                                 minHeight: "3.5rem",
@@ -1929,14 +1934,15 @@ const OrganizationEdit = (props) => {
                               }
                             >
                               (Re-)Assign
-                            </PrimaryButton>
+                            </Button>
                           </div>
                         </Tooltip>
                         <Tooltip
                           title={"Submitted record needs changes -> Assigned "}
                         >
                           <div>
-                            <PrimaryButton
+                            <Button
+                              variant="contained"
                               type="button"
                               style={{
                                 minHeight: "3.5rem",
@@ -1967,12 +1973,13 @@ const OrganizationEdit = (props) => {
                               }
                             >
                               Request Changes
-                            </PrimaryButton>
+                            </Button>
                           </div>
                         </Tooltip>
                         <Tooltip title="Approve as Verified">
                           <div>
-                            <PrimaryButton
+                            <Button
+                              variant="contained"
                               type="button"
                               style={{
                                 minHeight: "3.5rem",
@@ -1999,12 +2006,13 @@ const OrganizationEdit = (props) => {
                               }
                             >
                               Approve
-                            </PrimaryButton>
+                            </Button>
                           </div>
                         </Tooltip>
                         <Tooltip title="Delete Organization from Database Permanently">
                           <div>
-                            <PrimaryButton
+                            <Button
+                              variant="contained"
                               type="button"
                               style={{
                                 minHeight: "3.5rem",
@@ -2022,7 +2030,7 @@ const OrganizationEdit = (props) => {
                               disabled={!user.isAdmin || !values.id}
                             >
                               Delete
-                            </PrimaryButton>
+                            </Button>
                           </div>
                         </Tooltip>
                       </div>
@@ -2039,7 +2047,8 @@ const OrganizationEdit = (props) => {
                       >
                         <Tooltip title="Save changes to work on later">
                           <div>
-                            <PrimaryButton
+                            <Button
+                              variant="contained"
                               type="submit"
                               style={{
                                 minHeight: "3.5rem",
@@ -2048,12 +2057,13 @@ const OrganizationEdit = (props) => {
                               disabled={isSubmitting || isUnchanged(values)}
                             >
                               Save Progress
-                            </PrimaryButton>
+                            </Button>
                           </div>
                         </Tooltip>
                         <Tooltip title="Unable to complete six critical fields (*), but need to hand off to someone else to complete">
                           <div>
-                            <PrimaryButton
+                            <Button
+                              variant="contained"
                               type="button"
                               style={{
                                 minHeight: "3.5rem",
@@ -2077,12 +2087,13 @@ const OrganizationEdit = (props) => {
                               }
                             >
                               Hand Off
-                            </PrimaryButton>
+                            </Button>
                           </div>
                         </Tooltip>
                         <Tooltip title="Critical information entered, Submit for Review.">
                           <div>
-                            <PrimaryButton
+                            <Button
+                              variant="contained"
                               type="button"
                               style={{
                                 minHeight: "3.5rem",
@@ -2109,7 +2120,7 @@ const OrganizationEdit = (props) => {
                               }
                             >
                               Submit For Review
-                            </PrimaryButton>
+                            </Button>
                           </div>
                         </Tooltip>
                       </div>

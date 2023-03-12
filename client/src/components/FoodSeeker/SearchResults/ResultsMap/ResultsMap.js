@@ -26,7 +26,6 @@ import {
 import { regionFillStyle, regionBorderStyle } from "./RegionHelpers";
 import useStyles from "./styles";
 import * as analytics from "services/analytics";
-// import { SecondaryButton } from "../../../UI/StandardButton";
 import { Button } from "@mui/material";
 import {
   useSearchCoordinates,

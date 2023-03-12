@@ -3,13 +3,12 @@ import PropTypes from "prop-types";
 import moment from "moment";
 import * as momentTz from "moment-timezone";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
-import { SecondaryButton } from "../../../UI/StandardButton";
 import { useSiteContext } from "contexts/siteContext";
-
 import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
@@ -239,7 +238,8 @@ const StakeholderPreview = ({ stakeholder }) => {
               )}
           </Box>
           <Stack direction="row" sx={{ justifyContent: "space-between" }}>
-            <SecondaryButton
+            <Button
+              variant="outlined"
               // size="small"
               onClick={() => {
                 analytics.postEvent("getDirections", {
@@ -256,10 +256,11 @@ const StakeholderPreview = ({ stakeholder }) => {
               }}
             >
               Directions
-            </SecondaryButton>
+            </Button>
 
             {mainNumber && (
-              <SecondaryButton
+              <Button
+                variant="outlined"
                 onClick={() => {
                   analytics.postEvent("dialPhone", {
                     id: stakeholder.id,
@@ -269,16 +270,17 @@ const StakeholderPreview = ({ stakeholder }) => {
                 }}
               >
                 Call
-              </SecondaryButton>
+              </Button>
             )}
 
-            <SecondaryButton
+            <Button
+              variant="outlined"
               disabled={stakeholder.inactive}
               onClick={() => handleSelectOrganization(stakeholder)}
             >
               {/* <Typography variant="button">Details</Typography> */}
               Details
-            </SecondaryButton>
+            </Button>
           </Stack>
         </Stack>
       </Grid2>

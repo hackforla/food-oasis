@@ -1,7 +1,7 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import withStyles from "@mui/styles/withStyles";
-import { PrimaryButton } from "../UI/StandardButton";
+import { Button } from "@mui/material";
 import { Avatar, Box, Container, CssBaseline, Typography } from "@mui/material";
 import Footer from "../Layout/Footer";
 
@@ -83,9 +83,12 @@ const ResetPasswordEmailSent = (props) => {
           </Typography>
           <Container maxWidth="xs">
             <Box sx={{ mt: 2, mb: 2 }}>
-              <PrimaryButton onClick={() => history.push("/login")}>
+              <Button
+                variant="contained"
+                onClick={() => history.push("/login")}
+              >
                 Back to login
-              </PrimaryButton>
+              </Button>
             </Box>
           </Container>
         </div>

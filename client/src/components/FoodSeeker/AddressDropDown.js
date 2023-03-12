@@ -78,7 +78,8 @@ export default function AddressDropDown({ showSearchIcon }) {
 
   const renderInput = (params) => {
     return (
-      <TextField 
+      <TextField
+        variant="outlined"
         {...params}
         label="Search by address or zip code"
         margin="none"
@@ -88,7 +89,7 @@ export default function AddressDropDown({ showSearchIcon }) {
         autoFocus={false}
         onClick={() => setInputVal("")}
         InputLabelProps={{
-          className: classes.label
+          className: classes.label,
         }}
         InputProps={{
           endAdornment: (
@@ -102,10 +103,10 @@ export default function AddressDropDown({ showSearchIcon }) {
               <SearchIcon />
             </InputAdornment>
           ),
-          ...params.InputProps
+          ...params.InputProps,
         }}
       />
-  )
+    );
   };
 
   const renderOption = (props, option) => {

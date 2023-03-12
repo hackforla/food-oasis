@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { SecondaryButton } from "../../../UI/StandardButton";
+import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import ArrowBack from "@mui/icons-material/ArrowBackIosNew";
 import Box from "@mui/material/Box";
@@ -311,7 +311,8 @@ const StakeholderDetails = () => {
         </Stack>
 
         <Stack direction="row" sx={{ justifyContent: "space-between" }}>
-          <SecondaryButton
+          <Button
+            variant="outlined"
             onClick={() => {
               analytics.postEvent("getDirections", {
                 id: selectedOrganization.id,
@@ -326,11 +327,13 @@ const StakeholderDetails = () => {
             }}
           >
             Directions
-          </SecondaryButton>
-          <SecondaryButton onClick={handleSuggestionDialogOpen}>
+          </Button>
+          <Button variant="outlined" onClick={handleSuggestionDialogOpen}>
             Send Correction
-          </SecondaryButton>
-          <SecondaryButton onClick={shareLink}>Share</SecondaryButton>
+          </Button>
+          <Button variant="outlined" onClick={shareLink}>
+            Share
+          </Button>
         </Stack>
 
         <MinorHeading>Eligibility/Requirements</MinorHeading>

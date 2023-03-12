@@ -8,8 +8,8 @@ import {
   Grid,
   TextField,
   Typography,
+  Button,
 } from "@mui/material";
-import { PrimaryButton } from "../UI/StandardButton";
 import withStyles from "@mui/styles/withStyles";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -199,12 +199,12 @@ const LoginForm = (props) => {
                   sx={{ mt: 2, mb: 2 }}
                 />
                 <Box sx={{ mt: 2, mb: 2 }}>
-                  <PrimaryButton
+                  <Button
                     type="submit"
                     disabled={isSubmitting || !(isValid && dirty)}
                   >
                     Sign In
-                  </PrimaryButton>
+                  </Button>
                 </Box>
                 <Grid container>
                   <Grid item xs>

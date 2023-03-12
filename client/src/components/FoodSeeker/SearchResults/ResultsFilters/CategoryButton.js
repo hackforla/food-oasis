@@ -24,10 +24,9 @@ const PantryIcon = ({ isSelected }) => (
 
 const MealIcon = ({ isSelected }) => (
   <svg
-    width="9"
+    width="14"
     height="22"
-    margin="5"
-    viewBox="0 0 9 22"
+    viewBox="0 0 14 22"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
@@ -45,9 +44,9 @@ const CategoryButton = ({ isSelected, onClick, icon, label, style }) => {
   return (
     <Button
       style={{
-        borderWidth: "2px",
+        borderWidth: "1px",
         borderStyle: "solid",
-        borderRadius: "12px",
+        borderRadius: "4px",
         borderColor: isSelected
           ? "translucent"
           : icon === "pantry"

@@ -171,7 +171,6 @@ const StakeholderPreview = ({ stakeholder }) => {
             {stakeholder.categories.map((category) => (
               <Typography
                 variant="body2"
-                component="body2"
                 fontStyle="italic"
                 key={stakeholder.id + category.id}
                 sx={{
@@ -209,8 +208,7 @@ const StakeholderPreview = ({ stakeholder }) => {
           <Box textAlign="left">
             {stakeholder.inactiveTemporary || stakeholder.inactive ? (
               <Chip
-                color="#545454"
-                backgroundColor="#E0E0E0"
+                color="inactiveButton"
                 label={
                   stakeholder.inactiveTemporary
                     ? "Temporarily Closed"
@@ -224,17 +222,19 @@ const StakeholderPreview = ({ stakeholder }) => {
                 <>
                   {isOpenFlag && (
                     <Chip
-                      sx={{ backgroundColor: "#008000" }}
+                      // sx={{ backgroundColor: "#008000" }}
+                      color="success"
                       label="OPEN NOW"
                     />
                   )}
                   {isAlmostClosedFlag && (
                     <Chip
-                      sx={{ backgroundColor: "#CC3333" }}
+                      // sx={{ backgroundColor: "#CC3333" }}
+                      color="mealProgram"
                       label={`Closing in ${minutesToClosing} minutes`}
                     />
                   )}
-                  <Chip label="Walk-Ins Allowed" />
+                  <Chip label="Walk-Ins Allowed" color="primary" />
                 </>
               )}
           </Box>

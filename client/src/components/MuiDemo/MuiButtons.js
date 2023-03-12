@@ -11,7 +11,14 @@ function MuiButtons() {
       <Typography variant="subtitle1" component="h3">
         Primary
       </Typography>
-      <Box padding=".2rem" backgroundColor="lightgray">
+      <Box
+        sx={{
+          padding: "0.5rem",
+          backgroundColor: "lightgray",
+          border: "1px solid black",
+          borderRadius: "4px",
+        }}
+      >
         <Stack direction="row">
           <PrimaryButton>Normal</PrimaryButton>
           <PrimaryButton>Normal</PrimaryButton>
@@ -21,7 +28,14 @@ function MuiButtons() {
       <Typography variant="subtitle1" component="h3">
         Primary (Light Background)
       </Typography>
-      <Box padding=".2rem" backgroundColor="white">
+      <Box
+        sx={{
+          padding: "0.5rem",
+          backgroundColor: "white",
+          border: "1px solid black",
+          borderRadius: "4px",
+        }}
+      >
         <Stack direction="row">
           <PrimaryButton>Normal</PrimaryButton>
           <PrimaryButton>Normal</PrimaryButton>
@@ -31,7 +45,13 @@ function MuiButtons() {
       <Typography variant="subtitle1" component="h3">
         Primary (Dark Background)
       </Typography>
-      <Box padding=".2rem" backgroundColor="black">
+      <Box
+        sx={{
+          padding: "0.5rem",
+          backgroundColor: "black",
+          borderRadius: "4px",
+        }}
+      >
         <Stack direction="row">
           <PrimaryButton>Normal</PrimaryButton>
           <PrimaryButton>Normal</PrimaryButton>
@@ -116,7 +136,14 @@ function MuiButtons() {
       <Typography variant="subtitle1" component="h3">
         Secondary
       </Typography>
-      <Box padding=".2rem" backgroundColor="lightgray">
+      <Box
+        sx={{
+          padding: "0.5rem",
+          backgroundColor: "lightgray",
+          border: "1px solid black",
+          borderRadius: "4px",
+        }}
+      >
         <Stack direction="row">
           <SecondaryButton>Normal</SecondaryButton>
           <SecondaryButton>Normal</SecondaryButton>
@@ -126,7 +153,14 @@ function MuiButtons() {
       <Typography variant="subtitle1" component="h3">
         Secondary (Light Background)
       </Typography>
-      <Box padding=".2rem" backgroundColor="white">
+      <Box
+        sx={{
+          padding: "0.5rem",
+          backgroundColor: "white",
+          border: "1px solid black",
+          borderRadius: "4px",
+        }}
+      >
         <Stack direction="row">
           <SecondaryButton>Normal</SecondaryButton>
           <SecondaryButton>Normal</SecondaryButton>
@@ -136,7 +170,13 @@ function MuiButtons() {
       <Typography variant="subtitle1" component="h3">
         Secondary (Dark Background)
       </Typography>
-      <Box padding=".2rem" backgroundColor="black">
+      <Box
+        sx={{
+          padding: "0.5rem",
+          backgroundColor: "black",
+          borderRadius: "4px",
+        }}
+      >
         <Stack direction="row">
           <SecondaryButton>Normal</SecondaryButton>
           <SecondaryButton>Normal</SecondaryButton>

@@ -1,11 +1,10 @@
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
 import { IconButton as MuiIconButton } from "@mui/material";
 import PropTypes from "prop-types";
 import { ICON_DICT } from "../UI/iconLookup.js";
 
-const InnerPrimaryButton = styled(Button)(({ theme }) => ({
+const PrimaryButton = styled(Button)(({ theme }) => ({
   gridColumn: 1,
   gridRow: 1,
   variant: "contained",
@@ -13,66 +12,33 @@ const InnerPrimaryButton = styled(Button)(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
   minWidth: "4rem",
   minHeight: "0",
-  border: "2px solid transparent",
-  borderRadius: "0.9rem",
+  borderRadius: "4px",
   margin: "0rem",
   lineHeight: "1.1rem",
-  padding: "8px 16px",
+  padding: "4px 8px",
+  border: "2px solid transparent",
+  boxSizing: "border-box",
   "&:hover": {
     backgroundColor: "#2D5B88",
     border: "2px solid transparent",
   },
-  "&:focus": {
-    backgroundColor: theme.palette.primary.main,
-  },
+
   "&:active": {
     backgroundColor: "#264A79",
   },
+  "&:focus": {
+    backgroundColor: theme.palette.primary.main,
+    border: "2px solid #264A79",
+    dropShadow: "10px 10px  12px",
+  },
   "&:disabled": {
     backgroundColor: "#949494",
-    border: "2px solid #6C6C6C",
+    border: "2px solid transparent",
     color: theme.palette.common.white,
   },
 }));
 
-const PrimaryBorderBox = styled(Box)(({ theme }) => ({
-  border: "2px solid transparent",
-  margin: "0",
-  borderRadius: "1.2rem",
-  padding: 0,
-  "&:focus-within": {
-    border: "2px solid #336699",
-  },
-  display: "grid",
-  gridTemplateColumns: "2px  1fr 2px",
-  gridTemplateRows: "2px 1fr 2px",
-}));
-
-const PrimaryButton = (props) => {
-  return (
-    <PrimaryBorderBox {...props}>
-      <Box
-        sx={{
-          gridColumn: 2,
-          gridRow: 2,
-          border: "2px solid transparent",
-          margin: 0,
-          padding: 0,
-          borderRadius: "1rem",
-          display: "grid",
-          gridTemplateColumn: "16px 1fr 16px",
-          gridTemplateRow: "8px 1fr 8px",
-          justifyItems: "stretch",
-          alignItems: "stretch",
-        }}
-      >
-        <InnerPrimaryButton {...props} />
-      </Box>
-    </PrimaryBorderBox>
-  );
-};
-
-const InnerSecondaryButton = styled(Button)(({ theme }) => ({
+const SecondaryButton = styled(Button)(({ theme }) => ({
   variant: "contained",
   gridColumn: 1,
   gridRow: 1,
@@ -80,60 +46,28 @@ const InnerSecondaryButton = styled(Button)(({ theme }) => ({
   backgroundColor: theme.palette.common.white,
   minWidth: "4rem",
   minHeight: 0,
-  border: "2px solid #336699",
-  borderRadius: "0.9rem",
+  border: "1px solid #336699",
+  borderRadius: "4px",
   margin: "0rem",
   lineHeight: "1.1rem",
-  padding: "8px 16px",
+  padding: "4px 8px",
+  boxSizing: "border-box",
   "&:hover": {
     backgroundColor: "#E5F1F7",
-    border: "2px solid #336699",
+    border: "1px solid #336699",
   },
   "&:active": {
     backgroundColor: "#CBE3F1",
   },
+  "&:focus": {
+    border: "2px solid #264A79",
+    dropShadow: "0 0  12px #FFFFFF80",
+  },
   "&:disabled": {
-    border: "2px solid #6C6C6C",
+    border: "1px solid #949494",
     color: "#949494",
   },
 }));
-
-const SecondaryBorderBox = styled(Box)(({ theme }) => ({
-  border: "2px solid transparent",
-  margin: "0px",
-  borderRadius: "1.2rem",
-  padding: 0,
-  "&:focus-within": {
-    border: "2px solid #336699",
-  },
-  display: "grid",
-  gridTemplateColumns: "2px  1fr 2px",
-  gridTemplateRows: "2px 1fr 2px",
-}));
-
-const SecondaryButton = (props) => {
-  return (
-    <SecondaryBorderBox {...props}>
-      <Box
-        sx={{
-          gridColumn: 2,
-          gridRow: 2,
-          border: "2px solid transparent",
-          margin: "0",
-          padding: "0",
-          borderRadius: "1rem",
-          display: "grid",
-          gridTemplateColumn: "16px 1fr 16px",
-          gridTemplateRow: "8px 1fr 8px",
-          justifyItems: "stretch",
-          alignItems: "stretch",
-        }}
-      >
-        <InnerSecondaryButton {...props} />
-      </Box>
-    </SecondaryBorderBox>
-  );
-};
 
 const IconButton = ({ icon, ...props }) => {
   const Icon = ICON_DICT[icon];

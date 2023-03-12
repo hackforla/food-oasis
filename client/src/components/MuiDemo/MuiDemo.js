@@ -4,6 +4,7 @@ import Stack from "@mui/material/Stack";
 import MuiPalette from "./MuiPalette";
 import MuiTypography from "./MuiTypography";
 import MuiButtons from "./MuiButtons";
+import MuiLink from "./MuiLink";
 import MuiTextField from "./MuiTextField";
 import MuiPaper from "./MuiPaper";
 
@@ -19,6 +20,12 @@ function MuiDemo() {
           <CardHeader title="Buttons"></CardHeader>
           <CardContent>
             <MuiButtons />
+          </CardContent>
+        </Card>
+        <Card variant="outlined">
+          <CardHeader title="Links"></CardHeader>
+          <CardContent>
+            <MuiLink />
           </CardContent>
         </Card>
         <Card variant="outlined">

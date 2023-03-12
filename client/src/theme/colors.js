@@ -15,7 +15,7 @@ const bodyText = "#313233";
 const inactiveButton = "#949494";
 //const inactiveButtonText = "#4D4D4D";
 const link = "#1976D2";
-const linkVisited = "#63a4ff";
+const linkVisited = "#551A8B";
 const linkHover = "#004ba0";
 
 //Icon and List Colors

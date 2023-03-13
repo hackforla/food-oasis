@@ -4,7 +4,7 @@ import withStyles from "@mui/styles/withStyles";
 import { withFormik } from "formik";
 import * as Yup from "yup";
 import * as accountService from "../../services/account-service";
-import { PrimaryButton } from "../UI/StandardButton";
+import { Button } from "@mui/material";
 import {
   Avatar,
   Box,
@@ -153,12 +153,13 @@ const form = (props) => {
               </Grid>
             </Grid>
             <Box sx={{ mt: 2, mb: 2 }}>
-              <PrimaryButton
+              <Button
+                variant="contained"
                 type="submit"
                 disabled={isSubmitting || !(isValid && dirty)}
               >
                 Register
-              </PrimaryButton>
+              </Button>
             </Box>
             <Grid container justifyContent="center">
               <Grid item>

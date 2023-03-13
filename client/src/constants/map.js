@@ -2,7 +2,7 @@ import {
   FOOD_PANTRY_CATEGORY_ID,
   MEAL_PROGRAM_CATEGORY_ID,
 } from "./stakeholder";
-import { foodPantry, mealProgram, closed } from "../theme/colors";
+import { foodPantry, mealProgram, closed } from "../theme/palette";
 
 export const MAPBOX_STYLE = "mapbox://styles/mapbox/streets-v11";
 

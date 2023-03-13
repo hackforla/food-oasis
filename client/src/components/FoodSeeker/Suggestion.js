@@ -1,10 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
-import { PrimaryButton } from "../UI/StandardButton";
+import { Button } from "@mui/material";
 import {
   Container,
   CssBaseline,
+  TextField,
   Typography,
   useMediaQuery,
 } from "@mui/material";
@@ -12,7 +13,6 @@ import Grid2 from "@mui/material/Unstable_Grid2";
 import * as suggestionService from "services/suggestion-service";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { TextField } from "../../components/UI";
 import { DEFAULT_STAKEHOLDER } from "../../constants/stakeholder";
 import { useToasterContext } from "contexts/toasterContext";
 import { useTheme } from "@mui/styles";
@@ -318,12 +318,13 @@ function Suggestion(props) {
                   />
                 </Grid2>
                 <Grid2 xs={12} padding="1rem" textAlign="center">
-                  <PrimaryButton
+                  <Button
+                    variant="contained"
                     onClick={handleSubmit}
                     disabled={isSubmitting || !(isValid && dirty)}
                   >
                     Send Suggestions
-                  </PrimaryButton>
+                  </Button>
                 </Grid2>
               </Grid2>
             </Container>

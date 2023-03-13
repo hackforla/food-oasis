@@ -12,13 +12,10 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Container from "@mui/material/Container";
 import Modal from "@mui/material/Modal";
+import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
-import {
-  PrimaryButton,
-  SecondaryButton,
-  IconButton,
-} from "../UI/StandardButton";
-import Input from "../UI/TextField";
+import Button from "@mui/material/Button";
+import { IconButton } from "../UI/StandardButton";
 import { Formik } from "formik";
 import { tenantId } from "helpers/Configuration";
 // import IconButton from "components/UI/IconButton";
@@ -141,7 +138,9 @@ function TagAdmin(props) {
     <Container maxWidth="sm">
       <div className={classes.heading}>
         <h2 style={{ margin: 0 }}>Tags</h2>
-        <SecondaryButton onClick={handleAddNew}>Add New</SecondaryButton>
+        <Button variant="outlined" onClick={handleAddNew}>
+          Add New
+        </Button>
       </div>
 
       {deleteError && (
@@ -266,7 +265,7 @@ function TagAdmin(props) {
                     handleSubmit(e);
                   }}
                 >
-                  <Input
+                  <TextField
                     label="Name"
                     id="name"
                     value={values.name}
@@ -281,12 +280,19 @@ function TagAdmin(props) {
                     <div className={classes.error}>Something went wrong.</div>
                   )}
                   <Box mt={3} display="flex" justifyContent="space-between">
-                    <SecondaryButton onClick={() => setActiveTag(null)}>
+                    <Button
+                      variant="outlined"
+                      onClick={() => setActiveTag(null)}
+                    >
                       Cancel
-                    </SecondaryButton>
-                    <PrimaryButton type="submit" disabled={isSubmitting}>
+                    </Button>
+                    <Button
+                      variant="contained"
+                      type="submit"
+                      disabled={isSubmitting}
+                    >
                       Save
-                    </PrimaryButton>
+                    </Button>
                   </Box>
                 </form>
               )}

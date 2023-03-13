@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import {
+  Button,
   Input,
   FormControl,
   FormHelperText,
@@ -16,8 +17,6 @@ import {
 } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import { STAKEHOLDER_SCHEMA } from "../../../constants/stakeholder-schema";
-// import { Button } from "../../../components/UI";
-import { PrimaryButton } from "../../UI/StandardButton";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -92,9 +91,9 @@ const ImportFileGuide = (props) => {
           <br />
           <Input type="file" onChange={handleChange} inputRef={ref} />
           <br />
-          <PrimaryButton type="button" onClick={handleUpload}>
+          <Button variant="contained" type="button" onClick={handleUpload}>
             Submit
-          </PrimaryButton>
+          </Button>
         </section>
         <section className={classes.section}>
           <Typography variant="h5">CSV Template</Typography>
@@ -105,9 +104,9 @@ const ImportFileGuide = (props) => {
             </li>
             <li>Do not change column names or order.</li>
           </ul>
-          <PrimaryButton type="button" onClick={handleDownload}>
+          <Button variant="contained" type="button" onClick={handleDownload}>
             Download CSV template
-          </PrimaryButton>
+          </Button>
         </section>
         <section className={classes.section}>
           <Typography variant="h5">Schema Guide</Typography>

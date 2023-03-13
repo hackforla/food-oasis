@@ -12,8 +12,7 @@ import TableRow from "@mui/material/TableRow";
 import Container from "@mui/material/Container";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import { PrimaryButton, SecondaryButton } from "../UI/StandardButton";
-import Input from "../UI/TextField";
+import Button from "@mui/material/Button";
 import { Formik } from "formik";
 import * as suggestionService from "../../services/suggestion-service";
 import { Redirect, withRouter } from "react-router-dom";
@@ -38,6 +37,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import LocationCityIcon from "@mui/icons-material/LocationCity";
 import PhoneIcon from "@mui/icons-material/Phone";
 import { getIsMobile } from "../../utils";
+import { TextField } from "@mui/material";
 
 const columns = [
   { id: "name", label: "Name", minWidth: 100 },
@@ -352,7 +352,7 @@ function Suggestions(props) {
                       />
                     </List>
                     <Divider style={{ margin: "1em 0" }} />
-                    <Input
+                    <TextField
                       label="Admin Notes"
                       id="adminNotes"
                       value={values.adminNotes || ""}
@@ -394,12 +394,19 @@ function Suggestions(props) {
                       <div className={classes.error}>Something went wrong.</div>
                     )}
                     <Box mt={3} display="flex" justifyContent="space-between">
-                      <SecondaryButton onClick={() => setActiveOrg(null)}>
+                      <Button
+                        variant="outlined"
+                        onClick={() => setActiveOrg(null)}
+                      >
                         Cancel
-                      </SecondaryButton>
-                      <PrimaryButton type="submit" disabled={isSubmitting}>
+                      </Button>
+                      <Button
+                        variant="contained"
+                        type="submit"
+                        disabled={isSubmitting}
+                      >
                         Save
-                      </PrimaryButton>
+                      </Button>
                     </Box>
                   </form>
                 </div>

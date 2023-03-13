@@ -1,5 +1,5 @@
 import React from "react";
-import { foodPantry, closed } from "theme/colors";
+import { foodPantry, closed } from "theme/palette";
 
 const PantryIcon = ({ isClosed, height = "72px", width = "72px" }) => (
   <svg

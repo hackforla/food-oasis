@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { MenuItem, Autocomplete } from "@mui/material";
+import { MenuItem, Autocomplete, TextField } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import { useMapboxGeocoder } from "hooks/useMapboxGeocoder";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
-import { TextField } from "../UI";
 import {
   useSearchCoordinates,
   useAppDispatch,
@@ -79,7 +78,8 @@ export default function AddressDropDown({ showSearchIcon }) {
 
   const renderInput = (params) => {
     return (
-      <TextField 
+      <TextField
+        variant="outlined"
         {...params}
         label="Search by address or zip code"
         margin="none"
@@ -89,7 +89,7 @@ export default function AddressDropDown({ showSearchIcon }) {
         autoFocus={false}
         onClick={() => setInputVal("")}
         InputLabelProps={{
-          className: classes.label
+          className: classes.label,
         }}
         InputProps={{
           endAdornment: (
@@ -103,10 +103,10 @@ export default function AddressDropDown({ showSearchIcon }) {
               <SearchIcon />
             </InputAdornment>
           ),
-          ...params.InputProps
+          ...params.InputProps,
         }}
       />
-  )
+    );
   };
 
   const renderOption = (props, option) => {

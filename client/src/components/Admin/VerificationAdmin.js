@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useLocation, Redirect } from "react-router-dom";
-import { CssBaseline, Dialog, Typography } from "@mui/material";
-import { PrimaryButton, SecondaryButton } from "../UI/StandardButton";
+import { Button, CssBaseline, Dialog, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import MuiDialogTitle from "@mui/material/DialogTitle";
 import makeStyles from "@mui/styles/makeStyles";
@@ -80,7 +79,8 @@ const DialogTitle = (props) => {
     <MuiDialogTitle disableTypography className={classes.root} {...other}>
       <Typography variant="h6">{children}</Typography>
       {onClose ? (
-        <PrimaryButton
+        <Button
+          variant="contained"
           type="button"
           icon="search"
           kind="close"
@@ -88,7 +88,7 @@ const DialogTitle = (props) => {
           className={classes.closeButton}
         >
           Search
-        </PrimaryButton>
+        </Button>
       ) : null}
     </MuiDialogTitle>
   );
@@ -320,9 +320,14 @@ function VerificationAdmin() {
           >
             Verification Administration
           </Typography>
-          <PrimaryButton type="button" icon="search" onClick={handleDialogOpen}>
+          <Button
+            variant="contained"
+            type="button"
+            icon="search"
+            onClick={handleDialogOpen}
+          >
             Criteria...
-          </PrimaryButton>
+          </Button>
         </header>
       </div>
       <SearchCriteriaDisplay
@@ -442,27 +447,30 @@ function VerificationAdmin() {
                 }}
               >
                 <Stack direction="row" spacing={1} marginBottom={1}>
-                  <SecondaryButton
+                  <Button
+                    variant="outlined"
                     type="button"
                     disabled={selectedStakeholderIds.length === 0}
                     onClick={handleNeedsVerificationDialogOpen}
                   >
                     Needs Verification
-                  </SecondaryButton>
-                  <SecondaryButton
+                  </Button>
+                  <Button
+                    variant="outlined"
                     type="button"
                     disabled={selectedStakeholderIds.length === 0}
                     onClick={handleAssignDialogOpen}
                   >
                     Assign
-                  </SecondaryButton>
-                  <SecondaryButton
+                  </Button>
+                  <Button
+                    variant="outlined"
                     type="button"
                     disabled={selectedStakeholderIds.length === 0}
                     onClick={handleExport}
                   >
                     Export
-                  </SecondaryButton>
+                  </Button>
                 </Stack>
                 <div>{`${stakeholders.length} rows`} </div>
               </div>

@@ -23,6 +23,9 @@ const autocomplete = async (address: string) => {
         "Language": "en"
     };
     const data = await location.searchPlaceIndexForText(params).promise().then(results => results)
+    data.Results.forEach((result) => {
+        result.Place.Geometry.Point?.push(result.Place.Geometry.Point.shift())
+    })
     return data
 }
 
@@ -36,7 +39,7 @@ const getCoords = async (address: string) => {
         "Language": "en"
     };
     const data = await location.searchPlaceIndexForText(params).promise().then(results => results)
-    console.log(data)
+    data.Results[0].Place.Geometry.Point?.push(data.Results[0].Place.Geometry.Point.shift())
     return data
 }
 

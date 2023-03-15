@@ -1,6 +1,6 @@
 FROM node:lts-alpine as clientBuilder
 
-ENV NODE_ENV "development"
+ENV NODE_ENV "production"
 ENV NODE_OPTIONS=--openssl-legacy-provider
 
 RUN mkdir /app

@@ -32,6 +32,7 @@ export const palette = {
     light: "#6693CA",
     main: primary,
     dark: "#003C6B",
+    constrastText: white,
   },
   secondary: {
     main: secondary,

@@ -1,7 +1,6 @@
 import React from "react";
 import { useTheme } from "@mui/material/styles";
 import Button from "@mui/material/Button";
-import { Translate } from "@mui/icons-material";
 
 const PantryIcon = ({ isSelected }) => (
   <svg

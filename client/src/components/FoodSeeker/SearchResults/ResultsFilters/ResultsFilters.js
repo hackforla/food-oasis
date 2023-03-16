@@ -39,7 +39,7 @@ const ResultsFilters = ({
   const isMealsSelected = categoryIds.indexOf(MEAL_PROGRAM_CATEGORY_ID) >= 0;
   const isPantrySelected = categoryIds.indexOf(FOOD_PANTRY_CATEGORY_ID) >= 0;
   const { taglineText } = tenantDetails;
-  const { getUserLocation, isLoading: isGettingLocation } = useGeolocation();
+  const { getUserLocation } = useGeolocation();
   const locationPermission = useLocationPermission();
   const [error, setError] = React.useState("");
 

@@ -13,5 +13,8 @@
     "hooks": {
       "pre-commit": "lerna run lint"
     }
+  },
+  "dependencies": {
+    "react-scripts": "^5.0.1"
   }
 }

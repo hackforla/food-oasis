@@ -78,12 +78,7 @@ function NeedsVerificationDialog(props) {
         </RadioGroup>
       </DialogContent>
       <DialogActions>
-        <Button
-          variant="outlined"
-          variant="outlined"
-          autoFocus
-          onClick={handleCancel}
-        >
+        <Button variant="outlined" autoFocus onClick={handleCancel}>
           Cancel
         </Button>
 

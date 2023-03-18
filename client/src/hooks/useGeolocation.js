@@ -60,28 +60,18 @@ export default function useGeolocation() {
   return { getUserLocation, isLoading };
 }
 
-// will return granted || prompt || denied
-export const useLocationPermission = () => {
-  const [permission, setPermission] = React.useState(null);
-  React.useEffect(() => {
-    if (navigator.permissions) {
-      return null;
-    }
-    async function getPermission() {
-      try {
-        const result = await navigator.permissions.query({
-          name: "geolocation",
-        });
-        result.onchange = () => {
-          setPermission(result.state);
-        };
-
-        setPermission(result.state);
-      } catch (e) {
-        console.error(e);
-      }
-    }
-    getPermission();
-  }, []);
-  return permission;
-};
+// will return granted || prompt || denied || unknown
+export function getLocationPermissionStatus() {
+  if ("permissions" in navigator) {
+    return navigator.permissions
+      .query({ name: "geolocation" })
+      .then((permissionStatus) => permissionStatus.state)
+      .catch((error) => {
+        console.error(`Error getting location permission status: ${error}`);
+        return "unknown";
+      });
+  } else {
+    console.error("Permissions API not available");
+    return Promise.resolve("unknown");
+  }
+}

@@ -16,7 +16,9 @@ import { PrimaryButton } from "../UI/StandardButton";
 import logo from "images/foodoasis.svg";
 import * as analytics from "services/analytics";
 import { useSiteContext } from "../../contexts/siteContext";
-import useGeolocation, { useLocationPermission } from "hooks/useGeolocation";
+import useGeolocation, {
+  getLocationPermissionStatus,
+} from "hooks/useGeolocation";
 import CircularProgress from "@mui/material/CircularProgress";
 import { LocationOn } from "@mui/icons-material";
 
@@ -188,7 +190,7 @@ const Home = () => {
   const [bgImg, setBgImg] = React.useState(`url("/landing-page/bg-LA.jpeg")`);
   const { getUserLocation, isLoading: isGettingLocation } = useGeolocation();
   const [error, setError] = React.useState("");
-  const locationPermission = useLocationPermission();
+  const [locationPermission, setLocationPermission] = React.useState("");
 
   React.useEffect(() => {
     if (error && locationPermission === "granted") {
@@ -228,6 +230,12 @@ const Home = () => {
       setError(e);
     }
   };
+
+  React.useEffect(() => {
+    getLocationPermissionStatus().then((status) => {
+      setLocationPermission(status);
+    });
+  }, []);
 
   return (
     <div className={classes.homeWrapper} style={{ backgroundImage: bgImg }}>
@@ -274,7 +282,7 @@ const Home = () => {
                           onClick={useMyLocationTrigger}
                           disabled={locationPermission === "denied" || !!error}
                         >
-                          Use my current location
+                          <div>Use my current location</div>
                         </PrimaryButton>
                       </div>
                     </Tooltip>

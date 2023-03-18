@@ -16,7 +16,9 @@ import SwitchViewsButton from "./SwitchViewsButton";
 import CategoryButton from "./CategoryButton";
 import * as analytics from "services/analytics";
 import { tenantDetails } from "../../../../helpers/Configuration";
-import useGeolocation, { useLocationPermission } from "hooks/useGeolocation";
+import useGeolocation, {
+  getLocationPermissionStatus,
+} from "hooks/useGeolocation";
 
 const RecenterButton = styled(Button)(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
@@ -41,8 +43,8 @@ const ResultsFilters = ({
   const isPantrySelected = categoryIds.indexOf(FOOD_PANTRY_CATEGORY_ID) >= 0;
   const { taglineText } = tenantDetails;
   const { getUserLocation, isLoading: isGettingLocation } = useGeolocation();
-  const locationPermission = useLocationPermission();
   const [error, setError] = React.useState("");
+  const [locationPermission, setLocationPermission] = React.useState("");
 
   React.useEffect(() => {
     if (error && locationPermission === "granted") {
@@ -60,6 +62,11 @@ const ResultsFilters = ({
     analytics.postEvent("togglePantryFilter", {});
   }, [toggleCategory]);
 
+  React.useEffect(() => {
+    getLocationPermissionStatus().then((status) => {
+      setLocationPermission(status);
+    });
+  }, []);
   return (
     <Grid2
       container

@@ -12,12 +12,12 @@ import TableRow from "@mui/material/TableRow";
 import Container from "@mui/material/Container";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import { PrimaryButton, SecondaryButton } from "../UI/StandardButton";
-import Input from "../UI/TextField";
+import Button from "@mui/material/Button";
+import { TextField } from "@mui/material";
+import { IconButton } from "../UI/StandardButton";
 import { Formik } from "formik";
 import * as parentOrganizationService from "../../services/parent-organization-service";
 import { tenantId } from "helpers/Configuration";
-import IconButton from "components/UI/IconButton";
 import { Redirect, withRouter } from "react-router-dom";
 
 const columns = [
@@ -139,7 +139,9 @@ function ParentOrganizations(props) {
     <Container maxWidth="sm">
       <div className={classes.heading}>
         <h2 style={{ margin: 0 }}>Parent Organizations</h2>
-        <SecondaryButton onClick={handleAddNew}>Add New</SecondaryButton>
+        <Button variant="outlined" onClick={handleAddNew}>
+          Add New
+        </Button>
       </div>
 
       {deleteError && (
@@ -191,7 +193,6 @@ function ParentOrganizations(props) {
                                   );
                                   setActiveOrg(org);
                                 }}
-                                size="large"
                               />
                             </TableCell>
                           );
@@ -205,8 +206,8 @@ function ParentOrganizations(props) {
                             >
                               <IconButton
                                 icon="delete"
+                                color="error"
                                 onClick={() => handleDelete(parentOrg.id)}
-                                size="large"
                               />
                             </TableCell>
                           );
@@ -266,7 +267,7 @@ function ParentOrganizations(props) {
                     handleSubmit(e);
                   }}
                 >
-                  <Input
+                  <TextField
                     label="Name"
                     id="name"
                     value={values.name}
@@ -276,7 +277,7 @@ function ParentOrganizations(props) {
                     fullWidth
                     autoFocus
                   />
-                  <Input
+                  <TextField
                     label="Code"
                     id="code"
                     value={values.code}
@@ -289,15 +290,19 @@ function ParentOrganizations(props) {
                     <div className={classes.error}>Something went wrong.</div>
                   )}
                   <Box mt={3} display="flex" justifyContent="space-between">
-                    <SecondaryButton
-                      color="white"
+                    <Button
+                      variant="outlined"
                       onClick={() => setActiveOrg(null)}
                     >
                       Cancel
-                    </SecondaryButton>
-                    <PrimaryButton type="submit" disabled={isSubmitting}>
+                    </Button>
+                    <Button
+                      variant="contained"
+                      type="submit"
+                      disabled={isSubmitting}
+                    >
                       Save
-                    </PrimaryButton>
+                    </Button>
                   </Box>
                 </form>
               )}

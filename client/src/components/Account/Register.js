@@ -4,9 +4,10 @@ import withStyles from "@mui/styles/withStyles";
 import { withFormik } from "formik";
 import * as Yup from "yup";
 import * as accountService from "../../services/account-service";
-import { PrimaryButton } from "../UI/StandardButton";
+import { Button } from "@mui/material";
 import {
   Avatar,
+  Box,
   CssBaseline,
   Link,
   Grid,
@@ -151,14 +152,15 @@ const form = (props) => {
                 />
               </Grid>
             </Grid>
-            <PrimaryButton
-              type="submit"
-              fullWidth
-              sx={{ mt: 2, mb: 2 }}
-              disabled={isSubmitting || !(isValid && dirty)}
-            >
-              Register
-            </PrimaryButton>
+            <Box sx={{ mt: 2, mb: 2 }}>
+              <Button
+                variant="contained"
+                type="submit"
+                disabled={isSubmitting || !(isValid && dirty)}
+              >
+                Register
+              </Button>
+            </Box>
             <Grid container justifyContent="center">
               <Grid item>
                 <Link href="/login" variant="body2">

@@ -10,7 +10,6 @@ import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
 } from "constants/stakeholder";
-import theme from "theme/clientTheme";
 import AddressDropDown from "components/FoodSeeker/AddressDropDown";
 import SwitchViewsButton from "./SwitchViewsButton";
 import CategoryButton from "./CategoryButton";
@@ -42,7 +41,10 @@ const ResultsFilters = ({
   const isMealsSelected = categoryIds.indexOf(MEAL_PROGRAM_CATEGORY_ID) >= 0;
   const isPantrySelected = categoryIds.indexOf(FOOD_PANTRY_CATEGORY_ID) >= 0;
   const { taglineText } = tenantDetails;
-  const { getUserLocation, isLoading: isGettingLocation } = useGeolocation();
+  const {
+    getUserLocation,
+    // isLoading: isGettingLocation
+  } = useGeolocation();
   const [error, setError] = React.useState("");
   const [locationPermission, setLocationPermission] = React.useState("");
 
@@ -141,7 +143,6 @@ const ResultsFilters = ({
               <SwitchViewsButton
                 isListView={showList}
                 onClick={toggleShowList}
-                color={theme.palette.primary.dark}
                 style={{ marginLeft: 5 }}
               />
             </Grid2>
@@ -164,7 +165,6 @@ const ResultsFilters = ({
                   disabled={locationPermission === "denied" || !!error}
                   icon="locationSearching"
                   // isLoading={isGettingLocation}
-                  backgroundColor="primary.main"
                   sx={{ maxWidth: "2rem" }}
                 >
                   <LocationSearching

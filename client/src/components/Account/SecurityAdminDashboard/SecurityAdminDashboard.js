@@ -3,8 +3,8 @@ import SecurityTable from "./SecurityTable";
 import { makeStyles } from "@mui/styles";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import TextField from "@mui/material/TextField";
 import * as accountService from "../../../services/account-service";
-import { TextField } from "../../UI";
 import debounce from "lodash.debounce";
 
 const useStyles = makeStyles({
@@ -38,7 +38,7 @@ const SecurityAdminDashboard = () => {
   }, []);
 
   useEffect(() => {
-    if (accounts.length === 0) return;
+    if (accounts.length === 0) return undefined;
     if (search.length === 0) {
       setError("");
       setFilteredAccounts(accounts);

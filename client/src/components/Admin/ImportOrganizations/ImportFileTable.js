@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {
+  Button,
   Table,
   TableBody,
   TableCell,
@@ -11,8 +12,6 @@ import {
 } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import { STAKEHOLDER_SCHEMA } from "../../../constants/stakeholder-schema";
-// import { Button } from "../../../components/UI";
-import { PrimaryButton, SecondaryButton } from "../../UI/StandardButton";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,12 +59,12 @@ const ImportFileTable = (props) => {
           Review your import below and click "Import" when you're ready to
           update your records.
         </Typography>
-        <SecondaryButton type="button" onClick={handleCancel}>
+        <Button variant="outlined" type="button" onClick={handleCancel}>
           Cancel
-        </SecondaryButton>
-        <PrimaryButton type="button" onClick={handleImportAction}>
+        </Button>
+        <Button variant="contained" type="button" onClick={handleImportAction}>
           Import
-        </PrimaryButton>
+        </Button>
       </div>
       <TableContainer className={classes.tableContainer}>
         <Table>

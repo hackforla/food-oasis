@@ -1,5 +1,5 @@
 import React from "react";
-import { foodPantry, mealProgram, closed } from "theme/colors";
+import { foodPantry, mealProgram, closed } from "theme/palette";
 
 /*
 This is a temporary test file for Issue #923 testing. It should be

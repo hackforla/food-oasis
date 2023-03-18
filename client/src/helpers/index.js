@@ -1,4 +1,4 @@
-import theme from "theme/clientTheme";
+import { breakpoints } from "../theme/breakpoints";
 import geoViewport from "@mapbox/geo-viewport";
 
 export const getMapBounds = (center, zoom, dimensions) => {
@@ -42,7 +42,7 @@ export const getGoogleMapsDirectionsUrl = (
   );
 };
 
-export const isMobile = () => window.innerWidth < theme.breakpoints.values.sm;
+export const isMobile = () => window.innerWidth < breakpoints.values.sm;
 
 export const extractNumbers = (numbers) =>
   numbers.split(/(and)|,|&+/).map((n) => {

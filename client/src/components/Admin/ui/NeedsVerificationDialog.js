@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { PrimaryButton, SecondaryButton } from "../../UI/StandardButton";
 import {
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -12,22 +12,9 @@ import {
   RadioGroup,
   FormControlLabel,
 } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import { white } from "theme/colors";
-
-const useStyles = makeStyles((theme) => ({
-  button: {
-    borderColor: theme.palette.primary.translucent,
-    "&:hover": {
-      background: theme.palette.primary.main,
-      color: white,
-    },
-  },
-}));
 
 function NeedsVerificationDialog(props) {
   const { onClose, open, ...other } = props;
-  const classes = useStyles();
 
   const [message, setMessage] = useState("");
   const [preserveConfirmations, setPreserveConfirmations] = useState("");
@@ -91,18 +78,13 @@ function NeedsVerificationDialog(props) {
         </RadioGroup>
       </DialogContent>
       <DialogActions>
-        <SecondaryButton
-          variant="outlined"
-          className={classes.button}
-          autoFocus
-          onClick={handleCancel}
-        >
+        <Button variant="outlined" autoFocus onClick={handleCancel}>
           Cancel
-        </SecondaryButton>
+        </Button>
 
-        <PrimaryButton type="button" onClick={handleConfirm}>
+        <Button variant="contained" type="button" onClick={handleConfirm}>
           Confirm Status Change
-        </PrimaryButton>
+        </Button>
       </DialogActions>
     </Dialog>
   );

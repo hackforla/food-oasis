@@ -4,14 +4,8 @@ import withStyles from "@mui/styles/withStyles";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import * as accountService from "../../services/account-service";
-import { PrimaryButton } from "../UI/StandardButton";
-import {
-  Avatar,
-  Container,
-  CssBaseline,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button } from "@mui/material";
+import { Avatar, Box, Container, CssBaseline, Typography } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useToasterContext } from "../../contexts/toasterContext";
 import PasswordInput from "../UI/PasswordInput";
@@ -164,14 +158,15 @@ const ResetPassword = (props) => {
                   }
                   sx={{ mt: 2, mb: 2 }}
                 />
-                <PrimaryButton
-                  type="submit"
-                  fullWidth
-                  disabled={isSubmitting || !(isValid && dirty)}
-                  sx={{ mt: 2, mb: 2 }}
-                >
-                  Reset Password
-                </PrimaryButton>
+                <Box sx={{ mt: 2, mb: 2 }}>
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    disabled={isSubmitting || !(isValid && dirty)}
+                  >
+                    Reset Password
+                  </Button>
+                </Box>
               </form>
             )}
           </Formik>

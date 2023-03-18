@@ -11,7 +11,7 @@ import Link from "@mui/material/Link";
 import { Link as RouterLink } from "react-router-dom";
 import AddressDropDown from "components/FoodSeeker/AddressDropDown";
 // import { Button } from "../../components/UI";
-import { PrimaryButton } from "../UI/StandardButton";
+import { Button } from "@mui/material";
 // All the tenant logos happen to be the same for now
 import logo from "images/foodoasis.svg";
 import * as analytics from "services/analytics";
@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     margin: "0 auto",
-    padding: "1.5rem 0.5rem 3rem 0.5rem",
+    padding: "3.5rem 0.5rem 3rem 0.5rem",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -64,10 +64,6 @@ const useStyles = makeStyles((theme) => ({
       justifyContent: "start",
       boxShadow: "none",
     },
-  },
-  logoContainer: {
-    margin: "30px 0 0px 0",
-    textAlign: "center",
   },
   header: {
     marginBottom: theme.spacing(1),
@@ -214,7 +210,6 @@ const Home = () => {
         break;
       default:
         setBgImg(`url("/landing-page/bg-LA.jpeg")`);
-        return;
     }
   }, [tenantId]);
 
@@ -242,13 +237,11 @@ const Home = () => {
       <Container component="main" className={classes.container}>
         <CssBaseline />
         <Paper className={classes.paper}>
-          <Box className={classes.logoContainer}>
-            <img
-              src={logoPaths[tenantId] ? logoPaths[tenantId].default : logo}
-              alt="logo"
-              className={classes.logo}
-            />
-          </Box>
+          <img
+            src={logoPaths[tenantId] ? logoPaths[tenantId].default : logo}
+            alt="logo"
+            className={classes.logo}
+          />
           <Box className={classes.formContainer}>
             <form
               className={classes.form}
@@ -276,14 +269,15 @@ const Home = () => {
                       }
                     >
                       <div>
-                        <PrimaryButton
+                        <Button
+                          variant="contained"
                           startIcon={<LocationOn />}
                           // className={classes.locationBtn}
                           onClick={useMyLocationTrigger}
                           disabled={locationPermission === "denied" || !!error}
                         >
                           <div>Use my current location</div>
-                        </PrimaryButton>
+                        </Button>
                       </div>
                     </Tooltip>
                   </div>

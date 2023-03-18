@@ -18,7 +18,11 @@ export const getById = async (id) => {
 };
 
 export const post = async (suggestion) => {
-  const response = await axios.post(baseUrl, { ...suggestion, tenantId });
+  const response = await axios.post(baseUrl, {
+    ...suggestion,
+    stakeholderId: suggestion.stakeholderId || null,
+    tenantId,
+  });
   return response.data;
 };
 

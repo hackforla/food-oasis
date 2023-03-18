@@ -1,36 +1,25 @@
-import { styled } from "@mui/material/styles";
-import Button from "@mui/material/Button";
+import { IconButton as MuiIconButton } from "@mui/material";
+import PropTypes from "prop-types";
+import { ICON_DICT } from "../UI/iconLookup.js";
 
-const PrimaryButton = styled(Button)(({ theme }) => ({
-  variant: "contained",
-  color: theme.palette.common.white,
-  backgroundColor: theme.palette.primary.main,
-  size: "small",
-  minWidth: 0,
-  minHeight: 0,
-  "&:hover": {
-    backgroundColor: theme.palette.primary.light,
-  },
-  "&:disabled": {
-    color: theme.palette.common.white,
-    backgroundColor: theme.palette.common.disabled,
-  },
-}));
+const IconButton = ({ icon, ...props }) => {
+  const Icon = ICON_DICT[icon];
+  return (
+    <MuiIconButton
+      variant={props.variant || "contained"}
+      color={props.color || "primary"}
+      fontSize={props.fontSize || "inherit"}
+      aria-label={icon}
+      {...props}
+    >
+      <Icon />
+    </MuiIconButton>
+  );
+};
 
-const SecondaryButton = styled(Button)(({ theme }) => ({
-  variant: "outlined",
-  backgroundColor: theme.palette.common.white,
-  size: "small",
-  minWidth: 0,
-  minHeight: 0,
-  "&:hover": {
-    color: theme.palette.common.white,
-    backgroundColor: theme.palette.primary.main,
-    opacity: "1",
-  },
-  "&:disabled": {
-    color: "#A0A0A0",
-  },
-}));
+IconButton.propTypes = {
+  icon: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
+};
 
-export { PrimaryButton, SecondaryButton };
+export { IconButton };

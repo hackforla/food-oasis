@@ -13,7 +13,7 @@ import {
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-import { IconButton } from "../UI";
+import { IconButton } from "../UI/StandardButton";
 
 const useStyles = makeStyles((theme) => ({
   row: {
@@ -156,10 +156,20 @@ function OpenTimeInput(props) {
           />
         </Grid>
         <Grid item xs={2} sm={1}>
-          <IconButton icon="cancel" onClick={removeInput} size="large" />
+          <IconButton
+            icon="cancel"
+            color="error"
+            size="large"
+            onClick={removeInput}
+          />
         </Grid>
         <Grid item xs={2} sm={1}>
-          <IconButton icon="wrapText" onClick={copyInput} size="large" />
+          <IconButton
+            icon="wrapText"
+            color="primary"
+            size="large"
+            onClick={copyInput}
+          />
         </Grid>
       </Grid>
     </LocalizationProvider>

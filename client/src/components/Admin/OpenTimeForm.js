@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import OpenTimeInputs from "./OpenTimeInput";
-import { Card, CardContent, Typography } from "@mui/material";
+import { Button, Card, CardContent, Typography } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
-import { SecondaryButton } from "../UI/StandardButton";
 import { Add as AddIcon } from "@mui/icons-material";
 
 const useStyles = makeStyles((theme) => ({
@@ -81,6 +80,8 @@ function OpenTimeForm(props) {
     );
   });
 
+  const addIcon = <AddIcon />;
+
   return (
     <Card style={{ border: "1px solid lightgray", borderRadius: "4px" }}>
       <CardContent>
@@ -93,14 +94,15 @@ function OpenTimeForm(props) {
               </div>
             ))
           : null}
-        <SecondaryButton
+        <Button
+          variant="outlined"
           type="button"
           onClick={addHours}
           icon="add"
-          startIcon={<AddIcon />}
+          startIcon={addIcon}
         >
           Add Hours
-        </SecondaryButton>
+        </Button>
       </CardContent>
     </Card>
   );

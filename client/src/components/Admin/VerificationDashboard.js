@@ -5,7 +5,7 @@ import makeStyles from "@mui/styles/makeStyles";
 import StakeholderGrid from "./VerificationAdminGrid";
 import { useOrganizations } from "hooks/useOrganizations";
 import * as stakeholderService from "services/stakeholder-service";
-import { SecondaryButton } from "..//UI/StandardButton";
+import { Button } from "@mui/material";
 import { useUserContext } from "../../contexts/userContext";
 import CircularProgress from "@mui/material/CircularProgress";
 
@@ -91,7 +91,7 @@ function VerificationDashboard(props) {
 
   useEffect(() => {
     const execute = async () => {
-      if (!user) return;
+      if (!user) return undefined;
       const initialCriteria = { ...defaultCriteria, assignedLoginId: user.id };
       if (initialCriteria) {
         setCriteria(initialCriteria);
@@ -154,12 +154,21 @@ function VerificationDashboard(props) {
             {`${user && user.firstName} ${user && user.lastName}'s Dashboard`}
           </Typography>
           <div style={{ display: "flex", flexDirection: "row" }}>
-            <SecondaryButton type="button" onClick={requestAssignment}>
+            <Button
+              variant="outlined"
+              type="button"
+              onClick={requestAssignment}
+            >
               Request Assignment
-            </SecondaryButton>
-            <SecondaryButton type="button" icon="search" onClick={search}>
+            </Button>
+            <Button
+              variant="outlined"
+              type="button"
+              icon="search"
+              onClick={search}
+            >
               Refresh
-            </SecondaryButton>
+            </Button>
           </div>
         </header>
       </div>

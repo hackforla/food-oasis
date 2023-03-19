@@ -1,7 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import moment from "moment";
-import * as momentTz from "moment-timezone";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
@@ -29,37 +27,70 @@ const TENANT_TIME_ZONES = {
   6: "America/Los_Angeles",
 };
 
-const isLastOccurrenceInMonth = (currentDay) => {
-  const currentMonth = currentDay.month();
-  if (currentDay.add(7, "days").month() !== currentMonth) {
+const isLastOccurrenceInMonth = (tenantTimeZone) => {
+  const currentDate = new Date();
+  const currentDatePlus7Days = new Date();
+  currentDatePlus7Days.setDate(currentDatePlus7Days.getDate() + 7);
+
+  const timezoneOptions = {
+    timeZone: tenantTimeZone,
+    month: "short",
+  };
+  const currentDateCurrentMonth = currentDate.toLocaleString(
+    "en-US",
+    timezoneOptions
+  );
+  const currentDatePlus7DaysCurrentMonth = currentDatePlus7Days.toLocaleString(
+    "en-US",
+    timezoneOptions
+  );
+
+  if (currentDateCurrentMonth !== currentDatePlus7DaysCurrentMonth) {
     return true;
   }
+  return false;
 };
 
 const stakeholdersCurrentDaysHours = (stakeholder, tenantTimeZone) => {
-  const currentDay = momentTz().tz(tenantTimeZone);
-  const currentDayOfWeek = currentDay.format("ddd");
-  const dayOccurrenceInMonth = Math.ceil(currentDay.format("DD") / 7); // In tandum with currentDayOfWeek tells us which week the day falls
-  const currentTime = currentDay.format("HH:mm:ss");
+  let currentDay = new Date();
+
+  const timeZone = tenantTimeZone;
+  const currentDayOfWeek = currentDay.toLocaleString("en-US", {
+    timeZone,
+    weekday: "short",
+  });
+
+  // In tandum with currentDayOfWeek tells us which week the day falls
+  const dayOccurrenceInMonth = Math.ceil(
+    Number(
+      currentDay.toLocaleString("en-US", {
+        timeZone,
+        day: "2-digit",
+      })
+    ) / 7
+  );
+
+  const currentTime = currentDay.toLocaleString("en-US", {
+    timeZone,
+    hour12: false,
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+
   const currentDaysHoursOfOperation =
     stakeholder.hours &&
     stakeholder.hours.filter((todaysHours) => {
       const hasHoursToday = currentDayOfWeek === todaysHours.day_of_week;
-      const stakeholderOpenTime = moment(todaysHours.open, "HH:mm:ss").format(
-        "HH:mm:ss"
-      );
-      const stakeholderClosingTime = moment(
-        todaysHours.close,
-        "HH:mm:ss"
-      ).format("HH:mm:ss");
+
       const isOnlyOpenOnLastWeekOfMonth =
         hasHoursToday &&
-        isLastOccurrenceInMonth(currentDay) &&
-        todaysHours.week_of_month === 5;
+        isLastOccurrenceInMonth(tenantTimeZone) &&
+        todaysHours.week_of_month === -1;
       return (
         hasHoursToday &&
-        currentTime >= stakeholderOpenTime &&
-        currentTime < stakeholderClosingTime &&
+        currentTime >= todaysHours.open &&
+        currentTime < todaysHours.close &&
         (todaysHours.week_of_month === 0 ||
           dayOccurrenceInMonth === todaysHours.week_of_month ||
           isOnlyOpenOnLastWeekOfMonth)
@@ -71,11 +102,29 @@ const stakeholdersCurrentDaysHours = (stakeholder, tenantTimeZone) => {
 };
 
 const calculateMinutesToClosing = (hours, tenantTimeZone) => {
-  const currentTime = momentTz().tz(tenantTimeZone).format("HH:mm");
-  return moment(hours[0].close, "HH:mm").diff(
-    moment(currentTime, "HH:mm"),
-    "minutes"
-  );
+  const currentTime = new Date().toLocaleString("en-US", {
+    timeZone: tenantTimeZone,
+    hour12: false,
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+
+  function calculateTimeDifference(time1, time2) {
+    // Create Date objects for both times with a fixed date (e.g., 1970-01-01)
+    const date1 = new Date(`1970-01-01T${time1}Z`);
+    const date2 = new Date(`1970-01-01T${time2}Z`);
+
+    // Calculate the difference in milliseconds
+    const differenceInMilliseconds = date1.getTime() - date2.getTime();
+    // Convert the difference to minutes
+    const differenceInMinutes = Math.round(
+      differenceInMilliseconds / (1000 * 60)
+    );
+
+    return differenceInMinutes;
+  }
+  return calculateTimeDifference(hours[0].close, currentTime);
 };
 
 const isAlmostClosed = (hours, tenantTimeZone) => {

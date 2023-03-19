@@ -125,15 +125,16 @@ const StakeholderDetails = () => {
   const numbers = extractNumbers(selectedOrganization.phone).map((n) => {
     if (n.number) {
       return (
-        <Link
-          key={n.value}
-          textAlign="left"
-          href={"tel:" + n.value}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {n.value}
-        </Link>
+        <DetailText key={n.value}>
+          <Link
+            textAlign="left"
+            href={"tel:" + n.value}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {n.value}
+          </Link>
+        </DetailText>
       );
     } else {
       return <DetailText key={n.value}> {n.value} </DetailText>;
@@ -201,8 +202,7 @@ const StakeholderDetails = () => {
         stakeholder={selectedOrganization}
         setToast={setToast}
       />
-
-      <Stack margin="0.5rem">
+      <Stack padding="0 1em 5em 1em" sx={{ width: "100%" }}>
         <Typography
           variant="h5"
           component="p"

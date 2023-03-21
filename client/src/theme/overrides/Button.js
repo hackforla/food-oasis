@@ -17,6 +17,7 @@ export default function Button(theme) {
     MuiButton: {
       defaultProps: {
         variant: "contained",
+        border: "none",
       },
       styleOverrides: {
         root: {
@@ -29,46 +30,48 @@ export default function Button(theme) {
           boxSizing: "border-box",
         },
         contained: {
-          color: theme.palette.common.white,
-          border: "2px solid transparent",
+          padding: "8px 16px",
+          color: theme.palette.primary.contrastText,
           backgroundColor: theme.palette.primary.main,
           "&:hover": {
-            backgroundColor: "#2D5B88",
-            border: "2px solid transparent",
+            backgroundColor: theme.palette.primary.dark,
           },
 
           "&:active": {
-            backgroundColor: "#264A79",
+            backgroundColor: theme.palette.primary.dark,
+            boxShadow: "inset 4px 8px 4px rgba(0,0,0,0.4)",
           },
           "&:focus": {
             backgroundColor: theme.palette.primary.main,
-            border: "2px solid #264A79",
-            dropShadow: "10px 10px  12px",
+            filter: "drop-shadow(0px 0px 12px rgba(255, 255, 255, 0.8))",
           },
           "&:disabled": {
-            backgroundColor: "#949494",
-            border: "2px solid transparent",
+            backgroundColor: theme.palette.common.inactiveButton,
             color: theme.palette.common.white,
+            boxShadow: "none",
           },
         },
         outlined: {
           color: theme.palette.primary.main,
           backgroundColor: theme.palette.common.white,
-          border: "1px solid #336699",
+          borderStyle: "solid",
+          borderWidth: "1px",
+          borderColor: theme.palette.primary.light,
           "&:hover": {
             backgroundColor: "#E5F1F7",
-            border: "1px solid #336699",
           },
           "&:active": {
             backgroundColor: "#CBE3F1",
+            boxShadow: "inset 4px 8px 4px rgba(0,0,0,0.25)",
           },
           "&:focus": {
-            border: "2px solid #264A79",
-            dropShadow: "0 0  12px #FFFFFF80",
+            filter: "drop-shadow(0px 0px  12px rgba(255, 255, 255, 0.8))",
           },
           "&:disabled": {
-            border: "1px solid #949494",
-            color: "#949494",
+            borderColor: theme.palette.common.inactiveButton,
+            backgroundColor: theme.palette.common.white,
+            color: theme.palette.common.inactiveButton,
+            boxShadow: "none",
           },
         },
         recenter: {

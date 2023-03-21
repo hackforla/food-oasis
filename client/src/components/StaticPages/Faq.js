@@ -193,8 +193,8 @@ const About = () => {
             <Typography variant="body1" align="center" className={classes.dl}>
               <dt>How can I add our food pantry to your directory?</dt>
               <dd>
-                Please visit our{" "}
-                <Link to={"/suggestion"}>“Suggest New Listing”</Link> page.
+                Please visit our “
+                <Link to={"/suggestion"}>Suggest New Listing</Link>” page.
               </dd>
             </Typography>
           </Container>

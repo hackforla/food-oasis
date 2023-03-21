@@ -28,11 +28,4 @@ code {
   font-weight: bold;
   padding-right: 8px;
 }
-.react-grid-Cell {
-  padding: 0 !important;
-  text-align: center !important;
-}
-.last {
-  background-color: rgb(255, 185, 185);
-  padding: 5px 0 !important;
-}
+

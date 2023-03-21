@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import { withRouter, Redirect } from "react-router-dom";
 import { CssBaseline, Typography } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
-import StakeholderGrid from "./VerificationAdminGrid";
 import { useOrganizations } from "hooks/useOrganizations";
 import * as stakeholderService from "services/stakeholder-service";
 import { Button } from "@mui/material";
 import { useUserContext } from "../../contexts/userContext";
 import CircularProgress from "@mui/material/CircularProgress";
+import VerificationAdminGridMui from "./VerificationAdminGridMui";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -204,7 +204,10 @@ function VerificationDashboard(props) {
               </Typography>
             </div>
           ) : stakeholders ? (
-            <StakeholderGrid mode={"dataentry"} stakeholders={stakeholders} />
+            <VerificationAdminGridMui
+              stakeholders={stakeholders}
+              mode={"dataentry"}
+            />
           ) : (
             <div className={classes.bigMessage}>
               <Typography variant="h5" component="h5">

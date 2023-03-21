@@ -112,7 +112,7 @@ const search = async (
     s.food_bakery, s.food_dry_goods, s.food_produce,
     s.food_dairy, s.food_prepared, s.food_meat,
     s.parent_organization_id,
-    s.hours_notes, s.allow_walkins, s.tags,
+    s.hours_notes, s.allow_walkins, s.tags, s.complete_critical_percent,
     sug.sug_count,
     ${locationClause ? `${locationClause} AS distance,` : ""}
     ${buildLoginSelectsClause()}
@@ -161,6 +161,7 @@ const search = async (
     order by ${locationClause ? "distance" : "s.name"}
 
   `;
+
   const stakeholders: StakeholderWithDistance[] = [];
   let categoriesResults: StakeholderCategory[];
   let rows, stakeholder_ids;
@@ -180,6 +181,7 @@ const search = async (
   } catch (err: any) {
     return Promise.reject(err.message);
   }
+
   rows.forEach((row) => {
     const stakeholder = {
       ...stakeholderHelpers.rowToStakeholder(

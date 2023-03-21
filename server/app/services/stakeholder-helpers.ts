@@ -19,6 +19,7 @@ const rowToStakeholder = (row: any, categories?: any): Stakeholder => {
     claimedDate: row.claimed_date,
     claimedLoginId: row.claimed_login_id,
     claimedUser: row.claimed_user || "",
+    completeCriticalPercent: row.complete_critical_percent,
     confirmedAddress: row.v_address,
     confirmedCategories: row.v_categories,
     confirmedEmail: row.v_email,

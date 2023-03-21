@@ -18,7 +18,7 @@ const useStyles = makeStyles(() => ({
     "& $ul": {
       paddingLeft: "26px",
       margin: "5px",
-      fontSize: "18px",
+      fontSize: "16px",
       lineHeight: "26.55px",
     },
     "@media only screen and (min-width: 75em)": {

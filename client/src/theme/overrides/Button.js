@@ -71,6 +71,35 @@ export default function Button(theme) {
             color: "#949494",
           },
         },
+        recenter: {
+          color: theme.palette.common.white,
+          border: "2px solid transparent",
+          backgroundColor: theme.palette.primary.main,
+          size: "small",
+          minWidth: 0,
+          maxWidth: "2rem",
+          minHeight: 0,
+          height: theme.spacing(5),
+          padding: theme.spacing(1),
+          boxSizing: "border-box",
+          "&:hover": {
+            backgroundColor: theme.palette.primary.light,
+            border: "2px solid transparent",
+          },
+          "&:active": {
+            backgroundColor: "#264A79",
+          },
+          "&:focus": {
+            border: "2px solid #264A79",
+            dropShadow: "10px 10px  12px",
+          },
+          "&:disabled": {
+            backgroundColor: "#949494",
+            border: "2px solid transparent",
+            color: theme.palette.common.white,
+            opacity: 0.5,
+          },
+        }
       },
     },
   };

@@ -1,6 +1,5 @@
 export const white = "#FFFFFF";
 export const gray = "#545454";
-export const primary = "#336699";
 export const secondary = "#E57109";
 export const hover = "#4C99E5";
 export const success = "#219653";
@@ -26,13 +25,13 @@ export const palette = {
     gray: gray,
     white: white,
     disabled: "#A0A0A0",
-    inactiveButton,
   },
   primary: {
-    light: "#6693CA",
-    main: primary,
-    dark: "#003C6B",
-    constrastText: white,
+    extralight: "#CBE3F1",
+    light: "#6098CD",
+    main: "#336699",
+    dark: "#264A79",
+    contrastText: white,
   },
   secondary: {
     main: secondary,
@@ -53,7 +52,7 @@ export const palette = {
   inactiveButton: {
     light: "#D0D0D0",
     main: inactiveButton,
-    dark: "909090",
+    dark: "#909090",
     contrastText: "#FFFFFF",
   },
   mealProgram: {

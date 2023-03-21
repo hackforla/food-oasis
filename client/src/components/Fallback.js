@@ -22,7 +22,6 @@ const useStyles = makeStyles(() => ({
     padding: "32px",
     margin: "32px 0",
     borderRadius: "24px",
-    color: "#4d4d4d",
     background: "#f0f0f0",
     display: "flex",
     flexDirection: "column",

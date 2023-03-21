@@ -108,7 +108,6 @@ const About = () => {
     analytics.postEvent("visitFaqPage");
   }, []);
 
-  // const { t } = useTranslation("about");
   return (
     <div className={classes.outer}>
       <div className={classes.main}>

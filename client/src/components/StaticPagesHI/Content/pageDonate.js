@@ -1,5 +1,5 @@
 import donatebg from "../assets/donate-header.jpg";
-import Typography from "@mui/material/Typography";
+import { Link, Typography } from "@mui/material";
 
 const PAGE_INFO_DONATE = {
   pageTitle: "Donate",
@@ -23,13 +23,13 @@ const PAGE_SECTIONS_DONATE = [
 
         <Typography variant="body1">
           To donate online, visit{" "}
-          <a
+          <Link
             href="https://alohaharvest.org/donate"
             target="_blank"
             rel="noopener noreferrer"
           >
             alohaharvest.org/donate.
-          </a>
+          </Link>
         </Typography>
 
         <Typography variant="body1">
@@ -63,13 +63,13 @@ const PAGE_SECTIONS_DONATE = [
         <Typography variant="body1">
           If you or your business have excess food you’d like to donate to us
           for redistribution, please visit{" "}
-          <a
+          <Link
             href="https://alohaharvest.org/donate-food"
             target="_blank"
             rel="noopener noreferrer"
           >
             alohaharvest.org/donate-food
-          </a>{" "}
+          </Link>{" "}
           to get started. You can also call us at 808-208-1581 or email
           info@alohaharvest.org with questions.
         </Typography>

@@ -19,7 +19,6 @@ const useStyles = makeStyles(() => ({
     },
   },
   title: {
-    color: "#4d4d4d",
     textTransform: "uppercase",
     fontWeight: 500,
     textAlign: "center",
@@ -65,7 +64,6 @@ const useStyles = makeStyles(() => ({
     padding: "32px",
     margin: "32px 0 0 0",
     borderRadius: "24px",
-    color: "#4d4d4d",
     background: "#f0f0f0",
     display: "flex",
     flexWrap: "wrap",
@@ -89,7 +87,6 @@ const useStyles = makeStyles(() => ({
     padding: "32px",
     margin: "32px 0 0 0",
     borderRadius: "24px",
-    color: "#4d4d4d",
     background: "#B6D8FB",
     display: "flex",
     flexWrap: "wrap",

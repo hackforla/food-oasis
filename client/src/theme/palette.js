@@ -8,7 +8,6 @@ export const confirmed = "#008000";
 export const headingText = "#1B1B1B";
 export const bodyText = "#313233";
 export const inactiveButton = "#949494";
-//export const inactiveButtonText = "#4D4D4D";
 export const linkNormal = "#1976D2";
 export const linkVisited = "#551A8B";
 export const linkHovered = "#004BA0";

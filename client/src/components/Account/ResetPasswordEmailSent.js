@@ -3,7 +3,6 @@ import { withRouter } from "react-router-dom";
 import withStyles from "@mui/styles/withStyles";
 import { Button } from "@mui/material";
 import { Avatar, Box, Container, CssBaseline, Typography } from "@mui/material";
-import Footer from "../Layout/Footer";
 
 const MailIcon = () => {
   return (
@@ -93,7 +92,6 @@ const ResetPasswordEmailSent = (props) => {
           </Container>
         </div>
       </Container>
-      <Footer />
     </div>
   );
 };

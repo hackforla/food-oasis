@@ -10,10 +10,7 @@ import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import { Link as RouterLink } from "react-router-dom";
 import AddressDropDown from "components/FoodSeeker/AddressDropDown";
-// import { Button } from "../../components/UI";
 import { Button } from "@mui/material";
-// All the tenant logos happen to be the same for now
-import logo from "images/foodoasis.svg";
 import * as analytics from "services/analytics";
 import { useSiteContext } from "../../contexts/siteContext";
 import useGeolocation, { useLocationPermission } from "hooks/useGeolocation";
@@ -21,9 +18,12 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { LocationOn } from "@mui/icons-material";
 
 const logoPaths = {
-  1: require("images/foodoasis.svg"),
-  2: require("images/foodoasis.svg"),
+  1: require("images/foodoasis.svg").default,
+  2: require("images/foodoasis.svg").default,
   3: require("../StaticPagesHI/assets/aloha-harvest-bg-none.png"),
+  4: require("images/foodoasis.svg").default,
+  5: require("images/foodoasis.svg").default,
+  6: require("images/foodoasis.svg").default,
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -104,7 +104,6 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "flex-start",
     justifyContent: "center",
     marginBottom: "1em",
-    color: "#4D4D4D",
     fontSize: "16px",
   },
   address: {
@@ -152,28 +151,10 @@ const useStyles = makeStyles((theme) => ({
   },
   learnMore: {
     fontSize: "16px",
-    color: "#4D4D4D",
-    textDecoration: "underline",
-    textUnderlineOffset: "8px",
-    "&:visited": {
-      color: "#4D4D4D",
-    },
-    "&:hover": {
-      color: "#31C658",
-    },
     [theme.breakpoints.up("sm")]: {
       fontSize: "19px",
     },
   },
-  // locationBtn: {
-  //   backgroundColor: "#336699",
-  //   color: "white",
-  //   letterSpacing: "1px",
-  //   fontWeight: "500",
-  //   "&:hover": {
-  //     backgroundColor: "#0A3865",
-  //   },
-  // },
 }));
 
 const Home = () => {
@@ -229,11 +210,7 @@ const Home = () => {
       <Container component="main" className={classes.container}>
         <CssBaseline />
         <Paper className={classes.paper}>
-          <img
-            src={logoPaths[tenantId] ? logoPaths[tenantId].default : logo}
-            alt="logo"
-            className={classes.logo}
-          />
+          <img src={logoPaths[tenantId]} alt="logo" className={classes.logo} />
           <Box className={classes.formContainer}>
             <form
               className={classes.form}

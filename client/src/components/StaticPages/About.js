@@ -3,7 +3,6 @@ import aboutbg from "./assets/about-bg.webp";
 import iconSpacerGray from "./assets/icon-spacer-gray.svg";
 import foodCycle from "./assets/food-cycle.png";
 import foodForward from "./assets/food-forward.png";
-import farmPeople from "./assets/farm-people.png";
 import farm2people from "./assets/farm2people.png";
 import foodBank from "./assets/food-bank.png";
 import makeStyles from "@mui/styles/makeStyles";
@@ -25,7 +24,6 @@ const useStyles = makeStyles(() => ({
     },
   },
   title: {
-    color: "#4d4d4d",
     textTransform: "uppercase",
     textAlign: "center",
     background: "#FFF",
@@ -36,7 +34,6 @@ const useStyles = makeStyles(() => ({
     fontSize: "20px",
     padding: "5px 32px 10px",
     "@media only screen and (min-width: 75em)": {
-      fontSize: "20px",
       fontSize: "24px",
       padding: "5px 120px 20px",
     },
@@ -53,7 +50,6 @@ const useStyles = makeStyles(() => ({
     padding: "50px 32px 50px",
     margin: "32px 0",
     borderRadius: "24px",
-    color: "#4d4d4d",
     background: "#f0f0f0",
     display: "flex",
     flexDirection: "column",
@@ -74,7 +70,6 @@ const useStyles = makeStyles(() => ({
     margin: "32px 0 0 0",
     borderRadius: "24px",
     background: "#B6D8FB",
-    color: "#4d4d4d",
     display: "flex",
     flexDirection: "column",
     "& $h2": {
@@ -85,9 +80,6 @@ const useStyles = makeStyles(() => ({
       marginTop: "10px",
       marginBottom: "20px",
     },
-    "& $a": {
-      color: "#4d4d4d",
-    },
     "& $p": {
       marginBottom: "16px",
     },
@@ -96,7 +88,6 @@ const useStyles = makeStyles(() => ({
     padding: "50px 32px 50px",
     margin: "32px 0 0 0",
     borderRadius: "24px",
-    color: "#4d4d4d",
     background: "#f0f0f0",
     display: "flex",
     flexDirection: "column",
@@ -110,15 +101,11 @@ const useStyles = makeStyles(() => ({
       marginTop: "10px",
       marginBottom: "20px",
     },
-    "& $a": {
-      color: "#4d4d4d",
-    },
     "& $p": {
       marginBottom: "16px",
     },
   },
   partners: {
-    color: "#4d4d4d",
     background: "#fff",
     padding: "48px 32px",
     borderRadius: "24px",

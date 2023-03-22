@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import donatebg from "./assets/donate-bg.webp";
-import iconSpacerGray from "./assets/icon-spacer-gray.svg";
 import makeStyles from "@mui/styles/makeStyles";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";

@@ -22,16 +22,12 @@ const useStyles = makeStyles(() => ({
     },
   },
   title: {
-    color: "#4d4d4d",
     textTransform: "uppercase",
     fontWeight: 500,
     textAlign: "center",
     background: "#FFF",
     margin: 0,
     padding: "32px 0",
-    "& $span": {
-      color: "#4d4d4d",
-    },
   },
   figure: {
     margin: 0,
@@ -44,12 +40,10 @@ const useStyles = makeStyles(() => ({
     padding: "32px",
     margin: "32px 0",
     borderRadius: "24px",
-    color: "#4d4d4d",
     background: "#f0f0f0",
     display: "flex",
     flexDirection: "column",
     "& $h2": {
-      color: "#4d4d4d",
       flexBasis: "100",
 
       textAlign: "center",
@@ -63,7 +57,6 @@ const useStyles = makeStyles(() => ({
     padding: "32px",
     margin: "32px 0 0 0",
     borderRadius: "24px",
-    color: "#4d4d4d",
     background: "#B6D8FB",
     display: "flex",
     flexDirection: "column",
@@ -76,21 +69,16 @@ const useStyles = makeStyles(() => ({
       marginTop: "10px",
       marginBottom: "20px",
     },
-    "& $a": {
-      color: "#4d4d4d",
-    },
   },
   contact: {
     padding: "32px",
     margin: "32px 0 0 0",
     borderRadius: "24px",
-    color: "#4d4d4d",
     background: "#f0f0f0",
     display: "flex",
     flexDirection: "column",
     textAlign: "center",
     "& $h2": {
-      color: "#4d4d4d",
       flexBasis: "100",
 
       textAlign: "center",
@@ -99,9 +87,7 @@ const useStyles = makeStyles(() => ({
       marginTop: "10px",
       marginBottom: "20px",
     },
-    "& $a": {
-      color: "#4d4d4d",
-    },
+
     "& $p": {
       marginBottom: "16px",
     },
@@ -116,7 +102,6 @@ const useStyles = makeStyles(() => ({
     flexWrap: "wrap",
     flexDirection: "column",
     "& $h2": {
-      color: "#4d4d4d",
       width: "100%",
       flexBasis: "100",
       textAlign: "center",

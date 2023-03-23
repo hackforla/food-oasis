@@ -66,3 +66,13 @@ export const formatDate = (ts) => {
         minute: "numeric",
       });
 };
+
+export const formatDateMMMddYYYY = (ts) => {
+  return !ts
+    ? null
+    : new Date(ts).toLocaleString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
+};

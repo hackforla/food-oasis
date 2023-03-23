@@ -141,6 +141,11 @@ function App() {
                       <Route exact path="/">
                         <HeaderHome />
                       </Route>
+                      {/*
+                        When app is embedded as a widget on another site, don't
+                        show any header  
+                      */}
+                      <Route exact path="/widget" />
                       <Route>
                         <Header />
                       </Route>

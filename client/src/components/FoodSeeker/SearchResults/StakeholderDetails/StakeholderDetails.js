@@ -28,6 +28,7 @@ import { useHistory } from "react-router-dom";
 import { useToasterContext } from "../../../../contexts/toasterContext";
 import SEO from "../../../SEO";
 import { styled } from "@mui/material/styles";
+import { formatDateMMMddYYYY } from "helpers";
 
 const MinorHeading = styled(Typography)(({ theme }) => ({
   variant: "h5",
@@ -506,13 +507,13 @@ const StakeholderDetails = () => {
 
         {selectedOrganization.verificationStatusId ===
         VERIFICATION_STATUS.VERIFIED ? (
-          <DetailText color="primary.main">
+          <DetailText color="secondary.main">
             Data updated on{" "}
             {selectedOrganization.approvedDate
-              ? selectedOrganization.approvedDate.format("MMM Do, YYYY")
+              ? formatDateMMMddYYYY(selectedOrganization.approvedDate)
               : selectedOrganization.modifiedDate
-              ? selectedOrganization.modifiedDate.format("MMM Do, YYYY")
-              : selectedOrganization.createdDate.format("MMM Do, YYYY")}
+              ? formatDateMMMddYYYY(selectedOrganization.modifiedDate)
+              : formatDateMMMddYYYY(selectedOrganization.createdDate)}
           </DetailText>
         ) : null}
       </Stack>

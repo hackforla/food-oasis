@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
 import * as loginsService from "../services/logins-service";
-import moment from "moment";
+
+const dateFormatOptions = {
+  weekday: "short",
+  month: "short",
+  day: "numeric",
+  year: "numeric",
+  hour: "numeric",
+  minute: "numeric",
+};
 
 export const useLogins = (emailQuery) => {
   const [data, setData] = useState([]);
@@ -14,7 +22,10 @@ export const useLogins = (emailQuery) => {
         let logins = await loginsService.getAll(email);
         logins = logins.map((login) => ({
           ...login,
-          loginTime: moment.utc(login.loginTime).local().format("llll"),
+          loginTime: new Date(login.loginTime).toLocaleDateString(
+            "en-US",
+            dateFormatOptions
+          ),
         }));
         setData(logins);
         setLoading(false);

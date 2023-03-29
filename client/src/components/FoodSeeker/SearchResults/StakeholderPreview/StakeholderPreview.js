@@ -21,6 +21,12 @@ import {
 } from "../../../../appReducer";
 import StakeholderIcon from "images/stakeholderIcon";
 import { useHistory, useLocation } from "react-router-dom";
+import {
+  formatDatewTimeZoneDD,
+  formatDatewTimeZonehhmmss,
+  formatDatewTimeZoneWeekdayShort,
+  formatDatewTimeZoneMMM,
+} from "helpers";
 
 const TENANT_TIME_ZONES = {
   1: "America/Los_Angeles",
@@ -36,17 +42,14 @@ const isLastOccurrenceInMonth = (tenantTimeZone) => {
   const currentDatePlus7Days = new Date();
   currentDatePlus7Days.setDate(currentDatePlus7Days.getDate() + 7);
 
-  const timezoneOptions = {
-    timeZone: tenantTimeZone,
-    month: "short",
-  };
-  const currentDateCurrentMonth = currentDate.toLocaleString(
-    "en-US",
-    timezoneOptions
+  const currentDateCurrentMonth = formatDatewTimeZoneMMM(
+    currentDate,
+    tenantTimeZone
   );
-  const currentDatePlus7DaysCurrentMonth = currentDatePlus7Days.toLocaleString(
-    "en-US",
-    timezoneOptions
+
+  const currentDatePlus7DaysCurrentMonth = formatDatewTimeZoneMMM(
+    currentDatePlus7Days,
+    tenantTimeZone
   );
 
   if (currentDateCurrentMonth !== currentDatePlus7DaysCurrentMonth) {
@@ -59,28 +62,17 @@ const stakeholdersCurrentDaysHours = (stakeholder, tenantTimeZone) => {
   let currentDay = new Date();
 
   const timeZone = tenantTimeZone;
-  const currentDayOfWeek = currentDay.toLocaleString("en-US", {
-    timeZone,
-    weekday: "short",
-  });
+  const currentDayOfWeek = formatDatewTimeZoneWeekdayShort(
+    currentDay,
+    timeZone
+  );
 
   // In tandum with currentDayOfWeek tells us which week the day falls
   const dayOccurrenceInMonth = Math.ceil(
-    Number(
-      currentDay.toLocaleString("en-US", {
-        timeZone,
-        day: "2-digit",
-      })
-    ) / 7
+    Number(formatDatewTimeZoneDD(currentDay, timeZone)) / 7
   );
 
-  const currentTime = currentDay.toLocaleString("en-US", {
-    timeZone,
-    hour12: false,
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-  });
+  const currentTime = formatDatewTimeZonehhmmss(currentDay, timeZone);
 
   const currentDaysHoursOfOperation =
     stakeholder.hours &&
@@ -106,13 +98,7 @@ const stakeholdersCurrentDaysHours = (stakeholder, tenantTimeZone) => {
 };
 
 const calculateMinutesToClosing = (hours, tenantTimeZone) => {
-  const currentTime = new Date().toLocaleString("en-US", {
-    timeZone: tenantTimeZone,
-    hour12: false,
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-  });
+  const currentTime = formatDatewTimeZonehhmmss(new Date(), tenantTimeZone);
 
   function calculateTimeDifference(time1, time2) {
     // Create Date objects for both times with a fixed date (e.g., 1970-01-01)

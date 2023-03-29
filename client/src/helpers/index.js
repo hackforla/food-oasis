@@ -72,3 +72,45 @@ export const formatDateMMMddYYYY = (ts) => {
         year: "numeric",
       });
 };
+
+export const formatDatewTimeZoneDD = (ts, timeZone) => {
+  if (!ts || !timeZone) {
+    return null;
+  }
+  return new Date(ts).toLocaleString("en-US", { timeZone, day: "2-digit" });
+};
+
+export const formatDatewTimeZonehhmmss = (ts, timeZone) => {
+  if (!ts || !timeZone) {
+    return null;
+  }
+  return new Date(ts).toLocaleString("en-US", {
+    timeZone,
+    hour12: false,
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+};
+
+// e.g. returns "Tue"
+export const formatDatewTimeZoneWeekdayShort = (ts, timeZone) => {
+  if (!ts || !timeZone) {
+    return null;
+  }
+  return new Date(ts).toLocaleString("en-US", {
+    timeZone,
+    weekday: "short",
+  });
+};
+
+// e.g. returns "Apr"
+export const formatDatewTimeZoneMMM = (ts, timeZone) => {
+  if (!ts || !timeZone) {
+    return null;
+  }
+  return new Date(ts).toLocaleString("en-US", {
+    timeZone,
+    month: "short",
+  });
+};

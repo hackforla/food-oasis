@@ -61,6 +61,9 @@ const useStyles = makeStyles(() => ({
       marginTop: "10px",
       marginBottom: "20px",
     },
+    "& $a": {
+      color: "#4d4d4d",
+    },
   },
   forVolunteers: {
     padding: "50px 32px 50px",
@@ -76,6 +79,9 @@ const useStyles = makeStyles(() => ({
       fontSize: "32px",
       marginTop: "10px",
       marginBottom: "20px",
+    },
+    "& $a": {
+      color: "#4d4d4d",
     },
   },
   dl: {
@@ -151,8 +157,8 @@ const About = () => {
                     No. While our directory is not an exhaustive list of every
                     food resource open to the public in Los Angeles, our
                     volunteers work hard to ensure the information listed is
-                    updated. To suggest a listing missing from our directory,
-                    use this link.
+                    updated. To suggest a listing missing from our directory,{" "}
+                    <Link to={"/suggestion"}>use this link</Link>.
                   </li>
                 </ul>
                 <br />
@@ -167,7 +173,7 @@ const About = () => {
                     to food seekers. Meal programs provide free cooked meals to
                     food seekers. Many locations provide multiple services. Our
                     updated directory indicates which services are available at
-                    each location
+                    each location.
                   </li>
                 </ul>
               </dl>
@@ -184,7 +190,7 @@ const About = () => {
           <Typography variant="h2">Food Providers</Typography>
           <Container maxWidth="sm">
             <Typography variant="body1" align="center" className={classes.dl}>
-              <dt>How can I add our food pantry to your directory?</dt>
+              <dt>How can I add our food resource to your directory?</dt>
               <dd>
                 Please visit our “
                 <Link to={"/suggestion"}>Suggest New Listing</Link>” page.

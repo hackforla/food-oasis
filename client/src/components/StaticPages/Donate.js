@@ -75,6 +75,9 @@ const useStyles = makeStyles((theme) => ({
     "& $btnOutline": {
       margin: "30px auto",
     },
+    "& $a": {
+      color: "#4d4d4d",
+    },
   },
   donationDialog: {
     flexGrow: 1,
@@ -149,8 +152,15 @@ const Donate = () => {
               their family. We are committed to connecting food seekers to free
               food resources in Los Angeles County.
               <br /> <br />
-              Food Oasis is a 100% volunteer-run through Hack for LA. Our
-              volunteers have done amazing work but we need your help to
+              Food Oasis is a 100% volunteer-run through{" "}
+              <a
+                href="https://hackforla.org/"
+                target={"_blank"}
+                rel="noopener noreferrer"
+              >
+                Hack for LA
+              </a>
+              . Our volunteers have done amazing work but we need your help to
               maintain and expand this important resource. Your tax-deductible
               donation helps us offset the costs involved with marketing and
               updating our directory.

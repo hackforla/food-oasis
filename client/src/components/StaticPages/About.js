@@ -80,6 +80,9 @@ const useStyles = makeStyles(() => ({
       marginTop: "10px",
       marginBottom: "20px",
     },
+    "& $a": {
+      color: "#4d4d4d",
+    },
     "& $p": {
       marginBottom: "16px",
     },
@@ -100,6 +103,9 @@ const useStyles = makeStyles(() => ({
       fontSize: "32px",
       marginTop: "10px",
       marginBottom: "20px",
+    },
+    "& $a": {
+      color: "#4d4d4d",
     },
     "& $p": {
       marginBottom: "16px",
@@ -143,7 +149,6 @@ const About = () => {
     analytics.postEvent("visitAboutPage");
   }, []);
 
-  // const { t } = useTranslation("about");
   return (
     <div className={classes.outer}>
       <div className={classes.main}>
@@ -190,8 +195,15 @@ const About = () => {
           <Typography variant="h2">Our Team</Typography>
           <Container maxWidth="sm">
             <Typography variant="body1">
-              We are a 100% volunteer-run project. We are part of Hack for LA.
-              Our team includes product managers, researchers, designers,
+              We are a 100% volunteer-run project. We are part of{" "}
+              <a
+                href="https://hackforla.org/"
+                target={"_blank"}
+                rel="noopener noreferrer"
+              >
+                Hack for LA
+              </a>
+              . Our team includes product managers, researchers, designers,
               developers, writers and data validators who maintain this
               web-based directory. We verify each listing in our directory
               regularly to ensure the contact information, hours of operation,

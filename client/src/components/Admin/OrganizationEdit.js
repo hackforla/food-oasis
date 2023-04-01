@@ -487,7 +487,7 @@ const OrganizationEdit = (props) => {
                     </Tabs>
                   </AppBar>
                   <TabPanel value={tabPage} index={0}>
-                    <Grid container spacing={1}>
+                    <Grid container spacing={2}>
                       <Grid item xs={12} display="flex">
                         <TextField
                           name="name"
@@ -795,189 +795,183 @@ const OrganizationEdit = (props) => {
                         </Tooltip>
                       </Grid>
 
-                      <Grid container spacing={1}>
-                        <Grid item xs={12}>
-                          <TextField
-                            name="address1"
-                            label="Address Line 1 *"
-                            value={values.address1}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            helperText={touched.address1 ? errors.address1 : ""}
-                            error={touched.address1 && Boolean(errors.address1)}
-                          />
-                        </Grid>
-                        <Grid item xs={12}>
-                          <TextField
-                            name="address2"
-                            label="Address Line 2"
-                            value={values.address2}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            helperText={touched.address2 ? errors.address2 : ""}
-                            error={touched.address2 && Boolean(errors.address2)}
-                          />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                          <TextField
-                            name="city"
-                            label="City *"
-                            value={values.city}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            helperText={touched.city ? errors.city : ""}
-                            error={touched.city && Boolean(errors.city)}
-                          />
-                        </Grid>
-                        <Grid item xs={12} sm={3}>
-                          <TextField
-                            name="state"
-                            label="State *"
-                            value={values.state}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            helperText={touched.state ? errors.state : ""}
-                            error={touched.state && Boolean(errors.state)}
-                          />
-                        </Grid>
-                        <Grid item xs={12} sm={3}>
-                          <TextField
-                            name="zip"
-                            label="Zip Code *"
-                            value={values.zip}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            helperText={touched.zip ? errors.zip : ""}
-                            error={touched.zip && Boolean(errors.zip)}
-                          />
-                        </Grid>
-
-                        <Grid item xs={6} md={3}>
-                          <TextField
-                            name="latitude"
-                            label="Latitude *"
-                            value={values.latitude}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            helperText={touched.latitude ? errors.latitude : ""}
-                            error={touched.latitude && Boolean(errors.latitude)}
-                          />
-                        </Grid>
-                        <Grid item xs={6} md={3}>
-                          <TextField
-                            name="longitude"
-                            label="Longitude *"
-                            value={values.longitude}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            helperText={
-                              touched.longitude ? errors.longitude : ""
-                            }
-                            error={
-                              touched.longitude && Boolean(errors.longitude)
-                            }
-                          />
-                        </Grid>
-                        <Grid item xs={12} md={6}>
-                          <Grid container>
-                            <Grid
-                              xs={12}
-                              item
-                              style={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                              }}
-                            >
-                              <Tooltip title="Click to get latitude / longitude for address">
-                                <Grid item>
-                                  <Button
-                                    variant="outlined"
-                                    icon="search"
-                                    // style={{ marginTop: "1.2em" }}
-                                    onClick={() => {
-                                      (geocodeResults &&
-                                        geocodeResults.length) < 1
-                                        ? geocode(values)
-                                        : setGeocodeResults([]);
-                                    }}
-                                  >
-                                    {(geocodeResults && geocodeResults.length) <
-                                    1
-                                      ? "Get Coordinates"
-                                      : "Close"}
-                                  </Button>
-                                </Grid>
-                              </Tooltip>
-                              <div>
-                                <FormControlLabel
-                                  control={
-                                    <Checkbox
-                                      margin="normal"
-                                      name="confirmedAddress"
-                                      value={values.confirmedAddress}
-                                      checked={values.confirmedAddress}
-                                      onChange={() =>
-                                        setFieldValue(
-                                          "confirmedAddress",
-                                          !values.confirmedAddress
-                                        )
-                                      }
-                                      onBlur={handleBlur}
-                                    />
-                                  }
-                                  label="Confirm Address"
-                                />
-                              </div>
-                            </Grid>
-                          </Grid>
-                          <div style={{ padding: "0.5em 0" }}>
-                            {geocodeResults ? (
-                              geocodeResults.map((result, index) => (
-                                <div
-                                  style={{
-                                    border: "1px solid black",
-                                    backgroundColor: "#EEE",
-                                    margin: "0.1em",
-                                    padding: "0.5em",
-                                  }}
-                                  key={index}
-                                >
-                                  <Grid container>
-                                    <Grid item xs={10}>
-                                      <Typography>{`(${result.Place.Geometry.Point[1]}, ${result.Place.Geometry.Point[0]})`}</Typography>
-                                      <Typography>{`Match Score: ${result.Relevance}`}</Typography>
-                                      {/* <Typography>{`${result.attributes.Addr_type}`}</Typography> */}
-                                    </Grid>
-                                    <Grid item xs={2}>
-                                      <Button
-                                        variant="outlined"
-                                        type="button"
-                                        icon="check"
-                                        style={{ paddingRight: "0" }}
-                                        onClick={() => {
-                                          setFieldValue(
-                                            "latitude",
-                                            result.Place.Geometry.Point[1]
-                                          );
-                                          setFieldValue(
-                                            "longitude",
-                                            result.Place.Geometry.Point[0]
-                                          );
-                                          setGeocodeResults([]);
-                                        }}
-                                      >
-                                        Set
-                                      </Button>
-                                    </Grid>
-                                  </Grid>
-                                </div>
-                              ))
-                            ) : (
-                              <div>No Results</div>
-                            )}
-                          </div>
-                        </Grid>
+                      <Grid item xs={12}>
+                        <TextField
+                          name="address1"
+                          label="Address Line 1 *"
+                          value={values.address1}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          helperText={touched.address1 ? errors.address1 : ""}
+                          error={touched.address1 && Boolean(errors.address1)}
+                        />
                       </Grid>
+                      <Grid item xs={12}>
+                        <TextField
+                          name="address2"
+                          label="Address Line 2"
+                          value={values.address2}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          helperText={touched.address2 ? errors.address2 : ""}
+                          error={touched.address2 && Boolean(errors.address2)}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <TextField
+                          name="city"
+                          label="City *"
+                          value={values.city}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          helperText={touched.city ? errors.city : ""}
+                          error={touched.city && Boolean(errors.city)}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={3}>
+                        <TextField
+                          name="state"
+                          label="State *"
+                          value={values.state}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          helperText={touched.state ? errors.state : ""}
+                          error={touched.state && Boolean(errors.state)}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={3}>
+                        <TextField
+                          name="zip"
+                          label="Zip Code *"
+                          value={values.zip}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          helperText={touched.zip ? errors.zip : ""}
+                          error={touched.zip && Boolean(errors.zip)}
+                        />
+                      </Grid>
+
+                      <Grid item xs={6} md={3}>
+                        <TextField
+                          name="latitude"
+                          label="Latitude *"
+                          value={values.latitude}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          helperText={touched.latitude ? errors.latitude : ""}
+                          error={touched.latitude && Boolean(errors.latitude)}
+                        />
+                      </Grid>
+                      <Grid item xs={6} md={3}>
+                        <TextField
+                          name="longitude"
+                          label="Longitude *"
+                          value={values.longitude}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          helperText={touched.longitude ? errors.longitude : ""}
+                          error={touched.longitude && Boolean(errors.longitude)}
+                        />
+                      </Grid>
+                      <Grid item xs={12} md={6}>
+                        <Grid container>
+                          <Grid
+                            xs={12}
+                            item
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <Tooltip title="Click to get latitude / longitude for address">
+                              <Grid item>
+                                <Button
+                                  variant="outlined"
+                                  icon="search"
+                                  // style={{ marginTop: "1.2em" }}
+                                  onClick={() => {
+                                    (geocodeResults && geocodeResults.length) <
+                                    1
+                                      ? geocode(values)
+                                      : setGeocodeResults([]);
+                                  }}
+                                >
+                                  {(geocodeResults && geocodeResults.length) < 1
+                                    ? "Get Coordinates"
+                                    : "Close"}
+                                </Button>
+                              </Grid>
+                            </Tooltip>
+                            <div>
+                              <FormControlLabel
+                                control={
+                                  <Checkbox
+                                    margin="normal"
+                                    name="confirmedAddress"
+                                    value={values.confirmedAddress}
+                                    checked={values.confirmedAddress}
+                                    onChange={() =>
+                                      setFieldValue(
+                                        "confirmedAddress",
+                                        !values.confirmedAddress
+                                      )
+                                    }
+                                    onBlur={handleBlur}
+                                  />
+                                }
+                                label="Confirm Address"
+                              />
+                            </div>
+                          </Grid>
+                        </Grid>
+                        <div style={{ padding: "0.5em 0" }}>
+                          {geocodeResults ? (
+                            geocodeResults.map((result, index) => (
+                              <div
+                                style={{
+                                  border: "1px solid black",
+                                  backgroundColor: "#EEE",
+                                  margin: "0.1em",
+                                  padding: "0.5em",
+                                }}
+                                key={index}
+                              >
+                                <Grid container>
+                                  <Grid item xs={10}>
+                                    <Typography>{`(${result.Place.Geometry.Point[1]}, ${result.Place.Geometry.Point[0]})`}</Typography>
+                                    <Typography>{`Match Score: ${result.Relevance}`}</Typography>
+                                    {/* <Typography>{`${result.attributes.Addr_type}`}</Typography> */}
+                                  </Grid>
+                                  <Grid item xs={2}>
+                                    <Button
+                                      variant="outlined"
+                                      type="button"
+                                      icon="check"
+                                      style={{ paddingRight: "0" }}
+                                      onClick={() => {
+                                        setFieldValue(
+                                          "latitude",
+                                          result.Place.Geometry.Point[1]
+                                        );
+                                        setFieldValue(
+                                          "longitude",
+                                          result.Place.Geometry.Point[0]
+                                        );
+                                        setGeocodeResults([]);
+                                      }}
+                                    >
+                                      Set
+                                    </Button>
+                                  </Grid>
+                                </Grid>
+                              </div>
+                            ))
+                          ) : (
+                            <div>No Results</div>
+                          )}
+                        </div>
+                      </Grid>
+
                       <Grid item xs={12} sm={6}>
                         <div>
                           <FormControl fullWidth>
@@ -1184,7 +1178,7 @@ const OrganizationEdit = (props) => {
                     </Grid>
                   </TabPanel>
                   <TabPanel value={tabPage} index={3}>
-                    <Grid container spacing={2} display="flex">
+                    <Grid container spacing={2}>
                       <Grid item xs={12}>
                         <Typography>Details for Food Seekers to See</Typography>
                       </Grid>
@@ -1198,7 +1192,13 @@ const OrganizationEdit = (props) => {
                         <Grid item xs={6}>
                           <Typography>Food Types</Typography>
                         </Grid>
-                        <Grid item container justifyContent="flex-end" xs={6}>
+                        <Grid
+                          item
+                          container
+                          justifyContent="flex-end"
+                          xs={6}
+                          spacing={2}
+                        >
                           <FormControlLabel
                             control={
                               <Checkbox
@@ -1238,119 +1238,121 @@ const OrganizationEdit = (props) => {
                           );
                         })}
                       </Grid>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <TextField
-                        name="foodTypes"
-                        label="Other Food Types"
-                        multiline
-                        minRows={2}
-                        maxRows={12}
-                        value={values.foodTypes}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        helperText={touched.foodTypes ? errors.foodTypes : ""}
-                        error={touched.foodTypes && Boolean(errors.foodTypes)}
-                      />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Tooltip title="(Items besides food, i.e. dog food, cat food, hygiene products, diapers, female hygiene products)">
+
+                      <Grid item xs={12}>
                         <TextField
-                          name="items"
-                          label="Non-Food Items"
-                          value={values.items}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          helperText={touched.items ? errors.items : ""}
-                          error={touched.items && Boolean(errors.items)}
-                        />
-                      </Tooltip>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Tooltip title="(Besides feeding ppl, i.e., family counseling, career counseling, drop in for women or homeless, etc.)">
-                        <TextField
-                          name="services"
-                          label="Services (separated by commas)"
-                          value={values.services}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          helperText={touched.services ? errors.services : ""}
-                          error={touched.services && Boolean(errors.services)}
-                        />
-                      </Tooltip>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Tooltip title="(Must go to chapel service, must be < 18, must show citizenship, etc.)">
-                        <TextField
-                          name="requirements"
-                          label="Eligibility / Requirements"
+                          name="foodTypes"
+                          label="Other Food Types"
                           multiline
                           minRows={2}
                           maxRows={12}
-                          value={values.requirements}
+                          value={values.foodTypes}
                           onChange={handleChange}
                           onBlur={handleBlur}
-                          helperText={
-                            touched.requirements ? errors.requirements : ""
-                          }
-                          error={
-                            touched.requirements && Boolean(errors.requirements)
-                          }
+                          helperText={touched.foodTypes ? errors.foodTypes : ""}
+                          error={touched.foodTypes && Boolean(errors.foodTypes)}
                         />
-                      </Tooltip>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Tooltip title="Other notes about eligibility requirements">
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Tooltip title="(Items besides food, i.e. dog food, cat food, hygiene products, diapers, female hygiene products)">
+                          <TextField
+                            name="items"
+                            label="Non-Food Items"
+                            value={values.items}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            helperText={touched.items ? errors.items : ""}
+                            error={touched.items && Boolean(errors.items)}
+                          />
+                        </Tooltip>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Tooltip title="(Besides feeding ppl, i.e., family counseling, career counseling, drop in for women or homeless, etc.)">
+                          <TextField
+                            name="services"
+                            label="Services (separated by commas)"
+                            value={values.services}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            helperText={touched.services ? errors.services : ""}
+                            error={touched.services && Boolean(errors.services)}
+                          />
+                        </Tooltip>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Tooltip title="(Must go to chapel service, must be < 18, must show citizenship, etc.)">
+                          <TextField
+                            name="requirements"
+                            label="Eligibility / Requirements"
+                            multiline
+                            minRows={2}
+                            maxRows={12}
+                            value={values.requirements}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            helperText={
+                              touched.requirements ? errors.requirements : ""
+                            }
+                            error={
+                              touched.requirements &&
+                              Boolean(errors.requirements)
+                            }
+                          />
+                        </Tooltip>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Tooltip title="Other notes about eligibility requirements">
+                          <TextField
+                            name="eligibilityNotes"
+                            label="Eligibility Notes"
+                            multiline
+                            minRows={2}
+                            maxRows={12}
+                            value={values.eligibilityNotes}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            helperText={
+                              touched.eligibilityNotes
+                                ? errors.eligibilityNotes
+                                : ""
+                            }
+                            error={
+                              touched.eligibilityNotes &&
+                              Boolean(errors.eligibilityNotes)
+                            }
+                          />
+                        </Tooltip>
+                      </Grid>
+                      <Grid item xs={12}>
                         <TextField
-                          name="eligibilityNotes"
-                          label="Eligibility Notes"
+                          name="languages"
+                          label="Languages"
                           multiline
                           minRows={2}
                           maxRows={12}
-                          value={values.eligibilityNotes}
+                          value={values.languages}
                           onChange={handleChange}
                           onBlur={handleBlur}
-                          helperText={
-                            touched.eligibilityNotes
-                              ? errors.eligibilityNotes
-                              : ""
-                          }
-                          error={
-                            touched.eligibilityNotes &&
-                            Boolean(errors.eligibilityNotes)
-                          }
+                          helperText={touched.languages ? errors.languages : ""}
+                          error={touched.languages && Boolean(errors.languages)}
                         />
-                      </Tooltip>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <TextField
-                        name="languages"
-                        label="Languages"
-                        multiline
-                        minRows={2}
-                        maxRows={12}
-                        value={values.languages}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        helperText={touched.languages ? errors.languages : ""}
-                        error={touched.languages && Boolean(errors.languages)}
-                      />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Tooltip title={noteTooltip}>
-                        <TextField
-                          name="notes"
-                          label="Notes for the Public"
-                          multiline
-                          minRows={2}
-                          maxRows={12}
-                          value={values.notes}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          helperText={touched.notes ? errors.notes : ""}
-                          error={touched.notes && Boolean(errors.notes)}
-                        />
-                      </Tooltip>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Tooltip title={noteTooltip}>
+                          <TextField
+                            name="notes"
+                            label="Notes for the Public"
+                            multiline
+                            minRows={2}
+                            maxRows={12}
+                            value={values.notes}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            helperText={touched.notes ? errors.notes : ""}
+                            error={touched.notes && Boolean(errors.notes)}
+                          />
+                        </Tooltip>
+                      </Grid>
                     </Grid>
                   </TabPanel>
                   <TabPanel value={tabPage} index={4}>
@@ -1830,302 +1832,284 @@ const OrganizationEdit = (props) => {
                     </Tooltip>
                   </div>
 
-                  <div
-                    style={{
-                      flexGrow: "0",
-                      flexBasis: "65%",
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "flex-end",
-                    }}
-                  >
-                    {user && (user.isAdmin || user.isCoordinator) ? (
-                      <div
-                        style={{
-                          margin: 0,
-                          paddingLeft: "0.2em",
-                          display: "flex",
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          alignItems: "flex-end",
-                        }}
+                  {user && (user.isAdmin || user.isCoordinator) ? (
+                    <Stack
+                      direction="row"
+                      spacing={2}
+                      alignItems="flex-end"
+                      flexBasis="65%"
+                    >
+                      <Tooltip title="Save updated information, but do not change the verification status">
+                        <div>
+                          <Button
+                            variant="contained"
+                            type="submit"
+                            disabled={isSubmitting || isUnchanged(values)}
+                            sx={{
+                              minHeight: "3.5rem",
+                            }}
+                          >
+                            Save Progress
+                          </Button>
+                        </div>
+                      </Tooltip>
+                      <Tooltip title="Mark for re-verification">
+                        <div>
+                          <Button
+                            variant="contained"
+                            type="button"
+                            style={{
+                              minHeight: "3.5rem",
+                              display: "flex",
+                            }}
+                            onClick={() => {
+                              setFieldValue("reviewedLoginId", "");
+                              setFieldValue("reviewedUser", "");
+                              setFieldValue("approvedDate", "");
+                              setFieldValue("assignedLoginId", "");
+                              setFieldValue("assignedUser", "");
+                              setFieldValue("assignedDate", "");
+
+                              // TODO: Really need to pop up a dialog and prompt the
+                              // user to determine for information about what needs
+                              // to be verified.
+                              setFieldValue(
+                                "verificationStatusId",
+                                VERIFICATION_STATUS.NEEDS_VERIFICATION
+                              );
+                              setNextUrl("/verificationadmin");
+                              handleSubmit();
+                            }}
+                            disabled={
+                              isSubmitting ||
+                              values.verifivation_status_id ===
+                                VERIFICATION_STATUS.NEEDS_VERIFICATION
+                            }
+                          >
+                            Needs Verfication
+                          </Button>
+                        </div>
+                      </Tooltip>
+                      <Tooltip title="Assign for Verification">
+                        <div>
+                          <Button
+                            variant="contained"
+                            type="button"
+                            style={{
+                              minHeight: "3.5rem",
+                              display: "flex",
+                            }}
+                            onClick={() => {
+                              handleAssignDialogOpen({
+                                callback: (loginId) => {
+                                  setFieldValue("reviewedLoginId", "");
+                                  setFieldValue("reviewedUser", "");
+                                  setFieldValue("approvedDate", "");
+                                  setFieldValue("assignedLoginId", loginId);
+                                  setFieldValue("assignedDate", moment());
+                                  setFieldValue(
+                                    "verificationStatusId",
+                                    VERIFICATION_STATUS.ASSIGNED
+                                  );
+                                  setNextUrl("/verificationadmin");
+                                  handleSubmit();
+                                },
+                              });
+                            }}
+                            disabled={
+                              isSubmitting ||
+                              values.verification_status_id ===
+                                VERIFICATION_STATUS.SUBMITTED
+                            }
+                          >
+                            (Re-)Assign
+                          </Button>
+                        </div>
+                      </Tooltip>
+                      <Tooltip
+                        title={"Submitted record needs changes -> Assigned "}
                       >
-                        <Tooltip title="Save updated information, but do not change the verification status">
-                          <div>
-                            <Button
-                              variant="contained"
-                              type="submit"
-                              disabled={isSubmitting || isUnchanged(values)}
-                              sx={{
-                                minHeight: "3.5rem",
-                              }}
-                            >
-                              Save Progress
-                            </Button>
-                          </div>
-                        </Tooltip>
-                        <Tooltip title="Mark for re-verification">
-                          <div>
-                            <Button
-                              variant="contained"
-                              type="button"
-                              style={{
-                                minHeight: "3.5rem",
-                                display: "flex",
-                              }}
-                              onClick={() => {
-                                setFieldValue("reviewedLoginId", "");
-                                setFieldValue("reviewedUser", "");
-                                setFieldValue("approvedDate", "");
-                                setFieldValue("assignedLoginId", "");
-                                setFieldValue("assignedUser", "");
-                                setFieldValue("assignedDate", "");
+                        <div>
+                          <Button
+                            variant="contained"
+                            type="button"
+                            style={{
+                              minHeight: "3.5rem",
+                              display: "flex",
+                            }}
+                            onClick={() => {
+                              setFieldValue(
+                                "reviewedUser",
+                                user.firstName + " " + user.lastName
+                              );
+                              setFieldValue("reviewedLoginId", user.id);
 
-                                // TODO: Really need to pop up a dialog and prompt the
-                                // user to determine for information about what needs
-                                // to be verified.
-                                setFieldValue(
-                                  "verificationStatusId",
-                                  VERIFICATION_STATUS.NEEDS_VERIFICATION
-                                );
-                                setNextUrl("/verificationadmin");
-                                handleSubmit();
-                              }}
-                              disabled={
-                                isSubmitting ||
-                                values.verifivation_status_id ===
-                                  VERIFICATION_STATUS.NEEDS_VERIFICATION
-                              }
-                            >
-                              Needs Verfication
-                            </Button>
-                          </div>
-                        </Tooltip>
-                        <Tooltip title="Assign for Verification">
-                          <div>
-                            <Button
-                              variant="contained"
-                              type="button"
-                              style={{
-                                minHeight: "3.5rem",
-                                display: "flex",
-                              }}
-                              onClick={() => {
-                                handleAssignDialogOpen({
-                                  callback: (loginId) => {
-                                    setFieldValue("reviewedLoginId", "");
-                                    setFieldValue("reviewedUser", "");
-                                    setFieldValue("approvedDate", "");
-                                    setFieldValue("assignedLoginId", loginId);
-                                    setFieldValue("assignedDate", moment());
-                                    setFieldValue(
-                                      "verificationStatusId",
-                                      VERIFICATION_STATUS.ASSIGNED
-                                    );
-                                    setNextUrl("/verificationadmin");
-                                    handleSubmit();
-                                  },
-                                });
-                              }}
-                              disabled={
-                                isSubmitting ||
-                                values.verification_status_id ===
-                                  VERIFICATION_STATUS.SUBMITTED
-                              }
-                            >
-                              (Re-)Assign
-                            </Button>
-                          </div>
-                        </Tooltip>
-                        <Tooltip
-                          title={"Submitted record needs changes -> Assigned "}
-                        >
-                          <div>
-                            <Button
-                              variant="contained"
-                              type="button"
-                              style={{
-                                minHeight: "3.5rem",
-                                display: "flex",
-                              }}
-                              onClick={() => {
-                                setFieldValue(
-                                  "reviewedUser",
-                                  user.firstName + " " + user.lastName
-                                );
-                                setFieldValue("reviewedLoginId", user.id);
+                              // TODO: Really need to pop up a dialog and prompt the
+                              // user for a review comment
+                              // about what needs to be fixed.
+                              setFieldValue(
+                                "verificationStatusId",
+                                VERIFICATION_STATUS.ASSIGNED
+                              );
 
-                                // TODO: Really need to pop up a dialog and prompt the
-                                // user for a review comment
-                                // about what needs to be fixed.
-                                setFieldValue(
-                                  "verificationStatusId",
-                                  VERIFICATION_STATUS.ASSIGNED
-                                );
-
-                                setNextUrl("/verificationadmin");
-                                handleSubmit();
-                              }}
-                              disabled={
-                                isSubmitting ||
-                                !values.submittedDate ||
-                                values.verificationStatusId !== 3
-                              }
-                            >
-                              Request Changes
-                            </Button>
-                          </div>
-                        </Tooltip>
-                        <Tooltip title="Approve as Verified">
-                          <div>
-                            <Button
-                              variant="contained"
-                              type="button"
-                              style={{
-                                minHeight: "3.5rem",
-                                display: "flex",
-                              }}
-                              onClick={() => {
-                                setFieldValue("approvedDate", moment());
-                                setFieldValue(
-                                  "reviewedUser",
-                                  user.firstName + " " + user.lastName
-                                );
-                                setFieldValue("reviewedLoginId", user.id);
-                                setFieldValue(
-                                  "verificationStatusId",
-                                  VERIFICATION_STATUS.VERIFIED
-                                );
-                                setNextUrl("/verificationadmin");
-                                handleSubmit();
-                              }}
-                              disabled={
-                                isSubmitting ||
-                                !criticalFieldsValidate(values) ||
-                                (user.isCoordinator && !user.isAdmin)
-                              }
-                            >
-                              Approve
-                            </Button>
-                          </div>
-                        </Tooltip>
-                        <Tooltip title="Delete Organization from Database Permanently">
-                          <div>
-                            <Button
-                              variant="contained"
-                              type="button"
-                              style={{
-                                minHeight: "3.5rem",
-                                display: "flex",
-                              }}
-                              onClick={() => {
-                                handleConfirmDialogOpen({
-                                  callback: () => {
-                                    stakeholderService.remove(values.id);
-                                    setNextUrl("/verificationadmin");
-                                    handleSubmit();
-                                  },
-                                });
-                              }}
-                              disabled={!user.isAdmin || !values.id}
-                            >
-                              Delete
-                            </Button>
-                          </div>
-                        </Tooltip>
-                      </div>
-                    ) : user && user.isDataEntry ? (
-                      <div
-                        style={{
-                          margin: 0,
-                          paddingLeft: "0.2em",
-                          display: "flex",
-                          flexDirection: "row",
-                          justifyContent: "center",
-                          alignItems: "flex-end",
-                        }}
-                      >
-                        <Tooltip title="Save changes to work on later">
-                          <div>
-                            <Button
-                              variant="contained"
-                              type="submit"
-                              style={{
-                                minHeight: "3.5rem",
-                                display: "flex",
-                              }}
-                              disabled={isSubmitting || isUnchanged(values)}
-                            >
-                              Save Progress
-                            </Button>
-                          </div>
-                        </Tooltip>
-                        <Tooltip title="Unable to complete six critical fields (*), but need to hand off to someone else to complete">
-                          <div>
-                            <Button
-                              variant="contained"
-                              type="button"
-                              style={{
-                                minHeight: "3.5rem",
-                                display: "flex",
-                              }}
-                              onClick={() => {
-                                setFieldValue("assignedLoginId", "");
-                                setFieldValue("assignedUser", "");
-                                setFieldValue("assignedDate", "");
-                                setFieldValue(
-                                  "verificationStatusId",
-                                  VERIFICATION_STATUS.NEEDS_VERIFICATION
-                                );
-                                setNextUrl("/verificationdashboard");
-                                handleSubmit();
-                              }}
-                              disabled={
-                                criticalFieldsValidate(values) ||
-                                values.verificationStatusId ===
-                                  VERIFICATION_STATUS.NEEDS_VERIFICATION
-                              }
-                            >
-                              Hand Off
-                            </Button>
-                          </div>
-                        </Tooltip>
-                        <Tooltip title="Critical information entered, Submit for Review.">
-                          <div>
-                            <Button
-                              variant="contained"
-                              type="button"
-                              style={{
-                                minHeight: "3.5rem",
-                                display: "flex",
-                              }}
-                              onClick={() => {
-                                setFieldValue("submittedDate", moment());
-                                setFieldValue(
-                                  "submittedUser",
-                                  user.firstName + " " + user.lastName
-                                );
-                                setFieldValue("submittedLoginId", user.id);
-                                setFieldValue(
-                                  "verificationStatusId",
-                                  VERIFICATION_STATUS.SUBMITTED
-                                );
-                                setNextUrl("/verificationdashboard");
-                                handleSubmit();
-                              }}
-                              disabled={
-                                !criticalFieldsValidate(values) ||
-                                values.verificationStatusId ===
-                                  VERIFICATION_STATUS.SUBMITTED
-                              }
-                            >
-                              Submit For Review
-                            </Button>
-                          </div>
-                        </Tooltip>
-                      </div>
-                    ) : null}
-                  </div>
+                              setNextUrl("/verificationadmin");
+                              handleSubmit();
+                            }}
+                            disabled={
+                              isSubmitting ||
+                              !values.submittedDate ||
+                              values.verificationStatusId !== 3
+                            }
+                          >
+                            Request Changes
+                          </Button>
+                        </div>
+                      </Tooltip>
+                      <Tooltip title="Approve as Verified">
+                        <div>
+                          <Button
+                            variant="contained"
+                            type="button"
+                            style={{
+                              minHeight: "3.5rem",
+                              display: "flex",
+                            }}
+                            onClick={() => {
+                              setFieldValue("approvedDate", moment());
+                              setFieldValue(
+                                "reviewedUser",
+                                user.firstName + " " + user.lastName
+                              );
+                              setFieldValue("reviewedLoginId", user.id);
+                              setFieldValue(
+                                "verificationStatusId",
+                                VERIFICATION_STATUS.VERIFIED
+                              );
+                              setNextUrl("/verificationadmin");
+                              handleSubmit();
+                            }}
+                            disabled={
+                              isSubmitting ||
+                              !criticalFieldsValidate(values) ||
+                              (user.isCoordinator && !user.isAdmin)
+                            }
+                          >
+                            Approve
+                          </Button>
+                        </div>
+                      </Tooltip>
+                      <Tooltip title="Delete Organization from Database Permanently">
+                        <div>
+                          <Button
+                            variant="contained"
+                            type="button"
+                            style={{
+                              minHeight: "3.5rem",
+                              display: "flex",
+                            }}
+                            onClick={() => {
+                              handleConfirmDialogOpen({
+                                callback: () => {
+                                  stakeholderService.remove(values.id);
+                                  setNextUrl("/verificationadmin");
+                                  handleSubmit();
+                                },
+                              });
+                            }}
+                            disabled={!user.isAdmin || !values.id}
+                          >
+                            Delete
+                          </Button>
+                        </div>
+                      </Tooltip>
+                    </Stack>
+                  ) : user && user.isDataEntry ? (
+                    <Stack
+                      direction="row"
+                      justifyContent="center"
+                      alignItems="flex-end"
+                      spacing={2}
+                    >
+                      <Tooltip title="Save changes to work on later">
+                        <div>
+                          <Button
+                            variant="contained"
+                            type="submit"
+                            style={{
+                              minHeight: "3.5rem",
+                              display: "flex",
+                            }}
+                            disabled={isSubmitting || isUnchanged(values)}
+                          >
+                            Save Progress
+                          </Button>
+                        </div>
+                      </Tooltip>
+                      <Tooltip title="Unable to complete six critical fields (*), but need to hand off to someone else to complete">
+                        <div>
+                          <Button
+                            variant="contained"
+                            type="button"
+                            style={{
+                              minHeight: "3.5rem",
+                              display: "flex",
+                            }}
+                            onClick={() => {
+                              setFieldValue("assignedLoginId", "");
+                              setFieldValue("assignedUser", "");
+                              setFieldValue("assignedDate", "");
+                              setFieldValue(
+                                "verificationStatusId",
+                                VERIFICATION_STATUS.NEEDS_VERIFICATION
+                              );
+                              setNextUrl("/verificationdashboard");
+                              handleSubmit();
+                            }}
+                            disabled={
+                              criticalFieldsValidate(values) ||
+                              values.verificationStatusId ===
+                                VERIFICATION_STATUS.NEEDS_VERIFICATION
+                            }
+                          >
+                            Hand Off
+                          </Button>
+                        </div>
+                      </Tooltip>
+                      <Tooltip title="Critical information entered, Submit for Review.">
+                        <div>
+                          <Button
+                            variant="contained"
+                            type="button"
+                            style={{
+                              minHeight: "3.5rem",
+                              display: "flex",
+                            }}
+                            onClick={() => {
+                              setFieldValue("submittedDate", moment());
+                              setFieldValue(
+                                "submittedUser",
+                                user.firstName + " " + user.lastName
+                              );
+                              setFieldValue("submittedLoginId", user.id);
+                              setFieldValue(
+                                "verificationStatusId",
+                                VERIFICATION_STATUS.SUBMITTED
+                              );
+                              setNextUrl("/verificationdashboard");
+                              handleSubmit();
+                            }}
+                            disabled={
+                              !criticalFieldsValidate(values) ||
+                              values.verificationStatusId ===
+                                VERIFICATION_STATUS.SUBMITTED
+                            }
+                          >
+                            Submit For Review
+                          </Button>
+                        </div>
+                      </Tooltip>
+                    </Stack>
+                  ) : null}
                 </Stack>
               </Stack>
             </form>

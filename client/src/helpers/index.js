@@ -54,3 +54,25 @@ export const extractNumbers = (numbers) =>
       ? { number: true, value: match[0] }
       : { number: false, value: n };
   });
+
+export const formatDate = (ts) => {
+  return !ts
+    ? null
+    : new Date(ts).toLocaleString("en-US", {
+        month: "numeric",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+      });
+};
+
+export const formatDateMMMddYYYY = (ts) => {
+  return !ts
+    ? null
+    : new Date(ts).toLocaleString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
+};

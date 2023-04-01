@@ -17,6 +17,7 @@ export default function Button(theme) {
     MuiButton: {
       defaultProps: {
         variant: "contained",
+        border: "none",
       },
       styleOverrides: {
         root: {
@@ -29,19 +30,69 @@ export default function Button(theme) {
           boxSizing: "border-box",
         },
         contained: {
+          padding: "8px 16px",
+          color: theme.palette.primary.contrastText,
+          backgroundColor: theme.palette.primary.main,
+          "&:hover": {
+            backgroundColor: theme.palette.primary.dark,
+          },
+
+          "&:active": {
+            backgroundColor: theme.palette.primary.dark,
+            boxShadow: "inset 4px 8px 4px rgba(0,0,0,0.4)",
+          },
+          "&:focus": {
+            backgroundColor: theme.palette.primary.main,
+            filter: "drop-shadow(0px 0px 12px rgba(255, 255, 255, 0.8))",
+          },
+          "&:disabled": {
+            backgroundColor: theme.palette.common.inactiveButton,
+            color: theme.palette.common.white,
+            boxShadow: "none",
+          },
+        },
+        outlined: {
+          color: theme.palette.primary.main,
+          backgroundColor: theme.palette.common.white,
+          borderStyle: "solid",
+          borderWidth: "1px",
+          borderColor: theme.palette.primary.light,
+          "&:hover": {
+            backgroundColor: "#E5F1F7",
+          },
+          "&:active": {
+            backgroundColor: "#CBE3F1",
+            boxShadow: "inset 4px 8px 4px rgba(0,0,0,0.25)",
+          },
+          "&:focus": {
+            filter: "drop-shadow(0px 0px  12px rgba(255, 255, 255, 0.8))",
+          },
+          "&:disabled": {
+            borderColor: theme.palette.common.inactiveButton,
+            backgroundColor: theme.palette.common.white,
+            color: theme.palette.common.inactiveButton,
+            boxShadow: "none",
+          },
+        },
+        recenter: {
           color: theme.palette.common.white,
           border: "2px solid transparent",
           backgroundColor: theme.palette.primary.main,
+          size: "small",
+          minWidth: 0,
+          maxWidth: "2rem",
+          minHeight: 0,
+          height: theme.spacing(5),
+          padding: theme.spacing(1),
+          boxSizing: "border-box",
           "&:hover": {
-            backgroundColor: "#2D5B88",
+            backgroundColor: theme.palette.primary.light,
             border: "2px solid transparent",
           },
-
           "&:active": {
             backgroundColor: "#264A79",
           },
           "&:focus": {
-            backgroundColor: theme.palette.primary.main,
             border: "2px solid #264A79",
             dropShadow: "10px 10px  12px",
           },
@@ -49,28 +100,9 @@ export default function Button(theme) {
             backgroundColor: "#949494",
             border: "2px solid transparent",
             color: theme.palette.common.white,
+            opacity: 0.5,
           },
-        },
-        outlined: {
-          color: theme.palette.primary.main,
-          backgroundColor: theme.palette.common.white,
-          border: "1px solid #336699",
-          "&:hover": {
-            backgroundColor: "#E5F1F7",
-            border: "1px solid #336699",
-          },
-          "&:active": {
-            backgroundColor: "#CBE3F1",
-          },
-          "&:focus": {
-            border: "2px solid #264A79",
-            dropShadow: "0 0  12px #FFFFFF80",
-          },
-          "&:disabled": {
-            border: "1px solid #949494",
-            color: "#949494",
-          },
-        },
+        }
       },
     },
   };

@@ -21,9 +21,6 @@ const useStyles = makeStyles(() => ({
     background: "#FFF",
     margin: 0,
     padding: "32px 0",
-    "& $span": {
-      color: "#4d4d4d",
-    },
   },
   figure: {
     margin: 0,

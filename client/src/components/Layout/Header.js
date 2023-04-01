@@ -12,12 +12,12 @@ Header.propTypes = {
 };
 
 const logoPaths = {
-  1: require("images/foodoasis.svg"),
-  2: require("images/foodoasis.svg"),
-  3: require("../StaticPagesHI/assets/aloha-harvest-bg-none-no-tag.png"),
-  4: require("images/foodoasis.svg"),
-  5: require("images/foodoasis.svg"),
-  6: require("images/foodoasis.svg"),
+  1: require("images/foodoasis.svg").default,
+  2: require("images/foodoasis.svg").default,
+  3: require("../StaticPagesHI/assets/aloha-harvest-bg-none.png"),
+  4: require("images/foodoasis.svg").default,
+  5: require("images/foodoasis.svg").default,
+  6: require("images/foodoasis.svg").default,
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -74,8 +74,9 @@ export default function Header() {
   const classes = useStyles();
   const { isAuthPage } = useLocationHook();
   const imageType = logoPaths
-    ? logoPaths[tenantId].default.split(".").pop()
+    ? logoPaths[tenantId].split(".").pop()
     : "unknown";
+
   const { user } = useUserContext();
 
   return (
@@ -90,17 +91,13 @@ export default function Header() {
           <div>
             <a href="/">
               <img
-                src={
-                  logoPaths[tenantId]
-                    ? logoPaths[tenantId].default
-                    : logoPaths[1].default
-                }
+                src={logoPaths[tenantId]}
                 className={classes.logo}
                 style={
                   imageType === "svg" ? { width: "100%", height: "100%" } : {}
                 }
                 alt="logo"
-              />{" "}
+              />
             </a>
           </div>
           <div className={classes.content}>

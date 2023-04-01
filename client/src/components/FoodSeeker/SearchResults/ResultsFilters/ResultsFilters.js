@@ -1,6 +1,5 @@
 import React, { useCallback } from "react";
 import PropTypes from "prop-types";
-import { styled } from "@mui/material/styles";
 import { Typography, Tooltip } from "@mui/material";
 import LocationSearching from "@mui/icons-material/LocationSearching";
 import Button from "@mui/material/Button";
@@ -16,19 +15,6 @@ import CategoryButton from "./CategoryButton";
 import * as analytics from "services/analytics";
 import { tenantDetails } from "../../../../helpers/Configuration";
 import useGeolocation, { useLocationPermission } from "hooks/useGeolocation";
-
-const RecenterButton = styled(Button)(({ theme }) => ({
-  backgroundColor: theme.palette.primary.main,
-  size: "small",
-  minWidth: 0,
-  minHeight: 0,
-  "&.Mui-disabled": {
-    opacity: 0.5,
-  },
-  "&:hover": {
-    backgroundColor: theme.palette.primary.light,
-  },
-}));
 
 const ResultsFilters = ({
   categoryIds,
@@ -61,6 +47,16 @@ const ResultsFilters = ({
     toggleCategory(FOOD_PANTRY_CATEGORY_ID);
     analytics.postEvent("togglePantryFilter", {});
   }, [toggleCategory]);
+
+  const useMyLocationTrigger = async () => {
+    try {
+      await getUserLocation();
+    } catch (e) {
+      console.log({ e });
+      setError(e);
+    }
+    analytics.postEvent("recenterMap", {});
+  };
 
   return (
     <Grid2
@@ -150,21 +146,20 @@ const ResultsFilters = ({
                     : "Show Your Current Location"
                 }
               >
-                <RecenterButton
-                  onClick={() => {
-                    analytics.postEvent("recenterMap", {});
-                    getUserLocation();
-                  }}
-                  disabled={locationPermission === "denied" || !!error}
-                  icon="locationSearching"
-                  // isLoading={isGettingLocation}
-                  sx={{ maxWidth: "2rem" }}
-                >
-                  <LocationSearching
-                    htmlColor="white"
-                    sx={{ fontSize: "1.25rem" }}
-                  />
-                </RecenterButton>
+                <div>
+                  <Button
+                    variant="recenter"
+                    onClick={useMyLocationTrigger}
+                    disabled={locationPermission === "denied" || !!error}
+                    icon="locationSearching"
+                    // isLoading={isGettingLocation}
+                  >
+                    <LocationSearching
+                      htmlColor="white"
+                      sx={{ fontSize: "1.25rem" }}
+                    />
+                  </Button>
+                </div>
               </Tooltip>
             </Stack>
           </Grid2>

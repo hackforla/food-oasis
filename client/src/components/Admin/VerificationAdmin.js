@@ -5,7 +5,6 @@ import { Button, CssBaseline, Dialog, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import MuiDialogTitle from "@mui/material/DialogTitle";
 import makeStyles from "@mui/styles/makeStyles";
-import StakeholderGrid from "./VerificationAdminGrid";
 import { useOrganizations } from "hooks/useOrganizations";
 import { useCategories } from "hooks/useCategories";
 import { useNeighborhoods } from "hooks/useNeighborhoods";
@@ -23,6 +22,7 @@ import SearchCriteriaDisplay from "./SearchCriteriaDisplay";
 import { useUserContext } from "../../contexts/userContext";
 import { useSearchCoordinates, useUserCoordinates } from "../../appReducer";
 import CircularProgress from "@mui/material/CircularProgress";
+import VerificationAdminGridMui from "./VerificationAdminGridMui";
 
 const CRITERIA_TOKEN = "verificationAdminCriteria";
 
@@ -296,7 +296,6 @@ function VerificationAdmin() {
     setCriteria(criteria);
     search();
   };
-
   return (
     <main className={classes.root}>
       {stakeholdersError.status === 401 || unauthorized ? (
@@ -313,8 +312,8 @@ function VerificationAdmin() {
       >
         <header className={classes.header}>
           <Typography
-            variant="h4"
-            component="h4"
+            variant="h2"
+            component="h2"
             align="center"
             style={{ marginBottom: "0.5em" }}
           >
@@ -474,9 +473,9 @@ function VerificationAdmin() {
                 </Stack>
                 <div>{`${stakeholders.length} rows`} </div>
               </div>
-              <StakeholderGrid
-                mode={"admin"}
+              <VerificationAdminGridMui
                 stakeholders={stakeholders}
+                mode={"admin"}
                 setSelectedStakeholderIds={setSelectedStakeholderIds}
               />
             </>

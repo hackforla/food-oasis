@@ -202,6 +202,7 @@ const LoginForm = (props) => {
                   <Button
                     type="submit"
                     disabled={isSubmitting || !(isValid && dirty)}
+                    fullWidth
                   >
                     Sign In
                   </Button>

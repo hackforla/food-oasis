@@ -157,6 +157,7 @@ const form = (props) => {
                 variant="contained"
                 type="submit"
                 disabled={isSubmitting || !(isValid && dirty)}
+                fullWidth
               >
                 Register
               </Button>

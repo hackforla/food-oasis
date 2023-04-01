@@ -445,7 +445,7 @@ function VerificationAdmin() {
                   justifyContent: "space-between",
                 }}
               >
-                <Stack direction="row" spacing={1} marginBottom={1}>
+                <Stack direction="row" spacing={2} marginBottom={1}>
                   <Button
                     variant="outlined"
                     type="button"

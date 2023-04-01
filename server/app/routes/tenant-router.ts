@@ -1,11 +1,12 @@
 import { Router } from "express";
 const router = Router();
 import tenantController from "../controllers/tenant-controller";
-import {validateTenantMiddleware} from '../../middleware/request-validation-middlewares'
+import {requestValidationMiddleware} from '../../middleware/request-validation-middlewares'
+import { tenantRequestSchema } from '../request-validation-schema';
 
 router.get("/", tenantController.getAll);
 router.get("/:id", tenantController.getById);
-router.post("/", validateTenantMiddleware, tenantController.post);
+router.post("/", requestValidationMiddleware(tenantRequestSchema), tenantController.post);
 router.put("/:id", tenantController.put);
 
 

@@ -1,6 +1,8 @@
 import { Router } from "express";
 import * as tagController from "../controllers/tag-controller";
 import jwtSession from "../../middleware/jwt-session";
+import {requestValidationMiddleware} from '../../middleware/request-validation-middlewares'
+import { tagRequestSchema } from "../request-validation-schema";
 
 const router = Router();
 
@@ -15,6 +17,7 @@ router.post(
 router.put(
   "/:tagId",
   jwtSession.validateUserHasRequiredRoles(["admin"]),
+  requestValidationMiddleware(tagRequestSchema),
   tagController.put
 );
 

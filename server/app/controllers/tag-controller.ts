@@ -37,7 +37,7 @@ const post: RequestHandler<
   }
 };
 
-const put: RequestHandler<{ tagId: string }, never, Tag, never> = async (
+const put: RequestHandler<{ tagId: string }, never, Omit<Tag, "id">, never> = async (
   req,
   res
 ) => {

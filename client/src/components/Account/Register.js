@@ -18,6 +18,10 @@ import {
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useToasterContext } from "contexts/toasterContext";
 import PasswordInput from "components/UI/PasswordInput";
+import {
+  PASSWORD_VALIDATION_ERROR,
+  PASSWORD_VALIDATION_REGEX,
+} from "helpers/Constants";
 
 const styles = (theme) => ({
   paper: {
@@ -203,10 +207,7 @@ const RegisterForm = withFormik({
       .email("Enter a valid email")
       .required("Email is required"),
     password: Yup.string()
-      .matches(
-        /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
-        "Password must contain at least 8 characters, one uppercase, one number and one special case character"
-      )
+      .matches(PASSWORD_VALIDATION_REGEX, PASSWORD_VALIDATION_ERROR)
       .required("Password is required"),
     passwordConfirm: Yup.string()
       .required("Confirm your password")

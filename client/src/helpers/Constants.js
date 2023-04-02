@@ -59,6 +59,12 @@ const SANTA_BARBARA = {
   urlContains: ["sb."],
 };
 
+export const PASSWORD_VALIDATION_REGEX =
+  /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/;
+
+export const PASSWORD_VALIDATION_ERROR =
+  "Password must contain at least 8 characters, one uppercase, one number and one special character.";
+
 export const TENANT_CONFIG = {
   1: LOS_ANGELES,
   3: HAWAII,

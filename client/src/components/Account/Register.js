@@ -75,17 +75,17 @@ const form = (props) => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="fname"
-                  name="firstName"
-                  required
+                  autoFocus
+                  error={touched.firstName && Boolean(errors.firstName)}
                   fullWidth
+                  helperText={touched.firstName ? errors.firstName : ""}
                   id="firstName"
                   label="First Name"
-                  autoFocus
-                  value={values.firstName}
-                  onChange={handleChange}
+                  name="firstName"
                   onBlur={handleBlur}
-                  helperText={touched.firstName ? errors.firstName : ""}
-                  error={touched.firstName && Boolean(errors.firstName)}
+                  onChange={handleChange}
+                  required
+                  value={values.firstName}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -138,7 +138,7 @@ const form = (props) => {
                   required
                   fullWidth
                   name="passwordConfirm"
-                  label="Re-type Password"
+                  label="Confirm Password"
                   id="passwordConfirm"
                   value={values.passwordConfirm}
                   onChange={handleChange}
@@ -194,6 +194,7 @@ const RegisterForm = withFormik({
       passwordConfirm: passwordConfirm || "",
     };
   },
+  validateOnBlur: false,
 
   validationSchema: Yup.object().shape({
     firstName: Yup.string().required("Required"),

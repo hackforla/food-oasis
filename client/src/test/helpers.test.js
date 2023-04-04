@@ -5,7 +5,7 @@ import {
   formatDatewTimeZonehhmmss,
   formatDatewTimeZoneWeekdayShort,
   formatDatewTimeZoneMMM,
-} from "helpers";
+} from "../helpers";
 
 describe("Date utility functions", () => {
   const ts = 1616947200000; // March 28, 2021 12:00:00 UTC

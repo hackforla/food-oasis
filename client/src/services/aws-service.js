@@ -1,9 +1,9 @@
 import axios from "axios";
 const baseUrl = "/api/aws";
 
-export const autoComplete = async (address) => {
+export const autoComplete = async (address, tenantId) => {
   const response = await axios.get(baseUrl + "/autocomplete", {
-    params: { address },
+    params: { address, tenantId },
   });
   return response.data;
 };
@@ -13,4 +13,4 @@ export const getCoords = async (address) => {
     params: { address },
   });
   return response.data;
-}
+};

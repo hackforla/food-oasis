@@ -2193,16 +2193,21 @@
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "ae763c3f-34d6-40dd-9749-50a88bd18b89",
     "name": "AWS Geocode Autocomplete",
-    "url": "http://localhost:5001/api/aws/autocomplete?address=1345 Turnbull Canyon Road",
+    "url": "http://localhost:5001/api/aws/autocomplete?address=Los Angeles&tenantId=1",
     "method": "GET",
     "sortNum": 600000,
     "created": "2023-01-09T21:59:20.949Z",
-    "modified": "2023-01-13T22:25:04.595Z",
+    "modified": "2023-04-06T01:54:05.429Z",
     "headers": [],
     "params": [
       {
         "name": "address",
-        "value": "1345 Turnbull Canyon Road",
+        "value": "Los Angeles",
+        "isPath": false
+      },
+      {
+        "name": "tenantId",
+        "value": "1",
         "isPath": false
       }
     ],
@@ -2226,16 +2231,16 @@
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "ae763c3f-34d6-40dd-9749-50a88bd18b89",
     "name": "AWS Geocode Get Coordinates",
-    "url": "http://localhost:5001/api/aws/getCoords?address=1345 Turnbull Canyon Road",
+    "url": "http://localhost:5001/api/aws/getCoords?address=San Pedro",
     "method": "GET",
     "sortNum": 610000,
     "created": "2023-01-13T19:43:32.383Z",
-    "modified": "2023-01-13T22:25:25.080Z",
+    "modified": "2023-04-05T04:45:21.425Z",
     "headers": [],
     "params": [
       {
         "name": "address",
-        "value": "1345 Turnbull Canyon Road",
+        "value": "San Pedro",
         "isPath": false
       }
     ],

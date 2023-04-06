@@ -18,9 +18,10 @@ const LocationAutocomplete = (props) => {
       // this request starts executing after the
       // setTimeout delay, this request is stale
       // and we don't want to run it.
+      const tenantId = process.env.REACT_APP_TENANT_ID;
       if (s.length > 8 && s === latestSearchString) {
-        const result = await awsService.autoComplete(s);
-        setGeocodeResults(result.Results);
+        const result = await awsService.autoComplete(s, tenantId);
+        setGeocodeResults(result);
       }
     }, 500);
   };
@@ -65,7 +66,7 @@ const LocationAutocomplete = (props) => {
                 {/* <Typography>{`${result.attributes.Addr_type}`}</Typography> */}
               </Grid>
             </div>
-          )
+          );
         })
       ) : (
         <div>No Results</div>

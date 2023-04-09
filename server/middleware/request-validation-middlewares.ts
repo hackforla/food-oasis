@@ -2,9 +2,9 @@ import { Request, Response, NextFunction } from "express";
 import Ajv from 'ajv';
 const ajv = new Ajv({ allErrors: true });
 
-export const requestValidationMiddleware = (schema: any) => {
-  
-  const validatingRequest = ajv.compile(schema);
+export function requestValidationMiddleware<T>(schema: T) {
+
+  const validatingRequest = ajv.compile(schema as object);
 
   return (req: Request, res: Response, next: NextFunction) => {
     const valid = validatingRequest(req.body);

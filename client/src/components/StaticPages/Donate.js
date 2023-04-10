@@ -4,13 +4,16 @@ import makeStyles from "@mui/styles/makeStyles";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import logo from "images/foodoasis.svg";
-import Paper from "@mui/material/Paper";
-import Grid from "@mui/material/Grid";
-import Avatar from "@mui/material/Avatar";
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
+import {
+  Link,
+  Paper,
+  Grid,
+  Avatar,
+  Container,
+  Typography,
+  Box,
+  Button,
+} from "@mui/material";
 import donationStep1 from "images/donationStep1.png";
 import donationStep2 from "images/donationStep2.png";
 import donationStep3 from "images/donationStep3.png";
@@ -149,8 +152,15 @@ const Donate = () => {
               their family. We are committed to connecting food seekers to free
               food resources in Los Angeles County.
               <br /> <br />
-              Food Oasis is a 100% volunteer-run through Hack for LA. Our
-              volunteers have done amazing work but we need your help to
+              Food Oasis is a 100% volunteer-run through{" "}
+              <Link
+                href="https://hackforla.org/"
+                target={"_blank"}
+                rel="noopener noreferrer"
+              >
+                Hack for LA
+              </Link>
+              . Our volunteers have done amazing work but we need your help to
               maintain and expand this important resource. Your tax-deductible
               donation helps us offset the costs involved with marketing and
               updating our directory.

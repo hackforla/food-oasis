@@ -163,6 +163,7 @@ const ResetPassword = (props) => {
                     variant="contained"
                     type="submit"
                     disabled={isSubmitting || !(isValid && dirty)}
+                    fullWidth
                   >
                     Reset Password
                   </Button>

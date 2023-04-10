@@ -16,12 +16,12 @@ const MailIcon = () => {
       <path
         d="M6.63424 14H23.7009C24.8055 14 25.7009 13.1046 25.7009 12V3C25.7009 1.89543 24.8055 1 23.7009 1H7.39551C6.90286 1 6.70713 1.63726 7.11484 1.9138L14.8251 7.14337C15.146 7.36102 15.5638 7.37355 15.8971 7.17552L24.8342 1.86667"
         stroke="white"
-        stroke-linecap="round"
+        strokeLinecap="round"
       />
       <path
         d="M8.8 5.7666H1M8.8 10.0999H4.03333"
         stroke="white"
-        stroke-linecap="round"
+        strokeLinecap="round"
       />
     </svg>
   );
@@ -80,16 +80,11 @@ const ResetPasswordEmailSent = (props) => {
             A password reset link was sent to {match.params.email}.<br /> If you
             don’t see it in your inbox, please check your junk/spam folder.
           </Typography>
-          <Container maxWidth="xs">
-            <Box sx={{ mt: 2, mb: 2 }}>
-              <Button
-                variant="contained"
-                onClick={() => history.push("/login")}
-              >
-                Back to login
-              </Button>
-            </Box>
-          </Container>
+          <Box sx={{ mt: 2, mb: 2 }}>
+            <Button variant="contained" onClick={() => history.push("/login")}>
+              Back to login
+            </Button>
+          </Box>
         </div>
       </Container>
     </div>

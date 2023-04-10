@@ -1,16 +1,16 @@
 import awsService from "../services/aws-service"
 import { RequestHandler } from "express";
-import { SearchPlaceIndexForTextResponse } from "aws-sdk/clients/location";
+import { SearchPlaceIndexForTextResponse, SearchForTextResult } from "aws-sdk/clients/location";
 
 const autocomplete: RequestHandler<
     never,
-    SearchPlaceIndexForTextResponse,
+    SearchForTextResult[],
     { params: string | Record<string, never> },
     never
 > = async (req, res) => {
     try {
-        const { address } = req.query;
-        const response = await awsService.autocomplete(address);
+        const { address, tenantId } = req.query;
+        const response = await awsService.autocomplete(address, tenantId);
         res.send(response);
     } catch (err) {
         console.error(err);

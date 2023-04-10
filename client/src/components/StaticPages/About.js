@@ -10,6 +10,7 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import * as analytics from "../../services/analytics";
 import { Link } from "react-router-dom";
+import { Link as MuiLink } from "@mui/material";
 
 const useStyles = makeStyles(() => ({
   outer: {
@@ -80,9 +81,6 @@ const useStyles = makeStyles(() => ({
       marginTop: "10px",
       marginBottom: "20px",
     },
-    "& $a": {
-      color: "#4d4d4d",
-    },
     "& $p": {
       marginBottom: "16px",
     },
@@ -103,9 +101,6 @@ const useStyles = makeStyles(() => ({
       fontSize: "32px",
       marginTop: "10px",
       marginBottom: "20px",
-    },
-    "& $a": {
-      color: "#4d4d4d",
     },
     "& $p": {
       marginBottom: "16px",
@@ -142,6 +137,7 @@ const useStyles = makeStyles(() => ({
     },
   },
 }));
+
 const About = () => {
   const classes = useStyles();
 
@@ -196,13 +192,13 @@ const About = () => {
           <Container maxWidth="sm">
             <Typography variant="body1">
               We are a 100% volunteer-run project. We are part of{" "}
-              <a
+              <MuiLink
                 href="https://hackforla.org/"
                 target={"_blank"}
                 rel="noopener noreferrer"
               >
                 Hack for LA
-              </a>
+              </MuiLink>
               . Our team includes product managers, researchers, designers,
               developers, writers and data validators who maintain this
               web-based directory. We verify each listing in our directory
@@ -221,16 +217,13 @@ const About = () => {
           <Typography variant="h2">Questions</Typography>
           <Typography variant="body1">
             For more information, please visit our{" "}
-            <Link to={"/faqs"}>FAQ page</Link>.
+            <MuiLink to={"/faqs"} component={Link}>
+              FAQ page
+            </MuiLink>
+            .
           </Typography>
         </section>
         <section className={classes.partners}>
-          {/* <img
-            alt='Our Team'
-            src={iconSpacerGray}
-            className={classes.icon}
-            height='40'
-          /> */}
           <Typography variant="h2">Our Partners</Typography>
           <a
             href="https://www.foodcyclela.org/"

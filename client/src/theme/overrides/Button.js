@@ -46,7 +46,7 @@ export default function Button(theme) {
             filter: "drop-shadow(0px 0px 12px rgba(255, 255, 255, 0.8))",
           },
           "&:disabled": {
-            backgroundColor: theme.palette.common.inactiveButton,
+            backgroundColor: theme.palette.inactiveButton.main,
             color: theme.palette.common.white,
             boxShadow: "none",
           },
@@ -68,9 +68,9 @@ export default function Button(theme) {
             filter: "drop-shadow(0px 0px  12px rgba(255, 255, 255, 0.8))",
           },
           "&:disabled": {
-            borderColor: theme.palette.common.inactiveButton,
+            borderColor: theme.palette.inactiveButton.main,
             backgroundColor: theme.palette.common.white,
-            color: theme.palette.common.inactiveButton,
+            color: theme.palette.inactiveButton.main,
             boxShadow: "none",
           },
         },
@@ -102,7 +102,7 @@ export default function Button(theme) {
             color: theme.palette.common.white,
             opacity: 0.5,
           },
-        }
+        },
       },
     },
   };

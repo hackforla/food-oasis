@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import faqbg from "./assets/faq-bg.webp";
 import iconSpacerGray from "./assets/icon-spacer-gray.svg";
-import { Typography } from "@mui/material";
+import { Link, Typography } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import * as analytics from "../../services/analytics";
 import Container from "@mui/material/Container";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
 const useStyles = makeStyles(() => ({
   outer: {
@@ -61,9 +61,6 @@ const useStyles = makeStyles(() => ({
       marginTop: "10px",
       marginBottom: "20px",
     },
-    "& $a": {
-      color: "#4d4d4d",
-    },
   },
   forVolunteers: {
     padding: "50px 32px 50px",
@@ -79,9 +76,6 @@ const useStyles = makeStyles(() => ({
       fontSize: "32px",
       marginTop: "10px",
       marginBottom: "20px",
-    },
-    "& $a": {
-      color: "#4d4d4d",
     },
   },
   dl: {
@@ -158,7 +152,10 @@ const About = () => {
                     food resource open to the public in Los Angeles, our
                     volunteers work hard to ensure the information listed is
                     updated. To suggest a listing missing from our directory,{" "}
-                    <Link to={"/suggestion"}>use this link</Link>.
+                    <Link to={"/suggestion"} component={RouterLink}>
+                      use this link
+                    </Link>
+                    .
                   </li>
                 </ul>
                 <br />
@@ -193,7 +190,10 @@ const About = () => {
               <dt>How can I add our food resource to your directory?</dt>
               <dd>
                 Please visit our “
-                <Link to={"/suggestion"}>Suggest New Listing</Link>” page.
+                <Link to={"/suggestion"} component={RouterLink}>
+                  Suggest New Listing
+                </Link>
+                ” page.
               </dd>
             </Typography>
           </Container>

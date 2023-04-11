@@ -20,8 +20,6 @@ import * as analytics from "services/analytics";
 import {
   useSelectedOrganization,
   useAppDispatch,
-  useSearchCoordinates,
-  useUserCoordinates,
   useWidget,
 } from "../../../../appReducer";
 import { useHistory } from "react-router-dom";
@@ -49,9 +47,6 @@ const StakeholderDetails = () => {
   const [SuggestionDialogOpen, setSuggestionDialogOpen] = useState(false);
   const selectedOrganization = useSelectedOrganization();
   const dispatch = useAppDispatch();
-  const searchCoordinates = useSearchCoordinates();
-  const userCoordinates = useUserCoordinates();
-  const originCoordinates = searchCoordinates || userCoordinates;
   const isWidget = useWidget();
   const history = useHistory();
   const { setToast } = useToasterContext();
@@ -320,7 +315,7 @@ const StakeholderDetails = () => {
                 name: selectedOrganization.name,
               });
               window.open(
-                getGoogleMapsDirectionsUrl(originCoordinates, {
+                getGoogleMapsDirectionsUrl({
                   latitude: selectedOrganization.latitude,
                   longitude: selectedOrganization.longitude,
                 })

@@ -9,8 +9,8 @@ import makeStyles from "@mui/styles/makeStyles";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import * as analytics from "../../services/analytics";
-import { Link } from "react-router-dom";
-import { Link as MuiLink } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
+import { Link } from "@mui/material";
 
 const useStyles = makeStyles(() => ({
   outer: {
@@ -192,13 +192,14 @@ const About = () => {
           <Container maxWidth="sm">
             <Typography variant="body1">
               We are a 100% volunteer-run project. We are part of{" "}
-              <MuiLink
+              <Link
                 href="https://hackforla.org/"
                 target={"_blank"}
                 rel="noopener noreferrer"
+                variant="secondary"
               >
                 Hack for LA
-              </MuiLink>
+              </Link>
               . Our team includes product managers, researchers, designers,
               developers, writers and data validators who maintain this
               web-based directory. We verify each listing in our directory
@@ -217,9 +218,9 @@ const About = () => {
           <Typography variant="h2">Questions</Typography>
           <Typography variant="body1">
             For more information, please visit our{" "}
-            <MuiLink to={"/faqs"} component={Link}>
+            <Link to={"/faqs"} variant="secondary" component={RouterLink}>
               FAQ page
-            </MuiLink>
+            </Link>
             .
           </Typography>
         </section>

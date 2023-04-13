@@ -28,6 +28,10 @@ export default function Button(theme) {
           margin: "0rem",
           lineHeight: "1.1rem",
           boxSizing: "border-box",
+          fontSize: ".875rem",
+          "@media (min-width:600px)": {
+            fontSize: "1rem",
+          },
         },
         contained: {
           padding: "8px 16px",
@@ -39,7 +43,7 @@ export default function Button(theme) {
 
           "&:active": {
             backgroundColor: theme.palette.primary.dark,
-            boxShadow: "inset 4px 8px 4px rgba(0,0,0,0.4)",
+            boxShadow: "inset 0px 8px 4px rgba(0,0,0,0.24)",
           },
           "&:focus": {
             backgroundColor: theme.palette.primary.main,
@@ -52,17 +56,22 @@ export default function Button(theme) {
           },
         },
         outlined: {
+          padding: "6px 12px",
           color: theme.palette.primary.main,
           backgroundColor: theme.palette.common.white,
           borderStyle: "solid",
           borderWidth: "1px",
           borderColor: theme.palette.primary.light,
+          fontSize: ".8125rem",
+          "@media (min-width:600px)": {
+            fontSize: "0.8125rem",
+          },
           "&:hover": {
-            backgroundColor: "#E5F1F7",
+            backgroundColor: theme.palette.primary.extralight,
           },
           "&:active": {
-            backgroundColor: "#CBE3F1",
-            boxShadow: "inset 4px 8px 4px rgba(0,0,0,0.25)",
+            backgroundColor: theme.palette.primary.extralight,
+            boxShadow: "inset 0px 8px 4px rgba(51, 102, 153, 0.24)",
           },
           "&:focus": {
             filter: "drop-shadow(0px 0px  12px rgba(255, 255, 255, 0.8))",
@@ -90,14 +99,16 @@ export default function Button(theme) {
             border: "2px solid transparent",
           },
           "&:active": {
-            backgroundColor: "#264A79",
+            backgroundColor: theme.palette.primary.dark,
           },
           "&:focus": {
-            border: "2px solid #264A79",
+            borderWidth: "2px",
+            borderColor: theme.palette.primary.dark,
+            borderStyle: "solid",
             dropShadow: "10px 10px  12px",
           },
           "&:disabled": {
-            backgroundColor: "#949494",
+            backgroundColor: theme.palette.inactiveButtonMain,
             border: "2px solid transparent",
             color: theme.palette.common.white,
             opacity: 0.5,

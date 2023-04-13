@@ -489,14 +489,14 @@ const StakeholderDetails = () => {
                 </Link>
               ) : null}
               {selectedOrganization.instagram ? (
-                <Link
+                <a
                   href={selectedOrganization.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
                   variant="icon"
                 >
                   <img alt="instagram link" src={instaIcon} />
-                </Link>
+                </a>
               ) : null}
             </Stack>
           </>

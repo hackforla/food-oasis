@@ -274,13 +274,13 @@ const dataEntryColumns = [
   {
     field: "inactive",
     headerName: "Perm Closed",
-    renderCell: inactiveFormatter,
+    renderCell: inactiveFormatter("inactive"),
     width: 120,
   },
   {
     field: "inactiveTemporary",
     headerName: "Covid Closed",
-    renderCell: inactiveFormatter,
+    renderCell: inactiveFormatter("inactiveTemporary"),
     width: 150,
   },
   {
@@ -292,43 +292,43 @@ const dataEntryColumns = [
   {
     field: "confirmedName",
     headerName: "Name",
-    renderCell: confirmationFormatter,
+    renderCell: confirmationFormatter("confirmedName"),
     width: 100,
   },
   {
     field: "confirmedCategories",
     headerName: "Categories",
-    renderCell: confirmationFormatter,
+    renderCell: confirmationFormatter("confirmedCategories"),
     width: 100,
   },
   {
     field: "confirmedAddress",
     headerName: "Address",
-    renderCell: confirmationFormatter,
+    renderCell: confirmationFormatter("confirmedAddress"),
     width: 100,
   },
   {
     field: "confirmedPhone",
     headerName: "Phone",
-    renderCell: confirmationFormatter,
+    renderCell: confirmationFormatter("confirmedPhone"),
     width: 100,
   },
   {
     field: "confirmedEmail",
     headerName: "Email",
-    renderCell: confirmationFormatter,
+    renderCell: confirmationFormatter("confirmedEmail"),
     width: 100,
   },
   {
     field: "confirmedHours",
     headerName: "Hours",
-    renderCell: confirmationFormatter,
+    renderCell: confirmationFormatter("confirmedHours"),
     width: 100,
   },
   {
     field: "confirmedFoodTypes",
     headerName: "FoodTypes",
-    renderCell: confirmationFormatter,
+    renderCell: confirmationFormatter("confirmedFoodTypes"),
     width: 100,
   },
   {
@@ -359,7 +359,7 @@ const dataEntryColumns = [
 ];
 
 export default function VerificationAdminGridMui(props) {
-  const { stakeholders, mode } = props;
+  const { stakeholders, mode, setSelectedStakeholderIds } = props;
   return (
     <Box
       sx={{
@@ -374,9 +374,13 @@ export default function VerificationAdminGridMui(props) {
       <DataGrid
         rows={stakeholders}
         columns={mode === "admin" ? adminColumns : dataEntryColumns}
-        checkboxSelection
+        checkboxSelection={mode === "admin" ? true : false}
         disableSelectionOnClick
+        keepNonExistentRowsSelected
         experimentalFeatures={{ newEditingApi: true }}
+        onSelectionModelChange={(ids) => {
+          setSelectedStakeholderIds(ids);
+        }}
       />
     </Box>
   );

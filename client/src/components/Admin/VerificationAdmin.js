@@ -402,7 +402,7 @@ function VerificationAdmin() {
           id="needs-verification-dialog"
           title='Change Listing(s) Status to "Needs Verification"'
           message={""}
-          preserveConfirmations={false}
+          // preserveConfirmations={false}
           open={needsVerificationDialogOpen}
           onClose={handleNeedsVerificationDialogClose}
         />

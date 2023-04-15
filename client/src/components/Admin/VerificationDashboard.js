@@ -158,10 +158,7 @@ function VerificationDashboard(props) {
               variant="outlined"
               type="button"
               onClick={requestAssignment}
-<<<<<<< HEAD
-=======
               sx={{ margin: ".1rem" }}
->>>>>>> release-1.0.72
             >
               Request Assignment
             </Button>

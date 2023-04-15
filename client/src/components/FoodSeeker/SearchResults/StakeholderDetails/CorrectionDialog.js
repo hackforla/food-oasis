@@ -8,19 +8,11 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
-<<<<<<< HEAD
-  InputAdornment,
-=======
->>>>>>> release-1.0.72
   TextField,
   Typography,
 } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import * as suggestionService from "services/suggestion-service";
-<<<<<<< HEAD
-// import { TextField } from "../../../UI";
-=======
->>>>>>> release-1.0.72
 import { DEFAULT_STAKEHOLDER } from "../../../../constants/stakeholder";
 import * as Yup from "yup";
 
@@ -41,10 +33,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "2rem",
   },
 }));
-<<<<<<< HEAD
-
-=======
->>>>>>> release-1.0.72
 function SuggestionDialog(props) {
   const { values, touched, errors, handleChange, handleBlur, handleSubmit } =
     props;
@@ -58,98 +46,6 @@ function SuggestionDialog(props) {
       disableEscapeKeyDown
       fullWidth
       maxWidth="sm"
-<<<<<<< HEAD
-      aria-label="Correction Dialog"
-      open={open}
-      id={id}
-    >
-      <DialogTitle id="confirmation-dialog-title">Send Correction</DialogTitle>
-      <DialogContent dividers>
-        <Grid container spacing={1}>
-          <Grid item xs={12}>
-            <Typography>
-              Please help us improve our data by letting us know when our
-              information is incorrect. All fields are optional, but filling in
-              as many as you can helps our volunteers to validate efficiently.
-              Thanks!
-            </Typography>
-          </Grid>
-          <Grid item xs={12} style={{ position: "relative" }}>
-            <TextField
-              type="text"
-              // className={classes.correctionInput}
-              size="small"
-              multiline
-              minRows={2}
-              maxRows={12}
-              label="Corrections"
-              name="notes"
-              id="notes"
-              margin="normal"
-              fullWidth
-              value={values.notes}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              helperText={touched.notes ? errors.notes : ""}
-              error={touched.notes && Boolean(errors.notes)}
-              endAdornment={<InputAdornment>*</InputAdornment>}
-            />
-            cd glitch{" "}
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              type="text"
-              size="small"
-              multiline
-              minRows={2}
-              maxRows={12}
-              label="Your Name (optional)"
-              name="tipsterName"
-              margin="normal"
-              fullWidth
-              value={values.tipsterName}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              type="text"
-              size="small"
-              multiline
-              minRows={2}
-              maxRows={12}
-              label="Your Phone (optional)"
-              name="tipsterPhone"
-              margin="normal"
-              fullWidth
-              value={values.tipsterPhone}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              type="text"
-              size="small"
-              multiline
-              minRows={2}
-              maxRows={12}
-              label="Your Email (optional)"
-              name="tipsterEmail"
-              margin="normal"
-              fullWidth
-              value={values.tipsterEmail}
-              onChange={handleChange}
-            />
-          </Grid>
-        </Grid>
-      </DialogContent>
-      <DialogActions>
-        <Button autoFocus onClick={handleCancel}>
-          Cancel
-        </Button>
-        <Button onClick={handleSubmit}>Send</Button>
-      </DialogActions>
-=======
       aria-labelledby="confirmation-dialog-title"
       open={open}
       id={id}
@@ -249,7 +145,6 @@ function SuggestionDialog(props) {
           </Button>
         </DialogActions>
       </form>
->>>>>>> release-1.0.72
     </Dialog>
   );
 }

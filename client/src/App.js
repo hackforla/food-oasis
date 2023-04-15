@@ -5,46 +5,70 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
-import { Grid, CssBaseline } from "@material-ui/core";
-import theme from "theme/clientTheme";
-// Components
+import { ThemeProvider } from "theme";
+import makeStyles from "@mui/styles/makeStyles";
+import { Grid, CssBaseline, Stack } from "@mui/material";
 import { ToasterProvider } from "contexts/toasterContext";
 import { UserProvider } from "contexts/userContext";
 import Toast from "components/UI/Toast";
 import Header from "components/Layout/Header";
 import HeaderHome from "components/Layout/HeaderHome";
 import WidgetFooter from "components/Layout/WidgetFooter";
-import VerificationAdmin from "components/Admin/VerificationAdmin";
-import VerificationDashboard from "components/Admin/VerificationDashboard";
-import SecurityAdminDashboard from "components/Account/SecurityAdminDashboard/SecurityAdminDashboard";
-import OrganizationEdit from "components/Admin/OrganizationEdit";
-import ParentOrganizations from "components/Admin/ParentOrganizations";
-import TagAdmin from "components/Admin/TagAdmin";
-import Resources from "components/Layout/Resources";
-import Register from "components/Account/Register";
-import Login from "components/Account/Login";
-import ForgotPassword from "components/Account/ForgotPassword";
-import ResetPassword from "components/Account/ResetPassword";
-import ConfirmEmail from "components/Account/ConfirmEmail";
 import Home from "components/FoodSeeker/Home";
-import SearchResults from "components/FoodSeeker/SearchResults/SearchResults";
-import Suggestion from "components/FoodSeeker/Suggestion";
-import ImportFile from "components/Admin/ImportOrganizations/ImportFile";
-import adminTheme from "./theme/adminTheme";
+
 import * as analytics from "../src/services/analytics";
-import Suggestions from "components/Admin/Suggestions";
-import Logins from "components/Admin/Logins";
 import PrivateRoute from "./components/PrivateRoute";
 import Fallback from "./components/Fallback";
-import Donate from "./components/Donate";
-import About from "./components/About";
-import Faq from "./components/Faq";
 import { AppStateProvider } from "./appReducer";
 import { SiteProvider } from "contexts/siteContext";
 import { HelmetProvider } from "react-helmet-async";
 import SEO from "./components/SEO";
+import CircularProgress from "@mui/material/CircularProgress";
 
+const VerificationAdmin = React.lazy(() =>
+  import("components/Admin/VerificationAdmin")
+);
+const VerificationDashboard = React.lazy(() =>
+  import("components/Admin/VerificationDashboard")
+);
+const SecurityAdminDashboard = React.lazy(() =>
+  import("components/Account/SecurityAdminDashboard/SecurityAdminDashboard")
+);
+const OrganizationEdit = React.lazy(() =>
+  import("components/Admin/OrganizationEdit")
+);
+const ParentOrganizations = React.lazy(() =>
+  import("components/Admin/ParentOrganizations")
+);
+const TagAdmin = React.lazy(() => import("components/Admin/TagAdmin"));
+const Resources = React.lazy(() => import("components/Layout/Resources"));
+const Register = React.lazy(() => import("components/Account/Register"));
+const Login = React.lazy(() => import("components/Account/Login"));
+const ForgotPassword = React.lazy(() =>
+  import("components/Account/ForgotPassword")
+);
+const ResetPasswordEmailSent = React.lazy(() =>
+  import("components/Account/ResetPasswordEmailSent")
+);
+const ResetPassword = React.lazy(() =>
+  import("components/Account/ResetPassword")
+);
+const ConfirmEmail = React.lazy(() =>
+  import("components/Account/ConfirmEmail")
+);
+const SearchResults = React.lazy(() =>
+  import("components/FoodSeeker/SearchResults/SearchResults")
+);
+const Suggestion = React.lazy(() => import("components/FoodSeeker/Suggestion"));
+const ImportFile = React.lazy(() =>
+  import("components/Admin/ImportOrganizations/ImportFile")
+);
+const Suggestions = React.lazy(() => import("components/Admin/Suggestions"));
+const Logins = React.lazy(() => import("components/Admin/Logins"));
+const Donate = React.lazy(() => import("./components/Donate"));
+const About = React.lazy(() => import("./components/About"));
+const Faq = React.lazy(() => import("./components/Faq"));
+const MuiDemo = React.lazy(() => import("./components/MuiDemo/MuiDemo"));
 const useStyles = makeStyles({
   app: () => ({
     color: "black",
@@ -91,12 +115,12 @@ function App() {
 
   return (
     <HelmetProvider>
+      <CssBaseline />
       <AppStateProvider>
         <SiteProvider>
           <ToasterProvider>
             <UserProvider>
-              <ThemeProvider theme={theme}>
-                <CssBaseline />
+              <ThemeProvider>
                 <SEO
                   title={`Food Oasis`}
                   url={window.origin}
@@ -117,132 +141,150 @@ function App() {
                       <Route exact path="/">
                         <HeaderHome />
                       </Route>
-                      <Route path="/widget"></Route>
+                      {/*
+                        When app is embedded as a widget on another site, don't
+                        show any header  
+                      */}
+                      <Route exact path="/widget" />
                       <Route>
                         <Header />
                       </Route>
                     </Switch>
-                    <Switch className={classes.mainContent}>
-                      <Route exact path="/">
-                        <Home />
-                      </Route>
-                      {/*
-              Following route provides backward-compatibilty for the
-              http"//foodoasis.la/search Link that has been published at
-              http://publichealth.lacounty.gov/eh/LACFRI/ShareAndDonate.htm
-              */}
-                      <Redirect from="/search" to="/widget" />
-                      <Route path="/widget">
-                        <>
+                    <React.Suspense
+                      fallback={
+                        <Stack
+                          justifyContent="center"
+                          alignContent="center"
+                          flexWrap="wrap"
+                        >
+                          <CircularProgress />
+                        </Stack>
+                      }
+                    >
+                      <Switch className={classes.mainContent}>
+                        <Route exact path="/">
+                          <Home />
+                        </Route>
+                        {/*
+                Following route provides backward-compatibilty for the
+                http"//foodoasis.la/search Link that has been published at
+                http://publichealth.lacounty.gov/eh/LACFRI/ShareAndDonate.htm
+                */}
+                        <Redirect from="/search" to="/widget" />
+                        <Route path="/widget">
+                          <>
+                            <SearchResults />
+                            <WidgetFooter />
+                          </>
+                        </Route>
+                        <Route path="/organizations">
                           <SearchResults />
-                          <WidgetFooter />
-                        </>
-                      </Route>
-                      <Route path="/organizations">
-                        <SearchResults />
-                      </Route>
-                      <Route path="/suggestion">
-                        <Suggestion />
-                      </Route>
-                      <Route path="/logins">
-                        <Logins />
-                      </Route>
-                      <Route path="/organizationedit/:id?">
-                        <ThemeProvider theme={adminTheme}>
+                        </Route>
+                        <Route path="/suggestion">
+                          <Suggestion />
+                        </Route>
+                        <Route path="/logins">
+                          <Logins />
+                        </Route>
+                        <Route path="/organizationedit/:id?">
                           <div className={classes.organizationEditWrapper}>
                             <OrganizationEdit />
                           </div>
-                        </ThemeProvider>
-                      </Route>
-                      <Route path="/verificationdashboard">
-                        <ThemeProvider theme={adminTheme}>
+                        </Route>
+                        <Route path="/muidemo">
+                          <div className={classes.organizationEditWrapper}>
+                            <MuiDemo />
+                          </div>
+                        </Route>
+                        <Route path="/verificationdashboard">
                           <div className={classes.verificationAdminWrapper}>
                             <VerificationDashboard />
                           </div>
-                        </ThemeProvider>
-                      </Route>
-                      <PrivateRoute
-                        path="/verificationadmin"
-                        roles={["isAdmin", "isCoordinator"]}
-                      >
-                        <ThemeProvider theme={adminTheme}>
+                        </Route>
+                        <PrivateRoute
+                          path="/verificationadmin"
+                          roles={["isAdmin", "isCoordinator"]}
+                        >
                           <div className={classes.verificationAdminWrapper}>
                             <VerificationAdmin />
                           </div>
-                        </ThemeProvider>
-                      </PrivateRoute>
-                      <PrivateRoute
-                        path="/parentorganizations"
-                        roles={["isAdmin"]}
-                      >
-                        <div className={classes.organizationEditWrapper}>
-                          <ParentOrganizations />
-                        </div>
-                      </PrivateRoute>
-                      <PrivateRoute path="/tags" roles={["isAdmin"]}>
-                        <div className={classes.organizationEditWrapper}>
-                          <TagAdmin />
-                        </div>
-                      </PrivateRoute>
-                      <PrivateRoute path="/suggestions" roles={["isAdmin"]}>
-                        <div className={classes.organizationEditWrapper}>
-                          <Suggestions />
-                        </div>
-                      </PrivateRoute>
-                      <PrivateRoute
-                        path="/logins"
-                        roles={["isAdmin", "isCoordinator"]}
-                      >
-                        {" "}
-                        <div className={classes.organizationEditWrapper}>
-                          <Logins />
-                        </div>
-                      </PrivateRoute>
-                      <PrivateRoute
-                        path="/securityadmindashboard"
-                        roles={["isGlobalAdmin", "isSecurityAdmin"]}
-                      >
-                        <div className={classes.verificationAdminWrapper}>
-                          <SecurityAdminDashboard />
-                        </div>
-                      </PrivateRoute>
-                      <PrivateRoute
-                        path="/organizationimport"
-                        roles={["isAdmin"]}
-                      >
-                        <ImportFile />
-                      </PrivateRoute>
-                      <Route path="/resources">
-                        <Resources />
-                      </Route>
-                      <Route path="/register">
-                        <Register />
-                      </Route>
-                      <Route path="/confirm/:token">
-                        <ConfirmEmail />
-                      </Route>
-                      <Route path="/login/:email?">
-                        <Login />
-                      </Route>
-                      <Route path="/forgotpassword/:email?">
-                        <ForgotPassword />
-                      </Route>
-                      <Route path="/resetPassword/:token">
-                        <ResetPassword />
-                      </Route>
-                      <Route path="/donate">
-                        <Donate />
-                      </Route>
-                      <Route path="/about">
-                        <About />
-                      </Route>
-                      <Route exact path="/faqs">
-                        <Faq />
-                      </Route>
-                      <Route exact path="/fallback">
-                        <Fallback />
-                      </Route>
-                    </Switch>
+                        </PrivateRoute>
+                        <PrivateRoute
+                          path="/parentorganizations"
+                          roles={["isAdmin"]}
+                        >
+                          <div className={classes.organizationEditWrapper}>
+                            <ParentOrganizations />
+                          </div>
+                        </PrivateRoute>
+                        <PrivateRoute path="/tags" roles={["isAdmin"]}>
+                          <div className={classes.organizationEditWrapper}>
+                            <TagAdmin />
+                          </div>
+                        </PrivateRoute>
+                        <PrivateRoute path="/suggestions" roles={["isAdmin"]}>
+                          <div className={classes.organizationEditWrapper}>
+                            <Suggestions />
+                          </div>
+                        </PrivateRoute>
+                        <PrivateRoute
+                          path="/logins"
+                          roles={["isAdmin", "isCoordinator"]}
+                        >
+                          {" "}
+                          <div className={classes.organizationEditWrapper}>
+                            <Logins />
+                          </div>
+                        </PrivateRoute>
+                        <PrivateRoute
+                          path="/securityadmindashboard"
+                          roles={["isGlobalAdmin", "isSecurityAdmin"]}
+                        >
+                          <div className={classes.verificationAdminWrapper}>
+                            <SecurityAdminDashboard />
+                          </div>
+                        </PrivateRoute>
+                        <PrivateRoute
+                          path="/organizationimport"
+                          roles={["isAdmin"]}
+                        >
+                          <ImportFile />
+                        </PrivateRoute>
+                        <Route path="/resources">
+                          <Resources />
+                        </Route>
+                        <Route path="/register">
+                          <Register />
+                        </Route>
+                        <Route path="/confirm/:token">
+                          <ConfirmEmail />
+                        </Route>
+                        <Route path="/login/:email?">
+                          <Login />
+                        </Route>
+                        <Route path="/forgotpassword/:email?">
+                          <ForgotPassword />
+                        </Route>
+                        <Route path="/resetpasswordemailsent/:email?">
+                          <ResetPasswordEmailSent />
+                        </Route>
+                        <Route path="/resetPassword/:token">
+                          <ResetPassword />
+                        </Route>
+                        <Route path="/donate">
+                          <Donate />
+                        </Route>
+                        <Route path="/about">
+                          <About />
+                        </Route>
+                        <Route exact path="/faqs">
+                          <Faq />
+                        </Route>
+                        <Route exact path="/fallback">
+                          <Fallback />
+                        </Route>
+                      </Switch>
+                    </React.Suspense>
                     <Toast />
                   </Grid>
                 </Router>

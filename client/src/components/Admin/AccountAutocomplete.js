@@ -1,7 +1,6 @@
 import React from "react";
-import { Autocomplete } from "@material-ui/lab";
+import { Autocomplete, TextField } from "@mui/material";
 import { useAccounts } from "../../hooks/useAccounts";
-import { TextField } from "../UI";
 
 export default function AccountAutocomplete({
   accountId,

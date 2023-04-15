@@ -1,4 +1,4 @@
-import theme from "theme/clientTheme";
+import { breakpoints } from "../theme/breakpoints";
 import geoViewport from "@mapbox/geo-viewport";
 
 export const getMapBounds = (center, zoom, dimensions) => {
@@ -31,18 +31,14 @@ export const getGoogleMapsUrl = (zip, address1, address2) => {
   return `${baseUrl}${address1url},+${zip}`;
 };
 
-export const getGoogleMapsDirectionsUrl = (
-  originCoordinates,
-  destinationCoordinates
-) => {
+export const getGoogleMapsDirectionsUrl = (destinationCoordinates) => {
   return (
     `https://google.com/maps/dir/?api=1` +
-    `&origin=${originCoordinates.latitude},${originCoordinates.longitude}` +
     `&destination=${destinationCoordinates.latitude},${destinationCoordinates.longitude}`
   );
 };
 
-export const isMobile = () => window.innerWidth < theme.breakpoints.values.sm;
+export const isMobile = () => window.innerWidth < breakpoints.values.sm;
 
 export const extractNumbers = (numbers) =>
   numbers.split(/(and)|,|&+/).map((n) => {
@@ -54,3 +50,25 @@ export const extractNumbers = (numbers) =>
       ? { number: true, value: match[0] }
       : { number: false, value: n };
   });
+
+export const formatDate = (ts) => {
+  return !ts
+    ? null
+    : new Date(ts).toLocaleString("en-US", {
+        month: "numeric",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+      });
+};
+
+export const formatDateMMMddYYYY = (ts) => {
+  return !ts
+    ? null
+    : new Date(ts).toLocaleString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
+};

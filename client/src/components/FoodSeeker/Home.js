@@ -1,26 +1,29 @@
 import React from "react";
 import { useHistory } from "react-router";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { Typography, Tooltip } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import Paper from "@material-ui/core/Paper";
-import Box from "@material-ui/core/Box";
-import Link from "@material-ui/core/Link";
+import CssBaseline from "@mui/material/CssBaseline";
+import { Typography, Tooltip } from "@mui/material";
+import makeStyles from "@mui/styles/makeStyles";
+import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
+import Stack from "@mui/material/Stack";
+import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
 import { Link as RouterLink } from "react-router-dom";
 import AddressDropDown from "components/FoodSeeker/AddressDropDown";
-import { Button } from "../../components/UI";
-import { RotateLoader } from "react-spinners";
-// All the tenant logos happen to be the same for now
-import logo from "images/foodoasis.svg";
+import { Button } from "@mui/material";
 import * as analytics from "services/analytics";
 import { useSiteContext } from "../../contexts/siteContext";
 import useGeolocation, { useLocationPermission } from "hooks/useGeolocation";
+import CircularProgress from "@mui/material/CircularProgress";
+import { LocationOn } from "@mui/icons-material";
 
 const logoPaths = {
-  1: require("images/foodoasis.svg"),
-  2: require("images/foodoasis.svg"),
+  1: require("images/foodoasis.svg").default,
+  2: require("images/foodoasis.svg").default,
   3: require("../StaticPagesHI/assets/aloha-harvest-bg-none.png"),
+  4: require("images/foodoasis.svg").default,
+  5: require("images/foodoasis.svg").default,
+  6: require("images/foodoasis.svg").default,
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -33,26 +36,26 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       height: "100%",
     },
   },
   container: {
     maxWidth: "650px",
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       padding: 0,
       height: "100%",
     },
   },
   paper: {
     margin: "0 auto",
-    padding: "1.5rem 0.5rem 3rem 0.5rem",
+    padding: "3.5rem 0.5rem 3rem 0.5rem",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     borderRadius: "24px",
     boxShadow: "0px 5px 8px 0px rgb(0, 0, 0, 40%)",
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       height: "100%",
       borderRadius: "0",
       paddingTop: "10rem",
@@ -60,33 +63,12 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: "none",
     },
   },
-  logoContainer: {
-    margin: "30px 0 0px 0",
-    textAlign: "center",
-  },
-  header: {
-    marginBottom: theme.spacing(1),
-  },
   subtitle: {
     marginTop: theme.spacing(1),
     fontWeight: "500",
     fontSize: "18.72px",
     marginBottom: "0.5em",
-    color: "#000000",
     textAlign: "center",
-  },
-  label: {
-    textAlign: "center",
-    marginTop: 10,
-    marginBottom: "0.5em",
-    padding: "0 5vw",
-
-    [theme.breakpoints.down("sm")]: {
-      padding: "0 5vw",
-    },
-    [theme.breakpoints.down("md")]: {
-      padding: "0 8.5vw",
-    },
   },
   form: {
     width: "100%",
@@ -105,39 +87,10 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "flex-start",
     justifyContent: "center",
     marginBottom: "1em",
-    color: "#4D4D4D",
     fontSize: "16px",
-  },
-  address: {
-    marginTop: theme.spacing(1),
-    paddingRight: 0,
-  },
-  inputRoot: {
-    '&[class*="MuiOutlinedInput-root"]': {
-      paddingRight: 0,
-    },
   },
   endAdornment: {
     display: "none",
-  },
-  submit: {
-    height: "40px",
-    minWidth: "25px",
-    backgroundColor: "#BCE76D",
-    borderRadius: "0 6px 6px 0",
-    // marginLeft: ".5em",
-    boxShadow: "none",
-    "& .MuiButton-startIcon": {
-      marginRight: 0,
-    },
-    "&.Mui-disabled": {
-      backgroundColor: "#BCE76D",
-      opacity: 0.8,
-    },
-    "&:hover": {
-      backgroundColor: "#C7F573",
-      boxShadow: "none",
-    },
   },
   logo: {
     width: "60%",
@@ -153,26 +106,8 @@ const useStyles = makeStyles((theme) => ({
   },
   learnMore: {
     fontSize: "16px",
-    color: "#4D4D4D",
-    textDecoration: "underline",
-    textUnderlineOffset: "8px",
-    "&:visited": {
-      color: "#4D4D4D",
-    },
-    "&:hover": {
-      color: "#31C658",
-    },
     [theme.breakpoints.up("sm")]: {
       fontSize: "19px",
-    },
-  },
-  locationBtn: {
-    backgroundColor: "#336699",
-    color: "white",
-    letterSpacing: "1px",
-    fontWeight: "500",
-    "&:hover": {
-      backgroundColor: "#0A3865",
     },
   },
 }));
@@ -209,7 +144,6 @@ const Home = () => {
         break;
       default:
         setBgImg(`url("/landing-page/bg-LA.jpeg")`);
-        return;
     }
   }, [tenantId]);
 
@@ -231,19 +165,13 @@ const Home = () => {
       <Container component="main" className={classes.container}>
         <CssBaseline />
         <Paper className={classes.paper}>
-          <Box className={classes.logoContainer}>
-            <img
-              src={logoPaths[tenantId] ? logoPaths[tenantId].default : logo}
-              alt="logo"
-              className={classes.logo}
-            />
-          </Box>
+          <img src={logoPaths[tenantId]} alt="logo" className={classes.logo} />
           <Box className={classes.formContainer}>
             <form
               className={classes.form}
               onSubmit={() => history.push("/organizations")}
             >
-              <Typography className={classes.subtitle}>
+              <Typography variant="h2" className={classes.subtitle}>
                 {taglineText}
               </Typography>
               <Box className={classes.inputContainer}>
@@ -252,7 +180,9 @@ const Home = () => {
               <Box className={classes.inputContainer}>or</Box>
               <Box className={classes.inputContainer}>
                 {isGettingLocation ? (
-                  <RotateLoader sizeUnit="px" size={15} color="green" loading />
+                  <Stack justifyContent="center" alignContent="center">
+                    <CircularProgress />
+                  </Stack>
                 ) : (
                   <div style={{ textAlign: "center" }}>
                     <Tooltip
@@ -264,9 +194,9 @@ const Home = () => {
                     >
                       <div>
                         <Button
-                          icon="locationOn"
-                          iconPosition="start"
-                          className={classes.locationBtn}
+                          variant="contained"
+                          startIcon={<LocationOn />}
+                          // className={classes.locationBtn}
                           onClick={useMyLocationTrigger}
                           disabled={locationPermission === "denied" || !!error}
                         >

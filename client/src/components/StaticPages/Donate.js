@@ -1,17 +1,19 @@
 import React, { useEffect } from "react";
-
-import donatebg from "./assets/donate-bg.png";
-import iconSpacerGray from "./assets/icon-spacer-gray.svg";
-import { makeStyles } from "@material-ui/core";
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
+import donatebg from "./assets/donate-bg.webp";
+import makeStyles from "@mui/styles/makeStyles";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
 import logo from "images/foodoasis.svg";
-import Paper from "@material-ui/core/Paper";
-import Grid from "@material-ui/core/Grid";
-import Avatar from "@material-ui/core/Avatar";
-import Container from "@material-ui/core/Container";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
+import {
+  Link,
+  Paper,
+  Grid,
+  Avatar,
+  Container,
+  Typography,
+  Box,
+  Button,
+} from "@mui/material";
 import donationStep1 from "images/donationStep1.png";
 import donationStep2 from "images/donationStep2.png";
 import donationStep3 from "images/donationStep3.png";
@@ -20,7 +22,7 @@ import donationStep5 from "images/donationStep5.png";
 import donationStep6 from "images/donationStep6.png";
 import donationStep7 from "images/donationStep7.png";
 import * as analytics from "../../services/analytics";
-import { Button, IconButton } from "../../components/UI";
+import { IconButton } from "../UI/StandardButton";
 
 const useStyles = makeStyles((theme) => ({
   outer: {
@@ -35,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   title: {
-    color: "#4d4d4d",
+    color: "#000000",
     textTransform: "uppercase",
     fontWeight: 500,
     textAlign: "center",
@@ -43,28 +45,10 @@ const useStyles = makeStyles((theme) => ({
     margin: 0,
     padding: "32px 0",
   },
-  btnOrange: {
-    color: "#fff",
-    fontSize: "18px",
-    background: "#e57109",
-    boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-    borderRadius: "6px",
-    padding: "8px 16px",
-    textDecoration: "none",
-    textTransform: "uppercase",
-  },
   btnOutline: {
     color: "#fff",
     border: "1px solid #336699",
     background: "#336699",
-    borderRadius: "6px",
-    padding: "8px 16px",
-    textDecoration: "none",
-    textTransform: "uppercase",
-  },
-  btnWhite: {
-    color: "#336699",
-    background: "#ffffff",
     borderRadius: "6px",
     padding: "8px 16px",
     textDecoration: "none",
@@ -78,31 +62,7 @@ const useStyles = makeStyles((theme) => ({
     margin: "auto",
   },
   donate: {
-    padding: "32px",
-    margin: "32px 0 0 0",
-    borderRadius: "24px",
-    color: "#4d4d4d",
-    background: "#f0f0f0",
-    display: "flex",
-    flexDirection: "column",
-    flexWrap: "wrap",
-    "& $h2": {
-      flexBasis: "100%",
-      textAlign: "center",
-      fontWeight: "500",
-      fontSize: "32px",
-      marginTop: "10px",
-      marginBottom: "20px",
-    },
-    "& $btnOutline": {
-      margin: "20px auto",
-    },
-  },
-  volunteerSection: {
-    padding: "32px",
-    margin: "32px 0 0 0",
-    borderRadius: "24px",
-    background: "#B6D8FB",
+    padding: "10px",
     color: "#4d4d4d",
     display: "flex",
     flexDirection: "column",
@@ -116,45 +76,8 @@ const useStyles = makeStyles((theme) => ({
       marginBottom: "20px",
     },
     "& $btnOutline": {
-      margin: "20px auto",
+      margin: "30px auto",
     },
-  },
-  cards: {
-    display: "flex",
-    flexWrap: "wrap",
-    margin: "0 0 32px 0",
-    justifyContent: "center",
-    "& $aside": {
-      textAlign: "center",
-      borderRadius: "24px",
-      padding: "1.25rem",
-      maxWidth: "550px",
-      margin: "1rem 0",
-      "& $btnWhite": {
-        display: "inline-block",
-        marginBottom: "20px",
-      },
-      "& $h3": {
-        fontSize: "40px",
-        fontWeight: "500",
-        color: "#ffffff",
-        margin: "20px 0",
-      },
-      "@media only screen and (min-width: 64em)": {
-        marginLeft: "1rem",
-        marginRight: "1rem",
-      },
-    },
-    "@media only screen and (min-width: 64em)": {
-      flexWrap: "nowrap",
-      padding: "32px",
-    },
-  },
-  signup: {
-    background: "rgba(229, 113, 9, .7)",
-  },
-  volunteer: {
-    background: "#e57109",
   },
   donationDialog: {
     flexGrow: 1,
@@ -162,16 +85,16 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
     margin: theme.spacing(1),
     "@media only screen and (min-width: 64em)": {
-      margin: `${theme.spacing(1)}px auto`,
+      margin: `${theme.spacing(1)} auto`,
       padding: theme.spacing(1, 4),
     },
   },
   paper: {
     maxWidth: 400,
     padding: theme.spacing(2),
-    margin: `${theme.spacing(2)}px auto`,
+    margin: `${theme.spacing(2)} auto`,
     "@media only screen and (min-width: 64em)": {
-      margin: `${theme.spacing(3)}px auto`,
+      margin: `${theme.spacing(3)} auto`,
       padding: theme.spacing(3),
     },
   },
@@ -222,24 +145,29 @@ const Donate = () => {
           Donate
         </Typography>
         <section className={classes.donate}>
-          <img
-            alt="Why Donate?"
-            src={iconSpacerGray}
-            className={classes.icon}
-            height="40"
-          />
-          <Typography variant="h2">Why Donate?</Typography>
           <Container maxWidth="sm">
             <Typography variant="body1">
-              We’ve done so much already as a 100% volunteer-run
-              organization—but we need your help to finish what we set out to
-              do. The admin, development, and marketing costs to expand our
-              directory are extensive. We have a directory of over 1,300
-              organizations to update. Your tax-deductible donation would help
-              us offset some of those costs.
+              As of July 2022, about 1 in 4 people in Los Angeles county are
+              food insecure, meaning they worry about having enough food for
+              their family. We are committed to connecting food seekers to free
+              food resources in Los Angeles County.
+              <br /> <br />
+              Food Oasis is a 100% volunteer-run through{" "}
+              <Link
+                href="https://hackforla.org/"
+                target={"_blank"}
+                rel="noopener noreferrer"
+              >
+                Hack for LA
+              </Link>
+              . Our volunteers have done amazing work but we need your help to
+              maintain and expand this important resource. Your tax-deductible
+              donation helps us offset the costs involved with marketing and
+              updating our directory.
             </Typography>
           </Container>
           <Button
+            variant="contained"
             className={classes.btnOutline}
             onClick={handleShowDonationDialog}
           >
@@ -251,46 +179,6 @@ const Donate = () => {
               setShowDonationDialog={setShowDonationDialog}
             />
           )}
-        </section>
-        <div className={classes.volunteerSection}>
-          <img
-            alt="Volunteer"
-            src={iconSpacerGray}
-            className={classes.icon}
-            height="40"
-          />
-          <Typography variant="h2">Want to give your time instead?</Typography>
-
-          <Container maxWidth="sm">
-            <Typography variant="body1">
-              We’re run 100% by remote volunteers who do critical work by
-              updating our food directory weekly. The work you do impact those
-              who don’t have enough to eat. Your help to update our directory
-              makes it easier for anyone to get in touch with groups that fit
-              their needs.
-            </Typography>
-          </Container>
-          <Button
-            href="//volunteer.laworks.com/opportunity/a0C3l00000r3wLvEAI"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={classes.btnOutline}
-          >
-            Volunteer
-          </Button>
-        </div>
-        <section className={classes.cards}>
-          {/* <aside className={classes.signup}>
-            <h3>Get monthly updates on what we&apos;re doing</h3>
-            <a
-              href="//foodoasis.us18.list-manage.com/subscribe?u=40d31892cbbe01312937f7de6&id=42235bb7ce"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={classes.btnWhite}
-            >
-              Signup
-            </a>
-          </aside> */}
         </section>
       </div>
     </div>

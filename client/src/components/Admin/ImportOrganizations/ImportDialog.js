@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -10,9 +11,8 @@ import {
   Radio,
   RadioGroup,
   Typography,
-} from "@material-ui/core";
-import makeStyles from "@material-ui/styles/makeStyles";
-import { Button } from "../../../components/UI";
+} from "@mui/material";
+import makeStyles from "@mui/styles/makeStyles";
 
 const optionDescriptions = {
   replace:
@@ -76,10 +76,11 @@ function ImportDialog(props) {
         </RadioGroup>
       </FormControl>
       <DialogActions>
-        <Button type="button" onClick={handleImportAction}>
+        <Button variant="outlined" type="button" onClick={handleImportAction}>
           Cancel
         </Button>
         <Button
+          variant="contained"
           type="button"
           autoFocus
           onClick={handleImport}

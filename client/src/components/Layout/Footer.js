@@ -1,17 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { Box } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { Box } from "@mui/material";
+import makeStyles from "@mui/styles/makeStyles";
 import useLocationHook from "hooks/useLocationHook";
 import { MENU_ITEMS } from "helpers/Constants";
 import { Link } from "react-router-dom";
-// The two tenant logos happen to be the same at this moment
-import logo from "images/foodoasis.svg";
 import { tenantId } from "../../helpers/Configuration";
 
+/* 
+This file is not used in the application at this time, but left here in 
+case the UI/UX team decides to re-instate it.
+*/
+
 const logoPaths = {
-  1: require("images/foodoasis.svg"),
-  2: require("images/foodoasis.svg"),
-  3: require("../StaticPagesHI/assets/aloha-harvest-bg-none-no-tag.png"),
+  1: require("images/foodoasis.svg").default,
+  2: require("images/foodoasis.svg").default,
+  3: require("../StaticPagesHI/assets/aloha-harvest-bg-none.png"),
+  4: require("images/foodoasis.svg").default,
+  5: require("images/foodoasis.svg").default,
+  6: require("images/foodoasis.svg").default,
 };
 
 const useStyles = makeStyles(() => ({
@@ -61,7 +67,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Footer = () => {
-  const {isHomePage} = useLocationHook();
+  const { isHomePage } = useLocationHook();
   const classes = useStyles();
 
   const initialFooterSwitch = window.innerWidth >= 1000 ? true : false;
@@ -110,11 +116,7 @@ const Footer = () => {
 
   return (
     <Box className={classes.footer} style={holderStyle}>
-      <img
-        src={logoPaths[tenantId] ? logoPaths[tenantId].default : logo}
-        className={classes.logo}
-        alt="logo"
-      />
+      <img src={logoPaths[tenantId]} className={classes.logo} alt="logo" />
       <div className={classes.textHolder} style={constantStyles}>
         {constantLinks}
       </div>

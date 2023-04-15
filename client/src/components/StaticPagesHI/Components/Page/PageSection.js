@@ -1,7 +1,7 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core";
-import Container from "@material-ui/core/Container";
-import Typography from "@material-ui/core/Typography";
+import makeStyles from "@mui/styles/makeStyles";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
 
 const useStyles = makeStyles(() => ({
   icon: {
@@ -12,7 +12,6 @@ const useStyles = makeStyles(() => ({
     padding: "32px",
     margin: "32px 0 0 0",
     borderRadius: "24px",
-    color: "#4d4d4d",
     background: "#f0f0f0",
     display: "flex",
     flexDirection: "column",
@@ -27,9 +26,6 @@ const useStyles = makeStyles(() => ({
     "& $btnOutline": {
       margin: "20px auto 0 auto",
     },
-    "& $a": {
-      color: "#4d4d4d",
-    },
     "& $p": {
       marginBottom: "16px",
     },
@@ -38,7 +34,6 @@ const useStyles = makeStyles(() => ({
     padding: "32px",
     margin: "32px 0 0 0",
     borderRadius: "24px",
-    color: "#4d4d4d",
     background: "#B6D8FB",
     display: "flex",
     flexDirection: "column",
@@ -49,9 +44,6 @@ const useStyles = makeStyles(() => ({
       fontSize: "32px",
       marginTop: "10px",
       marginBottom: "20px",
-    },
-    "& $a": {
-      color: "#4d4d4d",
     },
     "& $p": {
       marginBottom: "16px",

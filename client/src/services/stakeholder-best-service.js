@@ -1,12 +1,8 @@
 import axios from "axios";
-import moment from "moment";
 import { tenantId } from "helpers/Configuration";
+import { formatDate } from "helpers";
 
 const baseUrl = `/api/stakeholderbests`;
-
-const toLocalMoment = (ts) => {
-  return !ts ? null : moment.utc(ts).local();
-};
 
 /*
     searchParams is an object with any/all of the following properties:
@@ -37,12 +33,12 @@ export const search = async (searchParams) => {
   let stakeholders = response.data.map((s) => {
     return {
       ...s,
-      createdDate: toLocalMoment(s.createdDate),
-      modifiedDate: toLocalMoment(s.modifiedDate),
-      assignedDate: toLocalMoment(s.assignedDate),
-      submittedDate: toLocalMoment(s.submittedDate),
-      approvedDate: toLocalMoment(s.approvedDate),
-      claimedDate: toLocalMoment(s.claimedDate),
+      createdDate: formatDate(s.createdDate),
+      modifiedDate: formatDate(s.modifiedDate),
+      assignedDate: formatDate(s.assignedDate),
+      submittedDate: formatDate(s.submittedDate),
+      approvedDate: formatDate(s.approvedDate),
+      claimedDate: formatDate(s.claimedDate),
     };
   });
 
@@ -54,11 +50,11 @@ export const getById = async (id) => {
   const s = response.data;
   return {
     ...s,
-    createdDate: toLocalMoment(s.createdDate),
-    modifiedDate: toLocalMoment(s.modifiedDate),
-    assignedDate: toLocalMoment(s.assignedDate),
-    submittedDate: toLocalMoment(s.submittedDate),
-    approvedDate: toLocalMoment(s.approvedDate),
-    claimedDate: toLocalMoment(s.claimedDate),
+    createdDate: formatDate(s.createdDate),
+    modifiedDate: formatDate(s.modifiedDate),
+    assignedDate: formatDate(s.assignedDate),
+    submittedDate: formatDate(s.submittedDate),
+    approvedDate: formatDate(s.approvedDate),
+    claimedDate: formatDate(s.claimedDate),
   };
 };

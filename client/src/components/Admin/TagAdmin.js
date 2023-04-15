@@ -1,23 +1,24 @@
 import React from "react";
 import { useTags } from "hooks/useTags";
 import * as tagService from "../../services/tag-service";
-import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TablePagination from "@material-ui/core/TablePagination";
-import TableRow from "@material-ui/core/TableRow";
-import Container from "@material-ui/core/Container";
-import Modal from "@material-ui/core/Modal";
-import Box from "@material-ui/core/Box";
-import Button from "../UI/Button";
-import Input from "../UI/TextField";
+import makeStyles from "@mui/styles/makeStyles";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import Container from "@mui/material/Container";
+import Modal from "@mui/material/Modal";
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import { IconButton } from "../UI/StandardButton";
 import { Formik } from "formik";
 import { tenantId } from "helpers/Configuration";
-import IconButton from "components/UI/IconButton";
+// import IconButton from "components/UI/IconButton";
 import { Redirect, withRouter } from "react-router-dom";
 
 const columns = [
@@ -137,7 +138,9 @@ function TagAdmin(props) {
     <Container maxWidth="sm">
       <div className={classes.heading}>
         <h2 style={{ margin: 0 }}>Tags</h2>
-        <Button onClick={handleAddNew}>Add New</Button>
+        <Button variant="outlined" onClick={handleAddNew}>
+          Add New
+        </Button>
       </div>
 
       {deleteError && (
@@ -202,6 +205,7 @@ function TagAdmin(props) {
                             >
                               <IconButton
                                 icon="delete"
+                                color="error"
                                 onClick={() => handleDelete(tag.id)}
                               />
                             </TableCell>
@@ -261,7 +265,7 @@ function TagAdmin(props) {
                     handleSubmit(e);
                   }}
                 >
-                  <Input
+                  <TextField
                     label="Name"
                     id="name"
                     value={values.name}
@@ -276,10 +280,17 @@ function TagAdmin(props) {
                     <div className={classes.error}>Something went wrong.</div>
                   )}
                   <Box mt={3} display="flex" justifyContent="space-between">
-                    <Button color="white" onClick={() => setActiveTag(null)}>
+                    <Button
+                      variant="outlined"
+                      onClick={() => setActiveTag(null)}
+                    >
                       Cancel
                     </Button>
-                    <Button type="submit" disabled={isSubmitting}>
+                    <Button
+                      variant="contained"
+                      type="submit"
+                      disabled={isSubmitting}
+                    >
                       Save
                     </Button>
                   </Box>

@@ -1,27 +1,23 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { withStyles } from "@material-ui/core";
+import withStyles from "@mui/styles/withStyles";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import * as accountService from "../../services/account-service";
+import { Button } from "@mui/material";
 import {
   Avatar,
   Container,
-  CssBaseline,
   Link,
   Grid,
+  TextField,
   Typography,
-} from "@material-ui/core";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import { Button, TextField } from "../../components/UI";
+} from "@mui/material";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useToasterContext } from "../../contexts/toasterContext";
+import debounce from "lodash.debounce";
 
 const styles = (theme) => ({
-  "@global": {
-    body: {
-      backgroundColor: theme.palette.common.white,
-    },
-  },
   paper: {
     marginTop: theme.spacing(1),
     display: "flex",
@@ -35,9 +31,6 @@ const styles = (theme) => ({
   form: {
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
   },
   body: {
     display: "flex",
@@ -59,10 +52,22 @@ const ForgotPassword = (props) => {
   const { classes, history, match } = props;
   const { setToast } = useToasterContext();
 
+  const debouncedEmailValidation = debounce(async (value, setFieldError) => {
+    try {
+      await accountService.getByEmail(value);
+      return;
+    } catch (e) {
+      console.error(e);
+      setFieldError(
+        "email",
+        "Account not found. If you want to create a new account with this email, please register."
+      );
+    }
+  }, 500);
+
   return (
     <div className={classes.body}>
       <Container component="main" maxWidth="xs" className={classes.container}>
-        <CssBaseline />
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
@@ -71,6 +76,7 @@ const ForgotPassword = (props) => {
             Forgot Password
           </Typography>
           <Formik
+            validateOnBlur={false}
             initialValues={{
               email: match.params.email || "",
             }}
@@ -81,11 +87,7 @@ const ForgotPassword = (props) => {
                   values.email
                 );
                 if (response.isSuccess) {
-                  setToast({
-                    message:
-                      "Please check your email for a 'Reset Password' link.",
-                  });
-                  history.push("/");
+                  history.push(`/resetpasswordemailsent/${values.email || ""}`);
                 } else if (
                   response.code === "FORGOT_PASSWORD_ACCOUNT_NOT_FOUND"
                 ) {
@@ -128,54 +130,66 @@ const ForgotPassword = (props) => {
               handleBlur,
               handleSubmit,
               isSubmitting,
-              /* and other goodies */
-            }) => (
-              <form
-                className={classes.form}
-                noValidate
-                onSubmit={(evt) => {
-                  evt.preventDefault();
-                  handleSubmit(evt);
-                }}
-              >
-                <TextField
-                  type="email"
-                  id="email"
-                  label="Email"
-                  name="email"
-                  variant="outlined"
-                  margin="normal"
-                  fullWidth
-                  autoComplete="email"
-                  autoFocus
-                  value={values.email}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  helperText={touched.email ? errors.email : ""}
-                  error={touched.email && Boolean(errors.email)}
-                />
-                <Button
-                  type="submit"
-                  fullWidth
-                  className={classes.submit}
-                  disabled={isSubmitting}
+              setFieldError,
+              isValid,
+            }) => {
+              const handleEmailChange = (e) => {
+                handleChange(e);
+                debouncedEmailValidation(e.target.value, setFieldError);
+              };
+              return (
+                <form
+                  className={classes.form}
+                  noValidate
+                  onSubmit={(evt) => {
+                    evt.preventDefault();
+                    handleSubmit(evt);
+                  }}
                 >
-                  Send Reset Link to Email
-                </Button>
-                <Grid container>
-                  <Grid item xs>
-                    <Link href={`/login/${values.email || ""}`} variant="body2">
-                      Login
-                    </Link>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      <TextField
+                        type="email"
+                        id="email"
+                        label="Email"
+                        name="email"
+                        variant="outlined"
+                        margin="normal"
+                        fullWidth
+                        autoComplete="email"
+                        autoFocus
+                        value={values.email}
+                        onChange={handleEmailChange}
+                        onBlur={handleBlur}
+                        helperText={touched.email ? errors.email : ""}
+                        error={touched.email && Boolean(errors.email)}
+                      />
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <Button
+                        variant="contained"
+                        type="submit"
+                        fullWidth
+                        disabled={isSubmitting || !isValid}
+                      >
+                        Send Password Reset Link
+                      </Button>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography align="center">
+                        <Link
+                          href={`/login/${values.email || ""}`}
+                          variant="body2"
+                        >
+                          Return to Login
+                        </Link>
+                      </Typography>
+                    </Grid>
                   </Grid>
-                  <Grid item>
-                    <Link href="/register" variant="body2">
-                      {"Register"}
-                    </Link>
-                  </Grid>
-                </Grid>
-              </form>
-            )}
+                </form>
+              );
+            }}
           </Formik>
         </div>
       </Container>

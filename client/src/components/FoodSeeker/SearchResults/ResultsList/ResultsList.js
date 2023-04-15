@@ -1,16 +1,12 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-import { CircularProgress } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import List from "react-virtualized/dist/es/List";
-import AutoSizer from "react-virtualized/dist/es/AutoSizer";
-import CellMeasurer from "react-virtualized/dist/es/CellMeasurer";
-import CellMeasurerCache from "react-virtualized/dist/es/CellMeasurer/CellMeasurerCache";
+import { Button, CircularProgress, Stack } from "@mui/material";
+import makeStyles from "@mui/styles/makeStyles";
 import StakeholderPreview from "../StakeholderPreview/StakeholderPreview";
 import StakeholderDetails from "../StakeholderDetails/StakeholderDetails";
 import * as analytics from "services/analytics";
-import { Button } from "../../../UI";
 import { useSelectedOrganization } from "../../../../appReducer";
+import { Virtuoso } from "react-virtuoso";
 
 const useStyles = makeStyles((theme) => ({
   listContainer: {
@@ -20,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       fontSize: 12,
     },
     padding: "1px", // This keeps the control width from infintely switching widths back and forth - have no idea why
@@ -33,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   preview: {
     width: "100%",
     borderBottom: " .2em solid #f1f1f1",
-    padding: "0 1em",
+    padding: "0",
   },
   emptyResult: {
     padding: "1em 0",
@@ -43,13 +39,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const cache = new CellMeasurerCache({
-  defaultHeight: 340,
-  fixedWidth: true,
-});
-
-const clearCache = () => cache.clearAll();
-
 const ResultsList = ({ stakeholders, loading, handleReset }) => {
   const classes = useStyles();
   const selectedOrganization = useSelectedOrganization();
@@ -58,49 +47,17 @@ const ResultsList = ({ stakeholders, loading, handleReset }) => {
     analytics.postEvent("showList");
   }, []);
 
-  useEffect(() => {
-    window.addEventListener("resize", clearCache);
-    return () => window.removeEventListener("resize", clearCache);
-  }, []);
-
-  useEffect(() => {
-    clearCache();
-  }, [stakeholders]);
-
-  const scrollToIndex = selectedOrganization
-    ? stakeholders.findIndex((s) => s.id === selectedOrganization.id)
-    : 0;
-
-  const rowRenderer = useCallback(
-    ({ index, style, key, parent }) => (
-      <CellMeasurer
-        key={key}
-        cache={cache}
-        parent={parent}
-        columnIndex={0}
-        rowIndex={index}
-      >
-        {({ registerChild }) => (
-          <div ref={registerChild} style={style} className={classes.preview}>
-            <StakeholderPreview stakeholder={stakeholders[index]} />
-          </div>
-        )}
-      </CellMeasurer>
-    ),
-    [stakeholders, classes.preview]
-  );
-
   return (
     <div className={classes.listContainer}>
       {loading && (
-        <div className={classes.emptyResult}>
+        <Stack justifyContent="center" alignContent="center">
           <CircularProgress />
-        </div>
+        </Stack>
       )}
       {!loading && stakeholders.length === 0 && (
         <div className={classes.emptyResult}>
           <p>Sorry, we don&apos;t have any results for this area.</p>
-          <Button onClick={handleReset} disableElevation>
+          <Button variant="outlined" onClick={handleReset} disableElevation>
             Click here to reset the search
           </Button>
         </div>
@@ -111,19 +68,14 @@ const ResultsList = ({ stakeholders, loading, handleReset }) => {
         <StakeholderDetails />
       ) : (
         <div className={classes.list}>
-          <AutoSizer>
-            {({ height, width }) => (
-              <List
-                width={width}
-                height={height}
-                rowCount={stakeholders.length}
-                rowRenderer={rowRenderer}
-                deferredMeasurementCache={cache}
-                rowHeight={cache.rowHeight}
-                scrollToIndex={scrollToIndex}
-              />
+          <Virtuoso
+            data={stakeholders}
+            itemContent={(index) => (
+              <div className={classes.preview}>
+                <StakeholderPreview stakeholder={stakeholders[index]} />
+              </div>
             )}
-          </AutoSizer>
+          />
         </div>
       )}
     </div>

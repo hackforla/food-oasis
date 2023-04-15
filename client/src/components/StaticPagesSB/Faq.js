@@ -1,10 +1,10 @@
 import React from "react";
 
-import faqbg from "./assets/faq-bg.png";
+import faqbg from "./assets/faq-bg.webp";
 import iconSpacerGray from "./assets/icon-spacer-gray.svg";
-import { makeStyles } from "@material-ui/core";
-import Container from "@material-ui/core/Container";
-import Typography from "@material-ui/core/Typography";
+import makeStyles from "@mui/styles/makeStyles";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
 
 const useStyles = makeStyles(() => ({
   outer: {
@@ -19,7 +19,6 @@ const useStyles = makeStyles(() => ({
     },
   },
   title: {
-    color: "#4d4d4d",
     textTransform: "uppercase",
     fontWeight: 500,
     textAlign: "center",
@@ -27,7 +26,6 @@ const useStyles = makeStyles(() => ({
     margin: 0,
     padding: "32px 0",
     "& $span": {
-      color: "#4d4d4d",
       "& $span": {
         textTransform: "none",
       },
@@ -44,7 +42,6 @@ const useStyles = makeStyles(() => ({
     padding: "32px",
     margin: "32px 0",
     borderRadius: "24px",
-    color: "#4d4d4d",
     backgroundColor: "#F0F0F0",
     display: "flex",
     flexWrap: "wrap",
@@ -61,7 +58,6 @@ const useStyles = makeStyles(() => ({
     padding: "32px",
     margin: "32px 0",
     borderRadius: "24px",
-    color: "#4d4d4d",
     background: "#B6D8FB",
     display: "flex",
     flexDirection: "column",
@@ -73,12 +69,8 @@ const useStyles = makeStyles(() => ({
       marginTop: "20px",
       marginBottom: "20px",
     },
-    "& $a": {
-      color: "#4d4d4d",
-    },
   },
   forDonors: {
-    color: "#4d4d4d",
     backgroundColor: "#F0F0F0",
     background: "#fff",
     padding: "32px",

@@ -15,7 +15,7 @@ import {
   Save,
   Search,
   WrapText,
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 
 export const ICON_DICT = {
   add: Add,

@@ -1,8 +1,10 @@
 import React from "react";
-import { getTenantId, DEFAULT_VIEWPORTS } from "contexts/siteContext";
+import { getTenantId } from "contexts/siteContext";
+import { TENANT_CONFIG } from "helpers/Constants";
 
 const tenantId = getTenantId();
-export const DEFAULT_COORDINATES = DEFAULT_VIEWPORTS[tenantId].center;
+export const DEFAULT_COORDINATES =
+  TENANT_CONFIG[tenantId].defaultViewport.center;
 
 function defaultCoordinatesReducer(state, action) {
   switch (action.type) {

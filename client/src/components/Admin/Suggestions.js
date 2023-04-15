@@ -1,43 +1,43 @@
 import React from "react";
 import { useSuggestions } from "hooks/useSuggestions";
-import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TablePagination from "@material-ui/core/TablePagination";
-import TableRow from "@material-ui/core/TableRow";
-import Container from "@material-ui/core/Container";
-import Modal from "@material-ui/core/Modal";
-import Box from "@material-ui/core/Box";
-import Button from "../UI/Button";
-import Input from "../UI/TextField";
+import makeStyles from "@mui/styles/makeStyles";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import Container from "@mui/material/Container";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import { Formik } from "formik";
 import * as suggestionService from "../../services/suggestion-service";
 import { Redirect, withRouter } from "react-router-dom";
-import Chip from "@material-ui/core/Chip";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import Checkbox from "@material-ui/core/Checkbox";
-import ListItemText from "@material-ui/core/ListItemText";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import Avatar from "@material-ui/core/Avatar";
-import CommentIcon from "@material-ui/icons/Comment";
-import Divider from "@material-ui/core/Divider";
-import AssessmentIcon from "@material-ui/icons/Assessment";
-import PersonIcon from "@material-ui/icons/Person";
-import EmailIcon from "@material-ui/icons/Email";
-import PhoneIphoneIcon from "@material-ui/icons/PhoneIphone";
-import HomeIcon from "@material-ui/icons/Home";
-import LocationCityIcon from "@material-ui/icons/LocationCity";
-import PhoneIcon from "@material-ui/icons/Phone";
+import Chip from "@mui/material/Chip";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import Checkbox from "@mui/material/Checkbox";
+import ListItemText from "@mui/material/ListItemText";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import Avatar from "@mui/material/Avatar";
+import CommentIcon from "@mui/icons-material/Comment";
+import Divider from "@mui/material/Divider";
+import AssessmentIcon from "@mui/icons-material/Assessment";
+import PersonIcon from "@mui/icons-material/Person";
+import EmailIcon from "@mui/icons-material/Email";
+import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
+import HomeIcon from "@mui/icons-material/Home";
+import LocationCityIcon from "@mui/icons-material/LocationCity";
+import PhoneIcon from "@mui/icons-material/Phone";
 import { getIsMobile } from "../../utils";
+import { TextField } from "@mui/material";
 
 const columns = [
   { id: "name", label: "Name", minWidth: 100 },
@@ -352,7 +352,7 @@ function Suggestions(props) {
                       />
                     </List>
                     <Divider style={{ margin: "1em 0" }} />
-                    <Input
+                    <TextField
                       label="Admin Notes"
                       id="adminNotes"
                       value={values.adminNotes || ""}
@@ -395,12 +395,16 @@ function Suggestions(props) {
                     )}
                     <Box mt={3} display="flex" justifyContent="space-between">
                       <Button
-                        color="default"
+                        variant="outlined"
                         onClick={() => setActiveOrg(null)}
                       >
                         Cancel
                       </Button>
-                      <Button type="submit" disabled={isSubmitting}>
+                      <Button
+                        variant="contained"
+                        type="submit"
+                        disabled={isSubmitting}
+                      >
                         Save
                       </Button>
                     </Box>

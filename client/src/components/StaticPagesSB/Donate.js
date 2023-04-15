@@ -1,10 +1,10 @@
 import React from "react";
 
-import donatebg from "./assets/donate-bg.png";
+import donatebg from "./assets/donate-bg.webp";
 import iconSpacerGray from "./assets/icon-spacer-gray.svg";
-import { makeStyles } from "@material-ui/core";
-import Container from "@material-ui/core/Container";
-import Typography from "@material-ui/core/Typography";
+import makeStyles from "@mui/styles/makeStyles";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
 
 const useStyles = makeStyles(() => ({
   outer: {
@@ -19,7 +19,6 @@ const useStyles = makeStyles(() => ({
     },
   },
   title: {
-    color: "#4d4d4d",
     textTransform: "uppercase",
     fontWeight: 500,
     textAlign: "center",
@@ -65,7 +64,6 @@ const useStyles = makeStyles(() => ({
     padding: "32px",
     margin: "32px 0 0 0",
     borderRadius: "24px",
-    color: "#4d4d4d",
     background: "#f0f0f0",
     display: "flex",
     flexWrap: "wrap",
@@ -89,7 +87,6 @@ const useStyles = makeStyles(() => ({
     padding: "32px",
     margin: "32px 0 0 0",
     borderRadius: "24px",
-    color: "#4d4d4d",
     background: "#B6D8FB",
     display: "flex",
     flexWrap: "wrap",

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from "@mui/styles/makeStyles";
 import {
   Card,
   CardContent,
@@ -15,7 +15,7 @@ import {
   Typography,
   RadioGroup,
   Radio,
-} from "@material-ui/core";
+} from "@mui/material";
 import RadioTrueFalseEither from "./ui/RadioTrueFalseEither";
 import LocationAutocomplete from "./LocationAutocomplete";
 import AccountAutocomplete from "./AccountAutocomplete";
@@ -126,14 +126,14 @@ const SearchCriteria = ({
   };
 
   const setLocation = (location) => {
-    setCustomLatitude(location.location.y);
-    setCustomLongitude(location.location.x);
-    setCustomPlaceName(location.address);
+    setCustomLatitude(location.Geometry.Point[0]);
+    setCustomLongitude(location.Geometry.Point[1]);
+    setCustomPlaceName(location.Label);
     setCriteria({
       ...criteria,
-      latitude: location.location.y,
-      longitude: location.location.x,
-      placeName: location.address,
+      latitude: location.Geometry.Point[0],
+      longitude: location.Geometry.Point[1],
+      placeName: location.Label,
     });
     setUseMyLocation("custom");
   };

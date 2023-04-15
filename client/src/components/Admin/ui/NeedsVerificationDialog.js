@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import {
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -10,24 +11,10 @@ import {
   Radio,
   RadioGroup,
   FormControlLabel,
-} from "@material-ui/core";
-import { Button } from "../../../components/UI";
-import { makeStyles } from "@material-ui/core/styles";
-import { white } from "theme/colors";
-
-const useStyles = makeStyles((theme) => ({
-  button: {
-    borderColor: theme.palette.primary.translucent,
-    "&:hover": {
-      background: theme.palette.primary.main,
-      color: white,
-    },
-  },
-}));
+} from "@mui/material";
 
 function NeedsVerificationDialog(props) {
   const { onClose, open, ...other } = props;
-  const classes = useStyles();
 
   const [message, setMessage] = useState("");
   const [preserveConfirmations, setPreserveConfirmations] = useState("");
@@ -67,7 +54,7 @@ function NeedsVerificationDialog(props) {
           minRows={4}
           maxRows={12}
           value={message}
-          onChange={(e) => setMessage(!!e.target.value)}
+          onChange={(e) => setMessage(e.target.value)}
         />
         <FormLabel id="confirmation-reset-options=label">
           Critical Field Confirmations
@@ -91,16 +78,11 @@ function NeedsVerificationDialog(props) {
         </RadioGroup>
       </DialogContent>
       <DialogActions>
-        <Button
-          variant="outlined"
-          className={classes.button}
-          autoFocus
-          onClick={handleCancel}
-        >
+        <Button variant="outlined" autoFocus onClick={handleCancel}>
           Cancel
         </Button>
 
-        <Button type="button" onClick={handleConfirm}>
+        <Button variant="contained" type="button" onClick={handleConfirm}>
           Confirm Status Change
         </Button>
       </DialogActions>

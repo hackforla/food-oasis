@@ -1,6 +1,6 @@
 import React from "react";
-import { useTheme } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
+import { useTheme } from "@mui/material/styles";
+import Button from "@mui/material/Button";
 
 const PantryIcon = ({ isSelected }) => (
   <svg
@@ -23,10 +23,9 @@ const PantryIcon = ({ isSelected }) => (
 
 const MealIcon = ({ isSelected }) => (
   <svg
-    width="9"
+    width="14"
     height="22"
-    margin="5"
-    viewBox="0 0 9 22"
+    viewBox="0 0 14 22"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
@@ -44,20 +43,21 @@ const CategoryButton = ({ isSelected, onClick, icon, label, style }) => {
   return (
     <Button
       style={{
-        borderWidth: 1,
+        borderWidth: "1px",
         borderStyle: "solid",
+        borderRadius: "4px",
         borderColor: isSelected
-          ? theme.palette.primary.white
+          ? "translucent"
           : icon === "pantry"
-          ? theme.palette.foodPantry.translucent
-          : theme.palette.mealProgram.translucent,
+          ? theme.palette.foodPantry.main
+          : theme.palette.mealProgram.main,
         backgroundColor: !isSelected
-          ? "#fff"
+          ? theme.palette.common.white
           : icon === "pantry"
           ? theme.palette.foodPantry.main
           : theme.palette.mealProgram.main,
         color: isSelected
-          ? "#fff"
+          ? theme.palette.common.white
           : icon === "pantry"
           ? theme.palette.foodPantry.main
           : theme.palette.mealProgram.main,

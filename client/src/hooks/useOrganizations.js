@@ -75,6 +75,7 @@ export const useOrganizations = () => {
         maxCompleteCriticalPercent,
         tag,
       });
+
       setState({ data: stakeholders, loading: false, error: false });
       return stakeholders;
     } catch (err) {

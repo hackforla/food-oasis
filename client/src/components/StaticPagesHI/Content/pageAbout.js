@@ -1,5 +1,5 @@
 import aboutbg from "../assets/about-header.jpg";
-import Typography from "@material-ui/core/Typography";
+import { Link, Typography } from "@mui/material";
 
 const PAGE_INFO_ABOUT = {
   pageTitle: (
@@ -74,13 +74,13 @@ const PAGE_SECTIONS_ABOUT = [
     content: (
       <div>
         <Typography variant="body1">
-          <a
+          <Link
             href={"https://alohaharvest.org/"}
             target="_blank"
             rel="noopener noreferrer"
           >
             Aloha Harvest
-          </a>{" "}
+          </Link>{" "}
           is the largest food rescue nonprofit in the state of Hawaiʻi. Seven
           days a week, free of charge and free of liability, we rescue quality
           excess food from donors (ex: wholesale distributors, grocery stores,
@@ -91,13 +91,13 @@ const PAGE_SECTIONS_ABOUT = [
           We have been doing this work for over 21 years and represent the
           largest and most successful collaboration between businesses and
           nonprofits in the state.{" "}
-          <a
+          <Link
             href="https://alohaharvest.org/reports/"
             target="_blank"
             rel="noopener noreferrer"
           >
             Last year
-          </a>
+          </Link>
           , we worked with 370 food donors and 273 recipient agencies to
           redistribute over 2.7 million pounds of good food that would have
           otherwise been wasted!
@@ -106,56 +106,56 @@ const PAGE_SECTIONS_ABOUT = [
           This work is essential because even while 1 in 5 people in Hawaiʻi
           rely on food pantries for assistance, about 237,000 tons of good food
           is wasted annually. Here's a{" "}
-          <a
+          <Link
             href="https://www.youtube.com/watch?v=p9kNYCUtg8E&feature=youtu.be"
             target="_blank"
             rel="noopener noreferrer"
           >
             short video
-          </a>{" "}
+          </Link>{" "}
           video that explains more of our process, impact, and future potential.
         </Typography>
         <Typography variant="body1">
           Visit{" "}
-          <a
+          <Link
             href="https://alohaharvest.org"
             target="_blank"
             rel="noopener noreferrer"
           >
             alohaharvest.org
-          </a>{" "}
+          </Link>{" "}
           or follow us on{" "}
-          <a
+          <Link
             href="http://instagram.com/alohaharvest"
             target="_blank"
             rel="noopener noreferrer"
           >
             Instagram
-          </a>
+          </Link>
           ,{" "}
-          <a
+          <Link
             href="http://facebook.com/alohaharvest"
             target="_blank"
             rel="noopener noreferrer"
           >
             Facebook
-          </a>
+          </Link>
           ,{" "}
-          <a
+          <Link
             href="https://www.linkedin.com/company/4005035"
             target="_blank"
             rel="noopener noreferrer"
           >
             LinkedIn
-          </a>
+          </Link>
           , and{" "}
-          <a
+          <Link
             href="http://twitter.com/alohaharvest"
             target="_blank"
             rel="noopener noreferrer"
           >
             Twitter
-          </a>
+          </Link>
           .
         </Typography>
       </div>
@@ -168,7 +168,7 @@ const PAGE_SECTIONS_ABOUT = [
       <section>
         <Typography variant="body1">
           Call our office at 808-208-1581, or email{" "}
-          <a href="mailto:info@alohaharvest.org">info@alohaharvest.org</a>
+          <Link href="mailto:info@alohaharvest.org">info@alohaharvest.org</Link>
         </Typography>
       </section>
     ),

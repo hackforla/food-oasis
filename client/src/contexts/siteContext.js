@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { TENANT_CONFIG } from "../helpers/Constants";
-
 export const SiteContext = React.createContext(null);
 
 const TENANT_IDS = {
@@ -66,9 +65,7 @@ export const SiteProvider = ({ children }) => {
   }, [tenantId, tenantName, tenantDetails, defaultViewport]);
   return <SiteContext.Provider value={value}>{children}</SiteContext.Provider>;
 };
-
 export const useSiteContext = () => React.useContext(SiteContext);
-
 SiteProvider.propTypes = {
   children: PropTypes.any,
 };

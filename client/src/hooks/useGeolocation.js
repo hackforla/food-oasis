@@ -64,8 +64,8 @@ export default function useGeolocation() {
 export const useLocationPermission = () => {
   const [permission, setPermission] = React.useState(null);
   React.useEffect(() => {
-    if (navigator.permissions) {
-      return null;
+    if (!navigator.permissions) {
+      return undefined;
     }
     async function getPermission() {
       try {

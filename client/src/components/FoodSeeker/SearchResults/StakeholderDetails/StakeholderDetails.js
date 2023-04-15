@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Button } from "../../../UI";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import ArrowBack from "@mui/icons-material/ArrowBackIosNew";
+import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
+import Stack from "@mui/material/Stack";
 import StakeholderIcon from "images/stakeholderIcon";
 import fbIcon from "images/fbIcon.png";
 import instaIcon from "images/instaIcon.png";
@@ -11,147 +15,38 @@ import {
 } from "constants/stakeholder";
 import { ORGANIZATION_COLORS, CLOSED_COLOR } from "constants/map";
 import { extractNumbers, getGoogleMapsDirectionsUrl } from "helpers";
-import SuggestionForm from "./SuggestionDialog";
+import CorrectionDialog from "./CorrectionDialog";
 import * as analytics from "services/analytics";
 import {
   useSelectedOrganization,
   useAppDispatch,
-  useSearchCoordinates,
-  useUserCoordinates,
   useWidget,
 } from "../../../../appReducer";
 import { useHistory } from "react-router-dom";
 import { useToasterContext } from "../../../../contexts/toasterContext";
 import SEO from "../../../SEO";
+import { styled } from "@mui/material/styles";
+import { formatDateMMMddYYYY } from "helpers";
 
-const useStyles = makeStyles((theme) => ({
-  stakeholder: {
-    width: "100%",
-    display: "flex",
-    flexDirection: "column",
-    textAlign: "center",
-    padding: "0 1em 5em 1em ",
-    alignItems: "center",
-    // paddingBottom: "5em",
-    flexShrink: 0,
-    [theme.breakpoints.down("xs")]: {
-      fontSize: "12px",
-    },
-  },
-  topInfo: {
-    width: "100%",
-    display: "inherit",
-    justifyContent: "inherit",
-  },
-  info: {
-    fontSize: "1.1em",
-    textAlign: "left",
-    width: "60%",
-    display: "inherit",
-    flexDirection: "column",
-    justifyContent: "space-between",
-  },
-  check: {
-    width: "10%",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-  },
-  title: {
-    alignSelf: "flex-start",
-  },
-  hoursContainer: {
-    width: "100%",
-    display: "inherit",
-    flexDirection: "inherit",
-    fontSize: "1.1em",
-  },
-  singleHourContainer: {
-    width: "100%",
-    display: "inherit",
-    justifyContent: "space-between",
-    margin: ".2em 0",
-  },
-  fontSize: {
-    fontSize: "14px",
-    alignSelf: "flex-start",
-    textAlign: "left",
-  },
-  icon: {
-    display: "flex",
-    alignSelf: "flex-start",
-  },
-  icons: {
-    alignSelf: "flex-start",
-    margin: "0 1em 0 0",
-  },
-  arrow: {
-    position: "fixed",
-    bottom: "1em",
-    left: "1em",
-    alignSelf: "flex-start",
-    margin: "1em 0 0 0",
-    cursor: "pointer",
-  },
-  label: {
-    width: "100%",
-    display: "flex",
-    flexDirection: "column",
-  },
-  closedLabel: {
-    color: "#545454",
-    alignSelf: "flex-end",
-    backgroundColor: "#E0E0E0",
-    padding: ".25em .5em",
-    borderRadius: "3px",
-  },
-  buttons: {
-    width: "100%",
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: "10px",
-  },
-  button: {
-    borderColor: theme.palette.primary.translucent,
-    "&:hover": {
-      background: theme.palette.primary.main,
-    },
-  },
-  numbers: {
-    display: "inline",
-    alignSelf: "flex-start",
-  },
-  backButtonWrapper: {
-    display: "inline",
-    alignSelf: "flex-start",
-    marginBottom: "1em",
-    position: "sticky",
-    top: 0,
-    width: "100%",
-    cursor: "pointer",
-    backgroundColor: theme.palette.background.main,
-    textAlign: "left",
-  },
-  backButton: {
-    fontSize: "1.2em",
-    fontWeight: "bold",
-    paddingTop: "1em",
-    paddingBottom: "1em",
-    color: "blue",
-    textDecoration: "underline",
-    border: "none",
-  },
+const MinorHeading = styled(Typography)(({ theme }) => ({
+  variant: "h5",
+  component: "h3",
+  textAlign: "left",
+  margin: "0.5rem 0",
+  fontWeight: "600",
+  color: theme.palette.headingText.main,
+}));
+
+const DetailText = styled(Typography)(({ theme }) => ({
+  variant: "body1",
+  component: "p",
+  textAlign: "left",
 }));
 
 const StakeholderDetails = () => {
-  const classes = useStyles();
   const [SuggestionDialogOpen, setSuggestionDialogOpen] = useState(false);
   const selectedOrganization = useSelectedOrganization();
   const dispatch = useAppDispatch();
-  const searchCoordinates = useSearchCoordinates();
-  const userCoordinates = useUserCoordinates();
-  const originCoordinates = searchCoordinates || userCoordinates;
   const isWidget = useWidget();
   const history = useHistory();
   const { setToast } = useToasterContext();
@@ -226,18 +121,19 @@ const StakeholderDetails = () => {
   const numbers = extractNumbers(selectedOrganization.phone).map((n) => {
     if (n.number) {
       return (
-        <a
-          key={n.value}
-          className={classes.fontSize}
-          href={"tel:" + n.value}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {n.value}
-        </a>
+        <DetailText key={n.value}>
+          <Link
+            textAlign="left"
+            href={"tel:" + n.value}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {n.value}
+          </Link>
+        </DetailText>
       );
     } else {
-      return <span key={n.value}> {n.value} </span>;
+      return <DetailText key={n.value}> {n.value} </DetailText>;
     }
   });
 
@@ -294,80 +190,112 @@ const StakeholderDetails = () => {
         title={`Food Oasis: ${selectedOrganization.name}`}
         url={window.location.href}
       />
-
-      <div className={classes.stakeholder}>
-        <div className={classes.backButtonWrapper}>
-          <div
+      <CorrectionDialog
+        id="assign-dialog"
+        keepMounted
+        open={SuggestionDialogOpen}
+        onClose={handleSuggestionDialogClose}
+        stakeholder={selectedOrganization}
+        setToast={setToast}
+      />
+      <Stack padding="0 1em 5em 1em" sx={{ width: "100%" }}>
+        <Typography
+          variant="h5"
+          component="p"
+          textAlign="left"
+          margin={"0 0 1rem 0"}
+        >
+          <Link
+            variant="h4"
+            component="button"
+            textAlign="left"
             role="button"
-            className={classes.backButton}
             onClick={handleBackButtonClick}
           >
-            {" "}
-            &lt; Back to List{" "}
-          </div>
-        </div>
-        <SuggestionForm
-          id="assign-dialog"
-          keepMounted
-          open={SuggestionDialogOpen}
-          onClose={handleSuggestionDialogClose}
-          stakeholder={selectedOrganization}
-          setToast={setToast}
-        />
-        <div className={classes.topInfo}>
+            <Stack direction="row" alignItems="center">
+              <ArrowBack fontSize="small" />
+              Back to List
+            </Stack>
+          </Link>
+        </Typography>
+
+        <Stack direction="row" justifyContent="space-between">
           <StakeholderIcon
             stakeholder={selectedOrganization}
             height="50px"
             width="50px"
           />
-          <div className={classes.info}>
-            <span>{selectedOrganization.name}</span>
-            <span>{selectedOrganization.address1}</span>
-            <div>
+          <Box align="left">
+            <Typography variant="h6" component="h2" align="left">
+              {selectedOrganization.name}
+            </Typography>
+            <Typography variant="body1" component="p">
+              {selectedOrganization.address1}
+            </Typography>
+            <Typography variant="body1" component="p">
               {selectedOrganization.city} {selectedOrganization.zip}
-            </div>
-            {selectedOrganization.categories.map((category) => (
-              <em
-                key={category.id}
-                style={{
-                  alignSelf: "flex-start",
-                  color:
-                    selectedOrganization.inactiveTemporary ||
-                    selectedOrganization.inactive
-                      ? CLOSED_COLOR
-                      : category.id === FOOD_PANTRY_CATEGORY_ID
-                      ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
-                      : category.id === MEAL_PROGRAM_CATEGORY_ID
-                      ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
-                      : "#000",
-                }}
-              >
-                {category.name}
-              </em>
-            ))}
-            <div className={classes.label}>
-              <em
+            </Typography>
+            <Box textAlign="left">
+              {selectedOrganization.categories.map((category) => (
+                <Typography
+                  variant="body1"
+                  component="p"
+                  fontStyle="italic"
+                  key={selectedOrganization.id + category.id}
+                  sx={{
+                    margin: "0.25em 0",
+                    marginRight: "0.25em",
+                    color:
+                      selectedOrganization.inactiveTemporary ||
+                      selectedOrganization.inactive
+                        ? CLOSED_COLOR
+                        : category.id === FOOD_PANTRY_CATEGORY_ID
+                        ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
+                        : category.id === MEAL_PROGRAM_CATEGORY_ID
+                        ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
+                        : "#000",
+                  }}
+                >
+                  {category.name}
+                </Typography>
+              ))}
+            </Box>
+
+            <Box textAlign="left">
+              <Typography
+                variant="body2"
+                component="p"
+                fontStyle="italic"
                 key={selectedOrganization.id}
-                style={{
+                sx={{
                   alignSelf: "flex-start",
-                  margin: "0 0.25em 0.25em 0",
+                  margin: "0 0.25em 0.5em 0",
                 }}
               >
                 {selectedOrganization.foodTypes}
-              </em>
-            </div>
-            <div className={classes.label}>
+              </Typography>
+            </Box>
+
+            <Box textAlign="left">
               {selectedOrganization.inactiveTemporary ||
               selectedOrganization.inactive ? (
-                <em className={classes.closedLabel}>
+                <Typography
+                  sx={{
+                    color: "#545454",
+                    alignSelf: "flex-end",
+                    backgroundColor: "#E0E0E0",
+                    padding: ".25em .5em",
+                    borderRadius: "3px",
+                  }}
+                >
                   {selectedOrganization.inactiveTemporary
                     ? "Temporarily Closed"
                     : "Closed"}
-                </em>
+                </Typography>
               ) : null}
-            </div>
-          </div>
-          <div className={classes.check}>
+            </Box>
+          </Box>
+          <Box>
             {selectedOrganization.distance >= 10
               ? selectedOrganization.distance
                   .toString()
@@ -375,40 +303,19 @@ const StakeholderDetails = () => {
                   .padEnd(4, "0")
               : selectedOrganization.distance.toString().substring(0, 3)}{" "}
             mi
-          </div>
-        </div>
-        {selectedOrganization.verificationStatusId ===
-        VERIFICATION_STATUS.VERIFIED ? (
-          <p
-            style={{
-              color:
-                selectedOrganization.inactiveTemporary ||
-                selectedOrganization.inactive
-                  ? CLOSED_COLOR
-                  : selectedOrganization.categories[0].id === 1
-                  ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
-                  : ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID],
-            }}
-          >
-            Data updated on{" "}
-            {selectedOrganization.approvedDate
-              ? selectedOrganization.approvedDate.format("MMM Do, YYYY")
-              : selectedOrganization.modifiedDate
-              ? selectedOrganization.modifiedDate.format("MMM Do, YYYY")
-              : selectedOrganization.createdDate.format("MMM Do, YYYY")}
-          </p>
-        ) : null}
-        <div className={classes.buttons}>
+          </Box>
+        </Stack>
+
+        <Stack direction="row" sx={{ justifyContent: "space-between" }}>
           <Button
             variant="outlined"
-            className={classes.button}
             onClick={() => {
               analytics.postEvent("getDirections", {
                 id: selectedOrganization.id,
                 name: selectedOrganization.name,
               });
               window.open(
-                getGoogleMapsDirectionsUrl(originCoordinates, {
+                getGoogleMapsDirectionsUrl({
                   latitude: selectedOrganization.latitude,
                   longitude: selectedOrganization.longitude,
                 })
@@ -417,213 +324,196 @@ const StakeholderDetails = () => {
           >
             Directions
           </Button>
-          <Button
-            className={classes.button}
-            variant="outlined"
-            onClick={handleSuggestionDialogOpen}
-          >
+          <Button variant="outlined" onClick={handleSuggestionDialogOpen}>
             Send Correction
           </Button>
-          <Button
-            className={classes.button}
-            variant="outlined"
-            onClick={shareLink}
-          >
+          <Button variant="outlined" onClick={shareLink}>
             Share
           </Button>
-        </div>
+        </Stack>
 
-        <h2 className={classes.title}>Eligibility/Requirements</h2>
+        <MinorHeading>Eligibility/Requirements</MinorHeading>
         {selectedOrganization.requirements ? (
-          <span
-            className={classes.fontSize}
+          <DetailText
             dangerouslySetInnerHTML={{
               __html: formatEmailPhone(selectedOrganization.requirements),
             }}
-          ></span>
+          ></DetailText>
         ) : (
-          <div className={classes.fontSize}>No special requirements</div>
+          <DetailText>No special requirements</DetailText>
         )}
 
-        <h2 className={classes.title}>Hours</h2>
+        <MinorHeading>Hours</MinorHeading>
         {selectedOrganization.allowWalkins ? (
-          <div className={classes.fontSize}>Walk-ins welcome.</div>
+          <DetailText>Walk-ins welcome.</DetailText>
         ) : null}
 
         {selectedOrganization.hoursNotes ? (
-          <div
-            className={classes.fontSize}
+          <DetailText
             dangerouslySetInnerHTML={{
               __html: formatEmailPhone(selectedOrganization.hoursNotes),
             }}
-          ></div>
-        ) : null}
-        {selectedOrganization.hours ? (
-          <>
-            <div className={classes.hoursContainer}>
-              {selectedOrganization.hours &&
-              selectedOrganization.hours.length > 0 ? (
-                selectedOrganization.hours.sort(hoursSort).map((hour) => (
-                  <div
-                    key={JSON.stringify(hour)}
-                    className={classes.singleHourContainer}
-                  >
-                    <span>
-                      {hour.week_of_month === 5
-                        ? "Last " + hour.day_of_week
-                        : hour.week_of_month === 1
-                        ? "1st " + hour.day_of_week
-                        : hour.week_of_month === 2
-                        ? "2nd " + hour.day_of_week
-                        : hour.week_of_month === 3
-                        ? "3rd " + hour.day_of_week
-                        : hour.week_of_month === 4
-                        ? "4th " + hour.day_of_week
-                        : hour.day_of_week}
-                    </span>
-                    <span>
-                      {standardTime(hour.open)}-{standardTime(hour.close)}
-                    </span>
-                  </div>
-                ))
-              ) : (
-                <span className={classes.fontSize}>No hours on record</span>
-              )}
-            </div>
-          </>
+          ></DetailText>
         ) : null}
 
-        <h2 className={classes.title}>Phone</h2>
-        {numbers.length ? (
-          <div
-            className={classes.numbers}
-            onClick={() => {
-              analytics.postEvent("dialPhone", {
-                id: selectedOrganization.id,
-                name: selectedOrganization.name,
-              });
-            }}
-          >
-            {numbers}
-          </div>
-        ) : (
-          <span className={classes.fontSize}>No Phone Number on record</span>
-        )}
-        <h2 className={classes.title}>E-Mail</h2>
+        {selectedOrganization.hours ? (
+          <Stack margin="0.5rem 1rem 0 1rem">
+            {selectedOrganization.hours &&
+            selectedOrganization.hours.length > 0 ? (
+              selectedOrganization.hours.sort(hoursSort).map((hour) => (
+                <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  key={JSON.stringify(hour)}
+                >
+                  <DetailText>
+                    {hour.week_of_month === 5
+                      ? "Last " + hour.day_of_week
+                      : hour.week_of_month === 1
+                      ? "1st " + hour.day_of_week
+                      : hour.week_of_month === 2
+                      ? "2nd " + hour.day_of_week
+                      : hour.week_of_month === 3
+                      ? "3rd " + hour.day_of_week
+                      : hour.week_of_month === 4
+                      ? "4th " + hour.day_of_week
+                      : hour.day_of_week}
+                  </DetailText>
+                  <DetailText>
+                    {standardTime(hour.open)}-{standardTime(hour.close)}
+                  </DetailText>
+                </Stack>
+              ))
+            ) : (
+              <DetailText>No hours on record</DetailText>
+            )}
+          </Stack>
+        ) : null}
+
+        <MinorHeading>Phone</MinorHeading>
+        {numbers}
+
+        <MinorHeading>Email</MinorHeading>
         {selectedOrganization.email ? (
           <React.Fragment>
-            <a
-              className={classes.fontSize}
-              href={"mailto:" + selectedOrganization.email}
-              onClick={() => {
-                analytics.postEvent("sendEmail", {
-                  id: selectedOrganization.id,
-                  name: selectedOrganization.name,
-                });
-              }}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {selectedOrganization.email}
-            </a>
+            <DetailText>
+              <Link
+                href={"mailto:" + selectedOrganization.email}
+                onClick={() => {
+                  analytics.postEvent("sendEmail", {
+                    id: selectedOrganization.id,
+                    name: selectedOrganization.name,
+                  });
+                }}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {selectedOrganization.email}
+              </Link>
+            </DetailText>
           </React.Fragment>
         ) : (
-          <span className={classes.fontSize}>No E-Mail Address on record</span>
+          <DetailText>No E-Mail Address on record</DetailText>
         )}
 
-        <h2 className={classes.title}>Languages</h2>
+        <MinorHeading>Languages</MinorHeading>
         {selectedOrganization.languages ? (
-          <span className={classes.fontSize}>
-            {selectedOrganization.languages}
-          </span>
+          <DetailText>{selectedOrganization.languages}</DetailText>
         ) : (
-          <span className={classes.fontSize}>No information on languages.</span>
+          <DetailText>No information on languages.</DetailText>
         )}
 
-        <h2 className={classes.title}>Notes</h2>
+        <MinorHeading>Notes</MinorHeading>
         {selectedOrganization.notes ? (
-          <span
-            className={classes.fontSize}
+          <DetailText
             dangerouslySetInnerHTML={{
               __html: formatEmailPhone(selectedOrganization.notes),
             }}
-          ></span>
+          ></DetailText>
         ) : (
-          <span className={classes.fontSize}>No notes to display.</span>
+          <DetailText>No notes to display.</DetailText>
         )}
 
-        <h2 className={classes.title}>Covid Notes</h2>
+        <MinorHeading>COVID Notes</MinorHeading>
         {selectedOrganization.covidNotes ? (
-          <span
-            className={classes.fontSize}
+          <DetailText
             dangerouslySetInnerHTML={{
               __html: formatEmailPhone(selectedOrganization.covidNotes),
             }}
-          ></span>
+          ></DetailText>
         ) : (
-          <span className={classes.fontSize}>No covid notes to display.</span>
+          <DetailText>No covid notes to display.</DetailText>
         )}
 
         {selectedOrganization.website ? (
-          <React.Fragment>
-            <h2 className={classes.title}>Website</h2>
-            <a
-              className={classes.fontSize}
-              href={selectedOrganization.website}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {selectedOrganization.website}
-            </a>
-          </React.Fragment>
+          <>
+            <MinorHeading>Website</MinorHeading>
+            <DetailText>
+              <Link
+                href={selectedOrganization.website}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {selectedOrganization.website}
+              </Link>
+            </DetailText>
+          </>
         ) : null}
 
         {selectedOrganization.services ? (
-          <React.Fragment>
-            <h2 className={classes.title}>Services</h2>
-            <span className={classes.fontSize}>
-              {selectedOrganization.services}
-            </span>
-          </React.Fragment>
+          <>
+            <MinorHeading>Services</MinorHeading>
+            <DetailText>{selectedOrganization.services}</DetailText>
+          </>
         ) : null}
 
         {selectedOrganization.items ? (
-          <React.Fragment>
-            <h2 className={classes.title}>Items Available</h2>
-            <span className={classes.fontSize}>
-              {selectedOrganization.items}
-            </span>
-          </React.Fragment>
+          <>
+            <MinorHeading>Items Available</MinorHeading>
+            <DetailText>{selectedOrganization.items}</DetailText>
+          </>
         ) : null}
 
         {selectedOrganization.facebook || selectedOrganization.instagram ? (
-          <React.Fragment>
-            <h2 className={classes.title}>Social Media</h2>
-            <div className={classes.icon}>
+          <>
+            <MinorHeading>Social Media</MinorHeading>
+            <Stack direction="row" spacing={1}>
               {selectedOrganization.facebook ? (
-                <a
-                  className={classes.icons}
+                <Link
                   href={selectedOrganization.facebook}
                   target="_blank"
                   rel="noopener noreferrer"
+                  variant="icon"
                 >
-                  <img alt="fb-logo" src={fbIcon} />
-                </a>
+                  <img alt="facebook link" src={fbIcon} />
+                </Link>
               ) : null}
               {selectedOrganization.instagram ? (
                 <a
-                  className={classes.icons}
                   href={selectedOrganization.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
+                  variant="icon"
                 >
-                  <img alt="ig-logo" src={instaIcon} />
+                  <img alt="instagram link" src={instaIcon} />
                 </a>
               ) : null}
-            </div>
-          </React.Fragment>
+            </Stack>
+          </>
         ) : null}
-      </div>
+
+        {selectedOrganization.verificationStatusId ===
+        VERIFICATION_STATUS.VERIFIED ? (
+          <DetailText color="secondary.main">
+            Data updated on{" "}
+            {selectedOrganization.approvedDate
+              ? formatDateMMMddYYYY(selectedOrganization.approvedDate)
+              : selectedOrganization.modifiedDate
+              ? formatDateMMMddYYYY(selectedOrganization.modifiedDate)
+              : formatDateMMMddYYYY(selectedOrganization.createdDate)}
+          </DetailText>
+        ) : null}
+      </Stack>
     </>
   );
 };

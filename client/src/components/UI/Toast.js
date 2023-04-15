@@ -1,6 +1,7 @@
 import React from "react";
-import { Snackbar, withStyles } from "@material-ui/core";
-import { IconButton } from "./index";
+import { Snackbar } from "@mui/material";
+import withStyles from "@mui/styles/withStyles";
+import { IconButton } from "../UI/StandardButton";
 import { useToasterContext } from "../../contexts/toasterContext";
 
 const styles = (theme) => ({

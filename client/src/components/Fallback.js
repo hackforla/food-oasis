@@ -1,6 +1,6 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import { makeStyles } from "@material-ui/core";
+import makeStyles from "@mui/styles/makeStyles";
 
 const useStyles = makeStyles(() => ({
   outer: {
@@ -22,7 +22,6 @@ const useStyles = makeStyles(() => ({
     padding: "32px",
     margin: "32px 0",
     borderRadius: "24px",
-    color: "#4d4d4d",
     background: "#f0f0f0",
     display: "flex",
     flexDirection: "column",

@@ -83,11 +83,11 @@
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
     "name": "Confirm Register",
-    "url": "http://localhost:5001/api/accounts/confirmRegister/174",
+    "url": "http://localhost:5001/api/accounts/confirmRegister",
     "method": "POST",
     "sortNum": 30000,
     "created": "2022-10-04T03:11:23.700Z",
-    "modified": "2022-11-22T01:39:03.044Z",
+    "modified": "2022-11-28T19:42:58.325Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -392,7 +392,7 @@
     "method": "POST",
     "sortNum": 110000,
     "created": "2022-10-04T03:11:23.709Z",
-    "modified": "2022-11-22T16:36:58.378Z",
+    "modified": "2022-11-29T00:05:09.996Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -410,13 +410,13 @@
         "type": "res-code",
         "custom": "",
         "action": "equal",
-        "value": "201"
+        "value": "400"
       },
       {
         "type": "res-body",
         "custom": "",
         "action": "contains",
-        "value": "\"id\""
+        "value": "\"Cannot insert duplicate row.\""
       }
     ]
   },
@@ -832,7 +832,7 @@
     "method": "GET",
     "sortNum": 10000,
     "created": "2022-10-04T03:11:23.723Z",
-    "modified": "2022-11-22T03:16:25.820Z",
+    "modified": "2022-12-07T16:06:43.637Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -851,7 +851,7 @@
         "type": "res-body",
         "custom": "",
         "action": "contains",
-        "value": "\"Salvation Army - Redondo Beach\""
+        "value": "\"Salvation Army Redondo Beach\""
       }
     ],
     "preReq": {
@@ -870,19 +870,138 @@
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "7f5a5a8a-37c9-4fea-911f-c13660509a3e",
     "name": "Stakeholders GET All",
-    "url": "http://localhost:5001/api/stakeholders",
+    "url": "http://localhost:5001/api/stakeholders?tenantId=1&name=&latitude=0&longitude=0&distance=0&categoryIds[]=9&categoryIds[]=1&isInactive=either&isAssigned=either&isSubmitted=either&isApproved=either&isClaimed=either&verificationStatusId=4&isInactiveTemporary=either&stakeholderId=&neighborhoodId=72&minCompleteCriticalPercent=0&maxCompleteCriticalPercent=100&tag=",
     "method": "GET",
     "sortNum": 20000,
     "created": "2022-10-04T03:11:23.724Z",
-    "modified": "2022-11-18T02:09:57.748Z",
+    "modified": "2022-12-10T03:50:53.408Z",
     "headers": [
       {
         "name": "Content-Type",
         "value": "application/json"
       }
     ],
-    "params": [],
-    "tests": []
+    "params": [
+      {
+        "name": "tenantId",
+        "value": "1",
+        "isPath": false
+      },
+      {
+        "name": "name",
+        "value": "",
+        "isPath": false
+      },
+      {
+        "name": "latitude",
+        "value": "0",
+        "isPath": false
+      },
+      {
+        "name": "longitude",
+        "value": "0",
+        "isPath": false
+      },
+      {
+        "name": "distance",
+        "value": "0",
+        "isPath": false
+      },
+      {
+        "name": "categoryIds[]",
+        "value": "9",
+        "isPath": false
+      },
+      {
+        "name": "categoryIds[]",
+        "value": "1",
+        "isPath": false
+      },
+      {
+        "name": "isInactive",
+        "value": "either",
+        "isPath": false
+      },
+      {
+        "name": "isAssigned",
+        "value": "either",
+        "isPath": false
+      },
+      {
+        "name": "isSubmitted",
+        "value": "either",
+        "isPath": false
+      },
+      {
+        "name": "isApproved",
+        "value": "either",
+        "isPath": false
+      },
+      {
+        "name": "isClaimed",
+        "value": "either",
+        "isPath": false
+      },
+      {
+        "name": "verificationStatusId",
+        "value": "4",
+        "isPath": false
+      },
+      {
+        "name": "isInactiveTemporary",
+        "value": "either",
+        "isPath": false
+      },
+      {
+        "name": "stakeholderId",
+        "value": "",
+        "isPath": false
+      },
+      {
+        "name": "neighborhoodId",
+        "value": "72",
+        "isPath": false
+      },
+      {
+        "name": "minCompleteCriticalPercent",
+        "value": "0",
+        "isPath": false
+      },
+      {
+        "name": "maxCompleteCriticalPercent",
+        "value": "100",
+        "isPath": false
+      },
+      {
+        "name": "tag",
+        "value": "",
+        "isPath": false
+      }
+    ],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"DOWNTOWN LOS ANGELES\""
+      }
+    ],
+    "preReq": {
+      "runRequests": [
+        {
+          "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+          "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+          "triggerCondition": "run-always",
+          "triggerValue": ""
+        }
+      ]
+    }
   },
   {
     "_id": "c8b7d3dd-a67d-46aa-9bff-e3b25d64310f",
@@ -893,7 +1012,7 @@
     "method": "GET",
     "sortNum": 10000,
     "created": "2022-10-04T03:11:23.726Z",
-    "modified": "2022-11-23T01:50:35.011Z",
+    "modified": "2022-12-02T23:49:52.778Z",
     "headers": [],
     "params": [],
     "tests": [
@@ -910,6 +1029,7 @@
         "value": "application/json; charset=utf-8"
       }
     ],
+    "docs": "This endpoint scrapes the LA Pubic Library site for listings.",
     "preReq": {
       "runRequests": [
         {
@@ -926,16 +1046,16 @@
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "1fa8eeb1-253f-49fe-92e1-a2f2e3b25cd3",
     "name": "Get LA Public Library Listings",
-    "url": "http://localhost:5001/api/loads/lapl-food-resources?format=csv",
+    "url": "http://localhost:5001/api/loads/lapl-food-resources?format=json",
     "method": "GET",
     "sortNum": 5000,
     "created": "2022-10-04T03:11:23.727Z",
-    "modified": "2022-11-23T02:59:09.091Z",
+    "modified": "2022-12-02T20:09:07.395Z",
     "headers": [],
     "params": [
       {
         "name": "format",
-        "value": "csv",
+        "value": "json",
         "isPath": false
       }
     ],
@@ -950,7 +1070,7 @@
         "type": "Content-Type",
         "custom": "",
         "action": "equal",
-        "value": "text/csv; charset=utf-8"
+        "value": "application/json; charset=utf-8"
       }
     ],
     "docs": "(Not presently used by client app)\n\nThis endpoint gets all the listings from the LA Public Library import table in our database.",
@@ -974,7 +1094,7 @@
     "method": "POST",
     "sortNum": 30000,
     "created": "2022-10-04T03:11:23.728Z",
-    "modified": "2022-11-18T02:16:25.537Z",
+    "modified": "2022-12-07T16:11:48.929Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -984,105 +1104,33 @@
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n\n        \"name\": \"_Veteran's Park\",\n        \"address1\": \"309 Esplanade\",\n        \"address2\": \"\",\n        \"city\": \"Redondo Beach\",\n        \"state\": \"CA\",\n        \"zip\": \"90277\",\n        \"phone\": \"310 901-5944\",\n        \"latitude\": 33.873834,\n        \"longitude\": -118.389660,\n        \"website\": \"http://redondo.org\",\n        \"active\": true,\n        \"notes\": \"A test stakeholder\",\n        \"categories\": [\n            {\n                \"id\": 6,\n                \"name\": \"Summer Lunch for Kids\"\n            }\n        ]\n    }",
+      "raw": "{\n  \"tenantId\": 1,\n  \"name\": \"_Veteran's Park\",\n  \"address1\": \"309 Esplanade\",\n  \"address2\": \"\",\n  \"city\": \"Redondo Beach\",\n  \"state\": \"CA\",\n  \"zip\": \"90277\",\n  \"phone\": \"310 901-5944\",\n  \"latitude\": 33.873834,\n  \"longitude\": -118.389660,\n  \"website\": \"http://redondo.org\",\n  \"active\": true,\n  \"notes\": \"A test stakeholder\",\n  \"categories\": [\n    {\n      \"id\": 6,\n      \"name\": \"Summer Lunch for Kids\"\n    }\n  ]\n}",
       "form": []
     },
-    "tests": []
-  },
-  {
-    "_id": "c429c489-92f1-445b-84a1-71044c74a8d5",
-    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
-    "containerId": "ae763c3f-34d6-40dd-9749-50a88bd18b89",
-    "name": "ERIS Geocode",
-    "url": "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?category=Street Address&f=json&outFields=*&singleline= 525 S. Hewitt St. Los Angeles CA &token=r6oXxbB-S0qsvLKwPojTi6JQg2XpMCErUR0foyB1PhLgVsh_I-_UwcxpiQ15qrtCbCcSTcNutoTJvWqJTY70qmWtHtsXKqIWL_fN97hO6helkqpfiXTrZp8kQIzEoruTJrw8fjm_xbau2NvUg_hx9A..",
-    "method": "GET",
-    "sortNum": 40000,
-    "created": "2022-10-04T03:11:23.729Z",
-    "modified": "2022-11-18T02:13:56.365Z",
-    "headers": [],
-    "params": [
+    "tests": [
       {
-        "name": "category",
-        "value": "Street Address",
-        "isPath": false
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "201"
       },
       {
-        "name": "f",
-        "value": "json",
-        "isPath": false
-      },
-      {
-        "name": "outFields",
-        "value": "*",
-        "isPath": false
-      },
-      {
-        "name": "singleline",
-        "value": "525 S. Hewitt St. Los Angeles CA",
-        "isPath": false
-      },
-      {
-        "name": "token",
-        "value": "r6oXxbB-S0qsvLKwPojTi6JQg2XpMCErUR0foyB1PhLgVsh_I-_UwcxpiQ15qrtCbCcSTcNutoTJvWqJTY70qmWtHtsXKqIWL_fN97hO6helkqpfiXTrZp8kQIzEoruTJrw8fjm_xbau2NvUg_hx9A..",
-        "isPath": false
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"id\""
       }
     ],
-    "tests": []
-  },
-  {
-    "_id": "fa77ee55-d562-4b60-96d2-117b03ba668a",
-    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
-    "containerId": "ae763c3f-34d6-40dd-9749-50a88bd18b89",
-    "name": "ERIS GET Token",
-    "url": "https://www.arcgis.com/sharing/oauth2/token?client_id=pZCxbMSzRf1qPO7a&grant_type=client_credentials&client_secret=6f96f8722e7b426eb59ec269d84fd427&f=pjson",
-    "method": "GET",
-    "sortNum": 30000,
-    "created": "2022-10-04T03:11:23.730Z",
-    "modified": "2022-11-18T02:13:53.807Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "client_id",
-        "value": "pZCxbMSzRf1qPO7a",
-        "isPath": false
-      },
-      {
-        "name": "grant_type",
-        "value": "client_credentials",
-        "isPath": false
-      },
-      {
-        "name": "client_secret",
-        "value": "6f96f8722e7b426eb59ec269d84fd427",
-        "isPath": false
-      },
-      {
-        "name": "f",
-        "value": "pjson",
-        "isPath": false
-      }
-    ],
-    "tests": []
-  },
-  {
-    "_id": "6e320836-fe20-4d58-89fc-1bc4f465b268",
-    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
-    "containerId": "ae763c3f-34d6-40dd-9749-50a88bd18b89",
-    "name": "ERIS Web API Geocode",
-    "url": "http://localhost:5001/api/esri/geocode?address=525 S. Hewiitt St. Los Angeles CA",
-    "method": "GET",
-    "sortNum": 20000,
-    "created": "2022-10-04T03:11:23.731Z",
-    "modified": "2022-11-18T02:13:50.642Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "address",
-        "value": "525 S. Hewiitt St. Los Angeles CA",
-        "isPath": false
-      }
-    ],
-    "tests": []
+    "preReq": {
+      "runRequests": [
+        {
+          "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+          "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+          "triggerCondition": "run-always",
+          "triggerValue": ""
+        }
+      ]
+    }
   },
   {
     "_id": "c4031b1f-dc91-413f-8d87-07bd94ae4f21",
@@ -1124,64 +1172,6 @@
         }
       ]
     }
-  },
-  {
-    "_id": "a00d9da8-8bd0-4710-b3a1-0f2cf9cd75eb",
-    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
-    "containerId": "ae763c3f-34d6-40dd-9749-50a88bd18b89",
-    "name": "TAMU Geocode",
-    "url": "https://geoservices.tamu.edu/Services/Geocode/WebService/GeocoderWebServiceHttpNonParsed_V04_01.aspx?apiKey=5c141ed805794a7a9562c22c090a71cb&version=4.01&streetAddress=21036 Wendy Dr&city=torrance?state=CA&zip=90503&format=xml",
-    "method": "GET",
-    "sortNum": 10000,
-    "created": "2022-10-04T03:11:23.734Z",
-    "modified": "2022-11-18T03:15:56.244Z",
-    "headers": [],
-    "params": [
-      {
-        "name": "apiKey",
-        "value": "5c141ed805794a7a9562c22c090a71cb",
-        "isPath": false
-      },
-      {
-        "name": "version",
-        "value": "4.01",
-        "isPath": false
-      },
-      {
-        "name": "streetAddress",
-        "value": "21036 Wendy Dr",
-        "isPath": false
-      },
-      {
-        "name": "city",
-        "value": "torrance?state=CA",
-        "isPath": false
-      },
-      {
-        "name": "zip",
-        "value": "90503",
-        "isPath": false
-      },
-      {
-        "name": "format",
-        "value": "xml",
-        "isPath": false
-      }
-    ],
-    "tests": [
-      {
-        "type": "res-code",
-        "custom": "",
-        "action": "equal",
-        "value": "200"
-      },
-      {
-        "type": "res-body",
-        "custom": "",
-        "action": "contains",
-        "value": "LOCATION_TYPE_STREET_ADDRESS"
-      }
-    ]
   },
   {
     "_id": "12c55368-c5bb-42a2-aebc-b79189be38dd",
@@ -1266,21 +1256,34 @@
     "method": "GET",
     "sortNum": 20000,
     "created": "2022-10-04T03:11:23.737Z",
-    "modified": "2022-11-18T16:48:10.446Z",
+    "modified": "2022-11-28T19:39:45.933Z",
     "headers": [],
     "params": [],
-    "tests": []
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"MountainView ADHC\""
+      }
+    ]
   },
   {
     "_id": "fbe8ae83-b87c-46a9-8d03-48b9b6567c12",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "24d28291-9541-4bea-a1d3-ee1b778eeb85",
-    "name": "Suggestion POST",
+    "name": "Correction POST",
     "url": "http://localhost:5001/api/suggestions",
     "method": "POST",
     "sortNum": 30000,
     "created": "2022-10-04T03:11:23.738Z",
-    "modified": "2022-11-23T00:35:48.173Z",
+    "modified": "2023-02-25T04:10:37.916Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -1290,7 +1293,7 @@
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"stakeholderId\": 1,\n  \"name\": \"ThunderClient-Generated Listing\",\n  \"address1\": \"303 E 6th st.\",\n  \"address2\": \"\",\n  \"city\": \"Los Angeles\",\n  \"state\": \"CA\",\n  \"zip\": \"90013\",\n  \"phone\": \"213-629-1227 x347\",\n  \"email\": \"info@lamission.net\",\n  \"notes\": \"test\",\n  \"tipsterName\": \"\",\n  \"tipsterPhone\": \"\",\n  \"tipsterEmail\": \"\",\n  \"hours\": \"\",\n  \"category\": \"\",\n  \"suggestionStatusId\": 1,\n  \"adminNotes\": \"\",\n  \"tenantId\": 1\n}",
+      "raw": "{\n  \"stakeholderId\": 1,\n  \"name\": \"ThunderClient-Generated Correction\",\n  \"address1\": \"303 E 6th st.\",\n  \"address2\": \"\",\n  \"city\": \"Los Angeles\",\n  \"state\": \"CA\",\n  \"zip\": \"90013\",\n  \"phone\": \"213-629-1227 x347\",\n  \"email\": \"info@lamission.net\",\n  \"notes\": \"test\",\n  \"tipsterName\": \"\",\n  \"tipsterPhone\": \"\",\n  \"tipsterEmail\": \"\",\n  \"hours\": \"\",\n  \"category\": \"\",\n  \"suggestionStatusId\": 1,\n  \"adminNotes\": \"\",\n  \"tenantId\": 1\n}",
       "form": []
     },
     "tests": [
@@ -1427,7 +1430,7 @@
     "method": "PUT",
     "sortNum": 60000,
     "created": "2022-10-04T03:11:23.742Z",
-    "modified": "2022-11-22T02:51:19.794Z",
+    "modified": "2022-12-07T16:12:29.834Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -1440,20 +1443,33 @@
       "raw": "{\n    \"id\": 3107,\n    \"name\": \"Salvation Army Redondo Beach\",\n    \"address1\": \"125 W. Beryl Street\",\n    \"address2\": \"\",\n    \"city\": \"Redondo Beach\",\n    \"state\": \"CA\",\n    \"zip\": \"90277\",\n    \"phone\": \"(310) 318-2827\",\n    \"latitude\": 33.84627323,\n    \"longitude\": -118.3929677,\n    \"website\": \"https://redondobeach.salvationarmy.org\",\n    \"createdDate\": \"2019-12-01T08:00:00\",\n    \"notes\": \"\",\n    \"createdLoginId\": null,\n    \"modifiedDate\": \"2021-02-17T20:18:35\",\n    \"modifiedLoginId\": 108,\n    \"submittedDate\": null,\n    \"submittedLoginId\": null,\n    \"approvedDate\": \"2020-05-23T12:43:05\",\n    \"assignedLoginId\": 110,\n    \"assignedDate\": \"2020-05-23T01:56:23\",\n    \"claimedLoginId\": null,\n    \"claimedDate\": \"2019-12-01T08:00:00\",\n    \"requirements\": \"Must be local resident\",\n    \"adminNotes\": \"There is no food pantry at this location. The nearest Salvation Army Pantry is in Lomita.\",\n    \"inactive\": true,\n    \"createdUser\": \" \",\n    \"modifiedUser\": \"Admin User\",\n    \"submittedUser\": \" \",\n    \"reviewedUser\": \" \",\n    \"assignedUser\": \"Data Entry User\",\n    \"claimedUser\": \" \",\n    \"selectedCategoryIds\": [1],\n    \"hours\": [\n        {\n            \"dayOfWeek\": \"Tue\",\n            \"open\": \"02:00:00\",\n            \"close\": \"05:00:00\",\n            \"weekOfMonth\": 3\n        }\n    ],\n    \"parentOrganization\": \"\",\n    \"physicalAccess\": \"\",\n    \"email\": \"army@salvation.org\",\n    \"items\": \"\",\n    \"services\": \"\",\n    \"facebook\": \"\",\n    \"twitter\": \"\",\n    \"pinterest\": \"\",\n    \"linkedin\": \"\",\n    \"description\": \"\",\n    \"reviewNotes\": \"\",\n    \"instagram\": \"\",\n    \"adminContactName\": \"\",\n    \"adminContactPhone\": \"\",\n    \"adminContactEmail\": \"\",\n    \"donationContactName\": \"\",\n    \"donationContactPhone\": \"\",\n    \"donationContactEmail\": \"\",\n    \"donationPickup\": false,\n    \"donationAcceptFrozen\": false,\n    \"donationAcceptRefrigerated\": false,\n    \"donationAcceptPerishable\": false,\n    \"donationSchedule\": \"\",\n    \"donationDeliveryInstructions\": \"\",\n    \"donationNotes\": \"\",\n    \"covidNotes\": \"\",\n    \"categoryNotes\": \"\",\n    \"eligibilityNotes\": \"\",\n    \"foodTypes\": \"\",\n    \"languages\": \"English\",\n    \"confirmedName\": true,\n    \"confirmedCategories\": true,\n    \"confirmedAddress\": true,\n    \"confirmedPhone\": true,\n    \"confirmedEmail\": true,\n    \"confirmedHours\": true,\n    \"confirmedFoodTypes\": false,\n    \"verificationStatusId\": 4,\n    \"inactiveTemporary\": false,\n    \"neighborhoodId\": null,\n    \"foodBakery\": false,\n    \"foodDryGoods\": false,\n    \"foodProduce\": false,\n    \"foodDairy\": false,\n    \"foodPrepared\": false,\n    \"foodMeat\": false,\n    \"parentOrganizationId\": 2,\n    \"distance\": null\n}",
       "form": []
     },
-    "tests": []
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      }
+    ]
   },
   {
     "_id": "1d8d36d7-690e-406f-8d7a-827608526e85",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "aaf8073a-e70d-4516-be25-c013040d9f45",
     "name": "Neighborhoods GET All LA",
-    "url": "http://localhost:5001/api/neighborhoods",
+    "url": "http://localhost:5001/api/neighborhoods?tenantId=1",
     "method": "GET",
     "sortNum": 10000,
     "created": "2022-10-04T03:11:23.744Z",
-    "modified": "2022-11-22T02:20:12.626Z",
+    "modified": "2022-12-05T04:06:30.928Z",
     "headers": [],
-    "params": [],
+    "params": [
+      {
+        "name": "tenantId",
+        "value": "1",
+        "isPath": false
+      }
+    ],
     "tests": [
       {
         "type": "res-code",
@@ -1545,7 +1561,7 @@
     "method": "POST",
     "sortNum": 110000,
     "created": "2022-10-27T23:39:58.096Z",
-    "modified": "2022-11-18T03:18:38.261Z",
+    "modified": "2022-12-03T00:08:25.141Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -1558,7 +1574,14 @@
       "raw": "{\n  \"name\": \"CHURCH CHICKEN\",\n    \"tenantId\": 1\n}",
       "form": []
     },
-    "tests": [],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "201"
+      }
+    ],
     "preReq": {
       "runRequests": [
         {
@@ -1579,10 +1602,23 @@
     "method": "GET",
     "sortNum": 120000,
     "created": "2022-10-27T23:39:58.097Z",
-    "modified": "2022-10-27T23:47:21.052Z",
+    "modified": "2022-12-03T00:09:48.335Z",
     "headers": [],
     "params": [],
-    "tests": []
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"KOSHER\""
+      }
+    ]
   },
   {
     "_id": "843d1919-428f-42ab-8b64-d1223432fcec",
@@ -1593,7 +1629,7 @@
     "method": "PUT",
     "sortNum": 130000,
     "created": "2022-10-27T23:39:58.098Z",
-    "modified": "2022-11-18T03:19:56.142Z",
+    "modified": "2022-12-03T00:10:07.888Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -1606,7 +1642,14 @@
       "raw": "{\n \n    \"id\": 5,\n    \"name\": \"CHURCH\",\n    \"tenantId\": 1\n \n}",
       "form": []
     },
-    "tests": [],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      }
+    ],
     "preReq": {
       "runRequests": [
         {
@@ -1627,10 +1670,17 @@
     "method": "DELETE",
     "sortNum": 140000,
     "created": "2022-10-27T23:39:58.099Z",
-    "modified": "2022-11-23T00:46:50.238Z",
+    "modified": "2022-12-03T00:10:30.852Z",
     "headers": [],
     "params": [],
-    "tests": []
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "400"
+      }
+    ]
   },
   {
     "_id": "f3321a9e-5b9a-4c3f-a72a-4aa13dab934a",
@@ -1811,7 +1861,7 @@
     "method": "POST",
     "sortNum": 550000,
     "created": "2022-11-22T16:47:27.449Z",
-    "modified": "2022-11-22T17:32:36.113Z",
+    "modified": "2022-12-07T16:13:49.264Z",
     "headers": [],
     "params": [],
     "body": {
@@ -1819,7 +1869,20 @@
       "raw": "{\n  \"ids\": [\n    3108,\n    3109\n  ]\n}",
       "form": []
     },
-    "tests": [],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "Salvation Army - Santa Clarita Valley Corps"
+      }
+    ],
     "preReq": {
       "runRequests": [
         {
@@ -1837,10 +1900,10 @@
     "containerId": "7f5a5a8a-37c9-4fea-911f-c13660509a3e",
     "name": "Stakeholder Request Assignment",
     "url": "http://localhost:5001/api/stakeholders/requestAssignment",
-    "method": "PUT",
+    "method": "POST",
     "sortNum": 590000,
     "created": "2022-11-22T17:00:04.303Z",
-    "modified": "2022-11-22T17:19:55.532Z",
+    "modified": "2022-12-03T00:02:32.562Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -1881,7 +1944,7 @@
     "method": "POST",
     "sortNum": 550000,
     "created": "2022-11-22T17:04:38.095Z",
-    "modified": "2022-11-22T17:05:27.701Z",
+    "modified": "2022-11-28T19:44:57.302Z",
     "headers": [],
     "params": [],
     "body": {
@@ -1900,7 +1963,7 @@
         "type": "res-body",
         "custom": "",
         "action": "contains",
-        "value": "\"securityuser@dispostable.com\""
+        "value": "\"dataentryuser@dispostable.com\""
       }
     ]
   },
@@ -1975,23 +2038,42 @@
     "method": "GET",
     "sortNum": 125000,
     "created": "2022-11-23T00:48:32.745Z",
-    "modified": "2022-11-23T00:48:53.293Z",
+    "modified": "2022-12-03T00:09:15.120Z",
     "headers": [],
     "params": [],
-    "tests": []
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "\"ALOHA HARVEST\""
+      }
+    ]
   },
   {
     "_id": "3f4517df-2b79-4097-b7a9-4de4249b5c1d",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "1fa8eeb1-253f-49fe-92e1-a2f2e3b25cd3",
     "name": "GET 211 Listings",
-    "url": "http://localhost:5001/api/loads/load-211",
+    "url": "http://localhost:5001/api/loads/load-211?limit=10",
     "method": "GET",
     "sortNum": 7500,
     "created": "2022-11-23T01:42:06.012Z",
-    "modified": "2022-11-23T02:58:45.769Z",
+    "modified": "2022-12-02T23:45:18.231Z",
     "headers": [],
-    "params": [],
+    "params": [
+      {
+        "name": "limit",
+        "value": "10",
+        "isPath": false
+      }
+    ],
     "tests": [
       {
         "type": "res-code",
@@ -2023,16 +2105,16 @@
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "1fa8eeb1-253f-49fe-92e1-a2f2e3b25cd3",
     "name": "Get Open LA Listings",
-    "url": "http://localhost:5001/api/loads/open-la?format=csv",
+    "url": "http://localhost:5001/api/loads/open-la?format=json",
     "method": "GET",
     "sortNum": 6250,
     "created": "2022-11-23T02:46:29.398Z",
-    "modified": "2022-11-23T02:58:57.999Z",
+    "modified": "2022-12-02T23:47:55.394Z",
     "headers": [],
     "params": [
       {
         "name": "format",
-        "value": "csv",
+        "value": "json",
         "isPath": false
       }
     ],
@@ -2047,7 +2129,7 @@
         "type": "Content-Type",
         "custom": "",
         "action": "equal",
-        "value": "text/csv; charset=utf-8"
+        "value": "application/json; charset=utf-8"
       }
     ],
     "docs": "(Not presently used by client app)\n\nThis endpoint gets all the listings from the load_open_la_data  import table in our database. This was imported from the Open LA Data Portal.\n\nThe data was imported with a one-time import process (not sure what the procedure was)",
@@ -2067,16 +2149,16 @@
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "1fa8eeb1-253f-49fe-92e1-a2f2e3b25cd3",
     "name": "Get LA Regional Food Bank Listings",
-    "url": "http://localhost:5001/api/loads/larfb?format=csv",
+    "url": "http://localhost:5001/api/loads/larfb?format=json",
     "method": "GET",
     "sortNum": 6875,
     "created": "2022-11-23T02:55:14.782Z",
-    "modified": "2022-11-23T02:58:09.916Z",
+    "modified": "2022-12-02T23:48:30.941Z",
     "headers": [],
     "params": [
       {
         "name": "format",
-        "value": "csv",
+        "value": "json",
         "isPath": false
       }
     ],
@@ -2091,7 +2173,7 @@
         "type": "Content-Type",
         "custom": "",
         "action": "equal",
-        "value": "text/csv; charset=utf-8"
+        "value": "application/json; charset=utf-8"
       }
     ],
     "docs": "(Not presently used by client app)\n\nThis endpoint gets all the listings from the load_larfb  import table in our database. This was imported from a massaged Google Sheet based on a csv file received form thr LA Regional Food Bank.\n\n",
@@ -2105,5 +2187,139 @@
         }
       ]
     }
+  },
+  {
+    "_id": "b6dc3666-af88-464b-9e9a-affc7ef5ef45",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "ae763c3f-34d6-40dd-9749-50a88bd18b89",
+    "name": "AWS Geocode Autocomplete",
+    "url": "http://localhost:5001/api/aws/autocomplete?address=Los Angeles&tenantId=1",
+    "method": "GET",
+    "sortNum": 600000,
+    "created": "2023-01-09T21:59:20.949Z",
+    "modified": "2023-04-06T01:54:05.429Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "address",
+        "value": "Los Angeles",
+        "isPath": false
+      },
+      {
+        "name": "tenantId",
+        "value": "1",
+        "isPath": false
+      }
+    ],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "Results"
+      }
+    ]
+  },
+  {
+    "_id": "4cefd842-834d-4d1c-97d1-0f5cf44c424c",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "ae763c3f-34d6-40dd-9749-50a88bd18b89",
+    "name": "AWS Geocode Get Coordinates",
+    "url": "http://localhost:5001/api/aws/getCoords?address=San Pedro",
+    "method": "GET",
+    "sortNum": 610000,
+    "created": "2023-01-13T19:43:32.383Z",
+    "modified": "2023-04-05T04:45:21.425Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "address",
+        "value": "San Pedro",
+        "isPath": false
+      }
+    ],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "Results"
+      }
+    ]
+  },
+  {
+    "_id": "a78961bb-8741-4838-9788-c9135c9c19c9",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
+    "name": "Get By Email",
+    "url": "http://localhost:5001/api/accounts/adminuser@dispostable.com?tenantId=1",
+    "method": "GET",
+    "sortNum": 570000,
+    "created": "2023-01-30T03:32:14.600Z",
+    "modified": "2023-02-05T21:08:16.441Z",
+    "headers": [
+      {
+        "name": "Content-Type",
+        "value": "application/json"
+      }
+    ],
+    "params": [
+      {
+        "name": "tenantId",
+        "value": "1",
+        "isPath": false
+      }
+    ],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      }
+    ]
+  },
+  {
+    "_id": "e0c0951d-6e30-4712-8f98-0241da62896d",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "24d28291-9541-4bea-a1d3-ee1b778eeb85",
+    "name": "Suggestion POST",
+    "url": "http://localhost:5001/api/suggestions",
+    "method": "POST",
+    "sortNum": 40000,
+    "created": "2023-02-25T04:09:54.129Z",
+    "modified": "2023-02-25T04:10:24.838Z",
+    "headers": [
+      {
+        "name": "Content-Type",
+        "value": "application/json"
+      }
+    ],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"stakeholderId\": null,\n  \"name\": \"ThunderClient-Generated Suggestion\",\n  \"address1\": \"303 E 6th st.\",\n  \"address2\": \"\",\n  \"city\": \"Los Angeles\",\n  \"state\": \"CA\",\n  \"zip\": \"90013\",\n  \"phone\": \"213-629-1227 x347\",\n  \"email\": \"info@lamission.net\",\n  \"notes\": \"test\",\n  \"tipsterName\": \"\",\n  \"tipsterPhone\": \"\",\n  \"tipsterEmail\": \"\",\n  \"hours\": \"\",\n  \"category\": \"\",\n  \"suggestionStatusId\": 1,\n  \"adminNotes\": \"\",\n  \"tenantId\": 1\n}",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "201"
+      }
+    ]
   }
 ]

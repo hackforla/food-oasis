@@ -1,27 +1,16 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { withStyles } from "@material-ui/core";
+import withStyles from "@mui/styles/withStyles";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import * as accountService from "../../services/account-service";
-import {
-  Avatar,
-  Container,
-  CssBaseline,
-  Link,
-  Grid,
-  Typography,
-} from "@material-ui/core";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import { TextField, Button } from "../../components/UI";
+import { Button } from "@mui/material";
+import { Avatar, Box, Container, CssBaseline, Typography } from "@mui/material";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useToasterContext } from "../../contexts/toasterContext";
+import PasswordInput from "../UI/PasswordInput";
 
 const styles = (theme) => ({
-  "@global": {
-    body: {
-      backgroundColor: theme.palette.common.white,
-    },
-  },
   paper: {
     marginTop: theme.spacing(1),
     display: "flex",
@@ -35,9 +24,6 @@ const styles = (theme) => ({
   form: {
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
   },
   body: {
     display: "flex",
@@ -72,7 +58,7 @@ const ResetPassword = (props) => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Reset Password
+            Password Reset
           </Typography>
           <Formik
             initialValues={{
@@ -91,7 +77,12 @@ const ResetPassword = (props) => {
                   setToast({
                     message: "Password has been reset. Please use it to login.",
                   });
-                  history.push(`/login/${response.email}`);
+                  history.push({
+                    pathname: `/login/${response.email}`,
+                    state: {
+                      isPasswordReset: true,
+                    },
+                  });
                 } else if (
                   response.code === "RESET_PASSWORD_TOKEN_INVALID" ||
                   response.code === "RESET_PASSWORD_TOKEN_EXPIRED"
@@ -124,6 +115,8 @@ const ResetPassword = (props) => {
               handleBlur,
               handleSubmit,
               isSubmitting,
+              isValid,
+              dirty,
               /* and other goodies */
             }) => (
               <form
@@ -134,13 +127,11 @@ const ResetPassword = (props) => {
                   handleSubmit(evt);
                 }}
               >
-                <TextField
-                  variant="outlined"
+                <PasswordInput
                   margin="normal"
                   fullWidth
                   name="password"
-                  label="Password"
-                  type="password"
+                  label="New Password"
                   id="password"
                   autoComplete="current-password"
                   value={values.password}
@@ -148,14 +139,13 @@ const ResetPassword = (props) => {
                   onBlur={handleBlur}
                   helperText={touched.password ? errors.password : ""}
                   error={touched.password && Boolean(errors.password)}
+                  sx={{ mt: 2, mb: 2 }}
                 />
-                <TextField
-                  variant="outlined"
+                <PasswordInput
                   margin="normal"
                   fullWidth
                   name="passwordConfirm"
-                  label="Password"
-                  type="password"
+                  label="Confirm Password"
                   id="passwordConfirm"
                   value={values.passwordConfirm}
                   onChange={handleChange}
@@ -166,22 +156,18 @@ const ResetPassword = (props) => {
                   error={
                     touched.passwordConfirm && Boolean(errors.passwordConfirm)
                   }
+                  sx={{ mt: 2, mb: 2 }}
                 />
-                <Button
-                  type="submit"
-                  fullWidth
-                  className={classes.submit}
-                  disabled={isSubmitting}
-                >
-                  Reset Password
-                </Button>
-                <Grid container>
-                  <Grid item xs>
-                    <Link href="/forgotpassword" variant="body2">
-                      Forgot password?
-                    </Link>
-                  </Grid>
-                </Grid>
+                <Box sx={{ mt: 2, mb: 2 }}>
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    disabled={isSubmitting || !(isValid && dirty)}
+                    fullWidth
+                  >
+                    Reset Password
+                  </Button>
+                </Box>
               </form>
             )}
           </Formik>

@@ -1,6 +1,6 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
+import makeStyles from "@mui/styles/makeStyles";
+import Typography from "@mui/material/Typography";
 
 const useStyles = makeStyles(() => ({
   outer: {
@@ -21,9 +21,6 @@ const useStyles = makeStyles(() => ({
     background: "#FFF",
     margin: 0,
     padding: "32px 0",
-    "& $span": {
-      color: "#4d4d4d",
-    },
   },
   figure: {
     margin: 0,

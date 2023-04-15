@@ -1,5 +1,5 @@
 import faqbg from "../assets/faq-header.jpg";
-import Typography from "@material-ui/core/Typography";
+import { Link, Typography } from "@mui/material";
 
 const PAGE_INFO_FAQ = {
   pageTitle: "FAQs",
@@ -19,13 +19,13 @@ const PAGE_SECTIONS_FAQ = [
             <dt>How do I use this tool to find food near me?</dt>
             <dd>
               From the{" "}
-              <a
+              <Link
                 href="https://devhi.foodoasis.net/organizations"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 “Find Food”
-              </a>{" "}
+              </Link>{" "}
               page, type in your zip code or address and hit Enter. A list of
               nearby options, sorted from nearest to farthest, will pop up on
               the left side of the page. Click “PANTRIES” or “MEALS” if you’d
@@ -54,21 +54,21 @@ const PAGE_SECTIONS_FAQ = [
               resources and related assistance?
             </dt>
             <dd>
-              <a
+              <Link
                 href="https://www.auw211.org/s/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 Aloha United Way
-              </a>{" "}
+              </Link>{" "}
               can be called by dialing 211 or visiting{" "}
-              <a
+              <Link
                 href="https://www.auw211.org/s/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 auw211.org
-              </a>
+              </Link>
               . Their specialists can help you through a directory of every
               registered social service agency in the state that helps get food
               to people who need it. They can also search a database of 4,000+
@@ -95,13 +95,13 @@ const PAGE_SECTIONS_FAQ = [
               redistribute it to a network of nonprofits and social service
               agencies feeding O‘ahu’s hungry. To learn more, visit this tool’s
               About Us page or our website directly at{" "}
-              <a
+              <Link
                 href="https://alohaharvest.org"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 alohaharvest.org
-              </a>
+              </Link>
               .
             </dd>
           </dl>
@@ -123,13 +123,13 @@ const PAGE_SECTIONS_FAQ = [
             </dt>
             <dd>
               Visit our website at{" "}
-              <a
+              <Link
                 href="https://alohaharvest.org"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 alohaharvest.org.
-              </a>
+              </Link>
             </dd>
             <dt>What is food insecurity?</dt>
             <dd>
@@ -148,21 +148,21 @@ const PAGE_SECTIONS_FAQ = [
             <dt>Do you accept food or monetary donations?</dt>
             <dd>
               Yes! Please visit the Aloha Harvest{" "}
-              <a
+              <Link
                 href="https://alohaharvest.org/donate-food/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 food donation
-              </a>{" "}
+              </Link>{" "}
               and{" "}
-              <a
+              <Link
                 href="https://alohaharvest.org/donate-money/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 monetary donation
-              </a>{" "}
+              </Link>{" "}
               pages for more information.
             </dd>
           </dl>

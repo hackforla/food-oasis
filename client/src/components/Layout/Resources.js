@@ -1,9 +1,7 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
-
-import Container from "@material-ui/core/Container";
-import { Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core";
+import Container from "@mui/material/Container";
+import { Typography } from "@mui/material";
+import makeStyles from "@mui/styles/makeStyles";
 
 const useStyles = makeStyles(() => ({
   listItem: {
@@ -19,15 +17,14 @@ const useStyles = makeStyles(() => ({
 
 const Resources = () => {
   const classes = useStyles();
-  const { t } = useTranslation("resources");
 
   return (
     <Container maxWidth="sm">
       <Typography className={classes.title} variant="h4">
-        {t("title")}
+        Healthy Food Resources
       </Typography>
       <Typography className={classes.subtitle} variant="h6">
-        {t("non-profit")}
+        Non-Profit and Policy Groups
       </Typography>
       <ul>
         <li className={classes.listItem}>
@@ -54,7 +51,7 @@ const Resources = () => {
         </li>
       </ul>
       <Typography className={classes.subtitle} variant="h6">
-        {t("government")}
+        Government Data Links
       </Typography>
       <ul>
         <li className={classes.listItem}>
@@ -79,7 +76,7 @@ const Resources = () => {
         </li>
       </ul>
       <Typography className={classes.subtitle} variant="h6">
-        {t("education")}
+        Education
       </Typography>
       <ul>
         <li className={classes.listItem}>
@@ -89,7 +86,7 @@ const Resources = () => {
         </li>
       </ul>
       <Typography className={classes.subtitle} variant="h6">
-        {t("useful-links")}
+        Other Useful Links
       </Typography>
       <ul>
         <li className={classes.listItem}>

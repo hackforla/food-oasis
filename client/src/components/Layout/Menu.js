@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import useLocationHook from "hooks/useLocationHook";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from "@mui/styles/makeStyles";
 import {
   Drawer,
   List,
@@ -9,11 +9,11 @@ import {
   ListItemAvatar,
   Avatar,
   Divider,
-} from "@material-ui/core";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+} from "@mui/material";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { MENU_ITEMS } from "helpers/Constants";
 import MenuItemLink from "./MenuItemLink";
-import { IconButton } from "../../components/UI";
+import { IconButton } from "../UI/StandardButton";
 import { useUserContext } from "../../contexts/userContext";
 import { isMobile } from "helpers";
 
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "#FFF",
       opacity: 0.8,
     },
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down("sm")]: {
       transform: "scale(1.2, 1.2)",
     },
   },
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Menu() {
-  const {isHomePage} = useLocationHook();
+  const { isHomePage } = useLocationHook();
   const homePageStyles = {
     buttonColor: "#F1F1F1",
   };
@@ -172,14 +172,13 @@ export default function Menu() {
 
         {user ? authedLinks : unAuthLinks}
       </List>
-      {/* <LanguageChooser /> */}
     </div>
   );
 
   return (
     <div>
       <IconButton
-        size={!isHomePage && isMobile ? "small" : "medium"}
+        size={!isHomePage && isMobile ? "small" : "large"}
         icon="menu"
         onClick={toggleDrawer}
         classes={{

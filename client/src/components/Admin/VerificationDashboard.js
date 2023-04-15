@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { withRouter, Redirect } from "react-router-dom";
-import { CssBaseline, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import StakeholderGrid from "./VerificationAdminGrid";
-import { RotateLoader } from "react-spinners";
+import { CssBaseline, Typography } from "@mui/material";
+import makeStyles from "@mui/styles/makeStyles";
 import { useOrganizations } from "hooks/useOrganizations";
 import * as stakeholderService from "services/stakeholder-service";
-import { Button } from "../../components/UI";
+import { Button } from "@mui/material";
 import { useUserContext } from "../../contexts/userContext";
+import CircularProgress from "@mui/material/CircularProgress";
+import VerificationAdminGridMui from "./VerificationAdminGridMui";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -91,7 +91,7 @@ function VerificationDashboard(props) {
 
   useEffect(() => {
     const execute = async () => {
-      if (!user) return;
+      if (!user) return undefined;
       const initialCriteria = { ...defaultCriteria, assignedLoginId: user.id };
       if (initialCriteria) {
         setCriteria(initialCriteria);
@@ -155,16 +155,22 @@ function VerificationDashboard(props) {
           </Typography>
           <div style={{ display: "flex", flexDirection: "row" }}>
             <Button
+              variant="outlined"
               type="button"
               onClick={requestAssignment}
+<<<<<<< HEAD
+=======
+              sx={{ margin: ".1rem" }}
+>>>>>>> release-1.0.72
             >
               Request Assignment
             </Button>
             <Button
+              variant="outlined"
               type="button"
               icon="search"
-              iconPosition="start"
               onClick={search}
+              sx={{ margin: ".1rem" }}
             >
               Refresh
             </Button>
@@ -194,13 +200,7 @@ function VerificationDashboard(props) {
               }}
               aria-label="Loading spinner"
             >
-              <RotateLoader
-                // css={}
-                sizeUnit="px"
-                size={15}
-                color="green"
-                loading
-              />
+              <CircularProgress />
             </div>
           ) : stakeholders && stakeholders.length === 0 ? (
             <div className={classes.bigMessage}>
@@ -209,7 +209,10 @@ function VerificationDashboard(props) {
               </Typography>
             </div>
           ) : stakeholders ? (
-            <StakeholderGrid mode={"dataentry"} stakeholders={stakeholders} />
+            <VerificationAdminGridMui
+              stakeholders={stakeholders}
+              mode={"dataentry"}
+            />
           ) : (
             <div className={classes.bigMessage}>
               <Typography variant="h5" component="h5">

@@ -1,30 +1,27 @@
 import React from "react";
 import { withRouter, useLocation } from "react-router-dom";
 import {
-  withStyles,
   Avatar,
+  Box,
   Container,
-  CssBaseline,
   Link,
   Grid,
+  TextField,
   Typography,
-} from "@material-ui/core";
+  Button,
+} from "@mui/material";
+import withStyles from "@mui/styles/withStyles";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import * as accountService from "services/account-service";
 import * as analytics from "../../services/analytics";
-import { Button, TextField } from "../../components/UI";
 import { useUserContext } from "../../contexts/userContext";
 import { useToasterContext } from "../../contexts/toasterContext";
 
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import PasswordInput from "../../components/UI/PasswordInput";
 
 const styles = (theme) => ({
-  "@global": {
-    body: {
-      backgroundColor: theme.palette.common.white,
-    },
-  },
   paper: {
     marginTop: theme.spacing(1),
     display: "flex",
@@ -38,9 +35,6 @@ const styles = (theme) => ({
   form: {
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
   },
   body: {
     display: "flex",
@@ -71,8 +65,12 @@ const LoginForm = (props) => {
   return (
     <div className={classes.body}>
       <Container component="main" maxWidth="xs" className={classes.container}>
-        <CssBaseline />
         <div className={classes.paper}>
+          {state?.isPasswordReset && (
+            <Typography component="p" className={classes.submit}>
+              Password has been successfully updated
+            </Typography>
+          )}
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
@@ -80,6 +78,7 @@ const LoginForm = (props) => {
             Login
           </Typography>
           <Formik
+            validateOnBlur={false}
             initialValues={{
               email: match.params.email || "",
               password: "",
@@ -98,7 +97,7 @@ const LoginForm = (props) => {
                     setToast({
                       message: "Login successful.",
                     });
-                    if (state) {
+                    if (state?.from) {
                       history.push(state.from);
                     } else if (
                       response.user.isAdmin ||
@@ -147,7 +146,6 @@ const LoginForm = (props) => {
                     });
                     formikBag.setSubmitting(false);
                   }
-                  // async function muist return something
                   return true;
                 } catch (err) {
                   setToast({
@@ -167,49 +165,53 @@ const LoginForm = (props) => {
               handleBlur,
               handleSubmit,
               isSubmitting,
-              /* and other goodies */
+              dirty,
+              isValid,
             }) => (
               <form className={classes.form} noValidate onSubmit={handleSubmit}>
-                <TextField
-                  type="email"
-                  id="email"
-                  label="Email"
-                  name="email"
-                  variant="outlined"
-                  margin="normal"
-                  fullWidth
-                  autoComplete="email"
-                  autoFocus
-                  value={values.email}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  helperText={touched.email ? errors.email : ""}
-                  error={touched.email && Boolean(errors.email)}
-                />
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                  value={values.password}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  helperText={touched.password ? errors.password : ""}
-                  error={touched.password && Boolean(errors.password)}
-                />
-                <Button
-                  type="submit"
-                  fullWidth
-                  className={classes.submit}
-                  disabled={isSubmitting}
-                >
-                  Sign In
-                </Button>
-                <Grid container>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <TextField
+                      autoComplete="email"
+                      autoFocus
+                      error={touched.email && Boolean(errors.email)}
+                      fullWidth
+                      helperText={touched.email ? errors.email : ""}
+                      id="email"
+                      label="Email"
+                      name="email"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      required
+                      type="email"
+                      value={values.email}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <PasswordInput
+                      autoComplete="current-password"
+                      error={touched.password && Boolean(errors.password)}
+                      fullWidth
+                      helperText={touched.password ? errors.password : ""}
+                      id="password"
+                      label="Password"
+                      name="password"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.password}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Box>
+                      <Button
+                        type="submit"
+                        disabled={isSubmitting || !(isValid && dirty)}
+                        fullWidth
+                      >
+                        Sign In
+                      </Button>
+                    </Box>
+                  </Grid>
                   <Grid item xs>
                     <Link
                       href={`/forgotpassword/${values.email || ""}`}

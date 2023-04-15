@@ -2,10 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import * as momentTz from "moment-timezone";
-import { makeStyles } from "@material-ui/core/styles";
-import { Button } from "../../../UI";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
+import Grid2 from "@mui/material/Unstable_Grid2";
+import Typography from "@mui/material/Typography";
+import Chip from "@mui/material/Chip";
 import { useSiteContext } from "contexts/siteContext";
-
 import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
@@ -13,11 +16,7 @@ import {
 import { ORGANIZATION_COLORS, CLOSED_COLOR } from "constants/map";
 import { getGoogleMapsDirectionsUrl, extractNumbers } from "helpers";
 import * as analytics from "services/analytics";
-import {
-  useAppDispatch,
-  useSearchCoordinates,
-  useUserCoordinates,
-} from "../../../../appReducer";
+import { useAppDispatch } from "../../../../appReducer";
 import StakeholderIcon from "images/stakeholderIcon";
 import { useHistory, useLocation } from "react-router-dom";
 
@@ -29,89 +28,6 @@ const TENANT_TIME_ZONES = {
   5: "America/Chicago",
   6: "America/Los_Angeles",
 };
-
-const useStyles = makeStyles((theme) => ({
-  stakeholder: {
-    width: "100%",
-    minHeight: "6em",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "1em 0",
-  },
-  info: {
-    fontSize: "1em",
-    textAlign: "left",
-    width: "100%",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    "& p": {
-      margin: 0,
-    },
-  },
-  label: {
-    width: "100%",
-    display: "flex",
-  },
-  closedLabel: {
-    color: "#545454",
-    alignSelf: "flex-end",
-    backgroundColor: "#E0E0E0",
-    padding: ".25em .5em",
-    borderRadius: "3px",
-    margin: ".25em 0",
-  },
-  openLabel: {
-    color: "#fff",
-    alignSelf: "flex-start",
-    backgroundColor: "#008000",
-    padding: ".25em",
-    borderRadius: "3px",
-    margin: ".25em 0",
-    marginRight: "0.25em",
-  },
-  closingSoonLabel: {
-    color: "#fff",
-    alignSelf: "flex-start",
-    backgroundColor: "#CC3333",
-    padding: ".25em",
-    borderRadius: "3px",
-    margin: ".25em 0",
-  },
-  allowWalkinsLabel: {
-    color: "#fff",
-    alignSelf: "flex-start",
-    backgroundColor: theme.palette.primary.main,
-    padding: ".25em",
-    borderRadius: "3px",
-    margin: ".25em 0",
-    marginRight: "0.25em",
-  },
-  buttons: {
-    width: "100%",
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  leftInfo: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginRight: "1em",
-  },
-  name: {
-    fontSize: "16px",
-  },
-  button: {
-    borderColor: theme.palette.primary.translucent,
-    borderWidth: "1px",
-    "&:hover": {
-      background: theme.palette.primary.main,
-    },
-  },
-}));
 
 const isLastOccurrenceInMonth = (currentDay) => {
   const currentMonth = currentDay.month();
@@ -169,11 +85,7 @@ const isAlmostClosed = (hours, tenantTimeZone) => {
 };
 
 const StakeholderPreview = ({ stakeholder }) => {
-  const classes = useStyles();
   const dispatch = useAppDispatch();
-  const searchCoordinates = useSearchCoordinates();
-  const userCoordinates = useUserCoordinates();
-  const originCoordinates = searchCoordinates || userCoordinates;
   const { tenantId } = useSiteContext();
   const tenantTimeZone = TENANT_TIME_ZONES[tenantId];
   const history = useHistory();
@@ -208,132 +120,164 @@ const StakeholderPreview = ({ stakeholder }) => {
     calculateMinutesToClosing(stakeholderHours, tenantTimeZone);
 
   return (
-    <div
-      className={classes.stakeholder}
+    <Grid2
+      container
+      spacing={0}
       key={stakeholder.id}
-      onClick={() => handleSelectOrganization(stakeholder)}
+      sx={{
+        width: "100%",
+        minHeight: "6rem",
+        padding: "0.5rem",
+      }}
     >
-      <div className={classes.leftInfo}>
-        <StakeholderIcon stakeholder={stakeholder} height="50px" width="50px" />
-        {stakeholder.distance ? (
-          <div>
-            {stakeholder.distance >= 10
-              ? stakeholder.distance.toString().substring(0, 3).padEnd(4, "0")
-              : stakeholder.distance.toString().substring(0, 3)}{" "}
-            mi
-          </div>
-        ) : null}
-      </div>
-      <div className={classes.info}>
-        <p className={classes.name}>{stakeholder.name}</p>
-        <div className={classes.label}>
-          {stakeholder.categories.map((category) => (
-            <em
-              key={stakeholder.id + category.id}
-              style={{
+      <Grid2 xs={2}>
+        <Stack
+          xs={2}
+          direction="column"
+          justifyContent="flex-start"
+          alignItems="center"
+          sx={{ marginTop: ".2rem", height: "100%" }}
+        >
+          <StakeholderIcon
+            stakeholder={stakeholder}
+            height="50px"
+            width="50px"
+          />
+          {stakeholder.distance ? (
+            <Typography variant="body2" component="p">
+              {stakeholder.distance >= 10
+                ? stakeholder.distance.toString().substring(0, 3).padEnd(4, "0")
+                : stakeholder.distance.toString().substring(0, 3)}{" "}
+              mi
+            </Typography>
+          ) : null}
+        </Stack>
+      </Grid2>
+
+      <Grid2 xs={10}>
+        <Stack direction="column" xs={10}>
+          <Typography variant="h6" component="h2" align="left">
+            {stakeholder.name}
+          </Typography>
+          <Box textAlign="left">
+            {stakeholder.categories.map((category) => (
+              <Typography
+                variant="body2"
+                fontStyle="italic"
+                key={stakeholder.id + category.id}
+                sx={{
+                  margin: "0.25em 0",
+                  marginRight: "0.25em",
+                  color:
+                    stakeholder.inactiveTemporary || stakeholder.inactive
+                      ? CLOSED_COLOR
+                      : category.id === FOOD_PANTRY_CATEGORY_ID
+                      ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
+                      : category.id === MEAL_PROGRAM_CATEGORY_ID
+                      ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
+                      : "#000",
+                }}
+              >
+                {category.name}
+              </Typography>
+            ))}
+          </Box>
+          <Box textAlign="left">
+            <Typography
+              variant="body2"
+              component="p"
+              fontStyle="italic"
+              key={stakeholder.id}
+              sx={{
                 alignSelf: "flex-start",
-                margin: "0.25em 0",
-                marginRight: "0.25em",
-                color:
-                  stakeholder.inactiveTemporary || stakeholder.inactive
-                    ? CLOSED_COLOR
-                    : category.id === FOOD_PANTRY_CATEGORY_ID
-                    ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
-                    : category.id === MEAL_PROGRAM_CATEGORY_ID
-                    ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
-                    : "#000",
+                margin: "0 0.25em 0.5em 0",
               }}
             >
-              {category.name}
-            </em>
-          ))}
-        </div>
-        <div className={classes.label}>
-          <em
-            key={stakeholder.id}
-            style={{
-              alignSelf: "flex-start",
-              margin: "0 0.25em 0.5em 0",
-            }}
-          >
-            {stakeholder.foodTypes}
-          </em>
-        </div>
-        <div className={classes.label}>
-          {stakeholder.inactiveTemporary || stakeholder.inactive ? (
-            <em className={classes.closedLabel}>
-              {stakeholder.inactiveTemporary
-                ? "Temporarily Closed"
-                : "Permanently Closed"}
-            </em>
-          ) : null}
+              {stakeholder.foodTypes}
+            </Typography>
+          </Box>
 
-          {showAllowWalkinsFlag &&
-            !(stakeholder.inactiveTemporary || stakeholder.inactive) && (
-              <>
-                {isOpenFlag &&
-                  <em className={classes.openLabel}>OPEN NOW</em>
+          <Box textAlign="left">
+            {stakeholder.inactiveTemporary || stakeholder.inactive ? (
+              <Chip
+                color="inactiveButton"
+                label={
+                  stakeholder.inactiveTemporary
+                    ? "Temporarily Closed"
+                    : "Permanently Closed"
                 }
-                {isAlmostClosedFlag && 
-                  <em className={classes.closingSoonLabel}>
-                    {`Closing in ${minutesToClosing} minutes`}
-                  </em>
-                }
-                <em className={classes.allowWalkinsLabel}>Walk-Ins Allowed</em>
-              </>
-            )
-          }
-          
-        </div>
-        <div className={classes.buttons}>
-          <Button
-            variant="outlined"
-            size="small"
-            className={classes.button}
-            onClick={() => {
-              analytics.postEvent("getDirections", {
-                id: stakeholder.id,
-                name: stakeholder.name,
-              });
+              />
+            ) : null}
 
-              window.open(
-                getGoogleMapsDirectionsUrl(originCoordinates, {
-                  latitude: stakeholder.latitude,
-                  longitude: stakeholder.longitude,
-                })
-              );
-            }}
-          >
-            Directions
-          </Button>
-
-          {mainNumber && (
+            {showAllowWalkinsFlag &&
+              !(stakeholder.inactiveTemporary || stakeholder.inactive) && (
+                <>
+                  {isOpenFlag && (
+                    <Chip
+                      // sx={{ backgroundColor: "#008000" }}
+                      color="success"
+                      label="OPEN NOW"
+                    />
+                  )}
+                  {isAlmostClosedFlag && (
+                    <Chip
+                      // sx={{ backgroundColor: "#CC3333" }}
+                      color="mealProgram"
+                      label={`Closing in ${minutesToClosing} minutes`}
+                    />
+                  )}
+                  <Chip label="Walk-Ins Allowed" color="primary" />
+                </>
+              )}
+          </Box>
+          <Stack direction="row" sx={{ justifyContent: "space-between" }}>
             <Button
               variant="outlined"
-              size="small"
-              className={classes.button}
+              // size="small"
               onClick={() => {
-                analytics.postEvent("dialPhone", {
+                analytics.postEvent("getDirections", {
                   id: stakeholder.id,
                   name: stakeholder.name,
                 });
-                window.open(`tel:${mainNumber.value}`);
+
+                window.open(
+                  getGoogleMapsDirectionsUrl({
+                    latitude: stakeholder.latitude,
+                    longitude: stakeholder.longitude,
+                  })
+                );
               }}
             >
-              Call
+              Directions
             </Button>
-          )}
-          <Button
-            variant="outlined"
-            size="small"
-            className={classes.button}
-            disabled={stakeholder.inactive}
-          >
-            Details
-          </Button>
-        </div>
-      </div>
-    </div>
+
+            {mainNumber && (
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  analytics.postEvent("dialPhone", {
+                    id: stakeholder.id,
+                    name: stakeholder.name,
+                  });
+                  window.open(`tel:${mainNumber.value}`);
+                }}
+              >
+                Call
+              </Button>
+            )}
+
+            <Button
+              variant="outlined"
+              disabled={stakeholder.inactive}
+              onClick={() => handleSelectOrganization(stakeholder)}
+            >
+              {/* <Typography variant="button">Details</Typography> */}
+              Details
+            </Button>
+          </Stack>
+        </Stack>
+      </Grid2>
+    </Grid2>
   );
 };
 

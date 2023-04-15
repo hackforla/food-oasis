@@ -1,27 +1,25 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { withStyles } from "@material-ui/core";
+import withStyles from "@mui/styles/withStyles";
 import { withFormik } from "formik";
 import * as Yup from "yup";
 import * as accountService from "../../services/account-service";
+import { Button } from "@mui/material";
 import {
   Avatar,
+  Box,
   CssBaseline,
   Link,
   Grid,
+  TextField,
   Typography,
   Container,
-} from "@material-ui/core";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import { TextField, Button } from "../../components/UI";
+} from "@mui/material";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useToasterContext } from "contexts/toasterContext";
+import PasswordInput from "components/UI/PasswordInput";
 
 const styles = (theme) => ({
-  "@global": {
-    body: {
-      backgroundColor: theme.palette.common.white,
-    },
-  },
   paper: {
     marginTop: theme.spacing(1),
     display: "flex",
@@ -35,9 +33,6 @@ const styles = (theme) => ({
   form: {
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
   },
   body: {
     display: "flex",
@@ -53,10 +48,12 @@ const styles = (theme) => ({
 const form = (props) => {
   const {
     classes,
+    dirty,
     values,
     touched,
     errors,
     isSubmitting,
+    isValid,
     handleChange,
     handleBlur,
     handleSubmit,
@@ -78,23 +75,21 @@ const form = (props) => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="fname"
-                  name="firstName"
-                  variant="outlined"
-                  required
+                  autoFocus
+                  error={touched.firstName && Boolean(errors.firstName)}
                   fullWidth
+                  helperText={touched.firstName ? errors.firstName : ""}
                   id="firstName"
                   label="First Name"
-                  autoFocus
-                  value={values.firstName}
-                  onChange={handleChange}
+                  name="firstName"
                   onBlur={handleBlur}
-                  helperText={touched.firstName ? errors.firstName : ""}
-                  error={touched.firstName && Boolean(errors.firstName)}
+                  onChange={handleChange}
+                  required
+                  value={values.firstName}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  variant="outlined"
                   required
                   fullWidth
                   id="lastName"
@@ -114,7 +109,6 @@ const form = (props) => {
                   id="email"
                   label="Email"
                   name="email"
-                  variant="outlined"
                   fullWidth
                   autoComplete="email"
                   value={values.email}
@@ -125,13 +119,11 @@ const form = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  variant="outlined"
+                <PasswordInput
                   required
                   fullWidth
                   name="password"
                   label="Password"
-                  type="password"
                   id="password"
                   autoComplete="current-password"
                   value={values.password}
@@ -142,13 +134,11 @@ const form = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  variant="outlined"
+                <PasswordInput
                   required
                   fullWidth
                   name="passwordConfirm"
-                  label="Re-type Password"
-                  type="password"
+                  label="Confirm Password"
                   id="passwordConfirm"
                   value={values.passwordConfirm}
                   onChange={handleChange}
@@ -162,14 +152,16 @@ const form = (props) => {
                 />
               </Grid>
             </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              className={classes.submit}
-              disabled={isSubmitting}
-            >
-              Register
-            </Button>
+            <Box sx={{ mt: 2, mb: 2 }}>
+              <Button
+                variant="contained"
+                type="submit"
+                disabled={isSubmitting || !(isValid && dirty)}
+                fullWidth
+              >
+                Register
+              </Button>
+            </Box>
             <Grid container justifyContent="center">
               <Grid item>
                 <Link href="/login" variant="body2">
@@ -202,6 +194,7 @@ const RegisterForm = withFormik({
       passwordConfirm: passwordConfirm || "",
     };
   },
+  validateOnBlur: false,
 
   validationSchema: Yup.object().shape({
     firstName: Yup.string().required("Required"),

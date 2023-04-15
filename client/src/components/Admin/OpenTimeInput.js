@@ -1,20 +1,19 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from "@mui/styles/makeStyles";
 import {
   Grid,
   MenuItem,
   FormControl,
   InputLabel,
+  TextField,
   Select,
-} from "@material-ui/core";
-import DateFnsUtils from "@date-io/moment";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-} from "@material-ui/pickers";
-import { IconButton } from "../UI";
+} from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import { IconButton } from "../UI/StandardButton";
 
 const useStyles = makeStyles((theme) => ({
   row: {
@@ -56,7 +55,7 @@ function OpenTimeInput(props) {
   );
 
   return (
-    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+    <LocalizationProvider dateAdapter={AdapterMoment}>
       <Grid container spacing={1} className={classes.row}>
         <Grid item xs={12} sm={2}>
           <FormControl
@@ -106,13 +105,12 @@ function OpenTimeInput(props) {
           </FormControl>
         </Grid>
         <Grid item xs={12} sm={3}>
-          <KeyboardTimePicker
-            autoOK
+          <TimePicker
             label="Opening Time"
             inputVariant="outlined"
             value={openingTime}
-            mask="__:__ _M"
-            KeyboardButtonProps={{ "aria-label": "change-time" }}
+            renderInput={(params) => <TextField {...params} />}
+            DialogProps={{ color: "secondary" }}
             onChange={(dt) => {
               setOpeningTime(dt);
               // Pass dt to parent component as null, unless it's a valid
@@ -135,11 +133,11 @@ function OpenTimeInput(props) {
           sm={3}
           styles={{ display: "flex", flexDirection: "column" }}
         >
-          <KeyboardTimePicker
+          <TimePicker
             autoOk
             label="Closing Time"
             inputVariant="outlined"
-            mask="__:__ _M"
+            renderInput={(params) => <TextField {...params} />}
             value={closingTime}
             onChange={(dt) => {
               setClosingTime(dt);
@@ -158,13 +156,23 @@ function OpenTimeInput(props) {
           />
         </Grid>
         <Grid item xs={2} sm={1}>
-          <IconButton icon="cancel" onClick={removeInput} />
+          <IconButton
+            icon="cancel"
+            color="error"
+            size="large"
+            onClick={removeInput}
+          />
         </Grid>
         <Grid item xs={2} sm={1}>
-          <IconButton icon="wrapText" onClick={copyInput} />
+          <IconButton
+            icon="wrapText"
+            color="primary"
+            size="large"
+            onClick={copyInput}
+          />
         </Grid>
       </Grid>
-    </MuiPickersUtilsProvider>
+    </LocalizationProvider>
   );
 }
 

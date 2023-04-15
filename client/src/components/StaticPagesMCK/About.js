@@ -1,14 +1,14 @@
 import React from "react";
 
-import aboutbg from "./assets/about-bg.png";
+import aboutbg from "./assets/about-bg.webp";
 import foodCycle from "./assets/food-cycle.png";
 import foodForward from "./assets/food-forward.png";
 import farmPeople from "./assets/farm-people.png";
 import foodBank from "./assets/food-bank.png";
-import { makeStyles } from "@material-ui/core";
+import makeStyles from "@mui/styles/makeStyles";
 import iconSpacerGray from "./assets/icon-spacer-gray.svg";
-import Container from "@material-ui/core/Container";
-import Typography from "@material-ui/core/Typography";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
 
 const useStyles = makeStyles(() => ({
   outer: {
@@ -23,16 +23,12 @@ const useStyles = makeStyles(() => ({
     },
   },
   title: {
-    color: "#4d4d4d",
     textTransform: "uppercase",
     fontWeight: 500,
     textAlign: "center",
     background: "#FFF",
     margin: 0,
     padding: "32px 0",
-    "& $span": {
-      color: "#4d4d4d",
-    },
   },
   figure: {
     margin: 0,
@@ -45,12 +41,10 @@ const useStyles = makeStyles(() => ({
     padding: "32px",
     margin: "32px 0",
     borderRadius: "24px",
-    color: "#4d4d4d",
     background: "#f0f0f0",
     display: "flex",
     flexDirection: "column",
     "& $h2": {
-      color: "#4d4d4d",
       flexBasis: "100",
       textAlign: "center",
       fontWeight: "500",
@@ -66,7 +60,6 @@ const useStyles = makeStyles(() => ({
     padding: "32px",
     margin: "32px 0 0 0",
     borderRadius: "24px",
-    color: "#4d4d4d",
     background: "#B6D8FB",
     display: "flex",
     flexDirection: "column",
@@ -78,9 +71,6 @@ const useStyles = makeStyles(() => ({
       marginTop: "15px",
       marginBottom: "15px",
     },
-    "& $a": {
-      color: "#4d4d4d",
-    },
     "& $p": {
       marginBottom: "16px",
     },
@@ -89,7 +79,6 @@ const useStyles = makeStyles(() => ({
     padding: "32px",
     margin: "32px 0 0 0",
     borderRadius: "24px",
-    color: "#4d4d4d",
     background: "#f0f0f0",
     display: "flex",
     flexDirection: "column",
@@ -102,9 +91,6 @@ const useStyles = makeStyles(() => ({
       marginTop: "15px",
       marginBottom: "15px",
     },
-    "& $a": {
-      color: "#4d4d4d",
-    },
   },
   partners: {
     background: "#fff",
@@ -116,7 +102,6 @@ const useStyles = makeStyles(() => ({
     flexWrap: "wrap",
     flexDirection: "column",
     "& $h2": {
-      color: "#4d4d4d",
       width: "100%",
       flexBasis: "100",
       textAlign: "center",

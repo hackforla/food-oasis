@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useLocation, Redirect } from "react-router-dom";
-import { CssBaseline, Dialog, Typography } from "@material-ui/core";
-import MuiDialogTitle from "@material-ui/core/DialogTitle";
-import { makeStyles } from "@material-ui/core/styles";
-import StakeholderGrid from "./VerificationAdminGrid";
-import { RotateLoader } from "react-spinners";
+import { Button, CssBaseline, Dialog, Typography } from "@mui/material";
+import Stack from "@mui/material/Stack";
+import MuiDialogTitle from "@mui/material/DialogTitle";
+import makeStyles from "@mui/styles/makeStyles";
 import { useOrganizations } from "hooks/useOrganizations";
 import { useCategories } from "hooks/useCategories";
 import { useNeighborhoods } from "hooks/useNeighborhoods";
@@ -19,9 +18,11 @@ import AssignDialog from "./AssignDialog";
 import NeedsVerificationDialog from "./ui/NeedsVerificationDialog";
 import SearchCriteria from "./SearchCriteria";
 import SearchCriteriaDisplay from "./SearchCriteriaDisplay";
-import { Button } from "../../components/UI";
+
 import { useUserContext } from "../../contexts/userContext";
 import { useSearchCoordinates, useUserCoordinates } from "../../appReducer";
+import CircularProgress from "@mui/material/CircularProgress";
+import VerificationAdminGridMui from "./VerificationAdminGridMui";
 
 const CRITERIA_TOKEN = "verificationAdminCriteria";
 
@@ -79,9 +80,9 @@ const DialogTitle = (props) => {
       <Typography variant="h6">{children}</Typography>
       {onClose ? (
         <Button
+          variant="contained"
           type="button"
           icon="search"
-          iconPosition="start"
           kind="close"
           onClick={onClose}
           className={classes.closeButton}
@@ -295,7 +296,6 @@ function VerificationAdmin() {
     setCriteria(criteria);
     search();
   };
-
   return (
     <main className={classes.root}>
       {stakeholdersError.status === 401 || unauthorized ? (
@@ -312,17 +312,17 @@ function VerificationAdmin() {
       >
         <header className={classes.header}>
           <Typography
-            variant="h4"
-            component="h4"
+            variant="h2"
+            component="h2"
             align="center"
             style={{ marginBottom: "0.5em" }}
           >
             Verification Administration
           </Typography>
           <Button
+            variant="contained"
             type="button"
             icon="search"
-            iconPosition="start"
             onClick={handleDialogOpen}
           >
             Criteria...
@@ -388,13 +388,7 @@ function VerificationAdmin() {
               }}
               aria-label="Loading spinner"
             >
-              <RotateLoader
-                // css={}
-                sizeUnit="px"
-                size={15}
-                color="#FAEBD7"
-                loading
-              />
+              <CircularProgress />
             </div>
           ) : null}
         </Dialog>
@@ -408,7 +402,7 @@ function VerificationAdmin() {
           id="needs-verification-dialog"
           title='Change Listing(s) Status to "Needs Verification"'
           message={""}
-          preserveConfirmations={false}
+          // preserveConfirmations={false}
           open={needsVerificationDialogOpen}
           onClose={handleNeedsVerificationDialogClose}
         />
@@ -434,13 +428,7 @@ function VerificationAdmin() {
               }}
               aria-label="Loading spinner"
             >
-              <RotateLoader
-                // css={}
-                sizeUnit="px"
-                size={15}
-                color="green"
-                loading
-              />
+              <CircularProgress />
             </div>
           ) : stakeholders && stakeholders.length === 0 ? (
             <div className={classes.bigMessage}>
@@ -457,14 +445,9 @@ function VerificationAdmin() {
                   justifyContent: "space-between",
                 }}
               >
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "flex-start",
-                  }}
-                >
+                <Stack direction="row" spacing={2} marginBottom={1}>
                   <Button
+                    variant="outlined"
                     type="button"
                     disabled={selectedStakeholderIds.length === 0}
                     onClick={handleNeedsVerificationDialogOpen}
@@ -472,6 +455,7 @@ function VerificationAdmin() {
                     Needs Verification
                   </Button>
                   <Button
+                    variant="outlined"
                     type="button"
                     disabled={selectedStakeholderIds.length === 0}
                     onClick={handleAssignDialogOpen}
@@ -479,18 +463,19 @@ function VerificationAdmin() {
                     Assign
                   </Button>
                   <Button
+                    variant="outlined"
                     type="button"
                     disabled={selectedStakeholderIds.length === 0}
                     onClick={handleExport}
                   >
                     Export
                   </Button>
-                </div>
+                </Stack>
                 <div>{`${stakeholders.length} rows`} </div>
               </div>
-              <StakeholderGrid
-                mode={"admin"}
+              <VerificationAdminGridMui
                 stakeholders={stakeholders}
+                mode={"admin"}
                 setSelectedStakeholderIds={setSelectedStakeholderIds}
               />
             </>

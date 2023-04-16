@@ -27,7 +27,7 @@
   "license": "GPL-2.0",
   "dependencies": {
     "@sendgrid/mail": "^7.6.2",
-    "aws-sdk": "^2.1291.0",
+    "aws-sdk": "^2.1359.0",
     "axios": "^0.27.2",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.20.0",

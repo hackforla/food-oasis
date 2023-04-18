@@ -9,6 +9,10 @@ import { Avatar, Box, Container, CssBaseline, Typography } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useToasterContext } from "../../contexts/toasterContext";
 import PasswordInput from "../UI/PasswordInput";
+import {
+  PASSWORD_VALIDATION_ERROR,
+  PASSWORD_VALIDATION_REGEX,
+} from "helpers/Constants";
 
 const styles = (theme) => ({
   paper: {
@@ -38,7 +42,7 @@ const styles = (theme) => ({
 const validationSchema = Yup.object().shape({
   token: Yup.string().required("Token is required"),
   password: Yup.string()
-    .min(8, "Password must be 8 characters at minimum")
+    .matches(PASSWORD_VALIDATION_REGEX, PASSWORD_VALIDATION_ERROR)
     .required("Password is required"),
   passwordConfirm: Yup.string()
     .required("Confirm your password")

@@ -31,9 +31,15 @@ export const getGoogleMapsUrl = (zip, address1, address2) => {
   return `${baseUrl}${address1url},+${zip}`;
 };
 
-export const getGoogleMapsDirectionsUrl = (destinationCoordinates) => {
+export const getGoogleMapsDirectionsUrl = (
+  originCoordinates,
+  destinationCoordinates
+) => {
   return (
     `https://google.com/maps/dir/?api=1` +
+    (originCoordinates
+      ? `&origin=${originCoordinates.latitude},${originCoordinates.longitude}`
+      : "") +
     `&destination=${destinationCoordinates.latitude},${destinationCoordinates.longitude}`
   );
 };

@@ -16,7 +16,11 @@ import {
 import { ORGANIZATION_COLORS, CLOSED_COLOR } from "constants/map";
 import { getGoogleMapsDirectionsUrl, extractNumbers } from "helpers";
 import * as analytics from "services/analytics";
-import { useAppDispatch } from "../../../../appReducer";
+import {
+  useAppDispatch,
+  useSearchCoordinates,
+  useUserCoordinates,
+} from "../../../../appReducer";
 import StakeholderIcon from "images/stakeholderIcon";
 import { useHistory, useLocation } from "react-router-dom";
 
@@ -86,6 +90,9 @@ const isAlmostClosed = (hours, tenantTimeZone) => {
 
 const StakeholderPreview = ({ stakeholder }) => {
   const dispatch = useAppDispatch();
+  const searchCoordinates = useSearchCoordinates();
+  const userCoordinates = useUserCoordinates();
+  const originCoordinates = searchCoordinates || userCoordinates;
   const { tenantId } = useSiteContext();
   const tenantTimeZone = TENANT_TIME_ZONES[tenantId];
   const history = useHistory();
@@ -241,7 +248,7 @@ const StakeholderPreview = ({ stakeholder }) => {
                 });
 
                 window.open(
-                  getGoogleMapsDirectionsUrl({
+                  getGoogleMapsDirectionsUrl(originCoordinates, {
                     latitude: stakeholder.latitude,
                     longitude: stakeholder.longitude,
                   })

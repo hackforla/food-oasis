@@ -491,7 +491,7 @@ const OrganizationEdit = (props) => {
                   <TabPanel value={tabPage} index={0}>
                     <Grid container spacing={2}>
                       <Grid item xs={12} display="flex">
-                        <div>
+                        <div style={{ width: "100%", boxSizing: "border-box" }}>
                           <Label id="name" label="Name *" />
                           <TextField
                             id="name"
@@ -562,7 +562,7 @@ const OrganizationEdit = (props) => {
                         />
                       </Grid>
                       <Grid item sm={6} xs={12} display="flex">
-                        <div>
+                        <div style={{ width: "100%", boxSizing: "border-box" }}>
                           <Label
                             id="email"
                             label="Email *"

@@ -42,6 +42,8 @@ import { withRouter } from "react-router-dom";
 import * as awsService from "services/aws-service";
 import * as stakeholderService from "services/stakeholder-service";
 import * as Yup from "yup";
+import Label from "./ui/Label";
+import Textarea from "./ui/Textarea";
 
 const DATE_FORMAT = "MM/DD/YY h:mm a";
 const ITEM_HEIGHT = 48;
@@ -489,15 +491,20 @@ const OrganizationEdit = (props) => {
                   <TabPanel value={tabPage} index={0}>
                     <Grid container spacing={2}>
                       <Grid item xs={12} display="flex">
-                        <TextField
-                          name="name"
-                          label="Name *"
-                          value={values.name}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          helperText={touched.name ? errors.name : ""}
-                          error={touched.name && Boolean(errors.name)}
-                        />
+                        <div>
+                          <Label id="name" label="Name *" />
+                          <TextField
+                            id="name"
+                            name="name"
+                            placeholder="Name *"
+                            value={values.name}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            helperText={touched.name ? errors.name : ""}
+                            error={touched.name && Boolean(errors.name)}
+                          />
+                        </div>
+
                         <FormControlLabel
                           sx={{ mt: 1, ml: 0 }}
                           control={
@@ -516,17 +523,24 @@ const OrganizationEdit = (props) => {
                         />
                       </Grid>
                       <Grid item sm={6} xs={12} display="flex">
-                        <Tooltip title="Phone number for clients to use">
-                          <TextField
-                            name="phone"
+                        <div style={{ width: "100%", boxSizing: "border-box" }}>
+                          <Label
+                            id="phone"
                             label="Phone *"
+                            tooltipTitle="Phone number for clients to use"
+                          />
+                          <TextField
+                            id="phone"
+                            name="phone"
+                            placeholder="Phone *"
                             value={values.phone}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             helperText={touched.phone ? errors.phone : ""}
                             error={touched.phone && Boolean(errors.phone)}
                           />
-                        </Tooltip>
+                        </div>
+
                         <FormControlLabel
                           sx={{ mt: 1, ml: 0 }}
                           control={
@@ -548,17 +562,24 @@ const OrganizationEdit = (props) => {
                         />
                       </Grid>
                       <Grid item sm={6} xs={12} display="flex">
-                        <Tooltip title="Email for clients to use">
-                          <TextField
-                            name="email"
+                        <div>
+                          <Label
+                            id="email"
                             label="Email *"
+                            tooltipTitle="Email for clients to use"
+                          />
+                          <TextField
+                            id="email"
+                            name="email"
+                            placeholder="Email *"
                             value={values.email}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             helperText={touched.email ? errors.email : ""}
                             error={touched.email && Boolean(errors.email)}
                           />
-                        </Tooltip>
+                        </div>
+
                         <FormControlLabel
                           sx={{ mt: 1, ml: 0 }}
                           control={
@@ -665,15 +686,16 @@ const OrganizationEdit = (props) => {
                         />
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <Tooltip title="Notes about identifying organization category">
-                          <TextField
-                            variant="outlined"
-                            flex={2}
-                            name="categoryNotes"
+                        <div>
+                          <Label
+                            id="categoryNotes"
                             label="Category Notes"
-                            multiline
-                            minRows={2}
-                            maxRows={12}
+                            tooltipTitle="Notes about identifying organization category"
+                          />
+                          <Textarea
+                            id="categoryNotes"
+                            name="categoryNotes"
+                            placeholder="Category Notes"
                             value={values.categoryNotes}
                             onChange={handleChange}
                             onBlur={handleBlur}
@@ -685,7 +707,7 @@ const OrganizationEdit = (props) => {
                               Boolean(errors.categoryNotes)
                             }
                           />
-                        </Tooltip>
+                        </div>
                       </Grid>
                       <Grid item xs={6} sm={3}>
                         <Tooltip title="Check if they are permanently closed.">
@@ -731,14 +753,16 @@ const OrganizationEdit = (props) => {
                         </Tooltip>
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <Tooltip title="COVID-related conditions">
-                          <TextField
-                            variant="outlined"
-                            name="covidNotes"
+                        <div>
+                          <Label
+                            id="covidNotes"
                             label="COVID Notes"
-                            multiline
-                            minRows={2}
-                            maxRows={12}
+                            tooltipTitle="COVID-related conditions"
+                          />
+                          <Textarea
+                            id="covidNotes"
+                            name="covidNotes"
+                            placeholder="COVID Notes"
                             value={values.covidNotes}
                             onChange={handleChange}
                             onBlur={handleBlur}
@@ -749,18 +773,20 @@ const OrganizationEdit = (props) => {
                               touched.covidNotes && Boolean(errors.covidNotes)
                             }
                           />
-                        </Tooltip>
+                        </div>
                       </Grid>
 
                       <Grid item xs={12}>
-                        <Tooltip title="The mission statement or other description.">
-                          <TextField
-                            variant="outlined"
-                            name="description"
+                        <div>
+                          <Label
+                            id="description"
                             label="Description"
-                            multiline
-                            minRows={2}
-                            maxRows={12}
+                            tooltipTitle="The mission statement or other description."
+                          />
+                          <Textarea
+                            id="description"
+                            name="description"
+                            placeholder="Description"
                             value={values.description}
                             onChange={handleChange}
                             onBlur={handleBlur}
@@ -771,14 +797,20 @@ const OrganizationEdit = (props) => {
                               touched.description && Boolean(errors.description)
                             }
                           />
-                        </Tooltip>
+                        </div>
                       </Grid>
 
                       <Grid item xs={12}>
-                        <Tooltip title="If part of a larger organization, the parent name">
-                          <TextField
-                            name="parentOrganization"
+                        <div>
+                          <Label
+                            id="parentOrganization"
                             label="Parent Organization"
+                            tooltipTitle="If part of a larger organization, the parent name"
+                          />
+                          <TextField
+                            id="parentOrganization"
+                            name="parentOrganization"
+                            placeholder="Parent Organization"
                             value={values.parentOrganization}
                             onChange={handleChange}
                             onBlur={handleBlur}
@@ -792,24 +824,32 @@ const OrganizationEdit = (props) => {
                               Boolean(errors.parentOrganization)
                             }
                           />
-                        </Tooltip>
+                        </div>
                       </Grid>
 
                       <Grid item xs={12}>
-                        <TextField
-                          name="address1"
-                          label="Address Line 1 *"
-                          value={values.address1}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          helperText={touched.address1 ? errors.address1 : ""}
-                          error={touched.address1 && Boolean(errors.address1)}
-                        />
+                        <div>
+                          <Label id="address1" label="Address Line 1 *" />
+                          <TextField
+                            id="address1"
+                            name="address1"
+                            placeholder="Address Line 1 *"
+                            value={values.address1}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            helperText={touched.address1 ? errors.address1 : ""}
+                            error={touched.address1 && Boolean(errors.address1)}
+                          />
+                        </div>
                       </Grid>
                       <Grid item xs={12}>
+                        <div>
+                          <Label id="address2" label="Address Line 2" />
+                        </div>
                         <TextField
+                          id="address2"
                           name="address2"
-                          label="Address Line 2"
+                          placeholder="Address Line 2"
                           value={values.address2}
                           onChange={handleChange}
                           onBlur={handleBlur}
@@ -818,43 +858,59 @@ const OrganizationEdit = (props) => {
                         />
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <TextField
-                          name="city"
-                          label="City *"
-                          value={values.city}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          helperText={touched.city ? errors.city : ""}
-                          error={touched.city && Boolean(errors.city)}
-                        />
+                        <div>
+                          <Label id="city" label="City *" />
+                          <TextField
+                            id="city"
+                            name="city"
+                            placeholder="City *"
+                            value={values.city}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            helperText={touched.city ? errors.city : ""}
+                            error={touched.city && Boolean(errors.city)}
+                          />
+                        </div>
                       </Grid>
                       <Grid item xs={12} sm={3}>
-                        <TextField
-                          name="state"
-                          label="State *"
-                          value={values.state}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          helperText={touched.state ? errors.state : ""}
-                          error={touched.state && Boolean(errors.state)}
-                        />
+                        <div>
+                          <Label id="state" label="State *" />
+                          <TextField
+                            id="state"
+                            name="state"
+                            placeholder="State *"
+                            value={values.state}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            helperText={touched.state ? errors.state : ""}
+                            error={touched.state && Boolean(errors.state)}
+                          />
+                        </div>
                       </Grid>
                       <Grid item xs={12} sm={3}>
-                        <TextField
-                          name="zip"
-                          label="Zip Code *"
-                          value={values.zip}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          helperText={touched.zip ? errors.zip : ""}
-                          error={touched.zip && Boolean(errors.zip)}
-                        />
+                        <div>
+                          <Label id="zip" label="Zip Code *" />
+                          <TextField
+                            id="zip"
+                            name="zip"
+                            placeholder="Zip Code *"
+                            value={values.zip}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            helperText={touched.zip ? errors.zip : ""}
+                            error={touched.zip && Boolean(errors.zip)}
+                          />
+                        </div>
                       </Grid>
 
                       <Grid item xs={6} md={3}>
+                        <div>
+                          <Label id="latitude" label="Latitude *" />
+                        </div>
                         <TextField
+                          id="latitude"
                           name="latitude"
-                          label="Latitude *"
+                          placeholder="Latitude *"
                           value={values.latitude}
                           onChange={handleChange}
                           onBlur={handleBlur}
@@ -863,9 +919,13 @@ const OrganizationEdit = (props) => {
                         />
                       </Grid>
                       <Grid item xs={6} md={3}>
+                        <div>
+                          <Label id="longitude" label="Longitude *" />
+                        </div>
                         <TextField
+                          id="longitude"
                           name="longitude"
-                          label="Longitude *"
+                          placeholder="Longitude *"
                           value={values.longitude}
                           onChange={handleChange}
                           onBlur={handleBlur}
@@ -1083,15 +1143,18 @@ const OrganizationEdit = (props) => {
                           }
                           label="Allow Walk-Ins"
                         />
-                        <Tooltip title="Notes and caveats about hours">
-                          <TextField
+                        <div>
+                          <Label
+                            id="hoursNotes"
+                            label="Notes about hours"
+                            tooltipTitle="Notes and caveats about hours"
+                          />
+                          <Textarea
+                            id="hoursNotes"
                             variant="outlined"
                             name="hoursNotes"
-                            label="Notes about hours"
+                            placeholder="Notes about hours"
                             value={values.hoursNotes}
-                            multiline
-                            minRows={2}
-                            maxRows={12}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             helperText={
@@ -1101,79 +1164,113 @@ const OrganizationEdit = (props) => {
                               touched.hoursNotes && Boolean(errors.hoursNotes)
                             }
                           />
-                        </Tooltip>
+                        </div>
                       </Grid>
                     </Grid>
                   </TabPanel>
                   <TabPanel value={tabPage} index={2}>
                     <Grid container spacing={1}>
                       <Grid item xs={12}>
-                        <Tooltip title="The organization's web address">
-                          <TextField
-                            name="website"
+                        <div>
+                          <Label
+                            id="website"
                             label="Web Site"
+                            tooltipTitle="The organization's web address"
+                          />
+                          <TextField
+                            id="website"
+                            name="website"
+                            placeholder="Web Site"
                             value={values.website}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             helperText={touched.website ? errors.website : ""}
                             error={touched.website && Boolean(errors.website)}
                           />
-                        </Tooltip>
+                        </div>
                       </Grid>
                       <Grid item sm={6} xs={12}>
-                        <TextField
-                          name="instagram"
-                          label="Instagram"
-                          value={values.instagram}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          helperText={touched.instagram ? errors.instagram : ""}
-                          error={touched.instagram && Boolean(errors.instagram)}
-                        />
+                        <div>
+                          <Label id="instagram" label="Instagram" />
+                          <TextField
+                            id="instagram"
+                            name="instagram"
+                            placeholder="Instagram"
+                            value={values.instagram}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            helperText={
+                              touched.instagram ? errors.instagram : ""
+                            }
+                            error={
+                              touched.instagram && Boolean(errors.instagram)
+                            }
+                          />
+                        </div>
                       </Grid>
                       <Grid item sm={6} xs={12}>
-                        <TextField
-                          name="facebook"
-                          label="Facebook"
-                          value={values.facebook}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          helperText={touched.facebook ? errors.facebook : ""}
-                          error={touched.facebook && Boolean(errors.facebook)}
-                        />
+                        <div>
+                          <Label id="facebook" label="Facebook" />
+                          <TextField
+                            id="facebook"
+                            name="facebook"
+                            placeholder="Facebook"
+                            value={values.facebook}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            helperText={touched.facebook ? errors.facebook : ""}
+                            error={touched.facebook && Boolean(errors.facebook)}
+                          />
+                        </div>
                       </Grid>
                       <Grid item sm={6} xs={12}>
-                        <TextField
-                          name="twitter"
-                          label="Twitter"
-                          value={values.twitter}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          helperText={touched.twitter ? errors.twitter : ""}
-                          error={touched.twitter && Boolean(errors.twitter)}
-                        />
+                        <div>
+                          <Label id="twitter" label="Twitter" />
+                          <TextField
+                            id="twitter"
+                            name="twitter"
+                            placeholder="Twitter"
+                            value={values.twitter}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            helperText={touched.twitter ? errors.twitter : ""}
+                            error={touched.twitter && Boolean(errors.twitter)}
+                          />
+                        </div>
                       </Grid>
                       <Grid item sm={6} xs={12}>
-                        <TextField
-                          name="pinterest"
-                          label="Pinterest"
-                          value={values.pinterest}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          helperText={touched.pinterest ? errors.pinterest : ""}
-                          error={touched.pinterest && Boolean(errors.pinterest)}
-                        />
+                        <div>
+                          <Label id="pinterest" label="Pinterest" />
+                          <TextField
+                            id="pinterest"
+                            name="pinterest"
+                            placeholder="Pinterest"
+                            value={values.pinterest}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            helperText={
+                              touched.pinterest ? errors.pinterest : ""
+                            }
+                            error={
+                              touched.pinterest && Boolean(errors.pinterest)
+                            }
+                          />
+                        </div>
                       </Grid>
                       <Grid item sm={6} xs={12}>
-                        <TextField
-                          name="linkedin"
-                          label="LinkedIn"
-                          value={values.linkedin}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          helperText={touched.linkedin ? errors.linkedin : ""}
-                          error={touched.linkedin && Boolean(errors.linkedin)}
-                        />
+                        <div>
+                          <Label id="linkedin" label="LinkedIn" />
+                          <TextField
+                            id="linkedin"
+                            name="linkedin"
+                            placeholder="LinkedIn"
+                            value={values.linkedin}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            helperText={touched.linkedin ? errors.linkedin : ""}
+                            error={touched.linkedin && Boolean(errors.linkedin)}
+                          />
+                        </div>
                       </Grid>
                     </Grid>
                   </TabPanel>
@@ -1240,53 +1337,73 @@ const OrganizationEdit = (props) => {
                       </Grid>
 
                       <Grid item xs={12}>
-                        <TextField
-                          name="foodTypes"
-                          label="Other Food Types"
-                          multiline
-                          minRows={2}
-                          maxRows={12}
-                          value={values.foodTypes}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          helperText={touched.foodTypes ? errors.foodTypes : ""}
-                          error={touched.foodTypes && Boolean(errors.foodTypes)}
-                        />
+                        <div>
+                          <Label id="foodTypes" label="Other Food Types" />
+                          <Textarea
+                            id="foodTypes"
+                            name="foodTypes"
+                            placeholder="Other Food Types"
+                            value={values.foodTypes}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            helperText={
+                              touched.foodTypes ? errors.foodTypes : ""
+                            }
+                            error={
+                              touched.foodTypes && Boolean(errors.foodTypes)
+                            }
+                          />
+                        </div>
                       </Grid>
                       <Grid item xs={12}>
-                        <Tooltip title="(Items besides food, i.e. dog food, cat food, hygiene products, diapers, female hygiene products)">
-                          <TextField
-                            name="items"
+                        <div>
+                          <Label
+                            id="items"
                             label="Non-Food Items"
+                            tooltipTitle="(Items besides food, i.e. dog food, cat food, hygiene products, diapers, female hygiene products)"
+                          />
+                          <TextField
+                            id="items"
+                            name="items"
+                            placeholder="Non-Food Items"
                             value={values.items}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             helperText={touched.items ? errors.items : ""}
                             error={touched.items && Boolean(errors.items)}
                           />
-                        </Tooltip>
+                        </div>
                       </Grid>
                       <Grid item xs={12}>
-                        <Tooltip title="(Besides feeding ppl, i.e., family counseling, career counseling, drop in for women or homeless, etc.)">
-                          <TextField
-                            name="services"
+                        <div>
+                          <Label
+                            id="services"
                             label="Services (separated by commas)"
+                            tooltipTitle="(Besides feeding ppl, i.e., family counseling, career counseling, drop in for women or homeless, etc.)"
+                          />
+                          <TextField
+                            id="services"
+                            name="services"
+                            placeholder="Services (separated by commas)"
                             value={values.services}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             helperText={touched.services ? errors.services : ""}
                             error={touched.services && Boolean(errors.services)}
                           />
-                        </Tooltip>
+                        </div>
                       </Grid>
                       <Grid item xs={12}>
-                        <Tooltip title="(Must go to chapel service, must be < 18, must show citizenship, etc.)">
-                          <TextField
-                            name="requirements"
+                        <div>
+                          <Label
+                            id="requirements"
                             label="Eligibility / Requirements"
-                            multiline
-                            minRows={2}
-                            maxRows={12}
+                            tooltipTitle="(Must go to chapel service, must be < 18, must show citizenship, etc.)"
+                          />
+                          <Textarea
+                            id="requirements"
+                            name="requirements"
+                            placeholder="Eligibility / Requirements"
                             value={values.requirements}
                             onChange={handleChange}
                             onBlur={handleBlur}
@@ -1298,16 +1415,19 @@ const OrganizationEdit = (props) => {
                               Boolean(errors.requirements)
                             }
                           />
-                        </Tooltip>
+                        </div>
                       </Grid>
                       <Grid item xs={12}>
-                        <Tooltip title="Other notes about eligibility requirements">
-                          <TextField
-                            name="eligibilityNotes"
+                        <div>
+                          <Label
+                            id="eligibilityNotes"
                             label="Eligibility Notes"
-                            multiline
-                            minRows={2}
-                            maxRows={12}
+                            tooltipTitle="Other notes about eligibility requirements"
+                          />
+                          <Textarea
+                            id="eligibilityNotes"
+                            name="eligibilityNotes"
+                            placeholder="Eligibility Notes"
                             value={values.eligibilityNotes}
                             onChange={handleChange}
                             onBlur={handleBlur}
@@ -1321,47 +1441,61 @@ const OrganizationEdit = (props) => {
                               Boolean(errors.eligibilityNotes)
                             }
                           />
-                        </Tooltip>
+                        </div>
                       </Grid>
                       <Grid item xs={12}>
-                        <TextField
-                          name="languages"
-                          label="Languages"
-                          multiline
-                          minRows={2}
-                          maxRows={12}
-                          value={values.languages}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          helperText={touched.languages ? errors.languages : ""}
-                          error={touched.languages && Boolean(errors.languages)}
-                        />
+                        <div>
+                          <Label id="languages" label="Languages" />
+                          <Textarea
+                            id="languages"
+                            name="languages"
+                            placeholder="Languages"
+                            value={values.languages}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            helperText={
+                              touched.languages ? errors.languages : ""
+                            }
+                            error={
+                              touched.languages && Boolean(errors.languages)
+                            }
+                          />
+                        </div>
                       </Grid>
                       <Grid item xs={12}>
-                        <Tooltip title={noteTooltip}>
-                          <TextField
-                            name="notes"
+                        <div>
+                          <Label
+                            id="notes"
                             label="Notes for the Public"
-                            multiline
-                            minRows={2}
-                            maxRows={12}
+                            tooltipTitle={noteTooltip}
+                          />
+                          <Textarea
+                            id="notes"
+                            name="notes"
+                            placeholder="Notes for the Public"
                             value={values.notes}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             helperText={touched.notes ? errors.notes : ""}
                             error={touched.notes && Boolean(errors.notes)}
                           />
-                        </Tooltip>
+                        </div>
                       </Grid>
                     </Grid>
                   </TabPanel>
                   <TabPanel value={tabPage} index={4}>
                     <Grid container spacing={1}>
                       <Grid item xs={12} sm={6}>
-                        <Tooltip title="Name of person(s) to contact for donations">
-                          <TextField
-                            name="donationContactName"
+                        <div>
+                          <Label
+                            id="donationContactName"
                             label="Donation Contact Name"
+                            tooltipTitle="Name of person(s) to contact for donations"
+                          />
+                          <TextField
+                            id="donationContactName"
+                            name="donationContactName"
+                            placeholder="Donation Contact Name"
                             value={values.donationContactName}
                             onChange={handleChange}
                             onBlur={handleBlur}
@@ -1375,13 +1509,19 @@ const OrganizationEdit = (props) => {
                               Boolean(errors.donationContactName)
                             }
                           />
-                        </Tooltip>
+                        </div>
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <Tooltip title="Phone for donations">
-                          <TextField
-                            name="donationContactPhone"
+                        <div>
+                          <Label
+                            id="donationContactPhone"
                             label="Donation Phone"
+                            tooltipTitle="Phone for donations"
+                          />
+                          <TextField
+                            id="donationContactPhone"
+                            name="donationContactPhone"
+                            placeholder="Donation Phone"
                             value={values.donationContactPhone}
                             onChange={handleChange}
                             onBlur={handleBlur}
@@ -1395,13 +1535,19 @@ const OrganizationEdit = (props) => {
                               Boolean(errors.donationContactPhone)
                             }
                           />
-                        </Tooltip>
+                        </div>
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <Tooltip title="Email for donations">
-                          <TextField
-                            name="donationContactEmail"
+                        <div>
+                          <Label
+                            id="donationContactEmail"
                             label="Donation Email"
+                            tooltipTitle="Email for donations"
+                          />
+                          <TextField
+                            id="donationContactEmail"
+                            name="donationContactEmail"
+                            placeholder="Donation Email"
                             value={values.donationContactEmail}
                             onChange={handleChange}
                             onBlur={handleBlur}
@@ -1415,13 +1561,19 @@ const OrganizationEdit = (props) => {
                               Boolean(errors.donationContactEmail)
                             }
                           />
-                        </Tooltip>
+                        </div>
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <Tooltip title="When can organization receive or pickup donations">
-                          <TextField
-                            name="donationSchedule"
+                        <div>
+                          <Label
+                            id="donationSchedule"
                             label="Donation Schedule"
+                            tooltipTitle="When can organization receive or pickup donations"
+                          />
+                          <TextField
+                            id="donationSchedule"
+                            name="donationSchedule"
+                            placeholder="Donation Schedule"
                             value={values.donationSchedule}
                             onChange={handleChange}
                             onBlur={handleBlur}
@@ -1435,7 +1587,7 @@ const OrganizationEdit = (props) => {
                               Boolean(errors.donationSchedule)
                             }
                           />
-                        </Tooltip>
+                        </div>
                       </Grid>
                       <Grid item xs={12}>
                         <Tooltip title="Check if organization can pick up food from source">
@@ -1531,10 +1683,16 @@ const OrganizationEdit = (props) => {
                       </Grid>
 
                       <Grid item xs={12} sm={6}>
-                        <Tooltip title="Delivery Instructions">
-                          <TextField
-                            name="donationDeliveryInstructions"
+                        <div>
+                          <Label
+                            id="donationDeliveryInstructions"
                             label="Donation Delivery or Pickup Instructions"
+                            tooltipTitle="Delivery Instructions"
+                          />
+                          <TextField
+                            id="donationDeliveryInstructions"
+                            name="donationDeliveryInstructions"
+                            placeholder="Donation Delivery or Pickup Instructions"
                             value={values.donationDeliveryInstructions}
                             onChange={handleChange}
                             onBlur={handleBlur}
@@ -1548,13 +1706,19 @@ const OrganizationEdit = (props) => {
                               Boolean(errors.donationDeliveryInstructions)
                             }
                           />
-                        </Tooltip>
+                        </div>
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <Tooltip title="Other donation notes">
-                          <TextField
-                            name="donationNotes"
+                        <div>
+                          <Label
+                            id="donationNotes"
                             label="Donation Notes"
+                            tooltipTitle="Other donation notes"
+                          />
+                          <TextField
+                            id="donationNotes"
+                            name="donationNotes"
+                            placeholder="Donation Notes"
                             value={values.donationNotes}
                             onChange={handleChange}
                             onBlur={handleBlur}
@@ -1566,17 +1730,23 @@ const OrganizationEdit = (props) => {
                               Boolean(errors.donationNotes)
                             }
                           />
-                        </Tooltip>
+                        </div>
                       </Grid>
                     </Grid>
                   </TabPanel>
                   <TabPanel value={tabPage} index={5}>
                     <Grid container spacing={1}>
                       <Grid item xs={12} sm={6}>
-                        <Tooltip title="Name of person(s) to contact for organization information">
-                          <TextField
-                            name="adminContactName"
+                        <div>
+                          <Label
+                            id="adminContactName"
                             label="Verification Contact Name"
+                            tooltipTitle="Name of person(s) to contact for organization information"
+                          />
+                          <TextField
+                            id="adminContactName"
+                            name="adminContactName"
+                            placeholder="Verification Contact Name"
                             value={values.adminContactName}
                             onChange={handleChange}
                             onBlur={handleBlur}
@@ -1590,13 +1760,19 @@ const OrganizationEdit = (props) => {
                               Boolean(errors.adminContactName)
                             }
                           />
-                        </Tooltip>
+                        </div>
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <Tooltip title="Phone number for administrative information">
-                          <TextField
-                            name="adminContactPhone"
+                        <div>
+                          <Label
+                            id="adminContactPhone"
                             label="Verification Phone"
+                            tooltipTitle="Phone number for administrative information"
+                          />
+                          <TextField
+                            id="adminContactPhone"
+                            name="adminContactPhone"
+                            placeholder="Verification Phone"
                             value={values.adminContactPhone}
                             onChange={handleChange}
                             onBlur={handleBlur}
@@ -1610,13 +1786,19 @@ const OrganizationEdit = (props) => {
                               Boolean(errors.adminContactPhone)
                             }
                           />
-                        </Tooltip>
+                        </div>
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <Tooltip title="Email for administrative information">
-                          <TextField
-                            name="adminContactEmail"
+                        <div>
+                          <Label
+                            id="adminContactEmail"
                             label="Verification Email"
+                            tooltipTitle="Email for administrative information"
+                          />
+                          <TextField
+                            id="adminContactEmail"
+                            name="adminContactEmail"
+                            placeholder="Verification Email"
                             value={values.adminContactEmail}
                             onChange={handleChange}
                             onBlur={handleBlur}
@@ -1630,7 +1812,7 @@ const OrganizationEdit = (props) => {
                               Boolean(errors.adminContactEmail)
                             }
                           />
-                        </Tooltip>
+                        </div>
                       </Grid>
                       <Grid
                         item
@@ -1791,13 +1973,16 @@ const OrganizationEdit = (props) => {
                         </Stack>
                       </Grid>
                       <Grid item xs={12}>
-                        <Tooltip title="Verification review comments and instructions">
-                          <TextField
-                            name="reviewNotes"
+                        <div>
+                          <Label
+                            id="reviewNotes"
                             label="Reviewer Notes"
-                            multiline
-                            minRows={2}
-                            maxRows={12}
+                            tooltipTitle="Verification review comments and instructions"
+                          />
+                          <Textarea
+                            id="reviewNotes"
+                            name="reviewNotes"
+                            placeholder="Reviewer Notes"
                             value={values.reviewNotes}
                             onChange={handleChange}
                             onBlur={handleBlur}
@@ -1808,28 +1993,30 @@ const OrganizationEdit = (props) => {
                               touched.reviewNotes && Boolean(errors.reviewNotes)
                             }
                           />
-                        </Tooltip>
+                        </div>
                       </Grid>
                     </Grid>
                   </TabPanel>
                 </Box>
                 <Stack direction="row">
                   <div style={{ flexBasis: "20%", flexGrow: 1 }}>
-                    <Tooltip title={adminNoteTooltip} placement="right">
-                      <TextField
-                        variant="outlined"
-                        name="adminNotes"
+                    <div>
+                      <Label
+                        id="adminNotes"
                         label="Verification Notes"
-                        multiline
-                        minRows={2}
-                        maxRows={12}
+                        tooltipTitle={adminNoteTooltip}
+                      />
+                      <Textarea
+                        id="adminNotes"
+                        name="adminNotes"
+                        placeholder="Verification Notes"
                         value={values.adminNotes}
                         onChange={handleChange}
                         onBlur={handleBlur}
                         helperText={touched.adminNotes ? errors.adminNotes : ""}
                         error={touched.adminNotes && Boolean(errors.adminNotes)}
                       />
-                    </Tooltip>
+                    </div>
                   </div>
 
                   {user && (user.isAdmin || user.isCoordinator) ? (

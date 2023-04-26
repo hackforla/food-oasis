@@ -491,7 +491,7 @@ const OrganizationEdit = (props) => {
                   <TabPanel value={tabPage} index={0}>
                     <Grid container spacing={2}>
                       <Grid item xs={12} display="flex">
-                        <div style={{ width: "100%", boxSizing: "border-box" }}>
+                        <Stack direction="column" sx={{ width: "100%" }}>
                           <Label id="name" label="Name *" />
                           <TextField
                             id="name"
@@ -503,7 +503,7 @@ const OrganizationEdit = (props) => {
                             helperText={touched.name ? errors.name : ""}
                             error={touched.name && Boolean(errors.name)}
                           />
-                        </div>
+                        </Stack>
 
                         <FormControlLabel
                           sx={{ mt: 1, ml: 0 }}
@@ -523,7 +523,7 @@ const OrganizationEdit = (props) => {
                         />
                       </Grid>
                       <Grid item sm={6} xs={12} display="flex">
-                        <div style={{ width: "100%", boxSizing: "border-box" }}>
+                        <Stack direction="column" sx={{ width: "100%" }}>
                           <Label
                             id="phone"
                             label="Phone *"
@@ -539,7 +539,7 @@ const OrganizationEdit = (props) => {
                             helperText={touched.phone ? errors.phone : ""}
                             error={touched.phone && Boolean(errors.phone)}
                           />
-                        </div>
+                        </Stack>
 
                         <FormControlLabel
                           sx={{ mt: 1, ml: 0 }}
@@ -562,7 +562,7 @@ const OrganizationEdit = (props) => {
                         />
                       </Grid>
                       <Grid item sm={6} xs={12} display="flex">
-                        <div style={{ width: "100%", boxSizing: "border-box" }}>
+                        <Stack direction="column" sx={{ width: "100%" }}>
                           <Label
                             id="email"
                             label="Email *"
@@ -578,7 +578,7 @@ const OrganizationEdit = (props) => {
                             helperText={touched.email ? errors.email : ""}
                             error={touched.email && Boolean(errors.email)}
                           />
-                        </div>
+                        </Stack>
 
                         <FormControlLabel
                           sx={{ mt: 1, ml: 0 }}

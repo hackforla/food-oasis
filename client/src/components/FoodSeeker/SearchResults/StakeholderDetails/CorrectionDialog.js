@@ -15,6 +15,8 @@ import makeStyles from "@mui/styles/makeStyles";
 import * as suggestionService from "services/suggestion-service";
 import { DEFAULT_STAKEHOLDER } from "../../../../constants/stakeholder";
 import * as Yup from "yup";
+import Label from "components/Admin/ui/Label";
+import Textarea from "components/Admin/ui/Textarea";
 
 const useStyles = makeStyles((theme) => ({
   correctionInput: {
@@ -23,14 +25,6 @@ const useStyles = makeStyles((theme) => ({
         paddingRight: "2rem",
       },
     },
-  },
-  asterisk: {
-    position: "absolute",
-    top: "40px",
-    right: "2rem",
-    transform: "translateY(-8px)",
-    color: theme.palette.error.main,
-    fontSize: "2rem",
   },
 }));
 function SuggestionDialog(props) {
@@ -65,70 +59,70 @@ function SuggestionDialog(props) {
               </Typography>
             </Grid>
             <Grid item xs={12} style={{ position: "relative" }}>
-              <TextField
-                type="text"
-                className={classes.correctionInput}
-                size="small"
-                multiline
-                minRows={2}
-                maxRows={12}
-                label="Corrections"
-                name="notes"
-                id="notes"
-                margin="normal"
-                fullWidth
-                value={values.notes}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                helperText={touched.notes ? errors.notes : ""}
-                error={touched.notes && Boolean(errors.notes)}
-              />
-              <div className={classes.asterisk}>*</div>
+              <div>
+                <Label id="notes" label="Corrections *" />
+                <Textarea
+                  type="text"
+                  className={classes.correctionInput}
+                  size="small"
+                  minRows={2}
+                  maxRows={12}
+                  placeholder="Corrections"
+                  name="notes"
+                  id="notes"
+                  fullWidth
+                  value={values.notes}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  helperText={touched.notes ? errors.notes : ""}
+                  error={touched.notes && Boolean(errors.notes)}
+                />
+              </div>
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                type="text"
-                size="small"
-                multiline
-                minRows={2}
-                maxRows={12}
-                label="Your Name (optional)"
-                name="tipsterName"
-                margin="normal"
-                fullWidth
-                value={values.tipsterName}
-                onChange={handleChange}
-              />
+              <div>
+                <Label id="tipsterName" label="Your Name (optional)" />
+                <TextField
+                  id="tipsterName"
+                  type="text"
+                  size="small"
+                  placeholder="Your Name (optional)"
+                  name="tipsterName"
+                  fullWidth
+                  value={values.tipsterName}
+                  onChange={handleChange}
+                />
+              </div>
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                type="text"
-                size="small"
-                multiline
-                minRows={2}
-                maxRows={12}
-                label="Your Phone (optional)"
-                name="tipsterPhone"
-                margin="normal"
-                fullWidth
-                value={values.tipsterPhone}
-                onChange={handleChange}
-              />
+              <div>
+                <Label id="tipsterPhone" label="Your Phone (optional)" />
+                <TextField
+                  id="tipsterPhone"
+                  type="text"
+                  size="small"
+                  placeholder="Your Phone (optional)"
+                  name="tipsterPhone"
+                  fullWidth
+                  value={values.tipsterPhone}
+                  onChange={handleChange}
+                />
+              </div>
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                type="text"
-                size="small"
-                multiline
-                minRows={2}
-                maxRows={12}
-                label="Your Email (optional)"
-                name="tipsterEmail"
-                margin="normal"
-                fullWidth
-                value={values.tipsterEmail}
-                onChange={handleChange}
-              />
+              <div>
+                <Label id="tipsterEmail" label="Your Email (optional)" />
+                <TextField
+                  id="tipsterEmail"
+                  type="text"
+                  size="small"
+                  placeholder="Your Email (optional)"
+                  name="tipsterEmail"
+                  fullWidth
+                  value={values.tipsterEmail}
+                  onChange={handleChange}
+                />
+              </div>
             </Grid>
           </Grid>
         </DialogContent>

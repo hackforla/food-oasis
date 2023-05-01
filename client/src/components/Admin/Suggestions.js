@@ -37,7 +37,8 @@ import HomeIcon from "@mui/icons-material/Home";
 import LocationCityIcon from "@mui/icons-material/LocationCity";
 import PhoneIcon from "@mui/icons-material/Phone";
 import { getIsMobile } from "../../utils";
-import { TextField } from "@mui/material";
+import Label from "./ui/Label";
+import Textarea from "./ui/Textarea";
 
 const columns = [
   { id: "name", label: "Name", minWidth: 100 },
@@ -352,18 +353,19 @@ function Suggestions(props) {
                       />
                     </List>
                     <Divider style={{ margin: "1em 0" }} />
-                    <TextField
-                      label="Admin Notes"
-                      id="adminNotes"
-                      value={values.adminNotes || ""}
-                      onChange={handleChange}
-                      helperText={touched.adminNotes ? errors.adminNotes : ""}
-                      error={touched.adminNotes && Boolean(errors.adminNotes)}
-                      fullWidth
-                      autoFocus
-                      multiline
-                      minRows={4}
-                    />
+                    <div>
+                      <Label id="adminNotes" label="Admin Notes" />
+                      <Textarea
+                        placeholder="Admin Notes"
+                        id="adminNotes"
+                        value={values.adminNotes || ""}
+                        onChange={handleChange}
+                        helperText={touched.adminNotes ? errors.adminNotes : ""}
+                        error={touched.adminNotes && Boolean(errors.adminNotes)}
+                        fullWidth
+                        autoFocus
+                      />
+                    </div>
                     <List>
                       <DisplayText
                         label="Suggestion"

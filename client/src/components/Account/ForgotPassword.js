@@ -16,6 +16,7 @@ import {
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useToasterContext } from "../../contexts/toasterContext";
 import debounce from "lodash.debounce";
+import Label from "components/Admin/ui/Label";
 
 const styles = (theme) => ({
   paper: {
@@ -148,22 +149,25 @@ const ForgotPassword = (props) => {
                 >
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
-                      <TextField
-                        type="email"
-                        id="email"
-                        label="Email"
-                        name="email"
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        autoComplete="email"
-                        autoFocus
-                        value={values.email}
-                        onChange={handleEmailChange}
-                        onBlur={handleBlur}
-                        helperText={touched.email ? errors.email : ""}
-                        error={touched.email && Boolean(errors.email)}
-                      />
+                      <div>
+                        <Label id="email" label="Email" />
+                        <TextField
+                          type="email"
+                          id="email"
+                          placeholder="Email"
+                          name="email"
+                          variant="outlined"
+                          //margin="normal"
+                          fullWidth
+                          autoComplete="email"
+                          autoFocus
+                          value={values.email}
+                          onChange={handleEmailChange}
+                          onBlur={handleBlur}
+                          helperText={touched.email ? errors.email : ""}
+                          error={touched.email && Boolean(errors.email)}
+                        />
+                      </div>
                     </Grid>
 
                     <Grid item xs={12}>

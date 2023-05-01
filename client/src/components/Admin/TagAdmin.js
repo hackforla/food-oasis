@@ -20,6 +20,7 @@ import { Formik } from "formik";
 import { tenantId } from "helpers/Configuration";
 // import IconButton from "components/UI/IconButton";
 import { Redirect, withRouter } from "react-router-dom";
+import Label from "./ui/Label";
 
 const columns = [
   { id: "edit", label: "" },
@@ -265,16 +266,19 @@ function TagAdmin(props) {
                     handleSubmit(e);
                   }}
                 >
-                  <TextField
-                    label="Name"
-                    id="name"
-                    value={values.name}
-                    onChange={handleChange}
-                    helperText={touched.name ? errors.name : ""}
-                    error={touched.name && Boolean(errors.name)}
-                    fullWidth
-                    autoFocus
-                  />
+                  <div>
+                    <Label id="name" label="Name" />
+                    <TextField
+                      placeholder="Name"
+                      id="name"
+                      value={values.name}
+                      onChange={handleChange}
+                      helperText={touched.name ? errors.name : ""}
+                      error={touched.name && Boolean(errors.name)}
+                      fullWidth
+                      autoFocus
+                    />
+                  </div>
 
                   {error && (
                     <div className={classes.error}>Something went wrong.</div>

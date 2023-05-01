@@ -13,6 +13,7 @@ import {
   PASSWORD_VALIDATION_ERROR,
   PASSWORD_VALIDATION_REGEX,
 } from "helpers/Constants";
+import Label from "components/Admin/ui/Label";
 
 const styles = (theme) => ({
   paper: {
@@ -131,37 +132,41 @@ const ResetPassword = (props) => {
                   handleSubmit(evt);
                 }}
               >
-                <PasswordInput
-                  margin="normal"
-                  fullWidth
-                  name="password"
-                  label="New Password"
-                  id="password"
-                  autoComplete="current-password"
-                  value={values.password}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  helperText={touched.password ? errors.password : ""}
-                  error={touched.password && Boolean(errors.password)}
-                  sx={{ mt: 2, mb: 2 }}
-                />
-                <PasswordInput
-                  margin="normal"
-                  fullWidth
-                  name="passwordConfirm"
-                  label="Confirm Password"
-                  id="passwordConfirm"
-                  value={values.passwordConfirm}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  helperText={
-                    touched.passwordConfirm ? errors.passwordConfirm : ""
-                  }
-                  error={
-                    touched.passwordConfirm && Boolean(errors.passwordConfirm)
-                  }
-                  sx={{ mt: 2, mb: 2 }}
-                />
+                <div>
+                  <Label id="password" label="New Password" />
+                  <PasswordInput
+                    fullWidth
+                    name="password"
+                    placeholder="New Password"
+                    id="password"
+                    autoComplete="current-password"
+                    value={values.password}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={touched.password ? errors.password : ""}
+                    error={touched.password && Boolean(errors.password)}
+                    sx={{ mt: 2, mb: 2 }}
+                  />
+                </div>
+                <div>
+                  <Label id="passwordConfirm" label="Confirm Password" />
+                  <PasswordInput
+                    fullWidth
+                    name="passwordConfirm"
+                    placeholder="Confirm Password"
+                    id="passwordConfirm"
+                    value={values.passwordConfirm}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={
+                      touched.passwordConfirm ? errors.passwordConfirm : ""
+                    }
+                    error={
+                      touched.passwordConfirm && Boolean(errors.passwordConfirm)
+                    }
+                    sx={{ mt: 2, mb: 2 }}
+                  />
+                </div>
                 <Box sx={{ mt: 2, mb: 2 }}>
                   <Button
                     variant="contained"

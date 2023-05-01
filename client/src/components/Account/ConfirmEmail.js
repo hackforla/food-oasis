@@ -8,6 +8,7 @@ import { Redirect, withRouter } from "react-router-dom";
 import * as Yup from "yup";
 import { useToasterContext } from "../../contexts/toasterContext";
 import * as accountService from "../../services/account-service";
+import Label from "components/Admin/ui/Label";
 
 const styles = (theme) => ({
   paper: {
@@ -106,21 +107,24 @@ const ConfirmEmail = (props) => {
             </p>
 
             <form onSubmit={handleSubmit}>
-              <TextField
-                required
-                fullWidth
-                name="email"
-                label="Enter the email for your account"
-                type="email"
-                id="email"
-                autoFocus
-                value={values.email}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                helperText={touched.email ? errors.email : ""}
-                error={touched.email && Boolean(errors.email)}
-                sx={{ mt: 1, mb: 2 }}
-              />
+              <div>
+                <Label id="email" label="Enter the email for your account" />
+                <TextField
+                  required
+                  fullWidth
+                  name="email"
+                  placeholder="Enter the email for your account"
+                  type="email"
+                  id="email"
+                  autoFocus
+                  value={values.email}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  helperText={touched.email ? errors.email : ""}
+                  error={touched.email && Boolean(errors.email)}
+                  sx={{ mt: 1, mb: 2 }}
+                />
+              </div>
               <LoadingButton
                 variant="contained"
                 loading={isSubmitting}

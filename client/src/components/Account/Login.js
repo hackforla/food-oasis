@@ -20,6 +20,7 @@ import { useToasterContext } from "../../contexts/toasterContext";
 
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import PasswordInput from "../../components/UI/PasswordInput";
+import Label from "components/Admin/ui/Label";
 
 const styles = (theme) => ({
   paper: {
@@ -171,35 +172,41 @@ const LoginForm = (props) => {
               <form className={classes.form} noValidate onSubmit={handleSubmit}>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
-                    <TextField
-                      autoComplete="email"
-                      autoFocus
-                      error={touched.email && Boolean(errors.email)}
-                      fullWidth
-                      helperText={touched.email ? errors.email : ""}
-                      id="email"
-                      label="Email"
-                      name="email"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      required
-                      type="email"
-                      value={values.email}
-                    />
+                    <div>
+                      <Label id="email" label="Email *" />
+                      <TextField
+                        autoComplete="email"
+                        autoFocus
+                        error={touched.email && Boolean(errors.email)}
+                        fullWidth
+                        helperText={touched.email ? errors.email : ""}
+                        id="email"
+                        placeholder="Email"
+                        name="email"
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        required
+                        type="email"
+                        value={values.email}
+                      />
+                    </div>
                   </Grid>
                   <Grid item xs={12}>
-                    <PasswordInput
-                      autoComplete="current-password"
-                      error={touched.password && Boolean(errors.password)}
-                      fullWidth
-                      helperText={touched.password ? errors.password : ""}
-                      id="password"
-                      label="Password"
-                      name="password"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      value={values.password}
-                    />
+                    <div>
+                      <Label id="password" label="Password" />
+                      <PasswordInput
+                        autoComplete="current-password"
+                        error={touched.password && Boolean(errors.password)}
+                        fullWidth
+                        helperText={touched.password ? errors.password : ""}
+                        id="password"
+                        placeholder="Password"
+                        name="password"
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        value={values.password}
+                      />
+                    </div>
                   </Grid>
                   <Grid item xs={12}>
                     <Box>

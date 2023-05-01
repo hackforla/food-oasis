@@ -506,7 +506,7 @@ const OrganizationEdit = (props) => {
                         </Stack>
 
                         <FormControlLabel
-                          sx={{ mt: 1, ml: 0 }}
+                          sx={{ mt: 3, ml: 0 }}
                           control={
                             <Checkbox
                               margin="normal"
@@ -519,7 +519,7 @@ const OrganizationEdit = (props) => {
                               onBlur={handleBlur}
                             />
                           }
-                          label="confirm"
+                          label="Confirm"
                         />
                       </Grid>
                       <Grid item sm={6} xs={12} display="flex">
@@ -542,7 +542,7 @@ const OrganizationEdit = (props) => {
                         </Stack>
 
                         <FormControlLabel
-                          sx={{ mt: 1, ml: 0 }}
+                          sx={{ mt: 3, ml: 0 }}
                           control={
                             <Checkbox
                               margin="normal"
@@ -558,7 +558,7 @@ const OrganizationEdit = (props) => {
                               onBlur={handleBlur}
                             />
                           }
-                          label="confirm"
+                          label="Confirm"
                         />
                       </Grid>
                       <Grid item sm={6} xs={12} display="flex">
@@ -581,7 +581,7 @@ const OrganizationEdit = (props) => {
                         </Stack>
 
                         <FormControlLabel
-                          sx={{ mt: 1, ml: 0 }}
+                          sx={{ mt: 3, ml: 0 }}
                           control={
                             <Checkbox
                               margin="normal"
@@ -597,7 +597,7 @@ const OrganizationEdit = (props) => {
                               onBlur={handleBlur}
                             />
                           }
-                          label="confirm"
+                          label="Confirm"
                         />
                       </Grid>
 
@@ -682,7 +682,7 @@ const OrganizationEdit = (props) => {
                               onBlur={handleBlur}
                             />
                           }
-                          label="confirm"
+                          label="Confirm"
                         />
                       </Grid>
                       <Grid item xs={12} sm={6}>
@@ -964,6 +964,7 @@ const OrganizationEdit = (props) => {
                             </Tooltip>
                             <div>
                               <FormControlLabel
+                                sx={{ mt: { md: "27px" } }}
                                 control={
                                   <Checkbox
                                     margin="normal"
@@ -1297,6 +1298,7 @@ const OrganizationEdit = (props) => {
                           spacing={2}
                         >
                           <FormControlLabel
+                            sx={{ mt: 2 }}
                             control={
                               <Checkbox
                                 margin="normal"
@@ -1312,7 +1314,7 @@ const OrganizationEdit = (props) => {
                                 onBlur={handleBlur}
                               />
                             }
-                            label="confirm"
+                            label="Confirm"
                           />
                         </Grid>
                       </Grid>

@@ -54,7 +54,7 @@ function NeedsVerificationDialog(props) {
           minRows={4}
           maxRows={12}
           value={message}
-          onChange={(e) => setMessage(!!e.target.value)}
+          onChange={(e) => setMessage(e.target.value)}
         />
         <FormLabel id="confirmation-reset-options=label">
           Critical Field Confirmations

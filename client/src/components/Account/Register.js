@@ -18,6 +18,10 @@ import {
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useToasterContext } from "contexts/toasterContext";
 import PasswordInput from "components/UI/PasswordInput";
+import {
+  PASSWORD_VALIDATION_ERROR,
+  PASSWORD_VALIDATION_REGEX,
+} from "helpers/Constants";
 
 const styles = (theme) => ({
   paper: {
@@ -75,17 +79,17 @@ const form = (props) => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="fname"
-                  name="firstName"
-                  required
+                  autoFocus
+                  error={touched.firstName && Boolean(errors.firstName)}
                   fullWidth
+                  helperText={touched.firstName ? errors.firstName : ""}
                   id="firstName"
                   label="First Name"
-                  autoFocus
-                  value={values.firstName}
-                  onChange={handleChange}
+                  name="firstName"
                   onBlur={handleBlur}
-                  helperText={touched.firstName ? errors.firstName : ""}
-                  error={touched.firstName && Boolean(errors.firstName)}
+                  onChange={handleChange}
+                  required
+                  value={values.firstName}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -138,7 +142,7 @@ const form = (props) => {
                   required
                   fullWidth
                   name="passwordConfirm"
-                  label="Re-type Password"
+                  label="Confirm Password"
                   id="passwordConfirm"
                   value={values.passwordConfirm}
                   onChange={handleChange}
@@ -157,6 +161,7 @@ const form = (props) => {
                 variant="contained"
                 type="submit"
                 disabled={isSubmitting || !(isValid && dirty)}
+                fullWidth
               >
                 Register
               </Button>
@@ -193,6 +198,7 @@ const RegisterForm = withFormik({
       passwordConfirm: passwordConfirm || "",
     };
   },
+  validateOnBlur: false,
 
   validationSchema: Yup.object().shape({
     firstName: Yup.string().required("Required"),
@@ -201,8 +207,8 @@ const RegisterForm = withFormik({
       .email("Enter a valid email")
       .required("Email is required"),
     password: Yup.string()
-      .min(8, "Password must contain at least 8 characters")
-      .required("Enter your password"),
+      .matches(PASSWORD_VALIDATION_REGEX, PASSWORD_VALIDATION_ERROR)
+      .required("Password is required"),
     passwordConfirm: Yup.string()
       .required("Confirm your password")
       .oneOf([Yup.ref("password")], "Password does not match"),

@@ -158,6 +158,7 @@ function VerificationDashboard(props) {
               variant="outlined"
               type="button"
               onClick={requestAssignment}
+              sx={{ margin: ".1rem" }}
             >
               Request Assignment
             </Button>
@@ -166,6 +167,7 @@ function VerificationDashboard(props) {
               type="button"
               icon="search"
               onClick={search}
+              sx={{ margin: ".1rem" }}
             >
               Refresh
             </Button>

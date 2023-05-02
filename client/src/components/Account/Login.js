@@ -78,6 +78,7 @@ const LoginForm = (props) => {
             Login
           </Typography>
           <Formik
+            validateOnBlur={false}
             initialValues={{
               email: match.params.email || "",
               password: "",
@@ -145,7 +146,6 @@ const LoginForm = (props) => {
                     });
                     formikBag.setSubmitting(false);
                   }
-                  // async function muist return something
                   return true;
                 } catch (err) {
                   setToast({
@@ -167,46 +167,51 @@ const LoginForm = (props) => {
               isSubmitting,
               dirty,
               isValid,
-              /* and other goodies */
             }) => (
               <form className={classes.form} noValidate onSubmit={handleSubmit}>
-                <TextField
-                  type="email"
-                  id="email"
-                  label="Email"
-                  name="email"
-                  fullWidth
-                  autoComplete="email"
-                  autoFocus
-                  value={values.email}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  helperText={touched.email ? errors.email : ""}
-                  error={touched.email && Boolean(errors.email)}
-                  sx={{ mt: 2, mb: 2 }}
-                />
-                <PasswordInput
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  id="password"
-                  autoComplete="current-password"
-                  value={values.password}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  helperText={touched.password ? errors.password : ""}
-                  error={touched.password && Boolean(errors.password)}
-                  sx={{ mt: 2, mb: 2 }}
-                />
-                <Box sx={{ mt: 2, mb: 2 }}>
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting || !(isValid && dirty)}
-                  >
-                    Sign In
-                  </Button>
-                </Box>
-                <Grid container>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <TextField
+                      autoComplete="email"
+                      autoFocus
+                      error={touched.email && Boolean(errors.email)}
+                      fullWidth
+                      helperText={touched.email ? errors.email : ""}
+                      id="email"
+                      label="Email"
+                      name="email"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      required
+                      type="email"
+                      value={values.email}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <PasswordInput
+                      autoComplete="current-password"
+                      error={touched.password && Boolean(errors.password)}
+                      fullWidth
+                      helperText={touched.password ? errors.password : ""}
+                      id="password"
+                      label="Password"
+                      name="password"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.password}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Box>
+                      <Button
+                        type="submit"
+                        disabled={isSubmitting || !(isValid && dirty)}
+                        fullWidth
+                      >
+                        Sign In
+                      </Button>
+                    </Box>
+                  </Grid>
                   <Grid item xs>
                     <Link
                       href={`/forgotpassword/${values.email || ""}`}

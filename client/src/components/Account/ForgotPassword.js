@@ -76,12 +76,11 @@ const ForgotPassword = (props) => {
             Forgot Password
           </Typography>
           <Formik
+            validateOnBlur={false}
             initialValues={{
               email: match.params.email || "",
             }}
             validationSchema={validationSchema}
-            validateOnMount={true}
-            validateOnBlur={false}
             onSubmit={async (values, formikBag) => {
               try {
                 const response = await accountService.forgotPassword(
@@ -133,7 +132,6 @@ const ForgotPassword = (props) => {
               isSubmitting,
               setFieldError,
               isValid,
-              /* and other goodies */
             }) => {
               const handleEmailChange = (e) => {
                 handleChange(e);
@@ -148,34 +146,37 @@ const ForgotPassword = (props) => {
                     handleSubmit(evt);
                   }}
                 >
-                  <TextField
-                    type="email"
-                    id="email"
-                    label="Email"
-                    name="email"
-                    variant="outlined"
-                    margin="normal"
-                    fullWidth
-                    autoComplete="email"
-                    autoFocus
-                    value={values.email}
-                    onChange={handleEmailChange}
-                    onBlur={handleBlur}
-                    helperText={touched.email ? errors.email : ""}
-                    error={touched.email && Boolean(errors.email)}
-                  />
-                  <div sx={{ mt: 2, mb: 2 }}>
-                    <Button
-                      variant="contained"
-                      type="submit"
-                      fullWidth
-                      disabled={isSubmitting || !isValid}
-                    >
-                      Send Password Reset Link
-                    </Button>
-                  </div>
-                  <Grid container>
-                    <Grid item xs>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      <TextField
+                        type="email"
+                        id="email"
+                        label="Email"
+                        name="email"
+                        variant="outlined"
+                        margin="normal"
+                        fullWidth
+                        autoComplete="email"
+                        autoFocus
+                        value={values.email}
+                        onChange={handleEmailChange}
+                        onBlur={handleBlur}
+                        helperText={touched.email ? errors.email : ""}
+                        error={touched.email && Boolean(errors.email)}
+                      />
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <Button
+                        variant="contained"
+                        type="submit"
+                        fullWidth
+                        disabled={isSubmitting || !isValid}
+                      >
+                        Send Password Reset Link
+                      </Button>
+                    </Grid>
+                    <Grid item xs={12}>
                       <Typography align="center">
                         <Link
                           href={`/login/${values.email || ""}`}

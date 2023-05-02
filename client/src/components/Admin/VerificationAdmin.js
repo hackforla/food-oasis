@@ -402,7 +402,7 @@ function VerificationAdmin() {
           id="needs-verification-dialog"
           title='Change Listing(s) Status to "Needs Verification"'
           message={""}
-          preserveConfirmations={false}
+          // preserveConfirmations={false}
           open={needsVerificationDialogOpen}
           onClose={handleNeedsVerificationDialogClose}
         />
@@ -445,7 +445,7 @@ function VerificationAdmin() {
                   justifyContent: "space-between",
                 }}
               >
-                <Stack direction="row" spacing={1} marginBottom={1}>
+                <Stack direction="row" spacing={2} marginBottom={1}>
                   <Button
                     variant="outlined"
                     type="button"

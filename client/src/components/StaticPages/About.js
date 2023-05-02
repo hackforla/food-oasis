@@ -9,7 +9,8 @@ import makeStyles from "@mui/styles/makeStyles";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import * as analytics from "../../services/analytics";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
+import { Link } from "@mui/material";
 
 const useStyles = makeStyles(() => ({
   outer: {
@@ -136,6 +137,7 @@ const useStyles = makeStyles(() => ({
     },
   },
 }));
+
 const About = () => {
   const classes = useStyles();
 
@@ -143,7 +145,6 @@ const About = () => {
     analytics.postEvent("visitAboutPage");
   }, []);
 
-  // const { t } = useTranslation("about");
   return (
     <div className={classes.outer}>
       <div className={classes.main}>
@@ -190,8 +191,16 @@ const About = () => {
           <Typography variant="h2">Our Team</Typography>
           <Container maxWidth="sm">
             <Typography variant="body1">
-              We are a 100% volunteer-run project. We are part of Hack for LA.
-              Our team includes product managers, researchers, designers,
+              We are a 100% volunteer-run project. We are part of{" "}
+              <Link
+                href="https://hackforla.org/"
+                target={"_blank"}
+                rel="noopener noreferrer"
+                variant="secondary"
+              >
+                Hack for LA
+              </Link>
+              . Our team includes product managers, researchers, designers,
               developers, writers and data validators who maintain this
               web-based directory. We verify each listing in our directory
               regularly to ensure the contact information, hours of operation,
@@ -209,16 +218,13 @@ const About = () => {
           <Typography variant="h2">Questions</Typography>
           <Typography variant="body1">
             For more information, please visit our{" "}
-            <Link to={"/faqs"}>FAQ page</Link>.
+            <Link to={"/faqs"} variant="secondary" component={RouterLink}>
+              FAQ page
+            </Link>
+            .
           </Typography>
         </section>
         <section className={classes.partners}>
-          {/* <img
-            alt='Our Team'
-            src={iconSpacerGray}
-            className={classes.icon}
-            height='40'
-          /> */}
           <Typography variant="h2">Our Partners</Typography>
           <a
             href="https://www.foodcyclela.org/"

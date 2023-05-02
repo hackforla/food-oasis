@@ -16,7 +16,6 @@ export default function PasswordInput(props) {
 
   return (
     <TextField
-      {...props}
       type={showPassword ? "text" : "password"}
       InputProps={{
         endAdornment: (
@@ -33,6 +32,7 @@ export default function PasswordInput(props) {
         ),
       }}
       label="Password"
+      {...props}
     />
   );
 }

@@ -14,12 +14,11 @@ export const tenantRequestSchema: JSONSchemaType<Tenant> = {
     },
     name: {
       type: "string",
-      minLength: 1,
-      maxLength: 50,
+      maxLength: 256,
     },
     code: {
       type: "string",
-      minLength: 1,
+      maxLength: 256,
     },
   },
   additionalProperties: false,

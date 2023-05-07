@@ -20,7 +20,7 @@ const logoPaths = {
   6: require("images/foodoasis.svg").default,
 };
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   footer: {
     position: "relative",
     backgroundColor: "#FFF",
@@ -36,7 +36,6 @@ const useStyles = makeStyles(() => ({
     height: "100%",
     width: "100%",
     marginTop: "0",
-    marginBottom: "auto",
     "&:hover": {
       filter: "brightness(1.2)",
     },
@@ -52,6 +51,10 @@ const useStyles = makeStyles(() => ({
   textHolder: {
     display: "flex",
     flexDirection: "row",
+    [theme.breakpoints.up("md")]: {
+      alignItems: "flex-start",
+      gap: "4em",
+    },
   },
   linkStyle: {
     padding: "0 !important",
@@ -70,13 +73,13 @@ const Footer = () => {
   const { isHomePage } = useLocationHook();
   const classes = useStyles();
 
-  const initialFooterSwitch = window.innerWidth >= 1000 ? true : false;
+  const initialFooterSwitch = window.innerWidth >= 960 ? true : false;
   const [fullSizeFooterVisible, changeFooterSize] =
     useState(initialFooterSwitch);
 
   useEffect(() => {
     const checkWindowSize = () => {
-      window.innerWidth >= 1000
+      window.innerWidth >= 960
         ? changeFooterSize(true)
         : changeFooterSize(false);
     };

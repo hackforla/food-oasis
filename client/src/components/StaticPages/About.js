@@ -11,6 +11,7 @@ import Typography from "@mui/material/Typography";
 import * as analytics from "../../services/analytics";
 import { Link as RouterLink } from "react-router-dom";
 import { Link } from "@mui/material";
+import Footer from "../Layout/Footer";
 
 const useStyles = makeStyles(() => ({
   outer: {
@@ -271,6 +272,7 @@ const About = () => {
             />
           </a>
         </section>
+        <Footer />
       </div>
     </div>
   );

@@ -23,6 +23,7 @@ import donationStep6 from "images/donationStep6.png";
 import donationStep7 from "images/donationStep7.png";
 import * as analytics from "../../services/analytics";
 import { IconButton } from "../UI/StandardButton";
+import Footer from "../Layout/Footer";
 
 const useStyles = makeStyles((theme) => ({
   outer: {
@@ -180,6 +181,7 @@ const Donate = () => {
             />
           )}
         </section>
+        <Footer />
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ import makeStyles from "@mui/styles/makeStyles";
 import * as analytics from "../../services/analytics";
 import Container from "@mui/material/Container";
 import { Link as RouterLink } from "react-router-dom";
+import Footer from "../Layout/Footer";
 
 const useStyles = makeStyles(() => ({
   outer: {
@@ -198,6 +199,7 @@ const About = () => {
             </Typography>
           </Container>
         </section>
+        <Footer />
       </div>
     </div>
   );

@@ -120,3 +120,9 @@ export const formatDatewTimeZoneMMM = (ts, timeZone) => {
     month: "short",
   });
 };
+
+export const validateUrl = (url) => {
+  return url.startsWith("http://") || url.startsWith("https://")
+    ? url
+    : `https://${url}`;
+};

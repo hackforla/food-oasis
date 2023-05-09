@@ -124,5 +124,5 @@ export const formatDatewTimeZoneMMM = (ts, timeZone) => {
 export const validateUrl = (url) => {
   return url.startsWith("http://") || url.startsWith("https://")
     ? url
-    : `https://${url}`;
+    : `http://${url}`;
 };

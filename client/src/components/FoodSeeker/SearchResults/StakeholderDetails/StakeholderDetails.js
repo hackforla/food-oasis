@@ -14,7 +14,11 @@ import {
   VERIFICATION_STATUS,
 } from "constants/stakeholder";
 import { ORGANIZATION_COLORS, CLOSED_COLOR } from "constants/map";
-import { extractNumbers, getGoogleMapsDirectionsUrl } from "helpers";
+import {
+  extractNumbers,
+  getGoogleMapsDirectionsUrl,
+  validateUrl,
+} from "helpers";
 import CorrectionDialog from "./CorrectionDialog";
 import * as analytics from "services/analytics";
 import {
@@ -455,7 +459,7 @@ const StakeholderDetails = () => {
             <MinorHeading>Website</MinorHeading>
             <DetailText>
               <Link
-                href={selectedOrganization.website}
+                href={validateUrl(selectedOrganization.website)}
                 target="_blank"
                 rel="noopener noreferrer"
               >

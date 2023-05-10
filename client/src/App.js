@@ -124,7 +124,7 @@ function App() {
                 <SEO
                   title={`Food Oasis`}
                   url={window.origin}
-                  description="Food Oasis is an application that helps eliminate food waste by connecting donors and food outlets."
+                  description="Food Oasis is a non-profit, volunteer-run directory of free food resources in the Los Angeles area."
                 />
                 <Router>
                   <Grid

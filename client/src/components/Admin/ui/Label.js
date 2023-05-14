@@ -27,22 +27,6 @@ const Label = ({ id, label, tooltipTitle }) => {
               open={tooltipOpen}
               arrow
               placement="top-start"
-              componentsProps={{
-                tooltip: {
-                  sx: {
-                    backgroundColor: "#D9D9D9",
-                    color: "black",
-                    padding: "24px",
-                    borderRadius: "8px",
-                    maxWidth: "592px",
-                  },
-                },
-                arrow: {
-                  sx: {
-                    color: "#D9D9D9",
-                  },
-                },
-              }}
             >
               <IconButton onClick={() => handleToolTipToggle()}>
                 <InfoOutlinedIcon />

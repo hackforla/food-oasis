@@ -5,7 +5,7 @@ import {
   User,
   Role,
 } from "../../types/account-types";
-import moment from "moment";
+import dayjs from "dayjs";
 import bcrypt from "bcrypt";
 import camelcaseKeys from "camelcase-keys";
 import { v4 as uuid4 } from "uuid";
@@ -152,7 +152,7 @@ const confirmRegistration = async (token: string): Promise<AccountResponse> => {
     from security_token where token = $<token>;`;
   try {
     const rows = await db.manyOrNone(sql, { token });
-    const now = moment();
+    const now = dayjs();
 
     if (rows.length < 1) {
       return {
@@ -161,7 +161,7 @@ const confirmRegistration = async (token: string): Promise<AccountResponse> => {
         message:
           "Email confirmation failed. Invalid security token. Re-send confirmation email.",
       };
-    } else if (moment(now).diff(rows[0].date_created, "hours") >= 1) {
+    } else if (dayjs(now).diff(rows[0].date_created, "hours") >= 1) {
       return {
         isSuccess: false,
         code: "REG_CONFIRM_TOKEN_EXPIRED",
@@ -276,7 +276,7 @@ const resetPassword = async ({
 }): Promise<AccountResponse> => {
   const sql = `select email, date_created
     from security_token where token = $<token>; `;
-  const now = moment();
+  const now = dayjs();
   let email = "";
   try {
     const row = await db.one(sql, { token });
@@ -288,7 +288,7 @@ const resetPassword = async ({
         message:
           "Password reset failed. Invalid security token. Re-send confirmation email.",
       };
-    } else if (moment(now).diff(row.date_created, "hours") >= 1) {
+    } else if (dayjs(now).diff(row.date_created, "hours") >= 1) {
       return {
         isSuccess: false,
         code: "RESET_PASSWORD_TOKEN_EXPIRED",
@@ -519,10 +519,10 @@ const updateUserProfile = async (
   userid: string,
   firstName: string,
   lastName: string,
-  email: string, 
+  email: string,
   tenantId: string
 ) => {
-  let sql = `update login
+  const sql = `update login
                 set first_name = $<firstName>,
                 last_name = $<lastName>,
                 email = $<email>
@@ -534,16 +534,16 @@ const updateUserProfile = async (
       isSuccess: true,
       code: "UPDATE_SUCCESS",
       message: `User profile successfully updated`,
-      "user": user,
+      user: user,
     };
   } catch (error) {
     return {
       isSuccess: false,
       code: "DB_ERROR",
       message: `Updating user profile failed ${error}`,
-    }
+    };
   }
-}
+};
 
 export default {
   authenticate,
@@ -559,5 +559,5 @@ export default {
   setGlobalPermissions,
   setTenantPermissions,
   update,
-  updateUserProfile
+  updateUserProfile,
 };

@@ -35,7 +35,7 @@ import { useUserContext } from "contexts/userContext";
 import { Formik } from "formik";
 import { useCategories } from "hooks/useCategories";
 import { useTags } from "hooks/useTags";
-import moment from "moment";
+import dayjs from "dayjs";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
@@ -1841,7 +1841,7 @@ const OrganizationEdit = (props) => {
                           <Typography flexBasis="20%">
                             {!values.createdDate
                               ? null
-                              : moment(values.createdDate).format(DATE_FORMAT)}
+                              : dayjs(values.createdDate).format(DATE_FORMAT)}
                           </Typography>
                         </Stack>
                         <Stack direction="row">
@@ -1854,7 +1854,7 @@ const OrganizationEdit = (props) => {
                           <Typography flexBasis="20%">
                             {!values.modifiedDate
                               ? null
-                              : moment(values.modifiedDate).format(DATE_FORMAT)}
+                              : dayjs(values.modifiedDate).format(DATE_FORMAT)}
                           </Typography>
                         </Stack>
                         <Stack direction="row">
@@ -1865,7 +1865,7 @@ const OrganizationEdit = (props) => {
                           <Typography flexBasis="20%">
                             {!values.assignedDate
                               ? null
-                              : moment(values.assignedDate).format(DATE_FORMAT)}
+                              : dayjs(values.assignedDate).format(DATE_FORMAT)}
                           </Typography>
                           {/* <div >
                         <UserContext.Consumer>
@@ -1920,9 +1920,7 @@ const OrganizationEdit = (props) => {
                           <Typography flexBasis="20%">
                             {!values.submittedDate
                               ? null
-                              : moment(values.submittedDate).format(
-                                  DATE_FORMAT
-                                )}
+                              : dayjs(values.submittedDate).format(DATE_FORMAT)}
                           </Typography>
                         </Stack>
                         <Stack direction="row">
@@ -1932,7 +1930,7 @@ const OrganizationEdit = (props) => {
                           </Typography>
                           <Typography flexBasis="20%">
                             {values.approvedDate
-                              ? moment(values.approvedDate).format(DATE_FORMAT)
+                              ? dayjs(values.approvedDate).format(DATE_FORMAT)
                               : ""}
                           </Typography>
                         </Stack>
@@ -1944,7 +1942,7 @@ const OrganizationEdit = (props) => {
                           <Typography flexBasis="20%">
                             {!values.claimedDate
                               ? ""
-                              : moment(values.claimedDate).format(DATE_FORMAT)}
+                              : dayjs(values.claimedDate).format(DATE_FORMAT)}
                           </Typography>
                           {user && (user.isAdmin || user.isCoordinator) ? (
                             <div
@@ -1962,7 +1960,7 @@ const OrganizationEdit = (props) => {
                                       "claimedUser",
                                       `${login.firstName} ${login.lastName}`
                                     );
-                                    setFieldValue("claimedDate", moment());
+                                    setFieldValue("claimedDate", dayjs());
                                   } else {
                                     setFieldValue("claimedLoginId", "");
                                     setFieldValue("claimedUser", "");
@@ -2095,7 +2093,7 @@ const OrganizationEdit = (props) => {
                                   setFieldValue("reviewedUser", "");
                                   setFieldValue("approvedDate", "");
                                   setFieldValue("assignedLoginId", loginId);
-                                  setFieldValue("assignedDate", moment());
+                                  setFieldValue("assignedDate", dayjs());
                                   setFieldValue(
                                     "verificationStatusId",
                                     VERIFICATION_STATUS.ASSIGNED
@@ -2164,7 +2162,7 @@ const OrganizationEdit = (props) => {
                               display: "flex",
                             }}
                             onClick={() => {
-                              setFieldValue("approvedDate", moment());
+                              setFieldValue("approvedDate", dayjs());
                               setFieldValue(
                                 "reviewedUser",
                                 user.firstName + " " + user.lastName
@@ -2274,7 +2272,7 @@ const OrganizationEdit = (props) => {
                               display: "flex",
                             }}
                             onClick={() => {
-                              setFieldValue("submittedDate", moment());
+                              setFieldValue("submittedDate", dayjs());
                               setFieldValue(
                                 "submittedUser",
                                 user.firstName + " " + user.lastName

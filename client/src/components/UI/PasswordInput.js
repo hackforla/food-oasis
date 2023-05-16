@@ -31,7 +31,7 @@ export default function PasswordInput(props) {
           </InputAdornment>
         ),
       }}
-      label="Password"
+      //label="Password"
       {...props}
     />
   );

@@ -22,6 +22,7 @@ import {
   PASSWORD_VALIDATION_ERROR,
   PASSWORD_VALIDATION_REGEX,
 } from "helpers/Constants";
+import Label from "components/Admin/ui/Label";
 
 const styles = (theme) => ({
   paper: {
@@ -77,83 +78,98 @@ const form = (props) => {
           <form className={classes.form} noValidate onSubmit={handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="fname"
-                  autoFocus
-                  error={touched.firstName && Boolean(errors.firstName)}
-                  fullWidth
-                  helperText={touched.firstName ? errors.firstName : ""}
-                  id="firstName"
-                  label="First Name"
-                  name="firstName"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  required
-                  value={values.firstName}
-                />
+                <div>
+                  <Label id="firstName" label="First Name *" />
+                  <TextField
+                    autoComplete="fname"
+                    autoFocus
+                    error={touched.firstName && Boolean(errors.firstName)}
+                    fullWidth
+                    helperText={touched.firstName ? errors.firstName : ""}
+                    id="firstName"
+                    placeholder="First Name"
+                    name="firstName"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    required
+                    value={values.firstName}
+                  />
+                </div>
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="lname"
-                  value={values.lastName}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  helperText={touched.lastName ? errors.lastName : ""}
-                  error={touched.lastName && Boolean(errors.lastName)}
-                />
+                <div>
+                  <Label id="lastName" label="Last Name *" />
+                  <TextField
+                    required
+                    fullWidth
+                    id="lastName"
+                    placeholder="Last Name"
+                    name="lastName"
+                    autoComplete="lname"
+                    value={values.lastName}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={touched.lastName ? errors.lastName : ""}
+                    error={touched.lastName && Boolean(errors.lastName)}
+                  />
+                </div>
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  type="email"
-                  id="email"
-                  label="Email"
-                  name="email"
-                  fullWidth
-                  autoComplete="email"
-                  value={values.email}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  helperText={touched.email ? errors.email : ""}
-                  error={touched.email && Boolean(errors.email)}
-                />
+                <div>
+                  <Label id="email" label="Email" />
+                  <TextField
+                    type="email"
+                    id="email"
+                    placeholder="Email"
+                    name="email"
+                    fullWidth
+                    autoComplete="email"
+                    value={values.email}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={touched.email ? errors.email : ""}
+                    error={touched.email && Boolean(errors.email)}
+                  />
+                </div>
               </Grid>
               <Grid item xs={12}>
-                <PasswordInput
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  id="password"
-                  autoComplete="current-password"
-                  value={values.password}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  helperText={touched.password ? errors.password : ""}
-                  error={touched.password && Boolean(errors.password)}
-                />
+                <div>
+                  <Label id="password" label="Password *" />
+                  <PasswordInput
+                    required
+                    fullWidth
+                    name="password"
+                    placeholder="Password"
+                    id="password"
+                    autoComplete="current-password"
+                    value={values.password}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={touched.password ? errors.password : ""}
+                    error={touched.password && Boolean(errors.password)}
+                  />
+                </div>
               </Grid>
               <Grid item xs={12}>
-                <PasswordInput
-                  required
-                  fullWidth
-                  name="passwordConfirm"
-                  label="Confirm Password"
-                  id="passwordConfirm"
-                  value={values.passwordConfirm}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  helperText={
-                    touched.passwordConfirm ? errors.passwordConfirm : ""
-                  }
-                  error={
-                    touched.passwordConfirm && Boolean(errors.passwordConfirm)
-                  }
-                />
+                <div>
+                  <Label id="passwordConfirm" label="Confirm Password *" />
+                  <PasswordInput
+                    required
+                    fullWidth
+                    name="passwordConfirm"
+                    placeholder="Confirm Password"
+                    id="passwordConfirm"
+                    value={values.passwordConfirm}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={
+                      touched.passwordConfirm ? errors.passwordConfirm : ""
+                    }
+                    error={
+                      touched.passwordConfirm && Boolean(errors.passwordConfirm)
+                    }
+                  />
+                </div>
               </Grid>
             </Grid>
             <Box sx={{ mt: 2, mb: 2 }}>

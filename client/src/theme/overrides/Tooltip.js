@@ -12,9 +12,13 @@ export default function Tooltip(theme) {
           padding: "24px",
           borderRadius: "8px",
           maxWidth: "592px",
+          boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
         },
         arrow: {
           color: "#D9D9D9",
+          "&:before": {
+            boxShadow: "2px 2px 2px rgba(0, 0, 0, 0.25)",
+          },
         },
         tooltipPlacementTop: {
           "&.MuiTooltip-tooltipArrow": {

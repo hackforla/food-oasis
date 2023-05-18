@@ -347,30 +347,45 @@ const OrganizationEdit = (props) => {
   );
 
   const adminNoteTooltip = (
-    <Stack spacing={1}>
-      Notes about Verification. For example,
-      <Stack spacing={2}>
-        <p>They are most responsive to email (or Facebook or whatever).</p>
-        <p>We do not have any good contact information for them.</p>
-        <p>
-          You might have been able to verify some information, but need to
-          follow-up with another phone call, Facebook message, etc.
-        </p>
-        <p>
-          You might have been able to verify some information online, but need
-          to make phone contact.
-        </p>
-        <p>
-          You might have sent email or Facebook message, and are waiting for a
-          response.
-        </p>
-        <p>If you don&apos;t get through to them: (choose one)</p>
-        <p>1. The phone was inactive</p>
-        <p>2. Weren't available but call back</p>
-        <p>
-          3. Got partial information from voicemail (also enter this information
-          in the appropriate formfields)
-        </p>
+    <Stack sx={{ lineHeight: "27px" }}>
+      Notes about verification, for example:
+      <Stack
+        spacing={2}
+        sx={{ marginLeft: "24px", marginBottom: "20px", fontWeight: "normal" }}
+      >
+        <ul>
+          <li>They are most responsive to email (or Facebook or whatever).</li>
+          <li>We do not have any good contact information for them.</li>
+          <li>
+            You might have been able to verify some information, but need to
+            follow-up with another phone call, Facebook message, etc.
+          </li>
+          <li>
+            You might have been able to verify some information online, but need
+            to make phone contact.
+          </li>
+          <li>
+            You might have sent email or Facebook message, and are waiting for a
+            response.
+          </li>
+        </ul>
+      </Stack>
+      If you don&apos;t get through to them: (choose one)
+      <Stack
+        sx={{
+          marginLeft: "24px !important",
+
+          fontWeight: "normal",
+        }}
+      >
+        <ul>
+          <li>The phone was inactive</li>
+          <li>Weren't available but call back</li>
+          <li>
+            Got partial information from voicemail (also enter this information
+            in the appropriate formfields)
+          </li>
+        </ul>
       </Stack>
     </Stack>
   );

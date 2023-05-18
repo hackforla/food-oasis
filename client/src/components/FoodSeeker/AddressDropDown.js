@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { MenuItem, Autocomplete, TextField } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import { useMapboxGeocoder } from "hooks/useMapboxGeocoder";
-import InputAdornment from "@mui/material/InputAdornment";
+import { Button } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import {
   useSearchCoordinates,
@@ -31,8 +31,20 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "#F0F0F0",
     },
   },
-  searchIconCont: {
-    cursor: "pointer",
+  searchButton: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    borderRadius: "20px",
+    marginTop: theme.spacing(0.25),
+    padding: "6px",
+    minWidth: "36px",
+    "&:hover": {
+      backgroundColor: "purple",
+    },
+  },
+  inputContainer: {
+    display: "flex",
+    alignItems: "center",
   },
 }));
 
@@ -61,11 +73,11 @@ export default function AddressDropDown({ showSearchIcon }) {
     const result = mapboxResults.find(
       (item) => item.place_name === selectedResult
     );
-    setOpen(false)
-    setInputVal(selectedResult)
+    setOpen(false);
+    setInputVal(selectedResult);
     if (result) {
       const [longitude, latitude] = result.center;
-      
+
       dispatch({
         type: "SEARCH_COORDINATES_UPDATED",
         coordinates: { latitude, longitude, locationName: result.place_name },
@@ -76,36 +88,32 @@ export default function AddressDropDown({ showSearchIcon }) {
     }
   };
 
+  const handleSearch = () => {
+    history.push(isWidget ? "/widget" : "/organizations");
+  };
+
   const renderInput = (params) => {
     return (
-      <TextField
-        variant="outlined"
-        {...params}
-        label="Search by address or zip code"
-        margin="none"
-        fullWidth
-        name="address"
-        size="small"
-        autoFocus={false}
-        onClick={() => setInputVal("")}
-        InputLabelProps={{
-          className: classes.label,
-        }}
-        InputProps={{
-          endAdornment: (
-            <InputAdornment
-              position="end"
-              onClick={() => {
-                history.push(isWidget ? "/widget" : "/organizations");
-              }}
-              className={classes.searchIconCont}
-            >
-              <SearchIcon />
-            </InputAdornment>
-          ),
-          ...params.InputProps,
-        }}
-      />
+      <div className={classes.inputContainer}>
+        <TextField
+          variant="outlined"
+          {...params}
+          label="Search by address or zip code"
+          margin="none"
+          fullWidth
+          name="address"
+          size="small"
+          autoFocus={false}
+          onClick={() => setInputVal("")}
+          InputLabelProps={{
+            className: classes.label,
+          }}
+          InputProps={{
+            endAdornment: null,
+            ...params.InputProps,
+          }}
+        />
+      </div>
     );
   };
 
@@ -118,7 +126,7 @@ export default function AddressDropDown({ showSearchIcon }) {
       >
         {option}
       </MenuItem>
-    )
+    );
   };
 
   return (
@@ -146,6 +154,14 @@ export default function AddressDropDown({ showSearchIcon }) {
         renderInput={(params) => renderInput(params)}
         renderOption={(props, option) => renderOption(props, option)}
       />
+      <Button
+        variant="contained"
+        color="primary"
+        className={classes.searchButton}
+        onClick={handleSearch}
+      >
+        <SearchIcon />
+      </Button>
     </>
   );
 }

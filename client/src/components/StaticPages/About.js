@@ -225,6 +225,35 @@ const About = () => {
             .
           </Typography>
         </section>
+        <section className={classes.team}>
+          <img
+            alt="Contact Us"
+            src={iconSpacerGray}
+            className={classes.icon}
+            height="40"
+          />
+          <Typography variant="h2">Contact Us</Typography>
+          <Container maxWidth="sm">
+            <Typography variant="body1" align="center">
+              Questions about our project?
+              <br />
+              Updates to the listings?
+              <br />
+              General inquiries?
+              <br />
+            </Typography>
+            <Typography align="center">
+              Please contact our Support Team
+              <br />
+              <Link
+                variant="secondary"
+                href="mailto:foodoasisinfo@hackforla.org"
+              >
+                foodoasisinfo@hackforla.org
+              </Link>
+            </Typography>
+          </Container>
+        </section>
         <section className={classes.partners}>
           <Typography variant="h2">Our Partners</Typography>
           <a

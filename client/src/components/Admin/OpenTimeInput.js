@@ -8,6 +8,7 @@ import {
   InputLabel,
   TextField,
   Select,
+  OutlinedInput,
 } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -69,6 +70,7 @@ function OpenTimeInput(props) {
               name="weekOfMonth"
               onChange={onChange}
               value={values.weekOfMonth}
+              input={<OutlinedInput label="Interval" />}
             >
               {intervals.map((day) => (
                 <MenuItem key={day.value} value={day.value}>
@@ -92,6 +94,7 @@ function OpenTimeInput(props) {
               name="dayOfWeek"
               onChange={onChange}
               value={values.dayOfWeek}
+              input={<OutlinedInput label="Days" />}
             >
               {days.map((day) => (
                 <MenuItem key={day.value} label={day.label} value={day.value}>

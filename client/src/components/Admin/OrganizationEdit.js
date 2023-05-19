@@ -5,14 +5,12 @@ import {
   Checkbox,
   Container,
   CssBaseline,
-  FormControl,
   FormControlLabel,
   FormHelperText,
   Grid,
-  Input,
-  InputLabel,
   ListItemText,
   MenuItem,
+  OutlinedInput,
   Select,
   Stack,
   Tab,
@@ -44,6 +42,7 @@ import * as stakeholderService from "services/stakeholder-service";
 import * as Yup from "yup";
 import Label from "./ui/Label";
 import Textarea from "./ui/Textarea";
+import { disabledText } from "theme/palette";
 
 const DATE_FORMAT = "MM/DD/YY h:mm a";
 const ITEM_HEIGHT = 48;
@@ -623,27 +622,36 @@ const OrganizationEdit = (props) => {
                         display="flex"
                         alignItems="flex-start"
                       >
-                        <FormControl fullWidth>
-                          <InputLabel id="selectCategoryIds-label">
-                            Categories *
-                          </InputLabel>
-
-                          <Select
-                            labelId="selectCategoryIds-label"
+                        <Stack direction="column" sx={{ width: "100%" }}>
+                          <Label
                             id="selectedCategoryIds"
-                            variant="outlined"
+                            label="Categories *"
+                          />
+                          <Select
+                            id="selectedCategoryIds"
                             name="selectedCategoryIds"
                             multiple
                             fullWidth
                             value={values.selectedCategoryIds}
                             onChange={handleChange}
-                            input={<Input />}
+                            input={<OutlinedInput />}
+                            displayEmpty
                             renderValue={(selectedCategoryIds) => {
                               if (!categories) {
                                 return "Loading categories...";
                               }
                               if (selectedCategoryIds.length === 0) {
-                                return "(Select Categories)";
+                                return (
+                                  <Typography
+                                    variant="body1"
+                                    sx={{
+                                      fontStyle: "italic",
+                                      color: disabledText,
+                                    }}
+                                  >
+                                    Select Categories
+                                  </Typography>
+                                );
                               }
                               return selectedCategoryIds
                                 .map(
@@ -674,12 +682,14 @@ const OrganizationEdit = (props) => {
                                   </MenuItem>
                                 ))}
                           </Select>
-                          <FormHelperText>
-                            {touched.selectedCategoryIds
-                              ? errors.selectedCategoryIds
-                              : ""}
-                          </FormHelperText>
-                        </FormControl>
+                        </Stack>
+
+                        <FormHelperText>
+                          {touched.selectedCategoryIds
+                            ? errors.selectedCategoryIds
+                            : ""}
+                        </FormHelperText>
+
                         <FormControlLabel
                           sx={{ mt: 1, ml: 0 }}
                           control={
@@ -1049,54 +1059,56 @@ const OrganizationEdit = (props) => {
                       </Grid>
 
                       <Grid item xs={12} sm={6}>
-                        <div>
-                          <FormControl fullWidth>
-                            <InputLabel id="selectedTags-label">
-                              Tags
-                            </InputLabel>
-
-                            <Select
-                              labelId="selectedTags-label"
-                              id="tags"
-                              variant="outlined"
-                              name="tags"
-                              multiple
-                              fullWidth
-                              value={values.tags || []}
-                              onChange={handleChange}
-                              input={<Input />}
-                              renderValue={(tags) => {
-                                if (!allTags) {
-                                  return "Loading tags...";
-                                }
-                                if (tags.length === 0) {
-                                  return "(Select Tags)";
-                                }
-                                return tags.join(", ");
-                              }}
-                              MenuProps={MenuProps}
-                            >
-                              {!allTags || allTags.length === 0
-                                ? null
-                                : allTags.map((t) => (
-                                    <MenuItem key={t.name} value={t.name}>
-                                      <Checkbox
-                                        checked={
-                                          values.tags &&
-                                          values.tags.find(
-                                            (tt) => tt === t.name
-                                          )
-                                        }
-                                      />
-                                      <ListItemText primary={t.name} />
-                                    </MenuItem>
-                                  ))}
-                            </Select>
-                            <FormHelperText>
-                              {touched.tags ? errors.tags : ""}
-                            </FormHelperText>
-                          </FormControl>
-                        </div>
+                        <Stack direction="column" sx={{ width: "100%" }}>
+                          <Label id="selectedTags-label" label="Tags" />
+                          <Select
+                            id="selectedTags-label"
+                            name="tags"
+                            multiple
+                            fullWidth
+                            value={values.tags || []}
+                            onChange={handleChange}
+                            input={<OutlinedInput />}
+                            displayEmpty
+                            renderValue={(tags) => {
+                              if (!allTags) {
+                                return "Loading tags...";
+                              }
+                              if (tags.length === 0) {
+                                return (
+                                  <Typography
+                                    variant="body1"
+                                    sx={{
+                                      fontStyle: "italic",
+                                      color: disabledText,
+                                    }}
+                                  >
+                                    Select Tags
+                                  </Typography>
+                                );
+                              }
+                              return tags.join(", ");
+                            }}
+                            MenuProps={MenuProps}
+                          >
+                            {!allTags || allTags.length === 0
+                              ? null
+                              : allTags.map((t) => (
+                                  <MenuItem key={t.name} value={t.name}>
+                                    <Checkbox
+                                      checked={
+                                        values.tags &&
+                                        values.tags.find((tt) => tt === t.name)
+                                      }
+                                    />
+                                    <ListItemText primary={t.name} />
+                                  </MenuItem>
+                                ))}
+                          </Select>
+                          <FormHelperText>
+                            {touched.tags ? errors.tags : ""}
+                          </FormHelperText>
+                        </Stack>
                       </Grid>
                     </Grid>
                   </TabPanel>

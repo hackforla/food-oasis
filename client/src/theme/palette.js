@@ -12,6 +12,7 @@ export const linkNormal = "#1976D2";
 export const linkVisited = "#551A8B";
 export const linkHovered = "#004BA0";
 export const darkGray = "#4D4D4D";
+export const disabledText = "#999999";
 
 //Icon and List Colors
 export const foodPantry = "#336699"; //blue

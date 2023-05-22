@@ -272,6 +272,7 @@ const OrganizationEdit = (props) => {
     try {
       const result = await awsService.getCoords(address);
       if (result.Results) {
+        console.log(result.Results);
         setGeocodeResults(result.Results);
       } else {
         setToast({
@@ -1014,7 +1015,7 @@ const OrganizationEdit = (props) => {
                               >
                                 <Grid container>
                                   <Grid item xs={10}>
-                                    <Typography>{`(${result.Place.Geometry.Point[1]}, ${result.Place.Geometry.Point[0]})`}</Typography>
+                                    <Typography>{`(${result.Place.Geometry.Point[0]}, ${result.Place.Geometry.Point[1]})`}</Typography>
                                     <Typography>{`Match Score: ${result.Relevance}`}</Typography>
                                     {/* <Typography>{`${result.attributes.Addr_type}`}</Typography> */}
                                   </Grid>
@@ -1027,11 +1028,11 @@ const OrganizationEdit = (props) => {
                                       onClick={() => {
                                         setFieldValue(
                                           "latitude",
-                                          result.Place.Geometry.Point[1]
+                                          result.Place.Geometry.Point[0]
                                         );
                                         setFieldValue(
                                           "longitude",
-                                          result.Place.Geometry.Point[0]
+                                          result.Place.Geometry.Point[1]
                                         );
                                         setGeocodeResults([]);
                                       }}

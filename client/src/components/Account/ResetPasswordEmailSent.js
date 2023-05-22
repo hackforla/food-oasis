@@ -1,5 +1,5 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import withStyles from "@mui/styles/withStyles";
 import { Button } from "@mui/material";
 import { Avatar, Box, Container, CssBaseline, Typography } from "@mui/material";
@@ -58,7 +58,9 @@ const styles = (theme) => ({
 });
 
 const ResetPasswordEmailSent = (props) => {
-  const { classes, history, match } = props;
+  const { classes} = props;
+  const navigate = useNavigate();
+  const { email } = useParams();
 
   return (
     <div className={classes.body}>
@@ -77,11 +79,11 @@ const ResetPasswordEmailSent = (props) => {
             Password Reset Link was Sent
           </Typography>
           <Typography component="p" align="center">
-            A password reset link was sent to {match.params.email}.<br /> If you
+            A password reset link was sent to {email}.<br /> If you
             don’t see it in your inbox, please check your junk/spam folder.
           </Typography>
           <Box sx={{ mt: 2, mb: 2 }}>
-            <Button variant="contained" onClick={() => history.push("/login")}>
+            <Button variant="contained" onClick={() => navigate("/login")}>
               Back to login
             </Button>
           </Box>
@@ -91,4 +93,4 @@ const ResetPasswordEmailSent = (props) => {
   );
 };
 
-export default withStyles(styles)(withRouter(ResetPasswordEmailSent));
+export default withStyles(styles)(ResetPasswordEmailSent);

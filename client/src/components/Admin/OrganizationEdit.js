@@ -38,7 +38,7 @@ import { useTags } from "hooks/useTags";
 import dayjs from "dayjs";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
-import { withRouter } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import * as awsService from "services/aws-service";
 import * as stakeholderService from "services/stakeholder-service";
 import * as Yup from "yup";
@@ -191,8 +191,8 @@ const CheckboxWithLabel = ({ name, label, checked, onChange, ...props }) => (
 );
 
 const OrganizationEdit = (props) => {
-  const { match, history } = props;
-  const editId = match.params.id;
+  const navigate = useNavigate();
+  const { id: editId } = useParams();
   const [assignDialogOpen, setAssignDialogOpen] = useState(false);
   const [assignDialogCallback, setAssignDialogCallback] = useState({});
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
@@ -425,7 +425,7 @@ const OrganizationEdit = (props) => {
                   });
                   setOriginalData(values);
                   if (nextUrl) {
-                    history.push(nextUrl);
+                    navigate(nextUrl);
                   }
                 })
                 .catch((err) => {
@@ -446,7 +446,7 @@ const OrganizationEdit = (props) => {
                   setFieldValue("id", response.id);
                   setOriginalData({ ...values, id: response.id });
                   if (nextUrl) {
-                    history.push(nextUrl);
+                    navigate(nextUrl);
                   }
                 })
                 .catch((err) => {
@@ -2328,4 +2328,4 @@ OrganizationEdit.propTypes = {
   history: PropTypes.object,
 };
 
-export default withRouter(OrganizationEdit);
+export default OrganizationEdit;

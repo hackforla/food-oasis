@@ -36,7 +36,7 @@ import {
   useUserCoordinates,
 } from "../../../../appReducer";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const ResultsMap = (
   {
@@ -56,7 +56,7 @@ const ResultsMap = (
   const [markersLoaded, setMarkersLoaded] = useState(false);
   const searchCoordinates = useSearchCoordinates();
   const selectedOrganization = useSelectedOrganization();
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
 
   const longitude =
@@ -116,7 +116,7 @@ const ResultsMap = (
         const name = selectedOrganization.name
           .toLowerCase()
           .replaceAll(" ", "_");
-        history.push(
+        navigate(
           `${location.pathname}?latitude=${selectedOrganization.latitude}&longitude=${selectedOrganization.longitude}&org=${name}&id=${selectedOrganization.id}`
         );
       }

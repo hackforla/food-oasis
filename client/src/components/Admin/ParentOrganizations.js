@@ -18,7 +18,7 @@ import { IconButton } from "../UI/StandardButton";
 import { Formik } from "formik";
 import * as parentOrganizationService from "../../services/parent-organization-service";
 import { tenantId } from "helpers/Configuration";
-import { Redirect, withRouter } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import Label from "./ui/Label";
 
 const columns = [
@@ -75,6 +75,7 @@ function ParentOrganizations(props) {
   const [modalStyle] = React.useState(getModalStyle);
   const [error, setError] = React.useState("");
   const [deleteError, setDeleteError] = React.useState("");
+  const location = useLocation();
 
   React.useEffect(() => {
     if (data) {
@@ -85,8 +86,8 @@ function ParentOrganizations(props) {
   React.useEffect(() => {
     if (status === 401) {
       return (
-        <Redirect
-          to={{ pathname: "/login", state: { from: props.location } }}
+        <Navigate
+          to={{ pathname: "/login", state: { from:location } }}
         />
       );
     }
@@ -321,4 +322,4 @@ function ParentOrganizations(props) {
   );
 }
 
-export default withRouter(ParentOrganizations);
+export default ParentOrganizations;

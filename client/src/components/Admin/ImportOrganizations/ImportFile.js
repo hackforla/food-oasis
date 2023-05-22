@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Route, useHistory } from "react-router-dom";
+import { Route, useNavigate } from "react-router-dom";
 import { Typography } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import { uploadCsv, importCsv } from "../../../services/import-service";
@@ -40,7 +40,7 @@ const initialImportData = {
 };
 
 const ImportFile = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { tenantId, tenantName } = useSiteContext();
   const { user } = useUserContext();
   const { setToast } = useToasterContext();
@@ -140,7 +140,7 @@ const ImportFile = () => {
         setToast({
           message: "File successfully imported!",
         });
-        history.push("/verificationadmin");
+        navigate("/verificationadmin");
       })
       .catch((err) => {
         console.error(err.message);
@@ -154,13 +154,13 @@ const ImportFile = () => {
 
   useEffect(() => {
     if (importData.data) {
-      history.push("/organizationimport/review");
+      navigate("/organizationimport/review");
       setLoading(false);
     } else {
-      history.push("/organizationimport");
+      navigate("/organizationimport");
       setFile(null);
     }
-  }, [importData, history]);
+  }, [importData, navigate]);
 
   useEffect(() => {
     if (!file) {
@@ -177,7 +177,7 @@ const ImportFile = () => {
 
   return (
     <main className={classes.root}>
-      {user && user.isAdmin ? (
+      {/* {user && user.isAdmin ? (
         <div>
           <Route
             exact
@@ -219,7 +219,7 @@ const ImportFile = () => {
         loading={loading}
         messageOnLoad="Importing file. This may take up to a minute."
         // handleCancelUpload={handleCancelUpload}
-      />
+      /> */}
     </main>
   );
 };

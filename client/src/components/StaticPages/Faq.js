@@ -120,7 +120,7 @@ const About = () => {
           />
           <Typography variant="h2">Food Seekers</Typography>
           <Container maxWidth="sm">
-            <Typography variant="body1" className={classes.dl}>
+            <div className={classes.dl}>
               <dl>
                 <dt> How do I use this directory?</dt>
                 <ul>
@@ -175,7 +175,7 @@ const About = () => {
                   </li>
                 </ul>
               </dl>
-            </Typography>
+            </div>
           </Container>
         </section>
         <section className={classes.forVolunteers}>

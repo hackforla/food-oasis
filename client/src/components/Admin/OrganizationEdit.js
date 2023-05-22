@@ -272,7 +272,6 @@ const OrganizationEdit = (props) => {
     try {
       const result = await awsService.getCoords(address);
       if (result.Results) {
-        console.log(result.Results);
         setGeocodeResults(result.Results);
       } else {
         setToast({

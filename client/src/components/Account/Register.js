@@ -1,5 +1,5 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import withStyles from "@mui/styles/withStyles";
 import { withFormik } from "formik";
 import * as Yup from "yup";
@@ -241,7 +241,7 @@ const RegisterForm = withFormik({
             props.setToast({
               message: `Registration successful. Please check your email for a confirmation link.`,
             });
-            props.history.push("/");
+            props.navigate("/");
           } else if (result.code === "REG_DUPLICATE_EMAIL") {
             props.setToast({
               message: `The email ${email} is already registered.
@@ -268,9 +268,10 @@ const RegisterForm = withFormik({
   },
 })(form);
 
-const WrappedRegisterForm = withStyles(styles)(withRouter(RegisterForm));
+const WrappedRegisterForm = withStyles(styles)(RegisterForm);
 
 export default function Register() {
   const { setToast } = useToasterContext();
-  return <WrappedRegisterForm setToast={setToast} />;
+  const navigate = useNavigate();
+  return <WrappedRegisterForm setToast={setToast} navigate={navigate} />;
 }

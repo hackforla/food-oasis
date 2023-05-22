@@ -1,9 +1,8 @@
-import { Route, Redirect } from "react-router-dom";
 import { useUserContext } from "../contexts/userContext";
-import { useLocation } from "react-router-dom";
+import { useLocation, Navigate } from "react-router-dom";
 import { useToasterContext } from "../contexts/toasterContext";
 
-function PrivateRoute({ path, children, roles }) {
+function PrivateRoute({ children, roles, redirectTo = "/login" }) {
   const { user } = useUserContext();
   const { setToast } = useToasterContext();
   const location = useLocation();
@@ -29,19 +28,14 @@ function PrivateRoute({ path, children, roles }) {
     });
 
     return (
-      <Redirect
-        to={{
-          pathname: "/fallback",
-          state: {
-            from: location.pathname,
-            message: message,
-          },
-        }}
+      <Navigate
+        to={redirectTo}
+        state={{ from: location.pathname, message: message }}
       />
     );
   }
 
-  return <Route path={path}>{children}</Route>;
+  return children;
 }
 
 export default PrivateRoute;

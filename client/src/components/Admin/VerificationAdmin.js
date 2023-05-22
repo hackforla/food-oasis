@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { useLocation, Redirect } from "react-router-dom";
+import { useLocation, Navigate } from "react-router-dom";
 import { Button, CssBaseline, Dialog, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import MuiDialogTitle from "@mui/material/DialogTitle";
@@ -299,7 +299,7 @@ function VerificationAdmin() {
   return (
     <main className={classes.root}>
       {stakeholdersError.status === 401 || unauthorized ? (
-        <Redirect to={{ pathname: "/login", state: { from: location } }} />
+        <Navigate to={{ pathname: "/login", state: { from: location } }} />
       ) : null}
       <CssBaseline />
       <div

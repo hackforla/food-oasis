@@ -1,18 +1,14 @@
-import { Link as RouterLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { VERIFICATION_STATUS_NAMES } from "../../constants/stakeholder";
 import clsx from "clsx";
 import { DataGrid } from "@mui/x-data-grid";
 import { Block } from "@mui/icons-material";
 import CheckIcon from "@mui/icons-material/Check";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { Box, Link } from "@mui/material";
+import { Box } from "@mui/material";
 
 const linkFormatter = ({ value, row }) => {
-  return (
-    <Link to={`/organizationedit/${row.id}`} component={RouterLink}>
-      {value}
-    </Link>
-  );
+  return <Link to={`/organizationedit/${row.id}`}>{value}</Link>;
 };
 
 const inactiveFormatter =

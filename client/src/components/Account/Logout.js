@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useHistory, withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "../UI";
 
 LogoutButton.propTypes = {
@@ -8,7 +8,8 @@ LogoutButton.propTypes = {
   setToast: PropTypes.func,
 };
 
-export const logout = (setUser, setToast, history) => {
+export const logout = (setUser, setToast) => {
+  const navigate = useNavigate();
   // This isn't a perfect logout solution, since it just destroys the
   // cookie with the JWT on this browser. However, if malicious code
   // has stolen the token, it is still valid until expiration.
@@ -20,14 +21,12 @@ export const logout = (setUser, setToast, history) => {
   setToast({
     message: "Logged out successfully.",
   });
-  history.push("/");
+  navigate("/");
 };
 
 function LogoutButton({ setUser, setToast }) {
   const history = useHistory();
-  return (
-    <Button onClick={() => logout(setUser, setToast, history)}>Logout</Button>
-  );
+  return <Button onClick={() => logout(setUser, setToast)}>Logout</Button>;
 }
 
-export default withRouter(LogoutButton);
+export default LogoutButton;

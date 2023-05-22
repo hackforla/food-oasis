@@ -20,7 +20,7 @@ import {
   useUserCoordinates,
 } from "../../../../appReducer";
 import StakeholderIcon from "images/stakeholderIcon";
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   formatDatewTimeZoneDD,
   formatDatewTimeZonehhmmss,
@@ -130,7 +130,7 @@ const StakeholderPreview = ({ stakeholder }) => {
   const originCoordinates = searchCoordinates || userCoordinates;
   const { tenantId } = useSiteContext();
   const tenantTimeZone = TENANT_TIME_ZONES[tenantId];
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
 
   const handleSelectOrganization = (organization) => {
@@ -142,7 +142,7 @@ const StakeholderPreview = ({ stakeholder }) => {
 
     //Update url history
     const name = organization.name.toLowerCase().replaceAll(" ", "_");
-    history.push(
+    navigate(
       `${location.pathname}?latitude=${organization.latitude}&longitude=${organization.longitude}&org=${name}&id=${organization.id}`
     );
   };

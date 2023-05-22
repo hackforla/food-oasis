@@ -1,5 +1,5 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import withStyles from "@mui/styles/withStyles";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -51,8 +51,10 @@ const validationSchema = Yup.object().shape({
 });
 
 const ResetPassword = (props) => {
-  const { classes, history, match } = props;
+  const { classes} = props;
   const { setToast } = useToasterContext();
+  const navigate = useNavigate();
+  const { token } = useParams();
 
   return (
     <div className={classes.body}>
@@ -67,7 +69,7 @@ const ResetPassword = (props) => {
           </Typography>
           <Formik
             initialValues={{
-              token: match.params.token,
+              token: token,
               password: "",
               passwordConfirm: "",
             }}
@@ -82,7 +84,7 @@ const ResetPassword = (props) => {
                   setToast({
                     message: "Password has been reset. Please use it to login.",
                   });
-                  history.push({
+                  navigate({
                     pathname: `/login/${response.email}`,
                     state: {
                       isPasswordReset: true,
@@ -186,4 +188,4 @@ const ResetPassword = (props) => {
   );
 };
 
-export default withStyles(styles)(withRouter(ResetPassword));
+export default withStyles(styles)(ResetPassword);

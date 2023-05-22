@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Grid } from "@mui/material";
 import { Container, TextField, Typography, useMediaQuery } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
@@ -36,7 +36,7 @@ const validationSchema = Yup.object().shape({
 
 function Suggestion(props) {
   const { setToast } = useToasterContext();
-  const { history } = props;
+  const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"), {
     defaultMatches: true,
@@ -70,7 +70,7 @@ function Suggestion(props) {
                   setToast({
                     message: "Thank you for your help!",
                   });
-                  history.push("/");
+                  navigate("/");
                 })
                 .catch(() => {
                   formikBag.setSubmitting(false);
@@ -401,4 +401,4 @@ Suggestion.propTypes = {
   setSubmitting: PropTypes.bool,
 };
 
-export default withRouter(Suggestion);
+export default Suggestion;

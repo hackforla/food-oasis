@@ -28,7 +28,7 @@ import {
   useUserCoordinates,
   useWidget,
 } from "../../../../appReducer";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useToasterContext } from "../../../../contexts/toasterContext";
 import SEO from "../../../SEO";
 import { styled } from "@mui/material/styles";
@@ -57,7 +57,7 @@ const StakeholderDetails = () => {
   const userCoordinates = useUserCoordinates();
   const originCoordinates = searchCoordinates || userCoordinates;
   const isWidget = useWidget();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { setToast } = useToasterContext();
 
   useEffect(() => {
@@ -79,7 +79,7 @@ const StakeholderDetails = () => {
 
   const handleBackButtonClick = () => {
     dispatch({ type: "RESET_SELECTED_ORGANIZATION" });
-    history.push(isWidget ? "/widget" : "/organizations");
+    navigate(isWidget ? "/widget" : "/organizations");
   };
 
   const dayOfWeek = (dayOfWeekString) => {

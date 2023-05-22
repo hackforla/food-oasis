@@ -4,7 +4,7 @@ import { Avatar, Container, TextField, Typography } from "@mui/material";
 import withStyles from "@mui/styles/withStyles";
 import { Formik } from "formik";
 import { useEffect, useState } from "react";
-import { Redirect, withRouter } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import * as Yup from "yup";
 import { useToasterContext } from "../../contexts/toasterContext";
 import * as accountService from "../../services/account-service";
@@ -44,7 +44,7 @@ const validationSchema = Yup.object().shape({
 const ConfirmEmail = (props) => {
   const { classes } = props;
   const [confirmResult, setConfirmResult] = useState(false);
-  const token = props.match.params.token;
+  const token = useParams();
   const { setToast } = useToasterContext();
   const [view, setView] = useState("loading");
 
@@ -89,7 +89,7 @@ const ConfirmEmail = (props) => {
       case "loading":
         return <div>&ldquo;Confirming Email...&ldquo;</div>;
       case "success":
-        return <Redirect to={`/login/${confirmResult.email}`} />;
+        return <Navigate to={`/login/${confirmResult.email}`} />;
       case "emailSent":
         return (
           <p>
@@ -166,4 +166,4 @@ const ConfirmEmail = (props) => {
   );
 };
 
-export default withStyles(styles)(withRouter(ConfirmEmail));
+export default withStyles(styles)(ConfirmEmail);

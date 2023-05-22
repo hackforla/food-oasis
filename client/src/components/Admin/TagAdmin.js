@@ -19,7 +19,7 @@ import { IconButton } from "../UI/StandardButton";
 import { Formik } from "formik";
 import { tenantId } from "helpers/Configuration";
 // import IconButton from "components/UI/IconButton";
-import { Redirect, withRouter } from "react-router-dom";
+import { Navigate,useLocation  } from "react-router-dom";
 import Label from "./ui/Label";
 
 const columns = [
@@ -75,6 +75,7 @@ function TagAdmin(props) {
   const [modalStyle] = React.useState(getModalStyle);
   const [error, setError] = React.useState("");
   const [deleteError, setDeleteError] = React.useState("");
+  const location = useLocation();
 
   React.useEffect(() => {
     if (data) {
@@ -85,8 +86,8 @@ function TagAdmin(props) {
   React.useEffect(() => {
     if (status === 401) {
       return (
-        <Redirect
-          to={{ pathname: "/login", state: { from: props.location } }}
+        <Navigate
+          to={{ pathname: "/login", state: { from: location } }}
         />
       );
     }
@@ -308,4 +309,4 @@ function TagAdmin(props) {
   );
 }
 
-export default withRouter(TagAdmin);
+export default TagAdmin;

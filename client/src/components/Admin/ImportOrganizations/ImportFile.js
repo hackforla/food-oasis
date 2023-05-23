@@ -177,7 +177,7 @@ const ImportFile = () => {
 
   return (
     <main className={classes.root}>
-      {/* {user && user.isAdmin ? (
+      {user && user.isAdmin ? (
         <div>
           <Route
             exact
@@ -219,7 +219,7 @@ const ImportFile = () => {
         loading={loading}
         messageOnLoad="Importing file. This may take up to a minute."
         // handleCancelUpload={handleCancelUpload}
-      /> */}
+      />
     </main>
   );
 };

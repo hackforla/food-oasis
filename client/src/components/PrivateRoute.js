@@ -27,12 +27,14 @@ function PrivateRoute({ children, roles, redirectTo = "/login" }) {
       message: message,
     });
 
-    return (
-      <Navigate
-        to={redirectTo}
-        state={{ from: location.pathname, message: message }}
-      />
-    );
+    setTimeout(() => {
+      return (
+        <Navigate
+          to={redirectTo}
+          state={{ from: location.pathname, message: message }}
+        />
+      );
+    }, 2000);
   }
 
   return children;

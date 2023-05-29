@@ -199,12 +199,21 @@ function App() {
                             </div>
                           }
                         />
+
                         <Route
                           path="verificationdashboard"
                           element={
-                            <div className={classes.verificationAdminWrapper}>
-                              <VerificationDashboard />
-                            </div>
+                            <PrivateRoute
+                              roles={[
+                                "isAdmin",
+                                "isDataEntry",
+                                "isCoordinator",
+                              ]}
+                            >
+                              <div className={classes.verificationAdminWrapper}>
+                                <VerificationDashboard />
+                              </div>
+                            </PrivateRoute>
                           }
                         />
                         <Route

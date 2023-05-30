@@ -197,7 +197,6 @@ const About = () => {
                 href="https://hackforla.org/"
                 target={"_blank"}
                 rel="noopener noreferrer"
-                variant="secondary"
               >
                 Hack for LA
               </Link>
@@ -219,7 +218,7 @@ const About = () => {
           <Typography variant="h2">Questions</Typography>
           <Typography variant="body1">
             For more information, please visit our{" "}
-            <Link to={"/faqs"} variant="secondary" component={RouterLink}>
+            <Link to={"/faqs"} component={RouterLink}>
               FAQ page
             </Link>
             .
@@ -246,7 +245,6 @@ const About = () => {
               Please contact our Support Team
               <br />
               <Link
-                variant="secondary"
                 href="mailto:foodoasisinfo@hackforla.org"
               >
                 foodoasisinfo@hackforla.org

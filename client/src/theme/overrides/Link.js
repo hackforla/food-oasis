@@ -11,14 +11,6 @@ export default function Link(theme) {
     MuiLink: {
       variants: [
         {
-          props: { variant: "secondary" },
-          style: {
-            textDecoration: "none",
-            color: "#4D4D4D",
-            borderBottom: "1px solid #4D4D4D",
-          },
-        },
-        {
           props: { variant: "icon" },
           style: {
             textDecoration: "none",

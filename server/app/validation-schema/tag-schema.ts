@@ -1,32 +1,22 @@
 import { JSONSchemaType } from "ajv";
-import { StakeholderTag } from '../../types/tag-types';
+import { Tag, StakeholderTag } from '../../types/tag-types';
 
-export const tagPutRequestSchema: JSONSchemaType<StakeholderTag> = {
+export const tagPutRequestSchema: JSONSchemaType<Omit<Tag, "id">> = {
   type: "object",
-  required: ["id", "name", "tenantId"],
+  required: ["name"],
   properties: {
-    id: {
-      type: "integer",
-      minimum: 1,
-      maximum: 10000,
-    },
     name: {
       type: "string",
       minLength: 1,
       maxLength: 256,
-    },
-    tenantId: {
-      type: "integer",
-      minimum: 1,
-      maximum: 10000
-    },
+    }
   },
   additionalProperties: false,
 };
 
 export const tagPostRequestSchema: JSONSchemaType<Omit<StakeholderTag, "id">> = {
   type: "object",
-  required: ["name", "tenantId"],
+  required: ["name"],
   properties: {
     name: {
       type: "string",
@@ -36,7 +26,6 @@ export const tagPostRequestSchema: JSONSchemaType<Omit<StakeholderTag, "id">> = 
     tenantId: {
       type: "integer",
       minimum: 1,
-      maximum: 10000,
     },
   },
   additionalProperties: false

@@ -22,7 +22,7 @@ const insert = async (model: Omit<StakeholderTag, "id">) => {
   return { id: result.id };
 };
 
-const update = async (body: Tag, tagId: string) => {
+const update = async (body: Omit<Tag, "id">, tagId: string) => {
   body.name = body.name.toUpperCase();
 
   const sql = `update stakeholder_tag

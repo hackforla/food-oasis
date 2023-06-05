@@ -33,14 +33,8 @@ const useStyles = makeStyles((theme) => ({
   },
   searchButton: {
     marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    borderRadius: "20px",
-    marginTop: theme.spacing(0.25),
-    padding: "6px",
-    minWidth: "36px",
-    "&:hover": {
-      backgroundColor: "purple",
-    },
+    padding: "3px",
+    minWidth: "25px",
   },
   inputContainer: {
     display: "flex",
@@ -109,8 +103,20 @@ export default function AddressDropDown({ showSearchIcon }) {
             className: classes.label,
           }}
           InputProps={{
-            endAdornment: null,
             ...params.InputProps,
+            endAdornment: (
+              <React.Fragment>
+                {params.InputProps.endAdornment}
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.searchButton}
+                  onClick={handleSearch}
+                >
+                  <SearchIcon />
+                </Button>
+              </React.Fragment>
+            ),
           }}
         />
       </div>
@@ -130,38 +136,28 @@ export default function AddressDropDown({ showSearchIcon }) {
   };
 
   return (
-    <>
-      <Autocomplete
-        onInputChange={(value) => handleInputChange(value)}
-        freeSolo
-        inputValue={inputVal}
-        open={open}
-        onOpen={() => setOpen(true)}
-        onClose={() => setOpen(false)}
-        onChange={(event, newValue) => setInputVal(newValue)}
-        options={mapboxResults.slice(0, 10).map((item) => item.place_name)}
-        sx={{
-          width: 600,
-          backgroundColor: "#F0F0F0",
-          "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-            borderColor: "white",
-          },
-        }}
-        classes={{
-          paper: classes.paper,
-          input: classes.input,
-        }}
-        renderInput={(params) => renderInput(params)}
-        renderOption={(props, option) => renderOption(props, option)}
-      />
-      <Button
-        variant="contained"
-        color="primary"
-        className={classes.searchButton}
-        onClick={handleSearch}
-      >
-        <SearchIcon />
-      </Button>
-    </>
+    <Autocomplete
+      onInputChange={(value) => handleInputChange(value)}
+      freeSolo
+      inputValue={inputVal}
+      open={open}
+      onOpen={() => setOpen(true)}
+      onClose={() => setOpen(false)}
+      onChange={(event, newValue) => setInputVal(newValue)}
+      options={mapboxResults.slice(0, 10).map((item) => item.place_name)}
+      sx={{
+        width: 600,
+        backgroundColor: "#F0F0F0",
+        "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+          borderColor: "white",
+        },
+      }}
+      classes={{
+        paper: classes.paper,
+        input: classes.input,
+      }}
+      renderInput={(params) => renderInput(params)}
+      renderOption={(props, option) => renderOption(props, option)}
+    />
   );
 }

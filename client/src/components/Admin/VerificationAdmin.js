@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { useLocation, Navigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Button, CssBaseline, Dialog, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import MuiDialogTitle from "@mui/material/DialogTitle";
@@ -132,10 +132,10 @@ function VerificationAdmin() {
     useState(false);
   const [criteria, setCriteria] = useState(defaultCriteria);
   const [selectedStakeholderIds, setSelectedStakeholderIds] = useState([]);
-  const [unauthorized, setUnauthorized] = useState(false);
   const userCoordinates = useUserCoordinates();
   const location = useLocation();
   const searchCoordinates = useSearchCoordinates();
+  const navigate = useNavigate();
 
   const {
     data: categories,
@@ -216,7 +216,7 @@ function VerificationAdmin() {
       // to be logged in, will redirect to login page.
       // Otherwise it's a real exception.
       if (err.response && err.response.status === 401) {
-        setUnauthorized(true);
+        navigate("/login", { state: { from: location } });
       } else {
         console.error(err);
         return Promise.reject(err.message);
@@ -242,7 +242,7 @@ function VerificationAdmin() {
       // to be logged in, will redirect to login page.
       // Otherwise it's a real exception.
       if (err.response && err.response.status === 401) {
-        setUnauthorized(true);
+        navigate("/login", { state: { from: location } });
       } else {
         console.error(err);
         return Promise.reject(err.message);
@@ -274,7 +274,7 @@ function VerificationAdmin() {
       // to be logged in, will redirect to login page.
       // Otherwise it's a real exception.
       if (err.response && err.response.status === 401) {
-        setUnauthorized(true);
+        navigate("/login", { state: { from: location } });
       } else {
         console.error(err);
         return Promise.reject(err.message);
@@ -296,11 +296,12 @@ function VerificationAdmin() {
     setCriteria(criteria);
     search();
   };
+
+  if (!user) {
+    return null;
+  }
   return (
     <main className={classes.root}>
-      {stakeholdersError.status === 401 || unauthorized ? (
-        <Navigate to={{ pathname: "/login", state: { from: location } }} />
-      ) : null}
       <CssBaseline />
       <div
         style={{

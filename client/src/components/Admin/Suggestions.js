@@ -93,7 +93,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Suggestions(props) {
+function Suggestions() {
   const initialStatusIds = [1, 2, 3, 4];
   const [suggestions, setSuggestions] = React.useState([]);
   const classes = useStyles();
@@ -116,9 +116,7 @@ function Suggestions(props) {
   React.useEffect(() => {
     if (status === 401) {
       return (
-        <Navigate
-          to={{ pathname: "/login", state: { from: props.location } }}
-        />
+        <Navigate to={{ pathname: "/login", state: { from: location } }} />
       );
     }
   });

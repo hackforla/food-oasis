@@ -183,6 +183,7 @@ function App() {
                         />
                         <Route path="suggestion" element={<Suggestion />} />
                         <Route path="logins" element={<Logins />} />
+                        <Route path="profile/:id" element={<Profile />} />
                         <Route
                           path="organizationedit/:id?"
                           element={

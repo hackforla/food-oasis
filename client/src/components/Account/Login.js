@@ -65,6 +65,15 @@ const LoginForm = (props) => {
   const navigate = useNavigate();
   const { email } = useParams();
 
+  React.useEffect(() => {
+    if (state.message) {
+      setToast({
+        message: state.message,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className={classes.body}>
       <Container component="main" maxWidth="xs" className={classes.container}>

@@ -66,7 +66,7 @@ const LoginForm = (props) => {
   const { email } = useParams();
 
   React.useEffect(() => {
-    if (state.message) {
+    if (state?.message) {
       setToast({
         message: state.message,
       });

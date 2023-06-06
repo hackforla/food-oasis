@@ -1,44 +1,43 @@
 import React, { useEffect } from "react";
 import faqbg from "./assets/faq-bg.webp";
 import iconSpacerGray from "./assets/icon-spacer-gray.svg";
-import { Link, Typography } from "@mui/material";
+import { Link, Typography, Container, Box } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import * as analytics from "../../services/analytics";
-import Container from "@mui/material/Container";
 import { Link as RouterLink } from "react-router-dom";
 import Footer from "../Layout/Footer";
 
 const useStyles = makeStyles(() => ({
-  outer: {
-    background: "#fff",
-  },
-  main: {
-    padding: "1.5rem 0",
-    maxWidth: "1200px",
-    margin: "0 auto",
-    "& $ul": {
-      paddingLeft: "26px",
-      margin: "5px",
-      fontSize: "16px",
-      lineHeight: "26.55px",
-    },
-    "@media only screen and (min-width: 75em)": {
-      padding: "1.5rem 2rem",
-    },
-  },
-  title: {
-    textTransform: "uppercase",
-    fontWeight: 500,
-    textAlign: "center",
-    background: "#FFF",
-    margin: 0,
-    padding: "32px 0",
-    "& $span": {
-      "& $span": {
-        textTransform: "none",
-      },
-    },
-  },
+  // outer: {
+  //   background: "#fff",
+  // },
+  // main: {
+  //   padding: "1.5rem 0",
+  //   maxWidth: "1200px",
+  //   margin: "0 auto",
+  //   "& $ul": {
+  //     paddingLeft: "26px",
+  //     margin: "5px",
+  //     fontSize: "16px",
+  //     lineHeight: "26.55px",
+  //   },
+  //   "@media only screen and (min-width: 75em)": {
+  //     padding: "1.5rem 2rem",
+  //   },
+  // },
+  // title: {
+  //   textTransform: "uppercase",
+  //   fontWeight: 500,
+  //   textAlign: "center",
+  //   background: "#FFF",
+  //   margin: 0,
+  //   padding: "32px 0",
+  //   "& $span": {
+  //     "& $span": {
+  //       textTransform: "none",
+  //     },
+  //   },
+  // },
   figure: {
     margin: 0,
     padding: 0,
@@ -47,38 +46,38 @@ const useStyles = makeStyles(() => ({
     margin: "auto",
     marginBottom: "20px",
   },
-  glossary: {
-    padding: "50px 32px 50px",
-    margin: "32px 0",
-    borderRadius: "24px",
-    background: "#f0f0f0",
-    display: "flex",
-    flexWrap: "wrap",
-    "& $h2": {
-      flexBasis: "100%",
-      textAlign: "center",
-      fontWeight: "500",
-      fontSize: "32px",
-      marginTop: "10px",
-      marginBottom: "20px",
-    },
-  },
-  forVolunteers: {
-    padding: "50px 32px 50px",
-    margin: "32px 0",
-    borderRadius: "24px",
-    background: "#B6D8FB",
-    display: "flex",
-    flexDirection: "column",
-    "& $h2": {
-      flexBasis: "100%",
-      textAlign: "center",
-      fontWeight: "500",
-      fontSize: "32px",
-      marginTop: "10px",
-      marginBottom: "20px",
-    },
-  },
+  // glossary: {
+  //   padding: "50px 32px 50px",
+  //   margin: "32px 0",
+  //   borderRadius: "24px",
+  //   background: "#f0f0f0",
+  //   display: "flex",
+  //   flexWrap: "wrap",
+  //   "& $h2": {
+  //     flexBasis: "100%",
+  //     textAlign: "center",
+  //     fontWeight: "500",
+  //     fontSize: "32px",
+  //     marginTop: "10px",
+  //     marginBottom: "20px",
+  //   },
+  // },
+  // forVolunteers: {
+  //   padding: "50px 32px 50px",
+  //   margin: "32px 0",
+  //   borderRadius: "24px",
+  //   background: "#B6D8FB",
+  //   display: "flex",
+  //   flexDirection: "column",
+  //   "& $h2": {
+  //     flexBasis: "100%",
+  //     textAlign: "center",
+  //     fontWeight: "500",
+  //     fontSize: "32px",
+  //     marginTop: "10px",
+  //     marginBottom: "20px",
+  //   },
+  // },
   dl: {
     marginTop: "10px",
     marginBottom: "0",
@@ -103,24 +102,53 @@ const About = () => {
   }, []);
 
   return (
-    <div className={classes.outer}>
-      <div className={classes.main}>
+    <Container>
+      <Container 
+      sx={{
+        padding: { xs: "1.5rem 0", lg: "1.5rem 2rem"},
+        margin: "0 auto"
+      }}
+      maxWidth="1200px"
+      >
         <figure className={classes.figure}>
           <img alt="FAQ" src={faqbg} style={{ width: "100%" }} />
         </figure>
-        <Typography variant="h1" className={classes.title}>
+        <Typography variant="h1"
+        sx={{
+          textTransform: "uppercase",
+          textAlign: "center",
+          margin: 0,
+          padding: "32px 0"
+        }}
+        >
           FAQ
         </Typography>
-        <section className={classes.glossary}>
+        <Box
+        sx={{
+          padding: "50px 32px 50px",
+          margin: "32px 0",
+          borderRadius: "24px",
+          background: "#f0f0f0",
+          display: "flex",
+          flexWrap: "wrap",
+        }}
+        >
           <img
             alt="Glossary"
             src={iconSpacerGray}
             className={classes.icon}
             height="40"
           />
-          <Typography variant="h2">Food Seekers</Typography>
+          <Typography variant="h2"
+          sx={{
+            flexBasis: "100%",
+            textAlign: "center",
+            marginTop: "10px",
+            marginBottom: "20px"
+          }}
+          >Food Seekers</Typography>
           <Container maxWidth="sm">
-            <div className={classes.dl}>
+            <Box className={classes.dl}>
               <dl>
                 <dt> How do I use this directory?</dt>
                 <ul>
@@ -175,17 +203,33 @@ const About = () => {
                   </li>
                 </ul>
               </dl>
-            </div>
+            </Box>
           </Container>
-        </section>
-        <section className={classes.forVolunteers}>
+        </Box>
+        <Box
+        sx={{
+          padding: "50px 32px 50px",
+          margin: "32px 0",
+          borderRadius: "24px",
+          background: "#B6D8FB",
+          display: "flex",
+          flexDirection: "column"
+        }}
+        >
           <img
             alt="For Volunteers"
             src={iconSpacerGray}
             className={classes.icon}
             height="40"
           />
-          <Typography variant="h2">Food Providers</Typography>
+          <Typography variant="h2"
+          sx={{
+            flexBasis: "100%",
+            textAlign: "center",
+            marginTop: "10px",
+            marginBottom: "20px",
+          }}
+          >Food Providers</Typography>
           <Container maxWidth="sm">
             <Typography variant="body1" align="center" className={classes.dl}>
               <dt>How can I add our food resource to your directory?</dt>
@@ -198,10 +242,10 @@ const About = () => {
               </dd>
             </Typography>
           </Container>
-        </section>
+        </Box>
         <Footer />
-      </div>
-    </div>
+      </Container>
+    </Container>
   );
 };
 

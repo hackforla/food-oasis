@@ -1,5 +1,5 @@
 import React from "react";
-import { withRouter, useLocation } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   Avatar,
   Box,
@@ -57,11 +57,22 @@ const validationSchema = Yup.object().shape({
 });
 
 const LoginForm = (props) => {
-  const { classes, history, match } = props;
+  const { classes } = props;
   const { onLogin } = useUserContext();
   const { setToast } = useToasterContext();
   // state is the previous pathname if the user has been redirected here from a PrivateRoute.
   const { state } = useLocation();
+  const navigate = useNavigate();
+  const { email } = useParams();
+
+  React.useEffect(() => {
+    if (state.message) {
+      setToast({
+        message: state.message,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className={classes.body}>
@@ -81,7 +92,7 @@ const LoginForm = (props) => {
           <Formik
             validateOnBlur={false}
             initialValues={{
-              email: match.params.email || "",
+              email: email || "",
               password: "",
             }}
             validationSchema={validationSchema}
@@ -99,18 +110,18 @@ const LoginForm = (props) => {
                       message: "Login successful.",
                     });
                     if (state?.from) {
-                      history.push(state.from);
+                      navigate(state.from);
                     } else if (
                       response.user.isAdmin ||
                       response.user.isCoordinator
                     ) {
-                      history.push("/verificationAdmin");
+                      navigate("/verificationAdmin");
                     } else if (response.user.isSecurityAdmin) {
-                      history.push("/securityadmindashboard");
+                      navigate("/securityadmindashboard");
                     } else if (response.user.isDataEntry) {
-                      history.push("/verificationdashboard");
+                      navigate("/verificationdashboard");
                     } else {
-                      history.push("/");
+                      navigate("/");
                     }
                   } else if (response.code === "AUTH_NOT_CONFIRMED") {
                     try {
@@ -242,4 +253,4 @@ const LoginForm = (props) => {
   );
 };
 
-export default withStyles(styles)(withRouter(LoginForm));
+export default withStyles(styles)(LoginForm);

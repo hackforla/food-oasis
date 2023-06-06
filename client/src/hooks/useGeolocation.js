@@ -1,12 +1,12 @@
 import React from "react";
 import { useAppDispatch, useUserCoordinates, useWidget } from "../appReducer";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function useGeolocation() {
   const dispatch = useAppDispatch();
   const userCoordinates = useUserCoordinates();
   const isWidget = useWidget();
-  const history = useHistory();
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = React.useState(false);
 
   const getUserLocation = React.useCallback(async () => {
@@ -18,7 +18,7 @@ export default function useGeolocation() {
           longitude: userCoordinates.longitude,
         },
       });
-      history.push(isWidget ? "/widget" : "/organizations");
+      navigate(isWidget ? "/widget" : "/organizations");
       return;
     }
 
@@ -54,8 +54,8 @@ export default function useGeolocation() {
       );
     }
     setIsLoading(false);
-    history.push(isWidget ? "/widget" : "/organizations");
-  }, [dispatch, history, userCoordinates, isWidget]);
+    navigate(isWidget ? "/widget" : "/organizations");
+  }, [dispatch, navigate, userCoordinates, isWidget]);
 
   return { getUserLocation, isLoading };
 }

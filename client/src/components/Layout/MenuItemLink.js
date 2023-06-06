@@ -17,9 +17,7 @@ const MenuItemLink = ({ to, text, userSection, onClick }) => {
   const renderLink = useMemo(
     () =>
       // eslint-disable-next-line react/display-name
-      forwardRef((itemProps, ref) => (
-        <Link to={to} innerRef={ref} {...itemProps} />
-      )),
+      forwardRef((itemProps, ref) => <Link to={to} ref={ref} {...itemProps} />),
     [to]
   );
 

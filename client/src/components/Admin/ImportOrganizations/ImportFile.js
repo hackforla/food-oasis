@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Route, useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Typography } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import { uploadCsv, importCsv } from "../../../services/import-service";
@@ -40,7 +40,7 @@ const initialImportData = {
 };
 
 const ImportFile = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { tenantId, tenantName } = useSiteContext();
   const { user } = useUserContext();
   const { setToast } = useToasterContext();
@@ -53,6 +53,9 @@ const ImportFile = () => {
   const [loading, setLoading] = useState(false);
   const classes = useStyles();
   let formData = React.useMemo(() => new FormData(), []);
+  const [view, setView] = useState(
+    user && user.isAdmin ? "adminAccessNotice" : "fileGuide"
+  );
 
   const handleChange = (e) => {
     const uploadedFile = e.currentTarget.files[0];
@@ -73,7 +76,7 @@ const ImportFile = () => {
         console.error(err.message);
         setToast({
           message:
-            "File could not be uploaded. Please doublecheck file format and schema.",
+            "File could not be uploaded. Please double check file format and schema.",
         });
         handleCancel();
       });
@@ -140,7 +143,7 @@ const ImportFile = () => {
         setToast({
           message: "File successfully imported!",
         });
-        history.push("/verificationadmin");
+        navigate("/verificationadmin");
       })
       .catch((err) => {
         console.error(err.message);
@@ -154,13 +157,13 @@ const ImportFile = () => {
 
   useEffect(() => {
     if (importData.data) {
-      history.push("/organizationimport/review");
+      setView("fileTable");
       setLoading(false);
     } else {
-      history.push("/organizationimport");
+      setView("fileGuide");
       setFile(null);
     }
-  }, [importData, history]);
+  }, [importData]);
 
   useEffect(() => {
     if (!file) {
@@ -175,46 +178,56 @@ const ImportFile = () => {
     exportCsv("template.csv");
   };
 
+  const renderView = () => {
+    switch (view) {
+      case "adminAccessNotice":
+        return (
+          <Typography>You must have admin access to import files</Typography>
+        );
+      case "fileGuide":
+        return (
+          <ImportFileGuide
+            handleChange={handleChange}
+            handleUpload={handleUpload}
+            handleDownload={handleDownload}
+            file={file}
+          />
+        );
+      case "fileTable":
+        return (
+          <ImportFileTable
+            tenantName={tenantName}
+            data={importData.data}
+            handleImportAction={handleImportAction}
+            handleImportDialog={handleImportDialog}
+            handleCancel={handleCancel}
+          />
+        );
+      default:
+        return (
+          <ImportFileGuide
+            handleChange={handleChange}
+            handleUpload={handleUpload}
+            handleDownload={handleDownload}
+            file={file}
+          />
+        );
+    }
+  };
+
   return (
     <main className={classes.root}>
-      {user && user.isAdmin ? (
-        <div>
-          <Route
-            exact
-            path="/organizationimport"
-            render={() => (
-              <ImportFileGuide
-                handleChange={handleChange}
-                handleUpload={handleUpload}
-                handleDownload={handleDownload}
-                file={file}
-              />
-            )}
-          />
-          <Route
-            path="/organizationimport/review"
-            render={() => (
-              <ImportFileTable
-                tenantName={tenantName}
-                data={importData.data}
-                handleImportAction={handleImportAction}
-                handleImportDialog={handleImportDialog}
-                handleCancel={handleCancel}
-              />
-            )}
-          />
-          <ImportDialog
-            tenantName={tenantName}
-            open={dialog}
-            importData={importData}
-            title="Import stakeholder records"
-            handleImportAction={handleImportAction}
-            handleImport={handleImport}
-          />
-        </div>
-      ) : (
-        <Typography>You must have admin access to import files</Typography>
-      )}
+      <div>
+        {renderView()}
+        <ImportDialog
+          tenantName={tenantName}
+          open={dialog}
+          importData={importData}
+          title="Import stakeholder records"
+          handleImportAction={handleImportAction}
+          handleImport={handleImport}
+        />
+      </div>
       <ProgressBackdrop
         loading={loading}
         messageOnLoad="Importing file. This may take up to a minute."

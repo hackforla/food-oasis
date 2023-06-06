@@ -1,5 +1,4 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
 import withStyles from "@mui/styles/withStyles";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -17,6 +16,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useToasterContext } from "../../contexts/toasterContext";
 import debounce from "lodash.debounce";
 import Label from "components/Admin/ui/Label";
+import { useNavigate, useParams } from "react-router-dom";
 
 const styles = (theme) => ({
   paper: {
@@ -50,8 +50,10 @@ const validationSchema = Yup.object().shape({
 });
 
 const ForgotPassword = (props) => {
-  const { classes, history, match } = props;
+  const { classes } = props;
   const { setToast } = useToasterContext();
+  const { email } = useParams();
+  const navigate = useNavigate();
 
   const debouncedEmailValidation = debounce(async (value, setFieldError) => {
     try {
@@ -79,7 +81,7 @@ const ForgotPassword = (props) => {
           <Formik
             validateOnBlur={false}
             initialValues={{
-              email: match.params.email || "",
+              email: email || "",
             }}
             validationSchema={validationSchema}
             onSubmit={async (values, formikBag) => {
@@ -88,7 +90,7 @@ const ForgotPassword = (props) => {
                   values.email
                 );
                 if (response.isSuccess) {
-                  history.push(`/resetpasswordemailsent/${values.email || ""}`);
+                  navigate(`/resetpasswordemailsent/${values.email || ""}`);
                 } else if (
                   response.code === "FORGOT_PASSWORD_ACCOUNT_NOT_FOUND"
                 ) {
@@ -201,4 +203,4 @@ const ForgotPassword = (props) => {
   );
 };
 
-export default withStyles(styles)(withRouter(ForgotPassword));
+export default withStyles(styles)(ForgotPassword);

@@ -13,11 +13,14 @@ export default function useLocationHook() {
     "/forgotpassword/:email",
   ];
 
-  const match = matchPath(location.pathname, {
-    path: AUTHROUTES,
-    exact: true,
-    strict: false,
-  });
+  const match = AUTHROUTES.some((path) =>
+    matchPath(
+      {
+        path,
+      },
+      location.pathname
+    )
+  );
 
   useEffect(() => {
     setIsHomePage(location.pathname === "/");

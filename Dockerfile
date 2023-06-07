@@ -1,4 +1,4 @@
-FROM node:lts-alpine as clientBuilder
+FROM node:lts-bullseye-slim as clientBuilder
 
 ENV NODE_ENV "production"
 ENV NODE_OPTIONS=--openssl-legacy-provider
@@ -14,7 +14,7 @@ RUN npm run build
 RUN echo package.json
 
 # Server Build Container
-FROM node:lts-alpine as serverBuilder
+FROM node:lts-bullseye-slim as serverBuilder
 
 WORKDIR /usr/src
 COPY tsconfig.json ./
@@ -32,7 +32,7 @@ COPY ./server/server.ts ./
 RUN npm ci --quiet && npm run build
 
 # Server Container
-FROM node:buster-slim
+FROM node:lts-bullseye-slim
 LABEL maintainer.fola="foodoasis@hackforla.org"
 LABEL org.hackforla="Hack For LA"
 LABEL description="Food Oasis app"

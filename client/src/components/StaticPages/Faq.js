@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import faqbg from "./assets/faq-bg.webp";
 // import iconSpacerGray from "./assets/icon-spacer-gray.svg";
 import IconSpacerSVG from "./assets/IconSpacerSVG";
-import { Link, Typography, Container, Box, CardMedia, SvgIcon } from "@mui/material";
+import { Link, Typography, Container, Box, CardMedia, SvgIcon} from "@mui/material";
 // import makeStyles from "@mui/styles/makeStyles";
 import * as analytics from "../../services/analytics";
 import { Link as RouterLink } from "react-router-dom";
@@ -116,13 +116,7 @@ const About = () => {
         maxWidth: "1200px"
       }}
       >
-      <figure style={{
-        margin: 0,
-        padding: 0
-      }}
-      >
-        <CardMedia component="img" alt="FAQ" src={faqbg} style={{ width: "100%" }}></CardMedia>
-      </figure>
+      <CardMedia component="img" alt="FAQ" src={faqbg} style={{ width: "100%" }}></CardMedia>
       <Typography variant="h1"
       sx={{
         textTransform: "uppercase",
@@ -180,7 +174,12 @@ const About = () => {
             }}
             >
                 <Typography variant="subtitle1" component="dt"> How do I use this directory?</Typography>
-                <Box sx={{ paddingLeft: "26px"}} component="ul">
+                <Box 
+                sx={{ 
+                  paddingLeft: "26px",
+                  margin: "5px",
+                  lineHeight: "26.55px"
+                  }} component="ul">
                   <Typography variant="body1" component="li">
                     From the “Find Food” page, type in your zip code or address
                     and click “Enter.”
@@ -204,7 +203,13 @@ const About = () => {
                   Does this web-based directory include every resource where I
                   can get free food in Los Angeles County?
                 </Typography>
-                <Box sx={{ paddingLeft: "26px"}} component="ul">
+                <Box
+                sx={{ 
+                  paddingLeft: "26px",
+                  margin: "5px",
+                  lineHeight: "26.55px"
+                }}
+                 component="ul">
                   <Typography variant="body1" component="li">
                     No. While our directory is not an exhaustive list of every
                     food resource open to the public in Los Angeles, our
@@ -221,7 +226,13 @@ const About = () => {
                   What is the difference between a food bank, food pantry and
                   meal program?
                 </Typography>
-                <Box sx={{ paddingLeft: "26px"}} component="ul">
+                <Box
+                sx={{ 
+                  paddingLeft: "26px",
+                  margin: "5px",
+                  lineHeight: "26.55px"
+                }}
+                component="ul">
                   <Typography variant="body1" component="li">
                     Generally, food banks collect donated food and distribute
                     items to food pantries. Food pantries provide free groceries

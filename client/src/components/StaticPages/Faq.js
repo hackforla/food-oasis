@@ -1,102 +1,14 @@
 import React, { useEffect } from "react";
 import faqbg from "./assets/faq-bg.webp";
-// import iconSpacerGray from "./assets/icon-spacer-gray.svg";
 import IconSpacerSVG from "./assets/IconSpacerSVG";
 import { Link, Typography, Container, Box, CardMedia, SvgIcon} from "@mui/material";
-// import makeStyles from "@mui/styles/makeStyles";
 import * as analytics from "../../services/analytics";
 import { Link as RouterLink } from "react-router-dom";
 import Footer from "../Layout/Footer";
 
-// const useStyles = makeStyles(() => ({
-//   // outer: {
-//   //   background: "#fff",
-//   // },
-//   // main: {
-//   //   padding: "1.5rem 0",
-//   //   maxWidth: "1200px",
-//   //   margin: "0 auto",
-//   //   "& $ul": {
-//   //     paddingLeft: "26px",
-//   //     margin: "5px",
-//   //     fontSize: "16px",
-//   //     lineHeight: "26.55px",
-//   //   },
-//   //   "@media only screen and (min-width: 75em)": {
-//   //     padding: "1.5rem 2rem",
-//   //   },
-//   // },
-//   // title: {
-//   //   textTransform: "uppercase",
-//   //   fontWeight: 500,
-//   //   textAlign: "center",
-//   //   background: "#FFF",
-//   //   margin: 0,
-//   //   padding: "32px 0",
-//   //   "& $span": {
-//   //     "& $span": {
-//   //       textTransform: "none",
-//   //     },
-//   //   },
-//   // },
-//   // figure: {
-//   //   margin: 0,
-//   //   padding: 0,
-//   // },
-//   // icon: {
-//   //   margin: "auto",
-//   //   marginBottom: "20px",
-//   // },
-//   // glossary: {
-//   //   padding: "50px 32px 50px",
-//   //   margin: "32px 0",
-//   //   borderRadius: "24px",
-//   //   background: "#f0f0f0",
-//   //   display: "flex",
-//   //   flexWrap: "wrap",
-//   //   "& $h2": {
-//   //     flexBasis: "100%",
-//   //     textAlign: "center",
-//   //     fontWeight: "500",
-//   //     fontSize: "32px",
-//   //     marginTop: "10px",
-//   //     marginBottom: "20px",
-//   //   },
-//   // },
-//   // forVolunteers: {
-//   //   padding: "50px 32px 50px",
-//   //   margin: "32px 0",
-//   //   borderRadius: "24px",
-//   //   background: "#B6D8FB",
-//   //   display: "flex",
-//   //   flexDirection: "column",
-//   //   "& $h2": {
-//   //     flexBasis: "100%",
-//   //     textAlign: "center",
-//   //     fontWeight: "500",
-//   //     fontSize: "32px",
-//   //     marginTop: "10px",
-//   //     marginBottom: "20px",
-//   //   },
-//   // },
-//   // dl: {
-//   //   marginTop: "10px",
-//   //   marginBottom: "0",
-//   //   "& $dt": {
-//   //     fontWeight: "600",
-//   //     fontSize: "20px",
-//   //   },
-//   //   "& $dd": {
-//   //     marginLeft: "0",
-//   //     marginBottom: "32px",
-//   //   },
-//   //   "& $dd:last-child": {
-//   //     marginBottom: "0",
-//   //   },
-//   // },
-// }));
+
+
 const About = () => {
-  // const classes = useStyles();
 
   useEffect(() => {
     analytics.postEvent("visitFaqPage");

@@ -1,144 +1,162 @@
 import React, { useEffect } from "react";
 import faqbg from "./assets/faq-bg.webp";
 import iconSpacerGray from "./assets/icon-spacer-gray.svg";
-import { Link, Typography, Container, Box } from "@mui/material";
+import IconSpacerSVG from "./assets/IconSpacerSVG";
+import { Link, Typography, Container, Box, CardMedia, SvgIcon } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import * as analytics from "../../services/analytics";
 import { Link as RouterLink } from "react-router-dom";
 import Footer from "../Layout/Footer";
+import { height } from "@mui/system";
 
-const useStyles = makeStyles(() => ({
-  // outer: {
-  //   background: "#fff",
-  // },
-  // main: {
-  //   padding: "1.5rem 0",
-  //   maxWidth: "1200px",
-  //   margin: "0 auto",
-  //   "& $ul": {
-  //     paddingLeft: "26px",
-  //     margin: "5px",
-  //     fontSize: "16px",
-  //     lineHeight: "26.55px",
-  //   },
-  //   "@media only screen and (min-width: 75em)": {
-  //     padding: "1.5rem 2rem",
-  //   },
-  // },
-  // title: {
-  //   textTransform: "uppercase",
-  //   fontWeight: 500,
-  //   textAlign: "center",
-  //   background: "#FFF",
-  //   margin: 0,
-  //   padding: "32px 0",
-  //   "& $span": {
-  //     "& $span": {
-  //       textTransform: "none",
-  //     },
-  //   },
-  // },
-  figure: {
-    margin: 0,
-    padding: 0,
-  },
-  icon: {
-    margin: "auto",
-    marginBottom: "20px",
-  },
-  // glossary: {
-  //   padding: "50px 32px 50px",
-  //   margin: "32px 0",
-  //   borderRadius: "24px",
-  //   background: "#f0f0f0",
-  //   display: "flex",
-  //   flexWrap: "wrap",
-  //   "& $h2": {
-  //     flexBasis: "100%",
-  //     textAlign: "center",
-  //     fontWeight: "500",
-  //     fontSize: "32px",
-  //     marginTop: "10px",
-  //     marginBottom: "20px",
-  //   },
-  // },
-  // forVolunteers: {
-  //   padding: "50px 32px 50px",
-  //   margin: "32px 0",
-  //   borderRadius: "24px",
-  //   background: "#B6D8FB",
-  //   display: "flex",
-  //   flexDirection: "column",
-  //   "& $h2": {
-  //     flexBasis: "100%",
-  //     textAlign: "center",
-  //     fontWeight: "500",
-  //     fontSize: "32px",
-  //     marginTop: "10px",
-  //     marginBottom: "20px",
-  //   },
-  // },
-  dl: {
-    marginTop: "10px",
-    marginBottom: "0",
-    "& $dt": {
-      fontWeight: "600",
-      fontSize: "20px",
-    },
-    "& $dd": {
-      marginLeft: "0",
-      marginBottom: "32px",
-    },
-    "& $dd:last-child": {
-      marginBottom: "0",
-    },
-  },
-}));
+// const useStyles = makeStyles(() => ({
+//   // outer: {
+//   //   background: "#fff",
+//   // },
+//   // main: {
+//   //   padding: "1.5rem 0",
+//   //   maxWidth: "1200px",
+//   //   margin: "0 auto",
+//   //   "& $ul": {
+//   //     paddingLeft: "26px",
+//   //     margin: "5px",
+//   //     fontSize: "16px",
+//   //     lineHeight: "26.55px",
+//   //   },
+//   //   "@media only screen and (min-width: 75em)": {
+//   //     padding: "1.5rem 2rem",
+//   //   },
+//   // },
+//   // title: {
+//   //   textTransform: "uppercase",
+//   //   fontWeight: 500,
+//   //   textAlign: "center",
+//   //   background: "#FFF",
+//   //   margin: 0,
+//   //   padding: "32px 0",
+//   //   "& $span": {
+//   //     "& $span": {
+//   //       textTransform: "none",
+//   //     },
+//   //   },
+//   // },
+//   // figure: {
+//   //   margin: 0,
+//   //   padding: 0,
+//   // },
+//   // icon: {
+//   //   margin: "auto",
+//   //   marginBottom: "20px",
+//   // },
+//   // glossary: {
+//   //   padding: "50px 32px 50px",
+//   //   margin: "32px 0",
+//   //   borderRadius: "24px",
+//   //   background: "#f0f0f0",
+//   //   display: "flex",
+//   //   flexWrap: "wrap",
+//   //   "& $h2": {
+//   //     flexBasis: "100%",
+//   //     textAlign: "center",
+//   //     fontWeight: "500",
+//   //     fontSize: "32px",
+//   //     marginTop: "10px",
+//   //     marginBottom: "20px",
+//   //   },
+//   // },
+//   // forVolunteers: {
+//   //   padding: "50px 32px 50px",
+//   //   margin: "32px 0",
+//   //   borderRadius: "24px",
+//   //   background: "#B6D8FB",
+//   //   display: "flex",
+//   //   flexDirection: "column",
+//   //   "& $h2": {
+//   //     flexBasis: "100%",
+//   //     textAlign: "center",
+//   //     fontWeight: "500",
+//   //     fontSize: "32px",
+//   //     marginTop: "10px",
+//   //     marginBottom: "20px",
+//   //   },
+//   // },
+//   // dl: {
+//   //   marginTop: "10px",
+//   //   marginBottom: "0",
+//   //   "& $dt": {
+//   //     fontWeight: "600",
+//   //     fontSize: "20px",
+//   //   },
+//   //   "& $dd": {
+//   //     marginLeft: "0",
+//   //     marginBottom: "32px",
+//   //   },
+//   //   "& $dd:last-child": {
+//   //     marginBottom: "0",
+//   //   },
+//   // },
+// }));
 const About = () => {
-  const classes = useStyles();
+  // const classes = useStyles();
 
   useEffect(() => {
     analytics.postEvent("visitFaqPage");
   }, []);
 
   return (
-    <Container>
+    <Container
+    sx={{
+      padding: { xs: "1.5rem 0", lg: "1.5rem 2rem"}
+    }}
+    >
       <Container 
       sx={{
-        padding: { xs: "1.5rem 0", lg: "1.5rem 2rem"},
+        padding: { xs: "0", lg: "1.5rem 2rem"},
         margin: "0 auto"
       }}
       maxWidth="1200px"
       >
-        <figure className={classes.figure}>
-          <img alt="FAQ" src={faqbg} style={{ width: "100%" }} />
-        </figure>
-        <Typography variant="h1"
-        sx={{
-          textTransform: "uppercase",
-          textAlign: "center",
-          margin: 0,
-          padding: "32px 0"
-        }}
-        >
-          FAQ
-        </Typography>
-        <Box
-        sx={{
-          padding: "50px 32px 50px",
-          margin: "32px 0",
-          borderRadius: "24px",
-          background: "#f0f0f0",
-          display: "flex",
-          flexWrap: "wrap",
-        }}
-        >
-          <img
-            alt="Glossary"
-            src={iconSpacerGray}
-            className={classes.icon}
-            height="40"
-          />
+      <figure style={{
+        margin: 0,
+        padding: 0
+      }}
+      >
+        <CardMedia component="img" alt="FAQ" src={faqbg} style={{ width: "100%" }}></CardMedia>
+      </figure>
+      <Typography variant="h1"
+      sx={{
+        textTransform: "uppercase",
+        textAlign: "center",
+        margin: 0,
+        padding: "32px 0"
+      }}
+      >
+        FAQ
+      </Typography>
+      <Box
+      sx={{
+        padding: "50px 32px 50px",
+        margin: "32px 0",
+        borderRadius: "24px",
+        background: "#f0f0f0",
+        display: "flex",
+        flexWrap: "wrap",
+      }}
+      >
+      <CardMedia
+      component="svg"
+      sx={{
+        margin: "auto",
+        marginBottom: "20px",
+        height: "40px",
+        width: "90px"
+      }}
+      >
+        <SvgIcon 
+        component={IconSpacerSVG}
+        titleAccess="Glossary"
+      />
+      </CardMedia>
           <Typography variant="h2"
           sx={{
             flexBasis: "100%",
@@ -148,35 +166,50 @@ const About = () => {
           }}
           >Food Seekers</Typography>
           <Container maxWidth="sm">
-            <Box className={classes.dl}>
-              <dl>
-                <dt> How do I use this directory?</dt>
-                <ul>
-                  <li>
+            <Box component="dl"
+            sx={{
+              marginTop: "10px",
+              marginBottom: "0",
+              "& dt": {
+                fontWeight: "600",
+                fontSize: "20"
+              },
+              "& dd": {
+                marginLeft: "0",
+                marginBottom: "24px"
+              },
+              "& dd:last-child": {
+                marginBottom: "0"
+              }
+            }}
+            >
+                <Typography component="dt"> How do I use this directory?</Typography>
+                <Box component="ul">
+                  <Typography variant="body1" component="li">
                     From the “Find Food” page, type in your zip code or address
                     and click “Enter.”
-                  </li>
-                  <li>
+                  </Typography>
+                  <Typography variant="body1" component="li">
                     A list of nearby options, sorted from nearest to farthest,
                     will pop up on the left side of the screen.
-                  </li>
-                  <li>
+                  </Typography>
+                  <Typography variant="body1" component="li">
                     Choose “PANTRIES” or “MEALS” if you would like to filter by
                     type of food resource.
-                  </li>
-                  <li>
+                  </Typography>
+                  <Typography variant="body1" component="li">
                     The “Details” button on an entry provides information like
                     Directions, Hours of Operation and Contact Information for
                     the service.
-                  </li>
-                </ul>
+                  </Typography>
+                </Box>
                 <br />
-                <dt>
+                <Typography component="dt">
                   Does this web-based directory include every resource where I
                   can get free food in Los Angeles County?
-                </dt>
-                <ul>
-                  <li>
+                </Typography>
+                <Box component="ul">
+                  <Typography variant="body1" component="li">
                     No. While our directory is not an exhaustive list of every
                     food resource open to the public in Los Angeles, our
                     volunteers work hard to ensure the information listed is
@@ -185,24 +218,23 @@ const About = () => {
                       use this link
                     </Link>
                     .
-                  </li>
-                </ul>
+                  </Typography>
+                </Box>
                 <br />
-                <dt>
+                <Typography component="dt">
                   What is the difference between a food bank, food pantry and
                   meal program?
-                </dt>
-                <ul>
-                  <li>
+                </Typography>
+                <Box component="ul">
+                  <Typography variant="body1" component="li">
                     Generally, food banks collect donated food and distribute
                     items to food pantries. Food pantries provide free groceries
                     to food seekers. Meal programs provide free cooked meals to
                     food seekers. Many locations provide multiple services. Our
                     updated directory indicates which services are available at
                     each location.
-                  </li>
-                </ul>
-              </dl>
+                  </Typography>
+                </Box>
             </Box>
           </Container>
         </Box>
@@ -216,12 +248,20 @@ const About = () => {
           flexDirection: "column"
         }}
         >
-          <img
-            alt="For Volunteers"
-            src={iconSpacerGray}
-            className={classes.icon}
-            height="40"
-          />
+          <CardMedia
+        component="svg"
+        sx={{
+          margin: "auto",
+          marginBottom: "20px",
+          height: "40px",
+          width: "90px"
+        }}
+      >
+        <SvgIcon 
+        component={IconSpacerSVG}
+        titleAccess="Glossary"
+        />
+      </CardMedia>
           <Typography variant="h2"
           sx={{
             flexBasis: "100%",
@@ -231,16 +271,21 @@ const About = () => {
           }}
           >Food Providers</Typography>
           <Container maxWidth="sm">
-            <Typography variant="body1" align="center" className={classes.dl}>
-              <dt>How can I add our food resource to your directory?</dt>
-              <dd>
+            <Box component="dl" align="center">
+              <Typography
+              sx={{
+                fontWeight: "600",
+                fontSize: "20"
+              }}
+              component="dt">How can I add our food resource to your directory?</Typography>
+              <Typography component="dd">
                 Please visit our “
                 <Link to={"/suggestion"} component={RouterLink}>
                   Suggest New Listing
                 </Link>
                 ” page.
-              </dd>
-            </Typography>
+              </Typography>
+            </Box>
           </Container>
         </Box>
         <Footer />

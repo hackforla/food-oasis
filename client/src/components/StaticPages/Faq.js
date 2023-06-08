@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import faqbg from "./assets/faq-bg.webp";
-import iconSpacerGray from "./assets/icon-spacer-gray.svg";
+// import iconSpacerGray from "./assets/icon-spacer-gray.svg";
 import IconSpacerSVG from "./assets/IconSpacerSVG";
 import { Link, Typography, Container, Box, CardMedia, SvgIcon } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
+// import makeStyles from "@mui/styles/makeStyles";
 import * as analytics from "../../services/analytics";
 import { Link as RouterLink } from "react-router-dom";
 import Footer from "../Layout/Footer";
@@ -106,15 +106,15 @@ const About = () => {
   return (
     <Container
     sx={{
-      padding: { xs: "1.5rem 0", lg: "1.5rem 2rem"}
+      padding: { xs: "1.5rem 0" },
     }}
     >
       <Container 
       sx={{
-        padding: { xs: "0", lg: "1.5rem 2rem"},
-        margin: "0 auto"
+        padding: { sm: "0", md: "0rem 2rem"},
+        margin: "0 auto",
+        maxWidth: "1200px"
       }}
-      maxWidth="1200px"
       >
       <figure style={{
         margin: 0,

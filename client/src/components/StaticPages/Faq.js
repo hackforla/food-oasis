@@ -170,10 +170,6 @@ const About = () => {
             sx={{
               marginTop: "10px",
               marginBottom: "0",
-              "& dt": {
-                fontWeight: "600",
-                fontSize: "20"
-              },
               "& dd": {
                 marginLeft: "0",
                 marginBottom: "24px"
@@ -183,8 +179,8 @@ const About = () => {
               }
             }}
             >
-                <Typography component="dt"> How do I use this directory?</Typography>
-                <Box component="ul">
+                <Typography variant="subtitle1" component="dt"> How do I use this directory?</Typography>
+                <Box sx={{ paddingLeft: "26px"}} component="ul">
                   <Typography variant="body1" component="li">
                     From the “Find Food” page, type in your zip code or address
                     and click “Enter.”
@@ -204,11 +200,11 @@ const About = () => {
                   </Typography>
                 </Box>
                 <br />
-                <Typography component="dt">
+                <Typography variant="subtitle1" component="dt">
                   Does this web-based directory include every resource where I
                   can get free food in Los Angeles County?
                 </Typography>
-                <Box component="ul">
+                <Box sx={{ paddingLeft: "26px"}} component="ul">
                   <Typography variant="body1" component="li">
                     No. While our directory is not an exhaustive list of every
                     food resource open to the public in Los Angeles, our
@@ -221,11 +217,11 @@ const About = () => {
                   </Typography>
                 </Box>
                 <br />
-                <Typography component="dt">
+                <Typography variant="subtitle1" component="dt">
                   What is the difference between a food bank, food pantry and
                   meal program?
                 </Typography>
-                <Box component="ul">
+                <Box sx={{ paddingLeft: "26px"}} component="ul">
                   <Typography variant="body1" component="li">
                     Generally, food banks collect donated food and distribute
                     items to food pantries. Food pantries provide free groceries
@@ -272,12 +268,7 @@ const About = () => {
           >Food Providers</Typography>
           <Container maxWidth="sm">
             <Box component="dl" align="center">
-              <Typography
-              sx={{
-                fontWeight: "600",
-                fontSize: "20"
-              }}
-              component="dt">How can I add our food resource to your directory?</Typography>
+              <Typography variant="subtitle1" component="dt">How can I add our food resource to your directory?</Typography>
               <Typography component="dd">
                 Please visit our “
                 <Link to={"/suggestion"} component={RouterLink}>

@@ -7,7 +7,6 @@ import { Link, Typography, Container, Box, CardMedia, SvgIcon} from "@mui/materi
 import * as analytics from "../../services/analytics";
 import { Link as RouterLink } from "react-router-dom";
 import Footer from "../Layout/Footer";
-import { height } from "@mui/system";
 
 // const useStyles = makeStyles(() => ({
 //   // outer: {
@@ -111,7 +110,7 @@ const About = () => {
     >
       <Container 
       sx={{
-        padding: { sm: "0", md: "0rem 2rem"},
+        padding: { xs: "0", md: "0rem 2rem"},
         margin: "0 auto",
         maxWidth: "1200px"
       }}

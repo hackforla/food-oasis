@@ -16,26 +16,30 @@ export default function Link(theme) {
             textDecoration: "none",
           },
         },
-      ],
-      styleOverrides: {
-        inherit: {
+        {
+          props: { variant: "primary" },
+          style: {
           textDecoration: "none",
           padding: "2px 1px 0",
           borderBottom: "1px solid",
           "&:link": {
             color: theme.palette.link.normal,
           },
-          "&:visited": {
-            color: theme.palette.link.visited,
+          "&:a": {
+            color: theme.palette.link.normal,
           },
-          "&:hover": {
-            color: theme.palette.link.hovered,
-          },
-          "&:active": {
-            color: theme.palette.primary.light,
+          // "&:visited": {
+          //   color: theme.palette.link.visited,
+          // },
+          // "&:hover": {
+          //   color: theme.palette.link.hovered,
+          // },
+          // "&:active": {
+          //   color: theme.palette.primary.light,
+          // },
           },
         },
-      },
+      ],
     },
   };
 }

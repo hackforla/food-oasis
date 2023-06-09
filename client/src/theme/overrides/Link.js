@@ -28,15 +28,15 @@ export default function Link(theme) {
           "&:a": {
             color: theme.palette.link.normal,
           },
-          // "&:visited": {
-          //   color: theme.palette.link.visited,
-          // },
-          // "&:hover": {
-          //   color: theme.palette.link.hovered,
-          // },
-          // "&:active": {
-          //   color: theme.palette.primary.light,
-          // },
+          "&:visited": {
+            color: theme.palette.link.visited,
+          },
+          "&:hover": {
+            color: theme.palette.link.hovered,
+          },
+          "&:active": {
+            color: theme.palette.primary.light,
+          },
           },
         },
       ],

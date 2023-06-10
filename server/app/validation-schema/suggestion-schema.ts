@@ -1,105 +1,113 @@
 import { JSONSchemaType } from "ajv";
 import { Suggestion } from "../../types/suggestion-types";
 
-export const suggestionPutRequestSchema: JSONSchemaType<Suggestion> = {
+export const suggestionPostRequestSchema: JSONSchemaType<Omit<Suggestion, "id">> = {
   type: "object",
-  required: ["id", "adminNotes", "suggestionStatusId"],
+  required: ["name"],
   properties: {
-    id: {
+    stakeholderId: {
       type: "integer",
       minimum: 1,
-      maximum: 10000,
     },
     adminNotes: {
       type: "string",
-      minLength: 1,
-      maxLength: 256,
     },
-    suggestionStatusId: {
-      type: "integer",
-    },
+    suggestionStatusId: { type: "integer" },
     name: {
       type: "string",
+      maxLength: 100,
+      pattern: "^[^\s].+[^\s]$"
     },
     address1: {
       type: "string",
+      maxLength: 256,
     },
     address2: {
       type: "string",
+      maxLength: 256,
     },
     city: {
       type: "string",
+      maxLength: 20,
     },
     state: {
       type: "string",
+      maxLength: 20,
     },
     zip: {
       type: "string",
+      maxLength: 256,
     },
     phone: {
       type: "string",
+      maxLength: 20,
     },
     email: {
-      type: "string",
+      // once we have set a value to format/pattern property, that property becomes required
+      // since email is opetional, we can make UnionType to accept empty strings
+      // setting minLength to 0 or setting nullable: true won't help to leave email empty
+      anyOf: [
+        {
+          type: "string",
+          "format": "email",
+          maxLength: 50,
+        },
+        {
+          type: "string",
+          maxLength: 0
+        }
+      ]
     },
-    notes: {
-      type: "string",
-    },
+    notes: { type: "string" }, // also called "other information"
     tipsterName: {
       type: "string",
+      maxLength: 100
     },
     tipsterPhone: {
       type: "string",
+      maxLength: 20,
     },
     tipsterEmail: {
-      type: "string",
+      anyOf: [
+        {
+          type: "string",
+          "format": "email",
+          maxLength: 50,
+        },
+        {
+          type: "string",
+          maxLength: 0
+        }
+      ]
     },
-    hours: {
-      type: "string",
-    },
-    category: {
-      type: "string",
-    },
-    stakeholderId: {
-      type: "number",
-    },
+    hours: { type: "string" },
+    category: { type: "string" },
     tenantId: {
       type: "integer",
+      minimum: 1
     }
   },
   additionalProperties: false
 };
 
-export const suggestionPostRequestSchema: JSONSchemaType<Omit<Suggestion, "id">> = {
+export const suggestionPutRequestSchema: JSONSchemaType<Omit<Suggestion, "id">> = {
   type: "object",
-  required: [
-    "stakeholderId", "adminNotes", "suggestionStatusId", "name", "address1", "address2", "city",
-    "state", "zip", "phone", "email", "notes", "tipsterName", "tipsterPhone", "tipsterEmail",
-    "hours", "category", "tenantId"
-  ],
+  required: [],
   properties: {
     stakeholderId: {
       type: "integer",
       minimum: 1,
-      maximum: 10000,
     },
     adminNotes: {
       type: "string",
-      maxLength: 256,
     },
-    suggestionStatusId: {
-      type: "integer",
-      minimum: 1,
-      maximum: 100,
-    },
+    suggestionStatusId: { type: "integer" },
     name: {
       type: "string",
-      minLength: 1,
-      maxLength: 256,
+      maxLength: 100,
     },
     address1: {
       type: "string",
-      minLength: 1,
       maxLength: 256,
     },
     address2: {
@@ -108,13 +116,11 @@ export const suggestionPostRequestSchema: JSONSchemaType<Omit<Suggestion, "id">>
     },
     city: {
       type: "string",
-      minLength: 1,
-      maxLength: 256,
+      maxLength: 20,
     },
     state: {
       type: "string",
-      minLength: 1,
-      maxLength: 256,
+      maxLength: 20,
     },
     zip: {
       type: "string",
@@ -122,40 +128,48 @@ export const suggestionPostRequestSchema: JSONSchemaType<Omit<Suggestion, "id">>
     },
     phone: {
       type: "string",
-      maxLength: 256,
+      maxLength: 20,
     },
     email: {
-      type: "string",
-      maxLength: 256,
+      anyOf: [
+        {
+          type: "string",
+          "format": "email",
+          maxLength: 50,
+        },
+        {
+          type: "string",
+          maxLength: 0
+        }
+      ]
     },
-    notes: {
-      type: "string",
-      maxLength: 1024,
-    },
+    notes: { type: "string" },
     tipsterName: {
       type: "string",
-      maxLength: 256
+      maxLength: 100
     },
     tipsterPhone: {
       type: "string",
-      maxLength: 256,
+      maxLength: 20,
     },
     tipsterEmail: {
-      type: "string",
-      maxLength: 256,
+      anyOf: [
+        {
+          type: "string",
+          "format": "email",
+          maxLength: 50,
+        },
+        {
+          type: "string",
+          maxLength: 0
+        }
+      ]
     },
-    hours: {
-      type: "string",
-      maxLength: 1024,
-    },
-    category: {
-      type: "string",
-      maxLength: 256,
-    },
+    hours: { type: "string" },
+    category: { type: "string" },
     tenantId: {
       type: "integer",
-      minimum: 1,
-      maximum: 10000,
+      minimum: 1
     }
   },
   additionalProperties: false

@@ -43,6 +43,7 @@ import * as Yup from "yup";
 import Label from "./ui/Label";
 import Textarea from "./ui/Textarea";
 import { disabledText } from "theme/palette";
+import { blue } from "@mui/material/colors";
 
 const DATE_FORMAT = "MM/DD/YY h:mm a";
 const ITEM_HEIGHT = 48;
@@ -520,7 +521,7 @@ const OrganizationEdit = (props) => {
                         </Stack>
 
                         <FormControlLabel
-                          sx={{ mt: 3, ml: 0 }}
+                          sx={{ mt: 5, ml: 0 }}
                           control={
                             <Checkbox
                               margin="normal"
@@ -556,7 +557,7 @@ const OrganizationEdit = (props) => {
                         </Stack>
 
                         <FormControlLabel
-                          sx={{ mt: 3, ml: 0 }}
+                          sx={{ mt: 5, ml: 0 }}
                           control={
                             <Checkbox
                               margin="normal"
@@ -595,7 +596,7 @@ const OrganizationEdit = (props) => {
                         </Stack>
 
                         <FormControlLabel
-                          sx={{ mt: 3, ml: 0 }}
+                          sx={{ mt: 5, ml: 0 }}
                           control={
                             <Checkbox
                               margin="normal"
@@ -691,7 +692,7 @@ const OrganizationEdit = (props) => {
                         </FormHelperText>
 
                         <FormControlLabel
-                          sx={{ mt: 1, ml: 0 }}
+                          sx={{ mt: 5, ml: 0 }}
                           control={
                             <Checkbox
                               margin="normal"

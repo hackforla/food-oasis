@@ -104,7 +104,7 @@ const Footer = () => {
     : {
         justifyContent: "flex-end",
         height: "135px",
-        flexDirection: "column-reverse",
+        flexDirection: "column",
         alignItems: "flex-end",
       };
 

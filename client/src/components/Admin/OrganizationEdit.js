@@ -69,6 +69,20 @@ const validationSchema = Yup.object().shape({
     1,
     "You must select at least one category"
   ),
+  hours: Yup.array().of(
+    Yup.object().shape({
+      weekOfMonth: Yup.number().required("Week of month is required"),
+      dayOfWeek: Yup.string()
+        .required("Day of week is required")
+        .notOneOf([""], "Day of week should not be empty"),
+      open: Yup.string()
+        .required("Open time is required")
+        .notOneOf([""], "Open time should not be empty"),
+      close: Yup.string()
+        .required("Close time is required")
+        .notOneOf([""], "Close time should not be empty"),
+    })
+  ),
 });
 
 const emptyOrganization = {
@@ -462,6 +476,7 @@ const OrganizationEdit = (props) => {
           {({
             values,
             errors,
+            isValid,
             touched,
             handleChange,
             handleBlur,
@@ -2058,7 +2073,9 @@ const OrganizationEdit = (props) => {
                           <Button
                             variant="contained"
                             type="submit"
-                            disabled={isSubmitting || isUnchanged(values)}
+                            disabled={
+                              isSubmitting || isUnchanged(values) || !isValid
+                            }
                             sx={{
                               minHeight: "3.5rem",
                             }}

@@ -520,7 +520,7 @@ const OrganizationEdit = (props) => {
                         </Stack>
 
                         <FormControlLabel
-                          sx={{ mt: 3, ml: 0 }}
+                          sx={{ mt: 5, ml: 0 }}
                           control={
                             <Checkbox
                               margin="normal"
@@ -556,7 +556,7 @@ const OrganizationEdit = (props) => {
                         </Stack>
 
                         <FormControlLabel
-                          sx={{ mt: 3, ml: 0 }}
+                          sx={{ mt: 5, ml: 0 }}
                           control={
                             <Checkbox
                               margin="normal"
@@ -595,7 +595,7 @@ const OrganizationEdit = (props) => {
                         </Stack>
 
                         <FormControlLabel
-                          sx={{ mt: 3, ml: 0 }}
+                          sx={{ mt: 5, ml: 0 }}
                           control={
                             <Checkbox
                               margin="normal"
@@ -691,7 +691,7 @@ const OrganizationEdit = (props) => {
                         </FormHelperText>
 
                         <FormControlLabel
-                          sx={{ mt: 1, ml: 0 }}
+                          sx={{ mt: 5, ml: 0 }}
                           control={
                             <Checkbox
                               margin="normal"

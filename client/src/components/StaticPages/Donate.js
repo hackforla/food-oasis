@@ -27,69 +27,69 @@ import { IconButton } from "../UI/StandardButton";
 import Footer from "../Layout/Footer";
 import { margin, padding } from "@mui/system";
 
-const useStyles = makeStyles((theme) => ({
-  // donate: {
-  //   padding: "10px",
-  //   color: "#4d4d4d",
-  //   display: "flex",
-  //   flexDirection: "column",
-  //   flexWrap: "wrap",
-  //   "& $h2": {
-  //     flexBasis: "100%",
-  //     textAlign: "center",
-  //     fontWeight: "500",
-  //     fontSize: "32px",
-  //     marginTop: "10px",
-  //     marginBottom: "20px",
-  //   },
-  //   "& $btnOutline": {
-  //     margin: "30px auto",
-  //   },
-  // },
-  donationDialog: {
-    flexGrow: 1,
-    overflow: "scroll",
-    padding: theme.spacing(1),
-    margin: theme.spacing(1),
-    "@media only screen and (min-width: 64em)": {
-      margin: `${theme.spacing(1)} auto`,
-      padding: theme.spacing(1, 4),
-    },
-  },
-  paper: {
-    maxWidth: 400,
-    padding: theme.spacing(2),
-    margin: `${theme.spacing(2)} auto`,
-    "@media only screen and (min-width: 64em)": {
-      margin: `${theme.spacing(3)} auto`,
-      padding: theme.spacing(3),
-    },
-  },
-  step: {
-    backgroundColor: "#ef624f",
-    width: theme.spacing(3),
-    height: theme.spacing(3),
-    "@media only screen and (min-width: 64em)": {
-      width: theme.spacing(7),
-      height: theme.spacing(7),
-    },
-  },
-  dialogCloseButton: {
-    position: "absolute",
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    color: theme.palette.grey[500],
-  },
-  donateButtonWrapper: {
-    position: "sticky",
-    bottom: 0,
-    backgroundColor: "#fff",
-  },
-  donationImg: {
-    width: "100%",
-    height: "auto",
-  },
-}));
+// const useStyles = makeStyles((theme) => ({
+//   // donate: {
+//   //   padding: "10px",
+//   //   color: "#4d4d4d",
+//   //   display: "flex",
+//   //   flexDirection: "column",
+//   //   flexWrap: "wrap",
+//   //   "& $h2": {
+//   //     flexBasis: "100%",
+//   //     textAlign: "center",
+//   //     fontWeight: "500",
+//   //     fontSize: "32px",
+//   //     marginTop: "10px",
+//   //     marginBottom: "20px",
+//   //   },
+//   //   "& $btnOutline": {
+//   //     margin: "30px auto",
+//   //   },
+//   // },
+//   donationDialog: {
+//     flexGrow: 1,
+//     overflow: "scroll",
+//     padding: theme.spacing(1),
+//     margin: theme.spacing(1),
+//     "@media only screen and (min-width: 64em)": {
+//       margin: `${theme.spacing(1)} auto`,
+//       padding: theme.spacing(1, 4),
+//     },
+//   },
+//   paper: {
+//     maxWidth: 400,
+//     padding: theme.spacing(2),
+//     margin: `${theme.spacing(2)} auto`,
+//     "@media only screen and (min-width: 64em)": {
+//       margin: `${theme.spacing(3)} auto`,
+//       padding: theme.spacing(3),
+//     },
+//   },
+//   step: {
+//     backgroundColor: "#ef624f",
+//     width: theme.spacing(3),
+//     height: theme.spacing(3),
+//     "@media only screen and (min-width: 64em)": {
+//       width: theme.spacing(7),
+//       height: theme.spacing(7),
+//     },
+//   },
+//   dialogCloseButton: {
+//     position: "absolute",
+//     right: theme.spacing(1),
+//     top: theme.spacing(1),
+//     color: theme.palette.grey[500],
+//   },
+//   donateButtonWrapper: {
+//     position: "sticky",
+//     bottom: 0,
+//     backgroundColor: "#fff",
+//   },
+//   donationImg: {
+//     width: "100%",
+//     height: "auto",
+//   },
+// }));
 
 const Donate = () => {
   const classes = useStyles();
@@ -229,13 +229,17 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
           margin: {xs: "16px auto", md: "24px auto"}
         }}
         >
-          <Grid container wrap="nowrap" spacing={2}>
+          <Grid
+          sx={{
+            padding: "5px 16px"
+          }}
+           container wrap="nowrap" spacing={2}>
             <Grid item>
               <Avatar
               sx={{
                 backgroundColor: "#ef624f",
                 width: {xs: "24px", md:"56px"},
-                height: {xs: "24px", md: "56x"}
+                height: {xs: "24px", md: "56px"}
               }}
               >1</Avatar>
             </Grid>
@@ -260,11 +264,17 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
           margin: {xs: "16px auto", md: "24px auto"}
         }}
         >
-          <Grid container wrap="nowrap" spacing={2}>
+          <Grid
+          sx={{
+            padding: "5px 16px"
+          }}
+          container wrap="nowrap" spacing={2}>
             <Grid item>
             <Avatar
               sx={{
                 backgroundColor: "#ef624f",
+                width: {xs: "24px", md:"56px"},
+                height: {xs: "24px", md: "56px"}
               }}
               >2</Avatar>
             </Grid>
@@ -289,11 +299,17 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
           margin: {xs: "16px auto", md: "24px auto"}
         }}
         >
-          <Grid container wrap="nowrap" spacing={2}>
+          <Grid
+          sx={{
+            padding: "5px 16px"
+          }}
+          container wrap="nowrap" spacing={2}>
             <Grid item>
             <Avatar
               sx={{
                 backgroundColor: "#ef624f",
+                width: {xs: "24px", md:"56px"},
+                height: {xs: "24px", md: "56px"}
               }}
               >3</Avatar>
             </Grid>
@@ -321,11 +337,17 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
           margin: {xs: "16px auto", md: "24px auto"}
         }}
         >
-          <Grid container wrap="nowrap" spacing={2}>
+          <Grid
+          sx={{
+            padding: "5px 16px"
+          }}
+          container wrap="nowrap" spacing={2}>
             <Grid item>
             <Avatar
               sx={{
                 backgroundColor: "#ef624f",
+                width: {xs: "24px", md:"56px"},
+                height: {xs: "24px", md: "56px"}
               }}
               >4</Avatar>
             </Grid>
@@ -353,11 +375,17 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
           margin: {xs: "16px auto", md: "24px auto"}
         }}
         >
-          <Grid container wrap="nowrap" spacing={2}>
+          <Grid
+          sx={{
+            padding: "5px 16px"
+          }}
+          container wrap="nowrap" spacing={2}>
             <Grid item>
             <Avatar
               sx={{
                 backgroundColor: "#ef624f",
+                width: {xs: "24px", md:"56px"},
+                height: {xs: "24px", md: "56px"}
               }}
               >5</Avatar>
             </Grid>
@@ -384,11 +412,17 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
           margin: {xs: "16px auto", md: "24px auto"}
         }}
         >
-          <Grid container wrap="nowrap" spacing={2}>
+          <Grid
+          sx={{
+            padding: "5px 16px"
+          }}
+          container wrap="nowrap" spacing={2}>
             <Grid item>
             <Avatar
               sx={{
                 backgroundColor: "#ef624f",
+                width: {xs: "24px", md:"56px"},
+                height: {xs: "24px", md: "56px"}
               }}
               >6</Avatar>
             </Grid>
@@ -413,11 +447,17 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
           margin: {xs: "16px auto", md: "24px auto"}
         }}
         >
-          <Grid container wrap="nowrap" spacing={2}>
+          <Grid
+          sx={{
+            padding: "5px 16px"
+          }}
+          container wrap="nowrap" spacing={2}>
             <Grid item>
               <Avatar
               sx={{
                 backgroundColor: "#ef624f",
+                width: {xs: "24px", md:"56px"},
+                height: {xs: "24px", md: "56px"}
               }}
               >7</Avatar>
             </Grid>

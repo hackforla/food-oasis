@@ -194,6 +194,7 @@ const About = () => {
             <Typography variant="body1">
               We are a 100% volunteer-run project. We are part of{" "}
               <Link
+                variant="primary"
                 href="https://hackforla.org/"
                 target={"_blank"}
                 rel="noopener noreferrer"
@@ -218,7 +219,7 @@ const About = () => {
           <Typography variant="h2">Questions</Typography>
           <Typography variant="body1">
             For more information, please visit our{" "}
-            <Link to={"/faqs"} component={RouterLink}>
+            <Link variant="primary" to={"/faqs"} component={RouterLink}>
               FAQ page
             </Link>
             .
@@ -245,6 +246,7 @@ const About = () => {
               Please contact our Support Team
               <br />
               <Link
+                variant="primary"
                 href="mailto:foodoasisinfo@hackforla.org"
               >
                 foodoasisinfo@hackforla.org

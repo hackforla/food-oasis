@@ -153,7 +153,7 @@ const About = () => {
                     food resource open to the public in Los Angeles, our
                     volunteers work hard to ensure the information listed is
                     updated. To suggest a listing missing from our directory,{" "}
-                    <Link to={"/suggestion"} component={RouterLink}>
+                    <Link variant="primary" to={"/suggestion"} component={RouterLink}>
                       use this link
                     </Link>
                     .
@@ -191,7 +191,7 @@ const About = () => {
               <dt>How can I add our food resource to your directory?</dt>
               <dd>
                 Please visit our “
-                <Link to={"/suggestion"} component={RouterLink}>
+                <Link variant="primary" to={"/suggestion"} component={RouterLink}>
                   Suggest New Listing
                 </Link>
                 ” page.

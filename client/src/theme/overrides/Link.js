@@ -9,6 +9,9 @@
 export default function Link(theme) {
   return {
     MuiLink: {
+      defaultProps: {
+        default: "primary"
+      },
       variants: [
         {
           props: { variant: "icon" },
@@ -16,13 +19,16 @@ export default function Link(theme) {
             textDecoration: "none",
           },
         },
-      ],
-      styleOverrides: {
-        inherit: {
+        {
+          props: { variant: "primary" },
+          style: {
           textDecoration: "none",
           padding: "2px 1px 0",
           borderBottom: "1px solid",
           "&:link": {
+            color: theme.palette.link.normal,
+          },
+          "&:a": {
             color: theme.palette.link.normal,
           },
           "&:visited": {
@@ -34,8 +40,9 @@ export default function Link(theme) {
           "&:active": {
             color: theme.palette.primary.light,
           },
+          },
         },
-      },
+      ],
     },
   };
 }

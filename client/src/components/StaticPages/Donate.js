@@ -213,16 +213,33 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
           </Grid>
         </Grid>
       </DialogTitle>
-      <div className={classes.donationDialog}>
-        <Paper className={classes.paper}>
+      <Container
+      sx={{
+        flexGrow: 1,
+        overflow: "scroll"
+      }}
+      >
+        <Paper
+        xs={{
+          maxWidth: 400,
+        }}
+        >
           <Grid container wrap="nowrap" spacing={2}>
             <Grid item>
-              <Avatar className={classes.step}>1</Avatar>
+              <Avatar
+              sx={{
+                backgroundColor: "#ef624f",
+              }}
+              >1</Avatar>
             </Grid>
             <Grid item xs zeroMinWidth>
               <Typography>Enter your donation amount.</Typography>
-              <img
-                className={classes.donationImg}
+              <CardMedia
+                component="img"
+                sx={{
+                  width: "100%",
+                  height: "auto"
+                }}
                 src={donationStep1}
                 alt="logo"
               />
@@ -330,7 +347,7 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
             </Grid>
           </Grid>
         </Paper>
-      </div>
+      </Container>
       <Grid
         className={classes.donateButtonWrapper}
         container

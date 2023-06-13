@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+      <loc>https://foodoasis.la/</loc>
+   </url>
+   <url>
+      <loc>https://foodoasis.la/organizations</loc>
+   </url>
+   <url>
+      <loc>https://foodoasis.la/about</loc>
+   </url>
+   <url>
+      <loc>https://foodoasis.la/donate</loc>
+   </url>
+   <url>
+      <loc>https://foodoasis.la/faqs</loc>
+   </url>
+   <url>
+      <loc>https://foodoasis.la/suggestion</loc>
+   </url>
+   <url>
+      <loc>https://foodoasis.la/login</loc>
+   </url>
+   <url>
+      <loc>https://foodoasis.la/register</loc>
+   </url>
+</urlset>

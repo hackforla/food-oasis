@@ -13,6 +13,7 @@ import {
   Typography,
   Box,
   Button,
+  CardMedia
 } from "@mui/material";
 import donationStep1 from "images/donationStep1.png";
 import donationStep2 from "images/donationStep2.png";
@@ -137,15 +138,33 @@ const Donate = () => {
     setShowDonationDialog(showDonationDialog ? false : true);
   };
   return (
-    <div className={classes.outer}>
-      <div className={classes.main}>
-        <figure className={classes.figure}>
-          <img alt="Donate" src={donatebg} style={{ width: "100%" }} />
-        </figure>
-        <Typography variant="h1" className={classes.title}>
+    <Container 
+       sx={{
+         padding: { xs: "1.5rem 0", md: "0rem 2rem"},
+         margin: "0 auto",
+         maxWidth: "1200px"
+       }}
+       >
+         <CardMedia component="img" alt="Donate" src={donatebg} style={{ width: "100%" }}></CardMedia>
+        <Typography variant="h1"
+        sx={{
+          textTransform: "uppercase",
+          textAlign: "center",
+          margin: 0,
+          padding: "32px 0"
+        }}
+        >
           Donate
         </Typography>
-        <section className={classes.donate}>
+        <Container
+        sx={{
+          padding: "10px",
+          color: "#4d4d4d",
+          display: "flex",
+          flexDirection: "column",
+          flexWrap: "wrap"
+        }}
+        >
           <Container maxWidth="sm">
             <Typography variant="body1">
               As of July 2022, about 1 in 4 people in Los Angeles county are
@@ -168,6 +187,9 @@ const Donate = () => {
             </Typography>
           </Container>
           <Button
+          sx={{
+            margin: "30px auto",
+          }}
             variant="contained"
             className={classes.btnOutline}
             onClick={handleShowDonationDialog}
@@ -180,10 +202,9 @@ const Donate = () => {
               setShowDonationDialog={setShowDonationDialog}
             />
           )}
-        </section>
+        </Container>
         <Footer />
-      </div>
-    </div>
+      </Container>
   );
 };
 

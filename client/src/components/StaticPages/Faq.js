@@ -15,14 +15,9 @@ const About = () => {
   }, []);
 
   return (
-    <Container
-    sx={{
-      padding: { xs: "1.5rem 0" },
-    }}
-    >
       <Container 
       sx={{
-        padding: { xs: "0", md: "0rem 2rem"},
+        padding: { xs: "1.5rem 0", md: "0rem 2rem"},
         margin: "0 auto",
         maxWidth: "1200px"
       }}
@@ -203,7 +198,6 @@ const About = () => {
         </Box>
         <Footer />
       </Container>
-    </Container>
   );
 };
 

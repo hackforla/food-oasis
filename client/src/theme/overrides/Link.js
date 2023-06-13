@@ -10,7 +10,7 @@ export default function Link(theme) {
   return {
     MuiLink: {
       defaultProps: {
-        default: "primary"
+        variant: "primary"
       },
       variants: [
         {

@@ -27,60 +27,24 @@ import { IconButton } from "../UI/StandardButton";
 import Footer from "../Layout/Footer";
 
 const useStyles = makeStyles((theme) => ({
-  outer: {
-    background: "#fff",
-  },
-  main: {
-    padding: "1.5rem 0",
-    maxWidth: "1200px",
-    margin: "0 auto",
-    "@media only screen and (min-width: 75em)": {
-      padding: "1.5rem 2rem",
-    },
-  },
-  title: {
-    color: "#000000",
-    textTransform: "uppercase",
-    fontWeight: 500,
-    textAlign: "center",
-    background: "#FFF",
-    margin: 0,
-    padding: "32px 0",
-  },
-  btnOutline: {
-    color: "#fff",
-    border: "1px solid #336699",
-    background: "#336699",
-    borderRadius: "6px",
-    padding: "8px 16px",
-    textDecoration: "none",
-    textTransform: "uppercase",
-  },
-  figure: {
-    margin: 0,
-    padding: 0,
-  },
-  icon: {
-    margin: "auto",
-  },
-  donate: {
-    padding: "10px",
-    color: "#4d4d4d",
-    display: "flex",
-    flexDirection: "column",
-    flexWrap: "wrap",
-    "& $h2": {
-      flexBasis: "100%",
-      textAlign: "center",
-      fontWeight: "500",
-      fontSize: "32px",
-      marginTop: "10px",
-      marginBottom: "20px",
-    },
-    "& $btnOutline": {
-      margin: "30px auto",
-    },
-  },
+  // donate: {
+  //   padding: "10px",
+  //   color: "#4d4d4d",
+  //   display: "flex",
+  //   flexDirection: "column",
+  //   flexWrap: "wrap",
+  //   "& $h2": {
+  //     flexBasis: "100%",
+  //     textAlign: "center",
+  //     fontWeight: "500",
+  //     fontSize: "32px",
+  //     marginTop: "10px",
+  //     marginBottom: "20px",
+  //   },
+  //   "& $btnOutline": {
+  //     margin: "30px auto",
+  //   },
+  // },
   donationDialog: {
     flexGrow: 1,
     overflow: "scroll",
@@ -189,9 +153,15 @@ const Donate = () => {
           <Button
           sx={{
             margin: "30px auto",
+            color: "#fff",
+            border: "1px solid #336699",
+            background: "#336699",
+            borderRadius: "6px",
+            padding: "8px 16px",
+            textDecoration: "none",
+            textTransform: "uppercase"
           }}
             variant="contained"
-            className={classes.btnOutline}
             onClick={handleShowDonationDialog}
           >
             Donate

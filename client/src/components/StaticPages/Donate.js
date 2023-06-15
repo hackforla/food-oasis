@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import donatebg from "./assets/donate-bg.webp";
-import makeStyles from "@mui/styles/makeStyles";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import logo from "images/foodoasis.svg";
@@ -25,74 +24,10 @@ import donationStep7 from "images/donationStep7.png";
 import * as analytics from "../../services/analytics";
 import { IconButton } from "../UI/StandardButton";
 import Footer from "../Layout/Footer";
-import { margin, padding } from "@mui/system";
 
-// const useStyles = makeStyles((theme) => ({
-//   // donate: {
-//   //   padding: "10px",
-//   //   color: "#4d4d4d",
-//   //   display: "flex",
-//   //   flexDirection: "column",
-//   //   flexWrap: "wrap",
-//   //   "& $h2": {
-//   //     flexBasis: "100%",
-//   //     textAlign: "center",
-//   //     fontWeight: "500",
-//   //     fontSize: "32px",
-//   //     marginTop: "10px",
-//   //     marginBottom: "20px",
-//   //   },
-//   //   "& $btnOutline": {
-//   //     margin: "30px auto",
-//   //   },
-//   // },
-//   // donationDialog: {
-//   //   flexGrow: 1,
-//   //   overflow: "scroll",
-//   //   padding: theme.spacing(1),
-//   //   margin: theme.spacing(1),
-//   //   "@media only screen and (min-width: 64em)": {
-//   //     margin: `${theme.spacing(1)} auto`,
-//   //     padding: theme.spacing(1, 4),
-//   //   },
-//   // },
-//   // paper: {
-//   //   maxWidth: 400,
-//   //   padding: theme.spacing(2),
-//   //   margin: `${theme.spacing(2)} auto`,
-//   //   "@media only screen and (min-width: 64em)": {
-//   //     margin: `${theme.spacing(3)} auto`,
-//   //     padding: theme.spacing(3),
-//   //   },
-//   // },
-//   // step: {
-//   //   backgroundColor: "#ef624f",
-//   //   width: theme.spacing(3),
-//   //   height: theme.spacing(3),
-//   //   "@media only screen and (min-width: 64em)": {
-//   //     width: theme.spacing(7),
-//   //     height: theme.spacing(7),
-//   //   },
-//   // },
-//   // dialogCloseButton: {
-//   //   position: "absolute",
-//   //   right: theme.spacing(1),
-//   //   top: theme.spacing(1),
-//   //   color: theme.palette.grey[500],
-//   // },
-//   // donateButtonWrapper: {
-//   //   position: "sticky",
-//   //   bottom: 0,
-//   //   backgroundColor: "#fff",
-//   // },
-//   // donationImg: {
-//   //   width: "100%",
-//   //   height: "auto",
-//   // },
-// }));
+
 
 const Donate = () => {
-  // const classes = useStyles();
   const [showDonationDialog, setShowDonationDialog] = React.useState(false);
 
   useEffect(() => {
@@ -182,7 +117,6 @@ const Donate = () => {
 export default Donate;
 
 const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
-  // const classes = useStyles();
   const handleCloseDonationDialog = () => {
     setShowDonationDialog(false);
   };
@@ -253,7 +187,7 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
               <CardMedia
                 component="img"
                 sx={{
-                  width: "100%",
+                  width: "90%",
                   height: "auto"
                 }}
                 src={donationStep1}
@@ -288,7 +222,7 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
               <CardMedia
                 component="img"
                 sx={{
-                  width: "100%",
+                  width: "90%",
                   height: "auto"
                 }}
                 src={donationStep2}
@@ -326,7 +260,7 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
               <CardMedia
                 component="img"
                 sx={{
-                  width: "100%",
+                  width: "90%",
                   height: "auto"
                 }}
                 src={donationStep3}
@@ -364,7 +298,7 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
               <CardMedia
                 component="img"
                 sx={{
-                  width: "100%",
+                  width: "90%",
                   height: "auto"
                 }}
                 src={donationStep4}
@@ -401,7 +335,7 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
               <CardMedia
                 component="img"
                 sx={{
-                  width: "100%",
+                  width: "90%",
                   height: "auto"
                 }}
                 src={donationStep5}
@@ -436,7 +370,7 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
               <CardMedia
                 component="img"
                 sx={{
-                  width: "100%",
+                  width: "90%",
                   height: "auto"
                 }}
                 src={donationStep6}
@@ -474,7 +408,7 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
               <CardMedia
                 component="img"
                 sx={{
-                  width: "100%",
+                  width: "90%",
                   height: "auto"
                 }}
                 src={donationStep7}

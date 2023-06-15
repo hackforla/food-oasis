@@ -6,44 +6,43 @@ import foodForward from "./assets/food-forward.png";
 import farm2people from "./assets/farm2people.png";
 import foodBank from "./assets/food-bank.png";
 import makeStyles from "@mui/styles/makeStyles";
-import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import * as analytics from "../../services/analytics";
 import { Link as RouterLink } from "react-router-dom";
-import { Link } from "@mui/material";
+import { Link, Container, CardMedia, Box } from "@mui/material";
 import Footer from "../Layout/Footer";
 
 const useStyles = makeStyles(() => ({
-  outer: {
-    background: "#fff",
-  },
-  main: {
-    padding: "1.5rem 0",
-    maxWidth: "1200px",
-    margin: "0 auto",
-    "@media only screen and (min-width: 75em)": {
-      padding: "1.5rem 2rem",
-    },
-  },
-  title: {
-    textTransform: "uppercase",
-    textAlign: "center",
-    background: "#FFF",
-    margin: 0,
-    padding: "32px 0",
-  },
-  description: {
-    fontSize: "20px",
-    padding: "5px 32px 10px",
-    "@media only screen and (min-width: 75em)": {
-      fontSize: "24px",
-      padding: "5px 120px 20px",
-    },
-  },
-  figure: {
-    margin: 0,
-    padding: 0,
-  },
+  // outer: {
+  //   background: "#fff",
+  // },
+  // main: {
+  //   padding: "1.5rem 0",
+  //   maxWidth: "1200px",
+  //   margin: "0 auto",
+  //   "@media only screen and (min-width: 75em)": {
+  //     padding: "1.5rem 2rem",
+  //   },
+  // },
+  // title: {
+  //   textTransform: "uppercase",
+  //   textAlign: "center",
+  //   background: "#FFF",
+  //   margin: 0,
+  //   padding: "32px 0",
+  // },
+  // description: {
+  //   fontSize: "20px",
+  //   padding: "5px 32px 10px",
+  //   "@media only screen and (min-width: 75em)": {
+  //     fontSize: "24px",
+  //     padding: "5px 120px 20px",
+  //   },
+  // },
+  // figure: {
+  //   margin: 0,
+  //   padding: 0,
+  // },
   icon: {
     margin: "auto",
     marginBottom: "20px",
@@ -147,16 +146,31 @@ const About = () => {
   }, []);
 
   return (
-    <div className={classes.outer}>
-      <div className={classes.main}>
-        <figure className={classes.figure}>
-          <img alt="About" src={aboutbg} style={{ width: "100%" }} />
-        </figure>
+    <Container 
+       sx={{
+         padding: { xs: "1.5rem 0", md: "0rem 2rem"},
+         margin: "0 auto",
+         maxWidth: "1200px"
+       }}
+       >
+        <CardMedia component="img" alt="About" src={aboutbg} style={{ width: "100%" }}></CardMedia>
         <Container maxWidth="md">
-          <Typography variant="h1" className={classes.title}>
+          <Typography variant="h1"
+          sx={{
+            textTransform: "uppercase",
+            textAlign: "center",
+            margin: 0,
+            padding: "32px 0"
+          }}
+          >
             <span>About</span> Food Oasis / LA
           </Typography>
-          <Typography component="p" className={classes.description}>
+          <Typography component="p"
+          sx={{
+              fontSize: {xs: "20px", md: "24px"},
+              padding: {xs: "5px 32px 10px", md: "5px 120px 20px"}
+          }}
+          >
             There are numerous free food resources in Los Angeles County. With
             an updated directory of over 1000 listings, our website helps
             connect you to these resources.
@@ -302,8 +316,7 @@ const About = () => {
           </a>
         </section>
         <Footer />
-      </div>
-    </div>
+    </Container>
   );
 };
 

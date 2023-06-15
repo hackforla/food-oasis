@@ -196,7 +196,7 @@ const About = () => {
             </Typography>
           </Container>
         </div>
-        <section className={classes.team}>
+        <Box className={classes.team}>
           <img
             alt="Our Team"
             src={iconSpacerGray}
@@ -222,8 +222,8 @@ const About = () => {
               and services provided are accurate.
             </Typography>
           </Container>
-        </section>
-        <section className={classes.contact}>
+        </Box>
+        <Box className={classes.contact}>
           <img
             alt="Questions"
             src={iconSpacerGray}
@@ -238,8 +238,8 @@ const About = () => {
             </Link>
             .
           </Typography>
-        </section>
-        <section className={classes.team}>
+        </Box>
+        <Box className={classes.team}>
           <img
             alt="Contact Us"
             src={iconSpacerGray}
@@ -267,54 +267,62 @@ const About = () => {
               </Link>
             </Typography>
           </Container>
-        </section>
-        <section className={classes.partners}>
+        </Box>
+        <Box className={classes.partners}>
           <Typography variant="h2">Our Partners</Typography>
-          <a
+          <Link
+            component="a"
             href="https://www.foodcyclela.org/"
             target={"_blank"}
             rel="noopener noreferrer"
           >
-            <img
+            <CardMedia
+              component="img"
               alt="Food Cycle LA"
               src={foodCycle}
               className={classes.partnersLogo}
             />
-          </a>
-          <a
+          </Link>
+          <Link
+            component="a"
             href="https://foodforward.org/"
             target={"_blank"}
             rel="noopener noreferrer"
           >
-            <img
+            <CardMedia
+              component="img"
               alt="Food Forward"
               src={foodForward}
               className={classes.partnersLogo}
             />
-          </a>
-          <a
+          </Link>
+          <Link
+            component="a"
             href="https://www.farm2people.org/"
             target={"_blank"}
             rel="noopener noreferrer"
           >
-            <img
+            <CardMedia
+              component="img"
               alt="Farm People"
               src={farm2people}
               className={classes.partnersLogo}
             />
-          </a>
-          <a
+          </Link>
+          <Link
+            component="a"
             href="https://www.lafoodbank.org/"
             target={"_blank"}
             rel="noopener noreferrer"
           >
-            <img
+            <CardMedia
+              component="img"
               alt="Food Bank"
               src={foodBank}
               className={classes.partnersLogo}
             />
-          </a>
-        </section>
+          </Link>
+        </Box>
         <Footer />
     </Container>
   );

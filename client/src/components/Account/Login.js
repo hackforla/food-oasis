@@ -8,7 +8,7 @@ import {
   Grid,
   TextField,
   Typography,
-  Button,
+  Button
 } from "@mui/material";
 import withStyles from "@mui/styles/withStyles";
 import { Formik } from "formik";
@@ -21,31 +21,33 @@ import { useToasterContext } from "../../contexts/toasterContext";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import PasswordInput from "../../components/UI/PasswordInput";
 import Label from "components/Admin/ui/Label";
+import { palette } from "theme/palette";
 
-const styles = (theme) => ({
-  paper: {
-    marginTop: theme.spacing(1),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  body: {
-    display: "flex",
-    height: "97.8%",
-    flexDirection: "column",
-  },
-  container: {
-    flex: 1,
-  },
-});
+
+// const styles = (theme) => ({
+//   // paper: {
+//   //   marginTop: theme.spacing(1),
+//   //   display: "flex",
+//   //   flexDirection: "column",
+//   //   alignItems: "center",
+//   // },
+//   // avatar: {
+//   //   margin: theme.spacing(1),
+//   //   backgroundColor: theme.palette.secondary.main,
+//   // },
+//   // form: {
+//   //   width: "100%", // Fix IE 11 issue.
+//   //   marginTop: theme.spacing(1),
+//   // },
+//   // body: {
+//   //   display: "flex",
+//   //   height: "97.8%",
+//   //   flexDirection: "column",
+//   // },
+//   // container: {
+//   //   flex: 1,
+//   // },
+// });
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -75,15 +77,32 @@ const LoginForm = (props) => {
   }, []);
 
   return (
-    <div className={classes.body}>
-      <Container component="main" maxWidth="xs" className={classes.container}>
-        <div className={classes.paper}>
+    <Container component="main" maxWidth="xs"
+    sx={{
+      display: "flex",
+      height: "97.8%",
+      flexDirection: "column",
+    }}
+    >
+        <Box
+        sx={{
+          marginTop: "8px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+        >
           {state?.isPasswordReset && (
             <Typography component="p" className={classes.submit}>
               Password has been successfully updated
             </Typography>
           )}
-          <Avatar className={classes.avatar}>
+          <Avatar
+          sx={{
+            margin: "8px",
+            backgroundColor: palette.secondary.main,
+          }}
+          >
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -180,10 +199,14 @@ const LoginForm = (props) => {
               dirty,
               isValid,
             }) => (
-              <form className={classes.form} noValidate onSubmit={handleSubmit}>
+              <form
+              sx={{
+                width: "100%", // Fix IE 11 issue.
+                marginTop: "8px"
+              }}
+              noValidate onSubmit={handleSubmit}>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
-                    <div>
                       <Label id="email" label="Email *" />
                       <TextField
                         autoComplete="email"
@@ -200,10 +223,8 @@ const LoginForm = (props) => {
                         type="email"
                         value={values.email}
                       />
-                    </div>
                   </Grid>
                   <Grid item xs={12}>
-                    <div>
                       <Label id="password" label="Password" />
                       <PasswordInput
                         autoComplete="current-password"
@@ -217,7 +238,6 @@ const LoginForm = (props) => {
                         onChange={handleChange}
                         value={values.password}
                       />
-                    </div>
                   </Grid>
                   <Grid item xs={12}>
                     <Box>
@@ -247,10 +267,9 @@ const LoginForm = (props) => {
               </form>
             )}
           </Formik>
-        </div>
-      </Container>
-    </div>
+        </Box>
+    </Container>
   );
 };
 
-export default withStyles(styles)(LoginForm);
+export default LoginForm;

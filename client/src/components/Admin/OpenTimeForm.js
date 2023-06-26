@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import OpenTimeInputs from "./OpenTimeInput";
 import { Button, Card, CardContent, Typography } from "@mui/material";
@@ -35,6 +35,11 @@ function OpenTimeForm(props) {
     }
     return messages;
   };
+
+  useEffect(() => {
+    setErrorMessages(validate(hours));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleChange = (newHours) => {
     //   setHours(newHours);

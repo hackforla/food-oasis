@@ -42,7 +42,7 @@ import * as stakeholderService from "services/stakeholder-service";
 import * as Yup from "yup";
 import Label from "./ui/Label";
 import Textarea from "./ui/Textarea";
-import { disabledText } from "theme/palette";
+import { disabledText, error as errorColor } from "theme/palette";
 
 const DATE_FORMAT = "MM/DD/YY h:mm a";
 const ITEM_HEIGHT = 48;
@@ -540,13 +540,13 @@ const OrganizationEdit = (props) => {
                         <Stack direction="column" sx={{ width: "100%" }}>
                           <Label
                             id="phone"
-                            label="Phone *"
+                            label="Phone"
                             tooltipTitle="Phone number for clients to use"
                           />
                           <TextField
                             id="phone"
                             name="phone"
-                            placeholder="Phone *"
+                            placeholder="Phone"
                             value={values.phone}
                             onChange={handleChange}
                             onBlur={handleBlur}
@@ -579,13 +579,13 @@ const OrganizationEdit = (props) => {
                         <Stack direction="column" sx={{ width: "100%" }}>
                           <Label
                             id="email"
-                            label="Email *"
+                            label="Email"
                             tooltipTitle="Email for clients to use"
                           />
                           <TextField
                             id="email"
                             name="email"
-                            placeholder="Email *"
+                            placeholder="Email"
                             value={values.email}
                             onChange={handleChange}
                             onBlur={handleBlur}
@@ -646,7 +646,12 @@ const OrganizationEdit = (props) => {
                                     variant="body1"
                                     sx={{
                                       fontStyle: "italic",
-                                      color: disabledText,
+                                      color: `${
+                                        touched.selectedCategoryIds &&
+                                        Boolean(errors.selectedCategoryIds)
+                                          ? errorColor
+                                          : disabledText
+                                      }`,
                                     }}
                                   >
                                     Select Categories
@@ -663,6 +668,10 @@ const OrganizationEdit = (props) => {
                                 .join(", ");
                             }}
                             MenuProps={MenuProps}
+                            error={
+                              touched.selectedCategoryIds &&
+                              Boolean(errors.selectedCategoryIds)
+                            }
                           >
                             {!categories || categories.length === 0
                               ? null
@@ -682,13 +691,18 @@ const OrganizationEdit = (props) => {
                                   </MenuItem>
                                 ))}
                           </Select>
+                          <FormHelperText
+                            sx={{ marginLeft: "14px" }}
+                            error={
+                              touched.selectedCategoryIds &&
+                              Boolean(errors.selectedCategoryIds)
+                            }
+                          >
+                            {touched.selectedCategoryIds
+                              ? errors.selectedCategoryIds
+                              : ""}
+                          </FormHelperText>
                         </Stack>
-
-                        <FormHelperText>
-                          {touched.selectedCategoryIds
-                            ? errors.selectedCategoryIds
-                            : ""}
-                        </FormHelperText>
 
                         <FormControlLabel
                           sx={{ mt: 5, ml: 0 }}

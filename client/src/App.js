@@ -68,6 +68,7 @@ const Logins = React.lazy(() => import("components/Admin/Logins"));
 const Donate = React.lazy(() => import("./components/Donate"));
 const About = React.lazy(() => import("./components/About"));
 const Faq = React.lazy(() => import("./components/Faq"));
+const Contact = React.lazy(() => import("./components/StaticPages/Contact"));
 const MuiDemo = React.lazy(() => import("./components/MuiDemo/MuiDemo"));
 const useStyles = makeStyles({
   app: () => ({
@@ -141,7 +142,7 @@ function App() {
                       <Route path="/" element={<HeaderHome />} />
                       {/*
                         When app is embedded as a widget on another site, don't
-                        show any header  
+                        show any header
                       */}
                       {/* <Route exact path="/widget" /> */}
                       <Route path="/*" element={<Header />} />
@@ -310,6 +311,7 @@ function App() {
                         <Route path="donate" element={<Donate />} />
                         <Route path="about" element={<About />} />
                         <Route exact path="faqs" element={<Faq />} />
+                        <Route exact path="contact" element={<Contact />} />
                         <Route exact path="fallback" element={<Fallback />} />
                       </Routes>
                     </React.Suspense>

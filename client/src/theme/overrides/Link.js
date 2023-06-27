@@ -25,6 +25,7 @@ export default function Link(theme) {
           textDecoration: "none",
           padding: "2px 1px 0",
           borderBottom: "1px solid",
+          color: theme.palette.link.normal,
           "&:link": {
             color: theme.palette.link.normal,
           },

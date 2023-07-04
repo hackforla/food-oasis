@@ -149,7 +149,6 @@ const ForgotPassword = (props) => {
                   }}
                   container spacing={2}>
                     <Grid item xs={12}>
-                      <div>
                         <Label id="email" label="Email" />
                         <TextField
                           type="email"
@@ -167,7 +166,6 @@ const ForgotPassword = (props) => {
                           helperText={touched.email ? errors.email : ""}
                           error={touched.email && Boolean(errors.email)}
                         />
-                      </div>
                     </Grid>
 
                     <Grid item xs={12}>

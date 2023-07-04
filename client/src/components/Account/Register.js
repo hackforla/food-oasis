@@ -1,6 +1,5 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import withStyles from "@mui/styles/withStyles";
 import { withFormik } from "formik";
 import * as Yup from "yup";
 import * as accountService from "../../services/account-service";
@@ -26,30 +25,6 @@ import Label from "components/Admin/ui/Label";
 import { palette } from "theme/palette";
 
 
- const styles = (theme) => ({
-//   // paper: {
-//   //   marginTop: theme.spacing(1),
-//   //   display: "flex",
-//   //   flexDirection: "column",
-//   //   alignItems: "center",
-//   // },
-//   // avatar: {
-//   //   margin: theme.spacing(1),
-//   //   backgroundColor: theme.palette.secondary.main,
-//   // },
-//   // form: {
-//   //   width: "100%", // Fix IE 11 issue.
-//   //   marginTop: theme.spacing(1),
-//   // },
-//   // body: {
-//   //   display: "flex",
-//   //   height: "97.8%",
-//   //   flexDirection: "column",
-//   // },
-//   // container: {
-//   //   flex: 1,
-//   // },
- });
 
 // Core component is the Material UI form itself
 const form = (props) => {
@@ -94,8 +69,13 @@ const form = (props) => {
           <Typography component="h1" variant="h5">
             Register
           </Typography>
-          <form className={classes.form} noValidate onSubmit={handleSubmit}>
-            <Grid container spacing={2}>
+          <form noValidate onSubmit={handleSubmit}>
+            <Grid
+            sx={{
+              width: "100%", // Fix IE 11 issue.
+              marginTop: "8px"
+            }}
+            container spacing={2}>
               <Grid item xs={12} sm={6}>
                   <Label id="firstName" label="First Name *" />
                   <TextField
@@ -276,7 +256,7 @@ const RegisterForm = withFormik({
   },
 })(form);
 
-const WrappedRegisterForm = withStyles(styles)(RegisterForm);
+const WrappedRegisterForm = RegisterForm;
 
 export default function Register() {
   const { setToast } = useToasterContext();

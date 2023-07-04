@@ -1,6 +1,5 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import withStyles from "@mui/styles/withStyles";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import * as accountService from "../../services/account-service";
@@ -16,30 +15,6 @@ import {
 import Label from "components/Admin/ui/Label";
 import { palette } from "theme/palette";
 
-const styles = (theme) => ({
-  // paper: {
-  //   marginTop: theme.spacing(1),
-  //   display: "flex",
-  //   flexDirection: "column",
-  //   alignItems: "center",
-  // },
-  // avatar: {
-  //   margin: theme.spacing(1),
-  //   backgroundColor: theme.palette.secondary.main,
-  // },
-  // form: {
-  //   width: "100%", // Fix IE 11 issue.
-  //   marginTop: theme.spacing(1),
-  // },
-  // body: {
-  //   display: "flex",
-  //   height: "97.8%",
-  //   flexDirection: "column",
-  // },
-  // container: {
-  //   flex: 1,
-  // },
-});
 
 const validationSchema = Yup.object().shape({
   token: Yup.string().required("Token is required"),
@@ -145,14 +120,18 @@ const ResetPassword = (props) => {
               /* and other goodies */
             }) => (
               <form
-                className={classes.form}
                 noValidate
                 onSubmit={(evt) => {
                   evt.preventDefault();
                   handleSubmit(evt);
                 }}
               >
-                <Box>
+                <Box
+                sx={{
+                  width: "100%", // Fix IE 11 issue.
+                  marginTop: "8px"
+                }}
+                >
                   <Label id="password" label="New Password" />
                   <PasswordInput
                     fullWidth
@@ -205,4 +184,4 @@ const ResetPassword = (props) => {
   );
 };
 
-export default withStyles(styles)(ResetPassword);
+export default ResetPassword;

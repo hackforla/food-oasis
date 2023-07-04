@@ -1,7 +1,6 @@
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { Avatar, Container, TextField, Typography, Box } from "@mui/material";
-import withStyles from "@mui/styles/withStyles";
 import { Formik } from "formik";
 import { useEffect, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
@@ -11,30 +10,6 @@ import * as accountService from "../../services/account-service";
 import Label from "components/Admin/ui/Label";
 import { palette } from "theme/palette";
 
-const styles = (theme) => ({
-  // paper: {
-  //   marginTop: theme.spacing(1),
-  //   display: "flex",
-  //   flexDirection: "column",
-  //   alignItems: "center",
-  // },
-  // avatar: {
-  //   margin: theme.spacing(1),
-  //   backgroundColor: theme.palette.secondary.main,
-  // },
-  // form: {
-  //   width: "100%", // Fix IE 11 issue.
-  //   marginTop: theme.spacing(1),
-  // },
-  // body: {
-  //   display: "flex",
-  //   height: "97.8%",
-  //   flexDirection: "column",
-  // },
-  // container: {
-  //   flex: 1,
-  // },
-});
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -188,4 +163,4 @@ const ConfirmEmail = (props) => {
   );
 };
 
-export default withStyles(styles)(ConfirmEmail);
+export default ConfirmEmail;

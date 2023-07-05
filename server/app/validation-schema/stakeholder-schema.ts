@@ -1,7 +1,7 @@
 import { JSONSchemaType } from "ajv";
 import { InsertStakeholderParams } from '../../types/stakeholder-types';
 
-export const stakeholderPostRequestSchema: JSONSchemaType<InsertStakeholderParams> = {
+export const stakeholderRequestSchema: JSONSchemaType<InsertStakeholderParams> = {
   type: "object",
   required: [],
   // oneOf: [],
@@ -75,17 +75,19 @@ export const stakeholderPostRequestSchema: JSONSchemaType<InsertStakeholderParam
     // | string
     // | { weekOfMonth: number; open: Date; close: Date; dayOfWeek: number }[];
     hours: {
-      type: ["string", "array"],
-      items: {
-        type: "object",
-        properties: {
-          weekOfMonth: { type: "integer" },
-          dayOfWeek: { type: "string" },
-          open: { type: "string", format: "date" },
-          close: { type: "string", format: "date" }
+      anyOf: [{ type: "string" }, {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            weekOfMonth: { type: "integer" },
+            dayOfWeek: { type: "string" },
+            open: { type: "string", format: "date" },
+            close: { type: "string", format: "date" }
+          }
         }
-
       }
+      ],
     },
     hoursNotes: { type: "string" },
     id: { type: "integer" },

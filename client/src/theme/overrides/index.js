@@ -4,6 +4,7 @@ import Chip from "./Chip";
 import CssBaseline from "./CssBaseline";
 import Link from "./Link";
 import ListItemButton from "./ListItemButton";
+import Radio from "./Radio";
 import Select from "./Select";
 import SvgIcon from "./SvgIcon";
 import Tab from "./Tab";
@@ -20,6 +21,7 @@ export function componentsOverrides(theme) {
     CssBaseline(theme),
     Link(theme),
     ListItemButton(theme),
+    Radio(theme),
     SvgIcon(theme),
     Select(theme),
     Tab(theme),

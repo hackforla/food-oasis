@@ -1,4 +1,4 @@
-import { disabledText } from "theme/palette";
+import { disabledText, error } from "theme/palette";
 
 export default function TextField(theme) {
   return {
@@ -24,6 +24,11 @@ export default function TextField(theme) {
             fontStyle: "italic",
             color: disabledText,
             opacity: "1",
+          },
+        },
+        error: {
+          "& input::placeholder": {
+            color: error,
           },
         },
       },

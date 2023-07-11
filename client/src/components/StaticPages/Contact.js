@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import iconSpacerWhite from "./assets/icon-spacer.svg";
-import { Typography, Box, CardMedia, SvgIcon } from "@mui/material";
+import IconSpacerSVG from "./assets/IconSpacerSVG";
+import { Typography, Box, CardMedia, List, ListItem, ListItemText, SvgIcon, Button, TextField } from "@mui/material";
 import * as analytics from "../../services/analytics";
 import Container from "@mui/material/Container";
 import { Link as RouterLink } from "react-router-dom";
@@ -21,6 +21,29 @@ const validationSchema = Yup.object().shape({
   message: Yup.string()
     .required("Message is required")
 });
+
+function createListItems() {
+  const listTexts = [
+    "Learn more about Food Oasis",
+    "How can I sign up to volunteer?",
+    "When can I become a volunteer?",
+    "How do I set up an account to start my assignment?",
+    "How can I donate?",
+    "What will my donation go toward?",
+    "How can I suggest a new listing?"
+  ];
+
+  return listTexts.map((value, i) =>
+    <ListItem
+      key={i}
+      sx={{
+        display: "list-item",
+        padding: "0px"
+      }}
+    >
+      {value}
+    </ListItem>)
+}
 
 
 const Contact = () => {
@@ -56,106 +79,102 @@ const Contact = () => {
           background: "#369",
           display: "flex",
           flexDirection: 'column',
+          justifyContent: "space-around",
+          alignItems: "center",
           flexWrap: "wrap",
+          height: "545px"
         }}
       >
-        <CardMedia
-          component="svg"
+        <SvgIcon
+          alt="Glossary"
+          component={IconSpacerSVG}
+        />
+        <Typography variant="subtitle1"
           sx={{
-            margin: "auto",
-            marginBottom: "20px",
-            height: "40px",
-            width: "90px"
+            textAlign: "center",
+            color: "white",
+            textTransform: "uppercase",
+            maxWidth: "392px"
+          }}>
+          Get the information you're looking for right now
+        </Typography>
+        <List
+          sx={{
+            listStyleType: "disc",
+            color: "white",
+            alignItems: "left",
+            width: "95%"
           }}
         >
-          <SvgIcon
-            component={iconSpacerWhite}
-            titleAccess="Glossary"
-          />
-        </CardMedia>
-        <Typography variant="h2"
+          {createListItems()}
+        </List>
+        <Button
+          variant="outlined"
+          type="submit"
           sx={{
-            flexBasis: "100%",
-            textAlign: "center",
-            marginTop: "10px",
-            marginBottom: "20px"
-          }}
-        >Food Seekers</Typography>
-        <Container maxWidth="sm">
-          <Box component="dl"
-            sx={{
-              marginTop: "10px",
-              marginBottom: "0",
-              "& dd": {
-                marginLeft: "0",
-                marginBottom: "24px"
-              },
-              "& dd:last-child": {
-                marginBottom: "0"
-              }
-            }}
-          >
-            <Typography variant="subtitle2"
-              sx={{
-                textAlign: "center",
-                color: "white"
-              }}>
-              Get the information you're looking for right now
-            </Typography>
-          </Box>
-        </Container>
-      </Box>
+            minHeight: "21.78px",
+            maxWidth: "392px",
+            alignSelf: "center"
+          }}>SEE ALL FREQUENTLY ASKED QUESTIONS
+        </Button>
+      </Box >
       <Box
         sx={{
-          padding: "50px 32px 50px",
           margin: "32px 0",
-          borderRadius: "24px",
-          background: "#B6D8FB",
           display: "flex",
-          flexDirection: "column"
+          flexDirection: "column",
+          width: "100%"
         }}
       >
-        <Container maxWidth="sm">
-          <Box
-            sx={{
-              paddingLeft: "26px",
-              margin: "5px",
-              lineHeight: "26.55px"
-            }} component="ul">
-            <Formik
-              initialValues={{ name: '', email: '', phone: '', title: '', message: '' }}
-              validationSchema={validationSchema}
-              onSubmit={(values, { setSubmitting }) => {
-                setTimeout(() => {
-                  alert(JSON.stringify(values, null, 2));
-                  setSubmitting(false);
-                }, 400);
-              }}
-            >
-              {({ isSubmitting }) => (
-                <Form>
-                  <label htmlFor="name">Name</label>
-                  <Field type="input" name="name" />
-                  <ErrorMessage name="name" component="div" />
-                  <label htmlFor="email">Email</label>
-                  <Field type="email" name="email" />
-                  <ErrorMessage name="email" component="div" />
-                  <label htmlFor="phone">Phone</label>
-                  <Field type="phone" name="phone" />
-                  <label htmlFor="title">Title</label>
-                  <Field type="input" name="title" />
-                  <ErrorMessage name="title" component="div" />
-                  <label htmlFor="message">Message</label>
-                  <Field name="message" as="textarea" />
-                  <ErrorMessage name="message" component="div" />
-                  <button type="submit" disabled={isSubmitting}>
-                    Submit
-                  </button>
-                </Form>
-              )}
-            </Formik>
-          </Box>
-        </Container>
+        <Box
+          sx={{
+            paddingLeft: "26px",
+            margin: "5px",
+            lineHeight: "26.55px"
+          }} component="ul">
+        <Typography variant="subtitle1"
+          sx={{
+            color: "black",
+            textTransform: "uppercase",
+            maxWidth: "392px"
+          }}>
+          Can't find what you're looking for?
+        </Typography>
+        <Typography variant="subtitle2"
+          sx={{
+            color: "black",
+            maxWidth: "392px"
+          }}>
+          How can we help?
+        </Typography>
+          <Formik
+            initialValues={{ name: '', email: '', phone: '', title: '', message: '' }}
+            validationSchema={validationSchema}
+            onSubmit={(values, { setSubmitting }) => {
+              setTimeout(() => {
+                alert(JSON.stringify(values, null, 2));
+                setSubmitting(false);
+              }, 400);
+            }}
+          >
+            {({ isSubmitting }) => (
+              <Form>
+                <TextField type="input" name="name" placeholder="Your Name" />
+                <ErrorMessage name="name" component="div" />
+                <TextField type="email" name="email" placeholder="Email" sx={{width: "604px"}} />
+                <ErrorMessage name="email" component="div" />
+                <TextField type="phone" name="phone" placeholder="Phone Number" />
+                <TextField type="input" name="title" placeholder="Title" />
+                <ErrorMessage name="title" component="div" />
+                <Field name="message" as="textarea" placeholder="Message" />
+                <ErrorMessage name="message" component="div" />
+                <button type="submit" disabled={isSubmitting}>
+                  Submit
+                </button>
+              </Form>
+            )}
+          </Formik>
+        </Box>
       </Box >
       <Footer />
     </Container >

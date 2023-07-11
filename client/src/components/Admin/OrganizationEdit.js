@@ -69,6 +69,20 @@ const validationSchema = Yup.object().shape({
     1,
     "You must select at least one category"
   ),
+  hours: Yup.array().of(
+    Yup.object().shape({
+      weekOfMonth: Yup.number().required("Week of month is required"),
+      dayOfWeek: Yup.string()
+        .required("Day of week is required")
+        .notOneOf([""], "Day of week should not be empty"),
+      open: Yup.string()
+        .required("Open time is required")
+        .notOneOf([""], "Open time should not be empty"),
+      close: Yup.string()
+        .required("Close time is required")
+        .notOneOf([""], "Close time should not be empty"),
+    })
+  ),
 });
 
 const emptyOrganization = {
@@ -389,6 +403,35 @@ const OrganizationEdit = (props) => {
     </Stack>
   );
 
+  const [isSubmitClicked, setSubmitClicked] = useState(false);
+  // should include all fields that are required for the form to be valid
+  const tabs = {
+    name: 0,
+    address1: 0,
+    city: 0,
+    state: 0,
+    zip: 0,
+    latitude: 0,
+    longitude: 0,
+    email: 0,
+    selectedCategoryIds: 0,
+    hours: 1,
+  };
+
+  const scrollIntoViewHelper = (errors) => {
+    const firstError = Object.keys(errors)[0];
+    if (firstError.startsWith("hours")) {
+      return;
+    }
+    let el = document.querySelector(`[name="${firstError}"]`);
+    if (el) {
+      el.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  };
+
   return (
     <Container component="main" maxWidth="lg">
       <CssBaseline />
@@ -414,6 +457,39 @@ const OrganizationEdit = (props) => {
           initialValues={JSON.parse(JSON.stringify(originalData))}
           enableReinitialize
           validationSchema={validationSchema}
+          validate={(values) => {
+            try {
+              validationSchema.validateSync(values, { abortEarly: false });
+            } catch (error) {
+              if (isSubmitClicked) {
+                setSubmitClicked(false);
+                const errors = error.inner.reduce(
+                  (errors, { path, message }) => ({
+                    ...errors,
+                    [path]: message,
+                  }),
+                  {}
+                );
+                const firstError = Object.keys(errors)[0];
+                let tabIndex;
+                // Check if the first part of the key matches 'hours'
+                if (firstError.startsWith("hours")) {
+                  tabIndex = tabs["hours"];
+                } else {
+                  tabIndex = tabs[firstError];
+                }
+
+                if (tabIndex !== undefined) {
+                  setTabPage(tabIndex); // change to the tab of the first error field
+
+                  // Scroll to the error field after the new tab contents have rendered
+                  setTimeout(() => {
+                    scrollIntoViewHelper(errors);
+                  }, 0);
+                }
+              }
+            }
+          }}
           onSubmit={(values, { setSubmitting, setFieldValue }) => {
             if (values.id) {
               return stakeholderService
@@ -2076,11 +2152,13 @@ const OrganizationEdit = (props) => {
                             sx={{
                               minHeight: "3.5rem",
                             }}
+                            onClick={() => setSubmitClicked(true)}
                           >
                             Save Progress
                           </Button>
                         </div>
                       </Tooltip>
+
                       <Tooltip title="Mark for re-verification">
                         <div>
                           <Button

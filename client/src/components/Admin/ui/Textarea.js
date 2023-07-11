@@ -9,7 +9,8 @@ const Textarea = ({
   onBlur,
   helperText,
   error,
-  props,
+  rows,
+  props
 }) => {
   return (
     <TextField
@@ -28,6 +29,7 @@ const Textarea = ({
           padding: "0",
         },
       }}
+      rows={rows || "auto"}
       minRows={2}
       maxRows={12}
       value={value}

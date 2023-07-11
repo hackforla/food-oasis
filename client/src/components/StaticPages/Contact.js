@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import IconSpacerSVG from "./assets/IconSpacerSVG";
-import { Typography, Box, CardMedia, List, ListItem, ListItemText, SvgIcon, Button, TextField } from "@mui/material";
+import { Typography, Box, CardMedia, List, ListItem, ListItemText, Button, TextField, Stack } from "@mui/material";
 import * as analytics from "../../services/analytics";
 import Container from "@mui/material/Container";
 import { Link as RouterLink } from "react-router-dom";
@@ -9,6 +9,7 @@ import typing from "./assets/3social-equity.png";
 
 import { Formik, Form, Field, ErrorMessage, yupToFormErrors } from 'formik';
 import * as Yup from "yup";
+import Textarea from "components/Admin/ui/Textarea";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -44,7 +45,6 @@ function createListItems() {
       {value}
     </ListItem>)
 }
-
 
 const Contact = () => {
   useEffect(() => {
@@ -85,10 +85,7 @@ const Contact = () => {
           height: "545px"
         }}
       >
-        <SvgIcon
-          alt="Glossary"
-          component={IconSpacerSVG}
-        />
+        <IconSpacerSVG />
         <Typography variant="subtitle1"
           sx={{
             textAlign: "center",
@@ -111,6 +108,8 @@ const Contact = () => {
         <Button
           variant="outlined"
           type="submit"
+          component={RouterLink}
+          to="/faqs"
           sx={{
             minHeight: "21.78px",
             maxWidth: "392px",
@@ -119,6 +118,7 @@ const Contact = () => {
         </Button>
       </Box >
       <Box
+        className="bottom-box"
         sx={{
           margin: "32px 0",
           display: "flex",
@@ -127,54 +127,65 @@ const Contact = () => {
         }}
       >
         <Box
+          className="words"
           sx={{
-            paddingLeft: "26px",
             margin: "5px",
             lineHeight: "26.55px"
           }} component="ul">
-        <Typography variant="subtitle1"
-          sx={{
-            color: "black",
-            textTransform: "uppercase",
-            maxWidth: "392px"
-          }}>
-          Can't find what you're looking for?
-        </Typography>
-        <Typography variant="subtitle2"
-          sx={{
-            color: "black",
-            maxWidth: "392px"
-          }}>
-          How can we help?
-        </Typography>
-          <Formik
-            initialValues={{ name: '', email: '', phone: '', title: '', message: '' }}
-            validationSchema={validationSchema}
-            onSubmit={(values, { setSubmitting }) => {
-              setTimeout(() => {
-                alert(JSON.stringify(values, null, 2));
-                setSubmitting(false);
-              }, 400);
-            }}
-          >
-            {({ isSubmitting }) => (
-              <Form>
+          <Typography variant="subtitle1"
+            sx={{
+              color: "black",
+              textTransform: "uppercase",
+              maxWidth: "392px",
+              fontWeight: "500",
+              letterSpacing: "1px"
+            }}>
+            Can't find what you're looking for?
+          </Typography>
+          <Typography variant="subtitle2"
+            sx={{
+              color: "#1B1B1B",
+              maxWidth: "392px",
+              fontWeight: "400",
+              letterSpacing: "1px"
+            }}>
+            How can we help?
+          </Typography>
+        </Box>
+        <Formik
+          initialValues={{ name: '', email: '', phone: '', title: '', message: '' }}
+          validationSchema={validationSchema}
+          onSubmit={(values, { setSubmitting }) => {
+            setTimeout(() => {
+              alert(JSON.stringify(values, null, 2));
+              setSubmitting(false);
+            }, 400);
+          }}
+        >
+          {({ isSubmitting }) => (
+            <Form>
+              <Box sx={{height: "550px", "& > *": { height: "61px", marginTop: "10px", marginBottom: "10px", "& input::placeholder": { color: "#999", fontSize: "16px", fontStyle: "normal", fontWeight: "400", lineHeight: "24px"}} }}>
                 <TextField type="input" name="name" placeholder="Your Name" />
                 <ErrorMessage name="name" component="div" />
-                <TextField type="email" name="email" placeholder="Email" sx={{width: "604px"}} />
-                <ErrorMessage name="email" component="div" />
-                <TextField type="phone" name="phone" placeholder="Phone Number" />
+                <Stack direction={"row"}>
+                  <TextField type="email" name="email" placeholder="Email" sx={{ width: "604px", marginRight: "15px"}} />
+                  <ErrorMessage name="email" component="div" />
+                  <TextField type="phone" name="phone" placeholder="Phone Number" sx={{ width: "604px" }} />
+                </Stack>
                 <TextField type="input" name="title" placeholder="Title" />
                 <ErrorMessage name="title" component="div" />
-                <Field name="message" as="textarea" placeholder="Message" />
+                <Textarea name="message" placeholder="Message" rows={10} placeholderStyle={{fontStyle: "normal"}}/>
                 <ErrorMessage name="message" component="div" />
-                <button type="submit" disabled={isSubmitting}>
+              </Box>
+              <Stack direction={"row"} sx={{ justifyContent: "center"}}>
+                <Button variant="outlined" sx={{ marginRight: "15px"}}>Cancel</Button>
+                <Button type="submit" disabled={isSubmitting}>
                   Submit
-                </button>
-              </Form>
-            )}
-          </Formik>
-        </Box>
+                </Button>
+              </Stack>
+            </Form>
+          )}
+        </Formik>
       </Box >
       <Footer />
     </Container >

@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import withStyles from "@mui/styles/withStyles";
 import { Button } from "@mui/material";
 import { Avatar, Box, Container, CssBaseline, Typography } from "@mui/material";
+import { palette } from "theme/palette";
 
 const MailIcon = () => {
   return (
@@ -27,35 +27,6 @@ const MailIcon = () => {
   );
 };
 
-const styles = (theme) => ({
-  "@global": {
-    body: {
-      backgroundColor: theme.palette.common.white,
-    },
-  },
-  paper: {
-    marginTop: theme.spacing(1),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.success.main,
-  },
-  header: {
-    width: "100%", // Fix IE 11 issue.
-    margin: theme.spacing(3, 0, 3),
-  },
-  body: {
-    display: "flex",
-    height: "97.8%",
-    flexDirection: "column",
-  },
-  container: {
-    flex: 1,
-  },
-});
 
 const ResetPasswordEmailSent = (props) => {
   const { classes} = props;
@@ -63,17 +34,37 @@ const ResetPasswordEmailSent = (props) => {
   const { email } = useParams();
 
   return (
-    <div className={classes.body}>
-      <Container component="main" maxWidth="s" className={classes.container}>
+    <Container component="main" maxWidth="xs"
+    sx={{
+      display: "flex",
+      height: "97.8%",
+      flexDirection: "column",
+    }}
+    >
         <CssBaseline />
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
+        <Box
+        sx={{
+          marginTop: "8px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+        >
+         <Avatar
+          sx={{
+            margin: "8px",
+            backgroundColor: palette.secondary.main,
+          }}
+          >
             <MailIcon />
           </Avatar>
           <Typography
             component="h1"
             variant="h5"
-            className={classes.header}
+            sx={{
+              width: "100%", 
+              margin: "24px 0px"
+            }}
             align="center"
           >
             Password Reset Link was Sent
@@ -87,10 +78,11 @@ const ResetPasswordEmailSent = (props) => {
               Back to login
             </Button>
           </Box>
-        </div>
+        </Box>
       </Container>
-    </div>
   );
 };
 
-export default withStyles(styles)(ResetPasswordEmailSent);
+
+export default ResetPasswordEmailSent;
+

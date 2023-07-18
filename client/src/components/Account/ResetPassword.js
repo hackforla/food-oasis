@@ -1,6 +1,5 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import withStyles from "@mui/styles/withStyles";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import * as accountService from "../../services/account-service";
@@ -14,31 +13,8 @@ import {
   PASSWORD_VALIDATION_REGEX,
 } from "helpers/Constants";
 import Label from "components/Admin/ui/Label";
+import { palette } from "theme/palette";
 
-const styles = (theme) => ({
-  paper: {
-    marginTop: theme.spacing(1),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  body: {
-    display: "flex",
-    height: "97.8%",
-    flexDirection: "column",
-  },
-  container: {
-    flex: 1,
-  },
-});
 
 const validationSchema = Yup.object().shape({
   token: Yup.string().required("Token is required"),
@@ -57,11 +33,28 @@ const ResetPassword = (props) => {
   const { token } = useParams();
 
   return (
-    <div className={classes.body}>
-      <Container component="main" maxWidth="xs" className={classes.container}>
+    <Container component="main" maxWidth="xs"
+    sx={{
+      display: "flex",
+      height: "97.8%",
+      flexDirection: "column",
+    }}
+    >
         <CssBaseline />
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
+        <Box
+        sx={{
+          marginTop: "8px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+        >
+          <Avatar
+          sx={{
+            margin: "8px",
+            backgroundColor: palette.secondary.main,
+          }}
+          >
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -127,14 +120,18 @@ const ResetPassword = (props) => {
               /* and other goodies */
             }) => (
               <form
-                className={classes.form}
                 noValidate
                 onSubmit={(evt) => {
                   evt.preventDefault();
                   handleSubmit(evt);
                 }}
               >
-                <div>
+                <Box
+                sx={{
+                  width: "100%", // Fix IE 11 issue.
+                  marginTop: "8px"
+                }}
+                >
                   <Label id="password" label="New Password" />
                   <PasswordInput
                     fullWidth
@@ -149,8 +146,8 @@ const ResetPassword = (props) => {
                     error={touched.password && Boolean(errors.password)}
                     sx={{ mt: 2, mb: 2 }}
                   />
-                </div>
-                <div>
+                </Box>
+                <Box>
                   <Label id="passwordConfirm" label="Confirm Password" />
                   <PasswordInput
                     fullWidth
@@ -168,7 +165,7 @@ const ResetPassword = (props) => {
                     }
                     sx={{ mt: 2, mb: 2 }}
                   />
-                </div>
+                </Box>
                 <Box sx={{ mt: 2, mb: 2 }}>
                   <Button
                     variant="contained"
@@ -182,10 +179,10 @@ const ResetPassword = (props) => {
               </form>
             )}
           </Formik>
-        </div>
+        </Box>
       </Container>
-    </div>
   );
 };
 
-export default withStyles(styles)(ResetPassword);
+export default ResetPassword;
+

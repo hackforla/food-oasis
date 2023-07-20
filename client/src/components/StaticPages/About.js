@@ -282,6 +282,7 @@ const About = () => {
             href="https://www.foodcyclela.org/"
             target={"_blank"}
             rel="noopener noreferrer"
+            variant="icon"
           >
             <CardMedia
               component="img"
@@ -299,6 +300,7 @@ const About = () => {
             href="https://foodforward.org/"
             target={"_blank"}
             rel="noopener noreferrer"
+            variant="icon"
           >
             <CardMedia
               component="img"
@@ -316,6 +318,7 @@ const About = () => {
             href="https://www.farm2people.org/"
             target={"_blank"}
             rel="noopener noreferrer"
+            variant="icon"
           >
             <CardMedia
               component="img"
@@ -333,6 +336,7 @@ const About = () => {
             href="https://www.lafoodbank.org/"
             target={"_blank"}
             rel="noopener noreferrer"
+            variant="icon"
           >
             <CardMedia
               component="img"

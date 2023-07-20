@@ -5,141 +5,15 @@ import foodCycle from "./assets/food-cycle.png";
 import foodForward from "./assets/food-forward.png";
 import farm2people from "./assets/farm2people.png";
 import foodBank from "./assets/food-bank.png";
-import makeStyles from "@mui/styles/makeStyles";
 import Typography from "@mui/material/Typography";
 import * as analytics from "../../services/analytics";
 import { Link as RouterLink } from "react-router-dom";
-import { Link, Container, CardMedia, Box } from "@mui/material";
+import { Link, Container, CardMedia, Box, SvgIcon } from "@mui/material";
 import Footer from "../Layout/Footer";
+import IconSpacerSVG from "./assets/IconSpacerSVG";
 
-const useStyles = makeStyles(() => ({
-  // outer: {
-  //   background: "#fff",
-  // },
-  // main: {
-  //   padding: "1.5rem 0",
-  //   maxWidth: "1200px",
-  //   margin: "0 auto",
-  //   "@media only screen and (min-width: 75em)": {
-  //     padding: "1.5rem 2rem",
-  //   },
-  // },
-  // title: {
-  //   textTransform: "uppercase",
-  //   textAlign: "center",
-  //   background: "#FFF",
-  //   margin: 0,
-  //   padding: "32px 0",
-  // },
-  // description: {
-  //   fontSize: "20px",
-  //   padding: "5px 32px 10px",
-  //   "@media only screen and (min-width: 75em)": {
-  //     fontSize: "24px",
-  //     padding: "5px 120px 20px",
-  //   },
-  // },
-  // figure: {
-  //   margin: 0,
-  //   padding: 0,
-  // },
-  icon: {
-    margin: "auto",
-    marginBottom: "20px",
-  },
-  // mission: {
-  //   padding: "50px 32px 50px",
-  //   margin: "32px 0",
-  //   borderRadius: "24px",
-  //   background: "#f0f0f0",
-  //   display: "flex",
-  //   flexDirection: "column",
-  //   "& $h2": {
-  //     flexBasis: "100",
-  //     textAlign: "center",
-  //     fontWeight: "500",
-  //     fontSize: "32px",
-  //     marginTop: "10px",
-  //     marginBottom: "20px",
-  //   },
-  //   "& $p": {
-  //     marginBottom: "16px",
-  //   },
-  // },
-  // team: {
-  //   padding: "50px 32px 50px",
-  //   margin: "32px 0 0 0",
-  //   borderRadius: "24px",
-  //   background: "#B6D8FB",
-  //   display: "flex",
-  //   flexDirection: "column",
-  //   "& $h2": {
-  //     flexBasis: "100",
-  //     textAlign: "center",
-  //     fontWeight: "500",
-  //     fontSize: "32px",
-  //     marginTop: "10px",
-  //     marginBottom: "20px",
-  //   },
-  //   "& $p": {
-  //     marginBottom: "16px",
-  //   },
-  // },
-  // contact: {
-  //   padding: "50px 32px 50px",
-  //   margin: "32px 0 0 0",
-  //   borderRadius: "24px",
-  //   background: "#f0f0f0",
-  //   display: "flex",
-  //   flexDirection: "column",
-  //   textAlign: "center",
-  //   "& $h2": {
-  //     flexBasis: "100",
-
-  //     textAlign: "center",
-  //     fontWeight: "500",
-  //     fontSize: "32px",
-  //     marginTop: "10px",
-  //     marginBottom: "20px",
-  //   },
-  //   "& $p": {
-  //     marginBottom: "16px",
-  //   },
-  // },
-  // partners: {
-  //   background: "#fff",
-  //   padding: "48px 32px",
-  //   borderRadius: "24px",
-  //   justifyContent: "space-between",
-  //   alignItems: "center",
-  //   display: "flex",
-  //   flexWrap: "wrap",
-  //   flexDirection: "column",
-  //   "& $h2": {
-  //     width: "100%",
-  //     flexBasis: "100",
-  //     textAlign: "center",
-  //     fontWeight: "500",
-  //     fontSize: "32px",
-  //     marginTop: "10px",
-  //     marginBottom: "60px",
-  //   },
-  //   "@media only screen and (min-width: 64em)": {
-  //     flexDirection: "row",
-  //   },
-  // },
-  // partnersLogo: {
-  //   maxWidth: "100%",
-  //   height: "100%",
-  //   marginBottom: "40px",
-  //   "@media only screen and (min-width: 64em) ": {
-  //     marginBottom: 0,
-  //   },
-  // },
-}));
 
 const About = () => {
-  const classes = useStyles();
 
   useEffect(() => {
     analytics.postEvent("visitAboutPage");
@@ -187,12 +61,20 @@ const About = () => {
           flexDirection: "column"
         }}
         >
-          <img
-            alt="Our Mission"
-            src={iconSpacerGray}
-            className={classes.icon}
-            height="40"
-          />
+          <CardMedia
+        component="svg"
+        sx={{
+          margin: "auto",
+          marginBottom: "20px",
+          height: "40px",
+          width: "90px"
+        }}
+        >
+          <SvgIcon 
+          component={IconSpacerSVG}
+          titleAccess="Glossary"
+        />
+        </CardMedia>
           <Typography
           sx={{
             flexBasis: "100",
@@ -225,12 +107,20 @@ const About = () => {
           display: "flex",
           flexDirection: "column",
         }}>
-          <img
-            alt="Our Team"
-            src={iconSpacerGray}
-            className={classes.icon}
-            height="40"
-          />
+          <CardMedia
+      component="svg"
+      sx={{
+        margin: "auto",
+        marginBottom: "20px",
+        height: "40px",
+        width: "90px"
+      }}
+      >
+        <SvgIcon 
+        component={IconSpacerSVG}
+        titleAccess="Glossary"
+      />
+      </CardMedia>
           <Typography
           sx={{
             flexBasis: "100",
@@ -273,12 +163,20 @@ const About = () => {
           textAlign: "center"
         }}
         >
-          <img
-            alt="Questions"
-            src={iconSpacerGray}
-            className={classes.icon}
-            height="40"
-          />
+          <CardMedia
+      component="svg"
+      sx={{
+        margin: "auto",
+        marginBottom: "20px",
+        height: "40px",
+        width: "90px"
+      }}
+      >
+        <SvgIcon 
+        component={IconSpacerSVG}
+        titleAccess="Glossary"
+      />
+      </CardMedia>
           <Typography
           sx={{
             flexBasis: "100",
@@ -309,12 +207,20 @@ const About = () => {
           flexDirection: "column"
         }}
         >
-          <img
-            alt="Contact Us"
-            src={iconSpacerGray}
-            className={classes.icon}
-            height="40"
-          />
+         <CardMedia
+      component="svg"
+      sx={{
+        margin: "auto",
+        marginBottom: "20px",
+        height: "40px",
+        width: "90px"
+      }}
+      >
+        <SvgIcon 
+        component={IconSpacerSVG}
+        titleAccess="Glossary"
+      />
+      </CardMedia>
           <Typography
           sx={{
             flexBasis: "100",

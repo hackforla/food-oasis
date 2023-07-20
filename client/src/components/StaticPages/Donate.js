@@ -440,6 +440,7 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
               textDecoration: "none",
               textTransform: "uppercase"
             }}
+              variant="contained"
               href="//www.codeforamerica.org/donate"
               target="_blank"
               rel="noopener noreferrer"

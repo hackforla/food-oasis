@@ -10,7 +10,6 @@ import * as accountService from "../../services/account-service";
 import Label from "components/Admin/ui/Label";
 import { palette } from "theme/palette";
 
-
 const validationSchema = Yup.object().shape({
   email: Yup.string()
     .email("Invalid email address format")
@@ -20,7 +19,7 @@ const validationSchema = Yup.object().shape({
 const ConfirmEmail = (props) => {
   const { classes } = props;
   const [confirmResult, setConfirmResult] = useState(false);
-  const token = useParams();
+  const { token } = useParams();
   const { setToast } = useToasterContext();
   const [view, setView] = useState("loading");
 
@@ -75,12 +74,14 @@ const ConfirmEmail = (props) => {
       default:
       case "error":
         return (
-          <Container component="main" maxWidth="xs"
-          sx={{
-            display: "flex",
-            height: "97.8%",
-            flexDirection: "column",
-          }}
+          <Container
+            component="main"
+            maxWidth="xs"
+            sx={{
+              display: "flex",
+              height: "97.8%",
+              flexDirection: "column",
+            }}
           >
             <Typography component="p">
               The confirmation request was not found, or has expired. Please
@@ -124,42 +125,45 @@ const ConfirmEmail = (props) => {
   };
 
   return (
-    <Container component="main" maxWidth="xs"
-    sx={{
-      display: "flex",
-      height: "97.8%",
-      flexDirection: "column",
-    }}
+    <Container
+      component="main"
+      maxWidth="xs"
+      sx={{
+        display: "flex",
+        height: "97.8%",
+        flexDirection: "column",
+      }}
     >
-        <Box
+      <Box
         sx={{
           marginTop: "8px",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
-        >
-          <Avatar
+      >
+        <Avatar
           sx={{
             margin: "8px",
             backgroundColor: palette.secondary.main,
-          }}>
-            <EmailOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Confirm Email
-          </Typography>
-          <Formik
-            initialValues={{
-              email: "",
-            }}
-            validationSchema={validationSchema}
-            onSubmit={resendConfirmationEmail}
-          >
-            {(props) => renderView(props)}
-          </Formik>
-        </Box>
-      </Container>
+          }}
+        >
+          <EmailOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Confirm Email
+        </Typography>
+        <Formik
+          initialValues={{
+            email: "",
+          }}
+          validationSchema={validationSchema}
+          onSubmit={resendConfirmationEmail}
+        >
+          {(props) => renderView(props)}
+        </Formik>
+      </Box>
+    </Container>
   );
 };
 

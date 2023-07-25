@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import donatebg from "./assets/donate-bg.webp";
-import makeStyles from "@mui/styles/makeStyles";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import logo from "images/foodoasis.svg";
@@ -13,6 +12,7 @@ import {
   Typography,
   Box,
   Button,
+  CardMedia
 } from "@mui/material";
 import donationStep1 from "images/donationStep1.png";
 import donationStep2 from "images/donationStep2.png";
@@ -25,108 +25,9 @@ import * as analytics from "../../services/analytics";
 import { IconButton } from "../UI/StandardButton";
 import Footer from "../Layout/Footer";
 
-const useStyles = makeStyles((theme) => ({
-  outer: {
-    background: "#fff",
-  },
-  main: {
-    padding: "1.5rem 0",
-    maxWidth: "1200px",
-    margin: "0 auto",
-    "@media only screen and (min-width: 75em)": {
-      padding: "1.5rem 2rem",
-    },
-  },
-  title: {
-    color: "#000000",
-    textTransform: "uppercase",
-    fontWeight: 500,
-    textAlign: "center",
-    background: "#FFF",
-    margin: 0,
-    padding: "32px 0",
-  },
-  btnOutline: {
-    color: "#fff",
-    border: "1px solid #336699",
-    background: "#336699",
-    borderRadius: "6px",
-    padding: "8px 16px",
-    textDecoration: "none",
-    textTransform: "uppercase",
-  },
-  figure: {
-    margin: 0,
-    padding: 0,
-  },
-  icon: {
-    margin: "auto",
-  },
-  donate: {
-    padding: "10px",
-    color: "#4d4d4d",
-    display: "flex",
-    flexDirection: "column",
-    flexWrap: "wrap",
-    "& $h2": {
-      flexBasis: "100%",
-      textAlign: "center",
-      fontWeight: "500",
-      fontSize: "32px",
-      marginTop: "10px",
-      marginBottom: "20px",
-    },
-    "& $btnOutline": {
-      margin: "30px auto",
-    },
-  },
-  donationDialog: {
-    flexGrow: 1,
-    overflow: "scroll",
-    padding: theme.spacing(1),
-    margin: theme.spacing(1),
-    "@media only screen and (min-width: 64em)": {
-      margin: `${theme.spacing(1)} auto`,
-      padding: theme.spacing(1, 4),
-    },
-  },
-  paper: {
-    maxWidth: 400,
-    padding: theme.spacing(2),
-    margin: `${theme.spacing(2)} auto`,
-    "@media only screen and (min-width: 64em)": {
-      margin: `${theme.spacing(3)} auto`,
-      padding: theme.spacing(3),
-    },
-  },
-  step: {
-    backgroundColor: "#ef624f",
-    width: theme.spacing(3),
-    height: theme.spacing(3),
-    "@media only screen and (min-width: 64em)": {
-      width: theme.spacing(7),
-      height: theme.spacing(7),
-    },
-  },
-  dialogCloseButton: {
-    position: "absolute",
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    color: theme.palette.grey[500],
-  },
-  donateButtonWrapper: {
-    position: "sticky",
-    bottom: 0,
-    backgroundColor: "#fff",
-  },
-  donationImg: {
-    width: "100%",
-    height: "auto",
-  },
-}));
+
 
 const Donate = () => {
-  const classes = useStyles();
   const [showDonationDialog, setShowDonationDialog] = React.useState(false);
 
   useEffect(() => {
@@ -137,15 +38,33 @@ const Donate = () => {
     setShowDonationDialog(showDonationDialog ? false : true);
   };
   return (
-    <div className={classes.outer}>
-      <div className={classes.main}>
-        <figure className={classes.figure}>
-          <img alt="Donate" src={donatebg} style={{ width: "100%" }} />
-        </figure>
-        <Typography variant="h1" className={classes.title}>
+    <Container 
+       sx={{
+        padding: { xs: "1.5rem 0", md: "1.5rem 2rem"},
+         margin: "0 auto",
+         maxWidth: "1200px"
+       }}
+       >
+         <CardMedia component="img" alt="Donate" src={donatebg} style={{ width: "100%" }}></CardMedia>
+        <Typography variant="h1"
+        sx={{
+          textTransform: "uppercase",
+          textAlign: "center",
+          margin: 0,
+          padding: "32px 0"
+        }}
+        >
           Donate
         </Typography>
-        <section className={classes.donate}>
+        <Container
+        sx={{
+          padding: "10px",
+          color: "#4d4d4d",
+          display: "flex",
+          flexDirection: "column",
+          flexWrap: "wrap"
+        }}
+        >
           <Container maxWidth="sm">
             <Typography variant="body1">
               As of July 2022, about 1 in 4 people in Los Angeles county are
@@ -168,8 +87,17 @@ const Donate = () => {
             </Typography>
           </Container>
           <Button
+          sx={{
+            margin: "30px auto",
+            color: "#fff",
+            border: "1px solid #336699",
+            background: "#336699",
+            borderRadius: "6px",
+            padding: "8px 16px",
+            textDecoration: "none",
+            textTransform: "uppercase"
+          }}
             variant="contained"
-            className={classes.btnOutline}
             onClick={handleShowDonationDialog}
           >
             Donate
@@ -180,17 +108,15 @@ const Donate = () => {
               setShowDonationDialog={setShowDonationDialog}
             />
           )}
-        </section>
+        </Container>
         <Footer />
-      </div>
-    </div>
+      </Container>
   );
 };
 
 export default Donate;
 
 const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
-  const classes = useStyles();
   const handleCloseDonationDialog = () => {
     setShowDonationDialog(false);
   };
@@ -203,7 +129,7 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
     >
       <DialogTitle id="simple-dialog-title">
         <Grid container justifyContent="center">
-          <img style={{ height: "50px" }} src={logo} alt="logo" />
+          <CardMedia component="img" sx={{height: "50px", width: " auto"}} src={logo} alt="logo" />
           <Grid item>
             <Typography align="center">
               Please make donations to our parent organization (Code for
@@ -216,145 +142,312 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
           <Grid item>
             <IconButton
               icon="close"
-              className={classes.dialogCloseButton}
+              sx={{
+              position: "absolute",
+              right: "16px",
+              top: "16px",
+              color: "#9e9e9e"
+              }}
               onClick={handleCloseDonationDialog}
             />
           </Grid>
         </Grid>
       </DialogTitle>
-      <div className={classes.donationDialog}>
-        <Paper className={classes.paper}>
-          <Grid container wrap="nowrap" spacing={2}>
+      <Container
+      sx={{
+        flexGrow: 1,
+        overflow: "scroll",
+        padding: {xs: "8px", md:"8px 32px"},
+        margin: {xs: "8px", md: "8px auto"}
+      }}
+      >
+        <Paper
+        xs={{
+          maxWidth: "400px",
+          padding: {xs: "16px", md:"24px"},
+          margin: {xs: "16px auto", md: "24px auto"}
+        }}
+        >
+          <Grid
+          sx={{
+            padding: "5px 16px"
+          }}
+           container wrap="nowrap" spacing={2}>
             <Grid item>
-              <Avatar className={classes.step}>1</Avatar>
+              <Avatar
+              sx={{
+                backgroundColor: "#ef624f",
+                width: {xs: "24px", md:"56px"},
+                height: {xs: "24px", md: "56px"}
+              }}
+              >1</Avatar>
             </Grid>
             <Grid item xs zeroMinWidth>
               <Typography>Enter your donation amount.</Typography>
-              <img
-                className={classes.donationImg}
+              <CardMedia
+                component="img"
+                sx={{
+                  width: "90%",
+                  height: "auto"
+                }}
                 src={donationStep1}
                 alt="logo"
               />
             </Grid>
           </Grid>
         </Paper>
-        <Paper className={classes.paper}>
-          <Grid container wrap="nowrap" spacing={2}>
+        <Paper
+        xs={{
+          maxWidth: "400px",
+          padding: {xs: "16px", md:"24px"},
+          margin: {xs: "16px auto", md: "24px auto"}
+        }}
+        >
+          <Grid
+          sx={{
+            padding: "5px 16px"
+          }}
+          container wrap="nowrap" spacing={2}>
             <Grid item>
-              <Avatar className={classes.step}>2</Avatar>
+            <Avatar
+              sx={{
+                backgroundColor: "#ef624f",
+                width: {xs: "24px", md:"56px"},
+                height: {xs: "24px", md: "56px"}
+              }}
+              >2</Avatar>
             </Grid>
             <Grid item xs zeroMinWidth>
               <Typography>Check the box right below.</Typography>
-              <img
-                className={classes.donationImg}
+              <CardMedia
+                component="img"
+                sx={{
+                  width: "90%",
+                  height: "auto"
+                }}
                 src={donationStep2}
                 alt="logo"
               />
             </Grid>
           </Grid>
         </Paper>
-        <Paper className={classes.paper}>
-          <Grid container wrap="nowrap" spacing={2}>
+        <Paper
+        xs={{
+          maxWidth: "400px",
+          padding: {xs: "16px", md:"24px"},
+          margin: {xs: "16px auto", md: "24px auto"}
+        }}
+        >
+          <Grid
+          sx={{
+            padding: "5px 16px"
+          }}
+          container wrap="nowrap" spacing={2}>
             <Grid item>
-              <Avatar className={classes.step}>3</Avatar>
+            <Avatar
+              sx={{
+                backgroundColor: "#ef624f",
+                width: {xs: "24px", md:"56px"},
+                height: {xs: "24px", md: "56px"}
+              }}
+              >3</Avatar>
             </Grid>
             <Grid item xs zeroMinWidth>
               <Typography>
                 Under "Person to notify" and "Honoree Name" write{" "}
                 <em>"Food Oasis"</em>.
               </Typography>
-              <img
-                className={classes.donationImg}
+              <CardMedia
+                component="img"
+                sx={{
+                  width: "90%",
+                  height: "auto"
+                }}
                 src={donationStep3}
                 alt="logo"
               />
             </Grid>
           </Grid>
         </Paper>
-        <Paper className={classes.paper}>
-          <Grid container wrap="nowrap" spacing={2}>
+        <Paper
+        xs={{
+          maxWidth: "400px",
+          padding: {xs: "16px", md:"24px"},
+          margin: {xs: "16px auto", md: "24px auto"}
+        }}
+        >
+          <Grid
+          sx={{
+            padding: "5px 16px"
+          }}
+          container wrap="nowrap" spacing={2}>
             <Grid item>
-              <Avatar className={classes.step}>4</Avatar>
+            <Avatar
+              sx={{
+                backgroundColor: "#ef624f",
+                width: {xs: "24px", md:"56px"},
+                height: {xs: "24px", md: "56px"}
+              }}
+              >4</Avatar>
             </Grid>
             <Grid item xs zeroMinWidth>
               <Typography>
                 Under "Recipient Email" write{" "}
                 <em>"foodoasis+donations@hackforla.org"</em>.
               </Typography>
-              <img
-                className={classes.donationImg}
+              <CardMedia
+                component="img"
+                sx={{
+                  width: "90%",
+                  height: "auto"
+                }}
                 src={donationStep4}
                 alt="logo"
               />
             </Grid>
           </Grid>
         </Paper>
-        <Paper className={classes.paper}>
-          <Grid container wrap="nowrap" spacing={2}>
+        <Paper
+        xs={{
+          maxWidth: "400px",
+          padding: {xs: "16px", md:"24px"},
+          margin: {xs: "16px auto", md: "24px auto"}
+        }}
+        >
+          <Grid
+          sx={{
+            padding: "5px 16px"
+          }}
+          container wrap="nowrap" spacing={2}>
             <Grid item>
-              <Avatar className={classes.step}>5</Avatar>
+            <Avatar
+              sx={{
+                backgroundColor: "#ef624f",
+                width: {xs: "24px", md:"56px"},
+                height: {xs: "24px", md: "56px"}
+              }}
+              >5</Avatar>
             </Grid>
             <Grid item xs zeroMinWidth>
               <Typography>
                 Choose the brigade <em>"Hack for LA"</em> in the dropdown.
               </Typography>
-              <img
-                className={classes.donationImg}
+              <CardMedia
+                component="img"
+                sx={{
+                  width: "90%",
+                  height: "auto"
+                }}
                 src={donationStep5}
                 alt="logo"
               />
             </Grid>
           </Grid>
         </Paper>
-        <Paper className={classes.paper}>
-          <Grid container wrap="nowrap" spacing={2}>
+        <Paper
+        xs={{
+          maxWidth: "400px",
+          padding: {xs: "16px", md:"24px"},
+          margin: {xs: "16px auto", md: "24px auto"}
+        }}
+        >
+          <Grid
+          sx={{
+            padding: "5px 16px"
+          }}
+          container wrap="nowrap" spacing={2}>
             <Grid item>
-              <Avatar className={classes.step}>6</Avatar>
+            <Avatar
+              sx={{
+                backgroundColor: "#ef624f",
+                width: {xs: "24px", md:"56px"},
+                height: {xs: "24px", md: "56px"}
+              }}
+              >6</Avatar>
             </Grid>
             <Grid item xs zeroMinWidth>
               <Typography>Click next.</Typography>
-              <img
-                className={classes.donationImg}
+              <CardMedia
+                component="img"
+                sx={{
+                  width: "90%",
+                  height: "auto"
+                }}
                 src={donationStep6}
                 alt="logo"
               />
             </Grid>
           </Grid>
         </Paper>
-        <Paper className={classes.paper}>
-          <Grid container wrap="nowrap" spacing={2}>
+        <Paper
+        xs={{
+          maxWidth: "400px",
+          padding: {xs: "16px", md:"24px"},
+          margin: {xs: "16px auto", md: "24px auto"}
+        }}
+        >
+          <Grid
+          sx={{
+            padding: "5px 16px"
+          }}
+          container wrap="nowrap" spacing={2}>
             <Grid item>
-              <Avatar className={classes.step}>7</Avatar>
+              <Avatar
+              sx={{
+                backgroundColor: "#ef624f",
+                width: {xs: "24px", md:"56px"},
+                height: {xs: "24px", md: "56px"}
+              }}
+              >7</Avatar>
             </Grid>
             <Grid item xs zeroMinWidth>
               <Typography>
                 Under "What inspired you to donate today?" write{" "}
                 <em>"Food Oasis"</em>.
               </Typography>
-              <img
-                className={classes.donationImg}
+              <CardMedia
+                component="img"
+                sx={{
+                  width: "90%",
+                  height: "auto"
+                }}
                 src={donationStep7}
                 alt="logo"
               />
             </Grid>
           </Grid>
         </Paper>
-      </div>
+      </Container>
       <Grid
-        className={classes.donateButtonWrapper}
+        sx={{
+          position: "sticky",
+          bottom: 0,
+          backgroundColor: "#fff"
+        }}
         container
         justifyContent="center"
       >
         <Grid item>
           <Box m={3}>
-            <a
+            <Link
+            sx={{
+              margin: "30px auto",
+              color: "#fff",
+              border: "1px solid #336699",
+              background: "#336699",
+              borderRadius: "6px",
+              padding: "8px 16px",
+              textDecoration: "none",
+              textTransform: "uppercase"
+            }}
+              variant="contained"
               href="//www.codeforamerica.org/donate"
               target="_blank"
               rel="noopener noreferrer"
-              className={classes.btnOutline}
+              component="a"
             >
               Donate
-            </a>
+            </Link>
           </Box>
         </Grid>
       </Grid>

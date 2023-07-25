@@ -40,14 +40,6 @@ const useStyles = makeStyles((theme) => ({
       filter: "brightness(1.2)",
     },
   },
-  // logoHi: {
-  //   marginTop: "0",
-  //   marginBottom: "auto",
-  //   height: "3.25rem",
-  //   "&:hover": {
-  //     filter: "brightness(1.2)",
-  //   },
-  // },
   textHolder: {
     display: "flex",
     flexDirection: "row",

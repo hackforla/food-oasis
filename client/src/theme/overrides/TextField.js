@@ -30,6 +30,9 @@ export default function TextField(theme) {
           "& input::placeholder": {
             color: error,
           },
+          "& input": {
+            color: error,
+          },
         },
       },
     },

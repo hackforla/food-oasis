@@ -5,16 +5,28 @@ import {
   FormLabel,
   Radio,
   RadioGroup,
+  Typography,
 } from "@mui/material";
+import { bodyText } from "theme/palette";
 
 const RadioTrueFalseEither = (props) => {
   const { label, name, value, onChange } = props;
   return (
     <FormControl
       component="fieldset"
-      style={{ border: "1px solid gray", padding: "0.5em", width: "100%" }}
+      sx={{
+        border: "1px solid gray",
+        padding: "0.5em",
+        width: "100%",
+        paddingLeft: "16px",
+      }}
     >
-      <FormLabel component="legend">{label}</FormLabel>
+      <FormLabel
+        component="legend"
+        sx={{ fontWeight: "bold", color: bodyText }}
+      >
+        {label}
+      </FormLabel>
       <RadioGroup
         defaultValue="either"
         aria-label={label}
@@ -22,9 +34,21 @@ const RadioTrueFalseEither = (props) => {
         value={value}
         onChange={onChange}
       >
-        <FormControlLabel value="true" control={<Radio />} label="Yes" />
-        <FormControlLabel value="false" control={<Radio />} label="No" />
-        <FormControlLabel value="either" control={<Radio />} label="Either" />
+        <FormControlLabel
+          value="true"
+          control={<Radio />}
+          label={<Typography sx={{ fontStyle: "normal" }}>Yes</Typography>}
+        />
+        <FormControlLabel
+          value="false"
+          control={<Radio />}
+          label={<Typography sx={{ fontStyle: "normal" }}>No</Typography>}
+        />
+        <FormControlLabel
+          value="either"
+          control={<Radio />}
+          label={<Typography sx={{ fontStyle: "normal" }}>Either</Typography>}
+        />
       </RadioGroup>
     </FormControl>
   );

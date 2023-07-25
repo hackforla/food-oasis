@@ -2,9 +2,11 @@ import {
   StakeholderCategory,
   StakeholderBestSearchParams,
   StakeholderBest,
+  FoodSeekerStakeholder,
 } from "../../types/stakeholder-types";
 import db from "./db";
 import stakeholderHelpers from "./stakeholder-helpers";
+import camelcaseKeys from "camelcase-keys";
 
 /*
 
@@ -29,6 +31,66 @@ const booleanEitherClause = (columnName: string, value?: string) => {
     : value === "false"
     ? ` and ${columnName} is false `
     : "";
+};
+
+const selectAll = async ({ tenantId }: { tenantId: string }) => {
+  const sql = `
+  SELECT 
+  s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
+  s.phone, s.latitude, s.longitude, s.website,  s.notes,
+  to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
+    as created_date, 
+  to_char(s.modified_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
+    as modified_date,
+  to_char(s.approved_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
+    as approved_date, 
+  s.requirements, s.inactive,
+  s.parent_organization, s.physical_access, s.email,
+  s.items, s.services, s.facebook,
+  s.twitter, s.pinterest, s.linkedin, s.description,
+  s.review_notes, s.instagram, s.admin_contact_name,
+  s.admin_contact_phone, s.admin_contact_email,
+  s.covid_notes, s.food_types, s.languages,
+  s.verification_status_id, s.inactive_temporary,
+  array_to_json(s.hours) as hours, s.category_ids,
+  s.neighborhood_id, n.name as neighborhood_name, s.is_verified,
+  s.parent_organization_id,
+  s.allow_walkins, s.hours_notes, s.tags
+  FROM stakeholder_best s
+  LEFT JOIN neighborhood n on s.neighborhood_id = n.id
+  WHERE 1 = ANY(s.category_ids)
+  OR 9 = ANY(s.category_ids)
+  AND s.tenant_id = ${tenantId}
+  `;
+
+  const stakeholders: FoodSeekerStakeholder[] = [];
+  let categories: StakeholderCategory[] = [];
+
+  const rows = await db.manyOrNone(sql);
+  const stakeholder_ids = rows.map((a) => a.id);
+  if (stakeholder_ids.length) {
+    // Hoover up all the stakeholder categories
+    // for all of our stakeholder row results.
+    const categoriesSql = `select sc.stakeholder_id, c.id, c.name, c.display_order
+          from category c
+          join stakeholder_best_category sc on c.id = sc.category_id
+          where sc.stakeholder_id in (${stakeholder_ids.join(",")})
+          order by c.display_order, c.name`;
+    categories = await db.manyOrNone(categoriesSql);
+  }
+
+  rows.forEach((row) => {
+    stakeholders.push({
+      ...camelcaseKeys(row),
+      isVerified: row.is_verified,
+      categories: categories
+        .filter((cr) => cr.stakeholder_id === row.id)
+        .map((c) => {
+          return { id: c.id, name: c.name, displayOrder: c.display_order };
+        }),
+    });
+  });
+  return stakeholders;
 };
 
 const search = async ({
@@ -449,6 +511,7 @@ const buildLoginSelectsClause = () => {
 };
 
 export default {
+  selectAll,
   search,
   selectById,
 };

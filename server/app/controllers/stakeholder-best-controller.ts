@@ -1,9 +1,27 @@
 import stakeholderService from "../services/stakeholder-best-service";
 import { RequestHandler } from "express";
 import {
+  FoodSeekerStakeholder,
+  FoodSeekerStakeholderParams,
   Stakeholder,
   StakeholderBestSearchParams,
 } from "../../types/stakeholder-types";
+
+const selectAll: RequestHandler<
+  never,
+  FoodSeekerStakeholder[] | { error: string },
+  never,
+  FoodSeekerStakeholderParams
+> = (req, res) => {
+  stakeholderService
+    .selectAll({ tenantId: req.query.tenantId })
+    .then((resp) => {
+      res.send(resp);
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.toString() });
+    });
+};
 
 const search: RequestHandler<
   never,
@@ -53,6 +71,7 @@ const getById: RequestHandler<
 };
 
 export default {
+  selectAll,
   search,
   getById,
 };

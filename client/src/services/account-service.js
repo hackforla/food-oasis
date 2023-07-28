@@ -96,4 +96,4 @@ export const updateProfile = async (userId, values) => {
     console.log(error);
     return null;
   }
-}
+};

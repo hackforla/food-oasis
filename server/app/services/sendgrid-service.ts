@@ -1,6 +1,6 @@
 import sgMail from "@sendgrid/mail";
 import applyEmailTemplate from "./EmailTemplate";
-import { Email } from "../../types/email-type";
+import { ContactFormData, Email } from "../../types/email-type";
 
 const emailUser: string = process.env.EMAIL_USER || "";
 const sendgridKey: string = process.env.SENDGRID_API_KEY || "";
@@ -35,7 +35,7 @@ const sendRegistrationConfirmation = async (
       Hello,
     </p>
     <p>
-      Thank you for registering with Food Oasis! 
+      Thank you for registering with Food Oasis!
       Please take a moment to verify your account by clicking the link below.
     <br>
     </p>
@@ -111,4 +111,62 @@ const sendResetPasswordConfirmation = async (
   });
 };
 
-export { send, sendRegistrationConfirmation, sendResetPasswordConfirmation };
+// Contact us form
+const sendContactEmail = async ({
+  name,
+  email,
+  title,
+  message,
+  clientUrl,
+  phone,
+}: ContactFormData) => {
+  const emailBody = `
+    <p style="font-weight: bold;">
+      Hello,
+    </p>
+    <p>
+    There is a new message from a Food Oasis user.
+    </p>
+    <table border="0" cellpadding="0" cellspacing="0" style="border-spacing:0;background-color: #336699;border:1px solid #353535; border-radius: 5px;margin-left: auto;margin-right: auto;">
+      <tr>
+        <tr>
+        ${name}
+        </tr>
+        <tr>
+        ${email}
+        </tr>
+        <tr>
+        ${phone}
+        </tr>
+        <tr>
+        ${title}
+        </tr>
+        <tr>
+        ${message}
+        </tr>
+      </tr>
+    </table>
+  `;
+  const msg = {
+    to: `developerkrista@gmail.com`,
+    from: emailUser,
+    subject: `New message from contact form`,
+    text: `Contact form message`,
+    html: `${applyEmailTemplate(emailBody, clientUrl)}`,
+  };
+
+  return sgMail.send(msg, false, (err) => {
+    if (err) {
+      console.log("ERRROR********:", err);
+      return Promise.reject("Sending contact form email failed.");
+    }
+    return Promise.resolve(true);
+  });
+};
+
+export {
+  send,
+  sendRegistrationConfirmation,
+  sendResetPasswordConfirmation,
+  sendContactEmail,
+};

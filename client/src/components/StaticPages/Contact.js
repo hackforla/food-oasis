@@ -1,26 +1,33 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import IconSpacerSVG from "./assets/IconSpacerSVG";
-import { Typography, Box, CardMedia, List, ListItem, ListItemText, Button, TextField, Stack } from "@mui/material";
+import {
+  Typography,
+  Box,
+  CardMedia,
+  List,
+  ListItem,
+  Button,
+  TextField,
+  Stack,
+} from "@mui/material";
 import * as analytics from "../../services/analytics";
 import Container from "@mui/material/Container";
 import { Link as RouterLink } from "react-router-dom";
 import Footer from "../Layout/Footer";
 import typing from "./assets/3social-equity.png";
 
-import { Formik, Form, Field, ErrorMessage, yupToFormErrors } from 'formik';
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import Textarea from "components/Admin/ui/Textarea";
+import { sendContactForm } from "services/contact-service";
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string()
-    .required("Name is required"),
+  name: Yup.string().required("Name is required"),
   email: Yup.string()
     .email("Invalid email address format")
     .required("Email is required"),
-  title: Yup.string()
-    .required("Title is required"),
-  message: Yup.string()
-    .required("Message is required")
+  title: Yup.string().required("Title is required"),
+  message: Yup.string().required("Message is required"),
 });
 
 function createListItems() {
@@ -31,45 +38,71 @@ function createListItems() {
     "How do I set up an account to start my assignment?",
     "How can I donate?",
     "What will my donation go toward?",
-    "How can I suggest a new listing?"
+    "How can I suggest a new listing?",
   ];
 
-  return listTexts.map((value, i) =>
+  return listTexts.map((value, i) => (
     <ListItem
       key={i}
       sx={{
         display: "list-item",
-        padding: "0px"
+        padding: "0px",
       }}
     >
       {value}
-    </ListItem>)
+    </ListItem>
+  ));
 }
+
+const redAsterisk = {
+  endAdornment: (
+    <Typography
+      component="span"
+      variant="h2"
+      color="error"
+      sx={{
+        marginTop: "5px",
+      }}
+    >
+      *
+    </Typography>
+  ),
+};
 
 const Contact = () => {
   useEffect(() => {
     analytics.postEvent("visitContactPage");
   }, []);
 
+  const handleCancel = (e) => {
+    console.log("whatever");
+  };
+
   return (
     <Container
       sx={{
         padding: { xs: "1.5rem 0", md: "1.5rem 2rem" },
         margin: "0 auto",
-        maxWidth: "1200px"
+        maxWidth: "1200px",
       }}
     >
-      <Typography variant="h1"
+      <Typography
+        variant="h1"
         sx={{
           textTransform: "uppercase",
           textAlign: "center",
           margin: 0,
-          padding: "32px 0"
+          padding: "32px 0",
         }}
       >
         Contact Us
       </Typography>
-      <CardMedia component="img" alt="contact" src={typing} style={{ width: "100%" }}></CardMedia>
+      <CardMedia
+        component="img"
+        alt="contact"
+        src={typing}
+        style={{ width: "100%" }}
+      ></CardMedia>
       <Box
         className="blue-box"
         sx={{
@@ -78,21 +111,23 @@ const Contact = () => {
           borderRadius: "24px",
           background: "#369",
           display: "flex",
-          flexDirection: 'column',
+          flexDirection: "column",
           justifyContent: "space-around",
           alignItems: "center",
           flexWrap: "wrap",
-          height: "545px"
+          height: "545px",
         }}
       >
         <IconSpacerSVG />
-        <Typography variant="subtitle1"
+        <Typography
+          variant="subtitle1"
           sx={{
             textAlign: "center",
             color: "white",
             textTransform: "uppercase",
-            maxWidth: "392px"
-          }}>
+            maxWidth: "392px",
+          }}
+        >
           Get the information you're looking for right now
         </Typography>
         <List
@@ -100,7 +135,7 @@ const Contact = () => {
             listStyleType: "disc",
             color: "white",
             alignItems: "left",
-            width: "95%"
+            width: "95%",
           }}
         >
           {createListItems()}
@@ -113,72 +148,150 @@ const Contact = () => {
           sx={{
             minHeight: "21.78px",
             maxWidth: "392px",
-            alignSelf: "center"
-          }}>SEE ALL FREQUENTLY ASKED QUESTIONS
+            alignSelf: "center",
+          }}
+        >
+          SEE ALL FREQUENTLY ASKED QUESTIONS
         </Button>
-      </Box >
+      </Box>
       <Box
         className="bottom-box"
         sx={{
           margin: "32px 0",
           display: "flex",
           flexDirection: "column",
-          width: "100%"
+          width: "100%",
         }}
       >
         <Box
           className="words"
           sx={{
             margin: "5px",
-            lineHeight: "26.55px"
-          }} component="ul">
-          <Typography variant="subtitle1"
+            lineHeight: "26.55px",
+          }}
+          component="ul"
+        >
+          <Typography
+            variant="subtitle1"
             sx={{
               color: "black",
               textTransform: "uppercase",
               maxWidth: "392px",
               fontWeight: "500",
-              letterSpacing: "1px"
-            }}>
+              letterSpacing: "1px",
+            }}
+          >
             Can't find what you're looking for?
           </Typography>
-          <Typography variant="subtitle2"
+          <Typography
+            variant="subtitle2"
             sx={{
               color: "#1B1B1B",
               maxWidth: "392px",
               fontWeight: "400",
-              letterSpacing: "1px"
-            }}>
+              letterSpacing: "1px",
+            }}
+          >
             How can we help?
           </Typography>
         </Box>
         <Formik
-          initialValues={{ name: '', email: '', phone: '', title: '', message: '' }}
+          initialValues={{
+            name: "",
+            email: "",
+            phone: "",
+            title: "",
+            message: "",
+          }}
           validationSchema={validationSchema}
-          onSubmit={(values, { setSubmitting }) => {
-            setTimeout(() => {
-              alert(JSON.stringify(values, null, 2));
-              setSubmitting(false);
-            }, 400);
+          onSubmit={(values) => {
+            sendContactForm(values);
           }}
         >
-          {({ isSubmitting }) => (
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            isSubmitting,
+            isValid,
+            dirty,
+          }) => (
             <Form>
-              <Box sx={{height: "550px", "& > *": { height: "61px", marginTop: "10px", marginBottom: "10px", "& input::placeholder": { color: "#999", fontSize: "16px", fontStyle: "normal", fontWeight: "400", lineHeight: "24px"}} }}>
-                <TextField type="input" name="name" placeholder="Your Name" />
-                <ErrorMessage name="name" component="div" />
-                <Stack direction={"row"}>
-                  <TextField type="email" name="email" placeholder="Email" sx={{ width: "604px", marginRight: "15px"}} />
-                  <ErrorMessage name="email" component="div" />
-                  <TextField type="phone" name="phone" placeholder="Phone Number" sx={{ width: "604px" }} />
+              <Box
+                sx={{
+                  height: "560px",
+                  "& > div": {
+                    height: "61px",
+                    marginTop: "12px",
+                    marginBottom: "12px",
+                  },
+                }}
+              >
+                <TextField
+                  helperText={touched.name ? errors.name : ""}
+                  error={touched.name && Boolean(errors.name)}
+                  type="input"
+                  name="name"
+                  placeholder="Your Name"
+                  InputProps={touched.name && redAsterisk}
+                  value={values.name}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                <Stack direction={"row"} spacing={4}>
+                  <TextField
+                    helperText={touched.email ? errors.email : ""}
+                    error={touched.email && Boolean(errors.email)}
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    sx={{ width: "604px" }}
+                    InputProps={touched.email && redAsterisk}
+                    value={values.email}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                  <TextField
+                    type="phone"
+                    name="phone"
+                    placeholder="Phone Number (Optional)"
+                    sx={{ width: "604px" }}
+                    value={values.phone}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
                 </Stack>
-                <TextField type="input" name="title" placeholder="Title" />
-                <ErrorMessage name="title" component="div" />
-                <Textarea name="message" placeholder="Message" rows={10} placeholderStyle={{fontStyle: "normal"}}/>
-                <ErrorMessage name="message" component="div" />
+                <TextField
+                  helperText={touched.title ? errors.title : ""}
+                  error={touched.title && Boolean(errors.title)}
+                  type="input"
+                  name="title"
+                  placeholder="Title"
+                  InputProps={touched.title && redAsterisk}
+                  value={values.title}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                <Textarea
+                  helperText={touched.message ? errors.message : ""}
+                  error={touched.message && Boolean(errors.message)}
+                  name="message"
+                  placeholder="Message"
+                  rows={10}
+                  placeholderStyle={{ fontStyle: "normal" }}
+                  InputProps={touched.message && redAsterisk}
+                  value={values.message}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
               </Box>
-              <Stack direction={"row"} sx={{ justifyContent: "center"}}>
-                <Button variant="outlined" sx={{ marginRight: "15px"}}>Cancel</Button>
+              <Stack direction="row" spacing={4} justifyContent="center">
+                <Button variant="outlined" onClick={(e) => handleCancel(e)}>
+                  Cancel
+                </Button>
                 <Button type="submit" disabled={isSubmitting}>
                   Submit
                 </Button>
@@ -186,9 +299,9 @@ const Contact = () => {
             </Form>
           )}
         </Formik>
-      </Box >
+      </Box>
       <Footer />
-    </Container >
+    </Container>
   );
 };
 

@@ -5,3 +5,11 @@ export interface Email {
   textBody: string;
   htmlBody: string;
 }
+export interface ContactFormData {
+  name: string;
+  email: string;
+  title: string;
+  message: string;
+  clientUrl: string;
+  phone?: string;
+}

@@ -12,6 +12,7 @@ import {
   TextField,
   Tooltip,
   Typography,
+  Box,
 } from "@mui/material";
 import { TabPanel } from "components/Admin/ui/TabPanel";
 import { useToasterContext } from "contexts/toasterContext";
@@ -73,38 +74,41 @@ export default function Identification({
   return (
     <TabPanel value={tabPage} index={0}>
       <Grid container spacing={2}>
-        <Grid item xs={12} display="flex">
-          <Stack direction="column" sx={{ width: "100%" }}>
-            <Label id="name" label="Name *" />
-            <TextField
-              id="name"
-              name="name"
-              placeholder="Name *"
-              value={values.name}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              helperText={touched.name ? errors.name : ""}
-              error={touched.name && Boolean(errors.name)}
-            />
-          </Stack>
-
-          <FormControlLabel
-            sx={{ mt: 5, ml: 0 }}
-            control={
-              <Checkbox
-                margin="normal"
-                name="confirmedName"
-                value={values.confirmedName}
-                checked={values.confirmedName}
-                onChange={(e) =>
-                  setFieldValue("confirmedName", e.target.checked)
-                }
+        <Grid item xs={12}>
+          <Box sx={{ display: "flex", alignItems: "flex-start" }}>
+            <Stack direction="column" sx={{ width: "100%", marginRight: 1 }}>
+              <Label id="name" label="Name *" />
+              <TextField
+                id="name"
+                name="name"
+                placeholder="Name *"
+                value={values.name}
+                onChange={handleChange}
                 onBlur={handleBlur}
+                helperText={touched.name ? errors.name : ""}
+                error={touched.name && Boolean(errors.name)}
               />
-            }
-            label="Confirm"
-          />
+            </Stack>
+
+            <FormControlLabel
+              sx={{ mt: 5, ml: 0 }}
+              control={
+                <Checkbox
+                  margin="normal"
+                  name="confirmedName"
+                  value={values.confirmedName}
+                  checked={values.confirmedName}
+                  onChange={(e) =>
+                    setFieldValue("confirmedName", e.target.checked)
+                  }
+                  onBlur={handleBlur}
+                />
+              }
+              label="Confirm"
+            />
+          </Box>
         </Grid>
+
         <Grid item sm={6} xs={12} display="flex">
           <Stack direction="column" sx={{ width: "100%" }}>
             <Label

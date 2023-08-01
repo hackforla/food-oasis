@@ -2,58 +2,38 @@ import {
   AppBar,
   Box,
   Button,
-  Checkbox,
   Container,
   CssBaseline,
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
-  Grid,
-  Input,
-  InputLabel,
-  ListItemText,
-  MenuItem,
-  Select,
   Stack,
   Tab,
   Tabs,
-  TextField,
   Tooltip,
   Typography,
 } from "@mui/material";
-import AccountAutocomplete from "components/Admin/AccountAutocomplete";
 import AssignDialog from "components/Admin/AssignDialog";
-import OpenTimeForm from "components/Admin/OpenTimeForm";
 import ConfirmDialog from "components/Admin/ui/ConfirmDialog";
-import { TabPanel, a11yProps } from "components/Admin/ui/TabPanel";
+import { a11yProps } from "components/Admin/ui/TabPanel";
 import {
   VERIFICATION_STATUS,
   VERIFICATION_STATUS_NAMES,
 } from "constants/stakeholder";
 import { useToasterContext } from "contexts/toasterContext";
 import { useUserContext } from "contexts/userContext";
+import dayjs from "dayjs";
 import { Formik } from "formik";
-import { useCategories } from "hooks/useCategories";
-import { useTags } from "hooks/useTags";
-import moment from "moment";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
-import { withRouter } from "react-router-dom";
-import * as awsService from "services/aws-service";
+import { useNavigate, useParams } from "react-router-dom";
 import * as stakeholderService from "services/stakeholder-service";
 import * as Yup from "yup";
-
-const DATE_FORMAT = "MM/DD/YY h:mm a";
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
+import BusinessHours from "./OrganizationEdit/BusinessHours";
+import ContactDetails from "./OrganizationEdit/ContactDetails";
+import Donations from "./OrganizationEdit/Donations";
+import Identification from "./OrganizationEdit/Identification";
+import MoreDetails from "./OrganizationEdit/MoreDetails";
+import Verification from "./OrganizationEdit/Verification";
+import Label from "./ui/Label";
+import Textarea from "./ui/Textarea";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -67,6 +47,20 @@ const validationSchema = Yup.object().shape({
   selectedCategoryIds: Yup.array().min(
     1,
     "You must select at least one category"
+  ),
+  hours: Yup.array().of(
+    Yup.object().shape({
+      weekOfMonth: Yup.number().required("Week of month is required"),
+      dayOfWeek: Yup.string()
+        .required("Day of week is required")
+        .notOneOf([""], "Day of week should not be empty"),
+      open: Yup.string()
+        .required("Open time is required")
+        .notOneOf([""], "Open time should not be empty"),
+      close: Yup.string()
+        .required("Close time is required")
+        .notOneOf([""], "Close time should not be empty"),
+    })
   ),
 });
 
@@ -145,65 +139,18 @@ const emptyOrganization = {
   tags: [],
 };
 
-const FOOD_TYPES = [
-  {
-    name: "foodBakery",
-    label: "Baked Goods",
-  },
-  {
-    name: "foodDryGoods",
-    label: "Dry Goods",
-  },
-  {
-    name: "foodProduce",
-    label: "Produce",
-  },
-  {
-    name: "foodDairy",
-    label: "Dairy",
-  },
-  {
-    name: "foodPrepared",
-    label: "Prepared Food",
-  },
-  {
-    name: "foodMeat",
-    label: "Meat",
-  },
-];
-
-const CheckboxWithLabel = ({ name, label, checked, onChange, ...props }) => (
-  <Grid item xs={12} sm={4}>
-    <FormControlLabel
-      control={
-        <Checkbox
-          name={name}
-          checked={checked}
-          onChange={onChange}
-          {...props}
-        />
-      }
-      label={label}
-    />
-  </Grid>
-);
-
 const OrganizationEdit = (props) => {
-  const { match, history } = props;
-  const editId = match.params.id;
+  const navigate = useNavigate();
+  const { id: editId } = useParams();
   const [assignDialogOpen, setAssignDialogOpen] = useState(false);
   const [assignDialogCallback, setAssignDialogCallback] = useState({});
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [confirmDialogCallback, setConfirmDialogCallback] = useState({});
   const [tabPage, setTabPage] = useState(0);
-  const [geocodeResults, setGeocodeResults] = useState([]);
   const [nextUrl, setNextUrl] = useState(null);
   const [originalData, setOriginalData] = useState(emptyOrganization);
   const { user } = useUserContext();
   const { setToast } = useToasterContext();
-
-  const { data: categories } = useCategories();
-  const { data: allTags } = useTags();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -265,29 +212,6 @@ const OrganizationEdit = (props) => {
   //   }, ${formData.state || ""} ${formData.zip || ""}`;
   // }
 
-  const geocode = async (formData) => {
-    const address = `${formData.address1} ${formData.city} ${formData.state} ${formData.zip}`;
-    try {
-      const result = await awsService.getCoords(address);
-      if (result.Results) {
-        setGeocodeResults(result.Results);
-      } else {
-        setToast({
-          message:
-            `Geocoder request failed: ` +
-            `Please try again and/or contact support.`,
-        });
-      }
-    } catch (err) {
-      console.error(err);
-      setToast({
-        message:
-          `Geocoder request failed: ${err} ` +
-          `Please try again and/or contact support.`,
-      });
-    }
-  };
-
   const handleChangeTabPage = (event, newValue) => {
     setTabPage(newValue);
   };
@@ -329,49 +253,78 @@ const OrganizationEdit = (props) => {
     return JSON.stringify(values) === JSON.stringify(originalData);
   };
 
-  const noteTooltip = (
-    <Stack spacing={1}>
-      <p>These are notes for clients to see, for example:</p>
-      <Stack spacing={2}>
-        <p>Holiday hours may differ. Call or text message to confirm.</p>
-        <p>
-          Call ahead to make appointment or confirm that they are actually open
-        </p>
-        <p>Food tends to run out early on Saturdays</p>
-        <p>This pantry was acquired by Shepherds Pantry</p>
-        <p>Enter through double doors on Figueroa St.</p>
+  const adminNoteTooltip = (
+    <Stack sx={{ lineHeight: "27px" }}>
+      Notes about verification, for example:
+      <Stack
+        spacing={2}
+        sx={{ marginLeft: "24px", marginBottom: "20px", fontWeight: "normal" }}
+      >
+        <ul>
+          <li>They are most responsive to email (or Facebook or whatever).</li>
+          <li>We do not have any good contact information for them.</li>
+          <li>
+            You might have been able to verify some information, but need to
+            follow-up with another phone call, Facebook message, etc.
+          </li>
+          <li>
+            You might have been able to verify some information online, but need
+            to make phone contact.
+          </li>
+          <li>
+            You might have sent email or Facebook message, and are waiting for a
+            response.
+          </li>
+        </ul>
+      </Stack>
+      If you don&apos;t get through to them: (choose one)
+      <Stack
+        sx={{
+          marginLeft: "24px !important",
+
+          fontWeight: "normal",
+        }}
+      >
+        <ul>
+          <li>The phone was inactive</li>
+          <li>Weren't available but call back</li>
+          <li>
+            Got partial information from voicemail (also enter this information
+            in the appropriate formfields)
+          </li>
+        </ul>
       </Stack>
     </Stack>
   );
 
-  const adminNoteTooltip = (
-    <Stack spacing={1}>
-      Notes about Verification. For example,
-      <Stack spacing={2}>
-        <p>They are most responsive to email (or Facebook or whatever).</p>
-        <p>We do not have any good contact information for them.</p>
-        <p>
-          You might have been able to verify some information, but need to
-          follow-up with another phone call, Facebook message, etc.
-        </p>
-        <p>
-          You might have been able to verify some information online, but need
-          to make phone contact.
-        </p>
-        <p>
-          You might have sent email or Facebook message, and are waiting for a
-          response.
-        </p>
-        <p>If you don&apos;t get through to them: (choose one)</p>
-        <p>1. The phone was inactive</p>
-        <p>2. Weren't available but call back</p>
-        <p>
-          3. Got partial information from voicemail (also enter this information
-          in the appropriate formfields)
-        </p>
-      </Stack>
-    </Stack>
-  );
+  const [isSubmitClicked, setSubmitClicked] = useState(false);
+  // should include all fields that are required for the form to be valid
+  const tabs = {
+    name: 0,
+    address1: 0,
+    city: 0,
+    state: 0,
+    zip: 0,
+    latitude: 0,
+    longitude: 0,
+    email: 0,
+    selectedCategoryIds: 0,
+    hours: 1,
+  };
+
+  const scrollIntoViewHelper = (errors) => {
+    const firstError = Object.keys(errors)[0];
+    if (firstError.startsWith("hours")) {
+      return;
+    }
+    let el = document.querySelector(`[name="${firstError}"]`);
+    if (el) {
+      el.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  };
 
   return (
     <Container component="main" maxWidth="lg">
@@ -398,6 +351,39 @@ const OrganizationEdit = (props) => {
           initialValues={JSON.parse(JSON.stringify(originalData))}
           enableReinitialize
           validationSchema={validationSchema}
+          validate={(values) => {
+            try {
+              validationSchema.validateSync(values, { abortEarly: false });
+            } catch (error) {
+              if (isSubmitClicked) {
+                setSubmitClicked(false);
+                const errors = error.inner.reduce(
+                  (errors, { path, message }) => ({
+                    ...errors,
+                    [path]: message,
+                  }),
+                  {}
+                );
+                const firstError = Object.keys(errors)[0];
+                let tabIndex;
+                // Check if the first part of the key matches 'hours'
+                if (firstError.startsWith("hours")) {
+                  tabIndex = tabs["hours"];
+                } else {
+                  tabIndex = tabs[firstError];
+                }
+
+                if (tabIndex !== undefined) {
+                  setTabPage(tabIndex); // change to the tab of the first error field
+
+                  // Scroll to the error field after the new tab contents have rendered
+                  setTimeout(() => {
+                    scrollIntoViewHelper(errors);
+                  }, 0);
+                }
+              }
+            }
+          }}
           onSubmit={(values, { setSubmitting, setFieldValue }) => {
             if (values.id) {
               return stakeholderService
@@ -408,7 +394,7 @@ const OrganizationEdit = (props) => {
                   });
                   setOriginalData(values);
                   if (nextUrl) {
-                    history.push(nextUrl);
+                    navigate(nextUrl);
                   }
                 })
                 .catch((err) => {
@@ -429,7 +415,7 @@ const OrganizationEdit = (props) => {
                   setFieldValue("id", response.id);
                   setOriginalData({ ...values, id: response.id });
                   if (nextUrl) {
-                    history.push(nextUrl);
+                    navigate(nextUrl);
                   }
                 })
                 .catch((err) => {
@@ -486,1350 +472,79 @@ const OrganizationEdit = (props) => {
                       <Tab label="Verification" {...a11yProps(5)} />
                     </Tabs>
                   </AppBar>
-                  <TabPanel value={tabPage} index={0}>
-                    <Grid container spacing={2}>
-                      <Grid item xs={12} display="flex">
-                        <TextField
-                          name="name"
-                          label="Name *"
-                          value={values.name}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          helperText={touched.name ? errors.name : ""}
-                          error={touched.name && Boolean(errors.name)}
-                        />
-                        <FormControlLabel
-                          sx={{ mt: 1, ml: 0 }}
-                          control={
-                            <Checkbox
-                              margin="normal"
-                              name="confirmedName"
-                              value={values.confirmedName}
-                              checked={values.confirmedName}
-                              onChange={(e) =>
-                                setFieldValue("confirmedName", e.target.checked)
-                              }
-                              onBlur={handleBlur}
-                            />
-                          }
-                          label="confirm"
-                        />
-                      </Grid>
-                      <Grid item sm={6} xs={12} display="flex">
-                        <Tooltip title="Phone number for clients to use">
-                          <TextField
-                            name="phone"
-                            label="Phone *"
-                            value={values.phone}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            helperText={touched.phone ? errors.phone : ""}
-                            error={touched.phone && Boolean(errors.phone)}
-                          />
-                        </Tooltip>
-                        <FormControlLabel
-                          sx={{ mt: 1, ml: 0 }}
-                          control={
-                            <Checkbox
-                              margin="normal"
-                              name="confirmedPhone"
-                              value={values.confirmedPhone}
-                              checked={values.confirmedPhone}
-                              onChange={() =>
-                                setFieldValue(
-                                  "confirmedPhone",
-                                  !values.confirmedPhone
-                                )
-                              }
-                              onBlur={handleBlur}
-                            />
-                          }
-                          label="confirm"
-                        />
-                      </Grid>
-                      <Grid item sm={6} xs={12} display="flex">
-                        <Tooltip title="Email for clients to use">
-                          <TextField
-                            name="email"
-                            label="Email *"
-                            value={values.email}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            helperText={touched.email ? errors.email : ""}
-                            error={touched.email && Boolean(errors.email)}
-                          />
-                        </Tooltip>
-                        <FormControlLabel
-                          sx={{ mt: 1, ml: 0 }}
-                          control={
-                            <Checkbox
-                              margin="normal"
-                              name="confirmedEmail"
-                              value={values.confirmedEmail}
-                              checked={values.confirmedEmail}
-                              onChange={() =>
-                                setFieldValue(
-                                  "confirmedEmail",
-                                  !values.confirmedEmail
-                                )
-                              }
-                              onBlur={handleBlur}
-                            />
-                          }
-                          label="confirm"
-                        />
-                      </Grid>
-
-                      <Grid
-                        item
-                        xs={12}
-                        sm={6}
-                        display="flex"
-                        alignItems="flex-start"
-                      >
-                        <FormControl fullWidth>
-                          <InputLabel id="selectCategoryIds-label">
-                            Categories *
-                          </InputLabel>
-
-                          <Select
-                            labelId="selectCategoryIds-label"
-                            id="selectedCategoryIds"
-                            variant="outlined"
-                            name="selectedCategoryIds"
-                            multiple
-                            fullWidth
-                            value={values.selectedCategoryIds}
-                            onChange={handleChange}
-                            input={<Input />}
-                            renderValue={(selectedCategoryIds) => {
-                              if (!categories) {
-                                return "Loading categories...";
-                              }
-                              if (selectedCategoryIds.length === 0) {
-                                return "(Select Categories)";
-                              }
-                              return selectedCategoryIds
-                                .map(
-                                  (categoryId) =>
-                                    categories.filter(
-                                      (category) => category.id === categoryId
-                                    )[0].name
-                                )
-                                .join(", ");
-                            }}
-                            MenuProps={MenuProps}
-                          >
-                            {!categories || categories.length === 0
-                              ? null
-                              : categories.map((category) => (
-                                  <MenuItem
-                                    key={category.id}
-                                    value={category.id}
-                                  >
-                                    <Checkbox
-                                      checked={
-                                        values.selectedCategoryIds.indexOf(
-                                          category.id
-                                        ) > -1
-                                      }
-                                    />
-                                    <ListItemText primary={category.name} />
-                                  </MenuItem>
-                                ))}
-                          </Select>
-                          <FormHelperText>
-                            {touched.selectedCategoryIds
-                              ? errors.selectedCategoryIds
-                              : ""}
-                          </FormHelperText>
-                        </FormControl>
-                        <FormControlLabel
-                          sx={{ mt: 1, ml: 0 }}
-                          control={
-                            <Checkbox
-                              margin="normal"
-                              name="confirmedCategories"
-                              value={values.confirmedCategories}
-                              checked={values.confirmedCategories}
-                              onChange={() =>
-                                setFieldValue(
-                                  "confirmedCategories",
-                                  !values.confirmedCategories
-                                )
-                              }
-                              onBlur={handleBlur}
-                            />
-                          }
-                          label="confirm"
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <Tooltip title="Notes about identifying organization category">
-                          <TextField
-                            variant="outlined"
-                            flex={2}
-                            name="categoryNotes"
-                            label="Category Notes"
-                            multiline
-                            minRows={2}
-                            maxRows={12}
-                            value={values.categoryNotes}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            helperText={
-                              touched.categoryNotes ? errors.categoryNotes : ""
-                            }
-                            error={
-                              touched.categoryNotes &&
-                              Boolean(errors.categoryNotes)
-                            }
-                          />
-                        </Tooltip>
-                      </Grid>
-                      <Grid item xs={6} sm={3}>
-                        <Tooltip title="Check if they are permanently closed.">
-                          <FormControlLabel
-                            control={
-                              <Checkbox
-                                margin="normal"
-                                name="inactive"
-                                label="Inactive"
-                                value={values.inactive}
-                                checked={values.inactive}
-                                onChange={() =>
-                                  setFieldValue("inactive", !values.inactive)
-                                }
-                                onBlur={handleBlur}
-                              />
-                            }
-                            label="Permanently Closed"
-                          />
-                        </Tooltip>
-                      </Grid>
-                      <Grid item xs={6} sm={3}>
-                        <Tooltip title="Check if they are temporarily closed.">
-                          <FormControlLabel
-                            control={
-                              <Checkbox
-                                margin="normal"
-                                name="inactiveTemporary"
-                                label="Inactive"
-                                value={values.inactiveTemporary}
-                                checked={values.inactiveTemporary}
-                                onChange={() =>
-                                  setFieldValue(
-                                    "inactiveTemporary",
-                                    !values.inactiveTemporary
-                                  )
-                                }
-                                onBlur={handleBlur}
-                              />
-                            }
-                            label="Temporarily Closed (COVID)"
-                          />
-                        </Tooltip>
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <Tooltip title="COVID-related conditions">
-                          <TextField
-                            variant="outlined"
-                            name="covidNotes"
-                            label="COVID Notes"
-                            multiline
-                            minRows={2}
-                            maxRows={12}
-                            value={values.covidNotes}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            helperText={
-                              touched.covidNotes ? errors.covidNotes : ""
-                            }
-                            error={
-                              touched.covidNotes && Boolean(errors.covidNotes)
-                            }
-                          />
-                        </Tooltip>
-                      </Grid>
-
-                      <Grid item xs={12}>
-                        <Tooltip title="The mission statement or other description.">
-                          <TextField
-                            variant="outlined"
-                            name="description"
-                            label="Description"
-                            multiline
-                            minRows={2}
-                            maxRows={12}
-                            value={values.description}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            helperText={
-                              touched.description ? errors.description : ""
-                            }
-                            error={
-                              touched.description && Boolean(errors.description)
-                            }
-                          />
-                        </Tooltip>
-                      </Grid>
-
-                      <Grid item xs={12}>
-                        <Tooltip title="If part of a larger organization, the parent name">
-                          <TextField
-                            name="parentOrganization"
-                            label="Parent Organization"
-                            value={values.parentOrganization}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            helperText={
-                              touched.parentOrganization
-                                ? errors.parentOrganization
-                                : ""
-                            }
-                            error={
-                              touched.parentOrganization &&
-                              Boolean(errors.parentOrganization)
-                            }
-                          />
-                        </Tooltip>
-                      </Grid>
-
-                      <Grid item xs={12}>
-                        <TextField
-                          name="address1"
-                          label="Address Line 1 *"
-                          value={values.address1}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          helperText={touched.address1 ? errors.address1 : ""}
-                          error={touched.address1 && Boolean(errors.address1)}
-                        />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <TextField
-                          name="address2"
-                          label="Address Line 2"
-                          value={values.address2}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          helperText={touched.address2 ? errors.address2 : ""}
-                          error={touched.address2 && Boolean(errors.address2)}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-                          name="city"
-                          label="City *"
-                          value={values.city}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          helperText={touched.city ? errors.city : ""}
-                          error={touched.city && Boolean(errors.city)}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={3}>
-                        <TextField
-                          name="state"
-                          label="State *"
-                          value={values.state}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          helperText={touched.state ? errors.state : ""}
-                          error={touched.state && Boolean(errors.state)}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={3}>
-                        <TextField
-                          name="zip"
-                          label="Zip Code *"
-                          value={values.zip}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          helperText={touched.zip ? errors.zip : ""}
-                          error={touched.zip && Boolean(errors.zip)}
-                        />
-                      </Grid>
-
-                      <Grid item xs={6} md={3}>
-                        <TextField
-                          name="latitude"
-                          label="Latitude *"
-                          value={values.latitude}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          helperText={touched.latitude ? errors.latitude : ""}
-                          error={touched.latitude && Boolean(errors.latitude)}
-                        />
-                      </Grid>
-                      <Grid item xs={6} md={3}>
-                        <TextField
-                          name="longitude"
-                          label="Longitude *"
-                          value={values.longitude}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          helperText={touched.longitude ? errors.longitude : ""}
-                          error={touched.longitude && Boolean(errors.longitude)}
-                        />
-                      </Grid>
-                      <Grid item xs={12} md={6}>
-                        <Grid container>
-                          <Grid
-                            xs={12}
-                            item
-                            style={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                            }}
-                          >
-                            <Tooltip title="Click to get latitude / longitude for address">
-                              <Grid item>
-                                <Button
-                                  variant="outlined"
-                                  icon="search"
-                                  // style={{ marginTop: "1.2em" }}
-                                  onClick={() => {
-                                    (geocodeResults && geocodeResults.length) <
-                                    1
-                                      ? geocode(values)
-                                      : setGeocodeResults([]);
-                                  }}
-                                >
-                                  {(geocodeResults && geocodeResults.length) < 1
-                                    ? "Get Coordinates"
-                                    : "Close"}
-                                </Button>
-                              </Grid>
-                            </Tooltip>
-                            <div>
-                              <FormControlLabel
-                                control={
-                                  <Checkbox
-                                    margin="normal"
-                                    name="confirmedAddress"
-                                    value={values.confirmedAddress}
-                                    checked={values.confirmedAddress}
-                                    onChange={() =>
-                                      setFieldValue(
-                                        "confirmedAddress",
-                                        !values.confirmedAddress
-                                      )
-                                    }
-                                    onBlur={handleBlur}
-                                  />
-                                }
-                                label="Confirm Address"
-                              />
-                            </div>
-                          </Grid>
-                        </Grid>
-                        <div style={{ padding: "0.5em 0" }}>
-                          {geocodeResults ? (
-                            geocodeResults.map((result, index) => (
-                              <div
-                                style={{
-                                  border: "1px solid black",
-                                  backgroundColor: "#EEE",
-                                  margin: "0.1em",
-                                  padding: "0.5em",
-                                }}
-                                key={index}
-                              >
-                                <Grid container>
-                                  <Grid item xs={10}>
-                                    <Typography>{`(${result.Place.Geometry.Point[1]}, ${result.Place.Geometry.Point[0]})`}</Typography>
-                                    <Typography>{`Match Score: ${result.Relevance}`}</Typography>
-                                    {/* <Typography>{`${result.attributes.Addr_type}`}</Typography> */}
-                                  </Grid>
-                                  <Grid item xs={2}>
-                                    <Button
-                                      variant="outlined"
-                                      type="button"
-                                      icon="check"
-                                      style={{ paddingRight: "0" }}
-                                      onClick={() => {
-                                        setFieldValue(
-                                          "latitude",
-                                          result.Place.Geometry.Point[1]
-                                        );
-                                        setFieldValue(
-                                          "longitude",
-                                          result.Place.Geometry.Point[0]
-                                        );
-                                        setGeocodeResults([]);
-                                      }}
-                                    >
-                                      Set
-                                    </Button>
-                                  </Grid>
-                                </Grid>
-                              </div>
-                            ))
-                          ) : (
-                            <div>No Results</div>
-                          )}
-                        </div>
-                      </Grid>
-
-                      <Grid item xs={12} sm={6}>
-                        <div>
-                          <FormControl fullWidth>
-                            <InputLabel id="selectedTags-label">
-                              Tags
-                            </InputLabel>
-
-                            <Select
-                              labelId="selectedTags-label"
-                              id="tags"
-                              variant="outlined"
-                              name="tags"
-                              multiple
-                              fullWidth
-                              value={values.tags || []}
-                              onChange={handleChange}
-                              input={<Input />}
-                              renderValue={(tags) => {
-                                if (!allTags) {
-                                  return "Loading tags...";
-                                }
-                                if (tags.length === 0) {
-                                  return "(Select Tags)";
-                                }
-                                return tags.join(", ");
-                              }}
-                              MenuProps={MenuProps}
-                            >
-                              {!allTags || allTags.length === 0
-                                ? null
-                                : allTags.map((t) => (
-                                    <MenuItem key={t.name} value={t.name}>
-                                      <Checkbox
-                                        checked={
-                                          values.tags &&
-                                          values.tags.find(
-                                            (tt) => tt === t.name
-                                          )
-                                        }
-                                      />
-                                      <ListItemText primary={t.name} />
-                                    </MenuItem>
-                                  ))}
-                            </Select>
-                            <FormHelperText>
-                              {touched.tags ? errors.tags : ""}
-                            </FormHelperText>
-                          </FormControl>
-                        </div>
-                      </Grid>
-                    </Grid>
-                  </TabPanel>
-                  <TabPanel value={tabPage} index={1}>
-                    <Grid container spacing={1}>
-                      <Grid item xs={12}>
-                        <Typography>Business hours for Food Seekers</Typography>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <div
-                          style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "flex-end",
-                          }}
-                        >
-                          <FormControlLabel
-                            control={
-                              <Checkbox
-                                margin="normal"
-                                name="confirmedHours"
-                                value={values.confirmedHours}
-                                checked={values.confirmedHours}
-                                onChange={() =>
-                                  setFieldValue(
-                                    "confirmedHours",
-                                    !values.confirmedHours
-                                  )
-                                }
-                                onBlur={handleBlur}
-                              />
-                            }
-                            label="Confirm Hours"
-                          />
-                        </div>
-                        <OpenTimeForm
-                          name="hours"
-                          onChange={(e) =>
-                            setFieldValue("hours", e.target.value)
-                          }
-                          value={values.hours}
-                        />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              margin="normal"
-                              name="allowWalkins"
-                              value={values.allowWalkins}
-                              checked={values.allowWalkins}
-                              onChange={() =>
-                                setFieldValue(
-                                  "allowWalkins",
-                                  !values.allowWalkins
-                                )
-                              }
-                              onBlur={handleBlur}
-                            />
-                          }
-                          label="Allow Walk-Ins"
-                        />
-                        <Tooltip title="Notes and caveats about hours">
-                          <TextField
-                            variant="outlined"
-                            name="hoursNotes"
-                            label="Notes about hours"
-                            value={values.hoursNotes}
-                            multiline
-                            minRows={2}
-                            maxRows={12}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            helperText={
-                              touched.hoursNotes ? errors.hoursNotes : ""
-                            }
-                            error={
-                              touched.hoursNotes && Boolean(errors.hoursNotes)
-                            }
-                          />
-                        </Tooltip>
-                      </Grid>
-                    </Grid>
-                  </TabPanel>
-                  <TabPanel value={tabPage} index={2}>
-                    <Grid container spacing={1}>
-                      <Grid item xs={12}>
-                        <Tooltip title="The organization's web address">
-                          <TextField
-                            name="website"
-                            label="Web Site"
-                            value={values.website}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            helperText={touched.website ? errors.website : ""}
-                            error={touched.website && Boolean(errors.website)}
-                          />
-                        </Tooltip>
-                      </Grid>
-                      <Grid item sm={6} xs={12}>
-                        <TextField
-                          name="instagram"
-                          label="Instagram"
-                          value={values.instagram}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          helperText={touched.instagram ? errors.instagram : ""}
-                          error={touched.instagram && Boolean(errors.instagram)}
-                        />
-                      </Grid>
-                      <Grid item sm={6} xs={12}>
-                        <TextField
-                          name="facebook"
-                          label="Facebook"
-                          value={values.facebook}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          helperText={touched.facebook ? errors.facebook : ""}
-                          error={touched.facebook && Boolean(errors.facebook)}
-                        />
-                      </Grid>
-                      <Grid item sm={6} xs={12}>
-                        <TextField
-                          name="twitter"
-                          label="Twitter"
-                          value={values.twitter}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          helperText={touched.twitter ? errors.twitter : ""}
-                          error={touched.twitter && Boolean(errors.twitter)}
-                        />
-                      </Grid>
-                      <Grid item sm={6} xs={12}>
-                        <TextField
-                          name="pinterest"
-                          label="Pinterest"
-                          value={values.pinterest}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          helperText={touched.pinterest ? errors.pinterest : ""}
-                          error={touched.pinterest && Boolean(errors.pinterest)}
-                        />
-                      </Grid>
-                      <Grid item sm={6} xs={12}>
-                        <TextField
-                          name="linkedin"
-                          label="LinkedIn"
-                          value={values.linkedin}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          helperText={touched.linkedin ? errors.linkedin : ""}
-                          error={touched.linkedin && Boolean(errors.linkedin)}
-                        />
-                      </Grid>
-                    </Grid>
-                  </TabPanel>
-                  <TabPanel value={tabPage} index={3}>
-                    <Grid container spacing={2}>
-                      <Grid item xs={12}>
-                        <Typography>Details for Food Seekers to See</Typography>
-                      </Grid>
-                      <Grid
-                        item
-                        container
-                        justifyContent="space-between"
-                        xs={12}
-                        alignItems="center"
-                      >
-                        <Grid item xs={6}>
-                          <Typography>Food Types</Typography>
-                        </Grid>
-                        <Grid
-                          item
-                          container
-                          justifyContent="flex-end"
-                          xs={6}
-                          spacing={2}
-                        >
-                          <FormControlLabel
-                            control={
-                              <Checkbox
-                                margin="normal"
-                                name="confirmedFoodTypes"
-                                value={values.confirmedFoodTypes}
-                                checked={values.confirmedFoodTypes}
-                                onChange={(e) =>
-                                  setFieldValue(
-                                    "confirmedFoodTypes",
-                                    e.target.checked
-                                  )
-                                }
-                                onBlur={handleBlur}
-                              />
-                            }
-                            label="confirm"
-                          />
-                        </Grid>
-                      </Grid>
-                      <Grid
-                        container
-                        alignItems="center"
-                        sx={{ pl: 1.5, maxWidth: "600px" }}
-                      >
-                        {FOOD_TYPES.map(({ name, label }) => {
-                          const checked = values[name];
-                          return (
-                            <CheckboxWithLabel
-                              key={name}
-                              name={name}
-                              label={label}
-                              checked={checked}
-                              onChange={() => setFieldValue(name, !checked)}
-                              onBlur={handleBlur}
-                            />
-                          );
-                        })}
-                      </Grid>
-
-                      <Grid item xs={12}>
-                        <TextField
-                          name="foodTypes"
-                          label="Other Food Types"
-                          multiline
-                          minRows={2}
-                          maxRows={12}
-                          value={values.foodTypes}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          helperText={touched.foodTypes ? errors.foodTypes : ""}
-                          error={touched.foodTypes && Boolean(errors.foodTypes)}
-                        />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Tooltip title="(Items besides food, i.e. dog food, cat food, hygiene products, diapers, female hygiene products)">
-                          <TextField
-                            name="items"
-                            label="Non-Food Items"
-                            value={values.items}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            helperText={touched.items ? errors.items : ""}
-                            error={touched.items && Boolean(errors.items)}
-                          />
-                        </Tooltip>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Tooltip title="(Besides feeding ppl, i.e., family counseling, career counseling, drop in for women or homeless, etc.)">
-                          <TextField
-                            name="services"
-                            label="Services (separated by commas)"
-                            value={values.services}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            helperText={touched.services ? errors.services : ""}
-                            error={touched.services && Boolean(errors.services)}
-                          />
-                        </Tooltip>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Tooltip title="(Must go to chapel service, must be < 18, must show citizenship, etc.)">
-                          <TextField
-                            name="requirements"
-                            label="Eligibility / Requirements"
-                            multiline
-                            minRows={2}
-                            maxRows={12}
-                            value={values.requirements}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            helperText={
-                              touched.requirements ? errors.requirements : ""
-                            }
-                            error={
-                              touched.requirements &&
-                              Boolean(errors.requirements)
-                            }
-                          />
-                        </Tooltip>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Tooltip title="Other notes about eligibility requirements">
-                          <TextField
-                            name="eligibilityNotes"
-                            label="Eligibility Notes"
-                            multiline
-                            minRows={2}
-                            maxRows={12}
-                            value={values.eligibilityNotes}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            helperText={
-                              touched.eligibilityNotes
-                                ? errors.eligibilityNotes
-                                : ""
-                            }
-                            error={
-                              touched.eligibilityNotes &&
-                              Boolean(errors.eligibilityNotes)
-                            }
-                          />
-                        </Tooltip>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <TextField
-                          name="languages"
-                          label="Languages"
-                          multiline
-                          minRows={2}
-                          maxRows={12}
-                          value={values.languages}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          helperText={touched.languages ? errors.languages : ""}
-                          error={touched.languages && Boolean(errors.languages)}
-                        />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Tooltip title={noteTooltip}>
-                          <TextField
-                            name="notes"
-                            label="Notes for the Public"
-                            multiline
-                            minRows={2}
-                            maxRows={12}
-                            value={values.notes}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            helperText={touched.notes ? errors.notes : ""}
-                            error={touched.notes && Boolean(errors.notes)}
-                          />
-                        </Tooltip>
-                      </Grid>
-                    </Grid>
-                  </TabPanel>
-                  <TabPanel value={tabPage} index={4}>
-                    <Grid container spacing={1}>
-                      <Grid item xs={12} sm={6}>
-                        <Tooltip title="Name of person(s) to contact for donations">
-                          <TextField
-                            name="donationContactName"
-                            label="Donation Contact Name"
-                            value={values.donationContactName}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            helperText={
-                              touched.donationContactName
-                                ? errors.donationContactName
-                                : ""
-                            }
-                            error={
-                              touched.donationContactName &&
-                              Boolean(errors.donationContactName)
-                            }
-                          />
-                        </Tooltip>
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <Tooltip title="Phone for donations">
-                          <TextField
-                            name="donationContactPhone"
-                            label="Donation Phone"
-                            value={values.donationContactPhone}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            helperText={
-                              touched.donationContactPhone
-                                ? errors.donationContactPhone
-                                : ""
-                            }
-                            error={
-                              touched.donationContactPhone &&
-                              Boolean(errors.donationContactPhone)
-                            }
-                          />
-                        </Tooltip>
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <Tooltip title="Email for donations">
-                          <TextField
-                            name="donationContactEmail"
-                            label="Donation Email"
-                            value={values.donationContactEmail}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            helperText={
-                              touched.donationContactEmail
-                                ? errors.donationContactEmail
-                                : ""
-                            }
-                            error={
-                              touched.donationContactEmail &&
-                              Boolean(errors.donationContactEmail)
-                            }
-                          />
-                        </Tooltip>
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <Tooltip title="When can organization receive or pickup donations">
-                          <TextField
-                            name="donationSchedule"
-                            label="Donation Schedule"
-                            value={values.donationSchedule}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            helperText={
-                              touched.donationSchedule
-                                ? errors.donationSchedule
-                                : ""
-                            }
-                            error={
-                              touched.donationSchedule &&
-                              Boolean(errors.donationSchedule)
-                            }
-                          />
-                        </Tooltip>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Tooltip title="Check if organization can pick up food from source">
-                          <FormControlLabel
-                            control={
-                              <Checkbox
-                                margin="normal"
-                                name="donationPickup"
-                                label="Pick Up"
-                                value={values.donationPickup}
-                                checked={values.donationPickup}
-                                onChange={() =>
-                                  setFieldValue(
-                                    "donationPickup",
-                                    !values.donationPickup
-                                  )
-                                }
-                                onBlur={handleBlur}
-                              />
-                            }
-                            label="Pick Up"
-                          />
-                        </Tooltip>
-                      </Grid>
-                      <Grid item xs={12} sm={4}>
-                        <Tooltip title="Check if organization can accept frozen food">
-                          <FormControlLabel
-                            control={
-                              <Checkbox
-                                margin="normal"
-                                name="donationAcceptFrozen"
-                                label="Frozen"
-                                value={values.donationAcceptFrozen}
-                                checked={values.donationAcceptFrozen}
-                                onChange={() =>
-                                  setFieldValue(
-                                    "donationAcceptFrozen",
-                                    !values.donationAcceptFrozen
-                                  )
-                                }
-                                onBlur={handleBlur}
-                              />
-                            }
-                            label="Frozen"
-                          />
-                        </Tooltip>
-                      </Grid>
-                      <Grid item xs={12} sm={4}>
-                        <Tooltip title="Check if organization can accept refrigerated food">
-                          <FormControlLabel
-                            control={
-                              <Checkbox
-                                margin="normal"
-                                name="donationAcceptRefrigerated"
-                                label="Refrigerated"
-                                value={values.donationAcceptRefrigerated}
-                                checked={values.donationAcceptRefrigerated}
-                                onChange={() =>
-                                  setFieldValue(
-                                    "donationAcceptRefrigerated",
-                                    !values.donationAcceptRefrigerated
-                                  )
-                                }
-                                onBlur={handleBlur}
-                              />
-                            }
-                            label="Refrigerated"
-                          />
-                        </Tooltip>
-                      </Grid>
-                      <Grid item xs={12} sm={4}>
-                        <Tooltip title="Check if organization can accept perishables">
-                          <FormControlLabel
-                            control={
-                              <Checkbox
-                                margin="normal"
-                                name="donationAcceptPerishable"
-                                label="Perishable"
-                                value={values.donationAcceptPerishable}
-                                checked={values.donationAcceptPerishable}
-                                onChange={() =>
-                                  setFieldValue(
-                                    "donationAcceptPerishable",
-                                    !values.donationAcceptPerishable
-                                  )
-                                }
-                                onBlur={handleBlur}
-                              />
-                            }
-                            label="Perishable"
-                          />
-                        </Tooltip>
-                      </Grid>
-
-                      <Grid item xs={12} sm={6}>
-                        <Tooltip title="Delivery Instructions">
-                          <TextField
-                            name="donationDeliveryInstructions"
-                            label="Donation Delivery or Pickup Instructions"
-                            value={values.donationDeliveryInstructions}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            helperText={
-                              touched.donationDeliveryInstructions
-                                ? errors.donationDeliveryInstructions
-                                : ""
-                            }
-                            error={
-                              touched.donationDeliveryInstructions &&
-                              Boolean(errors.donationDeliveryInstructions)
-                            }
-                          />
-                        </Tooltip>
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <Tooltip title="Other donation notes">
-                          <TextField
-                            name="donationNotes"
-                            label="Donation Notes"
-                            value={values.donationNotes}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            helperText={
-                              touched.donationNotes ? errors.donationNotes : ""
-                            }
-                            error={
-                              touched.donationNotes &&
-                              Boolean(errors.donationNotes)
-                            }
-                          />
-                        </Tooltip>
-                      </Grid>
-                    </Grid>
-                  </TabPanel>
-                  <TabPanel value={tabPage} index={5}>
-                    <Grid container spacing={1}>
-                      <Grid item xs={12} sm={6}>
-                        <Tooltip title="Name of person(s) to contact for organization information">
-                          <TextField
-                            name="adminContactName"
-                            label="Verification Contact Name"
-                            value={values.adminContactName}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            helperText={
-                              touched.adminContactName
-                                ? errors.adminContactName
-                                : ""
-                            }
-                            error={
-                              touched.adminContactName &&
-                              Boolean(errors.adminContactName)
-                            }
-                          />
-                        </Tooltip>
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <Tooltip title="Phone number for administrative information">
-                          <TextField
-                            name="adminContactPhone"
-                            label="Verification Phone"
-                            value={values.adminContactPhone}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            helperText={
-                              touched.adminContactPhone
-                                ? errors.adminContactPhone
-                                : ""
-                            }
-                            error={
-                              touched.adminContactPhone &&
-                              Boolean(errors.adminContactPhone)
-                            }
-                          />
-                        </Tooltip>
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <Tooltip title="Email for administrative information">
-                          <TextField
-                            name="adminContactEmail"
-                            label="Verification Email"
-                            value={values.adminContactEmail}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            helperText={
-                              touched.adminContactEmail
-                                ? errors.adminContactEmail
-                                : ""
-                            }
-                            error={
-                              touched.adminContactEmail &&
-                              Boolean(errors.adminContactEmail)
-                            }
-                          />
-                        </Tooltip>
-                      </Grid>
-                      <Grid
-                        item
-                        xs={12}
-                        sx={{
-                          mt: 2,
-                          border: "1px solid gray",
-                          borderRadius: "4px",
-                          padding: "0.5em",
-                          display: "flex",
-                          flexDirection: "column",
-                        }}
-                      >
-                        <Stack direction="row">
-                          <Typography flexBasis="20%">Id:</Typography>
-                          <Typography flexBasis="20%">{values.id}</Typography>
-                        </Stack>
-                        <Stack direction="row">
-                          <Typography flexBasis="20%">Entered:</Typography>
-                          <Typography flexBasis="20%">
-                            {values.createdUser}
-                          </Typography>
-
-                          <Typography flexBasis="20%">
-                            {!values.createdDate
-                              ? null
-                              : moment(values.createdDate).format(DATE_FORMAT)}
-                          </Typography>
-                        </Stack>
-                        <Stack direction="row">
-                          <Typography flexBasis="20%">
-                            Last Modified:
-                          </Typography>
-                          <Typography flexBasis="20%">
-                            {values.modifiedUser}
-                          </Typography>
-                          <Typography flexBasis="20%">
-                            {!values.modifiedDate
-                              ? null
-                              : moment(values.modifiedDate).format(DATE_FORMAT)}
-                          </Typography>
-                        </Stack>
-                        <Stack direction="row">
-                          <Typography flexBasis="20%">Assigned:</Typography>
-                          <Typography flexBasis="20%">
-                            {values.assignedUser}
-                          </Typography>
-                          <Typography flexBasis="20%">
-                            {!values.assignedDate
-                              ? null
-                              : moment(values.assignedDate).format(DATE_FORMAT)}
-                          </Typography>
-                          {/* <div >
-                        <UserContext.Consumer>
-                          {(user) =>
-                            user && user.isAdmin ? (
-                              <div
-                                style={{
-                                  display: "flex",
-                                  flexDirection: "row",
-                                  justifyContent: "flex-end",
-                                }}
-                              >
-                                <AccountAutocomplete
-                                  accountId={values.assignedLoginId || ""}
-                                  setAccount={(login) => {
-                                    if (login) {
-                                      setFieldValue(
-                                        "assignedLoginId",
-                                        login.id
-                                      );
-                                      setFieldValue(
-                                        "assignedUser",
-                                        `${login.firstName} ${login.lastName}`
-                                      );
-                                      setFieldValue("assignedDate", moment());
-                                      setFieldValue(
-                                        "verificationStatusId",
-                                        VERIFICATION_STATUS.ASSIGNED
-                                      );
-                                    } else {
-                                      setFieldValue("assignedLoginId", "");
-                                      setFieldValue("assignedUser", "");
-                                      setFieldValue("assignedDate", "");
-                                      setFieldValue(
-                                        "verificationStatusId",
-                                        VERIFICATION_STATUS.NEEDS_VERIFICATION
-                                      );
-                                    }
-                                  }}
-                                />
-                              </div>
-                            ) : null
-                          }
-                        </UserContext.Consumer>
-                      </div>*/}
-                        </Stack>
-                        <Stack direction="row">
-                          <Typography flexBasis="20%">Submitted:</Typography>
-                          <Typography flexBasis="20%">
-                            {values.submittedUser}
-                          </Typography>
-                          <Typography flexBasis="20%">
-                            {!values.submittedDate
-                              ? null
-                              : moment(values.submittedDate).format(
-                                  DATE_FORMAT
-                                )}
-                          </Typography>
-                        </Stack>
-                        <Stack direction="row">
-                          <Typography flexBasis="20%">Approved:</Typography>
-                          <Typography flexBasis="20%">
-                            {values.reviewedUser}
-                          </Typography>
-                          <Typography flexBasis="20%">
-                            {values.approvedDate
-                              ? moment(values.approvedDate).format(DATE_FORMAT)
-                              : ""}
-                          </Typography>
-                        </Stack>
-                        <Stack direction="row">
-                          <Typography flexBasis="20%">Claimed:</Typography>
-                          <Typography flexBasis="20%">
-                            {values.claimedUser}
-                          </Typography>
-                          <Typography flexBasis="20%">
-                            {!values.claimedDate
-                              ? ""
-                              : moment(values.claimedDate).format(DATE_FORMAT)}
-                          </Typography>
-                          {user && (user.isAdmin || user.isCoordinator) ? (
-                            <div
-                              style={{
-                                flexBasis: "40%",
-                              }}
-                            >
-                              <AccountAutocomplete
-                                style={{ width: "100%" }}
-                                accountId={values.claimedLoginId || ""}
-                                setAccount={(login) => {
-                                  if (login) {
-                                    setFieldValue("claimedLoginId", login.id);
-                                    setFieldValue(
-                                      "claimedUser",
-                                      `${login.firstName} ${login.lastName}`
-                                    );
-                                    setFieldValue("claimedDate", moment());
-                                  } else {
-                                    setFieldValue("claimedLoginId", "");
-                                    setFieldValue("claimedUser", "");
-                                    setFieldValue("claimedDate", "");
-                                  }
-                                }}
-                              />
-                            </div>
-                          ) : null}
-                        </Stack>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Tooltip title="Verification review comments and instructions">
-                          <TextField
-                            name="reviewNotes"
-                            label="Reviewer Notes"
-                            multiline
-                            minRows={2}
-                            maxRows={12}
-                            value={values.reviewNotes}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            helperText={
-                              touched.reviewNotes ? errors.reviewNotes : ""
-                            }
-                            error={
-                              touched.reviewNotes && Boolean(errors.reviewNotes)
-                            }
-                          />
-                        </Tooltip>
-                      </Grid>
-                    </Grid>
-                  </TabPanel>
+                  <Identification
+                    tabPage={tabPage}
+                    values={values}
+                    handleChange={handleChange}
+                    errors={errors}
+                    touched={touched}
+                    setFieldValue={setFieldValue}
+                    handleBlur={handleBlur}
+                  />
+                  <BusinessHours
+                    tabPage={tabPage}
+                    values={values}
+                    handleChange={handleChange}
+                    errors={errors}
+                    touched={touched}
+                    setFieldValue={setFieldValue}
+                    handleBlur={handleBlur}
+                  />
+                  <ContactDetails
+                    tabPage={tabPage}
+                    values={values}
+                    handleChange={handleChange}
+                    errors={errors}
+                    touched={touched}
+                    handleBlur={handleBlur}
+                  />
+                  <MoreDetails
+                    tabPage={tabPage}
+                    values={values}
+                    handleChange={handleChange}
+                    errors={errors}
+                    touched={touched}
+                    setFieldValue={setFieldValue}
+                    handleBlur={handleBlur}
+                  />
+                  <Donations
+                    tabPage={tabPage}
+                    values={values}
+                    handleChange={handleChange}
+                    errors={errors}
+                    touched={touched}
+                    setFieldValue={setFieldValue}
+                    handleBlur={handleBlur}
+                  />
+                  <Verification
+                    tabPage={tabPage}
+                    values={values}
+                    handleChange={handleChange}
+                    errors={errors}
+                    touched={touched}
+                    setFieldValue={setFieldValue}
+                    handleBlur={handleBlur}
+                  />
                 </Box>
                 <Stack direction="row">
                   <div style={{ flexBasis: "20%", flexGrow: 1 }}>
-                    <Tooltip title={adminNoteTooltip} placement="right">
-                      <TextField
-                        variant="outlined"
-                        name="adminNotes"
+                    <div>
+                      <Label
+                        id="adminNotes"
                         label="Verification Notes"
-                        multiline
-                        minRows={2}
-                        maxRows={12}
+                        tooltipTitle={adminNoteTooltip}
+                      />
+                      <Textarea
+                        id="adminNotes"
+                        name="adminNotes"
+                        placeholder="Verification Notes"
                         value={values.adminNotes}
                         onChange={handleChange}
                         onBlur={handleBlur}
                         helperText={touched.adminNotes ? errors.adminNotes : ""}
                         error={touched.adminNotes && Boolean(errors.adminNotes)}
                       />
-                    </Tooltip>
+                    </div>
                   </div>
 
                   {user && (user.isAdmin || user.isCoordinator) ? (
@@ -1848,11 +563,13 @@ const OrganizationEdit = (props) => {
                             sx={{
                               minHeight: "3.5rem",
                             }}
+                            onClick={() => setSubmitClicked(true)}
                           >
                             Save Progress
                           </Button>
                         </div>
                       </Tooltip>
+
                       <Tooltip title="Mark for re-verification">
                         <div>
                           <Button
@@ -1906,7 +623,7 @@ const OrganizationEdit = (props) => {
                                   setFieldValue("reviewedUser", "");
                                   setFieldValue("approvedDate", "");
                                   setFieldValue("assignedLoginId", loginId);
-                                  setFieldValue("assignedDate", moment());
+                                  setFieldValue("assignedDate", dayjs());
                                   setFieldValue(
                                     "verificationStatusId",
                                     VERIFICATION_STATUS.ASSIGNED
@@ -1975,7 +692,7 @@ const OrganizationEdit = (props) => {
                               display: "flex",
                             }}
                             onClick={() => {
-                              setFieldValue("approvedDate", moment());
+                              setFieldValue("approvedDate", dayjs());
                               setFieldValue(
                                 "reviewedUser",
                                 user.firstName + " " + user.lastName
@@ -2085,7 +802,7 @@ const OrganizationEdit = (props) => {
                               display: "flex",
                             }}
                             onClick={() => {
-                              setFieldValue("submittedDate", moment());
+                              setFieldValue("submittedDate", dayjs());
                               setFieldValue(
                                 "submittedUser",
                                 user.firstName + " " + user.lastName
@@ -2126,4 +843,4 @@ OrganizationEdit.propTypes = {
   history: PropTypes.object,
 };
 
-export default withRouter(OrganizationEdit);
+export default OrganizationEdit;

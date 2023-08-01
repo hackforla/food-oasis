@@ -1,11 +1,8 @@
-import { Route, Redirect } from "react-router-dom";
 import { useUserContext } from "../contexts/userContext";
-import { useLocation } from "react-router-dom";
-import { useToasterContext } from "../contexts/toasterContext";
+import { useLocation, Navigate } from "react-router-dom";
 
-function PrivateRoute({ path, children, roles }) {
+function PrivateRoute({ children, roles, redirectTo = "/login" }) {
   const { user } = useUserContext();
-  const { setToast } = useToasterContext();
   const location = useLocation();
 
   if (!user || !roles.some((role) => user[role])) {
@@ -24,24 +21,15 @@ function PrivateRoute({ path, children, roles }) {
     ].slice(2)} can access this page "${location.pathname}". Please
     log into an account with either of these roles to access this page.`;
 
-    setToast({
-      message: message,
-    });
-
     return (
-      <Redirect
-        to={{
-          pathname: "/fallback",
-          state: {
-            from: location.pathname,
-            message: message,
-          },
-        }}
+      <Navigate
+        to={redirectTo}
+        state={{ from: location.pathname, message: message }}
       />
     );
   }
 
-  return <Route path={path}>{children}</Route>;
+  return children;
 }
 
 export default PrivateRoute;

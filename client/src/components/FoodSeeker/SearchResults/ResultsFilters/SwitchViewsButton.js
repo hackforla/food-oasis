@@ -19,13 +19,13 @@ export default function SwitchViewsButton({ isListView, onClick, style }) {
       {!isListView && (
         <>
           <FormatListBulletedIcon />
-          <Typography variant="button">List</Typography>
+          <Typography variant="button" color="inherit">List</Typography>
         </>
       )}
       {isListView && (
         <>
           <MapIcon />
-          <Typography variant="button">Map</Typography>
+          <Typography variant="button" color="inherit">Map</Typography>
         </>
       )}
     </SwitchButton>

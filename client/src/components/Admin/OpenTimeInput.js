@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import moment from "moment";
 import makeStyles from "@mui/styles/makeStyles";
 import {
   Grid,
@@ -9,11 +8,13 @@ import {
   InputLabel,
   TextField,
   Select,
+  OutlinedInput,
 } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { IconButton } from "../UI/StandardButton";
+import dayjs from "dayjs";
 
 const useStyles = makeStyles((theme) => ({
   row: {
@@ -44,18 +45,17 @@ const intervals = [
 function OpenTimeInput(props) {
   const classes = useStyles();
   const { values, rowIndex, onChange, removeInput, copyInput } = props;
-
-  // Use state variables containing moment objects for
+  // Use state variables containing dayjs objects for
   // the Material-UI TimePickers to interact with.
   const [openingTime, setOpeningTime] = useState(
-    values.open ? moment(values.open, "HH:mm:ss") : null
+    values.open ? dayjs(values.open, "HH:mm:ss") : null
   );
   const [closingTime, setClosingTime] = useState(
-    values.close ? moment(values.close, "HH:mm:ss") : null
+    values.close ? dayjs(values.close, "HH:mm:ss") : null
   );
 
   return (
-    <LocalizationProvider dateAdapter={AdapterMoment}>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Grid container spacing={1} className={classes.row}>
         <Grid item xs={12} sm={2}>
           <FormControl
@@ -68,9 +68,9 @@ function OpenTimeInput(props) {
               labelId="open-days-select-id"
               id="open-days-select"
               name="weekOfMonth"
-              labelWidth={75}
               onChange={onChange}
               value={values.weekOfMonth}
+              input={<OutlinedInput label="Interval" />}
             >
               {intervals.map((day) => (
                 <MenuItem key={day.value} value={day.value}>
@@ -92,9 +92,9 @@ function OpenTimeInput(props) {
               id="open-days-select"
               variant="outlined"
               name="dayOfWeek"
-              labelWidth={75}
               onChange={onChange}
               value={values.dayOfWeek}
+              input={<OutlinedInput label="Days" />}
             >
               {days.map((day) => (
                 <MenuItem key={day.value} label={day.label} value={day.value}>
@@ -114,7 +114,7 @@ function OpenTimeInput(props) {
             onChange={(dt) => {
               setOpeningTime(dt);
               // Pass dt to parent component as null, unless it's a valid
-              // moment date, in which case we trnslate to HH:mm:ss format
+              // dayjs date, in which case we trnslate to HH:mm:ss format
               onChange(
                 {
                   target: {
@@ -142,7 +142,7 @@ function OpenTimeInput(props) {
             onChange={(dt) => {
               setClosingTime(dt);
               // Pass dt to parent component as null, unless it's a valid
-              // moment date, in which case we trnslate to HH:mm:ss format
+              // dayjs date, in which case we trnslate to HH:mm:ss format
               onChange(
                 {
                   target: {

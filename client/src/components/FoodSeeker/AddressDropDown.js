@@ -9,7 +9,7 @@ import {
   useAppDispatch,
   useWidget,
 } from "../../appReducer";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router-dom";
 import * as analytics from "services/analytics";
 
 const useStyles = makeStyles((theme) => ({
@@ -46,7 +46,7 @@ export default function AddressDropDown({ showSearchIcon }) {
   const [open, setOpen] = useState(true);
   const { mapboxResults, fetchMapboxResults } = useMapboxGeocoder();
   const dispatch = useAppDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleInputChange = (delta) => {
     const safeValue = typeof delta === "string" ? delta : delta.target.value;
@@ -61,16 +61,16 @@ export default function AddressDropDown({ showSearchIcon }) {
     const result = mapboxResults.find(
       (item) => item.place_name === selectedResult
     );
-    setOpen(false)
-    setInputVal(selectedResult)
+    setOpen(false);
+    setInputVal(selectedResult);
     if (result) {
       const [longitude, latitude] = result.center;
-      
+
       dispatch({
         type: "SEARCH_COORDINATES_UPDATED",
         coordinates: { latitude, longitude, locationName: result.place_name },
       });
-      history.push(isWidget ? "/widget" : "/organizations");
+      navigate(isWidget ? "/widget" : "/organizations");
 
       analytics.postEvent("changeOrigin", {});
     }
@@ -96,7 +96,7 @@ export default function AddressDropDown({ showSearchIcon }) {
             <InputAdornment
               position="end"
               onClick={() => {
-                history.push(isWidget ? "/widget" : "/organizations");
+                navigate(isWidget ? "/widget" : "/organizations");
               }}
               className={classes.searchIconCont}
             >
@@ -118,7 +118,7 @@ export default function AddressDropDown({ showSearchIcon }) {
       >
         {option}
       </MenuItem>
-    )
+    );
   };
 
   return (

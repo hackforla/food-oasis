@@ -18,7 +18,8 @@ import { IconButton } from "../UI/StandardButton";
 import { Formik } from "formik";
 import * as parentOrganizationService from "../../services/parent-organization-service";
 import { tenantId } from "helpers/Configuration";
-import { Redirect, withRouter } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
+import Label from "./ui/Label";
 
 const columns = [
   { id: "edit", label: "" },
@@ -74,6 +75,7 @@ function ParentOrganizations(props) {
   const [modalStyle] = React.useState(getModalStyle);
   const [error, setError] = React.useState("");
   const [deleteError, setDeleteError] = React.useState("");
+  const location = useLocation();
 
   React.useEffect(() => {
     if (data) {
@@ -84,8 +86,8 @@ function ParentOrganizations(props) {
   React.useEffect(() => {
     if (status === 401) {
       return (
-        <Redirect
-          to={{ pathname: "/login", state: { from: props.location } }}
+        <Navigate
+          to={{ pathname: "/login", state: { from:location } }}
         />
       );
     }
@@ -267,25 +269,31 @@ function ParentOrganizations(props) {
                     handleSubmit(e);
                   }}
                 >
-                  <TextField
-                    label="Name"
-                    id="name"
-                    value={values.name}
-                    onChange={handleChange}
-                    helperText={touched.name ? errors.name : ""}
-                    error={touched.name && Boolean(errors.name)}
-                    fullWidth
-                    autoFocus
-                  />
-                  <TextField
-                    label="Code"
-                    id="code"
-                    value={values.code}
-                    onChange={handleChange}
-                    helperText={touched.code ? errors.code : ""}
-                    error={touched.code && Boolean(errors.code)}
-                    fullWidth
-                  />
+                  <div>
+                    <Label id="name" label="Name" />
+                    <TextField
+                      placeholder="Name"
+                      id="name"
+                      value={values.name}
+                      onChange={handleChange}
+                      helperText={touched.name ? errors.name : ""}
+                      error={touched.name && Boolean(errors.name)}
+                      fullWidth
+                      autoFocus
+                    />
+                  </div>
+                  <div>
+                    <Label id="code" label="Code" />
+                    <TextField
+                      placeholder="Code"
+                      id="code"
+                      value={values.code}
+                      onChange={handleChange}
+                      helperText={touched.code ? errors.code : ""}
+                      error={touched.code && Boolean(errors.code)}
+                      fullWidth
+                    />
+                  </div>
                   {error && (
                     <div className={classes.error}>Something went wrong.</div>
                   )}
@@ -314,4 +322,4 @@ function ParentOrganizations(props) {
   );
 }
 
-export default withRouter(ParentOrganizations);
+export default ParentOrganizations;

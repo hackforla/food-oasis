@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Box, Stack, MenuItem, TextField, Typography } from "@mui/material";
+import Label from "components/Admin/ui/Label";
 
 const variants = ["outlined", "filled", "standard"];
 
@@ -110,6 +111,10 @@ function MuiForm() {
             helperText="Incorrect entry."
             variant={variant}
           />
+          <div>
+            <Label id="label" label="Hello World" tooltipTitle="Hello World" />
+            <TextField id="label" name="label" placeholder="Hello World" />
+          </div>
         </Stack>
       </Box>
     </>

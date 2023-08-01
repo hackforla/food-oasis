@@ -7,11 +7,12 @@ import {
   DialogContent,
   DialogTitle,
   FormLabel,
-  TextField,
   Radio,
   RadioGroup,
   FormControlLabel,
 } from "@mui/material";
+import Textarea from "./Textarea";
+import Label from "./Label";
 
 function NeedsVerificationDialog(props) {
   const { onClose, open, ...other } = props;
@@ -42,20 +43,20 @@ function NeedsVerificationDialog(props) {
     >
       <DialogTitle id="confirmation-dialog-title">{props.title}</DialogTitle>
       <DialogContent dividers>
-        <TextField
-          margin="normal"
-          fullWidth
-          name="message"
-          label="Reviewer Notes"
-          type="text"
-          size="small"
-          variant="outlined"
-          multiline
-          minRows={4}
-          maxRows={12}
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-        />
+        <div>
+          <Label id="message" label="Reviewer Notes" />
+          <Textarea
+            id="message"
+            margin="normal"
+            fullWidth
+            name="message"
+            placeholder="Reviewer Notes"
+            type="text"
+            size="small"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
+        </div>
         <FormLabel id="confirmation-reset-options=label">
           Critical Field Confirmations
         </FormLabel>

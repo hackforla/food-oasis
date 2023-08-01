@@ -1,6 +1,5 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
-import withStyles from "@mui/styles/withStyles";
+import { useNavigate, useParams } from "react-router-dom";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import * as accountService from "../../services/account-service";
@@ -9,36 +8,18 @@ import { Avatar, Box, Container, CssBaseline, Typography } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useToasterContext } from "../../contexts/toasterContext";
 import PasswordInput from "../UI/PasswordInput";
+import {
+  PASSWORD_VALIDATION_ERROR,
+  PASSWORD_VALIDATION_REGEX,
+} from "helpers/Constants";
+import Label from "components/Admin/ui/Label";
+import { palette } from "theme/palette";
 
-const styles = (theme) => ({
-  paper: {
-    marginTop: theme.spacing(1),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  body: {
-    display: "flex",
-    height: "97.8%",
-    flexDirection: "column",
-  },
-  container: {
-    flex: 1,
-  },
-});
 
 const validationSchema = Yup.object().shape({
   token: Yup.string().required("Token is required"),
   password: Yup.string()
-    .min(8, "Password must be 8 characters at minimum")
+    .matches(PASSWORD_VALIDATION_REGEX, PASSWORD_VALIDATION_ERROR)
     .required("Password is required"),
   passwordConfirm: Yup.string()
     .required("Confirm your password")
@@ -46,15 +27,34 @@ const validationSchema = Yup.object().shape({
 });
 
 const ResetPassword = (props) => {
-  const { classes, history, match } = props;
+  const { classes} = props;
   const { setToast } = useToasterContext();
+  const navigate = useNavigate();
+  const { token } = useParams();
 
   return (
-    <div className={classes.body}>
-      <Container component="main" maxWidth="xs" className={classes.container}>
+    <Container component="main" maxWidth="xs"
+    sx={{
+      display: "flex",
+      height: "97.8%",
+      flexDirection: "column",
+    }}
+    >
         <CssBaseline />
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
+        <Box
+        sx={{
+          marginTop: "8px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+        >
+          <Avatar
+          sx={{
+            margin: "8px",
+            backgroundColor: palette.secondary.main,
+          }}
+          >
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -62,7 +62,7 @@ const ResetPassword = (props) => {
           </Typography>
           <Formik
             initialValues={{
-              token: match.params.token,
+              token: token,
               password: "",
               passwordConfirm: "",
             }}
@@ -77,7 +77,7 @@ const ResetPassword = (props) => {
                   setToast({
                     message: "Password has been reset. Please use it to login.",
                   });
-                  history.push({
+                  navigate({
                     pathname: `/login/${response.email}`,
                     state: {
                       isPasswordReset: true,
@@ -120,44 +120,52 @@ const ResetPassword = (props) => {
               /* and other goodies */
             }) => (
               <form
-                className={classes.form}
                 noValidate
                 onSubmit={(evt) => {
                   evt.preventDefault();
                   handleSubmit(evt);
                 }}
               >
-                <PasswordInput
-                  margin="normal"
-                  fullWidth
-                  name="password"
-                  label="New Password"
-                  id="password"
-                  autoComplete="current-password"
-                  value={values.password}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  helperText={touched.password ? errors.password : ""}
-                  error={touched.password && Boolean(errors.password)}
-                  sx={{ mt: 2, mb: 2 }}
-                />
-                <PasswordInput
-                  margin="normal"
-                  fullWidth
-                  name="passwordConfirm"
-                  label="Confirm Password"
-                  id="passwordConfirm"
-                  value={values.passwordConfirm}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  helperText={
-                    touched.passwordConfirm ? errors.passwordConfirm : ""
-                  }
-                  error={
-                    touched.passwordConfirm && Boolean(errors.passwordConfirm)
-                  }
-                  sx={{ mt: 2, mb: 2 }}
-                />
+                <Box
+                sx={{
+                  width: "100%", // Fix IE 11 issue.
+                  marginTop: "8px"
+                }}
+                >
+                  <Label id="password" label="New Password" />
+                  <PasswordInput
+                    fullWidth
+                    name="password"
+                    placeholder="New Password"
+                    id="password"
+                    autoComplete="current-password"
+                    value={values.password}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={touched.password ? errors.password : ""}
+                    error={touched.password && Boolean(errors.password)}
+                    sx={{ mt: 2, mb: 2 }}
+                  />
+                </Box>
+                <Box>
+                  <Label id="passwordConfirm" label="Confirm Password" />
+                  <PasswordInput
+                    fullWidth
+                    name="passwordConfirm"
+                    placeholder="Confirm Password"
+                    id="passwordConfirm"
+                    value={values.passwordConfirm}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={
+                      touched.passwordConfirm ? errors.passwordConfirm : ""
+                    }
+                    error={
+                      touched.passwordConfirm && Boolean(errors.passwordConfirm)
+                    }
+                    sx={{ mt: 2, mb: 2 }}
+                  />
+                </Box>
                 <Box sx={{ mt: 2, mb: 2 }}>
                   <Button
                     variant="contained"
@@ -171,10 +179,9 @@ const ResetPassword = (props) => {
               </form>
             )}
           </Formik>
-        </div>
+        </Box>
       </Container>
-    </div>
   );
 };
 
-export default withStyles(styles)(withRouter(ResetPassword));
+export default ResetPassword;

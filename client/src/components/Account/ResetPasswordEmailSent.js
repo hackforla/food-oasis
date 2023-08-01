@@ -1,8 +1,8 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
-import withStyles from "@mui/styles/withStyles";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@mui/material";
 import { Avatar, Box, Container, CssBaseline, Typography } from "@mui/material";
+import { palette } from "theme/palette";
 
 const MailIcon = () => {
   return (
@@ -27,68 +27,60 @@ const MailIcon = () => {
   );
 };
 
-const styles = (theme) => ({
-  "@global": {
-    body: {
-      backgroundColor: theme.palette.common.white,
-    },
-  },
-  paper: {
-    marginTop: theme.spacing(1),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.success.main,
-  },
-  header: {
-    width: "100%", // Fix IE 11 issue.
-    margin: theme.spacing(3, 0, 3),
-  },
-  body: {
-    display: "flex",
-    height: "97.8%",
-    flexDirection: "column",
-  },
-  container: {
-    flex: 1,
-  },
-});
 
 const ResetPasswordEmailSent = (props) => {
-  const { classes, history, match } = props;
+  const { classes} = props;
+  const navigate = useNavigate();
+  const { email } = useParams();
 
   return (
-    <div className={classes.body}>
-      <Container component="main" maxWidth="s" className={classes.container}>
+    <Container component="main" maxWidth="xs"
+    sx={{
+      display: "flex",
+      height: "97.8%",
+      flexDirection: "column",
+    }}
+    >
         <CssBaseline />
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
+        <Box
+        sx={{
+          marginTop: "8px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+        >
+         <Avatar
+          sx={{
+            margin: "8px",
+            backgroundColor: palette.secondary.main,
+          }}
+          >
             <MailIcon />
           </Avatar>
           <Typography
             component="h1"
             variant="h5"
-            className={classes.header}
+            sx={{
+              width: "100%", 
+              margin: "24px 0px"
+            }}
             align="center"
           >
             Password Reset Link was Sent
           </Typography>
           <Typography component="p" align="center">
-            A password reset link was sent to {match.params.email}.<br /> If you
+            A password reset link was sent to {email}.<br /> If you
             don’t see it in your inbox, please check your junk/spam folder.
           </Typography>
           <Box sx={{ mt: 2, mb: 2 }}>
-            <Button variant="contained" onClick={() => history.push("/login")}>
+            <Button variant="contained" onClick={() => navigate("/login")}>
               Back to login
             </Button>
           </Box>
-        </div>
+        </Box>
       </Container>
-    </div>
   );
 };
 
-export default withStyles(styles)(withRouter(ResetPasswordEmailSent));
+export default ResetPasswordEmailSent;

@@ -2,7 +2,7 @@ import React from "react";
 import { Helmet } from "react-helmet-async";
 export default function SEO({
   title,
-  description = "Food Oasis is an application that helps eliminate food waste by connecting donors and food outlets.",
+  description = "Food Oasis is a non-profit, volunteer-run directory of free food resources in the Los Angeles area.",
   name = "Food Oasis",
   type = "website",
   url = "",

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { withRouter, Redirect } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { CssBaseline, Typography } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import { useOrganizations } from "hooks/useOrganizations";
@@ -81,6 +81,8 @@ function VerificationDashboard(props) {
   const { user } = useUserContext();
   const classes = useStyles();
   const [criteria, setCriteria] = useState(defaultCriteria);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const {
     data: stakeholders,
@@ -128,13 +130,16 @@ function VerificationDashboard(props) {
     }
   };
 
+  if (!user) {
+    return null;
+  }
+
+  if (stakeholdersError.status === 401) {
+    navigate("/login", { state: { from: location } });
+  }
+
   return (
     <main className={classes.root}>
-      {stakeholdersError.status === 401 ? (
-        <Redirect
-          to={{ pathname: "/login", state: { from: props.location } }}
-        />
-      ) : null}
       <CssBaseline />
       <div
         style={{
@@ -223,4 +228,4 @@ function VerificationDashboard(props) {
   );
 }
 
-export default withRouter(VerificationDashboard);
+export default VerificationDashboard;

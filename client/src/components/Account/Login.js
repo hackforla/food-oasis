@@ -1,5 +1,5 @@
 import React from "react";
-import { withRouter, useLocation } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   Avatar,
   Box,
@@ -8,9 +8,8 @@ import {
   Grid,
   TextField,
   Typography,
-  Button,
+  Button
 } from "@mui/material";
-import withStyles from "@mui/styles/withStyles";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import * as accountService from "services/account-service";
@@ -20,31 +19,10 @@ import { useToasterContext } from "../../contexts/toasterContext";
 
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import PasswordInput from "../../components/UI/PasswordInput";
+import Label from "components/Admin/ui/Label";
+import { palette } from "theme/palette";
 
-const styles = (theme) => ({
-  paper: {
-    marginTop: theme.spacing(1),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  body: {
-    display: "flex",
-    height: "97.8%",
-    flexDirection: "column",
-  },
-  container: {
-    flex: 1,
-  },
-});
+
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -56,22 +34,50 @@ const validationSchema = Yup.object().shape({
 });
 
 const LoginForm = (props) => {
-  const { classes, history, match } = props;
+  const { classes } = props;
   const { onLogin } = useUserContext();
   const { setToast } = useToasterContext();
   // state is the previous pathname if the user has been redirected here from a PrivateRoute.
   const { state } = useLocation();
+  const navigate = useNavigate();
+  const { email } = useParams();
+
+  React.useEffect(() => {
+    if (state?.message) {
+      setToast({
+        message: state.message,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-    <div className={classes.body}>
-      <Container component="main" maxWidth="xs" className={classes.container}>
-        <div className={classes.paper}>
+    <Container component="main" maxWidth="xs"
+    sx={{
+      display: "flex",
+      height: "97.8%",
+      flexDirection: "column",
+    }}
+    >
+        <Box
+        sx={{
+          marginTop: "8px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+        >
           {state?.isPasswordReset && (
             <Typography component="p" className={classes.submit}>
               Password has been successfully updated
             </Typography>
           )}
-          <Avatar className={classes.avatar}>
+          <Avatar
+          sx={{
+            margin: "8px",
+            backgroundColor: palette.secondary.main,
+          }}
+          >
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -80,7 +86,7 @@ const LoginForm = (props) => {
           <Formik
             validateOnBlur={false}
             initialValues={{
-              email: match.params.email || "",
+              email: email || "",
               password: "",
             }}
             validationSchema={validationSchema}
@@ -98,18 +104,18 @@ const LoginForm = (props) => {
                       message: "Login successful.",
                     });
                     if (state?.from) {
-                      history.push(state.from);
+                      navigate(state.from);
                     } else if (
                       response.user.isAdmin ||
                       response.user.isCoordinator
                     ) {
-                      history.push("/verificationAdmin");
+                      navigate("/verificationAdmin");
                     } else if (response.user.isSecurityAdmin) {
-                      history.push("/securityadmindashboard");
+                      navigate("/securityadmindashboard");
                     } else if (response.user.isDataEntry) {
-                      history.push("/verificationdashboard");
+                      navigate("/verificationdashboard");
                     } else {
-                      history.push("/");
+                      navigate("/");
                     }
                   } else if (response.code === "AUTH_NOT_CONFIRMED") {
                     try {
@@ -168,38 +174,46 @@ const LoginForm = (props) => {
               dirty,
               isValid,
             }) => (
-              <form className={classes.form} noValidate onSubmit={handleSubmit}>
-                <Grid container spacing={2}>
+              <form
+              noValidate onSubmit={handleSubmit}>
+                <Grid
+                sx={{
+                  width: "100%", // Fix IE 11 issue.
+                  marginTop: "8px"
+                }}
+                 container spacing={2}>
                   <Grid item xs={12}>
-                    <TextField
-                      autoComplete="email"
-                      autoFocus
-                      error={touched.email && Boolean(errors.email)}
-                      fullWidth
-                      helperText={touched.email ? errors.email : ""}
-                      id="email"
-                      label="Email"
-                      name="email"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      required
-                      type="email"
-                      value={values.email}
-                    />
+                      <Label id="email" label="Email *" />
+                      <TextField
+                        autoComplete="email"
+                        autoFocus
+                        error={touched.email && Boolean(errors.email)}
+                        fullWidth
+                        helperText={touched.email ? errors.email : ""}
+                        id="email"
+                        placeholder="Email"
+                        name="email"
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        required
+                        type="email"
+                        value={values.email}
+                      />
                   </Grid>
                   <Grid item xs={12}>
-                    <PasswordInput
-                      autoComplete="current-password"
-                      error={touched.password && Boolean(errors.password)}
-                      fullWidth
-                      helperText={touched.password ? errors.password : ""}
-                      id="password"
-                      label="Password"
-                      name="password"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      value={values.password}
-                    />
+                      <Label id="password" label="Password" />
+                      <PasswordInput
+                        autoComplete="current-password"
+                        error={touched.password && Boolean(errors.password)}
+                        fullWidth
+                        helperText={touched.password ? errors.password : ""}
+                        id="password"
+                        placeholder="Password"
+                        name="password"
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        value={values.password}
+                      />
                   </Grid>
                   <Grid item xs={12}>
                     <Box>
@@ -229,10 +243,9 @@ const LoginForm = (props) => {
               </form>
             )}
           </Formik>
-        </div>
-      </Container>
-    </div>
+        </Box>
+    </Container>
   );
 };
 
-export default withStyles(styles)(withRouter(LoginForm));
+export default LoginForm;

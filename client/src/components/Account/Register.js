@@ -1,6 +1,5 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
-import withStyles from "@mui/styles/withStyles";
+import { useNavigate } from "react-router-dom";
 import { withFormik } from "formik";
 import * as Yup from "yup";
 import * as accountService from "../../services/account-service";
@@ -18,31 +17,14 @@ import {
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useToasterContext } from "contexts/toasterContext";
 import PasswordInput from "components/UI/PasswordInput";
+import {
+  PASSWORD_VALIDATION_ERROR,
+  PASSWORD_VALIDATION_REGEX,
+} from "helpers/Constants";
+import Label from "components/Admin/ui/Label";
+import { palette } from "theme/palette";
 
-const styles = (theme) => ({
-  paper: {
-    marginTop: theme.spacing(1),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  body: {
-    display: "flex",
-    height: "97.8%",
-    flexDirection: "column",
-  },
-  container: {
-    flex: 1,
-  },
-});
+
 
 // Core component is the Material UI form itself
 const form = (props) => {
@@ -60,96 +42,123 @@ const form = (props) => {
   } = props;
 
   return (
-    <div className={classes.body}>
-      <Container component="main" maxWidth="xs" className={classes.container}>
+    <Container component="main" maxWidth="xs"
+    sx={{
+      display: "flex",
+      height: "97.8%",
+      flexDirection: "column",
+    }}
+    >
         <CssBaseline />
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
+        <Box
+        sx={{
+          marginTop: "8px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+        >
+          <Avatar
+          sx={{
+            margin: "8px",
+            backgroundColor: palette.secondary.main,
+          }}
+          >
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Register
           </Typography>
-          <form className={classes.form} noValidate onSubmit={handleSubmit}>
-            <Grid container spacing={2}>
+          <form noValidate onSubmit={handleSubmit}>
+            <Grid
+            sx={{
+              width: "100%", // Fix IE 11 issue.
+              marginTop: "8px"
+            }}
+            container spacing={2}>
               <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="fname"
-                  autoFocus
-                  error={touched.firstName && Boolean(errors.firstName)}
-                  fullWidth
-                  helperText={touched.firstName ? errors.firstName : ""}
-                  id="firstName"
-                  label="First Name"
-                  name="firstName"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  required
-                  value={values.firstName}
-                />
+                  <Label id="firstName" label="First Name *" />
+                  <TextField
+                    autoComplete="fname"
+                    autoFocus
+                    error={touched.firstName && Boolean(errors.firstName)}
+                    fullWidth
+                    helperText={touched.firstName ? errors.firstName : ""}
+                    id="firstName"
+                    placeholder="First Name"
+                    name="firstName"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    required
+                    value={values.firstName}
+                  />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="lname"
-                  value={values.lastName}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  helperText={touched.lastName ? errors.lastName : ""}
-                  error={touched.lastName && Boolean(errors.lastName)}
-                />
+                  <Label id="lastName" label="Last Name *" />
+                  <TextField
+                    required
+                    fullWidth
+                    id="lastName"
+                    placeholder="Last Name"
+                    name="lastName"
+                    autoComplete="lname"
+                    value={values.lastName}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={touched.lastName ? errors.lastName : ""}
+                    error={touched.lastName && Boolean(errors.lastName)}
+                  />
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  type="email"
-                  id="email"
-                  label="Email"
-                  name="email"
-                  fullWidth
-                  autoComplete="email"
-                  value={values.email}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  helperText={touched.email ? errors.email : ""}
-                  error={touched.email && Boolean(errors.email)}
-                />
+                  <Label id="email" label="Email" />
+                  <TextField
+                    type="email"
+                    id="email"
+                    placeholder="Email"
+                    name="email"
+                    fullWidth
+                    autoComplete="email"
+                    value={values.email}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={touched.email ? errors.email : ""}
+                    error={touched.email && Boolean(errors.email)}
+                  />
               </Grid>
               <Grid item xs={12}>
-                <PasswordInput
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  id="password"
-                  autoComplete="current-password"
-                  value={values.password}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  helperText={touched.password ? errors.password : ""}
-                  error={touched.password && Boolean(errors.password)}
-                />
+                  <Label id="password" label="Password *" />
+                  <PasswordInput
+                    required
+                    fullWidth
+                    name="password"
+                    placeholder="Password"
+                    id="password"
+                    autoComplete="current-password"
+                    value={values.password}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={touched.password ? errors.password : ""}
+                    error={touched.password && Boolean(errors.password)}
+                  />
               </Grid>
               <Grid item xs={12}>
-                <PasswordInput
-                  required
-                  fullWidth
-                  name="passwordConfirm"
-                  label="Confirm Password"
-                  id="passwordConfirm"
-                  value={values.passwordConfirm}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  helperText={
-                    touched.passwordConfirm ? errors.passwordConfirm : ""
-                  }
-                  error={
-                    touched.passwordConfirm && Boolean(errors.passwordConfirm)
-                  }
-                />
+                  <Label id="passwordConfirm" label="Confirm Password *" />
+                  <PasswordInput
+                    required
+                    fullWidth
+                    name="passwordConfirm"
+                    placeholder="Confirm Password"
+                    id="passwordConfirm"
+                    value={values.passwordConfirm}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    helperText={
+                      touched.passwordConfirm ? errors.passwordConfirm : ""
+                    }
+                    error={
+                      touched.passwordConfirm && Boolean(errors.passwordConfirm)
+                    }
+                  />
               </Grid>
             </Grid>
             <Box sx={{ mt: 2, mb: 2 }}>
@@ -170,9 +179,8 @@ const form = (props) => {
               </Grid>
             </Grid>
           </form>
-        </div>
+        </Box>
       </Container>
-    </div>
   );
 };
 
@@ -203,8 +211,8 @@ const RegisterForm = withFormik({
       .email("Enter a valid email")
       .required("Email is required"),
     password: Yup.string()
-      .min(8, "Password must contain at least 8 characters")
-      .required("Enter your password"),
+      .matches(PASSWORD_VALIDATION_REGEX, PASSWORD_VALIDATION_ERROR)
+      .required("Password is required"),
     passwordConfirm: Yup.string()
       .required("Confirm your password")
       .oneOf([Yup.ref("password")], "Password does not match"),
@@ -221,7 +229,7 @@ const RegisterForm = withFormik({
             props.setToast({
               message: `Registration successful. Please check your email for a confirmation link.`,
             });
-            props.history.push("/");
+            props.navigate("/");
           } else if (result.code === "REG_DUPLICATE_EMAIL") {
             props.setToast({
               message: `The email ${email} is already registered.
@@ -248,9 +256,10 @@ const RegisterForm = withFormik({
   },
 })(form);
 
-const WrappedRegisterForm = withStyles(styles)(withRouter(RegisterForm));
+const WrappedRegisterForm = RegisterForm;
 
 export default function Register() {
   const { setToast } = useToasterContext();
-  return <WrappedRegisterForm setToast={setToast} />;
+  const navigate = useNavigate();
+  return <WrappedRegisterForm setToast={setToast} navigate={navigate} />;
 }

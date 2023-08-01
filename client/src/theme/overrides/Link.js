@@ -9,28 +9,27 @@
 export default function Link(theme) {
   return {
     MuiLink: {
+      defaultProps: {
+        variant: "primary"
+      },
       variants: [
-        {
-          props: { variant: "secondary" },
-          style: {
-            textDecoration: "none",
-            color: "#4D4D4D",
-            borderBottom: "1px solid #4D4D4D",
-          },
-        },
         {
           props: { variant: "icon" },
           style: {
             textDecoration: "none",
           },
         },
-      ],
-      styleOverrides: {
-        inherit: {
+        {
+          props: { variant: "primary" },
+          style: {
           textDecoration: "none",
           padding: "2px 1px 0",
           borderBottom: "1px solid",
+          color: theme.palette.link.normal,
           "&:link": {
+            color: theme.palette.link.normal,
+          },
+          "&:a": {
             color: theme.palette.link.normal,
           },
           "&:visited": {
@@ -42,8 +41,9 @@ export default function Link(theme) {
           "&:active": {
             color: theme.palette.primary.light,
           },
+          },
         },
-      },
+      ],
     },
   };
 }

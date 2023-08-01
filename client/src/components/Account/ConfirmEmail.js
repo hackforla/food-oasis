@@ -1,38 +1,14 @@
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { Avatar, Container, TextField, Typography } from "@mui/material";
-import withStyles from "@mui/styles/withStyles";
+import { Avatar, Container, TextField, Typography, Box } from "@mui/material";
 import { Formik } from "formik";
 import { useEffect, useState } from "react";
-import { Redirect, withRouter } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import * as Yup from "yup";
 import { useToasterContext } from "../../contexts/toasterContext";
 import * as accountService from "../../services/account-service";
-
-const styles = (theme) => ({
-  paper: {
-    marginTop: theme.spacing(1),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  body: {
-    display: "flex",
-    height: "97.8%",
-    flexDirection: "column",
-  },
-  container: {
-    flex: 1,
-  },
-});
+import Label from "components/Admin/ui/Label";
+import { palette } from "theme/palette";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -43,7 +19,7 @@ const validationSchema = Yup.object().shape({
 const ConfirmEmail = (props) => {
   const { classes } = props;
   const [confirmResult, setConfirmResult] = useState(false);
-  const token = props.match.params.token;
+  const { token } = useParams();
   const { setToast } = useToasterContext();
   const [view, setView] = useState("loading");
 
@@ -88,7 +64,7 @@ const ConfirmEmail = (props) => {
       case "loading":
         return <div>&ldquo;Confirming Email...&ldquo;</div>;
       case "success":
-        return <Redirect to={`/login/${confirmResult.email}`} />;
+        return <Navigate to={`/login/${confirmResult.email}`} />;
       case "emailSent":
         return (
           <p>
@@ -98,29 +74,40 @@ const ConfirmEmail = (props) => {
       default:
       case "error":
         return (
-          <div>
-            <p>
+          <Container
+            component="main"
+            maxWidth="xs"
+            sx={{
+              display: "flex",
+              height: "97.8%",
+              flexDirection: "column",
+            }}
+          >
+            <Typography component="p">
               The confirmation request was not found, or has expired. Please
               enter your email here and press the button to re-send the
               registration confirmation email.
-            </p>
+            </Typography>
 
             <form onSubmit={handleSubmit}>
-              <TextField
-                required
-                fullWidth
-                name="email"
-                label="Enter the email for your account"
-                type="email"
-                id="email"
-                autoFocus
-                value={values.email}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                helperText={touched.email ? errors.email : ""}
-                error={touched.email && Boolean(errors.email)}
-                sx={{ mt: 1, mb: 2 }}
-              />
+              <Box>
+                <Label id="email" label="Enter the email for your account" />
+                <TextField
+                  required
+                  fullWidth
+                  name="email"
+                  placeholder="Enter the email for your account"
+                  type="email"
+                  id="email"
+                  autoFocus
+                  value={values.email}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  helperText={touched.email ? errors.email : ""}
+                  error={touched.email && Boolean(errors.email)}
+                  sx={{ mt: 1, mb: 2 }}
+                />
+              </Box>
               <LoadingButton
                 variant="contained"
                 loading={isSubmitting}
@@ -132,34 +119,52 @@ const ConfirmEmail = (props) => {
                 Re-send confirmation email
               </LoadingButton>
             </form>
-          </div>
+          </Container>
         );
     }
   };
 
   return (
-    <div className={classes.body}>
-      <Container component="main" maxWidth="xs" className={classes.container}>
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <EmailOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Confirm Email
-          </Typography>
-          <Formik
-            initialValues={{
-              email: "",
-            }}
-            validationSchema={validationSchema}
-            onSubmit={resendConfirmationEmail}
-          >
-            {(props) => renderView(props)}
-          </Formik>
-        </div>
-      </Container>
-    </div>
+    <Container
+      component="main"
+      maxWidth="xs"
+      sx={{
+        display: "flex",
+        height: "97.8%",
+        flexDirection: "column",
+      }}
+    >
+      <Box
+        sx={{
+          marginTop: "8px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Avatar
+          sx={{
+            margin: "8px",
+            backgroundColor: palette.secondary.main,
+          }}
+        >
+          <EmailOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Confirm Email
+        </Typography>
+        <Formik
+          initialValues={{
+            email: "",
+          }}
+          validationSchema={validationSchema}
+          onSubmit={resendConfirmationEmail}
+        >
+          {(props) => renderView(props)}
+        </Formik>
+      </Box>
+    </Container>
   );
 };
 
-export default withStyles(styles)(withRouter(ConfirmEmail));
+export default ConfirmEmail;

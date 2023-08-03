@@ -9,6 +9,7 @@ import { useToasterContext } from "../../contexts/toasterContext";
 import * as accountService from "../../services/account-service";
 import Label from "components/Admin/ui/Label";
 import { palette } from "theme/palette";
+import { PageWrapper } from "./PageWrapper";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -74,15 +75,7 @@ const ConfirmEmail = (props) => {
       default:
       case "error":
         return (
-          <Container
-            component="main"
-            maxWidth="xs"
-            sx={{
-              display: "flex",
-              height: "97.8%",
-              flexDirection: "column",
-            }}
-          >
+          <PageWrapper>
             <Typography component="p">
               The confirmation request was not found, or has expired. Please
               enter your email here and press the button to re-send the
@@ -119,21 +112,13 @@ const ConfirmEmail = (props) => {
                 Re-send confirmation email
               </LoadingButton>
             </form>
-          </Container>
+          </PageWrapper>
         );
     }
   };
 
   return (
-    <Container
-      component="main"
-      maxWidth="xs"
-      sx={{
-        display: "flex",
-        height: "97.8%",
-        flexDirection: "column",
-      }}
-    >
+    <PageWrapper>
       <Box
         sx={{
           marginTop: "8px",
@@ -163,7 +148,7 @@ const ConfirmEmail = (props) => {
           {(props) => renderView(props)}
         </Formik>
       </Box>
-    </Container>
+      </PageWrapper>
   );
 };
 

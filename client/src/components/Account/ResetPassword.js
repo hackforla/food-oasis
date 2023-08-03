@@ -14,6 +14,7 @@ import {
 } from "helpers/Constants";
 import Label from "components/Admin/ui/Label";
 import { palette } from "theme/palette";
+import { PageWrapper } from "./PageWrapper";
 
 
 const validationSchema = Yup.object().shape({
@@ -33,13 +34,7 @@ const ResetPassword = (props) => {
   const { token } = useParams();
 
   return (
-    <Container component="main" maxWidth="xs"
-    sx={{
-      display: "flex",
-      height: "97.8%",
-      flexDirection: "column",
-    }}
-    >
+    <PageWrapper>
         <CssBaseline />
         <Box
         sx={{
@@ -180,7 +175,7 @@ const ResetPassword = (props) => {
             )}
           </Formik>
         </Box>
-      </Container>
+      </PageWrapper>
   );
 };
 

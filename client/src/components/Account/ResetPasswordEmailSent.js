@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@mui/material";
 import { Avatar, Box, Container, CssBaseline, Typography } from "@mui/material";
 import { palette } from "theme/palette";
+import { PageWrapper } from "./PageWrapper";
 
 const MailIcon = () => {
   return (
@@ -34,13 +35,7 @@ const ResetPasswordEmailSent = (props) => {
   const { email } = useParams();
 
   return (
-    <Container component="main" maxWidth="xs"
-    sx={{
-      display: "flex",
-      height: "97.8%",
-      flexDirection: "column",
-    }}
-    >
+    <PageWrapper>
         <CssBaseline />
         <Box
         sx={{
@@ -79,7 +74,7 @@ const ResetPasswordEmailSent = (props) => {
             </Button>
           </Box>
         </Box>
-      </Container>
+        </PageWrapper>
   );
 };
 

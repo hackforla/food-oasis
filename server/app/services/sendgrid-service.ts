@@ -121,36 +121,343 @@ const sendContactEmail = async ({
   phone,
 }: ContactFormData) => {
   const emailBody = `
-    <p style="font-weight: bold;">
-      Hello,
-    </p>
-    <p>
-    There is a new message from a Food Oasis user.
-    </p>
-    <table border="0" cellpadding="0" cellspacing="0" style="border-spacing:0;background-color: #336699;border:1px solid #353535; border-radius: 5px;margin-left: auto;margin-right: auto;">
-      <tr>
-        <tr>
-        ${name}
-        </tr>
-        <tr>
-        ${email}
-        </tr>
-        <tr>
-        ${phone}
-        </tr>
-        <tr>
-        ${title}
-        </tr>
-        <tr>
-        ${message}
-        </tr>
-      </tr>
-    </table>
+  <p
+  style="
+    font-family: sans-serif;
+    font-size: 14px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  "
+>
+  Hello,
+</p>
+<p
+  style="
+    font-family: sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    margin: 0;
+    margin-bottom: 15px;
+  "
+>
+  There is a new message from a Food Oasis user.
+</p>
+  <table
+  border="0"
+  cellpadding="0"
+  cellspacing="0"
+  style="
+    border-collapse: separate;
+    mso-table-lspace: 0pt;
+    mso-table-rspace: 0pt;
+    width: auto;
+  "
+>
+  <tbody>
+    <tr>
+      <td
+        style="
+          word-break: break-word;
+          vertical-align: top;
+        "
+        valign="top"
+      >
+        <div>
+          <div
+            style="
+              min-width: 320px;
+              max-width: 600px;
+              word-wrap: break-word;
+              word-break: break-word;
+              margin: 0 auto;
+              background-color: #ffffff;
+            "
+          >
+            <div
+              style="
+                border-collapse: collapse;
+                display: table;
+                width: 100%;
+                background-color: #ffffff;
+              "
+            >
+              <div
+                style="
+                  min-width: 320px;
+                  max-width: 600px;
+                  display: table-cell;
+                  vertical-align: top;
+                  width: 600px;
+                "
+              >
+                <div>
+                  <div
+                    style="
+                      border-top: 0px solid
+                        transparent;
+                      border-left: 0px solid
+                        transparent;
+                      border-bottom: 0px solid
+                        transparent;
+                      border-right: 0px solid
+                        transparent;
+                      padding-top: 5px;
+                      padding-bottom: 5px;
+                      padding-right: 0px;
+                      padding-left: 0px;
+                    "
+                  >
+                    <div
+                      style="
+                        color: #000000;
+                        font-family: Open Sans,
+                          Helvetica Neue,
+                          Helvetica, Arial,
+                          sans-serif;
+                        line-height: 1.5;
+                        padding-top: 10px;
+                        padding-bottom: 10px;
+                      "
+                    >
+                      <div
+                        style="
+                          line-height: 1.5;
+                          font-size: 12px;
+                          color: #000000;
+                          font-family: Open Sans,
+                            Helvetica Neue,
+                            Helvetica, Arial,
+                            sans-serif;
+                        "
+                      >
+                        <p
+                          style="
+                            margin: 0;
+                            font-size: 14px;
+                            line-height: 1.5;
+                            word-break: break-word;
+                            margin-top: 0;
+                            margin-bottom: 0;
+                          "
+                        >
+                          <span
+                            style="
+                              color: #999999;
+                            "
+                            >Name</span
+                          >
+                        </p>
+                        <span
+                          style="
+                            margin: 0;
+                            font-size: 16px;
+                            line-height: 1.5;
+                            word-break: break-word;
+                            margin-top: 0;
+                            margin-bottom: 0;
+                            font-size: 16px;
+                          "
+                        >
+                          ${name}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div
+                      style="
+                        color: #000000;
+                        font-family: Open Sans,
+                          Helvetica Neue,
+                          Helvetica, Arial,
+                          sans-serif;
+                        line-height: 1.5;
+                        padding-top: 10px;
+                        padding-bottom: 10px;
+                      "
+                    >
+                      <div
+                        style="
+                          line-height: 1.5;
+                          font-size: 12px;
+                          color: #000000;
+                          font-family: Open Sans,
+                            Helvetica Neue,
+                            Helvetica, Arial,
+                            sans-serif;
+                        "
+                      >
+                        <p
+                          style="
+                            margin: 0;
+                            font-size: 14px;
+                            line-height: 1.5;
+                            word-break: break-word;
+                            margin-top: 0;
+                            margin-bottom: 0;
+                          "
+                        >
+                          <span
+                            style="
+                              color: #999999;
+                            "
+                            >Email</span
+                          >
+                        </p>
+                        <span
+                          style="
+                            margin: 0;
+                            font-size: 16px;
+                            line-height: 1.5;
+                            word-break: break-word;
+                            margin-top: 0;
+                            margin-bottom: 0;
+                            font-size: 16px;
+                          "
+                        >
+                          <a
+                            href="mailto:${email}"
+                            target="_blank"
+                            >${email}</a
+                          >
+                        </span>
+                      </div>
+                    </div>
+
+                    <div
+                      style="
+                        color: #000000;
+                        font-family: Open Sans,
+                          Helvetica Neue,
+                          Helvetica, Arial,
+                          sans-serif;
+                        line-height: 1.5;
+                        padding-top: 10px;
+                        padding-bottom: 10px;
+                      "
+                    >
+                      <div
+                        style="
+                          line-height: 1.5;
+                          font-size: 12px;
+                          color: #000000;
+                          font-family: Open Sans,
+                            Helvetica Neue,
+                            Helvetica, Arial,
+                            sans-serif;
+                        "
+                      >
+                        <p
+                          style="
+                            margin: 0;
+                            font-size: 14px;
+                            line-height: 1.5;
+                            word-break: break-word;
+                            margin-top: 0;
+                            margin-bottom: 0;
+                          "
+                        >
+                          <span
+                            style="
+                              color: #999999;
+                            "
+                            >Phone Number</span
+                          >
+                        </p>
+                        <span
+                          style="
+                            margin: 0;
+                            font-size: 16px;
+                            line-height: 1.5;
+                            word-break: break-word;
+                            margin-top: 0;
+                            margin-bottom: 0;
+                            font-size: 16px;
+                          "
+                        >
+                          ${
+                            phone
+                              ? phone
+                              : `Not
+                          Provided`
+                          }
+                        </span>
+                      </div>
+                    </div>
+
+                    <div
+                      style="
+                        color: #000000;
+                        font-family: Open Sans,
+                          Helvetica Neue,
+                          Helvetica, Arial,
+                          sans-serif;
+                        line-height: 1.5;
+                        padding-top: 10px;
+                        padding-bottom: 10px;
+                      "
+                    >
+                      <div
+                        style="
+                          line-height: 1.5;
+                          font-size: 12px;
+                          color: #000000;
+                          font-family: Open Sans,
+                            Helvetica Neue,
+                            Helvetica, Arial,
+                            sans-serif;
+                        "
+                      >
+                        <p
+                          style="
+                            margin: 0;
+                            font-size: 14px;
+                            line-height: 1.5;
+                            word-break: break-word;
+                            margin-top: 0;
+                            margin-bottom: 0;
+                          "
+                        >
+                          <span
+                            style="
+                              color: #999999;
+                            "
+                            >Message</span
+                          >
+                        </p>
+                        <span
+                          style="
+                            margin: 0;
+                            font-size: 16px;
+                            line-height: 1.5;
+                            word-break: break-word;
+                            margin-top: 0;
+                            margin-bottom: 0;
+                            font-size: 16px;
+                          "
+                        >
+                          ${message}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
   `;
   const msg = {
     to: `developerkrista@gmail.com`,
     from: emailUser,
-    subject: `New message from contact form`,
+    subject: title,
     text: `Contact form message`,
     html: `${applyEmailTemplate(emailBody, clientUrl)}`,
   };

@@ -9,8 +9,8 @@ const Textarea = ({
   onBlur,
   helperText,
   error,
-  rows,
-  props
+  rows = null,
+  props,
 }) => {
   return (
     <TextField
@@ -29,8 +29,7 @@ const Textarea = ({
           padding: "0",
         },
       }}
-      rows={rows || "auto"}
-      minRows={2}
+      minRows={rows || 2}
       maxRows={12}
       value={value}
       onChange={onChange}

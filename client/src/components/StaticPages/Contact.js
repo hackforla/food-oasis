@@ -6,6 +6,7 @@ import {
   CardMedia,
   List,
   ListItem,
+  Modal,
   Button,
   TextField,
   Stack,
@@ -54,29 +55,14 @@ function createListItems() {
   ));
 }
 
-const redAsterisk = {
-  endAdornment: (
-    <Typography
-      component="span"
-      variant="h2"
-      color="error"
-      sx={{
-        marginTop: "5px",
-      }}
-    >
-      *
-    </Typography>
-  ),
-};
-
 const Contact = () => {
   useEffect(() => {
     analytics.postEvent("visitContactPage");
   }, []);
 
-  const handleCancel = (e) => {
-    console.log("whatever");
-  };
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   return (
     <Container
@@ -215,11 +201,10 @@ const Contact = () => {
             handleChange,
             handleBlur,
             handleSubmit,
+            handleReset,
             isSubmitting,
-            isValid,
-            dirty,
           }) => (
-            <Form>
+            <form onSubmit={handleSubmit}>
               <Box
                 sx={{
                   height: "560px",
@@ -235,8 +220,7 @@ const Contact = () => {
                   error={touched.name && Boolean(errors.name)}
                   type="input"
                   name="name"
-                  placeholder="Your Name"
-                  InputProps={touched.name && redAsterisk}
+                  placeholder="Your Name *"
                   value={values.name}
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -247,9 +231,8 @@ const Contact = () => {
                     error={touched.email && Boolean(errors.email)}
                     type="email"
                     name="email"
-                    placeholder="Email"
+                    placeholder="Email *"
                     sx={{ width: "604px" }}
-                    InputProps={touched.email && redAsterisk}
                     value={values.email}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -269,8 +252,7 @@ const Contact = () => {
                   error={touched.title && Boolean(errors.title)}
                   type="input"
                   name="title"
-                  placeholder="Title"
-                  InputProps={touched.title && redAsterisk}
+                  placeholder="Title *"
                   value={values.title}
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -279,24 +261,60 @@ const Contact = () => {
                   helperText={touched.message ? errors.message : ""}
                   error={touched.message && Boolean(errors.message)}
                   name="message"
-                  placeholder="Message"
+                  placeholder="Message *"
                   rows={10}
                   placeholderStyle={{ fontStyle: "normal" }}
-                  InputProps={touched.message && redAsterisk}
                   value={values.message}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                />
+                ></Textarea>
               </Box>
               <Stack direction="row" spacing={4} justifyContent="center">
-                <Button variant="outlined" onClick={(e) => handleCancel(e)}>
-                  Cancel
+                <Button variant="outlined" onClick={handleReset}>
+                  Clear
                 </Button>
-                <Button type="submit" disabled={isSubmitting}>
+                {/* <Button type="submit" disabled={isSubmitting}>
                   Submit
-                </Button>
+                </Button> */}
+                <Button onClick={handleOpen}>Submit</Button>
+                <Modal
+                  open={open}
+                  onClose={handleClose}
+                  aria-labelledby="parent-modal-title"
+                  aria-describedby="parent-modal-description"
+                >
+                  <Box
+                    sx={{
+                      height: "454px",
+                      width: "799px",
+                      backgroundColor: "white",
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                      borderRadius: "24px",
+                      padding: "24px",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center"
+                    }}
+                  >
+                    <Typography
+                      id="modal-modal-title"
+                      variant="h6"
+                      component="h2"
+                    >
+                      Text in a modal
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                      Duis mollis, est non commodo luctus, nisi erat porttitor
+                      ligula.
+                    </Typography>
+                  </Box>
+                </Modal>
               </Stack>
-            </Form>
+            </form>
           )}
         </Formik>
       </Box>

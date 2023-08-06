@@ -63,7 +63,9 @@ const Contact = () => {
   }, []);
 
   const [open, setOpen] = useState(false);
-  const [submitted, setSubmitted] = useState(true);
+  const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] =
+    "There was an error with your submission. Please try again.";
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -196,7 +198,13 @@ const Contact = () => {
           }}
           validationSchema={validationSchema}
           onSubmit={(values) => {
-            sendContactForm(values);
+            sendContactForm(values).then((res) => {
+              if (res.ok) setSubmitted(true);
+              else
+                setSubmitError(
+                  "There was an error with your submission. Please try again."
+                );
+            });
           }}
         >
           {({
@@ -206,7 +214,8 @@ const Contact = () => {
             handleChange,
             handleBlur,
             handleSubmit,
-            handleReset,
+            isValid,
+            dirty,
             isSubmitting,
           }) => (
             <form onSubmit={handleSubmit}>
@@ -275,7 +284,7 @@ const Contact = () => {
                 ></Textarea>
               </Box>
               <Stack direction="row" spacing={4} justifyContent="center">
-                <Button onClick={handleOpen} disabled={isSubmitting}>
+                <Button onClick={handleOpen} disabled={!dirty || !isValid}>
                   Submit
                 </Button>
                 <Modal
@@ -370,12 +379,21 @@ const Contact = () => {
                             <Button variant="outlined" onClick={handleClose}>
                               Cancel
                             </Button>
-                            <Button type="submit" disabled={isSubmitting}>
+                            <Button
+                              type="submit"
+                              onClick={handleSubmit}
+                              disabled={isSubmitting}
+                            >
                               Submit
                             </Button>
                           </>
                         )}
                       </Stack>
+                      {submitError && (
+                        <Typography variant="subtitle2" color="error">
+                          {submitError}
+                        </Typography>
+                      )}
                     </Stack>
                   </Box>
                 </Modal>

@@ -10,17 +10,19 @@ import {
   Button,
   TextField,
   Stack,
+  IconButton,
 } from "@mui/material";
 import * as analytics from "../../services/analytics";
 import Container from "@mui/material/Container";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import Footer from "../Layout/Footer";
 import typing from "./assets/3social-equity.png";
 
-import { Formik, Form } from "formik";
+import { Formik } from "formik";
 import * as Yup from "yup";
 import Textarea from "components/Admin/ui/Textarea";
 import { sendContactForm } from "services/contact-service";
+import { Check, Close, Mail } from "@mui/icons-material";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -61,8 +63,11 @@ const Contact = () => {
   }, []);
 
   const [open, setOpen] = useState(false);
+  const [submitted, setSubmitted] = useState(true);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const navigate = useNavigate();
 
   return (
     <Container
@@ -270,13 +275,9 @@ const Contact = () => {
                 ></Textarea>
               </Box>
               <Stack direction="row" spacing={4} justifyContent="center">
-                <Button variant="outlined" onClick={handleReset}>
-                  Clear
-                </Button>
-                {/* <Button type="submit" disabled={isSubmitting}>
+                <Button onClick={handleOpen} disabled={isSubmitting}>
                   Submit
-                </Button> */}
-                <Button onClick={handleOpen}>Submit</Button>
+                </Button>
                 <Modal
                   open={open}
                   onClose={handleClose}
@@ -297,20 +298,85 @@ const Contact = () => {
                       display: "flex",
                       flexDirection: "column",
                       justifyContent: "center",
-                      alignItems: "center"
+                      alignItems: "center",
                     }}
                   >
-                    <Typography
-                      id="modal-modal-title"
-                      variant="h6"
-                      component="h2"
+                    <IconButton
+                      edge="end"
+                      sx={{
+                        position: "fixed",
+                        top: "8px",
+                        right: "25px",
+                        border: "1px solid #19334D",
+                        borderRadius: "2px",
+                        padding: "2px",
+                        height: "28px",
+                        width: "28px",
+                        color: "#19334D",
+                      }}
+                      onClick={handleClose}
                     >
-                      Text in a modal
-                    </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                      Duis mollis, est non commodo luctus, nisi erat porttitor
-                      ligula.
-                    </Typography>
+                      <Close />
+                    </IconButton>
+                    <Stack
+                      direction="column"
+                      justifyContent="center"
+                      alignItems="center"
+                      spacing={5}
+                    >
+                      <div
+                        style={{
+                          borderRadius: "100%",
+                          height: "40px",
+                          width: "40px",
+                          backgroundColor: "#00C851",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        {submitted ? (
+                          <Check sx={{ color: "white" }} />
+                        ) : (
+                          <Mail sx={{ color: "white" }} />
+                        )}
+                      </div>
+                      <div style={{ textAlign: "center" }}>
+                        <Typography
+                          id="modal-modal-title"
+                          variant="h6"
+                          component="h2"
+                          textTransform="uppercase"
+                        >
+                          {submitted ? "Thank you" : "Submit your message?"}
+                        </Typography>
+                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                          {submitted
+                            ? "Your message has been received!"
+                            : "Are you sure you want to submit this message?"}
+                        </Typography>
+                      </div>
+                      <Stack
+                        direction="row"
+                        spacing={4}
+                        justifyContent="center"
+                      >
+                        {submitted ? (
+                          <Button onClick={() => navigate("/")}>
+                            Back to home page
+                          </Button>
+                        ) : (
+                          <>
+                            <Button variant="outlined" onClick={handleClose}>
+                              Cancel
+                            </Button>
+                            <Button type="submit" disabled={isSubmitting}>
+                              Submit
+                            </Button>
+                          </>
+                        )}
+                      </Stack>
+                    </Stack>
                   </Box>
                 </Modal>
               </Stack>

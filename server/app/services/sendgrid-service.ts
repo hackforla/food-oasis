@@ -451,7 +451,7 @@ const sendContactEmail = async ({
 </table>
   `;
   const msg = {
-    to: `foodoasisinfo@hackforla.org`,
+    to: `developerkrista@gmail.com`,
     from: emailUser,
     subject: title,
     text: `Contact form message`,

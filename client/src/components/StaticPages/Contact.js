@@ -22,7 +22,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import Textarea from "components/Admin/ui/Textarea";
 import { sendContactForm } from "services/contact-service";
-import { Check, Close, Mail } from "@mui/icons-material";
+import { Check, Close } from "@mui/icons-material";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -64,8 +64,7 @@ const Contact = () => {
 
   const [open, setOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [submitError, setSubmitError] =
-    "There was an error with your submission. Please try again.";
+  const [submitError, setSubmitError] = useState("");
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -198,13 +197,17 @@ const Contact = () => {
           }}
           validationSchema={validationSchema}
           onSubmit={(values) => {
-            sendContactForm(values).then((res) => {
-              if (res.ok) setSubmitted(true);
-              else
+            sendContactForm(values)
+              .then(() => {
+                setSubmitted(true);
+                setSubmitError("");
+                handleOpen();
+              })
+              .catch(() => {
                 setSubmitError(
                   "There was an error with your submission. Please try again."
                 );
-            });
+              });
           }}
         >
           {({
@@ -214,6 +217,7 @@ const Contact = () => {
             handleChange,
             handleBlur,
             handleSubmit,
+            handleReset,
             isValid,
             dirty,
             isSubmitting,
@@ -283,10 +287,23 @@ const Contact = () => {
                   onBlur={handleBlur}
                 ></Textarea>
               </Box>
-              <Stack direction="row" spacing={4} justifyContent="center">
-                <Button onClick={handleOpen} disabled={!dirty || !isValid}>
+              <Stack
+                direction="column"
+                spacing={2}
+                justifyContent="center"
+                alignItems="center"
+              >
+                <Button
+                  type="submit"
+                  disabled={!dirty || !isValid || isSubmitting}
+                >
                   Submit
                 </Button>
+                {submitError && (
+                  <Typography variant="subtitle2" color="error">
+                    {submitError}
+                  </Typography>
+                )}
                 <Modal
                   open={open}
                   onClose={handleClose}
@@ -344,11 +361,7 @@ const Contact = () => {
                           alignItems: "center",
                         }}
                       >
-                        {submitted ? (
-                          <Check sx={{ color: "white" }} />
-                        ) : (
-                          <Mail sx={{ color: "white" }} />
-                        )}
+                        <Check sx={{ color: "white" }} />
                       </div>
                       <div style={{ textAlign: "center" }}>
                         <Typography
@@ -357,12 +370,10 @@ const Contact = () => {
                           component="h2"
                           textTransform="uppercase"
                         >
-                          {submitted ? "Thank you" : "Submit your message?"}
+                          Thank you
                         </Typography>
                         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                          {submitted
-                            ? "Your message has been received!"
-                            : "Are you sure you want to submit this message?"}
+                          Your message has been received!
                         </Typography>
                       </div>
                       <Stack
@@ -370,30 +381,10 @@ const Contact = () => {
                         spacing={4}
                         justifyContent="center"
                       >
-                        {submitted ? (
-                          <Button onClick={() => navigate("/")}>
-                            Back to home page
-                          </Button>
-                        ) : (
-                          <>
-                            <Button variant="outlined" onClick={handleClose}>
-                              Cancel
-                            </Button>
-                            <Button
-                              type="submit"
-                              onClick={handleSubmit}
-                              disabled={isSubmitting}
-                            >
-                              Submit
-                            </Button>
-                          </>
-                        )}
+                        <Button onClick={() => navigate("/")}>
+                          Back to home page
+                        </Button>
                       </Stack>
-                      {submitError && (
-                        <Typography variant="subtitle2" color="error">
-                          {submitError}
-                        </Typography>
-                      )}
                     </Stack>
                   </Box>
                 </Modal>

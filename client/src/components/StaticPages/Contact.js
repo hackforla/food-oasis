@@ -78,13 +78,12 @@ const Contact = () => {
           textTransform: "uppercase",
           textAlign: "center",
           margin: 0,
-          padding: isMobile ? "20px 0 0 0" : "32px 0",
+          padding: isMobile && "20px 0 0 0",
         }}
       >
         Contact Us
       </Typography>
       <Box
-        className="bottom-box"
         sx={{
           margin: isMobile ? "15px 0 32px 0" : "32px 0",
           display: "flex",
@@ -92,26 +91,18 @@ const Contact = () => {
           width: "100%",
         }}
       >
-        <Box
-          className="words"
+        <Typography
+          variant="subtitle1"
           sx={{
-            margin: "5px",
-            lineHeight: "26.55px",
+            color: "black",
+            textTransform: "uppercase",
+            maxWidth: "392px",
+            fontWeight: "500",
+            padding: isMobile ? "12px 0" : "25px 0",
           }}
-          component="ul"
         >
-          <Typography
-            variant="subtitle1"
-            sx={{
-              color: "black",
-              textTransform: "uppercase",
-              maxWidth: "392px",
-              fontWeight: "500",
-            }}
-          >
-            How can we help?
-          </Typography>
-        </Box>
+          How can we help?
+        </Typography>
         <Formik
           initialValues={{
             name: "",
@@ -148,7 +139,7 @@ const Contact = () => {
             <form onSubmit={handleSubmit}>
               <Box
                 sx={{
-                  height: isMobile ? "520px" : "560px",
+                  height: isMobile ? "480px" : "560px",
                   "& > div": {
                     height: "61px",
                     marginTop: isMobile ? "3px" : "12px",
@@ -217,18 +208,25 @@ const Contact = () => {
                 direction="column"
                 justifyContent="center"
                 alignItems="center"
+                gap={isMobile ? 1 : 2}
               >
+                {submitError && (
+                  <Typography
+                    variant="subtitle2"
+                    color="error"
+                    sx={{
+                      marginTop: "-20px",
+                    }}
+                  >
+                    {submitError}
+                  </Typography>
+                )}
                 <Button
                   type="submit"
                   disabled={!dirty || !isValid || isSubmitting}
                 >
                   Submit
                 </Button>
-                {submitError && (
-                  <Typography variant="subtitle2" color="error">
-                    {submitError}
-                  </Typography>
-                )}
                 <Modal
                   open={open}
                   onClose={handleClose}

@@ -29,11 +29,11 @@ const sendContactForm: RequestHandler<
   ContactFormData, // request
   never // query param
 > = (req, res) => {
-  return res.status(404).json({ error: "Errors noooo" });
-  // emailService
-  //   .sendContactEmail(req.body)
-  //   .then((resp) => res.send(resp))
-  //   .catch((err: any) => res.status(404).json({ error: err.toString() }));
+  // return res.status(404).json({ error: "Errors noooo" });
+  emailService
+    .sendContactEmail(req.body)
+    .then((resp) => res.send(resp))
+    .catch((err: any) => res.status(404).json({ error: err.toString() }));
 };
 
 export { send, sendContactForm };

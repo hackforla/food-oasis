@@ -4,6 +4,7 @@ import { ContactFormData, Email } from "../../types/email-type";
 
 const emailUser: string = process.env.EMAIL_USER || "";
 const sendgridKey: string = process.env.SENDGRID_API_KEY || "";
+const staffEmail: string = process.env.CONTACT_US_DEV || "";
 sgMail.setApiKey(sendgridKey);
 
 const send = async (email: Email) => {
@@ -317,7 +318,7 @@ const sendContactEmail = async ({
                           <a
                             href="mailto:${email}"
                             target="_blank"
-                            >${email}</a
+                            >${email ? email : `Not Provided`}</a
                           >
                         </span>
                       </div>
@@ -451,17 +452,168 @@ const sendContactEmail = async ({
 </table>
   `;
   const msg = {
-    to: `developerkrista@gmail.com`,
+    to: staffEmail,
     from: emailUser,
-    subject: title,
+    subject: title ? title : `New Contact Form Message`,
     text: `Contact form message`,
     html: `${applyEmailTemplate(emailBody, clientUrl)}`,
   };
 
   return sgMail.send(msg, false, (err) => {
+    console.log("Staff Email: ", staffEmail);
     if (err) {
       console.log("ERRROR********:", err);
-      return Promise.reject("Sending contact form email failed.");
+      Promise.reject("Sending contact form email failed.");
+    }
+    Promise.resolve(true).then(() => {
+      if (email) {
+        sendContactConfirmation({
+          name,
+          email,
+          title,
+          message,
+          clientUrl,
+          phone,
+        });
+      }
+    });
+  });
+};
+
+// confirm that an email was sent via the contact us form
+const sendContactConfirmation = async ({
+  name,
+  email,
+  title,
+  message,
+  clientUrl,
+  phone,
+}: ContactFormData) => {
+  const now = new Date();
+  const dateString: string = now.toLocaleString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "America/Los_Angeles",
+  });
+
+  const hours = now.toLocaleString("en-US", {
+    hour: "numeric",
+    hour12: false,
+    timeZone: "America/Los_Angeles",
+  });
+  const minutes = now.getMinutes();
+  const seconds = now.getSeconds();
+  const time = `${hours}:${minutes}:${seconds}`;
+
+  const emailBody = `
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <title>We received your message!</title>
+      <style>
+        .font {
+          font-family: "Helvetica Neue", Helvetica, sans-serif;
+          font-size: 16px;
+          color: black;
+        };
+      </style>
+    </head>
+    <body>
+      <table
+        align="center"
+        border="0"
+        cellpadding="0"
+        cellspacing="0"
+        width="100%"
+      >
+        <tr style="background-color: #ccffcc;">
+          <td align="center" style="padding: 20px 0;">
+            <img
+              src="${clientUrl}/FoodOasisLogo.png""
+              alt="Banner Image"
+              width="300"
+              height="140"
+              style="display: block"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td
+            align="left"
+            bgcolor="#ffffff"
+            class="font"
+            style="padding: 30px 0 0 10%;"
+          >
+            <p>
+              Hello ${name},
+            </p>
+            <p>
+              Thank you for contacting Food Oasis.
+            </p>
+            <p>
+              Our volunteers will respond to your message within 7 days.
+            </p>
+            <p>
+              Here's the copy of your message:
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td
+            align="left"
+            bgcolor="#ffffff"
+            class="font"
+            style="padding-left: 10%;"
+          >
+            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+              <tr>
+                <td width="25%" style="padding: 10px 10px 10px 0">Date: ${dateString}</td>
+              </tr>
+              <tr>
+                <td width="25%" style="padding: 10px 10px 10px 0">Time: ${time}</td>
+              </tr>
+              <tr>
+                <td width="25%" style="padding: 10px 10px 10px 0">Subject: ${
+                  title || `Not Provided`
+                }</td>
+              </tr>
+              <tr>
+                <td width="25%" style="padding: 10px 10px 10px 0">Inquiries:
+                  <p style="padding-left: 20px;">${message}</p>
+                </td>
+              </tr>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </body>
+    <footer style="position: fixed; bottom: 0; left:25%;padding: 28px">
+      <p class="font" style="font-style: italic">
+        ** Please note: Do not reply to this email. This email is sent from an
+        unattended mailbox. Replies will not be read.
+      </p>
+    </footer>
+  </html>
+
+  `;
+  const msg = {
+    to: `${email}`,
+    from: emailUser,
+    subject: `We received your message`,
+    text: `Confirmation that we received your message from our contact form`,
+    html: emailBody,
+  };
+
+  return sgMail.send(msg, false, (err) => {
+    if (err) {
+      return Promise.reject(
+        "Sending contact form message received confirmation email failed."
+      );
     }
     return Promise.resolve(true);
   });

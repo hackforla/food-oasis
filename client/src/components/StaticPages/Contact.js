@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import * as analytics from "../../services/analytics";
 import Container from "@mui/material/Container";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Footer from "../Layout/Footer";
 
 import { Formik } from "formik";
@@ -18,7 +18,6 @@ import Textarea from "components/Admin/ui/Textarea";
 import { sendContactForm } from "services/contact-service";
 import { Check } from "@mui/icons-material";
 import useBreakpoints from "hooks/useBreakpoints";
-import Header from "components/Layout/Header";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Please enter your name"),
@@ -103,7 +102,7 @@ const Contact = () => {
 
   return (
     <>
-      {submitted ? (
+      {isMobile && submitted ? (
         <Box
           sx={{
             height: "100%",
@@ -131,14 +130,14 @@ const Contact = () => {
               textTransform: "uppercase",
               textAlign: "center",
               margin: 0,
-              padding: isMobile && "20px 0 0 0",
+              padding: { xs: "20px 0 0 0" },
             }}
           >
             Contact Us
           </Typography>
           <Box
             sx={{
-              margin: isMobile ? "15px 0 32px 0" : "32px 0",
+              margin: { xs: "15px 0 32px 0", md: "32px 0" },
               display: "flex",
               flexDirection: "column",
               width: "100%",
@@ -151,7 +150,7 @@ const Contact = () => {
                 textTransform: "uppercase",
                 maxWidth: "392px",
                 fontWeight: "500",
-                padding: isMobile ? "12px 0" : "25px 0",
+                padding: { xs: "12px 0", md: "25px 0" },
               }}
             >
               How can we help?
@@ -192,11 +191,11 @@ const Contact = () => {
                 <form onSubmit={handleSubmit}>
                   <Box
                     sx={{
-                      height: isMobile ? "480px" : "560px",
+                      height: { xs: "480px", md: "560px" },
                       "& > div": {
                         height: "61px",
-                        marginTop: isMobile ? "3px" : "12px",
-                        marginBottom: isMobile ? "3px" : "12px",
+                        marginTop: { xs: "3px", md: "12px" },
+                        marginBottom: { xs: "3px", md: "12px" },
                       },
                     }}
                   >
@@ -293,7 +292,7 @@ const Contact = () => {
                           left: "50%",
                           transform: "translate(-50%, -50%)",
                           borderRadius: "24px",
-                          padding: isMobile ? "0" : "24px",
+                          padding: "24px",
                           display: "flex",
                           flexDirection: "column",
                           justifyContent: "center",

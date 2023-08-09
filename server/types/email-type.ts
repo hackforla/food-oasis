@@ -7,9 +7,9 @@ export interface Email {
 }
 export interface ContactFormData {
   name: string;
-  email: string;
-  title: string;
   message: string;
   clientUrl: string;
+  email?: string;
+  title?: string;
   phone?: string;
 }

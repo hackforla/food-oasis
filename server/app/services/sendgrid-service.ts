@@ -4,7 +4,7 @@ import { ContactFormData, Email } from "../../types/email-type";
 
 const emailUser: string = process.env.EMAIL_USER || "";
 const sendgridKey: string = process.env.SENDGRID_API_KEY || "";
-const staffEmail: string = process.env.CONTACT_US_DEV || "";
+const staffEmail: string = process.env.CONTACT_US_EMAIL || "";
 sgMail.setApiKey(sendgridKey);
 
 const send = async (email: Email) => {
@@ -498,14 +498,7 @@ const sendContactConfirmation = async ({
     timeZone: "America/Los_Angeles",
   });
 
-  const hours = now.toLocaleString("en-US", {
-    hour: "numeric",
-    hour12: false,
-    timeZone: "America/Los_Angeles",
-  });
-  const minutes = now.getMinutes();
-  const seconds = now.getSeconds();
-  const time = `${hours}:${minutes}:${seconds}`;
+  const time = now.toLocaleTimeString();
 
   const emailBody = `
   <!DOCTYPE html>
@@ -533,7 +526,7 @@ const sendContactConfirmation = async ({
         <tr style="background-color: #ccffcc;">
           <td align="center" style="padding: 20px 0;">
             <img
-              src="${clientUrl}/FoodOasisLogo.png""
+              src="https://foodoasis.la/static/media/foodoasis.369891dbe6610acb8c9c55a18e34a8e2.svg"
               alt="Banner Image"
               width="300"
               height="140"
@@ -571,18 +564,18 @@ const sendContactConfirmation = async ({
           >
             <table border="0" cellpadding="0" cellspacing="0" width="100%">
               <tr>
-                <td width="25%" style="padding: 10px 10px 10px 0">Date: ${dateString}</td>
+                <td width="25%" style="padding: 10px 10px 10px 0"><strong>Date:</strong> ${dateString}</td>
               </tr>
               <tr>
-                <td width="25%" style="padding: 10px 10px 10px 0">Time: ${time}</td>
+                <td width="25%" style="padding: 10px 10px 10px 0"><strong>Time:</strong>${time} PST</td>
               </tr>
               <tr>
-                <td width="25%" style="padding: 10px 10px 10px 0">Subject: ${
+                <td width="25%" style="padding: 10px 10px 10px 0"><strong>Subject:</strong> ${
                   title || `Not Provided`
                 }</td>
               </tr>
               <tr>
-                <td width="25%" style="padding: 10px 10px 10px 0">Inquiries:
+                <td width="25%" style="padding: 10px 10px 10px 0"><strong>Inquiries:</strong>
                   <p style="padding-left: 20px;">${message}</p>
                 </td>
               </tr>
@@ -590,14 +583,16 @@ const sendContactConfirmation = async ({
             </table>
           </td>
         </tr>
+        <tr>
+          <td style="position: fixed; bottom: 0; left:25%;padding: 28px">
+            <p class="font" style="font-style: italic">
+              ** Please note: Do not reply to this email. This email is sent from an
+              unattended mailbox. Replies will not be read.
+            </p>
+          </td>
+        </tr>
       </table>
     </body>
-    <footer style="position: fixed; bottom: 0; left:25%;padding: 28px">
-      <p class="font" style="font-style: italic">
-        ** Please note: Do not reply to this email. This email is sent from an
-        unattended mailbox. Replies will not be read.
-      </p>
-    </footer>
   </html>
 
   `;

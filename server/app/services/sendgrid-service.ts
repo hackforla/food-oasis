@@ -460,9 +460,7 @@ const sendContactEmail = async ({
   };
 
   return sgMail.send(msg, false, (err) => {
-    console.log("Staff Email: ", staffEmail);
     if (err) {
-      console.log("ERRROR********:", err);
       Promise.reject("Sending contact form email failed.");
     }
     Promise.resolve(true).then(() => {
@@ -526,7 +524,7 @@ const sendContactConfirmation = async ({
         <tr style="background-color: #ccffcc;">
           <td align="center" style="padding: 20px 0;">
             <img
-              src="https://foodoasis.la/static/media/foodoasis.369891dbe6610acb8c9c55a18e34a8e2.svg"
+              src="${clientUrl}/FoodOasisLogo.png"
               alt="Banner Image"
               width="300"
               height="140"

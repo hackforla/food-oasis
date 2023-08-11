@@ -30,7 +30,7 @@ const Textarea = ({
         },
       }}
       minRows={rows || 2}
-      maxRows={12}
+      maxRows={rows || 12}
       value={value}
       onChange={onChange}
       onBlur={onBlur}

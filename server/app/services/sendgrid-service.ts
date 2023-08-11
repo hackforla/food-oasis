@@ -565,7 +565,7 @@ const sendContactConfirmation = async ({
                 <td width="25%" style="padding: 10px 10px 10px 0"><strong>Date:</strong> ${dateString}</td>
               </tr>
               <tr>
-                <td width="25%" style="padding: 10px 10px 10px 0"><strong>Time:</strong>${time} PST</td>
+                <td width="25%" style="padding: 10px 10px 10px 0"><strong>Time:</strong> ${time} PST</td>
               </tr>
               <tr>
                 <td width="25%" style="padding: 10px 10px 10px 0"><strong>Subject:</strong> ${

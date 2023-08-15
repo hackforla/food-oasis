@@ -1,7 +1,6 @@
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { Avatar, Container, TextField, Typography } from "@mui/material";
-import withStyles from "@mui/styles/withStyles";
+import { Avatar, Container, TextField, Typography, Box } from "@mui/material";
 import { Formik } from "formik";
 import { useEffect, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
@@ -9,31 +8,8 @@ import * as Yup from "yup";
 import { useToasterContext } from "../../contexts/toasterContext";
 import * as accountService from "../../services/account-service";
 import Label from "components/Admin/ui/Label";
-
-const styles = (theme) => ({
-  paper: {
-    marginTop: theme.spacing(1),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  body: {
-    display: "flex",
-    height: "97.8%",
-    flexDirection: "column",
-  },
-  container: {
-    flex: 1,
-  },
-});
+import { palette } from "theme/palette";
+import { PageWrapper } from "./PageWrapper";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -44,7 +20,7 @@ const validationSchema = Yup.object().shape({
 const ConfirmEmail = (props) => {
   const { classes } = props;
   const [confirmResult, setConfirmResult] = useState(false);
-  const token = useParams();
+  const { token } = useParams();
   const { setToast } = useToasterContext();
   const [view, setView] = useState("loading");
 
@@ -99,15 +75,15 @@ const ConfirmEmail = (props) => {
       default:
       case "error":
         return (
-          <div>
-            <p>
+          <PageWrapper>
+            <Typography component="p">
               The confirmation request was not found, or has expired. Please
               enter your email here and press the button to re-send the
               registration confirmation email.
-            </p>
+            </Typography>
 
             <form onSubmit={handleSubmit}>
-              <div>
+              <Box>
                 <Label id="email" label="Enter the email for your account" />
                 <TextField
                   required
@@ -124,7 +100,7 @@ const ConfirmEmail = (props) => {
                   error={touched.email && Boolean(errors.email)}
                   sx={{ mt: 1, mb: 2 }}
                 />
-              </div>
+              </Box>
               <LoadingButton
                 variant="contained"
                 loading={isSubmitting}
@@ -136,34 +112,44 @@ const ConfirmEmail = (props) => {
                 Re-send confirmation email
               </LoadingButton>
             </form>
-          </div>
+          </PageWrapper>
         );
     }
   };
 
   return (
-    <div className={classes.body}>
-      <Container component="main" maxWidth="xs" className={classes.container}>
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <EmailOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Confirm Email
-          </Typography>
-          <Formik
-            initialValues={{
-              email: "",
-            }}
-            validationSchema={validationSchema}
-            onSubmit={resendConfirmationEmail}
-          >
-            {(props) => renderView(props)}
-          </Formik>
-        </div>
-      </Container>
-    </div>
+    <PageWrapper>
+      <Box
+        sx={{
+          marginTop: "8px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Avatar
+          sx={{
+            margin: "8px",
+            backgroundColor: palette.secondary.main,
+          }}
+        >
+          <EmailOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Confirm Email
+        </Typography>
+        <Formik
+          initialValues={{
+            email: "",
+          }}
+          validationSchema={validationSchema}
+          onSubmit={resendConfirmationEmail}
+        >
+          {(props) => renderView(props)}
+        </Formik>
+      </Box>
+      </PageWrapper>
   );
 };
 
-export default withStyles(styles)(ConfirmEmail);
+export default ConfirmEmail;

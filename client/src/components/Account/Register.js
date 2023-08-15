@@ -23,6 +23,7 @@ import {
 } from "helpers/Constants";
 import Label from "components/Admin/ui/Label";
 import { palette } from "theme/palette";
+import { PageWrapper } from "./PageWrapper";
 
 
 
@@ -42,13 +43,7 @@ const form = (props) => {
   } = props;
 
   return (
-    <Container component="main" maxWidth="xs"
-    sx={{
-      display: "flex",
-      height: "97.8%",
-      flexDirection: "column",
-    }}
-    >
+    <PageWrapper>
         <CssBaseline />
         <Box
         sx={{
@@ -180,7 +175,7 @@ const form = (props) => {
             </Grid>
           </form>
         </Box>
-      </Container>
+      </PageWrapper>
   );
 };
 

@@ -18,6 +18,7 @@ import debounce from "lodash.debounce";
 import Label from "components/Admin/ui/Label";
 import { useNavigate, useParams } from "react-router-dom";
 import { palette } from "theme/palette";
+import { PageWrapper } from "./PageWrapper";
 
 
 
@@ -47,13 +48,7 @@ const ForgotPassword = (props) => {
   }, 500);
 
   return (
-    <Container component="main" maxWidth="xs"
-    sx={{
-      display: "flex",
-      height: "97.8%",
-      flexDirection: "column",
-    }}
-    >
+    <PageWrapper>
        <Box
         sx={{
           marginTop: "8px",
@@ -194,7 +189,7 @@ const ForgotPassword = (props) => {
             }}
           </Formik>
           </Box>
-      </Container>
+        </PageWrapper>
   );
 };
 

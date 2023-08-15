@@ -3,6 +3,7 @@ export const MENU_ITEMS = [
   { text: "About Us", link: "/about" },
   { text: "Donate", link: "/donate" },
   { text: "FAQs", link: "/faqs" },
+  { text: "Contact Us", link: "/contact" },
   { text: "Suggest New Listing", link: "/suggestion" },
 ];
 

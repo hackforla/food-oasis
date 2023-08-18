@@ -1,6 +1,6 @@
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { Avatar, Container, TextField, Typography, Box } from "@mui/material";
+import { Avatar, TextField, Typography, Box } from "@mui/material";
 import { Formik } from "formik";
 import { useEffect, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
@@ -18,7 +18,6 @@ const validationSchema = Yup.object().shape({
 });
 
 const ConfirmEmail = (props) => {
-  const { classes } = props;
   const [confirmResult, setConfirmResult] = useState(false);
   const { token } = useParams();
   const { setToast } = useToasterContext();
@@ -148,7 +147,7 @@ const ConfirmEmail = (props) => {
           {(props) => renderView(props)}
         </Formik>
       </Box>
-      </PageWrapper>
+    </PageWrapper>
   );
 };
 

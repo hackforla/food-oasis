@@ -11,6 +11,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { Link, Container, CardMedia, Box, SvgIcon } from "@mui/material";
 import Footer from "../Layout/Footer";
 import IconSpacerSVG from "./assets/IconSpacerSVG";
+import { PageWrapper } from "./PageWrapper";
 
 
 const About = () => {
@@ -20,13 +21,7 @@ const About = () => {
   }, []);
 
   return (
-    <Container 
-       sx={{
-        padding: { xs: "1.5rem 0", md: "1.5rem 2rem"},
-         margin: "0 auto",
-         maxWidth: "1200px"
-       }}
-       >
+    <PageWrapper>
         <CardMedia component="img" alt="About" src={aboutbg} style={{ width: "100%" }}></CardMedia>
         <Container maxWidth="md">
           <Typography variant="h1"
@@ -351,7 +346,7 @@ const About = () => {
           </Link>
         </Box>
         <Footer />
-    </Container>
+      </PageWrapper>
   );
 };
 

@@ -21,6 +21,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import PasswordInput from "../../components/UI/PasswordInput";
 import Label from "components/Admin/ui/Label";
 import { palette } from "theme/palette";
+import { PageWrapper } from "./PageWrapper";
 
 
 
@@ -52,13 +53,7 @@ const LoginForm = (props) => {
   }, []);
 
   return (
-    <Container component="main" maxWidth="xs"
-    sx={{
-      display: "flex",
-      height: "97.8%",
-      flexDirection: "column",
-    }}
-    >
+    <PageWrapper>
         <Box
         sx={{
           marginTop: "8px",
@@ -244,7 +239,7 @@ const LoginForm = (props) => {
             )}
           </Formik>
         </Box>
-    </Container>
+      </PageWrapper>
   );
 };
 

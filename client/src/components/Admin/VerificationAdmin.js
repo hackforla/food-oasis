@@ -191,12 +191,12 @@ function VerificationAdmin() {
     execute();
   }, [userCoordinates, searchCallback, searchCoordinates]);
 
-  const search = async () => {
+  const search = async (searchCriteria = criteria) => {
     try {
-      await searchCallback(criteria);
+      await searchCallback(searchCriteria);
       console.log("Searching...");
-      console.log(criteria);
-      sessionStorage.setItem(CRITERIA_TOKEN, JSON.stringify(criteria));
+      console.log(searchCriteria);
+      sessionStorage.setItem(CRITERIA_TOKEN, JSON.stringify(searchCriteria));
     } catch (err) {
       // If we receive a 401 status code, the user needs
       // to be logged in, will redirect to login page.
@@ -292,9 +292,9 @@ function VerificationAdmin() {
     setDialogOpen(false);
   };
 
-  const handleCriteriaChange = (criteria) => {
-    setCriteria(criteria);
-    search();
+  const handleCriteriaChange = (newCriteria) => {
+    setCriteria(newCriteria);
+    search(newCriteria);
   };
 
   if (!user) {

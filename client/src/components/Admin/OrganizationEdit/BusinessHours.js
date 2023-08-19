@@ -12,6 +12,7 @@ export default function BusinessHours({
   handleChange,
   handleBlur,
   setFieldValue,
+  setFieldTouched,
 }) {
   return (
     <TabPanel value={tabPage} index={1}>
@@ -44,10 +45,14 @@ export default function BusinessHours({
             />
           </div>
           <OpenTimeForm
-            name="hours"
-            onChange={(e) => setFieldValue("hours", e.target.value)}
-            value={values.hours}
-          />
+            name="hours"                          
+            values={values}
+            setFieldValue={setFieldValue}
+            setFieldTouched={setFieldTouched}
+            errors={errors}
+            touched={touched}
+            handleBlur={handleBlur}                          
+            />
         </Grid>
         <Grid item xs={12}>
           <FormControlLabel

@@ -1,0 +1,2436 @@
+{
+    "_id": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "colName": "Food Oasis ",
+    "created": "2022-10-04T03:11:23.696Z",
+    "sortNum": 10000,
+    "folders": [
+        {
+            "_id": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
+            "name": "Accounts",
+            "containerId": "",
+            "created": "2022-10-04T03:11:23.697Z",
+            "sortNum": 10000
+        },
+        {
+            "_id": "3ff960b6-f779-4e24-90a6-99d2c89d3b68",
+            "name": "ParentOrganizations",
+            "containerId": "",
+            "created": "2022-10-04T03:11:23.698Z",
+            "sortNum": 20000
+        },
+        {
+            "_id": "e39dc47f-701b-4d02-80e1-1a5bbd65cfdb",
+            "name": "Categories",
+            "containerId": "",
+            "created": "2022-10-04T03:11:23.699Z",
+            "sortNum": 15000
+        },
+        {
+            "_id": "8af1b2e1-3c85-439d-b277-d4b83209cc98",
+            "name": "Tenants",
+            "containerId": "",
+            "created": "2022-10-04T03:11:23.700Z",
+            "sortNum": 40000
+        },
+        {
+            "_id": "24d28291-9541-4bea-a1d3-ee1b778eeb85",
+            "name": "Suggestions",
+            "containerId": "",
+            "created": "2022-10-22T06:36:29.788Z",
+            "sortNum": 22500
+        },
+        {
+            "_id": "d8625d5d-3acd-4b25-b796-b62f4d6a68ce",
+            "name": "Tags",
+            "containerId": "",
+            "created": "2022-10-27T23:39:58.096Z",
+            "sortNum": 25000
+        },
+        {
+            "_id": "aaf8073a-e70d-4516-be25-c013040d9f45",
+            "name": "Neighborhoods",
+            "containerId": "",
+            "created": "2022-11-18T00:47:20.734Z",
+            "sortNum": 18750
+        },
+        {
+            "_id": "7f5a5a8a-37c9-4fea-911f-c13660509a3e",
+            "name": "Stakeholders",
+            "containerId": "",
+            "created": "2022-11-18T02:09:50.611Z",
+            "sortNum": 21250
+        },
+        {
+            "_id": "ae763c3f-34d6-40dd-9749-50a88bd18b89",
+            "name": "Geocode",
+            "containerId": "",
+            "created": "2022-11-18T02:13:33.972Z",
+            "sortNum": 16250
+        },
+        {
+            "_id": "d6bbf7d0-eaef-486e-919f-4869bb8766d3",
+            "name": "StakeholderBests",
+            "containerId": "",
+            "created": "2022-11-18T02:14:30.792Z",
+            "sortNum": 21875
+        },
+        {
+            "_id": "edc0a923-2274-4573-ba0d-0ef3d5daed06",
+            "name": "StakeholderLogs",
+            "containerId": "",
+            "created": "2022-11-18T02:14:43.234Z",
+            "sortNum": 22187.5
+        },
+        {
+            "_id": "65ec2675-283c-4b6f-a507-21d6420f7e2d",
+            "name": "Email",
+            "containerId": "",
+            "created": "2022-11-23T00:24:36.442Z",
+            "sortNum": 15625
+        },
+        {
+            "_id": "1fa8eeb1-253f-49fe-92e1-a2f2e3b25cd3",
+            "name": "Load ",
+            "containerId": "",
+            "created": "2022-11-23T00:56:58.882Z",
+            "sortNum": 17500
+        },
+        {
+            "_id": "75ccff0e-93eb-402e-a657-6a6422276fac",
+            "name": "Import",
+            "containerId": "",
+            "created": "2022-11-23T01:50:29.384Z",
+            "sortNum": 60000
+        }
+    ],
+    "settings": {
+        "headers": [],
+        "tests": [],
+        "envId": "7125f331-2265-4a91-be18-62faf5aba81d"
+    },
+    "requests": [
+        {
+            "_id": "0675139e-744b-4823-97c0-4526d3917bf6",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
+            "name": "Accounts GET All",
+            "url": "http://localhost:5001/api/accounts?tenantId=1",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2022-10-04T03:11:23.698Z",
+            "modified": "2022-11-18T03:12:47.069Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [
+                {
+                    "name": "tenantId",
+                    "value": "1",
+                    "isPath": false
+                }
+            ],
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ],
+            "preReq": {
+                "runRequests": [
+                    {
+                        "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+                        "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+                        "triggerCondition": "run-always",
+                        "triggerValue": ""
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "2f227418-a51d-4980-8fd3-bb596266e9a1",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
+            "name": "Register",
+            "url": "http://localhost:5001/api/accounts/register",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2022-10-04T03:11:23.699Z",
+            "modified": "2022-11-22T01:03:58.907Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\"firstName\": \"Admin\",\n\"lastName\": \"User\",\n\"email\": \"{{ADMIN_EMAIL}}\",\n\"password\": \"{{ADMIN_PASSWORD}}\",\n\"tenantId\": 1}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "contains",
+                    "value": "\"REG_DUPLICATE_EMAIL\""
+                }
+            ]
+        },
+        {
+            "_id": "5a47ee1b-6bf3-4962-968a-82d95f704454",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
+            "name": "Confirm Register",
+            "url": "http://localhost:5001/api/accounts/confirmRegister",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2022-10-04T03:11:23.700Z",
+            "modified": "2022-11-28T19:42:58.325Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"id\": \"108\",\n    \"token\": \"1b56e5fc-a1e7-4fe2-aee8-69855ae90df5\"\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "contains",
+                    "value": "\"REG_CONFIRM_TOKEN_EXPIRED\""
+                }
+            ]
+        },
+        {
+            "_id": "e43da1bc-367f-48cf-8025-ee8c775df831",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
+            "name": "Resend Confirmation",
+            "url": "http://localhost:5001/api/accounts/resendConfirmationEmail",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2022-10-04T03:11:23.701Z",
+            "modified": "2022-11-22T01:45:11.837Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n\"email\": \"{{ADMIN_EMAIL}}\",\n\"clientUrl\": 1}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "contains",
+                    "value": "\"REG_SUCCESS\""
+                }
+            ]
+        },
+        {
+            "_id": "de0c25a0-2c78-426a-9377-0cdebe61ead1",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
+            "name": "Set Permissions",
+            "url": "http://localhost:5001/api/accounts/setPermissions",
+            "method": "POST",
+            "sortNum": 50000,
+            "created": "2022-10-04T03:11:23.703Z",
+            "modified": "2022-11-22T02:02:11.463Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"userId\" : 108,\n  \"permissionName\" : \"is_admin\",\n  \"value\" : true,\n  \"tenantId\": 1\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "contains",
+                    "value": "\"UPDATE_SUCCESS\""
+                }
+            ],
+            "preReq": {
+                "runRequests": [
+                    {
+                        "reqId": "c0d5a22b-6be2-40fa-8c83-1a2cb95a640f",
+                        "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+                        "triggerCondition": "run-always",
+                        "triggerValue": ""
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "9467a5a3-abf7-4497-84a2-3d4248b581c2",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
+            "name": "Set Global Permissions",
+            "url": "http://localhost:5001/api/accounts/setGlobalPermissions",
+            "method": "POST",
+            "sortNum": 60000,
+            "created": "2022-10-04T03:11:23.704Z",
+            "modified": "2022-11-22T02:03:33.433Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"userId\": \"174\",\n    \"permissionName\": \"is_global_reporting\",\n    \"value\": \"true\",\n    \"tenantId\": \"1\"\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "contains",
+                    "value": "\"UPDATE_SUCCESS\""
+                }
+            ],
+            "preReq": {
+                "runRequests": [
+                    {
+                        "reqId": "17a5ffa8-9a70-4317-97fa-b97a416de130",
+                        "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+                        "triggerCondition": "run-always",
+                        "triggerValue": ""
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "5b1ced04-1c44-4713-9730-5d5db1bd887f",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
+            "name": "Forgot Password",
+            "url": "http://localhost:5001/api/accounts/forgotPassword",
+            "method": "POST",
+            "sortNum": 70000,
+            "created": "2022-10-04T03:11:23.705Z",
+            "modified": "2022-11-22T02:07:19.096Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n\"email\": \"{{ADMIN_EMAIL}}\",\n\"clientUrl\": \"http://devla.foodoasis.net\"}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "contains",
+                    "value": "\"FORGOT_PASSWORD_SUCCESS\""
+                }
+            ]
+        },
+        {
+            "_id": "3b8960ab-e791-41a3-9ebd-13c65a57fc49",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
+            "name": "Reset Password",
+            "url": "http://localhost:5001/api/accounts/resetPassword",
+            "method": "POST",
+            "sortNum": 80000,
+            "created": "2022-10-04T03:11:23.706Z",
+            "modified": "2022-11-22T02:10:52.419Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"token\": \"INvalidToken\",\n\"password\": \"PhonyPassword123#\"\n  \n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "contains",
+                    "value": "\"RESET_PASSWORD_FAILED\""
+                }
+            ]
+        },
+        {
+            "_id": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
+            "name": "Login Admin",
+            "url": "http://localhost:5001/api/accounts/login",
+            "method": "POST",
+            "sortNum": 5000,
+            "created": "2022-10-04T03:11:23.707Z",
+            "modified": "2022-11-22T03:09:38.159Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n\"password\": \"{{ADMIN_PASSWORD}}\",\n\"email\": \"{{ADMIN_EMAIL}}\",\n\"tenantId\": 1\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "contains",
+                    "value": "\"adminuser@dispostable.com\""
+                }
+            ]
+        },
+        {
+            "_id": "8487fef6-4692-418a-a317-05745383e93e",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
+            "name": "Logout",
+            "url": "http://localhost:5001/api/accounts/logout",
+            "method": "GET",
+            "sortNum": 560000,
+            "created": "2022-10-04T03:11:23.708Z",
+            "modified": "2022-11-23T00:50:13.145Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ]
+        },
+        {
+            "_id": "2d9edbb6-1b2c-481d-afdd-9df6d746e211",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "3ff960b6-f779-4e24-90a6-99d2c89d3b68",
+            "name": "ParentOrganizations POST",
+            "url": "http://localhost:5001/api/parent-organizations",
+            "method": "POST",
+            "sortNum": 110000,
+            "created": "2022-10-04T03:11:23.709Z",
+            "modified": "2022-11-29T00:05:09.996Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\"code\": \"SA\", \"name\": \"Salvation Army\", \"tenantId\": 1}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "400"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "contains",
+                    "value": "\"Cannot insert duplicate row.\""
+                }
+            ]
+        },
+        {
+            "_id": "cbc1445c-a235-4667-9064-6e145b2fdfde",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "3ff960b6-f779-4e24-90a6-99d2c89d3b68",
+            "name": "ParentOrganizations GET All",
+            "url": "http://localhost:5001/api/parent-organizations/1",
+            "method": "GET",
+            "sortNum": 120000,
+            "created": "2022-10-04T03:11:23.710Z",
+            "modified": "2022-11-22T02:23:39.658Z",
+            "headers": [],
+            "params": [],
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "contains",
+                    "value": "\"Salvation Army\""
+                }
+            ]
+        },
+        {
+            "_id": "c9392e24-f0ed-4611-97bb-4f51463d4815",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "3ff960b6-f779-4e24-90a6-99d2c89d3b68",
+            "name": "ParentOrganizations PUT",
+            "url": "http://localhost:5001/api/parent-organizations/1",
+            "method": "PUT",
+            "sortNum": 130000,
+            "created": "2022-10-04T03:11:23.711Z",
+            "modified": "2022-11-22T16:38:11.798Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n        \"id\": 1,\n        \"name\": \"Salvation Army\",\n        \"code\": \"SA\"\n    }",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ]
+        },
+        {
+            "_id": "1ede81e0-0fac-444c-820f-544621eb89bb",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "3ff960b6-f779-4e24-90a6-99d2c89d3b68",
+            "name": "ParentOrganizations DELETE",
+            "url": "http://localhost:5001/api/parent-organizations/9999",
+            "method": "DELETE",
+            "sortNum": 140000,
+            "created": "2022-10-04T03:11:23.712Z",
+            "modified": "2022-11-22T16:38:56.340Z",
+            "headers": [],
+            "params": [],
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "400"
+                }
+            ]
+        },
+        {
+            "_id": "85d7e2bb-d01f-416d-83bf-c4d7887bec22",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "e39dc47f-701b-4d02-80e1-1a5bbd65cfdb",
+            "name": "Categories GET All",
+            "url": "http://localhost:5001/api/categories",
+            "method": "GET",
+            "sortNum": 150000,
+            "created": "2022-10-04T03:11:23.713Z",
+            "modified": "2022-11-18T03:21:12.012Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ]
+        },
+        {
+            "_id": "00c0280a-8a9a-47bb-931c-bbf4ce30abbc",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "e39dc47f-701b-4d02-80e1-1a5bbd65cfdb",
+            "name": "Categories GET By Id",
+            "url": "http://localhost:5001/api/categories/1",
+            "method": "GET",
+            "sortNum": 160000,
+            "created": "2022-10-04T03:11:23.714Z",
+            "modified": "2022-11-18T03:22:26.067Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "contains",
+                    "value": "\"Food Pantry\""
+                }
+            ]
+        },
+        {
+            "_id": "fd1acc10-2921-45d2-a161-6ea5659d6938",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "e39dc47f-701b-4d02-80e1-1a5bbd65cfdb",
+            "name": "Categories POST",
+            "url": "http://localhost:5001/api/categories",
+            "method": "POST",
+            "sortNum": 170000,
+            "created": "2022-10-04T03:11:23.715Z",
+            "modified": "2022-11-22T02:16:40.893Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"name\": \"samplessdsddfaaf\",\n    \"displayOrder\": 99,\n    \"inactive\": false\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "201"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "contains",
+                    "value": "\"id\""
+                }
+            ],
+            "preReq": {
+                "runRequests": [
+                    {
+                        "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+                        "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+                        "triggerCondition": "run-always",
+                        "triggerValue": ""
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "6a169d24-90f2-4f8d-8276-61d01a68dfe2",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "e39dc47f-701b-4d02-80e1-1a5bbd65cfdb",
+            "name": "Categories PUT",
+            "url": "http://localhost:5001/api/categories/700",
+            "method": "POST",
+            "sortNum": 180000,
+            "created": "2022-10-04T03:11:23.716Z",
+            "modified": "2022-11-22T02:15:43.371Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"id\": 700,\n  \"name\": \"Care Center\",\n  \"displayOrder\": 20,\n  \"inactive\": true\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "404"
+                }
+            ],
+            "preReq": {
+                "runRequests": [
+                    {
+                        "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+                        "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+                        "triggerCondition": "run-always",
+                        "triggerValue": ""
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "4aa50149-cff0-402a-bde5-7e3523be1fd4",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "e39dc47f-701b-4d02-80e1-1a5bbd65cfdb",
+            "name": "Categories DELETE",
+            "url": "http://localhost:5001/api/categories/13",
+            "method": "DELETE",
+            "sortNum": 190000,
+            "created": "2022-10-04T03:11:23.717Z",
+            "modified": "2022-11-22T02:14:42.013Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "400"
+                }
+            ]
+        },
+        {
+            "_id": "f4290985-8a9c-46be-80aa-605a4d8393a4",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "8af1b2e1-3c85-439d-b277-d4b83209cc98",
+            "name": "Tenant GET All",
+            "url": "http://localhost:5001/api/tenants",
+            "method": "GET",
+            "sortNum": 200000,
+            "created": "2022-10-04T03:11:23.718Z",
+            "modified": "2022-11-18T04:13:07.846Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "contains",
+                    "value": "\"FOLA\""
+                }
+            ]
+        },
+        {
+            "_id": "efca71e6-eac8-4dac-be14-c4dcf88ac346",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "8af1b2e1-3c85-439d-b277-d4b83209cc98",
+            "name": "Tenant GET One",
+            "url": "http://localhost:5001/api/tenants/1",
+            "method": "GET",
+            "sortNum": 210000,
+            "created": "2022-10-04T03:11:23.719Z",
+            "modified": "2022-11-18T04:13:32.337Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "contains",
+                    "value": "\"FOLA\""
+                }
+            ]
+        },
+        {
+            "_id": "31b8883f-4bd6-47b2-ab42-61e94b5479d4",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "8af1b2e1-3c85-439d-b277-d4b83209cc98",
+            "name": "Tenant POST",
+            "url": "http://localhost:5001/api/tenants",
+            "method": "POST",
+            "sortNum": 220000,
+            "created": "2022-10-04T03:11:23.720Z",
+            "modified": "2022-11-23T00:44:19.794Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\"id\": 9999, \"name\": \"test\", \"code\": \"t\"}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "201"
+                }
+            ]
+        },
+        {
+            "_id": "a2c95079-5b49-4f1a-8611-48ea2230f406",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "8af1b2e1-3c85-439d-b277-d4b83209cc98",
+            "name": "Tenant PUT",
+            "url": "http://localhost:5001/api/tenants/77",
+            "method": "PUT",
+            "sortNum": 230000,
+            "created": "2022-10-04T03:11:23.721Z",
+            "modified": "2022-11-18T04:12:04.232Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\"id\": 77, \"name\": \"test\", \"code\": \"tt\"}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ]
+        },
+        {
+            "_id": "048f724e-560b-4dc2-831e-a581ccba2722",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "8af1b2e1-3c85-439d-b277-d4b83209cc98",
+            "name": "Tenant DELETE",
+            "url": "http://localhost:5001/api/tenants/9999",
+            "method": "DELETE",
+            "sortNum": 240000,
+            "created": "2022-10-04T03:11:23.722Z",
+            "modified": "2022-11-23T00:44:37.538Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "204"
+                }
+            ]
+        },
+        {
+            "_id": "2a69d308-4650-4ba0-ae76-521f1ace2699",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "7f5a5a8a-37c9-4fea-911f-c13660509a3e",
+            "name": "Stakeholders GET One",
+            "url": "http://localhost:5001/api/stakeholders/3107",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2022-10-04T03:11:23.723Z",
+            "modified": "2022-12-07T16:06:43.637Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "contains",
+                    "value": "\"Salvation Army Redondo Beach\""
+                }
+            ],
+            "preReq": {
+                "runRequests": [
+                    {
+                        "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+                        "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+                        "triggerCondition": "run-always",
+                        "triggerValue": ""
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "97773f9c-f251-4a70-a543-addda7a39a1b",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "7f5a5a8a-37c9-4fea-911f-c13660509a3e",
+            "name": "Stakeholders GET All",
+            "url": "http://localhost:5001/api/stakeholders?tenantId=1&name=&latitude=0&longitude=0&distance=0&categoryIds[]=9&categoryIds[]=1&isInactive=either&isAssigned=either&isSubmitted=either&isApproved=either&isClaimed=either&verificationStatusId=4&isInactiveTemporary=either&stakeholderId=&neighborhoodId=72&minCompleteCriticalPercent=0&maxCompleteCriticalPercent=100&tag=",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2022-10-04T03:11:23.724Z",
+            "modified": "2022-12-10T03:50:53.408Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [
+                {
+                    "name": "tenantId",
+                    "value": "1",
+                    "isPath": false
+                },
+                {
+                    "name": "name",
+                    "value": "",
+                    "isPath": false
+                },
+                {
+                    "name": "latitude",
+                    "value": "0",
+                    "isPath": false
+                },
+                {
+                    "name": "longitude",
+                    "value": "0",
+                    "isPath": false
+                },
+                {
+                    "name": "distance",
+                    "value": "0",
+                    "isPath": false
+                },
+                {
+                    "name": "categoryIds[]",
+                    "value": "9",
+                    "isPath": false
+                },
+                {
+                    "name": "categoryIds[]",
+                    "value": "1",
+                    "isPath": false
+                },
+                {
+                    "name": "isInactive",
+                    "value": "either",
+                    "isPath": false
+                },
+                {
+                    "name": "isAssigned",
+                    "value": "either",
+                    "isPath": false
+                },
+                {
+                    "name": "isSubmitted",
+                    "value": "either",
+                    "isPath": false
+                },
+                {
+                    "name": "isApproved",
+                    "value": "either",
+                    "isPath": false
+                },
+                {
+                    "name": "isClaimed",
+                    "value": "either",
+                    "isPath": false
+                },
+                {
+                    "name": "verificationStatusId",
+                    "value": "4",
+                    "isPath": false
+                },
+                {
+                    "name": "isInactiveTemporary",
+                    "value": "either",
+                    "isPath": false
+                },
+                {
+                    "name": "stakeholderId",
+                    "value": "",
+                    "isPath": false
+                },
+                {
+                    "name": "neighborhoodId",
+                    "value": "72",
+                    "isPath": false
+                },
+                {
+                    "name": "minCompleteCriticalPercent",
+                    "value": "0",
+                    "isPath": false
+                },
+                {
+                    "name": "maxCompleteCriticalPercent",
+                    "value": "100",
+                    "isPath": false
+                },
+                {
+                    "name": "tag",
+                    "value": "",
+                    "isPath": false
+                }
+            ],
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "contains",
+                    "value": "\"DOWNTOWN LOS ANGELES\""
+                }
+            ],
+            "preReq": {
+                "runRequests": [
+                    {
+                        "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+                        "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+                        "triggerCondition": "run-always",
+                        "triggerValue": ""
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "c8b7d3dd-a67d-46aa-9bff-e3b25d64310f",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "75ccff0e-93eb-402e-a657-6a6422276fac",
+            "name": "Import LAPL Food Resources",
+            "url": "http://localhost:5001/api/import/lapl-food-resources",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2022-10-04T03:11:23.726Z",
+            "modified": "2022-12-02T23:49:52.778Z",
+            "headers": [],
+            "params": [],
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "Content-Type",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "application/json; charset=utf-8"
+                }
+            ],
+            "docs": "This endpoint scrapes the LA Pubic Library site for listings.",
+            "preReq": {
+                "runRequests": [
+                    {
+                        "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+                        "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+                        "triggerCondition": "run-always",
+                        "triggerValue": ""
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "13c6da22-a85a-494d-82c4-9f03fbb68b13",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "1fa8eeb1-253f-49fe-92e1-a2f2e3b25cd3",
+            "name": "Get LA Public Library Listings",
+            "url": "http://localhost:5001/api/loads/lapl-food-resources?format=json",
+            "method": "GET",
+            "sortNum": 5000,
+            "created": "2022-10-04T03:11:23.727Z",
+            "modified": "2022-12-02T20:09:07.395Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "format",
+                    "value": "json",
+                    "isPath": false
+                }
+            ],
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "Content-Type",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "application/json; charset=utf-8"
+                }
+            ],
+            "docs": "(Not presently used by client app)\n\nThis endpoint gets all the listings from the LA Public Library import table in our database.",
+            "preReq": {
+                "runRequests": [
+                    {
+                        "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+                        "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+                        "triggerCondition": "run-always",
+                        "triggerValue": ""
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "7e59df7f-8bc7-4ef9-81df-7753caf2e4ab",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "7f5a5a8a-37c9-4fea-911f-c13660509a3e",
+            "name": "Stakeholder POST",
+            "url": "http://localhost:5001/api/stakeholders",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2022-10-04T03:11:23.728Z",
+            "modified": "2022-12-07T16:11:48.929Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"tenantId\": 1,\n  \"name\": \"_Veteran's Park\",\n  \"address1\": \"309 Esplanade\",\n  \"address2\": \"\",\n  \"city\": \"Redondo Beach\",\n  \"state\": \"CA\",\n  \"zip\": \"90277\",\n  \"phone\": \"310 901-5944\",\n  \"latitude\": 33.873834,\n  \"longitude\": -118.389660,\n  \"website\": \"http://redondo.org\",\n  \"active\": true,\n  \"notes\": \"A test stakeholder\",\n  \"categories\": [\n    {\n      \"id\": 6,\n      \"name\": \"Summer Lunch for Kids\"\n    }\n  ]\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "201"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "contains",
+                    "value": "\"id\""
+                }
+            ],
+            "preReq": {
+                "runRequests": [
+                    {
+                        "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+                        "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+                        "triggerCondition": "run-always",
+                        "triggerValue": ""
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "c4031b1f-dc91-413f-8d87-07bd94ae4f21",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "7f5a5a8a-37c9-4fea-911f-c13660509a3e",
+            "name": "Stakeholder Needs Verification",
+            "url": "http://localhost:5001/api/stakeholders/3107/needsVerification",
+            "method": "PUT",
+            "sortNum": 560000,
+            "created": "2022-10-04T03:11:23.732Z",
+            "modified": "2022-11-22T17:17:17.468Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"id\": 3107,\n  \"setVerify\": true,\n  \"userLoginId\": 108,\n  \"message\": \"Set to Needs Verification by ThunderClient test\",\n  \"preserveConfirmations\": false\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ],
+            "preReq": {
+                "runRequests": [
+                    {
+                        "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+                        "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+                        "triggerCondition": "run-always",
+                        "triggerValue": ""
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "12c55368-c5bb-42a2-aebc-b79189be38dd",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "65ec2675-283c-4b6f-a507-21d6420f7e2d",
+            "name": "SendGrid Test",
+            "url": "http://localhost:5001/api/emails",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2022-10-04T03:11:23.735Z",
+            "modified": "2022-11-23T00:26:55.351Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"emailTo\": \"darragh@entrotech.net\",\n    \"emailFrom\": \"tdm+sendgrid@hackforla.org\",\n    \"subject\": \"Email from TDM Dev\",\n    \"textBody\": \"This is from SendGrid!\",\n    \"htmlBody\": \"<div><h1>TDM</h1><p>This is sent from SendGrid.</p><a href=\\\"https://tdmdev.azurewebsites.net\\\">Go to site</a></div>\"\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "404"
+                }
+            ],
+            "docs": "There isn't really a way to test the \"happy path\" for this request, since SendGrid authenticates the sending origin, and the account can only be set up to authenticate a publicly available origin (e.g. foodoasis.net), NOT localhost:5001."
+        },
+        {
+            "_id": "12a51cc1-86a0-4994-ac6f-6e86f1bb8879",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "24d28291-9541-4bea-a1d3-ee1b778eeb85",
+            "name": "Suggestion GET All",
+            "url": "http://localhost:5001/api/suggestions?statusIds[]=1&statusIds[]=2&statusIds[]=3&statusIds[]=4&tenantId=1",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2022-10-04T03:11:23.736Z",
+            "modified": "2022-11-23T00:28:32.748Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "statusIds[]",
+                    "value": "1",
+                    "isPath": false
+                },
+                {
+                    "name": "statusIds[]",
+                    "value": "2",
+                    "isPath": false
+                },
+                {
+                    "name": "statusIds[]",
+                    "value": "3",
+                    "isPath": false
+                },
+                {
+                    "name": "statusIds[]",
+                    "value": "4",
+                    "isPath": false
+                },
+                {
+                    "name": "tenantId",
+                    "value": "1",
+                    "isPath": false
+                }
+            ],
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ]
+        },
+        {
+            "_id": "135b5684-3c3b-4dc5-91a0-d5d31e6b900c",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "24d28291-9541-4bea-a1d3-ee1b778eeb85",
+            "name": "Suggestion GET one",
+            "url": "http://localhost:5001/api/suggestions/13",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2022-10-04T03:11:23.737Z",
+            "modified": "2022-11-28T19:39:45.933Z",
+            "headers": [],
+            "params": [],
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "contains",
+                    "value": "\"MountainView ADHC\""
+                }
+            ]
+        },
+        {
+            "_id": "fbe8ae83-b87c-46a9-8d03-48b9b6567c12",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "24d28291-9541-4bea-a1d3-ee1b778eeb85",
+            "name": "Correction POST",
+            "url": "http://localhost:5001/api/suggestions",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2022-10-04T03:11:23.738Z",
+            "modified": "2023-02-25T04:10:37.916Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"stakeholderId\": 1,\n  \"name\": \"ThunderClient-Generated Correction\",\n  \"address1\": \"303 E 6th st.\",\n  \"address2\": \"\",\n  \"city\": \"Los Angeles\",\n  \"state\": \"CA\",\n  \"zip\": \"90013\",\n  \"phone\": \"213-629-1227 x347\",\n  \"email\": \"info@lamission.net\",\n  \"notes\": \"test\",\n  \"tipsterName\": \"\",\n  \"tipsterPhone\": \"\",\n  \"tipsterEmail\": \"\",\n  \"hours\": \"\",\n  \"category\": \"\",\n  \"suggestionStatusId\": 1,\n  \"adminNotes\": \"\",\n  \"tenantId\": 1\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "201"
+                }
+            ]
+        },
+        {
+            "_id": "bd281275-824c-40ae-8d15-33bb01ab6723",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "24d28291-9541-4bea-a1d3-ee1b778eeb85",
+            "name": "Suggestion PUT",
+            "url": "http://localhost:5001/api/suggestions/1",
+            "method": "PUT",
+            "sortNum": 15000,
+            "created": "2022-10-04T03:11:23.739Z",
+            "modified": "2022-11-23T00:40:31.405Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"id\": 13,\n  \"adminNotes\": \"ThunderClient Test\",\n  \"suggestionStatusId\": 1\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ],
+            "docs": "The only allowed updates to a suggestion are edting the adminNotes, and changing the status.",
+            "preReq": {
+                "runRequests": [
+                    {
+                        "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+                        "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+                        "triggerCondition": "run-always",
+                        "triggerValue": ""
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "0264c9f1-32fe-480e-a337-0cd30f5db13e",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "edc0a923-2274-4573-ba0d-0ef3d5daed06",
+            "name": "Stakeholder Logs - GET for One Stakeholder",
+            "url": "http://localhost:5001/api/stakeholderlogs/3960",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2022-10-04T03:11:23.740Z",
+            "modified": "2022-11-22T17:35:05.431Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "contains",
+                    "value": "\"Pavilions\""
+                }
+            ],
+            "preReq": {
+                "runRequests": [
+                    {
+                        "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+                        "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+                        "triggerCondition": "run-always",
+                        "triggerValue": ""
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "e9ca3d32-3927-448a-8f8e-a5d58b763c48",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "d6bbf7d0-eaef-486e-919f-4869bb8766d3",
+            "name": "Stakeholder Bests - GET for One Stakeholder",
+            "url": "http://localhost:5001/api/stakeholderbests/3960",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2022-10-04T03:11:23.741Z",
+            "modified": "2022-11-22T17:34:12.444Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "contains",
+                    "value": "\"Pavilions\""
+                }
+            ]
+        },
+        {
+            "_id": "12e5d7e3-f9f7-49b3-b6b8-f02c027e30df",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "7f5a5a8a-37c9-4fea-911f-c13660509a3e",
+            "name": "Stakeholder PUT",
+            "url": "http://localhost:5001/api/stakeholders/3107",
+            "method": "PUT",
+            "sortNum": 60000,
+            "created": "2022-10-04T03:11:23.742Z",
+            "modified": "2022-12-07T16:12:29.834Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"id\": 3107,\n    \"name\": \"Salvation Army Redondo Beach\",\n    \"address1\": \"125 W. Beryl Street\",\n    \"address2\": \"\",\n    \"city\": \"Redondo Beach\",\n    \"state\": \"CA\",\n    \"zip\": \"90277\",\n    \"phone\": \"(310) 318-2827\",\n    \"latitude\": 33.84627323,\n    \"longitude\": -118.3929677,\n    \"website\": \"https://redondobeach.salvationarmy.org\",\n    \"createdDate\": \"2019-12-01T08:00:00\",\n    \"notes\": \"\",\n    \"createdLoginId\": null,\n    \"modifiedDate\": \"2021-02-17T20:18:35\",\n    \"modifiedLoginId\": 108,\n    \"submittedDate\": null,\n    \"submittedLoginId\": null,\n    \"approvedDate\": \"2020-05-23T12:43:05\",\n    \"assignedLoginId\": 110,\n    \"assignedDate\": \"2020-05-23T01:56:23\",\n    \"claimedLoginId\": null,\n    \"claimedDate\": \"2019-12-01T08:00:00\",\n    \"requirements\": \"Must be local resident\",\n    \"adminNotes\": \"There is no food pantry at this location. The nearest Salvation Army Pantry is in Lomita.\",\n    \"inactive\": true,\n    \"createdUser\": \" \",\n    \"modifiedUser\": \"Admin User\",\n    \"submittedUser\": \" \",\n    \"reviewedUser\": \" \",\n    \"assignedUser\": \"Data Entry User\",\n    \"claimedUser\": \" \",\n    \"selectedCategoryIds\": [1],\n    \"hours\": [\n        {\n            \"dayOfWeek\": \"Tue\",\n            \"open\": \"02:00:00\",\n            \"close\": \"05:00:00\",\n            \"weekOfMonth\": 3\n        }\n    ],\n    \"parentOrganization\": \"\",\n    \"physicalAccess\": \"\",\n    \"email\": \"army@salvation.org\",\n    \"items\": \"\",\n    \"services\": \"\",\n    \"facebook\": \"\",\n    \"twitter\": \"\",\n    \"pinterest\": \"\",\n    \"linkedin\": \"\",\n    \"description\": \"\",\n    \"reviewNotes\": \"\",\n    \"instagram\": \"\",\n    \"adminContactName\": \"\",\n    \"adminContactPhone\": \"\",\n    \"adminContactEmail\": \"\",\n    \"donationContactName\": \"\",\n    \"donationContactPhone\": \"\",\n    \"donationContactEmail\": \"\",\n    \"donationPickup\": false,\n    \"donationAcceptFrozen\": false,\n    \"donationAcceptRefrigerated\": false,\n    \"donationAcceptPerishable\": false,\n    \"donationSchedule\": \"\",\n    \"donationDeliveryInstructions\": \"\",\n    \"donationNotes\": \"\",\n    \"covidNotes\": \"\",\n    \"categoryNotes\": \"\",\n    \"eligibilityNotes\": \"\",\n    \"foodTypes\": \"\",\n    \"languages\": \"English\",\n    \"confirmedName\": true,\n    \"confirmedCategories\": true,\n    \"confirmedAddress\": true,\n    \"confirmedPhone\": true,\n    \"confirmedEmail\": true,\n    \"confirmedHours\": true,\n    \"confirmedFoodTypes\": false,\n    \"verificationStatusId\": 4,\n    \"inactiveTemporary\": false,\n    \"neighborhoodId\": null,\n    \"foodBakery\": false,\n    \"foodDryGoods\": false,\n    \"foodProduce\": false,\n    \"foodDairy\": false,\n    \"foodPrepared\": false,\n    \"foodMeat\": false,\n    \"parentOrganizationId\": 2,\n    \"distance\": null\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ]
+        },
+        {
+            "_id": "1d8d36d7-690e-406f-8d7a-827608526e85",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "aaf8073a-e70d-4516-be25-c013040d9f45",
+            "name": "Neighborhoods GET All LA",
+            "url": "http://localhost:5001/api/neighborhoods?tenantId=1",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2022-10-04T03:11:23.744Z",
+            "modified": "2022-12-05T04:06:30.928Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "tenantId",
+                    "value": "1",
+                    "isPath": false
+                }
+            ],
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "contains",
+                    "value": "\"ARLETA NC\""
+                }
+            ],
+            "docs": "No authentication required. Will get all neighborhoods."
+        },
+        {
+            "_id": "050ed44b-e5f3-4faf-b51a-9ea74fd5cabe",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "255832f4-de6a-495c-93c2-4eed76ec4951",
+            "name": "Tags GET All",
+            "url": "http://localhost:5001/api/tags/1",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2022-10-04T03:11:23.745Z",
+            "modified": "2022-10-27T22:44:52.250Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "e0a7645f-0054-499e-9be1-b3b2cc620ab4",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "255832f4-de6a-495c-93c2-4eed76ec4951",
+            "name": "Tags  POST",
+            "url": "http://localhost:5001/api/tags",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2022-10-04T03:11:23.746Z",
+            "modified": "2022-10-27T22:52:10.312Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{ \"name\": \"Holy Family\", \"tenantId\": 1}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "4e91b6a5-cd57-4e4d-b9f2-b05c1d1c291f",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "255832f4-de6a-495c-93c2-4eed76ec4951",
+            "name": "Tags PUT",
+            "url": "http://localhost:5001/api/tags/2",
+            "method": "PUT",
+            "sortNum": 490000,
+            "created": "2022-10-27T22:48:15.264Z",
+            "modified": "2022-10-27T22:51:00.918Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": " {\n    \"id\": 2,\n    \"name\": \"San Gabriel Mission\",\n    \"tenantId\": 1\n  }",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "d56a6451-59ff-4158-b03e-099bb82c7a7b",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "255832f4-de6a-495c-93c2-4eed76ec4951",
+            "name": "Tags DELETE",
+            "url": "http://localhost:5001/api/tags/4",
+            "method": "DELETE",
+            "sortNum": 500000,
+            "created": "2022-10-27T22:51:33.793Z",
+            "modified": "2022-10-27T22:52:34.558Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "295ed532-7b44-4e54-9262-5db34d3f88be",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "d8625d5d-3acd-4b25-b796-b62f4d6a68ce",
+            "name": "Tag POST",
+            "url": "http://localhost:5001/api/tags/",
+            "method": "POST",
+            "sortNum": 110000,
+            "created": "2022-10-27T23:39:58.096Z",
+            "modified": "2022-12-03T00:08:25.141Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"CHURCH CHICKEN\",\n    \"tenantId\": 1\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "201"
+                }
+            ],
+            "preReq": {
+                "runRequests": [
+                    {
+                        "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+                        "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+                        "triggerCondition": "run-always",
+                        "triggerValue": ""
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "73ee4ff8-cc07-459d-a27c-94f10756e52e",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "d8625d5d-3acd-4b25-b796-b62f4d6a68ce",
+            "name": "Tag GET All (Los Angeles)",
+            "url": "http://localhost:5001/api/tags/1",
+            "method": "GET",
+            "sortNum": 120000,
+            "created": "2022-10-27T23:39:58.097Z",
+            "modified": "2022-12-03T00:09:48.335Z",
+            "headers": [],
+            "params": [],
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "contains",
+                    "value": "\"KOSHER\""
+                }
+            ]
+        },
+        {
+            "_id": "843d1919-428f-42ab-8b64-d1223432fcec",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "d8625d5d-3acd-4b25-b796-b62f4d6a68ce",
+            "name": "Tag PUT",
+            "url": "http://localhost:5001/api/tags/5",
+            "method": "PUT",
+            "sortNum": 130000,
+            "created": "2022-10-27T23:39:58.098Z",
+            "modified": "2022-12-03T00:10:07.888Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n \n    \"id\": 5,\n    \"name\": \"CHURCH\",\n    \"tenantId\": 1\n \n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ],
+            "preReq": {
+                "runRequests": [
+                    {
+                        "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+                        "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+                        "triggerCondition": "run-always",
+                        "triggerValue": ""
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "6a2186eb-675b-4b46-afe7-776fd9deaaf0",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "d8625d5d-3acd-4b25-b796-b62f4d6a68ce",
+            "name": "Tag DELETE",
+            "url": "http://localhost:5001/api/tags/9999",
+            "method": "DELETE",
+            "sortNum": 140000,
+            "created": "2022-10-27T23:39:58.099Z",
+            "modified": "2022-12-03T00:10:30.852Z",
+            "headers": [],
+            "params": [],
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "400"
+                }
+            ]
+        },
+        {
+            "_id": "f3321a9e-5b9a-4c3f-a72a-4aa13dab934a",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "aaf8073a-e70d-4516-be25-c013040d9f45",
+            "name": "Neighborhoods GET One",
+            "url": "http://localhost:5001/api/neighborhoods/78",
+            "method": "GET",
+            "sortNum": 510000,
+            "created": "2022-11-18T02:04:34.801Z",
+            "modified": "2022-11-22T02:20:41.316Z",
+            "headers": [],
+            "params": [],
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "contains",
+                    "value": "\"SOUTH CENTRAL NC\""
+                }
+            ],
+            "docs": "Will get neighborhood object for South Central LA"
+        },
+        {
+            "_id": "e00d2dec-c6c7-4bde-ab5f-3dea0a063fae",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "d6bbf7d0-eaef-486e-919f-4869bb8766d3",
+            "name": "Stakeholder Bests - Search",
+            "url": "http://localhost:5001/api/stakeholderbests?categoryIds[]=1&latitude=34.0354899&longitude=-118.2439235&isInactive=either&verificationStatusId=0&maxLng=-118.02955627441406&maxLat=34.14950399246919&minLng=-118.45802307128906&minLat=33.92152413543374&tenantId=1",
+            "method": "GET",
+            "sortNum": 520000,
+            "created": "2022-11-18T16:37:27.688Z",
+            "modified": "2022-11-22T17:33:35.237Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "categoryIds[]",
+                    "value": "1",
+                    "isPath": false
+                },
+                {
+                    "name": "latitude",
+                    "value": "34.0354899",
+                    "isPath": false
+                },
+                {
+                    "name": "longitude",
+                    "value": "-118.2439235",
+                    "isPath": false
+                },
+                {
+                    "name": "isInactive",
+                    "value": "either",
+                    "isPath": false
+                },
+                {
+                    "name": "verificationStatusId",
+                    "value": "0",
+                    "isPath": false
+                },
+                {
+                    "name": "maxLng",
+                    "value": "-118.02955627441406",
+                    "isPath": false
+                },
+                {
+                    "name": "maxLat",
+                    "value": "34.14950399246919",
+                    "isPath": false
+                },
+                {
+                    "name": "minLng",
+                    "value": "-118.45802307128906",
+                    "isPath": false
+                },
+                {
+                    "name": "minLat",
+                    "value": "33.92152413543374",
+                    "isPath": false
+                },
+                {
+                    "name": "tenantId",
+                    "value": "1",
+                    "isPath": false
+                }
+            ],
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "contains",
+                    "value": "\"https://www.myfriendshousela.org/\""
+                }
+            ]
+        },
+        {
+            "_id": "17a5ffa8-9a70-4317-97fa-b97a416de130",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
+            "name": "Login Root",
+            "url": "http://localhost:5001/api/accounts/login",
+            "method": "POST",
+            "sortNum": 530000,
+            "created": "2022-11-22T01:52:01.195Z",
+            "modified": "2022-11-22T02:12:46.661Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n\"password\": \"{{ROOT_PASSWORD}}\",\n\"email\": \"{{ROOT_EMAIL}}\",\n\"tenantId\": 1\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "contains",
+                    "value": "\"rootuser@dispostable.com\""
+                }
+            ]
+        },
+        {
+            "_id": "c0d5a22b-6be2-40fa-8c83-1a2cb95a640f",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
+            "name": "Login Security User",
+            "url": "http://localhost:5001/api/accounts/login",
+            "method": "POST",
+            "sortNum": 540000,
+            "created": "2022-11-22T01:53:56.296Z",
+            "modified": "2022-11-22T02:13:14.928Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n\"password\": \"{{SECURITY_PASSWORD}}\",\n\"email\": \"{{SECURITY_EMAIL}}\",\n\"tenantId\": 1\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "contains",
+                    "value": "\"securityuser@dispostable.com\""
+                }
+            ]
+        },
+        {
+            "_id": "7ceb01c5-dbba-4aa2-a8c3-3e062476dc97",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "7f5a5a8a-37c9-4fea-911f-c13660509a3e",
+            "name": "Stakeholders POST CSV",
+            "url": "http://localhost:5001/api/stakeholders/csv",
+            "method": "POST",
+            "sortNum": 550000,
+            "created": "2022-11-22T16:47:27.449Z",
+            "modified": "2022-12-07T16:13:49.264Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"ids\": [\n    3108,\n    3109\n  ]\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "contains",
+                    "value": "Salvation Army - Santa Clarita Valley Corps"
+                }
+            ],
+            "preReq": {
+                "runRequests": [
+                    {
+                        "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+                        "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+                        "triggerCondition": "run-always",
+                        "triggerValue": ""
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "19f89591-bf7b-4239-815e-574d4b10452a",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "7f5a5a8a-37c9-4fea-911f-c13660509a3e",
+            "name": "Stakeholder Request Assignment",
+            "url": "http://localhost:5001/api/stakeholders/requestAssignment",
+            "method": "POST",
+            "sortNum": 590000,
+            "created": "2022-11-22T17:00:04.303Z",
+            "modified": "2022-12-03T00:02:32.562Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"id\": 3107,\n  \"setVerify\": true,\n  \"loginId\": 78,\n  \"tenantId\": 1\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ],
+            "preReq": {
+                "runRequests": [
+                    {
+                        "reqId": "0bb17d61-fe1c-4608-a36e-4a69dbe82dfb",
+                        "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+                        "triggerCondition": "run-always",
+                        "triggerValue": ""
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "0bb17d61-fe1c-4608-a36e-4a69dbe82dfb",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
+            "name": "Login Data Entry",
+            "url": "http://localhost:5001/api/accounts/login",
+            "method": "POST",
+            "sortNum": 550000,
+            "created": "2022-11-22T17:04:38.095Z",
+            "modified": "2022-11-28T19:44:57.302Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n\"password\": \"{{DATA_ENTRY_PASSWORD}}\",\n\"email\": \"{{DATA_ENTRY_EMAIL}}\",\n\"tenantId\": 1\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "contains",
+                    "value": "\"dataentryuser@dispostable.com\""
+                }
+            ]
+        },
+        {
+            "_id": "c062965d-e367-48ac-b1fc-81635f3d99f8",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "7f5a5a8a-37c9-4fea-911f-c13660509a3e",
+            "name": "Stakeholder Assign",
+            "url": "http://localhost:5001/api/stakeholders/3107/assign",
+            "method": "PUT",
+            "sortNum": 580000,
+            "created": "2022-11-22T17:18:32.622Z",
+            "modified": "2022-11-22T17:19:48.366Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"id\": 4720,\n  \"userLoginId\": 108,\n  \"loginId\": 110\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ],
+            "preReq": {
+                "runRequests": [
+                    {
+                        "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+                        "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+                        "triggerCondition": "run-always",
+                        "triggerValue": ""
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "37f764ff-b666-437c-bea7-0f36e7b8d9da",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "7f5a5a8a-37c9-4fea-911f-c13660509a3e",
+            "name": "Stakeholder Claim",
+            "url": "http://localhost:5001/api/stakeholders/3107/claim",
+            "method": "PUT",
+            "sortNum": 585000,
+            "created": "2022-11-22T17:22:01.002Z",
+            "modified": "2022-11-22T17:30:07.543Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"id\": 4720,\n  \"userLoginId\": 108,\n  \"loginId\": 110,\n  \"setClaimed\": false\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ]
+        },
+        {
+            "_id": "0b8e715f-5a0b-412c-b12d-f3d70c894d8d",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "d8625d5d-3acd-4b25-b796-b62f4d6a68ce",
+            "name": "Tag GET All (Hawaii)",
+            "url": "http://localhost:5001/api/tags/3",
+            "method": "GET",
+            "sortNum": 125000,
+            "created": "2022-11-23T00:48:32.745Z",
+            "modified": "2022-12-03T00:09:15.120Z",
+            "headers": [],
+            "params": [],
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "contains",
+                    "value": "\"ALOHA HARVEST\""
+                }
+            ]
+        },
+        {
+            "_id": "3f4517df-2b79-4097-b7a9-4de4249b5c1d",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "1fa8eeb1-253f-49fe-92e1-a2f2e3b25cd3",
+            "name": "GET 211 Listings",
+            "url": "http://localhost:5001/api/loads/load-211?limit=10",
+            "method": "GET",
+            "sortNum": 7500,
+            "created": "2022-11-23T01:42:06.012Z",
+            "modified": "2022-12-02T23:45:18.231Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "limit",
+                    "value": "10",
+                    "isPath": false
+                }
+            ],
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "Content-Type",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "application/json; charset=utf-8"
+                }
+            ],
+            "docs": "(Not presently used by client app)\n\nThis endpoint gets all the listings from the load_211 table in our database that has been loaded from the LA Open Data Portal 211 API.\n\nThe 211.org site has been re-designed since the data was imported, and we have not re-implemeted an import process to re-import the data, so the data is stale.",
+            "preReq": {
+                "runRequests": [
+                    {
+                        "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+                        "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+                        "triggerCondition": "run-always",
+                        "triggerValue": ""
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "f9a80eb9-581b-4494-841e-49d7eee35cbc",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "1fa8eeb1-253f-49fe-92e1-a2f2e3b25cd3",
+            "name": "Get Open LA Listings",
+            "url": "http://localhost:5001/api/loads/open-la?format=json",
+            "method": "GET",
+            "sortNum": 6250,
+            "created": "2022-11-23T02:46:29.398Z",
+            "modified": "2022-12-02T23:47:55.394Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "format",
+                    "value": "json",
+                    "isPath": false
+                }
+            ],
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "Content-Type",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "application/json; charset=utf-8"
+                }
+            ],
+            "docs": "(Not presently used by client app)\n\nThis endpoint gets all the listings from the load_open_la_data  import table in our database. This was imported from the Open LA Data Portal.\n\nThe data was imported with a one-time import process (not sure what the procedure was)",
+            "preReq": {
+                "runRequests": [
+                    {
+                        "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+                        "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+                        "triggerCondition": "run-always",
+                        "triggerValue": ""
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "a5d38949-7ee7-45a9-bd6b-724a7e2681a1",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "1fa8eeb1-253f-49fe-92e1-a2f2e3b25cd3",
+            "name": "Get LA Regional Food Bank Listings",
+            "url": "http://localhost:5001/api/loads/larfb?format=json",
+            "method": "GET",
+            "sortNum": 6875,
+            "created": "2022-11-23T02:55:14.782Z",
+            "modified": "2022-12-02T23:48:30.941Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "format",
+                    "value": "json",
+                    "isPath": false
+                }
+            ],
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "Content-Type",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "application/json; charset=utf-8"
+                }
+            ],
+            "docs": "(Not presently used by client app)\n\nThis endpoint gets all the listings from the load_larfb  import table in our database. This was imported from a massaged Google Sheet based on a csv file received form thr LA Regional Food Bank.\n\n",
+            "preReq": {
+                "runRequests": [
+                    {
+                        "reqId": "9d11e36b-69a7-453e-91c9-61e13243f42a",
+                        "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+                        "triggerCondition": "run-always",
+                        "triggerValue": ""
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "b6dc3666-af88-464b-9e9a-affc7ef5ef45",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "ae763c3f-34d6-40dd-9749-50a88bd18b89",
+            "name": "AWS Geocode Autocomplete",
+            "url": "http://localhost:5001/api/aws/autocomplete?address=Los Angeles&tenantId=1",
+            "method": "GET",
+            "sortNum": 600000,
+            "created": "2023-01-09T21:59:20.949Z",
+            "modified": "2023-04-06T01:54:05.429Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "address",
+                    "value": "Los Angeles",
+                    "isPath": false
+                },
+                {
+                    "name": "tenantId",
+                    "value": "1",
+                    "isPath": false
+                }
+            ],
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "contains",
+                    "value": "Results"
+                }
+            ]
+        },
+        {
+            "_id": "4cefd842-834d-4d1c-97d1-0f5cf44c424c",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "ae763c3f-34d6-40dd-9749-50a88bd18b89",
+            "name": "AWS Geocode Get Coordinates",
+            "url": "http://localhost:5001/api/aws/getCoords?address=San Pedro",
+            "method": "GET",
+            "sortNum": 610000,
+            "created": "2023-01-13T19:43:32.383Z",
+            "modified": "2023-04-05T04:45:21.425Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "address",
+                    "value": "San Pedro",
+                    "isPath": false
+                }
+            ],
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                },
+                {
+                    "type": "res-body",
+                    "custom": "",
+                    "action": "contains",
+                    "value": "Results"
+                }
+            ]
+        },
+        {
+            "_id": "a78961bb-8741-4838-9788-c9135c9c19c9",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
+            "name": "Get By Email",
+            "url": "http://localhost:5001/api/accounts/adminuser@dispostable.com?tenantId=1",
+            "method": "GET",
+            "sortNum": 570000,
+            "created": "2023-01-30T03:32:14.600Z",
+            "modified": "2023-02-05T21:08:16.441Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [
+                {
+                    "name": "tenantId",
+                    "value": "1",
+                    "isPath": false
+                }
+            ],
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ]
+        },
+        {
+            "_id": "e0c0951d-6e30-4712-8f98-0241da62896d",
+            "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+            "containerId": "24d28291-9541-4bea-a1d3-ee1b778eeb85",
+            "name": "Suggestion POST",
+            "url": "http://localhost:5001/api/suggestions",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2023-02-25T04:09:54.129Z",
+            "modified": "2023-02-25T04:10:24.838Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"stakeholderId\": null,\n  \"name\": \"ThunderClient-Generated Suggestion\",\n  \"address1\": \"303 E 6th st.\",\n  \"address2\": \"\",\n  \"city\": \"Los Angeles\",\n  \"state\": \"CA\",\n  \"zip\": \"90013\",\n  \"phone\": \"213-629-1227 x347\",\n  \"email\": \"info@lamission.net\",\n  \"notes\": \"test\",\n  \"tipsterName\": \"\",\n  \"tipsterPhone\": \"\",\n  \"tipsterEmail\": \"\",\n  \"hours\": \"\",\n  \"category\": \"\",\n  \"suggestionStatusId\": 1,\n  \"adminNotes\": \"\",\n  \"tenantId\": 1\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "201"
+                }
+            ]
+        }
+    ]
+}

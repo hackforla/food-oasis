@@ -1,0 +1,12 @@
+[
+  {
+    "_id": "7125f331-2265-4a91-be18-62faf5aba81d",
+    "name": "Server Env File",
+    "default": true,
+    "sortNum": 30000,
+    "created": "2022-11-18T03:07:15.325Z",
+    "modified": "2022-11-18T03:30:59.496Z",
+    "data": [],
+    "envFile": "..\\server\\.env"
+  }
+]

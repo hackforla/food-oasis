@@ -5,6 +5,7 @@ import { Link, Typography, Container, Box, CardMedia, SvgIcon} from "@mui/materi
 import * as analytics from "../../services/analytics";
 import { Link as RouterLink } from "react-router-dom";
 import Footer from "../Layout/Footer";
+import { PageWrapper } from "./PageWrapper";
 
 
 
@@ -15,13 +16,7 @@ const About = () => {
   }, []);
 
   return (
-      <Container 
-      sx={{
-        padding: { xs: "1.5rem 0", md: "1.5rem 2rem"},
-        margin: "0 auto",
-        maxWidth: "1200px"
-      }}
-      >
+      <PageWrapper>
       <CardMedia component="img" alt="FAQ" src={faqbg} style={{ width: "100%" }}></CardMedia>
       <Typography variant="h1"
       sx={{
@@ -197,7 +192,7 @@ const About = () => {
           </Container>
         </Box>
         <Footer />
-      </Container>
+        </PageWrapper>
   );
 };
 

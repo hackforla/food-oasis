@@ -12,6 +12,7 @@ import {
   TextField,
   Tooltip,
   Typography,
+  Box,
 } from "@mui/material";
 import { TabPanel } from "components/Admin/ui/TabPanel";
 import { useToasterContext } from "contexts/toasterContext";
@@ -73,204 +74,213 @@ export default function Identification({
   return (
     <TabPanel value={tabPage} index={0}>
       <Grid container spacing={2}>
-        <Grid item xs={12} display="flex">
-          <Stack direction="column" sx={{ width: "100%" }}>
-            <Label id="name" label="Name *" />
-            <TextField
-              id="name"
-              name="name"
-              placeholder="Name *"
-              value={values.name}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              helperText={touched.name ? errors.name : ""}
-              error={touched.name && Boolean(errors.name)}
-            />
-          </Stack>
-
-          <FormControlLabel
-            sx={{ mt: 5, ml: 0 }}
-            control={
-              <Checkbox
-                margin="normal"
-                name="confirmedName"
-                value={values.confirmedName}
-                checked={values.confirmedName}
-                onChange={(e) =>
-                  setFieldValue("confirmedName", e.target.checked)
-                }
+        <Grid item xs={12}>
+          <Box sx={{ display: "flex", alignItems: "flex-start" }}>
+            <Stack direction="column" sx={{ width: "100%", marginRight: 1 }}>
+              <Label id="name" label="Name *" />
+              <TextField
+                id="name"
+                name="name"
+                placeholder="Name *"
+                value={values.name}
+                onChange={handleChange}
                 onBlur={handleBlur}
+                helperText={touched.name ? errors.name : ""}
+                error={touched.name && Boolean(errors.name)}
               />
-            }
-            label="Confirm"
-          />
-        </Grid>
-        <Grid item sm={6} xs={12} display="flex">
-          <Stack direction="column" sx={{ width: "100%" }}>
-            <Label
-              id="phone"
-              label="Phone"
-              tooltipTitle="Phone number for clients to use"
-            />
-            <TextField
-              id="phone"
-              name="phone"
-              placeholder="Phone"
-              value={values.phone}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              helperText={touched.phone ? errors.phone : ""}
-              error={touched.phone && Boolean(errors.phone)}
-            />
-          </Stack>
+            </Stack>
 
-          <FormControlLabel
-            sx={{ mt: 5, ml: 0 }}
-            control={
-              <Checkbox
-                margin="normal"
-                name="confirmedPhone"
-                value={values.confirmedPhone}
-                checked={values.confirmedPhone}
-                onChange={() =>
-                  setFieldValue("confirmedPhone", !values.confirmedPhone)
-                }
-                onBlur={handleBlur}
-              />
-            }
-            label="Confirm"
-          />
-        </Grid>
-        <Grid item sm={6} xs={12} display="flex">
-          <Stack direction="column" sx={{ width: "100%" }}>
-            <Label
-              id="email"
-              label="Email"
-              tooltipTitle="Email for clients to use"
-            />
-            <TextField
-              id="email"
-              name="email"
-              placeholder="Email"
-              value={values.email}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              helperText={touched.email ? errors.email : ""}
-              error={touched.email && Boolean(errors.email)}
-            />
-          </Stack>
-
-          <FormControlLabel
-            sx={{ mt: 5, ml: 0 }}
-            control={
-              <Checkbox
-                margin="normal"
-                name="confirmedEmail"
-                value={values.confirmedEmail}
-                checked={values.confirmedEmail}
-                onChange={() =>
-                  setFieldValue("confirmedEmail", !values.confirmedEmail)
-                }
-                onBlur={handleBlur}
-              />
-            }
-            label="Confirm"
-          />
-        </Grid>
-
-        <Grid item xs={12} sm={6} display="flex" alignItems="flex-start">
-          <Stack direction="column" sx={{ width: "100%" }}>
-            <Label id="selectedCategoryIds" label="Categories *" />
-            <Select
-              id="selectedCategoryIds"
-              name="selectedCategoryIds"
-              multiple
-              fullWidth
-              value={values.selectedCategoryIds}
-              onChange={handleChange}
-              input={<OutlinedInput />}
-              displayEmpty
-              renderValue={(selectedCategoryIds) => {
-                if (!categories) {
-                  return "Loading categories...";
-                }
-                if (selectedCategoryIds.length === 0) {
-                  return (
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        fontStyle: "italic",
-                        color: `${
-                          touched.selectedCategoryIds &&
-                          Boolean(errors.selectedCategoryIds)
-                            ? errorColor
-                            : disabledText
-                        }`,
-                      }}
-                    >
-                      Select Categories
-                    </Typography>
-                  );
-                }
-                return selectedCategoryIds
-                  .map(
-                    (categoryId) =>
-                      categories.filter(
-                        (category) => category.id === categoryId
-                      )[0].name
-                  )
-                  .join(", ");
-              }}
-              MenuProps={MenuProps}
-              error={
-                touched.selectedCategoryIds &&
-                Boolean(errors.selectedCategoryIds)
+            <FormControlLabel
+              sx={{ mt: 5, ml: 0 }}
+              control={
+                <Checkbox
+                  margin="normal"
+                  name="confirmedName"
+                  value={values.confirmedName}
+                  checked={values.confirmedName}
+                  onChange={(e) =>
+                    setFieldValue("confirmedName", e.target.checked)
+                  }
+                  onBlur={handleBlur}
+                />
               }
-            >
-              {!categories || categories.length === 0
-                ? null
-                : categories.map((category) => (
-                    <MenuItem key={category.id} value={category.id}>
-                      <Checkbox
-                        checked={
-                          values.selectedCategoryIds.indexOf(category.id) > -1
-                        }
-                      />
-                      <ListItemText primary={category.name} />
-                    </MenuItem>
-                  ))}
-            </Select>
-            <FormHelperText
-              sx={{ marginLeft: "14px" }}
-              error={
-                touched.selectedCategoryIds &&
-                Boolean(errors.selectedCategoryIds)
-              }
-            >
-              {touched.selectedCategoryIds ? errors.selectedCategoryIds : ""}
-            </FormHelperText>
-          </Stack>
-
-          <FormControlLabel
-            sx={{ mt: 5, ml: 0 }}
-            control={
-              <Checkbox
-                margin="normal"
-                name="confirmedCategories"
-                value={values.confirmedCategories}
-                checked={values.confirmedCategories}
-                onChange={() =>
-                  setFieldValue(
-                    "confirmedCategories",
-                    !values.confirmedCategories
-                  )
-                }
-                onBlur={handleBlur}
-              />
-            }
-            label="Confirm"
-          />
+              label="Confirm"
+            />
+          </Box>
         </Grid>
+
+        <Grid item xs={12} sm={6}>
+          <Box sx={{ display: "flex", alignItems: "flex-start" }}>
+            <Stack direction="column" sx={{ width: "100%" }}>
+              <Label
+                id="phone"
+                label="Phone"
+                tooltipTitle="Phone number for clients to use"
+              />
+              <TextField
+                id="phone"
+                name="phone"
+                placeholder="Phone"
+                value={values.phone}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                helperText={touched.phone ? errors.phone : ""}
+                error={touched.phone && Boolean(errors.phone)}
+              />
+            </Stack>
+            <FormControlLabel
+              sx={{ mt: 5, ml: 0 }}
+              control={
+                <Checkbox
+                  margin="normal"
+                  name="confirmedPhone"
+                  value={values.confirmedPhone}
+                  checked={values.confirmedPhone}
+                  onChange={() =>
+                    setFieldValue("confirmedPhone", !values.confirmedPhone)
+                  }
+                  onBlur={handleBlur}
+                />
+              }
+              label="Confirm"
+            />
+          </Box>
+        </Grid>
+
+        <Grid item sm={6} xs={12}>
+          <Box sx={{ display: "flex", alignItems: "flex-start" }}>
+            <Stack direction="column" sx={{ width: "100%" }}>
+              <Label
+                id="email"
+                label="Email"
+                tooltipTitle="Email for clients to use"
+              />
+              <TextField
+                id="email"
+                name="email"
+                placeholder="Email"
+                value={values.email}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                helperText={touched.email ? errors.email : ""}
+                error={touched.email && Boolean(errors.email)}
+              />
+            </Stack>
+            <FormControlLabel
+              sx={{ mt: 5, ml: 0 }}
+              control={
+                <Checkbox
+                  margin="normal"
+                  name="confirmedEmail"
+                  value={values.confirmedEmail}
+                  checked={values.confirmedEmail}
+                  onChange={() =>
+                    setFieldValue("confirmedEmail", !values.confirmedEmail)
+                  }
+                  onBlur={handleBlur}
+                />
+              }
+              label="Confirm"
+            />
+          </Box>
+        </Grid>
+
+        <Grid item xs={12} sm={6}>
+          <Box sx={{ display: "flex", alignItems: "flex-start" }}>
+            <Stack direction="column" sx={{ width: "100%" }}>
+              <Label id="selectedCategoryIds" label="Categories *" />
+              <Select
+                id="selectedCategoryIds"
+                name="selectedCategoryIds"
+                multiple
+                fullWidth
+                value={values.selectedCategoryIds}
+                onChange={handleChange}
+                input={<OutlinedInput />}
+                displayEmpty
+                renderValue={(selectedCategoryIds) => {
+                  if (!categories) {
+                    return "Loading categories...";
+                  }
+                  if (selectedCategoryIds.length === 0) {
+                    return (
+                      <Typography
+                        variant="body1"
+                        sx={{
+                          fontStyle: "italic",
+                          color: `${
+                            touched.selectedCategoryIds &&
+                            Boolean(errors.selectedCategoryIds)
+                              ? errorColor
+                              : disabledText
+                          }`,
+                        }}
+                      >
+                        Select Categories
+                      </Typography>
+                    );
+                  }
+                  return selectedCategoryIds
+                    .map(
+                      (categoryId) =>
+                        categories.filter(
+                          (category) => category.id === categoryId
+                        )[0].name
+                    )
+                    .join(", ");
+                }}
+                MenuProps={MenuProps}
+                error={
+                  touched.selectedCategoryIds &&
+                  Boolean(errors.selectedCategoryIds)
+                }
+              >
+                {!categories || categories.length === 0
+                  ? null
+                  : categories.map((category) => (
+                      <MenuItem key={category.id} value={category.id}>
+                        <Checkbox
+                          checked={
+                            values.selectedCategoryIds.indexOf(category.id) > -1
+                          }
+                        />
+                        <ListItemText primary={category.name} />
+                      </MenuItem>
+                    ))}
+              </Select>
+              <FormHelperText
+                sx={{ marginLeft: "14px" }}
+                error={
+                  touched.selectedCategoryIds &&
+                  Boolean(errors.selectedCategoryIds)
+                }
+              >
+                {touched.selectedCategoryIds ? errors.selectedCategoryIds : ""}
+              </FormHelperText>
+            </Stack>
+
+            <FormControlLabel
+              sx={{ mt: 5, ml: 0 }}
+              control={
+                <Checkbox
+                  margin="normal"
+                  name="confirmedCategories"
+                  value={values.confirmedCategories}
+                  checked={values.confirmedCategories}
+                  onChange={() =>
+                    setFieldValue(
+                      "confirmedCategories",
+                      !values.confirmedCategories
+                    )
+                  }
+                  onBlur={handleBlur}
+                />
+              }
+              label="Confirm"
+            />
+          </Box>
+        </Grid>
+
         <Grid item xs={12} sm={6}>
           <div>
             <Label

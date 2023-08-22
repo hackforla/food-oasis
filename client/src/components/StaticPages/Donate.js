@@ -24,7 +24,7 @@ import donationStep7 from "images/donationStep7.png";
 import * as analytics from "../../services/analytics";
 import { IconButton } from "../UI/StandardButton";
 import Footer from "../Layout/Footer";
-
+import { PageWrapper } from "./PageWrapper";
 
 
 const Donate = () => {
@@ -38,13 +38,7 @@ const Donate = () => {
     setShowDonationDialog(showDonationDialog ? false : true);
   };
   return (
-    <Container 
-       sx={{
-        padding: { xs: "1.5rem 0", md: "1.5rem 2rem"},
-         margin: "0 auto",
-         maxWidth: "1200px"
-       }}
-       >
+    <PageWrapper>
          <CardMedia component="img" alt="Donate" src={donatebg} style={{ width: "100%" }}></CardMedia>
         <Typography variant="h1"
         sx={{
@@ -110,7 +104,7 @@ const Donate = () => {
           )}
         </Container>
         <Footer />
-      </Container>
+        </PageWrapper>
   );
 };
 

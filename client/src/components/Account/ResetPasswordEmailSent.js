@@ -1,8 +1,9 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@mui/material";
-import { Avatar, Box, Container, CssBaseline, Typography } from "@mui/material";
+import { Avatar, Box, CssBaseline, Typography } from "@mui/material";
 import { palette } from "theme/palette";
+import { PageWrapper } from "./PageWrapper";
 
 const MailIcon = () => {
   return (
@@ -27,59 +28,51 @@ const MailIcon = () => {
   );
 };
 
-
 const ResetPasswordEmailSent = (props) => {
-  const { classes} = props;
   const navigate = useNavigate();
   const { email } = useParams();
 
   return (
-    <Container component="main" maxWidth="xs"
-    sx={{
-      display: "flex",
-      height: "97.8%",
-      flexDirection: "column",
-    }}
-    >
-        <CssBaseline />
-        <Box
+    <PageWrapper>
+      <CssBaseline />
+      <Box
         sx={{
           marginTop: "8px",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
-        >
-         <Avatar
+      >
+        <Avatar
           sx={{
             margin: "8px",
             backgroundColor: palette.secondary.main,
           }}
-          >
-            <MailIcon />
-          </Avatar>
-          <Typography
-            component="h1"
-            variant="h5"
-            sx={{
-              width: "100%", 
-              margin: "24px 0px"
-            }}
-            align="center"
-          >
-            Password Reset Link was Sent
-          </Typography>
-          <Typography component="p" align="center">
-            A password reset link was sent to {email}.<br /> If you
-            don’t see it in your inbox, please check your junk/spam folder.
-          </Typography>
-          <Box sx={{ mt: 2, mb: 2 }}>
-            <Button variant="contained" onClick={() => navigate("/login")}>
-              Back to login
-            </Button>
-          </Box>
+        >
+          <MailIcon />
+        </Avatar>
+        <Typography
+          component="h1"
+          variant="h5"
+          sx={{
+            width: "100%",
+            margin: "24px 0px",
+          }}
+          align="center"
+        >
+          Password Reset Link was Sent
+        </Typography>
+        <Typography component="p" align="center">
+          A password reset link was sent to {email}.<br /> If you don’t see it
+          in your inbox, please check your junk/spam folder.
+        </Typography>
+        <Box sx={{ mt: 2, mb: 2 }}>
+          <Button variant="contained" onClick={() => navigate("/login")}>
+            Back to login
+          </Button>
         </Box>
-      </Container>
+      </Box>
+    </PageWrapper>
   );
 };
 

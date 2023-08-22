@@ -4,7 +4,7 @@ export default function Checkbox(theme) {
       defaultProps: {
         disableRipple: true,
         disableTouchRipple: true,
-        color: "secondary",
+        color: "primary",
       },
       styleOverrides: {
         root: {
@@ -14,8 +14,8 @@ export default function Checkbox(theme) {
             borderWidth: "2px",
             borderRadius: "4px",
           },
-        "&:hover": {
-          backgroundColor: "rgba(51, 102, 153, 0.2)",
+          "&:hover": {
+            backgroundColor: "rgba(51, 102, 153, 0.2)",
           },
         },
       },

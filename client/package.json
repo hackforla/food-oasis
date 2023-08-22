@@ -25,7 +25,7 @@
     "@mui/material": "^5.11.1",
     "@mui/styles": "^5.11.1",
     "@mui/x-data-grid": "^5.17.20",
-    "@mui/x-date-pickers": "^5.0.12",
+    "@mui/x-date-pickers": "^6.8.0",
     "axios": "^0.21.4",
     "dayjs": "^1.11.7",
     "debounce-fn": "^5.0.0",

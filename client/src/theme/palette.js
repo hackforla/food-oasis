@@ -13,6 +13,7 @@ export const linkVisited = "#551A8B";
 export const linkHovered = "#004BA0";
 export const darkGray = "#4D4D4D";
 export const disabledText = "#999999";
+export const tooltipHover = "rgba(51, 102, 153, 0.2)";
 
 //Icon and List Colors
 export const foodPantry = "#336699"; //blue
@@ -72,5 +73,8 @@ export const palette = {
   },
   confirmed: {
     main: confirmed,
+  },
+  tooltip: {
+    hover: tooltipHover,
   },
 };

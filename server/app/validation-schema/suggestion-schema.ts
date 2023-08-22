@@ -10,6 +10,7 @@ export const suggestionPostRequestSchema: JSONSchemaType<
     stakeholderId: {
       type: "integer",
       minimum: 1,
+      nullable: true,
     },
     adminNotes: {
       type: "string",
@@ -17,7 +18,7 @@ export const suggestionPostRequestSchema: JSONSchemaType<
     suggestionStatusId: { type: "integer" },
     name: {
       type: "string",
-      pattern: "^[^s].+[^s]$",
+      minLength: 1,
     },
     address1: {
       type: "string",
@@ -78,7 +79,7 @@ export const suggestionPostRequestSchema: JSONSchemaType<
       minimum: 1,
     },
   },
-  additionalProperties: false,
+  additionalProperties: true,
 };
 
 export const suggestionPutRequestSchema: JSONSchemaType<

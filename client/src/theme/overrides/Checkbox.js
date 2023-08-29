@@ -15,7 +15,7 @@ export default function Checkbox(theme) {
             borderRadius: "4px",
           },
           "&:hover": {
-            backgroundColor: "rgba(51, 102, 153, 0.2)",
+            backgroundColor: theme.palette.tooltip.hover,
           },
         },
       },

@@ -62,20 +62,22 @@ export default function AddressDropDown({ showSearchIcon }) {
         size="small"
         autoFocus={false}
         onClick={() => setInputVal("")}
-        xs={{
-          textOverflow: "ellipsis",
-          paddingRight: "20px",
-          color: "#252525",
+        InputLabelProps={{
+          sx: {
+            textOverflow: "ellipsis",
+            paddingRight: "20px",
+            color: "#252525",
+          }
         }}
         InputProps={{
+          sx: {
+            cursor: "pointer"
+          },
           endAdornment: (
             <InputAdornment
               position="end"
               onClick={() => {
                 navigate(isWidget ? "/widget" : "/organizations");
-              }}
-              xs={{
-                cursor: "pointer",
               }}
             >
               <SearchIcon />

@@ -79,7 +79,7 @@ const Footer = () => {
       justifyContent: "space-between",
       color: "#1b1b1b",
       [theme.breakpoints.up("md")]: {
-        alignItems: 'center'
+        alignItems: 'flex-start'
       },
       fontFamily: `"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans- serif`,
     })}
@@ -110,8 +110,7 @@ const Footer = () => {
       [theme.breakpoints.up("md")]: {
         flexDirection: "row",
         alignItems: "flex-start",
-        gap: "4em",
-        justifyContent: 'center',
+        gap: "4em"
       },
       [theme.breakpoints.down("md")]: {
         height: '135px',

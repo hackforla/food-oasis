@@ -106,7 +106,11 @@ const Footer = () => {
         flexDirection: "row",
         alignItems: "flex-start",
         gap: "4em",
+        height: ''
       },
+      [theme.breakpoints.down("md")]: {
+        height: '135px',
+      }
     })}>
       {constantLinks}
       </Box>

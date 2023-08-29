@@ -1,6 +1,7 @@
 import { JSONSchemaType } from "ajv";
 import { InsertStakeholderParams } from '../../types/stakeholder-types';
 
+// we could ignore typescript error for red line under "stakeholderRequestSchema" 
 export const stakeholderRequestSchema: JSONSchemaType<InsertStakeholderParams> = {
   type: "object",
   required: [],
@@ -21,7 +22,7 @@ export const stakeholderRequestSchema: JSONSchemaType<InsertStakeholderParams> =
         },
         {
           type: "string",
-          maxLength: 0
+          maxLength: 0 // this makes it sure we won't have empty string error
         }
       ]
     },
@@ -236,5 +237,3 @@ export const stakeholderRequestSchema: JSONSchemaType<InsertStakeholderParams> =
   },
   additionalProperties: false,
 }
-
-

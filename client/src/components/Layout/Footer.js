@@ -69,17 +69,21 @@ const Footer = () => {
 
   return (
     <Box
-    sx={{
+    sx={(theme) => ({
       position: "relative",
+      alignItems: 'flex-end',
       backgroundColor: "#FFF",
       padding: "1.5rem 1rem",
       display: "flex",
       flexDirection: "row",
       justifyContent: "space-between",
       color: "#1b1b1b",
+      [theme.breakpoints.up("md")]: {
+        alignItems: 'center'
+      },
       fontFamily: `"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans- serif`,
-    }}
-    style={holderStyle}>
+    })}
+    >
       <CardMedia
       component='img'
       alt='logo'
@@ -89,6 +93,7 @@ const Footer = () => {
         height: "100%",
         width: "100%",
         marginTop: "0",
+       
         "&:hover": {
           filter: "brightness(1.2)",
         },
@@ -106,7 +111,7 @@ const Footer = () => {
         flexDirection: "row",
         alignItems: "flex-start",
         gap: "4em",
-        height: ''
+        justifyContent: 'center',
       },
       [theme.breakpoints.down("md")]: {
         height: '135px',

@@ -15,7 +15,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { Formik } from "formik";
 import * as suggestionService from "../../services/suggestion-service";
-import { Redirect, withRouter } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import Chip from "@mui/material/Chip";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -37,7 +37,8 @@ import HomeIcon from "@mui/icons-material/Home";
 import LocationCityIcon from "@mui/icons-material/LocationCity";
 import PhoneIcon from "@mui/icons-material/Phone";
 import { getIsMobile } from "../../utils";
-import { TextField } from "@mui/material";
+import Label from "./ui/Label";
+import Textarea from "./ui/Textarea";
 
 const columns = [
   { id: "name", label: "Name", minWidth: 100 },
@@ -92,7 +93,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Suggestions(props) {
+function Suggestions() {
   const initialStatusIds = [1, 2, 3, 4];
   const [suggestions, setSuggestions] = React.useState([]);
   const classes = useStyles();
@@ -104,6 +105,7 @@ function Suggestions(props) {
   const [filters, setFilters] = React.useState(initialStatusIds);
   let { data, status, setStatusIds } = useSuggestions(initialStatusIds);
   const isMobile = getIsMobile();
+  const location = useLocation();
 
   React.useEffect(() => {
     if (data) {
@@ -114,9 +116,7 @@ function Suggestions(props) {
   React.useEffect(() => {
     if (status === 401) {
       return (
-        <Redirect
-          to={{ pathname: "/login", state: { from: props.location } }}
-        />
+        <Navigate to={{ pathname: "/login", state: { from: location } }} />
       );
     }
   });
@@ -352,18 +352,19 @@ function Suggestions(props) {
                       />
                     </List>
                     <Divider style={{ margin: "1em 0" }} />
-                    <TextField
-                      label="Admin Notes"
-                      id="adminNotes"
-                      value={values.adminNotes || ""}
-                      onChange={handleChange}
-                      helperText={touched.adminNotes ? errors.adminNotes : ""}
-                      error={touched.adminNotes && Boolean(errors.adminNotes)}
-                      fullWidth
-                      autoFocus
-                      multiline
-                      minRows={4}
-                    />
+                    <div>
+                      <Label id="adminNotes" label="Admin Notes" />
+                      <Textarea
+                        placeholder="Admin Notes"
+                        id="adminNotes"
+                        value={values.adminNotes || ""}
+                        onChange={handleChange}
+                        helperText={touched.adminNotes ? errors.adminNotes : ""}
+                        error={touched.adminNotes && Boolean(errors.adminNotes)}
+                        fullWidth
+                        autoFocus
+                      />
+                    </div>
                     <List>
                       <DisplayText
                         label="Suggestion"
@@ -430,4 +431,4 @@ const DisplayText = ({ label, value, icon = <CommentIcon /> }) => {
   );
 };
 
-export default withRouter(Suggestions);
+export default Suggestions;

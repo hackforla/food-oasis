@@ -1,11 +1,10 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
-import withStyles from "@mui/styles/withStyles";
+import { useNavigate, useParams } from "react-router-dom";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import * as accountService from "../../services/account-service";
 import { Button } from "@mui/material";
-import { Avatar, Box, Container, CssBaseline, Typography } from "@mui/material";
+import { Avatar, Box, CssBaseline, Typography } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useToasterContext } from "../../contexts/toasterContext";
 import PasswordInput from "../UI/PasswordInput";
@@ -13,31 +12,9 @@ import {
   PASSWORD_VALIDATION_ERROR,
   PASSWORD_VALIDATION_REGEX,
 } from "helpers/Constants";
-
-const styles = (theme) => ({
-  paper: {
-    marginTop: theme.spacing(1),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  body: {
-    display: "flex",
-    height: "97.8%",
-    flexDirection: "column",
-  },
-  container: {
-    flex: 1,
-  },
-});
+import Label from "components/Admin/ui/Label";
+import { palette } from "theme/palette";
+import { PageWrapper } from "./PageWrapper";
 
 const validationSchema = Yup.object().shape({
   token: Yup.string().required("Token is required"),
@@ -50,92 +27,109 @@ const validationSchema = Yup.object().shape({
 });
 
 const ResetPassword = (props) => {
-  const { classes, history, match } = props;
   const { setToast } = useToasterContext();
+  const navigate = useNavigate();
+  const { token } = useParams();
 
   return (
-    <div className={classes.body}>
-      <Container component="main" maxWidth="xs" className={classes.container}>
-        <CssBaseline />
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Password Reset
-          </Typography>
-          <Formik
-            initialValues={{
-              token: match.params.token,
-              password: "",
-              passwordConfirm: "",
-            }}
-            validationSchema={validationSchema}
-            onSubmit={async (values, formikBag) => {
-              try {
-                const response = await accountService.resetPassword(
-                  values.token,
-                  values.password
-                );
-                if (response.isSuccess) {
-                  setToast({
-                    message: "Password has been reset. Please use it to login.",
-                  });
-                  history.push({
-                    pathname: `/login/${response.email}`,
-                    state: {
-                      isPasswordReset: true,
-                    },
-                  });
-                } else if (
-                  response.code === "RESET_PASSWORD_TOKEN_INVALID" ||
-                  response.code === "RESET_PASSWORD_TOKEN_EXPIRED"
-                ) {
-                  console.error(
-                    "The reset token is invalid or has expired. Use the forgot password link to try again."
-                  );
-                  formikBag.setSubmitting(false);
-                } else {
-                  // RESET_PASSWORD_FAILED  with unexpected error
-                  setToast({
-                    message: `${response.message}`,
-                  });
-                  formikBag.setSubmitting(false);
-                }
-              } catch (err) {
+    <PageWrapper>
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: "8px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Avatar
+          sx={{
+            margin: "8px",
+            backgroundColor: palette.secondary.main,
+          }}
+        >
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Password Reset
+        </Typography>
+        <Formik
+          initialValues={{
+            token: token,
+            password: "",
+            passwordConfirm: "",
+          }}
+          validationSchema={validationSchema}
+          onSubmit={async (values, formikBag) => {
+            try {
+              const response = await accountService.resetPassword(
+                values.token,
+                values.password
+              );
+              if (response.isSuccess) {
                 setToast({
-                  message: `Password reset failed. ${err.message}`,
+                  message: "Password has been reset. Please use it to login.",
                 });
-                console.error(err);
+                navigate({
+                  pathname: `/login/${response.email}`,
+                  state: {
+                    isPasswordReset: true,
+                  },
+                });
+              } else if (
+                response.code === "RESET_PASSWORD_TOKEN_INVALID" ||
+                response.code === "RESET_PASSWORD_TOKEN_EXPIRED"
+              ) {
+                console.error(
+                  "The reset token is invalid or has expired. Use the forgot password link to try again."
+                );
+                formikBag.setSubmitting(false);
+              } else {
+                // RESET_PASSWORD_FAILED  with unexpected error
+                setToast({
+                  message: `${response.message}`,
+                });
                 formikBag.setSubmitting(false);
               }
-            }}
-          >
-            {({
-              values,
-              errors,
-              touched,
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              isSubmitting,
-              isValid,
-              dirty,
-              /* and other goodies */
-            }) => (
-              <form
-                className={classes.form}
-                noValidate
-                onSubmit={(evt) => {
-                  evt.preventDefault();
-                  handleSubmit(evt);
+            } catch (err) {
+              setToast({
+                message: `Password reset failed. ${err.message}`,
+              });
+              console.error(err);
+              formikBag.setSubmitting(false);
+            }
+          }}
+        >
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            isSubmitting,
+            isValid,
+            dirty,
+            /* and other goodies */
+          }) => (
+            <form
+              noValidate
+              onSubmit={(evt) => {
+                evt.preventDefault();
+                handleSubmit(evt);
+              }}
+            >
+              <Box
+                sx={{
+                  width: "100%", // Fix IE 11 issue.
+                  marginTop: "8px",
                 }}
               >
+                <Label id="password" label="New Password" />
                 <PasswordInput
-                  margin="normal"
                   fullWidth
                   name="password"
-                  label="New Password"
+                  placeholder="New Password"
                   id="password"
                   autoComplete="current-password"
                   value={values.password}
@@ -145,11 +139,13 @@ const ResetPassword = (props) => {
                   error={touched.password && Boolean(errors.password)}
                   sx={{ mt: 2, mb: 2 }}
                 />
+              </Box>
+              <Box>
+                <Label id="passwordConfirm" label="Confirm Password" />
                 <PasswordInput
-                  margin="normal"
                   fullWidth
                   name="passwordConfirm"
-                  label="Confirm Password"
+                  placeholder="Confirm Password"
                   id="passwordConfirm"
                   value={values.passwordConfirm}
                   onChange={handleChange}
@@ -162,23 +158,23 @@ const ResetPassword = (props) => {
                   }
                   sx={{ mt: 2, mb: 2 }}
                 />
-                <Box sx={{ mt: 2, mb: 2 }}>
-                  <Button
-                    variant="contained"
-                    type="submit"
-                    disabled={isSubmitting || !(isValid && dirty)}
-                    fullWidth
-                  >
-                    Reset Password
-                  </Button>
-                </Box>
-              </form>
-            )}
-          </Formik>
-        </div>
-      </Container>
-    </div>
+              </Box>
+              <Box sx={{ mt: 2, mb: 2 }}>
+                <Button
+                  variant="contained"
+                  type="submit"
+                  disabled={isSubmitting || !(isValid && dirty)}
+                  fullWidth
+                >
+                  Reset Password
+                </Button>
+              </Box>
+            </form>
+          )}
+        </Formik>
+      </Box>
+    </PageWrapper>
   );
 };
 
-export default withStyles(styles)(withRouter(ResetPassword));
+export default ResetPassword;

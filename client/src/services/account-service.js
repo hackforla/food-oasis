@@ -86,3 +86,14 @@ export const setGlobalPermissions = async (userId, permissionName, value) => {
     console.error(err);
   }
 };
+
+export const updateProfile = async (userId, values) => {
+  const body = { ...values, tenantId };
+  try {
+    const response = await axios.put(baseUrl + `/${userId}`, body);
+    return response;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};

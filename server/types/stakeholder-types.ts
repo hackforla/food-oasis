@@ -201,3 +201,74 @@ export interface NeedsVerificationParams {
   preserveConfirmations: number;
   message: string;
 }
+
+export interface FoodSeekerStakeholder {
+  address1: string;
+  address2: null | string;
+  adminContactEmail: null | string;
+  adminContactName: null | string;
+  adminContactPhone: null | string;
+  allowWalkins: boolean;
+  approvedDate: null | string;
+  categories: StakeholderCategory[];
+  categoryIds: number[];
+  city: string;
+  covidNotes: string;
+  createdDate: string;
+  description: string;
+  email: string;
+  facebook: string;
+  foodTypes: string;
+  hours: Hour[] | null;
+  hoursNotes: string;
+  id: number;
+  inactive: boolean;
+  inactiveTemporary: boolean;
+  instagram: string;
+  isVerified: boolean;
+  items: string;
+  languages: string;
+  latitude: string;
+  linkedin: string;
+  longitude: string;
+  modifiedDate: null | string;
+  name: string;
+  neighborhoodId: number | null;
+  neighborhoodName: null | string;
+  notes: string;
+  parentOrganization: string;
+  parentOrganizationId: null;
+  phone: string;
+  physicalAccess: string;
+  pinterest: string;
+  requirements: string;
+  reviewNotes: null | string;
+  services: string;
+  state: string;
+  tags: null | string[];
+  twitter: string;
+  verificationStatusId: number;
+  website: string;
+  zip: string;
+}
+
+export interface Hour {
+  close: string;
+  day_of_week: DayOfWeek;
+  open: string;
+  week_of_month: number;
+}
+
+export enum DayOfWeek {
+  Fri = "Fri",
+  Mon = "Mon",
+  Sat = "Sat",
+  Sun = "Sun",
+  Thu = "Thu",
+  Tue = "Tue",
+  Wed = "Wed",
+}
+
+export interface FoodSeekerStakeholderParams {
+  tenantId: string;
+}

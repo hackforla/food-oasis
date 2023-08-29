@@ -1,5 +1,4 @@
 import React from "react";
-import { useHistory } from "react-router";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Typography, Tooltip } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
@@ -8,7 +7,7 @@ import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import AddressDropDown from "components/FoodSeeker/AddressDropDown";
 import { Button } from "@mui/material";
 import * as analytics from "services/analytics";
@@ -114,7 +113,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Home = () => {
   const classes = useStyles();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { tenantId, tenantDetails } = useSiteContext();
   const { taglineText } = tenantDetails;
   const [bgImg, setBgImg] = React.useState(`url("/landing-page/bg-LA.jpeg")`);
@@ -169,7 +168,7 @@ const Home = () => {
           <Box className={classes.formContainer}>
             <form
               className={classes.form}
-              onSubmit={() => history.push("/organizations")}
+              onSubmit={() => navigate("/organizations")}
             >
               <Typography variant="h2" className={classes.subtitle}>
                 {taglineText}

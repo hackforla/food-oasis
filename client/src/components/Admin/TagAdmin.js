@@ -19,7 +19,8 @@ import { IconButton } from "../UI/StandardButton";
 import { Formik } from "formik";
 import { tenantId } from "helpers/Configuration";
 // import IconButton from "components/UI/IconButton";
-import { Redirect, withRouter } from "react-router-dom";
+import { Navigate,useLocation  } from "react-router-dom";
+import Label from "./ui/Label";
 
 const columns = [
   { id: "edit", label: "" },
@@ -74,6 +75,7 @@ function TagAdmin(props) {
   const [modalStyle] = React.useState(getModalStyle);
   const [error, setError] = React.useState("");
   const [deleteError, setDeleteError] = React.useState("");
+  const location = useLocation();
 
   React.useEffect(() => {
     if (data) {
@@ -84,8 +86,8 @@ function TagAdmin(props) {
   React.useEffect(() => {
     if (status === 401) {
       return (
-        <Redirect
-          to={{ pathname: "/login", state: { from: props.location } }}
+        <Navigate
+          to={{ pathname: "/login", state: { from: location } }}
         />
       );
     }
@@ -265,16 +267,19 @@ function TagAdmin(props) {
                     handleSubmit(e);
                   }}
                 >
-                  <TextField
-                    label="Name"
-                    id="name"
-                    value={values.name}
-                    onChange={handleChange}
-                    helperText={touched.name ? errors.name : ""}
-                    error={touched.name && Boolean(errors.name)}
-                    fullWidth
-                    autoFocus
-                  />
+                  <div>
+                    <Label id="name" label="Name" />
+                    <TextField
+                      placeholder="Name"
+                      id="name"
+                      value={values.name}
+                      onChange={handleChange}
+                      helperText={touched.name ? errors.name : ""}
+                      error={touched.name && Boolean(errors.name)}
+                      fullWidth
+                      autoFocus
+                    />
+                  </div>
 
                   {error && (
                     <div className={classes.error}>Something went wrong.</div>
@@ -304,4 +309,4 @@ function TagAdmin(props) {
   );
 }
 
-export default withRouter(TagAdmin);
+export default TagAdmin;

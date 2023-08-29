@@ -20,7 +20,7 @@ import {
   useUserCoordinates,
 } from "../../../../appReducer";
 import StakeholderIcon from "images/stakeholderIcon";
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   formatDatewTimeZoneDD,
   formatDatewTimeZonehhmmss,
@@ -130,7 +130,7 @@ const StakeholderPreview = ({ stakeholder }) => {
   const originCoordinates = searchCoordinates || userCoordinates;
   const { tenantId } = useSiteContext();
   const tenantTimeZone = TENANT_TIME_ZONES[tenantId];
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
 
   const handleSelectOrganization = (organization) => {
@@ -142,7 +142,7 @@ const StakeholderPreview = ({ stakeholder }) => {
 
     //Update url history
     const name = organization.name.toLowerCase().replaceAll(" ", "_");
-    history.push(
+    navigate(
       `${location.pathname}?latitude=${organization.latitude}&longitude=${organization.longitude}&org=${name}&id=${organization.id}`
     );
   };
@@ -172,7 +172,11 @@ const StakeholderPreview = ({ stakeholder }) => {
         padding: "0.5rem",
       }}
     >
-      <Grid2 xs={2}>
+      <Grid2
+        xs={2}
+        sx={{ cursor: "pointer" }}
+        onClick={() => handleSelectOrganization(stakeholder)}
+      >
         <Stack
           xs={2}
           direction="column"
@@ -198,80 +202,86 @@ const StakeholderPreview = ({ stakeholder }) => {
 
       <Grid2 xs={10}>
         <Stack direction="column" xs={10}>
-          <Typography variant="h6" component="h2" align="left">
-            {stakeholder.name}
-          </Typography>
-          <Box textAlign="left">
-            {stakeholder.categories.map((category) => (
+          <Stack
+            sx={{ cursor: "pointer" }}
+            onClick={() => handleSelectOrganization(stakeholder)}
+          >
+            <Typography variant="h6" component="h2" align="left">
+              {stakeholder.name}
+            </Typography>
+            <Box textAlign="left">
+              {stakeholder.categories.map((category) => (
+                <Typography
+                  variant="body2"
+                  fontStyle="italic"
+                  key={stakeholder.id + category.id}
+                  sx={{
+                    margin: "0.25em 0",
+                    marginRight: "0.25em",
+                    color:
+                      stakeholder.inactiveTemporary || stakeholder.inactive
+                        ? CLOSED_COLOR
+                        : category.id === FOOD_PANTRY_CATEGORY_ID
+                        ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
+                        : category.id === MEAL_PROGRAM_CATEGORY_ID
+                        ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
+                        : "#000",
+                  }}
+                >
+                  {category.name}
+                </Typography>
+              ))}
+            </Box>
+            <Box textAlign="left">
               <Typography
                 variant="body2"
+                component="p"
                 fontStyle="italic"
-                key={stakeholder.id + category.id}
+                key={stakeholder.id}
                 sx={{
-                  margin: "0.25em 0",
-                  marginRight: "0.25em",
-                  color:
-                    stakeholder.inactiveTemporary || stakeholder.inactive
-                      ? CLOSED_COLOR
-                      : category.id === FOOD_PANTRY_CATEGORY_ID
-                      ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
-                      : category.id === MEAL_PROGRAM_CATEGORY_ID
-                      ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
-                      : "#000",
+                  alignSelf: "flex-start",
+                  margin: "0 0.25em 0.5em 0",
                 }}
               >
-                {category.name}
+                {stakeholder.foodTypes}
               </Typography>
-            ))}
-          </Box>
-          <Box textAlign="left">
-            <Typography
-              variant="body2"
-              component="p"
-              fontStyle="italic"
-              key={stakeholder.id}
-              sx={{
-                alignSelf: "flex-start",
-                margin: "0 0.25em 0.5em 0",
-              }}
-            >
-              {stakeholder.foodTypes}
-            </Typography>
-          </Box>
+            </Box>
 
-          <Box textAlign="left">
-            {stakeholder.inactiveTemporary || stakeholder.inactive ? (
-              <Chip
-                color="inactiveButton"
-                label={
-                  stakeholder.inactiveTemporary
-                    ? "Temporarily Closed"
-                    : "Permanently Closed"
-                }
-              />
-            ) : null}
+            <Box textAlign="left">
+              {stakeholder.inactiveTemporary || stakeholder.inactive ? (
+                <Chip
+                  color="inactiveButton"
+                  label={
+                    stakeholder.inactiveTemporary
+                      ? "Temporarily Closed"
+                      : "Permanently Closed"
+                  }
+                />
+              ) : null}
 
-            {showAllowWalkinsFlag &&
-              !(stakeholder.inactiveTemporary || stakeholder.inactive) && (
-                <>
-                  {isOpenFlag && (
-                    <Chip
-                      // sx={{ backgroundColor: "#008000" }}
-                      color="success"
-                      label="OPEN NOW"
-                    />
-                  )}
-                  {isAlmostClosedFlag && (
-                    <Chip
-                      // sx={{ backgroundColor: "#CC3333" }}
-                      color="mealProgram"
-                      label={`Closing in ${minutesToClosing} minutes`}
-                    />
-                  )}
-                  <Chip label="Walk-Ins Allowed" color="primary" />
-                </>
-              )}
-          </Box>
+              {showAllowWalkinsFlag &&
+                !(stakeholder.inactiveTemporary || stakeholder.inactive) && (
+                  <>
+                    {isOpenFlag && (
+                      <Chip
+                        // sx={{ backgroundColor: "#008000" }}
+                        color="success"
+                        label="OPEN NOW"
+                      />
+                    )}
+                    {isAlmostClosedFlag && (
+                      <Chip
+                        // sx={{ backgroundColor: "#CC3333" }}
+                        color="mealProgram"
+                        label={`Closing in ${minutesToClosing} minutes`}
+                      />
+                    )}
+                    <Chip label="Walk-Ins Allowed" color="primary" />
+                  </>
+                )}
+            </Box>
+          </Stack>
+
           <Stack direction="row" sx={{ justifyContent: "space-between" }}>
             <Button
               variant="outlined"

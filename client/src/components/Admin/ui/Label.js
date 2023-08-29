@@ -8,6 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
+import { tooltipHover } from "theme/palette";
 
 const Label = ({ id, label, tooltipTitle }) => {
   const [tooltipOpen, setTooltipOpen] = useState(false);
@@ -27,24 +28,11 @@ const Label = ({ id, label, tooltipTitle }) => {
               open={tooltipOpen}
               arrow
               placement="top-start"
-              componentsProps={{
-                tooltip: {
-                  sx: {
-                    backgroundColor: "#D9D9D9",
-                    color: "black",
-                    padding: "24px",
-                    borderRadius: "8px",
-                    maxWidth: "592px",
-                  },
-                },
-                arrow: {
-                  sx: {
-                    color: "#D9D9D9",
-                  },
-                },
-              }}
             >
-              <IconButton onClick={() => handleToolTipToggle()}>
+              <IconButton
+                sx={{ "&:hover": { backgroundColor: tooltipHover } }}
+                onClick={() => handleToolTipToggle()}
+              >
                 <InfoOutlinedIcon />
               </IconButton>
             </Tooltip>

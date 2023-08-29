@@ -7,6 +7,7 @@ import MuiButtons from "./MuiButtons";
 import MuiLink from "./MuiLink";
 import MuiTextField from "./MuiTextField";
 import MuiPaper from "./MuiPaper";
+import MuiChips from "./MuiChips";
 
 function MuiDemo() {
   return (
@@ -48,9 +49,14 @@ function MuiDemo() {
           </CardContent>
         </Card>
 
-        <Card spacing={1} sx={{ spacing: 1 }}>
+        <Card spacing={1}>
           <CardHeader title="Paper" />
           <MuiPaper />
+        </Card>
+
+        <Card spacing={1}>
+          <CardHeader title="Chips" />
+          <MuiChips />
         </Card>
       </Stack>
     </Container>

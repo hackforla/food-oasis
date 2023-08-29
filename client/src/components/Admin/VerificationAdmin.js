@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { useLocation, Redirect } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Button, CssBaseline, Dialog, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import MuiDialogTitle from "@mui/material/DialogTitle";
@@ -132,10 +132,10 @@ function VerificationAdmin() {
     useState(false);
   const [criteria, setCriteria] = useState(defaultCriteria);
   const [selectedStakeholderIds, setSelectedStakeholderIds] = useState([]);
-  const [unauthorized, setUnauthorized] = useState(false);
   const userCoordinates = useUserCoordinates();
   const location = useLocation();
   const searchCoordinates = useSearchCoordinates();
+  const navigate = useNavigate();
 
   const {
     data: categories,
@@ -191,12 +191,12 @@ function VerificationAdmin() {
     execute();
   }, [userCoordinates, searchCallback, searchCoordinates]);
 
-  const search = async () => {
+  const search = async (searchCriteria = criteria) => {
     try {
-      await searchCallback(criteria);
+      await searchCallback(searchCriteria);
       console.log("Searching...");
-      console.log(criteria);
-      sessionStorage.setItem(CRITERIA_TOKEN, JSON.stringify(criteria));
+      console.log(searchCriteria);
+      sessionStorage.setItem(CRITERIA_TOKEN, JSON.stringify(searchCriteria));
     } catch (err) {
       // If we receive a 401 status code, the user needs
       // to be logged in, will redirect to login page.
@@ -216,7 +216,7 @@ function VerificationAdmin() {
       // to be logged in, will redirect to login page.
       // Otherwise it's a real exception.
       if (err.response && err.response.status === 401) {
-        setUnauthorized(true);
+        navigate("/login", { state: { from: location } });
       } else {
         console.error(err);
         return Promise.reject(err.message);
@@ -242,7 +242,7 @@ function VerificationAdmin() {
       // to be logged in, will redirect to login page.
       // Otherwise it's a real exception.
       if (err.response && err.response.status === 401) {
-        setUnauthorized(true);
+        navigate("/login", { state: { from: location } });
       } else {
         console.error(err);
         return Promise.reject(err.message);
@@ -274,7 +274,7 @@ function VerificationAdmin() {
       // to be logged in, will redirect to login page.
       // Otherwise it's a real exception.
       if (err.response && err.response.status === 401) {
-        setUnauthorized(true);
+        navigate("/login", { state: { from: location } });
       } else {
         console.error(err);
         return Promise.reject(err.message);
@@ -292,15 +292,16 @@ function VerificationAdmin() {
     setDialogOpen(false);
   };
 
-  const handleCriteriaChange = (criteria) => {
-    setCriteria(criteria);
-    search();
+  const handleCriteriaChange = (newCriteria) => {
+    setCriteria(newCriteria);
+    search(newCriteria);
   };
+
+  if (!user) {
+    return null;
+  }
   return (
     <main className={classes.root}>
-      {stakeholdersError.status === 401 || unauthorized ? (
-        <Redirect to={{ pathname: "/login", state: { from: location } }} />
-      ) : null}
       <CssBaseline />
       <div
         style={{

@@ -1,3 +1,5 @@
+import { disabledText, error } from "theme/palette";
+
 export default function TextField(theme) {
   return {
     MuiTextField: {
@@ -20,6 +22,16 @@ export default function TextField(theme) {
           padding: "11px 16px",
           "&::placeholder": {
             fontStyle: "italic",
+            color: disabledText,
+            opacity: "1",
+          },
+        },
+        error: {
+          "& input::placeholder": {
+            color: error,
+          },
+          "& input": {
+            color: error,
           },
         },
       },

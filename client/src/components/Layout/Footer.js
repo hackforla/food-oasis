@@ -71,7 +71,6 @@ const Footer = () => {
     <Box
     sx={(theme) => ({
       position: "relative",
-      alignItems: 'flex-end',
       backgroundColor: "#FFF",
       padding: "1.5rem 1rem",
       display: "flex",
@@ -81,6 +80,9 @@ const Footer = () => {
       [theme.breakpoints.up("md")]: {
         alignItems: 'flex-start'
       },
+      [theme.breakpoints.down("md")]: {
+        alignItems: 'flex-end'
+      },
       fontFamily: `"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans- serif`,
     })}
     >
@@ -88,7 +90,7 @@ const Footer = () => {
       component='img'
       alt='logo'
       src={logoPaths[tenantId]}
-      sx={{
+      sx={(theme) => ({
         maxWidth: "95px",
         height: "100%",
         width: "100%",
@@ -97,7 +99,10 @@ const Footer = () => {
         "&:hover": {
           filter: "brightness(1.2)",
         },
-      }}
+        [theme.breakpoints.up("md")]: {
+          paddingTop: '5px'
+        },
+      })}
       />
 
       <Box 

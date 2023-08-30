@@ -511,14 +511,15 @@ export default function Identification({
             error={touched.longitude && Boolean(errors.longitude)}
           />
         </Grid>
-        <Grid item xs={12} md={6}>
-          <Grid container>
+        <Grid item xs={12} md={6} sx={{display: 'flex'}}>
+          <Grid container sx={{display: 'flex', alignItems: 'flex-end'}}>
             <Grid
               xs={12}
               item
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
+              sx={{
+                display: "flex",                
+                columnGap: '1rem',
+                alignItems: 'center',                
               }}
             >
               <Tooltip title="Click to get latitude / longitude for address">
@@ -526,7 +527,7 @@ export default function Identification({
                   <Button
                     variant="outlined"
                     icon="search"
-                    // style={{ marginTop: "1.2em" }}
+                    size="large"                    
                     onClick={() => {
                       (geocodeResults && geocodeResults.length) < 1
                         ? geocode(values)
@@ -540,8 +541,7 @@ export default function Identification({
                 </Grid>
               </Tooltip>
               <div>
-                <FormControlLabel
-                  sx={{ mt: { md: "27px" } }}
+                <FormControlLabel                  
                   control={
                     <Checkbox
                       margin="normal"

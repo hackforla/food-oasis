@@ -118,7 +118,7 @@ const Footer = () => {
         gap: "4em"
       },
       [theme.breakpoints.down("md")]: {
-        height: '135px',
+        height: '180px',
       }
     })}>
       {constantLinks}

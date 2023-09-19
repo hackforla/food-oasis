@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import makeStyles from "@mui/styles/makeStyles";
+import Box from '@mui/material/Box';
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
@@ -10,6 +10,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
+import Typography from '@mui/material/Typography';
 import FormControl from "@mui/material/FormControl";
 import { useLogins } from "hooks/useLogins";
 import debounce from "lodash.debounce";
@@ -20,23 +21,7 @@ const columns = [
   { id: "loginTime", label: "Login Time", minWidth: 10 },
 ];
 
-const useStyles = makeStyles((theme) => ({
-  container: {
-    maxHeight: "500px",
-  },
-  heading: {
-    marginBottom: theme.spacing(1),
-    display: "flex",
-    justifyContent: "space-between",
-  },
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 180,
-  },
-}));
-
 const Logins = () => {
-  const classes = useStyles();
   const [logins, setLogins] = useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -66,22 +51,41 @@ const Logins = () => {
 
   return (
     <Container>
-      <div className={classes.heading}>
-        <h2>User Logins</h2>
-        <FormControl className={classes.formControl}>
+	    <Box
+          sx={{
+            marginBottom: "8px",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+        <Typography variant="h2"
+		  sx={{
+			marginTop: "4px",
+			fontWeight: 700,
+		  }}
+		>User Logins</Typography>
+        <FormControl 
+          sx={{
+            margin: "8px",
+            minWidth: 180,
+          }}
+        >
           <TextField
             variant="outlined"
             margin="none"
             placeholder="Find by Email"
             size="small"
-            className={classes.textInput}
             onChange={debouncedChangeHandler}
           />
         </FormControl>
-      </div>
+      </Box>
 
       <Paper>
-        <TableContainer className={classes.container}>
+        <TableContainer 
+          sx={{
+            maxHeight: "500px",
+          }}
+        >
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>

@@ -25,94 +25,7 @@ const logoPaths = {
   6: require("images/foodoasis.svg").default,
 };
 
-const useStyles = makeStyles((theme) => ({
-  homeWrapper: {
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundImage: 'url("/landing-page/map.png")', // replaced the background image style inside useStyles instead of inline styling
-    minHeight: "max(100.7vh,20em)",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    [theme.breakpoints.down("sm")]: {
-      height: "100%",
-    },
-  },
-  container: {
-    maxWidth: "650px",
-    [theme.breakpoints.down("sm")]: {
-      padding: 0,
-      height: "100%",
-    },
-  },
-  paper: {
-    margin: "0 auto",
-    padding: "3.5rem 0.5rem 3rem 0.5rem",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    borderRadius: "24px",
-    boxShadow: "0px 5px 8px 0px rgb(0, 0, 0, 40%)",
-    [theme.breakpoints.down("sm")]: {
-      height: "100%",
-      borderRadius: "0",
-      paddingTop: "10rem",
-      justifyContent: "start",
-      boxShadow: "none",
-    },
-  },
-  subtitle: {
-    marginTop: theme.spacing(1),
-    fontWeight: "500",
-    fontSize: "18.72px",
-    marginBottom: "0.5em",
-    textAlign: "center",
-  },
-  form: {
-    width: "100%",
-    marginTop: theme.spacing(1),
-  },
-  formContainer: {
-    width: "100%",
-    padding: "5px 15px 15px 15px",
-    color: "#000000",
-    [theme.breakpoints.up("sm")]: {
-      paddingInline: "90px",
-    },
-  },
-  inputContainer: {
-    display: "flex",
-    alignItems: "flex-start",
-    justifyContent: "center",
-    marginBottom: "1em",
-    fontSize: "16px",
-  },
-  endAdornment: {
-    display: "none",
-  },
-  logo: {
-    width: "60%",
-    height: "auto",
-    textAlign: "center",
-    [theme.breakpoints.up("sm")]: {
-      width: "40%",
-    },
-  },
-  searchIcon: {
-    width: 32,
-    height: 32,
-  },
-  learnMore: {
-    fontSize: "16px",
-    [theme.breakpoints.up("sm")]: {
-      fontSize: "19px",
-    },
-  },
-}));
-
 const Home = () => {
-  const classes = useStyles();
   const navigate = useNavigate();
   const { tenantId, tenantDetails } = useSiteContext();
   const { taglineText } = tenantDetails;
@@ -160,24 +73,125 @@ const Home = () => {
   };
 
   return (
-    <div className={classes.homeWrapper} style={{ backgroundImage: bgImg }}>
-      <Container component="main" className={classes.container}>
+    <Box
+      style={{ backgroundImage: bgImg }}
+      sx={(theme) => ({
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundImage: 'url("/landing-page/map.png")', // replaced the background image style inside useStyles instead of inline styling
+        minHeight: "max(100.7vh,20em)",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        [theme.breakpoints.down("sm")]: {
+          height: "100%",
+        },
+      })}
+    >
+      <Container
+        component="main"
+        maxWidth={false}
+        sx={(theme) => ({
+          maxWidth: "650px",
+          [theme.breakpoints.down("sm")]: {
+            padding: 0,
+            height: "100%",
+          },
+        })}
+      >
         <CssBaseline />
-        <Paper className={classes.paper}>
-          <img src={logoPaths[tenantId]} alt="logo" className={classes.logo} />
-          <Box className={classes.formContainer}>
-            <form
-              className={classes.form}
+        <Paper
+          sx={(theme) => ({
+            margin: "0 auto",
+            padding: "3.5rem 0.5rem 3rem 0.5rem",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            borderRadius: "24px",
+            boxShadow: "0px 5px 8px 0px rgb(0, 0, 0, 40%)",
+            [theme.breakpoints.down("sm")]: {
+              height: "100%",
+              borderRadius: "0",
+              paddingTop: "10rem",
+              justifyContent: "start",
+              boxShadow: "none",
+            },
+          })}
+        >
+          <Box
+            sx={(theme) => ({
+              width: "60%",
+              height: "auto",
+              textAlign: "center",
+              [theme.breakpoints.up("sm")]: {
+                width: "40%",
+              },
+            })}
+          >
+            <img src={logoPaths[tenantId]} alt="logo" />
+          </Box>
+          <Box
+            sx={(theme) => ({
+              width: "100%",
+              padding: "5px 15px 15px 15px",
+              color: "#000000",
+              [theme.breakpoints.up("sm")]: {
+                paddingInline: "90px",
+              },
+            })}
+          >
+            <Box
+              component="form"
               onSubmit={() => navigate("/organizations")}
+              sx={(theme) => ({
+                width: "100%",
+                marginTop: theme.spacing(1),
+              })}
             >
-              <Typography variant="h2" className={classes.subtitle}>
+              <Typography
+                variant="h2"
+                sx={(theme) => ({
+                  marginTop: theme.spacing(1),
+                  fontWeight: "500",
+                  fontSize: "18.72px !important",
+                  marginBottom: "0.5em",
+                  textAlign: "center",
+                })}
+              >
                 {taglineText}
               </Typography>
-              <Box className={classes.inputContainer}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                  justifyContent: "center",
+                  marginBottom: "1em",
+                  fontSize: "16px",
+                }}
+              >
                 <AddressDropDown />
               </Box>
-              <Box className={classes.inputContainer}>or</Box>
-              <Box className={classes.inputContainer}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                  justifyContent: "center",
+                  marginBottom: "1em",
+                  fontSize: "16px",
+                }}
+              >
+                or
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                  justifyContent: "center",
+                  marginBottom: "1em",
+                  fontSize: "16px",
+                }}
+              >
                 {isGettingLocation ? (
                   <Stack justifyContent="center" alignContent="center">
                     <CircularProgress />
@@ -206,20 +220,33 @@ const Home = () => {
                   </div>
                 )}
               </Box>
-              <Box className={classes.inputContainer}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                  justifyContent: "center",
+                  marginBottom: "1em",
+                  fontSize: "16px",
+                }}
+              >
                 <Link
                   component={RouterLink}
                   to="/about"
-                  className={classes.learnMore}
+                  sx={(theme) => ({
+                    fontSize: "16px",
+                    [theme.breakpoints.up("sm")]: {
+                      fontSize: "19px",
+                    },
+                  })}
                 >
                   Learn about this site
                 </Link>
               </Box>
-            </form>
+            </Box>
           </Box>
         </Paper>
       </Container>
-    </div>
+    </Box>
   );
 };
 

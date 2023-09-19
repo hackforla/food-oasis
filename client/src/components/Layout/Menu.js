@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import useLocationHook from "hooks/useLocationHook";
-import makeStyles from "@mui/styles/makeStyles";
 import {
   Drawer,
   List,
@@ -17,38 +16,8 @@ import { IconButton } from "../UI/StandardButton";
 import { useUserContext } from "../../contexts/userContext";
 import { isMobile } from "helpers";
 
-const useStyles = makeStyles((theme) => ({
-  list: {
-    width: 250,
-  },
-  menuButton: {
-    transform: "scale(1.2,1.2)",
-    minWidth: "0",
-    backgroundColor: "#FFF",
-    "&:hover": {
-      backgroundColor: "#FFF",
-      opacity: 0.8,
-    },
-    [theme.breakpoints.down("sm")]: {
-      transform: "scale(1.2, 1.2)",
-    },
-  },
-  blueMenu: {
-    fill: "#19334D",
-  },
-}));
-
 export default function Menu() {
   const { isHomePage } = useLocationHook();
-  const homePageStyles = {
-    buttonColor: "#F1F1F1",
-  };
-
-  const defaultStyles = {
-    headerColor: "#FFF",
-  };
-  const styles = isHomePage ? homePageStyles : defaultStyles;
-  const classes = useStyles(styles);
   const [isOpen, setIsOpen] = useState(false);
   const { user, onLogout } = useUserContext();
 
@@ -88,7 +57,6 @@ export default function Menu() {
 
   const sideList = () => (
     <div
-      className={classes.list}
       role="presentation"
       onClick={(e) => toggleDrawer(e)}
       onKeyDown={(e) => toggleDrawer(e)}
@@ -181,12 +149,22 @@ export default function Menu() {
         size={!isHomePage && isMobile ? "small" : "large"}
         icon="menu"
         onClick={toggleDrawer}
-        classes={{
-          root: classes.menuButton,
-          label: classes.blueMenu,
+        sx={{
+          transform: "scale(1.2,1.2)", 
+          minWidth: "0",
+          backgroundColor: "#FFF",
+          '&:hover': {
+            backgroundColor: "#FFF",
+            opacity: 0.8,
+          },
         }}
       />
-      <Drawer anchor={"right"} open={isOpen} onClose={toggleDrawer}>
+      <Drawer 
+        anchor={"right"} 
+        open={isOpen} 
+        onClose={toggleDrawer}
+        PaperProps={{sx: {width: '250px'}}}
+      >
         {sideList()}
       </Drawer>
     </div>

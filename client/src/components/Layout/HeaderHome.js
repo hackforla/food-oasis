@@ -17,16 +17,19 @@ export default function Header() {
                 mb:'-65px',
                 boxShadow: 'none'
                 }}>
-        <Toolbar
-          sx={{
-              display: 'flex', 
-              justifyContent: "flex-end",
-              "&.MuiToolbar-root": {
-                minHeight: isMobile ? "45px" : "60px",
-                padding: isMobile ? "0.25em 0.5em 0 0" : "0.25em 1.25em 0 0",
-              },
-            }}
-        >
+          <Toolbar sx={(theme) => ({
+                      display: 'flex',
+                      justifyContent: "flex-end",
+                      "&.MuiToolbar-root": {
+                        minHeight: "60px",
+                        padding: "0.25em 1.25em 0 0",
+                        [theme.breakpoints.down("sm")]: { 
+                            minHeight: "45px", 
+                            padding: "0.25em 0.5em 0 0",
+                        },
+                      },
+                  })}
+          >
           <Menu />
         </Toolbar>
       </AppBar>

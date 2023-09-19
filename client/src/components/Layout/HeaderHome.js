@@ -1,33 +1,35 @@
 import React from "react";
 import Menu from "./Menu";
-import { AppBar, Toolbar } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-
-const useStyles = makeStyles((theme) => ({
-  headerHolder: {
-    backgroundColor: "transparent",
-    marginBottom: "-65px",
-    boxShadow: "none",
-  },
-  header: {
-    minHeight: "60px",
-    display: "flex",
-    justifyContent: "flex-end",
-    padding: "0.25em 1.25em 0 0",
-    [theme.breakpoints.down("sm")]: {
-      padding: "0.25em 0.5em 0 0",
-      minHeight: "45px",
-    },
-  },
-}));
+import { AppBar, Toolbar, useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/styles";
 
 export default function Header() {
-  const classes = useStyles();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"), {
+    defaultMatches: true,
+  });
 
   return (
     <>
-      <AppBar position="sticky" className={classes.headerHolder}>
-        <Toolbar className={classes.header}>
+      <AppBar position="sticky"
+              sx={{
+                backgroundColor: 'transparent',
+                mb:'-65px',
+                boxShadow: 'none'
+                }}>
+          <Toolbar sx={(theme) => ({
+                      display: 'flex',
+                      justifyContent: "flex-end",
+                      "&.MuiToolbar-root": {
+                        minHeight: "60px",
+                        padding: "0.25em 1.25em 0 0",
+                        [theme.breakpoints.down("sm")]: { 
+                            minHeight: "45px", 
+                            padding: "0.25em 0.5em 0 0",
+                        },
+                      },
+                  })}
+          >
           <Menu />
         </Toolbar>
       </AppBar>

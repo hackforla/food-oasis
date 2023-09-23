@@ -94,7 +94,7 @@ function WidgetFooterSection(props) {
                             width: "100%",
                             height: "100%",
                             margin: 0,
-                            maxWidth: "65px",
+                            maxWidth: "175px",
                             maxHeight: "38px",
                             "&:hover": {
                               filter: "brightness(1.2)",

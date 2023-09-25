@@ -52,12 +52,6 @@ function SuggestionDialog(props) {
                 <Label id="notes" label="Corrections *" />
                 <Textarea
                   type="text"
-                  sx={{
-                    "& div": {
-                    "& textarea": {
-                      paddingRight: "2rem",
-                    },
-                  },}}
                   size="small"
                   minRows={2}
                   maxRows={12}

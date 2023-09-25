@@ -23,6 +23,7 @@ const PAGE_SECTIONS_ABOUT = [
         <Typography variant="body1">
           This tool is meant to provide an easy way for people on Oʻahu to
           locate food resources near them that are open to the public.
+          <br /> <br />
         </Typography>
         <Typography variant="body1">
           From the “Find Food” page, type in your zip code or address and hit
@@ -31,6 +32,7 @@ const PAGE_SECTIONS_ABOUT = [
           you’d like to filter by type. Click “Details” on an entry to view
           information like Directions, Hours, Phone, Email, and Eligibility
           Requirements.
+          <br /> <br />
         </Typography>
         <Typography variant="body1">
           The data Aloha Harvest uses to populate this directory includes all
@@ -38,6 +40,7 @@ const PAGE_SECTIONS_ABOUT = [
           public. It is not an exhaustive list of every single food resource on
           O‘ahu. A volunteer reviews this list once a week to confirm that all
           details are still current and correct. Learn more on the FAQs page.
+          <br /> <br />
         </Typography>
         <Typography variant="body1">
           Click to the three horizontal lines in the upper right of the page to
@@ -57,6 +60,7 @@ const PAGE_SECTIONS_ABOUT = [
           groups are part of the Code For America network, a national alliance
           of community organizers, developers, and designers that are putting
           technology to work in service of their local communities.
+          <br /> <br />
         </Typography>
         <Typography variant="body1">
           Code For Hawaiʻi asked Aloha Harvest to provide the data (directory of
@@ -86,6 +90,7 @@ const PAGE_SECTIONS_ABOUT = [
           excess food from donors (ex: wholesale distributors, grocery stores,
           restaurants, hotels) and redistribute it to recipient agencies feeding
           the hungry (ex: homeless shelters, social services, food pantries).
+          <br /> <br />
         </Typography>
         <Typography variant="body1">
           We have been doing this work for over 21 years and represent the
@@ -101,6 +106,7 @@ const PAGE_SECTIONS_ABOUT = [
           , we worked with 370 food donors and 273 recipient agencies to
           redistribute over 2.7 million pounds of good food that would have
           otherwise been wasted!
+          <br /> <br />
         </Typography>
         <Typography variant="body1">
           This work is essential because even while 1 in 5 people in Hawaiʻi
@@ -114,6 +120,7 @@ const PAGE_SECTIONS_ABOUT = [
             short video
           </Link>{" "}
           video that explains more of our process, impact, and future potential.
+          <br /> <br />
         </Typography>
         <Typography variant="body1">
           Visit{" "}

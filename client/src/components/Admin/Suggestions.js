@@ -1,6 +1,5 @@
 import React from "react";
 import { useSuggestions } from "hooks/useSuggestions";
-import makeStyles from "@mui/styles/makeStyles";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -68,35 +67,9 @@ function getModalStyle() {
   };
 }
 
-const useStyles = makeStyles((theme) => ({
-  container: {
-    maxHeight: "500px",
-    cursor: "pointer",
-  },
-  heading: {
-    marginBottom: theme.spacing(1),
-    display: "flex",
-    justifyContent: "space-between",
-  },
-  paper: {
-    position: "absolute",
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, getIsMobile() ? 1 : 4, 3),
-  },
-  error: {
-    color: theme.palette.error.main,
-  },
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 180,
-  },
-}));
-
 function Suggestions() {
   const initialStatusIds = [1, 2, 3, 4];
   const [suggestions, setSuggestions] = React.useState([]);
-  const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [activeOrg, setActiveOrg] = React.useState(null);
@@ -171,9 +144,20 @@ function Suggestions() {
 
   return (
     <Container>
-      <div className={classes.heading}>
+      <Box
+        sx={(theme) => ({
+          marginBottom: theme.spacing(1),
+          display: "flex",
+          justifyContent: "space-between",
+        })}
+      >
         <h2>Suggestions Administration</h2>
-        <FormControl className={classes.formControl}>
+        <FormControl
+          sx={(theme) => ({
+            margin: theme.spacing(1),
+            minWidth: 180,
+          })}
+        >
           <InputLabel id="filters-checkbox-label">Filters</InputLabel>
           <Select
             labelId="filters-checkbox-label"
@@ -195,10 +179,10 @@ function Suggestions() {
             ))}
           </Select>
         </FormControl>
-      </div>
+      </Box>
 
       <Paper>
-        <TableContainer className={classes.container}>
+        <TableContainer sx={{ maxHeight: "500px", cursor: "pointer" }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -286,7 +270,15 @@ function Suggestions() {
                 errors,
                 isSubmitting,
               }) => (
-                <div style={modalStyle} className={classes.paper}>
+                <Paper
+                  style={modalStyle}
+                  sx={(theme) => ({
+                    position: "absolute",
+                    backgroundColor: theme.palette.background.paper,
+                    boxShadow: theme.shadows[5],
+                    padding: theme.spacing(2, getIsMobile() ? 1 : 4, 3),
+                  })}
+                >
                   <div
                     id="simple-modal-title"
                     style={{
@@ -303,7 +295,12 @@ function Suggestions() {
                     >
                       {activeOrg.name}
                     </h1>
-                    <FormControl className={classes.formControl}>
+                    <FormControl
+                      sx={(theme) => ({
+                        margin: theme.spacing(1),
+                        minWidth: 180,
+                      })}
+                    >
                       <InputLabel id="status-select">Status</InputLabel>
                       <Select
                         labelId="status-select"
@@ -392,7 +389,11 @@ function Suggestions() {
                     </List>
 
                     {error && (
-                      <div className={classes.error}>Something went wrong.</div>
+                      <Box
+                        sx={(theme) => ({ color: theme.palette.error.main })}
+                      >
+                        Something went wrong.
+                      </Box>
                     )}
                     <Box mt={3} display="flex" justifyContent="space-between">
                       <Button
@@ -410,7 +411,7 @@ function Suggestions() {
                       </Button>
                     </Box>
                   </form>
-                </div>
+                </Paper>
               )}
             </Formik>
           </Modal>

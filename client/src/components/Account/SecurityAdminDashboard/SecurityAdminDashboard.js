@@ -1,29 +1,16 @@
 import React, { useState, useEffect, useMemo } from "react";
 import SecurityTable from "./SecurityTable";
-import { makeStyles } from "@mui/styles";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import * as accountService from "../../../services/account-service";
 import debounce from "lodash.debounce";
 
-const useStyles = makeStyles({
-  root: {
-    textAlign: "center",
-    padding: "2rem",
-  },
-  textInput: {
-    marginBottom: 10,
-  },
-});
-
 const SecurityAdminDashboard = () => {
   const [accounts, setAccounts] = useState([]);
   const [filteredAccounts, setFilteredAccounts] = useState([]);
   const [search, setSearch] = useState("");
   const [error, setError] = useState("");
-
-  const classes = useStyles();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -90,15 +77,25 @@ const SecurityAdminDashboard = () => {
   };
 
   return (
-    <Container maxWidth="lg" className={classes.root}>
+    <Container 
+      maxWidth="lg"      
+      sx={{
+        "&.MuiContainer-root": {
+          textAlign: "center",
+          padding: "2rem",
+        }
+      }}
+    >
       <Typography variant="h4">Security Roles</Typography>
       <Typography variant="h6">Grant or Revoke Permissions</Typography>
       <TextField
+        sx={{
+          marginBottom: "10px",
+        }}
         variant="outlined"
         margin="none"
         placeholder="Find"
         size="small"
-        className={classes.textInput}
         onChange={debouncedChangeHandler}
       />
       {error === "User does not Exist" ? (

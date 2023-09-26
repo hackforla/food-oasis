@@ -11,28 +11,17 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
 import * as suggestionService from "services/suggestion-service";
 import { DEFAULT_STAKEHOLDER } from "../../../../constants/stakeholder";
 import * as Yup from "yup";
 import Label from "components/Admin/ui/Label";
 import Textarea from "components/Admin/ui/Textarea";
 
-const useStyles = makeStyles((theme) => ({
-  correctionInput: {
-    "& div": {
-      "& textarea": {
-        paddingRight: "2rem",
-      },
-    },
-  },
-}));
 function SuggestionDialog(props) {
   const { values, touched, errors, handleChange, handleBlur, handleSubmit } =
     props;
 
   const { onClose, open, id } = props;
-  const classes = useStyles();
   const handleCancel = () => onClose(false);
 
   return (
@@ -63,7 +52,6 @@ function SuggestionDialog(props) {
                 <Label id="notes" label="Corrections *" />
                 <Textarea
                   type="text"
-                  className={classes.correctionInput}
                   size="small"
                   minRows={2}
                   maxRows={12}

@@ -1,6 +1,5 @@
 import React from "react";
 import { useParentOrganizations } from "hooks/useParentOrganizations";
-import makeStyles from "@mui/styles/makeStyles";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -43,32 +42,9 @@ function getModalStyle() {
   };
 }
 
-const useStyles = makeStyles((theme) => ({
-  container: {
-    maxHeight: "500px",
-    cursor: "pointer",
-  },
-  heading: {
-    marginBottom: theme.spacing(1),
-    display: "flex",
-    justifyContent: "space-between",
-  },
-  paper: {
-    position: "absolute",
-    width: 400,
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-  },
-  error: {
-    color: theme.palette.error.main,
-  },
-}));
-
 function ParentOrganizations(props) {
   let { data, status } = useParentOrganizations();
   const [parentOrgs, setParentOrgs] = React.useState([]);
-  const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [activeOrg, setActiveOrg] = React.useState(false);
@@ -139,19 +115,26 @@ function ParentOrganizations(props) {
 
   return (
     <Container maxWidth="sm">
-      <div className={classes.heading}>
+      <Box sx={ (theme) => ({
+        display: "flex", 
+        justifyContent: "space-between",
+        marginBottom: theme.spacing(1),
+      })}>
         <h2 style={{ margin: 0 }}>Parent Organizations</h2>
         <Button variant="outlined" onClick={handleAddNew}>
           Add New
         </Button>
-      </div>
+      </Box>
 
       {deleteError && (
-        <div className={classes.error}>Something went wrong.</div>
+        <Box sx={(theme) => ({color: theme.palette.error.main})}>
+          Something went wrong.
+        </Box>
       )}
 
       <Paper>
-        <TableContainer className={classes.container}>
+        <TableContainer 
+          sx={{ maxHeight: "500px", cursor: "pointer" }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -243,7 +226,15 @@ function ParentOrganizations(props) {
           aria-labelledby="parent-org-modal"
           aria-describedby="parent-org-modal-description"
         >
-          <div style={modalStyle} className={classes.paper}>
+          <Box style={modalStyle} 
+            sx={(theme) => ({
+              position: "absolute",
+              width: 400,
+              backgroundColor: theme.palette.background.paper,
+              boxShadow: theme.shadows[5],
+              padding: theme.spacing(2, 4, 3),
+            })}
+          >
             <div id="simple-modal-title">
               <h2>Edit Parent Organization</h2>
             </div>
@@ -295,7 +286,9 @@ function ParentOrganizations(props) {
                     />
                   </div>
                   {error && (
-                    <div className={classes.error}>Something went wrong.</div>
+                    <Box sx={(theme) => ({color: theme.palette.error.main})}>
+                      Something went wrong.
+                    </Box>
                   )}
                   <Box mt={3} display="flex" justifyContent="space-between">
                     <Button
@@ -315,7 +308,7 @@ function ParentOrganizations(props) {
                 </form>
               )}
             </Formik>
-          </div>
+          </Box>
         </Modal>
       </Paper>
     </Container>

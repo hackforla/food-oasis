@@ -37,6 +37,7 @@ import {
 } from "../../../../appReducer";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useNavigate, useLocation } from "react-router-dom";
+import useFeatureFlag from "hooks/useFeatureFlag";
 
 const ResultsMap = (
   {
@@ -77,6 +78,8 @@ const ResultsMap = (
   const neighborhood = useNeighborhood();
   const regionGeoJSON = neighborhood?.geojson;
   const startIconCoordinates = searchCoordinates || userCoordinates;
+
+  const hasAdvancedFilterFeatureFlag = useFeatureFlag("advancedFilter");
 
   useEffect(() => {
     analytics.postEvent("showMap");
@@ -202,15 +205,18 @@ const ResultsMap = (
           <Map.Layer {...regionBorderStyle} />
         </Map.Source>
       )}
-      <Button
-        variant="outlined"
-        onClick={searchMapArea}
-        size="small"
-        className={classes.searchButton}
-        disabled={loading}
-      >
-        Search this area
-      </Button>
+      
+      {!hasAdvancedFilterFeatureFlag && (
+        <Button
+          variant="outlined"
+          onClick={searchMapArea}
+          size="small"
+          className={classes.searchButton}
+          disabled={loading}
+        >
+          Search this area
+        </Button>
+      )}
     </ReactMapGL>
   );
 };

@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 import * as stakeholderService from "../services/stakeholder-best-service";
 import * as analytics from "../services/analytics";
 import { DEFAULT_CATEGORIES } from "constants/stakeholder";
+import { useAppDispatch } from "../appReducer";
 
 const sortOrganizations = (a, b) => {
   if (
@@ -24,11 +25,13 @@ const sortOrganizations = (a, b) => {
 export default function useOrganizationBests() {
   const [state, setState] = useState({
     data: null,
-    loading: true,
+    loading: false,
     error: false,
   });
 
-  const search = useCallback(
+  const dispatch = useAppDispatch();
+
+  const selectAll = useCallback(
     async ({
       name,
       latitude,
@@ -87,14 +90,18 @@ export default function useOrganizationBests() {
         const stakeholders = await stakeholderService.selectAll();
         stakeholders.sort(sortOrganizations);
         setState({ data: stakeholders, loading: false, error: false });
-        return stakeholders;
+        localStorage.setItem("stakeholders", JSON.stringify(stakeholders));
+        dispatch({
+          type: "STAKEHOLDERS_LOADED",
+          stakeholders,
+        });
       } catch (err) {
         setState({ data: null, loading: false, error: true });
         console.error(err);
         return Promise.reject(err);
       }
     },
-    []
+    [dispatch]
   );
 
   const getById = useCallback(async (id) => {
@@ -117,5 +124,5 @@ export default function useOrganizationBests() {
     }
   }, []);
 
-  return { ...state, search, getById };
+  return { ...state, selectAll, getById };
 }

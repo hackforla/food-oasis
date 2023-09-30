@@ -17,12 +17,13 @@ import {
   useAppDispatch,
   useSelectedOrganization,
   DEFAULT_COORDINATES,
+  useStakeholders,
 } from "../../../appReducer";
 
 const SearchResults = () => {
   const mapRef = useRef(null);
   const { isDesktop, isTablet } = useBreakpoints();
-  const { data: stakeholders, search, loading } = useOrganizationBests();
+  const { selectAll, loading } = useOrganizationBests();
   const { categoryIds, toggleCategory } = useCategoryIds([]);
   const { getGeoJSONById } = useNeighborhoodsGeoJSON();
   const [showList, setShowList] = useState(true);
@@ -33,6 +34,7 @@ const SearchResults = () => {
   const neighborhoodId = new URLSearchParams(location.search).get(
     "neighborhood_id"
   );
+  const stakeholders = useStakeholders();
   const organizationId = new URLSearchParams(location.search).get("id");
   let latitude, longitude;
   if (location.search && !searchCoordinates) {
@@ -92,9 +94,21 @@ const SearchResults = () => {
       neighborhoodId: null,
       tag: null,
     };
-    search(criteria);
+    const localStorageStakeholders = JSON.parse(
+      localStorage.getItem("stakeholders")
+    );
+
+    if (localStorageStakeholders) {
+      dispatch({
+        type: "STAKEHOLDERS_LOADED",
+        stakeholders: localStorageStakeholders,
+      });
+    } else {
+      selectAll(criteria);
+    }
+
     analytics.postEvent("searchArea", criteria);
-  }, [categoryIds, search, neighborhoodId, longitude, latitude]);
+  }, [categoryIds, selectAll, neighborhoodId, longitude, latitude, dispatch]);
 
   useEffect(() => {
     if (!location.search) {

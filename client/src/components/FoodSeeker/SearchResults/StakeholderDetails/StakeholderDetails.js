@@ -304,15 +304,17 @@ const StakeholderDetails = () => {
               ) : null}
             </Box>
           </Box>
-          <Box>
-            {selectedOrganization.distance >= 10
-              ? selectedOrganization.distance
-                  .toString()
-                  .substring(0, 3)
-                  .padEnd(4, "0")
-              : selectedOrganization.distance.toString().substring(0, 3)}{" "}
-            mi
-          </Box>
+          {selectedOrganization.distance ? (
+            <Box>
+              {selectedOrganization.distance >= 10
+                ? selectedOrganization.distance
+                    .toString()
+                    .substring(0, 3)
+                    .padEnd(4, "0")
+                : selectedOrganization.distance.toString().substring(0, 3)}{" "}
+              mi
+            </Box>
+          ) : null}
         </Stack>
 
         <Stack direction="row" sx={{ justifyContent: "space-between" }}>

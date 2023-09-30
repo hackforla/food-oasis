@@ -84,7 +84,7 @@ export default function useOrganizationBests() {
             minLat,
           };
         }
-        const stakeholders = await stakeholderService.search(params);
+        const stakeholders = await stakeholderService.selectAll();
         stakeholders.sort(sortOrganizations);
         setState({ data: stakeholders, loading: false, error: false });
         return stakeholders;

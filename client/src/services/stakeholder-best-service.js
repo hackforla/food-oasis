@@ -4,6 +4,29 @@ import { formatDate } from "helpers";
 
 const baseUrl = `/api/stakeholderbests`;
 
+export const selectAll = async () => {
+  const response = await axios.get(`${baseUrl}/select-all`, {
+    params: {
+      tenantId,
+    },
+  });
+  let stakeholders = response.data.map((s) => {
+    return {
+      ...s,
+      latitude: Number(s.latitude),
+      longitude: Number(s.longitude),
+      createdDate: formatDate(s.createdDate),
+      modifiedDate: formatDate(s.modifiedDate),
+      assignedDate: formatDate(s.assignedDate),
+      submittedDate: formatDate(s.submittedDate),
+      approvedDate: formatDate(s.approvedDate),
+      claimedDate: formatDate(s.claimedDate),
+    };
+  });
+
+  return stakeholders;
+};
+
 /*
     searchParams is an object with any/all of the following properties:
         name - look for this string as substring of the stakeholder's name

@@ -1,23 +1,7 @@
 import React from "react";
 import Chip from "@mui/material/Chip";
-import makeStyles from "@mui/styles/makeStyles";
 import { useAccounts } from "../../hooks/useAccounts";
-
-const useStyles = makeStyles(() => ({
-  root: {
-    display: "flex",
-    flexDirection: "row-reverse",
-    flexWrap: "wrap",
-    maxWidth: "75%",
-    marginLeft: "24%",
-  },
-  criteriaChip: {
-    margin: "2px",
-    display: "flex",
-    flexDirection: "row-reverse",
-    padding: "5px 10px 5px 10px",
-  },
-}));
+import { Stack } from "@mui/material";
 
 function SearchCriteriaDisplay({
   neighborhoods,
@@ -28,11 +12,8 @@ function SearchCriteriaDisplay({
   criteria,
   defaultCriteria,
 }) {
-  const classes = useStyles();
   const { data: accounts, loading: accountsLoading } = useAccounts();
   const CriteriaChip = ({ label, value, name }) => {
-    const classes = useStyles();
-
     const setCriterion = () => {
       handleDelete({
         ...criteria,
@@ -47,9 +28,14 @@ function SearchCriteriaDisplay({
     return (
       <Chip
         size="small"
-        className={classes.criteriaChip}
         label={chipLabel}
         onDelete={setCriterion}
+        sx={{
+          margin: "2px",
+          display: "flex",
+          flexDirection: "row-reverse",
+          padding: "5px 10px 5px 10px",
+        }}
       />
     );
   };
@@ -369,7 +355,15 @@ function SearchCriteriaDisplay({
   if (checkForCriteriaPresent()) {
     const criteriasToDisplay = getCriteriaToDisplay();
 
-    return <div className={classes.root}>{criteriasToDisplay}</div>;
+    return (
+      <Stack
+        direction="row-reverse"
+        flexWrap="wrap"
+        sx={{ maxWidth: "75%", marginLeft: "24%" }}
+      >
+        {criteriasToDisplay}
+      </Stack>
+    );
   }
 
   return <></>;

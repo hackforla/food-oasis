@@ -77,4 +77,13 @@ export const palette = {
   tooltip: {
     hover: tooltipHover,
   },
+  filterButtons: {
+    border: {
+      selected: "1px solid #336699",
+      notSelected: "1px solid transparent",
+    },
+    backgroundColor: "#E6F0FF",
+    bodyText: "#313233",
+    hoverColor: "#CBE3F1",
+  }
 };

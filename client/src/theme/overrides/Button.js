@@ -32,7 +32,6 @@ export default function Button(theme) {
           "&:hover": {
             backgroundColor: theme.palette.primary.dark,
           },
-
           "&:active": {
             backgroundColor: theme.palette.primary.dark,
             boxShadow: "inset 0px 8px 4px rgba(0,0,0,0.24)",

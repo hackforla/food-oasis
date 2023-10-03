@@ -63,12 +63,12 @@ const insert = async (model: Suggestion): Promise<{ id: number }> => {
   return { id: result.id };
 };
 
-const update = async (model: Suggestion) => {
+const update = async (id: string, model: Suggestion) => {
   const sql = `update suggestion set
     admin_notes = $<adminNotes>,
     suggestion_status_id = $<suggestionStatusId>
   where id = $<id>`;
-  await db.none(sql, model);
+  await db.none(sql, {...model, id: Number(id)});
 };
 
 const remove = async (id: string) => {

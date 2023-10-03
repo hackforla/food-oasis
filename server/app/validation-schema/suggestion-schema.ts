@@ -86,8 +86,11 @@ export const suggestionPutRequestSchema: JSONSchemaType<
   Omit<Suggestion, "id">
 > = {
   type: "object",
-  required: [],
+  required: ["id"],
   properties: {
+    id: {
+      type: "integer",
+    },
     stakeholderId: {
       type: "integer",
       minimum: 1,

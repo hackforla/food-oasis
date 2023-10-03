@@ -21,8 +21,11 @@ function SuggestionDialog(props) {
   const { values, touched, errors, handleChange, handleBlur, handleSubmit } =
     props;
 
-  const { onClose, open, id } = props;
-  const handleCancel = () => onClose(false);
+  const { onClose, open, id, handleReset } = props;
+  const handleCancel = () => {
+    handleReset();
+    onClose(false);
+  };
 
   return (
     <Dialog
@@ -144,10 +147,10 @@ const SuggestionForm = withFormik({
     tipsterEmail: tipsterEmail || "",
   }),
   validationSchema: Yup.object(validationsForm),
-  handleSubmit: (values, { props }) => {
+  handleSubmit: (values, formikBag) => {
     const stakeholder = {
       ...DEFAULT_STAKEHOLDER,
-      ...props.stakeholder,
+      ...formikBag.stakeholder,
     };
 
     // Construct the suggestion by starting with the stakeholder record,
@@ -164,13 +167,14 @@ const SuggestionForm = withFormik({
     return suggestionService
       .post(altered)
       .then(() => {
-        props.setToast({
+        formikBag.props.setToast({
           message: "Thank you for your help!",
         });
-        props.onClose(true);
+         formikBag.resetForm();
+        formikBag.props.onClose(true);
       })
       .catch(() => {
-        props.setToast({
+        formikBag.props.setToast({
           message:
             "Sorry, submitting your correction failed, please email us at the address on the About page.",
         });

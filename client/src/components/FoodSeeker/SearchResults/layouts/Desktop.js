@@ -1,32 +1,32 @@
 import React from "react";
-import makeStyles from "@mui/styles/makeStyles";
-
-const useStyles = makeStyles((theme) => ({
-  container: {
-    flex: "auto",
-    overflowY: "hidden",
-    display: "flex",
-  },
-  list: {
-    width: "35%",
-    overflow: "auto",
-  },
-  map: {
-    height: "100%",
-    flex: 1,
-  },
-}));
+import { Box } from "@mui/material";
 
 const DesktopLayout = ({ filters, list, map }) => {
-  const classes = useStyles();
 
   return (
     <>
       {filters}
-      <div className={classes.container}>
-        <div className={classes.list}>{list}</div>
-        <div className={classes.map}>{map}</div>
-      </div>
+      <Box 
+        sx={{ 
+          flex: "auto",
+          overflowY: "hidden",
+          display: "flex",
+        }}>
+        <Box 
+          sx={{
+            width: "35%",
+            overflow: "auto",            
+          }}>
+          {list}
+        </Box>
+        <Box 
+          sx={{
+            height: "100%",
+            flex: 1,
+          }}>
+          {map}
+        </Box>
+      </Box>
     </>
   );
 };

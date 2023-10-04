@@ -4,7 +4,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Button, CssBaseline, Dialog, Typography } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import MuiDialogTitle from '@mui/material/DialogTitle';
-import makeStyles from '@mui/styles/makeStyles';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import { useOrganizations } from 'hooks/useOrganizations';
@@ -52,7 +51,6 @@ const DialogTitle = (props) => {
           icon='search'
           kind='close'
           onClick={onClose}
-          // className={classes.closeButton}
           sx={{
             position: 'absolute',
             right: '8px',

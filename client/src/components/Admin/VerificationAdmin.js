@@ -270,7 +270,7 @@ function VerificationAdmin() {
     return null;
   }
   return (
-    <Container
+    <Box
       sx={{
         flexGrow: '1',
         flexBasis: '100%',
@@ -510,7 +510,7 @@ function VerificationAdmin() {
           )}
         </>
       </Box>
-    </Container>
+    </Box>
   );
 }
 

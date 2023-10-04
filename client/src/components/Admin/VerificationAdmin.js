@@ -79,7 +79,18 @@ const DialogTitle = (props) => {
   const classes = useStyles();
   const { children, onClose, ...other } = props;
   return (
-    <MuiDialogTitle disableTypography className={classes.root} {...other}>
+    <MuiDialogTitle
+      disableTypography
+      sx={{
+        flexGrow: '1',
+        flexBasis: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '2rem',
+        paddingBottom: '0',
+      }}
+      {...other}
+    >
       <Typography variant='h6'>{children}</Typography>
       {onClose ? (
         <Button
@@ -88,7 +99,12 @@ const DialogTitle = (props) => {
           icon='search'
           kind='close'
           onClick={onClose}
-          className={classes.closeButton}
+          // className={classes.closeButton}
+          sx={{
+            position: 'absolute',
+            right: '8px',
+            top: '8px',
+          }}
         >
           Search
         </Button>
@@ -434,11 +450,23 @@ function VerificationAdmin() {
         />
         <>
           {categoriesError || stakeholdersError || tagsError ? (
-            <Box className={classes.bigMessage}>
+            <Box
+              sx={{
+                flexGrow: '1',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                backgroundColor: '#E8E8E8',
+                textAlign: 'center',
+                padding: '4em',
+              }}
+            >
               <Typography
                 variant='h3'
                 component='h3'
-                className={classes.errorText}
+                sx={{
+                  color: 'error.main',
+                  fontSize: '24pt',
+                }}
               >
                 Uh Oh! Something went wrong!
               </Typography>
@@ -457,7 +485,16 @@ function VerificationAdmin() {
               <CircularProgress />
             </Box>
           ) : stakeholders && stakeholders.length === 0 ? (
-            <Box className={classes.bigMessage}>
+            <Box
+              sx={{
+                flexGrow: '1',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                backgroundColor: '#E8E8E8',
+                textAlign: 'center',
+                padding: '4em',
+              }}
+            >
               <Typography variant='h5' component='h5'>
                 No matches found, please try different criteria
               </Typography>
@@ -506,7 +543,16 @@ function VerificationAdmin() {
               />
             </>
           ) : (
-            <Box className={classes.bigMessage}>
+            <Box
+              sx={{
+                flexGrow: '1',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                backgroundColor: '#E8E8E8',
+                textAlign: 'center',
+                padding: '4em',
+              }}
+            >
               <Typography variant='h5' component='h5'>
                 Please enter search criteria and execute a search
               </Typography>

@@ -5,6 +5,7 @@ import { Button, CssBaseline, Dialog, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import MuiDialogTitle from "@mui/material/DialogTitle";
 import makeStyles from "@mui/styles/makeStyles";
+import Box from "@mui/material/Box";
 import { useOrganizations } from "hooks/useOrganizations";
 import { useCategories } from "hooks/useCategories";
 import { useNeighborhoods } from "hooks/useNeighborhoods";

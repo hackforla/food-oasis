@@ -29,54 +29,7 @@ import { AddBoxOutlined, GifBox, GifBoxTwoTone } from '@mui/icons-material';
 
 const CRITERIA_TOKEN = 'verificationAdminCriteria';
 
-const useStyles = makeStyles((theme) => ({
-  // root: {
-  //   flexGrow: 1,
-  //   flexBasis: '100%',
-  //   display: 'flex',
-  //   flexDirection: 'column',
-  //   padding: '2rem',
-  //   paddingBottom: '0',
-  // },
-  // mainContent: {
-  //   flexGrow: 1,
-  //   padding: theme.spacing(2),
-  //   display: 'flex',
-  //   flexDirection: 'column',
-  // },
-  closeButton: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    // color: theme.palette.grey[500],
-  },
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  hide: {
-    display: 'none',
-  },
-  bigMessage: {
-    flexGrow: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    backgroundColor: '#E8E8E8',
-    textAlign: 'center',
-    padding: '4em',
-  },
-  errorText: {
-    color: theme.palette.error.main,
-    fontSize: '24pt',
-  },
-}));
-
 const DialogTitle = (props) => {
-  const classes = useStyles();
   const { children, onClose, ...other } = props;
   return (
     <MuiDialogTitle
@@ -144,7 +97,6 @@ const defaultCriteria = {
 
 function VerificationAdmin() {
   const { user } = useUserContext();
-  const classes = useStyles();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [assignDialogOpen, setAssignDialogOpen] = useState(false);
   const [needsVerificationDialogOpen, setNeedsVerificationDialogOpen] =

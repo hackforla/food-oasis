@@ -40,7 +40,7 @@ function ImportDialog(props) {
       fullWidth
       maxWidth="sm"
       aria-labelledby="import-dialog-title"
-      open={true}
+      open={open}
       {...other}
     >
       <DialogTitle id="import-dialog-title">{props.title}</DialogTitle>

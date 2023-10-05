@@ -16,6 +16,7 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { spacing } from "@mui/system";
 import { IconButton } from "../UI/StandardButton";
 import { Formik } from "formik";
 import { tenantId } from "helpers/Configuration";
@@ -137,7 +138,13 @@ function TagAdmin(props) {
 
   return (
     <Container maxWidth="sm">
-      <Box className={classes.heading}>
+      <Box
+        sx={{
+          marginBottom: 1,
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
         <Typography variant="h2" style={{ margin: 0 }}>
           Tags
         </Typography>
@@ -147,11 +154,22 @@ function TagAdmin(props) {
       </Box>
 
       {deleteError && (
-        <Typography className={classes.error}>Something went wrong.</Typography>
+        <Typography
+          sx={{
+            color: "error.main",
+          }}
+        >
+          Something went wrong.
+        </Typography>
       )}
 
       <Paper>
-        <TableContainer className={classes.container}>
+        <TableContainer
+          sx={{
+            maxHeight: "500px",
+            cursor: "pointer",
+          }}
+        >
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -243,7 +261,16 @@ function TagAdmin(props) {
           aria-labelledby="tag-modal"
           aria-describedby="tag-modal-description"
         >
-          <Box style={modalStyle} className={classes.paper}>
+          <Box
+            style={modalStyle}
+            sx={{
+              position: "absolute",
+              width: 400,
+              backgroundColor: "background.paper",
+              boxShadow: 5,
+              padding: (2, 4, 3),
+            }}
+          >
             <Typography variant="h2" id="simple-modal-title">
               Edit Tag
             </Typography>
@@ -283,7 +310,11 @@ function TagAdmin(props) {
                   </Box>
 
                   {error && (
-                    <Typography className={classes.error}>
+                    <Typography
+                      sx={{
+                        color: "error.main",
+                      }}
+                    >
                       Something went wrong.
                     </Typography>
                   )}

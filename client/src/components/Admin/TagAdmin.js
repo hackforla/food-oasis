@@ -15,11 +15,12 @@ import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import { IconButton } from "../UI/StandardButton";
 import { Formik } from "formik";
 import { tenantId } from "helpers/Configuration";
 // import IconButton from "components/UI/IconButton";
-import { Navigate,useLocation  } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import Label from "./ui/Label";
 
 const columns = [
@@ -86,9 +87,7 @@ function TagAdmin(props) {
   React.useEffect(() => {
     if (status === 401) {
       return (
-        <Navigate
-          to={{ pathname: "/login", state: { from: location } }}
-        />
+        <Navigate to={{ pathname: "/login", state: { from: location } }} />
       );
     }
   });
@@ -138,15 +137,17 @@ function TagAdmin(props) {
 
   return (
     <Container maxWidth="sm">
-      <div className={classes.heading}>
-        <h2 style={{ margin: 0 }}>Tags</h2>
+      <Box className={classes.heading}>
+        <Typography variant="h2" style={{ margin: 0 }}>
+          Tags
+        </Typography>
         <Button variant="outlined" onClick={handleAddNew}>
           Add New
         </Button>
-      </div>
+      </Box>
 
       {deleteError && (
-        <div className={classes.error}>Something went wrong.</div>
+        <Typography className={classes.error}>Something went wrong.</Typography>
       )}
 
       <Paper>
@@ -242,10 +243,10 @@ function TagAdmin(props) {
           aria-labelledby="tag-modal"
           aria-describedby="tag-modal-description"
         >
-          <div style={modalStyle} className={classes.paper}>
-            <div id="simple-modal-title">
-              <h2>Edit Tag</h2>
-            </div>
+          <Box style={modalStyle} className={classes.paper}>
+            <Typography variant="h2" id="simple-modal-title">
+              Edit Tag
+            </Typography>
 
             <Formik
               initialValues={{
@@ -267,7 +268,7 @@ function TagAdmin(props) {
                     handleSubmit(e);
                   }}
                 >
-                  <div>
+                  <Box>
                     <Label id="name" label="Name" />
                     <TextField
                       placeholder="Name"
@@ -279,10 +280,12 @@ function TagAdmin(props) {
                       fullWidth
                       autoFocus
                     />
-                  </div>
+                  </Box>
 
                   {error && (
-                    <div className={classes.error}>Something went wrong.</div>
+                    <Typography className={classes.error}>
+                      Something went wrong.
+                    </Typography>
                   )}
                   <Box mt={3} display="flex" justifyContent="space-between">
                     <Button
@@ -302,7 +305,7 @@ function TagAdmin(props) {
                 </form>
               )}
             </Formik>
-          </div>
+          </Box>
         </Modal>
       </Paper>
     </Container>

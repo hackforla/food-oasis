@@ -145,7 +145,7 @@ function TagAdmin(props) {
           justifyContent: "space-between",
         }}
       >
-        <Typography variant="h2" style={{ margin: 0 }}>
+        <Typography variant="h2" style={{ margin: 0, fontWeight: "bold" }}>
           Tags
         </Typography>
         <Button variant="outlined" onClick={handleAddNew}>
@@ -271,7 +271,13 @@ function TagAdmin(props) {
               padding: (2, 4, 3),
             }}
           >
-            <Typography variant="h2" id="simple-modal-title">
+            <Typography
+              variant="h2"
+              id="simple-modal-title"
+              sx={{
+                fontWeight: "bold",
+              }}
+            >
               Edit Tag
             </Typography>
 

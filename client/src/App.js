@@ -284,9 +284,9 @@ function App() {
                         <Route
                           path="organizationimport"
                           element={
-                             <PrivateRoute roles={["isAdmin"]}>
-                               <ImportFile />
-                             </PrivateRoute>
+                            <PrivateRoute roles={["isAdmin"]}>
+                              <ImportFile />
+                            </PrivateRoute>
                           }
                         />
                         <Route path="resources" element={<Resources />} />

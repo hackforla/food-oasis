@@ -9,8 +9,7 @@ export const suggestionPostRequestSchema: JSONSchemaType<
   properties: {
     stakeholderId: {
       type: "integer",
-      minimum: 1,
-      nullable: true,
+      anyOf: [{ minimum: 1 }, { type: "null" }],
     },
     adminNotes: {
       type: "string",
@@ -42,15 +41,10 @@ export const suggestionPostRequestSchema: JSONSchemaType<
       // once we have set a value to format/pattern property, that property becomes required
       // since email is optional, we can make UnionType to accept empty strings
       // setting minLength to 0 or setting nullable: true won't help to leave email empty
+      type: "string",
       anyOf: [
-        {
-          type: "string",
-          format: "email",
-        },
-        {
-          type: "string",
-          maxLength: 0,
-        },
+        { format: "email" },
+        { maxLength: 0 }, // for an empty string
       ],
     },
     notes: { type: "string" }, // also called "other information"
@@ -61,16 +55,8 @@ export const suggestionPostRequestSchema: JSONSchemaType<
       type: "string",
     },
     tipsterEmail: {
-      anyOf: [
-        {
-          type: "string",
-          format: "email",
-        },
-        {
-          type: "string",
-          maxLength: 0,
-        },
-      ],
+      type: "string",
+      anyOf: [{ format: "email" }, { maxLength: 0 }],
     },
     hours: { type: "string" },
     category: { type: "string" },
@@ -82,9 +68,7 @@ export const suggestionPostRequestSchema: JSONSchemaType<
   additionalProperties: true,
 };
 
-export const suggestionPutRequestSchema: JSONSchemaType<
-  Omit<Suggestion, "id">
-> = {
+export const suggestionPutRequestSchema: JSONSchemaType<Suggestion> = {
   type: "object",
   required: ["id"],
   properties: {

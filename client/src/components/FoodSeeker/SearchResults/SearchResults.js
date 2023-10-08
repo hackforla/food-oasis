@@ -94,18 +94,7 @@ const SearchResults = () => {
       neighborhoodId: null,
       tag: null,
     };
-    const localStorageStakeholders = JSON.parse(
-      localStorage.getItem("stakeholders")
-    );
-
-    if (localStorageStakeholders) {
-      dispatch({
-        type: "STAKEHOLDERS_LOADED",
-        stakeholders: localStorageStakeholders,
-      });
-    } else {
-      selectAll(criteria);
-    }
+    selectAll(criteria);
 
     analytics.postEvent("searchArea", criteria);
   }, [categoryIds, selectAll, neighborhoodId, longitude, latitude, dispatch]);

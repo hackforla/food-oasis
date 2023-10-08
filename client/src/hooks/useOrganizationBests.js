@@ -3,6 +3,7 @@ import * as stakeholderService from "../services/stakeholder-best-service";
 import * as analytics from "../services/analytics";
 import { DEFAULT_CATEGORIES } from "constants/stakeholder";
 import { useAppDispatch } from "../appReducer";
+import { computeDistances, isStaleData } from "helpers";
 
 const sortOrganizations = (a, b) => {
   if (
@@ -87,14 +88,54 @@ export default function useOrganizationBests() {
             minLat,
           };
         }
-        const stakeholders = await stakeholderService.selectAll();
-        stakeholders.sort(sortOrganizations);
-        setState({ data: stakeholders, loading: false, error: false });
-        localStorage.setItem("stakeholders", JSON.stringify(stakeholders));
-        dispatch({
-          type: "STAKEHOLDERS_LOADED",
-          stakeholders,
-        });
+
+        const localStorageStakeholders = JSON.parse(
+          localStorage.getItem("stakeholders")
+        );
+
+        if (localStorageStakeholders && !isStaleData()) {
+          const stakeholdersWithDistances = computeDistances(
+            latitude,
+            longitude,
+            localStorageStakeholders
+          );
+          stakeholdersWithDistances.sort(sortOrganizations);
+          dispatch({
+            type: "STAKEHOLDERS_LOADED",
+            stakeholders: stakeholdersWithDistances,
+          });
+          setState({
+            data: stakeholdersWithDistances,
+            loading: false,
+            error: false,
+          });
+        } else {
+          const stakeholders = await stakeholderService.selectAll();
+
+          const currentTimestamp = new Date().getTime();
+          localStorage.setItem("stakeholders", JSON.stringify(stakeholders));
+          localStorage.setItem(
+            "stakeholdersTimestamp",
+            currentTimestamp.toString()
+          );
+
+          const stakeholdersWithDistances = computeDistances(
+            latitude,
+            longitude,
+            stakeholders
+          );
+          stakeholdersWithDistances.sort(sortOrganizations);
+
+          dispatch({
+            type: "STAKEHOLDERS_LOADED",
+            stakeholders: stakeholdersWithDistances,
+          });
+          setState({
+            data: stakeholdersWithDistances,
+            loading: false,
+            error: false,
+          });
+        }
       } catch (err) {
         setState({ data: null, loading: false, error: true });
         console.error(err);

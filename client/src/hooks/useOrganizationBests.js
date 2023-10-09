@@ -96,47 +96,50 @@ export default function useOrganizationBests() {
     [dispatch, longitude, latitude]
   );
 
-  const selectAll = useCallback(async () => {
-    if (!latitude || !longitude) {
-      setState({ data: null, loading: false, error: true });
-      const msg =
-        "Call to search function missing latitude and/or longitude parameters";
-      console.error(msg);
-      return Promise.reject(msg);
-    }
-    analytics.postEvent("searchFoodSeeker", {
-      latitude,
-      longitude,
-      categoryIds,
-    });
-
-    try {
-      setState({ data: null, loading: true, error: false });
-
-      const filters = {
-        categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
-      };
-
-      let stakeholders;
-      const isStaleData = checkIfStaleData();
-      if (!isStaleData) {
-        stakeholders = JSON.parse(localStorage.getItem("stakeholders"));
-      } else {
-        stakeholders = await stakeholderService.selectAll();
-        const currentTimestamp = new Date().getTime();
-        localStorage.setItem("stakeholders", JSON.stringify(stakeholders));
-        localStorage.setItem(
-          "stakeholdersTimestamp",
-          currentTimestamp.toString()
-        );
+  const selectAll = useCallback(
+    async ({ categoryIds }) => {
+      if (!latitude || !longitude) {
+        setState({ data: null, loading: false, error: true });
+        const msg =
+          "Call to search function missing latitude and/or longitude parameters";
+        console.error(msg);
+        return Promise.reject(msg);
       }
-      processStakeholders(stakeholders, latitude, longitude, filters);
-    } catch (err) {
-      setState({ data: null, loading: false, error: true });
-      console.error(err);
-      return Promise.reject(err);
-    }
-  }, [processStakeholders, latitude, longitude, categoryIds]);
+      analytics.postEvent("searchFoodSeeker", {
+        latitude,
+        longitude,
+        categoryIds,
+      });
+
+      try {
+        setState({ data: null, loading: true, error: false });
+
+        const filters = {
+          categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
+        };
+
+        let stakeholders;
+        const isStaleData = checkIfStaleData();
+        if (!isStaleData) {
+          stakeholders = JSON.parse(localStorage.getItem("stakeholders"));
+        } else {
+          stakeholders = await stakeholderService.selectAll();
+          const currentTimestamp = new Date().getTime();
+          localStorage.setItem("stakeholders", JSON.stringify(stakeholders));
+          localStorage.setItem(
+            "stakeholdersTimestamp",
+            currentTimestamp.toString()
+          );
+        }
+        processStakeholders(stakeholders, filters);
+      } catch (err) {
+        setState({ data: null, loading: false, error: true });
+        console.error(err);
+        return Promise.reject(err);
+      }
+    },
+    [processStakeholders, latitude, longitude, categoryIds]
+  );
 
   const getById = useCallback(async (id) => {
     if (!id) {

@@ -72,7 +72,7 @@ const SearchResults = () => {
   }, [neighborhoodId, getGeoJSONById, dispatch]);
 
   useEffect(() => {
-    selectAll();
+    selectAll({ categoryIds });
 
     analytics.postEvent("searchArea");
   }, [categoryIds, selectAll, neighborhoodId, dispatch]);

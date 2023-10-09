@@ -1,9 +1,15 @@
-import { useState, useCallback } from "react";
-import * as stakeholderService from "../services/stakeholder-best-service";
-import * as analytics from "../services/analytics";
 import { DEFAULT_CATEGORIES } from "constants/stakeholder";
-import { useAppDispatch } from "../appReducer";
-import { computeDistances, isStaleData } from "helpers";
+import { computeDistances, checkIfStaleData } from "helpers";
+import useCategoryIds from "hooks/useCategoryIds";
+import { useCallback, useState } from "react";
+import { useLocation } from "react-router-dom";
+import {
+  DEFAULT_COORDINATES,
+  useAppDispatch,
+  useSearchCoordinates,
+} from "../appReducer";
+import * as analytics from "../services/analytics";
+import * as stakeholderService from "../services/stakeholder-best-service";
 
 const sortOrganizations = (a, b) => {
   if (
@@ -29,11 +35,24 @@ export default function useOrganizationBests() {
     loading: false,
     error: false,
   });
+  const location = useLocation();
+  const searchCoordinates = useSearchCoordinates();
+  const { categoryIds } = useCategoryIds([]);
+
+  let latitude, longitude;
+  if (location.search && !searchCoordinates) {
+    const queryParams = new URLSearchParams(location.search);
+    longitude = Number(queryParams.get("longitude"));
+    latitude = Number(queryParams.get("latitude"));
+  } else {
+    longitude = searchCoordinates?.longitude || DEFAULT_COORDINATES.longitude;
+    latitude = searchCoordinates?.latitude || DEFAULT_COORDINATES.latitude;
+  }
 
   const dispatch = useAppDispatch();
 
   const processStakeholders = useCallback(
-    (stakeholders, latitude, longitude, filters) => {
+    (stakeholders, filters) => {
       let filteredStakeholders = stakeholders;
 
       if (latitude && longitude) {
@@ -49,13 +68,6 @@ export default function useOrganizationBests() {
           filters.categoryIds.some((catId) =>
             stakeholder.categoryIds.includes(catId)
           )
-        );
-      }
-
-      // do we want to show inactive organizations?
-      if (filters.isInactive !== undefined && filters.isInactive !== "either") {
-        filteredStakeholders = filteredStakeholders.filter(
-          (stakeholder) => stakeholder.inactive === filters.isInactive
         );
       }
 
@@ -81,82 +93,50 @@ export default function useOrganizationBests() {
         error: false,
       });
     },
-    [dispatch]
+    [dispatch, longitude, latitude]
   );
 
-  const selectAll = useCallback(
-    async ({
-      name,
+  const selectAll = useCallback(async () => {
+    if (!latitude || !longitude) {
+      setState({ data: null, loading: false, error: true });
+      const msg =
+        "Call to search function missing latitude and/or longitude parameters";
+      console.error(msg);
+      return Promise.reject(msg);
+    }
+    analytics.postEvent("searchFoodSeeker", {
       latitude,
       longitude,
-      radius,
-      bounds,
       categoryIds,
-      isInactive,
-      verificationStatusId,
-      neighborhoodId,
-      tag,
-    }) => {
-      if (!latitude || !longitude) {
-        setState({ data: null, loading: false, error: true });
-        const msg =
-          "Call to search function missing latitude and/or longitude parameters";
-        console.error(msg);
-        return Promise.reject(msg);
-      }
-      analytics.postEvent("searchFoodSeeker", {
-        latitude,
-        longitude,
-        radius,
-        bounds,
-        categoryIds,
-        isInactive,
-        verificationStatusId,
-        neighborhoodId,
-        tag,
-      });
+    });
 
-      try {
-        setState({ data: null, loading: true, error: false });
+    try {
+      setState({ data: null, loading: true, error: false });
 
-        const filters = {
-          categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
-          isInactive,
-          verificationStatusId,
-          neighborhoodId,
-          tag,
-        };
-        const localStorageStakeholders = JSON.parse(
-          localStorage.getItem("stakeholders")
+      const filters = {
+        categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
+      };
+
+      let stakeholders;
+      const isStaleData = checkIfStaleData();
+      if (!isStaleData) {
+        stakeholders = JSON.parse(localStorage.getItem("stakeholders"));
+      } else {
+        stakeholders = await stakeholderService.selectAll();
+        const currentTimestamp = new Date().getTime();
+        localStorage.setItem("stakeholders", JSON.stringify(stakeholders));
+        localStorage.setItem(
+          "stakeholdersTimestamp",
+          currentTimestamp.toString()
         );
-
-        if (localStorageStakeholders && !isStaleData()) {
-          processStakeholders(
-            localStorageStakeholders,
-            latitude,
-            longitude,
-            filters
-          );
-        } else {
-          const stakeholders = await stakeholderService.selectAll();
-
-          const currentTimestamp = new Date().getTime();
-          localStorage.setItem("stakeholders", JSON.stringify(stakeholders));
-          localStorage.setItem(
-            "stakeholdersTimestamp",
-            currentTimestamp.toString()
-          );
-
-          processStakeholders(stakeholders, latitude, longitude, filters);
-        }
-      } catch (err) {
-        setState({ data: null, loading: false, error: true });
-        console.error(err);
-        return Promise.reject(err);
       }
-    },
-    [processStakeholders]
-  );
+      processStakeholders(stakeholders, latitude, longitude, filters);
+    } catch (err) {
+      setState({ data: null, loading: false, error: true });
+      console.error(err);
+      return Promise.reject(err);
+    }
+  }, [processStakeholders, latitude, longitude, categoryIds]);
 
   const getById = useCallback(async (id) => {
     if (!id) {

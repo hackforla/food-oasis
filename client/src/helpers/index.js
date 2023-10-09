@@ -149,7 +149,7 @@ export const haversineDistanceInMiles = (lat1, lon1, lat2, lon2) => {
   return d; // Returns distance in miles
 };
 
-export const isStaleData = () => {
+export const checkIfStaleData = () => {
   const storedTimestamp = localStorage.getItem("stakeholdersTimestamp");
   if (!storedTimestamp) return true;
 

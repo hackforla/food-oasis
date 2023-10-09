@@ -32,6 +32,58 @@ export default function useOrganizationBests() {
 
   const dispatch = useAppDispatch();
 
+  const processStakeholders = useCallback(
+    (stakeholders, latitude, longitude, filters) => {
+      let filteredStakeholders = stakeholders;
+
+      if (latitude && longitude) {
+        filteredStakeholders = computeDistances(
+          latitude,
+          longitude,
+          filteredStakeholders
+        );
+      }
+
+      if (filters.categoryIds && filters.categoryIds.length) {
+        filteredStakeholders = filteredStakeholders.filter((stakeholder) =>
+          filters.categoryIds.some((catId) =>
+            stakeholder.categoryIds.includes(catId)
+          )
+        );
+      }
+
+      // do we want to show inactive organizations?
+      if (filters.isInactive !== undefined && filters.isInactive !== "either") {
+        filteredStakeholders = filteredStakeholders.filter(
+          (stakeholder) => stakeholder.inactive === filters.isInactive
+        );
+      }
+
+      if (filters.neighborhoodId) {
+        filteredStakeholders = filteredStakeholders.filter(
+          (stakeholder) => stakeholder.neighborhoodId === filters.neighborhoodId
+        );
+      }
+
+      const stakeholdersWithDistances = computeDistances(
+        latitude,
+        longitude,
+        filteredStakeholders
+      );
+      stakeholdersWithDistances.sort(sortOrganizations);
+      dispatch({
+        type: "STAKEHOLDERS_LOADED",
+        stakeholders: stakeholdersWithDistances,
+      });
+      setState({
+        data: stakeholdersWithDistances,
+        loading: false,
+        error: false,
+      });
+    },
+    [dispatch]
+  );
+
   const selectAll = useCallback(
     async ({
       name,
@@ -53,7 +105,6 @@ export default function useOrganizationBests() {
         return Promise.reject(msg);
       }
       analytics.postEvent("searchFoodSeeker", {
-        name,
         latitude,
         longitude,
         radius,
@@ -64,51 +115,28 @@ export default function useOrganizationBests() {
         neighborhoodId,
         tag,
       });
-      //if (!categoryIds || categoryIds.length === 0) return;
+
       try {
         setState({ data: null, loading: true, error: false });
-        let params = {
-          name,
+
+        const filters = {
           categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
-          latitude,
-          longitude,
-          distance: radius,
           isInactive,
           verificationStatusId,
           neighborhoodId,
           tag,
         };
-        if (bounds) {
-          const { maxLat, maxLng, minLat, minLng } = bounds;
-          params = {
-            ...params,
-            maxLng,
-            maxLat,
-            minLng,
-            minLat,
-          };
-        }
-
         const localStorageStakeholders = JSON.parse(
           localStorage.getItem("stakeholders")
         );
 
         if (localStorageStakeholders && !isStaleData()) {
-          const stakeholdersWithDistances = computeDistances(
+          processStakeholders(
+            localStorageStakeholders,
             latitude,
             longitude,
-            localStorageStakeholders
+            filters
           );
-          stakeholdersWithDistances.sort(sortOrganizations);
-          dispatch({
-            type: "STAKEHOLDERS_LOADED",
-            stakeholders: stakeholdersWithDistances,
-          });
-          setState({
-            data: stakeholdersWithDistances,
-            loading: false,
-            error: false,
-          });
         } else {
           const stakeholders = await stakeholderService.selectAll();
 
@@ -119,22 +147,7 @@ export default function useOrganizationBests() {
             currentTimestamp.toString()
           );
 
-          const stakeholdersWithDistances = computeDistances(
-            latitude,
-            longitude,
-            stakeholders
-          );
-          stakeholdersWithDistances.sort(sortOrganizations);
-
-          dispatch({
-            type: "STAKEHOLDERS_LOADED",
-            stakeholders: stakeholdersWithDistances,
-          });
-          setState({
-            data: stakeholdersWithDistances,
-            loading: false,
-            error: false,
-          });
+          processStakeholders(stakeholders, latitude, longitude, filters);
         }
       } catch (err) {
         setState({ data: null, loading: false, error: true });
@@ -142,7 +155,7 @@ export default function useOrganizationBests() {
         return Promise.reject(err);
       }
     },
-    [dispatch]
+    [processStakeholders]
   );
 
   const getById = useCallback(async (id) => {

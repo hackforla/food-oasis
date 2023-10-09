@@ -154,9 +154,11 @@ export const checkIfStaleData = () => {
   if (!storedTimestamp) return true;
 
   const currentTimestamp = new Date().getTime();
-  const fiveMinutesInMilliseconds = 5 * 60 * 1000;
+  const timeToRefreshInMilliseconds = 10 * 60 * 1000; //this is 10 minutes
 
-  return currentTimestamp - Number(storedTimestamp) > fiveMinutesInMilliseconds;
+  return (
+    currentTimestamp - Number(storedTimestamp) > timeToRefreshInMilliseconds
+  );
 };
 
 export const computeDistances = (userLatitude, userLongitude, stakeholders) => {

@@ -137,7 +137,11 @@ const ResultsFilters = ({
             </Grid2>
           </Grid2>
           <Grid2 xs={12} sm={6}>
-            <Stack direction="row" sx={{ margin: "0.5rem" }}>
+            <Stack
+              direction="row"
+              alignItems="center"
+              sx={{ margin: "0.5rem" }}
+            >
               <AddressDropDown />
               <Tooltip
                 title={

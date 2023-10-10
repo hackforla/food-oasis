@@ -5,7 +5,6 @@ import { Button, CssBaseline, Dialog, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import MuiDialogTitle from "@mui/material/DialogTitle";
 import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
 import { useOrganizations } from "hooks/useOrganizations";
 import { useCategories } from "hooks/useCategories";
 import { useNeighborhoods } from "hooks/useNeighborhoods";
@@ -24,7 +23,6 @@ import { useUserContext } from "../../contexts/userContext";
 import { useSearchCoordinates, useUserCoordinates } from "../../appReducer";
 import CircularProgress from "@mui/material/CircularProgress";
 import VerificationAdminGridMui from "./VerificationAdminGridMui";
-import { AddBoxOutlined, GifBox, GifBoxTwoTone } from "@mui/icons-material";
 
 const CRITERIA_TOKEN = "verificationAdminCriteria";
 

@@ -41,7 +41,6 @@ const getLaplFoodResources: RequestHandler<
       });
     }
   } catch (err) {
-    console.log(err);
     res.sendStatus(500);
   }
 };
@@ -75,7 +74,6 @@ const getOpenLA: RequestHandler<
       });
     }
   } catch (err) {
-    console.log(err);
     res.sendStatus(500);
   }
 };
@@ -106,7 +104,6 @@ const getLARFB: RequestHandler<
       });
     }
   } catch (err) {
-    console.log(err);
     res.sendStatus(500);
   }
 };
@@ -177,7 +174,6 @@ const get211: RequestHandler<
     });
     res.send(resJSON);
   } catch (err) {
-    console.log(err);
     res.sendStatus(500);
   }
 };

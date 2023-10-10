@@ -66,7 +66,6 @@ const Home = () => {
     try {
       await getUserLocation();
     } catch (e) {
-      console.log({ e });
       setError(e);
     }
   };

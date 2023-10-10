@@ -52,7 +52,6 @@ const ResultsFilters = ({
     try {
       await getUserLocation();
     } catch (e) {
-      console.log({ e });
       setError(e);
     }
     analytics.postEvent("recenterMap", {});

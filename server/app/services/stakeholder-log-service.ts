@@ -48,7 +48,6 @@ const selectById = async (id: number): Promise<any[]> => {
 
   const rows = await db.manyOrNone(sql, { id: Number(id) });
   const categories: Category[] = await categoryService.selectAll();
-  console.log(categories);
 
   rows.forEach((row) => {
     const stakeholderCategories = row.category_ids

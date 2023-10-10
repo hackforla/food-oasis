@@ -14,7 +14,6 @@ import IconSpacerSVG from "components/StaticPages/assets/IconSpacerSVG";
 import Footer from "../Layout/Footer";
 
 const About = () => {
-  // const { t } = useTranslation("about");
   return (
     <PageWrapper>
       <CardMedia

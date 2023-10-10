@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Box, CardMedia } from "@mui/material";
 import useLocationHook from "hooks/useLocationHook";
 import { MENU_ITEMS } from "helpers/Constants";
@@ -19,49 +19,29 @@ const logoPaths = {
   6: require("images/foodoasis.svg").default,
 };
 
-
-
 const Footer = () => {
   const { isHomePage } = useLocationHook();
 
-  const initialFooterSwitch = window.innerWidth >= 960 ? true : false;
-  const [fullSizeFooterVisible, changeFooterSize] =
-    useState(initialFooterSwitch);
-
-  useEffect(() => {
-    const checkWindowSize = () => {
-      window.innerWidth >= 960
-        ? changeFooterSize(true)
-        : changeFooterSize(false);
-    };
-    window.addEventListener("resize", checkWindowSize);
-    return () => window.removeEventListener("resize", checkWindowSize);
-  }, []);
-
   if (isHomePage) return null;
-
-  const holderStyle = fullSizeFooterVisible
-    ? {
-        alignItems: "center",
-      }
-    : {
-        alignItems: "flex-end",
-      };
 
   const constantLinks = MENU_ITEMS.map((item, index) => {
     const { text, link } = item;
     return (
-      <Link style={{
-        padding: "0 !important",
-        color: "#1b1b1b",
-        textDecoration: "none",
-        fontSize: "16px",
-        textTransform: "uppercase",
-        margin: ".4em 0 .4em 1.5em",
-        "&:hover": {
-          textDecoration: "underline",
-    },
-      }} key={index} to={link}>
+      <Link
+        style={{
+          padding: "0 !important",
+          color: "#1b1b1b",
+          textDecoration: "none",
+          fontSize: "16px",
+          textTransform: "uppercase",
+          margin: ".4em 0 .4em 1.5em",
+          "&:hover": {
+            textDecoration: "underline",
+          },
+        }}
+        key={index}
+        to={link}
+      >
         {text}
       </Link>
     );
@@ -69,59 +49,60 @@ const Footer = () => {
 
   return (
     <Box
-    sx={(theme) => ({
-      position: "relative",
-      backgroundColor: "#FFF",
-      padding: "1.5rem 1rem",
-      display: "flex",
-      flexDirection: "row",
-      justifyContent: "space-between",
-      color: "#1b1b1b",
-      [theme.breakpoints.up("md")]: {
-        alignItems: 'flex-start'
-      },
-      [theme.breakpoints.down("md")]: {
-        alignItems: 'flex-end'
-      },
-      fontFamily: `"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans- serif`,
-    })}
+      sx={(theme) => ({
+        position: "relative",
+        backgroundColor: "#FFF",
+        padding: "1.5rem 1rem",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        color: "#1b1b1b",
+        [theme.breakpoints.up("md")]: {
+          alignItems: "flex-start",
+        },
+        [theme.breakpoints.down("md")]: {
+          alignItems: "flex-end",
+        },
+        fontFamily: `"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans- serif`,
+      })}
     >
       <CardMedia
-      component='img'
-      alt='logo'
-      src={logoPaths[tenantId]}
-      sx={(theme) => ({
-        maxWidth: "95px",
-        height: "100%",
-        width: "100%",
-        marginTop: "0",
-       
-        "&:hover": {
-          filter: "brightness(1.2)",
-        },
-        [theme.breakpoints.up("md")]: {
-          paddingTop: '5px'
-        },
-      })}
+        component="img"
+        alt="logo"
+        src={logoPaths[tenantId]}
+        sx={(theme) => ({
+          maxWidth: "95px",
+          height: "100%",
+          width: "100%",
+          marginTop: "0",
+
+          "&:hover": {
+            filter: "brightness(1.2)",
+          },
+          [theme.breakpoints.up("md")]: {
+            paddingTop: "5px",
+          },
+        })}
       />
 
-      <Box 
-      sx={(theme) => ({
-      justifyContent: 'center',
-      alignItems: 'flex-end',
-      display: "flex",
-      flexDirection: "column",
-      marginBottom: "10px",
-      [theme.breakpoints.up("md")]: {
-        flexDirection: "row",
-        alignItems: "flex-start",
-        gap: "4em"
-      },
-      [theme.breakpoints.down("md")]: {
-        height: '180px',
-      }
-    })}>
-      {constantLinks}
+      <Box
+        sx={(theme) => ({
+          justifyContent: "center",
+          alignItems: "flex-end",
+          display: "flex",
+          flexDirection: "column",
+          marginBottom: "10px",
+          [theme.breakpoints.up("md")]: {
+            flexDirection: "row",
+            alignItems: "flex-start",
+            gap: "4em",
+          },
+          [theme.breakpoints.down("md")]: {
+            height: "180px",
+          },
+        })}
+      >
+        {constantLinks}
       </Box>
       {/* <Copyright /> */}
     </Box>

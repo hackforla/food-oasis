@@ -35,13 +35,6 @@ import Verification from "./OrganizationEdit/Verification";
 import Label from "./ui/Label";
 import Textarea from "./ui/Textarea";
 
-const HourSchema = Yup.object().shape({
-  weekOfMonth: Yup.number().required("Interval is required"),
-  dayOfWeek: Yup.string().required("Day is required"),
-  open: Yup.string().required("Opening time is required"),
-  close: Yup.string().required("Closing time is required"),
-})
-
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
   address1: Yup.string().required("Street address is required"),
@@ -51,7 +44,6 @@ const validationSchema = Yup.object().shape({
   latitude: Yup.number().required("Latitude is required").min(-90).max(90),
   longitude: Yup.number().required("Longitude is required").min(-180).max(180),
   email: Yup.string().email("Invalid email address format"),
-  hours: Yup.array().of(HourSchema),
   selectedCategoryIds: Yup.array().min(
     1,
     "You must select at least one category"

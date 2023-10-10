@@ -41,7 +41,7 @@ const MobileLayout = ({ filters, map, list, preview, details }) => {
         <Box sx={{ flex: 1 }}>{map}</Box>
         {list && (
           <Draggable
-          bounds={{ top: minY, bottom: window.innerHeight  - 300 }}
+          bounds={{ top: minY, bottom: window.innerHeight  - 200 }}
           defaultPosition={{ x: 0, y: minY * (window.innerHeight / 100) }}
           axis="y">
             <Box sx={overlay}>

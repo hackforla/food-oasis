@@ -1,32 +1,15 @@
 import React, { useState, useEffect, useCallback } from "react";
-import makeStyles from "@mui/styles/makeStyles";
+import { Box } from "@mui/material";
 
-const useStyles = makeStyles((theme) => ({
-  container: {
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-    overflow: "auto",
-    position: "relative",
-  },
-  map: {
-    flex: 1,
-  },
-  preview: {
-    margin: "0 1em",
-    flex: 0,
-  },
-  overlay: {
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-    backgroundColor: theme.palette.background.default,
-    zIndex: 1000,
-  },
-}));
+const overlay = {
+  position: "absolute",
+  width: "100%",
+  height: "100%",
+  backgroundColor: "white",
+  zIndex: 1000,
+};
 
 const MobileLayout = ({ filters, map, list, preview, details }) => {
-  const classes = useStyles();
   const [showDetails, setShowDetails] = useState(false);
 
   useEffect(() => {
@@ -38,18 +21,24 @@ const MobileLayout = ({ filters, map, list, preview, details }) => {
   return (
     <>
       {filters}
-      <div className={classes.container}>
-        <div className={classes.map}>{map}</div>
-        {list && <div className={classes.overlay}>{list}</div>}
+      <Box
+        sx={{
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          overflow: "auto",
+          position: "relative",
+        }}
+      >
+        <Box sx={{ flex: 1 }}>{map}</Box>
+        {list && <Box sx={overlay}>{list}</Box>}
         {preview && (
-          <div className={classes.preview} onClick={show}>
+          <Box sx={{ margin: "0 1em", flex: 0 }} onClick={show}>
             {preview}
-          </div>
+          </Box>
         )}
-        {details && showDetails && (
-          <div className={classes.overlay}>{details}</div>
-        )}
-      </div>
+        {details && showDetails && <Box sx={overlay}>{details}</Box>}
+      </Box>
     </>
   );
 };

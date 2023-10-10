@@ -12,6 +12,7 @@ import StakeholderDetails from "../StakeholderDetails/StakeholderDetails";
 import * as analytics from "services/analytics";
 import { useSelectedOrganization } from "../../../../appReducer";
 import { Virtuoso } from "react-virtuoso";
+import { borderBottom, borderBottomColor } from "@mui/system";
 
 const ResultsList = ({ stakeholders, loading, handleReset }) => {
   const selectedOrganization = useSelectedOrganization();

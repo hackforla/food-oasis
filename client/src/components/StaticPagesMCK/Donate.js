@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import { PageWrapper } from "components/StaticPages/PageWrapper";
 import { Box, CardMedia, Link, SvgIcon } from "@mui/material";
 import IconSpacerSVG from "components/StaticPages/assets/IconSpacerSVG";
+import Footer from "components/Layout/Footer";
 
 const Donate = () => {
   // const { t } = useTranslation("donate");
@@ -209,6 +210,7 @@ const Donate = () => {
             </Typography>
           </Container>
         </Box>
+        <Footer/>
       </PageWrapper>
   );
 };

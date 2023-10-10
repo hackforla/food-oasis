@@ -13,17 +13,6 @@ const logoPaths = {
   6: require("images/foodoasis.svg"),
 };
 
-// const logoStackedPaths = {
-//   1: require("images/logo-food-oasis-stacked.svg"),
-//   2: require("images/logo-food-oasis-stacked.svg"),
-//   3: require("images/logo-food-oasis-stacked.svg"),
-//   4: require("images/logo-food-oasis-stacked.svg"),
-//   5: require("images/logo-food-oasis-stacked.svg"),
-//   6: require("images/logo-food-oasis-stacked.svg"),
-// };
-
-
-
 function WidgetFooterSection(props) {
   const {
     logoPath,

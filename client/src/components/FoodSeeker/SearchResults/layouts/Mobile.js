@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Box } from "@mui/material";
+import Draggable from "react-draggable";
 
 const overlay = {
   position: "absolute",
@@ -18,6 +19,11 @@ const MobileLayout = ({ filters, map, list, preview, details }) => {
 
   const show = useCallback(() => setShowDetails(true), []);
 
+  // Define the bounds for vertical dragging
+  const minY = 35; // Minimum Y position (30% of viewport height)
+  const maxY = 800; // Maximum Y position (35% of viewport height)
+
+
   return (
     <>
       {filters}
@@ -31,7 +37,14 @@ const MobileLayout = ({ filters, map, list, preview, details }) => {
         }}
       >
         <Box sx={{ flex: 1 }}>{map}</Box>
-        {list && <Box sx={overlay}>{list}</Box>}
+        {list && (
+          <Draggable
+          bounds={{ top: minY, bottom: maxY }}
+          defaultPosition={{ x: 0, y: maxY }} // Start at minY position
+          axis="y">
+            <Box sx={overlay}>{list}</Box>
+          </Draggable>
+        )}
         {preview && (
           <Box sx={{ margin: "0 1em", flex: 0 }} onClick={show}>
             {preview}

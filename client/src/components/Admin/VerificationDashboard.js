@@ -1,60 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { CssBaseline, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
 import { useOrganizations } from "hooks/useOrganizations";
 import * as stakeholderService from "services/stakeholder-service";
-import { Button } from "@mui/material";
+import { Button, Box } from "@mui/material";
 import { useUserContext } from "../../contexts/userContext";
 import CircularProgress from "@mui/material/CircularProgress";
 import VerificationAdminGridMui from "./VerificationAdminGridMui";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    flexBasis: "100%",
-    display: "flex",
-    flexDirection: "column",
-    padding: "2rem",
-    paddingBottom: "0",
-  },
-  mainContent: {
-    flexGrow: 1,
-    padding: theme.spacing(2),
-    display: "flex",
-    flexDirection: "column",
-  },
-  closeButton: {
-    position: "absolute",
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    // color: theme.palette.grey[500],
-  },
-
-  header: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  hide: {
-    display: "none",
-  },
-  bigMessage: {
-    flexGrow: 1,
-    flexDirection: "column",
-    justifyContent: "center",
-    backgroundColor: "#E8E8E8",
-    textAlign: "center",
-    padding: "4em",
-  },
-  errorText: {
-    color: theme.palette.error.main,
-    fontSize: "24pt",
-  },
-}));
 
 const defaultCriteria = {
   name: "",
@@ -79,7 +32,6 @@ const defaultCriteria = {
 
 function VerificationDashboard(props) {
   const { user } = useUserContext();
-  const classes = useStyles();
   const [criteria, setCriteria] = useState(defaultCriteria);
   const location = useLocation();
   const navigate = useNavigate();
@@ -139,17 +91,32 @@ function VerificationDashboard(props) {
   }
 
   return (
-    <main className={classes.root}>
+    <main
+    style={{
+      flexGrow: 1,
+      flexBasis: "100%",
+      display: "flex",
+      flexDirection: "column",
+      padding: "2rem",
+      paddingBottom: "0"
+    }}
+    >
       <CssBaseline />
-      <div
-        style={{
+      <Box
+        sx={{
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
           margin: "10px",
         }}
       >
-        <header className={classes.header}>
+        <header 
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center"
+        }}
+        >
           <Typography
             variant="h4"
             component="h4"
@@ -158,7 +125,7 @@ function VerificationDashboard(props) {
           >
             {`${user && user.firstName} ${user && user.lastName}'s Dashboard`}
           </Typography>
-          <div style={{ display: "flex", flexDirection: "row" }}>
+          <Box sx={{ display: "flex", flexDirection: "row" }}>
             <Button
               variant="outlined"
               type="button"
@@ -176,23 +143,42 @@ function VerificationDashboard(props) {
             >
               Refresh
             </Button>
-          </div>
+          </Box>
         </header>
-      </div>
-      <div className={classes.mainContent}>
+      </Box>
+      <Box
+      sx={(theme) => ({
+        flexGrow: 1,
+        padding: theme.spacing(2),
+        display: "flex",
+        flexDirection: "column"
+      })}
+      >
         <>
           {stakeholdersError ? (
-            <div className={classes.bigMessage}>
+            <Box
+            sx={{
+              flexGrow: 1,
+              flexDirection: "column",
+              justifyContent: "center",
+              backgroundColor: "#E8E8E8",
+              textAlign: "center",
+              padding: "4em"
+            }}
+            >
               <Typography
                 variant="h5"
                 component="h5"
-                className={classes.errorText}
+                sx={(theme) => ({
+                  color: theme.palette.error.main,
+                  fontSize: "24pt",
+                })}
               >
                 Uh Oh! Something went wrong!
               </Typography>
-            </div>
+            </Box>
           ) : stakeholdersLoading ? (
-            <div
+            <Box
               style={{
                 flexGrow: 1,
                 width: "100%",
@@ -203,27 +189,45 @@ function VerificationDashboard(props) {
               aria-label="Loading spinner"
             >
               <CircularProgress />
-            </div>
+            </Box>
           ) : stakeholders && stakeholders.length === 0 ? (
-            <div className={classes.bigMessage}>
+            <Box
+            sx={{
+              flexGrow: 1,
+              flexDirection: "column",
+              justifyContent: "center",
+              backgroundColor: "#E8E8E8",
+              textAlign: "center",
+              padding: "4em"
+            }} 
+            >
               <Typography variant="h5" component="h5">
                 No organizations have been assigned to you.
               </Typography>
-            </div>
+            </Box>
           ) : stakeholders ? (
             <VerificationAdminGridMui
               stakeholders={stakeholders}
               mode={"dataentry"}
             />
           ) : (
-            <div className={classes.bigMessage}>
+            <Box
+            sx={{
+              flexGrow: 1,
+              flexDirection: "column",
+              justifyContent: "center",
+              backgroundColor: "#E8E8E8",
+              textAlign: "center",
+              padding: "4em"
+            }}
+            >
               <Typography variant="h5" component="h5">
                 Please enter search criteria and execute a search
               </Typography>
-            </div>
+            </Box>
           )}
         </>
-      </div>
+      </Box>
     </main>
   );
 }

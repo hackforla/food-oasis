@@ -20,7 +20,7 @@ const MobileLayout = ({ filters, map, list, preview, details }) => {
   const show = useCallback(() => setShowDetails(true), []);
 
   // Define the bounds for vertical dragging
-  const minY = 35; // Minimum Y position (30% of viewport height)
+  const minY = 50; // Minimum Y position (30% of viewport height)
   const maxY = 800; // Maximum Y position (35% of viewport height)
 
 
@@ -39,8 +39,8 @@ const MobileLayout = ({ filters, map, list, preview, details }) => {
         <Box sx={{ flex: 1 }}>{map}</Box>
         {list && (
           <Draggable
-          bounds={{ top: minY, bottom: maxY }}
-          defaultPosition={{ x: 0, y: maxY }} // Start at minY position
+          bounds={{ top: minY, bottom: window.innerHeight  - 300 }}
+          defaultPosition={{ x: 0, y: minY * (window.innerHeight / 100) }}
           axis="y">
             <Box sx={overlay}>{list}</Box>
           </Draggable>

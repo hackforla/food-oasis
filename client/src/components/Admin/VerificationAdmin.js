@@ -198,7 +198,7 @@ function VerificationAdmin() {
   const handleAssignDialogClose = async (loginId) => {
     setAssignDialogOpen(false);
     // Dialog returns false if cancelled, null if
-    // want to unassign, otherwisd a loginId > 0
+    // want to unassign, otherwise a loginId > 0
     if (loginId === false) return;
     try {
       for (let i = 0; i < selectedStakeholderIds.length; i++) {
@@ -392,7 +392,6 @@ function VerificationAdmin() {
           id="needs-verification-dialog"
           title='Change Listing(s) Status to "Needs Verification"'
           message={""}
-          // preserveConfirmations={false}
           open={needsVerificationDialogOpen}
           onClose={handleNeedsVerificationDialogClose}
         />

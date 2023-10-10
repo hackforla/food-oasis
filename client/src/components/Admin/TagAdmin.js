@@ -18,7 +18,6 @@ import Typography from "@mui/material/Typography";
 import { IconButton } from "../UI/StandardButton";
 import { Formik } from "formik";
 import { tenantId } from "helpers/Configuration";
-// import IconButton from "components/UI/IconButton";
 import { Navigate, useLocation } from "react-router-dom";
 import Label from "./ui/Label";
 

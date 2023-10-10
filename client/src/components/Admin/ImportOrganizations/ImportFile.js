@@ -75,15 +75,6 @@ const ImportFile = () => {
     setFile(null);
   };
 
-  // closes loading backdrop, but doesn't cancel file upload/parsing
-  // const handleCancelUpload = () => {
-  //   setImportData((prevState) => ({
-  //     ...prevState,
-  //     initialImportData,
-  //   }));
-  //   setLoading(false);
-  // };
-
   const handleImportDialog = () => {
     setDialog(!dialog);
   };
@@ -209,7 +200,6 @@ const ImportFile = () => {
       <ProgressBackdrop
         loading={loading}
         messageOnLoad="Importing file. This may take up to a minute."
-        // handleCancelUpload={handleCancelUpload}
       />
     </>
   );

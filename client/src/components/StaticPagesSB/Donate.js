@@ -142,7 +142,6 @@ const useStyles = makeStyles(() => ({
 }));
 const Donate = () => {
   const classes = useStyles();
-  // const { t } = useTranslation("donate");
   return (
     <div className={classes.outer}>
       <div className={classes.main}>

@@ -27,7 +27,6 @@ const ResultsFilters = ({
   const { taglineText } = tenantDetails;
   const {
     getUserLocation,
-    // isLoading: isGettingLocation
   } = useGeolocation();
   const locationPermission = useLocationPermission();
   const [error, setError] = React.useState("");
@@ -156,7 +155,6 @@ const ResultsFilters = ({
                     onClick={useMyLocationTrigger}
                     disabled={locationPermission === "denied" || !!error}
                     icon="locationSearching"
-                    // isLoading={isGettingLocation}
                   >
                     <LocationSearching
                       htmlColor="white"

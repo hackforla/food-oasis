@@ -104,7 +104,6 @@ const useStyles = makeStyles(() => ({
 }));
 const About = () => {
   const classes = useStyles();
-  // const { t } = useTranslation("about");
   return (
     <div className={classes.outer}>
       <div className={classes.main}>

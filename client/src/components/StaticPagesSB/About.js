@@ -13,7 +13,6 @@ import { Link as RouterLink } from "react-router-dom";
 import Footer from "components/Layout/Footer";
 
 const About = () => {
-  // const { t } = useTranslation("about");
   return (
     <PageWrapper>
       <CardMedia

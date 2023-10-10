@@ -4,7 +4,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Button, CssBaseline, Dialog, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import MuiDialogTitle from "@mui/material/DialogTitle";
-import makeStyles from "@mui/styles/makeStyles";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
 import { useOrganizations } from "hooks/useOrganizations";
 import { useCategories } from "hooks/useCategories";
 import { useNeighborhoods } from "hooks/useNeighborhoods";
@@ -23,60 +24,25 @@ import { useUserContext } from "../../contexts/userContext";
 import { useSearchCoordinates, useUserCoordinates } from "../../appReducer";
 import CircularProgress from "@mui/material/CircularProgress";
 import VerificationAdminGridMui from "./VerificationAdminGridMui";
+import { AddBoxOutlined, GifBox, GifBoxTwoTone } from "@mui/icons-material";
 
 const CRITERIA_TOKEN = "verificationAdminCriteria";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    flexBasis: "100%",
-    display: "flex",
-    flexDirection: "column",
-    padding: "2rem",
-    paddingBottom: "0",
-  },
-  mainContent: {
-    flexGrow: 1,
-    padding: theme.spacing(2),
-    display: "flex",
-    flexDirection: "column",
-  },
-  closeButton: {
-    position: "absolute",
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    // color: theme.palette.grey[500],
-  },
-  header: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  hide: {
-    display: "none",
-  },
-  bigMessage: {
-    flexGrow: 1,
-    flexDirection: "column",
-    justifyContent: "center",
-    backgroundColor: "#E8E8E8",
-    textAlign: "center",
-    padding: "4em",
-  },
-  errorText: {
-    color: theme.palette.error.main,
-    fontSize: "24pt",
-  },
-}));
-
 const DialogTitle = (props) => {
-  const classes = useStyles();
   const { children, onClose, ...other } = props;
   return (
-    <MuiDialogTitle disableTypography className={classes.root} {...other}>
+    <MuiDialogTitle
+      disableTypography
+      sx={{
+        flexGrow: "1",
+        flexBasis: "100%",
+        display: "flex",
+        flexDirection: "column",
+        padding: "2rem",
+        paddingBottom: "0",
+      }}
+      {...other}
+    >
       <Typography variant="h6">{children}</Typography>
       {onClose ? (
         <Button
@@ -85,7 +51,11 @@ const DialogTitle = (props) => {
           icon="search"
           kind="close"
           onClick={onClose}
-          className={classes.closeButton}
+          sx={{
+            position: "absolute",
+            right: "8px",
+            top: "8px",
+          }}
         >
           Search
         </Button>
@@ -125,7 +95,6 @@ const defaultCriteria = {
 
 function VerificationAdmin() {
   const { user } = useUserContext();
-  const classes = useStyles();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [assignDialogOpen, setAssignDialogOpen] = useState(false);
   const [needsVerificationDialogOpen, setNeedsVerificationDialogOpen] =
@@ -301,17 +270,32 @@ function VerificationAdmin() {
     return null;
   }
   return (
-    <main className={classes.root}>
+    <Box
+      sx={{
+        flexGrow: "1",
+        flexBasis: "100%",
+        display: "flex",
+        flexDirection: "column",
+        padding: "2rem",
+        paddingBottom: "0",
+      }}
+    >
       <CssBaseline />
-      <div
-        style={{
+      <Box
+        sx={{
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
           margin: "10px",
         }}
       >
-        <header className={classes.header}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           <Typography
             variant="h2"
             component="h2"
@@ -328,8 +312,8 @@ function VerificationAdmin() {
           >
             Criteria...
           </Button>
-        </header>
-      </div>
+        </Box>
+      </Box>
       <SearchCriteriaDisplay
         defaultCriteria={defaultCriteria}
         criteria={criteria}
@@ -340,7 +324,14 @@ function VerificationAdmin() {
         tags={tags}
         isLoading={neighborhoodsLoading || categoriesLoading}
       />
-      <div className={classes.mainContent}>
+      <Box
+        sx={{
+          flexGrow: "1",
+          padding: "2",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
         <Dialog
           open={dialogOpen}
           onClose={handleDialogClose}
@@ -349,7 +340,7 @@ function VerificationAdmin() {
         >
           <DialogTitle onClose={handleDialogClose}>Search Criteria</DialogTitle>
           {criteria ? (
-            <div style={{ overflowY: "scroll" }}>
+            <Box sx={{ overflowY: "scroll" }}>
               <SearchCriteria
                 key={JSON.stringify({
                   userLatitude:
@@ -368,18 +359,18 @@ function VerificationAdmin() {
                 criteria={criteria}
                 setCriteria={setCriteria}
               />
-            </div>
+            </Box>
           ) : null}
           {categoriesError ||
           neighborhoodsError ||
           stakeholdersError ||
           tagsError ? (
-            <div> Uh Oh! Something went wrong!</div>
+            <Typography> Uh Oh! Something went wrong!</Typography>
           ) : categoriesLoading ||
             neighborhoodsLoading ||
             stakeholdersLoading ||
             tagsLoading ? (
-            <div
+            <Box
               style={{
                 height: "200",
                 width: "100%",
@@ -390,7 +381,7 @@ function VerificationAdmin() {
               aria-label="Loading spinner"
             >
               <CircularProgress />
-            </div>
+            </Box>
           ) : null}
         </Dialog>
         <AssignDialog
@@ -409,17 +400,29 @@ function VerificationAdmin() {
         />
         <>
           {categoriesError || stakeholdersError || tagsError ? (
-            <div className={classes.bigMessage}>
+            <Box
+              sx={{
+                flexGrow: "1",
+                flexDirection: "column",
+                justifyContent: "center",
+                backgroundColor: "#E8E8E8",
+                textAlign: "center",
+                padding: "4em",
+              }}
+            >
               <Typography
                 variant="h3"
                 component="h3"
-                className={classes.errorText}
+                sx={{
+                  color: "error.main",
+                  fontSize: "24pt",
+                }}
               >
                 Uh Oh! Something went wrong!
               </Typography>
-            </div>
+            </Box>
           ) : categoriesLoading || stakeholdersLoading | tagsLoading ? (
-            <div
+            <Box
               style={{
                 flexGrow: 1,
                 width: "100%",
@@ -430,16 +433,25 @@ function VerificationAdmin() {
               aria-label="Loading spinner"
             >
               <CircularProgress />
-            </div>
+            </Box>
           ) : stakeholders && stakeholders.length === 0 ? (
-            <div className={classes.bigMessage}>
+            <Box
+              sx={{
+                flexGrow: "1",
+                flexDirection: "column",
+                justifyContent: "center",
+                backgroundColor: "#E8E8E8",
+                textAlign: "center",
+                padding: "4em",
+              }}
+            >
               <Typography variant="h5" component="h5">
                 No matches found, please try different criteria
               </Typography>
-            </div>
+            </Box>
           ) : stakeholders ? (
             <>
-              <div
+              <Box
                 style={{
                   display: "flex",
                   flexDirection: "row",
@@ -472,8 +484,8 @@ function VerificationAdmin() {
                     Export
                   </Button>
                 </Stack>
-                <div>{`${stakeholders.length} rows`} </div>
-              </div>
+                <Box>{`${stakeholders.length} rows`} </Box>
+              </Box>
               <VerificationAdminGridMui
                 stakeholders={stakeholders}
                 mode={"admin"}
@@ -481,15 +493,24 @@ function VerificationAdmin() {
               />
             </>
           ) : (
-            <div className={classes.bigMessage}>
+            <Box
+              sx={{
+                flexGrow: "1",
+                flexDirection: "column",
+                justifyContent: "center",
+                backgroundColor: "#E8E8E8",
+                textAlign: "center",
+                padding: "4em",
+              }}
+            >
               <Typography variant="h5" component="h5">
                 Please enter search criteria and execute a search
               </Typography>
-            </div>
+            </Box>
           )}
         </>
-      </div>
-    </main>
+      </Box>
+    </Box>
   );
 }
 

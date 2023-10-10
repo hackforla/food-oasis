@@ -96,7 +96,7 @@ const assignNeighborhood = async (
     `;
     return db.none(sql, { stakeholder_id, stakeholder_lat, stakeholder_lon });
   }
-  // otherwise...what?
+  
   return Promise.reject(
     new Error("Could not find valid neighborhood ID for stakeholder")
   );

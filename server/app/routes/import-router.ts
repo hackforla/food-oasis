@@ -7,9 +7,6 @@ import multer from "multer";
 // memory storage
 const upload = multer({ storage: multer.memoryStorage() });
 
-// disk storage
-// const upload = multer({ dest: "uploads/" });
-
 router.get(
   "/lapl-food-resources",
   jwtSession.validateUserHasRequiredRoles(["admin"]),

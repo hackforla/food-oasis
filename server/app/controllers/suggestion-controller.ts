@@ -5,7 +5,7 @@ import { Suggestion } from "../../types/suggestion-types";
 const getAll: RequestHandler<
   // route params
   never,
-  //response
+  // response
   Suggestion[],
   // request body
   never,

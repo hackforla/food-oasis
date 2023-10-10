@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Box } from "@mui/material";
 import Draggable from "react-draggable";
-import { borderRadius } from "@mui/system";
 
 const overlay = {
   position: "absolute",

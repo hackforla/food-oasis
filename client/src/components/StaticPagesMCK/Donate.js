@@ -9,7 +9,6 @@ import IconSpacerSVG from "components/StaticPages/assets/IconSpacerSVG";
 import Footer from "components/Layout/Footer";
 
 const Donate = () => {
-  // const { t } = useTranslation("donate");
   return (
     <PageWrapper>
       <CardMedia

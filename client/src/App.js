@@ -76,6 +76,7 @@ const useStyles = makeStyles({
     backgroundColor: "#fff",
     margin: "0",
     height: "100%",
+    overflowX: 'hidden',
     //overflowY: "scroll",
   }),
   mainContent: {

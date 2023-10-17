@@ -1,7 +1,6 @@
 import React from "react";
 import { useTags } from "hooks/useTags";
 import * as tagService from "../../services/tag-service";
-import makeStyles from "@mui/styles/makeStyles";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -16,7 +15,6 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { spacing } from "@mui/system";
 import { IconButton } from "../UI/StandardButton";
 import { Formik } from "formik";
 import { tenantId } from "helpers/Configuration";
@@ -45,32 +43,9 @@ function getModalStyle() {
   };
 }
 
-const useStyles = makeStyles((theme) => ({
-  container: {
-    maxHeight: "500px",
-    cursor: "pointer",
-  },
-  heading: {
-    marginBottom: theme.spacing(1),
-    display: "flex",
-    justifyContent: "space-between",
-  },
-  paper: {
-    position: "absolute",
-    width: 400,
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-  },
-  error: {
-    color: theme.palette.error.main,
-  },
-}));
-
 function TagAdmin(props) {
   let { data, status } = useTags();
   const [tags, setTags] = React.useState([]);
-  const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [activeTag, setActiveTag] = React.useState(false);

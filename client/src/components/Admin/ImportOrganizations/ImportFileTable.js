@@ -9,34 +9,9 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Box
 } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
 import { STAKEHOLDER_SCHEMA } from "../../../constants/stakeholder-schema";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    textAlign: "center",
-  },
-  section: {
-    marginTop: theme.spacing(2),
-    margin: "0 auto",
-    padding: theme.spacing(4),
-    borderRadius: "8px",
-    boxShadow: "-.2rem 0 2rem #C7CCD1",
-    "& strong": {
-      color: theme.palette.error.main,
-    },
-    "& button": {
-      margin: theme.spacing(2),
-    },
-    tableBanner: {
-      display: "flex",
-    },
-    tableContainer: {
-      overflowX: "auto",
-    },
-  },
-}));
 
 const flattenHours = (daysArray) => {
   if (!daysArray || !daysArray.length) return [];
@@ -47,11 +22,29 @@ const flattenHours = (daysArray) => {
 
 const ImportFileTable = (props) => {
   const { tenantName, data, handleImportAction, handleCancel } = props;
-  const classes = useStyles();
 
   return (
-    <section className={classes.section}>
-      <div className={classes.tableBanner}>
+    <Box
+    sx={(theme) => ({
+    marginTop: theme.spacing(2),
+    margin: "0 auto",
+    padding: theme.spacing(4),
+    borderRadius: "8px",
+    boxShadow: "-.2rem 0 2rem #C7CCD1",
+    "& strong": {
+      color: theme.palette.error.main,
+    },
+    "& button": {
+      margin: theme.spacing(2),
+    }
+  })
+    }
+    >
+      <Box
+      sx={{
+        display: "flex"
+      }}
+      >
         <Typography variant="h5">
           Import Stakeholders ({tenantName} region)
         </Typography>
@@ -65,8 +58,12 @@ const ImportFileTable = (props) => {
         <Button variant="contained" type="button" onClick={handleImportAction}>
           Import
         </Button>
-      </div>
-      <TableContainer className={classes.tableContainer}>
+      </Box>
+      <TableContainer
+      sx={{
+        overflowX: "auto"
+      }}
+      >
         <Table>
           <TableHead>
             <TableRow>
@@ -98,7 +95,7 @@ const ImportFileTable = (props) => {
           </TableBody>
         </Table>
       </TableContainer>
-    </section>
+    </Box>
   );
 };
 

@@ -264,14 +264,12 @@ const StakeholderPreview = ({ stakeholder }) => {
                   <>
                     {isOpenFlag && (
                       <Chip
-                        // sx={{ backgroundColor: "#008000" }}
                         color="success"
                         label="OPEN NOW"
                       />
                     )}
                     {isAlmostClosedFlag && (
                       <Chip
-                        // sx={{ backgroundColor: "#CC3333" }}
                         color="mealProgram"
                         label={`Closing in ${minutesToClosing} minutes`}
                       />
@@ -285,7 +283,6 @@ const StakeholderPreview = ({ stakeholder }) => {
           <Stack direction="row" sx={{ justifyContent: "space-between" }}>
             <Button
               variant="outlined"
-              // size="small"
               onClick={() => {
                 analytics.postEvent("getDirections", {
                   id: stakeholder.id,

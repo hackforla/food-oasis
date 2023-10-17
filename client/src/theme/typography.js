@@ -70,7 +70,7 @@ export const typography = {
       fontSize: ".875rem",
     },
   },
-  //The variant "button" is not overridden, so that the text on a button
+  // The variant "button" is not overridden, so that the text on a button
   // is controlled by styles from the button itself. This allows us to
   // have different button variants with different font charactreristics.
 };

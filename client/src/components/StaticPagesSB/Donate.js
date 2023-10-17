@@ -4,7 +4,6 @@ import iconSpacerGray from "./assets/icon-spacer-gray.svg";
 import { Box, CardMedia, Container, Link, Typography } from "@mui/material";
 
 const Donate = () => {
-  // const { t } = useTranslation("donate");
   return (
     <Container
       sx={{

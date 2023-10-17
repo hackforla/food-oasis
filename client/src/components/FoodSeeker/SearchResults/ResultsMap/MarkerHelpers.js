@@ -1,7 +1,5 @@
 import React, { useMemo } from "react";
 import { renderToString } from "react-dom/server";
-// Nest two imports are sOnly for support of testing selected organization map
-// marker styles - remove after test of issue #923 is complete.
 import MapMarker from "images/mapMarker";
 import {
   MEAL_PROGRAM_CATEGORY_ID,

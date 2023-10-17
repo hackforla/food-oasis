@@ -61,7 +61,6 @@ function getModalStyle() {
     left: `${left}%`,
     transform: `translate(-${top}%, -${left}%)`,
     maxHeight: "80vh",
-    // minWidth: "60vw",
     width: "90vw",
     overflow: "scroll",
   };

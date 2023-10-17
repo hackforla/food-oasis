@@ -13,8 +13,5 @@
     "hooks": {
       "pre-commit": "lerna run lint"
     }
-  },
-  "dependencies": {
-    "react-draggable": "^4.4.6"
   }
 }

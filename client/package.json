@@ -39,7 +39,9 @@
     "react-router-dom": "^6.10.0",
     "react-scripts": "^5.0.1",
     "react-virtuoso": "^4.1.0",
-    "yup": "^0.32.8"
+    "yup": "^0.32.8",
+    "react-draggable": "^4.4.6"
+
   },
   "browserslist": {
     "production": [

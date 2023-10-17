@@ -85,7 +85,6 @@ const SearchCriteria = ({
     }
 
     setCriteria({ ...criteria, [evt.target.name]: evt.target.value });
-    console.log(criteria);
   };
 
   const handleRadioChange = (evt) => {

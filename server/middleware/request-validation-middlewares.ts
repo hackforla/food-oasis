@@ -11,7 +11,6 @@ export function requestValidationMiddleware<T>(schema: T) {
   return (req: Request, res: Response, next: NextFunction) => {
     const valid = validatingRequest(req.body);
     if (!valid) {
-      console.log(validatingRequest.errors);
       res.sendStatus(400);
     }
     else

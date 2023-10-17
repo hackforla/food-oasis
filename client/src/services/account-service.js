@@ -93,7 +93,6 @@ export const updateProfile = async (userId, values) => {
     const response = await axios.put(baseUrl + `/${userId}`, body);
     return response;
   } catch (error) {
-    console.log(error);
     return null;
   }
 };

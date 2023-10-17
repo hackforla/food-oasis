@@ -104,11 +104,8 @@ const selectAll = () => {
         }
       });
       return listings;
-      // console.log(JSON.stringify(listings, null, 2));
     })
-    .catch((err: any) => {
-      console.log(err);
-    });
+    .catch();
 };
 
 export default {

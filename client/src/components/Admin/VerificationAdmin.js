@@ -144,7 +144,6 @@ function VerificationAdmin() {
       setCriteria(initialCriteria);
       try {
         await searchCallback(initialCriteria);
-        console.log("executed");
       } catch (err) {
         // If we receive a 401 status code, the user needs
         // to be logged in, will redirect to login page.
@@ -161,8 +160,6 @@ function VerificationAdmin() {
   const search = async (searchCriteria = criteria) => {
     try {
       await searchCallback(searchCriteria);
-      console.log("Searching...");
-      console.log(searchCriteria);
       sessionStorage.setItem(CRITERIA_TOKEN, JSON.stringify(searchCriteria));
     } catch (err) {
       // If we receive a 401 status code, the user needs

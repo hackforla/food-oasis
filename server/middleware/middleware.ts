@@ -21,7 +21,6 @@ const cors: RequestHandler = (req, res, next): void => {
 };
 
 function handleError(err: any, req: Request, res: Response, next: any) {
-  console.log("server error", err);
   if (res.headersSent) return next(err);
   res.status(500).json({ error: "Internal Error" });
 }

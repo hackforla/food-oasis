@@ -14,10 +14,14 @@ import { json2csv } from "json-2-csv";
 
 // Retrieve LA Public Library imported listings from db table load_lapl_food_resources
 const getLaplFoodResources: RequestHandler<
-  never, // route params
-  LAPLFoodResource[] | string, // response
-  never, // req body
-  { format: string } // query params
+  // route params
+  never, 
+  // response
+  LAPLFoodResource[] | string, 
+  // req body
+  never, 
+  // query params
+  { format: string } 
 > = async (req, res) => {
   try {
     const rows: LAPLFoodResource[] = await loadLaplService.selectAll();
@@ -37,17 +41,20 @@ const getLaplFoodResources: RequestHandler<
       });
     }
   } catch (err) {
-    console.log(err);
     res.sendStatus(500);
   }
 };
 
 // Retrieve Open LA imported listings from db table load_open_la_data
 const getOpenLA: RequestHandler<
-  never, // route params
-  OpenLAData[] | string, // response
-  never, // req body
-  { format: string } // query params
+  // route params
+  never, 
+  // response
+  OpenLAData[] | string, 
+  // req body
+  never, 
+  // query params
+  { format: string } 
 > = async (req, res) => {
   try {
     const rows = await loadOpenLADataService.selectAll();
@@ -67,17 +74,20 @@ const getOpenLA: RequestHandler<
       });
     }
   } catch (err) {
-    console.log(err);
     res.sendStatus(500);
   }
 };
 
 // Retrieve LA Regional Food Bank imported listings from db table load_larfb
 const getLARFB: RequestHandler<
-  never, // route params
-  LARFBListing[] | string, // response
-  never, // req body
-  { format: string } // query params
+  // route params
+  never,
+  // response
+  LARFBListing[] | string, 
+  // req body
+  never, 
+  // query params
+  { format: string } 
 > = async (req, res) => {
   try {
     const resp = await loadLARFBService.selectAll();
@@ -94,17 +104,20 @@ const getLARFB: RequestHandler<
       });
     }
   } catch (err) {
-    console.log(err);
     res.sendStatus(500);
   }
 };
 
 // Retrieve 211 imported listings from db table load_211
 const get211: RequestHandler<
-  never, // route params
-  LA211Listing[] | string, // response
-  never, // req body
-  { limit: string } // query params
+  // route params
+  never, 
+  // response
+  LA211Listing[] | string, 
+  // req body
+  never, 
+  // query params
+  { limit: string } 
 > = async (req, res) => {
   try {
     // can't convert to csv because data has nested json
@@ -161,7 +174,6 @@ const get211: RequestHandler<
     });
     res.send(resJSON);
   } catch (err) {
-    console.log(err);
     res.sendStatus(500);
   }
 };

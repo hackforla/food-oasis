@@ -40,7 +40,7 @@ const HourSchema = Yup.object().shape({
   dayOfWeek: Yup.string().required("Day is required"),
   open: Yup.string().required("Opening time is required"),
   close: Yup.string().required("Closing time is required"),
-})
+});
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -55,20 +55,6 @@ const validationSchema = Yup.object().shape({
   selectedCategoryIds: Yup.array().min(
     1,
     "You must select at least one category"
-  ),
-  hours: Yup.array().of(
-    Yup.object().shape({
-      weekOfMonth: Yup.number().required("Week of month is required"),
-      dayOfWeek: Yup.string()
-        .required("Day of week is required")
-        .notOneOf([""], "Day of week should not be empty"),
-      open: Yup.string()
-        .required("Open time is required")
-        .notOneOf([""], "Open time should not be empty"),
-      close: Yup.string()
-        .required("Close time is required")
-        .notOneOf([""], "Close time should not be empty"),
-    })
   ),
 });
 

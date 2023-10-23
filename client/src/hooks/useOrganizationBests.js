@@ -1,6 +1,5 @@
 import { DEFAULT_CATEGORIES } from "constants/stakeholder";
 import { computeDistances, checkIfStaleData } from "helpers";
-import useCategoryIds from "hooks/useCategoryIds";
 import { useCallback, useState } from "react";
 import { useLocation } from "react-router-dom";
 import {
@@ -37,7 +36,6 @@ export default function useOrganizationBests() {
   });
   const location = useLocation();
   const searchCoordinates = useSearchCoordinates();
-  const { categoryIds } = useCategoryIds([]);
 
   let latitude, longitude;
   if (location.search && !searchCoordinates) {
@@ -138,7 +136,7 @@ export default function useOrganizationBests() {
         return Promise.reject(err);
       }
     },
-    [processStakeholders, latitude, longitude, categoryIds]
+    [processStakeholders, latitude, longitude]
   );
 
   const getById = useCallback(async (id) => {

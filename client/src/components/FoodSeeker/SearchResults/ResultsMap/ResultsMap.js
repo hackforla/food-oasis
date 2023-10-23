@@ -24,7 +24,6 @@ import {
   useMarkersGeojson,
 } from "./MarkerHelpers";
 import { regionFillStyle, regionBorderStyle } from "./RegionHelpers";
-import useStyles from "./styles";
 import * as analytics from "services/analytics";
 import { Button } from "@mui/material";
 import {
@@ -48,11 +47,9 @@ const ResultsMap = (
     categoryIds,
     loading,
     searchMapArea,
-    // regionGeoJSON,
   },
   ref
 ) => {
-  const classes = useStyles();
   const mapRef = useRef();
   const [markersLoaded, setMarkersLoaded] = useState(false);
   const searchCoordinates = useSearchCoordinates();
@@ -172,7 +169,12 @@ const ResultsMap = (
       getCursor={getCursor}
       width="100%"
       height="100%"
-      className={classes.map}
+      sx={{
+        position: "relative",
+        "& .mapboxgl-ctrl-attrib-button": {
+          display: "none",
+        },
+      }}
     >
       {startIconCoordinates && (
         <Map.Marker
@@ -187,12 +189,18 @@ const ResultsMap = (
       )}
       <Map.NavigationControl
         showCompass={false}
-        className={classes.navigationControl}
+        sx={{
+          top: 8,
+          right: 8,
+        }}
       />
       <Map.ScaleControl
         maxWidth={100}
         unit="imperial"
-        className={classes.scaleControl}
+        sx={{
+          top: 8,
+          left: 8,
+        }}
       />
       {markersLoaded && (
         <Map.Source type="geojson" data={markersGeojson}>
@@ -211,8 +219,18 @@ const ResultsMap = (
           variant="outlined"
           onClick={searchMapArea}
           size="small"
-          className={classes.searchButton}
           disabled={loading}
+          sx={{
+            position: "absolute",
+            top: 5,
+            left: "50%",
+            transform: "translate(-50%)",
+            backgroundColor: "white",
+            "&:hover": {
+              background: theme => theme.palette.primary.main,
+              color: "#FFFFFF",
+            },
+          }}
         >
           Search this area
         </Button>

@@ -4,10 +4,14 @@ import { Email, ContactFormData } from "../../types/email-type";
 import { ClientResponse } from "@sendgrid/mail";
 
 const send: RequestHandler<
-  never, // route param
-  [ClientResponse, Record<string, never>] | { error: string }, // response
-  Email, // request
-  never // query param
+  // route params
+  never, 
+  // response
+  [ClientResponse, Record<string, never>] | { error: string }, 
+  // request
+  Email,
+  // query params 
+  never 
 > = (req, res) => {
   const email: Email = {
     emailFrom: req.body.emailFrom,
@@ -24,12 +28,15 @@ const send: RequestHandler<
 };
 
 const sendContactForm: RequestHandler<
-  never, // route param
-  [ClientResponse, Record<string, never>] | { error: string }, // response
-  ContactFormData, // request
-  never // query param
+  // route params
+  never, 
+  // response
+  [ClientResponse, Record<string, never>] | { error: string }, 
+  // request
+  ContactFormData, 
+  // query params
+  never 
 > = (req, res) => {
-  // return res.status(404).json({ error: "Errors noooo" });
   emailService
     .sendContactEmail(req.body)
     .then((resp) => res.send(resp))

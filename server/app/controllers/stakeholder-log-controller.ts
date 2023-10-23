@@ -12,7 +12,6 @@ const getById: RequestHandler<
     const resp = await stakeholderLogService.selectById(Number(id));
     res.send(resp);
   } catch (err) {
-    console.log(err);
     res.sendStatus(500);
   }
 };

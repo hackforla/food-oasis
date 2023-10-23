@@ -200,12 +200,6 @@ const OrganizationEdit = (props) => {
     }
   };
 
-  // function formatMapAddress(formData) {
-  //   return `${formData.address1 || ""} ${formData.address2 || ""} ${
-  //     formData.city || ""
-  //   }, ${formData.state || ""} ${formData.zip || ""}`;
-  // }
-
   const handleChangeTabPage = (event, newValue) => {
     setTabPage(newValue);
   };

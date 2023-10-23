@@ -1,7 +1,7 @@
 import { JSONSchemaType } from "ajv";
-import { Tag, StakeholderTag } from "../../types/tag-types";
+import { StakeholderTag } from "../../types/tag-types";
 
-export const tagPutRequestSchema: JSONSchemaType<Omit<Tag, "id">> = {
+export const tagPutRequestSchema: JSONSchemaType<StakeholderTag> = {
   type: "object",
   required: ["id", "name"],
   properties: {

@@ -221,8 +221,8 @@ const forgotPassword = async (model: {
     // sending email.
     try {
       await requestResetPasswordConfirmation(email, result, clientUrl);
-    } catch (e) {
-      console.log(e);
+    } catch (err: any) {
+      throw new Error(err);
     }
     if (result.isSuccess === true) {
       return {

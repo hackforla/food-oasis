@@ -66,7 +66,6 @@ const Home = () => {
     try {
       await getUserLocation();
     } catch (e) {
-      console.log({ e });
       setError(e);
     }
   };
@@ -208,7 +207,6 @@ const Home = () => {
                         <Button
                           variant="contained"
                           startIcon={<LocationOn />}
-                          // className={classes.locationBtn}
                           onClick={useMyLocationTrigger}
                           disabled={locationPermission === "denied" || !!error}
                         >

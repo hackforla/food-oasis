@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
 import { uploadCsv, importCsv } from "../../../services/import-service";
 import exportCsv from "../../../services/export-service";
 import ImportFileTable from "./ImportFileTable";
@@ -13,26 +12,6 @@ import ProgressBackdrop from "./ProgressBackdrop";
 import { useUserContext } from "../../../contexts/userContext";
 import { useToasterContext } from "../../../contexts/toasterContext";
 import { useSiteContext } from "../../../contexts/siteContext";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    textAlign: "center",
-  },
-  section: {
-    marginTop: theme.spacing(2),
-    maxWidth: "800px",
-    margin: "0 auto",
-    padding: theme.spacing(4),
-    borderRadius: "8px",
-    boxShadow: "-.2rem 0 2rem #C7CCD1",
-    "& strong": {
-      color: theme.palette.error.main,
-    },
-    "& button": {
-      marginTop: theme.spacing(2),
-    },
-  },
-}));
 
 const initialImportData = {
   data: null,
@@ -51,7 +30,6 @@ const ImportFile = () => {
   });
   const [dialog, setDialog] = useState(false);
   const [loading, setLoading] = useState(false);
-  const classes = useStyles();
   let formData = React.useMemo(() => new FormData(), []);
   const [view, setView] = useState(
     user && user.isAdmin ? "adminAccessNotice" : "fileGuide"
@@ -97,15 +75,6 @@ const ImportFile = () => {
     setFile(null);
   };
 
-  // closes loading backdrop, but doesn't cancel file upload/parsing
-  // const handleCancelUpload = () => {
-  //   setImportData((prevState) => ({
-  //     ...prevState,
-  //     initialImportData,
-  //   }));
-  //   setLoading(false);
-  // };
-
   const handleImportDialog = () => {
     setDialog(!dialog);
   };
@@ -134,7 +103,7 @@ const ImportFile = () => {
     if (!validationCheck) {
       setToast({
         message:
-          "File fields could not be validated. Please doublecheck format, schema, and column names.",
+          "File fields could not be validated. Please double check format, schema, and column names.",
       });
       return;
     }
@@ -149,7 +118,7 @@ const ImportFile = () => {
         console.error(err.message);
         setToast({
           message:
-            "File could not be imported. Please doublecheck format, schema, and column names.",
+            "File could not be imported. Please double check format, schema, and column names.",
         });
       });
     setDialog(false);
@@ -216,7 +185,7 @@ const ImportFile = () => {
   };
 
   return (
-    <main className={classes.root}>
+    <>
       <div>
         {renderView()}
         <ImportDialog
@@ -231,9 +200,8 @@ const ImportFile = () => {
       <ProgressBackdrop
         loading={loading}
         messageOnLoad="Importing file. This may take up to a minute."
-        // handleCancelUpload={handleCancelUpload}
       />
-    </main>
+    </>
   );
 };
 

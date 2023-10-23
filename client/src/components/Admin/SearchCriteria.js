@@ -21,13 +21,6 @@ import LocationAutocomplete from "./LocationAutocomplete";
 import AccountAutocomplete from "./AccountAutocomplete";
 import { defaultViewport } from "../../helpers/Configuration";
 import Label from "./ui/Label";
-// TODO:  Having a project react component named "Input" seems to cause
-// some sort of conflict with the material-ui component also named Input.
-// For now, use the Input component from material-ui insted to fix broken
-// criteria dialog in production. Need to re-visit and figure out if
-// simply giving our Food Oasis input a different name will resolve
-// this problem.
-// import { Input } from "../UI";
 
 const closeTo = (lat1, lon1, lat2, lon2) => {
   return Math.abs(lat1 - lat2) + Math.abs(lon1 - lon2) < 0.01;
@@ -92,7 +85,6 @@ const SearchCriteria = ({
     }
 
     setCriteria({ ...criteria, [evt.target.name]: evt.target.value });
-    console.log(criteria);
   };
 
   const handleRadioChange = (evt) => {

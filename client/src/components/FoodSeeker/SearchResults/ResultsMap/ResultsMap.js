@@ -41,14 +41,10 @@ import useFeatureFlag from "hooks/useFeatureFlag";
 
 const ResultsMap = (
   {
-    center,
     stakeholders,
-    doSelectStakeholder,
-    selectedStakeholder,
     categoryIds,
     loading,
     searchMapArea,
-    // regionGeoJSON,
   },
   ref
 ) => {
@@ -224,12 +220,10 @@ const ResultsMap = (
 export default forwardRef(ResultsMap);
 
 ResultsMap.propTypes = {
-  ref: PropTypes.any,
   stakeholders: PropTypes.arrayOf(PropTypes.object),
   categoryIds: PropTypes.any,
   loading: PropTypes.bool,
   searchMapArea: PropTypes.any,
-  regionGeoJSON: PropTypes.object,
 };
 
 const StartIcon = () => {

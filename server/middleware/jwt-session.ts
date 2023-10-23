@@ -2,8 +2,6 @@ import jwt from "jsonwebtoken";
 import { CookieOptions, Request, Response } from "express";
 import { Role } from "../types/account-types";
 
-// const autoCatch = require("./lib/auto-catch");
-
 const jwtSecret = process.env.JWT_SECRET || "mark it zero";
 const jwtOpts: jwt.SignOptions = { algorithm: "HS256", expiresIn: "1d" };
 
@@ -124,9 +122,7 @@ async function verify(jwtString = "") {
 }
 
 export default {
-  //login: autoCatch(login),
   login,
-  //ensureUser: autoCatch(ensureUser),
   validateUser,
   validateUserHasRequiredRoles,
 };

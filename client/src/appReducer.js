@@ -6,6 +6,14 @@ const tenantId = getTenantId();
 export const DEFAULT_COORDINATES =
   TENANT_CONFIG[tenantId].defaultViewport.center;
 
+function stakeholdersReducer(state, action) {
+  switch (action.type) {
+    case "STAKEHOLDERS_LOADED":
+      return action.stakeholders;
+    default:
+      return state;
+  }
+}
 function defaultCoordinatesReducer(state, action) {
   switch (action.type) {
     case "DEFAULT_COORDINATES_UPDATED":
@@ -94,11 +102,13 @@ export function appReducer(state, action) {
     // isWidget === true indicates that app is implemented as an
     // iframe widget hosted in a third-party application.
     isWidget: widgetReducer(state.isWidget, action),
+    stakeholders: stakeholdersReducer(state.stakeholders, action),
   };
 }
 
 export function getInitialState() {
   return {
+    stakeholders: [],
     defaultCoordinates: DEFAULT_COORDINATES,
     searchCoordinates: null,
     selectedOrganization: null,
@@ -166,4 +176,9 @@ export function useNeighborhood() {
 export function useWidget() {
   const { isWidget } = useAppState();
   return isWidget;
+}
+
+export function useStakeholders() {
+  const { stakeholders } = useAppState();
+  return stakeholders;
 }

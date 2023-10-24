@@ -185,11 +185,6 @@ const ResultsMap = (
         showCompass={false}
         className={classes.navigationControl}
       />
-      <Map.ScaleControl
-        maxWidth={100}
-        unit="imperial"
-        className={classes.scaleControl}
-      />
       {markersLoaded && (
         <Map.Source type="geojson" data={markersGeojson}>
           <Map.Layer {...markersLayerStyles} />
@@ -201,7 +196,7 @@ const ResultsMap = (
           <Map.Layer {...regionBorderStyle} />
         </Map.Source>
       )}
-      
+
       {!hasAdvancedFilterFeatureFlag && (
         <Button
           variant="outlined"

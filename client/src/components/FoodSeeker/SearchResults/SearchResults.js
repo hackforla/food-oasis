@@ -143,7 +143,7 @@ const SearchResults = () => {
     <Mobile
       filters={filters}
       map={map}
-      list={showList && list}
+      list={list}
       preview={
         selectedOrganization && <Preview stakeholder={selectedOrganization} />
       }

@@ -27,7 +27,7 @@ const ImportFileTable = (props) => {
     <Box
     sx={(theme) => ({
     marginTop: theme.spacing(2),
-    margin: "auto",
+    marginX: "auto",
     padding: theme.spacing(4),
     borderRadius: "8px",
     boxShadow: "-.2rem 0 2rem #C7CCD1",

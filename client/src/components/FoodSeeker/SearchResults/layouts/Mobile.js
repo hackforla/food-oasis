@@ -22,7 +22,8 @@ const MobileLayout = ({ filters, map, list, preview, details }) => {
 
   // Define the bounds for vertical dragging
   const minY = 50; 
-  const maxY = 800; 
+  //const maxY = 800; 
+  //commented out const maxY above since it is currently not being used but might be useful in future
 
 
   return (
@@ -41,7 +42,7 @@ const MobileLayout = ({ filters, map, list, preview, details }) => {
         {list && (
           <Draggable
           handle=".handle"
-          bounds={{ top: minY, bottom: window.innerHeight  - 200 }}
+          bounds={{ top: minY, bottom: minY * (window.innerHeight / 100) }}
           defaultPosition={{ x: 0, y: minY * (window.innerHeight / 100) }}
           axis="y">
             <Box sx={overlay}>

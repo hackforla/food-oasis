@@ -1,5 +1,6 @@
 import React from "react";
-import { foodPantry, mealProgram, closed } from "theme/palette";
+import { foodPantry, mealProgram } from "theme/palette";
+import PantryIcon from "../icons/PantryIcon";
 
 /*
 This is a temporary test file for Issue #923 testing. It should be
@@ -9,18 +10,22 @@ preferred style.
 
 */
 
-const MapMarker = ({
-  category,
-  inactive,
-  onClick,
-  selected = false,
-  scale = 1.0,
-}) => {
-  const width = (selected ? 51 : 30) * scale;
-  const height = (selected ? 68 : 40) * scale;
-  //const filter = selected ? "url(#f1)" : "";
+const MapMarker = ({ category, onClick, selected = false, scale = 1.0 }) => {
+  const width = (selected ? 53 : 30) * scale;
+  const height = (selected ? 67 : 40) * scale;
   const filter = selected ? "" : "";
   let content;
+  const iconProps = {
+    width,
+    height,
+    selected,
+    onClick,
+    viewBox: selected ? "0 0 48 64" : "0 0 53 67",
+  };
+
+  if (category === 0) {
+    return <PantryIcon {...iconProps} />;
+  }
 
   if (selected) {
     if (category === -1)
@@ -120,12 +125,12 @@ const MapMarker = ({
         <g>
           <path
             d="M15 39.863 C10.201 34.568 1.439 22.592 0.075 15.856 -0.134 13.853 0.095 11.83 0.749 9.917 1.404 8.005 2.468 6.245 3.874 4.751 5.28 3.258 6.996 2.063 8.913 1.245 10.829 0.426 12.903 0.003 15 0 L15 6.364 15 20.698 Z"
-            fill={inactive ? closed : foodPantry}
+            fill={foodPantry}
             filter={filter}
           />
           <path
             d="M15 39.863 C19.8 34.568 28.561 22.592 29.925 15.856 30.135 13.853 29.905 11.83 29.251 9.917 28.597 8.005 27.532 6.245 26.126 4.751 24.72 3.258 23.004 2.063 21.088 1.245 19.171 0.426 17.098 0.003 15 0 L15 6.364 15 20.698 Z"
-            fill={inactive ? closed : mealProgram}
+            fill={mealProgram}
           />
           <path
             d="M8.481 18.575 C8.236 18.847 7.758 19 7.347 19 5.935 19 4 16.493 4 14.261 4 12.028 4.919 10.444 6.332 10.444 7.098 10.444 7.716 10.537 8.046 10.929 L8.04 10.904 C8.04 10.904 7.785 9.813 7.368 9.584 7.598 9.461 8.025 9.115 8.025 9.115 8.025 9.115 8.682 10.009 8.682 10.906 L8.682 10.929 C9.167 10.501 9.747 10.237 10.63 10.237 12.042 10.237 12.962 12.028 12.962 14.261 12.962 16.493 10.958 19 9.546 19 9.132 19 8.727 18.852 8.481 18.575 Z"
@@ -141,33 +146,12 @@ const MapMarker = ({
           />
         </g>
       );
-    else if (category === 0)
-      content = (
-        <g>
-          <path
-            d="M0,14.44C0,22.41,15,40,15,40s15-17.59,15-25.56C30,6.46,23.28,0,15,0C6.72,0,0,6.46,0,14.44z"
-            fill={inactive ? closed : foodPantry}
-            filter={filter}
-          />
-          <path
-            d="M14.93,23.34C14.55,23.76,13.81,24,13.17,24C10.99,24,8,20.13,8,16.68c0-3.45,1.42-5.9,3.6-5.9
-  c1.18,0,2.14,0.14,2.65,0.75l-0.01-0.04c0,0-0.39-1.69-1.04-2.04c0.36-0.19,1.02-0.73,1.02-0.73s1.02,1.38,1.02,2.77v0.04
-  c0.75-0.66,1.65-1.07,3.01-1.07c2.18,0,3.6,2.77,3.6,6.22c0,3.45-3.1,7.32-5.28,7.32C15.93,24,15.31,23.77,14.93,23.34z"
-            fill="white"
-          />
-          <path
-            d="M15.79,10.48c0,0,1.28-0.29,1.86-1.25C18.23,8.27,17.89,7,17.89,7s-1.28,0.29-1.86,1.25
-  C15.45,9.21,15.79,10.48,15.79,10.48z"
-            fill="white"
-          />
-        </g>
-      );
     else if (category === 1)
       content = (
         <g>
           <path
             d="M15,40c0,0-15-17.59-15-25.56C0,6.46,6.72,0,15,0c8.28,0,15,6.46,15,14.44C30,22.41,15,40,15,40z"
-            fill={inactive ? closed : mealProgram}
+            fill={mealProgram}
             filter={filter}
           />
           <path

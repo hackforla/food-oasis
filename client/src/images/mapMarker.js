@@ -1,7 +1,7 @@
 import React from "react";
 import { foodPantry, mealProgram } from "theme/palette";
 import PantryIcon from "../icons/PantryIcon";
-
+import SplitPantryMealIcon from "icons/SplitPantryMealIcon";
 /*
 This is a temporary test file for Issue #923 testing. It should be
 removed once we make a decision about the selected orgaiation map pin style,
@@ -25,6 +25,8 @@ const MapMarker = ({ category, onClick, selected = false, scale = 1.0 }) => {
 
   if (category === 0) {
     return <PantryIcon {...iconProps} />;
+  } else if (category === -1) {
+    return <SplitPantryMealIcon {...iconProps} />;
   }
 
   if (selected) {

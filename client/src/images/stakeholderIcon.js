@@ -1,7 +1,7 @@
 import React from "react";
 import PantryIcon from "../icons/PantryIcon";
+import SplitPantryMealIcon from "icons/SplitPantryMealIcon";
 import MealIcon from "images/mealIcon";
-import SplitPantryMealIcon from "images/splitPantryMealIcon";
 import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,

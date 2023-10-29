@@ -26,7 +26,6 @@ export default function AddressDropDown({ showSearchIcon }) {
     const safeValue = typeof delta === "string" ? delta : delta.target.value;
     setInputVal(safeValue);
     if (safeValue) {
-      handleAutocompleteOnChange(safeValue);
       fetchMapboxResults(safeValue);
     }
   };
@@ -67,11 +66,11 @@ export default function AddressDropDown({ showSearchIcon }) {
             textOverflow: "ellipsis",
             paddingRight: "20px",
             color: "#252525",
-          }
+          },
         }}
         InputProps={{
           sx: {
-            cursor: "pointer"
+            cursor: "pointer",
           },
           endAdornment: (
             <InputAdornment

@@ -16,9 +16,9 @@ export const disabledText = "#999999";
 export const tooltipHover = "rgba(51, 102, 153, 0.2)";
 
 //Icon and List Colors
-export const foodPantry = "#336699"; //blue
-export const mealProgram = "#E57109"; //orange | formerly red #CC3333
-export const closed = "#545454"; //grey
+export const foodPantry = "#0A7572";
+export const mealProgram = "#EF7F4F";
+export const closed = "#545454";
 
 export const palette = {
   contrastThreshold: 4.5,

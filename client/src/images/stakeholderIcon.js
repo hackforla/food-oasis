@@ -1,7 +1,7 @@
 import React from "react";
 import PantryIcon from "../icons/PantryIcon";
 import SplitPantryMealIcon from "icons/SplitPantryMealIcon";
-import MealIcon from "images/mealIcon";
+import MealIcon from "../icons/MealIcon";
 import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
@@ -35,7 +35,7 @@ const Icon = ({ stakeholder, height, width }) => {
       <SplitPantryMealIcon isClosed={isClosed} height={height} width={width} />
     );
   } else if (isFoodPantry) {
-    return <PantryIcon />;
+    return <PantryIcon isClosed={isClosed} height={height} width={width} />;
   } else {
     return <MealIcon isClosed={isClosed} height={height} width={width} />;
   }

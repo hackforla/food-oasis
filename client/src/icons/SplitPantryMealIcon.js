@@ -1,9 +1,12 @@
+import { mealProgram, closed, foodPantry, white } from "theme/palette";
+
 const SplitPantryMealIcon = ({
   height = "53px",
   width = "67px",
   onClick,
   selected = false,
   viewBox = "0 0 64 84",
+  isClosed,
 }) => (
   <svg
     width={width}
@@ -13,15 +16,54 @@ const SplitPantryMealIcon = ({
     onClick={onClick}
     viewBox={viewBox}
   >
+    <g filter="url(#a)">
+      <path
+        d="m25.5 56.34.761.649-.761.892-.761-.892.761-.649Zm0 0-.761.648h-.001l-.003-.004-.01-.012-.041-.049a78.34 78.34 0 0 1-.75-.898c-.51-.617-1.236-1.508-2.108-2.608a173.614 173.614 0 0 1-6.397-8.585c-2.326-3.346-4.667-7.022-6.43-10.496C7.254 30.898 6 27.517 6 24.806 6 14.385 14.767 6 25.5 6S45 14.384 45 24.807c0 2.71-1.254 6.09-2.999 9.529-1.764 3.474-4.104 7.15-6.43 10.496a173.614 173.614 0 0 1-6.397 8.585 169.281 169.281 0 0 1-2.7 3.32 78.34 78.34 0 0 1-.158.186l-.04.049-.011.012-.003.003v.001l-.762-.648Z"
+        fill={selected ? foodPantry : white}
+        stroke={white}
+        stroke-width="2"
+      />
+    </g>
     <path
-      d="M18.4992 49.1661C24.4184 42.6353 35.2248 27.8654 36.9069 19.5566C37.166 17.0866 36.8826 14.5909 36.0756 12.2321C35.2687 9.87335 33.9559 7.70283 32.2217 5.86025C30.4875 4.01813 28.3707 2.54471 26.007 1.53525C23.6434 0.525797 21.0861 0.00320608 18.4992 0V7.84985V25.5291V49.1661Z"
-      fill="#0A7572"
+      d="M25.5 56.166c5.918-6.53 16.725-21.3 18.407-29.61a17.1 17.1 0 0 0-.831-7.324 17.626 17.626 0 0 0-3.854-6.372 18.515 18.515 0 0 0-6.215-4.325A19.187 19.187 0 0 0 25.499 7v49.166Z"
+      fill={isClosed ? closed : foodPantry}
     />
     <path
-      d="M18.5 49.1661C12.5807 42.6353 1.77436 27.8654 0.092205 19.5566C-0.166441 17.0866 0.116543 14.5913 0.9235 12.2321C1.73046 9.87335 3.04325 7.70283 4.77743 5.86025C6.5116 4.01813 8.62849 2.54471 10.9921 1.53525C13.3557 0.525797 15.9131 0.00320608 18.5 0V7.84985V25.5291V49.1661Z"
-      fill="#EF7F4F"
+      d="M25.5 56.166c-5.92-6.53-16.726-21.3-18.408-29.61-.258-2.47.025-4.965.832-7.324a17.628 17.628 0 0 1 3.853-6.372 18.516 18.516 0 0 1 6.215-4.325A19.188 19.188 0 0 1 25.5 7v49.166Z"
+      fill={isClosed ? closed : mealProgram}
     />
-    <circle cx="18.5004" cy="18.5004" r="9.25042" fill="white" />
+    <circle cx="25.5" cy="25.501" r="9.25" fill="#fff" />
+    <defs>
+      <filter
+        id="a"
+        x="0"
+        y="0"
+        width="51"
+        height="64.423"
+        filterUnits="userSpaceOnUse"
+        color-interpolation-filters="sRGB"
+      >
+        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+        <feColorMatrix
+          in="SourceAlpha"
+          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+          result="hardAlpha"
+        />
+        <feOffset />
+        <feGaussianBlur stdDeviation="2.5" />
+        <feComposite in2="hardAlpha" operator="out" />
+        <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" />
+        <feBlend
+          in2="BackgroundImageFix"
+          result="effect1_dropShadow_5756_11853"
+        />
+        <feBlend
+          in="SourceGraphic"
+          in2="effect1_dropShadow_5756_11853"
+          result="shape"
+        />
+      </filter>
+    </defs>
   </svg>
 );
 

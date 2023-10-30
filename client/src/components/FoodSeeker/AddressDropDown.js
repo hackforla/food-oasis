@@ -52,7 +52,10 @@ export default function AddressDropDown({ showSearchIcon }) {
   const renderInput = (params) => {
     return (
       <TextField
-        variant="outlined"
+        sx={{
+          background: "#FFFFFF",
+        }}
+		variant="outlined"
         {...params}
         label="Search by address or zip code"
         margin="none"
@@ -71,6 +74,7 @@ export default function AddressDropDown({ showSearchIcon }) {
         InputProps={{
           sx: {
             cursor: "pointer",
+			backgroundColor: "#F0F0F0"
           },
           endAdornment: (
             <InputAdornment

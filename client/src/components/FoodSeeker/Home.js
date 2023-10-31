@@ -76,7 +76,7 @@ const Home = () => {
       sx={(theme) => ({
         backgroundSize: "cover",
         backgroundPosition: "center",
-        backgroundImage: 'url("/landing-page/map.png")', // replaced the background image style inside useStyles instead of inline styling
+        backgroundImage: 'url("/landing-page/map.png")', 
         minHeight: "max(100.7vh,20em)",
         display: "flex",
         flexDirection: "column",

@@ -211,7 +211,7 @@ const About = () => {
             variant="body1"
           >
             We are 100% volunteer-run project. We look forward to sharing our
-            updated directory with Los Angeles.
+            updated directory with McKinney.
           </Typography>
         </Container>
       </Box>

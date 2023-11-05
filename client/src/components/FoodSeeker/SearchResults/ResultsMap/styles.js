@@ -14,18 +14,7 @@ const useStyles = makeStyles((theme) => ({
   navigationControl: {
     top: 8,
     right: 8,
-  },
-  searchButton: {
-    position: "absolute",
-    top: 5,
-    left: "50%",
-    transform: "translate(-50%)",
-    backgroundColor: "white",
-    "&:hover": {
-      background: theme.palette.primary.main,
-      color: "#FFFFFF",
-    },
-  },
+  }
 }));
 
 export default useStyles;

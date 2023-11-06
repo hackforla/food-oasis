@@ -24,7 +24,6 @@ import {
   useMarkersGeojson,
 } from "./MarkerHelpers";
 import { regionFillStyle, regionBorderStyle } from "./RegionHelpers";
-import useStyles from "./styles";
 import * as analytics from "services/analytics";
 import {
   useSearchCoordinates,
@@ -46,7 +45,6 @@ const ResultsMap = (
   },
   ref
 ) => {
-  const classes = useStyles();
   const mapRef = useRef();
   const [markersLoaded, setMarkersLoaded] = useState(false);
   const searchCoordinates = useSearchCoordinates();
@@ -164,7 +162,6 @@ const ResultsMap = (
       getCursor={getCursor}
       width="100%"
       height="100%"
-      className={classes.map}
     >
       {startIconCoordinates && (
         <Map.Marker
@@ -179,7 +176,6 @@ const ResultsMap = (
       )}
       <Map.NavigationControl
         showCompass={false}
-        className={classes.navigationControl}
       />
       {markersLoaded && (
         <Map.Source type="geojson" data={markersGeojson}>

@@ -62,7 +62,7 @@ export default function AddressDropDown({ showSearchIcon }) {
         fullWidth
         name="address"
         size="small"
-        autoFocus={false}
+        autoFocus={true}
         onClick={() => setInputVal("")}
         InputLabelProps={{
           sx: {

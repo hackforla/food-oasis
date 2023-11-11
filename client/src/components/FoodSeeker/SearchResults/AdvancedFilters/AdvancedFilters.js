@@ -6,10 +6,16 @@ import {
 import MealLocatorIcon from "icons/MealLocatorIcon";
 import PantryLocatorIcon from "icons/PantryLocatorIcon";
 import PropTypes from "prop-types";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import * as analytics from "services/analytics";
+import FilterPanel from "../ResultsFilters/FilterPanel";
 import AdvancedFilterButton from "./AdvancedFilterButton";
+
 const AdvancedFilters = ({ toggleCategory, categoryIds }) => {
+  const [open, setOpen] = useState(false);
+  const isMealSelected = categoryIds.includes(MEAL_PROGRAM_CATEGORY_ID);
+  const isPantrySelected = categoryIds.includes(FOOD_PANTRY_CATEGORY_ID);
+
   const toggleMeal = useCallback(() => {
     toggleCategory(MEAL_PROGRAM_CATEGORY_ID);
     analytics.postEvent("toggleMealFilter", {});
@@ -19,9 +25,6 @@ const AdvancedFilters = ({ toggleCategory, categoryIds }) => {
     toggleCategory(FOOD_PANTRY_CATEGORY_ID);
     analytics.postEvent("togglePantryFilter", {});
   }, [toggleCategory]);
-
-  const isMealSelected = categoryIds.indexOf(MEAL_PROGRAM_CATEGORY_ID) >= 0;
-  const isPantrySelected = categoryIds.indexOf(FOOD_PANTRY_CATEGORY_ID) >= 0;
 
   return (
     <>
@@ -48,8 +51,22 @@ const AdvancedFilters = ({ toggleCategory, categoryIds }) => {
         <AdvancedFilterButton label="Days" onClick="" hasDropdown={true} />
       </Grid>
       <Grid item sx={{ whiteSpace: "nowrap", marginRight: "1rem" }}>
-        <AdvancedFilterButton label="More Filters" onClick="" />
+        <AdvancedFilterButton
+          label="More Filters"
+          onClick={() => setOpen(!open)}
+          isSelected={open}
+        />
       </Grid>
+      <FilterPanel
+        setOpen={setOpen}
+        open={open}
+        mealPantry={{
+          toggleMeal,
+          togglePantry,
+          isMealSelected,
+          isPantrySelected,
+        }}
+      />
     </>
   );
 };

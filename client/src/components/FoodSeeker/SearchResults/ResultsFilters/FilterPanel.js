@@ -22,25 +22,6 @@ import MealIconNoBorder from "icons/MealIconNoBorder";
 import PantryIconNoBorder from "icons/PantryIconNoBorder";
 
 const drawerWidth = 240;
-
-const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
-  ({ theme, open }) => ({
-    flexGrow: 1,
-    transition: theme.transitions.create("margin", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: `-${drawerWidth}px`,
-    ...(open && {
-      transition: theme.transitions.create("margin", {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-      marginLeft: 0,
-    }),
-  })
-);
-
 const DrawerHeader = styled("div")(({ theme }) => ({
   // display: "flex",
   alignItems: "center",
@@ -49,7 +30,10 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
 }));
 
-export default function FilterPanel({ setOpen, open }) {
+export default function FilterPanel({ setOpen, open, mealPantry }) {
+  const { toggleMeal, togglePantry, isMealSelected, isPantrySelected } =
+    mealPantry;
+
   const handleDrawerClose = () => {
     setOpen(false);
   };
@@ -78,8 +62,6 @@ export default function FilterPanel({ setOpen, open }) {
             - needs > clarification on 
                 - Day and Open Time dropdown
                 - requirements checkbox
-            
-          - states of filter needs to line up with other filters from AdvancedFilters
            */}
           <Typography variant="h3" textAlign="center">
             Filters
@@ -90,38 +72,62 @@ export default function FilterPanel({ setOpen, open }) {
         </DrawerHeader>
         <Divider />
         <List>
-          {["Pantry", "Meal"].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <FormControlLabel
-                  control={
-                    <Checkbox
+          <ListItem key="Pantry" disablePadding>
+            <ListItemButton>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    sx={{
+                      "&.Mui-checked": {
+                        color: "#00C851",
+                      },
+                    }}
+                    checked={isPantrySelected}
+                    onChange={togglePantry}
+                  />
+                }
+                label={
+                  <Stack direction="row" alignItems="center">
+                    <PantryIconNoBorder width="20px" height="20px" />
+                    <ListItemText
+                      primary="Pantry"
                       sx={{
-                        "&.Mui-checked": {
-                          color: "#00C851",
-                        },
+                        marginLeft: 1,
                       }}
                     />
-                  }
-                  label={
-                    <Stack direction="row" alignItems="center">
-                      {index % 2 === 0 ? (
-                        <PantryIconNoBorder width="20px" height="20px" />
-                      ) : (
-                        <MealIconNoBorder width="20px" height="20px" />
-                      )}
-                      <ListItemText
-                        primary={text}
-                        sx={{
-                          marginLeft: 1,
-                        }}
-                      />
-                    </Stack>
-                  }
-                />
-              </ListItemButton>
-            </ListItem>
-          ))}
+                  </Stack>
+                }
+              />
+            </ListItemButton>
+          </ListItem>
+          <ListItem key="Meal" disablePadding>
+            <ListItemButton>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    sx={{
+                      "&.Mui-checked": {
+                        color: "#00C851",
+                      },
+                    }}
+                    checked={isMealSelected}
+                    onChange={toggleMeal}
+                  />
+                }
+                label={
+                  <Stack direction="row" alignItems="center">
+                    <MealIconNoBorder width="20px" height="20px" />
+                    <ListItemText
+                      primary="Meal"
+                      sx={{
+                        marginLeft: 1,
+                      }}
+                    />
+                  </Stack>
+                }
+              />
+            </ListItemButton>
+          </ListItem>
         </List>
         <Divider />
         <FormControl>
@@ -167,9 +173,6 @@ export default function FilterPanel({ setOpen, open }) {
           </ListItemButton>
         </ListItem>
       </Drawer>
-      <Main open={open}>
-        <DrawerHeader />
-      </Main>
     </Box>
   );
 }

@@ -24,7 +24,7 @@ import MealIconNoBorder from "icons/MealIconNoBorder";
 import PantryIconNoBorder from "icons/PantryIconNoBorder";
 import useBreakpoints from "hooks/useBreakpoints";
 
-const DrawerHeader = styled("div")(({ theme }) => ({
+const DrawerHeader = styled("div")(({ _theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
@@ -36,7 +36,7 @@ const checkedStyle = {
   },
 };
 
-const yPadding = { py: 2, color: (theme) => theme.palette.common.black };
+const yPadding = { py: 2 };
 
 export default function FilterPanel({ setOpen, open, mealPantry }) {
   const { isDesktop } = useBreakpoints();
@@ -86,54 +86,38 @@ export default function FilterPanel({ setOpen, open, mealPantry }) {
         Category
       </Typography>
       <List>
-        <ListItem key="Pantry" sx={{ padding: 0 }}>
-          <ListItemButton sx={{ padding: 0 }}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  sx={checkedStyle}
-                  checked={isPantrySelected}
-                  onChange={togglePantry}
-                />
-              }
-              label={
-                <Stack direction="row" alignItems="center">
-                  <PantryIconNoBorder width="20px" height="20px" />
-                  <ListItemText
-                    primary="Pantry"
-                    sx={{
-                      marginLeft: 1,
-                    }}
+        {["Pantry", "Meal"].map((category) => (
+          <ListItem key={category} sx={{ padding: 0 }}>
+            <ListItemButton sx={{ padding: 0 }}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    sx={checkedStyle}
+                    checked={
+                      category === "Pantry" ? isPantrySelected : isMealSelected
+                    }
+                    onChange={category === "Pantry" ? togglePantry : toggleMeal}
                   />
-                </Stack>
-              }
-            />
-          </ListItemButton>
-        </ListItem>
-        <ListItem key="Meal" sx={{ padding: 0 }}>
-          <ListItemButton sx={{ padding: 0 }}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  sx={checkedStyle}
-                  checked={isMealSelected}
-                  onChange={toggleMeal}
-                />
-              }
-              label={
-                <Stack direction="row" alignItems="center">
-                  <MealIconNoBorder width="20px" height="20px" />
-                  <ListItemText
-                    primary="Meal"
-                    sx={{
-                      marginLeft: 1,
-                    }}
-                  />
-                </Stack>
-              }
-            />
-          </ListItemButton>
-        </ListItem>
+                }
+                label={
+                  <Stack direction="row" alignItems="center">
+                    {category === "Pantry" ? (
+                      <PantryIconNoBorder width="20px" height="20px" />
+                    ) : (
+                      <MealIconNoBorder width="20px" height="20px" />
+                    )}
+                    <ListItemText
+                      primary={category}
+                      sx={{
+                        marginLeft: 1,
+                      }}
+                    />
+                  </Stack>
+                }
+              />
+            </ListItemButton>
+          </ListItem>
+        ))}
       </List>
       <Divider />
       <FormControl>
@@ -161,15 +145,7 @@ export default function FilterPanel({ setOpen, open, mealPantry }) {
           ))}
           <FormControlLabel
             value="day"
-            control={
-              <Radio
-                sx={{
-                  "&.Mui-checked": {
-                    color: "#00C851",
-                  },
-                }}
-              />
-            }
+            control={<Radio sx={checkedStyle} />}
             label={
               <Stack direction="row" sx={{ width: "100%" }} gap={2}>
                 {Object.keys(openTime).map((key) => (
@@ -213,15 +189,7 @@ export default function FilterPanel({ setOpen, open, mealPantry }) {
       <ListItem key="requirements" sx={{ padding: 0 }}>
         <ListItemButton sx={{ padding: 0 }}>
           <FormControlLabel
-            control={
-              <Checkbox
-                sx={{
-                  "&.Mui-checked": {
-                    color: "#00C851",
-                  },
-                }}
-              />
-            }
+            control={<Checkbox sx={checkedStyle} />}
             label={
               <ListItemText
                 primary="No Known Elegibility Requirements"
@@ -280,3 +248,7 @@ const openTime = {
     ],
   },
 };
+
+// todo:
+// 1. open FilterPanel should push List panel to the right for desktop view
+// 2. moves styling to palette.js

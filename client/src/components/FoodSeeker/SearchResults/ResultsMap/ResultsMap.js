@@ -205,7 +205,7 @@ const ResultsMap = (
           overflow: "auto",
           gap: "0.5rem",
           padding: isMobile ? "0 0 0.3rem 0.75rem" : "0 0 0.3rem 2.25rem",
-          marginTop: "0.75rem",
+     
           scrollbarWidth: "none",
           position: "absolute",
           top: 0,

@@ -28,7 +28,7 @@ const AdvancedFilters = ({ toggleCategory, categoryIds }) => {
 
   return (
     <>
-      <Grid item sx={{ whiteSpace: "nowrap", marginLeft: "0.5rem" }}>
+      <Grid item sx={{ whiteSpace: "nowrap", marginLeft: "0.5rem", marginTop: "0.75rem"}}>
         <AdvancedFilterButton
           label="Pantry"
           onClick={togglePantry}
@@ -36,7 +36,7 @@ const AdvancedFilters = ({ toggleCategory, categoryIds }) => {
           icon={PantryLocatorIcon}
         />
       </Grid>
-      <Grid item sx={{ whiteSpace: "nowrap" }}>
+      <Grid item sx={{ whiteSpace: "nowrap", marginTop: "0.75rem" }}>
         <AdvancedFilterButton
           label="Meal"
           onClick={toggleMeal}
@@ -44,13 +44,13 @@ const AdvancedFilters = ({ toggleCategory, categoryIds }) => {
           icon={MealLocatorIcon}
         />
       </Grid>
-      <Grid item sx={{ whiteSpace: "nowrap" }}>
+      <Grid item sx={{ whiteSpace: "nowrap", marginTop: "0.75rem" }}>
         <AdvancedFilterButton label="Open Now" onClick="" />
       </Grid>
-      <Grid item sx={{ whiteSpace: "nowrap" }}>
+      <Grid item sx={{ whiteSpace: "nowrap", marginTop: "0.75rem" }}>
         <AdvancedFilterButton label="Days" onClick="" hasDropdown={true} />
       </Grid>
-      <Grid item sx={{ whiteSpace: "nowrap", marginRight: "1rem" }}>
+      <Grid item sx={{ whiteSpace: "nowrap", marginTop: "0.75rem", marginRight: "1rem" }}>
         <AdvancedFilterButton
           label="More Filters"
           onClick={() => setOpen(!open)}

@@ -1,5 +1,5 @@
 import LocationSearching from "@mui/icons-material/LocationSearching";
-import { Button, Stack, Tooltip, Typography } from "@mui/material";
+import { Box, Button, Stack, Tooltip, Typography } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import AddressDropDown from "components/FoodSeeker/AddressDropDown";
 import {
@@ -122,22 +122,27 @@ const ResultsFilters = ({
               />
             </Grid2>
 
-            <Grid2 display={{ xs: "block", sm: "none" }}>
+            {/* <Grid2 display={{ xs: "block", sm: "none" }}>
               <SwitchViewsButton
                 isListView={showList}
                 onClick={toggleShowList}
                 style={{ marginLeft: 5 }}
               />
-            </Grid2>
+            </Grid2> */}
           </Grid2>
           <Grid2 xs={12} sm={6}>
             <Stack
               direction="row"
               alignItems="center"
-              sx={{ margin: "0.5rem" }}
+              sx={{ 
+                marginX: "1rem",
+                maxWidth: '99vw',
+                gap: '0.5rem'
+              }}
             >
               <AddressDropDown />
-              <Tooltip
+              {/* THIS BUTTON ISN'T PRESENT IN THE NEW DESIGN */}
+              {/* <Tooltip
                 title={
                   locationPermission === "denied" || !!error
                     ? "Please allow location access"
@@ -157,7 +162,18 @@ const ResultsFilters = ({
                     />
                   </Button>
                 </div>
-              </Tooltip>
+              </Tooltip> */}
+              <Box
+              sx={{
+                maxWidth: '48px',
+                boxSizing: 'border-box'
+              }}
+               display={{ xs: "block", sm: "none" }}>
+              <SwitchViewsButton
+                isListView={showList}
+                onClick={toggleShowList}
+              />
+            </Box>
             </Stack>
           </Grid2>
         </Stack>

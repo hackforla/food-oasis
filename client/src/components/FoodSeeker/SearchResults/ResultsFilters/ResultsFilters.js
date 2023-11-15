@@ -121,14 +121,6 @@ const ResultsFilters = ({
                 style={{ marginLeft: 5 }}
               />
             </Grid2>
-
-            {/* <Grid2 display={{ xs: "block", sm: "none" }}>
-              <SwitchViewsButton
-                isListView={showList}
-                onClick={toggleShowList}
-                style={{ marginLeft: 5 }}
-              />
-            </Grid2> */}
           </Grid2>
           <Grid2 xs={12} sm={6}>
             <Stack
@@ -141,7 +133,7 @@ const ResultsFilters = ({
               }}
             >
               <AddressDropDown />
-              {/* THIS BUTTON ISN'T PRESENT IN THE NEW DESIGN FOR PHONE */}
+              {/* THIS BUTTON ISN'T HERE IN THE NEW DESIGN FOR PHONE */}
               <Tooltip
                 title={
                   locationPermission === "denied" || !!error

@@ -11,8 +11,23 @@ const overlay = {
   borderRadius: "10px",
 };
 
-const MobileLayout = ({ filters, map, list, preview, details }) => {
+const MobileLayout = ({ filters, map, list, preview, details, showList }) => {
   const [showDetails, setShowDetails] = useState(false);
+  const [position, setPosition] = useState();
+
+  useEffect(() => {
+    if (!showList) {
+      setPosition({
+        x: 0,
+        y: 60 * (window.innerHeight / 100),
+      });
+    } else {
+      setPosition({
+        x: 0,
+        y: 10,
+      });
+    }
+  }, [showList]);
 
   useEffect(() => {
     if (!details) setShowDetails(false);
@@ -40,6 +55,10 @@ const MobileLayout = ({ filters, map, list, preview, details }) => {
         <Box sx={{ flex: 1 }}>{map}</Box>
         {list && (
           <Draggable
+            position={position}
+            onDrag={(e, ui) => {
+              setPosition({ x: 0, y: ui.y });
+            }}
             handle=".handle"
             bounds={{ top: minY, bottom: minY * (window.innerHeight / 100) }}
             defaultPosition={{ x: 0, y: minY * (window.innerHeight / 100) }}

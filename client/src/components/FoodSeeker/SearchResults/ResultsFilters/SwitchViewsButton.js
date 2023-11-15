@@ -15,18 +15,12 @@ export default function SwitchViewsButton({ isListView, onClick, style }) {
     <SwitchButton onClick={onClick} sx={style}>
       {!isListView && (
         <>
-          <FormatListBulletedIcon />
-          <Typography variant="button" color="inherit">
-            List
-          </Typography>
+          <Typography variant="button" color="inherit">List</Typography>
         </>
       )}
       {isListView && (
         <>
-          <MapIcon />
-          <Typography variant="button" color="inherit">
-            Map
-          </Typography>
+          <Typography variant="button" color="inherit">Map</Typography>
         </>
       )}
     </SwitchButton>

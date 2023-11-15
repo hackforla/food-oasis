@@ -141,15 +141,19 @@ const ResultsFilters = ({
               }}
             >
               <AddressDropDown />
-              {/* THIS BUTTON ISN'T PRESENT IN THE NEW DESIGN */}
-              {/* <Tooltip
+              {/* THIS BUTTON ISN'T PRESENT IN THE NEW DESIGN FOR PHONE */}
+              <Tooltip
                 title={
                   locationPermission === "denied" || !!error
                     ? "Please allow location access"
                     : "Show Your Current Location"
                 }
               >
-                <div>
+                <Box
+                sx={{
+                  display: {xs: 'none', sm: 'block'}
+                }}
+                >
                   <Button
                     variant="recenter"
                     onClick={useMyLocationTrigger}
@@ -161,8 +165,9 @@ const ResultsFilters = ({
                       sx={{ fontSize: "1.25rem" }}
                     />
                   </Button>
-                </div>
-              </Tooltip> */}
+                </Box>
+              </Tooltip>
+              {/* =================================================== */}
               <Box
               sx={{
                 maxWidth: '48px',

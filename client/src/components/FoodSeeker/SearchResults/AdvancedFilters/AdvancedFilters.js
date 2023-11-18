@@ -6,8 +6,9 @@ import {
 import MealLocatorIcon from "icons/MealLocatorIcon";
 import PantryLocatorIcon from "icons/PantryLocatorIcon";
 import PropTypes from "prop-types";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import * as analytics from "services/analytics";
+import { useAppDispatch } from "../../../../appReducer";
 import FilterPanel from "../ResultsFilters/FilterPanel";
 import AdvancedFilterButton from "./AdvancedFilterButton";
 
@@ -25,6 +26,16 @@ const AdvancedFilters = ({ toggleCategory, categoryIds }) => {
     toggleCategory(FOOD_PANTRY_CATEGORY_ID);
     analytics.postEvent("togglePantryFilter", {});
   }, [toggleCategory]);
+
+  // toggling filter panel state
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch({
+      type: "FILTER_PANEL_TOGGLE",
+      filterPanel: open,
+    });
+  }, [dispatch, open]);
 
   return (
     <>

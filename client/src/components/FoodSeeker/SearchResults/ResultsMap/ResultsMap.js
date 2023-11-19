@@ -156,12 +156,18 @@ const ResultsMap = (
       mapStyle={MAPBOX_STYLE}
       {...viewport}
       onViewportChange={setViewport}
-      onLoad={onLoad}
+      onLoad={(event)=> { 
+        event.target.removeControl(event.target.attributionControl);
+        if (typeof onLoad === 'function'){
+          onLoad(event);
+        }
+      }}
       onClick={onClick}
       interactiveLayerIds={interactiveLayerIds}
       getCursor={getCursor}
       width="100%"
       height="100%"
+      style={{ position: "relative"}}
     >
       {startIconCoordinates && (
         <Map.Marker
@@ -176,6 +182,7 @@ const ResultsMap = (
       )}
       <Map.NavigationControl
         showCompass={false}
+        style={{ top: 8, right: 8}}
       />
       {markersLoaded && (
         <Map.Source type="geojson" data={markersGeojson}>

@@ -1,5 +1,5 @@
 import React from "react";
-import { useTheme } from "@mui/material/styles";
+import { useTheme } from "@mui/material";
 import Button from "@mui/material/Button";
 
 const PantryIcon = ({ isSelected }) => (

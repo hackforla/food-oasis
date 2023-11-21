@@ -1,19 +1,12 @@
 import React from "react";
 import { Snackbar } from "@mui/material";
-import withStyles from "@mui/styles/withStyles";
 import { IconButton } from "../UI/StandardButton";
 import { useToasterContext } from "../../contexts/toasterContext";
-
-const styles = (theme) => ({
-  close: {
-    padding: theme.spacing(0.5),
-  },
-});
 
 const Toast = () => {
   const { toast, setToast } = useToasterContext();
 
-  const handleSnackbarClose = (event, reason) => {
+  const handleSnackbarClose = (_event, reason) => {
     if (reason === "clickaway") {
       return;
     }
@@ -45,4 +38,4 @@ const Toast = () => {
   ) : null;
 };
 
-export default withStyles(styles)(Toast);
+export default Toast;

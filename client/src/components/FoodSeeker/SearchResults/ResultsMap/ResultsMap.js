@@ -25,6 +25,7 @@ import {
 } from "./MarkerHelpers";
 import { regionFillStyle, regionBorderStyle } from "./RegionHelpers";
 import * as analytics from "services/analytics";
+import { Button, Grid } from "@mui/material";
 import {
   useSearchCoordinates,
   useAppDispatch,
@@ -35,14 +36,12 @@ import {
 } from "../../../../appReducer";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useNavigate, useLocation } from "react-router-dom";
+import useFeatureFlag from "hooks/useFeatureFlag";
+import AdvancedFilters from "../AdvancedFilters/AdvancedFilters";
+import useBreakpoints from "hooks/useBreakpoints";
 
 const ResultsMap = (
-  {
-    stakeholders,
-    categoryIds,
-    loading,
-    searchMapArea,
-  },
+  { stakeholders, categoryIds, toggleCategory, loading, searchMapArea },
   ref
 ) => {
   const mapRef = useRef();
@@ -51,6 +50,7 @@ const ResultsMap = (
   const selectedOrganization = useSelectedOrganization();
   const navigate = useNavigate();
   const location = useLocation();
+  const { isMobile } = useBreakpoints();
 
   const longitude =
     searchCoordinates?.longitude ||
@@ -70,6 +70,7 @@ const ResultsMap = (
   const neighborhood = useNeighborhood();
   const regionGeoJSON = neighborhood?.geojson;
   const startIconCoordinates = searchCoordinates || userCoordinates;
+  const hasAdvancedFilterFeatureFlag = useFeatureFlag("advancedFilter");
 
   useEffect(() => {
     analytics.postEvent("showMap");
@@ -150,44 +151,97 @@ const ResultsMap = (
   );
 
   return (
-    <ReactMapGL
-      ref={mapRef}
-      mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-      mapStyle={MAPBOX_STYLE}
-      {...viewport}
-      onViewportChange={setViewport}
-      onLoad={onLoad}
-      onClick={onClick}
-      interactiveLayerIds={interactiveLayerIds}
-      getCursor={getCursor}
-      width="100%"
-      height="100%"
-      style={{ position: "relative" }}
-    >
-      {startIconCoordinates && (
-        <Map.Marker
-          longitude={startIconCoordinates.longitude}
-          latitude={startIconCoordinates.latitude}
-          offsetTop={-50}
-          offsetLeft={-25}
-          anchor="bottom"
-        >
-          <StartIcon />
-        </Map.Marker>
-      )}
-      <Map.NavigationControl showCompass={false} style={{ top: 8, right: 8 }} />
-      {markersLoaded && (
-        <Map.Source type="geojson" data={markersGeojson}>
-          <Map.Layer {...markersLayerStyles} />
-        </Map.Source>
-      )}
-      {regionGeoJSON && (
-        <Map.Source id="my-data" type="geojson" data={regionGeoJSON}>
-          <Map.Layer {...regionFillStyle} />
-          <Map.Layer {...regionBorderStyle} />
-        </Map.Source>
-      )}
-    </ReactMapGL>
+    <div style={{ position: "relative", height: "100%" }}>
+      <ReactMapGL
+        ref={mapRef}
+        mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+        mapStyle={MAPBOX_STYLE}
+        {...viewport}
+        onViewportChange={setViewport}
+        onLoad={onLoad}
+        onClick={onClick}
+        interactiveLayerIds={interactiveLayerIds}
+        getCursor={getCursor}
+        width="100%"
+        height="100%"
+        style={{ position: "relative" }}
+      >
+        {startIconCoordinates && (
+          <Map.Marker
+            longitude={startIconCoordinates.longitude}
+            latitude={startIconCoordinates.latitude}
+            offsetTop={-50}
+            offsetLeft={-25}
+            anchor="bottom"
+          >
+            <StartIcon />
+          </Map.Marker>
+        )}
+        {!isMobile && (
+          <Map.NavigationControl
+            showCompass={false}
+            style={{ top: 8, right: 8 }}
+          />
+        )}
+        {markersLoaded && (
+          <Map.Source type="geojson" data={markersGeojson}>
+            <Map.Layer {...markersLayerStyles} />
+          </Map.Source>
+        )}
+        {regionGeoJSON && (
+          <Map.Source id="my-data" type="geojson" data={regionGeoJSON}>
+            <Map.Layer {...regionFillStyle} />
+            <Map.Layer {...regionBorderStyle} />
+          </Map.Source>
+        )}
+
+        {!hasAdvancedFilterFeatureFlag && (
+          <Button
+            variant="outlined"
+            onClick={searchMapArea}
+            size="small"
+            sx={(theme) => ({
+              "position": "absolute",
+              "top": 5,
+              "left": "50%",
+              "transform": "translate(-50%)",
+              "backgroundColor": "white",
+              "&:hover": {
+                background: theme.palette.primary.main,
+                color: "#FFFFFF",
+              },
+            })}
+            disabled={loading}
+          >
+            Search this area
+          </Button>
+        )}
+      </ReactMapGL>
+      <Grid
+        container={isMobile}
+        wrap="nowrap"
+        position="absolute"
+        display="inline-flex"
+        alignItems="flex-start"
+        sx={{
+          overflow: "auto",
+          gap: "0.5rem",
+          padding: isMobile ? "0 0 0.3rem 0.75rem" : "0 0 0.3rem 2.25rem",
+          marginTop: "0.75rem",
+          scrollbarWidth: "none",
+          position: "absolute",
+          top: 0,
+          left: 0,
+        }}
+      >
+        {!loading && hasAdvancedFilterFeatureFlag && (
+          <AdvancedFilters
+            categoryIds={categoryIds}
+            toggleCategory={toggleCategory}
+          />
+        )}
+      </Grid>
+    </div>
   );
 };
 

@@ -156,18 +156,13 @@ const ResultsMap = (
       mapStyle={MAPBOX_STYLE}
       {...viewport}
       onViewportChange={setViewport}
-      onLoad={(event)=> { 
-        event.target.removeControl(event.target.attributionControl);
-        if (typeof onLoad === 'function'){
-          onLoad(event);
-        }
-      }}
+      onLoad={onLoad}
       onClick={onClick}
       interactiveLayerIds={interactiveLayerIds}
       getCursor={getCursor}
       width="100%"
       height="100%"
-      style={{ position: "relative"}}
+      style={{ position: "relative" }}
     >
       {startIconCoordinates && (
         <Map.Marker
@@ -180,10 +175,7 @@ const ResultsMap = (
           <StartIcon />
         </Map.Marker>
       )}
-      <Map.NavigationControl
-        showCompass={false}
-        style={{ top: 8, right: 8}}
-      />
+      <Map.NavigationControl showCompass={false} style={{ top: 8, right: 8 }} />
       {markersLoaded && (
         <Map.Source type="geojson" data={markersGeojson}>
           <Map.Layer {...markersLayerStyles} />
@@ -195,7 +187,6 @@ const ResultsMap = (
           <Map.Layer {...regionBorderStyle} />
         </Map.Source>
       )}
-
     </ReactMapGL>
   );
 };

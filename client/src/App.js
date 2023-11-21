@@ -74,8 +74,6 @@ function App() {
     analytics.postEvent("visitAppComponent");
   }, []);
 
-  // const classes = useStyles();
-
   return (
     <HelmetProvider>
       <CssBaseline />
@@ -124,9 +122,7 @@ function App() {
                         </Stack>
                       }
                     >
-                      <Routes
-                      //  className={classes.mainContent}
-                      >
+                      <Routes>
                         <Route exact path="/" element={<Home />} />
                         {/*
                 Following route provides backward-compatibilty for the

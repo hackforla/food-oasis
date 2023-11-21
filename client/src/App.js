@@ -42,7 +42,6 @@ const ParentOrganizations = React.lazy(() =>
   import("components/Admin/ParentOrganizations")
 );
 const TagAdmin = React.lazy(() => import("components/Admin/TagAdmin"));
-const Resources = React.lazy(() => import("components/Layout/Resources"));
 const Register = React.lazy(() => import("components/Account/Register"));
 const Login = React.lazy(() => import("components/Account/Login"));
 const ForgotPassword = React.lazy(() =>
@@ -290,7 +289,6 @@ function App() {
                             </PrivateRoute>
                           }
                         />
-                        <Route path="resources" element={<Resources />} />
                         <Route path="register" element={<Register />} />
                         <Route
                           path="confirm/:token"

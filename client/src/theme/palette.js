@@ -86,8 +86,4 @@ export const palette = {
     bodyText: "#313233",
     hoverColor: "#CBE3F1",
   },
-  // todo - moves filter option (checkbox & radio buttons) style to theme
-  // filterOptions:{
-
-  // }
 };

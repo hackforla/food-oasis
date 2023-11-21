@@ -3,7 +3,6 @@ import {
   Checkbox,
   Divider,
   Drawer,
-  FormControl,
   FormControlLabel,
   FormLabel,
   IconButton,
@@ -41,6 +40,7 @@ const yPadding = { py: 2 };
 export default function FilterPanel({ setOpen, open, mealPantry }) {
   const { isDesktop } = useBreakpoints();
   const drawerWidth = isDesktop ? 340 : "100%";
+  const drawerHeight = isDesktop ? "100%" : "50%";
 
   const { toggleMeal, togglePantry, isMealSelected, isPantrySelected } =
     mealPantry;
@@ -61,6 +61,7 @@ export default function FilterPanel({ setOpen, open, mealPantry }) {
         "& .MuiDrawer-paper": {
           top: "auto",
           width: drawerWidth,
+          height: drawerHeight,
           boxSizing: "border-box",
           padding: "1rem",
         },
@@ -90,6 +91,7 @@ export default function FilterPanel({ setOpen, open, mealPantry }) {
           <ListItem key={category} sx={{ padding: 0 }}>
             <ListItemButton sx={{ padding: 0 }}>
               <FormControlLabel
+                key={category}
                 control={
                   <Checkbox
                     sx={checkedStyle}
@@ -120,68 +122,70 @@ export default function FilterPanel({ setOpen, open, mealPantry }) {
         ))}
       </List>
       <Divider />
-      <FormControl>
-        <FormLabel id="time-selection">
-          <Typography variant="h4" sx={yPadding}>
-            Open Time
-          </Typography>
-        </FormLabel>
-        <RadioGroup
-          aria-labelledby="time-selection"
-          defaultValue="Show All"
-          name="radio-buttons-group"
-          sx={{
-            flexDirection: "column",
-            display: "flex",
-            gap: (theme) => theme.spacing(2),
-          }}
-        >
-          {["Show All", "Open Now"].map((text) => (
-            <FormControlLabel
-              value={text}
-              control={<Radio sx={checkedStyle} />}
-              label={text}
-            />
-          ))}
+      <FormLabel id="time-selection">
+        <Typography variant="h4" sx={yPadding}>
+          Open Time
+        </Typography>
+      </FormLabel>
+      <RadioGroup
+        aria-labelledby="time-selection"
+        defaultValue="Show All"
+        name="radio-buttons-group"
+        sx={{
+          flexDirection: "column",
+          display: "flex",
+          gap: (theme) => theme.spacing(2),
+        }}
+      >
+        {["Show All", "Open Now"].map((text) => (
           <FormControlLabel
-            value="day"
+            key={text}
+            value={text}
             control={<Radio sx={checkedStyle} />}
-            label={
-              <Stack direction="row" sx={{ width: "100%" }} gap={2}>
-                {Object.keys(openTime).map((key) => (
-                  <Select
-                    labelId={`${key}-label`}
-                    id={`${key}-select`}
-                    value={openTimeValue[key]}
-                    onChange={(e) => handleOpenTimeChange(key, e)}
-                    displayEmpty
-                    renderValue={(selected) =>
-                      selected.length === 0 ? (
-                        <em>{openTime[key].placeholder}</em>
-                      ) : (
-                        selected
-                      )
-                    }
-                    MenuProps={{
-                      sx: { maxHeight: 180, width: "fit-content" },
-                    }}
-                  >
-                    {openTime[key].items.map((dayOrTime) => (
-                      <MenuItem
-                        key={dayOrTime.value}
-                        label={dayOrTime.label}
-                        value={dayOrTime.label}
-                      >
-                        {dayOrTime.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                ))}
-              </Stack>
-            }
+            label={text}
           />
-        </RadioGroup>
-      </FormControl>
+        ))}
+        <FormControlLabel
+          key="day"
+          value="day"
+          control={<Radio sx={checkedStyle} />}
+          label={
+            <Stack direction="row" sx={{ width: "100%" }} gap={2}>
+              {Object.keys(openTime).map((key) => (
+                <Select
+                  labelId={`${key}-label`}
+                  id={`${key}-select`}
+                  key={`${key}-select`}
+                  value={openTimeValue[key]}
+                  onChange={(e) => handleOpenTimeChange(key, e)}
+                  displayEmpty
+                  renderValue={(selected) =>
+                    selected.length === 0 ? (
+                      <em>{openTime[key].placeholder}</em>
+                    ) : (
+                      selected
+                    )
+                  }
+                  MenuProps={{
+                    sx: { maxHeight: 180, width: "fit-content" },
+                  }}
+                >
+                  {openTime[key].items.map((dayOrTime) => (
+                    <MenuItem
+                      key={dayOrTime.value}
+                      label={dayOrTime.label}
+                      value={dayOrTime.label}
+                    >
+                      {dayOrTime.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              ))}
+            </Stack>
+          }
+        />
+      </RadioGroup>
+
       <Divider sx={{ mt: 2 }} />
       <Typography variant="h4" sx={yPadding}>
         Requirements

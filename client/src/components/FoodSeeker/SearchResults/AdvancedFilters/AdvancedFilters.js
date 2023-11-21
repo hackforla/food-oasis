@@ -50,7 +50,7 @@ const AdvancedFilters = ({ toggleCategory, categoryIds }) => {
         <AdvancedFilterButton
           label="Pantry"
           onClick={togglePantry}
-          selected={isPantrySelected}
+          isSelected={isPantrySelected}
           icon={PantryLocatorIcon}
         />
       </Grid>
@@ -58,7 +58,7 @@ const AdvancedFilters = ({ toggleCategory, categoryIds }) => {
         <AdvancedFilterButton
           label="Meal"
           onClick={toggleMeal}
-          selected={isMealSelected}
+          isSelected={isMealSelected}
           icon={MealLocatorIcon}
         />
       </Grid>

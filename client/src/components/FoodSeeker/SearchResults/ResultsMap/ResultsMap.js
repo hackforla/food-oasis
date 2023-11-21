@@ -197,7 +197,7 @@ const ResultsMap = (
       </ReactMapGL>
       <Grid
         container={isMobile}
-        wrap="nowrap"
+        wrap={isMobile ? "nowrap" : undefined}
         position="absolute"
         display="inline-flex"
         alignItems="flex-start"
@@ -205,7 +205,6 @@ const ResultsMap = (
           overflow: "auto",
           gap: "0.5rem",
           padding: isMobile ? "0 0 0.3rem 0.75rem" : "0 0 0.3rem 2.25rem",
-     
           scrollbarWidth: "none",
           position: "absolute",
           top: 0,

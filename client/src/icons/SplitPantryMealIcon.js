@@ -21,7 +21,7 @@ const SplitPantryMealIcon = ({
         d="m25.5 56.34.761.649-.761.892-.761-.892.761-.649Zm0 0-.761.648h-.001l-.003-.004-.01-.012-.041-.049a78.34 78.34 0 0 1-.75-.898c-.51-.617-1.236-1.508-2.108-2.608a173.614 173.614 0 0 1-6.397-8.585c-2.326-3.346-4.667-7.022-6.43-10.496C7.254 30.898 6 27.517 6 24.806 6 14.385 14.767 6 25.5 6S45 14.384 45 24.807c0 2.71-1.254 6.09-2.999 9.529-1.764 3.474-4.104 7.15-6.43 10.496a173.614 173.614 0 0 1-6.397 8.585 169.281 169.281 0 0 1-2.7 3.32 78.34 78.34 0 0 1-.158.186l-.04.049-.011.012-.003.003v.001l-.762-.648Z"
         fill={selected ? foodPantry : white}
         stroke={white}
-        stroke-width="2"
+        strokeWidth="2"
       />
     </g>
     <path
@@ -41,9 +41,9 @@ const SplitPantryMealIcon = ({
         width="51"
         height="64.423"
         filterUnits="userSpaceOnUse"
-        color-interpolation-filters="sRGB"
+        colorInterpolationFilters="sRGB"
       >
-        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+        <feFlood floodOpacity="0" result="BackgroundImageFix" />
         <feColorMatrix
           in="SourceAlpha"
           values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"

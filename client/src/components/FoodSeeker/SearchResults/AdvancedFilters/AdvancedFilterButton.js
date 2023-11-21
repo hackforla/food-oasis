@@ -53,7 +53,7 @@ const AdvancedFilterButton = ({
     <CustomButton
       variant="contained"
       disabled={disabled}
-      isSelected={isSelected}
+      selected={isSelected}
       onClick={(event) => onClick(event)}
     >
       {icon && <Icon />}
@@ -68,7 +68,7 @@ AdvancedFilterButton.propTypes = {
   onClick: PropTypes.func.isRequired,
   icon: PropTypes.any,
   hasDropdown: PropTypes.bool,
-  isSelected: PropTypes.bool,
+  selected: PropTypes.bool,
   disabled: PropTypes.bool,
 };
 

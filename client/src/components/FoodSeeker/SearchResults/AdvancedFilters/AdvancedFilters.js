@@ -39,11 +39,18 @@ const AdvancedFilters = ({ toggleCategory, categoryIds }) => {
 
   return (
     <>
-      <Grid item sx={{ whiteSpace: "nowrap", marginLeft: "0.5rem", marginTop: "0.75rem"}}>
+      <Grid
+        item
+        sx={{
+          whiteSpace: "nowrap",
+          marginLeft: "0.5rem",
+          marginTop: "0.75rem",
+        }}
+      >
         <AdvancedFilterButton
           label="Pantry"
           onClick={togglePantry}
-          isSelected={isPantrySelected}
+          selected={isPantrySelected}
           icon={PantryLocatorIcon}
         />
       </Grid>
@@ -51,17 +58,27 @@ const AdvancedFilters = ({ toggleCategory, categoryIds }) => {
         <AdvancedFilterButton
           label="Meal"
           onClick={toggleMeal}
-          isSelected={isMealSelected}
+          selected={isMealSelected}
           icon={MealLocatorIcon}
         />
       </Grid>
       <Grid item sx={{ whiteSpace: "nowrap", marginTop: "0.75rem" }}>
-        <AdvancedFilterButton label="Open Now" onClick="" />
+        <AdvancedFilterButton
+          label="Open Now"
+          onClick={() => console.log("todo: `Open Now` filter button")}
+        />
       </Grid>
       <Grid item sx={{ whiteSpace: "nowrap", marginTop: "0.75rem" }}>
-        <AdvancedFilterButton label="Days" onClick="" hasDropdown={true} />
+        <AdvancedFilterButton
+          label="Days"
+          onClick={() => console.log("todo: `Days` filter button")}
+          hasDropdown={true}
+        />
       </Grid>
-      <Grid item sx={{ whiteSpace: "nowrap", marginTop: "0.75rem", marginRight: "1rem" }}>
+      <Grid
+        item
+        sx={{ whiteSpace: "nowrap", marginTop: "0.75rem", marginRight: "1rem" }}
+      >
         <AdvancedFilterButton
           label="More Filters"
           onClick={() => setOpen(!open)}

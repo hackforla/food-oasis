@@ -6,7 +6,6 @@ import {
   Route,
 } from "react-router-dom";
 import { ThemeProvider } from "theme";
-import makeStyles from "@mui/styles/makeStyles";
 import { Grid, CssBaseline, Stack } from "@mui/material";
 import { ToasterProvider } from "contexts/toasterContext";
 import { UserProvider } from "contexts/userContext";
@@ -69,50 +68,13 @@ const About = React.lazy(() => import("./components/About"));
 const Faq = React.lazy(() => import("./components/Faq"));
 const Contact = React.lazy(() => import("./components/StaticPages/Contact"));
 const MuiDemo = React.lazy(() => import("./components/MuiDemo/MuiDemo"));
-const useStyles = makeStyles({
-  app: () => ({
-    color: "black",
-    backgroundColor: "#fff",
-    margin: "0",
-    height: "100%",
-    overflowX: 'hidden',
-    //overflowY: "scroll",
-  }),
-  mainContent: {
-    margin: "0",
-    paddingBottom: "50px",
-    overflowY: "scroll",
-    flexGrow: 1,
-  },
-  organizationEditWrapper: {
-    flexBasis: "90%",
-    paddingTop: "1em",
-    paddingBottom: "1em",
-  },
-  homeWrapper: {
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundImage: 'url("/landing-page/map.png")', // replaced the background image style inside useStyles instead of inline styling
-    minHeight: "max(100.7vh,20em)",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  verificationAdminWrapper: {
-    flexBasis: "100%",
-    flexGrow: 1,
-    display: "flex",
-    flexDirection: "column",
-  },
-});
 
 function App() {
   useEffect(() => {
     analytics.postEvent("visitAppComponent");
   }, []);
 
-  const classes = useStyles();
+  // const classes = useStyles();
 
   return (
     <HelmetProvider>
@@ -134,8 +96,12 @@ function App() {
                     wrap="nowrap"
                     alignContent="stretch"
                     spacing={0}
-                    classes={{
-                      container: classes.app,
+                    sx={{
+                      color: "black",
+                      backgroundColor: "#fff",
+                      margin: "0",
+                      height: "100%",
+                      overflowX: "hidden",
                     }}
                   >
                     <Routes>
@@ -158,7 +124,9 @@ function App() {
                         </Stack>
                       }
                     >
-                      <Routes className={classes.mainContent}>
+                      <Routes
+                      //  className={classes.mainContent}
+                      >
                         <Route exact path="/" element={<Home />} />
                         {/*
                 Following route provides backward-compatibilty for the
@@ -188,7 +156,13 @@ function App() {
                         <Route
                           path="organizationedit/:id?"
                           element={
-                            <div className={classes.organizationEditWrapper}>
+                            <div
+                              style={{
+                                flexBasis: "90%",
+                                paddingTop: "1em",
+                                paddingBottom: "1em",
+                              }}
+                            >
                               <OrganizationEdit />
                             </div>
                           }
@@ -196,7 +170,13 @@ function App() {
                         <Route
                           path="muidemo"
                           element={
-                            <div className={classes.organizationEditWrapper}>
+                            <div
+                              style={{
+                                flexBasis: "90%",
+                                paddingTop: "1em",
+                                paddingBottom: "1em",
+                              }}
+                            >
                               <MuiDemo />
                             </div>
                           }
@@ -212,7 +192,14 @@ function App() {
                                 "isCoordinator",
                               ]}
                             >
-                              <div className={classes.verificationAdminWrapper}>
+                              <div
+                                style={{
+                                  flexBasis: "100%",
+                                  flexGrow: 1,
+                                  display: "flex",
+                                  flexDirection: "column",
+                                }}
+                              >
                                 <VerificationDashboard />
                               </div>
                             </PrivateRoute>
@@ -222,7 +209,14 @@ function App() {
                           path="verificationadmin"
                           element={
                             <PrivateRoute roles={["isAdmin", "isCoordinator"]}>
-                              <div className={classes.verificationAdminWrapper}>
+                              <div
+                                style={{
+                                  flexBasis: "100%",
+                                  flexGrow: 1,
+                                  display: "flex",
+                                  flexDirection: "column",
+                                }}
+                              >
                                 <VerificationAdmin />
                               </div>
                             </PrivateRoute>
@@ -232,7 +226,13 @@ function App() {
                           path="parentorganizations"
                           element={
                             <PrivateRoute roles={["isAdmin"]}>
-                              <div className={classes.organizationEditWrapper}>
+                              <div
+                                style={{
+                                  flexBasis: "90%",
+                                  paddingTop: "1em",
+                                  paddingBottom: "1em",
+                                }}
+                              >
                                 <ParentOrganizations />
                               </div>
                             </PrivateRoute>
@@ -242,7 +242,13 @@ function App() {
                           path="tags"
                           element={
                             <PrivateRoute roles={["isAdmin"]}>
-                              <div className={classes.organizationEditWrapper}>
+                              <div
+                                style={{
+                                  flexBasis: "90%",
+                                  paddingTop: "1em",
+                                  paddingBottom: "1em",
+                                }}
+                              >
                                 <TagAdmin />
                               </div>
                             </PrivateRoute>
@@ -252,7 +258,13 @@ function App() {
                           path="suggestions"
                           element={
                             <PrivateRoute roles={["isAdmin"]}>
-                              <div className={classes.organizationEditWrapper}>
+                              <div
+                                style={{
+                                  flexBasis: "90%",
+                                  paddingTop: "1em",
+                                  paddingBottom: "1em",
+                                }}
+                              >
                                 <Suggestions />
                               </div>
                             </PrivateRoute>
@@ -263,7 +275,13 @@ function App() {
                           roles={["isAdmin", "isCoordinator"]}
                           element={
                             <PrivateRoute roles={["isAdmin", "isCoordinator"]}>
-                              <div className={classes.organizationEditWrapper}>
+                              <div
+                                style={{
+                                  flexBasis: "90%",
+                                  paddingTop: "1em",
+                                  paddingBottom: "1em",
+                                }}
+                              >
                                 <Logins />
                               </div>
                             </PrivateRoute>
@@ -275,7 +293,14 @@ function App() {
                             <PrivateRoute
                               roles={["isGlobalAdmin", "isSecurityAdmin"]}
                             >
-                              <div className={classes.verificationAdminWrapper}>
+                              <div
+                                style={{
+                                  flexBasis: "100%",
+                                  flexGrow: 1,
+                                  display: "flex",
+                                  flexDirection: "column",
+                                }}
+                              >
                                 <SecurityAdminDashboard />
                               </div>
                             </PrivateRoute>

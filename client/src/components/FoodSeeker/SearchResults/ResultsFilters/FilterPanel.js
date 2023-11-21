@@ -252,7 +252,3 @@ const openTime = {
     ],
   },
 };
-
-// todo:
-// 1. open FilterPanel should push List panel to the right for desktop view
-// 2. moves styling to palette.js

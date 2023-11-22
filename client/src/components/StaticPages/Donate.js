@@ -19,7 +19,7 @@ import donationStep5 from "images/donationStep5.png";
 import donationStep6 from "images/donationStep6.png";
 import donationStep7 from "images/donationStep7.png";
 import logo from "images/foodoasis.svg";
-import React, { useEffect } from "react";
+import { useState, useEffect } from "react";
 import * as analytics from "../../services/analytics";
 import Footer from "../Layout/Footer";
 import { IconButton } from "../UI/StandardButton";
@@ -27,7 +27,7 @@ import { PageWrapper } from "./PageWrapper";
 import donatebg from "./assets/donate-bg.webp";
 
 const Donate = () => {
-  const [showDonationDialog, setShowDonationDialog] = React.useState(false);
+  const [showDonationDialog, setShowDonationDialog] = useState(false);
 
   useEffect(() => {
     analytics.postEvent("visitDonatePage");

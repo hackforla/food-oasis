@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import AddressDropDown from "components/FoodSeeker/AddressDropDown";
 import useGeolocation, { useLocationPermission } from "hooks/useGeolocation";
-import React from "react";
+import { useEffect, useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import * as analytics from "services/analytics";
 import { useSiteContext } from "../../contexts/siteContext";
@@ -31,18 +31,18 @@ const Home = () => {
   const navigate = useNavigate();
   const { tenantId, tenantDetails } = useSiteContext();
   const { taglineText } = tenantDetails;
-  const [bgImg, setBgImg] = React.useState(`url("/landing-page/bg-LA.jpeg")`);
+  const [bgImg, setBgImg] = useState(`url("/landing-page/bg-LA.jpeg")`);
   const { getUserLocation, isLoading: isGettingLocation } = useGeolocation();
-  const [error, setError] = React.useState("");
+  const [error, setError] = useState("");
   const locationPermission = useLocationPermission();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (error && locationPermission === "granted") {
       setError("");
     }
   }, [error, locationPermission]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     switch (tenantId) {
       case 2:
         setBgImg(`url("/landing-page/bg-LA.jpeg")`);
@@ -61,7 +61,7 @@ const Home = () => {
     }
   }, [tenantId]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     analytics.postEvent("visitLandingPage");
   }, []);
 

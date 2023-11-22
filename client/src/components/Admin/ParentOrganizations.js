@@ -16,7 +16,7 @@ import {
 import { Formik } from "formik";
 import { tenantId } from "helpers/Configuration";
 import { useParentOrganizations } from "hooks/useParentOrganizations";
-import React from "react";
+import { useEffect, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import * as parentOrganizationService from "../../services/parent-organization-service";
 import { IconButton } from "../UI/StandardButton";
@@ -46,22 +46,22 @@ function getModalStyle() {
 
 function ParentOrganizations(props) {
   let { data, status } = useParentOrganizations();
-  const [parentOrgs, setParentOrgs] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [activeOrg, setActiveOrg] = React.useState(false);
-  const [modalStyle] = React.useState(getModalStyle);
-  const [error, setError] = React.useState("");
-  const [deleteError, setDeleteError] = React.useState("");
+  const [parentOrgs, setParentOrgs] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [activeOrg, setActiveOrg] = useState(false);
+  const [modalStyle] = useState(getModalStyle);
+  const [error, setError] = useState("");
+  const [deleteError, setDeleteError] = useState("");
   const location = useLocation();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (data) {
       setParentOrgs(data);
     }
   }, [data]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (status === 401) {
       return (
         <Navigate to={{ pathname: "/login", state: { from: location } }} />

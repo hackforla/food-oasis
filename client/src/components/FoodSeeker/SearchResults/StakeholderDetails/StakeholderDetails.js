@@ -15,7 +15,7 @@ import {
 import fbIcon from "images/fbIcon.png";
 import instaIcon from "images/instaIcon.png";
 import StakeholderIcon from "images/stakeholderIcon";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as analytics from "services/analytics";
 import {
@@ -401,7 +401,7 @@ const StakeholderDetails = () => {
 
         <MinorHeading>Email</MinorHeading>
         {selectedOrganization.email ? (
-          <React.Fragment>
+          <>
             <DetailText>
               <Link
                 href={"mailto:" + selectedOrganization.email}
@@ -417,7 +417,7 @@ const StakeholderDetails = () => {
                 {selectedOrganization.email}
               </Link>
             </DetailText>
-          </React.Fragment>
+          </>
         ) : (
           <DetailText>No E-Mail Address on record</DetailText>
         )}

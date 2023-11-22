@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import Label from "components/Admin/ui/Label";
 import { Formik } from "formik";
-import React from "react";
+import { useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import * as accountService from "services/account-service";
 import { palette } from "theme/palette";
@@ -39,7 +39,7 @@ const LoginForm = (props) => {
   const navigate = useNavigate();
   const { email } = useParams();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (state?.message) {
       setToast({
         message: state.message,

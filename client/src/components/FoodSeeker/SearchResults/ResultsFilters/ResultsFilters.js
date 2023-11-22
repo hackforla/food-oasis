@@ -8,7 +8,7 @@ import {
 } from "constants/stakeholder";
 import useGeolocation, { useLocationPermission } from "hooks/useGeolocation";
 import PropTypes from "prop-types";
-import React, { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import * as analytics from "services/analytics";
 import { tenantDetails } from "../../../../helpers/Configuration";
 import CategoryButton from "./CategoryButton";
@@ -25,9 +25,9 @@ const ResultsFilters = ({
   const { taglineText } = tenantDetails;
   const { getUserLocation } = useGeolocation();
   const locationPermission = useLocationPermission();
-  const [error, setError] = React.useState("");
+  const [error, setError] = useState("");
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (error && locationPermission === "granted") {
       setError("");
     }

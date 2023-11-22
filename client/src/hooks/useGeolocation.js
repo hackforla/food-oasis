@@ -1,15 +1,15 @@
-import React from "react";
-import { useAppDispatch, useUserCoordinates, useWidget } from "../appReducer";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useUserCoordinates, useWidget } from "../appReducer";
 
 export default function useGeolocation() {
   const dispatch = useAppDispatch();
   const userCoordinates = useUserCoordinates();
   const isWidget = useWidget();
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const getUserLocation = React.useCallback(async () => {
+  const getUserLocation = useCallback(async () => {
     if (userCoordinates) {
       dispatch({
         type: "USER_COORDINATES_UPDATED",
@@ -62,8 +62,8 @@ export default function useGeolocation() {
 
 // will return granted || prompt || denied
 export const useLocationPermission = () => {
-  const [permission, setPermission] = React.useState(null);
-  React.useEffect(() => {
+  const [permission, setPermission] = useState(null);
+  useEffect(() => {
     if (!navigator.permissions) {
       return undefined;
     }

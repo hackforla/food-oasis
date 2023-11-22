@@ -34,7 +34,7 @@ import {
 } from "@mui/material";
 import { Formik } from "formik";
 import { useSuggestions } from "hooks/useSuggestions";
-import React from "react";
+import { useEffect, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import * as suggestionService from "../../services/suggestion-service";
 import { getIsMobile } from "../../utils";
@@ -70,24 +70,24 @@ function getModalStyle() {
 
 function Suggestions() {
   const initialStatusIds = [1, 2, 3, 4];
-  const [suggestions, setSuggestions] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [activeOrg, setActiveOrg] = React.useState(null);
-  const [modalStyle] = React.useState(getModalStyle);
-  const [error, setError] = React.useState("");
-  const [filters, setFilters] = React.useState(initialStatusIds);
+  const [suggestions, setSuggestions] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [activeOrg, setActiveOrg] = useState(null);
+  const [modalStyle] = useState(getModalStyle);
+  const [error, setError] = useState("");
+  const [filters, setFilters] = useState(initialStatusIds);
   let { data, status, setStatusIds } = useSuggestions(initialStatusIds);
   const isMobile = getIsMobile();
   const location = useLocation();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (data) {
       setSuggestions(data);
     }
   }, [data]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (status === 401) {
       return (
         <Navigate to={{ pathname: "/login", state: { from: location } }} />

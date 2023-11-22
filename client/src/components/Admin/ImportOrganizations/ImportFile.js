@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { STAKEHOLDER_SCHEMA } from "../../../constants/stakeholder-schema";
 import { useSiteContext } from "../../../contexts/siteContext";
@@ -30,7 +30,7 @@ const ImportFile = () => {
   });
   const [dialog, setDialog] = useState(false);
   const [loading, setLoading] = useState(false);
-  let formData = React.useMemo(() => new FormData(), []);
+  let formData = useMemo(() => new FormData(), []);
   const [view, setView] = useState(
     user && user.isAdmin ? "adminAccessNotice" : "fileGuide"
   );

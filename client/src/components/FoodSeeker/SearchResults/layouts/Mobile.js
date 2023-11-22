@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react";
 import { Box } from "@mui/material";
+import { useCallback, useEffect, useState } from "react";
 import Draggable from "react-draggable";
 
 const overlay = {
@@ -8,7 +8,7 @@ const overlay = {
   height: "100%",
   backgroundColor: "white",
   zIndex: 1000,
-  borderRadius: '10px'
+  borderRadius: "10px",
 };
 
 const MobileLayout = ({ filters, map, list, preview, details }) => {
@@ -21,10 +21,9 @@ const MobileLayout = ({ filters, map, list, preview, details }) => {
   const show = useCallback(() => setShowDetails(true), []);
 
   // Define the bounds for vertical dragging
-  const minY = 50; 
-  //const maxY = 800; 
+  const minY = 50;
+  //const maxY = 800;
   //commented out const maxY above since it is currently not being used but might be useful in future
-
 
   return (
     <>
@@ -41,35 +40,34 @@ const MobileLayout = ({ filters, map, list, preview, details }) => {
         <Box sx={{ flex: 1 }}>{map}</Box>
         {list && (
           <Draggable
-          handle=".handle"
-          bounds={{ top: minY, bottom: minY * (window.innerHeight / 100) }}
-          defaultPosition={{ x: 0, y: minY * (window.innerHeight / 100) }}
-          axis="y">
+            handle=".handle"
+            bounds={{ top: minY, bottom: minY * (window.innerHeight / 100) }}
+            defaultPosition={{ x: 0, y: minY * (window.innerHeight / 100) }}
+            axis="y"
+          >
             <Box sx={overlay}>
               <Box
-              className="handle"
-              sx={{
-                height: 42,
-                width: '90vw',
-                paddingTop: '8px',
-                marginX: 'auto',
-                borderBottom: '1px solid #000',
-              }}
+                className="handle"
+                sx={{
+                  height: 42,
+                  width: "90vw",
+                  paddingTop: "8px",
+                  marginX: "auto",
+                  borderBottom: "1px solid #000",
+                }}
               >
                 <Box
-                sx={{
-                  width: 120,
-                  height: 5,
-                  margin: '0 auto',
-                  background: '#D9D9D9',
-                  borderRadius: '20px'
-                }}
-                >
-
-                </Box>
+                  sx={{
+                    width: 120,
+                    height: 5,
+                    margin: "0 auto",
+                    background: "#D9D9D9",
+                    borderRadius: "20px",
+                  }}
+                ></Box>
               </Box>
               {list}
-              </Box>
+            </Box>
           </Draggable>
         )}
         {preview && (

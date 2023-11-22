@@ -1,4 +1,4 @@
-import { Stack, Paper } from "@mui/material";
+import { Paper, Stack } from "@mui/material";
 
 function MuiPaper() {
   return (

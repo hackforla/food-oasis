@@ -1,5 +1,5 @@
-import donatebg from "../assets/donate-header.jpg";
 import { Link, Typography } from "@mui/material";
+import donatebg from "../assets/donate-header.jpg";
 
 const PAGE_INFO_DONATE = {
   pageTitle: "Donate",

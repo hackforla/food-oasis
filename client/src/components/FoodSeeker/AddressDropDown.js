@@ -1,15 +1,19 @@
-import React, { useState } from "react";
-import { MenuItem, Autocomplete, TextField } from "@mui/material";
-import { useMapboxGeocoder } from "hooks/useMapboxGeocoder";
-import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import {
-  useSearchCoordinates,
-  useAppDispatch,
-  useWidget,
-} from "../../appReducer";
+  Autocomplete,
+  InputAdornment,
+  MenuItem,
+  TextField,
+} from "@mui/material";
+import { useMapboxGeocoder } from "hooks/useMapboxGeocoder";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as analytics from "services/analytics";
+import {
+  useAppDispatch,
+  useSearchCoordinates,
+  useWidget,
+} from "../../appReducer";
 
 export default function AddressDropDown({ showSearchIcon }) {
   const searchCoordinates = useSearchCoordinates();
@@ -55,7 +59,7 @@ export default function AddressDropDown({ showSearchIcon }) {
         sx={{
           background: "#FFFFFF",
         }}
-		variant="outlined"
+        variant="outlined"
         {...params}
         label="Search by address or zip code"
         margin="none"
@@ -74,7 +78,7 @@ export default function AddressDropDown({ showSearchIcon }) {
         InputProps={{
           sx: {
             cursor: "pointer",
-			backgroundColor: "#F0F0F0"
+            backgroundColor: "#F0F0F0",
           },
           endAdornment: (
             <InputAdornment
@@ -116,15 +120,15 @@ export default function AddressDropDown({ showSearchIcon }) {
         onChange={(event, newValue) => setInputVal(newValue)}
         options={mapboxResults.slice(0, 10).map((item) => item.place_name)}
         sx={{
-          width: 600,
-          backgroundColor: "#F0F0F0",
+          "width": 600,
+          "backgroundColor": "#F0F0F0",
           "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-            borderColor: "white",
-            width: "auto",
-            maxWidth: "auto",
-            height: "auto",
-            maxHeight: "150px",
-            overflow: "auto",
+            "borderColor": "white",
+            "width": "auto",
+            "maxWidth": "auto",
+            "height": "auto",
+            "maxHeight": "150px",
+            "overflow": "auto",
             "&::placeholder": {
               opacity: "1",
               backgroundColor: "#F0F0F0",

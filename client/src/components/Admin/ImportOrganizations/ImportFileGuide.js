@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
-import PropTypes from "prop-types";
 import {
   Box,
   Button,
-  Input,
   FormControl,
   FormHelperText,
+  Input,
   MenuItem,
   Select,
   Table,
@@ -16,6 +14,8 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import PropTypes from "prop-types";
+import { useEffect, useRef, useState } from "react";
 import { STAKEHOLDER_SCHEMA } from "../../../constants/stakeholder-schema";
 
 const ImportFileGuide = (props) => {
@@ -33,19 +33,19 @@ const ImportFileGuide = (props) => {
   }, [file]);
 
   return (
-    <main 
+    <main
       style={{
         textAlign: "center",
       }}
     >
-      <Box 
+      <Box
         sx={(theme) => ({
-          marginTop: theme.spacing(2),
-          maxWidth: "800px",
-          mx: 'auto',
-          padding: theme.spacing(4),
-          borderRadius: "8px",
-          boxShadow: "-.2rem 0 2rem #C7CCD1",
+          "marginTop": theme.spacing(2),
+          "maxWidth": "800px",
+          "mx": "auto",
+          "padding": theme.spacing(4),
+          "borderRadius": "8px",
+          "boxShadow": "-.2rem 0 2rem #C7CCD1",
           "& strong": {
             color: theme.palette.error.main,
           },
@@ -59,16 +59,21 @@ const ImportFileGuide = (props) => {
         <Typography>
           <strong>Warning: this feature is still being tested. </strong>
         </Typography>
-        <Box component="ul" 
+        <Box
+          component="ul"
           sx={{
             margin: "0 auto",
             maxWidth: "650px",
-            textAlign: "left"
+            textAlign: "left",
           }}
         >
-          <Box component="li">You will have a chance to review your data before importing.</Box>
-          <Box component="li">Refer to the formatting guides below. Do not change any column
-            names.</Box>
+          <Box component="li">
+            You will have a chance to review your data before importing.
+          </Box>
+          <Box component="li">
+            Refer to the formatting guides below. Do not change any column
+            names.
+          </Box>
         </Box>
         <br />
         <Input type="file" onChange={handleChange} inputRef={ref} />
@@ -77,14 +82,14 @@ const ImportFileGuide = (props) => {
           Submit
         </Button>
       </Box>
-      <Box 
+      <Box
         sx={(theme) => ({
-          marginTop: theme.spacing(2),
-          maxWidth: "800px",
-          mx: 'auto',
-          padding: theme.spacing(4),
-          borderRadius: "8px",
-          boxShadow: "-.2rem 0 2rem #C7CCD1",
+          "marginTop": theme.spacing(2),
+          "maxWidth": "800px",
+          "mx": "auto",
+          "padding": theme.spacing(4),
+          "borderRadius": "8px",
+          "boxShadow": "-.2rem 0 2rem #C7CCD1",
           "& strong": {
             color: theme.palette.error.main,
           },
@@ -95,29 +100,32 @@ const ImportFileGuide = (props) => {
         })}
       >
         <Typography variant="h5">CSV Template</Typography>
-        <Box component="ul" 
+        <Box
+          component="ul"
           sx={{
             margin: "0 auto",
             maxWidth: "650px",
-            textAlign: "left"
+            textAlign: "left",
           }}
         >
-          <Box component="li">Download a CSV template to ensure proper formatting and column
-            names.</Box>
+          <Box component="li">
+            Download a CSV template to ensure proper formatting and column
+            names.
+          </Box>
           <Box component="li">Do not change column names or order.</Box>
         </Box>
         <Button variant="contained" type="button" onClick={handleDownload}>
           Download CSV template
         </Button>
       </Box>
-      <Box 
+      <Box
         sx={(theme) => ({
-          marginTop: theme.spacing(2),
-          maxWidth: "800px",
-          mx: 'auto',
-          padding: theme.spacing(4),
-          borderRadius: "8px",
-          boxShadow: "-.2rem 0 2rem #C7CCD1",
+          "marginTop": theme.spacing(2),
+          "maxWidth": "800px",
+          "mx": "auto",
+          "padding": theme.spacing(4),
+          "borderRadius": "8px",
+          "boxShadow": "-.2rem 0 2rem #C7CCD1",
           "& strong": {
             color: theme.palette.error.main,
           },
@@ -129,10 +137,9 @@ const ImportFileGuide = (props) => {
       >
         <Typography variant="h5">Schema Guide</Typography>
         <Typography>
-          The schema below lists the CSV column names, meanings, and
-          guidelines.
+          The schema below lists the CSV column names, meanings, and guidelines.
         </Typography>
-        <FormControl 
+        <FormControl
           sx={{
             display: "block",
             marginLeft: "auto",
@@ -165,24 +172,19 @@ const ImportFileGuide = (props) => {
                 (field) =>
                   field.show &&
                   (visibleFields === "all" ? (
-                    <TableRow key={field.name} 
+                    <TableRow
+                      key={field.name}
                       sx={(theme) => ({
                         "&:nth-of-type(odd)": {
                           backgroundColor: theme.palette.action.hover,
-                        }
+                        },
                       })}
                     >
-                      <TableCell
-                        style={{ fontWeight: field.required && 900 }}
-                      >
-                        {`${field.name} ${
-                          field.required ? "(required)" : ""
-                        }`}
+                      <TableCell style={{ fontWeight: field.required && 900 }}>
+                        {`${field.name} ${field.required ? "(required)" : ""}`}
                       </TableCell>
                       <TableCell>{field.description}</TableCell>
-                      <TableCell
-                        style={{ fontWeight: field.required && 900 }}
-                      >
+                      <TableCell style={{ fontWeight: field.required && 900 }}>
                         {field.default_value}
                       </TableCell>
                       <TableCell>{field.sample_format}</TableCell>
@@ -190,11 +192,12 @@ const ImportFileGuide = (props) => {
                   ) : (
                     visibleFields === "required" &&
                     field.required && (
-                      <TableRow key={field.name} 
+                      <TableRow
+                        key={field.name}
                         sx={(theme) => ({
                           "&:nth-of-type(odd)": {
                             backgroundColor: theme.palette.action.hover,
-                          }
+                          },
                         })}
                       >
                         <TableCell style={{ fontWeight: 900 }}>

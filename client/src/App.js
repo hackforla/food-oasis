@@ -1,29 +1,28 @@
-import React, { useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Navigate,
-  Routes,
-  Route,
-} from "react-router-dom";
-import { ThemeProvider } from "theme";
-import { Grid, CssBaseline, Stack } from "@mui/material";
-import { ToasterProvider } from "contexts/toasterContext";
-import { UserProvider } from "contexts/userContext";
-import Toast from "components/UI/Toast";
+import { CircularProgress, CssBaseline, Grid, Stack } from "@mui/material";
+import Home from "components/FoodSeeker/Home";
+import Suggestion from "components/FoodSeeker/Suggestion";
 import Header from "components/Layout/Header";
 import HeaderHome from "components/Layout/HeaderHome";
 import WidgetFooter from "components/Layout/WidgetFooter";
-import Home from "components/FoodSeeker/Home";
-import Profile from "./components/Account/Profile";
-import * as analytics from "../src/services/analytics";
-import PrivateRoute from "./components/PrivateRoute";
-import Fallback from "./components/Fallback";
-import { AppStateProvider } from "./appReducer";
+import Toast from "components/UI/Toast";
 import { SiteProvider } from "contexts/siteContext";
+import { ToasterProvider } from "contexts/toasterContext";
+import { UserProvider } from "contexts/userContext";
+import React, { useEffect } from "react";
 import { HelmetProvider } from "react-helmet-async";
+import {
+  Navigate,
+  Route,
+  BrowserRouter as Router,
+  Routes,
+} from "react-router-dom";
+import { ThemeProvider } from "theme";
+import * as analytics from "../src/services/analytics";
+import { AppStateProvider } from "./appReducer";
+import Profile from "./components/Account/Profile";
+import Fallback from "./components/Fallback";
+import PrivateRoute from "./components/PrivateRoute";
 import SEO from "./components/SEO";
-import CircularProgress from "@mui/material/CircularProgress";
-import Suggestion from "components/FoodSeeker/Suggestion";
 
 const VerificationAdmin = React.lazy(() =>
   import("components/Admin/VerificationAdmin")

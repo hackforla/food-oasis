@@ -1,17 +1,20 @@
-import React from "react";
-
+import {
+  Box,
+  CardMedia,
+  Container,
+  Link,
+  SvgIcon,
+  Typography,
+} from "@mui/material";
+import { PageWrapper } from "components/StaticPages/PageWrapper";
+import IconSpacerSVG from "components/StaticPages/assets/IconSpacerSVG";
+import { Link as RouterLink } from "react-router-dom";
+import Footer from "../Layout/Footer";
 import aboutbg from "./assets/about-bg.webp";
-import foodCycle from "./assets/food-cycle.png";
-import foodForward from "./assets/food-forward.png";
 import farm2people from "./assets/farm2people.png";
 import foodBank from "./assets/food-bank.png";
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
-import { PageWrapper } from "components/StaticPages/PageWrapper";
-import { Link as RouterLink } from "react-router-dom";
-import { Box, CardMedia, Link, SvgIcon } from "@mui/material";
-import IconSpacerSVG from "components/StaticPages/assets/IconSpacerSVG";
-import Footer from "../Layout/Footer";
+import foodCycle from "./assets/food-cycle.png";
+import foodForward from "./assets/food-forward.png";
 
 const About = () => {
   return (

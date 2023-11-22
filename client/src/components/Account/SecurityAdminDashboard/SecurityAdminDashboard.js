@@ -1,10 +1,8 @@
-import React, { useState, useEffect, useMemo } from "react";
-import SecurityTable from "./SecurityTable";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import TextField from "@mui/material/TextField";
-import * as accountService from "../../../services/account-service";
+import { Container, TextField, Typography } from "@mui/material";
 import debounce from "lodash.debounce";
+import { useEffect, useMemo, useState } from "react";
+import * as accountService from "../../../services/account-service";
+import SecurityTable from "./SecurityTable";
 
 const SecurityAdminDashboard = () => {
   const [accounts, setAccounts] = useState([]);
@@ -77,13 +75,13 @@ const SecurityAdminDashboard = () => {
   };
 
   return (
-    <Container 
-      maxWidth="lg"      
+    <Container
+      maxWidth="lg"
       sx={{
         "&.MuiContainer-root": {
           textAlign: "center",
           padding: "2rem",
-        }
+        },
       }}
     >
       <Typography variant="h4">Security Roles</Typography>

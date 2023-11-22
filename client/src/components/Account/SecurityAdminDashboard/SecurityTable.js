@@ -1,15 +1,16 @@
-import React from "react";
+import {
+  Checkbox,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import PropTypes from "prop-types";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import Checkbox from "@mui/material/Checkbox";
-import * as accountService from "../../../services/account-service";
 import { useUserContext } from "../../../contexts/userContext";
+import * as accountService from "../../../services/account-service";
 
 export default function SecurityTable(props) {
   const { user } = useUserContext();
@@ -96,33 +97,56 @@ export default function SecurityTable(props) {
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={{minWidth: 650}} aria-label="simple table">
-        <TableHead sx={{backgroundColor: "#000080"}}>
-          <TableRow >
-            <TableCell sx={(theme) => ({color: theme.palette.common.white})}>Email</TableCell>
-            <TableCell align="right" sx={(theme) => ({color: theme.palette.common.white})}>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <TableHead sx={{ backgroundColor: "#000080" }}>
+          <TableRow>
+            <TableCell sx={(theme) => ({ color: theme.palette.common.white })}>
+              Email
+            </TableCell>
+            <TableCell
+              align="right"
+              sx={(theme) => ({ color: theme.palette.common.white })}
+            >
               Name
             </TableCell>
             {user && user.isGlobalAdmin ? (
               <>
-                <TableCell align="right" sx={(theme) => ({color: theme.palette.common.white})}>
+                <TableCell
+                  align="right"
+                  sx={(theme) => ({ color: theme.palette.common.white })}
+                >
                   Root
                 </TableCell>
-                <TableCell align="right" sx={(theme) => ({color: theme.palette.common.white})}>
+                <TableCell
+                  align="right"
+                  sx={(theme) => ({ color: theme.palette.common.white })}
+                >
                   Reports
                 </TableCell>
               </>
             ) : null}
-            <TableCell align="right" sx={(theme) => ({color: theme.palette.common.white})}>
+            <TableCell
+              align="right"
+              sx={(theme) => ({ color: theme.palette.common.white })}
+            >
               Admin
             </TableCell>
-            <TableCell align="right" sx={(theme) => ({color: theme.palette.common.white})}>
+            <TableCell
+              align="right"
+              sx={(theme) => ({ color: theme.palette.common.white })}
+            >
               Coordinator
             </TableCell>
-            <TableCell align="right" sx={(theme) => ({color: theme.palette.common.white})}>
+            <TableCell
+              align="right"
+              sx={(theme) => ({ color: theme.palette.common.white })}
+            >
               Security Admin
             </TableCell>
-            <TableCell align="right" sx={(theme) => ({color: theme.palette.common.white})}>
+            <TableCell
+              align="right"
+              sx={(theme) => ({ color: theme.palette.common.white })}
+            >
               Data Entry
             </TableCell>
           </TableRow>

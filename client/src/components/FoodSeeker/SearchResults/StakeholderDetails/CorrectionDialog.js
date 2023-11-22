@@ -1,6 +1,3 @@
-import React from "react";
-import { withFormik } from "formik";
-import PropTypes from "prop-types";
 import {
   Button,
   Dialog,
@@ -11,11 +8,13 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import * as suggestionService from "services/suggestion-service";
-import { DEFAULT_STAKEHOLDER } from "../../../../constants/stakeholder";
-import * as Yup from "yup";
 import Label from "components/Admin/ui/Label";
 import Textarea from "components/Admin/ui/Textarea";
+import { withFormik } from "formik";
+import PropTypes from "prop-types";
+import * as suggestionService from "services/suggestion-service";
+import * as Yup from "yup";
+import { DEFAULT_STAKEHOLDER } from "../../../../constants/stakeholder";
 
 function SuggestionDialog(props) {
   const { values, touched, errors, handleChange, handleBlur, handleSubmit } =
@@ -170,7 +169,7 @@ const SuggestionForm = withFormik({
         formikBag.props.setToast({
           message: "Thank you for your help!",
         });
-         formikBag.resetForm();
+        formikBag.resetForm();
         formikBag.props.onClose(true);
       })
       .catch(() => {

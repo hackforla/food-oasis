@@ -1,7 +1,5 @@
-import React from "react";
+import { Box, Typography } from "@mui/material";
 import { useLocation } from "react-router-dom";
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 
 const Fallback = () => {
   const { state } = useLocation();
@@ -25,7 +23,7 @@ const Fallback = () => {
           flexDirection: "column",
         }}
       >
-        <Typography 
+        <Typography
           sx={{
             color: "#336699",
             flexBasis: "100",
@@ -37,7 +35,11 @@ const Fallback = () => {
             marginTop: "10px",
             marginBottom: "20px",
           }}
-        variant="h2" component="h1">Unauthorized</Typography>
+          variant="h2"
+          component="h1"
+        >
+          Unauthorized
+        </Typography>
         <Typography>{state?.message || "Something went wrong."}</Typography>
       </Box>
     </Box>

@@ -1,29 +1,30 @@
-import React from "react";
 import { Box } from "@mui/material";
 
 const DesktopLayout = ({ filters, list, map }) => {
-
   return (
     <>
       {filters}
-      <Box 
-        sx={{ 
+      <Box
+        sx={{
           flex: "auto",
           overflowY: "hidden",
           display: "flex",
-        }}>
-        <Box 
+        }}
+      >
+        <Box
           sx={{
             width: "35%",
-            overflow: "auto",            
-          }}>
+            overflow: "auto",
+          }}
+        >
           {list}
         </Box>
-        <Box 
+        <Box
           sx={{
             height: "100%",
             flex: 1,
-          }}>
+          }}
+        >
           {map}
         </Box>
       </Box>

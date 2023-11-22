@@ -1,10 +1,15 @@
-import faqbg from "./assets/faq-bg.webp";
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
+import {
+  Box,
+  CardMedia,
+  Container,
+  Link,
+  SvgIcon,
+  Typography,
+} from "@mui/material";
 import { PageWrapper } from "components/StaticPages/PageWrapper";
-import { Box, CardMedia, SvgIcon, Link } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import IconSpacerSVG from "./assets/IconSpacerSVG";
+import faqbg from "./assets/faq-bg.webp";
 
 const Faq = () => {
   return (
@@ -63,8 +68,8 @@ const Faq = () => {
           <Box
             component="dl"
             sx={{
-              marginTop: "10px",
-              marginBottom: "0",
+              "marginTop": "10px",
+              "marginBottom": "0",
               "& dd": {
                 marginLeft: "0",
                 marginBottom: "24px",
@@ -154,8 +159,8 @@ const Faq = () => {
           <Box
             component="dl"
             sx={{
-              marginTop: "10px",
-              marginBottom: "0",
+              "marginTop": "10px",
+              "marginBottom": "0",
               "& dd": {
                 marginLeft: "0",
                 marginBottom: "24px",
@@ -246,8 +251,8 @@ const Faq = () => {
           <Box
             component="dl"
             sx={{
-              marginTop: "10px",
-              marginBottom: "0",
+              "marginTop": "10px",
+              "marginBottom": "0",
               "& dd": {
                 marginLeft: "0",
                 marginBottom: "24px",

@@ -1,7 +1,5 @@
-import React from "react";
-import Chip from "@mui/material/Chip";
+import { Chip, Stack } from "@mui/material";
 import { useAccounts } from "../../hooks/useAccounts";
-import { Stack } from "@mui/material";
 
 function SearchCriteriaDisplay({
   neighborhoods,

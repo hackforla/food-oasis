@@ -1,12 +1,12 @@
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-  forwardRef,
-  useImperativeHandle,
-} from "react";
 import PropTypes from "prop-types";
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 // Mapbox is tricky, because version 6.* is "incompatible with some Babel transforms
 // because of the way it shares code between the maint thread and Web Worker."
 // See https://docs.mapbox.com/mapbox-gl-js/guides/install/#transpiling for details
@@ -14,31 +14,31 @@ import PropTypes from "prop-types";
 // recommendation from Mapbox team
 // https://github.com/mapbox/mapbox-gl-js/issues/10173  See comment by IvanDreamer on Mar 22
 // for craco.config.js contents
-import ReactMapGL, * as Map from "react-map-gl";
+import { Button, Grid } from "@mui/material";
 import { MAPBOX_STYLE } from "constants/map";
 import { defaultViewport } from "helpers/Configuration";
+import useBreakpoints from "hooks/useBreakpoints";
+import useFeatureFlag from "hooks/useFeatureFlag";
+import "mapbox-gl/dist/mapbox-gl.css";
+import ReactMapGL, * as Map from "react-map-gl";
+import { useLocation, useNavigate } from "react-router-dom";
+import * as analytics from "services/analytics";
+import {
+  DEFAULT_COORDINATES,
+  useAppDispatch,
+  useNeighborhood,
+  useSearchCoordinates,
+  useSelectedOrganization,
+  useUserCoordinates,
+} from "../../../../appReducer";
+import AdvancedFilters from "../AdvancedFilters/AdvancedFilters";
 import {
   MARKERS_LAYER_ID,
   loadMarkerIcons,
   markersLayerStyles,
   useMarkersGeojson,
 } from "./MarkerHelpers";
-import { regionFillStyle, regionBorderStyle } from "./RegionHelpers";
-import * as analytics from "services/analytics";
-import { Button, Grid } from "@mui/material";
-import {
-  useSearchCoordinates,
-  useAppDispatch,
-  useNeighborhood,
-  DEFAULT_COORDINATES,
-  useSelectedOrganization,
-  useUserCoordinates,
-} from "../../../../appReducer";
-import "mapbox-gl/dist/mapbox-gl.css";
-import { useNavigate, useLocation } from "react-router-dom";
-import useFeatureFlag from "hooks/useFeatureFlag";
-import AdvancedFilters from "../AdvancedFilters/AdvancedFilters";
-import useBreakpoints from "hooks/useBreakpoints";
+import { regionBorderStyle, regionFillStyle } from "./RegionHelpers";
 
 const ResultsMap = (
   { stakeholders, categoryIds, toggleCategory, loading, searchMapArea },

@@ -1,5 +1,3 @@
-import React, { useEffect } from "react";
-import PropTypes from "prop-types";
 import {
   Box,
   Button,
@@ -7,11 +5,13 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import StakeholderPreview from "../StakeholderPreview/StakeholderPreview";
-import StakeholderDetails from "../StakeholderDetails/StakeholderDetails";
+import PropTypes from "prop-types";
+import { useEffect } from "react";
+import { Virtuoso } from "react-virtuoso";
 import * as analytics from "services/analytics";
 import { useSelectedOrganization } from "../../../../appReducer";
-import { Virtuoso } from "react-virtuoso";
+import StakeholderDetails from "../StakeholderDetails/StakeholderDetails";
+import StakeholderPreview from "../StakeholderPreview/StakeholderPreview";
 
 const ResultsList = ({ stakeholders, loading, handleReset }) => {
   const selectedOrganization = useSelectedOrganization();

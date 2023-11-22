@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
 import {
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControlLabel,
   FormLabel,
   Radio,
   RadioGroup,
-  FormControlLabel,
 } from "@mui/material";
-import Textarea from "./Textarea";
+import PropTypes from "prop-types";
+import { useState } from "react";
 import Label from "./Label";
+import Textarea from "./Textarea";
 
 function NeedsVerificationDialog(props) {
   const { onClose, open, ...other } = props;

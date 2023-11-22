@@ -1,27 +1,32 @@
-import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-import { useLocation, useNavigate } from "react-router-dom";
-import { Button, CssBaseline, Dialog, Typography } from "@mui/material";
-import Stack from "@mui/material/Stack";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  CssBaseline,
+  Dialog,
+  Stack,
+  Typography,
+} from "@mui/material";
 import MuiDialogTitle from "@mui/material/DialogTitle";
-import Box from "@mui/material/Box";
-import { useOrganizations } from "hooks/useOrganizations";
 import { useCategories } from "hooks/useCategories";
 import { useNeighborhoods } from "hooks/useNeighborhoods";
+import { useOrganizations } from "hooks/useOrganizations";
 import { useTags } from "hooks/useTags";
+import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
-  needsVerification,
   assign,
   exportCsv,
+  needsVerification,
 } from "services/stakeholder-service";
 import AssignDialog from "./AssignDialog";
-import NeedsVerificationDialog from "./ui/NeedsVerificationDialog";
 import SearchCriteria from "./SearchCriteria";
 import SearchCriteriaDisplay from "./SearchCriteriaDisplay";
+import NeedsVerificationDialog from "./ui/NeedsVerificationDialog";
 
-import { useUserContext } from "../../contexts/userContext";
 import { useSearchCoordinates, useUserCoordinates } from "../../appReducer";
-import CircularProgress from "@mui/material/CircularProgress";
+import { useUserContext } from "../../contexts/userContext";
 import VerificationAdminGridMui from "./VerificationAdminGridMui";
 
 const CRITERIA_TOKEN = "verificationAdminCriteria";

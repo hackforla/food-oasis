@@ -1,20 +1,20 @@
-import React, { useState } from "react";
-import useLocationHook from "hooks/useLocationHook";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import {
+  Avatar,
+  Divider,
   Drawer,
   List,
   ListItem,
-  ListItemText,
   ListItemAvatar,
-  Avatar,
-  Divider,
+  ListItemText,
 } from "@mui/material";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { MENU_ITEMS } from "helpers/Constants";
-import MenuItemLink from "./MenuItemLink";
-import { IconButton } from "../UI/StandardButton";
-import { useUserContext } from "../../contexts/userContext";
 import { isMobile } from "helpers";
+import { MENU_ITEMS } from "helpers/Constants";
+import useLocationHook from "hooks/useLocationHook";
+import { useState } from "react";
+import { useUserContext } from "../../contexts/userContext";
+import { IconButton } from "../UI/StandardButton";
+import MenuItemLink from "./MenuItemLink";
 
 export default function Menu() {
   const { isHomePage } = useLocationHook();
@@ -150,20 +150,20 @@ export default function Menu() {
         icon="menu"
         onClick={toggleDrawer}
         sx={{
-          transform: "scale(1.2,1.2)", 
-          minWidth: "0",
-          backgroundColor: "#FFF",
-          '&:hover': {
+          "transform": "scale(1.2,1.2)",
+          "minWidth": "0",
+          "backgroundColor": "#FFF",
+          "&:hover": {
             backgroundColor: "#FFF",
             opacity: 0.8,
           },
         }}
       />
-      <Drawer 
-        anchor={"right"} 
-        open={isOpen} 
+      <Drawer
+        anchor={"right"}
+        open={isOpen}
         onClose={toggleDrawer}
-        PaperProps={{sx: {width: '250px'}}}
+        PaperProps={{ sx: { width: "250px" } }}
       >
         {sideList()}
       </Drawer>

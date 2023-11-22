@@ -1,6 +1,5 @@
-import React from "react";
-import Menu from "./Menu";
 import { AppBar, Toolbar } from "@mui/material";
+import Menu from "./Menu";
 
 export default function Header() {
   return (
@@ -15,8 +14,8 @@ export default function Header() {
       >
         <Toolbar
           sx={(theme) => ({
-            display: "flex",
-            justifyContent: "flex-end",
+            "display": "flex",
+            "justifyContent": "flex-end",
             "&.MuiToolbar-root": {
               minHeight: "60px",
               padding: "0.25em 1.25em 0 0",

@@ -1,26 +1,26 @@
-import React, { useState, useEffect } from "react";
 import {
+  Box,
   Card,
   CardContent,
   Checkbox,
+  Divider,
+  FormControlLabel,
+  Grid,
+  Input,
   ListItemText,
   MenuItem,
-  Input,
-  Select,
-  Grid,
-  FormControlLabel,
-  Typography,
-  RadioGroup,
   Radio,
+  RadioGroup,
+  Select,
   TextField,
-  Box,
-  Divider,
+  Typography,
 } from "@mui/material";
-import RadioTrueFalseEither from "./ui/RadioTrueFalseEither";
-import LocationAutocomplete from "./LocationAutocomplete";
-import AccountAutocomplete from "./AccountAutocomplete";
+import { useEffect, useState } from "react";
 import { defaultViewport } from "../../helpers/Configuration";
+import AccountAutocomplete from "./AccountAutocomplete";
+import LocationAutocomplete from "./LocationAutocomplete";
 import Label from "./ui/Label";
+import RadioTrueFalseEither from "./ui/RadioTrueFalseEither";
 
 const closeTo = (lat1, lon1, lat2, lon2) => {
   return Math.abs(lat1 - lat2) + Math.abs(lon1 - lon2) < 0.01;

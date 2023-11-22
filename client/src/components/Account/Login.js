@@ -1,25 +1,24 @@
-import React from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import {
   Avatar,
   Box,
-  Link,
+  Button,
   Grid,
+  Link,
   TextField,
   Typography,
-  Button,
 } from "@mui/material";
-import { Formik } from "formik";
-import * as Yup from "yup";
-import * as accountService from "services/account-service";
-import * as analytics from "../../services/analytics";
-import { useUserContext } from "../../contexts/userContext";
-import { useToasterContext } from "../../contexts/toasterContext";
-
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import PasswordInput from "../../components/UI/PasswordInput";
 import Label from "components/Admin/ui/Label";
+import { Formik } from "formik";
+import React from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import * as accountService from "services/account-service";
 import { palette } from "theme/palette";
+import * as Yup from "yup";
+import PasswordInput from "../../components/UI/PasswordInput";
+import { useToasterContext } from "../../contexts/toasterContext";
+import { useUserContext } from "../../contexts/userContext";
+import * as analytics from "../../services/analytics";
 import { PageWrapper } from "./PageWrapper";
 
 const validationSchema = Yup.object().shape({

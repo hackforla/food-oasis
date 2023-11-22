@@ -1,5 +1,5 @@
-import aboutbg from "../assets/about-header.jpg";
 import { Link, Typography } from "@mui/material";
+import aboutbg from "../assets/about-header.jpg";
 
 const PAGE_INFO_ABOUT = {
   pageTitle: (

@@ -1,5 +1,3 @@
-import React from "react";
-import PropTypes from "prop-types";
 import {
   Button,
   Dialog,
@@ -12,6 +10,7 @@ import {
   RadioGroup,
   Typography,
 } from "@mui/material";
+import PropTypes from "prop-types";
 
 const optionDescriptions = {
   replace:
@@ -20,7 +19,6 @@ const optionDescriptions = {
     "Updates all records matching your provided IDs. If an ID field is blank, the record will be treated as a new entry.",
   add: "Imports records without changing any existing records. This is not destructive but can result in duplicate records.",
 };
-
 
 function ImportDialog(props) {
   const {
@@ -33,7 +31,6 @@ function ImportDialog(props) {
     ...other
   } = props;
 
-
   return (
     <Dialog
       disableEscapeKeyDown
@@ -44,10 +41,11 @@ function ImportDialog(props) {
       {...other}
     >
       <DialogTitle id="import-dialog-title">{props.title}</DialogTitle>
-      <DialogContent dividers
-      sx={{
-        minHeight: "3em"
-      }}
+      <DialogContent
+        dividers
+        sx={{
+          minHeight: "3em",
+        }}
       >
         <Typography>{props.message}</Typography>
         <Typography>
@@ -55,9 +53,12 @@ function ImportDialog(props) {
             "Please select an option below."}
         </Typography>
       </DialogContent>
-      <FormControl component="fieldset" sx={(theme) => ({
-        padding: theme.spacing(3),
-      })}>
+      <FormControl
+        component="fieldset"
+        sx={(theme) => ({
+          padding: theme.spacing(3),
+        })}
+      >
         <RadioGroup
           arial-label="import-options"
           name="import-options"

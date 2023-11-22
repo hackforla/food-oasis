@@ -1,14 +1,14 @@
-import { useMemo } from "react";
 import { CssBaseline } from "@mui/material";
 import {
   createTheme,
   ThemeProvider as MUIThemeProvider,
   StyledEngineProvider,
 } from "@mui/material/styles";
-import { palette } from "./palette";
-import { typography } from "./typography";
+import { useMemo } from "react";
 import { breakpoints } from "./breakpoints";
 import { componentsOverrides } from "./overrides";
+import { palette } from "./palette";
+import { typography } from "./typography";
 
 export function ThemeProvider({ children }) {
   const themeOptions = useMemo(

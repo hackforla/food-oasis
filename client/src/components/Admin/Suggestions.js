@@ -1,40 +1,42 @@
-import React from "react";
-import { useSuggestions } from "hooks/useSuggestions";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
-import Container from "@mui/material/Container";
-import Modal from "@mui/material/Modal";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import { Formik } from "formik";
-import * as suggestionService from "../../services/suggestion-service";
-import { Navigate, useLocation } from "react-router-dom";
-import Chip from "@mui/material/Chip";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import Checkbox from "@mui/material/Checkbox";
-import ListItemText from "@mui/material/ListItemText";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
-import CommentIcon from "@mui/icons-material/Comment";
-import Divider from "@mui/material/Divider";
 import AssessmentIcon from "@mui/icons-material/Assessment";
-import PersonIcon from "@mui/icons-material/Person";
+import CommentIcon from "@mui/icons-material/Comment";
 import EmailIcon from "@mui/icons-material/Email";
-import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import HomeIcon from "@mui/icons-material/Home";
 import LocationCityIcon from "@mui/icons-material/LocationCity";
+import PersonIcon from "@mui/icons-material/Person";
 import PhoneIcon from "@mui/icons-material/Phone";
+import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
+import {
+  Avatar,
+  Box,
+  Button,
+  Checkbox,
+  Chip,
+  Container,
+  Divider,
+  FormControl,
+  InputLabel,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  MenuItem,
+  Modal,
+  Paper,
+  Select,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+} from "@mui/material";
+import { Formik } from "formik";
+import { useSuggestions } from "hooks/useSuggestions";
+import React from "react";
+import { Navigate, useLocation } from "react-router-dom";
+import * as suggestionService from "../../services/suggestion-service";
 import { getIsMobile } from "../../utils";
 import Label from "./ui/Label";
 import Textarea from "./ui/Textarea";

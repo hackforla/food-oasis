@@ -1,5 +1,5 @@
-import faqbg from "../assets/faq-header.jpg";
 import { Link, Typography } from "@mui/material";
+import faqbg from "../assets/faq-header.jpg";
 
 const PAGE_INFO_FAQ = {
   pageTitle: "FAQs",

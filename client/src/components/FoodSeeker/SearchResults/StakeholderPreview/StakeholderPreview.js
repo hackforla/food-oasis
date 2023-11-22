@@ -1,32 +1,28 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
+import { Box, Button, Chip, Stack, Typography } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
-import Typography from "@mui/material/Typography";
-import Chip from "@mui/material/Chip";
+import { CLOSED_COLOR, ORGANIZATION_COLORS } from "constants/map";
+import {
+  FOOD_PANTRY_CATEGORY_ID,
+  MEAL_PROGRAM_CATEGORY_ID,
+} from "constants/stakeholder";
 import { useSiteContext } from "contexts/siteContext";
 import {
-  MEAL_PROGRAM_CATEGORY_ID,
-  FOOD_PANTRY_CATEGORY_ID,
-} from "constants/stakeholder";
-import { ORGANIZATION_COLORS, CLOSED_COLOR } from "constants/map";
-import { getGoogleMapsDirectionsUrl, extractNumbers } from "helpers";
+  extractNumbers,
+  formatDatewTimeZoneDD,
+  formatDatewTimeZoneMMM,
+  formatDatewTimeZoneWeekdayShort,
+  formatDatewTimeZonehhmmss,
+  getGoogleMapsDirectionsUrl,
+} from "helpers";
+import StakeholderIcon from "images/stakeholderIcon";
+import PropTypes from "prop-types";
+import { useLocation, useNavigate } from "react-router-dom";
 import * as analytics from "services/analytics";
 import {
   useAppDispatch,
   useSearchCoordinates,
   useUserCoordinates,
 } from "../../../../appReducer";
-import StakeholderIcon from "images/stakeholderIcon";
-import { useNavigate, useLocation } from "react-router-dom";
-import {
-  formatDatewTimeZoneDD,
-  formatDatewTimeZonehhmmss,
-  formatDatewTimeZoneWeekdayShort,
-  formatDatewTimeZoneMMM,
-} from "helpers";
 
 const TENANT_TIME_ZONES = {
   1: "America/Los_Angeles",
@@ -262,12 +258,7 @@ const StakeholderPreview = ({ stakeholder }) => {
               {showAllowWalkinsFlag &&
                 !(stakeholder.inactiveTemporary || stakeholder.inactive) && (
                   <>
-                    {isOpenFlag && (
-                      <Chip
-                        color="success"
-                        label="OPEN NOW"
-                      />
-                    )}
+                    {isOpenFlag && <Chip color="success" label="OPEN NOW" />}
                     {isAlmostClosedFlag && (
                       <Chip
                         color="mealProgram"

@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { CssBaseline, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  CssBaseline,
+  Typography,
+} from "@mui/material";
 import { useOrganizations } from "hooks/useOrganizations";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import * as stakeholderService from "services/stakeholder-service";
-import { Button, Box } from "@mui/material";
 import { useUserContext } from "../../contexts/userContext";
-import CircularProgress from "@mui/material/CircularProgress";
 import VerificationAdminGridMui from "./VerificationAdminGridMui";
-
 
 const defaultCriteria = {
   name: "",
@@ -92,14 +95,14 @@ function VerificationDashboard(props) {
 
   return (
     <main
-    style={{
-      flexGrow: 1,
-      flexBasis: "100%",
-      display: "flex",
-      flexDirection: "column",
-      padding: "2rem",
-      paddingBottom: "0"
-    }}
+      style={{
+        flexGrow: 1,
+        flexBasis: "100%",
+        display: "flex",
+        flexDirection: "column",
+        padding: "2rem",
+        paddingBottom: "0",
+      }}
     >
       <CssBaseline />
       <Box
@@ -110,12 +113,12 @@ function VerificationDashboard(props) {
           margin: "10px",
         }}
       >
-        <header 
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center"
-        }}
+        <header
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
         >
           <Typography
             variant="h4"
@@ -147,24 +150,24 @@ function VerificationDashboard(props) {
         </header>
       </Box>
       <Box
-      sx={(theme) => ({
-        flexGrow: 1,
-        padding: theme.spacing(2),
-        display: "flex",
-        flexDirection: "column"
-      })}
+        sx={(theme) => ({
+          flexGrow: 1,
+          padding: theme.spacing(2),
+          display: "flex",
+          flexDirection: "column",
+        })}
       >
         <>
           {stakeholdersError ? (
             <Box
-            sx={{
-              flexGrow: 1,
-              flexDirection: "column",
-              justifyContent: "center",
-              backgroundColor: "#E8E8E8",
-              textAlign: "center",
-              padding: "4em"
-            }}
+              sx={{
+                flexGrow: 1,
+                flexDirection: "column",
+                justifyContent: "center",
+                backgroundColor: "#E8E8E8",
+                textAlign: "center",
+                padding: "4em",
+              }}
             >
               <Typography
                 variant="h5"
@@ -192,14 +195,14 @@ function VerificationDashboard(props) {
             </Box>
           ) : stakeholders && stakeholders.length === 0 ? (
             <Box
-            sx={{
-              flexGrow: 1,
-              flexDirection: "column",
-              justifyContent: "center",
-              backgroundColor: "#E8E8E8",
-              textAlign: "center",
-              padding: "4em"
-            }} 
+              sx={{
+                flexGrow: 1,
+                flexDirection: "column",
+                justifyContent: "center",
+                backgroundColor: "#E8E8E8",
+                textAlign: "center",
+                padding: "4em",
+              }}
             >
               <Typography variant="h5" component="h5">
                 No organizations have been assigned to you.
@@ -212,14 +215,14 @@ function VerificationDashboard(props) {
             />
           ) : (
             <Box
-            sx={{
-              flexGrow: 1,
-              flexDirection: "column",
-              justifyContent: "center",
-              backgroundColor: "#E8E8E8",
-              textAlign: "center",
-              padding: "4em"
-            }}
+              sx={{
+                flexGrow: 1,
+                flexDirection: "column",
+                justifyContent: "center",
+                backgroundColor: "#E8E8E8",
+                textAlign: "center",
+                padding: "4em",
+              }}
             >
               <Typography variant="h5" component="h5">
                 Please enter search criteria and execute a search

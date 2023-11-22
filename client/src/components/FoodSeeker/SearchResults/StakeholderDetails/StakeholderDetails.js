@@ -1,38 +1,33 @@
-import React, { useState, useEffect } from "react";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import ArrowBack from "@mui/icons-material/ArrowBackIosNew";
-import Box from "@mui/material/Box";
-import Link from "@mui/material/Link";
-import Stack from "@mui/material/Stack";
-import StakeholderIcon from "images/stakeholderIcon";
-import fbIcon from "images/fbIcon.png";
-import instaIcon from "images/instaIcon.png";
+import { Box, Button, Link, Stack, Typography, styled } from "@mui/material";
+import { CLOSED_COLOR, ORGANIZATION_COLORS } from "constants/map";
 import {
-  MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
+  MEAL_PROGRAM_CATEGORY_ID,
   VERIFICATION_STATUS,
 } from "constants/stakeholder";
-import { ORGANIZATION_COLORS, CLOSED_COLOR } from "constants/map";
 import {
   extractNumbers,
+  formatDateMMMddYYYY,
   getGoogleMapsDirectionsUrl,
   validateUrl,
 } from "helpers";
-import CorrectionDialog from "./CorrectionDialog";
+import fbIcon from "images/fbIcon.png";
+import instaIcon from "images/instaIcon.png";
+import StakeholderIcon from "images/stakeholderIcon";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import * as analytics from "services/analytics";
 import {
-  useSelectedOrganization,
   useAppDispatch,
   useSearchCoordinates,
+  useSelectedOrganization,
   useUserCoordinates,
   useWidget,
 } from "../../../../appReducer";
-import { useNavigate } from "react-router-dom";
 import { useToasterContext } from "../../../../contexts/toasterContext";
 import SEO from "../../../SEO";
-import { styled } from "@mui/material/styles";
-import { formatDateMMMddYYYY } from "helpers";
+import CorrectionDialog from "./CorrectionDialog";
 
 const MinorHeading = styled(Typography)(({ theme }) => ({
   variant: "h5",

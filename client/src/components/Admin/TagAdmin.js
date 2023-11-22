@@ -1,24 +1,26 @@
-import React from "react";
-import { useTags } from "hooks/useTags";
-import * as tagService from "../../services/tag-service";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
-import Container from "@mui/material/Container";
-import Modal from "@mui/material/Modal";
-import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import { IconButton } from "../UI/StandardButton";
+import {
+  Box,
+  Button,
+  Container,
+  Modal,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { Formik } from "formik";
 import { tenantId } from "helpers/Configuration";
+import { useTags } from "hooks/useTags";
+import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
+import * as tagService from "../../services/tag-service";
+import { IconButton } from "../UI/StandardButton";
 import Label from "./ui/Label";
 
 const columns = [

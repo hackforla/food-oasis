@@ -1,19 +1,21 @@
-import React, { useState, useEffect, useMemo } from "react";
-import Box from '@mui/material/Box';
-import Container from "@mui/material/Container";
-import Paper from "@mui/material/Paper";
-import TextField from "@mui/material/TextField";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
-import Typography from '@mui/material/Typography';
-import FormControl from "@mui/material/FormControl";
+import {
+  Box,
+  Container,
+  FormControl,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useLogins } from "hooks/useLogins";
 import debounce from "lodash.debounce";
+import { useEffect, useMemo, useState } from "react";
 
 const columns = [
   { id: "name", label: "Name", minWidth: 100 },
@@ -23,8 +25,8 @@ const columns = [
 
 const Logins = () => {
   const [logins, setLogins] = useState([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   let { data, refetch } = useLogins();
 
   useEffect(() => {
@@ -51,20 +53,23 @@ const Logins = () => {
 
   return (
     <Container>
-	    <Box
+      <Box
+        sx={{
+          marginBottom: "8px",
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
+        <Typography
+          variant="h2"
           sx={{
-            marginBottom: "8px",
-            display: "flex",
-            justifyContent: "space-between",
+            marginTop: "4px",
+            fontWeight: 700,
           }}
         >
-        <Typography variant="h2"
-		  sx={{
-			marginTop: "4px",
-			fontWeight: 700,
-		  }}
-		>User Logins</Typography>
-        <FormControl 
+          User Logins
+        </Typography>
+        <FormControl
           sx={{
             margin: "8px",
             minWidth: 180,
@@ -81,7 +86,7 @@ const Logins = () => {
       </Box>
 
       <Paper>
-        <TableContainer 
+        <TableContainer
           sx={{
             maxHeight: "500px",
           }}

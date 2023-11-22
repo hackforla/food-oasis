@@ -1,7 +1,6 @@
-import React from "react";
+import { Box, CardMedia, Container, Link, Typography } from "@mui/material";
 import donatebg from "./assets/donate-bg.webp";
 import iconSpacerGray from "./assets/icon-spacer-gray.svg";
-import { Box, CardMedia, Container, Link, Typography } from "@mui/material";
 
 const Donate = () => {
   return (

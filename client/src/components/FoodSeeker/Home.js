@@ -4,7 +4,6 @@ import {
   Button,
   CircularProgress,
   Container,
-  CssBaseline,
   Link,
   Paper,
   Stack,
@@ -101,7 +100,6 @@ const Home = () => {
           },
         })}
       >
-        <CssBaseline />
         <Paper
           sx={(theme) => ({
             margin: "0 auto",

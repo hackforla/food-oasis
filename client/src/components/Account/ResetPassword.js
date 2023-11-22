@@ -1,5 +1,5 @@
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { Avatar, Box, Button, CssBaseline, Typography } from "@mui/material";
+import { Avatar, Box, Button, Typography } from "@mui/material";
 import Label from "components/Admin/ui/Label";
 import { Formik } from "formik";
 import {
@@ -31,7 +31,6 @@ const ResetPassword = (props) => {
 
   return (
     <PageWrapper>
-      <CssBaseline />
       <Box
         sx={{
           marginTop: "8px",

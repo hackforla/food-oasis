@@ -1,10 +1,4 @@
-import {
-  Box,
-  Button,
-  CircularProgress,
-  CssBaseline,
-  Typography,
-} from "@mui/material";
+import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import { useOrganizations } from "hooks/useOrganizations";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -104,7 +98,6 @@ function VerificationDashboard(props) {
         paddingBottom: "0",
       }}
     >
-      <CssBaseline />
       <Box
         sx={{
           display: "flex",

@@ -3,7 +3,6 @@ import {
   Avatar,
   Box,
   Button,
-  CssBaseline,
   Grid,
   Link,
   TextField,
@@ -39,7 +38,6 @@ const form = (props) => {
 
   return (
     <PageWrapper>
-      <CssBaseline />
       <Box
         sx={{
           marginTop: "8px",

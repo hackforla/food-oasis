@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   CircularProgress,
-  CssBaseline,
   Dialog,
   Stack,
   Typography,
@@ -280,7 +279,6 @@ function VerificationAdmin() {
         paddingBottom: "0",
       }}
     >
-      <CssBaseline />
       <Box
         sx={{
           display: "flex",

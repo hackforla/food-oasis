@@ -1,11 +1,4 @@
-import {
-  Button,
-  Container,
-  CssBaseline,
-  Grid,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, Container, Grid, TextField, Typography } from "@mui/material";
 import SEO from "components/SEO";
 import { IconButton } from "components/UI/StandardButton";
 import { useToasterContext } from "contexts/toasterContext";
@@ -64,7 +57,6 @@ export default function Profile() {
     <>
       <SEO title="User Profile" />
       <Container component="main" maxWidth="lg">
-        <CssBaseline />
         <form onSubmit={formik.handleSubmit}>
           <Grid container spacing={{ sm: 1, md: 3 }} alignItems={"center"}>
             <Grid item xs={4} sm={3} md={2}>

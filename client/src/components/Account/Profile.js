@@ -1,18 +1,13 @@
-import React, { useState } from 'react';
-import { useUserContext } from '../../contexts/userContext';
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import { IconButton } from "components/UI/StandardButton";
-import Container from "@mui/material/Container";
-import CssBaseline from "@mui/material/CssBaseline";
-import { useFormik } from "formik";
-import { object, string } from "yup";
-import { updateProfile } from "services/account-service";
-import { useToasterContext } from "contexts/toasterContext";
-import { headingText, bodyText } from "../../theme/palette";
-import Grid from "@mui/material/Grid";
+import { Button, Container, Grid, TextField, Typography } from "@mui/material";
 import SEO from "components/SEO";
+import { IconButton } from "components/UI/StandardButton";
+import { useToasterContext } from "contexts/toasterContext";
+import { useFormik } from "formik";
+import { useState } from "react";
+import { updateProfile } from "services/account-service";
+import { object, string } from "yup";
+import { useUserContext } from "../../contexts/userContext";
+import { bodyText, headingText } from "../../theme/palette";
 
 export default function Profile() {
   const { user, onUpdate } = useUserContext();
@@ -62,7 +57,6 @@ export default function Profile() {
     <>
       <SEO title="User Profile" />
       <Container component="main" maxWidth="lg">
-        <CssBaseline />
         <form onSubmit={formik.handleSubmit}>
           <Grid container spacing={{ sm: 1, md: 3 }} alignItems={"center"}>
             <Grid item xs={4} sm={3} md={2}>

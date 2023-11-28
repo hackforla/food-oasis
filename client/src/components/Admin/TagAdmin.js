@@ -1,24 +1,26 @@
-import React from "react";
-import { useTags } from "hooks/useTags";
-import * as tagService from "../../services/tag-service";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
-import Container from "@mui/material/Container";
-import Modal from "@mui/material/Modal";
-import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import { IconButton } from "../UI/StandardButton";
+import {
+  Box,
+  Button,
+  Container,
+  Modal,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { Formik } from "formik";
 import { tenantId } from "helpers/Configuration";
+import { useTags } from "hooks/useTags";
+import { useEffect, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
+import * as tagService from "../../services/tag-service";
+import { IconButton } from "../UI/StandardButton";
 import Label from "./ui/Label";
 
 const columns = [
@@ -44,22 +46,22 @@ function getModalStyle() {
 
 function TagAdmin(props) {
   let { data, status } = useTags();
-  const [tags, setTags] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [activeTag, setActiveTag] = React.useState(false);
-  const [modalStyle] = React.useState(getModalStyle);
-  const [error, setError] = React.useState("");
-  const [deleteError, setDeleteError] = React.useState("");
+  const [tags, setTags] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [activeTag, setActiveTag] = useState(false);
+  const [modalStyle] = useState(getModalStyle);
+  const [error, setError] = useState("");
+  const [deleteError, setDeleteError] = useState("");
   const location = useLocation();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (data) {
       setTags(data);
     }
   }, [data]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (status === 401) {
       return (
         <Navigate to={{ pathname: "/login", state: { from: location } }} />

@@ -1,6 +1,5 @@
-import React from "react";
-import PropTypes from "prop-types";
 import {
+  Box,
   Button,
   Table,
   TableBody,
@@ -9,8 +8,8 @@ import {
   TableHead,
   TableRow,
   Typography,
-  Box
 } from "@mui/material";
+import PropTypes from "prop-types";
 import { STAKEHOLDER_SCHEMA } from "../../../constants/stakeholder-schema";
 
 const flattenHours = (daysArray) => {
@@ -25,25 +24,24 @@ const ImportFileTable = (props) => {
 
   return (
     <Box
-    sx={(theme) => ({
-    marginTop: theme.spacing(2),
-    marginX: "auto",
-    padding: theme.spacing(4),
-    borderRadius: "8px",
-    boxShadow: "-.2rem 0 2rem #C7CCD1",
-    "& strong": {
-      color: theme.palette.error.main,
-    },
-    "& button": {
-      margin: theme.spacing(2),
-    }
-  })
-    }
+      sx={(theme) => ({
+        "marginTop": theme.spacing(2),
+        "marginX": "auto",
+        "padding": theme.spacing(4),
+        "borderRadius": "8px",
+        "boxShadow": "-.2rem 0 2rem #C7CCD1",
+        "& strong": {
+          color: theme.palette.error.main,
+        },
+        "& button": {
+          margin: theme.spacing(2),
+        },
+      })}
     >
       <Box
-      sx={{
-        display: "flex"
-      }}
+        sx={{
+          display: "flex",
+        }}
       >
         <Typography variant="h5">
           Import Stakeholders ({tenantName} region)
@@ -60,9 +58,9 @@ const ImportFileTable = (props) => {
         </Button>
       </Box>
       <TableContainer
-      sx={{
-        overflowX: "auto"
-      }}
+        sx={{
+          overflowX: "auto",
+        }}
       >
         <Table>
           <TableHead>

@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { Typography } from "@mui/material";
-import { uploadCsv, importCsv } from "../../../services/import-service";
-import exportCsv from "../../../services/export-service";
-import ImportFileTable from "./ImportFileTable";
-import ImportFileGuide from "./ImportFileGuide";
-import ImportDialog from "./ImportDialog";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { STAKEHOLDER_SCHEMA } from "../../../constants/stakeholder-schema";
-import importValidation from "./importValidation";
-import ProgressBackdrop from "./ProgressBackdrop";
-import { useUserContext } from "../../../contexts/userContext";
-import { useToasterContext } from "../../../contexts/toasterContext";
 import { useSiteContext } from "../../../contexts/siteContext";
+import { useToasterContext } from "../../../contexts/toasterContext";
+import { useUserContext } from "../../../contexts/userContext";
+import exportCsv from "../../../services/export-service";
+import { importCsv, uploadCsv } from "../../../services/import-service";
+import ImportDialog from "./ImportDialog";
+import ImportFileGuide from "./ImportFileGuide";
+import ImportFileTable from "./ImportFileTable";
+import ProgressBackdrop from "./ProgressBackdrop";
+import importValidation from "./importValidation";
 
 const initialImportData = {
   data: null,
@@ -30,7 +30,7 @@ const ImportFile = () => {
   });
   const [dialog, setDialog] = useState(false);
   const [loading, setLoading] = useState(false);
-  let formData = React.useMemo(() => new FormData(), []);
+  let formData = useMemo(() => new FormData(), []);
   const [view, setView] = useState(
     user && user.isAdmin ? "adminAccessNotice" : "fileGuide"
   );

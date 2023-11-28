@@ -45,14 +45,14 @@ export default function BusinessHours({
             />
           </div>
           <OpenTimeForm
-            name="hours"                          
+            name="hours"
             values={values}
             setFieldValue={setFieldValue}
             setFieldTouched={setFieldTouched}
             errors={errors}
             touched={touched}
-            handleBlur={handleBlur}                          
-            />
+            handleBlur={handleBlur}
+          />
         </Grid>
         <Grid item xs={12}>
           <FormControlLabel

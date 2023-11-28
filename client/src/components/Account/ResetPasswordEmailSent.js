@@ -1,7 +1,5 @@
-import React from "react";
+import { Avatar, Box, Button, Typography } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
-import { Button } from "@mui/material";
-import { Avatar, Box, CssBaseline, Typography } from "@mui/material";
 import { palette } from "theme/palette";
 import { PageWrapper } from "./PageWrapper";
 
@@ -34,7 +32,6 @@ const ResetPasswordEmailSent = (props) => {
 
   return (
     <PageWrapper>
-      <CssBaseline />
       <Box
         sx={{
           marginTop: "8px",

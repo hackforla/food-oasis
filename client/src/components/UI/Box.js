@@ -1,4 +1,3 @@
-import React from "react";
 import MaterialBox from "@mui/material/Box";
 import PropTypes from "prop-types";
 

@@ -1,73 +1,66 @@
-import React, { useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Navigate,
-  Routes,
-  Route,
-} from "react-router-dom";
-import { ThemeProvider } from "theme";
-import { Grid, CssBaseline, Stack } from "@mui/material";
-import { ToasterProvider } from "contexts/toasterContext";
-import { UserProvider } from "contexts/userContext";
-import Toast from "components/UI/Toast";
+import { CircularProgress, CssBaseline, Grid, Stack } from "@mui/material";
+import Home from "components/FoodSeeker/Home";
+import Suggestion from "components/FoodSeeker/Suggestion";
 import Header from "components/Layout/Header";
 import HeaderHome from "components/Layout/HeaderHome";
 import WidgetFooter from "components/Layout/WidgetFooter";
-import Home from "components/FoodSeeker/Home";
-import Profile from "./components/Account/Profile";
-import * as analytics from "../src/services/analytics";
-import PrivateRoute from "./components/PrivateRoute";
-import Fallback from "./components/Fallback";
-import { AppStateProvider } from "./appReducer";
+import Toast from "components/UI/Toast";
 import { SiteProvider } from "contexts/siteContext";
+import { ToasterProvider } from "contexts/toasterContext";
+import { UserProvider } from "contexts/userContext";
+import { Suspense, lazy, useEffect } from "react";
 import { HelmetProvider } from "react-helmet-async";
+import {
+  Navigate,
+  Route,
+  BrowserRouter as Router,
+  Routes,
+} from "react-router-dom";
+import { ThemeProvider } from "theme";
+import * as analytics from "../src/services/analytics";
+import { AppStateProvider } from "./appReducer";
+import Profile from "./components/Account/Profile";
+import Fallback from "./components/Fallback";
+import PrivateRoute from "./components/PrivateRoute";
 import SEO from "./components/SEO";
-import CircularProgress from "@mui/material/CircularProgress";
-import Suggestion from "components/FoodSeeker/Suggestion";
 
-const VerificationAdmin = React.lazy(() =>
+const VerificationAdmin = lazy(() =>
   import("components/Admin/VerificationAdmin")
 );
-const VerificationDashboard = React.lazy(() =>
+const VerificationDashboard = lazy(() =>
   import("components/Admin/VerificationDashboard")
 );
-const SecurityAdminDashboard = React.lazy(() =>
+const SecurityAdminDashboard = lazy(() =>
   import("components/Account/SecurityAdminDashboard/SecurityAdminDashboard")
 );
-const OrganizationEdit = React.lazy(() =>
+const OrganizationEdit = lazy(() =>
   import("components/Admin/OrganizationEdit")
 );
-const ParentOrganizations = React.lazy(() =>
+const ParentOrganizations = lazy(() =>
   import("components/Admin/ParentOrganizations")
 );
-const TagAdmin = React.lazy(() => import("components/Admin/TagAdmin"));
-const Register = React.lazy(() => import("components/Account/Register"));
-const Login = React.lazy(() => import("components/Account/Login"));
-const ForgotPassword = React.lazy(() =>
-  import("components/Account/ForgotPassword")
-);
-const ResetPasswordEmailSent = React.lazy(() =>
+const TagAdmin = lazy(() => import("components/Admin/TagAdmin"));
+const Register = lazy(() => import("components/Account/Register"));
+const Login = lazy(() => import("components/Account/Login"));
+const ForgotPassword = lazy(() => import("components/Account/ForgotPassword"));
+const ResetPasswordEmailSent = lazy(() =>
   import("components/Account/ResetPasswordEmailSent")
 );
-const ResetPassword = React.lazy(() =>
-  import("components/Account/ResetPassword")
-);
-const ConfirmEmail = React.lazy(() =>
-  import("components/Account/ConfirmEmail")
-);
-const SearchResults = React.lazy(() =>
+const ResetPassword = lazy(() => import("components/Account/ResetPassword"));
+const ConfirmEmail = lazy(() => import("components/Account/ConfirmEmail"));
+const SearchResults = lazy(() =>
   import("components/FoodSeeker/SearchResults/SearchResults")
 );
-const ImportFile = React.lazy(() =>
+const ImportFile = lazy(() =>
   import("components/Admin/ImportOrganizations/ImportFile")
 );
-const Suggestions = React.lazy(() => import("components/Admin/Suggestions"));
-const Logins = React.lazy(() => import("components/Admin/Logins"));
-const Donate = React.lazy(() => import("./components/Donate"));
-const About = React.lazy(() => import("./components/About"));
-const Faq = React.lazy(() => import("./components/Faq"));
-const Contact = React.lazy(() => import("./components/StaticPages/Contact"));
-const MuiDemo = React.lazy(() => import("./components/MuiDemo/MuiDemo"));
+const Suggestions = lazy(() => import("components/Admin/Suggestions"));
+const Logins = lazy(() => import("components/Admin/Logins"));
+const Donate = lazy(() => import("./components/Donate"));
+const About = lazy(() => import("./components/About"));
+const Faq = lazy(() => import("./components/Faq"));
+const Contact = lazy(() => import("./components/StaticPages/Contact"));
+const MuiDemo = lazy(() => import("./components/MuiDemo/MuiDemo"));
 
 function App() {
   useEffect(() => {
@@ -111,7 +104,7 @@ function App() {
                       {/* <Route exact path="/widget" /> */}
                       <Route path="/*" element={<Header />} />
                     </Routes>
-                    <React.Suspense
+                    <Suspense
                       fallback={
                         <Stack
                           justifyContent="center"
@@ -334,7 +327,7 @@ function App() {
                         <Route exact path="contact" element={<Contact />} />
                         <Route exact path="fallback" element={<Fallback />} />
                       </Routes>
-                    </React.Suspense>
+                    </Suspense>
                     <Toast />
                   </Grid>
                 </Router>

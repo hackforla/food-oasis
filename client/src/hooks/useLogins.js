@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import * as loginsService from "../services/logins-service";
 
 const dateFormatOptions = {
@@ -15,7 +15,7 @@ export const useLogins = (emailQuery) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const fetch = React.useCallback(async (email) => {
+  const fetch = useCallback(async (email) => {
     const fetchApi = async (email) => {
       setLoading({ loading: true });
       try {

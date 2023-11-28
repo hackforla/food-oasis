@@ -1,7 +1,4 @@
-import React from "react";
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
+import { Box, Container, Typography } from "@mui/material";
 
 const PageSection = (props) => {
   const {
@@ -13,7 +10,7 @@ const PageSection = (props) => {
     customStyles,
     variant,
   } = props;
-  
+
   const lightSectionStyles = {
     padding: "32px",
     margin: "32px 0 0 0",
@@ -39,7 +36,7 @@ const PageSection = (props) => {
       marginBottom: "16px",
     },
   };
-  
+
   const darkSectionStyles = {
     padding: "32px",
     margin: "32px 0 0 0",
@@ -65,7 +62,7 @@ const PageSection = (props) => {
       marginBottom: "16px",
     },
   };
-  
+
   const specialBackgroundStyles = {
     padding: "32px",
     margin: "32px 0 0 0",
@@ -94,7 +91,7 @@ const PageSection = (props) => {
 
   const specialBackgroundTitles = [
     "CODE FOR HAWAIʻI AND ALOHA HARVEST",
-    "Contact Aloha Harvest"
+    "Contact Aloha Harvest",
   ];
 
   const isSpecialBackground = specialBackgroundTitles.includes(title);
@@ -103,7 +100,6 @@ const PageSection = (props) => {
     : variant === "dark"
     ? darkSectionStyles
     : lightSectionStyles;
-  
 
   return (
     <Box
@@ -120,24 +116,28 @@ const PageSection = (props) => {
           sx={{
             margin: "auto",
             height: 40,
-            ...(titleIcon.style),
+            ...titleIcon.style,
           }}
         />
       )}
-      <Typography variant="h2" sx={{
+      <Typography
+        variant="h2"
+        sx={{
           ...sectionStyles.h2,
           ...(customStyles && customStyles.title),
-        }}>
+        }}
+      >
         {title}
       </Typography>
       {subtitle && (
-        <Typography 
-          variant="h3"  
+        <Typography
+          variant="h3"
           sx={{
             ...sectionStyles.h3,
             ...(customStyles && customStyles.subtitle),
-        }}>
-         {subtitle}
+          }}
+        >
+          {subtitle}
         </Typography>
       )}
       <Container
@@ -147,11 +147,9 @@ const PageSection = (props) => {
           ...(customStyles && customStyles.content),
         }}
       >
-       {content}
+        {content}
       </Container>
-      <div sx={customStyles && customStyles.contact}>
-        {contact}
-      </div>
+      <div sx={customStyles && customStyles.contact}>{contact}</div>
     </Box>
   );
 };

@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
 import {
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-import { TextField, Button } from "../../../components/UI";
+import PropTypes from "prop-types";
+import { useState } from "react";
+import { Button, TextField } from "../../../components/UI";
 
 function MessageDialog(props) {
   const { onClose, open, message: initialMessage, ...other } = props;

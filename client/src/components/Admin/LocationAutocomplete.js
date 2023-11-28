@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import * as awsService from "../../services/aws-service";
 import { Grid, TextField, Typography } from "@mui/material";
+import { useState } from "react";
+import * as awsService from "../../services/aws-service";
 
 let latestSearchString = "";
 

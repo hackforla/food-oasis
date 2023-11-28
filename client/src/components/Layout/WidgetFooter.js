@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-import { isMobile } from "../../helpers";
-import { useSiteContext } from "contexts/siteContext";
 import { Box } from "@mui/material";
+import { useSiteContext } from "contexts/siteContext";
+import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
+import { isMobile } from "../../helpers";
 
 const logoPaths = {
   1: require("images/foodoasis.svg"),
@@ -26,39 +26,38 @@ function WidgetFooterSection(props) {
     type,
   } = props;
 
-
   if (type === "maintainer") {
     if (!maintainers?.length) return null;
     return (
       <Box
-      sx={(theme) => ({
-        color: theme.palette.primary.dark,
-        display: "flex",
-        alignItems: "center",
-        lineHeight: "1.2",
-        padding: 0,
-        margin: 0,
-        fontSize: 12,
-        "& a,h6": {
-          whiteSpace: "nowrap",
-          fontSize: 14,
-          textDecoration: "none",
-          color: theme.palette.primary.light,
-        },
-        [theme.breakpoints.up("sm")]: {
-          fontSize: 14,
-        },
-      })
-
-      }
+        sx={(theme) => ({
+          "color": theme.palette.primary.dark,
+          "display": "flex",
+          "alignItems": "center",
+          "lineHeight": "1.2",
+          "padding": 0,
+          "margin": 0,
+          "fontSize": 12,
+          "& a,h6": {
+            whiteSpace: "nowrap",
+            fontSize: 14,
+            textDecoration: "none",
+            color: theme.palette.primary.light,
+          },
+          [theme.breakpoints.up("sm")]: {
+            fontSize: 14,
+          },
+        })}
       >
         <Box
-        sx={{
-          display: "inline-block",
-          fontWeight: "bold",
-          fontFamily: `Helvetica, Arial, "Lucida Grande", sans- serif`,
-        }}
-        >{captionText}</Box>
+          sx={{
+            display: "inline-block",
+            fontWeight: "bold",
+            fontFamily: `Helvetica, Arial, "Lucida Grande", sans- serif`,
+          }}
+        >
+          {captionText}
+        </Box>
         {maintainers.map((maintainer) => {
           const logoMaintainerPath = maintainer.path?.default;
           const imageType = logoMaintainerPath
@@ -80,23 +79,23 @@ function WidgetFooterSection(props) {
                       imageType === "svg"
                         ? {
                             ...logoStyle,
-                            width: "100%",
-                            height: "100%",
-                            margin: 0,
-                            maxWidth: "175px",
-                            maxHeight: "38px",
+                            "width": "100%",
+                            "height": "100%",
+                            "margin": 0,
+                            "maxWidth": "175px",
+                            "maxHeight": "38px",
                             "&:hover": {
                               filter: "brightness(1.2)",
-    },
-                            
+                            },
                           }
-                        : { ...logoStyle,
-                          maxWidth: "175px",
-                          maxHeight: "38px",
-                          "&:hover": {
-                            filter: "brightness(1.2)",
-    },
-                         }
+                        : {
+                            ...logoStyle,
+                            "maxWidth": "175px",
+                            "maxHeight": "38px",
+                            "&:hover": {
+                              filter: "brightness(1.2)",
+                            },
+                          }
                     }
                     alt={`${maintainer.name} Logo`}
                   />
@@ -121,24 +120,24 @@ function WidgetFooterSection(props) {
 
   return (
     <Box
-    sx={(theme) => ({
-      color: theme.palette.primary.dark,
-    display: "flex",
-    alignItems: "center",
-    lineHeight: "1.2",
-    padding: 0,
-    margin: 0,
-    fontSize: 12,
-    "& a,h6": {
-      whiteSpace: "nowrap",
-      fontSize: 14,
-      textDecoration: "none",
-      color: theme.palette.primary.light,
-    },
-    [theme.breakpoints.up("sm")]: {
-      fontSize: 14,
-    },
-    })}
+      sx={(theme) => ({
+        "color": theme.palette.primary.dark,
+        "display": "flex",
+        "alignItems": "center",
+        "lineHeight": "1.2",
+        "padding": 0,
+        "margin": 0,
+        "fontSize": 12,
+        "& a,h6": {
+          whiteSpace: "nowrap",
+          fontSize: 14,
+          textDecoration: "none",
+          color: theme.palette.primary.light,
+        },
+        [theme.breakpoints.up("sm")]: {
+          fontSize: 14,
+        },
+      })}
     >
       {logoPath ? (
         <a href={url} target="_blank" rel="noopener noreferrer">
@@ -147,16 +146,25 @@ function WidgetFooterSection(props) {
             className={className}
             style={
               imageType === "svg"
-                ? { ...logoStyle, width: "100%", height: "100%", margin: 0,  maxWidth: "175px",
-                maxHeight: "38px",
-                "&:hover": {
-                  filter: "brightness(1.2)",
-                },}
-                : { ...logoStyle, maxWidth: "175px",
-                maxHeight: "38px",
-                "&:hover": {
-                  filter: "brightness(1.2)",
-                }, }
+                ? {
+                    ...logoStyle,
+                    "width": "100%",
+                    "height": "100%",
+                    "margin": 0,
+                    "maxWidth": "175px",
+                    "maxHeight": "38px",
+                    "&:hover": {
+                      filter: "brightness(1.2)",
+                    },
+                  }
+                : {
+                    ...logoStyle,
+                    "maxWidth": "175px",
+                    "maxHeight": "38px",
+                    "&:hover": {
+                      filter: "brightness(1.2)",
+                    },
+                  }
             }
             alt={alt}
           />
@@ -180,17 +188,19 @@ function WidgetFooter() {
   }, []);
 
   return (
-    <Box position="sticky"
-    sx={(theme) => ({
-      backgroundColor: "#FFF",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    minHeight: "50px",
-    marginBottom: 0,
-    padding: "2px 0.5em",
-    boxShadow: "none",
-    })}>
+    <Box
+      position="sticky"
+      sx={(theme) => ({
+        backgroundColor: "#FFF",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        minHeight: "50px",
+        marginBottom: 0,
+        padding: "2px 0.5em",
+        boxShadow: "none",
+      })}
+    >
       <WidgetFooterSection
         name="Food Oasis"
         logoPath={logoPaths[tenantId]}
@@ -230,4 +240,3 @@ WidgetFooterSection.defaultProps = {
 };
 
 export default WidgetFooter;
-

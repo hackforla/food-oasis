@@ -1,11 +1,11 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Menu from "./Menu";
-import { AppBar, Toolbar, Typography, Box } from "@mui/material";
-import { useUserContext } from "../../contexts/userContext";
-import { useSiteContext } from "../../contexts/siteContext";
+import { AppBar, Box, Toolbar, Typography } from "@mui/material";
 import useLocationHook from "hooks/useLocationHook";
-import { Link } from 'react-router-dom'
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import { useSiteContext } from "../../contexts/siteContext";
+import { useUserContext } from "../../contexts/userContext";
+import Menu from "./Menu";
+
 Header.propTypes = {
   tenantId: PropTypes.number,
 };
@@ -32,35 +32,39 @@ export default function Header() {
     <>
       <AppBar
         position="sticky"
-        sx={ (theme) => ({ 
-          backgroundColor: "#FFF", 
-          marginBottom: 0, 
+        sx={(theme) => ({
+          backgroundColor: "#FFF",
+          marginBottom: 0,
           boxShadow: "none",
           marginTop: isAuthPage && theme.spacing(4),
         })}
       >
-        <Toolbar sx={(theme) => ({
-          minHeight: "60px",
-          display: "flex",
-          justifyContent: "space-between",
-          padding: "0.5em",
-          [theme.breakpoints.down("md")]: {
-            padding: "0 0.5em 0 0",
-            minHeight: "45px",
-          },
-        })}>
-          <Box sx={(theme) => ({
-            maxWidth: "175px",
-            maxHeight: "48px",
-            margin: "4px 4px 0 4px",
-            "&:hover": {
-              filter: "brightness(1.2)",
+        <Toolbar
+          sx={(theme) => ({
+            minHeight: "60px",
+            display: "flex",
+            justifyContent: "space-between",
+            padding: "0.5em",
+            [theme.breakpoints.down("md")]: {
+              padding: "0 0.5em 0 0",
+              minHeight: "45px",
             },
-            [theme.breakpoints.down("sm")]: {
-              maxHeight: "36px",
-              margin: "4px 4px 0 8px",
-            },
-          })}>
+          })}
+        >
+          <Box
+            sx={(theme) => ({
+              "maxWidth": "175px",
+              "maxHeight": "48px",
+              "margin": "4px 4px 0 4px",
+              "&:hover": {
+                filter: "brightness(1.2)",
+              },
+              [theme.breakpoints.down("sm")]: {
+                maxHeight: "36px",
+                margin: "4px 4px 0 8px",
+              },
+            })}
+          >
             <a href="/">
               <img
                 src={logoPaths[tenantId]}
@@ -71,30 +75,32 @@ export default function Header() {
               />
             </a>
           </Box>
-          <Box 
-           sx={{
-            display: "flex",
-            flexGrow: 2,
-            justifyContent: "space-between",
-            alignItems: "center",
-            margin: "0px 24px",            
-           }}
+          <Box
+            sx={{
+              display: "flex",
+              flexGrow: 2,
+              justifyContent: "space-between",
+              alignItems: "center",
+              margin: "0px 24px",
+            }}
           >
             {user && user.firstName && (
               <Typography
-                variant="subtitle1"                
+                variant="subtitle1"
                 sx={(theme) => ({
-                    color: theme.palette.primary.dark,
-                    display: "inline-block",
-                    fontStyle: "italic",
-                    lineHeight: "1.5",
-                    flexGrow: 1,
-                    fontFamily: `"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
-                                  Helvetica, Arial, "Lucida Grande", sans- serif`,                 
+                  color: theme.palette.primary.dark,
+                  display: "inline-block",
+                  fontStyle: "italic",
+                  lineHeight: "1.5",
+                  flexGrow: 1,
+                  fontFamily: `"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
+                                  Helvetica, Arial, "Lucida Grande", sans- serif`,
                 })}
                 align="right"
               >
-                <Link to={`/profile/${user.id}`}>{user.firstName} {user.lastName}</Link>
+                <Link to={`/profile/${user.id}`}>
+                  {user.firstName} {user.lastName}
+                </Link>
               </Typography>
             )}
           </Box>

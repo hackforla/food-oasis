@@ -1,19 +1,17 @@
-import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { Formik } from "formik";
-import * as Yup from "yup";
-import * as accountService from "../../services/account-service";
-import { Button } from "@mui/material";
-import { Avatar, Box, CssBaseline, Typography } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { useToasterContext } from "../../contexts/toasterContext";
-import PasswordInput from "../UI/PasswordInput";
+import { Avatar, Box, Button, Typography } from "@mui/material";
+import Label from "components/Admin/ui/Label";
+import { Formik } from "formik";
 import {
   PASSWORD_VALIDATION_ERROR,
   PASSWORD_VALIDATION_REGEX,
 } from "helpers/Constants";
-import Label from "components/Admin/ui/Label";
+import { useNavigate, useParams } from "react-router-dom";
 import { palette } from "theme/palette";
+import * as Yup from "yup";
+import { useToasterContext } from "../../contexts/toasterContext";
+import * as accountService from "../../services/account-service";
+import PasswordInput from "../UI/PasswordInput";
 import { PageWrapper } from "./PageWrapper";
 
 const validationSchema = Yup.object().shape({
@@ -33,7 +31,6 @@ const ResetPassword = (props) => {
 
   return (
     <PageWrapper>
-      <CssBaseline />
       <Box
         sx={{
           marginTop: "8px",

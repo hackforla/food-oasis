@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import * as suggestionService from "../services/suggestion-service";
 
 export const useSuggestions = (initialStatuses = [1, 2, 3, 4]) => {
@@ -7,7 +7,7 @@ export const useSuggestions = (initialStatuses = [1, 2, 3, 4]) => {
   const [error, setError] = useState(null);
   const [statusIds, setStatusIds] = useState(initialStatuses);
 
-  const fetch = React.useCallback(async () => {
+  const fetch = useCallback(async () => {
     const fetchApi = async () => {
       setLoading({ loading: true });
       try {

@@ -1,19 +1,21 @@
-import React from "react";
-import CssBaseline from "@mui/material/CssBaseline";
-import { Typography, Tooltip } from "@mui/material";
-import Container from "@mui/material/Container";
-import Paper from "@mui/material/Paper";
-import Stack from "@mui/material/Stack";
-import Box from "@mui/material/Box";
-import Link from "@mui/material/Link";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { LocationOn } from "@mui/icons-material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  Link,
+  Paper,
+  Stack,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import AddressDropDown from "components/FoodSeeker/AddressDropDown";
-import { Button } from "@mui/material";
+import useGeolocation, { useLocationPermission } from "hooks/useGeolocation";
+import { useEffect, useState } from "react";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import * as analytics from "services/analytics";
 import { useSiteContext } from "../../contexts/siteContext";
-import useGeolocation, { useLocationPermission } from "hooks/useGeolocation";
-import CircularProgress from "@mui/material/CircularProgress";
-import { LocationOn } from "@mui/icons-material";
 
 const logoPaths = {
   1: require("images/foodoasis.svg").default,
@@ -28,18 +30,18 @@ const Home = () => {
   const navigate = useNavigate();
   const { tenantId, tenantDetails } = useSiteContext();
   const { taglineText } = tenantDetails;
-  const [bgImg, setBgImg] = React.useState(`url("/landing-page/bg-LA.jpeg")`);
+  const [bgImg, setBgImg] = useState(`url("/landing-page/bg-LA.jpeg")`);
   const { getUserLocation, isLoading: isGettingLocation } = useGeolocation();
-  const [error, setError] = React.useState("");
+  const [error, setError] = useState("");
   const locationPermission = useLocationPermission();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (error && locationPermission === "granted") {
       setError("");
     }
   }, [error, locationPermission]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     switch (tenantId) {
       case 2:
         setBgImg(`url("/landing-page/bg-LA.jpeg")`);
@@ -58,7 +60,7 @@ const Home = () => {
     }
   }, [tenantId]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     analytics.postEvent("visitLandingPage");
   }, []);
 
@@ -76,7 +78,7 @@ const Home = () => {
       sx={(theme) => ({
         backgroundSize: "cover",
         backgroundPosition: "center",
-        backgroundImage: 'url("/landing-page/map.png")', 
+        backgroundImage: 'url("/landing-page/map.png")',
         minHeight: "max(100.7vh,20em)",
         display: "flex",
         flexDirection: "column",
@@ -98,7 +100,6 @@ const Home = () => {
           },
         })}
       >
-        <CssBaseline />
         <Paper
           sx={(theme) => ({
             margin: "0 auto",

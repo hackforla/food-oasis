@@ -1,13 +1,11 @@
-import { Card, CardContent, CardHeader } from "@mui/material";
-import Container from "@mui/material/Container";
-import Stack from "@mui/material/Stack";
-import MuiPalette from "./MuiPalette";
-import MuiTypography from "./MuiTypography";
+import { Card, CardContent, CardHeader, Container, Stack } from "@mui/material";
 import MuiButtons from "./MuiButtons";
-import MuiLink from "./MuiLink";
-import MuiTextField from "./MuiTextField";
-import MuiPaper from "./MuiPaper";
 import MuiChips from "./MuiChips";
+import MuiLink from "./MuiLink";
+import MuiPalette from "./MuiPalette";
+import MuiPaper from "./MuiPaper";
+import MuiTextField from "./MuiTextField";
+import MuiTypography from "./MuiTypography";
 
 function MuiDemo() {
   return (

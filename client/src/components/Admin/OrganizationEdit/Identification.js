@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Checkbox,
   FormControlLabel,
@@ -12,7 +13,6 @@ import {
   TextField,
   Tooltip,
   Typography,
-  Box,
 } from "@mui/material";
 import { TabPanel } from "components/Admin/ui/TabPanel";
 import { useToasterContext } from "contexts/toasterContext";
@@ -511,15 +511,15 @@ export default function Identification({
             error={touched.longitude && Boolean(errors.longitude)}
           />
         </Grid>
-        <Grid item xs={12} md={6} sx={{display: 'flex'}}>
-          <Grid container sx={{display: 'flex', alignItems: 'flex-end'}}>
+        <Grid item xs={12} md={6} sx={{ display: "flex" }}>
+          <Grid container sx={{ display: "flex", alignItems: "flex-end" }}>
             <Grid
               xs={12}
               item
               sx={{
-                display: "flex",                
-                columnGap: '1rem',
-                alignItems: 'center',                
+                display: "flex",
+                columnGap: "1rem",
+                alignItems: "center",
               }}
             >
               <Tooltip title="Click to get latitude / longitude for address">
@@ -527,7 +527,7 @@ export default function Identification({
                   <Button
                     variant="outlined"
                     icon="search"
-                    size="large"                    
+                    size="large"
                     onClick={() => {
                       (geocodeResults && geocodeResults.length) < 1
                         ? geocode(values)
@@ -541,7 +541,7 @@ export default function Identification({
                 </Grid>
               </Tooltip>
               <div>
-                <FormControlLabel                  
+                <FormControlLabel
                   control={
                     <Checkbox
                       margin="normal"

@@ -1,13 +1,16 @@
-import React from "react";
-
-import faqbg from "./assets/faq-bg.webp";
-import IconSpacerSVG from "./assets/IconSpacerSVG";
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
-import { PageWrapper } from "components/StaticPages/PageWrapper";
-import { Box, CardMedia, SvgIcon, Link } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+import {
+  Box,
+  CardMedia,
+  Container,
+  Link,
+  SvgIcon,
+  Typography,
+} from "@mui/material";
 import Footer from "components/Layout/Footer";
+import { PageWrapper } from "components/StaticPages/PageWrapper";
+import { Link as RouterLink } from "react-router-dom";
+import IconSpacerSVG from "./assets/IconSpacerSVG";
+import faqbg from "./assets/faq-bg.webp";
 
 const About = () => {
   return (
@@ -65,8 +68,8 @@ const About = () => {
           <Box
             component="dl"
             sx={{
-              marginTop: "10px",
-              marginBottom: "0",
+              "marginTop": "10px",
+              "marginBottom": "0",
               "& dd": {
                 marginLeft: "0",
                 marginBottom: "24px",
@@ -156,8 +159,8 @@ const About = () => {
           <Box
             component="dl"
             sx={{
-              marginTop: "10px",
-              marginBottom: "0",
+              "marginTop": "10px",
+              "marginBottom": "0",
               "& dd": {
                 marginLeft: "0",
                 marginBottom: "24px",
@@ -248,8 +251,8 @@ const About = () => {
           <Box
             component="dl"
             sx={{
-              marginTop: "10px",
-              marginBottom: "0",
+              "marginTop": "10px",
+              "marginBottom": "0",
               "& dd": {
                 marginLeft: "0",
                 marginBottom: "24px",

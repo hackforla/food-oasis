@@ -1,7 +1,7 @@
-import React from "react";
 import axios from "axios";
 import debounce from "debounce-fn";
 import { tenantId } from "helpers/Configuration";
+import { useReducer } from "react";
 
 const baseUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places`;
 
@@ -42,7 +42,7 @@ function reducer(state = initialState, action) {
 }
 
 export function useMapboxGeocoder() {
-  const [{ isLoading, error, mapboxResults }, dispatch] = React.useReducer(
+  const [{ isLoading, error, mapboxResults }, dispatch] = useReducer(
     reducer,
     initialState
   );

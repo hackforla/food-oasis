@@ -1,6 +1,6 @@
-import React from "react";
 import { getTenantId } from "contexts/siteContext";
 import { TENANT_CONFIG } from "helpers/Constants";
+import { createContext, useContext, useMemo, useReducer } from "react";
 
 const tenantId = getTenantId();
 export const DEFAULT_COORDINATES =
@@ -118,15 +118,15 @@ export function getInitialState() {
   };
 }
 
-const AppStateContext = React.createContext({
+const AppStateContext = createContext({
   state: getInitialState(),
   dispatch: () => {},
 });
 
 export function AppStateProvider({ children }) {
-  const [state, dispatch] = React.useReducer(appReducer, getInitialState());
+  const [state, dispatch] = useReducer(appReducer, getInitialState());
 
-  const value = React.useMemo(() => {
+  const value = useMemo(() => {
     return {
       state,
       dispatch,
@@ -141,11 +141,11 @@ export function AppStateProvider({ children }) {
 }
 
 export function useAppState() {
-  return React.useContext(AppStateContext).state;
+  return useContext(AppStateContext).state;
 }
 
 export function useAppDispatch() {
-  return React.useContext(AppStateContext).dispatch;
+  return useContext(AppStateContext).dispatch;
 }
 
 export function useDefaultCoordinates() {

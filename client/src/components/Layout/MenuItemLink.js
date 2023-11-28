@@ -1,11 +1,9 @@
-import React, { useMemo, forwardRef } from "react";
+import { ListItem, ListItemText } from "@mui/material";
 import PropTypes from "prop-types";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
+import { forwardRef, useMemo } from "react";
 import { Link } from "react-router-dom";
 
 const MenuItemLink = ({ to, text, userSection, onClick }) => {
-
   const renderLink = useMemo(
     () =>
       // eslint-disable-next-line react/display-name

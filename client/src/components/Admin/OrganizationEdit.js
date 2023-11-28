@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   Container,
-  CssBaseline,
   Stack,
   Tab,
   Tabs,
@@ -316,7 +315,6 @@ const OrganizationEdit = (props) => {
 
   return (
     <Container component="main" maxWidth="lg">
-      <CssBaseline />
       <div>
         <AssignDialog
           id="assign-dialog"

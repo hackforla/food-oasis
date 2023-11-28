@@ -18,8 +18,6 @@ const parseCsv = async (file: any) => {
   if (!file) return;
   const { buffer } = file;
   const stream = Readable.from(buffer.toString());
-  // disk storage - comment out 'memory storage' above to replace with 'disk storage'
-  // const stream = fs.createReadStream(file.path, "utf8");
   const rowArray = [];
   const parser = stream.pipe(
     parse({

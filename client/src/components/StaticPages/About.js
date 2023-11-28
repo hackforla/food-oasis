@@ -1,16 +1,22 @@
-import React, { useEffect } from "react";
+import {
+  Box,
+  CardMedia,
+  Container,
+  Link,
+  SvgIcon,
+  Typography,
+} from "@mui/material";
+import { useEffect } from "react";
+import { Link as RouterLink } from "react-router-dom";
+import * as analytics from "../../services/analytics";
+import Footer from "../Layout/Footer";
+import { PageWrapper } from "./PageWrapper";
+import IconSpacerSVG from "./assets/IconSpacerSVG";
 import aboutbg from "./assets/about-bg.webp";
-import foodCycle from "./assets/food-cycle.png";
-import foodForward from "./assets/food-forward.png";
 import farm2people from "./assets/farm2people.png";
 import foodBank from "./assets/food-bank.png";
-import Typography from "@mui/material/Typography";
-import * as analytics from "../../services/analytics";
-import { Link as RouterLink } from "react-router-dom";
-import { Link, Container, CardMedia, Box, SvgIcon } from "@mui/material";
-import Footer from "../Layout/Footer";
-import IconSpacerSVG from "./assets/IconSpacerSVG";
-import { PageWrapper } from "./PageWrapper";
+import foodCycle from "./assets/food-cycle.png";
+import foodForward from "./assets/food-forward.png";
 
 const About = () => {
   useEffect(() => {

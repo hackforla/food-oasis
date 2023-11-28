@@ -1,4 +1,4 @@
-import { Box, Stack, Link, List, ListItem, Typography } from "@mui/material";
+import { Box, Link, List, ListItem, Stack, Typography } from "@mui/material";
 
 function MuiLink() {
   return (

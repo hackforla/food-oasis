@@ -1,11 +1,11 @@
-import { Link } from "react-router-dom";
-import { VERIFICATION_STATUS_NAMES } from "../../constants/stakeholder";
-import clsx from "clsx";
-import { DataGrid } from "@mui/x-data-grid";
 import { Block } from "@mui/icons-material";
 import CheckIcon from "@mui/icons-material/Check";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { Box } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
+import clsx from "clsx";
+import { Link } from "react-router-dom";
+import { VERIFICATION_STATUS_NAMES } from "../../constants/stakeholder";
 
 const linkFormatter = ({ value, row }) => {
   return <Link to={`/organizationedit/${row.id}`}>{value}</Link>;
@@ -359,8 +359,8 @@ export default function VerificationAdminGridMui(props) {
   return (
     <Box
       sx={{
-        height: "100%",
-        width: "100%",
+        "height": "100%",
+        "width": "100%",
         "& .suggestionCount-highlight.count": {
           backgroundColor: "rgb(255, 185, 185)",
         },

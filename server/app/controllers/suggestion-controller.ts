@@ -5,7 +5,7 @@ import { Suggestion } from "../../types/suggestion-types";
 const getAll: RequestHandler<
   // route params
   never,
-  //response
+  // response
   Suggestion[],
   // request body
   never,
@@ -57,12 +57,12 @@ const post: RequestHandler<
   }
 };
 
-const put: RequestHandler<{ id: string }, never, Suggestion> = async (
+const put: RequestHandler<{ id: string }, never, Suggestion, never> = async (
   req,
   res
 ) => {
   try {
-    await suggestionService.update(req.body);
+    await suggestionService.update(req.params.id, req.body);
     res.sendStatus(200);
   } catch (err) {
     console.error(err);

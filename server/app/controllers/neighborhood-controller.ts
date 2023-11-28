@@ -3,7 +3,6 @@ import { RequestHandler } from "express";
 import {
   Neighborhood,
   NeighborhoodGeoJSON,
-  // NeighborhoodPutRequest,
 } from "../../types/neighborhood-types";
 
 const getAll: RequestHandler<

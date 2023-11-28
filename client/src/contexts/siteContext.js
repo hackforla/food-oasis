@@ -1,7 +1,8 @@
-import React from "react";
 import PropTypes from "prop-types";
+import { createContext, useContext, useMemo } from "react";
 import { TENANT_CONFIG } from "../helpers/Constants";
-export const SiteContext = React.createContext(null);
+
+export const SiteContext = createContext(null);
 
 const TENANT_IDS = {
   1: ["la."],
@@ -55,7 +56,7 @@ export const SiteProvider = ({ children }) => {
   const tenantDetails = TENANT_CONFIG[tenantId];
   const defaultViewport = DEFAULT_VIEWPORTS[tenantId];
 
-  const value = React.useMemo(() => {
+  const value = useMemo(() => {
     return {
       tenantId,
       tenantName,
@@ -65,7 +66,7 @@ export const SiteProvider = ({ children }) => {
   }, [tenantId, tenantName, tenantDetails, defaultViewport]);
   return <SiteContext.Provider value={value}>{children}</SiteContext.Provider>;
 };
-export const useSiteContext = () => React.useContext(SiteContext);
+export const useSiteContext = () => useContext(SiteContext);
 SiteProvider.propTypes = {
   children: PropTypes.any,
 };

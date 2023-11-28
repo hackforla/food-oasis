@@ -1,19 +1,9 @@
-import React, { useMemo, forwardRef } from "react";
+import { ListItem, ListItemText } from "@mui/material";
 import PropTypes from "prop-types";
-import { makeStyles } from "@mui/styles";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
+import { forwardRef, useMemo } from "react";
 import { Link } from "react-router-dom";
 
-const useStyles = makeStyles({
-  background: {
-    backgroundColor: "rgba(144, 194, 70)",
-  },
-});
-
 const MenuItemLink = ({ to, text, userSection, onClick }) => {
-  const classes = useStyles();
-
   const renderLink = useMemo(
     () =>
       // eslint-disable-next-line react/display-name
@@ -22,7 +12,7 @@ const MenuItemLink = ({ to, text, userSection, onClick }) => {
   );
 
   return (
-    <span className={userSection && classes.background}>
+    <span className={userSection}>
       <ListItem component={renderLink} onClick={onClick}>
         <ListItemText primary={text} />
       </ListItem>

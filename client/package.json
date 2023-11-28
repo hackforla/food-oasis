@@ -1,7 +1,7 @@
 {
   "name": "foodoasis-client",
   "description": "React Client for Food Oasis",
-  "version": "1.0.75",
+  "version": "1.0.76",
   "author": "Hack for LA",
   "license": "GPL-2.0",
   "private": true,
@@ -23,10 +23,9 @@
     "@mui/icons-material": "^5.11.0",
     "@mui/lab": "^5.0.0-alpha.113",
     "@mui/material": "^5.11.1",
-    "@mui/styles": "^5.11.1",
     "@mui/x-data-grid": "^5.17.20",
-    "@mui/x-date-pickers": "^5.0.12",
-    "axios": "^0.21.4",
+    "@mui/x-date-pickers": "^6.8.0",
+    "axios": "^1.6.0",
     "dayjs": "^1.11.7",
     "debounce-fn": "^5.0.0",
     "formik": "^2.2.9",
@@ -39,7 +38,8 @@
     "react-router-dom": "^6.10.0",
     "react-scripts": "^5.0.1",
     "react-virtuoso": "^4.1.0",
-    "yup": "^0.32.8"
+    "yup": "^0.32.8",
+    "react-draggable": "^4.4.6"
   },
   "browserslist": {
     "production": [

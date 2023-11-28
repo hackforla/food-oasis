@@ -1,5 +1,3 @@
-import React from "react";
-import PropTypes from "prop-types";
 import {
   Button,
   Dialog,
@@ -12,7 +10,7 @@ import {
   RadioGroup,
   Typography,
 } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
+import PropTypes from "prop-types";
 
 const optionDescriptions = {
   replace:
@@ -21,15 +19,6 @@ const optionDescriptions = {
     "Updates all records matching your provided IDs. If an ID field is blank, the record will be treated as a new entry.",
   add: "Imports records without changing any existing records. This is not destructive but can result in duplicate records.",
 };
-
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    padding: theme.spacing(3),
-  },
-  dialogContent: {
-    minHeight: "3em",
-  },
-}));
 
 function ImportDialog(props) {
   const {
@@ -41,7 +30,6 @@ function ImportDialog(props) {
     children,
     ...other
   } = props;
-  const classes = useStyles();
 
   return (
     <Dialog
@@ -53,14 +41,24 @@ function ImportDialog(props) {
       {...other}
     >
       <DialogTitle id="import-dialog-title">{props.title}</DialogTitle>
-      <DialogContent dividers className={classes.dialogContent}>
+      <DialogContent
+        dividers
+        sx={{
+          minHeight: "3em",
+        }}
+      >
         <Typography>{props.message}</Typography>
         <Typography>
           {optionDescriptions[importData.action] ||
             "Please select an option below."}
         </Typography>
       </DialogContent>
-      <FormControl component="fieldset" className={classes.formControl}>
+      <FormControl
+        component="fieldset"
+        sx={(theme) => ({
+          padding: theme.spacing(3),
+        })}
+      >
         <RadioGroup
           arial-label="import-options"
           name="import-options"

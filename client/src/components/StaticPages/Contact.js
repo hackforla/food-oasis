@@ -1,23 +1,22 @@
-import React, { useEffect, useState } from "react";
+import { Check } from "@mui/icons-material";
 import {
   Box,
   Button,
+  Container,
   Modal,
+  Stack,
   TextField,
   Typography,
-  Stack,
 } from "@mui/material";
-import * as analytics from "../../services/analytics";
-import Container from "@mui/material/Container";
-import { useNavigate } from "react-router-dom";
-import Footer from "../Layout/Footer";
-
-import { Formik } from "formik";
-import * as Yup from "yup";
 import Textarea from "components/Admin/ui/Textarea";
-import { sendContactForm } from "services/contact-service";
-import { Check } from "@mui/icons-material";
+import { Formik } from "formik";
 import useBreakpoints from "hooks/useBreakpoints";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { sendContactForm } from "services/contact-service";
+import * as Yup from "yup";
+import * as analytics from "../../services/analytics";
+import Footer from "../Layout/Footer";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Please enter your name"),
@@ -191,7 +190,7 @@ const Contact = () => {
                 <form onSubmit={handleSubmit}>
                   <Box
                     sx={{
-                      height: { xs: "480px", md: "560px" },
+                      "height": { xs: "480px", md: "560px" },
                       "& > div": {
                         height: "61px",
                         marginTop: { xs: "3px", md: "12px" },

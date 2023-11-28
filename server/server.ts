@@ -27,7 +27,6 @@ if (process.env.NODE_ENV === "production") {
 }
 
 app.use(middleware.cors);
-// app.use(middleware.logger);
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, "client/build")));
@@ -51,7 +50,6 @@ app.get("/hello/:name", (req, res) => {
 
 app.get("/throw", (req, res, next) => {
   next(new Error("Ouch!"));
-  //throw new Error("Test Exception Handler");
 });
 
 app.get("/health", (req, res) => {

@@ -48,7 +48,6 @@ const search: RequestHandler<
       res.send(resp);
     })
     .catch((err) => {
-      console.log(err);
       res.status(404).json({ error: err.toString() });
     });
 };

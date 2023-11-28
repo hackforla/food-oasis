@@ -1,25 +1,26 @@
-import React from "react";
-import { useTags } from "hooks/useTags";
-import * as tagService from "../../services/tag-service";
-import makeStyles from "@mui/styles/makeStyles";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
-import Container from "@mui/material/Container";
-import Modal from "@mui/material/Modal";
-import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import { IconButton } from "../UI/StandardButton";
+import {
+  Box,
+  Button,
+  Container,
+  Modal,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { Formik } from "formik";
 import { tenantId } from "helpers/Configuration";
-// import IconButton from "components/UI/IconButton";
-import { Navigate,useLocation  } from "react-router-dom";
+import { useTags } from "hooks/useTags";
+import { useEffect, useState } from "react";
+import { Navigate, useLocation } from "react-router-dom";
+import * as tagService from "../../services/tag-service";
+import { IconButton } from "../UI/StandardButton";
 import Label from "./ui/Label";
 
 const columns = [
@@ -43,52 +44,27 @@ function getModalStyle() {
   };
 }
 
-const useStyles = makeStyles((theme) => ({
-  container: {
-    maxHeight: "500px",
-    cursor: "pointer",
-  },
-  heading: {
-    marginBottom: theme.spacing(1),
-    display: "flex",
-    justifyContent: "space-between",
-  },
-  paper: {
-    position: "absolute",
-    width: 400,
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-  },
-  error: {
-    color: theme.palette.error.main,
-  },
-}));
-
 function TagAdmin(props) {
   let { data, status } = useTags();
-  const [tags, setTags] = React.useState([]);
-  const classes = useStyles();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [activeTag, setActiveTag] = React.useState(false);
-  const [modalStyle] = React.useState(getModalStyle);
-  const [error, setError] = React.useState("");
-  const [deleteError, setDeleteError] = React.useState("");
+  const [tags, setTags] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [activeTag, setActiveTag] = useState(false);
+  const [modalStyle] = useState(getModalStyle);
+  const [error, setError] = useState("");
+  const [deleteError, setDeleteError] = useState("");
   const location = useLocation();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (data) {
       setTags(data);
     }
   }, [data]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (status === 401) {
       return (
-        <Navigate
-          to={{ pathname: "/login", state: { from: location } }}
-        />
+        <Navigate to={{ pathname: "/login", state: { from: location } }} />
       );
     }
   });
@@ -138,19 +114,38 @@ function TagAdmin(props) {
 
   return (
     <Container maxWidth="sm">
-      <div className={classes.heading}>
-        <h2 style={{ margin: 0 }}>Tags</h2>
+      <Box
+        sx={{
+          marginBottom: 1,
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
+        <Typography variant="h2" style={{ margin: 0, fontWeight: "bold" }}>
+          Tags
+        </Typography>
         <Button variant="outlined" onClick={handleAddNew}>
           Add New
         </Button>
-      </div>
+      </Box>
 
       {deleteError && (
-        <div className={classes.error}>Something went wrong.</div>
+        <Typography
+          sx={{
+            color: "error.main",
+          }}
+        >
+          Something went wrong.
+        </Typography>
       )}
 
       <Paper>
-        <TableContainer className={classes.container}>
+        <TableContainer
+          sx={{
+            maxHeight: "500px",
+            cursor: "pointer",
+          }}
+        >
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -242,10 +237,25 @@ function TagAdmin(props) {
           aria-labelledby="tag-modal"
           aria-describedby="tag-modal-description"
         >
-          <div style={modalStyle} className={classes.paper}>
-            <div id="simple-modal-title">
-              <h2>Edit Tag</h2>
-            </div>
+          <Box
+            style={modalStyle}
+            sx={{
+              position: "absolute",
+              width: 400,
+              backgroundColor: "background.paper",
+              boxShadow: 5,
+              padding: (2, 4, 3),
+            }}
+          >
+            <Typography
+              variant="h2"
+              id="simple-modal-title"
+              sx={{
+                fontWeight: "bold",
+              }}
+            >
+              Edit Tag
+            </Typography>
 
             <Formik
               initialValues={{
@@ -267,7 +277,7 @@ function TagAdmin(props) {
                     handleSubmit(e);
                   }}
                 >
-                  <div>
+                  <Box>
                     <Label id="name" label="Name" />
                     <TextField
                       placeholder="Name"
@@ -279,10 +289,16 @@ function TagAdmin(props) {
                       fullWidth
                       autoFocus
                     />
-                  </div>
+                  </Box>
 
                   {error && (
-                    <div className={classes.error}>Something went wrong.</div>
+                    <Typography
+                      sx={{
+                        color: "error.main",
+                      }}
+                    >
+                      Something went wrong.
+                    </Typography>
                   )}
                   <Box mt={3} display="flex" justifyContent="space-between">
                     <Button
@@ -302,7 +318,7 @@ function TagAdmin(props) {
                 </form>
               )}
             </Formik>
-          </div>
+          </Box>
         </Modal>
       </Paper>
     </Container>

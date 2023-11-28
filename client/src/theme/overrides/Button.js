@@ -5,16 +5,6 @@ export default function Button(theme) {
         disableRipple: true,
         disableTouchRipple: true,
       },
-      // I've commented out the style override for disabled buttons to address issue #1490, where the tooltips weren't working properly on disabled CTA buttons, also the same issue is on the main page. This change fixes the problem, but if any side effect occurs, we can always revert the change.
-
-      // styleOverrides: {
-      //   root: {
-      //     "&:disabled": {
-      //      cursor: "not-allowed",
-      //       pointerEvents: "auto",
-      //     },
-      //   },
-      // },
     },
     MuiButton: {
       defaultProps: {
@@ -42,7 +32,6 @@ export default function Button(theme) {
           "&:hover": {
             backgroundColor: theme.palette.primary.dark,
           },
-
           "&:active": {
             backgroundColor: theme.palette.primary.dark,
             boxShadow: "inset 0px 8px 4px rgba(0,0,0,0.24)",

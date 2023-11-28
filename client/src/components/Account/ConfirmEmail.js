@@ -1,14 +1,14 @@
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { Avatar, TextField, Typography, Box } from "@mui/material";
+import { Avatar, Box, TextField, Typography } from "@mui/material";
+import Label from "components/Admin/ui/Label";
 import { Formik } from "formik";
 import { useEffect, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
+import { palette } from "theme/palette";
 import * as Yup from "yup";
 import { useToasterContext } from "../../contexts/toasterContext";
 import * as accountService from "../../services/account-service";
-import Label from "components/Admin/ui/Label";
-import { palette } from "theme/palette";
 import { PageWrapper } from "./PageWrapper";
 
 const validationSchema = Yup.object().shape({

@@ -1,20 +1,18 @@
-import React, { useCallback } from "react";
-import PropTypes from "prop-types";
-import { Typography, Tooltip } from "@mui/material";
 import LocationSearching from "@mui/icons-material/LocationSearching";
-import Button from "@mui/material/Button";
+import { Button, Stack, Tooltip, Typography } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
-import Stack from "@mui/material/Stack";
-import {
-  MEAL_PROGRAM_CATEGORY_ID,
-  FOOD_PANTRY_CATEGORY_ID,
-} from "constants/stakeholder";
 import AddressDropDown from "components/FoodSeeker/AddressDropDown";
-import SwitchViewsButton from "./SwitchViewsButton";
-import CategoryButton from "./CategoryButton";
+import {
+  FOOD_PANTRY_CATEGORY_ID,
+  MEAL_PROGRAM_CATEGORY_ID,
+} from "constants/stakeholder";
+import useGeolocation, { useLocationPermission } from "hooks/useGeolocation";
+import PropTypes from "prop-types";
+import { useCallback, useEffect, useState } from "react";
 import * as analytics from "services/analytics";
 import { tenantDetails } from "../../../../helpers/Configuration";
-import useGeolocation, { useLocationPermission } from "hooks/useGeolocation";
+import CategoryButton from "./CategoryButton";
+import SwitchViewsButton from "./SwitchViewsButton";
 
 const ResultsFilters = ({
   categoryIds,
@@ -25,14 +23,11 @@ const ResultsFilters = ({
   const isMealsSelected = categoryIds.indexOf(MEAL_PROGRAM_CATEGORY_ID) >= 0;
   const isPantrySelected = categoryIds.indexOf(FOOD_PANTRY_CATEGORY_ID) >= 0;
   const { taglineText } = tenantDetails;
-  const {
-    getUserLocation,
-    // isLoading: isGettingLocation
-  } = useGeolocation();
+  const { getUserLocation } = useGeolocation();
   const locationPermission = useLocationPermission();
-  const [error, setError] = React.useState("");
+  const [error, setError] = useState("");
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (error && locationPermission === "granted") {
       setError("");
     }
@@ -52,7 +47,6 @@ const ResultsFilters = ({
     try {
       await getUserLocation();
     } catch (e) {
-      console.log({ e });
       setError(e);
     }
     analytics.postEvent("recenterMap", {});
@@ -137,7 +131,11 @@ const ResultsFilters = ({
             </Grid2>
           </Grid2>
           <Grid2 xs={12} sm={6}>
-            <Stack direction="row" sx={{ margin: "0.5rem" }}>
+            <Stack
+              direction="row"
+              alignItems="center"
+              sx={{ margin: "0.5rem" }}
+            >
               <AddressDropDown />
               <Tooltip
                 title={
@@ -152,7 +150,6 @@ const ResultsFilters = ({
                     onClick={useMyLocationTrigger}
                     disabled={locationPermission === "denied" || !!error}
                     icon="locationSearching"
-                    // isLoading={isGettingLocation}
                   >
                     <LocationSearching
                       htmlColor="white"

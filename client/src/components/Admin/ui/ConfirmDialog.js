@@ -1,5 +1,3 @@
-import React from "react";
-import PropTypes from "prop-types";
 import {
   Button,
   Dialog,
@@ -8,6 +6,7 @@ import {
   DialogTitle,
   Typography,
 } from "@mui/material";
+import PropTypes from "prop-types";
 
 function ConfirmDialog(props) {
   const { onClose, open, ...other } = props;

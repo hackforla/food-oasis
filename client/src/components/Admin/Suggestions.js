@@ -1,41 +1,42 @@
-import React from "react";
-import { useSuggestions } from "hooks/useSuggestions";
-import makeStyles from "@mui/styles/makeStyles";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
-import Container from "@mui/material/Container";
-import Modal from "@mui/material/Modal";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import { Formik } from "formik";
-import * as suggestionService from "../../services/suggestion-service";
-import { Navigate, useLocation } from "react-router-dom";
-import Chip from "@mui/material/Chip";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import Checkbox from "@mui/material/Checkbox";
-import ListItemText from "@mui/material/ListItemText";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
-import CommentIcon from "@mui/icons-material/Comment";
-import Divider from "@mui/material/Divider";
 import AssessmentIcon from "@mui/icons-material/Assessment";
-import PersonIcon from "@mui/icons-material/Person";
+import CommentIcon from "@mui/icons-material/Comment";
 import EmailIcon from "@mui/icons-material/Email";
-import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import HomeIcon from "@mui/icons-material/Home";
 import LocationCityIcon from "@mui/icons-material/LocationCity";
+import PersonIcon from "@mui/icons-material/Person";
 import PhoneIcon from "@mui/icons-material/Phone";
+import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
+import {
+  Avatar,
+  Box,
+  Button,
+  Checkbox,
+  Chip,
+  Container,
+  Divider,
+  FormControl,
+  InputLabel,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  MenuItem,
+  Modal,
+  Paper,
+  Select,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+} from "@mui/material";
+import { Formik } from "formik";
+import { useSuggestions } from "hooks/useSuggestions";
+import { useEffect, useState } from "react";
+import { Navigate, useLocation } from "react-router-dom";
+import * as suggestionService from "../../services/suggestion-service";
 import { getIsMobile } from "../../utils";
 import Label from "./ui/Label";
 import Textarea from "./ui/Textarea";
@@ -62,58 +63,31 @@ function getModalStyle() {
     left: `${left}%`,
     transform: `translate(-${top}%, -${left}%)`,
     maxHeight: "80vh",
-    // minWidth: "60vw",
     width: "90vw",
     overflow: "scroll",
   };
 }
 
-const useStyles = makeStyles((theme) => ({
-  container: {
-    maxHeight: "500px",
-    cursor: "pointer",
-  },
-  heading: {
-    marginBottom: theme.spacing(1),
-    display: "flex",
-    justifyContent: "space-between",
-  },
-  paper: {
-    position: "absolute",
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, getIsMobile() ? 1 : 4, 3),
-  },
-  error: {
-    color: theme.palette.error.main,
-  },
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 180,
-  },
-}));
-
 function Suggestions() {
   const initialStatusIds = [1, 2, 3, 4];
-  const [suggestions, setSuggestions] = React.useState([]);
-  const classes = useStyles();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [activeOrg, setActiveOrg] = React.useState(null);
-  const [modalStyle] = React.useState(getModalStyle);
-  const [error, setError] = React.useState("");
-  const [filters, setFilters] = React.useState(initialStatusIds);
+  const [suggestions, setSuggestions] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [activeOrg, setActiveOrg] = useState(null);
+  const [modalStyle] = useState(getModalStyle);
+  const [error, setError] = useState("");
+  const [filters, setFilters] = useState(initialStatusIds);
   let { data, status, setStatusIds } = useSuggestions(initialStatusIds);
   const isMobile = getIsMobile();
   const location = useLocation();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (data) {
       setSuggestions(data);
     }
   }, [data]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (status === 401) {
       return (
         <Navigate to={{ pathname: "/login", state: { from: location } }} />
@@ -171,9 +145,20 @@ function Suggestions() {
 
   return (
     <Container>
-      <div className={classes.heading}>
+      <Box
+        sx={(theme) => ({
+          marginBottom: theme.spacing(1),
+          display: "flex",
+          justifyContent: "space-between",
+        })}
+      >
         <h2>Suggestions Administration</h2>
-        <FormControl className={classes.formControl}>
+        <FormControl
+          sx={(theme) => ({
+            margin: theme.spacing(1),
+            minWidth: 180,
+          })}
+        >
           <InputLabel id="filters-checkbox-label">Filters</InputLabel>
           <Select
             labelId="filters-checkbox-label"
@@ -195,10 +180,10 @@ function Suggestions() {
             ))}
           </Select>
         </FormControl>
-      </div>
+      </Box>
 
       <Paper>
-        <TableContainer className={classes.container}>
+        <TableContainer sx={{ maxHeight: "500px", cursor: "pointer" }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -286,7 +271,15 @@ function Suggestions() {
                 errors,
                 isSubmitting,
               }) => (
-                <div style={modalStyle} className={classes.paper}>
+                <Paper
+                  style={modalStyle}
+                  sx={(theme) => ({
+                    position: "absolute",
+                    backgroundColor: theme.palette.background.paper,
+                    boxShadow: theme.shadows[5],
+                    padding: theme.spacing(2, getIsMobile() ? 1 : 4, 3),
+                  })}
+                >
                   <div
                     id="simple-modal-title"
                     style={{
@@ -303,7 +296,12 @@ function Suggestions() {
                     >
                       {activeOrg.name}
                     </h1>
-                    <FormControl className={classes.formControl}>
+                    <FormControl
+                      sx={(theme) => ({
+                        margin: theme.spacing(1),
+                        minWidth: 180,
+                      })}
+                    >
                       <InputLabel id="status-select">Status</InputLabel>
                       <Select
                         labelId="status-select"
@@ -392,7 +390,11 @@ function Suggestions() {
                     </List>
 
                     {error && (
-                      <div className={classes.error}>Something went wrong.</div>
+                      <Box
+                        sx={(theme) => ({ color: theme.palette.error.main })}
+                      >
+                        Something went wrong.
+                      </Box>
                     )}
                     <Box mt={3} display="flex" justifyContent="space-between">
                       <Button
@@ -410,7 +412,7 @@ function Suggestions() {
                       </Button>
                     </Box>
                   </form>
-                </div>
+                </Paper>
               )}
             </Formik>
           </Modal>

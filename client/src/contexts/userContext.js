@@ -1,15 +1,22 @@
-import React, { useState, useEffect } from "react";
-import * as analytics from "../services/analytics";
-import { logout } from "../services/account-service";
 import PropTypes from "prop-types";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import { logout } from "../services/account-service";
+import * as analytics from "../services/analytics";
 import { useToasterContext } from "./toasterContext";
 
-export const UserContext = React.createContext(null);
+export const UserContext = createContext(null);
 
 export const UserProvider = ({ children }) => {
   const { setToast } = useToasterContext();
   const [user, setUser] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = React.useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(null);
 
   useEffect(() => {
     const storedJson = sessionStorage.getItem("user");
@@ -28,18 +35,18 @@ export const UserProvider = ({ children }) => {
     }
   }, [user]);
 
-  const onLogin = React.useCallback(async (user) => {
+  const onLogin = useCallback(async (user) => {
     sessionStorage.setItem("user", JSON.stringify(user));
     setUser(user);
     setIsLoggedIn(true);
   }, []);
 
-  const onUpdate = React.useCallback(async (updateUser) => {
+  const onUpdate = useCallback(async (updateUser) => {
     sessionStorage.setItem("user", JSON.stringify(updateUser));
     setUser(updateUser);
   }, []);
 
-  const onLogout = React.useCallback(async () => {
+  const onLogout = useCallback(async () => {
     sessionStorage.removeItem("user");
     await logout();
     setIsLoggedIn(false);
@@ -57,7 +64,7 @@ export const UserProvider = ({ children }) => {
     });
   }, [setToast]);
 
-  const value = React.useMemo(() => {
+  const value = useMemo(() => {
     return {
       user,
       isLoggedIn,
@@ -74,7 +81,7 @@ export const UserProvider = ({ children }) => {
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
 
-export const useUserContext = () => React.useContext(UserContext);
+export const useUserContext = () => useContext(UserContext);
 
 UserProvider.propTypes = {
   children: PropTypes.any,

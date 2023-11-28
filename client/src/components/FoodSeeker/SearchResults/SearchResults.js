@@ -1,28 +1,27 @@
-import React, { useState, useCallback, useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
-import useOrganizationBests from "hooks/useOrganizationBests";
-import useCategoryIds from "hooks/useCategoryIds";
 import useBreakpoints from "hooks/useBreakpoints";
+import useCategoryIds from "hooks/useCategoryIds";
 import useNeighborhoodsGeoJSON from "hooks/useNeighborhoodsGeoJSON";
-import { getMapBounds } from "helpers";
-import { Mobile, Tablet, Desktop } from "./layouts";
-import Filters from "./ResultsFilters/ResultsFilters";
-import Map from "./ResultsMap/ResultsMap";
-import List from "./ResultsList/ResultsList";
-import Preview from "./StakeholderPreview/StakeholderPreview";
-import Details from "./StakeholderDetails/StakeholderDetails";
+import useOrganizationBests from "hooks/useOrganizationBests";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 import * as analytics from "services/analytics";
 import {
-  useSearchCoordinates,
   useAppDispatch,
+  useSearchCoordinates,
   useSelectedOrganization,
-  DEFAULT_COORDINATES,
+  useStakeholders,
 } from "../../../appReducer";
+import Filters from "./ResultsFilters/ResultsFilters";
+import List from "./ResultsList/ResultsList";
+import Map from "./ResultsMap/ResultsMap";
+import Details from "./StakeholderDetails/StakeholderDetails";
+import Preview from "./StakeholderPreview/StakeholderPreview";
+import { Desktop, Mobile, Tablet } from "./layouts";
 
 const SearchResults = () => {
   const mapRef = useRef(null);
   const { isDesktop, isTablet } = useBreakpoints();
-  const { data: stakeholders, search, loading } = useOrganizationBests();
+  const { selectAll, loading } = useOrganizationBests();
   const { categoryIds, toggleCategory } = useCategoryIds([]);
   const { getGeoJSONById } = useNeighborhoodsGeoJSON();
   const [showList, setShowList] = useState(true);
@@ -33,16 +32,8 @@ const SearchResults = () => {
   const neighborhoodId = new URLSearchParams(location.search).get(
     "neighborhood_id"
   );
+  const stakeholders = useStakeholders();
   const organizationId = new URLSearchParams(location.search).get("id");
-  let latitude, longitude;
-  if (location.search && !searchCoordinates) {
-    const queryParams = new URLSearchParams(location.search);
-    longitude = Number(queryParams.get("longitude"));
-    latitude = Number(queryParams.get("latitude"));
-  } else {
-    longitude = searchCoordinates?.longitude || DEFAULT_COORDINATES.longitude;
-    latitude = searchCoordinates?.latitude || DEFAULT_COORDINATES.latitude;
-  }
 
   // If path starts with "widget", then set the state variable isWidget to true,
   // so we stay in widget mode (w/o normal App Header and Footer)
@@ -81,20 +72,10 @@ const SearchResults = () => {
   }, [neighborhoodId, getGeoJSONById, dispatch]);
 
   useEffect(() => {
-    const { zoom, dimensions } = mapRef.current.getViewport();
-    const criteria = {
-      latitude,
-      longitude,
-      bounds: getMapBounds({ longitude, latitude }, zoom, dimensions),
-      categoryIds,
-      isInactive: "either",
-      verificationStatusId: 0,
-      neighborhoodId: null,
-      tag: null,
-    };
-    search(criteria);
-    analytics.postEvent("searchArea", criteria);
-  }, [categoryIds, search, neighborhoodId, longitude, latitude]);
+    selectAll({ categoryIds });
+
+    analytics.postEvent("searchArea");
+  }, [categoryIds, selectAll, neighborhoodId, dispatch]);
 
   useEffect(() => {
     if (!location.search) {
@@ -140,6 +121,7 @@ const SearchResults = () => {
     <Map
       ref={mapRef}
       stakeholders={stakeholders}
+      toggleCategory={toggleCategory}
       categoryIds={categoryIds}
       loading={loading}
       searchMapArea={searchMapArea}
@@ -162,7 +144,7 @@ const SearchResults = () => {
     <Mobile
       filters={filters}
       map={map}
-      list={showList && list}
+      list={list}
       preview={
         selectedOrganization && <Preview stakeholder={selectedOrganization} />
       }

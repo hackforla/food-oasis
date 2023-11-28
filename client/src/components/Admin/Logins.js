@@ -1,18 +1,21 @@
-import React, { useState, useEffect, useMemo } from "react";
-import makeStyles from "@mui/styles/makeStyles";
-import Container from "@mui/material/Container";
-import Paper from "@mui/material/Paper";
-import TextField from "@mui/material/TextField";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
-import FormControl from "@mui/material/FormControl";
+import {
+  Box,
+  Container,
+  FormControl,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useLogins } from "hooks/useLogins";
 import debounce from "lodash.debounce";
+import { useEffect, useMemo, useState } from "react";
 
 const columns = [
   { id: "name", label: "Name", minWidth: 100 },
@@ -20,26 +23,10 @@ const columns = [
   { id: "loginTime", label: "Login Time", minWidth: 10 },
 ];
 
-const useStyles = makeStyles((theme) => ({
-  container: {
-    maxHeight: "500px",
-  },
-  heading: {
-    marginBottom: theme.spacing(1),
-    display: "flex",
-    justifyContent: "space-between",
-  },
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 180,
-  },
-}));
-
 const Logins = () => {
-  const classes = useStyles();
   const [logins, setLogins] = useState([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   let { data, refetch } = useLogins();
 
   useEffect(() => {
@@ -66,22 +53,44 @@ const Logins = () => {
 
   return (
     <Container>
-      <div className={classes.heading}>
-        <h2>User Logins</h2>
-        <FormControl className={classes.formControl}>
+      <Box
+        sx={{
+          marginBottom: "8px",
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
+        <Typography
+          variant="h2"
+          sx={{
+            marginTop: "4px",
+            fontWeight: 700,
+          }}
+        >
+          User Logins
+        </Typography>
+        <FormControl
+          sx={{
+            margin: "8px",
+            minWidth: 180,
+          }}
+        >
           <TextField
             variant="outlined"
             margin="none"
             placeholder="Find by Email"
             size="small"
-            className={classes.textInput}
             onChange={debouncedChangeHandler}
           />
         </FormControl>
-      </div>
+      </Box>
 
       <Paper>
-        <TableContainer className={classes.container}>
+        <TableContainer
+          sx={{
+            maxHeight: "500px",
+          }}
+        >
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>

@@ -1,27 +1,25 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import { withFormik } from "formik";
-import * as Yup from "yup";
-import * as accountService from "../../services/account-service";
-import { Button } from "@mui/material";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import {
   Avatar,
   Box,
-  CssBaseline,
-  Link,
+  Button,
   Grid,
+  Link,
   TextField,
   Typography,
 } from "@mui/material";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { useToasterContext } from "contexts/toasterContext";
+import Label from "components/Admin/ui/Label";
 import PasswordInput from "components/UI/PasswordInput";
+import { useToasterContext } from "contexts/toasterContext";
+import { withFormik } from "formik";
 import {
   PASSWORD_VALIDATION_ERROR,
   PASSWORD_VALIDATION_REGEX,
 } from "helpers/Constants";
-import Label from "components/Admin/ui/Label";
+import { useNavigate } from "react-router-dom";
 import { palette } from "theme/palette";
+import * as Yup from "yup";
+import * as accountService from "../../services/account-service";
 import { PageWrapper } from "./PageWrapper";
 
 // Core component is the Material UI form itself
@@ -40,7 +38,6 @@ const form = (props) => {
 
   return (
     <PageWrapper>
-      <CssBaseline />
       <Box
         sx={{
           marginTop: "8px",

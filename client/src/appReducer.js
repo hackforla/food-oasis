@@ -1,11 +1,19 @@
-import React from "react";
 import { getTenantId } from "contexts/siteContext";
 import { TENANT_CONFIG } from "helpers/Constants";
+import { createContext, useContext, useMemo, useReducer } from "react";
 
 const tenantId = getTenantId();
 export const DEFAULT_COORDINATES =
   TENANT_CONFIG[tenantId].defaultViewport.center;
 
+function stakeholdersReducer(state, action) {
+  switch (action.type) {
+    case "STAKEHOLDERS_LOADED":
+      return action.stakeholders;
+    default:
+      return state;
+  }
+}
 function defaultCoordinatesReducer(state, action) {
   switch (action.type) {
     case "DEFAULT_COORDINATES_UPDATED":
@@ -94,11 +102,13 @@ export function appReducer(state, action) {
     // isWidget === true indicates that app is implemented as an
     // iframe widget hosted in a third-party application.
     isWidget: widgetReducer(state.isWidget, action),
+    stakeholders: stakeholdersReducer(state.stakeholders, action),
   };
 }
 
 export function getInitialState() {
   return {
+    stakeholders: [],
     defaultCoordinates: DEFAULT_COORDINATES,
     searchCoordinates: null,
     selectedOrganization: null,
@@ -108,15 +118,15 @@ export function getInitialState() {
   };
 }
 
-const AppStateContext = React.createContext({
+const AppStateContext = createContext({
   state: getInitialState(),
   dispatch: () => {},
 });
 
 export function AppStateProvider({ children }) {
-  const [state, dispatch] = React.useReducer(appReducer, getInitialState());
+  const [state, dispatch] = useReducer(appReducer, getInitialState());
 
-  const value = React.useMemo(() => {
+  const value = useMemo(() => {
     return {
       state,
       dispatch,
@@ -131,11 +141,11 @@ export function AppStateProvider({ children }) {
 }
 
 export function useAppState() {
-  return React.useContext(AppStateContext).state;
+  return useContext(AppStateContext).state;
 }
 
 export function useAppDispatch() {
-  return React.useContext(AppStateContext).dispatch;
+  return useContext(AppStateContext).dispatch;
 }
 
 export function useDefaultCoordinates() {
@@ -166,4 +176,9 @@ export function useNeighborhood() {
 export function useWidget() {
   const { isWidget } = useAppState();
   return isWidget;
+}
+
+export function useStakeholders() {
+  const { stakeholders } = useAppState();
+  return stakeholders;
 }

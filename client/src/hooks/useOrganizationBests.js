@@ -1,7 +1,14 @@
-import { useState, useCallback } from "react";
-import * as stakeholderService from "../services/stakeholder-best-service";
-import * as analytics from "../services/analytics";
 import { DEFAULT_CATEGORIES } from "constants/stakeholder";
+import { computeDistances, checkIfStaleData } from "helpers";
+import { useCallback, useState } from "react";
+import { useLocation } from "react-router-dom";
+import {
+  DEFAULT_COORDINATES,
+  useAppDispatch,
+  useSearchCoordinates,
+} from "../appReducer";
+import * as analytics from "../services/analytics";
+import * as stakeholderService from "../services/stakeholder-best-service";
 
 const sortOrganizations = (a, b) => {
   if (
@@ -24,23 +31,71 @@ const sortOrganizations = (a, b) => {
 export default function useOrganizationBests() {
   const [state, setState] = useState({
     data: null,
-    loading: true,
+    loading: false,
     error: false,
   });
+  const location = useLocation();
+  const searchCoordinates = useSearchCoordinates();
 
-  const search = useCallback(
-    async ({
-      name,
-      latitude,
-      longitude,
-      radius,
-      bounds,
-      categoryIds,
-      isInactive,
-      verificationStatusId,
-      neighborhoodId,
-      tag,
-    }) => {
+  let latitude, longitude;
+  if (location.search && !searchCoordinates) {
+    const queryParams = new URLSearchParams(location.search);
+    longitude = Number(queryParams.get("longitude"));
+    latitude = Number(queryParams.get("latitude"));
+  } else {
+    longitude = searchCoordinates?.longitude || DEFAULT_COORDINATES.longitude;
+    latitude = searchCoordinates?.latitude || DEFAULT_COORDINATES.latitude;
+  }
+
+  const dispatch = useAppDispatch();
+
+  const processStakeholders = useCallback(
+    (stakeholders, filters) => {
+      let filteredStakeholders = stakeholders;
+
+      if (latitude && longitude) {
+        filteredStakeholders = computeDistances(
+          latitude,
+          longitude,
+          filteredStakeholders
+        );
+      }
+
+      if (filters.categoryIds && filters.categoryIds.length) {
+        filteredStakeholders = filteredStakeholders.filter((stakeholder) =>
+          filters.categoryIds.some((catId) =>
+            stakeholder.categoryIds.includes(catId)
+          )
+        );
+      }
+
+      if (filters.neighborhoodId) {
+        filteredStakeholders = filteredStakeholders.filter(
+          (stakeholder) => stakeholder.neighborhoodId === filters.neighborhoodId
+        );
+      }
+
+      const stakeholdersWithDistances = computeDistances(
+        latitude,
+        longitude,
+        filteredStakeholders
+      );
+      stakeholdersWithDistances.sort(sortOrganizations);
+      dispatch({
+        type: "STAKEHOLDERS_LOADED",
+        stakeholders: stakeholdersWithDistances,
+      });
+      setState({
+        data: stakeholdersWithDistances,
+        loading: false,
+        error: false,
+      });
+    },
+    [dispatch, longitude, latitude]
+  );
+
+  const selectAll = useCallback(
+    async ({ categoryIds }) => {
       if (!latitude || !longitude) {
         setState({ data: null, loading: false, error: true });
         const msg =
@@ -49,52 +104,39 @@ export default function useOrganizationBests() {
         return Promise.reject(msg);
       }
       analytics.postEvent("searchFoodSeeker", {
-        name,
         latitude,
         longitude,
-        radius,
-        bounds,
         categoryIds,
-        isInactive,
-        verificationStatusId,
-        neighborhoodId,
-        tag,
       });
-      //if (!categoryIds || categoryIds.length === 0) return;
+
       try {
         setState({ data: null, loading: true, error: false });
-        let params = {
-          name,
+
+        const filters = {
           categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
-          latitude,
-          longitude,
-          distance: radius,
-          isInactive,
-          verificationStatusId,
-          neighborhoodId,
-          tag,
         };
-        if (bounds) {
-          const { maxLat, maxLng, minLat, minLng } = bounds;
-          params = {
-            ...params,
-            maxLng,
-            maxLat,
-            minLng,
-            minLat,
-          };
+
+        let stakeholders;
+        const isStaleData = checkIfStaleData();
+        if (!isStaleData) {
+          stakeholders = JSON.parse(localStorage.getItem("stakeholders"));
+        } else {
+          stakeholders = await stakeholderService.selectAll();
+          const currentTimestamp = new Date().getTime();
+          localStorage.setItem("stakeholders", JSON.stringify(stakeholders));
+          localStorage.setItem(
+            "stakeholdersTimestamp",
+            currentTimestamp.toString()
+          );
         }
-        const stakeholders = await stakeholderService.search(params);
-        stakeholders.sort(sortOrganizations);
-        setState({ data: stakeholders, loading: false, error: false });
-        return stakeholders;
+        processStakeholders(stakeholders, filters);
       } catch (err) {
         setState({ data: null, loading: false, error: true });
         console.error(err);
         return Promise.reject(err);
       }
     },
-    []
+    [processStakeholders, latitude, longitude]
   );
 
   const getById = useCallback(async (id) => {
@@ -117,5 +159,5 @@ export default function useOrganizationBests() {
     }
   }, []);
 
-  return { ...state, search, getById };
+  return { ...state, selectAll, getById };
 }

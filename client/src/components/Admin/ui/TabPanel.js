@@ -1,9 +1,8 @@
-import React from "react";
 import { Box, Typography } from "@mui/material";
 
 export function a11yProps(index) {
   return {
-    id: `tab-${index}`,
+    "id": `tab-${index}`,
     "aria-controls": `tab-${index}`,
   };
 }

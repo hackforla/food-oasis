@@ -126,3 +126,64 @@ export const validateUrl = (url) => {
     ? url
     : `http://${url}`;
 };
+
+export const haversineDistanceInMiles = (lat1, lon1, lat2, lon2) => {
+  function toRad(value) {
+    return (value * Math.PI) / 180;
+  }
+
+  const R = 3958.8; // Earth's radius in miles
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRad(lat1)) *
+      Math.cos(toRad(lat2)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const d = R * c;
+
+  return d; // Returns distance in miles
+};
+
+export const checkIfStaleData = () => {
+  const storedTimestamp = localStorage.getItem("stakeholdersTimestamp");
+  if (!storedTimestamp) return true;
+
+  const currentTimestamp = new Date().getTime();
+  const timeToRefreshInMilliseconds = 10 * 60 * 1000; //this is 10 minutes
+
+  return (
+    currentTimestamp - Number(storedTimestamp) > timeToRefreshInMilliseconds
+  );
+};
+
+export const computeDistances = (userLatitude, userLongitude, stakeholders) => {
+  const filteredStakeholders = stakeholders.filter(
+    (stakeholder) =>
+      !(stakeholder.latitude === 0 && stakeholder.longitude === 0)
+  );
+
+  filteredStakeholders.forEach((stakeholder) => {
+    if (
+      typeof stakeholder.latitude !== "undefined" &&
+      stakeholder.latitude !== null &&
+      typeof stakeholder.longitude !== "undefined" &&
+      stakeholder.longitude !== null
+    ) {
+      stakeholder.distance = haversineDistanceInMiles(
+        userLatitude,
+        userLongitude,
+        stakeholder.latitude,
+        stakeholder.longitude
+      );
+    } else {
+      stakeholder.distance = null;
+    }
+  });
+
+  return filteredStakeholders;
+};

@@ -1,4 +1,4 @@
-import { Stack, Box, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 
 const PaletteSwatch = ({ hexColor, name, textColor, children }) => {
   return (
@@ -177,7 +177,7 @@ function MuiPalette() {
           textColor="#FFFFFF"
         >
           <ul>
-            <li></li>typography (not body1 or body2)
+            <li>typography (not body1 or body2)</li>
           </ul>
         </PaletteSwatch>
       </Stack>
@@ -189,7 +189,7 @@ function MuiPalette() {
           textColor="#FFFFFF"
         >
           <ul>
-            <li></li>body1, body2 typography
+            <li>body1, body2 typography</li>
           </ul>
         </PaletteSwatch>
       </Stack>

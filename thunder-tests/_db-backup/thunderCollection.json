@@ -1,0 +1,113 @@
+[
+  {
+    "_id": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "colName": "Food Oasis ",
+    "created": "2022-10-04T03:11:23.696Z",
+    "sortNum": 10000,
+    "folders": [
+      {
+        "_id": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
+        "name": "Accounts",
+        "containerId": "",
+        "created": "2022-10-04T03:11:23.697Z",
+        "sortNum": 10000
+      },
+      {
+        "_id": "3ff960b6-f779-4e24-90a6-99d2c89d3b68",
+        "name": "ParentOrganizations",
+        "containerId": "",
+        "created": "2022-10-04T03:11:23.698Z",
+        "sortNum": 20000
+      },
+      {
+        "_id": "e39dc47f-701b-4d02-80e1-1a5bbd65cfdb",
+        "name": "Categories",
+        "containerId": "",
+        "created": "2022-10-04T03:11:23.699Z",
+        "sortNum": 15000
+      },
+      {
+        "_id": "8af1b2e1-3c85-439d-b277-d4b83209cc98",
+        "name": "Tenants",
+        "containerId": "",
+        "created": "2022-10-04T03:11:23.700Z",
+        "sortNum": 40000
+      },
+      {
+        "_id": "24d28291-9541-4bea-a1d3-ee1b778eeb85",
+        "name": "Suggestions",
+        "containerId": "",
+        "created": "2022-10-22T06:36:29.788Z",
+        "sortNum": 22500
+      },
+      {
+        "_id": "d8625d5d-3acd-4b25-b796-b62f4d6a68ce",
+        "name": "Tags",
+        "containerId": "",
+        "created": "2022-10-27T23:39:58.096Z",
+        "sortNum": 25000
+      },
+      {
+        "_id": "aaf8073a-e70d-4516-be25-c013040d9f45",
+        "name": "Neighborhoods",
+        "containerId": "",
+        "created": "2022-11-18T00:47:20.734Z",
+        "sortNum": 18750
+      },
+      {
+        "_id": "7f5a5a8a-37c9-4fea-911f-c13660509a3e",
+        "name": "Stakeholders",
+        "containerId": "",
+        "created": "2022-11-18T02:09:50.611Z",
+        "sortNum": 21250
+      },
+      {
+        "_id": "ae763c3f-34d6-40dd-9749-50a88bd18b89",
+        "name": "Geocode",
+        "containerId": "",
+        "created": "2022-11-18T02:13:33.972Z",
+        "sortNum": 16250
+      },
+      {
+        "_id": "d6bbf7d0-eaef-486e-919f-4869bb8766d3",
+        "name": "StakeholderBests",
+        "containerId": "",
+        "created": "2022-11-18T02:14:30.792Z",
+        "sortNum": 21875
+      },
+      {
+        "_id": "edc0a923-2274-4573-ba0d-0ef3d5daed06",
+        "name": "StakeholderLogs",
+        "containerId": "",
+        "created": "2022-11-18T02:14:43.234Z",
+        "sortNum": 22187.5
+      },
+      {
+        "_id": "65ec2675-283c-4b6f-a507-21d6420f7e2d",
+        "name": "Email",
+        "containerId": "",
+        "created": "2022-11-23T00:24:36.442Z",
+        "sortNum": 15625
+      },
+      {
+        "_id": "1fa8eeb1-253f-49fe-92e1-a2f2e3b25cd3",
+        "name": "Load ",
+        "containerId": "",
+        "created": "2022-11-23T00:56:58.882Z",
+        "sortNum": 17500
+      },
+      {
+        "_id": "75ccff0e-93eb-402e-a657-6a6422276fac",
+        "name": "Import",
+        "containerId": "",
+        "created": "2022-11-23T01:50:29.384Z",
+        "sortNum": 60000
+      }
+    ],
+    "settings": {
+      "headers": [],
+      "tests": [],
+      "envId": "7125f331-2265-4a91-be18-62faf5aba81d"
+    }
+  }
+]

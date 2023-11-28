@@ -1,5 +1,5 @@
-import donatebg from "../assets/donate-header.jpg";
 import { Link, Typography } from "@mui/material";
+import donatebg from "../assets/donate-header.jpg";
 
 const PAGE_INFO_DONATE = {
   pageTitle: "Donate",
@@ -19,6 +19,7 @@ const PAGE_SECTIONS_DONATE = [
           possible! As a 501(c)(3) nonprofit, Aloha Harvest relies completely on
           the generosity of our funders, ranging from national grants to
           individual donations by community members.
+          <br /> <br />
         </Typography>
 
         <Typography variant="body1">
@@ -30,10 +31,12 @@ const PAGE_SECTIONS_DONATE = [
           >
             alohaharvest.org/donate.
           </Link>
+          <br /> <br />
         </Typography>
 
         <Typography variant="body1">
           You will receive an automatic acknowledgement upon donation.
+          <br /> <br />
         </Typography>
 
         <Typography variant="body1">
@@ -44,7 +47,7 @@ const PAGE_SECTIONS_DONATE = [
           3599 Wai`alae Ave., Suite 23
           <br />
           Honolulu, HI 96816
-          <br />
+          <br /> <br />
         </Typography>
 
         <Typography variant="body1">

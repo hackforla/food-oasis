@@ -1,6 +1,3 @@
-import React from "react";
-import { withFormik } from "formik";
-import PropTypes from "prop-types";
 import {
   Button,
   Dialog,
@@ -11,29 +8,23 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import * as suggestionService from "services/suggestion-service";
-import { DEFAULT_STAKEHOLDER } from "../../../../constants/stakeholder";
-import * as Yup from "yup";
 import Label from "components/Admin/ui/Label";
 import Textarea from "components/Admin/ui/Textarea";
+import { withFormik } from "formik";
+import PropTypes from "prop-types";
+import * as suggestionService from "services/suggestion-service";
+import * as Yup from "yup";
+import { DEFAULT_STAKEHOLDER } from "../../../../constants/stakeholder";
 
-const useStyles = makeStyles((theme) => ({
-  correctionInput: {
-    "& div": {
-      "& textarea": {
-        paddingRight: "2rem",
-      },
-    },
-  },
-}));
 function SuggestionDialog(props) {
   const { values, touched, errors, handleChange, handleBlur, handleSubmit } =
     props;
 
-  const { onClose, open, id } = props;
-  const classes = useStyles();
-  const handleCancel = () => onClose(false);
+  const { onClose, open, id, handleReset } = props;
+  const handleCancel = () => {
+    handleReset();
+    onClose(false);
+  };
 
   return (
     <Dialog
@@ -63,7 +54,6 @@ function SuggestionDialog(props) {
                 <Label id="notes" label="Corrections *" />
                 <Textarea
                   type="text"
-                  className={classes.correctionInput}
                   size="small"
                   minRows={2}
                   maxRows={12}
@@ -156,10 +146,10 @@ const SuggestionForm = withFormik({
     tipsterEmail: tipsterEmail || "",
   }),
   validationSchema: Yup.object(validationsForm),
-  handleSubmit: (values, { props }) => {
+  handleSubmit: (values, formikBag) => {
     const stakeholder = {
       ...DEFAULT_STAKEHOLDER,
-      ...props.stakeholder,
+      ...formikBag.stakeholder,
     };
 
     // Construct the suggestion by starting with the stakeholder record,
@@ -176,13 +166,14 @@ const SuggestionForm = withFormik({
     return suggestionService
       .post(altered)
       .then(() => {
-        props.setToast({
+        formikBag.props.setToast({
           message: "Thank you for your help!",
         });
-        props.onClose(true);
+        formikBag.resetForm();
+        formikBag.props.onClose(true);
       })
       .catch(() => {
-        props.setToast({
+        formikBag.props.setToast({
           message:
             "Sorry, submitting your correction failed, please email us at the address on the About page.",
         });

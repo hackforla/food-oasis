@@ -1,118 +1,71 @@
-import React, { useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Navigate,
-  Routes,
-  Route,
-} from "react-router-dom";
-import { ThemeProvider } from "theme";
-import makeStyles from "@mui/styles/makeStyles";
-import { Grid, CssBaseline, Stack } from "@mui/material";
-import { ToasterProvider } from "contexts/toasterContext";
-import { UserProvider } from "contexts/userContext";
-import Toast from "components/UI/Toast";
+import { CircularProgress, CssBaseline, Grid, Stack } from "@mui/material";
+import Home from "components/FoodSeeker/Home";
+import Suggestion from "components/FoodSeeker/Suggestion";
 import Header from "components/Layout/Header";
 import HeaderHome from "components/Layout/HeaderHome";
 import WidgetFooter from "components/Layout/WidgetFooter";
-import Home from "components/FoodSeeker/Home";
-import Profile from "./components/Account/Profile";
-import * as analytics from "../src/services/analytics";
-import PrivateRoute from "./components/PrivateRoute";
-import Fallback from "./components/Fallback";
-import { AppStateProvider } from "./appReducer";
+import Toast from "components/UI/Toast";
 import { SiteProvider } from "contexts/siteContext";
+import { ToasterProvider } from "contexts/toasterContext";
+import { UserProvider } from "contexts/userContext";
+import { Suspense, lazy, useEffect } from "react";
 import { HelmetProvider } from "react-helmet-async";
+import {
+  Navigate,
+  Route,
+  BrowserRouter as Router,
+  Routes,
+} from "react-router-dom";
+import { ThemeProvider } from "theme";
+import * as analytics from "../src/services/analytics";
+import { AppStateProvider } from "./appReducer";
+import Profile from "./components/Account/Profile";
+import Fallback from "./components/Fallback";
+import PrivateRoute from "./components/PrivateRoute";
 import SEO from "./components/SEO";
-import CircularProgress from "@mui/material/CircularProgress";
-import Suggestion from "components/FoodSeeker/Suggestion";
 
-const VerificationAdmin = React.lazy(() =>
+const VerificationAdmin = lazy(() =>
   import("components/Admin/VerificationAdmin")
 );
-const VerificationDashboard = React.lazy(() =>
+const VerificationDashboard = lazy(() =>
   import("components/Admin/VerificationDashboard")
 );
-const SecurityAdminDashboard = React.lazy(() =>
+const SecurityAdminDashboard = lazy(() =>
   import("components/Account/SecurityAdminDashboard/SecurityAdminDashboard")
 );
-const OrganizationEdit = React.lazy(() =>
+const OrganizationEdit = lazy(() =>
   import("components/Admin/OrganizationEdit")
 );
-const ParentOrganizations = React.lazy(() =>
+const ParentOrganizations = lazy(() =>
   import("components/Admin/ParentOrganizations")
 );
-const TagAdmin = React.lazy(() => import("components/Admin/TagAdmin"));
-const Resources = React.lazy(() => import("components/Layout/Resources"));
-const Register = React.lazy(() => import("components/Account/Register"));
-const Login = React.lazy(() => import("components/Account/Login"));
-const ForgotPassword = React.lazy(() =>
-  import("components/Account/ForgotPassword")
-);
-const ResetPasswordEmailSent = React.lazy(() =>
+const TagAdmin = lazy(() => import("components/Admin/TagAdmin"));
+const Register = lazy(() => import("components/Account/Register"));
+const Login = lazy(() => import("components/Account/Login"));
+const ForgotPassword = lazy(() => import("components/Account/ForgotPassword"));
+const ResetPasswordEmailSent = lazy(() =>
   import("components/Account/ResetPasswordEmailSent")
 );
-const ResetPassword = React.lazy(() =>
-  import("components/Account/ResetPassword")
-);
-const ConfirmEmail = React.lazy(() =>
-  import("components/Account/ConfirmEmail")
-);
-const SearchResults = React.lazy(() =>
+const ResetPassword = lazy(() => import("components/Account/ResetPassword"));
+const ConfirmEmail = lazy(() => import("components/Account/ConfirmEmail"));
+const SearchResults = lazy(() =>
   import("components/FoodSeeker/SearchResults/SearchResults")
 );
-const ImportFile = React.lazy(() =>
+const ImportFile = lazy(() =>
   import("components/Admin/ImportOrganizations/ImportFile")
 );
-const Suggestions = React.lazy(() => import("components/Admin/Suggestions"));
-const Logins = React.lazy(() => import("components/Admin/Logins"));
-const Donate = React.lazy(() => import("./components/Donate"));
-const About = React.lazy(() => import("./components/About"));
-const Faq = React.lazy(() => import("./components/Faq"));
-const Contact = React.lazy(() => import("./components/StaticPages/Contact"));
-const MuiDemo = React.lazy(() => import("./components/MuiDemo/MuiDemo"));
-const useStyles = makeStyles({
-  app: () => ({
-    color: "black",
-    backgroundColor: "#fff",
-    margin: "0",
-    height: "100%",
-    //overflowY: "scroll",
-  }),
-  mainContent: {
-    margin: "0",
-    paddingBottom: "50px",
-    overflowY: "scroll",
-    flexGrow: 1,
-  },
-  organizationEditWrapper: {
-    flexBasis: "90%",
-    paddingTop: "1em",
-    paddingBottom: "1em",
-  },
-  homeWrapper: {
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundImage: 'url("/landing-page/map.png")', // replaced the background image style inside useStyles instead of inline styling
-    minHeight: "max(100.7vh,20em)",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  verificationAdminWrapper: {
-    flexBasis: "100%",
-    flexGrow: 1,
-    display: "flex",
-    flexDirection: "column",
-  },
-});
+const Suggestions = lazy(() => import("components/Admin/Suggestions"));
+const Logins = lazy(() => import("components/Admin/Logins"));
+const Donate = lazy(() => import("./components/Donate"));
+const About = lazy(() => import("./components/About"));
+const Faq = lazy(() => import("./components/Faq"));
+const Contact = lazy(() => import("./components/StaticPages/Contact"));
+const MuiDemo = lazy(() => import("./components/MuiDemo/MuiDemo"));
 
 function App() {
   useEffect(() => {
     analytics.postEvent("visitAppComponent");
   }, []);
-
-  const classes = useStyles();
 
   return (
     <HelmetProvider>
@@ -134,8 +87,12 @@ function App() {
                     wrap="nowrap"
                     alignContent="stretch"
                     spacing={0}
-                    classes={{
-                      container: classes.app,
+                    sx={{
+                      color: "black",
+                      backgroundColor: "#fff",
+                      margin: "0",
+                      height: "100%",
+                      overflowX: "hidden",
                     }}
                   >
                     <Routes>
@@ -147,7 +104,7 @@ function App() {
                       {/* <Route exact path="/widget" /> */}
                       <Route path="/*" element={<Header />} />
                     </Routes>
-                    <React.Suspense
+                    <Suspense
                       fallback={
                         <Stack
                           justifyContent="center"
@@ -158,7 +115,7 @@ function App() {
                         </Stack>
                       }
                     >
-                      <Routes className={classes.mainContent}>
+                      <Routes>
                         <Route exact path="/" element={<Home />} />
                         {/*
                 Following route provides backward-compatibilty for the
@@ -188,7 +145,13 @@ function App() {
                         <Route
                           path="organizationedit/:id?"
                           element={
-                            <div className={classes.organizationEditWrapper}>
+                            <div
+                              style={{
+                                flexBasis: "90%",
+                                paddingTop: "1em",
+                                paddingBottom: "1em",
+                              }}
+                            >
                               <OrganizationEdit />
                             </div>
                           }
@@ -196,7 +159,13 @@ function App() {
                         <Route
                           path="muidemo"
                           element={
-                            <div className={classes.organizationEditWrapper}>
+                            <div
+                              style={{
+                                flexBasis: "90%",
+                                paddingTop: "1em",
+                                paddingBottom: "1em",
+                              }}
+                            >
                               <MuiDemo />
                             </div>
                           }
@@ -212,7 +181,14 @@ function App() {
                                 "isCoordinator",
                               ]}
                             >
-                              <div className={classes.verificationAdminWrapper}>
+                              <div
+                                style={{
+                                  flexBasis: "100%",
+                                  flexGrow: 1,
+                                  display: "flex",
+                                  flexDirection: "column",
+                                }}
+                              >
                                 <VerificationDashboard />
                               </div>
                             </PrivateRoute>
@@ -222,7 +198,14 @@ function App() {
                           path="verificationadmin"
                           element={
                             <PrivateRoute roles={["isAdmin", "isCoordinator"]}>
-                              <div className={classes.verificationAdminWrapper}>
+                              <div
+                                style={{
+                                  flexBasis: "100%",
+                                  flexGrow: 1,
+                                  display: "flex",
+                                  flexDirection: "column",
+                                }}
+                              >
                                 <VerificationAdmin />
                               </div>
                             </PrivateRoute>
@@ -232,7 +215,13 @@ function App() {
                           path="parentorganizations"
                           element={
                             <PrivateRoute roles={["isAdmin"]}>
-                              <div className={classes.organizationEditWrapper}>
+                              <div
+                                style={{
+                                  flexBasis: "90%",
+                                  paddingTop: "1em",
+                                  paddingBottom: "1em",
+                                }}
+                              >
                                 <ParentOrganizations />
                               </div>
                             </PrivateRoute>
@@ -242,7 +231,13 @@ function App() {
                           path="tags"
                           element={
                             <PrivateRoute roles={["isAdmin"]}>
-                              <div className={classes.organizationEditWrapper}>
+                              <div
+                                style={{
+                                  flexBasis: "90%",
+                                  paddingTop: "1em",
+                                  paddingBottom: "1em",
+                                }}
+                              >
                                 <TagAdmin />
                               </div>
                             </PrivateRoute>
@@ -252,7 +247,13 @@ function App() {
                           path="suggestions"
                           element={
                             <PrivateRoute roles={["isAdmin"]}>
-                              <div className={classes.organizationEditWrapper}>
+                              <div
+                                style={{
+                                  flexBasis: "90%",
+                                  paddingTop: "1em",
+                                  paddingBottom: "1em",
+                                }}
+                              >
                                 <Suggestions />
                               </div>
                             </PrivateRoute>
@@ -263,7 +264,13 @@ function App() {
                           roles={["isAdmin", "isCoordinator"]}
                           element={
                             <PrivateRoute roles={["isAdmin", "isCoordinator"]}>
-                              <div className={classes.organizationEditWrapper}>
+                              <div
+                                style={{
+                                  flexBasis: "90%",
+                                  paddingTop: "1em",
+                                  paddingBottom: "1em",
+                                }}
+                              >
                                 <Logins />
                               </div>
                             </PrivateRoute>
@@ -275,7 +282,14 @@ function App() {
                             <PrivateRoute
                               roles={["isGlobalAdmin", "isSecurityAdmin"]}
                             >
-                              <div className={classes.verificationAdminWrapper}>
+                              <div
+                                style={{
+                                  flexBasis: "100%",
+                                  flexGrow: 1,
+                                  display: "flex",
+                                  flexDirection: "column",
+                                }}
+                              >
                                 <SecurityAdminDashboard />
                               </div>
                             </PrivateRoute>
@@ -289,7 +303,6 @@ function App() {
                             </PrivateRoute>
                           }
                         />
-                        <Route path="resources" element={<Resources />} />
                         <Route path="register" element={<Register />} />
                         <Route
                           path="confirm/:token"
@@ -314,7 +327,7 @@ function App() {
                         <Route exact path="contact" element={<Contact />} />
                         <Route exact path="fallback" element={<Fallback />} />
                       </Routes>
-                    </React.Suspense>
+                    </Suspense>
                     <Toast />
                   </Grid>
                 </Router>

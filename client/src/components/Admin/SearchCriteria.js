@@ -1,41 +1,26 @@
-import React, { useState, useEffect } from "react";
-import makeStyles from "@mui/styles/makeStyles";
 import {
+  Box,
   Card,
   CardContent,
   Checkbox,
+  Divider,
+  FormControlLabel,
+  Grid,
+  Input,
   ListItemText,
   MenuItem,
-  Input,
-  Select,
-  Grid,
-  FormControlLabel,
-  Typography,
-  RadioGroup,
   Radio,
+  RadioGroup,
+  Select,
   TextField,
+  Typography,
 } from "@mui/material";
-import RadioTrueFalseEither from "./ui/RadioTrueFalseEither";
-import LocationAutocomplete from "./LocationAutocomplete";
-import AccountAutocomplete from "./AccountAutocomplete";
+import { useEffect, useState } from "react";
 import { defaultViewport } from "../../helpers/Configuration";
+import AccountAutocomplete from "./AccountAutocomplete";
+import LocationAutocomplete from "./LocationAutocomplete";
 import Label from "./ui/Label";
-// TODO:  Having a project react component named "Input" seems to cause
-// some sort of conflict with the material-ui component also named Input.
-// For now, use the Input component from material-ui insted to fix broken
-// criteria dialog in production. Need to re-visit and figure out if
-// simply giving our Food Oasis input a different name will resolve
-// this problem.
-// import { Input } from "../UI";
-
-const useStyles = makeStyles(() => ({
-  card: {
-    margin: "0px",
-  },
-  formLabel: {
-    margin: "1rem 0 .5rem",
-  },
-}));
+import RadioTrueFalseEither from "./ui/RadioTrueFalseEither";
 
 const closeTo = (lat1, lon1, lat2, lon2) => {
   return Math.abs(lat1 - lat2) + Math.abs(lon1 - lon2) < 0.01;
@@ -100,10 +85,7 @@ const SearchCriteria = ({
     }
 
     setCriteria({ ...criteria, [evt.target.name]: evt.target.value });
-    console.log(criteria);
   };
-
-  const classes = useStyles();
 
   const handleRadioChange = (evt) => {
     const val = evt.target.value;
@@ -139,7 +121,7 @@ const SearchCriteria = ({
   };
 
   return (
-    <Card className={classes.card}>
+    <Card>
       <CardContent>
         <Grid container spacing={4}>
           <Grid item xs={12} sm={6}>
@@ -184,6 +166,7 @@ const SearchCriteria = ({
                 variant="outlined"
                 placeholder="Category(ies)"
                 fullWidth
+                labelId="select-multiple-chip"
                 value={criteria.categoryIds}
                 onChange={(event) => {
                   const categoryIds = event.target.value;
@@ -191,7 +174,7 @@ const SearchCriteria = ({
                 }}
                 inputProps={{ id: "select-categories" }}
                 renderValue={(ids) => (
-                  <div>
+                  <Typography>
                     {ids &&
                     ids.length > 0 &&
                     categories &&
@@ -205,11 +188,13 @@ const SearchCriteria = ({
                           )
                           .join(", ")
                       : "(Any)"}
-                  </div>
+                  </Typography>
                 )}
               >
                 <MenuItem disabled value="">
-                  <em>(All Categories)</em>
+                  <Typography sx={{ fontStyle: "italic" }}>
+                    (All Categories)
+                  </Typography>
                 </MenuItem>
                 {categories.map((category) => (
                   <MenuItem key={category.id} value={category.id}>
@@ -370,7 +355,9 @@ const SearchCriteria = ({
             <Grid container>
               <Label id="radius" label="Location" />
               <Grid item container alignItems="center">
-                <div style={{ marginRight: "0.5rem" }}>{"Within "}</div>
+                <Typography sx={{ marginRight: "0.5rem" }}>
+                  {"Within "}
+                </Typography>
                 <Select
                   name="radius"
                   variant="outlined"
@@ -404,7 +391,9 @@ const SearchCriteria = ({
                     50
                   </MenuItem>
                 </Select>
-                <div style={{ margin: "0 1rem 0 .5rem" }}>{"miles of"}</div>
+                <Typography sx={{ margin: "0 1rem 0 .5rem" }}>
+                  {"miles of"}
+                </Typography>
               </Grid>
               <Grid item xs={12}>
                 {/* If we got location from browser, allow using current location */}
@@ -419,12 +408,12 @@ const SearchCriteria = ({
                       control={<Radio color="primary" />}
                       style={{ alignItems: "flex-start" }}
                       label={
-                        <div>
+                        <Box>
                           <Typography>My Location: </Typography>
                           <Typography>{`(${userLatitude.toFixed(
                             6
                           )}, ${userLongitude.toFixed(6)})`}</Typography>
-                        </div>
+                        </Box>
                       }
                     />
                     <FormControlLabel
@@ -432,8 +421,8 @@ const SearchCriteria = ({
                       control={<Radio color="primary" />}
                       style={{ alignItems: "flex-start" }}
                       label={
-                        <div>
-                          <hr />
+                        <Box>
+                          <Divider />
                           <Typography>{`Custom Location:`} </Typography>
                           {customPlaceName ? (
                             <Typography>{customPlaceName}</Typography>
@@ -448,12 +437,12 @@ const SearchCriteria = ({
                             fullWidth
                             setLocation={setLocation}
                           />
-                        </div>
+                        </Box>
                       }
                     />
                   </RadioGroup>
                 ) : (
-                  <div>
+                  <Box>
                     {customPlaceName ? (
                       <Typography>{customPlaceName}</Typography>
                     ) : null}
@@ -468,7 +457,7 @@ const SearchCriteria = ({
                       fullWidth
                       setLocation={setLocation}
                     />
-                  </div>
+                  </Box>
                 )}
               </Grid>
             </Grid>

@@ -1,6 +1,4 @@
-import React from "react";
-import { useTheme } from "@mui/material/styles";
-import Button from "@mui/material/Button";
+import { Button, useTheme } from "@mui/material";
 
 const PantryIcon = ({ isSelected }) => (
   <svg

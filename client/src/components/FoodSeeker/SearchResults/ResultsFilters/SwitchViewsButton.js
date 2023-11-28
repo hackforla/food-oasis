@@ -1,9 +1,6 @@
-import React from "react";
-import { Button } from "@mui/material";
-import Typography from "@mui/material/Typography";
-import MapIcon from "@mui/icons-material/Map";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
-import { styled } from "@mui/material/styles";
+import MapIcon from "@mui/icons-material/Map";
+import { Button, Typography, styled } from "@mui/material";
 
 // Override standard button hover behavior
 const SwitchButton = styled(Button)(({ theme }) => ({
@@ -19,13 +16,17 @@ export default function SwitchViewsButton({ isListView, onClick, style }) {
       {!isListView && (
         <>
           <FormatListBulletedIcon />
-          <Typography variant="button" color="inherit">List</Typography>
+          <Typography variant="button" color="inherit">
+            List
+          </Typography>
         </>
       )}
       {isListView && (
         <>
           <MapIcon />
-          <Typography variant="button" color="inherit">Map</Typography>
+          <Typography variant="button" color="inherit">
+            Map
+          </Typography>
         </>
       )}
     </SwitchButton>

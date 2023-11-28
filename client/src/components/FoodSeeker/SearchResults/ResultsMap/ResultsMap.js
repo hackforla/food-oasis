@@ -14,7 +14,7 @@ import {
 // recommendation from Mapbox team
 // https://github.com/mapbox/mapbox-gl-js/issues/10173  See comment by IvanDreamer on Mar 22
 // for craco.config.js contents
-import { Button, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import { MAPBOX_STYLE } from "constants/map";
 import { defaultViewport } from "helpers/Configuration";
 import useBreakpoints from "hooks/useBreakpoints";
@@ -193,28 +193,6 @@ const ResultsMap = (
             <Map.Layer {...regionFillStyle} />
             <Map.Layer {...regionBorderStyle} />
           </Map.Source>
-        )}
-
-        {!hasAdvancedFilterFeatureFlag && (
-          <Button
-            variant="outlined"
-            onClick={searchMapArea}
-            size="small"
-            sx={(theme) => ({
-              "position": "absolute",
-              "top": 5,
-              "left": "50%",
-              "transform": "translate(-50%)",
-              "backgroundColor": "white",
-              "&:hover": {
-                background: theme.palette.primary.main,
-                color: "#FFFFFF",
-              },
-            })}
-            disabled={loading}
-          >
-            Search this area
-          </Button>
         )}
       </ReactMapGL>
       <Grid

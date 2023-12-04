@@ -1,4 +1,4 @@
-import { useState } from "react";
+import CloseIcon from "@mui/icons-material/Close";
 import {
   Checkbox,
   Divider,
@@ -18,10 +18,11 @@ import {
   Typography,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import CloseIcon from "@mui/icons-material/Close";
+import useBreakpoints from "hooks/useBreakpoints";
 import MealIconNoBorder from "icons/MealIconNoBorder";
 import PantryIconNoBorder from "icons/PantryIconNoBorder";
-import useBreakpoints from "hooks/useBreakpoints";
+import { useState } from "react";
+import { useAppDispatch, useFilterPanel } from "../../../../appReducer";
 
 const DrawerHeader = styled("div")(({ _theme }) => ({
   display: "flex",
@@ -37,7 +38,7 @@ const checkedStyle = {
 
 const yPadding = { py: 2 };
 
-export default function FilterPanel({ setOpen, open, mealPantry }) {
+export default function FilterPanel({ mealPantry }) {
   const { isDesktop } = useBreakpoints();
   const drawerWidth = isDesktop ? 340 : "100%";
   const drawerHeight = isDesktop ? "100%" : "50%";
@@ -45,9 +46,14 @@ export default function FilterPanel({ setOpen, open, mealPantry }) {
   const { toggleMeal, togglePantry, isMealSelected, isPantrySelected } =
     mealPantry;
   const [openTimeValue, setoOpenTimeValue] = useState({ day: "", time: "" });
+  const dispatch = useAppDispatch();
+  const open = useFilterPanel();
 
   const handleDrawerClose = () => {
-    setOpen(false);
+    dispatch({
+      type: "FILTER_PANEL_TOGGLE",
+      filterPanel: !open,
+    });
   };
 
   function handleOpenTimeChange(dayOrTime, event) {

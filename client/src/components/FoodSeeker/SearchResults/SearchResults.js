@@ -142,6 +142,7 @@ const SearchResults = () => {
 
   return (
     <Mobile
+      showList={showList}
       filters={filters}
       map={map}
       list={list}

@@ -82,6 +82,15 @@ function widgetReducer(state, action) {
   }
 }
 
+function filterPanelReducer(state, action) {
+  switch (action.type) {
+    case "FILTER_PANEL_TOGGLE":
+      return action.filterPanel;
+    default:
+      return state;
+  }
+}
+
 export function appReducer(state, action) {
   return {
     defaultCoordinate: defaultCoordinatesReducer(
@@ -103,6 +112,7 @@ export function appReducer(state, action) {
     // iframe widget hosted in a third-party application.
     isWidget: widgetReducer(state.isWidget, action),
     stakeholders: stakeholdersReducer(state.stakeholders, action),
+    filterPanel: filterPanelReducer(state.filterPanel, action),
   };
 }
 
@@ -115,6 +125,7 @@ export function getInitialState() {
     userCoordinates: null,
     neighborhood: null,
     isWidget: false,
+    filterPanel: false,
   };
 }
 
@@ -181,4 +192,9 @@ export function useWidget() {
 export function useStakeholders() {
   const { stakeholders } = useAppState();
   return stakeholders;
+}
+
+export function useFilterPanel() {
+  const { filterPanel } = useAppState();
+  return filterPanel;
 }

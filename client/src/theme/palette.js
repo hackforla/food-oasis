@@ -85,5 +85,5 @@ export const palette = {
     backgroundColor: "#E6F0FF",
     bodyText: "#313233",
     hoverColor: "#CBE3F1",
-  }
+  },
 };

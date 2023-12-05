@@ -87,14 +87,14 @@ const ResultsFilters = ({
         sm={8}
         justifyContent="center"
         alignItems="center"
-        wrap="wrap-reverse"
+        wrap="wrap-reverse"        
       >
         <Stack
           direction={{ xs: "column-reverse", sm: "row" }}
           spacing={0.5}
           sx={{
             width: "100%",
-            alignItems: "center",
+            alignItems: "center",            
           }}
         >
           <Grid2

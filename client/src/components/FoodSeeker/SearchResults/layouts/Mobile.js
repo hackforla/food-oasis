@@ -1,6 +1,8 @@
 import { Box } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import Draggable from "react-draggable";
+import { useFilterPanel } from "appReducer";
+import { useAppDispatch } from "appReducer";
 
 const overlay = {
   position: "absolute",
@@ -14,14 +16,26 @@ const overlay = {
 const MobileLayout = ({ filters, map, list, preview, details, showList }) => {
   const [showDetails, setShowDetails] = useState(false);
   const [position, setPosition] = useState();
+  const dispatch = useAppDispatch();
+  const filterPanelOpen = useFilterPanel();
+
+  console.log(filterPanelOpen)
 
   useEffect(() => {
     if (!showList) {
+      dispatch({
+        type: "FILTER_PANEL_TOGGLE",
+        filterPanel: false,
+      });
       setPosition({
         x: 0,
         y: 60 * (window.innerHeight / 100),
       });
     } else {
+      dispatch({
+        type: "FILTER_PANEL_TOGGLE",
+        filterPanel: false,
+      });
       setPosition({
         x: 0,
         y: 10,
@@ -32,6 +46,21 @@ const MobileLayout = ({ filters, map, list, preview, details, showList }) => {
   useEffect(() => {
     if (!details) setShowDetails(false);
   }, [details]);
+
+  useEffect(() => {
+    if(filterPanelOpen){
+      setPosition({
+        x: 0,
+        y: window.innerHeight
+      });
+    }
+    else {
+      setPosition({
+        x: 0,
+        y: 60,
+      });
+    }
+  }, [filterPanelOpen])
 
   const show = useCallback(() => setShowDetails(true), []);
 

@@ -8,14 +8,11 @@ import * as analytics from "services/analytics";
 import {
   useAppDispatch,
   useSearchCoordinates,
-  useSelectedOrganization,
   useStakeholders,
 } from "../../../appReducer";
 import Filters from "./ResultsFilters/ResultsFilters";
 import List from "./ResultsList/ResultsList";
 import Map from "./ResultsMap/ResultsMap";
-import Details from "./StakeholderDetails/StakeholderDetails";
-import Preview from "./StakeholderPreview/StakeholderPreview";
 import { Desktop, Mobile, Tablet } from "./layouts";
 
 const SearchResults = () => {
@@ -27,7 +24,6 @@ const SearchResults = () => {
   const [showList, setShowList] = useState(true);
   const searchCoordinates = useSearchCoordinates();
   const dispatch = useAppDispatch();
-  const selectedOrganization = useSelectedOrganization();
   const location = useLocation();
   const neighborhoodId = new URLSearchParams(location.search).get(
     "neighborhood_id"
@@ -140,18 +136,7 @@ const SearchResults = () => {
 
   if (isTablet) return <Tablet filters={filters} map={map} list={list} />;
 
-  return (
-    <Mobile
-      showList={showList}
-      filters={filters}
-      map={map}
-      list={list}
-      preview={
-        selectedOrganization && <Preview stakeholder={selectedOrganization} />
-      }
-      details={selectedOrganization && <Details />}
-    />
-  );
+  return <Mobile showList={showList} filters={filters} map={map} list={list} />;
 };
 
 export default SearchResults;

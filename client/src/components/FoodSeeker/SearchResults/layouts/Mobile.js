@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Draggable from "react-draggable";
 import { useFilterPanel } from "appReducer";
 
@@ -12,8 +12,7 @@ const overlay = {
   borderRadius: "10px",
 };
 
-const MobileLayout = ({ filters, map, list, preview, details, showList }) => {
-  const [showDetails, setShowDetails] = useState(false);
+const MobileLayout = ({ filters, map, list, showList }) => {
   const [position, setPosition] = useState();
   const filterPanelOpen = useFilterPanel();
 
@@ -30,32 +29,22 @@ const MobileLayout = ({ filters, map, list, preview, details, showList }) => {
       });
     }
   }, [showList]);
-
   useEffect(() => {
-    if (!details) setShowDetails(false);
-  }, [details]);
-
-  useEffect(() => {
-    if(filterPanelOpen){
+    if (filterPanelOpen) {
       setPosition({
         x: 0,
-        y: window.innerHeight
+        y: window.innerHeight,
       });
-    }
-    else {
+    } else {
       setPosition({
         x: 0,
         y: 60,
       });
     }
-  }, [filterPanelOpen])
-
-  const show = useCallback(() => setShowDetails(true), []);
+  }, [filterPanelOpen]);
 
   // Define the bounds for vertical dragging
   const minY = 50;
-  //const maxY = 800;
-  //commented out const maxY above since it is currently not being used but might be useful in future
 
   return (
     <>
@@ -106,12 +95,6 @@ const MobileLayout = ({ filters, map, list, preview, details, showList }) => {
             </Box>
           </Draggable>
         )}
-        {preview && (
-          <Box sx={{ margin: "0 1em", flex: 0 }} onClick={show}>
-            {preview}
-          </Box>
-        )}
-        {details && showDetails && <Box sx={overlay}>{details}</Box>}
       </Box>
     </>
   );

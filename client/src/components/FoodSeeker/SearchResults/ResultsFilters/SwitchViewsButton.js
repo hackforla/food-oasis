@@ -25,34 +25,16 @@ const SwitchButton = styled(Button)(({ theme }) => ({
 export default function SwitchViewsButton({ isListView, onClick }) {
   return (
     <SwitchButton onClick={onClick}>
-      {!isListView && (
-        <>
-          <Typography
-            sx={{
-              fontSize: "16px",
-              textTransform: "capitalize",
-              fontWeight: "500",
-            }}
-            color="inherit"
-          >
-            List
-          </Typography>
-        </>
-      )}
-      {isListView && (
-        <>
-          <Typography
-            sx={{
-              fontSize: "16px",
-              textTransform: "capitalize",
-              fontWeight: "500",
-            }}
-            color="inherit"
-          >
-            Map
-          </Typography>
-        </>
-      )}
+      <Typography
+        sx={{
+          fontSize: "16px",
+          textTransform: "capitalize",
+          fontWeight: "500",
+        }}
+        color="inherit"
+      >
+        {isListView ? "Map" : "List"}
+      </Typography>
     </SwitchButton>
   );
 }

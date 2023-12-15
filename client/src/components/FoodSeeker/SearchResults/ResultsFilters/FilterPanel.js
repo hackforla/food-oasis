@@ -72,7 +72,7 @@ export default function FilterPanel({ mealPantry }) {
           padding: "1rem",
         },
       }}
-      variant="persistent"
+      variant={isDesktop ? "persistent" : "temporary"}
       anchor={isDesktop ? "left" : "bottom"}
       open={open}
     >

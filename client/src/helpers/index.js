@@ -1,5 +1,12 @@
 import { breakpoints } from "../theme/breakpoints";
 import geoViewport from "@mapbox/geo-viewport";
+const dayjs = require("dayjs");
+const customParseFormat = require("dayjs/plugin/customParseFormat");
+const timezone = require("dayjs/plugin/timezone");
+const utc = require("dayjs/plugin/utc");
+dayjs.extend(customParseFormat);
+dayjs.extend(timezone);
+dayjs.extend(utc);
 
 export const getMapBounds = (center, zoom, dimensions) => {
   const [minLng, minLat, maxLng, maxLat] = geoViewport.bounds(
@@ -187,3 +194,40 @@ export const computeDistances = (userLatitude, userLongitude, stakeholders) => {
 
   return filteredStakeholders;
 };
+
+// input  {day: 'SUN', time: '01:00AM'}
+export function getNextDateForDay(customizedOpenTimeFilter, targetTimezone) {
+  const dayInput = customizedOpenTimeFilter.day;
+  const timeInput = customizedOpenTimeFilter.time;
+
+  const dayMap = { SUN: 0, MON: 1, TUE: 2, WED: 3, THU: 4, FRI: 5, SAT: 6 };
+  const targetDay = dayMap[dayInput.toUpperCase()];
+
+  // Parse the input time
+  let time = dayjs(timeInput, "hh:mmA");
+
+  // Get the current date and time in the target timezone
+  let currentDate = dayjs().tz(targetTimezone);
+  let currentDay = currentDate.day();
+
+  // Calculate the difference in days
+  let dayDifference = targetDay - currentDay;
+  if (dayDifference < 0) dayDifference += 7;
+  if (dayDifference === 0 && currentDate.hour() > time.hour()) {
+    dayDifference += 7;
+  }
+
+  // Set the target date and time
+  let targetDate = currentDate
+    .add(dayDifference, "day")
+    .set("hour", time.hour())
+    .set("minute", time.minute())
+    .set("second", 0);
+
+  return targetDate;
+}
+
+// // Example usage
+// const nextDate = getNextDateForDay("SUN", "01:00AM", "America/New_York");
+
+// console.log(nextDate.toString());

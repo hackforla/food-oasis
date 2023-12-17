@@ -21,7 +21,7 @@ import { styled } from "@mui/material/styles";
 import useBreakpoints from "hooks/useBreakpoints";
 import MealIconNoBorder from "icons/MealIconNoBorder";
 import PantryIconNoBorder from "icons/PantryIconNoBorder";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useFilterPanel } from "../../../../appReducer";
 
 const DrawerHeader = styled("div")(({ _theme }) => ({
@@ -48,6 +48,10 @@ export default function FilterPanel({ mealPantry }) {
   const [openTimeValue, setoOpenTimeValue] = useState({ day: "", time: "" });
   const dispatch = useAppDispatch();
   const open = useFilterPanel();
+  const [radioValue, setRadioValue] = useState("Show All");
+  const handleRadioChange = (event) => {
+    setRadioValue(event.target.value);
+  };
 
   const handleDrawerClose = () => {
     dispatch({
@@ -59,11 +63,28 @@ export default function FilterPanel({ mealPantry }) {
   function handleOpenTimeChange(dayOrTime, event) {
     setoOpenTimeValue({ ...openTimeValue, [dayOrTime]: event.target.value });
   }
+  useEffect(() => {
+    if (openTimeValue.day !== "" && openTimeValue.time !== "") {
+      dispatch({
+        type: "CUSTOMIZED_OPEN_TIME_FILTER_UPDATED",
+        customizedOpenTimeFilter: openTimeValue,
+      });
+    }
+  }, [dispatch, openTimeValue]);
+  useEffect(() => {
+    if (radioValue !== "day") {
+      dispatch({
+        type: "CUSTOMIZED_OPEN_TIME_FILTER_UPDATED",
+        customizedOpenTimeFilter: null,
+      });
+      setoOpenTimeValue({ day: "", time: "" });
+    }
+  }, [dispatch, radioValue]);
 
   return (
     <Drawer
       sx={{
-        "flexShrink": 0,
+        flexShrink: 0,
         "& .MuiDrawer-paper": {
           top: "auto",
           width: drawerWidth,
@@ -137,6 +158,7 @@ export default function FilterPanel({ mealPantry }) {
         aria-labelledby="time-selection"
         defaultValue="Show All"
         name="radio-buttons-group"
+        onChange={handleRadioChange}
         sx={{
           flexDirection: "column",
           display: "flex",
@@ -159,6 +181,7 @@ export default function FilterPanel({ mealPantry }) {
             <Stack direction="row" sx={{ width: "100%" }} gap={2}>
               {Object.keys(openTime).map((key) => (
                 <Select
+                  disabled={radioValue !== "day"}
                   labelId={`${key}-label`}
                   id={`${key}-select`}
                   key={`${key}-select`}

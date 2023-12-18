@@ -87,14 +87,14 @@ const ResultsFilters = ({
         sm={8}
         justifyContent="center"
         alignItems="center"
-        wrap="wrap-reverse"        
+        wrap="wrap-reverse"
       >
         <Stack
           direction={{ xs: "column-reverse", sm: "row" }}
           spacing={0.5}
           sx={{
             width: "100%",
-            alignItems: "center",            
+            alignItems: "center",
           }}
         >
           <Grid2
@@ -126,13 +126,13 @@ const ResultsFilters = ({
             <Stack
               direction="row"
               alignItems="center"
-              sx={{ 
+              sx={{
                 marginX: "1rem",
-                maxWidth: '99vw',
-                gap: '0.5rem'
+                maxWidth: "99vw",
+                gap: "0.5rem",
               }}
             >
-              <AddressDropDown />
+              <AddressDropDown autoFocus={false} />
               {/* THIS BUTTON ISN'T HERE IN THE NEW DESIGN FOR PHONE */}
               <Tooltip
                 title={
@@ -142,9 +142,9 @@ const ResultsFilters = ({
                 }
               >
                 <Box
-                sx={{
-                  display: {xs: 'none', sm: 'block'}
-                }}
+                  sx={{
+                    display: { xs: "none", sm: "block" },
+                  }}
                 >
                   <Button
                     variant="recenter"
@@ -161,16 +161,17 @@ const ResultsFilters = ({
               </Tooltip>
               {/* =================================================== */}
               <Box
-              sx={{
-                maxWidth: '48px',
-                boxSizing: 'border-box'
-              }}
-               display={{ xs: "block", sm: "none" }}>
-              <SwitchViewsButton
-                isListView={showList}
-                onClick={toggleShowList}
-              />
-            </Box>
+                sx={{
+                  maxWidth: "48px",
+                  boxSizing: "border-box",
+                }}
+                display={{ xs: "block", sm: "none" }}
+              >
+                <SwitchViewsButton
+                  isListView={showList}
+                  onClick={toggleShowList}
+                />
+              </Box>
             </Stack>
           </Grid2>
         </Stack>

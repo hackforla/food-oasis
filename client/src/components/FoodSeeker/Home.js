@@ -169,7 +169,7 @@ const Home = () => {
                   fontSize: "16px",
                 }}
               >
-                <AddressDropDown />
+                <AddressDropDown autoFocus={true}/>
               </Box>
               <Box
                 sx={{

@@ -75,18 +75,14 @@ export default function useOrganizationBests() {
         );
       }
 
-      if (filters.neighborhoodId) {
-        filteredStakeholders = filteredStakeholders.filter(
-          (stakeholder) => stakeholder.neighborhoodId === filters.neighborhoodId
-        );
-      }
-
-      if (filters.customizedOpenTimeFilter) {
-        // filter out inactive,inactiveTemporary stakeholders
+      if (filters.showActiveOnly) {
+        // filter out inactive, inactiveTemporary stakeholders
         filteredStakeholders = filteredStakeholders.filter((stakeholder) => {
           return !stakeholder.inactive && !stakeholder.inactiveTemporary;
         });
+      }
 
+      if (filters.customizedOpenTimeFilter) {
         filteredStakeholders = filteredStakeholders.filter((stakeholder) => {
           const nextDateForDay = getNextDateForDay(
             filters.customizedOpenTimeFilter,
@@ -145,6 +141,7 @@ export default function useOrganizationBests() {
 
         if (customizedOpenTimeFilter) {
           filters.customizedOpenTimeFilter = customizedOpenTimeFilter;
+          filters.showActiveOnly = true;
         }
 
         let stakeholders;

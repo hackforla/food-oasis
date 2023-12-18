@@ -140,10 +140,11 @@ const StakeholderPreview = ({ stakeholder }) => {
 
   const mainNumber = extractNumbers(stakeholder.phone).find((n) => n.number);
 
+  const currentDate = new Date();
   const stakeholderHours = stakeholdersDaysHours(
     stakeholder,
     tenantTimeZone,
-    new Date()
+    currentDate
   );
   const isOpenFlag = !!stakeholderHours;
   const showAllowWalkinsFlag = stakeholder.allowWalkins;

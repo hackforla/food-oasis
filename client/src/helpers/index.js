@@ -197,8 +197,7 @@ export const computeDistances = (userLatitude, userLongitude, stakeholders) => {
 
 // input  {day: 'SUN', time: '01:00AM'}
 export function getNextDateForDay(customizedOpenTimeFilter, targetTimezone) {
-  const dayInput = customizedOpenTimeFilter.day;
-  const timeInput = customizedOpenTimeFilter.time;
+  const { day: dayInput, time: timeInput } = customizedOpenTimeFilter;
 
   const dayMap = { SUN: 0, MON: 1, TUE: 2, WED: 3, THU: 4, FRI: 5, SAT: 6 };
   const targetDay = dayMap[dayInput.toUpperCase()];
@@ -228,6 +227,9 @@ export function getNextDateForDay(customizedOpenTimeFilter, targetTimezone) {
 }
 
 // // Example usage
-// const nextDate = getNextDateForDay("SUN", "01:00AM", "America/New_York");
+// const nextDate = getNextDateForDay(
+//   { day: "SUN", time: "01:00AM" },
+//   "America/New_York"
+// );
 
-// console.log(nextDate.toString());
+//  Example return value = "2023-12-24T06:00:00.003Z"

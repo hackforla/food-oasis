@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import { useMapboxGeocoder } from "hooks/useMapboxGeocoder";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import * as analytics from "services/analytics";
 import {
   useAppDispatch,
@@ -25,6 +25,9 @@ export default function AddressDropDown({ showSearchIcon }) {
   const { mapboxResults, fetchMapboxResults } = useMapboxGeocoder();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const focusValue = location.pathname === "/organizations"? false : true;
 
   const handleInputChange = (delta) => {
     const safeValue = typeof delta === "string" ? delta : delta.target.value;
@@ -66,7 +69,7 @@ export default function AddressDropDown({ showSearchIcon }) {
         fullWidth
         name="address"
         size="small"
-        autoFocus={true}
+        autoFocus={focusValue}
         onClick={() => setInputVal("")}
         InputLabelProps={{
           sx: {

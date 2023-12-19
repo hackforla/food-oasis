@@ -15,7 +15,7 @@ import {
   useWidget,
 } from "../../appReducer";
 
-export default function AddressDropDown({ showSearchIcon }) {
+export default function AddressDropDown({ autoFocus }) {
   const searchCoordinates = useSearchCoordinates();
   const isWidget = useWidget();
   const [inputVal, setInputVal] = useState(
@@ -66,7 +66,7 @@ export default function AddressDropDown({ showSearchIcon }) {
         fullWidth
         name="address"
         size="small"
-        autoFocus={true}
+        autoFocus={autoFocus}
         onClick={() => setInputVal("")}
         InputLabelProps={{
           sx: {
@@ -120,15 +120,15 @@ export default function AddressDropDown({ showSearchIcon }) {
         onChange={(event, newValue) => setInputVal(newValue)}
         options={mapboxResults.slice(0, 10).map((item) => item.place_name)}
         sx={{
-          "width": 600,
-          "backgroundColor": "#F0F0F0",
+          width: 600,
+          backgroundColor: "#F0F0F0",
           "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-            "borderColor": "white",
-            "width": "auto",
-            "maxWidth": "auto",
-            "height": "auto",
-            "maxHeight": "150px",
-            "overflow": "auto",
+            borderColor: "white",
+            width: "auto",
+            maxWidth: "auto",
+            height: "auto",
+            maxHeight: "150px",
+            overflow: "auto",
             "&::placeholder": {
               opacity: "1",
               backgroundColor: "#F0F0F0",

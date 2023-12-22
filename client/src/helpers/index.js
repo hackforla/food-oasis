@@ -195,7 +195,13 @@ export const computeDistances = (userLatitude, userLongitude, stakeholders) => {
   return filteredStakeholders;
 };
 
-// input  {day: 'SUN', time: '01:00AM'}
+/**
+ * This function takes in a customizedOpenTimeFilter and a targetTimezone
+ * and returns the next date and time in the target timezone that matches
+ * the customizedOpenTimeFilter.
+ * Example inputs: { day: "SUN", time: "01:00AM" }, "America/New_York";
+ * Example output: "2023-12-24T06:00:00.003Z"
+ */
 export function getNextDateForDay(customizedOpenTimeFilter, targetTimezone) {
   const { day: dayInput, time: timeInput } = customizedOpenTimeFilter;
 
@@ -225,11 +231,3 @@ export function getNextDateForDay(customizedOpenTimeFilter, targetTimezone) {
 
   return targetDate;
 }
-
-// // Example usage
-// const nextDate = getNextDateForDay(
-//   { day: "SUN", time: "01:00AM" },
-//   "America/New_York"
-// );
-
-//  Example return value = "2023-12-24T06:00:00.003Z"

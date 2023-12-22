@@ -16,7 +16,7 @@ import importRouter from "./import-router";
 import exportRouter from "./export-router";
 import loadRouter from "./load-router";
 import emailRouter from "./email-router";
-import awsRouter from "./aws-router"
+import awsRouter from "./aws-router";
 
 const router = Router();
 

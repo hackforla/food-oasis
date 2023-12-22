@@ -5,13 +5,13 @@ import { ClientResponse } from "@sendgrid/mail";
 
 const send: RequestHandler<
   // route params
-  never, 
+  never,
   // response
-  [ClientResponse, Record<string, never>] | { error: string }, 
+  [ClientResponse, Record<string, never>] | { error: string },
   // request
   Email,
-  // query params 
-  never 
+  // query params
+  never
 > = (req, res) => {
   const email: Email = {
     emailFrom: req.body.emailFrom,
@@ -29,13 +29,13 @@ const send: RequestHandler<
 
 const sendContactForm: RequestHandler<
   // route params
-  never, 
+  never,
   // response
-  [ClientResponse, Record<string, never>] | { error: string }, 
+  [ClientResponse, Record<string, never>] | { error: string },
   // request
-  ContactFormData, 
+  ContactFormData,
   // query params
-  never 
+  never
 > = (req, res) => {
   emailService
     .sendContactEmail(req.body)

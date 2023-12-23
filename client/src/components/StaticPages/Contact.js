@@ -190,7 +190,7 @@ const Contact = () => {
                 <form onSubmit={handleSubmit}>
                   <Box
                     sx={{
-                      "height": { xs: "480px", md: "560px" },
+                      height: { xs: "480px", md: "560px" },
                       "& > div": {
                         height: "61px",
                         marginTop: { xs: "3px", md: "12px" },

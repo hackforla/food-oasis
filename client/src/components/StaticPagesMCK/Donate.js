@@ -106,14 +106,14 @@ const Donate = () => {
             "&:hover": {
               backgroundColor: "#0A3865",
             },
-            "margin": "20px auto 0 auto",
-            "color": "#fff",
-            "border": "1px solid #336699",
-            "background": "#336699",
-            "borderRadius": "6px",
-            "padding": "8px 16px",
-            "textDecoration": "none",
-            "textTransform": "uppercase",
+            margin: "20px auto 0 auto",
+            color: "#fff",
+            border: "1px solid #336699",
+            background: "#336699",
+            borderRadius: "6px",
+            padding: "8px 16px",
+            textDecoration: "none",
+            textTransform: "uppercase",
           }}
         >
           Donate
@@ -121,13 +121,13 @@ const Donate = () => {
       </Box>
       <Box
         sx={{
-          "padding": "32px",
-          "margin": "32px 0 0 0",
-          "borderRadius": "24px",
-          "background": "#B6D8FB",
-          "display": "flex",
-          "flexDirection": "column",
-          "flexWrap": "wrap",
+          padding: "32px",
+          margin: "32px 0 0 0",
+          borderRadius: "24px",
+          background: "#B6D8FB",
+          display: "flex",
+          flexDirection: "column",
+          flexWrap: "wrap",
           "& $btnOutline": {
             color: "#fff",
             margin: "20px auto 16px auto",
@@ -193,14 +193,14 @@ const Donate = () => {
             "&:hover": {
               backgroundColor: "#0A3865",
             },
-            "margin": "20px auto 0 auto",
-            "color": "#fff",
-            "border": "1px solid #336699",
-            "background": "#336699",
-            "borderRadius": "6px",
-            "padding": "8px 16px",
-            "textDecoration": "none",
-            "textTransform": "uppercase",
+            margin: "20px auto 0 auto",
+            color: "#fff",
+            border: "1px solid #336699",
+            background: "#336699",
+            borderRadius: "6px",
+            padding: "8px 16px",
+            textDecoration: "none",
+            textTransform: "uppercase",
           }}
         >
           Volunteer

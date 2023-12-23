@@ -68,8 +68,8 @@ const Faq = () => {
           <Box
             component="dl"
             sx={{
-              "marginTop": "10px",
-              "marginBottom": "0",
+              marginTop: "10px",
+              marginBottom: "0",
               "& dd": {
                 marginLeft: "0",
                 marginBottom: "24px",
@@ -159,8 +159,8 @@ const Faq = () => {
           <Box
             component="dl"
             sx={{
-              "marginTop": "10px",
-              "marginBottom": "0",
+              marginTop: "10px",
+              marginBottom: "0",
               "& dd": {
                 marginLeft: "0",
                 marginBottom: "24px",
@@ -251,8 +251,8 @@ const Faq = () => {
           <Box
             component="dl"
             sx={{
-              "marginTop": "10px",
-              "marginBottom": "0",
+              marginTop: "10px",
+              marginBottom: "0",
               "& dd": {
                 marginLeft: "0",
                 marginBottom: "24px",

@@ -11,9 +11,9 @@ const Donate = () => {
     >
       <Box
         sx={{
-          "padding": "1.5rem 0",
-          "maxWidth": "1200px",
-          "margin": "0 auto",
+          padding: "1.5rem 0",
+          maxWidth: "1200px",
+          margin: "0 auto",
           "@media only screen and (min-width: 75em)": {
             padding: "1.5rem 2rem",
           },
@@ -41,13 +41,13 @@ const Donate = () => {
         <Box
           component="section"
           sx={{
-            "padding": "32px",
-            "margin": "32px 0 0 0",
-            "borderRadius": "24px",
-            "background": "#f0f0f0",
-            "display": "flex",
-            "flexWrap": "wrap",
-            "flexDirection": "column",
+            padding: "32px",
+            margin: "32px 0 0 0",
+            borderRadius: "24px",
+            background: "#f0f0f0",
+            display: "flex",
+            flexWrap: "wrap",
+            flexDirection: "column",
             "& h2": {
               flexBasis: "100%",
               textAlign: "center",
@@ -112,12 +112,12 @@ const Donate = () => {
         </Box>
         <Box
           sx={{
-            "padding": "32px",
-            "margin": "32px 0 0 0",
-            "borderRadius": "24px",
-            "background": "#B6D8FB",
-            "display": "flex",
-            "flexWrap": "wrap",
+            padding: "32px",
+            margin: "32px 0 0 0",
+            borderRadius: "24px",
+            background: "#B6D8FB",
+            display: "flex",
+            flexWrap: "wrap",
             "& h2": {
               flexBasis: "100%",
               textAlign: "center",

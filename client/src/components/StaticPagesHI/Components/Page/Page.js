@@ -7,9 +7,9 @@ const Page = (props) => {
     <Box sx={{ background: "#fff" }}>
       <Container
         sx={{
-          "padding": "1.5rem 0;",
-          "maxWidth": "1200px",
-          "margin": "0 auto",
+          padding: "1.5rem 0;",
+          maxWidth: "1200px",
+          margin: "0 auto",
           "@media only screen and (min-width: 75em)": {
             padding: "1.5rem 2rem",
           },

@@ -63,7 +63,7 @@ export default function FilterPanel({ mealPantry }) {
   return (
     <Drawer
       sx={{
-        "flexShrink": 0,
+        flexShrink: 0,
         "& .MuiDrawer-paper": {
           top: "auto",
           width: drawerWidth,

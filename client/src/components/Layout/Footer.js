@@ -28,12 +28,12 @@ const Footer = () => {
     return (
       <Link
         style={{
-          "padding": "0 !important",
-          "color": "#1b1b1b",
-          "textDecoration": "none",
-          "fontSize": "16px",
-          "textTransform": "uppercase",
-          "margin": ".4em 0 .4em 1.5em",
+          padding: "0 !important",
+          color: "#1b1b1b",
+          textDecoration: "none",
+          fontSize: "16px",
+          textTransform: "uppercase",
+          margin: ".4em 0 .4em 1.5em",
           "&:hover": {
             textDecoration: "underline",
           },
@@ -70,10 +70,10 @@ const Footer = () => {
         alt="logo"
         src={logoPaths[tenantId]}
         sx={(theme) => ({
-          "maxWidth": "95px",
-          "height": "100%",
-          "width": "100%",
-          "marginTop": "0",
+          maxWidth: "95px",
+          height: "100%",
+          width: "100%",
+          marginTop: "0",
 
           "&:hover": {
             filter: "brightness(1.2)",

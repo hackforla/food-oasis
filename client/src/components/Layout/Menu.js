@@ -150,9 +150,9 @@ export default function Menu() {
         icon="menu"
         onClick={toggleDrawer}
         sx={{
-          "transform": "scale(1.2,1.2)",
-          "minWidth": "0",
-          "backgroundColor": "#FFF",
+          transform: "scale(1.2,1.2)",
+          minWidth: "0",
+          backgroundColor: "#FFF",
           "&:hover": {
             backgroundColor: "#FFF",
             opacity: 0.8,

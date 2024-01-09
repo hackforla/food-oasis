@@ -31,13 +31,13 @@ function WidgetFooterSection(props) {
     return (
       <Box
         sx={(theme) => ({
-          "color": theme.palette.primary.dark,
-          "display": "flex",
-          "alignItems": "center",
-          "lineHeight": "1.2",
-          "padding": 0,
-          "margin": 0,
-          "fontSize": 12,
+          color: theme.palette.primary.dark,
+          display: "flex",
+          alignItems: "center",
+          lineHeight: "1.2",
+          padding: 0,
+          margin: 0,
+          fontSize: 12,
           "& a,h6": {
             whiteSpace: "nowrap",
             fontSize: 14,
@@ -79,19 +79,19 @@ function WidgetFooterSection(props) {
                       imageType === "svg"
                         ? {
                             ...logoStyle,
-                            "width": "100%",
-                            "height": "100%",
-                            "margin": 0,
-                            "maxWidth": "175px",
-                            "maxHeight": "38px",
+                            width: "100%",
+                            height: "100%",
+                            margin: 0,
+                            maxWidth: "175px",
+                            maxHeight: "38px",
                             "&:hover": {
                               filter: "brightness(1.2)",
                             },
                           }
                         : {
                             ...logoStyle,
-                            "maxWidth": "175px",
-                            "maxHeight": "38px",
+                            maxWidth: "175px",
+                            maxHeight: "38px",
                             "&:hover": {
                               filter: "brightness(1.2)",
                             },
@@ -121,13 +121,13 @@ function WidgetFooterSection(props) {
   return (
     <Box
       sx={(theme) => ({
-        "color": theme.palette.primary.dark,
-        "display": "flex",
-        "alignItems": "center",
-        "lineHeight": "1.2",
-        "padding": 0,
-        "margin": 0,
-        "fontSize": 12,
+        color: theme.palette.primary.dark,
+        display: "flex",
+        alignItems: "center",
+        lineHeight: "1.2",
+        padding: 0,
+        margin: 0,
+        fontSize: 12,
         "& a,h6": {
           whiteSpace: "nowrap",
           fontSize: 14,
@@ -148,19 +148,19 @@ function WidgetFooterSection(props) {
               imageType === "svg"
                 ? {
                     ...logoStyle,
-                    "width": "100%",
-                    "height": "100%",
-                    "margin": 0,
-                    "maxWidth": "175px",
-                    "maxHeight": "38px",
+                    width: "100%",
+                    height: "100%",
+                    margin: 0,
+                    maxWidth: "175px",
+                    maxHeight: "38px",
                     "&:hover": {
                       filter: "brightness(1.2)",
                     },
                   }
                 : {
                     ...logoStyle,
-                    "maxWidth": "175px",
-                    "maxHeight": "38px",
+                    maxWidth: "175px",
+                    maxHeight: "38px",
                     "&:hover": {
                       filter: "brightness(1.2)",
                     },

@@ -10,7 +10,7 @@ export default function Link(theme) {
   return {
     MuiLink: {
       defaultProps: {
-        variant: "primary"
+        variant: "primary",
       },
       variants: [
         {
@@ -22,25 +22,25 @@ export default function Link(theme) {
         {
           props: { variant: "primary" },
           style: {
-          textDecoration: "none",
-          padding: "2px 1px 0",
-          borderBottom: "1px solid",
-          color: theme.palette.link.normal,
-          "&:link": {
+            textDecoration: "none",
+            padding: "2px 1px 0",
+            borderBottom: "1px solid",
             color: theme.palette.link.normal,
-          },
-          "&:a": {
-            color: theme.palette.link.normal,
-          },
-          "&:visited": {
-            color: theme.palette.link.visited,
-          },
-          "&:hover": {
-            color: theme.palette.link.hovered,
-          },
-          "&:active": {
-            color: theme.palette.primary.light,
-          },
+            "&:link": {
+              color: theme.palette.link.normal,
+            },
+            "&:a": {
+              color: theme.palette.link.normal,
+            },
+            "&:visited": {
+              color: theme.palette.link.visited,
+            },
+            "&:hover": {
+              color: theme.palette.link.hovered,
+            },
+            "&:active": {
+              color: theme.palette.primary.light,
+            },
           },
         },
       ],

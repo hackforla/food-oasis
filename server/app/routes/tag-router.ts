@@ -1,7 +1,7 @@
 import { Router } from "express";
 import * as tagController from "../controllers/tag-controller";
 import jwtSession from "../../middleware/jwt-session";
-import {requestValidationMiddleware} from '../../middleware/request-validation-middlewares'
+import { requestValidationMiddleware } from "../../middleware/request-validation-middlewares";
 import { tagPutRequestSchema } from "../validation-schema/tag-schema";
 import { tagPostRequestSchema } from "../validation-schema/tag-schema";
 

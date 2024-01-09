@@ -37,10 +37,12 @@ const post: RequestHandler<
   }
 };
 
-const put: RequestHandler<{ tagId: string }, never, Omit<Tag, "id">, never> = async (
-  req,
-  res
-) => {
+const put: RequestHandler<
+  { tagId: string },
+  never,
+  Omit<Tag, "id">,
+  never
+> = async (req, res) => {
   try {
     await tagService.update(req.body, req.params.tagId);
     res.sendStatus(200);

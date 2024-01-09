@@ -8,8 +8,9 @@ import {
 } from "./import-constants";
 
 function formatMapAddress(formData) {
-  return `${formData.address_1 || ""} ${formData.address_2 || ""} ${formData.city || ""
-    }, ${formData.state || ""} ${formData.zip || ""}`;
+  return `${formData.address_1 || ""} ${formData.address_2 || ""} ${
+    formData.city || ""
+  }, ${formData.state || ""} ${formData.zip || ""}`;
 }
 
 function setDefaultValues(row) {

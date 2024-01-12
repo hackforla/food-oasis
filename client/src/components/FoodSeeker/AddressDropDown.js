@@ -27,6 +27,7 @@ export default function AddressDropDown({ autoFocus }) {
   const navigate = useNavigate();
 
   const handleInputChange = (delta) => {
+    if (!delta) return;
     const safeValue = typeof delta === "string" ? delta : delta.target.value;
     setInputVal(safeValue);
     if (safeValue) {
@@ -126,7 +127,7 @@ export default function AddressDropDown({ autoFocus }) {
         onClose={() => setOpen(false)}
         onKeyDown={handleKeyDown}
         onChange={(_event, newValue) => {
-          setInputVal(newValue);
+          setInputVal(newValue ?? "");
         }}
         options={mapboxResults.slice(0, 10).map((item) => item.place_name)}
         sx={{

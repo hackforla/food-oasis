@@ -108,16 +108,26 @@ export default function AddressDropDown({ autoFocus }) {
     );
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter" && mapboxResults.length > 0) {
+      event.preventDefault();
+      handleAutocompleteOnChange(mapboxResults[0].place_name);
+    }
+  };
   return (
     <>
       <Autocomplete
+        autoHighlight
         onInputChange={(value) => handleInputChange(value)}
         freeSolo
         inputValue={inputVal}
         open={open}
         onOpen={() => setOpen(true)}
         onClose={() => setOpen(false)}
-        onChange={(event, newValue) => setInputVal(newValue)}
+        onKeyDown={handleKeyDown}
+        onChange={(_event, newValue) => {
+          setInputVal(newValue);
+        }}
         options={mapboxResults.slice(0, 10).map((item) => item.place_name)}
         sx={{
           width: 600,

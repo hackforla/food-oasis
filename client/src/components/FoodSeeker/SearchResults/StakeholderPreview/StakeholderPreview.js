@@ -14,6 +14,7 @@ import {
   formatDatewTimeZonehhmmss,
   getGoogleMapsDirectionsUrl,
 } from "helpers";
+
 import StakeholderIcon from "images/stakeholderIcon";
 import PropTypes from "prop-types";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -23,15 +24,6 @@ import {
   useSearchCoordinates,
   useUserCoordinates,
 } from "../../../../appReducer";
-
-const TENANT_TIME_ZONES = {
-  1: "America/Los_Angeles",
-  2: "America/Los_Angeles",
-  3: "Pacific/Honolulu",
-  4: "America/Los_Angeles",
-  5: "America/Chicago",
-  6: "America/Los_Angeles",
-};
 
 const isLastOccurrenceInMonth = (tenantTimeZone) => {
   const currentDate = new Date();
@@ -54,21 +46,24 @@ const isLastOccurrenceInMonth = (tenantTimeZone) => {
   return false;
 };
 
-const stakeholdersCurrentDaysHours = (stakeholder, tenantTimeZone) => {
-  let currentDay = new Date();
-
+// pass in date object to check if it is Open
+export const stakeholdersDaysHours = (
+  stakeholder,
+  tenantTimeZone,
+  dateToCheck
+) => {
   const timeZone = tenantTimeZone;
   const currentDayOfWeek = formatDatewTimeZoneWeekdayShort(
-    currentDay,
+    dateToCheck,
     timeZone
   );
 
   // In tandum with currentDayOfWeek tells us which week the day falls
   const dayOccurrenceInMonth = Math.ceil(
-    Number(formatDatewTimeZoneDD(currentDay, timeZone)) / 7
+    Number(formatDatewTimeZoneDD(dateToCheck, timeZone)) / 7
   );
 
-  const currentTime = formatDatewTimeZonehhmmss(currentDay, timeZone);
+  const currentTime = formatDatewTimeZonehhmmss(dateToCheck, timeZone);
 
   const currentDaysHoursOfOperation =
     stakeholder.hours &&
@@ -124,8 +119,8 @@ const StakeholderPreview = ({ stakeholder }) => {
   const searchCoordinates = useSearchCoordinates();
   const userCoordinates = useUserCoordinates();
   const originCoordinates = searchCoordinates || userCoordinates;
-  const { tenantId } = useSiteContext();
-  const tenantTimeZone = TENANT_TIME_ZONES[tenantId];
+  const { tenantTimeZone } = useSiteContext();
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -145,9 +140,11 @@ const StakeholderPreview = ({ stakeholder }) => {
 
   const mainNumber = extractNumbers(stakeholder.phone).find((n) => n.number);
 
-  const stakeholderHours = stakeholdersCurrentDaysHours(
+  const currentDate = new Date();
+  const stakeholderHours = stakeholdersDaysHours(
     stakeholder,
-    tenantTimeZone
+    tenantTimeZone,
+    currentDate
   );
   const isOpenFlag = !!stakeholderHours;
   const showAllowWalkinsFlag = stakeholder.allowWalkins;

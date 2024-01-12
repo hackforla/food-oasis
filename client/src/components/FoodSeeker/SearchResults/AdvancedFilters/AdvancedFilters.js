@@ -61,13 +61,6 @@ const AdvancedFilters = ({ toggleCategory, categoryIds }) => {
           onClick={() => console.log("todo: `Open Now` filter button")}
         />
       </Grid>
-      <Grid item sx={{ whiteSpace: "nowrap", marginTop: "0.75rem" }}>
-        <AdvancedFilterButton
-          label="Days"
-          onClick={() => console.log("todo: `Days` filter button")}
-          hasDropdown={true}
-        />
-      </Grid>
       <Grid
         item
         sx={{ whiteSpace: "nowrap", marginTop: "0.75rem", marginRight: "1rem" }}

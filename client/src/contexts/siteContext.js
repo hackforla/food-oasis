@@ -17,6 +17,14 @@ const TENANT_NAMES = {
   5: "McKinney",
   6: "Santa Barbara",
 };
+const TENANT_TIME_ZONES = {
+  1: "America/Los_Angeles",
+  2: "America/Los_Angeles",
+  3: "Pacific/Honolulu",
+  4: "America/Los_Angeles",
+  5: "America/Chicago",
+  6: "America/Los_Angeles",
+};
 
 export const DEFAULT_VIEWPORTS = {
   1: {
@@ -55,6 +63,7 @@ export const SiteProvider = ({ children }) => {
   const tenantName = TENANT_NAMES[tenantId];
   const tenantDetails = TENANT_CONFIG[tenantId];
   const defaultViewport = DEFAULT_VIEWPORTS[tenantId];
+  const tenantTimeZone = TENANT_TIME_ZONES[tenantId];
 
   const value = useMemo(() => {
     return {
@@ -62,8 +71,9 @@ export const SiteProvider = ({ children }) => {
       tenantName,
       tenantDetails,
       defaultViewport,
+      tenantTimeZone,
     };
-  }, [tenantId, tenantName, tenantDetails, defaultViewport]);
+  }, [tenantId, tenantName, tenantDetails, defaultViewport, tenantTimeZone]);
   return <SiteContext.Provider value={value}>{children}</SiteContext.Provider>;
 };
 export const useSiteContext = () => useContext(SiteContext);

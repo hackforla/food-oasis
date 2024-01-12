@@ -1,14 +1,17 @@
 import { DEFAULT_CATEGORIES } from "constants/stakeholder";
-import { computeDistances, checkIfStaleData } from "helpers";
+import { computeDistances, checkIfStaleData, getNextDateForDay } from "helpers";
 import { useCallback, useState } from "react";
 import { useLocation } from "react-router-dom";
 import {
   DEFAULT_COORDINATES,
   useAppDispatch,
+  useCustomizedOpenTimeFilter,
   useSearchCoordinates,
 } from "../appReducer";
 import * as analytics from "../services/analytics";
 import * as stakeholderService from "../services/stakeholder-best-service";
+import { useSiteContext } from "contexts/siteContext";
+import { stakeholdersDaysHours } from "../components/FoodSeeker/SearchResults/StakeholderPreview/StakeholderPreview";
 
 const sortOrganizations = (a, b) => {
   if (
@@ -36,6 +39,9 @@ export default function useOrganizationBests() {
   });
   const location = useLocation();
   const searchCoordinates = useSearchCoordinates();
+  const customizedOpenTimeFilter = useCustomizedOpenTimeFilter();
+
+  const { tenantTimeZone } = useSiteContext();
 
   let latitude, longitude;
   if (location.search && !searchCoordinates) {
@@ -69,10 +75,27 @@ export default function useOrganizationBests() {
         );
       }
 
-      if (filters.neighborhoodId) {
-        filteredStakeholders = filteredStakeholders.filter(
-          (stakeholder) => stakeholder.neighborhoodId === filters.neighborhoodId
-        );
+      if (filters.showActiveOnly) {
+        // filter out inactive, inactiveTemporary stakeholders
+        filteredStakeholders = filteredStakeholders.filter((stakeholder) => {
+          return !stakeholder.inactive && !stakeholder.inactiveTemporary;
+        });
+      }
+
+      if (filters.customizedOpenTimeFilter) {
+        filteredStakeholders = filteredStakeholders.filter((stakeholder) => {
+          const nextDateForDay = getNextDateForDay(
+            filters.customizedOpenTimeFilter,
+            tenantTimeZone
+          );
+          const hours = stakeholdersDaysHours(
+            stakeholder,
+            tenantTimeZone,
+            nextDateForDay
+          );
+
+          return !!hours;
+        });
       }
 
       const stakeholdersWithDistances = computeDistances(
@@ -91,7 +114,7 @@ export default function useOrganizationBests() {
         error: false,
       });
     },
-    [dispatch, longitude, latitude]
+    [latitude, longitude, dispatch, tenantTimeZone]
   );
 
   const selectAll = useCallback(
@@ -116,6 +139,11 @@ export default function useOrganizationBests() {
           categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
         };
 
+        if (customizedOpenTimeFilter) {
+          filters.customizedOpenTimeFilter = customizedOpenTimeFilter;
+          filters.showActiveOnly = true;
+        }
+
         let stakeholders;
         const isStaleData = checkIfStaleData();
         if (!isStaleData) {
@@ -136,7 +164,7 @@ export default function useOrganizationBests() {
         return Promise.reject(err);
       }
     },
-    [processStakeholders, latitude, longitude]
+    [customizedOpenTimeFilter, latitude, longitude, processStakeholders]
   );
 
   const getById = useCallback(async (id) => {

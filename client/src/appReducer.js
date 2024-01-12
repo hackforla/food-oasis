@@ -91,6 +91,15 @@ function filterPanelReducer(state, action) {
   }
 }
 
+function customizedOpenTimeFilterReducer(state, action) {
+  switch (action.type) {
+    case "CUSTOMIZED_OPEN_TIME_FILTER_UPDATED":
+      return action.customizedOpenTimeFilter;
+    default:
+      return state;
+  }
+}
+
 export function appReducer(state, action) {
   return {
     defaultCoordinate: defaultCoordinatesReducer(
@@ -113,6 +122,10 @@ export function appReducer(state, action) {
     isWidget: widgetReducer(state.isWidget, action),
     stakeholders: stakeholdersReducer(state.stakeholders, action),
     filterPanel: filterPanelReducer(state.filterPanel, action),
+    customizedOpenTimeFilter: customizedOpenTimeFilterReducer(
+      state.customizedOpenTimeFilter,
+      action
+    ),
   };
 }
 
@@ -126,6 +139,7 @@ export function getInitialState() {
     neighborhood: null,
     isWidget: false,
     filterPanel: false,
+    customizedOpenTimeFilter: null,
   };
 }
 
@@ -197,4 +211,9 @@ export function useStakeholders() {
 export function useFilterPanel() {
   const { filterPanel } = useAppState();
   return filterPanel;
+}
+
+export function useCustomizedOpenTimeFilter() {
+  const { customizedOpenTimeFilter } = useAppState();
+  return customizedOpenTimeFilter;
 }

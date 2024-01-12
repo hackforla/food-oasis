@@ -117,6 +117,7 @@ export default function AddressDropDown({ autoFocus }) {
   return (
     <>
       <Autocomplete
+        autoHighlight
         onInputChange={(value) => handleInputChange(value)}
         freeSolo
         inputValue={inputVal}

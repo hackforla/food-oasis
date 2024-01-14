@@ -252,19 +252,20 @@ const StakeholderPreview = ({ stakeholder }) => {
                 />
               ) : null}
 
-              {showAllowWalkinsFlag &&
-                !(stakeholder.inactiveTemporary || stakeholder.inactive) && (
-                  <>
-                    {isOpenFlag && <Chip color="success" label="OPEN NOW" />}
-                    {isAlmostClosedFlag && (
-                      <Chip
-                        color="mealProgram"
-                        label={`Closing in ${minutesToClosing} minutes`}
-                      />
-                    )}
+              {!(stakeholder.inactiveTemporary || stakeholder.inactive) && (
+                <>
+                  {isOpenFlag && <Chip color="success" label="OPEN NOW" />}
+                  {isAlmostClosedFlag && (
+                    <Chip
+                      color="mealProgram"
+                      label={`Closing in ${minutesToClosing} minutes`}
+                    />
+                  )}
+                  {showAllowWalkinsFlag && (
                     <Chip label="Walk-Ins Allowed" color="primary" />
-                  </>
-                )}
+                  )}
+                </>
+              )}
             </Box>
           </Stack>
 

@@ -22,7 +22,11 @@ import useBreakpoints from "hooks/useBreakpoints";
 import MealIconNoBorder from "icons/MealIconNoBorder";
 import PantryIconNoBorder from "icons/PantryIconNoBorder";
 import { useEffect, useState } from "react";
-import { useAppDispatch, useFilterPanel } from "../../../../appReducer";
+import {
+  useAppDispatch,
+  useFilterPanel,
+  useNoKnownEligibilityRequirementsFilter,
+} from "../../../../appReducer";
 
 const DrawerHeader = styled("div")(({ _theme }) => ({
   display: "flex",
@@ -52,6 +56,8 @@ export default function FilterPanel({ mealPantry }) {
   const handleRadioChange = (event) => {
     setRadioValue(event.target.value);
   };
+  const noKnownEligibilityRequirementsFilter =
+    useNoKnownEligibilityRequirementsFilter();
 
   const handleDrawerClose = () => {
     dispatch({
@@ -222,10 +228,22 @@ export default function FilterPanel({ mealPantry }) {
       <ListItem key="requirements" sx={{ padding: 0 }}>
         <ListItemButton sx={{ padding: 0 }}>
           <FormControlLabel
-            control={<Checkbox sx={checkedStyle} />}
+            control={
+              <Checkbox
+                checked={noKnownEligibilityRequirementsFilter}
+                onChange={() =>
+                  dispatch({
+                    type: "NO_KNOWN_ELIGIBILITY_REQUIREMENTS_FILTER_TOGGLE",
+                    noKnownEligibilityRequirementsFilter:
+                      !noKnownEligibilityRequirementsFilter,
+                  })
+                }
+                sx={checkedStyle}
+              />
+            }
             label={
               <ListItemText
-                primary="No Known Elegibility Requirements"
+                primary="No Known Eligibility Requirements"
                 sx={{
                   marginLeft: 1,
                 }}

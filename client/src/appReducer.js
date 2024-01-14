@@ -100,6 +100,15 @@ function customizedOpenTimeFilterReducer(state, action) {
   }
 }
 
+function noKnownEligibilityRequirementsFilterReducer(state, action) {
+  switch (action.type) {
+    case "NO_KNOWN_ELIGIBILITY_REQUIREMENTS_FILTER_TOGGLE":
+      return action.noKnownEligibilityRequirementsFilter;
+    default:
+      return state;
+  }
+}
+
 export function appReducer(state, action) {
   return {
     defaultCoordinate: defaultCoordinatesReducer(
@@ -126,6 +135,11 @@ export function appReducer(state, action) {
       state.customizedOpenTimeFilter,
       action
     ),
+    noKnownEligibilityRequirementsFilter:
+      noKnownEligibilityRequirementsFilterReducer(
+        state.noKnownEligibilityRequirementsFilter,
+        action
+      ),
   };
 }
 
@@ -140,6 +154,7 @@ export function getInitialState() {
     isWidget: false,
     filterPanel: false,
     customizedOpenTimeFilter: null,
+    noKnownEligibilityRequirementsFilter: false,
   };
 }
 
@@ -216,4 +231,9 @@ export function useFilterPanel() {
 export function useCustomizedOpenTimeFilter() {
   const { customizedOpenTimeFilter } = useAppState();
   return customizedOpenTimeFilter;
+}
+
+export function useNoKnownEligibilityRequirementsFilter() {
+  const { noKnownEligibilityRequirementsFilter } = useAppState();
+  return noKnownEligibilityRequirementsFilter;
 }

@@ -152,6 +152,7 @@ export default function Menu() {
         sx={{
           transform: "scale(1.2,1.2)",
           minWidth: "0",
+          color: (theme) => theme.palette.common.black,
           backgroundColor: "#FFF",
           "&:hover": {
             backgroundColor: "#FFF",

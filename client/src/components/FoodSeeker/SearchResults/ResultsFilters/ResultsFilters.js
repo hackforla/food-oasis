@@ -12,6 +12,8 @@ import { useCallback, useEffect, useState } from "react";
 import * as analytics from "services/analytics";
 import { tenantDetails } from "../../../../helpers/Configuration";
 import CategoryButton from "./CategoryButton";
+import PantryIcon from "icons/PantryIcon";
+import MapMarker from "images/mapMarker";
 import SwitchViewsButton from "./SwitchViewsButton";
 
 const ResultsFilters = ({

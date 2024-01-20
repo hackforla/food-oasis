@@ -91,6 +91,15 @@ function filterPanelReducer(state, action) {
   }
 }
 
+function OpenNowFilterReducer(state, action) {
+  switch (action.type) {
+    case "OPEN_NOW_FILTER_UPDATED":
+      return action.OpenNowFilter;
+    default:
+      return state;
+  }
+}
+
 function customizedOpenTimeFilterReducer(state, action) {
   switch (action.type) {
     case "CUSTOMIZED_OPEN_TIME_FILTER_UPDATED":
@@ -131,6 +140,7 @@ export function appReducer(state, action) {
     isWidget: widgetReducer(state.isWidget, action),
     stakeholders: stakeholdersReducer(state.stakeholders, action),
     filterPanel: filterPanelReducer(state.filterPanel, action),
+    openNowFilter: filterPanelReducer(state.openNowFilter, action),
     customizedOpenTimeFilter: customizedOpenTimeFilterReducer(
       state.customizedOpenTimeFilter,
       action
@@ -153,6 +163,7 @@ export function getInitialState() {
     neighborhood: null,
     isWidget: false,
     filterPanel: false,
+    openNowFilter: null,
     customizedOpenTimeFilter: null,
     noKnownEligibilityRequirementsFilter: false,
   };
@@ -226,6 +237,11 @@ export function useStakeholders() {
 export function useFilterPanel() {
   const { filterPanel } = useAppState();
   return filterPanel;
+}
+
+export function useOpenNowFilter() {
+  const { openNowFilter } = useAppState();
+  return openNowFilter;
 }
 
 export function useCustomizedOpenTimeFilter() {

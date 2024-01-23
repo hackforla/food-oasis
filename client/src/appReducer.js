@@ -91,19 +91,10 @@ function filterPanelReducer(state, action) {
   }
 }
 
-function OpenNowFilterReducer(state, action) {
+function openTimeFilterReducer(state, action) {
   switch (action.type) {
-    case "OPEN_NOW_FILTER_UPDATED":
-      return action.OpenNowFilter;
-    default:
-      return state;
-  }
-}
-
-function customizedOpenTimeFilterReducer(state, action) {
-  switch (action.type) {
-    case "CUSTOMIZED_OPEN_TIME_FILTER_UPDATED":
-      return action.customizedOpenTimeFilter;
+    case "OPEN_TIME_FILTER_UPDATED":
+      return action.openTimeFilter;
     default:
       return state;
   }
@@ -140,11 +131,7 @@ export function appReducer(state, action) {
     isWidget: widgetReducer(state.isWidget, action),
     stakeholders: stakeholdersReducer(state.stakeholders, action),
     filterPanel: filterPanelReducer(state.filterPanel, action),
-    openNowFilter: filterPanelReducer(state.openNowFilter, action),
-    customizedOpenTimeFilter: customizedOpenTimeFilterReducer(
-      state.customizedOpenTimeFilter,
-      action
-    ),
+    openTimeFilter: openTimeFilterReducer(state.openTimeFilter, action),
     noKnownEligibilityRequirementsFilter:
       noKnownEligibilityRequirementsFilterReducer(
         state.noKnownEligibilityRequirementsFilter,
@@ -163,8 +150,7 @@ export function getInitialState() {
     neighborhood: null,
     isWidget: false,
     filterPanel: false,
-    openNowFilter: null,
-    customizedOpenTimeFilter: null,
+    openTimeFilter: { radio: "Show All", day: "", time: "" },
     noKnownEligibilityRequirementsFilter: false,
   };
 }
@@ -239,14 +225,9 @@ export function useFilterPanel() {
   return filterPanel;
 }
 
-export function useOpenNowFilter() {
-  const { openNowFilter } = useAppState();
-  return openNowFilter;
-}
-
-export function useCustomizedOpenTimeFilter() {
-  const { customizedOpenTimeFilter } = useAppState();
-  return customizedOpenTimeFilter;
+export function useOpenTimeFilter() {
+  const { openTimeFilter } = useAppState();
+  return openTimeFilter;
 }
 
 export function useNoKnownEligibilityRequirementsFilter() {

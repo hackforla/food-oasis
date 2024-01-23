@@ -8,7 +8,11 @@ import PantryLocatorIcon from "icons/PantryLocatorIcon";
 import PropTypes from "prop-types";
 import { useCallback } from "react";
 import * as analytics from "services/analytics";
-import { useAppDispatch, useFilterPanel } from "../../../../appReducer";
+import {
+  useAppDispatch,
+  useFilterPanel,
+  useOpenTimeFilter,
+} from "../../../../appReducer";
 import FilterPanel from "../ResultsFilters/FilterPanel";
 import AdvancedFilterButton from "./AdvancedFilterButton";
 
@@ -29,6 +33,7 @@ const AdvancedFilters = ({ toggleCategory, categoryIds }) => {
   // toggling filter panel state
   const dispatch = useAppDispatch();
   const open = useFilterPanel();
+  const openTime = useOpenTimeFilter();
 
   return (
     <>
@@ -58,7 +63,13 @@ const AdvancedFilters = ({ toggleCategory, categoryIds }) => {
       <Grid item sx={{ whiteSpace: "nowrap", marginTop: "0.75rem" }}>
         <AdvancedFilterButton
           label="Open Now"
-          onClick={() => console.log("todo: `Open Now` filter button")}
+          onClick={() => {
+            dispatch({
+              type: "OPEN_NOW_FILTER_UPDATED",
+              openTimeFilter: { ...openTime, radio: "Open Now" }, // calculate day and time now
+            });
+          }}
+          isSelected={openTime.radio === "Open Now"}
         />
       </Grid>
       <Grid

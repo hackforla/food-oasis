@@ -21,10 +21,10 @@ import { styled } from "@mui/material/styles";
 import useBreakpoints from "hooks/useBreakpoints";
 import MealIconNoBorder from "icons/MealIconNoBorder";
 import PantryIconNoBorder from "icons/PantryIconNoBorder";
-import { useEffect, useState } from "react";
 import {
   useAppDispatch,
   useFilterPanel,
+  useOpenTimeFilter,
   useNoKnownEligibilityRequirementsFilter,
 } from "../../../../appReducer";
 
@@ -49,13 +49,27 @@ export default function FilterPanel({ mealPantry }) {
 
   const { toggleMeal, togglePantry, isMealSelected, isPantrySelected } =
     mealPantry;
-  const [openTimeValue, setoOpenTimeValue] = useState({ day: "", time: "" });
   const dispatch = useAppDispatch();
   const open = useFilterPanel();
-  const [radioValue, setRadioValue] = useState("Show All");
+  const openTime = useOpenTimeFilter();
+
   const handleRadioChange = (event) => {
-    setRadioValue(event.target.value);
+    const name = event.target.name;
+    dispatch({
+      type: "OPEN_TIME_FILTER_UPDATED",
+      openTimeFilter: { ...openTime, radio: name },
+    });
   };
+
+  const handleOpenTimeChange = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    dispatch({
+      type: "OPEN_TIME_FILTER_UPDATED",
+      openTimeFilter: { ...openTime, [name]: value },
+    });
+  };
+  
   const noKnownEligibilityRequirementsFilter =
     useNoKnownEligibilityRequirementsFilter();
 
@@ -65,27 +79,6 @@ export default function FilterPanel({ mealPantry }) {
       filterPanel: !open,
     });
   };
-
-  function handleOpenTimeChange(dayOrTime, event) {
-    setoOpenTimeValue({ ...openTimeValue, [dayOrTime]: event.target.value });
-  }
-  useEffect(() => {
-    if (openTimeValue.day !== "" && openTimeValue.time !== "") {
-      dispatch({
-        type: "CUSTOMIZED_OPEN_TIME_FILTER_UPDATED",
-        customizedOpenTimeFilter: openTimeValue,
-      });
-    }
-  }, [dispatch, openTimeValue]);
-  useEffect(() => {
-    if (radioValue !== "day") {
-      dispatch({
-        type: "CUSTOMIZED_OPEN_TIME_FILTER_UPDATED",
-        customizedOpenTimeFilter: null,
-      });
-      setoOpenTimeValue({ day: "", time: "" });
-    }
-  }, [dispatch, radioValue]);
 
   return (
     <Drawer
@@ -171,47 +164,49 @@ export default function FilterPanel({ mealPantry }) {
           gap: (theme) => theme.spacing(2),
         }}
       >
-        {["Show All", "Open Now"].map((text) => (
-          <FormControlLabel
-            key={text}
-            value={text}
-            control={<Radio sx={checkedStyle} />}
-            label={text}
-          />
-        ))}
         <FormControlLabel
-          key="day"
-          value="day"
-          control={<Radio sx={checkedStyle} />}
+          key={"Show All"}
+          value={"Show All"}
+          control={<Radio name={"Show All"} sx={checkedStyle} />}
+          label={"Show All"}
+        />
+        <FormControlLabel
+          key={"Open Now"}
+          value={"Open Now"}
+          control={<Radio name={"Open Now"} sx={checkedStyle} />}
+          label={"Open Now"}
+        />
+
+        <FormControlLabel
+          key="Customized"
+          value="Customized"
+          control={<Radio name="Customized" sx={checkedStyle} />}
           label={
             <Stack direction="row" sx={{ width: "100%" }} gap={2}>
-              {Object.keys(openTime).map((key) => (
+              {["day", "time"].map((key) => (
                 <Select
-                  disabled={radioValue !== "day"}
+                  disabled={openTime.radio !== "Customized"}
                   labelId={`${key}-label`}
                   id={`${key}-select`}
                   key={`${key}-select`}
-                  value={openTimeValue[key]}
-                  onChange={(e) => handleOpenTimeChange(key, e)}
+                  name={key}
+                  value={openTime[key]}
+                  onChange={(e) => handleOpenTimeChange(e)}
                   displayEmpty
-                  renderValue={(selected) =>
-                    selected.length === 0 ? (
-                      <em>{openTime[key].placeholder}</em>
+                  renderValue={(selected) => {
+                    return selected.length === 0 ? (
+                      <em>{OPEN_TIME_DROPDOWNS[key].placeholder}</em>
                     ) : (
                       selected
-                    )
-                  }
+                    );
+                  }}
                   MenuProps={{
                     sx: { maxHeight: 180, width: "fit-content" },
                   }}
                 >
-                  {openTime[key].items.map((dayOrTime) => (
-                    <MenuItem
-                      key={dayOrTime.value}
-                      label={dayOrTime.label}
-                      value={dayOrTime.label}
-                    >
-                      {dayOrTime.label}
+                  {OPEN_TIME_DROPDOWNS[key].labels.map((label) => (
+                    <MenuItem key={label} label={label} value={label}>
+                      {label}
                     </MenuItem>
                   ))}
                 </Select>
@@ -256,46 +251,38 @@ export default function FilterPanel({ mealPantry }) {
   );
 }
 
-const openTime = {
+const OPEN_TIME_DROPDOWNS = {
   day: {
     placeholder: "DAY",
-    items: [
-      { label: "SUN", value: "Sun" },
-      { label: "MON", value: "Mon" },
-      { label: "TUE", value: "Tue" },
-      { label: "WED", value: "Wed" },
-      { label: "THU", value: "Thu" },
-      { label: "FRI", value: "Fri" },
-      { label: "SAT", value: "Sat" },
-    ],
+    labels: ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"],
   },
   time: {
     placeholder: "Open Time",
-    items: [
-      { label: "12:00AM", value: "00" },
-      { label: "01:00AM", value: "01" },
-      { label: "02:00AM", value: "02" },
-      { label: "03:00AM", value: "03" },
-      { label: "04:00AM", value: "04" },
-      { label: "05:00AM", value: "05" },
-      { label: "06:00AM", value: "06" },
-      { label: "07:00AM", value: "07" },
-      { label: "08:00AM", value: "08" },
-      { label: "09:00AM", value: "09" },
-      { label: "10:00AM", value: "10" },
-      { label: "11:00AM", value: "11" },
-      { label: "12:00PM", value: "12" },
-      { label: "01:00PM", value: "13" },
-      { label: "02:00PM", value: "14" },
-      { label: "03:00PM", value: "15" },
-      { label: "04:00PM", value: "16" },
-      { label: "05:00PM", value: "17" },
-      { label: "06:00PM", value: "18" },
-      { label: "07:00PM", value: "19" },
-      { label: "08:00PM", value: "20" },
-      { label: "09:00PM", value: "21" },
-      { label: "10:00PM", value: "22" },
-      { label: "11:00PM", value: "23" },
+    labels: [
+      "12:00AM",
+      "01:00AM",
+      "02:00AM",
+      "03:00AM",
+      "04:00AM",
+      "05:00AM",
+      "06:00AM",
+      "07:00AM",
+      "08:00AM",
+      "09:00AM",
+      "10:00AM",
+      "11:00AM",
+      "12:00PM",
+      "01:00PM",
+      "02:00PM",
+      "03:00PM",
+      "04:00PM",
+      "05:00PM",
+      "06:00PM",
+      "07:00PM",
+      "08:00PM",
+      "09:00PM",
+      "10:00PM",
+      "11:00PM",
     ],
   },
 };

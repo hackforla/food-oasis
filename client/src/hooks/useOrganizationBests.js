@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 import {
   DEFAULT_COORDINATES,
   useAppDispatch,
-  useCustomizedOpenTimeFilter,
+  useOpenTimeFilter,
   useSearchCoordinates,
   useNoKnownEligibilityRequirementsFilter,
 } from "../appReducer";
@@ -40,7 +40,7 @@ export default function useOrganizationBests() {
   });
   const location = useLocation();
   const searchCoordinates = useSearchCoordinates();
-  const customizedOpenTimeFilter = useCustomizedOpenTimeFilter();
+  const openTimeFilter = useOpenTimeFilter();
   const noKnownEligibilityRequirementsFilter =
     useNoKnownEligibilityRequirementsFilter();
   const { tenantTimeZone } = useSiteContext();
@@ -84,10 +84,10 @@ export default function useOrganizationBests() {
         });
       }
 
-      if (filters.customizedOpenTimeFilter) {
+      if (filters.openTimeFilter) {
         filteredStakeholders = filteredStakeholders.filter((stakeholder) => {
           const nextDateForDay = getNextDateForDay(
-            filters.customizedOpenTimeFilter,
+            filters.openTimeFilter,
             tenantTimeZone
           );
           const hours = stakeholdersDaysHours(
@@ -147,8 +147,8 @@ export default function useOrganizationBests() {
           categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
         };
 
-        if (customizedOpenTimeFilter) {
-          filters.customizedOpenTimeFilter = customizedOpenTimeFilter;
+        if (openTimeFilter) {
+          filters.openTimeFilter = openTimeFilter;
           filters.showActiveOnly = true;
         }
         if (noKnownEligibilityRequirementsFilter) {
@@ -177,7 +177,7 @@ export default function useOrganizationBests() {
       }
     },
     [
-      customizedOpenTimeFilter,
+      openTimeFilter,
       latitude,
       longitude,
       noKnownEligibilityRequirementsFilter,

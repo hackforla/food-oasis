@@ -16,7 +16,7 @@ import useBreakpoints from "hooks/useBreakpoints";
 
 const ResultsList = ({ stakeholders, loading, handleReset }) => {
   const selectedOrganization = useSelectedOrganization();
-  const { isMobile, isTablet } = useBreakpoints();
+  const { isDesktop } = useBreakpoints();
   useEffect(() => {
     analytics.postEvent("showList");
   }, []);
@@ -53,7 +53,7 @@ const ResultsList = ({ stakeholders, loading, handleReset }) => {
         <StakeholderDetails />
       ) : (
         <>
-          {stakeholders.length > 0 && !isMobile && !isTablet && (
+          {stakeholders.length > 0 && isDesktop && (
             <Typography
               sx={(theme) => ({
                 width: 1,
@@ -64,7 +64,6 @@ const ResultsList = ({ stakeholders, loading, handleReset }) => {
                 color: theme.palette.common.gray,
                 position: "relative",
                 "&::after": {
-                  // Using a pseudo-element for the inner border
                   content: '""',
                   position: "absolute",
                   left: 0,
@@ -73,7 +72,7 @@ const ResultsList = ({ stakeholders, loading, handleReset }) => {
                   top: 0,
                   borderBottom: `0.5px solid ${theme.palette.common.black}`,
                   pointerEvents: "none",
-                  marginX: "1em", // Adjust margin to match  padding
+                  marginX: "1em",
                 },
               })}
             >

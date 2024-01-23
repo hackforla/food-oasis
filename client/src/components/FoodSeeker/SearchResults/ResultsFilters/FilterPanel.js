@@ -27,6 +27,7 @@ import {
   useOpenTimeFilter,
   useNoKnownEligibilityRequirementsFilter,
 } from "../../../../appReducer";
+import dayjs from "dayjs";
 
 const DrawerHeader = styled("div")(({ _theme }) => ({
   display: "flex",
@@ -55,9 +56,21 @@ export default function FilterPanel({ mealPantry }) {
 
   const handleRadioChange = (event) => {
     const name = event.target.name;
+    let day, time;
+    if (name === "Open Now") {
+      const now = dayjs();
+      day = now.format("ddd").toUpperCase();
+      time = now.startOf("hour").format("hh:mmA");
+    }
+
     dispatch({
       type: "OPEN_TIME_FILTER_UPDATED",
-      openTimeFilter: { ...openTime, radio: name },
+      openTimeFilter: {
+        ...openTime,
+        radio: name,
+        day: name === "Show All" ? "" : day,
+        time: name === "Show All" ? "" : time,
+      },
     });
   };
 
@@ -69,7 +82,7 @@ export default function FilterPanel({ mealPantry }) {
       openTimeFilter: { ...openTime, [name]: value },
     });
   };
-  
+
   const noKnownEligibilityRequirementsFilter =
     useNoKnownEligibilityRequirementsFilter();
 

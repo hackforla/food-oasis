@@ -136,11 +136,10 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
           />
           <Grid item>
             <Typography align="center">
-              Please make donations to our parent organization (Code for
-              America)
+            Hack for LA takes donations through Civic Tech Structure.
             </Typography>
             <Typography align="center" color="error" variant="h6">
-              This is a 7-step process.
+              This is a 3-step process.
             </Typography>
           </Grid>
           <Grid item>
@@ -232,7 +231,7 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
               </Avatar>
             </Grid>
             <Grid item xs zeroMinWidth>
-              <Typography>Check the box right below.</Typography>
+              <Typography>In the "Project" field enter <em>"Food Oasis"</em>.</Typography>
               <CardMedia
                 component="img"
                 sx={{
@@ -273,8 +272,8 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
             </Grid>
             <Grid item xs zeroMinWidth>
               <Typography>
-                Under "Person to notify" and "Honoree Name" write{" "}
-                <em>"Food Oasis"</em>.
+                Fill out the remaining payment information and click{" "}
+                <em>Donate</em>.
               </Typography>
               <CardMedia
                 component="img"
@@ -283,174 +282,6 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
                   height: "auto",
                 }}
                 src={donationStep3}
-                alt="logo"
-              />
-            </Grid>
-          </Grid>
-        </Paper>
-        <Paper
-          xs={{
-            maxWidth: "400px",
-            padding: { xs: "16px", md: "24px" },
-            margin: { xs: "16px auto", md: "24px auto" },
-          }}
-        >
-          <Grid
-            sx={{
-              padding: "5px 16px",
-            }}
-            container
-            wrap="nowrap"
-            spacing={2}
-          >
-            <Grid item>
-              <Avatar
-                sx={{
-                  backgroundColor: "#ef624f",
-                  width: { xs: "24px", md: "56px" },
-                  height: { xs: "24px", md: "56px" },
-                }}
-              >
-                4
-              </Avatar>
-            </Grid>
-            <Grid item xs zeroMinWidth>
-              <Typography>
-                Under "Recipient Email" write{" "}
-                <em>"foodoasis+donations@hackforla.org"</em>.
-              </Typography>
-              <CardMedia
-                component="img"
-                sx={{
-                  width: "90%",
-                  height: "auto",
-                }}
-                src={donationStep4}
-                alt="logo"
-              />
-            </Grid>
-          </Grid>
-        </Paper>
-        <Paper
-          xs={{
-            maxWidth: "400px",
-            padding: { xs: "16px", md: "24px" },
-            margin: { xs: "16px auto", md: "24px auto" },
-          }}
-        >
-          <Grid
-            sx={{
-              padding: "5px 16px",
-            }}
-            container
-            wrap="nowrap"
-            spacing={2}
-          >
-            <Grid item>
-              <Avatar
-                sx={{
-                  backgroundColor: "#ef624f",
-                  width: { xs: "24px", md: "56px" },
-                  height: { xs: "24px", md: "56px" },
-                }}
-              >
-                5
-              </Avatar>
-            </Grid>
-            <Grid item xs zeroMinWidth>
-              <Typography>
-                Choose the brigade <em>"Hack for LA"</em> in the dropdown.
-              </Typography>
-              <CardMedia
-                component="img"
-                sx={{
-                  width: "90%",
-                  height: "auto",
-                }}
-                src={donationStep5}
-                alt="logo"
-              />
-            </Grid>
-          </Grid>
-        </Paper>
-        <Paper
-          xs={{
-            maxWidth: "400px",
-            padding: { xs: "16px", md: "24px" },
-            margin: { xs: "16px auto", md: "24px auto" },
-          }}
-        >
-          <Grid
-            sx={{
-              padding: "5px 16px",
-            }}
-            container
-            wrap="nowrap"
-            spacing={2}
-          >
-            <Grid item>
-              <Avatar
-                sx={{
-                  backgroundColor: "#ef624f",
-                  width: { xs: "24px", md: "56px" },
-                  height: { xs: "24px", md: "56px" },
-                }}
-              >
-                6
-              </Avatar>
-            </Grid>
-            <Grid item xs zeroMinWidth>
-              <Typography>Click next.</Typography>
-              <CardMedia
-                component="img"
-                sx={{
-                  width: "90%",
-                  height: "auto",
-                }}
-                src={donationStep6}
-                alt="logo"
-              />
-            </Grid>
-          </Grid>
-        </Paper>
-        <Paper
-          xs={{
-            maxWidth: "400px",
-            padding: { xs: "16px", md: "24px" },
-            margin: { xs: "16px auto", md: "24px auto" },
-          }}
-        >
-          <Grid
-            sx={{
-              padding: "5px 16px",
-            }}
-            container
-            wrap="nowrap"
-            spacing={2}
-          >
-            <Grid item>
-              <Avatar
-                sx={{
-                  backgroundColor: "#ef624f",
-                  width: { xs: "24px", md: "56px" },
-                  height: { xs: "24px", md: "56px" },
-                }}
-              >
-                7
-              </Avatar>
-            </Grid>
-            <Grid item xs zeroMinWidth>
-              <Typography>
-                Under "What inspired you to donate today?" write{" "}
-                <em>"Food Oasis"</em>.
-              </Typography>
-              <CardMedia
-                component="img"
-                sx={{
-                  width: "90%",
-                  height: "auto",
-                }}
-                src={donationStep7}
                 alt="logo"
               />
             </Grid>
@@ -480,7 +311,7 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
                 textTransform: "uppercase",
               }}
               variant="contained"
-              href="//www.codeforamerica.org/donate"
+              href="//www.hackforla.org/donate/"
               target="_blank"
               rel="noopener noreferrer"
               component="a"

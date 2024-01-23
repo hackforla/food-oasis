@@ -59,6 +59,7 @@ const ResultsFilters = ({
         borderTop: "1px solid lightgray",
         borderBottom: "1px solid lightgray",
         padding: "0.5rem 0",
+        zIndex: 2,
       }}
     >
       <Grid2

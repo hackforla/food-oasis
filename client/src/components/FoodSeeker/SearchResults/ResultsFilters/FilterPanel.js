@@ -68,8 +68,8 @@ export default function FilterPanel({ mealPantry }) {
       openTimeFilter: {
         ...openTime,
         radio: name,
-        day: name === "Show All" ? "" : day,
-        time: name === "Show All" ? "" : time,
+        day: name === "Open Now" ? day : "",
+        time: name === "Open Now" ? time : "",
       },
     });
   };
@@ -177,19 +177,14 @@ export default function FilterPanel({ mealPantry }) {
           gap: (theme) => theme.spacing(2),
         }}
       >
-        <FormControlLabel
-          key={"Show All"}
-          value={"Show All"}
-          control={<Radio name={"Show All"} sx={checkedStyle} />}
-          label={"Show All"}
-        />
-        <FormControlLabel
-          key={"Open Now"}
-          value={"Open Now"}
-          control={<Radio name={"Open Now"} sx={checkedStyle} />}
-          label={"Open Now"}
-        />
-
+        {["Show All", "Open Now"].map((text) => (
+          <FormControlLabel
+            key={text}
+            value={text}
+            control={<Radio name={text} sx={checkedStyle} />}
+            label={text}
+          />
+        ))}
         <FormControlLabel
           key="Customized"
           value="Customized"

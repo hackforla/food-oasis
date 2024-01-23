@@ -84,12 +84,10 @@ export default function useOrganizationBests() {
         });
       }
 
-      if (filters.openTimeFilter) {
+      const { day, time } = filters.openTimeFilter;
+      if (day !== "" && time !== "") {
         filteredStakeholders = filteredStakeholders.filter((stakeholder) => {
-          const nextDateForDay = getNextDateForDay(
-            filters.openTimeFilter,
-            tenantTimeZone
-          );
+          const nextDateForDay = getNextDateForDay(day, time, tenantTimeZone);
           const hours = stakeholdersDaysHours(
             stakeholder,
             tenantTimeZone,

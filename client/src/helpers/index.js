@@ -203,7 +203,7 @@ export const computeDistances = (userLatitude, userLongitude, stakeholders) => {
  * Example inputs: day: "SUN", time: "01:00AM", "America/New_York";
  * Example output: "2023-12-24T06:00:00.003Z"
  */
-export function getNextDateForDay(dayInput, timeInput, targetTimezone) {
+export const getNextDateForDay = (dayInput, timeInput, targetTimezone) => {
   const dayMap = { SUN: 0, MON: 1, TUE: 2, WED: 3, THU: 4, FRI: 5, SAT: 6 };
   const targetDay = dayMap[dayInput.toUpperCase()];
 
@@ -229,4 +229,12 @@ export function getNextDateForDay(dayInput, timeInput, targetTimezone) {
     .set("second", 0);
 
   return targetDate;
-}
+};
+
+export const getDayTimeNow = () => {
+  const now = dayjs();
+  const dayNow = now.format("ddd").toUpperCase();
+  const timeTime = now.startOf("hour").format("hh:mmA");
+
+  return [dayNow, timeTime];
+};

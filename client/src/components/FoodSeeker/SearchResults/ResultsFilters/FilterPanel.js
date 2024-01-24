@@ -27,7 +27,7 @@ import {
   useOpenTimeFilter,
   useNoKnownEligibilityRequirementsFilter,
 } from "../../../../appReducer";
-import dayjs from "dayjs";
+import { getDayTimeNow } from "helpers";
 
 const DrawerHeader = styled("div")(({ _theme }) => ({
   display: "flex",
@@ -58,15 +58,13 @@ export default function FilterPanel({ mealPantry }) {
     const name = event.target.name;
     let day, time;
     if (name === "Open Now") {
-      const now = dayjs();
-      day = now.format("ddd").toUpperCase();
-      time = now.startOf("hour").format("hh:mmA");
+      const [dayNow, timeNow] = getDayTimeNow();
+      day = dayNow;
+      time = timeNow;
     }
-
     dispatch({
       type: "OPEN_TIME_FILTER_UPDATED",
       openTimeFilter: {
-        ...openTime,
         radio: name,
         day: name === "Open Now" ? day : "",
         time: name === "Open Now" ? time : "",
@@ -168,7 +166,7 @@ export default function FilterPanel({ mealPantry }) {
       </FormLabel>
       <RadioGroup
         aria-labelledby="time-selection"
-        defaultValue="Show All"
+        value={openTime.radio}
         name="radio-buttons-group"
         onChange={handleRadioChange}
         sx={{
@@ -177,51 +175,50 @@ export default function FilterPanel({ mealPantry }) {
           gap: (theme) => theme.spacing(2),
         }}
       >
-        {["Show All", "Open Now"].map((text) => (
+        {["Show All", "Open Now", "Customized"].map((text) => (
           <FormControlLabel
             key={text}
             value={text}
             control={<Radio name={text} sx={checkedStyle} />}
-            label={text}
+            label={
+              text === "Customized" ? (
+                <Stack direction="row" sx={{ width: "100%" }} gap={2}>
+                  {["day", "time"].map((key) => (
+                    <Select
+                      disabled={openTime.radio !== "Customized"}
+                      labelId={`${key}-label`}
+                      id={`${key}-select`}
+                      key={`${key}-select`}
+                      name={key}
+                      value={openTime.radio === "Customized" && openTime[key]}
+                      onChange={(e) => handleOpenTimeChange(e)}
+                      displayEmpty
+                      renderValue={(selected) => {
+                        return openTime.radio !== "Customized" ||
+                          selected.length === 0 ? (
+                          <em>{OPEN_TIME_DROPDOWNS[key].placeholder}</em>
+                        ) : (
+                          selected
+                        );
+                      }}
+                      MenuProps={{
+                        sx: { maxHeight: 180, width: "fit-content" },
+                      }}
+                    >
+                      {OPEN_TIME_DROPDOWNS[key].labels.map((label) => (
+                        <MenuItem key={label} label={label} value={label}>
+                          {label}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  ))}
+                </Stack>
+              ) : (
+                text
+              )
+            }
           />
         ))}
-        <FormControlLabel
-          key="Customized"
-          value="Customized"
-          control={<Radio name="Customized" sx={checkedStyle} />}
-          label={
-            <Stack direction="row" sx={{ width: "100%" }} gap={2}>
-              {["day", "time"].map((key) => (
-                <Select
-                  disabled={openTime.radio !== "Customized"}
-                  labelId={`${key}-label`}
-                  id={`${key}-select`}
-                  key={`${key}-select`}
-                  name={key}
-                  value={openTime[key]}
-                  onChange={(e) => handleOpenTimeChange(e)}
-                  displayEmpty
-                  renderValue={(selected) => {
-                    return selected.length === 0 ? (
-                      <em>{OPEN_TIME_DROPDOWNS[key].placeholder}</em>
-                    ) : (
-                      selected
-                    );
-                  }}
-                  MenuProps={{
-                    sx: { maxHeight: 180, width: "fit-content" },
-                  }}
-                >
-                  {OPEN_TIME_DROPDOWNS[key].labels.map((label) => (
-                    <MenuItem key={label} label={label} value={label}>
-                      {label}
-                    </MenuItem>
-                  ))}
-                </Select>
-              ))}
-            </Stack>
-          }
-        />
       </RadioGroup>
 
       <Divider sx={{ mt: 2 }} />

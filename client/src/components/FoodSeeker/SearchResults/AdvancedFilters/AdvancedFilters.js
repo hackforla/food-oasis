@@ -15,6 +15,7 @@ import {
 } from "../../../../appReducer";
 import FilterPanel from "../ResultsFilters/FilterPanel";
 import AdvancedFilterButton from "./AdvancedFilterButton";
+import { getDayTimeNow } from "helpers";
 
 const AdvancedFilters = ({ toggleCategory, categoryIds }) => {
   const isMealSelected = categoryIds.includes(MEAL_PROGRAM_CATEGORY_ID);
@@ -33,7 +34,28 @@ const AdvancedFilters = ({ toggleCategory, categoryIds }) => {
   // toggling filter panel state
   const dispatch = useAppDispatch();
   const open = useFilterPanel();
+
+  // toggling Open Now state
   const openTime = useOpenTimeFilter();
+  const handleOpenNowToggle = () => {
+    const [dayNow, timeNow] = getDayTimeNow();
+
+    dispatch({
+      type: "OPEN_TIME_FILTER_UPDATED",
+      openTimeFilter:
+        openTime.radio !== "Open Now"
+          ? {
+              radio: "Open Now",
+              day: dayNow,
+              time: timeNow,
+            }
+          : {
+              radio: "Show All",
+              day: "",
+              time: "",
+            },
+    });
+  };
 
   return (
     <>
@@ -63,12 +85,7 @@ const AdvancedFilters = ({ toggleCategory, categoryIds }) => {
       <Grid item sx={{ whiteSpace: "nowrap", marginTop: "0.75rem" }}>
         <AdvancedFilterButton
           label="Open Now"
-          onClick={() => {
-            dispatch({
-              type: "OPEN_NOW_FILTER_UPDATED",
-              openTimeFilter: { ...openTime, radio: "Open Now" }, // calculate day and time now
-            });
-          }}
+          onClick={() => handleOpenNowToggle()}
           isSelected={openTime.radio === "Open Now"}
         />
       </Grid>

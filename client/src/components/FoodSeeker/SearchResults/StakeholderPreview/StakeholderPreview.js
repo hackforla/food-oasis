@@ -267,7 +267,7 @@ const StakeholderPreview = ({ stakeholder }) => {
 
           <Stack direction="row" sx={{ justifyContent: "space-between" }}>
             <Button
-              variant="outlined"
+              variant="gray"
               onClick={() => {
                 analytics.postEvent("getDirections", {
                   id: stakeholder.id,
@@ -287,7 +287,7 @@ const StakeholderPreview = ({ stakeholder }) => {
 
             {mainNumber && (
               <Button
-                variant="outlined"
+              variant="gray"
                 onClick={() => {
                   analytics.postEvent("dialPhone", {
                     id: stakeholder.id,
@@ -301,7 +301,7 @@ const StakeholderPreview = ({ stakeholder }) => {
             )}
 
             <Button
-              variant="outlined"
+              variant="gray"
               disabled={stakeholder.inactive}
               onClick={() => handleSelectOrganization(stakeholder)}
             >

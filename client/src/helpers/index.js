@@ -234,7 +234,7 @@ export const getNextDateForDay = (dayInput, timeInput, targetTimezone) => {
 export const getDayTimeNow = () => {
   const now = dayjs();
   const dayNow = now.format("ddd").toUpperCase();
-  const timeTime = now.startOf("hour").format("hh:mmA");
+  const timeTime = now.format("hh:mmA");
 
   return [dayNow, timeTime];
 };

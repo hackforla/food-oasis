@@ -105,6 +105,28 @@ export default function Button(theme) {
             opacity: 0.5,
           },
         },
+        gray: {
+          padding: "6px 12px",
+          color: '#313233',
+          backgroundColor: theme.palette.common.white,
+          borderStyle: "solid",
+          borderWidth: "1px",
+          borderColor: '#999999',
+          fontSize: ".8125rem",
+          "@media (min-width:600px)": {
+            fontSize: "0.8125rem",
+          },
+          "&:hover": {
+            backgroundColor: '#E1E1E1',
+          },
+          "&:active": {
+            backgroundColor: '#E1E1E1',
+            boxShadow: "inset 0px 8px 4px rgba(51, 102, 153, 0.24)",
+          },
+          "&:focus": {
+            filter: "drop-shadow(0px 0px  12px rgba(255, 255, 255, 0.8))",
+          }
+        }
       },
     },
   };

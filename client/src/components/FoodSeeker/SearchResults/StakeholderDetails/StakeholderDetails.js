@@ -310,7 +310,7 @@ const StakeholderDetails = () => {
 
         <Stack direction="row" sx={{ justifyContent: "space-between" }}>
           <Button
-            variant="outlined"
+            variant="gray"
             onClick={() => {
               analytics.postEvent("getDirections", {
                 id: selectedOrganization.id,

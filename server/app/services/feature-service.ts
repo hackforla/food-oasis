@@ -3,7 +3,7 @@ import { Feature } from "../../types/feature-types";
 
 const getAll = async (): Promise<Feature[]> => {
   const sql = `
-  select id,name from feature_flag
+  select id, name from feature_flag
   `;
   const result = await db.manyOrNone(sql);
   return result;

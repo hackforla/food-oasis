@@ -1,9 +1,9 @@
 import awsService from "../services/aws-service";
 import { RequestHandler } from "express";
 import {
-  SearchPlaceIndexForTextResponse,
   SearchForTextResult,
-} from "aws-sdk/clients/location";
+  SearchPlaceIndexForTextCommandOutput,
+} from "@aws-sdk/client-location";
 
 const autocomplete: RequestHandler<
   never,
@@ -23,7 +23,7 @@ const autocomplete: RequestHandler<
 
 const getCoords: RequestHandler<
   never,
-  SearchPlaceIndexForTextResponse,
+  SearchPlaceIndexForTextCommandOutput,
   { params: string | Record<string, never> },
   never
 > = async (req, res) => {

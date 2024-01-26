@@ -1,12 +1,12 @@
 import { Button, useTheme } from "@mui/material";
-import {default as MealIcon} from "icons/MealIconNoBorder";
-import {default as PantryIcon} from "icons/PantryIconNoBorder";
+import MealIcon from "icons/MealIconNoBorder";
+import PantryIcon from "icons/PantryIconNoBorder";
 
 const CategoryButton = ({ isSelected, onClick, icon, label, style }) => {
   const theme = useTheme();
   const Icon = icon === "pantry" ? PantryIcon : MealIcon;
   let ICON_SIZE = "25px";
-  
+
   return (
     <Button
       style={{

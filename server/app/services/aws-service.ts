@@ -42,8 +42,7 @@ const autocomplete = async (address: string, tenantId: number) => {
   if (!location) return;
 
   // Use the Location client to searchPlaceIndexForText
-  const data: SearchPlaceIndexForTextCommandOutput =
-    await location.searchPlaceIndexForText(params);
+  const data = await location.searchPlaceIndexForText(params);
 
   const tenantRegions: { [key: number]: string } = {
     1: "California",
@@ -78,8 +77,7 @@ const getCoords = async (address: string) => {
 
   if (!location) return;
 
-  const data: SearchPlaceIndexForTextCommandOutput =
-    await location.searchPlaceIndexForText(params);
+  const data = await location.searchPlaceIndexForText(params);
 
   const point = data.Results?.[0]?.Place?.Geometry?.Point?.shift();
   if (!point) return;

@@ -44,6 +44,7 @@ const DialogTitle = (props) => {
       }}
       {...other}
     >
+      {children}
       {onClose ? (
         <Button
           variant="contained"

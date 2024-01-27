@@ -29,9 +29,9 @@ exports.up = (pgm) => {
 
 exports.down = (pgm) => {
   pgm.sql(`
-  DROP TABLE feature_flag;
+  DROP TABLE feature_to_login;
   `);
   pgm.sql(`
-  DROP TABLE feature_to_login;
+  DROP TABLE feature_flag;
   `);
 };

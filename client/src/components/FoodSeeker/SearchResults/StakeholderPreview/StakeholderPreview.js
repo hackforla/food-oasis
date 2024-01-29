@@ -177,11 +177,7 @@ const StakeholderPreview = ({ stakeholder }) => {
           alignItems="center"
           sx={{ marginTop: ".2rem", height: "100%" }}
         >
-          <StakeholderIcon
-            stakeholder={stakeholder}
-            height="50px"
-            width="50px"
-          />
+          <StakeholderIcon stakeholder={stakeholder} />
           {stakeholder.distance ? (
             <Typography variant="body2" component="p">
               {stakeholder.distance >= 10

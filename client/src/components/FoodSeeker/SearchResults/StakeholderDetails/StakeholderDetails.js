@@ -224,11 +224,7 @@ const StakeholderDetails = () => {
         </Typography>
 
         <Stack direction="row" gap={2}>
-          <StakeholderIcon
-            stakeholder={selectedOrganization}
-            height="50px"
-            width="50px"
-          />
+          <StakeholderIcon stakeholder={selectedOrganization} />
           <Box align="left">
             <Typography variant="h6" component="h2" align="left">
               {selectedOrganization.name}

@@ -222,9 +222,6 @@ const StakeholderDetails = () => {
             }}
             direction="row" alignItems="center">
               <ArrowBack
-              sx={{
-                color: '#747476'
-              }}
               fontSize="small" />
               Back to List
             </Stack>

@@ -117,10 +117,10 @@ export default function Button(theme) {
             fontSize: "0.8125rem",
           },
           "&:hover": {
-            backgroundColor: '#E1E1E1',
+            backgroundColor: '#E2E5EE',
           },
           "&:active": {
-            backgroundColor: '#E1E1E1',
+            backgroundColor: '#E2E5EE',
             boxShadow: "inset 0px 8px 4px rgba(51, 102, 153, 0.24)",
           },
           "&:focus": {

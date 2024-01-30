@@ -1,13 +1,13 @@
 import React from "react";
-import PantryIcon from "../icons/PantryIcon";
-import SplitPantryMealIcon from "icons/SplitPantryMealIcon";
-import MealIcon from "../icons/MealIcon";
+import PantryIconStakeholder from "../icons/PantryIconStakeholder";
+import SplitPantryMealIconStakeholder from "icons/SplitPantryMealIconStakeholder";
+import MealIconStakeHolder from "../icons/MealIconStakeholder";
 import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,
 } from "constants/stakeholder";
 
-const Icon = ({ stakeholder, height, width }) => {
+const Icon = ({ stakeholder }) => {
   if (
     !stakeholder ||
     !stakeholder.categories ||
@@ -31,13 +31,11 @@ const Icon = ({ stakeholder, height, width }) => {
   const isFoodPantry = stakeholder.categories[0].id === FOOD_PANTRY_CATEGORY_ID;
 
   if (isBothMealProgramAndFoodPantry) {
-    return (
-      <SplitPantryMealIcon isClosed={isClosed} height={height} width={width} />
-    );
+    return <SplitPantryMealIconStakeholder isClosed={isClosed} />;
   } else if (isFoodPantry) {
-    return <PantryIcon isClosed={isClosed} height={height} width={width} />;
+    return <PantryIconStakeholder isClosed={isClosed} />;
   } else {
-    return <MealIcon isClosed={isClosed} height={height} width={width} />;
+    return <MealIconStakeHolder isClosed={isClosed} />;
   }
 };
 

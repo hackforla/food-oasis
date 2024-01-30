@@ -216,8 +216,13 @@ const StakeholderDetails = () => {
             role="button"
             onClick={handleBackButtonClick}
           >
-            <Stack direction="row" alignItems="center">
-              <ArrowBack fontSize="small" />
+            <Stack 
+            sx={{
+              color: '#747476'
+            }}
+            direction="row" alignItems="center">
+              <ArrowBack
+              fontSize="small" />
               Back to List
             </Stack>
           </Link>
@@ -310,7 +315,7 @@ const StakeholderDetails = () => {
 
         <Stack direction="row" sx={{ justifyContent: "space-between" }}>
           <Button
-            variant="outlined"
+            variant="gray"
             onClick={() => {
               analytics.postEvent("getDirections", {
                 id: selectedOrganization.id,
@@ -326,10 +331,10 @@ const StakeholderDetails = () => {
           >
             Directions
           </Button>
-          <Button variant="outlined" onClick={handleSuggestionDialogOpen}>
+          <Button variant="gray" onClick={handleSuggestionDialogOpen}>
             Send Correction
           </Button>
-          <Button variant="outlined" onClick={shareLink}>
+          <Button variant="gray" onClick={shareLink}>
             Share
           </Button>
         </Stack>

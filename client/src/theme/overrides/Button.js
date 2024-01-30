@@ -108,7 +108,7 @@ export default function Button(theme) {
         gray: {
           padding: "6px 12px",
           color: '#313233',
-          backgroundColor: theme.palette.common.white,
+          backgroundColor: '#FFFFFF',
           borderStyle: "solid",
           borderWidth: "1px",
           borderColor: '#999999',
@@ -117,10 +117,10 @@ export default function Button(theme) {
             fontSize: "0.8125rem",
           },
           "&:hover": {
-            backgroundColor: '#E2E5EE',
+            backgroundColor: '#EFEFEF',
           },
           "&:active": {
-            backgroundColor: '#E2E5EE',
+            backgroundColor: '#EFEFEF',
             boxShadow: "inset 0px 8px 4px rgba(51, 102, 153, 0.24)",
           },
           "&:focus": {

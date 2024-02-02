@@ -216,13 +216,14 @@ const StakeholderDetails = () => {
             role="button"
             onClick={handleBackButtonClick}
           >
-            <Stack 
-            sx={{
-              color: '#747476'
-            }}
-            direction="row" alignItems="center">
-              <ArrowBack
-              fontSize="small" />
+            <Stack
+              sx={{
+                color: "#747476",
+              }}
+              direction="row"
+              alignItems="center"
+            >
+              <ArrowBack fontSize="small" />
               Back to List
             </Stack>
           </Link>

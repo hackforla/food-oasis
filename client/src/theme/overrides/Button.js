@@ -107,26 +107,26 @@ export default function Button(theme) {
         },
         gray: {
           padding: "6px 12px",
-          color: '#313233',
-          backgroundColor: '#FFFFFF',
+          color: "#313233",
+          backgroundColor: "#FFFFFF",
           borderStyle: "solid",
           borderWidth: "1px",
-          borderColor: '#999999',
+          borderColor: "#999999",
           fontSize: ".8125rem",
           "@media (min-width:600px)": {
             fontSize: "0.8125rem",
           },
           "&:hover": {
-            backgroundColor: '#EFEFEF',
+            backgroundColor: "#EFEFEF",
           },
           "&:active": {
-            backgroundColor: '#EFEFEF',
+            backgroundColor: "#EFEFEF",
             boxShadow: "inset 0px 8px 4px rgba(51, 102, 153, 0.24)",
           },
           "&:focus": {
             filter: "drop-shadow(0px 0px  12px rgba(255, 255, 255, 0.8))",
-          }
-        }
+          },
+        },
       },
     },
   };

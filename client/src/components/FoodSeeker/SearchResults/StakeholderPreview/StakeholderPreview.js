@@ -287,7 +287,7 @@ const StakeholderPreview = ({ stakeholder }) => {
 
             {mainNumber && (
               <Button
-              variant="gray"
+                variant="gray"
                 onClick={() => {
                   analytics.postEvent("dialPhone", {
                     id: stakeholder.id,

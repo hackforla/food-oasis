@@ -61,5 +61,11 @@
     "@types/react-dom": "^18.2.18",
     "prettier": "^2.4.1",
     "typescript": "^4.9.5"
+  },
+  "overrides": {
+    "react-scripts": {
+      "nth-check": "^2.1.1",
+      "postcss": "^8.4.33"
+    }
   }
 }

@@ -1,4 +1,5 @@
 import express from "express";
+import compression from "compression";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -12,6 +13,9 @@ import router from "./app/routes/index";
 import { Express } from "express";
 
 const app: Express = express();
+
+// Enable compression
+app.use(compression());
 
 // Redirect HTTP requests to HTTPS
 if (process.env.NODE_ENV === "production") {

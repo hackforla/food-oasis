@@ -11,7 +11,7 @@
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject",
-    "format": "prettier --write  \"**/*.{js,jsx}\"",
+    "format": "prettier --write  \"**/*.{js,jsx,ts,tsx}\"",
     "lint": "eslint -c .eslintrc.json --ignore-path .eslintignore  \"**/*.{js,jsx}\"",
     "lint:fix": "eslint -c .eslintrc.json --ignore-path .eslintignore --fix  \"**/*.{js,jsx}\""
   },
@@ -25,7 +25,7 @@
     "@mui/material": "^5.11.1",
     "@mui/x-data-grid": "^5.17.20",
     "@mui/x-date-pickers": "^6.8.0",
-    "axios": "^1.6.0",
+    "axios": "^1.6.7",
     "dayjs": "^1.11.7",
     "debounce-fn": "^5.0.0",
     "formik": "^2.2.9",

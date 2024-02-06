@@ -65,7 +65,8 @@
   "overrides": {
     "react-scripts": {
       "nth-check": "^2.1.1",
-      "postcss": "^8.4.33"
+      "postcss": "^8.4.33",
+      "serialize-javascript": "6.0.2"
     }
   }
 }

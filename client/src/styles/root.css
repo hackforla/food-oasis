@@ -29,3 +29,17 @@ code {
   padding-right: 8px;
 }
 
+.mapboxgl-ctrl-attrib.mapboxgl-compact::after {
+  display: none;
+}
+
+button.mapboxgl-ctrl-attrib-button {
+  top: auto;
+  bottom: 0;
+}
+
+@media (max-width:600px)  {
+  div.mapboxgl-control-container {
+    display: none;
+  }   
+}

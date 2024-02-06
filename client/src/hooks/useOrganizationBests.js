@@ -1,14 +1,18 @@
 import { DEFAULT_CATEGORIES } from "constants/stakeholder";
-import { computeDistances, checkIfStaleData } from "helpers";
+import { computeDistances, checkIfStaleData, getNextDateForDay } from "helpers";
 import { useCallback, useState } from "react";
 import { useLocation } from "react-router-dom";
 import {
   DEFAULT_COORDINATES,
   useAppDispatch,
+  useOpenTimeFilter,
   useSearchCoordinates,
+  useNoKnownEligibilityRequirementsFilter,
 } from "../appReducer";
 import * as analytics from "../services/analytics";
 import * as stakeholderService from "../services/stakeholder-best-service";
+import { useSiteContext } from "contexts/siteContext";
+import { stakeholdersDaysHours } from "../components/FoodSeeker/SearchResults/StakeholderPreview/StakeholderPreview";
 
 const sortOrganizations = (a, b) => {
   if (
@@ -36,6 +40,10 @@ export default function useOrganizationBests() {
   });
   const location = useLocation();
   const searchCoordinates = useSearchCoordinates();
+  const openTimeFilter = useOpenTimeFilter();
+  const noKnownEligibilityRequirementsFilter =
+    useNoKnownEligibilityRequirementsFilter();
+  const { tenantTimeZone } = useSiteContext();
 
   let latitude, longitude;
   if (location.search && !searchCoordinates) {
@@ -69,10 +77,31 @@ export default function useOrganizationBests() {
         );
       }
 
-      if (filters.neighborhoodId) {
-        filteredStakeholders = filteredStakeholders.filter(
-          (stakeholder) => stakeholder.neighborhoodId === filters.neighborhoodId
-        );
+      if (filters.showActiveOnly) {
+        // filter out inactive, inactiveTemporary stakeholders
+        filteredStakeholders = filteredStakeholders.filter((stakeholder) => {
+          return !stakeholder.inactive && !stakeholder.inactiveTemporary;
+        });
+      }
+
+      const { day, time } = filters.openTimeFilter;
+      if (day !== "" && time !== "") {
+        filteredStakeholders = filteredStakeholders.filter((stakeholder) => {
+          const nextDateForDay = getNextDateForDay(day, time, tenantTimeZone);
+          const hours = stakeholdersDaysHours(
+            stakeholder,
+            tenantTimeZone,
+            nextDateForDay
+          );
+
+          return !!hours;
+        });
+      }
+
+      if (filters.noKnownEligibilityRequirementsFilter) {
+        filteredStakeholders = filteredStakeholders.filter((stakeholder) => {
+          return !stakeholder.requirements;
+        });
       }
 
       const stakeholdersWithDistances = computeDistances(
@@ -91,7 +120,7 @@ export default function useOrganizationBests() {
         error: false,
       });
     },
-    [dispatch, longitude, latitude]
+    [latitude, longitude, dispatch, tenantTimeZone]
   );
 
   const selectAll = useCallback(
@@ -116,6 +145,15 @@ export default function useOrganizationBests() {
           categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
         };
 
+        if (openTimeFilter) {
+          filters.openTimeFilter = openTimeFilter;
+          filters.showActiveOnly = true;
+        }
+        if (noKnownEligibilityRequirementsFilter) {
+          filters.noKnownEligibilityRequirementsFilter =
+            noKnownEligibilityRequirementsFilter;
+        }
+
         let stakeholders;
         const isStaleData = checkIfStaleData();
         if (!isStaleData) {
@@ -136,7 +174,13 @@ export default function useOrganizationBests() {
         return Promise.reject(err);
       }
     },
-    [processStakeholders, latitude, longitude]
+    [
+      openTimeFilter,
+      latitude,
+      longitude,
+      noKnownEligibilityRequirementsFilter,
+      processStakeholders,
+    ]
   );
 
   const getById = useCallback(async (id) => {

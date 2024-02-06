@@ -12,10 +12,11 @@ import * as analytics from "services/analytics";
 import { useSelectedOrganization } from "../../../../appReducer";
 import StakeholderDetails from "../StakeholderDetails/StakeholderDetails";
 import StakeholderPreview from "../StakeholderPreview/StakeholderPreview";
+import useBreakpoints from "hooks/useBreakpoints";
 
 const ResultsList = ({ stakeholders, loading, handleReset }) => {
   const selectedOrganization = useSelectedOrganization();
-
+  const { isDesktop } = useBreakpoints();
   useEffect(() => {
     analytics.postEvent("showList");
   }, []);
@@ -51,22 +52,51 @@ const ResultsList = ({ stakeholders, loading, handleReset }) => {
       !selectedOrganization.inactive ? (
         <StakeholderDetails />
       ) : (
-        <Box sx={{ width: 1, margin: 0, flex: 1 }}>
-          <Virtuoso
-            data={stakeholders}
-            itemContent={(index) => (
-              <Box
-                sx={{
-                  width: 1,
-                  borderBottom: ".2em solid #f1f1f1",
-                  padding: "0",
-                }}
-              >
-                <StakeholderPreview stakeholder={stakeholders[index]} />
-              </Box>
-            )}
-          />
-        </Box>
+        <>
+          {stakeholders.length > 0 && isDesktop && (
+            <Typography
+              sx={(theme) => ({
+                width: 1,
+                padding: "0.75rem 1em",
+                textAlign: "left",
+                fontWeight: "bold",
+                fontSize: { xs: "18px" },
+                color: theme.palette.common.gray,
+                position: "relative",
+                "&::after": {
+                  content: '""',
+                  position: "absolute",
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  top: 0,
+                  borderBottom: `0.5px solid ${theme.palette.common.black}`,
+                  pointerEvents: "none",
+                  marginX: "1em",
+                },
+              })}
+            >
+              {stakeholders.length}{" "}
+              {stakeholders.length === 1 ? "Location" : "Locations"}
+            </Typography>
+          )}
+          <Box sx={{ width: 1, margin: 0, flex: 1 }}>
+            <Virtuoso
+              data={stakeholders}
+              itemContent={(index) => (
+                <Box
+                  sx={{
+                    width: 1,
+                    borderBottom: ".2em solid #f1f1f1",
+                    padding: "0",
+                  }}
+                >
+                  <StakeholderPreview stakeholder={stakeholders[index]} />
+                </Box>
+              )}
+            />
+          </Box>
+        </>
       )}
     </Stack>
   );

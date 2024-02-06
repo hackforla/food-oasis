@@ -40,12 +40,12 @@ const ImportFileGuide = (props) => {
     >
       <Box
         sx={(theme) => ({
-          "marginTop": theme.spacing(2),
-          "maxWidth": "800px",
-          "mx": "auto",
-          "padding": theme.spacing(4),
-          "borderRadius": "8px",
-          "boxShadow": "-.2rem 0 2rem #C7CCD1",
+          marginTop: theme.spacing(2),
+          maxWidth: "800px",
+          mx: "auto",
+          padding: theme.spacing(4),
+          borderRadius: "8px",
+          boxShadow: "-.2rem 0 2rem #C7CCD1",
           "& strong": {
             color: theme.palette.error.main,
           },
@@ -84,12 +84,12 @@ const ImportFileGuide = (props) => {
       </Box>
       <Box
         sx={(theme) => ({
-          "marginTop": theme.spacing(2),
-          "maxWidth": "800px",
-          "mx": "auto",
-          "padding": theme.spacing(4),
-          "borderRadius": "8px",
-          "boxShadow": "-.2rem 0 2rem #C7CCD1",
+          marginTop: theme.spacing(2),
+          maxWidth: "800px",
+          mx: "auto",
+          padding: theme.spacing(4),
+          borderRadius: "8px",
+          boxShadow: "-.2rem 0 2rem #C7CCD1",
           "& strong": {
             color: theme.palette.error.main,
           },
@@ -120,12 +120,12 @@ const ImportFileGuide = (props) => {
       </Box>
       <Box
         sx={(theme) => ({
-          "marginTop": theme.spacing(2),
-          "maxWidth": "800px",
-          "mx": "auto",
-          "padding": theme.spacing(4),
-          "borderRadius": "8px",
-          "boxShadow": "-.2rem 0 2rem #C7CCD1",
+          marginTop: theme.spacing(2),
+          maxWidth: "800px",
+          mx: "auto",
+          padding: theme.spacing(4),
+          borderRadius: "8px",
+          boxShadow: "-.2rem 0 2rem #C7CCD1",
           "& strong": {
             color: theme.palette.error.main,
           },

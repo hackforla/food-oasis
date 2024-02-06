@@ -34,7 +34,6 @@ const DialogTitle = (props) => {
   const { children, onClose, ...other } = props;
   return (
     <MuiDialogTitle
-      disableTypography
       sx={{
         flexGrow: "1",
         flexBasis: "100%",
@@ -45,7 +44,7 @@ const DialogTitle = (props) => {
       }}
       {...other}
     >
-      <Typography variant="h6">{children}</Typography>
+      {children}
       {onClose ? (
         <Button
           variant="contained"

@@ -53,9 +53,9 @@ export default function Header() {
         >
           <Box
             sx={(theme) => ({
-              "maxWidth": "175px",
-              "maxHeight": "48px",
-              "margin": "4px 4px 0 4px",
+              maxWidth: "175px",
+              maxHeight: "48px",
+              margin: "4px 4px 0 4px",
               "&:hover": {
                 filter: "brightness(1.2)",
               },

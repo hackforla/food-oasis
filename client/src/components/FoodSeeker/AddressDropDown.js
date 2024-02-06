@@ -15,7 +15,7 @@ import {
   useWidget,
 } from "../../appReducer";
 
-export default function AddressDropDown({ showSearchIcon }) {
+export default function AddressDropDown({ autoFocus }) {
   const searchCoordinates = useSearchCoordinates();
   const isWidget = useWidget();
   const [inputVal, setInputVal] = useState(
@@ -27,6 +27,7 @@ export default function AddressDropDown({ showSearchIcon }) {
   const navigate = useNavigate();
 
   const handleInputChange = (delta) => {
+    if (!delta) return;
     const safeValue = typeof delta === "string" ? delta : delta.target.value;
     setInputVal(safeValue);
     if (safeValue) {
@@ -66,7 +67,7 @@ export default function AddressDropDown({ showSearchIcon }) {
         fullWidth
         name="address"
         size="small"
-        autoFocus={true}
+        autoFocus={autoFocus}
         onClick={() => setInputVal("")}
         InputLabelProps={{
           sx: {
@@ -108,27 +109,37 @@ export default function AddressDropDown({ showSearchIcon }) {
     );
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter" && mapboxResults.length > 0) {
+      event.preventDefault();
+      handleAutocompleteOnChange(mapboxResults[0].place_name);
+    }
+  };
   return (
     <>
       <Autocomplete
+        autoHighlight
         onInputChange={(value) => handleInputChange(value)}
         freeSolo
         inputValue={inputVal}
         open={open}
         onOpen={() => setOpen(true)}
         onClose={() => setOpen(false)}
-        onChange={(event, newValue) => setInputVal(newValue)}
+        onKeyDown={handleKeyDown}
+        onChange={(_event, newValue) => {
+          setInputVal(newValue ?? "");
+        }}
         options={mapboxResults.slice(0, 10).map((item) => item.place_name)}
         sx={{
-          "width": 600,
-          "backgroundColor": "#F0F0F0",
+          width: 600,
+          backgroundColor: "#F0F0F0",
           "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-            "borderColor": "white",
-            "width": "auto",
-            "maxWidth": "auto",
-            "height": "auto",
-            "maxHeight": "150px",
-            "overflow": "auto",
+            borderColor: "white",
+            width: "auto",
+            maxWidth: "auto",
+            height: "auto",
+            maxHeight: "150px",
+            overflow: "auto",
             "&::placeholder": {
               opacity: "1",
               backgroundColor: "#F0F0F0",

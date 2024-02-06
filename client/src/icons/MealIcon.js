@@ -25,7 +25,7 @@ const PantryIcon = ({
       <path
         d="m25.85 57.267.76.648-.76.893-.762-.892.761-.65Zm0 0-.762.648-.004-.004-.01-.013-.042-.049-.16-.19a172.391 172.391 0 0 1-2.752-3.382 176.944 176.944 0 0 1-6.517-8.745c-2.369-3.408-4.754-7.153-6.55-10.691-1.778-3.502-3.054-6.943-3.054-9.7 0-10.607 8.924-19.14 19.85-19.14C36.776 6 45.7 14.533 45.7 25.14c0 2.757-1.276 6.198-3.053 9.7-1.797 3.538-4.181 7.283-6.55 10.691a177.003 177.003 0 0 1-6.518 8.745 171.789 171.789 0 0 1-2.751 3.382l-.16.19-.042.05-.01.012-.004.003v.001l-.762-.648Z"
         stroke={selected ? mealProgram : white}
-        stroke-width="2"
+        strokeWidth="2"
       />
     </g>
     <path
@@ -40,9 +40,9 @@ const PantryIcon = ({
         width="51.699"
         height="65.349"
         filterUnits="userSpaceOnUse"
-        color-interpolation-filters="sRGB"
+        colorInterpolationFilters="sRGB"
       >
-        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+        <feFlood floodOpacity="0" result="BackgroundImageFix" />
         <feColorMatrix
           in="SourceAlpha"
           values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"

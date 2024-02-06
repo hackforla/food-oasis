@@ -8,8 +8,19 @@ import PantryLocatorIcon from "icons/PantryLocatorIcon";
 import PropTypes from "prop-types";
 import { useCallback } from "react";
 import * as analytics from "services/analytics";
+import {
+  useAppDispatch,
+  useFilterPanel,
+  useOpenTimeFilter,
+} from "../../../../appReducer";
+import FilterPanel from "../ResultsFilters/FilterPanel";
 import AdvancedFilterButton from "./AdvancedFilterButton";
+import { getDayTimeNow } from "helpers";
+
 const AdvancedFilters = ({ toggleCategory, categoryIds }) => {
+  const isMealSelected = categoryIds.includes(MEAL_PROGRAM_CATEGORY_ID);
+  const isPantrySelected = categoryIds.includes(FOOD_PANTRY_CATEGORY_ID);
+
   const toggleMeal = useCallback(() => {
     toggleCategory(MEAL_PROGRAM_CATEGORY_ID);
     analytics.postEvent("toggleMealFilter", {});
@@ -20,12 +31,42 @@ const AdvancedFilters = ({ toggleCategory, categoryIds }) => {
     analytics.postEvent("togglePantryFilter", {});
   }, [toggleCategory]);
 
-  const isMealSelected = categoryIds.indexOf(MEAL_PROGRAM_CATEGORY_ID) >= 0;
-  const isPantrySelected = categoryIds.indexOf(FOOD_PANTRY_CATEGORY_ID) >= 0;
+  // toggling filter panel state
+  const dispatch = useAppDispatch();
+  const open = useFilterPanel();
+
+  // toggling Open Now state
+  const openTime = useOpenTimeFilter();
+  const handleOpenNowToggle = () => {
+    const [dayNow, timeNow] = getDayTimeNow();
+
+    dispatch({
+      type: "OPEN_TIME_FILTER_UPDATED",
+      openTimeFilter:
+        openTime.radio !== "Open Now"
+          ? {
+              radio: "Open Now",
+              day: dayNow,
+              time: timeNow,
+            }
+          : {
+              radio: "Show All",
+              day: "",
+              time: "",
+            },
+    });
+  };
 
   return (
     <>
-      <Grid item sx={{ whiteSpace: "nowrap", marginLeft: "0.5rem" }}>
+      <Grid
+        item
+        sx={{
+          whiteSpace: "nowrap",
+          marginLeft: "0.5rem",
+          marginTop: "0.75rem",
+        }}
+      >
         <AdvancedFilterButton
           label="Pantry"
           onClick={togglePantry}
@@ -33,7 +74,7 @@ const AdvancedFilters = ({ toggleCategory, categoryIds }) => {
           icon={PantryLocatorIcon}
         />
       </Grid>
-      <Grid item sx={{ whiteSpace: "nowrap" }}>
+      <Grid item sx={{ whiteSpace: "nowrap", marginTop: "0.75rem" }}>
         <AdvancedFilterButton
           label="Meal"
           onClick={toggleMeal}
@@ -41,15 +82,36 @@ const AdvancedFilters = ({ toggleCategory, categoryIds }) => {
           icon={MealLocatorIcon}
         />
       </Grid>
-      <Grid item sx={{ whiteSpace: "nowrap" }}>
-        <AdvancedFilterButton label="Open Now" onClick="" />
+      <Grid item sx={{ whiteSpace: "nowrap", marginTop: "0.75rem" }}>
+        <AdvancedFilterButton
+          label="Open Now"
+          onClick={() => handleOpenNowToggle()}
+          isSelected={openTime.radio === "Open Now"}
+        />
       </Grid>
-      <Grid item sx={{ whiteSpace: "nowrap" }}>
-        <AdvancedFilterButton label="Days" onClick="" hasDropdown={true} />
+      <Grid
+        item
+        sx={{ whiteSpace: "nowrap", marginTop: "0.75rem", marginRight: "1rem" }}
+      >
+        <AdvancedFilterButton
+          label="More Filters"
+          onClick={() => {
+            dispatch({
+              type: "FILTER_PANEL_TOGGLE",
+              filterPanel: !open,
+            });
+          }}
+          isSelected={open}
+        />
       </Grid>
-      <Grid item sx={{ whiteSpace: "nowrap", marginRight: "1rem" }}>
-        <AdvancedFilterButton label="More Filters" onClick="" />
-      </Grid>
+      <FilterPanel
+        mealPantry={{
+          toggleMeal,
+          togglePantry,
+          isMealSelected,
+          isPantrySelected,
+        }}
+      />
     </>
   );
 };

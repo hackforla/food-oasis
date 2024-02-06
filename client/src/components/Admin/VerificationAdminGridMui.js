@@ -359,8 +359,8 @@ export default function VerificationAdminGridMui(props) {
   return (
     <Box
       sx={{
-        "height": "100%",
-        "width": "100%",
+        height: "100%",
+        width: "100%",
         "& .suggestionCount-highlight.count": {
           backgroundColor: "rgb(255, 185, 185)",
         },

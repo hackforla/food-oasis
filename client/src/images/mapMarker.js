@@ -24,13 +24,12 @@ const MapMarker = ({ category, onClick, selected = false, scale = 1.0 }) => {
 
   if (category === 0) {
     return <PantryIcon {...iconProps} />;
-  } 
-  
-  
+  }
+
   if (category === 1) {
     return <MealIcon {...iconProps} />;
   }
-  
+
   if (category === -1) {
     return <SplitPantryMealIcon {...iconProps} />;
   }

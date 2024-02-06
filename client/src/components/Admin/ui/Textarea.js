@@ -25,8 +25,8 @@ const Textarea = ({
           "& textarea": {
             padding: "11px 16px",
           },
-          "height": "auto",
-          "padding": "0",
+          height: "auto",
+          padding: "0",
         },
       }}
       minRows={rows || 2}

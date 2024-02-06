@@ -3,7 +3,6 @@ import Checkbox from "./Checkbox";
 import Chip from "./Chip";
 import CssBaseline from "./CssBaseline";
 import Link from "./Link";
-import ListItemButton from "./ListItemButton";
 import Radio from "./Radio";
 import Select from "./Select";
 import SvgIcon from "./SvgIcon";
@@ -20,7 +19,6 @@ export function componentsOverrides(theme) {
     Chip(theme),
     CssBaseline(theme),
     Link(theme),
-    ListItemButton(theme),
     Radio(theme),
     SvgIcon(theme),
     Select(theme),

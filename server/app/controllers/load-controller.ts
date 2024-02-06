@@ -15,13 +15,13 @@ import { json2csv } from "json-2-csv";
 // Retrieve LA Public Library imported listings from db table load_lapl_food_resources
 const getLaplFoodResources: RequestHandler<
   // route params
-  never, 
+  never,
   // response
-  LAPLFoodResource[] | string, 
+  LAPLFoodResource[] | string,
   // req body
-  never, 
+  never,
   // query params
-  { format: string } 
+  { format: string }
 > = async (req, res) => {
   try {
     const rows: LAPLFoodResource[] = await loadLaplService.selectAll();
@@ -48,13 +48,13 @@ const getLaplFoodResources: RequestHandler<
 // Retrieve Open LA imported listings from db table load_open_la_data
 const getOpenLA: RequestHandler<
   // route params
-  never, 
+  never,
   // response
-  OpenLAData[] | string, 
+  OpenLAData[] | string,
   // req body
-  never, 
+  never,
   // query params
-  { format: string } 
+  { format: string }
 > = async (req, res) => {
   try {
     const rows = await loadOpenLADataService.selectAll();
@@ -83,11 +83,11 @@ const getLARFB: RequestHandler<
   // route params
   never,
   // response
-  LARFBListing[] | string, 
+  LARFBListing[] | string,
   // req body
-  never, 
+  never,
   // query params
-  { format: string } 
+  { format: string }
 > = async (req, res) => {
   try {
     const resp = await loadLARFBService.selectAll();
@@ -111,13 +111,13 @@ const getLARFB: RequestHandler<
 // Retrieve 211 imported listings from db table load_211
 const get211: RequestHandler<
   // route params
-  never, 
+  never,
   // response
-  LA211Listing[] | string, 
+  LA211Listing[] | string,
   // req body
-  never, 
+  never,
   // query params
-  { limit: string } 
+  { limit: string }
 > = async (req, res) => {
   try {
     // can't convert to csv because data has nested json

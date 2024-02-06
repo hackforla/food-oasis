@@ -1,5 +1,5 @@
 import LocationSearching from "@mui/icons-material/LocationSearching";
-import { Button, Stack, Tooltip, Typography } from "@mui/material";
+import { Box, Button, Stack, Tooltip, Typography } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import AddressDropDown from "components/FoodSeeker/AddressDropDown";
 import {
@@ -121,22 +121,19 @@ const ResultsFilters = ({
                 style={{ marginLeft: 5 }}
               />
             </Grid2>
-
-            <Grid2 display={{ xs: "block", sm: "none" }}>
-              <SwitchViewsButton
-                isListView={showList}
-                onClick={toggleShowList}
-                style={{ marginLeft: 5 }}
-              />
-            </Grid2>
           </Grid2>
           <Grid2 xs={12} sm={6}>
             <Stack
               direction="row"
               alignItems="center"
-              sx={{ margin: "0.5rem" }}
+              sx={{
+                marginX: "1rem",
+                maxWidth: "99vw",
+                gap: "0.5rem",
+              }}
             >
-              <AddressDropDown />
+              <AddressDropDown autoFocus={false} />
+              {/* THIS BUTTON ISN'T HERE IN THE NEW DESIGN FOR PHONE */}
               <Tooltip
                 title={
                   locationPermission === "denied" || !!error
@@ -144,20 +141,46 @@ const ResultsFilters = ({
                     : "Show Your Current Location"
                 }
               >
-                <div>
+                <Box
+                  sx={{
+                    display: { xs: "none", sm: "block" },
+                  }}
+                >
                   <Button
                     variant="recenter"
                     onClick={useMyLocationTrigger}
                     disabled={locationPermission === "denied" || !!error}
                     icon="locationSearching"
+                    sx={(theme) => ({
+                      backgroundColor: theme.palette.common.white,
+                      "&:hover": {
+                        backgroundColor: theme.palette.common.white,
+                      }
+                    })}					
                   >
                     <LocationSearching
-                      htmlColor="white"
-                      sx={{ fontSize: "1.25rem" }}
+                      sx={(theme) => ({
+                        fontSize: "1.25rem",
+                        backgroundColor: theme.palette.common.white,
+                        color: theme.palette.common.black
+                      })}
                     />
                   </Button>
-                </div>
+                </Box>
               </Tooltip>
+              {/* =================================================== */}
+              <Box
+                sx={{
+                  maxWidth: "48px",
+                  boxSizing: "border-box",
+                }}
+                display={{ xs: "block", sm: "none" }}
+              >
+                <SwitchViewsButton
+                  isListView={showList}
+                  onClick={toggleShowList}
+                />
+              </Box>
             </Stack>
           </Grid2>
         </Stack>

@@ -316,7 +316,6 @@ where s.id in (${ids.join(", ")})`;
   const rows = await db.manyOrNone(sql);
   const stakeholders = rows.map((row) => {
     return stakeholderHelpers.rowToStakeholder(row);
-    
   });
   return stakeholders;
 };

@@ -14,10 +14,10 @@ import {
 import donationStep1 from "images/donationStep1.png";
 import donationStep2 from "images/donationStep2.png";
 import donationStep3 from "images/donationStep3.png";
-import donationStep4 from "images/donationStep4.png";
-import donationStep5 from "images/donationStep5.png";
-import donationStep6 from "images/donationStep6.png";
-import donationStep7 from "images/donationStep7.png";
+// import donationStep4 from "images/donationStep4.png";
+// import donationStep5 from "images/donationStep5.png";
+// import donationStep6 from "images/donationStep6.png";
+// import donationStep7 from "images/donationStep7.png";
 import logo from "images/foodoasis.svg";
 import { useState, useEffect } from "react";
 import * as analytics from "../../services/analytics";
@@ -136,7 +136,7 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
           />
           <Grid item>
             <Typography align="center">
-            Hack for LA takes donations through Civic Tech Structure.
+              Hack for LA takes donations through Civic Tech Structure.
             </Typography>
             <Typography align="center" color="error" variant="h6">
               This is a 3-step process.
@@ -231,7 +231,9 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
               </Avatar>
             </Grid>
             <Grid item xs zeroMinWidth>
-              <Typography>In the "Project" field enter <em>"Food Oasis"</em>.</Typography>
+              <Typography>
+                In the "Project" field enter <em>"Food Oasis"</em>.
+              </Typography>
               <CardMedia
                 component="img"
                 sx={{
@@ -311,7 +313,7 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
                 textTransform: "uppercase",
               }}
               variant="contained"
-              href="//www.hackforla.org/donate/"
+              href="//donate.stripe.com/bIY9Cpcg8dihfIc5kl"
               target="_blank"
               rel="noopener noreferrer"
               component="a"

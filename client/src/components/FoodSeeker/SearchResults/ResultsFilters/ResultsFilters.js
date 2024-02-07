@@ -151,10 +151,19 @@ const ResultsFilters = ({
                     onClick={useMyLocationTrigger}
                     disabled={locationPermission === "denied" || !!error}
                     icon="locationSearching"
+                    sx={(theme) => ({
+                      backgroundColor: theme.palette.common.white,
+                      "&:hover": {
+                        backgroundColor: theme.palette.common.white,
+                      },
+                    })}
                   >
                     <LocationSearching
-                      htmlColor="white"
-                      sx={{ fontSize: "1.25rem" }}
+                      sx={(theme) => ({
+                        fontSize: "1.25rem",
+                        backgroundColor: theme.palette.common.white,
+                        color: theme.palette.common.black,
+                      })}
                     />
                   </Button>
                 </Box>

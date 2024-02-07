@@ -1,7 +1,7 @@
 {
   "name": "foodoasis-client",
   "description": "React Client for Food Oasis",
-  "version": "1.0.77",
+  "version": "1.0.78",
   "author": "Hack for LA",
   "license": "GPL-2.0",
   "private": true,
@@ -11,7 +11,7 @@
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject",
-    "format": "prettier --write  \"**/*.{js,jsx}\"",
+    "format": "prettier --write  \"**/*.{js,jsx,ts,tsx}\"",
     "lint": "eslint -c .eslintrc.json --ignore-path .eslintignore  \"**/*.{js,jsx}\"",
     "lint:fix": "eslint -c .eslintrc.json --ignore-path .eslintignore --fix  \"**/*.{js,jsx}\""
   },
@@ -25,7 +25,7 @@
     "@mui/material": "^5.11.1",
     "@mui/x-data-grid": "^5.17.20",
     "@mui/x-date-pickers": "^6.8.0",
-    "axios": "^1.6.0",
+    "axios": "^1.6.7",
     "dayjs": "^1.11.7",
     "debounce-fn": "^5.0.0",
     "formik": "^2.2.9",
@@ -39,6 +39,7 @@
     "react-router-dom": "^6.10.0",
     "react-scripts": "^5.0.1",
     "react-virtuoso": "^4.1.0",
+    "typescript": "^4.9.5",
     "yup": "^0.32.8"
   },
   "browserslist": {
@@ -59,13 +60,13 @@
   "devDependencies": {
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
-    "prettier": "^2.4.1",
-    "typescript": "^4.9.5"
+    "prettier": "^2.4.1"
   },
   "overrides": {
     "react-scripts": {
       "nth-check": "^2.1.1",
-      "postcss": "^8.4.33"
+      "postcss": "^8.4.33",
+      "serialize-javascript": "6.0.2"
     }
   }
 }

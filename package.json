@@ -5,9 +5,9 @@
     "release-notes": "gren release"
   },
   "devDependencies": {
-    "husky": "^8.0.1",
-    "lerna": "^6.1.0",
-    "lerna-cli": "^5.1.1"
+    "husky": "^9.0.10",
+    "lerna": "^8.1.2",
+    "lerna-cli": "^5.0.6"
   },
   "husky": {
     "hooks": {

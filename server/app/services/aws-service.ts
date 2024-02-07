@@ -1,7 +1,7 @@
 import {
   Location,
   SearchPlaceIndexForTextCommandInput,
-  SearchPlaceIndexForTextCommandOutput,
+  // SearchPlaceIndexForTextCommandOutput,
 } from "@aws-sdk/client-location";
 import { CognitoIdentityClient } from "@aws-sdk/client-cognito-identity";
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-provider-cognito-identity";

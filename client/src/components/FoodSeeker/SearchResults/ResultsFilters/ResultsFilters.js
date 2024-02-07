@@ -155,14 +155,14 @@ const ResultsFilters = ({
                       backgroundColor: theme.palette.common.white,
                       "&:hover": {
                         backgroundColor: theme.palette.common.white,
-                      }
-                    })}					
+                      },
+                    })}
                   >
                     <LocationSearching
                       sx={(theme) => ({
                         fontSize: "1.25rem",
                         backgroundColor: theme.palette.common.white,
-                        color: theme.palette.common.black
+                        color: theme.palette.common.black,
                       })}
                     />
                   </Button>

@@ -37,6 +37,8 @@ const cn = process.env.DATABASE_URL
       database: process.env.POSTGRES_DATABASE,
       password: process.env.POSTGRES_PASSWORD,
       port: Number(process.env.POSTGRES_PORT),
+      ssl: { rejectUnauthorized: false },
+      /* See Release Notes for node-postgfres v8 https://node-postgres.com/guides/upgrading */
     };
 
 interface IDatabaseScope {
@@ -44,13 +46,18 @@ interface IDatabaseScope {
   pgp: pgLib.IMain;
 }
 
-export function getDB(): IDatabaseScope {
-  return createSingleton<IDatabaseScope>("food-oasis", () => {
-    return {
-      db: pgp(cn),
-      pgp,
-    };
-  });
+export function getDB(): IDatabaseScope | number {
+  try {
+    return createSingleton<IDatabaseScope>("food-oasis", () => {
+      return {
+        db: pgp(cn),
+        pgp,
+      };
+    });
+  } catch (err) {
+    console.log(err);
+    return 0;
+  }
 }
 // Creating a new database instance from the connection details:
 const { db } = getDB();

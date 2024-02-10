@@ -47,18 +47,14 @@ interface IDatabaseScope {
 }
 
 export function getDB(): IDatabaseScope | number {
-  try {
-    return createSingleton<IDatabaseScope>("food-oasis", () => {
-      return {
-        db: pgp(cn),
-        pgp,
-      };
-    });
-  } catch (err) {
-    console.log(err);
-    return 0;
-  }
+  return createSingleton<IDatabaseScope>("food-oasis", () => {
+    return {
+      db: pgp(cn),
+      pgp,
+    };
+  });
 }
+
 // Creating a new database instance from the connection details:
 const { db } = getDB();
 

@@ -46,7 +46,7 @@ interface IDatabaseScope {
   pgp: pgLib.IMain;
 }
 
-export function getDB(): IDatabaseScope | number {
+export function getDB(): IDatabaseScope {
   return createSingleton<IDatabaseScope>("food-oasis", () => {
     return {
       db: pgp(cn),

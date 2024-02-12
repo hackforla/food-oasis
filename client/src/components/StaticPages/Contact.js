@@ -17,6 +17,7 @@ import { sendContactForm } from "services/contact-service";
 import * as Yup from "yup";
 import * as analytics from "../../services/analytics";
 import Footer from "../Layout/Footer";
+import { useSiteContext } from "contexts/siteContext";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Please enter your name"),
@@ -96,6 +97,7 @@ const Contact = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const { isMobile } = useBreakpoints();
+  const { tenantId } = useSiteContext();
 
   const navigate = useNavigate();
 
@@ -161,6 +163,7 @@ const Contact = () => {
                 phone: "",
                 title: "",
                 message: "",
+                tenantId,
               }}
               validationSchema={validationSchema}
               onSubmit={(values) => {

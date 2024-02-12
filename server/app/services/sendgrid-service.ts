@@ -4,7 +4,7 @@ import { ContactFormData, Email } from "../../types/email-type";
 
 const emailUser: string = process.env.EMAIL_USER || "";
 const sendgridKey: string = process.env.SENDGRID_API_KEY || "";
-const staffEmail: string = process.env.CONTACT_US_EMAIL || "";
+
 sgMail.setApiKey(sendgridKey);
 
 const send = async (email: Email) => {
@@ -119,8 +119,19 @@ const sendContactEmail = async ({
   title,
   message,
   clientUrl,
+  tenantId,
   phone,
 }: ContactFormData) => {
+
+  const tenantRegions: { [key: number]: string } = {
+    1: process.env.CONTACT_US_LA || "",
+    3: process.env.CONTACT_US_HAWAII || "",
+    5: process.env.CONTACT_US_LA || "",
+    6: process.env.CONTACT_US_LA || "",
+  };
+
+  const staffEmail: string = tenantId ? tenantRegions[tenantId] : "";
+
   const emailBody = `
   <p
   style="
@@ -462,6 +473,7 @@ const sendContactEmail = async ({
   return sgMail.send(msg, false, (err) => {
     if (err) {
       Promise.reject("Sending contact form email failed.");
+      console.log("ERRR", err);
     }
     Promise.resolve(true).then(() => {
       if (email) {

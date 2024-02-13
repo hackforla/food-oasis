@@ -497,8 +497,7 @@ const sendContactConfirmation = async ({
   title,
   message,
   clientUrl,
-}: // phone,
-ContactFormData) => {
+}: ContactFormData) => {
   const now = new Date();
   const dateString: string = now.toLocaleString("en-US", {
     weekday: "long",

@@ -482,6 +482,7 @@ const sendContactEmail = async ({
           title,
           message,
           clientUrl,
+          tenantId,
           phone,
         });
       }
@@ -495,18 +496,26 @@ const sendContactConfirmation = async ({
   email,
   title,
   message,
+  tenantId,
   clientUrl,
 }: ContactFormData) => {
   const now = new Date();
+
+  const timeZones: { [key: number]: string } = {
+    1: "America/Los_Angeles", // LA
+    3: "Pacific/Honolulu", // Hawaii
+    5: "US/Central", // Texas
+    6: "America/Los_Angeles", // Santa Barbara
+  };
+
   const dateString: string = now.toLocaleString("en-US", {
     weekday: "long",
     year: "numeric",
     month: "long",
     day: "numeric",
-    timeZone: "America/Los_Angeles",
   });
 
-  const time = now.toLocaleTimeString();
+  const time = now.toLocaleTimeString("en-US", { timeZone: tenantId ? timeZones[tenantId] : "America/Los_Angeles", timeZoneName: 'short'});
 
   const emailBody = `
   <!DOCTYPE html>
@@ -575,7 +584,7 @@ const sendContactConfirmation = async ({
                 <td width="25%" style="padding: 10px 10px 10px 0"><strong>Date:</strong> ${dateString}</td>
               </tr>
               <tr>
-                <td width="25%" style="padding: 10px 10px 10px 0"><strong>Time:</strong> ${time} PST</td>
+                <td width="25%" style="padding: 10px 10px 10px 0"><strong>Time:</strong> ${time}</td>
               </tr>
               <tr>
                 <td width="25%" style="padding: 10px 10px 10px 0"><strong>Subject:</strong> ${

@@ -473,7 +473,6 @@ const sendContactEmail = async ({
   return sgMail.send(msg, false, (err) => {
     if (err) {
       Promise.reject("Sending contact form email failed.");
-      console.log("ERRR", err);
     }
     Promise.resolve(true).then(() => {
       if (email) {

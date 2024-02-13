@@ -124,10 +124,10 @@ const sendContactEmail = async ({
 }: ContactFormData) => {
 
   const tenantRegions: { [key: number]: string } = {
-    1: process.env.CONTACT_US_LA || "",
-    3: process.env.CONTACT_US_HAWAII || "",
-    5: process.env.CONTACT_US_LA || "",
-    6: process.env.CONTACT_US_LA || "",
+    1: process.env.CONTACT_US_LA || "", // LA
+    3: process.env.CONTACT_US_HAWAII || "", // Hawaii
+    5: process.env.CONTACT_US_LA || "", // Texas
+    6: process.env.CONTACT_US_LA || "", // Santa Barbara
   };
 
   const staffEmail: string = tenantId ? tenantRegions[tenantId] : "";

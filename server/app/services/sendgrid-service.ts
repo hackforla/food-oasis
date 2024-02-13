@@ -515,7 +515,7 @@ const sendContactConfirmation = async ({
     day: "numeric",
   });
 
-  const time = now.toLocaleTimeString("en-US", { timeZone: tenantId ? timeZones[tenantId] : "America/Los_Angeles"});
+  const time = now.toLocaleTimeString("en-US", { timeZone: tenantId ? timeZones[tenantId] : "America/Los_Angeles", timeZoneName: 'short'});
 
   const emailBody = `
   <!DOCTYPE html>
@@ -584,7 +584,7 @@ const sendContactConfirmation = async ({
                 <td width="25%" style="padding: 10px 10px 10px 0"><strong>Date:</strong> ${dateString}</td>
               </tr>
               <tr>
-                <td width="25%" style="padding: 10px 10px 10px 0"><strong>Time:</strong> ${time} PST</td>
+                <td width="25%" style="padding: 10px 10px 10px 0"><strong>Time:</strong> ${time}</td>
               </tr>
               <tr>
                 <td width="25%" style="padding: 10px 10px 10px 0"><strong>Subject:</strong> ${

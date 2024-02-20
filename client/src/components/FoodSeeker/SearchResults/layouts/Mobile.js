@@ -70,10 +70,10 @@ const MobileLayout = ({ filters, map, list, showList }) => {
             position={position}
             onStart={(e, ui) => handleDragStart(e, ui)}
             onStop={(e, ui) => {
-              if(originalY < 40 * (window.innerHeight / 100) && ui.y > 40 * (window.innerHeight / 100)){
+              if(originalY < 30 * (window.innerHeight / 100) && ui.y > 30 * (window.innerHeight / 100)){
                 setPosition({ x: 0, y:  minY * (window.innerHeight / 100)});
               }
-              if(originalY > 50 * (window.innerHeight / 100) && ui.y < 40 * (window.innerHeight / 100)){
+              if(originalY > 50 * (window.innerHeight / 100) && ui.y < 30 * (window.innerHeight / 100)){
                 setPosition({ x: 0, y:  5});
               }
             }}

@@ -26,7 +26,7 @@ const MobileLayout = ({ filters, map, list, showList }) => {
     } else {
       setPosition({
         x: 0,
-        y: 10,
+        y: 5,
       });
     }
   }, [showList]);
@@ -39,13 +39,13 @@ const MobileLayout = ({ filters, map, list, showList }) => {
     } else {
       setPosition({
         x: 0,
-        y: 60,
+        y: 5,
       });
     }
   }, [filterPanelOpen]);
 
   // Define the bounds for vertical dragging
-  const minY = 50;
+  const minY = 60;
 
   return (
     <>
@@ -67,7 +67,7 @@ const MobileLayout = ({ filters, map, list, showList }) => {
               setPosition({ x: 0, y: ui.y });
             }}
             handle=".handle"
-            bounds={{ top: minY, bottom: minY * (window.innerHeight / 100) }}
+            bounds={{ top: 5, bottom: minY * (window.innerHeight / 100) }}
             defaultPosition={{ x: 0, y: minY * (window.innerHeight / 100) }}
             axis="y"
             sx={{

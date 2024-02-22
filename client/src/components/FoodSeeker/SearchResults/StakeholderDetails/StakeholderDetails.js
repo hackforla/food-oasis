@@ -229,8 +229,7 @@ const StakeholderDetails = () => {
           </Link>
         </Typography>
 
-        <Stack
-        direction="row" gap={2}>
+        <Stack direction="row" gap={2}>
           <StakeholderIcon stakeholder={selectedOrganization} />
           <Box align="left">
             <Typography variant="h6" component="h2" align="left">

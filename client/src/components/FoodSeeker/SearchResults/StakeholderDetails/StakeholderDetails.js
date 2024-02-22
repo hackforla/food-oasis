@@ -202,7 +202,7 @@ const StakeholderDetails = () => {
         stakeholder={selectedOrganization}
         setToast={setToast}
       />
-      <Stack padding="0 1em 5em 1em" sx={{ width: "100%" }}>
+      <Stack padding="0 1em 5em 1em" sx={{ width: "100%", overflowY: 'scroll', paddingBottom: '300px' }}>
         <Typography
           variant="h5"
           component="p"
@@ -229,7 +229,8 @@ const StakeholderDetails = () => {
           </Link>
         </Typography>
 
-        <Stack direction="row" gap={2}>
+        <Stack
+        direction="row" gap={2}>
           <StakeholderIcon stakeholder={selectedOrganization} />
           <Box align="left">
             <Typography variant="h6" component="h2" align="left">

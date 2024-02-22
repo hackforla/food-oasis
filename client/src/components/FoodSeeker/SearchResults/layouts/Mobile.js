@@ -15,12 +15,7 @@ const overlay = {
 
 const MobileLayout = ({ filters, map, list, showList }) => {
   const [position, setPosition] = useState();
-  const [originalY, setOriginalY] = useState(null); // State variable to store original ui.y
   const filterPanelOpen = useFilterPanel();
-
-  const handleDragStart = (e, ui) => {
-    setOriginalY(ui.y); // Store the original ui.y when the drag starts
-  };
 
   useEffect(() => {
     if (!showList) {
@@ -70,7 +65,6 @@ const MobileLayout = ({ filters, map, list, showList }) => {
         {list && (
           <Draggable
             position={position}
-            onStart={(e, ui) => handleDragStart(e, ui)}
             onStop={(e, ui) => {
               if(ui.y < 20 * (window.innerHeight / 100)){
                 setPosition({ x: 0, y:  3});

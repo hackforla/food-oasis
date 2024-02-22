@@ -78,7 +78,7 @@ const MobileLayout = ({ filters, map, list, showList }) => {
               
             }}
             handle=".handle"
-            bounds={{ top: 5, bottom: minY * (window.innerHeight / 100) }}
+            bounds={{ top: 0, bottom: minY * (window.innerHeight / 100) }}
             defaultPosition={{ x: 0, y: minY * (window.innerHeight / 100) }}
             axis="y"
             sx={{

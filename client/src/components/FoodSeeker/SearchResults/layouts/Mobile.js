@@ -35,6 +35,7 @@ const MobileLayout = ({ filters, map, list, showList }) => {
       });
     }
   }, [showList]);
+
   useEffect(() => {
     if (filterPanelOpen) {
       setPosition({
@@ -57,11 +58,12 @@ const MobileLayout = ({ filters, map, list, showList }) => {
       {filters}
       <Box
         sx={{
-          height: "100%",
+          height: window.innerHeight,
           display: "flex",
           flexDirection: "column",
-          overflow: "auto",
+          overflow: "hidden",
           position: "relative",
+
         }}
       >
         <Box sx={{ flex: 1 }}>{map}</Box>
@@ -71,7 +73,7 @@ const MobileLayout = ({ filters, map, list, showList }) => {
             onStart={(e, ui) => handleDragStart(e, ui)}
             onStop={(e, ui) => {
               if(originalY < 30 * (window.innerHeight / 100) && ui.y > 30 * (window.innerHeight / 100)){
-                setPosition({ x: 0, y:  minY * (window.innerHeight / 100)});
+                setPosition({ x: 0, y:  57 * (window.innerHeight / 100)});
               }
               if(originalY > 50 * (window.innerHeight / 100) && ui.y < 30 * (window.innerHeight / 100)){
                 setPosition({ x: 0, y:  5});

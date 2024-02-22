@@ -26,12 +26,12 @@ const MobileLayout = ({ filters, map, list, showList }) => {
     if (!showList) {
       setPosition({
         x: 0,
-        y: 60 * (window.innerHeight / 100),
+        y: 57 * (window.innerHeight / 100),
       });
     } else {
       setPosition({
         x: 0,
-        y: 5,
+        y: 0,
       });
     }
   }, [showList]);
@@ -45,7 +45,7 @@ const MobileLayout = ({ filters, map, list, showList }) => {
     } else {
       setPosition({
         x: 0,
-        y: 5,
+        y: 0,
       });
     }
   }, [filterPanelOpen]);
@@ -72,12 +72,16 @@ const MobileLayout = ({ filters, map, list, showList }) => {
             position={position}
             onStart={(e, ui) => handleDragStart(e, ui)}
             onStop={(e, ui) => {
-              if(originalY < 30 * (window.innerHeight / 100) && ui.y > 30 * (window.innerHeight / 100)){
+              if(ui.y < 20 * (window.innerHeight / 100)){
+                setPosition({ x: 0, y:  3});
+              }
+              if(ui.y > 20 * (window.innerHeight / 100) && ui.y < 40 * (window.innerHeight / 100)){
+                setPosition({ x: 0, y:  25 * (window.innerHeight / 100)});
+              }
+              if(ui.y > 40 * (window.innerHeight / 100)){
                 setPosition({ x: 0, y:  57 * (window.innerHeight / 100)});
               }
-              if(originalY > 50 * (window.innerHeight / 100) && ui.y < 30 * (window.innerHeight / 100)){
-                setPosition({ x: 0, y:  5});
-              }
+              
             }}
             handle=".handle"
             bounds={{ top: 5, bottom: minY * (window.innerHeight / 100) }}

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import * as featureService from "../services/feature-service";
 
 export const useFeatures = () => {
@@ -6,20 +6,24 @@ export const useFeatures = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
-      setError(null);
+  const fetch = useCallback(() => {
+    const fetchApi = async () => {
+      setLoading({ loading: true });
       try {
-        const features = await featureService.getAllFeatures();
-        setData(features);
-      } catch (error) {
-        setError(error);
-        console.error(error);
+        const tags = await featureService.getAllFeatures();
+
+        setData(tags);
+        setLoading(false);
+      } catch (err) {
+        setError(err);
+        console.error(err);
       }
-      setLoading(false);
-    })();
+    };
+    fetchApi();
   }, []);
 
+  useEffect(() => {
+    fetch();
+  }, [fetch]);
   return { data, error, loading, refetch: fetch };
 };

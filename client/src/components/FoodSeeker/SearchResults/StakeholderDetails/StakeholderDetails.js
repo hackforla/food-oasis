@@ -15,6 +15,8 @@ import {
 import fbIcon from "images/fbIcon.png";
 import instaIcon from "images/instaIcon.png";
 import StakeholderIcon from "images/stakeholderIcon";
+import IosShareIcon from "@mui/icons-material/IosShare";
+import SubdirectoryArrowRightIcon from "@mui/icons-material/SubdirectoryArrowRight";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as analytics from "services/analytics";
@@ -109,14 +111,17 @@ const StakeholderDetails = ({ onBackClick }) => {
   const standardTime = (timeStr) => {
     if (timeStr) {
       if (parseInt(timeStr.substring(0, 2)) === 12) {
-        return `12${timeStr.substring(2, 5)} PM`;
+        return `12${timeStr.substring(2, 5)} pm`;
+      }
+      if (parseInt(timeStr.substring(0, 2)) === 0) {
+        return `12${timeStr.substring(2, 5)} am`;
       }
       return parseInt(timeStr.substring(0, 2)) > 12
         ? `${parseInt(timeStr.substring(0, 2)) - 12}${timeStr.substring(
             2,
             5
-          )} PM`
-        : `${timeStr.substring(0, 5)} AM`;
+          )} pm`
+        : `${parseInt(timeStr.substring(0, 5))}${timeStr.substring(2, 5)} am`;
     }
   };
 
@@ -319,9 +324,16 @@ const StakeholderDetails = ({ onBackClick }) => {
           ) : null}
         </Stack>
 
-        <Stack direction="row" sx={{ justifyContent: "space-between" }}>
+        <Stack
+          direction="row"
+          justifyContent="start"
+          spacing={1}
+          useflexgap="true"
+        >
           <Button
             variant="gray"
+            startIcon={<SubdirectoryArrowRightIcon />}
+            size="large"
             onClick={() => {
               analytics.postEvent("getDirections", {
                 id: selectedOrganization.id,
@@ -340,7 +352,12 @@ const StakeholderDetails = ({ onBackClick }) => {
           <Button variant="gray" onClick={handleSuggestionDialogOpen}>
             Send Correction
           </Button>
-          <Button variant="gray" onClick={shareLink}>
+          <Button
+            variant="gray"
+            onClick={shareLink}
+            size="large"
+            startIcon={<IosShareIcon />}
+          >
             Share
           </Button>
         </Stack>
@@ -368,7 +385,6 @@ const StakeholderDetails = ({ onBackClick }) => {
             }}
           ></DetailText>
         ) : null}
-
         {selectedOrganization.hours ? (
           <Stack margin="0.5rem 1rem 0 1rem">
             {selectedOrganization.hours &&
@@ -380,7 +396,7 @@ const StakeholderDetails = ({ onBackClick }) => {
                   key={JSON.stringify(hour)}
                 >
                   <DetailText>
-                    {hour.week_of_month === 5
+                    {hour.week_of_month === -1
                       ? "Last " + hour.day_of_week
                       : hour.week_of_month === 1
                       ? "1st " + hour.day_of_week
@@ -393,7 +409,7 @@ const StakeholderDetails = ({ onBackClick }) => {
                       : hour.day_of_week}
                   </DetailText>
                   <DetailText>
-                    {standardTime(hour.open)}-{standardTime(hour.close)}
+                    {standardTime(hour.open)} - {standardTime(hour.close)}
                   </DetailText>
                 </Stack>
               ))

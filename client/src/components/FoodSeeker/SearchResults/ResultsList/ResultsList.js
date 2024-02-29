@@ -5,6 +5,7 @@ import {
   CircularProgress,
   Stack,
   Typography,
+  Divider,
 } from "@mui/material";
 import PropTypes from "prop-types";
 import { useEffect } from "react";
@@ -49,31 +50,27 @@ const ResultsList = ({ stakeholders, loading, handleReset, handleFlyTo }) => {
         return (
           <>
             {stakeholders.length > 0 && isDesktop && (
-              <Typography
-                sx={(theme) => ({
-                  width: 1,
-                  padding: "0.75rem 1em",
-                  textAlign: "left",
-                  fontWeight: "bold",
-                  fontSize: { xs: "18px" },
-                  color: theme.palette.common.gray,
-                  position: "relative",
-                  "&::after": {
-                    content: '""',
-                    position: "absolute",
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    top: 0,
-                    borderBottom: `0.5px solid ${theme.palette.common.black}`,
-                    pointerEvents: "none",
-                    marginX: "1em",
-                  },
-                })}
-              >
-                {stakeholders.length}{" "}
-                {stakeholders.length === 1 ? "Location" : "Locations"}
-              </Typography>
+              <Stack sx={{ width: 1, padding: "0 35px 0 65px" }}>
+                <Typography
+                  sx={(theme) => ({
+                    paddingTop: "1.4rem",
+                    textAlign: "left",
+                    fontWeight: "bold",
+                    fontSize: { xs: "18px" },
+                    color: theme.palette.common.gray,
+                    position: "relative",
+                  })}
+                >
+                  {stakeholders.length}{" "}
+                  {stakeholders.length === 1 ? "Location" : "Locations"}
+                </Typography>
+                <Divider
+                  sx={(theme) => ({
+                    background: theme.palette.common.black,
+                    marginTop: "16px",
+                  })}
+                />
+              </Stack>
             )}
             {stakeholders ? (
               <Box sx={{ width: 1, margin: 0, flex: 1 }}>
@@ -82,22 +79,27 @@ const ResultsList = ({ stakeholders, loading, handleReset, handleFlyTo }) => {
                   data={stakeholders}
                   itemContent={(index, stakeholder) => {
                     return (
-                      <Box
-                        sx={{
-                          borderBottom: ".2em solid #f1f1f1",
-                        }}
-                      >
-                        <StakeholderPreview
-                          stakeholder={stakeholder}
-                          onSelect={() => {
-                            setTopMostIndex(index);
-                            handleFlyTo({
-                              longitude: stakeholder.longitude,
-                              latitude: stakeholder.latitude,
-                            });
+                      <>
+                        <Box
+                          sx={{
+                            width: 1,
+                            padding: "0",
                           }}
-                        />
-                      </Box>
+                        >
+                          <StakeholderPreview
+                            stakeholder={stakeholder}
+                            onSelect={() => {
+                              setTopMostIndex(index);
+                              handleFlyTo({
+                                longitude: stakeholder.longitude,
+                                latitude: stakeholder.latitude,
+                              });
+                            }}
+                            isDesktop={isDesktop}
+                          />
+                        </Box>
+                        <Divider sx={{ margin: "0 23px 0 65px" }} />
+                      </>
                     );
                   }}
                 />

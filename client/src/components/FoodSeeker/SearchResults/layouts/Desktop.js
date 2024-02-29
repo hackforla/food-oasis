@@ -82,9 +82,9 @@ const DesktopLayout = ({ filters, list, map }) => {
           direction="row"
           sx={{
             position: "absolute",
-            width: "35%",
+            width: "524px",
             transition: "left .5s ease-in-out",
-            left: isListPanelOpen ? 0 : "-35%",
+            left: isListPanelOpen ? 0 : "-524px",
             top: "120px",
             height: "100%",
             zIndex: "1",

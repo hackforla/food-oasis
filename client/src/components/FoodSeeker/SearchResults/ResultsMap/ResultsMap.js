@@ -20,7 +20,6 @@ import { defaultViewport } from "helpers/Configuration";
 import useBreakpoints from "hooks/useBreakpoints";
 import useFeatureFlag from "hooks/useFeatureFlag";
 import "mapbox-gl/dist/mapbox-gl.css";
-import ReactMapGL, * as Map from "react-map-gl";
 import { useLocation, useNavigate } from "react-router-dom";
 import * as analytics from "services/analytics";
 import {
@@ -39,6 +38,7 @@ import {
   useMarkersGeojson,
 } from "./MarkerHelpers";
 import { regionBorderStyle, regionFillStyle } from "./RegionHelpers";
+import Map, { Marker, Source, Layer, NavigationControl } from "react-map-gl";
 
 const ResultsMap = (
   { stakeholders, categoryIds, toggleCategory, loading, searchMapArea },
@@ -46,6 +46,7 @@ const ResultsMap = (
 ) => {
   const mapRef = useRef();
   const [markersLoaded, setMarkersLoaded] = useState(false);
+  const [cursor, setCursor] = useState("auto");
   const searchCoordinates = useSearchCoordinates();
   const selectedOrganization = useSelectedOrganization();
   const navigate = useNavigate();
@@ -72,6 +73,10 @@ const ResultsMap = (
   const startIconCoordinates = searchCoordinates || userCoordinates;
   const hasAdvancedFilterFeatureFlag = useFeatureFlag("advancedFilter");
 
+  const onMouseEnter = useCallback(() => setCursor("pointer"), []);
+  const onMouseLeave = useCallback(() => setCursor("auto"), []);
+  const [interactiveLayerIds, setInteractiveLayerIds] = useState(["nonexist"]);
+
   useEffect(() => {
     analytics.postEvent("showMap");
   }, []);
@@ -88,6 +93,7 @@ const ResultsMap = (
     const map = mapRef.current.getMap();
     await loadMarkerIcons(map);
     setMarkersLoaded(true);
+    setInteractiveLayerIds([MARKERS_LAYER_ID]);
   }, []);
 
   const onClick = useCallback(
@@ -119,12 +125,6 @@ const ResultsMap = (
     [stakeholders, dispatch]
   );
 
-  const interactiveLayerIds = markersLoaded ? [MARKERS_LAYER_ID] : undefined;
-
-  const getCursor = useCallback(({ isHovering, isDragging }) => {
-    return isDragging ? "grabbing" : isHovering ? "pointer" : "grab";
-  }, []);
-
   const markersGeojson = useMarkersGeojson({
     stakeholders,
     categoryIds,
@@ -152,22 +152,25 @@ const ResultsMap = (
 
   return (
     <div style={{ position: "relative", height: "100%" }}>
-      <ReactMapGL
+      <Map
         ref={mapRef}
-        mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-        mapStyle={MAPBOX_STYLE}
         {...viewport}
-        onViewportChange={setViewport}
+        onMove={(e) => setViewport(e.viewState)}
+        mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+        mapStyle={MAPBOX_STYLE}
+        draggable={true}
         onLoad={onLoad}
         onClick={onClick}
         interactiveLayerIds={interactiveLayerIds}
-        getCursor={getCursor}
-        width="100%"
-        height="100%"
-        style={{ position: "relative" }}
+        cursor={cursor}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
       >
+        {!isMobile && (
+          <NavigationControl showCompass={false} style={{ top: 8, right: 8 }} />
+        )}
         {startIconCoordinates && (
-          <Map.Marker
+          <Marker
             longitude={startIconCoordinates.longitude}
             latitude={startIconCoordinates.latitude}
             offsetTop={-50}
@@ -175,26 +178,20 @@ const ResultsMap = (
             anchor="bottom"
           >
             <StartIcon />
-          </Map.Marker>
-        )}
-        {!isMobile && (
-          <Map.NavigationControl
-            showCompass={false}
-            style={{ top: 8, right: 8 }}
-          />
+          </Marker>
         )}
         {markersLoaded && (
-          <Map.Source type="geojson" data={markersGeojson}>
-            <Map.Layer {...markersLayerStyles} />
-          </Map.Source>
+          <Source type="geojson" data={markersGeojson}>
+            <Layer {...markersLayerStyles} />
+          </Source>
         )}
         {regionGeoJSON && (
-          <Map.Source id="my-data" type="geojson" data={regionGeoJSON}>
-            <Map.Layer {...regionFillStyle} />
-            <Map.Layer {...regionBorderStyle} />
-          </Map.Source>
+          <Source id="my-data" type="geojson" data={regionGeoJSON}>
+            <Layer {...regionFillStyle} />
+            <Layer {...regionBorderStyle} />
+          </Source>
         )}
-      </ReactMapGL>
+      </Map>
       <Grid
         container={isMobile}
         wrap={isMobile ? "nowrap" : undefined}

@@ -36,11 +36,37 @@ const AttributionInfo = () => {
       ) : (
         <>
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <button
+              style={{
+                backgroundColor: "white",
+                borderBottomLeftRadius: "12px",
+                borderTopLeftRadius: "12px",
+                width: "24px",
+                height: "24px",
+                border: "none",
+              }}
+              onClick={handleClick}
+            >
+              <svg
+                style={{
+                  backgroundColor: "white",
+                  borderBottomRightRadius: "12px",
+                  borderTopRightRadius: "12px",
+                }}
+                width="24"
+                height="24"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+                fillRule="evenodd"
+              >
+                <path d="M4 10a6 6 0 1 0 12 0 6 6 0 1 0-12 0m5-3a1 1 0 1 0 2 0 1 1 0 1 0-2 0m0 3a1 1 0 1 1 2 0v3a1 1 0 1 1-2 0" />
+              </svg>
+            </button>
             <div
               style={{
                 backgroundColor: "white",
-                borderTopLeftRadius: "12px",
-                borderBottomLeftRadius: "12px",
+                borderTopRightRadius: "12px",
+                borderBottomRightRadius: "12px",
               }}
             >
               <a
@@ -92,32 +118,6 @@ const AttributionInfo = () => {
                 Improve this map
               </a>
             </div>
-            <button
-              style={{
-                backgroundColor: "white",
-                borderBottomRightRadius: "12px",
-                borderTopRightRadius: "12px",
-                width: "24px",
-                height: "24px",
-                border: "none",
-              }}
-              onClick={handleClick}
-            >
-              <svg
-                style={{
-                  backgroundColor: "white",
-                  borderBottomRightRadius: "12px",
-                  borderTopRightRadius: "12px",
-                }}
-                width="24"
-                height="24"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-                fillRule="evenodd"
-              >
-                <path d="M4 10a6 6 0 1 0 12 0 6 6 0 1 0-12 0m5-3a1 1 0 1 0 2 0 1 1 0 1 0-2 0m0 3a1 1 0 1 1 2 0v3a1 1 0 1 1-2 0" />
-              </svg>
-            </button>
           </div>
         </>
       )}

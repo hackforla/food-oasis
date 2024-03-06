@@ -114,7 +114,7 @@ const isAlmostClosed = (hours, tenantTimeZone) => {
   return minutesToClosing <= minutesToCloseFlag;
 };
 
-const StakeholderPreview = ({ stakeholder }) => {
+const StakeholderPreview = ({ stakeholder, handleFlyTo }) => {
   const dispatch = useAppDispatch();
   const searchCoordinates = useSearchCoordinates();
   const userCoordinates = useUserCoordinates();
@@ -125,6 +125,7 @@ const StakeholderPreview = ({ stakeholder }) => {
   const location = useLocation();
 
   const handleSelectOrganization = (organization) => {
+    handleFlyTo();
     dispatch({ type: "SELECTED_ORGANIZATION_UPDATED", organization });
     analytics.postEvent("selectOrganization", {
       id: organization.id,
@@ -317,6 +318,7 @@ const StakeholderPreview = ({ stakeholder }) => {
 
 StakeholderPreview.propTypes = {
   stakeholder: PropTypes.object.isRequired,
+  handleFlyTo: PropTypes.func,
 };
 
 export default StakeholderPreview;

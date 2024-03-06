@@ -75,7 +75,7 @@ const SearchResults = () => {
 
   useEffect(() => {
     if (!location.search) {
-      dispatch({ type: "RESET_SELECTED_ORGANIZATION", organization: null });
+      dispatch({ type: "RESET_SELECTED_ORGANIZATION" });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search]);
@@ -94,6 +94,13 @@ const SearchResults = () => {
     const { center } = mapRef.current.getViewport();
     dispatch({ type: "SEARCH_COORDINATES_UPDATED", coordinates: center });
   }, [dispatch]);
+
+  const flyTo = useCallback(({ longitude, latitude }) => {
+    mapRef.current?.flyTo({
+      longitude,
+      latitude,
+    });
+  }, []);
 
   const resetOrigin = useCallback(() => {
     dispatch({ type: "RESET_COORDINATES" });
@@ -129,6 +136,7 @@ const SearchResults = () => {
       stakeholders={stakeholders || []}
       loading={loading}
       handleReset={resetOrigin}
+      handleFlyTo={flyTo}
     />
   );
 

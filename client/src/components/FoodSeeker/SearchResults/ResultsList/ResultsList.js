@@ -14,7 +14,7 @@ import StakeholderDetails from "../StakeholderDetails/StakeholderDetails";
 import StakeholderPreview from "../StakeholderPreview/StakeholderPreview";
 import useBreakpoints from "hooks/useBreakpoints";
 
-const ResultsList = ({ stakeholders, loading, handleReset }) => {
+const ResultsList = ({ stakeholders, loading, handleReset, handleFlyTo }) => {
   const selectedOrganization = useSelectedOrganization();
   const { isDesktop } = useBreakpoints();
   useEffect(() => {
@@ -83,17 +83,28 @@ const ResultsList = ({ stakeholders, loading, handleReset }) => {
           <Box sx={{ width: 1, margin: 0, flex: 1 }}>
             <Virtuoso
               data={stakeholders}
-              itemContent={(index) => (
-                <Box
-                  sx={{
-                    width: 1,
-                    borderBottom: ".2em solid #f1f1f1",
-                    padding: "0",
-                  }}
-                >
-                  <StakeholderPreview stakeholder={stakeholders[index]} />
-                </Box>
-              )}
+              itemContent={(index) => {
+                const stakeholder = stakeholders[index];
+                return (
+                  <Box
+                    sx={{
+                      width: 1,
+                      borderBottom: ".2em solid #f1f1f1",
+                      padding: "0",
+                    }}
+                  >
+                    <StakeholderPreview
+                      stakeholder={stakeholder}
+                      handleFlyTo={() =>
+                        handleFlyTo({
+                          longitude: stakeholder.longitude,
+                          latitude: stakeholder.latitude,
+                        })
+                      }
+                    />
+                  </Box>
+                );
+              }}
             />
           </Box>
         </>
@@ -106,6 +117,7 @@ ResultsList.propTypes = {
   stakeholders: PropTypes.arrayOf(PropTypes.object),
   status: PropTypes.string,
   handleReset: PropTypes.func,
+  handleFlyTo: PropTypes.func,
 };
 
 export default ResultsList;

@@ -41,7 +41,7 @@ import { regionBorderStyle, regionFillStyle } from "./RegionHelpers";
 import Map, { Marker, Source, Layer, NavigationControl } from "react-map-gl";
 
 const ResultsMap = (
-  { stakeholders, categoryIds, toggleCategory, loading, searchMapArea },
+  { stakeholders, categoryIds, toggleCategory, loading },
   ref
 ) => {
   const mapRef = useRef();
@@ -58,9 +58,9 @@ const ResultsMap = (
     selectedOrganization?.longitude ||
     DEFAULT_COORDINATES.longitude;
   const latitude =
-    searchCoordinates?.latitude ||
-    selectedOrganization?.latitude ||
-    DEFAULT_COORDINATES.latitude;
+    searchCoordinates?.latitude || selectedOrganization?.latitude || isMobile
+      ? DEFAULT_COORDINATES.latitude - 0.06
+      : DEFAULT_COORDINATES.latitude;
   const userCoordinates = useUserCoordinates();
   const [viewport, setViewport] = useState({
     latitude,
@@ -84,10 +84,10 @@ const ResultsMap = (
   useEffect(() => {
     setViewport((viewport) => ({
       ...viewport,
-      latitude,
+      latitude: latitude,
       longitude,
     }));
-  }, [searchCoordinates, longitude, latitude]);
+  }, [searchCoordinates, longitude, latitude, isMobile]);
 
   const onLoad = useCallback(async () => {
     const map = mapRef.current.getMap();
@@ -98,6 +98,10 @@ const ResultsMap = (
 
   const onClick = useCallback(
     (e) => {
+      mapRef.current?.flyTo({
+        center: [e.lngLat.lng, isMobile ? e.lngLat.lat - 0.06 : e.lngLat.lat],
+        duration: 2000,
+      });
       if (!e.features || !e.features.length) {
         dispatch({ type: "RESET_SELECTED_ORGANIZATION" });
       } else if (stakeholders) {
@@ -146,8 +150,14 @@ const ResultsMap = (
           dimensions: { width, height },
         };
       },
+      flyTo: ({ latitude, longitude }) => {
+        mapRef.current?.flyTo({
+          center: [longitude, isMobile ? latitude - 0.06 : latitude],
+          duration: 2000,
+        });
+      },
     }),
-    []
+    [isMobile]
   );
 
   return (
@@ -160,6 +170,7 @@ const ResultsMap = (
         mapStyle={MAPBOX_STYLE}
         draggable={true}
         onLoad={onLoad}
+        interactive={true}
         onClick={onClick}
         interactiveLayerIds={interactiveLayerIds}
         cursor={cursor}
@@ -225,7 +236,6 @@ ResultsMap.propTypes = {
   stakeholders: PropTypes.arrayOf(PropTypes.object),
   categoryIds: PropTypes.any,
   loading: PropTypes.bool,
-  searchMapArea: PropTypes.any,
 };
 
 const StartIcon = () => {

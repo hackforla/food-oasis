@@ -1,24 +1,24 @@
 import { Router } from "express";
 import featureToLoginController from "../controllers/feature-to-login-controller";
+import jwtSession from "../../middleware/jwt-session";
+import { requestValidationMiddleware } from "../../middleware/request-validation-middlewares";
+import { FeatureToLoginPostRequestSchema } from "../validation-schema/feature-to-login-schema";
 
 const router = Router();
 
-// featureToLoginRouter controller: add association
-router.post("/", featureToLoginController.post);
+router.get("/", featureToLoginController.getLoginsByFeature);
 
-// featureToLoginRouter controller: remove an association
-router.delete("/:id", featureToLoginController.remove);
-
-// search featureId get a list of logins
-router.get(
-  "/features/:feature_id/logins",
-  featureToLoginController.getLoginsByFeature
+router.post(
+  "/",
+  jwtSession.validateUserHasRequiredRoles(["admin"]),
+  requestValidationMiddleware(FeatureToLoginPostRequestSchema),
+  featureToLoginController.post
 );
 
-//search loginId get a list of features
-router.get(
-  "/logins/:login_id/features",
-  featureToLoginController.getFeatureByLogin
+router.delete(
+  "/:id",
+  jwtSession.validateUserHasRequiredRoles(["admin"]),
+  featureToLoginController.remove
 );
 
 export default router;

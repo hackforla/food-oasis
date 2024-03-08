@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
-import * as featureService from "../services/feature-service";
+import * as useFeatureToLoginService from "../services/feature-to-login-service";
 
-export const useFeatures = () => {
+export const useFeatureToLogin = (id, type) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -10,9 +10,8 @@ export const useFeatures = () => {
     const fetchApi = async () => {
       setLoading(true);
       try {
-        const tags = await featureService.getAllFeatures();
-
-        setData(tags);
+        const response = await useFeatureToLoginService.getLoginsByFeature();
+        setData(response);
         setLoading(false);
       } catch (err) {
         setError(err);

@@ -1,8 +1,13 @@
 import {
   Box,
+  Button,
+  CircularProgress,
+  Collapse,
   Container,
-  FormControl,
+  Dialog,
+  IconButton,
   Paper,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -12,150 +17,158 @@ import {
   TableRow,
   TextField,
   Typography,
-  Button,
-  Modal,
-  IconButton,
-  Collapse,
 } from "@mui/material";
-import Label from "./ui/Label";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { useEffect, useState } from "react";
-import { Formik } from "formik";
-import * as React from "react";
-import { useFeatures } from "../../hooks/useFeatures";
-import { Navigate, useLocation } from "react-router-dom";
+import {
+  Delete as DeleteIcon,
+  KeyboardArrowDown as KeyboardArrowDownIcon,
+  KeyboardArrowUp as KeyboardArrowUpIcon,
+  PersonAdd as PersonAddIcon,
+} from "@mui/icons-material";
+import { useFormik } from "formik";
+import React, { useEffect, useState } from "react";
+import * as Yup from "yup";
+import { useFeatureToLogin } from "../../hooks/useFeatureToLogin";
+import * as accountService from "../../services/account-service";
 import * as featureService from "../../services/feature-service";
-// function createData(featureName) {
-//   return {
-//     featureName,
-//     userProfile: [
-//       {
-//         customerId: "108",
-//         name: "John",
-//         email: "admin@example.com",
-//       },
-//       {
-//         customerId: "106",
-//         name: "Steve",
-//         email: "dataentry@example.com",
-//       },
-//     ],
-//   };
-// }
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
+import * as featureToLoginService from "../../services/feature-to-login-service";
 
-function getModalStyle() {
-  const top = 50 + rand();
-  const left = 50 + rand();
-
+function createData(featureName, users, featureId) {
   return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
+    name: featureName,
+    id: featureId,
+    history: users.map((user) => ({
+      loginId: user.login_id,
+      firstName: user.first_name,
+      lastName: user.last_name,
+      email: user.email,
+      featureToLoginId: user.ftl_id,
+    })),
   };
 }
-function Row({ row }) {
-  const [open, setOpen] = React.useState(false);
 
-  return (
-    <React.Fragment>
-      <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
-        <TableCell>
-          <IconButton
-            aria-label="expand row"
-            size="small"
-            onClick={() => setOpen(!open)}
-          >
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
-        </TableCell>
-        <TableCell component="th" scope="row">
-          {row.name}
-        </TableCell>
-      </TableRow>
-      {/*  <TableRow>
-       <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box sx={{ margin: 1 }}>
-              <Typography variant="h6" gutterBottom component="div">
-                User Profile
-              </Typography>
-              <Table size="small" aria-label="purchases">
-                <TableHead>
-                  <TableRow>
-                    {/* <TableCell>Date</TableCell> 
-                    <TableCell>User ID</TableCell>
-                    <TableCell align="right">Name</TableCell>
-                    <TableCell align="right">Email</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {row.userProfile.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
-                      {/* <TableCell component="th" scope="row">
-                        {historyRow.date}
-                      </TableCell> 
-                      <TableCell>{historyRow.customerId}</TableCell>
-                      <TableCell align="right">{historyRow.name}</TableCell>
-                      <TableCell align="right">{historyRow.email}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Box>
-          </Collapse>
-        </TableCell>
-      </TableRow> */}
-    </React.Fragment>
-  );
-}
-// const rows = [createData("Sample Feature Name")];
-
+const featureFormValidationSchema = Yup.object({
+  name: Yup.string().trim().required("Name is required"),
+});
+const userFormValidationSchema = Yup.object({
+  email: Yup.string()
+    .email("Invalid email address")
+    .required("User email is required"),
+});
 const Features = () => {
-  let { data, error, loading, status } = useFeatures();
+  const [selectedRowId, setSelectedRowId] = useState(null);
+  const [rows, setRows] = useState([]);
+  const [selectedFeatureName, setSelectedFeatureName] = useState("");
+  const [selectedFeatureId, setSelectedFeatureId] = useState(null);
+  const [featureModalOpen, setFeatureModalOpen] = useState(false);
+  const [userModalOpen, setUserModalOpen] = useState(false);
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-  const [features, setFeatures] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [modalStyle] = useState(getModalStyle);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const location = useLocation();
-  // const [page, setPage] = useState(0);
-  // const [rowsPerPage, setRowsPerPage] = useState(10);
-
-  //get features from backend
-  useEffect(() => {
-    if (data) {
-      setFeatures(data);
-    }
-  }, [data]);
+  const {
+    data: featureToLoginData,
+    loading: featureToLoginLoading,
+    refetch: featureToLoginRefetch,
+  } = useFeatureToLogin();
 
   useEffect(() => {
-    if (status === 401) {
-      return (
-        <Navigate to={{ pathname: "/login", state: { from: location } }} />
+    if (featureToLoginData) {
+      const groupedByFeatureName = featureToLoginData.reduce((acc, curr) => {
+        acc[curr.feature_name] = [...(acc[curr.feature_name] || []), curr];
+        return acc;
+      }, {});
+      const newRows = Object.entries(groupedByFeatureName).map(
+        ([featureName, users]) => {
+          const featureId = users[0]?.feature_id;
+          return createData(featureName, users, featureId);
+        }
       );
+      setRows(newRows);
     }
+  }, [featureToLoginData]);
+
+  const handleFeatureModalOpen = () => setFeatureModalOpen(true);
+  const handleModalClose = () => {
+    setFeatureModalOpen(false);
+    featureFormik.resetForm();
+  };
+  const handleUserModalOpen = (featureName, featureId) => {
+    setSelectedFeatureName(featureName);
+    setSelectedFeatureId(featureId);
+    setUserModalOpen(true);
+  };
+  const handleUserModalClose = () => {
+    setUserModalOpen(false);
+    userFormik.resetForm();
+  };
+  const handleRowClick = (rowName) => {
+    if (selectedRowId === rowName) {
+      setSelectedRowId(null);
+    } else {
+      setSelectedRowId(rowName);
+    }
+  };
+  const featureFormik = useFormik({
+    initialValues: {
+      name: "",
+    },
+    validationSchema: featureFormValidationSchema,
+    onSubmit: async (values, { resetForm, setSubmitting }) => {
+      await featureService.post(values);
+      featureToLoginRefetch();
+      resetForm();
+      setSubmitting(false);
+      handleModalClose();
+    },
+  });
+  const userFormik = useFormik({
+    initialValues: {
+      email: "",
+    },
+    validationSchema: userFormValidationSchema,
+    onSubmit: async (values, { resetForm, setSubmitting, setFieldError }) => {
+      try {
+        const accountResponse = await accountService.getByEmail(values.email);
+        const loginId = accountResponse.data.data.id;
+        const featureId = selectedFeatureId;
+        await featureToLoginService.addUserToFeature(featureId, loginId);
+        resetForm();
+        setSubmitting(false);
+        handleUserModalClose();
+        featureToLoginRefetch();
+      } catch (error) {
+        if (error.response) {
+          switch (error.response.status) {
+            case 404:
+              setFieldError("email", "No user found with this email");
+              break;
+            case 409:
+              setFieldError(
+                "email",
+                "The user has already been granted access to this feature."
+              );
+              break;
+            default:
+              setFieldError("email", "An error occurred. Please try again.");
+              break;
+          }
+        }
+      }
+    },
   });
 
-  const handleAddNew = async (data) => {
-    console.log(data);
-    await featureService.post(data);
-    setFeatures([...features, { ...data }]);
+  const handleChangePage = (newPage) => {
+    setPage(newPage);
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
-
-  console.log(features);
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
   return (
     <Container maxWidth="md">
       <Box
         sx={{
-          marginBottom: 5,
+          marginBottom: 1,
           display: "flex",
           justifyContent: "space-between",
         }}
@@ -163,112 +176,244 @@ const Features = () => {
         <Typography variant="h2" style={{ margin: 0, fontWeight: "bold" }}>
           Feature to Logins
         </Typography>
-
-        <Button variant="outlined" onClick={handleOpen}>
-          Add New
+        <Button variant="outlined" onClick={handleFeatureModalOpen}>
+          Add New Feature
         </Button>
       </Box>
-      <TableContainer component={Paper}>
-        <Table aria-label="collapsible table">
-          <TableHead>
-            <TableRow>
-              <TableCell />
-              <TableCell>Feature Name</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {features.map((feature) => (
-              <Row key={feature.id} row={feature} />
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+      {featureToLoginLoading ? (
         <Box
-          style={modalStyle}
-          sx={{
-            position: "absolute",
-            width: 400,
-            backgroundColor: "background.paper",
-            boxShadow: 5,
-            padding: (2, 4, 3),
-          }}
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          minHeight="50vh"
         >
-          <Typography
-            variant="h2"
-            id="simple-modal-title"
-            sx={{
-              fontWeight: "bold",
-            }}
-          >
+          <CircularProgress />
+        </Box>
+      ) : (
+        <TableContainer component={Paper}>
+          <Table aria-label="collapsible table">
+            <TableHead>
+              <TableRow>
+                <TableCell />
+                <TableCell> Feature ID </TableCell>
+                <TableCell>Feature Name</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map((row, index) => (
+                <React.Fragment key={index}>
+                  <TableRow
+                    onClick={() => handleRowClick(row.name)}
+                    sx={{
+                      "& > *": { borderBottom: "unset", cursor: "pointer" },
+                    }}
+                    hover
+                  >
+                    <TableCell>
+                      <IconButton
+                        aria-label="expand row"
+                        size="small"
+                        onClick={() => handleRowClick(row.name)}
+                      >
+                        {selectedRowId === row.name ? (
+                          <KeyboardArrowUpIcon />
+                        ) : (
+                          <KeyboardArrowDownIcon />
+                        )}
+                      </IconButton>
+                    </TableCell>
+
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      sx={{ justifyContent: "space-between" }}
+                    >
+                      {row.id}
+                    </TableCell>
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      sx={{ justifyContent: "space-between" }}
+                    >
+                      {row.name}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell
+                      style={{ paddingBottom: 0, paddingTop: 0 }}
+                      colSpan={6}
+                    >
+                      <Collapse
+                        in={selectedRowId === row.name}
+                        timeout="auto"
+                        unmountOnExit
+                      >
+                        <Box sx={{ margin: 1 }}>
+                          <Stack direction="row" justifyContent="space-between">
+                            <Typography
+                              variant="h6"
+                              gutterBottom
+                              component="div"
+                            >
+                              Users
+                            </Typography>
+
+                            <IconButton
+                              color="primary"
+                              aria-label="add-user"
+                              onClick={() =>
+                                handleUserModalOpen(row.name, row.id)
+                              }
+                            >
+                              <PersonAddIcon />
+                            </IconButton>
+                          </Stack>
+
+                          <Table size="small" aria-label="purchases">
+                            <TableHead>
+                              <TableRow>
+                                <TableCell>Login ID</TableCell>
+                                <TableCell>First Name</TableCell>
+                                <TableCell>Last Name</TableCell>
+                                <TableCell>Email</TableCell>
+                              </TableRow>
+                            </TableHead>
+                            <TableBody>
+                              {row.history.map((historyRow) => (
+                                <TableRow key={historyRow.loginId}>
+                                  <TableCell component="th" scope="row">
+                                    {historyRow.loginId}
+                                  </TableCell>
+                                  <TableCell>{historyRow.firstName}</TableCell>
+                                  <TableCell>{historyRow.lastName}</TableCell>
+                                  <TableCell>{historyRow.email}</TableCell>
+                                  <TableCell>
+                                    {historyRow.featureToLoginId ? (
+                                      <IconButton
+                                        color="error"
+                                        aria-label="delete-user"
+                                        onClick={async () => {
+                                          try {
+                                            await featureToLoginService.removeUserFromFeature(
+                                              historyRow.featureToLoginId
+                                            );
+                                            featureToLoginRefetch();
+                                          } catch (error) {
+                                            console.error(
+                                              "Failed to remove user from feature:",
+                                              error
+                                            );
+                                          }
+                                        }}
+                                      >
+                                        <DeleteIcon />
+                                      </IconButton>
+                                    ) : null}
+                                  </TableCell>
+                                </TableRow>
+                              ))}
+                            </TableBody>
+                          </Table>
+                        </Box>
+                      </Collapse>
+                    </TableCell>
+                  </TableRow>
+                </React.Fragment>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
+
+      <Dialog open={featureModalOpen} onClose={handleModalClose}>
+        <Box sx={{ width: 400, p: 2 }}>
+          <Typography variant="h6" component="h2" sx={{ p: 2 }}>
             Add a new feature
           </Typography>
-
-          <Formik
-            initialValues={{
-              name: "",
-            }}
-            onSubmit={(values) => handleAddNew(values)}
-          >
-            {({
-              values,
-              handleChange,
-              handleSubmit,
-              touched,
-              errors,
-              isSubmitting,
-            }) => (
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  handleSubmit(e);
-                }}
-              >
-                <Box>
-                  <Label id="name" label="Name" />
-                  <TextField
-                    placeholder="Name"
-                    id="name"
-                    value={values.name}
-                    onChange={handleChange}
-                    helperText={touched.name ? errors.name : ""}
-                    error={touched.name && Boolean(errors.name)}
-                    fullWidth
-                    autoFocus
-                  />
-                </Box>
-
-                {error && (
-                  <Typography
-                    sx={{
-                      color: "error.main",
-                    }}
-                  >
-                    Something went wrong.
-                  </Typography>
-                )}
-                <Box mt={3} display="flex" justifyContent="space-between">
-                  <Button variant="outlined" onClick={handleClose}>
-                    Cancel
-                  </Button>
-                  <Button
-                    variant="contained"
-                    type="submit"
-                    disabled={isSubmitting}
-                  >
-                    Save
-                  </Button>
-                </Box>
-              </form>
-            )}
-          </Formik>
+          <form onSubmit={featureFormik.handleSubmit}>
+            <Box>
+              <TextField
+                placeholder="Name"
+                id="name"
+                onChange={featureFormik.handleChange}
+                value={featureFormik.values.name}
+                fullWidth
+                autoFocus
+              />
+              {featureFormik.errors.name && (
+                <Typography
+                  sx={{
+                    color: "error.main",
+                  }}
+                >
+                  {featureFormik.errors.name}
+                </Typography>
+              )}
+            </Box>
+            <Box mt={3} display="flex" justifyContent="space-between">
+              <Button variant="outlined" type="submit">
+                Submit
+              </Button>
+              <Button variant="outlined" onClick={handleModalClose}>
+                Cancel
+              </Button>
+            </Box>
+          </form>
         </Box>
-      </Modal>
+      </Dialog>
+
+      <Dialog
+        open={userModalOpen}
+        onClose={handleUserModalClose}
+        aria-labelledby="add-user-modal-title"
+        aria-describedby="add-user-modal-description"
+      >
+        <Box sx={{ width: 400, p: 2 }}>
+          <Typography variant="h6" component="h2" sx={{ p: 2 }}>
+            Add a user to {selectedFeatureName}
+          </Typography>
+          <form onSubmit={userFormik.handleSubmit}>
+            <Box>
+              {/* <Label id="email" label="Email" /> */}
+              <TextField
+                placeholder="Email"
+                id="email"
+                name="email"
+                onChange={userFormik.handleChange}
+                value={userFormik.values.email}
+                fullWidth
+                autoFocus
+              />
+              {userFormik.errors.email && (
+                <Typography
+                  sx={{
+                    color: "error.main",
+                  }}
+                >
+                  {userFormik.errors.email}
+                </Typography>
+              )}
+            </Box>
+            <Box mt={3} display="flex" justifyContent="space-between">
+              <Button variant="outlined" type="submit">
+                Submit
+              </Button>
+              <Button variant="outlined" onClick={handleUserModalClose}>
+                Cancel
+              </Button>
+            </Box>
+          </form>
+        </Box>
+      </Dialog>
+      <TablePagination
+        rowsPerPageOptions={[10, 25, 100]}
+        component="div"
+        count={rows.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </Container>
   );
 };

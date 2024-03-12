@@ -49,18 +49,28 @@ const getById: RequestHandler<
 
 const getByEmail: RequestHandler<
   { email: string },
-  { isSuccess: boolean },
+  { isSuccess: boolean; message?: string; data?: any },
   never,
   { tenantId: string }
 > = async (req, res) => {
   try {
     const { email } = req.params;
     const { tenantId } = req.query;
-    await accountService.selectByEmail(email, tenantId);
-    res.send({ isSuccess: true });
-  } catch (err) {
+    const response = await accountService.selectByEmail(email, tenantId);
+    res.send({ isSuccess: true, data: response });
+  } catch (err: any) {
     console.error(err);
-    res.sendStatus(500);
+    if (
+      err.code === "queryResultErrorCode.noData" ||
+      err.message.includes("No data returned")
+    ) {
+      return res
+        .status(404)
+        .send({ isSuccess: false, message: "User not found" });
+    }
+    res
+      .status(500)
+      .send({ isSuccess: false, message: "Internal server error" });
   }
 };
 

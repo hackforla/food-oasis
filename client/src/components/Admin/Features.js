@@ -176,7 +176,12 @@ const Features = () => {
         <Typography variant="h2" style={{ margin: 0, fontWeight: "bold" }}>
           Feature to Logins
         </Typography>
-        <Button variant="outlined" onClick={handleFeatureModalOpen}>
+        <Button
+          variant="contained"
+          type="button"
+          icon="search"
+          onClick={handleFeatureModalOpen}
+        >
           Add New Feature
         </Button>
       </Box>
@@ -351,11 +356,11 @@ const Features = () => {
               )}
             </Box>
             <Box mt={3} display="flex" justifyContent="space-between">
-              <Button variant="outlined" type="submit">
-                Submit
-              </Button>
               <Button variant="outlined" onClick={handleModalClose}>
                 Cancel
+              </Button>
+              <Button variant="contained" icon="search" type="submit">
+                Submit
               </Button>
             </Box>
           </form>
@@ -395,11 +400,11 @@ const Features = () => {
               )}
             </Box>
             <Box mt={3} display="flex" justifyContent="space-between">
-              <Button variant="outlined" type="submit">
-                Submit
-              </Button>
               <Button variant="outlined" onClick={handleUserModalClose}>
                 Cancel
+              </Button>
+              <Button variant="contained" icon="search" type="submit">
+                Submit
               </Button>
             </Box>
           </form>

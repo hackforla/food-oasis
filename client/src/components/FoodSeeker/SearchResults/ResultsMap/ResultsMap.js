@@ -29,6 +29,7 @@ import {
   useSearchCoordinates,
   useSelectedOrganization,
   useUserCoordinates,
+  useListPanel,
 } from "../../../../appReducer";
 import AdvancedFilters from "../AdvancedFilters/AdvancedFilters";
 import {
@@ -52,6 +53,7 @@ const ResultsMap = (
   const navigate = useNavigate();
   const location = useLocation();
   const { isMobile } = useBreakpoints();
+  const isListPanelOpen = useListPanel();
 
   const longitude =
     searchCoordinates?.longitude ||
@@ -96,38 +98,35 @@ const ResultsMap = (
     setInteractiveLayerIds([MARKERS_LAYER_ID]);
   }, []);
 
-  const onClick = useCallback(
-    (e) => {
-      mapRef.current?.flyTo({
-        center: [e.lngLat.lng, isMobile ? e.lngLat.lat - 0.06 : e.lngLat.lat],
-        duration: 2000,
+  const onClick = (e) => {
+    mapRef.current?.flyTo({
+      center: [
+        isListPanelOpen ? e.lngLat.lng - 0.08 : e.lngLat.lng,
+        isMobile ? e.lngLat.lat - 0.06 : e.lngLat.lat,
+      ],
+      duration: 2000,
+    });
+    if (!e.features || !e.features.length) {
+      dispatch({ type: "RESET_SELECTED_ORGANIZATION" });
+    } else if (stakeholders) {
+      const { id } = e.features[0];
+      const selectedOrganization = stakeholders.find((sh) => sh.id === id);
+      dispatch({
+        type: "SELECTED_ORGANIZATION_UPDATED",
+        organization: selectedOrganization,
       });
-      if (!e.features || !e.features.length) {
-        dispatch({ type: "RESET_SELECTED_ORGANIZATION" });
-      } else if (stakeholders) {
-        const { id } = e.features[0];
-        const selectedOrganization = stakeholders.find((sh) => sh.id === id);
-        dispatch({
-          type: "SELECTED_ORGANIZATION_UPDATED",
-          organization: selectedOrganization,
-        });
-        analytics.postEvent("selectOrganization", {
-          id: selectedOrganization.id,
-          name: selectedOrganization.name,
-        });
+      analytics.postEvent("selectOrganization", {
+        id: selectedOrganization.id,
+        name: selectedOrganization.name,
+      });
 
-        //Update url history
-        const name = selectedOrganization.name
-          .toLowerCase()
-          .replaceAll(" ", "_");
-        navigate(
-          `${location.pathname}?latitude=${selectedOrganization.latitude}&longitude=${selectedOrganization.longitude}&org=${name}&id=${selectedOrganization.id}`
-        );
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [stakeholders, dispatch]
-  );
+      //Update url history
+      const name = selectedOrganization.name.toLowerCase().replaceAll(" ", "_");
+      navigate(
+        `${location.pathname}?latitude=${selectedOrganization.latitude}&longitude=${selectedOrganization.longitude}&org=${name}&id=${selectedOrganization.id}`
+      );
+    }
+  };
 
   const markersGeojson = useMarkersGeojson({
     stakeholders,
@@ -152,12 +151,15 @@ const ResultsMap = (
       },
       flyTo: ({ latitude, longitude }) => {
         mapRef.current?.flyTo({
-          center: [longitude, isMobile ? latitude - 0.06 : latitude],
+          center: [
+            isListPanelOpen ? longitude - 0.08 : longitude,
+            isMobile ? latitude - 0.06 : latitude,
+          ],
           duration: 2000,
         });
       },
     }),
-    [isMobile]
+    [isMobile, isListPanelOpen]
   );
 
   return (
@@ -203,29 +205,29 @@ const ResultsMap = (
           </Source>
         )}
       </Map>
-      <Grid
-        container={isMobile}
-        wrap={isMobile ? "nowrap" : undefined}
-        position="absolute"
-        display="inline-flex"
-        alignItems="flex-start"
-        sx={{
-          overflow: "auto",
-          gap: "0.5rem",
-          padding: isMobile ? "0 0 0.3rem 0.75rem" : "0 0 0.3rem 2.25rem",
-          scrollbarWidth: "none",
-          position: "absolute",
-          top: 0,
-          left: 0,
-        }}
-      >
-        {!loading && hasAdvancedFilterFeatureFlag && (
+      {!loading && hasAdvancedFilterFeatureFlag && isMobile && (
+        <Grid
+          container
+          wrap="nowrap"
+          position="absolute"
+          display="inline-flex"
+          alignItems="flex-start"
+          sx={{
+            overflow: "auto",
+            gap: "0.5rem",
+            padding: "0 0 0.3rem 0.75rem",
+            scrollbarWidth: "none",
+            position: "absolute",
+            top: 0,
+            left: 0,
+          }}
+        >
           <AdvancedFilters
             categoryIds={categoryIds}
             toggleCategory={toggleCategory}
           />
-        )}
-      </Grid>
+        </Grid>
+      )}
     </div>
   );
 };

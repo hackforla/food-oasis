@@ -2,7 +2,6 @@ import axios from "axios";
 
 const baseUrl = "api/features";
 
-// get all features
 export const getAllFeatures = async () => {
   try {
     const response = await axios.get(`${baseUrl}`);
@@ -12,7 +11,6 @@ export const getAllFeatures = async () => {
   }
 };
 
-//add a new feature below
 export const post = async (feature) => {
   const response = await axios.post(`${baseUrl}`, {
     ...feature,

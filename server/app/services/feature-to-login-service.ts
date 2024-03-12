@@ -21,7 +21,6 @@ const insert = async (
   login_id: number;
 }> => {
   try {
-    // Check for existing association
     const existingAssociation = await db.oneOrNone(
       `SELECT 1 FROM feature_to_login WHERE feature_id = $<feature_id> AND login_id = $<login_id>`,
       model
@@ -52,23 +51,8 @@ const remove = async (id: string) => {
   return result.rowCount;
 };
 
-// const getFeatureByLogin = async (
-//   login_id: number
-// ): Promise<FeatureToLogin[]> => {
-//   const sql = `
-//   SELECT ff.id as feature_id, ff.name as feature_name
-//   FROM feature_to_login ftl
-//       JOIN login u ON u.id = ftl.login_id
-//       JOIN feature_flag ff ON ff.id = ftl.feature_id
-//   WHERE ftl.login_id = ($<login_id>)
-//   `;
-//   const result = await db.manyOrNone(sql, { login_id });
-//   return result;
-// };
-
 export default {
   insert,
   remove,
   getLoginsByFeature,
-  // getFeatureByLogin,
 };

@@ -2,7 +2,6 @@ import { RequestHandler } from "express";
 import { FeatureToLogin } from "../../types/feature-to-login-types";
 import featureToLoginService from "../services/feature-to-login-service";
 
-// Get all Logins by Feature
 const getLoginsByFeature: RequestHandler<
   never,
   FeatureToLogin[] | { error: string },
@@ -17,7 +16,6 @@ const getLoginsByFeature: RequestHandler<
   }
 };
 
-// Create Association
 const post: RequestHandler<
   never,
   { id: number } | { error: string } | { message: string },
@@ -39,7 +37,6 @@ const post: RequestHandler<
   }
 };
 
-// Delete Association
 const remove: RequestHandler<
   { id: string },
   Response | { error: string },

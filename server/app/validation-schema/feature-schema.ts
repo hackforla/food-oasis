@@ -1,7 +1,7 @@
 import { JSONSchemaType } from "ajv";
 import { Feature } from "../../types/feature-types";
 
-export const FeaturePostRequestSchema: JSONSchemaType<Omit<Feature, "id">> = {
+export const FeaturePostRequestSchema: JSONSchemaType<Feature> = {
   type: "object",
   required: ["name"],
   properties: {

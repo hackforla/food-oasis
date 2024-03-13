@@ -1,9 +1,7 @@
 import { JSONSchemaType } from "ajv";
 import { FeatureToLogin } from "../../types/feature-to-login-types";
 
-export const FeatureToLoginPostRequestSchema: JSONSchemaType<
-  Omit<FeatureToLogin, "id">
-> = {
+export const FeatureToLoginPostRequestSchema: JSONSchemaType<FeatureToLogin> = {
   type: "object",
   required: ["feature_id", "login_id"],
   properties: {

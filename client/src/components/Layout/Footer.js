@@ -3,7 +3,7 @@ import { MENU_ITEMS } from "helpers/Constants";
 import useLocationHook from "hooks/useLocationHook";
 import { Link } from "react-router-dom";
 import { tenantId } from "../../helpers/Configuration";
-
+import Copyright from "./Copyright";
 /* 
 This file is not used in the application at this time, but left here in 
 case the UI/UX team decides to re-instate it.
@@ -102,8 +102,8 @@ const Footer = () => {
         })}
       >
         {constantLinks}
+        <Copyright />
       </Box>
-      {/* <Copyright /> */}
     </Box>
   );
 };

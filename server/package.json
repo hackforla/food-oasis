@@ -1,6 +1,6 @@
 {
   "name": "foodoasis-web-api",
-  "version": "1.0.79",
+  "version": "1.0.80",
   "author": "Hack for LA",
   "description": "Web API Server for Food Oasis",
   "main": "server.js",

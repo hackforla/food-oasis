@@ -14,10 +14,6 @@ import {
 import donationStep1 from "images/donationStep1.png";
 import donationStep2 from "images/donationStep2.png";
 import donationStep3 from "images/donationStep3.png";
-// import donationStep4 from "images/donationStep4.png";
-// import donationStep5 from "images/donationStep5.png";
-// import donationStep6 from "images/donationStep6.png";
-// import donationStep7 from "images/donationStep7.png";
 import logo from "images/foodoasis.svg";
 import { useState, useEffect } from "react";
 import * as analytics from "../../services/analytics";

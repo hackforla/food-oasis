@@ -4,7 +4,7 @@ import { ContactFormData, Email } from "../../types/email-type";
 
 const emailUser: string = process.env.EMAIL_USER || "";
 const sendgridKey: string = process.env.SENDGRID_API_KEY || "";
-const staffEmail: string = process.env.CONTACT_US_EMAIL || "";
+
 sgMail.setApiKey(sendgridKey);
 
 const send = async (email: Email) => {
@@ -119,8 +119,19 @@ const sendContactEmail = async ({
   title,
   message,
   clientUrl,
+  tenantId,
   phone,
 }: ContactFormData) => {
+
+  const tenantRegions: { [key: number]: string } = {
+    1: process.env.CONTACT_US_LA || "", // LA
+    3: process.env.CONTACT_US_HAWAII || "", // Hawaii
+    5: process.env.CONTACT_US_LA || "", // Texas
+    6: process.env.CONTACT_US_LA || "", // Santa Barbara
+  };
+
+  const staffEmail: string = tenantId ? tenantRegions[tenantId] : "";
+
   const emailBody = `
   <p
   style="
@@ -471,6 +482,7 @@ const sendContactEmail = async ({
           title,
           message,
           clientUrl,
+          tenantId,
           phone,
         });
       }
@@ -484,19 +496,26 @@ const sendContactConfirmation = async ({
   email,
   title,
   message,
+  tenantId,
   clientUrl,
-}: // phone,
-ContactFormData) => {
+}: ContactFormData) => {
   const now = new Date();
+
+  const timeZones: { [key: number]: string } = {
+    1: "America/Los_Angeles", // LA
+    3: "Pacific/Honolulu", // Hawaii
+    5: "US/Central", // Texas
+    6: "America/Los_Angeles", // Santa Barbara
+  };
+
   const dateString: string = now.toLocaleString("en-US", {
     weekday: "long",
     year: "numeric",
     month: "long",
     day: "numeric",
-    timeZone: "America/Los_Angeles",
   });
 
-  const time = now.toLocaleTimeString();
+  const time = now.toLocaleTimeString("en-US", { timeZone: tenantId ? timeZones[tenantId] : "America/Los_Angeles", timeZoneName: 'short'});
 
   const emailBody = `
   <!DOCTYPE html>
@@ -565,7 +584,7 @@ ContactFormData) => {
                 <td width="25%" style="padding: 10px 10px 10px 0"><strong>Date:</strong> ${dateString}</td>
               </tr>
               <tr>
-                <td width="25%" style="padding: 10px 10px 10px 0"><strong>Time:</strong> ${time} PST</td>
+                <td width="25%" style="padding: 10px 10px 10px 0"><strong>Time:</strong> ${time}</td>
               </tr>
               <tr>
                 <td width="25%" style="padding: 10px 10px 10px 0"><strong>Subject:</strong> ${

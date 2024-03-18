@@ -18,6 +18,7 @@ import loadRouter from "./load-router";
 import emailRouter from "./email-router";
 import awsRouter from "./aws-router";
 import featureRouter from "./feature-router";
+import featureToLoginRouter from "./feature-to-login-router";
 
 const router = Router();
 
@@ -40,5 +41,6 @@ router.use("/api/tags", tagRouter);
 router.use("/api/tenants", tenantRouter);
 router.use("/api/logins", loginsRouter);
 router.use("/api/features", featureRouter);
+router.use("/api/features-to-login", featureToLoginRouter);
 
 export default router;

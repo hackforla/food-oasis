@@ -21,15 +21,16 @@ const MobileLayout = ({ filters, map, list, showList }) => {
     if (!showList) {
       setPosition({
         x: 0,
-        y: 60 * (window.innerHeight / 100),
+        y: 57 * (window.innerHeight / 100),
       });
     } else {
       setPosition({
         x: 0,
-        y: 10,
+        y: 0,
       });
     }
   }, [showList]);
+
   useEffect(() => {
     if (filterPanelOpen) {
       setPosition({
@@ -39,35 +40,45 @@ const MobileLayout = ({ filters, map, list, showList }) => {
     } else {
       setPosition({
         x: 0,
-        y: 60,
+        y: 0,
       });
     }
   }, [filterPanelOpen]);
 
   // Define the bounds for vertical dragging
-  const minY = 50;
+  const minY = 60;
 
   return (
     <>
       {filters}
       <Box
         sx={{
-          height: "100%",
+          height: window.innerHeight,
           display: "flex",
           flexDirection: "column",
-          overflow: "auto",
+          overflow: "hidden",
           position: "relative",
+
         }}
       >
         <Box sx={{ flex: 1 }}>{map}</Box>
         {list && (
           <Draggable
             position={position}
-            onDrag={(e, ui) => {
-              setPosition({ x: 0, y: ui.y });
+            onStop={(e, ui) => {
+              if(ui.y < 20 * (window.innerHeight / 100)){
+                setPosition({ x: 0, y:  3});
+              }
+              if(ui.y > 20 * (window.innerHeight / 100) && ui.y < 40 * (window.innerHeight / 100)){
+                setPosition({ x: 0, y:  25 * (window.innerHeight / 100)});
+              }
+              if(ui.y > 40 * (window.innerHeight / 100)){
+                setPosition({ x: 0, y:  57 * (window.innerHeight / 100)});
+              }
+              
             }}
             handle=".handle"
-            bounds={{ top: minY, bottom: minY * (window.innerHeight / 100) }}
+            bounds={{ top: 0, bottom: minY * (window.innerHeight / 100) }}
             defaultPosition={{ x: 0, y: minY * (window.innerHeight / 100) }}
             axis="y"
             sx={{

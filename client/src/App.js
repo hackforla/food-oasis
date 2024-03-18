@@ -61,6 +61,7 @@ const About = lazy(() => import("./components/About"));
 const Faq = lazy(() => import("./components/Faq"));
 const Contact = lazy(() => import("./components/StaticPages/Contact"));
 const MuiDemo = lazy(() => import("./components/MuiDemo/MuiDemo"));
+const Features = lazy(() => import("./components/Admin/Features"));
 
 function App() {
   useEffect(() => {
@@ -170,7 +171,6 @@ function App() {
                             </div>
                           }
                         />
-
                         <Route
                           path="verificationdashboard"
                           element={
@@ -272,6 +272,22 @@ function App() {
                                 }}
                               >
                                 <Logins />
+                              </div>
+                            </PrivateRoute>
+                          }
+                        />
+                        <Route
+                          path="features"
+                          element={
+                            <PrivateRoute roles={["isAdmin"]}>
+                              <div
+                                style={{
+                                  flexBasis: "90%",
+                                  paddingTop: "1em",
+                                  paddingBottom: "1em",
+                                }}
+                              >
+                                <Features />
                               </div>
                             </PrivateRoute>
                           }

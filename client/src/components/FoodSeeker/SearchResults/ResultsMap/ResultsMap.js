@@ -161,7 +161,6 @@ const ResultsMap = (
     }),
     [isMobile, isListPanelOpen]
   );
-
   return (
     <div style={{ position: "relative", height: "100%" }}>
       <Map

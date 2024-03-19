@@ -19,7 +19,33 @@ const insert = async (model: Feature): Promise<{ id: number }> => {
   return result;
 };
 
+
+const remove = async (id: string) => {
+  try {
+    await db.tx(async (t) => {
+      const deleteAssociationsQuery = `
+        DELETE FROM feature_to_login
+        WHERE feature_id = $<id>
+      `;
+      await t.none(deleteAssociationsQuery, { id: Number(id) });
+      const deleteFeatureQuery = `
+        DELETE FROM feature_flag
+        WHERE id = $<id>
+      `;
+      await t.none(deleteFeatureQuery, { id: Number(id) });
+    });
+    return {
+      success: true,
+      message: "Feature and associated logins deleted successfully.",
+    };
+  } catch (error) {
+    console.error("Error in remove function:", error);
+    throw error;
+  }
+};
+
 export default {
   insert,
   getAll,
+  remove,
 };

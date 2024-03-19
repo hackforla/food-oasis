@@ -78,11 +78,7 @@ const Features = () => {
     setFeatureModalOpen(false);
     featureFormik.resetForm();
   };
-  const handleUserModalOpen = (featureName, featureId) => {
-    setSelectedFeatureName(featureName);
-    setSelectedFeatureId(featureId);
-    setUserModalOpen(true);
-  };
+
   const handleUserModalClose = () => {
     setUserModalOpen(false);
     userFormik.resetForm();
@@ -149,10 +145,6 @@ const Features = () => {
     },
   });
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
   return (
     <Container maxWidth="md">
       <Box
@@ -188,9 +180,10 @@ const Features = () => {
           <Table aria-label="collapsible table">
             <TableHead>
               <TableRow>
+                <TableCell align="right" />
+                <TableCell align="right">Feature ID</TableCell>
+                <TableCell align="right">Feature Name</TableCell>
                 <TableCell />
-                <TableCell> Feature ID </TableCell>
-                <TableCell>Feature Name</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -218,6 +211,7 @@ const Features = () => {
                     </TableCell>
 
                     <TableCell
+                      align="right"
                       component="th"
                       scope="row"
                       sx={{ justifyContent: "space-between" }}
@@ -225,11 +219,24 @@ const Features = () => {
                       {row.id}
                     </TableCell>
                     <TableCell
+                      align="right"
                       component="th"
                       scope="row"
                       sx={{ justifyContent: "space-between" }}
                     >
                       {row.name}
+                    </TableCell>
+                    <TableCell align="right">
+                      <IconButton
+                        color="error"
+                        aria-label="delete-feature"
+                        onClick={async () => {
+                          await featureService.remove(row.id);
+                          featureToLoginRefetch();
+                        }}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
                     </TableCell>
                   </TableRow>
                   <TableRow>
@@ -255,9 +262,11 @@ const Features = () => {
                             <IconButton
                               color="primary"
                               aria-label="add-user"
-                              onClick={() =>
-                                handleUserModalOpen(row.name, row.id)
-                              }
+                              onClick={() => (featureName, featureId) => {
+                                setSelectedFeatureName(featureName);
+                                setSelectedFeatureId(featureId);
+                                setUserModalOpen(true);
+                              }}
                             >
                               <PersonAddIcon />
                             </IconButton>
@@ -266,21 +275,32 @@ const Features = () => {
                           <Table size="small" aria-label="purchases">
                             <TableHead>
                               <TableRow>
-                                <TableCell>Login ID</TableCell>
-                                <TableCell>First Name</TableCell>
-                                <TableCell>Last Name</TableCell>
-                                <TableCell>Email</TableCell>
+                                <TableCell align="right">Login ID</TableCell>
+                                <TableCell align="right">First Name</TableCell>
+                                <TableCell align="right">Last Name</TableCell>
+                                <TableCell align="right">Email</TableCell>
+                                <TableCell />
                               </TableRow>
                             </TableHead>
                             <TableBody>
                               {row.history.map((historyRow) => (
                                 <TableRow key={historyRow.loginId}>
-                                  <TableCell component="th" scope="row">
+                                  <TableCell
+                                    component="th"
+                                    scope="row"
+                                    align="center"
+                                  >
                                     {historyRow.loginId}
                                   </TableCell>
-                                  <TableCell>{historyRow.firstName}</TableCell>
-                                  <TableCell>{historyRow.lastName}</TableCell>
-                                  <TableCell>{historyRow.email}</TableCell>
+                                  <TableCell align="right">
+                                    {historyRow.firstName}
+                                  </TableCell>
+                                  <TableCell align="right">
+                                    {historyRow.lastName}
+                                  </TableCell>
+                                  <TableCell align="right">
+                                    {historyRow.email}
+                                  </TableCell>
                                   <TableCell>
                                     {historyRow.featureToLoginId ? (
                                       <IconButton
@@ -321,8 +341,11 @@ const Features = () => {
 
       <Dialog open={featureModalOpen} onClose={handleModalClose}>
         <Box sx={{ width: 400, p: 2 }}>
-          <Typography variant="h6" component="h2" sx={{ p: 2 }}>
+          <Typography variant="h6" component="h2" sx={{ py: 2 }}>
             Add a new feature
+          </Typography>
+          <Typography variant="body2" display="block" gutterBottom>
+            Feature names are usually camlecase
           </Typography>
           <form onSubmit={featureFormik.handleSubmit}>
             <Box>
@@ -407,7 +430,11 @@ const Features = () => {
         onPageChange={(newPage) => {
           setPage(newPage);
         }}
-        onRowsPerPageChange={handleChangeRowsPerPage}
+
+        onRowsPerPageChange={(event) => {
+          setRowsPerPage(+event.target.value);
+          setPage(0);
+        }}
       />
     </Container>
   );

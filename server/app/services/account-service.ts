@@ -56,17 +56,15 @@ const selectByEmail = async (
 ): Promise<Account> => {
   const sql = `
   select login.id, login.first_name, login.last_name, login.email, login.email_confirmed,login.password_hash,login.date_created, login.is_global_admin, login.is_global_reporting, lt.tenant_id, lt.is_admin, lt.is_security_admin, lt.is_data_entry, lt.is_coordinator,
-    string_agg(ff.name, ', ') as features
-    from login left outer join
-    (
-      select * from login_tenant where tenant_id = $<tenantId>
-    ) as lt on login.id = lt.login_id
+  COALESCE(string_agg(ff.name, ', '), '') as features
+  From login 
+  LEFT OUTER JOIN (
+    SELECT * FROM login_tenant WHERE tenant_id = $<tenantId>
+    ) as lt ON login.id = lt.login_id
   LEFT JOIN feature_to_login ftl ON login.id = ftl.login_id
   LEFT JOIN feature_flag ff ON ftl.feature_id = ff.id
-   where email ilike $<email>
-    GROUP BY  login.id, login.first_name, login.last_name, login.email, login.email_confirmed,
-   login.date_created, login.is_global_admin, login.is_global_reporting,
-    lt.tenant_id, lt.is_admin, lt.is_security_admin, lt.is_data_entry, lt.is_coordinator`;
+  WHERE email ilike $<email>
+  GROUP BY  login.id, login.first_name, login.last_name, login.email, login.email_confirmed, login.date_created, login.is_global_admin, login.is_global_reporting, lt.tenant_id, lt.is_admin, lt.is_security_admin, lt.is_data_entry, lt.is_coordinator`;
 
   const row: Omit<Account, "features"> & { features: string } = await db.one(
     sql,
@@ -75,7 +73,10 @@ const selectByEmail = async (
       tenantId: Number(tenantId),
     }
   );
-  return camelcaseKeys({ ...row, features: row.features.split(", ") || [] });
+  return camelcaseKeys({
+    ...row,
+    features: row.features.split(", ").filter(Boolean) || [],
+  });
 };
 
 const register = async (body: RegisterFields): Promise<AccountResponse> => {

@@ -1,16 +1,39 @@
 import { FeatureToLogin } from "../../types/feature-to-login-types";
 import db from "./db";
 
-const getLoginsByFeature = async (): Promise<FeatureToLogin[]> => {
+const getLoginsByFeature = async () => {
   const sql = `
     SELECT u.id as login_id, u.first_name, u.last_name, u.email, ff.name as feature_name, ff.id as feature_id, ftl.id as ftl_id
-    FROM  feature_flag ff 
+    FROM feature_flag ff 
     LEFT JOIN feature_to_login ftl ON ff.id = ftl.feature_id
     LEFT JOIN login u ON u.id = ftl.login_id
     ORDER BY ff.id DESC;
-`;
-  const result = await db.manyOrNone(sql);
-  return result;
+  `;
+  const results = await db.manyOrNone(sql);
+  const groupedByFeature = results.reduce((acc, item) => {
+    if (!acc.has(item.feature_id)) {
+      acc.set(item.feature_id, {
+        feature_id: item.feature_id,
+        feature_name: item.feature_name,
+        users: [],
+      });
+    }
+
+    const feature = acc.get(item.feature_id);
+    if (item.login_id) {
+      feature.users.push({
+        login_id: item.login_id,
+        first_name: item.first_name,
+        last_name: item.last_name,
+        email: item.email,
+        ftl_id: item.ftl_id,
+      });
+    }
+
+    return acc;
+  }, new Map());
+  const orderedFeatures = Array.from(groupedByFeature.values());
+  return orderedFeatures;
 };
 
 const insert = async (

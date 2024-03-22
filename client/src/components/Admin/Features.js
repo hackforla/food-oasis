@@ -45,15 +45,6 @@ function createData(featureName, users, featureId) {
     })),
   };
 }
-
-const featureFormValidationSchema = Yup.object({
-  name: Yup.string().trim().required("Name is required"),
-});
-const userFormValidationSchema = Yup.object({
-  email: Yup.string()
-    .email("Invalid email address")
-    .required("User email is required"),
-});
 const Features = () => {
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [rows, setRows] = useState([]);
@@ -72,21 +63,17 @@ const Features = () => {
 
   useEffect(() => {
     if (featureToLoginData) {
-      const groupedByFeatureName = featureToLoginData.reduce((acc, curr) => {
-        acc[curr.feature_name] = [...(acc[curr.feature_name] || []), curr];
-        return acc;
-      }, {});
-      const newRows = Object.entries(groupedByFeatureName).map(
-        ([featureName, users]) => {
-          const featureId = users[0]?.feature_id;
-          return createData(featureName, users, featureId);
-        }
+      const newRows = featureToLoginData.map((feature) =>
+        createData(
+          feature.feature_name,
+          feature.users || [],
+          feature.feature_id
+        )
       );
       setRows(newRows);
     }
   }, [featureToLoginData]);
-
-  const handleFeatureModalOpen = () => setFeatureModalOpen(true);
+  console.log(featureToLoginData);
   const handleModalClose = () => {
     setFeatureModalOpen(false);
     featureFormik.resetForm();
@@ -111,7 +98,9 @@ const Features = () => {
     initialValues: {
       name: "",
     },
-    validationSchema: featureFormValidationSchema,
+    validationSchema: Yup.object({
+      name: Yup.string().trim().required("Name is required"),
+    }),
     onSubmit: async (values, { resetForm, setSubmitting }) => {
       await featureService.post(values);
       featureToLoginRefetch();
@@ -124,7 +113,11 @@ const Features = () => {
     initialValues: {
       email: "",
     },
-    validationSchema: userFormValidationSchema,
+    validationSchema: Yup.object({
+      email: Yup.string()
+        .email("Invalid email address")
+        .required("User email is required"),
+    }),
     onSubmit: async (values, { resetForm, setSubmitting, setFieldError }) => {
       try {
         const accountResponse = await accountService.getByEmail(values.email);
@@ -156,10 +149,6 @@ const Features = () => {
     },
   });
 
-  const handleChangePage = (newPage) => {
-    setPage(newPage);
-  };
-
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -180,7 +169,7 @@ const Features = () => {
           variant="contained"
           type="button"
           icon="search"
-          onClick={handleFeatureModalOpen}
+          onClick={() => setFeatureModalOpen(true)}
         >
           Add New Feature
         </Button>
@@ -379,7 +368,6 @@ const Features = () => {
           </Typography>
           <form onSubmit={userFormik.handleSubmit}>
             <Box>
-              {/* <Label id="email" label="Email" /> */}
               <TextField
                 placeholder="Email"
                 id="email"
@@ -416,7 +404,9 @@ const Features = () => {
         count={rows.length}
         rowsPerPage={rowsPerPage}
         page={page}
-        onPageChange={handleChangePage}
+        onPageChange={(newPage) => {
+          setPage(newPage);
+        }}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </Container>

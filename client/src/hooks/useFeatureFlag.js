@@ -2,7 +2,7 @@ import { useUserContext } from "../contexts/userContext";
 
 export default function useFeatureFlag(flagName) {
   const { user } = useUserContext();
-  if (!user) {
+  if (!user || !user.featureFlags) {
     return false;
   }
   const featureFlags = user.features;

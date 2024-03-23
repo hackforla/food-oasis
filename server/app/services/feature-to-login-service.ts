@@ -13,6 +13,7 @@ const getLoginsByFeature = async () => {
   const groupedByFeature = results.reduce((acc, item) => {
     if (!acc.has(item.feature_id)) {
       acc.set(item.feature_id, {
+        ftl_id: item.ftl_id,
         feature_id: item.feature_id,
         feature_name: item.feature_name,
         users: [],
@@ -26,13 +27,16 @@ const getLoginsByFeature = async () => {
         first_name: item.first_name,
         last_name: item.last_name,
         email: item.email,
-        ftl_id: item.ftl_id,
+      
       });
     }
 
     return acc;
   }, new Map());
-  const orderedFeatures = Array.from(groupedByFeature.values());
+  const orderedFeatures: FeatureToLogin[] = Array.from(
+    groupedByFeature.values()
+  );
+  console.log(orderedFeatures);
   return orderedFeatures;
 };
 

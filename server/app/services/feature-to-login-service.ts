@@ -1,7 +1,7 @@
 import { FeatureToLogin } from "../../types/feature-to-login-types";
 import db from "./db";
 
-const getLoginsByFeature = async () => {
+const getLoginsByFeature = async (): Promise<FeatureToLogin[]> => {
   const sql = `
     SELECT u.id as login_id, u.first_name, u.last_name, u.email, ff.name as feature_name, ff.id as feature_id, ftl.id as ftl_id
     FROM feature_flag ff 

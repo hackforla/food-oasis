@@ -73,7 +73,7 @@ const Features = () => {
       setRows(newRows);
     }
   }, [featureToLoginData]);
-  console.log(featureToLoginData);
+
   const handleModalClose = () => {
     setFeatureModalOpen(false);
     featureFormik.resetForm();

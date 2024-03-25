@@ -41,7 +41,6 @@ const remove: RequestHandler<
       return res.status(400).json({ error: "Record not found" });
     }
     res.sendStatus(204);
-    // res.send({ message: "Delete a feature" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });

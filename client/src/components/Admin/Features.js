@@ -32,24 +32,11 @@ import * as accountService from "../../services/account-service";
 import * as featureService from "../../services/feature-service";
 import * as featureToLoginService from "../../services/feature-to-login-service";
 
-function createData(featureName, users, featureId) {
-  return {
-    name: featureName,
-    id: featureId,
-    history: users.map((user) => ({
-      loginId: user.login_id,
-      firstName: user.first_name,
-      lastName: user.last_name,
-      email: user.email,
-      featureToLoginId: user.ftl_id,
-    })),
-  };
-}
 const Features = () => {
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [rows, setRows] = useState([]);
   const [selectedFeatureName, setSelectedFeatureName] = useState("");
-  const [selectedFeatureId, setSelectedFeatureId] = useState(null);
+  const [selectedFeatureId, setSelectedFeatureId] = useState("");
   const [featureModalOpen, setFeatureModalOpen] = useState(false);
   const [userModalOpen, setUserModalOpen] = useState(false);
   const [page, setPage] = React.useState(0);
@@ -62,16 +49,19 @@ const Features = () => {
   } = useFeatureToLogin();
 
   useEffect(() => {
-    if (featureToLoginData) {
-      const newRows = featureToLoginData.map((feature) =>
-        createData(
-          feature.feature_name,
-          feature.users || [],
-          feature.feature_id
-        )
-      );
-      setRows(newRows);
-    }
+    const newRows = featureToLoginData.map((feature) => ({
+      featureId: feature.feature_id,
+      name: feature.feature_name,
+      featureToLoginId: feature.ftl_id,
+      history: feature.users.map((user) => ({
+        loginId: user.login_id,
+        firstName: user.first_name,
+        lastName: user.last_name,
+        email: user.email,
+        featureToLoginId: user.featureToLoginId || feature.ftl_id,
+      })),
+    }));
+    setRows(newRows);
   }, [featureToLoginData]);
 
   const handleModalClose = () => {
@@ -191,6 +181,7 @@ const Features = () => {
                 <TableCell />
                 <TableCell> Feature ID </TableCell>
                 <TableCell>Feature Name</TableCell>
+                <TableCell />
               </TableRow>
             </TableHead>
             <TableBody>
@@ -222,7 +213,7 @@ const Features = () => {
                       scope="row"
                       sx={{ justifyContent: "space-between" }}
                     >
-                      {row.id}
+                      {row.featureId}
                     </TableCell>
                     <TableCell
                       component="th"
@@ -230,6 +221,25 @@ const Features = () => {
                       sx={{ justifyContent: "space-between" }}
                     >
                       {row.name}
+                    </TableCell>
+                    <TableCell>
+                      <IconButton
+                        color="error"
+                        aria-label="delete-user"
+                        onClick={async () => {
+                          try {
+                            await featureService.remove(row.featureId);
+                            featureToLoginRefetch();
+                          } catch (error) {
+                            console.error(
+                              "Failed to remove user from feature:",
+                              error
+                            );
+                          }
+                        }}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
                     </TableCell>
                   </TableRow>
                   <TableRow>
@@ -256,7 +266,7 @@ const Features = () => {
                               color="primary"
                               aria-label="add-user"
                               onClick={() =>
-                                handleUserModalOpen(row.name, row.id)
+                                handleUserModalOpen(row.name, row.featureId)
                               }
                             >
                               <PersonAddIcon />
@@ -282,7 +292,7 @@ const Features = () => {
                                   <TableCell>{historyRow.lastName}</TableCell>
                                   <TableCell>{historyRow.email}</TableCell>
                                   <TableCell>
-                                    {historyRow.featureToLoginId ? (
+                                    {row.history.length > 0 && (
                                       <IconButton
                                         color="error"
                                         aria-label="delete-user"
@@ -302,7 +312,7 @@ const Features = () => {
                                       >
                                         <DeleteIcon />
                                       </IconButton>
-                                    ) : null}
+                                    )}
                                   </TableCell>
                                 </TableRow>
                               ))}

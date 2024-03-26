@@ -27,7 +27,6 @@ const getLoginsByFeature = async () => {
         first_name: item.first_name,
         last_name: item.last_name,
         email: item.email,
-      
       });
     }
 
@@ -36,14 +35,13 @@ const getLoginsByFeature = async () => {
   const orderedFeatures: FeatureToLogin[] = Array.from(
     groupedByFeature.values()
   );
-  console.log(orderedFeatures);
   return orderedFeatures;
 };
 
 const insert = async (
   model: FeatureToLogin
 ): Promise<{
-  id: number;
+  ftl_id: number;
   feature_id: number;
   login_id: number;
 }> => {

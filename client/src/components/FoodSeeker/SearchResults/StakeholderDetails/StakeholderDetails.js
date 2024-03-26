@@ -19,7 +19,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as analytics from "services/analytics";
 import {
-  useAppDispatch,
   useSearchCoordinates,
   useSelectedOrganization,
   useUserCoordinates,
@@ -44,10 +43,9 @@ const DetailText = styled(Typography)(({ theme }) => ({
   textAlign: "left",
 }));
 
-const StakeholderDetails = () => {
+const StakeholderDetails = ({ onBackClick }) => {
   const [SuggestionDialogOpen, setSuggestionDialogOpen] = useState(false);
   const selectedOrganization = useSelectedOrganization();
-  const dispatch = useAppDispatch();
   const searchCoordinates = useSearchCoordinates();
   const userCoordinates = useUserCoordinates();
   const originCoordinates = searchCoordinates || userCoordinates;
@@ -73,7 +71,7 @@ const StakeholderDetails = () => {
   };
 
   const handleBackButtonClick = () => {
-    dispatch({ type: "RESET_SELECTED_ORGANIZATION" });
+    onBackClick();
     navigate(isWidget ? "/widget" : "/organizations");
   };
 
@@ -202,7 +200,14 @@ const StakeholderDetails = () => {
         stakeholder={selectedOrganization}
         setToast={setToast}
       />
-      <Stack padding="0 1em 5em 1em" sx={{ width: "100%", overflowY: {xs: 'scroll', md: 'auto'}, paddingBottom: {xs:'300px', md: '0px'} }}>
+      <Stack
+        padding="1em"
+        sx={{
+          width: "100%",
+          overflowY: { xs: "scroll", md: "auto" },
+          paddingBottom: { xs: "300px", md: "0px" },
+        }}
+      >
         <Typography
           variant="h5"
           component="p"

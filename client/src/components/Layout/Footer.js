@@ -86,14 +86,14 @@ const Footer = () => {
           display: "flex",
           flexDirection: "column",
           marginLeft: "2em",
-          marginBottom: "10px",
           [theme.breakpoints.up("md")]: {
             flexDirection: "row",
             alignItems: "flex-start",
             gap: "4em",
           },
           [theme.breakpoints.down("md")]: {
-            height: "220px",
+            alignItems: "flex-end",
+            textAlign: "right",
           },
         })}
       >

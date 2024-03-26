@@ -5,7 +5,7 @@ const Copyright = () => (
     style={{
       fontSize: "16px",
       textTransform: "uppercase",
-      margin: ".4em 0 .4em 1.5em",
+      margin: ".4em 0 0 1.5em",
     }}
   >
     {`Copyright ©2020-${new Date().getFullYear()} -`}

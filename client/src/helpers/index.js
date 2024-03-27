@@ -119,24 +119,17 @@ export const formatDatewTimeZoneWeekdayShort = (ts, timeZone) => {
 };
 
 export const formatShortWeekdayToLong = (shortWeekday) => {
-  switch (shortWeekday) {
-    case "Mon":
-      return "Monday";
-    case "Tue":
-      return "Tuesday";
-    case "Wed":
-      return "Wednesday";
-    case "Thu":
-      return "Thursday";
-    case "Fri":
-      return "Friday";
-    case "Sat":
-      return "Saturday";
-    case "Sun":
-      return "Sunday";
-    default:
-      return null;
-  }
+  const weekdays = {
+    Mon: "Monday",
+    Tue: "Tuesday",
+    Wed: "Wednesday",
+    Thu: "Thursday",
+    Fri: "Friday",
+    Sat: "Saturday",
+    Sun: "Sunday",
+  };
+
+  return weekdays[shortWeekday] || null;
 };
 
 // e.g. returns "Apr"
@@ -261,24 +254,17 @@ export const getDayTimeNow = () => {
 };
 
 export const getDayOfWeekNum = (dayOfWeekString) => {
-  switch (dayOfWeekString.toLowerCase()) {
-    case "sun":
-      return 0;
-    case "mon":
-      return 1;
-    case "tue":
-      return 2;
-    case "wed":
-      return 3;
-    case "thu":
-      return 4;
-    case "fri":
-      return 5;
-    case "sat":
-      return 6;
-    default:
-      return null;
-  }
+  const weekdayNumbers = {
+    sun: 0,
+    mon: 1,
+    tue: 2,
+    wed: 3,
+    thu: 4,
+    fri: 5,
+    sat: 6,
+  };
+
+  return weekdayNumbers[dayOfWeekString.toLowerCase()] || null;
 };
 
 export const getLastWeekdayInMonth = (year, month, dayOfWeek) => {

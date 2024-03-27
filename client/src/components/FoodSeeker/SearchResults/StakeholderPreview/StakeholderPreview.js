@@ -410,45 +410,41 @@ const StakeholderPreview = ({ stakeholder, onSelect, isDesktop }) => {
                   {stakeholder.hours ? (
                     <Stack>
                       <Divider sx={{ margin: "8px 0px 4px" }} />
-                      {stakeholder.hours && stakeholder.hours.length > 0 ? (
-                        stakeholder.hours.sort(hoursSort).map((hour, index) => (
-                          <Stack
-                            direction="row"
-                            justifyContent="space-between"
-                            key={JSON.stringify(hour)}
-                            marginTop="4px"
-                            sx={{
-                              ".MuiTypography-root": {
-                                fontWeight:
-                                  index === 0 ||
-                                  isCurrentDayAndWeek(tenantTimeZone, hour)
-                                    ? "bold"
-                                    : "",
-                              },
-                            }}
-                          >
-                            <Typography>
-                              {hour.week_of_month === -1
-                                ? "Last " + hour.day_of_week
-                                : hour.week_of_month === 1
-                                ? "1st " + hour.day_of_week
-                                : hour.week_of_month === 2
-                                ? "2nd " + hour.day_of_week
-                                : hour.week_of_month === 3
-                                ? "3rd " + hour.day_of_week
-                                : hour.week_of_month === 4
-                                ? "4th " + hour.day_of_week
-                                : hour.day_of_week}
-                            </Typography>
-                            <Typography>
-                              {standardTime(hour.open)} -{" "}
-                              {standardTime(hour.close)}
-                            </Typography>
-                          </Stack>
-                        ))
-                      ) : (
-                        <Typography>No hours on record</Typography>
-                      )}
+                      {stakeholder.hours.sort(hoursSort).map((hour, index) => (
+                        <Stack
+                          direction="row"
+                          justifyContent="space-between"
+                          key={JSON.stringify(hour)}
+                          marginTop="4px"
+                          sx={{
+                            ".MuiTypography-root": {
+                              fontWeight:
+                                index === 0 ||
+                                isCurrentDayAndWeek(tenantTimeZone, hour)
+                                  ? "bold"
+                                  : "",
+                            },
+                          }}
+                        >
+                          <Typography>
+                            {hour.week_of_month === -1
+                              ? "Last " + hour.day_of_week
+                              : hour.week_of_month === 1
+                              ? "1st " + hour.day_of_week
+                              : hour.week_of_month === 2
+                              ? "2nd " + hour.day_of_week
+                              : hour.week_of_month === 3
+                              ? "3rd " + hour.day_of_week
+                              : hour.week_of_month === 4
+                              ? "4th " + hour.day_of_week
+                              : hour.day_of_week}
+                          </Typography>
+                          <Typography>
+                            {standardTime(hour.open)} -{" "}
+                            {standardTime(hour.close)}
+                          </Typography>
+                        </Stack>
+                      ))}
                     </Stack>
                   ) : null}
                 </AccordionDetails>

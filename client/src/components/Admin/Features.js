@@ -174,13 +174,13 @@ const Features = () => {
           <CircularProgress />
         </Box>
       ) : (
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} elevation={3}>
           <Table aria-label="collapsible table">
             <TableHead>
               <TableRow>
                 <TableCell />
-                <TableCell> Feature ID </TableCell>
-                <TableCell>Feature Name</TableCell>
+                <TableCell align="left"> Feature ID </TableCell>
+                <TableCell align="left">Feature Name</TableCell>
                 <TableCell />
               </TableRow>
             </TableHead>
@@ -190,7 +190,11 @@ const Features = () => {
                   <TableRow
                     onClick={() => handleRowClick(row.name)}
                     sx={{
-                      "& > *": { borderBottom: "unset", cursor: "pointer" },
+                      "& > *": {
+                        borderBottom: "unset",
+                        cursor: "pointer",
+                        backgroundColor: "#efefef",
+                      },
                     }}
                     hover
                   >
@@ -209,6 +213,7 @@ const Features = () => {
                     </TableCell>
 
                     <TableCell
+                      align="left"
                       component="th"
                       scope="row"
                       sx={{ justifyContent: "space-between" }}
@@ -216,13 +221,14 @@ const Features = () => {
                       {row.featureId}
                     </TableCell>
                     <TableCell
+                      align="left"
                       component="th"
                       scope="row"
                       sx={{ justifyContent: "space-between" }}
                     >
                       {row.name}
                     </TableCell>
-                    <TableCell>
+                    <TableCell align="right">
                       <IconButton
                         color="error"
                         aria-label="delete-user"
@@ -244,6 +250,7 @@ const Features = () => {
                   </TableRow>
                   <TableRow>
                     <TableCell
+                      align="right"
                       style={{ paddingBottom: 0, paddingTop: 0 }}
                       colSpan={6}
                     >
@@ -276,22 +283,32 @@ const Features = () => {
                           <Table size="small" aria-label="purchases">
                             <TableHead>
                               <TableRow>
-                                <TableCell>Login ID</TableCell>
-                                <TableCell>First Name</TableCell>
-                                <TableCell>Last Name</TableCell>
-                                <TableCell>Email</TableCell>
+                                <TableCell align="left">Login ID</TableCell>
+                                <TableCell align="left">First Name</TableCell>
+                                <TableCell align="left">Last Name</TableCell>
+                                <TableCell align="left">Email</TableCell>
                               </TableRow>
                             </TableHead>
                             <TableBody>
                               {row.history.map((historyRow) => (
                                 <TableRow key={historyRow.loginId}>
-                                  <TableCell component="th" scope="row">
+                                  <TableCell
+                                    align="left"
+                                    component="th"
+                                    scope="row"
+                                  >
                                     {historyRow.loginId}
                                   </TableCell>
-                                  <TableCell>{historyRow.firstName}</TableCell>
-                                  <TableCell>{historyRow.lastName}</TableCell>
-                                  <TableCell>{historyRow.email}</TableCell>
-                                  <TableCell>
+                                  <TableCell align="left">
+                                    {historyRow.firstName}
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    {historyRow.lastName}
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    {historyRow.email}
+                                  </TableCell>
+                                  <TableCell align="right">
                                     {row.history.length > 0 && (
                                       <IconButton
                                         color="error"
@@ -331,8 +348,11 @@ const Features = () => {
 
       <Dialog open={featureModalOpen} onClose={handleModalClose}>
         <Box sx={{ width: 400, p: 2 }}>
-          <Typography variant="h6" component="h2" sx={{ p: 2 }}>
+          <Typography variant="h6" component="h2" sx={{ py: 2 }}>
             Add a new feature
+          </Typography>
+          <Typography variant="caption">
+            Feature names are usually camel-cased
           </Typography>
           <form onSubmit={featureFormik.handleSubmit}>
             <Box>
@@ -373,7 +393,7 @@ const Features = () => {
         aria-describedby="add-user-modal-description"
       >
         <Box sx={{ width: 400, p: 2 }}>
-          <Typography variant="h6" component="h2" sx={{ p: 2 }}>
+          <Typography variant="h6" component="h2" sx={{ py: 2 }}>
             Add a user to {selectedFeatureName}
           </Typography>
           <form onSubmit={userFormik.handleSubmit}>

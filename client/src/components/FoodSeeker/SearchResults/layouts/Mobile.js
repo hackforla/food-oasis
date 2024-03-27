@@ -26,7 +26,7 @@ const MobileLayout = ({ filters, map, list, showList }) => {
     } else {
       setPosition({
         x: 0,
-        y: 0,
+        y: 30,
       });
     }
   }, [showList]);
@@ -40,7 +40,7 @@ const MobileLayout = ({ filters, map, list, showList }) => {
     } else {
       setPosition({
         x: 0,
-        y: 0,
+        y: 30,
       });
     }
   }, [filterPanelOpen]);
@@ -62,12 +62,20 @@ const MobileLayout = ({ filters, map, list, showList }) => {
         }}
       >
         <Box sx={{ flex: 1 }}>{map}</Box>
+        <Grid 
+          sx={{
+            position: "absolute",
+          }}
+          xs={12}
+        >
+          <AttributionInfo />
+        </Grid>
         {list && (
           <Draggable
             position={position}
             onStop={(e, ui) => {
               if(ui.y < 20 * (window.innerHeight / 100)){
-                setPosition({ x: 0, y:  3});
+                setPosition({ x: 0, y:  30});
               }
               if(ui.y > 20 * (window.innerHeight / 100) && ui.y < 40 * (window.innerHeight / 100)){
                 setPosition({ x: 0, y:  25 * (window.innerHeight / 100)});
@@ -148,9 +156,6 @@ const MobileLayout = ({ filters, map, list, showList }) => {
                       </svg>
                     </a>
                   </div>
-                </Grid>
-                <Grid xs={6}>
-                  <AttributionInfo />
                 </Grid>
               </Grid>
               <Box

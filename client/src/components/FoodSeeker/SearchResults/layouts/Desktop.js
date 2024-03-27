@@ -40,7 +40,6 @@ const DesktopLayout = ({ filters, list, map }) => {
         easing: theme.transitions.easing.easeOut,
         duration: theme.transitions.duration.enteringScreen,
       }),
-      marginLeft: "340px",
     }),
   }));
 
@@ -64,6 +63,8 @@ const DesktopLayout = ({ filters, list, map }) => {
       padding: "10px",
     },
   }));
+
+  let leftPostion = isFilterPanelOpen ? "340px" : 0;
   return (
     <>
       {filters}
@@ -74,23 +75,22 @@ const DesktopLayout = ({ filters, list, map }) => {
           display: "flex",
         }}
       >
-        <FilterPanelPlaceholder
-          isFilterPanelOpen={isFilterPanelOpen}
-        ></FilterPanelPlaceholder>
-
         <Stack
           direction="row"
           sx={{
             position: "absolute",
             width: "524px",
             transition: "left .5s ease-in-out",
-            left: isListPanelOpen ? 0 : "-524px",
+            left: isListPanelOpen ? leftPostion : "-524px",
             top: "120px",
             height: "100%",
             zIndex: "1",
             background: "white",
           }}
         >
+          <FilterPanelPlaceholder
+            isFilterPanelOpen={isFilterPanelOpen}
+          ></FilterPanelPlaceholder>
           <Box
             sx={{
               width: "100%",

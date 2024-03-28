@@ -58,8 +58,8 @@ const selectAll = async ({ tenantId }: { tenantId: string }) => {
   s.allow_walkins, s.hours_notes, s.tags
   FROM stakeholder_best s
   LEFT JOIN neighborhood n on s.neighborhood_id = n.id
-  WHERE 1 = ANY(s.category_ids)
-  OR 9 = ANY(s.category_ids)
+  WHERE (1 = ANY(s.category_ids)
+  OR 9 = ANY(s.category_ids))
   AND s.tenant_id = ${tenantId}
   `;
 

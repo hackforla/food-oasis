@@ -118,6 +118,20 @@ export const formatDatewTimeZoneWeekdayShort = (ts, timeZone) => {
   });
 };
 
+export const formatShortWeekdayToLong = (shortWeekday) => {
+  const weekdays = {
+    Mon: "Monday",
+    Tue: "Tuesday",
+    Wed: "Wednesday",
+    Thu: "Thursday",
+    Fri: "Friday",
+    Sat: "Saturday",
+    Sun: "Sunday",
+  };
+
+  return weekdays[shortWeekday] || null;
+};
+
 // e.g. returns "Apr"
 export const formatDatewTimeZoneMMM = (ts, timeZone) => {
   if (!ts || !timeZone) {
@@ -237,4 +251,218 @@ export const getDayTimeNow = () => {
   const timeTime = now.format("hh:mmA");
 
   return [dayNow, timeTime];
+};
+
+export const getDayOfWeekNum = (dayOfWeekString) => {
+  const weekdayNumbers = {
+    sun: 0,
+    mon: 1,
+    tue: 2,
+    wed: 3,
+    thu: 4,
+    fri: 5,
+    sat: 6,
+  };
+
+  return weekdayNumbers[dayOfWeekString.toLowerCase()] || null;
+};
+
+export const getLastWeekdayInMonth = (year, month, dayOfWeek) => {
+  let date = new Date(year, month + 1, 0, 12);
+  date.setDate(date.getDate() - ((date.getDay() + 7 - dayOfWeek) % 7));
+  return date.toLocaleDateString("en-US", { month: "long", day: "numeric" });
+};
+
+export const getNthWeekdayInMonth = (day_of_week, week_of_month, date) => {
+  const weekday = getDayOfWeekNum(day_of_week);
+
+  if (week_of_month === -1) {
+    return getLastWeekdayInMonth(date.getFullYear(), date.getMonth(), weekday);
+  }
+
+  let nDate = new Date(date.getFullYear(), date.getMonth(), 1);
+  let add = ((weekday - nDate.getDay() + 7) % 7) + (week_of_month - 1) * 7;
+
+  nDate.setDate(1 + add);
+
+  return nDate;
+};
+
+export const getCurrentWeekOfMonth = () => {
+  const todaysDate = new Date();
+  const date = todaysDate.getDate();
+  const day = todaysDate.getDay();
+  const weekOfMonth = Math.ceil((date - 1 - day) / 7);
+
+  return weekOfMonth;
+};
+
+export const isLastWeekOfMonth = () => {
+  const todaysDate = new Date();
+  const currentMonth = todaysDate.getMonth();
+  const nextMonth = new Date(todaysDate);
+  nextMonth.setMonth(currentMonth + 1);
+  nextMonth.setDate(0);
+
+  const lastWeekStartDate = nextMonth.getDate() - 6;
+  const currentDate = todaysDate.getDate();
+
+  if (currentDate >= lastWeekStartDate) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+const addMonths = (date, months) => {
+  var d = date.getDate();
+  date.setMonth(date.getMonth() + months);
+  if (date.getDate() !== d) {
+    date.setDate(0);
+  }
+  return date;
+};
+
+export const isCurrentDayAndWeek = (timeZone, hour) => {
+  const currentDate = new Date();
+  const currentDayOfWeek = formatDatewTimeZoneWeekdayShort(
+    currentDate,
+    timeZone
+  );
+
+  if (hour.day_of_week === currentDayOfWeek) {
+    if (
+      hour.week_of_month === 0 ||
+      (hour.week_of_month > 0 && hour.week_of_month === getCurrentWeekOfMonth())
+    )
+      return true;
+    if ((hour.week_of_month === -1) & isLastWeekOfMonth()) return true;
+  }
+  return false;
+};
+
+const dayOfWeek = (dayOfWeekString) => {
+  const currentDate = new Date();
+  const currentDay = currentDate.getDay();
+  const order = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+  const firstHalf = order.slice(0, currentDay);
+  const secondHalf = order.slice(currentDay, order.length);
+  const newOrder = secondHalf.concat(firstHalf);
+
+  return newOrder.indexOf(dayOfWeekString.toLowerCase());
+};
+
+export const standardTime = (timeStr) => {
+  if (timeStr) {
+    if (parseInt(timeStr.substring(0, 2)) === 12) {
+      return `12${timeStr.substring(2, 5)} pm`;
+    }
+    if (parseInt(timeStr.substring(0, 2)) === 0) {
+      return `12${timeStr.substring(2, 5)} am`;
+    }
+    return parseInt(timeStr.substring(0, 2)) > 12
+      ? `${parseInt(timeStr.substring(0, 2)) - 12}${timeStr.substring(2, 5)} pm`
+      : `${parseInt(timeStr.substring(0, 5))}${timeStr.substring(2, 5)} am`;
+  }
+};
+
+//will refactor in stakeholderdetails redesign ticket
+export const hoursSort = (hourOne, hourTwo) => {
+  if (hourOne.week_of_month !== hourTwo.week_of_month) {
+    const currentWeek = getCurrentWeekOfMonth();
+    const isLastWeek = isLastWeekOfMonth();
+    let hourOneWeekOfMonth = hourOne.week_of_month;
+    let hourTwoWeekOfMonth = hourTwo.week_of_month;
+
+    let hourOneIsCurrent =
+      hourOneWeekOfMonth === 0 ||
+      hourOneWeekOfMonth === currentWeek ||
+      (hourOneWeekOfMonth === -1 && isLastWeek);
+    let hourTwoIsCurrent =
+      hourTwoWeekOfMonth === 0 ||
+      hourTwoWeekOfMonth === currentWeek ||
+      (hourTwoWeekOfMonth === -1 && isLastWeek);
+
+    if (hourOneIsCurrent && !hourTwoIsCurrent) return -1;
+    if (hourTwoIsCurrent && !hourOneIsCurrent) return 1;
+
+    if (!hourOneIsCurrent && !hourTwoIsCurrent) {
+      hourOneWeekOfMonth = hourOneWeekOfMonth === -1 ? 5 : hourOneWeekOfMonth;
+      hourTwoWeekOfMonth = hourTwoWeekOfMonth === -1 ? 5 : hourTwoWeekOfMonth;
+
+      if (
+        (hourOneWeekOfMonth < currentWeek &&
+          hourTwoWeekOfMonth < currentWeek) ||
+        (hourOneWeekOfMonth > currentWeek && hourTwoWeekOfMonth > currentWeek)
+      ) {
+        return hourOneWeekOfMonth - hourTwoWeekOfMonth;
+      } else if (
+        hourOneWeekOfMonth < currentWeek &&
+        hourTwoWeekOfMonth > currentWeek
+      ) {
+        return 1;
+      } else {
+        return -1;
+      }
+    }
+  }
+
+  const hourOneDayOfWeek = dayOfWeek(hourOne.day_of_week);
+  const hourTwoDayOfWeek = dayOfWeek(hourTwo.day_of_week);
+  if (hourOneDayOfWeek !== hourTwoDayOfWeek) {
+    return hourOneDayOfWeek < hourTwoDayOfWeek ? -1 : 1;
+  }
+  return hourOne.open < hourTwo.open ? -1 : 1;
+};
+
+export const nextOpenTime = (sortedHours, timeZone) => {
+  const currentDate = new Date();
+  const currentDayOfWeek = formatDatewTimeZoneWeekdayShort(
+    currentDate,
+    timeZone
+  );
+  const currentTime = formatDatewTimeZonehhmmss(currentDate, timeZone);
+
+  for (let i = 0; i < sortedHours.length; i++) {
+    if (sortedHours[i].week_of_month > 0) {
+      if (getCurrentWeekOfMonth() !== sortedHours[i].week_of_month) {
+        continue;
+      }
+    }
+
+    if (sortedHours[i].week_of_month === -1 && !isLastWeekOfMonth()) {
+      continue;
+    }
+
+    if (currentDayOfWeek !== sortedHours[i].day_of_week) {
+      return formatShortWeekdayToLong(sortedHours[i].day_of_week);
+    }
+
+    if (currentTime < sortedHours[i].close) {
+      return `${standardTime(sortedHours[i].open)} - ${standardTime(
+        sortedHours[i].close
+      )}`;
+    }
+  }
+  if (sortedHours[0].day_of_week === currentDayOfWeek) {
+    return formatShortWeekdayToLong(sortedHours[0].day_of_week);
+  }
+
+  let nextDate = getNthWeekdayInMonth(
+    sortedHours[0].day_of_week,
+    sortedHours[0].week_of_month,
+    currentDate
+  );
+
+  if (currentDate < nextDate) {
+    return nextDate.toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+    });
+  }
+
+  return addMonths(nextDate, 1).toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+  });
 };

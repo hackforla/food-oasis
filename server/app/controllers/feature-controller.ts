@@ -29,8 +29,24 @@ const post: RequestHandler<
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
+const remove: RequestHandler<
+  { id: string },
+  Response | { error: string } | { message: string },
+  never
+> = async (req, res) => {
+  try {
+    const rowCount = await featureService.remove(req.params.id);
+    if (!rowCount) {
+      return res.status(400).json({ error: "Record not found" });
+    }
+    res.sendStatus(204);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
 export default {
   post,
   getAll,
+  remove
 };

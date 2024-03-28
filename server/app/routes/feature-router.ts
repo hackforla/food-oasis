@@ -13,5 +13,10 @@ router.post(
   requestValidationMiddleware(FeaturePostRequestSchema),
   featureController.post
 );
+router.delete(
+  "/:id",
+  jwtSession.validateUserHasRequiredRoles(["admin"]),
+  featureController.remove
+);
 
 export default router;

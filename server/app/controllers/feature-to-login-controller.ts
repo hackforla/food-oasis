@@ -18,7 +18,9 @@ const getLoginsByFeature: RequestHandler<
 
 const post: RequestHandler<
   never,
-  { id: number } | { error: string } | { message: string },
+  | { ftl_id: number; feature_id: number; login_id: number }
+  | { error: string }
+  | { message: string },
   FeatureToLogin
 > = async (req, res) => {
   try {

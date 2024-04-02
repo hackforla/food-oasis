@@ -466,3 +466,41 @@ export const nextOpenTime = (sortedHours, timeZone) => {
     day: "numeric",
   });
 };
+
+const calculateTimeDifference = (time1, time2) => {
+  const date1 = new Date(`1970-01-01T${time1}Z`);
+  const date2 = new Date(`1970-01-01T${time2}Z`);
+
+  const differenceInMilliseconds = date1.getTime() - date2.getTime();
+
+  const differenceInMinutes = Math.round(
+    differenceInMilliseconds / (1000 * 60)
+  );
+
+  return differenceInMinutes;
+};
+
+export const calculateMinutesToClosing = (hours, tenantTimeZone) => {
+  const currentTime = formatDatewTimeZonehhmmss(new Date(), tenantTimeZone);
+  return calculateTimeDifference(hours[0].close, currentTime);
+};
+export const calculateMinutesToOpening = (hours, tenantTimeZone) => {
+  if (!hours) {
+    return;
+  }
+  const currentTime = formatDatewTimeZonehhmmss(new Date(), tenantTimeZone);
+
+  return calculateTimeDifference(currentTime, hours[0].open);
+};
+
+export const isAlmostClosed = (hours, tenantTimeZone) => {
+  const minutesToCloseFlag = 60;
+  const minutesToClosing = calculateMinutesToClosing(hours, tenantTimeZone);
+  return minutesToClosing <= minutesToCloseFlag;
+};
+
+export const isAlmostOpen = (hours, tenantTimeZone) => {
+  const minutesToOpenFlag = 60;
+  const minutesToOpening = calculateMinutesToOpening(hours, tenantTimeZone);
+  return minutesToOpening <= minutesToOpenFlag;
+};

@@ -204,21 +204,21 @@ const ResultsMap = (
           </Source>
         )}
       </Map>
-      {!loading && hasAdvancedFilterFeatureFlag && isMobile && (
+      {!loading && hasAdvancedFilterFeatureFlag && (
         <Grid
-          container
-          wrap="nowrap"
+          container={isMobile}
+          className={!isMobile ? "advanced-filters-class" : ""}
+          wrap={isMobile ? "nowrap" : undefined}
           position="absolute"
           display="inline-flex"
           alignItems="flex-start"
           sx={{
             overflow: "auto",
             gap: "0.5rem",
-            padding: "0 0 0.3rem 0.75rem",
+            padding: isMobile ? "0 0 0.3rem 0.75rem" : "0 0 0.3rem 2.25rem",
             scrollbarWidth: "none",
-            position: "absolute",
             top: 0,
-            left: 0,
+            left: isMobile ? 0 : isListPanelOpen ? "524px" : 0,
           }}
         >
           <AdvancedFilters

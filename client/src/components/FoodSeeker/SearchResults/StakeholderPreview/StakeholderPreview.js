@@ -199,7 +199,7 @@ const StakeholderPreview = ({ stakeholder, onSelect, isDesktop }) => {
         "&:hover": {
           boxShadow: isDesktop ? "0 4px 20px rgb(0 22 100 / 20%)" : 0,
         },
-        borderRadius: 2,
+        borderRadius: "10px",
       }}
     >
       <Grid2

@@ -218,6 +218,7 @@ const ResultsMap = (
             scrollbarWidth: "none",
             top: 0,
             left: isMobile ? 0 : isListPanelOpen ? "524px" : 0,
+            transition: isMobile ? undefined : "left .5s ease-in-out",
           }}
         >
           <AdvancedFilters

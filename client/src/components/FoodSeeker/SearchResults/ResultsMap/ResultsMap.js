@@ -207,7 +207,6 @@ const ResultsMap = (
       {!loading && hasAdvancedFilterFeatureFlag && (
         <Grid
           container={isMobile}
-          className={!isMobile ? "advanced-filters-class" : ""}
           wrap={isMobile ? "nowrap" : undefined}
           position="absolute"
           display="inline-flex"

@@ -196,8 +196,10 @@ const StakeholderPreview = ({ stakeholder, onSelect, isDesktop }) => {
         minHeight: "6rem",
         padding: isDesktop ? "1.5rem 2.625rem" : "1.5rem 0",
         margin: "14px 23px",
-        "&:hover": { boxShadow: isDesktop ? 3 : 0 },
-        borderRadius: 2,
+        "&:hover": {
+          boxShadow: isDesktop ? "0 4px 20px rgb(0 22 100 / 20%)" : 0,
+        },
+        borderRadius: "10px",
       }}
     >
       <Grid2

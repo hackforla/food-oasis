@@ -30,6 +30,7 @@ import {
   useSelectedOrganization,
   useUserCoordinates,
   useListPanel,
+  useFilterPanel,
 } from "../../../../appReducer";
 import AdvancedFilters from "../AdvancedFilters/AdvancedFilters";
 import {
@@ -54,6 +55,7 @@ const ResultsMap = (
   const location = useLocation();
   const { isMobile } = useBreakpoints();
   const isListPanelOpen = useListPanel();
+  const isFilterPanelOpen = useFilterPanel();
 
   const longitude =
     searchCoordinates?.longitude ||
@@ -161,6 +163,10 @@ const ResultsMap = (
     }),
     [isMobile, isListPanelOpen]
   );
+
+  const listPanelLeftPostion = isListPanelOpen ? 524 : 0;
+  const filterPanelLeftPostion = isFilterPanelOpen ? 340 : 0;
+
   return (
     <div style={{ position: "relative", height: "100%" }}>
       <Map
@@ -217,7 +223,9 @@ const ResultsMap = (
             padding: isMobile ? "0 0 0.3rem 0.75rem" : "0 0 0.3rem 2.25rem",
             scrollbarWidth: "none",
             top: 0,
-            left: isMobile ? 0 : isListPanelOpen ? "524px" : 0,
+            left: isMobile
+              ? 0
+              : `${listPanelLeftPostion + filterPanelLeftPostion}px`,
             transition: isMobile ? undefined : "left .5s ease-in-out",
           }}
         >

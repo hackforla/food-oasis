@@ -79,7 +79,6 @@ const DesktopLayout = ({ filters, list, map }) => {
                 position: "absolute",
                 right: "-33px",
                 top: "50%",
-                zIndex: 9990,
                 transform: "translateY(-50%)",
               }}
               onClick={toggleDrawer}

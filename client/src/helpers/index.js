@@ -366,29 +366,34 @@ export const standardTime = (timeStr) => {
   }
 };
 
-//will refactor in stakeholderdetails redesign ticket
 export const hoursSort = (hourOne, hourTwo) => {
-  if (hourOne.week_of_month !== hourTwo.week_of_month) {
+  let hourOneWeekOfMonth = hourOne.week_of_month;
+  let hourTwoWeekOfMonth = hourTwo.week_of_month;
+
+  if (hourOneWeekOfMonth !== hourTwoWeekOfMonth) {
     const currentWeek = getCurrentWeekOfMonth();
     const isLastWeek = isLastWeekOfMonth();
-    let hourOneWeekOfMonth = hourOne.week_of_month;
-    let hourTwoWeekOfMonth = hourTwo.week_of_month;
 
-    let hourOneIsCurrent =
-      hourOneWeekOfMonth === 0 ||
-      hourOneWeekOfMonth === currentWeek ||
-      (hourOneWeekOfMonth === -1 && isLastWeek);
-    let hourTwoIsCurrent =
-      hourTwoWeekOfMonth === 0 ||
-      hourTwoWeekOfMonth === currentWeek ||
-      (hourTwoWeekOfMonth === -1 && isLastWeek);
+    const isCurrentWeek = (weekOfMonth) => {
+      return (
+        weekOfMonth === 0 ||
+        weekOfMonth === currentWeek ||
+        (weekOfMonth === -1 && isLastWeek)
+      );
+    };
 
-    if (hourOneIsCurrent && !hourTwoIsCurrent) return -1;
-    if (hourTwoIsCurrent && !hourOneIsCurrent) return 1;
+    let hourOneIsCurrentWeek = isCurrentWeek(hourOneWeekOfMonth);
+    let hourTwoIsCurrentWeek = isCurrentWeek(hourTwoWeekOfMonth);
 
-    if (!hourOneIsCurrent && !hourTwoIsCurrent) {
-      hourOneWeekOfMonth = hourOneWeekOfMonth === -1 ? 5 : hourOneWeekOfMonth;
-      hourTwoWeekOfMonth = hourTwoWeekOfMonth === -1 ? 5 : hourTwoWeekOfMonth;
+    if (hourOneIsCurrentWeek !== hourTwoIsCurrentWeek) {
+      return hourOneIsCurrentWeek ? -1 : 1;
+    }
+
+    if (!hourOneIsCurrentWeek && !hourTwoIsCurrentWeek) {
+      const normalizeWeekOfMonth = (week) => (week === -1 ? 5 : week);
+
+      hourOneWeekOfMonth = normalizeWeekOfMonth(hourOneWeekOfMonth);
+      hourTwoWeekOfMonth = normalizeWeekOfMonth(hourTwoWeekOfMonth);
 
       if (
         (hourOneWeekOfMonth < currentWeek &&
@@ -409,6 +414,7 @@ export const hoursSort = (hourOne, hourTwo) => {
 
   const hourOneDayOfWeek = dayOfWeek(hourOne.day_of_week);
   const hourTwoDayOfWeek = dayOfWeek(hourTwo.day_of_week);
+
   if (hourOneDayOfWeek !== hourTwoDayOfWeek) {
     return hourOneDayOfWeek < hourTwoDayOfWeek ? -1 : 1;
   }

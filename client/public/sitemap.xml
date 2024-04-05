@@ -19,9 +19,9 @@
       <loc>https://foodoasis.la/suggestion</loc>
    </url>
    <url>
-      <loc>https://foodoasis.la/login</loc>
+      <loc>https://foodoasis.la/admin/login</loc>
    </url>
    <url>
-      <loc>https://foodoasis.la/register</loc>
+      <loc>https://foodoasis.la/admin/register</loc>
    </url>
 </urlset>

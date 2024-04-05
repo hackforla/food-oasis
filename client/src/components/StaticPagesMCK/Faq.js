@@ -200,7 +200,11 @@ const About = () => {
               How do I set up an account to start my assignment?
             </Typography>
             <Typography variant="body1" component="dd">
-              <Link variant="primary" to={"/register"} component={RouterLink}>
+              <Link
+                variant="primary"
+                to={"/admin/register"}
+                component={RouterLink}
+              >
                 Attend a training session
               </Link>
               , and look out for a confirmation email from{" "}

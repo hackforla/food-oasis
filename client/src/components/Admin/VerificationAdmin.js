@@ -183,7 +183,7 @@ function VerificationAdmin() {
       // to be logged in, will redirect to login page.
       // Otherwise it's a real exception.
       if (err.response && err.response.status === 401) {
-        navigate("/login", { state: { from: location } });
+        navigate("/admin/login", { state: { from: location } });
       } else {
         console.error(err);
         return Promise.reject(err.message);
@@ -209,7 +209,7 @@ function VerificationAdmin() {
       // to be logged in, will redirect to login page.
       // Otherwise it's a real exception.
       if (err.response && err.response.status === 401) {
-        navigate("/login", { state: { from: location } });
+        navigate("/admin/login", { state: { from: location } });
       } else {
         console.error(err);
         return Promise.reject(err.message);
@@ -241,7 +241,7 @@ function VerificationAdmin() {
       // to be logged in, will redirect to login page.
       // Otherwise it's a real exception.
       if (err.response && err.response.status === 401) {
-        navigate("/login", { state: { from: location } });
+        navigate("/admin/login", { state: { from: location } });
       } else {
         console.error(err);
         return Promise.reject(err.message);

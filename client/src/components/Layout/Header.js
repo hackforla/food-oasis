@@ -98,7 +98,7 @@ export default function Header() {
                 })}
                 align="right"
               >
-                <Link to={`/profile/${user.id}`}>
+                <Link to={`/admin/profile/${user.id}`}>
                   {user.firstName} {user.lastName}
                 </Link>
               </Typography>

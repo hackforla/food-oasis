@@ -90,7 +90,9 @@ function Suggestions() {
   useEffect(() => {
     if (status === 401) {
       return (
-        <Navigate to={{ pathname: "/login", state: { from: location } }} />
+        <Navigate
+          to={{ pathname: "/admin/login", state: { from: location } }}
+        />
       );
     }
   });

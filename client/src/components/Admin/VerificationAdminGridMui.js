@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { VERIFICATION_STATUS_NAMES } from "../../constants/stakeholder";
 
 const linkFormatter = ({ value, row }) => {
-  return <Link to={`/organizationedit/${row.id}`}>{value}</Link>;
+  return <Link to={`/admin/organizationedit/${row.id}`}>{value}</Link>;
 };
 
 const inactiveFormatter =
@@ -359,7 +359,7 @@ export default function VerificationAdminGridMui(props) {
   return (
     <Box
       sx={{
-        height: "100%",
+        height: "80vh",
         width: "100%",
         "& .suggestionCount-highlight.count": {
           backgroundColor: "rgb(255, 185, 185)",

@@ -582,7 +582,7 @@ const OrganizationEdit = (props) => {
                                 "verificationStatusId",
                                 VERIFICATION_STATUS.NEEDS_VERIFICATION
                               );
-                              setNextUrl("/verificationadmin");
+                              setNextUrl("/admin/verificationadmin");
                               handleSubmit();
                             }}
                             disabled={
@@ -616,7 +616,7 @@ const OrganizationEdit = (props) => {
                                     "verificationStatusId",
                                     VERIFICATION_STATUS.ASSIGNED
                                   );
-                                  setNextUrl("/verificationadmin");
+                                  setNextUrl("/admin/verificationadmin");
                                   handleSubmit();
                                 },
                               });
@@ -657,7 +657,7 @@ const OrganizationEdit = (props) => {
                                 VERIFICATION_STATUS.ASSIGNED
                               );
 
-                              setNextUrl("/verificationadmin");
+                              setNextUrl("/admin/verificationadmin");
                               handleSubmit();
                             }}
                             disabled={
@@ -690,7 +690,7 @@ const OrganizationEdit = (props) => {
                                 "verificationStatusId",
                                 VERIFICATION_STATUS.VERIFIED
                               );
-                              setNextUrl("/verificationadmin");
+                              setNextUrl("/admin/verificationadmin");
                               handleSubmit();
                             }}
                             disabled={
@@ -716,7 +716,7 @@ const OrganizationEdit = (props) => {
                               handleConfirmDialogOpen({
                                 callback: () => {
                                   stakeholderService.remove(values.id);
-                                  setNextUrl("/verificationadmin");
+                                  setNextUrl("/admin/verificationadmin");
                                   handleSubmit();
                                 },
                               });
@@ -767,7 +767,7 @@ const OrganizationEdit = (props) => {
                                 "verificationStatusId",
                                 VERIFICATION_STATUS.NEEDS_VERIFICATION
                               );
-                              setNextUrl("/verificationdashboard");
+                              setNextUrl("/admin/verificationdashboard");
                               handleSubmit();
                             }}
                             disabled={
@@ -800,7 +800,7 @@ const OrganizationEdit = (props) => {
                                 "verificationStatusId",
                                 VERIFICATION_STATUS.SUBMITTED
                               );
-                              setNextUrl("/verificationdashboard");
+                              setNextUrl("/admin/verificationdashboard");
                               handleSubmit();
                             }}
                             disabled={

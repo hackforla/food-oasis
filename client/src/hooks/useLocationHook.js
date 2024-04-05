@@ -6,11 +6,11 @@ export default function useLocationHook() {
   const [isAuthPage, setIsAuthPage] = useState(false);
   const location = useLocation();
   const AUTHROUTES = [
-    "/login",
-    "/login/:email",
-    "/register",
-    "/forgotpassword",
-    "/forgotpassword/:email",
+    "/admin/login",
+    "/admin/login/:email",
+    "/admin/register",
+    "/admin/forgotpassword",
+    "/admin/forgotpassword/:email",
   ];
 
   const match = AUTHROUTES.some((path) =>

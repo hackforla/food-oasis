@@ -20,17 +20,18 @@ import { defaultViewport } from "helpers/Configuration";
 import useBreakpoints from "hooks/useBreakpoints";
 import useFeatureFlag from "hooks/useFeatureFlag";
 import "mapbox-gl/dist/mapbox-gl.css";
+import Map, { Layer, Marker, NavigationControl, Source } from "react-map-gl";
 import { useLocation, useNavigate } from "react-router-dom";
 import * as analytics from "services/analytics";
 import {
   DEFAULT_COORDINATES,
   useAppDispatch,
+  useFilterPanel,
+  useListPanel,
   useNeighborhood,
   useSearchCoordinates,
   useSelectedOrganization,
   useUserCoordinates,
-  useListPanel,
-  useFilterPanel,
 } from "../../../../appReducer";
 import AdvancedFilters from "../AdvancedFilters/AdvancedFilters";
 import {
@@ -40,7 +41,6 @@ import {
   useMarkersGeojson,
 } from "./MarkerHelpers";
 import { regionBorderStyle, regionFillStyle } from "./RegionHelpers";
-import Map, { Marker, Source, Layer, NavigationControl } from "react-map-gl";
 
 const ResultsMap = (
   { stakeholders, categoryIds, toggleCategory, loading },
@@ -166,7 +166,7 @@ const ResultsMap = (
 
   const listPanelLeftPostion = isListPanelOpen ? 524 : 0;
   const filterPanelLeftPostion = isFilterPanelOpen ? 340 : 0;
-
+  
   return (
     <div style={{ position: "relative", height: "100%" }}>
       <Map

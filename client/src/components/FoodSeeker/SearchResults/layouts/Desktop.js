@@ -12,22 +12,6 @@ const DesktopLayout = ({ filters, list, map }) => {
   const isListPanelOpen = useListPanel();
   const dispatch = useAppDispatch();
 
-  const FilterPanelPlaceholder = styled("div", {
-    shouldForwardProp: (prop) => prop !== "isFilterPanelOpen",
-  })(({ theme, isFilterPanelOpen }) => ({
-    transition: theme.transitions.create("margin", {
-      easing: theme.transitions.easing.easeIn,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-
-    ...(isFilterPanelOpen && {
-      transition: theme.transitions.create("margin", {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-    }),
-  }));
-
   const toggleDrawer = (event) => {
     if (
       event.type === "keydown" &&
@@ -73,9 +57,8 @@ const DesktopLayout = ({ filters, list, map }) => {
             background: "white",
           }}
         >
-          <FilterPanelPlaceholder
-            isFilterPanelOpen={isFilterPanelOpen}
-          ></FilterPanelPlaceholder>
+          <div isFilterPanelOpen={isFilterPanelOpen}></div>
+
           <Box
             sx={{
               width: "100%",

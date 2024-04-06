@@ -57,8 +57,6 @@ const DesktopLayout = ({ filters, list, map }) => {
             background: "white",
           }}
         >
-          <div isFilterPanelOpen={isFilterPanelOpen}></div>
-
           <Box
             sx={{
               width: "100%",

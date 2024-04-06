@@ -20,16 +20,18 @@ import { defaultViewport } from "helpers/Configuration";
 import useBreakpoints from "hooks/useBreakpoints";
 import useFeatureFlag from "hooks/useFeatureFlag";
 import "mapbox-gl/dist/mapbox-gl.css";
+import Map, { Layer, Marker, NavigationControl, Source } from "react-map-gl";
 import { useLocation, useNavigate } from "react-router-dom";
 import * as analytics from "services/analytics";
 import {
   DEFAULT_COORDINATES,
   useAppDispatch,
+  useFilterPanel,
+  useListPanel,
   useNeighborhood,
   useSearchCoordinates,
   useSelectedOrganization,
   useUserCoordinates,
-  useListPanel,
 } from "../../../../appReducer";
 import AdvancedFilters from "../AdvancedFilters/AdvancedFilters";
 import {
@@ -39,7 +41,6 @@ import {
   useMarkersGeojson,
 } from "./MarkerHelpers";
 import { regionBorderStyle, regionFillStyle } from "./RegionHelpers";
-import Map, { Marker, Source, Layer, NavigationControl } from "react-map-gl";
 
 const ResultsMap = (
   { stakeholders, categoryIds, toggleCategory, loading },
@@ -54,6 +55,7 @@ const ResultsMap = (
   const location = useLocation();
   const { isMobile } = useBreakpoints();
   const isListPanelOpen = useListPanel();
+  const isFilterPanelOpen = useFilterPanel();
 
   const longitude =
     searchCoordinates?.longitude ||
@@ -161,6 +163,10 @@ const ResultsMap = (
     }),
     [isMobile, isListPanelOpen]
   );
+
+  const listPanelLeftPostion = isListPanelOpen ? 524 : 0;
+  const filterPanelLeftPostion = isFilterPanelOpen ? 340 : 0;
+  
   return (
     <div style={{ position: "relative", height: "100%" }}>
       <Map
@@ -204,21 +210,23 @@ const ResultsMap = (
           </Source>
         )}
       </Map>
-      {!loading && hasAdvancedFilterFeatureFlag && isMobile && (
+      {!loading && hasAdvancedFilterFeatureFlag && (
         <Grid
-          container
-          wrap="nowrap"
+          container={isMobile}
+          wrap={isMobile ? "nowrap" : undefined}
           position="absolute"
           display="inline-flex"
           alignItems="flex-start"
           sx={{
             overflow: "auto",
             gap: "0.5rem",
-            padding: "0 0 0.3rem 0.75rem",
+            padding: isMobile ? "0 0 0.3rem 0.75rem" : "0 0 0.3rem 2.25rem",
             scrollbarWidth: "none",
-            position: "absolute",
             top: 0,
-            left: 0,
+            left: isMobile
+              ? 0
+              : `${listPanelLeftPostion + filterPanelLeftPostion}px`,
+            transition: isMobile ? undefined : "left .5s ease-in-out",
           }}
         >
           <AdvancedFilters

@@ -14,38 +14,36 @@ const overlay = {
 };
 
 const MobileLayout = ({ filters, map, list, showList }) => {
-  const [position, setPosition] = useState();
   const filterPanelOpen = useFilterPanel();
+  const initialY = showList ? 5 : 57;
+  const [position, setPosition] = useState({
+    x: 0,
+    y: initialY * (window.innerHeight / 100),
+  });
 
   useEffect(() => {
-    if (!showList) {
-      setPosition({
-        x: 0,
-        y: 57 * (window.innerHeight / 100),
-      });
-    } else {
-      setPosition({
-        x: 0,
-        y: 0,
-      });
-    }
-  }, [showList]);
-
-  useEffect(() => {
+    let newY;
     if (filterPanelOpen) {
-      setPosition({
-        x: 0,
-        y: window.innerHeight,
-      });
+      newY = 100;
     } else {
-      setPosition({
-        x: 0,
-        y: 0,
-      });
+      newY = showList ? 5 : 57;
     }
-  }, [filterPanelOpen]);
+    setPosition({ x: 0, y: newY * (window.innerHeight / 100) });
+  }, [showList, filterPanelOpen]);
 
-  // Define the bounds for vertical dragging
+  const handleStop = (e, ui) => {
+    const windowHeight = window.innerHeight / 100;
+    let newY;
+    if (ui.y < 20 * windowHeight) {
+      newY = 5;
+    } else if (ui.y > 20 * windowHeight && ui.y < 40 * windowHeight) {
+      newY = 25;
+    } else if (ui.y > 40 * windowHeight) {
+      newY = 57;
+    }
+    setPosition({ x: 0, y: newY * windowHeight });
+  };
+
   const minY = 60;
 
   return (
@@ -58,25 +56,13 @@ const MobileLayout = ({ filters, map, list, showList }) => {
           flexDirection: "column",
           overflow: "hidden",
           position: "relative",
-
         }}
       >
         <Box sx={{ flex: 1 }}>{map}</Box>
         {list && (
           <Draggable
             position={position}
-            onStop={(e, ui) => {
-              if(ui.y < 20 * (window.innerHeight / 100)){
-                setPosition({ x: 0, y:  3});
-              }
-              if(ui.y > 20 * (window.innerHeight / 100) && ui.y < 40 * (window.innerHeight / 100)){
-                setPosition({ x: 0, y:  25 * (window.innerHeight / 100)});
-              }
-              if(ui.y > 40 * (window.innerHeight / 100)){
-                setPosition({ x: 0, y:  57 * (window.innerHeight / 100)});
-              }
-              
-            }}
+            onStop={handleStop}
             handle=".handle"
             bounds={{ top: 0, bottom: minY * (window.innerHeight / 100) }}
             defaultPosition={{ x: 0, y: minY * (window.innerHeight / 100) }}

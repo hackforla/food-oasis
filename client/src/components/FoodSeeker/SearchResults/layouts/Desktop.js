@@ -53,7 +53,7 @@ const DesktopLayout = ({ filters, list, map }) => {
             left: isListPanelOpen ? leftPostion : "-524px",
             top: "120px",
             height: "calc(100% - 120px)",
-            zIndex: "1",
+            zIndex: 3,
             background: "white",
           }}
         >

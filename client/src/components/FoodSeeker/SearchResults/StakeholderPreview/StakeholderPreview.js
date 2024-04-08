@@ -16,6 +16,10 @@ import {
   hoursSort,
   nextOpenTime,
   standardTime,
+  isAlmostClosed,
+  isAlmostOpen,
+  calculateMinutesToClosing,
+  calculateMinutesToOpening,
 } from "helpers";
 
 import Accordion from "@mui/material/Accordion";
@@ -99,45 +103,6 @@ export const stakeholdersDaysHours = (
   if (currentDaysHoursOfOperation?.length > 0) {
     return currentDaysHoursOfOperation;
   }
-};
-
-const calculateTimeDifference = (time1, time2) => {
-  const date1 = new Date(`1970-01-01T${time1}Z`);
-  const date2 = new Date(`1970-01-01T${time2}Z`);
-
-  const differenceInMilliseconds = date1.getTime() - date2.getTime();
-
-  const differenceInMinutes = Math.round(
-    differenceInMilliseconds / (1000 * 60)
-  );
-
-  return differenceInMinutes;
-};
-
-const calculateMinutesToClosing = (hours, tenantTimeZone) => {
-  const currentTime = formatDatewTimeZonehhmmss(new Date(), tenantTimeZone);
-  return calculateTimeDifference(hours[0].close, currentTime);
-};
-
-const calculateMinutesToOpening = (hours, tenantTimeZone) => {
-  if (!hours) {
-    return;
-  }
-  const currentTime = formatDatewTimeZonehhmmss(new Date(), tenantTimeZone);
-
-  return calculateTimeDifference(currentTime, hours[0].open);
-};
-
-const isAlmostClosed = (hours, tenantTimeZone) => {
-  const minutesToCloseFlag = 60;
-  const minutesToClosing = calculateMinutesToClosing(hours, tenantTimeZone);
-  return minutesToClosing <= minutesToCloseFlag;
-};
-
-const isAlmostOpen = (hours, tenantTimeZone) => {
-  const minutesToOpenFlag = 60;
-  const minutesToOpening = calculateMinutesToOpening(hours, tenantTimeZone);
-  return minutesToOpening <= minutesToOpenFlag;
 };
 
 const StakeholderPreview = ({ stakeholder, onSelect, isDesktop }) => {

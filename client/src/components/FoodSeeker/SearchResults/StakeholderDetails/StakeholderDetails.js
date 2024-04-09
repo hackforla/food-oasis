@@ -65,6 +65,16 @@ const DetailText = styled(Typography)(({ theme }) => ({
   component: "p",
   textAlign: "left",
   marginBottom: "16px",
+  overflowWrap: "break-word",
+  "& a": {
+    color: theme.palette.link.normal,
+    "&:visited": {
+      color: theme.palette.link.visited,
+    },
+    "&:hover": {
+      color: theme.palette.link.hovered,
+    },
+  },
 }));
 
 const StakeholderDetails = ({ onBackClick, isDesktop }) => {
@@ -142,6 +152,7 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
     const emailRegEx = /\b[\w.-]+@[\w.-]+\.\w{2,4}\b/gi;
     const phoneMatches = text.match(phoneRegEx);
     const emailMatches = text.match(emailRegEx);
+
     if (phoneMatches) {
       phoneMatches.forEach((match) => {
         text = text.replace(
@@ -158,6 +169,7 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
         );
       });
     }
+
     return text;
   };
 
@@ -218,7 +230,7 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
         stakeholder={selectedOrganization}
         setToast={setToast}
       />
-      <Stack height={"100%"}>
+      <Stack height={"100%"} width={"100%"}>
         <Stack
           direction={"row"}
           alignItems="flex-end"

@@ -140,8 +140,26 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
     const phoneRegEx =
       /(\+?( |-|\.)?\d{1,2}( |-|\.)?)?(\(?\d{3}\)?|\d{3})( |-|\.)?(\d{3}( |-|\.)?\d{4})/g;
     const emailRegEx = /\b[\w.-]+@[\w.-]+\.\w{2,4}\b/gi;
+    const urlRegEx =
+      /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
     const phoneMatches = text.match(phoneRegEx);
     const emailMatches = text.match(emailRegEx);
+    const urlMatches = text.match(urlRegEx);
+
+    const getValidUrl = (url) => {
+      let newUrl = window.decodeURIComponent(url);
+      newUrl = newUrl.trim().replace(/\s/g, "");
+
+      if (/^(:\/\/)/.test(newUrl)) {
+        return `http${newUrl}`;
+      }
+      if (!/^(f|ht)tps?:\/\//i.test(newUrl)) {
+        return `http://${newUrl}`;
+      }
+
+      return newUrl;
+    };
+
     if (phoneMatches) {
       phoneMatches.forEach((match) => {
         text = text.replace(
@@ -155,6 +173,16 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
         text = text.replace(
           match,
           `<a key=${match} href="mailto:${match}">${match}</a>`
+        );
+      });
+    }
+    if (urlMatches) {
+      urlMatches.forEach((match) => {
+        text = text.replace(
+          match,
+          `<a key=${match} href="${getValidUrl(
+            match
+          )}" target="_blank" style="word-break: break-all;">${match}</a>`
         );
       });
     }

@@ -65,6 +65,15 @@ const DetailText = styled(Typography)(({ theme }) => ({
   component: "p",
   textAlign: "left",
   marginBottom: "16px",
+  "& a": {
+    color: theme.palette.link.normal,
+    "&:visited": {
+      color: theme.palette.link.visited,
+    },
+    "&:hover": {
+      color: theme.palette.link.hovered,
+    },
+  },
 }));
 
 const StakeholderDetails = ({ onBackClick, isDesktop }) => {

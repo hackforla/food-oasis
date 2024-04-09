@@ -395,7 +395,7 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
 
                 <Box textAlign="left" sx={{ marginTop: "16px" }}>
                   {selectedOrganization.hours &&
-                  selectedOrganization.hours > 0 ? (
+                  selectedOrganization.hours.length > 0 ? (
                     <Typography>
                       Open{" "}
                       {nextOpenTime(

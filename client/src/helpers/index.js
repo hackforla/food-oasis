@@ -315,12 +315,13 @@ export const isLastWeekOfMonth = () => {
 };
 
 const addMonths = (date, months) => {
-  var d = date.getDate();
-  date.setMonth(date.getMonth() + months);
-  if (date.getDate() !== d) {
-    date.setDate(0);
+  const normalizedDate = new Date(date);
+  const d = normalizedDate.getDate();
+  normalizedDate.setMonth(normalizedDate.getMonth() + months);
+  if (normalizedDate.getDate() !== d) {
+    normalizedDate.setDate(0);
   }
-  return date;
+  return normalizedDate;
 };
 
 export const isCurrentDayAndWeek = (timeZone, hour) => {

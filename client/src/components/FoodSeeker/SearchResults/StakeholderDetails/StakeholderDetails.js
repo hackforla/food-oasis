@@ -299,7 +299,7 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
           </Grid2>
           <Grid2 xs={10}>
             <Stack direction="column" xs={10}>
-              <Stack width="100%">
+              <Stack>
                 <Typography
                   variant="h4"
                   component="h2"

@@ -216,6 +216,16 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
     isAlmostOpenFlag &&
     calculateMinutesToOpening(stakeholderHours, tenantTimeZone);
 
+  useEffect(() => {
+    window.addEventListener(
+      "popstate",
+      function () {
+        onBackClick();
+      },
+      false
+    );
+  }, [onBackClick]);
+
   return (
     <>
       <SEO

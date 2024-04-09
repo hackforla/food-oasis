@@ -60,6 +60,7 @@ const DesktopLayout = ({ filters, list, map }) => {
           <Box
             sx={{
               width: "100%",
+              boxShadow: "2px 0px 15px rgba(0, 0, 0, 0.15)",
             }}
           >
             {list}
@@ -79,6 +80,7 @@ const DesktopLayout = ({ filters, list, map }) => {
                 position: "absolute",
                 right: "-33px",
                 top: "50%",
+                zIndex: -1,
                 transform: "translateY(-50%)",
               }}
               onClick={toggleDrawer}

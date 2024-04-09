@@ -65,6 +65,7 @@ const DetailText = styled(Typography)(({ theme }) => ({
   component: "p",
   textAlign: "left",
   marginBottom: "16px",
+  overflowWrap: "break-word",
   "& a": {
     color: theme.palette.link.normal,
     "&:visited": {
@@ -149,25 +150,8 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
     const phoneRegEx =
       /(\+?( |-|\.)?\d{1,2}( |-|\.)?)?(\(?\d{3}\)?|\d{3})( |-|\.)?(\d{3}( |-|\.)?\d{4})/g;
     const emailRegEx = /\b[\w.-]+@[\w.-]+\.\w{2,4}\b/gi;
-    const urlRegEx =
-      /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
     const phoneMatches = text.match(phoneRegEx);
     const emailMatches = text.match(emailRegEx);
-    const urlMatches = text.match(urlRegEx);
-
-    const getValidUrl = (url) => {
-      let newUrl = window.decodeURIComponent(url);
-      newUrl = newUrl.trim().replace(/\s/g, "");
-
-      if (/^(:\/\/)/.test(newUrl)) {
-        return `http${newUrl}`;
-      }
-      if (!/^(f|ht)tps?:\/\//i.test(newUrl)) {
-        return `http://${newUrl}`;
-      }
-
-      return newUrl;
-    };
 
     if (phoneMatches) {
       phoneMatches.forEach((match) => {
@@ -185,16 +169,7 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
         );
       });
     }
-    if (urlMatches) {
-      urlMatches.forEach((match) => {
-        text = text.replace(
-          match,
-          `<a key=${match} href="${getValidUrl(
-            match
-          )}" target="_blank" style="word-break: break-all;">${match}</a>`
-        );
-      });
-    }
+
     return text;
   };
 
@@ -255,7 +230,7 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
         stakeholder={selectedOrganization}
         setToast={setToast}
       />
-      <Stack height={"100%"}>
+      <Stack height={"100%"} width={"100%"}>
         <Stack
           direction={"row"}
           alignItems="flex-end"
@@ -324,7 +299,7 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
           </Grid2>
           <Grid2 xs={10}>
             <Stack direction="column" xs={10}>
-              <Stack>
+              <Stack width="100%">
                 <Typography
                   variant="h4"
                   component="h2"

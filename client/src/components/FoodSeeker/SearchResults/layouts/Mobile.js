@@ -75,7 +75,7 @@ const MobileLayout = ({ filters, map, list, showList }) => {
           >
             <Box sx={overlay}>
               <Grid container spacing={0}>
-                <Grid xs={6} item={true}>
+                <Grid xs={6} item>
                   <div>
                     <a
                       target="_blank"
@@ -135,7 +135,7 @@ const MobileLayout = ({ filters, map, list, showList }) => {
                     </a>
                   </div>
                 </Grid>
-                <Grid xs={6} item={true}>
+                <Grid xs={6} item>
                   <AttributionInfo />
                 </Grid>
               </Grid>

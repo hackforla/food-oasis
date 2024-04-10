@@ -103,8 +103,8 @@ const ResultsMap = (
   const onClick = (e) => {
     mapRef.current?.flyTo({
       center: [
-        isListPanelOpen ? e.lngLat.lng - 0.08 : e.lngLat.lng,
-        isMobile ? e.lngLat.lat - 0.06 : e.lngLat.lat,
+        isListPanelOpen && !isMobile ? e.lngLat.lng - 0.08 : e.lngLat.lng,
+        isMobile ? e.lngLat.lat - 0.03 : e.lngLat.lat,
       ],
       duration: 2000,
     });
@@ -154,8 +154,8 @@ const ResultsMap = (
       flyTo: ({ latitude, longitude }) => {
         mapRef.current?.flyTo({
           center: [
-            isListPanelOpen ? longitude - 0.08 : longitude,
-            isMobile ? latitude - 0.06 : latitude,
+            isListPanelOpen && !isMobile ? longitude - 0.08 : longitude,
+            isMobile ? latitude - 0.03 : latitude,
           ],
           duration: 2000,
         });

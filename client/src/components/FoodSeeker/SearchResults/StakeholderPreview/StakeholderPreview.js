@@ -381,7 +381,7 @@ const StakeholderPreview = ({ stakeholder, onSelect, isDesktop }) => {
                         <Stack
                           direction="row"
                           justifyContent="space-between"
-                          key={JSON.stringify(hour)}
+                          key={`${hour}-${index}`}
                           marginTop="4px"
                           sx={{
                             ".MuiTypography-root": {

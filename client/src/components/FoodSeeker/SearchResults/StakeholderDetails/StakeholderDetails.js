@@ -730,7 +730,7 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
 
                 {selectedOrganization.verificationStatusId ===
                 VERIFICATION_STATUS.VERIFIED ? (
-                  <DetailText color="secondary.main">
+                  <DetailText>
                     Data updated on{" "}
                     {selectedOrganization.approvedDate
                       ? formatDateMMMddYYYY(selectedOrganization.approvedDate)

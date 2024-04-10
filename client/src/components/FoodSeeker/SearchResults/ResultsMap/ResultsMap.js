@@ -169,7 +169,7 @@ const ResultsMap = (
   const filterPanelLeftPostion = isFilterPanelOpen ? 340 : 0;
 
   return (
-    <div style={{ position: "relative", height: "100%" }}>
+    <div style={{ position: "relative", height: "100%", width: "100%" }}>
       <Map
         ref={mapRef}
         {...viewport}

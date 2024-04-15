@@ -78,7 +78,7 @@ function Suggestion(props) {
                   formikBag.setSubmitting(false);
                   setToast({
                     message:
-                      "Sorry, submitting your correction failed, please email us at the address on the About page.",
+                      "Sorry, submitting your correction failed, please email us via the Contact Us page.",
                   });
                 });
             }}

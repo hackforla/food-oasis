@@ -1,5 +1,5 @@
 export interface Suggestion {
-  id: number;
+  id: number | null;
   name: string;
   address1: string;
   address2: string;
@@ -15,7 +15,7 @@ export interface Suggestion {
   hours: string;
   category: string;
   suggestionStatusId: number;
-  adminNotes: string;
+  adminNotes?: string;
   stakeholderId: number | null;
   tenantId: number;
 }

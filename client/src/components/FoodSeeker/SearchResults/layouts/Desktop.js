@@ -1,48 +1,16 @@
-import {
-  Stack,
-  Box,
-  Grid,
-  styled,
-  Tooltip,
-  tooltipClasses,
-} from "@mui/material";
+import { Stack, Box, styled, Tooltip, tooltipClasses } from "@mui/material";
 import {
   useFilterPanel,
   useListPanel,
   useAppDispatch,
 } from "../../../../appReducer";
-import * as React from "react";
 import DrawerLeftArrowButton from "../../../../icons/DrawerLeftArrowButton";
 import DrawerRightArrowButton from "../../../../icons/DrawerRightArrowButton";
-import useCategoryIds from "hooks/useCategoryIds";
-import AdvancedFilters from "../AdvancedFilters/AdvancedFilters";
-import useBreakpoints from "hooks/useBreakpoints";
-import useFeatureFlag from "hooks/useFeatureFlag";
 
 const DesktopLayout = ({ filters, list, map }) => {
   const isFilterPanelOpen = useFilterPanel();
-  const { categoryIds, toggleCategory } = useCategoryIds([]);
-  const { isMobile } = useBreakpoints();
-  const hasAdvancedFilterFeatureFlag = useFeatureFlag("advancedFilter");
   const isListPanelOpen = useListPanel();
   const dispatch = useAppDispatch();
-
-  const FilterPanelPlaceholder = styled("div", {
-    shouldForwardProp: (prop) => prop !== "isFilterPanelOpen",
-  })(({ theme, isFilterPanelOpen }) => ({
-    transition: theme.transitions.create("margin", {
-      easing: theme.transitions.easing.easeIn,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-
-    ...(isFilterPanelOpen && {
-      transition: theme.transitions.create("margin", {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-      marginLeft: "340px",
-    }),
-  }));
 
   const toggleDrawer = (event) => {
     if (
@@ -64,6 +32,8 @@ const DesktopLayout = ({ filters, list, map }) => {
       padding: "10px",
     },
   }));
+
+  let leftPostion = isFilterPanelOpen ? "340px" : 0;
   return (
     <>
       {filters}
@@ -74,26 +44,23 @@ const DesktopLayout = ({ filters, list, map }) => {
           display: "flex",
         }}
       >
-        <FilterPanelPlaceholder
-          isFilterPanelOpen={isFilterPanelOpen}
-        ></FilterPanelPlaceholder>
-
         <Stack
           direction="row"
           sx={{
             position: "absolute",
             width: "524px",
             transition: "left .5s ease-in-out",
-            left: isListPanelOpen ? 0 : "-524px",
+            left: isListPanelOpen ? leftPostion : "-524px",
             top: "120px",
-            height: "100%",
-            zIndex: "1",
+            height: "calc(100% - 120px)",
+            zIndex: 3,
             background: "white",
           }}
         >
           <Box
             sx={{
               width: "100%",
+              boxShadow: "1px 0px 10px rgba(0, 0, 0, 0.10)",
             }}
           >
             {list}
@@ -113,7 +80,7 @@ const DesktopLayout = ({ filters, list, map }) => {
                 position: "absolute",
                 right: "-33px",
                 top: "50%",
-                zIndex: 9990,
+                zIndex: -1,
                 transform: "translateY(-50%)",
               }}
               onClick={toggleDrawer}
@@ -125,27 +92,6 @@ const DesktopLayout = ({ filters, list, map }) => {
               )}
             </button>
           </LightTooltip>
-          {hasAdvancedFilterFeatureFlag && !isMobile && (
-            <Grid
-              className="advanced-filters-class"
-              display="inline-flex"
-              alignItems="flex-start"
-              sx={{
-                overflow: "auto",
-                gap: "0.5rem",
-                padding: "0 0 0.3rem 2.25rem",
-                scrollbarWidth: "none",
-                position: "absolute",
-                top: 0,
-                right: "-480px",
-              }}
-            >
-              <AdvancedFilters
-                categoryIds={categoryIds}
-                toggleCategory={toggleCategory}
-              />
-            </Grid>
-          )}
         </Stack>
         <Box
           sx={{

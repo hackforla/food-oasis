@@ -163,7 +163,7 @@ const form = (props) => {
           </Box>
           <Grid container justifyContent="center">
             <Grid item>
-              <Link href="/login" variant="body2">
+              <Link href="/admin/login" variant="body2">
                 Already have an account? Login
               </Link>
             </Grid>

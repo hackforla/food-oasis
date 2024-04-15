@@ -6,8 +6,6 @@ export const postEvent = async (eventName, properties) => {
     value: properties?.id,
     name: properties?.name,
   });
-  // Post event to Stormly
-  window.stormly("event", eventName, properties);
 };
 
 export const identify = async (userId) => {
@@ -18,7 +16,4 @@ export const identify = async (userId) => {
     value: userId,
     name: "user-" + userId,
   });
-
-  // Post event to Stormly
-  window.stormly("identify", userId ? "user-" + userId : null);
 };

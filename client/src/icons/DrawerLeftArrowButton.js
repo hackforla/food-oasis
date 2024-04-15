@@ -19,43 +19,6 @@ function DrawerLeftArrowButton() {
         strokeWidth="2"
         strokeLinecap="round"
       />
-      <defs>
-        <filter
-          id="filter0_d_5719_24249"
-          x="0"
-          y="0"
-          width="76"
-          height="132"
-          filterUnits="userSpaceOnUse"
-          colorInterpolationFilters="sRGB"
-        >
-          <feFlood floodOpacity="0" result="BackgroundImageFix" />
-          <feColorMatrix
-            in="SourceAlpha"
-            type="matrix"
-            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-            result="hardAlpha"
-          />
-          <feOffset dy="4" />
-          <feGaussianBlur stdDeviation="10" />
-          <feComposite in2="hardAlpha" operator="out" />
-          <feColorMatrix
-            type="matrix"
-            values="0 0 0 0 0 0 0 0 0 0.0861762 0 0 0 0 0.39171 0 0 0 0.12 0"
-          />
-          <feBlend
-            mode="normal"
-            in2="BackgroundImageFix"
-            result="effect1_dropShadow_5719_24249"
-          />
-          <feBlend
-            mode="normal"
-            in="SourceGraphic"
-            in2="effect1_dropShadow_5719_24249"
-            result="shape"
-          />
-        </filter>
-      </defs>
     </svg>
   );
 }

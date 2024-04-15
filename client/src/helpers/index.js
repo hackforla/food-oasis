@@ -315,12 +315,13 @@ export const isLastWeekOfMonth = () => {
 };
 
 const addMonths = (date, months) => {
-  var d = date.getDate();
-  date.setMonth(date.getMonth() + months);
-  if (date.getDate() !== d) {
-    date.setDate(0);
+  const normalizedDate = new Date(date);
+  const d = normalizedDate.getDate();
+  normalizedDate.setMonth(normalizedDate.getMonth() + months);
+  if (normalizedDate.getDate() !== d) {
+    normalizedDate.setDate(0);
   }
-  return date;
+  return normalizedDate;
 };
 
 export const isCurrentDayAndWeek = (timeZone, hour) => {
@@ -366,29 +367,34 @@ export const standardTime = (timeStr) => {
   }
 };
 
-//will refactor in stakeholderdetails redesign ticket
 export const hoursSort = (hourOne, hourTwo) => {
-  if (hourOne.week_of_month !== hourTwo.week_of_month) {
+  let hourOneWeekOfMonth = hourOne.week_of_month;
+  let hourTwoWeekOfMonth = hourTwo.week_of_month;
+
+  if (hourOneWeekOfMonth !== hourTwoWeekOfMonth) {
     const currentWeek = getCurrentWeekOfMonth();
     const isLastWeek = isLastWeekOfMonth();
-    let hourOneWeekOfMonth = hourOne.week_of_month;
-    let hourTwoWeekOfMonth = hourTwo.week_of_month;
 
-    let hourOneIsCurrent =
-      hourOneWeekOfMonth === 0 ||
-      hourOneWeekOfMonth === currentWeek ||
-      (hourOneWeekOfMonth === -1 && isLastWeek);
-    let hourTwoIsCurrent =
-      hourTwoWeekOfMonth === 0 ||
-      hourTwoWeekOfMonth === currentWeek ||
-      (hourTwoWeekOfMonth === -1 && isLastWeek);
+    const isCurrentWeek = (weekOfMonth) => {
+      return (
+        weekOfMonth === 0 ||
+        weekOfMonth === currentWeek ||
+        (weekOfMonth === -1 && isLastWeek)
+      );
+    };
 
-    if (hourOneIsCurrent && !hourTwoIsCurrent) return -1;
-    if (hourTwoIsCurrent && !hourOneIsCurrent) return 1;
+    let hourOneIsCurrentWeek = isCurrentWeek(hourOneWeekOfMonth);
+    let hourTwoIsCurrentWeek = isCurrentWeek(hourTwoWeekOfMonth);
 
-    if (!hourOneIsCurrent && !hourTwoIsCurrent) {
-      hourOneWeekOfMonth = hourOneWeekOfMonth === -1 ? 5 : hourOneWeekOfMonth;
-      hourTwoWeekOfMonth = hourTwoWeekOfMonth === -1 ? 5 : hourTwoWeekOfMonth;
+    if (hourOneIsCurrentWeek !== hourTwoIsCurrentWeek) {
+      return hourOneIsCurrentWeek ? -1 : 1;
+    }
+
+    if (!hourOneIsCurrentWeek && !hourTwoIsCurrentWeek) {
+      const normalizeWeekOfMonth = (week) => (week === -1 ? 5 : week);
+
+      hourOneWeekOfMonth = normalizeWeekOfMonth(hourOneWeekOfMonth);
+      hourTwoWeekOfMonth = normalizeWeekOfMonth(hourTwoWeekOfMonth);
 
       if (
         (hourOneWeekOfMonth < currentWeek &&
@@ -409,6 +415,7 @@ export const hoursSort = (hourOne, hourTwo) => {
 
   const hourOneDayOfWeek = dayOfWeek(hourOne.day_of_week);
   const hourTwoDayOfWeek = dayOfWeek(hourTwo.day_of_week);
+
   if (hourOneDayOfWeek !== hourTwoDayOfWeek) {
     return hourOneDayOfWeek < hourTwoDayOfWeek ? -1 : 1;
   }
@@ -465,4 +472,42 @@ export const nextOpenTime = (sortedHours, timeZone) => {
     month: "long",
     day: "numeric",
   });
+};
+
+const calculateTimeDifference = (time1, time2) => {
+  const date1 = new Date(`1970-01-01T${time1}Z`);
+  const date2 = new Date(`1970-01-01T${time2}Z`);
+
+  const differenceInMilliseconds = date1.getTime() - date2.getTime();
+
+  const differenceInMinutes = Math.round(
+    differenceInMilliseconds / (1000 * 60)
+  );
+
+  return differenceInMinutes;
+};
+
+export const calculateMinutesToClosing = (hours, tenantTimeZone) => {
+  const currentTime = formatDatewTimeZonehhmmss(new Date(), tenantTimeZone);
+  return calculateTimeDifference(hours[0].close, currentTime);
+};
+export const calculateMinutesToOpening = (hours, tenantTimeZone) => {
+  if (!hours) {
+    return;
+  }
+  const currentTime = formatDatewTimeZonehhmmss(new Date(), tenantTimeZone);
+
+  return calculateTimeDifference(currentTime, hours[0].open);
+};
+
+export const isAlmostClosed = (hours, tenantTimeZone) => {
+  const minutesToCloseFlag = 60;
+  const minutesToClosing = calculateMinutesToClosing(hours, tenantTimeZone);
+  return minutesToClosing <= minutesToCloseFlag;
+};
+
+export const isAlmostOpen = (hours, tenantTimeZone) => {
+  const minutesToOpenFlag = 60;
+  const minutesToOpening = calculateMinutesToOpening(hours, tenantTimeZone);
+  return minutesToOpening <= minutesToOpenFlag;
 };

@@ -68,7 +68,7 @@ const ResetPassword = (props) => {
                   message: "Password has been reset. Please use it to login.",
                 });
                 navigate({
-                  pathname: `/login/${response.email}`,
+                  pathname: `/admin/login/${response.email}`,
                   state: {
                     isPasswordReset: true,
                   },

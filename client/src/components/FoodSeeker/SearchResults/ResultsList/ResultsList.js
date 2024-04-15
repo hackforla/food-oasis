@@ -45,7 +45,12 @@ const ResultsList = ({ stakeholders, loading, handleReset, handleFlyTo }) => {
   const renderView = () => {
     switch (view) {
       case "details":
-        return <StakeholderDetails onBackClick={() => setView("list")} />;
+        return (
+          <StakeholderDetails
+            onBackClick={() => setView("list")}
+            isDesktop={isDesktop}
+          />
+        );
       case "list":
         return (
           <>

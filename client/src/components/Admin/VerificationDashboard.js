@@ -84,7 +84,7 @@ function VerificationDashboard(props) {
   }
 
   if (stakeholdersError.status === 401) {
-    navigate("/login", { state: { from: location } });
+    navigate("/admin/login", { state: { from: location } });
   }
 
   return (

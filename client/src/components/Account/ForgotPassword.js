@@ -75,7 +75,7 @@ const ForgotPassword = (props) => {
                 values.email
               );
               if (response.isSuccess) {
-                navigate(`/resetpasswordemailsent/${values.email || ""}`);
+                navigate(`/admin/resetpasswordemailsent/${values.email || ""}`);
               } else if (
                 response.code === "FORGOT_PASSWORD_ACCOUNT_NOT_FOUND"
               ) {
@@ -174,7 +174,7 @@ const ForgotPassword = (props) => {
                   <Grid item xs={12}>
                     <Typography align="center">
                       <Link
-                        href={`/login/${values.email || ""}`}
+                        href={`/admin/login/${values.email || ""}`}
                         variant="body2"
                       >
                         Return to Login

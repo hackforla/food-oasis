@@ -59,30 +59,6 @@
       }
     </style>
     <script type="text/javascript">
-      (function (e, t, n, r, i, s, o) {
-        e["StormlyObject"] = i;
-        (e[i] =
-          e[i] ||
-          function () {
-            (e[i].q = e[i].q || []).push(arguments);
-          }),
-          (s = t.createElement(n)),
-          (o = t.getElementsByTagName(n)[0]);
-        s.async = 1;
-        s.src = r;
-        o.parentNode.insertBefore(s, o);
-      })(
-        window,
-        document,
-        "script",
-        "//cdn.stormly.com/assets/tracking/t.js",
-        "stormly"
-      );
-      stormly("create", "d6f56047e6527499d8e4854b8db2f5f49", {
-        anonymizeIP: false,
-      });
-    </script>
-    <script type="text/javascript">
       if (
         window.location.hostname === "la.foodoasis.net" ||
         window.location.hostname === "foodoasis.la"
@@ -105,42 +81,5 @@
   <body id="body">
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-
-    <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
-
-    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js"></script>
-
-    <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
-    <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-analytics.js"></script>
-
-    <script>
-      // Your web app's Firebase configuration
-      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-      var firebaseConfig = {
-        apiKey: "AIzaSyD9P_FtD1_6A3UefslE-DouTjAnjvv89fw",
-        authDomain: "hack-for-la-firebase-project.firebaseapp.com",
-        databaseURL: "https://hack-for-la-firebase-project.firebaseio.com",
-        projectId: "hack-for-la-firebase-project",
-        storageBucket: "hack-for-la-firebase-project.appspot.com",
-        messagingSenderId: "901423769273",
-        appId: "1:901423769273:web:9f2954b9ba134d7e8f1d68",
-        // measurementId: "G-BX2932LS6Y",
-        measurementId: "G-8J47DL7ERE",
-      };
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-      firebase.analytics();
-    </script>
   </body>
 </html>

@@ -124,8 +124,8 @@ const SearchResults = () => {
     <Map
       ref={mapRef}
       stakeholders={stakeholders}
-      toggleCategory={toggleCategory}
       categoryIds={categoryIds}
+      toggleCategory={toggleCategory}
       loading={loading}
       searchMapArea={searchMapArea}
     />

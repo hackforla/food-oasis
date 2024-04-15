@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "api/features-to-login/";
+const baseUrl = "/api/features-to-login/";
 
 export const getLoginsByFeature = async (id) => {
   try {

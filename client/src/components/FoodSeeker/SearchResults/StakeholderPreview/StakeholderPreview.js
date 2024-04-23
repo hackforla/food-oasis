@@ -202,39 +202,43 @@ const StakeholderPreview = ({ stakeholder, onSelect, isDesktop }) => {
               sx={{ gap: "16px" }}
               onClick={() => handleSelectOrganization(stakeholder)}
             >
-              {stakeholder.categories.map((category, index) => (
-                <Stack
-                  direction="row"
-                  alignItems="center"
-                  spacing={1}
-                  useflexgap="true"
-                  key={`${index}-${category}`}
-                  sx={{
-                    order:
-                      category.id === MEAL_PROGRAM_CATEGORY_ID ? -1 : undefined,
-                  }}
-                >
-                  {category.id === FOOD_PANTRY_CATEGORY_ID ? (
-                    <AppleIcon />
-                  ) : category.id === MEAL_PROGRAM_CATEGORY_ID ? (
-                    <ForkIcon />
-                  ) : (
-                    ""
-                  )}
-
-                  <Typography
-                    variant="body2"
-                    key={stakeholder.id + category.id}
+              {stakeholder.categories
+                .filter((c) => c.isForFoodSeeker)
+                .map((category, index) => (
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    spacing={1}
+                    useflexgap="true"
+                    key={`${index}-${category}`}
                     sx={{
-                      margin: "0.25em 0",
-                      marginRight: "0.25em",
-                      fontWeight: "600",
+                      order:
+                        category.id === MEAL_PROGRAM_CATEGORY_ID
+                          ? -1
+                          : undefined,
                     }}
                   >
-                    {category.name}
-                  </Typography>
-                </Stack>
-              ))}
+                    {category.id === FOOD_PANTRY_CATEGORY_ID ? (
+                      <AppleIcon />
+                    ) : category.id === MEAL_PROGRAM_CATEGORY_ID ? (
+                      <ForkIcon />
+                    ) : (
+                      ""
+                    )}
+
+                    <Typography
+                      variant="body2"
+                      key={stakeholder.id + category.id}
+                      sx={{
+                        margin: "0.25em 0",
+                        marginRight: "0.25em",
+                        fontWeight: "600",
+                      }}
+                    >
+                      {category.name}
+                    </Typography>
+                  </Stack>
+                ))}
             </Stack>
 
             <Box

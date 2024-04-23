@@ -1,6 +1,6 @@
 export interface Suggestion {
   id: number | null;
-  name: string;
+  name: string | null;
   address1: string;
   address2: string;
   city: string;

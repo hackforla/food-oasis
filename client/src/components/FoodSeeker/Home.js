@@ -72,6 +72,13 @@ const Home = () => {
     }
   };
 
+  useEffect(() => {
+    const loadingSpinner = document.getElementById('home-loading-spinner');
+    if (loadingSpinner) {
+      loadingSpinner.style.display = 'none';
+    }
+  }, []);
+
   return (
     <Box
       style={{ backgroundImage: bgImg }}

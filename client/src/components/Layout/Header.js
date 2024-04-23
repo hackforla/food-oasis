@@ -56,9 +56,6 @@ export default function Header() {
               maxWidth: "175px",
               maxHeight: "48px",
               margin: "4px 4px 0 4px",
-              "&:hover": {
-                filter: "brightness(1.2)",
-              },
               [theme.breakpoints.down("sm")]: {
                 maxHeight: "36px",
                 margin: "4px 4px 0 8px",

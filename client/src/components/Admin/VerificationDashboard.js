@@ -1,4 +1,11 @@
-import { Box, Button, CircularProgress, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { useOrganizations } from "hooks/useOrganizations";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -27,11 +34,12 @@ const defaultCriteria = {
   tag: "",
 };
 
-function VerificationDashboard(props) {
+function VerificationDashboard() {
   const { user } = useUserContext();
   const [criteria, setCriteria] = useState(defaultCriteria);
   const location = useLocation();
   const navigate = useNavigate();
+  const [showAssignmentError, setShowAssignmentError] = useState(false);
 
   const {
     data: stakeholders,
@@ -73,8 +81,8 @@ function VerificationDashboard(props) {
       await stakeholderService.requestAssignment(user.id);
       search();
     } catch (err) {
-      if (err.status !== 401) {
-        console.error(err);
+      if (err.response.status === 404) {
+        setShowAssignmentError(true);
       }
     }
   };
@@ -86,6 +94,40 @@ function VerificationDashboard(props) {
   if (stakeholdersError.status === 401) {
     navigate("/admin/login", { state: { from: location } });
   }
+
+  const renderView = () => {
+    if (stakeholdersError) {
+      return <Alert severity="error">Uh Oh! Something went wrong!</Alert>;
+    } else if (stakeholdersLoading) {
+      return (
+        <Stack
+          style={{
+            flexGrow: 1,
+            width: "100%",
+            margin: "100px auto",
+            display: "flex",
+            justifyContent: "space-around",
+          }}
+          aria-label="Loading spinner"
+        >
+          <CircularProgress />
+        </Stack>
+      );
+    } else if (stakeholders && stakeholders.length === 0) {
+      return (
+        <Alert severity="info">
+          No organizations have been assigned to you.
+        </Alert>
+      );
+    } else if (stakeholders) {
+      return (
+        <VerificationAdminGridMui
+          stakeholders={stakeholders}
+          mode={"dataentry"}
+        />
+      );
+    }
+  };
 
   return (
     <main
@@ -127,6 +169,7 @@ function VerificationDashboard(props) {
               type="button"
               onClick={requestAssignment}
               sx={{ margin: ".1rem" }}
+              disabled={showAssignmentError}
             >
               Request Assignment
             </Button>
@@ -150,79 +193,22 @@ function VerificationDashboard(props) {
           flexDirection: "column",
         })}
       >
-        <>
-          {stakeholdersError ? (
-            <Box
-              sx={{
-                flexGrow: 1,
-                flexDirection: "column",
-                justifyContent: "center",
-                backgroundColor: "#E8E8E8",
-                textAlign: "center",
-                padding: "4em",
-              }}
-            >
-              <Typography
-                variant="h5"
-                component="h5"
-                sx={(theme) => ({
-                  color: theme.palette.error.main,
-                  fontSize: "24pt",
-                })}
-              >
-                Uh Oh! Something went wrong!
-              </Typography>
-            </Box>
-          ) : stakeholdersLoading ? (
-            <Box
-              style={{
-                flexGrow: 1,
-                width: "100%",
-                margin: "100px auto",
-                display: "flex",
-                justifyContent: "space-around",
-              }}
-              aria-label="Loading spinner"
-            >
-              <CircularProgress />
-            </Box>
-          ) : stakeholders && stakeholders.length === 0 ? (
-            <Box
-              sx={{
-                flexGrow: 1,
-                flexDirection: "column",
-                justifyContent: "center",
-                backgroundColor: "#E8E8E8",
-                textAlign: "center",
-                padding: "4em",
-              }}
-            >
-              <Typography variant="h5" component="h5">
-                No organizations have been assigned to you.
-              </Typography>
-            </Box>
-          ) : stakeholders ? (
-            <VerificationAdminGridMui
-              stakeholders={stakeholders}
-              mode={"dataentry"}
-            />
-          ) : (
-            <Box
-              sx={{
-                flexGrow: 1,
-                flexDirection: "column",
-                justifyContent: "center",
-                backgroundColor: "#E8E8E8",
-                textAlign: "center",
-                padding: "4em",
-              }}
-            >
-              <Typography variant="h5" component="h5">
-                Please enter search criteria and execute a search
-              </Typography>
-            </Box>
+        <Stack
+          sx={{
+            flexGrow: 1,
+            flexDirection: "column",
+            textAlign: "center",
+          }}
+          spacing={2}
+        >
+          {showAssignmentError && (
+            <Alert severity="error">
+              Error: Couldn’t find listings to verify. Please contact your
+              volunteer coordinator and let them know.
+            </Alert>
           )}
-        </>
+          {renderView()}
+        </Stack>
       </Box>
     </main>
   );

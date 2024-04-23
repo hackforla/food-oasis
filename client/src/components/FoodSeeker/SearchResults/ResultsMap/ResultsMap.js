@@ -166,7 +166,7 @@ const ResultsMap = (
 
   const listPanelLeftPostion = isListPanelOpen ? 524 : 0;
   const filterPanelLeftPostion = isFilterPanelOpen ? 340 : 0;
-  
+
   return (
     <div style={{ position: "relative", height: "100%" }}>
       <Map

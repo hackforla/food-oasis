@@ -71,7 +71,7 @@ const selectAll = async ({ tenantId }: { tenantId: string }) => {
   if (stakeholder_ids.length) {
     // Hoover up all the stakeholder categories
     // for all of our stakeholder row results.
-    const categoriesSql = `select sc.stakeholder_id, c.id, c.name, c.display_order
+    const categoriesSql = `select sc.stakeholder_id, c.id, c.name, c.display_order, c.is_for_food_seeker
           from category c
           join stakeholder_best_category sc on c.id = sc.category_id
           where sc.stakeholder_id in (${stakeholder_ids.join(",")})
@@ -86,7 +86,12 @@ const selectAll = async ({ tenantId }: { tenantId: string }) => {
       categories: categories
         .filter((cr) => cr.stakeholder_id === row.id)
         .map((c) => {
-          return { id: c.id, name: c.name, displayOrder: c.display_order };
+          return {
+            id: c.id,
+            name: c.name,
+            displayOrder: c.display_order,
+            isForFoodSeeker: c.is_for_food_seeker,
+          };
         }),
     });
   });
@@ -182,7 +187,7 @@ const search = async ({
   if (stakeholder_ids.length) {
     // Hoover up all the stakeholder categories
     // for all of our stakeholder row results.
-    const categoriesSql = `select sc.stakeholder_id, c.id, c.name, c.display_order
+    const categoriesSql = `select sc.stakeholder_id, c.id, c.name, c.display_order, c.is_for_food_seeker
           from category c
           join stakeholder_best_category sc on c.id = sc.category_id
           where sc.stakeholder_id in (${stakeholder_ids.join(",")})
@@ -197,7 +202,12 @@ const search = async ({
         categories
           .filter((cr) => cr.stakeholder_id === row.id)
           .map((c) => {
-            return { id: c.id, name: c.name, displayOrder: c.display_order };
+            return {
+              id: c.id,
+              name: c.name,
+              displayOrder: c.display_order,
+              isForFoodSeeker: c.is_for_food_seeker,
+            };
           })
       ),
       isVerified: row.is_verified,
@@ -214,7 +224,7 @@ const selectById = async (id: string): Promise<StakeholderBest> => {
       array_to_json(s.hours) as hours,
       (select array(select row_to_json(category_row)
         from (
-          select c.id, c.name, c.display_order
+          select c.id, c.name, c.display_order, c.is_for_food_seeker
           from category c
             join stakeholder_best_category sc on c.id = sc.category_id
           where sc.stakeholder_id = s.id
@@ -253,8 +263,36 @@ const selectById = async (id: string): Promise<StakeholderBest> => {
     where s.id = ${Number(id)}`;
   const row = await db.one(sql);
 
+  let categories: StakeholderCategory[] = [];
+
+  const rows = await db.manyOrNone(sql);
+  const stakeholder_ids = rows.map((a) => a.id);
+
+  if (stakeholder_ids.length) {
+    // Hoover up all the stakeholder categories
+    // for all of our stakeholder row results.
+    const categoriesSql = `select sc.stakeholder_id, c.id, c.name, c.display_order, c.is_for_food_seeker
+          from category c
+          join stakeholder_best_category sc on c.id = sc.category_id
+          where sc.stakeholder_id = ${row.id}
+          order by c.display_order, c.name`;
+    categories = await db.manyOrNone(categoriesSql);
+  }
+
   return {
-    ...stakeholderHelpers.rowToStakeholder(row),
+    ...stakeholderHelpers.rowToStakeholder(
+      row,
+      categories
+        .filter((cr) => cr.stakeholder_id === row.id)
+        .map((c) => {
+          return {
+            id: c.id,
+            name: c.name,
+            displayOrder: c.display_order,
+            isForFoodSeeker: c.is_for_food_seeker,
+          };
+        })
+    ),
     isVerified: row.is_verified,
     distance: row.distance,
   };

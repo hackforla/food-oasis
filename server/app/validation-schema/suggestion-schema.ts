@@ -15,9 +15,9 @@ export const suggestionPostRequestSchema: JSONSchemaType<
     adminNotes: {
       type: "string",
     },
-    suggestionStatusId: { type: "integer", nullable: true },
+    suggestionStatusId: { type: ["integer", "null"], nullable: true },
     name: {
-      type: "string",
+      type: ["string", "null"],
       minLength: 1,
     },
     address1: {

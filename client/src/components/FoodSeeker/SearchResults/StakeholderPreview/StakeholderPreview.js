@@ -200,29 +200,27 @@ const StakeholderPreview = ({ stakeholder, handleFlyTo }) => {
               {stakeholder.name}
             </Typography>
             <Box textAlign="left">
-              {stakeholder.categories
-                .filter((c) => c.isForFoodSeeker) // Only show categories that are "for food seekers"
-                .map((category) => (
-                  <Typography
-                    variant="body2"
-                    fontStyle="italic"
-                    key={stakeholder.id + category.id}
-                    sx={{
-                      margin: "0.25em 0",
-                      marginRight: "0.25em",
-                      color:
-                        stakeholder.inactiveTemporary || stakeholder.inactive
-                          ? CLOSED_COLOR
-                          : category.id === FOOD_PANTRY_CATEGORY_ID
-                          ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
-                          : category.id === MEAL_PROGRAM_CATEGORY_ID
-                          ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
-                          : "#000",
-                    }}
-                  >
-                    {category.name}
-                  </Typography>
-                ))}
+              {stakeholder.categories.map((category) => (
+                <Typography
+                  variant="body2"
+                  fontStyle="italic"
+                  key={stakeholder.id + category.id}
+                  sx={{
+                    margin: "0.25em 0",
+                    marginRight: "0.25em",
+                    color:
+                      stakeholder.inactiveTemporary || stakeholder.inactive
+                        ? CLOSED_COLOR
+                        : category.id === FOOD_PANTRY_CATEGORY_ID
+                        ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
+                        : category.id === MEAL_PROGRAM_CATEGORY_ID
+                        ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
+                        : "#000",
+                  }}
+                >
+                  {category.name}
+                </Typography>
+              ))}
             </Box>
             <Box textAlign="left">
               <Typography

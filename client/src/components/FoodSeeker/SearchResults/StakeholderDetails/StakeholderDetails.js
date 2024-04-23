@@ -249,31 +249,29 @@ const StakeholderDetails = () => {
               {selectedOrganization.city} {selectedOrganization.zip}
             </Typography>
             <Box textAlign="left">
-              {selectedOrganization.categories
-                .filter((c) => c.isForFoodSeeker) // Only show categories that are "for food seekers"
-                .map((category) => (
-                  <Typography
-                    variant="body1"
-                    component="p"
-                    fontStyle="italic"
-                    key={selectedOrganization.id + category.id}
-                    sx={{
-                      margin: "0.25em 0",
-                      marginRight: "0.25em",
-                      color:
-                        selectedOrganization.inactiveTemporary ||
-                        selectedOrganization.inactive
-                          ? CLOSED_COLOR
-                          : category.id === FOOD_PANTRY_CATEGORY_ID
-                          ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
-                          : category.id === MEAL_PROGRAM_CATEGORY_ID
-                          ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
-                          : "#000",
-                    }}
-                  >
-                    {category.name}
-                  </Typography>
-                ))}
+              {selectedOrganization.categories.map((category) => (
+                <Typography
+                  variant="body1"
+                  component="p"
+                  fontStyle="italic"
+                  key={selectedOrganization.id + category.id}
+                  sx={{
+                    margin: "0.25em 0",
+                    marginRight: "0.25em",
+                    color:
+                      selectedOrganization.inactiveTemporary ||
+                      selectedOrganization.inactive
+                        ? CLOSED_COLOR
+                        : category.id === FOOD_PANTRY_CATEGORY_ID
+                        ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
+                        : category.id === MEAL_PROGRAM_CATEGORY_ID
+                        ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
+                        : "#000",
+                  }}
+                >
+                  {category.name}
+                </Typography>
+              ))}
             </Box>
 
             <Box textAlign="left">

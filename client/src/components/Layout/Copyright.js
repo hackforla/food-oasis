@@ -1,9 +1,15 @@
 import { Link } from "@mui/material";
 
 const Copyright = () => (
-  <div>
-    {`Copyright ©${new Date().getFullYear()} -`}
-    <Link color="inherit" href="https://hackforla.org/">
+  <div
+    style={{
+      fontSize: "16px",
+      textTransform: "uppercase",
+      margin: ".4em 0 0 1.5em",
+    }}
+  >
+    {`Copyright ©2020-${new Date().getFullYear()} -`}
+    <Link style={{ color: "#1b1b1b" }} href="https://hackforla.org/">
       Hack for LA
     </Link>
   </div>

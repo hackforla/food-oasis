@@ -9,12 +9,13 @@ export const suggestionPostRequestSchema: JSONSchemaType<
   properties: {
     stakeholderId: {
       type: "integer",
-      anyOf: [{ minimum: 1 }, { type: "null" }],
+      nullable: true,
+      anyOf: [{ minimum: 1 }, { type: ["integer", "null"] }],
     },
     adminNotes: {
       type: "string",
     },
-    suggestionStatusId: { type: "integer" },
+    suggestionStatusId: { type: "integer", nullable: true },
     name: {
       type: "string",
       minLength: 1,

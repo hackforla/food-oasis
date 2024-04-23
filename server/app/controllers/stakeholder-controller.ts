@@ -175,12 +175,15 @@ const remove: RequestHandler<
 
 const requestAssignment: RequestHandler<
   never,
-  number,
+  { error: string },
   RequestAssignmentParams,
   never
 > = async (req, res) => {
   try {
-    await stakeholderService.requestAssignment(req.body);
+    const count = await stakeholderService.requestAssignment(req.body);
+    if (count === 0) {
+      res.status(404).send({ error: "No stakeholders found" });
+    }
     res.sendStatus(200);
   } catch (err) {
     console.error(err);

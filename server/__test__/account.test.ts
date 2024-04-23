@@ -28,6 +28,7 @@ const accounts = [
     isSecurityAdmin: false,
     isDataEntry: false,
     isCoordinator: false,
+    features: [],
   },
   {
     id: 110,
@@ -45,6 +46,7 @@ const accounts = [
     isSecurityAdmin: false,
     isDataEntry: true,
     isCoordinator: false,
+    features: [],
   },
   {
     id: 171,
@@ -62,6 +64,7 @@ const accounts = [
     isSecurityAdmin: false,
     isDataEntry: true,
     isCoordinator: false,
+    features: [],
   },
   {
     id: 108,
@@ -79,6 +82,7 @@ const accounts = [
     isSecurityAdmin: true,
     isDataEntry: true,
     isCoordinator: true,
+    features: [],
   },
   {
     id: 109,
@@ -96,6 +100,7 @@ const accounts = [
     isSecurityAdmin: true,
     isDataEntry: false,
     isCoordinator: false,
+    features: [],
   },
 ];
 function seedAccount() {
@@ -571,6 +576,7 @@ describe("Account", () => {
           isGlobalAdmin: true,
           isGlobalReporting: true,
           role: "admin",
+          features: [],
         },
       })
     );

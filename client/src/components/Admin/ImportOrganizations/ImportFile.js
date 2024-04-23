@@ -112,7 +112,7 @@ const ImportFile = () => {
         setToast({
           message: "File successfully imported!",
         });
-        navigate("/verificationadmin");
+        navigate("/admin/verificationadmin");
       })
       .catch((err) => {
         console.error(err.message);

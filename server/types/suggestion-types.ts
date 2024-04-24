@@ -1,6 +1,6 @@
 export interface Suggestion {
-  id: number | null;
-  name: string | null;
+  id: number;
+  name: string;
   address1: string;
   address2: string;
   city: string;
@@ -15,7 +15,7 @@ export interface Suggestion {
   hours: string;
   category: string;
   suggestionStatusId: number;
-  adminNotes?: string;
-  stakeholderId: number | null;
+  adminNotes: string;
+  stakeholderId: number;
   tenantId: number;
 }

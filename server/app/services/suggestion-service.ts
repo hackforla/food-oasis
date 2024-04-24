@@ -1,6 +1,7 @@
 import db from "./db";
 import camelcaseKeys from "camelcase-keys";
 import { Suggestion } from "../../types/suggestion-types";
+import { SuggestionPostFields } from "../validation-schema/suggestion-schema";
 
 const selectAll = async (params: {
   statusIds: string[];
@@ -43,8 +44,7 @@ const selectById = async (suggestionId: string): Promise<Suggestion> => {
   return camelcaseKeys(row);
 };
 
-const insert = async (model: Suggestion): Promise<{ id: number }> => {
-  model.suggestionStatusId = 1;
+const insert = async (model: SuggestionPostFields): Promise<{ id: number }> => {
   const sql = `insert into suggestion (
     name, address_1, address_2,
     city, state, zip,
@@ -59,7 +59,7 @@ const insert = async (model: Suggestion): Promise<{ id: number }> => {
     $<hours>, $<category>, $<tenantId>, $<stakeholderId>
   )
   returning id`;
-  const result = await db.one(sql, model);
+  const result = await db.one(sql, { ...model, suggestionStatusId: 1 });
   return { id: result.id };
 };
 

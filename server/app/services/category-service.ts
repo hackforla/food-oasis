@@ -4,7 +4,7 @@ import camelcaseKeys from "camelcase-keys";
 
 const selectAll = async (): Promise<Category[]> => {
   const sql = `
-    select id, name, display_order, inactive
+    select id, name, display_order, inactive, is_for_food_seeker
     from category
     order by name
   `;
@@ -13,7 +13,7 @@ const selectAll = async (): Promise<Category[]> => {
 };
 
 const selectById = async (id: string): Promise<Category> => {
-  const sql = `select id, name, display_order as displayOrder, inactive
+  const sql = `select id, name, display_order as displayOrder, inactive, is_for_food_seeker
    from category where id = $<id>`;
 
   const row: Category = await db.one(sql, { id: Number(id) });

@@ -64,7 +64,7 @@ const ResetPasswordEmailSent = (props) => {
           in your inbox, please check your junk/spam folder.
         </Typography>
         <Box sx={{ mt: 2, mb: 2 }}>
-          <Button variant="contained" onClick={() => navigate("/login")}>
+          <Button variant="contained" onClick={() => navigate("/admin/login")}>
             Back to login
           </Button>
         </Box>

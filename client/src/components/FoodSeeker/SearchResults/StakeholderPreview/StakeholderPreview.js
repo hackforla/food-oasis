@@ -1,6 +1,5 @@
-import { Box, Button, Chip, Stack, Typography } from "@mui/material";
+import { Box, Button, Chip, Divider, Stack, Typography } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
-import { CLOSED_COLOR, ORGANIZATION_COLORS } from "constants/map";
 import {
   FOOD_PANTRY_CATEGORY_ID,
   MEAL_PROGRAM_CATEGORY_ID,
@@ -13,9 +12,26 @@ import {
   formatDatewTimeZoneWeekdayShort,
   formatDatewTimeZonehhmmss,
   getGoogleMapsDirectionsUrl,
+  isCurrentDayAndWeek,
+  hoursSort,
+  nextOpenTime,
+  standardTime,
+  isAlmostClosed,
+  isAlmostOpen,
+  calculateMinutesToClosing,
+  calculateMinutesToOpening,
 } from "helpers";
 
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import StakeholderIcon from "images/stakeholderIcon";
+import ForkIcon from "icons/ForkIcon";
+import AppleIcon from "icons/AppleIcon";
+import SubdirectoryArrowRightIcon from "@mui/icons-material/SubdirectoryArrowRight";
+import PhoneIcon from "@mui/icons-material/Phone";
 import PropTypes from "prop-types";
 import { useLocation, useNavigate } from "react-router-dom";
 import * as analytics from "services/analytics";
@@ -24,6 +40,7 @@ import {
   useSearchCoordinates,
   useUserCoordinates,
 } from "../../../../appReducer";
+import { success } from "../../../../theme/palette";
 
 const isLastOccurrenceInMonth = (tenantTimeZone) => {
   const currentDate = new Date();
@@ -88,33 +105,7 @@ export const stakeholdersDaysHours = (
   }
 };
 
-const calculateMinutesToClosing = (hours, tenantTimeZone) => {
-  const currentTime = formatDatewTimeZonehhmmss(new Date(), tenantTimeZone);
-
-  function calculateTimeDifference(time1, time2) {
-    // Create Date objects for both times with a fixed date (e.g., 1970-01-01)
-    const date1 = new Date(`1970-01-01T${time1}Z`);
-    const date2 = new Date(`1970-01-01T${time2}Z`);
-
-    // Calculate the difference in milliseconds
-    const differenceInMilliseconds = date1.getTime() - date2.getTime();
-    // Convert the difference to minutes
-    const differenceInMinutes = Math.round(
-      differenceInMilliseconds / (1000 * 60)
-    );
-
-    return differenceInMinutes;
-  }
-  return calculateTimeDifference(hours[0].close, currentTime);
-};
-
-const isAlmostClosed = (hours, tenantTimeZone) => {
-  const minutesToCloseFlag = 60;
-  const minutesToClosing = calculateMinutesToClosing(hours, tenantTimeZone);
-  return minutesToClosing <= minutesToCloseFlag;
-};
-
-const StakeholderPreview = ({ stakeholder }) => {
+const StakeholderPreview = ({ stakeholder, onSelect, isDesktop }) => {
   const dispatch = useAppDispatch();
   const searchCoordinates = useSearchCoordinates();
   const userCoordinates = useUserCoordinates();
@@ -125,6 +116,7 @@ const StakeholderPreview = ({ stakeholder }) => {
   const location = useLocation();
 
   const handleSelectOrganization = (organization) => {
+    onSelect();
     dispatch({ type: "SELECTED_ORGANIZATION_UPDATED", organization });
     analytics.postEvent("selectOrganization", {
       id: organization.id,
@@ -154,15 +146,25 @@ const StakeholderPreview = ({ stakeholder }) => {
     isAlmostClosedFlag &&
     calculateMinutesToClosing(stakeholderHours, tenantTimeZone);
 
+  const isAlmostOpenFlag =
+    !isOpenFlag && isAlmostOpen(stakeholderHours, tenantTimeZone);
+  const minutesToOpening =
+    isAlmostOpenFlag &&
+    calculateMinutesToOpening(stakeholderHours, tenantTimeZone);
+
   return (
     <Grid2
       container
       spacing={0}
       key={stakeholder.id}
       sx={{
-        width: "100%",
         minHeight: "6rem",
-        padding: "0.5rem",
+        padding: isDesktop ? "1.5rem 2.625rem" : "1.5rem 0",
+        margin: "14px 23px",
+        "&:hover": {
+          boxShadow: isDesktop ? "0 4px 20px rgb(0 22 100 / 20%)" : 0,
+        },
+        borderRadius: "10px",
       }}
     >
       <Grid2
@@ -175,71 +177,82 @@ const StakeholderPreview = ({ stakeholder }) => {
           direction="column"
           justifyContent="flex-start"
           alignItems="center"
-          sx={{ marginTop: ".2rem", height: "100%" }}
+          sx={{ marginTop: ".2rem", marginRight: "1rem", height: "100%" }}
         >
           <StakeholderIcon stakeholder={stakeholder} />
-          {stakeholder.distance ? (
-            <Typography variant="body2" component="p">
-              {stakeholder.distance >= 10
-                ? stakeholder.distance.toString().substring(0, 3).padEnd(4, "0")
-                : stakeholder.distance.toString().substring(0, 3)}{" "}
-              mi
-            </Typography>
-          ) : null}
         </Stack>
       </Grid2>
 
       <Grid2 xs={10}>
         <Stack direction="column" xs={10}>
-          <Stack
-            sx={{ cursor: "pointer" }}
-            onClick={() => handleSelectOrganization(stakeholder)}
-          >
-            <Typography variant="h6" component="h2" align="left">
+          <Stack sx={{ cursor: "pointer" }}>
+            <Typography
+              variant="h4"
+              component="h2"
+              align="left"
+              fontWeight="bold"
+              onClick={() => handleSelectOrganization(stakeholder)}
+            >
               {stakeholder.name}
             </Typography>
-            <Box textAlign="left">
-              {stakeholder.categories.map((category) => (
-                <Typography
-                  variant="body2"
-                  fontStyle="italic"
-                  key={stakeholder.id + category.id}
-                  sx={{
-                    margin: "0.25em 0",
-                    marginRight: "0.25em",
-                    color:
-                      stakeholder.inactiveTemporary || stakeholder.inactive
-                        ? CLOSED_COLOR
-                        : category.id === FOOD_PANTRY_CATEGORY_ID
-                        ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
-                        : category.id === MEAL_PROGRAM_CATEGORY_ID
-                        ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
-                        : "#000",
-                  }}
-                >
-                  {category.name}
-                </Typography>
-              ))}
-            </Box>
-            <Box textAlign="left">
-              <Typography
-                variant="body2"
-                component="p"
-                fontStyle="italic"
-                key={stakeholder.id}
-                sx={{
-                  alignSelf: "flex-start",
-                  margin: "0 0.25em 0.5em 0",
-                }}
-              >
-                {stakeholder.foodTypes}
-              </Typography>
-            </Box>
+            <Stack
+              direction="row"
+              flexWrap="wrap"
+              marginTop="8px"
+              sx={{ gap: "16px" }}
+              onClick={() => handleSelectOrganization(stakeholder)}
+            >
+              {stakeholder.categories
+                .filter((c) => c.isForFoodSeeker)
+                .map((category, index) => (
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    spacing={1}
+                    useflexgap="true"
+                    key={`${index}-${category}`}
+                    sx={{
+                      order:
+                        category.id === MEAL_PROGRAM_CATEGORY_ID
+                          ? -1
+                          : undefined,
+                    }}
+                  >
+                    {category.id === FOOD_PANTRY_CATEGORY_ID ? (
+                      <AppleIcon />
+                    ) : category.id === MEAL_PROGRAM_CATEGORY_ID ? (
+                      <ForkIcon />
+                    ) : (
+                      ""
+                    )}
 
-            <Box textAlign="left">
+                    <Typography
+                      variant="body2"
+                      key={stakeholder.id + category.id}
+                      sx={{
+                        margin: "0.25em 0",
+                        marginRight: "0.25em",
+                        fontWeight: "600",
+                      }}
+                    >
+                      {category.name}
+                    </Typography>
+                  </Stack>
+                ))}
+            </Stack>
+
+            <Box
+              textAlign="left"
+              onClick={() => handleSelectOrganization(stakeholder)}
+            >
               {stakeholder.inactiveTemporary || stakeholder.inactive ? (
                 <Chip
                   color="inactiveButton"
+                  sx={{
+                    borderRadius: "6px",
+                    fontStyle: "normal",
+                    fontSize: "12px",
+                  }}
                   label={
                     stakeholder.inactiveTemporary
                       ? "Temporarily Closed"
@@ -250,24 +263,206 @@ const StakeholderPreview = ({ stakeholder }) => {
 
               {!(stakeholder.inactiveTemporary || stakeholder.inactive) && (
                 <>
-                  {isOpenFlag && <Chip color="success" label="OPEN NOW" />}
-                  {isAlmostClosedFlag && (
+                  {isOpenFlag && (
                     <Chip
-                      color="mealProgram"
-                      label={`Closing in ${minutesToClosing} minutes`}
+                      color="success"
+                      label="Open Now"
+                      sx={{
+                        borderRadius: "6px",
+                        fontStyle: "normal",
+                        fontSize: "12px",
+                        margin: "16px 16px 0 0",
+                      }}
                     />
                   )}
+
                   {showAllowWalkinsFlag && (
-                    <Chip label="Walk-Ins Allowed" color="primary" />
+                    <Chip
+                      label="Walk-Ins Allowed"
+                      color="primary"
+                      sx={{
+                        backgroundColor: "#2260FF",
+                        borderRadius: "6px",
+                        fontStyle: "normal",
+                        fontSize: "12px",
+                        margin: "16px 0 0",
+                      }}
+                    />
                   )}
                 </>
               )}
             </Box>
+            {stakeholder.hours && stakeholder.hours.length > 0 ? (
+              <Accordion
+                disableGutters
+                sx={{
+                  ".MuiAccordionSummary-root": {
+                    padding: "0px",
+                    minHeight: "0px",
+                    marginTop: "16px",
+                    alignItems: "flex-start",
+                  },
+                  ".MuiAccordionSummary-root.Mui-expanded": {
+                    minHeight: "0px",
+                  },
+                  boxShadow: "none",
+                  "&.MuiAccordion-root:before": {
+                    display: "none",
+                  },
+                  ".MuiAccordionDetails-root": { padding: "0px 6px 0px 0px" },
+                }}
+              >
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1-content"
+                  id="panel1-header"
+                  sx={{
+                    ".MuiAccordionSummary-content": {
+                      justifyContent: "space-between",
+                      margin: "0px",
+                      flexWrap: "wrap",
+                    },
+                  }}
+                >
+                  <Typography>
+                    Open{" "}
+                    {nextOpenTime(
+                      stakeholder.hours.sort(hoursSort),
+                      tenantTimeZone
+                    )}
+                  </Typography>
+
+                  <Typography
+                    color="#4A80F5"
+                    align="right"
+                    sx={{
+                      "&:hover": { textDecoration: "underline" },
+                    }}
+                  >
+                    More Hours
+                  </Typography>
+                  {isAlmostClosedFlag && (
+                    <Box
+                      textAlign="left"
+                      marginTop="4px"
+                      sx={{ flexBasis: "100%" }}
+                    >
+                      <Typography
+                        variant="body2"
+                        component="p"
+                        fontWeight="bold"
+                        color="#E00700"
+                        key={stakeholder.id}
+                      >
+                        {`Closing in ${minutesToClosing} minutes`}
+                      </Typography>
+                    </Box>
+                  )}
+
+                  {isAlmostOpenFlag && (
+                    <Box
+                      textAlign="left"
+                      marginTop="4px"
+                      sx={{ flexBasis: "100%" }}
+                    >
+                      <Typography
+                        variant="body2"
+                        component="p"
+                        fontWeight="bold"
+                        color={success}
+                        key={stakeholder.id}
+                      >
+                        {`Opening in ${minutesToOpening} minutes`}
+                      </Typography>
+                    </Box>
+                  )}
+                </AccordionSummary>
+                <AccordionDetails>
+                  {stakeholder.hours ? (
+                    <Stack>
+                      <Divider sx={{ margin: "8px 0px 4px" }} />
+                      {stakeholder.hours.sort(hoursSort).map((hour, index) => (
+                        <Stack
+                          direction="row"
+                          justifyContent="space-between"
+                          key={`${hour}-${index}`}
+                          marginTop="4px"
+                          sx={{
+                            ".MuiTypography-root": {
+                              fontWeight:
+                                index === 0 ||
+                                isCurrentDayAndWeek(tenantTimeZone, hour)
+                                  ? "bold"
+                                  : "",
+                            },
+                          }}
+                        >
+                          <Typography>
+                            {hour.week_of_month === -1
+                              ? "Last " + hour.day_of_week
+                              : hour.week_of_month === 1
+                              ? "1st " + hour.day_of_week
+                              : hour.week_of_month === 2
+                              ? "2nd " + hour.day_of_week
+                              : hour.week_of_month === 3
+                              ? "3rd " + hour.day_of_week
+                              : hour.week_of_month === 4
+                              ? "4th " + hour.day_of_week
+                              : hour.day_of_week}
+                          </Typography>
+                          <Typography>
+                            {standardTime(hour.open)} -{" "}
+                            {standardTime(hour.close)}
+                          </Typography>
+                        </Stack>
+                      ))}
+                    </Stack>
+                  ) : null}
+                </AccordionDetails>
+              </Accordion>
+            ) : (
+              <Stack
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                sx={{ marginTop: "16px" }}
+              >
+                <Typography>No hours on record</Typography>
+              </Stack>
+            )}
+            {stakeholder.foodTypes ? (
+              <Box
+                textAlign="left"
+                onClick={() => handleSelectOrganization(stakeholder)}
+              >
+                <Typography
+                  variant="body2"
+                  component="p"
+                  key={stakeholder.id}
+                  sx={{
+                    alignSelf: "flex-start",
+                    margin: "1em 0.25em 0.5em 0",
+                    fontSize: "1rem !important",
+                  }}
+                >
+                  {stakeholder.foodTypes}
+                </Typography>
+              </Box>
+            ) : (
+              ""
+            )}
           </Stack>
 
-          <Stack direction="row" sx={{ justifyContent: "space-between" }}>
+          <Stack
+            direction="row"
+            justifyContent="start"
+            spacing={1}
+            useflexgap="true"
+            sx={{ marginTop: "1em" }}
+          >
             <Button
               variant="gray"
+              startIcon={<SubdirectoryArrowRightIcon />}
+              size="large"
               onClick={() => {
                 analytics.postEvent("getDirections", {
                   id: stakeholder.id,
@@ -288,6 +483,8 @@ const StakeholderPreview = ({ stakeholder }) => {
             {mainNumber && (
               <Button
                 variant="gray"
+                startIcon={<PhoneIcon />}
+                size="large"
                 onClick={() => {
                   analytics.postEvent("dialPhone", {
                     id: stakeholder.id,
@@ -299,15 +496,6 @@ const StakeholderPreview = ({ stakeholder }) => {
                 Call
               </Button>
             )}
-
-            <Button
-              variant="gray"
-              disabled={stakeholder.inactive}
-              onClick={() => handleSelectOrganization(stakeholder)}
-            >
-              {/* <Typography variant="button">Details</Typography> */}
-              Details
-            </Button>
           </Stack>
         </Stack>
       </Grid2>
@@ -317,6 +505,7 @@ const StakeholderPreview = ({ stakeholder }) => {
 
 StakeholderPreview.propTypes = {
   stakeholder: PropTypes.object.isRequired,
+  onSelect: PropTypes.func,
 };
 
 export default StakeholderPreview;

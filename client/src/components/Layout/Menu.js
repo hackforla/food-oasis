@@ -35,7 +35,7 @@ export default function Menu() {
   const unAuthLinks = (
     <>
       <Divider />
-      <MenuItemLink key="login" to="/login" text="Volunteer Login">
+      <MenuItemLink key="login" to="/admin/login" text="Volunteer Login">
         Login
       </MenuItemLink>
     </>
@@ -79,17 +79,17 @@ export default function Menu() {
               <>
                 <MenuItemLink
                   key="organizationedit"
-                  to="/organizationedit"
+                  to="/admin/organizationedit"
                   text="Add New Organization"
                 />
                 <MenuItemLink
                   key="organizationimport"
-                  to="/organizationimport"
+                  to="/admin/organizationimport"
                   text="Import Organizations"
                 />
                 <MenuItemLink
                   key="verificationadmin"
-                  to="/verificationadmin"
+                  to="/admin/verificationadmin"
                   text="Verification Admin"
                 />
                 <Divider />
@@ -97,18 +97,27 @@ export default function Menu() {
             )}
             {user && user.isAdmin && (
               <>
-                <MenuItemLink key="tags" to="/tags" text="Tags" />
+                <MenuItemLink key="tags" to="/admin/tags" text="Tags" />
                 <MenuItemLink
                   key="parentorganizations"
-                  to="/parentorganizations"
+                  to="/admin/parentorganizations"
                   text="Parent Organizations"
                 />
                 <MenuItemLink
                   key="suggestions"
-                  to="/suggestions"
+                  to="/admin/suggestions"
                   text="Suggestions"
                 />
-                <MenuItemLink key="logins" to="/logins" text="User Logins" />
+                <MenuItemLink
+                  key="logins"
+                  to="/admin/logins"
+                  text="User Logins"
+                />
+                <MenuItemLink
+                  key="features"
+                  to="/admin/features"
+                  text="Features Flags"
+                />
                 <Divider />
               </>
             )}
@@ -117,7 +126,7 @@ export default function Menu() {
               <>
                 <MenuItemLink
                   key="verificationdashboard"
-                  to="/verificationdashboard"
+                  to="/admin/verificationdashboard"
                   text="My Dashboard"
                 />
                 <Divider />
@@ -127,7 +136,7 @@ export default function Menu() {
             {user && (user.isSecurityAdmin || user.isGlobalAdmin) && (
               <MenuItemLink
                 key="securityadmindashboard"
-                to="/securityadmindashboard"
+                to="/admin/securityadmindashboard"
                 text="Security Admin Dashboard"
               />
             )}

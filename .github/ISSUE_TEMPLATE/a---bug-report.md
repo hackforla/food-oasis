@@ -43,5 +43,5 @@ A clear and concise description of what the bug is, who it affects, how it affec
 #### Device configuration
 - Device: [e.g. type of smartphone, tablet, desktop computer]
 - OS version: [e.g. iOS, Android version #]
-- Browser [e.g. Chrome, Firefox, Safari, etc.]
-- Browser version [e.g. 22]
+- Browser: [e.g. Chrome, Firefox, Safari, etc.]
+- Browser version: [e.g. 22]

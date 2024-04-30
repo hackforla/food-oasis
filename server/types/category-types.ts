@@ -4,4 +4,5 @@ export interface Category {
   displayOrder: number;
   inactive: boolean;
   suggestionStatusId?: number;
+  isForFoodSeeker: boolean;
 }

@@ -13,6 +13,7 @@ import * as analytics from "services/analytics";
 import { tenantDetails } from "../../../../helpers/Configuration";
 import CategoryButton from "./CategoryButton";
 import SwitchViewsButton from "./SwitchViewsButton";
+import useFeatureFlag from "hooks/useFeatureFlag";
 
 const ResultsFilters = ({
   categoryIds,
@@ -26,6 +27,7 @@ const ResultsFilters = ({
   const { getUserLocation } = useGeolocation();
   const locationPermission = useLocationPermission();
   const [error, setError] = useState("");
+  const hasAdvancedFilterFeatureFlag = useFeatureFlag("advancedFilter");
 
   useEffect(() => {
     if (error && locationPermission === "granted") {
@@ -59,6 +61,7 @@ const ResultsFilters = ({
         borderTop: "1px solid lightgray",
         borderBottom: "1px solid lightgray",
         padding: "0.5rem 0",
+        zIndex: 2,
       }}
     >
       <Grid2
@@ -97,31 +100,34 @@ const ResultsFilters = ({
             alignItems: "center",
           }}
         >
-          <Grid2
-            container
-            xs={12}
-            sm={6}
-            spacing={1}
-            justifyContent={{ xs: "center", sm: "flex-start" }}
-          >
-            <Grid2 item>
-              <CategoryButton
-                icon="pantry"
-                onClick={togglePantry}
-                label="Pantries"
-                isSelected={isPantrySelected}
-              />
+          {!hasAdvancedFilterFeatureFlag && (
+            <Grid2
+              container
+              xs={12}
+              sm={6}
+              spacing={1}
+              justifyContent={{ xs: "center", sm: "flex-start" }}
+            >
+              <Grid2 item>
+                <CategoryButton
+                  icon="pantry"
+                  onClick={togglePantry}
+                  label="Pantries"
+                  isSelected={isPantrySelected}
+                />
+              </Grid2>
+              <Grid2 item>
+                <CategoryButton
+                  icon="meal"
+                  onClick={toggleMeal}
+                  label="Meals"
+                  isSelected={isMealsSelected}
+                  style={{ marginLeft: 5 }}
+                />
+              </Grid2>
             </Grid2>
-            <Grid2 item>
-              <CategoryButton
-                icon="meal"
-                onClick={toggleMeal}
-                label="Meals"
-                isSelected={isMealsSelected}
-                style={{ marginLeft: 5 }}
-              />
-            </Grid2>
-          </Grid2>
+          )}
+
           <Grid2 xs={12} sm={6}>
             <Stack
               direction="row"

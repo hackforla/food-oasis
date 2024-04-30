@@ -1,5 +1,10 @@
-export default function useFeatureFlag(flagName) {
-  const featureFlags = JSON.parse(process.env.REACT_APP_FEATURE_FLAGS || "[]");
+import { useUserContext } from "../contexts/userContext";
 
+export default function useFeatureFlag(flagName) {
+  const { user } = useUserContext();
+  if (!user || !user.features) {
+    return false;
+  }
+  const featureFlags = user.features;
   return featureFlags.includes(flagName);
 }

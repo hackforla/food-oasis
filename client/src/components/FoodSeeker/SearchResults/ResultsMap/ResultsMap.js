@@ -20,12 +20,14 @@ import { defaultViewport } from "helpers/Configuration";
 import useBreakpoints from "hooks/useBreakpoints";
 import useFeatureFlag from "hooks/useFeatureFlag";
 import "mapbox-gl/dist/mapbox-gl.css";
-import ReactMapGL, * as Map from "react-map-gl";
+import Map, { Layer, Marker, NavigationControl, Source } from "react-map-gl";
 import { useLocation, useNavigate } from "react-router-dom";
 import * as analytics from "services/analytics";
 import {
   DEFAULT_COORDINATES,
   useAppDispatch,
+  useFilterPanel,
+  useListPanel,
   useNeighborhood,
   useSearchCoordinates,
   useSelectedOrganization,
@@ -41,25 +43,28 @@ import {
 import { regionBorderStyle, regionFillStyle } from "./RegionHelpers";
 
 const ResultsMap = (
-  { stakeholders, categoryIds, toggleCategory, loading, searchMapArea },
+  { stakeholders, categoryIds, toggleCategory, loading },
   ref
 ) => {
   const mapRef = useRef();
   const [markersLoaded, setMarkersLoaded] = useState(false);
+  const [cursor, setCursor] = useState("auto");
   const searchCoordinates = useSearchCoordinates();
   const selectedOrganization = useSelectedOrganization();
   const navigate = useNavigate();
   const location = useLocation();
   const { isMobile } = useBreakpoints();
+  const isListPanelOpen = useListPanel();
+  const isFilterPanelOpen = useFilterPanel();
 
   const longitude =
     searchCoordinates?.longitude ||
     selectedOrganization?.longitude ||
     DEFAULT_COORDINATES.longitude;
   const latitude =
-    searchCoordinates?.latitude ||
-    selectedOrganization?.latitude ||
-    DEFAULT_COORDINATES.latitude;
+    searchCoordinates?.latitude || selectedOrganization?.latitude || isMobile
+      ? DEFAULT_COORDINATES.latitude - 0.06
+      : DEFAULT_COORDINATES.latitude;
   const userCoordinates = useUserCoordinates();
   const [viewport, setViewport] = useState({
     latitude,
@@ -72,6 +77,10 @@ const ResultsMap = (
   const startIconCoordinates = searchCoordinates || userCoordinates;
   const hasAdvancedFilterFeatureFlag = useFeatureFlag("advancedFilter");
 
+  const onMouseEnter = useCallback(() => setCursor("pointer"), []);
+  const onMouseLeave = useCallback(() => setCursor("auto"), []);
+  const [interactiveLayerIds, setInteractiveLayerIds] = useState(["nonexist"]);
+
   useEffect(() => {
     analytics.postEvent("showMap");
   }, []);
@@ -79,51 +88,47 @@ const ResultsMap = (
   useEffect(() => {
     setViewport((viewport) => ({
       ...viewport,
-      latitude,
+      latitude: latitude,
       longitude,
     }));
-  }, [searchCoordinates, longitude, latitude]);
+  }, [searchCoordinates, longitude, latitude, isMobile]);
 
   const onLoad = useCallback(async () => {
     const map = mapRef.current.getMap();
     await loadMarkerIcons(map);
     setMarkersLoaded(true);
+    setInteractiveLayerIds([MARKERS_LAYER_ID]);
   }, []);
 
-  const onClick = useCallback(
-    (e) => {
-      if (!e.features || !e.features.length) {
-        dispatch({ type: "RESET_SELECTED_ORGANIZATION" });
-      } else if (stakeholders) {
-        const { id } = e.features[0];
-        const selectedOrganization = stakeholders.find((sh) => sh.id === id);
-        dispatch({
-          type: "SELECTED_ORGANIZATION_UPDATED",
-          organization: selectedOrganization,
-        });
-        analytics.postEvent("selectOrganization", {
-          id: selectedOrganization.id,
-          name: selectedOrganization.name,
-        });
+  const onClick = (e) => {
+    mapRef.current?.flyTo({
+      center: [
+        isListPanelOpen && !isMobile ? e.lngLat.lng - 0.08 : e.lngLat.lng,
+        isMobile ? e.lngLat.lat - 0.03 : e.lngLat.lat,
+      ],
+      duration: 2000,
+    });
+    if (!e.features || !e.features.length) {
+      dispatch({ type: "RESET_SELECTED_ORGANIZATION" });
+    } else if (stakeholders) {
+      const { id } = e.features[0];
+      const selectedOrganization = stakeholders.find((sh) => sh.id === id);
+      dispatch({
+        type: "SELECTED_ORGANIZATION_UPDATED",
+        organization: selectedOrganization,
+      });
+      analytics.postEvent("selectOrganization", {
+        id: selectedOrganization.id,
+        name: selectedOrganization.name,
+      });
 
-        //Update url history
-        const name = selectedOrganization.name
-          .toLowerCase()
-          .replaceAll(" ", "_");
-        navigate(
-          `${location.pathname}?latitude=${selectedOrganization.latitude}&longitude=${selectedOrganization.longitude}&org=${name}&id=${selectedOrganization.id}`
-        );
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [stakeholders, dispatch]
-  );
-
-  const interactiveLayerIds = markersLoaded ? [MARKERS_LAYER_ID] : undefined;
-
-  const getCursor = useCallback(({ isHovering, isDragging }) => {
-    return isDragging ? "grabbing" : isHovering ? "pointer" : "grab";
-  }, []);
+      //Update url history
+      const name = selectedOrganization.name.toLowerCase().replaceAll(" ", "_");
+      navigate(
+        `${location.pathname}?latitude=${selectedOrganization.latitude}&longitude=${selectedOrganization.longitude}&org=${name}&id=${selectedOrganization.id}`
+      );
+    }
+  };
 
   const markersGeojson = useMarkersGeojson({
     stakeholders,
@@ -146,28 +151,44 @@ const ResultsMap = (
           dimensions: { width, height },
         };
       },
+      flyTo: ({ latitude, longitude }) => {
+        mapRef.current?.flyTo({
+          center: [
+            isListPanelOpen && !isMobile ? longitude - 0.08 : longitude,
+            isMobile ? latitude - 0.03 : latitude,
+          ],
+          duration: 2000,
+        });
+      },
     }),
-    []
+    [isMobile, isListPanelOpen]
   );
+
+  const listPanelLeftPostion = isListPanelOpen ? 524 : 0;
+  const filterPanelLeftPostion = isFilterPanelOpen ? 340 : 0;
 
   return (
     <div style={{ position: "relative", height: "100%" }}>
-      <ReactMapGL
+      <Map
         ref={mapRef}
-        mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-        mapStyle={MAPBOX_STYLE}
         {...viewport}
-        onViewportChange={setViewport}
+        onMove={(e) => setViewport(e.viewState)}
+        mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+        mapStyle={MAPBOX_STYLE}
+        draggable={true}
         onLoad={onLoad}
+        interactive={true}
         onClick={onClick}
         interactiveLayerIds={interactiveLayerIds}
-        getCursor={getCursor}
-        width="100%"
-        height="100%"
-        style={{ position: "relative" }}
+        cursor={cursor}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
       >
+        {!isMobile && (
+          <NavigationControl showCompass={false} style={{ top: 8, right: 8 }} />
+        )}
         {startIconCoordinates && (
-          <Map.Marker
+          <Marker
             longitude={startIconCoordinates.longitude}
             latitude={startIconCoordinates.latitude}
             offsetTop={-50}
@@ -175,49 +196,45 @@ const ResultsMap = (
             anchor="bottom"
           >
             <StartIcon />
-          </Map.Marker>
-        )}
-        {!isMobile && (
-          <Map.NavigationControl
-            showCompass={false}
-            style={{ top: 8, right: 8 }}
-          />
+          </Marker>
         )}
         {markersLoaded && (
-          <Map.Source type="geojson" data={markersGeojson}>
-            <Map.Layer {...markersLayerStyles} />
-          </Map.Source>
+          <Source type="geojson" data={markersGeojson}>
+            <Layer {...markersLayerStyles} />
+          </Source>
         )}
         {regionGeoJSON && (
-          <Map.Source id="my-data" type="geojson" data={regionGeoJSON}>
-            <Map.Layer {...regionFillStyle} />
-            <Map.Layer {...regionBorderStyle} />
-          </Map.Source>
+          <Source id="my-data" type="geojson" data={regionGeoJSON}>
+            <Layer {...regionFillStyle} />
+            <Layer {...regionBorderStyle} />
+          </Source>
         )}
-      </ReactMapGL>
-      <Grid
-        container={isMobile}
-        wrap={isMobile ? "nowrap" : undefined}
-        position="absolute"
-        display="inline-flex"
-        alignItems="flex-start"
-        sx={{
-          overflow: "auto",
-          gap: "0.5rem",
-          padding: isMobile ? "0 0 0.3rem 0.75rem" : "0 0 0.3rem 2.25rem",
-          scrollbarWidth: "none",
-          position: "absolute",
-          top: 0,
-          left: 0,
-        }}
-      >
-        {!loading && hasAdvancedFilterFeatureFlag && (
+      </Map>
+      {!loading && hasAdvancedFilterFeatureFlag && (
+        <Grid
+          container={isMobile}
+          wrap={isMobile ? "nowrap" : undefined}
+          position="absolute"
+          display="inline-flex"
+          alignItems="flex-start"
+          sx={{
+            overflow: "auto",
+            gap: "0.5rem",
+            padding: isMobile ? "0 0 0.3rem 0.75rem" : "0 0 0.3rem 2.25rem",
+            scrollbarWidth: "none",
+            top: 0,
+            left: isMobile
+              ? 0
+              : `${listPanelLeftPostion + filterPanelLeftPostion}px`,
+            transition: isMobile ? undefined : "left .5s ease-in-out",
+          }}
+        >
           <AdvancedFilters
             categoryIds={categoryIds}
             toggleCategory={toggleCategory}
           />
-        )}
-      </Grid>
+        </Grid>
+      )}
     </div>
   );
 };
@@ -228,7 +245,6 @@ ResultsMap.propTypes = {
   stakeholders: PropTypes.arrayOf(PropTypes.object),
   categoryIds: PropTypes.any,
   loading: PropTypes.bool,
-  searchMapArea: PropTypes.any,
 };
 
 const StartIcon = () => {

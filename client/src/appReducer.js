@@ -109,6 +109,15 @@ function noKnownEligibilityRequirementsFilterReducer(state, action) {
   }
 }
 
+function listPanelReducer(state, action) {
+  switch (action.type) {
+    case "TOGGLE_LIST_PANEL":
+      return action.listPanel;
+    default:
+      return state;
+  }
+}
+
 export function appReducer(state, action) {
   return {
     defaultCoordinate: defaultCoordinatesReducer(
@@ -137,6 +146,7 @@ export function appReducer(state, action) {
         state.noKnownEligibilityRequirementsFilter,
         action
       ),
+    listPanel: listPanelReducer(state.listPanel, action),
   };
 }
 
@@ -152,6 +162,7 @@ export function getInitialState() {
     filterPanel: false,
     openTimeFilter: { radio: "Show All", day: "", time: "" },
     noKnownEligibilityRequirementsFilter: false,
+    listPanel: true,
   };
 }
 
@@ -233,4 +244,9 @@ export function useOpenTimeFilter() {
 export function useNoKnownEligibilityRequirementsFilter() {
   const { noKnownEligibilityRequirementsFilter } = useAppState();
   return noKnownEligibilityRequirementsFilter;
+}
+
+export function useListPanel() {
+  const { listPanel } = useAppState();
+  return listPanel;
 }

@@ -14,48 +14,47 @@ const overlay = {
 };
 
 const MobileLayout = ({ filters, map, list, showList }) => {
-  const [position, setPosition] = useState();
   const filterPanelOpen = useFilterPanel();
+  const initialY = showList ? 5 : 57;
+  const [position, setPosition] = useState({
+    x: 0,
+    y: initialY * (window.innerHeight / 100),
+  });
 
   useEffect(() => {
-    if (!showList) {
-      setPosition({
-        x: 0,
-        y: 60 * (window.innerHeight / 100),
-      });
-    } else {
-      setPosition({
-        x: 0,
-        y: 10,
-      });
-    }
-  }, [showList]);
-  useEffect(() => {
+    let newY;
     if (filterPanelOpen) {
-      setPosition({
-        x: 0,
-        y: window.innerHeight,
-      });
+      newY = 100;
     } else {
-      setPosition({
-        x: 0,
-        y: 60,
-      });
+      newY = showList ? 5 : 57;
     }
-  }, [filterPanelOpen]);
+    setPosition({ x: 0, y: newY * (window.innerHeight / 100) });
+  }, [showList, filterPanelOpen]);
 
-  // Define the bounds for vertical dragging
-  const minY = 50;
+  const handleStop = (e, ui) => {
+    const windowHeight = window.innerHeight / 100;
+    let newY;
+    if (ui.y < 20 * windowHeight) {
+      newY = 5;
+    } else if (ui.y > 20 * windowHeight && ui.y < 40 * windowHeight) {
+      newY = 25;
+    } else if (ui.y > 40 * windowHeight) {
+      newY = 57;
+    }
+    setPosition({ x: 0, y: newY * windowHeight });
+  };
+
+  const minY = 60;
 
   return (
     <>
       {filters}
       <Box
         sx={{
-          height: "100%",
+          height: window.innerHeight,
           display: "flex",
           flexDirection: "column",
-          overflow: "auto",
+          overflow: "hidden",
           position: "relative",
         }}
       >
@@ -63,11 +62,9 @@ const MobileLayout = ({ filters, map, list, showList }) => {
         {list && (
           <Draggable
             position={position}
-            onDrag={(e, ui) => {
-              setPosition({ x: 0, y: ui.y });
-            }}
+            onStop={handleStop}
             handle=".handle"
-            bounds={{ top: minY, bottom: minY * (window.innerHeight / 100) }}
+            bounds={{ top: 0, bottom: minY * (window.innerHeight / 100) }}
             defaultPosition={{ x: 0, y: minY * (window.innerHeight / 100) }}
             axis="y"
             sx={{
@@ -78,7 +75,7 @@ const MobileLayout = ({ filters, map, list, showList }) => {
           >
             <Box sx={overlay}>
               <Grid container spacing={0}>
-                <Grid xs={6}>
+                <Grid xs={6} item>
                   <div>
                     <a
                       target="_blank"
@@ -138,7 +135,7 @@ const MobileLayout = ({ filters, map, list, showList }) => {
                     </a>
                   </div>
                 </Grid>
-                <Grid xs={6}>
+                <Grid xs={6} item>
                   <AttributionInfo />
                 </Grid>
               </Grid>

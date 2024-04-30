@@ -106,18 +106,20 @@ export default function Button(theme) {
           },
         },
         gray: {
-          padding: "6px 12px",
+          padding: "4px 16px",
           color: "#313233",
+          textTransform: "none",
           backgroundColor: "#FFFFFF",
           borderStyle: "solid",
           borderWidth: "1px",
           borderColor: "#999999",
-          fontSize: ".8125rem",
+          borderRadius: "10px",
+          fontSize: "1rem",
           "@media (min-width:600px)": {
-            fontSize: "0.8125rem",
+            fontSize: "1rem",
           },
           "&:hover": {
-            backgroundColor: "#EFEFEF",
+            backgroundColor: "#E2E5EE",
           },
           "&:active": {
             backgroundColor: "#EFEFEF",

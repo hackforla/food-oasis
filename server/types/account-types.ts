@@ -16,6 +16,7 @@ export interface Account extends User {
   isSecurityAdmin: boolean;
   isDataEntry: boolean;
   isCoordinator: boolean;
+  features: string[];
 }
 
 export interface RegisterFields extends User {

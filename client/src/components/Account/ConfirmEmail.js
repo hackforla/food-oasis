@@ -64,7 +64,7 @@ const ConfirmEmail = (props) => {
       case "loading":
         return <div>&ldquo;Confirming Email...&ldquo;</div>;
       case "success":
-        return <Navigate to={`/login/${confirmResult.email}`} />;
+        return <Navigate to={`/admin/login/${confirmResult.email}`} />;
       case "emailSent":
         return (
           <p>

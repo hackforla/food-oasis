@@ -65,6 +65,7 @@ const DetailText = styled(Typography)(({ theme }) => ({
   component: "p",
   textAlign: "left",
   marginBottom: "16px",
+  whiteSpace: "pre-wrap",
   overflowWrap: "break-word",
   "& a": {
     color: theme.palette.link.normal,

@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 import Draggable from "react-draggable";
 import { useFilterPanel } from "appReducer";
 import AttributionInfo from "../AttributionInfo";
+import { 
+  useIsListPanelVisible,
+} from '../../../../appReducer'
 
 const overlay = {
   position: "absolute",
@@ -20,6 +23,17 @@ const MobileLayout = ({ filters, map, list, showList }) => {
     x: 0,
     y: initialY * (window.innerHeight / 100),
   });
+
+  const isListPanelVisible = useIsListPanelVisible()
+
+
+  // List goes up when clicking the map
+  useEffect(() => {
+    setPosition({
+      x: 0,
+      y: initialY * (window.innerHeight / 100),
+    })
+  }, [isListPanelVisible])
 
   useEffect(() => {
     let newY;

@@ -1,4 +1,4 @@
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import Draggable from "react-draggable";
 import { useFilterPanel } from "appReducer";
@@ -6,6 +6,7 @@ import AttributionInfo from "../AttributionInfo";
 import { 
   useIsListPanelVisible,
 } from '../../../../appReducer'
+import useFeatureFlag from "hooks/useFeatureFlag";
 
 const overlay = {
   position: "absolute",
@@ -19,6 +20,8 @@ const overlay = {
 const MobileLayout = ({ filters, map, list, showList }) => {
   const filterPanelOpen = useFilterPanel();
   const initialY = showList ? 5 : 57;
+  const hasAdvancedFilterFeatureFlag = useFeatureFlag("advancedFilter");
+
   const [position, setPosition] = useState({
     x: 0,
     y: initialY * (window.innerHeight / 100),
@@ -39,17 +42,19 @@ const MobileLayout = ({ filters, map, list, showList }) => {
     let newY;
     if (filterPanelOpen) {
       newY = 100;
+    } else if (hasAdvancedFilterFeatureFlag) {
+      newY = showList ? ((100 / window.innerHeight) * 60) : 57;
     } else {
       newY = showList ? 5 : 57;
     }
     setPosition({ x: 0, y: newY * (window.innerHeight / 100) });
-  }, [showList, filterPanelOpen]);
+  }, [showList, filterPanelOpen, hasAdvancedFilterFeatureFlag]);
 
   const handleStop = (e, ui) => {
     const windowHeight = window.innerHeight / 100;
     let newY;
     if (ui.y < 20 * windowHeight) {
-      newY = 5;
+      newY = hasAdvancedFilterFeatureFlag ? (100 / window.innerHeight) * 60 : 5;
     } else if (ui.y > 20 * windowHeight && ui.y < 40 * windowHeight) {
       newY = 25;
     } else if (ui.y > 40 * windowHeight) {
@@ -89,7 +94,7 @@ const MobileLayout = ({ filters, map, list, showList }) => {
           >
             <Box sx={overlay}>
               <Grid container spacing={0}>
-                <Grid xs={6} item>
+                <Stack>
                   <div>
                     <a
                       target="_blank"
@@ -148,10 +153,12 @@ const MobileLayout = ({ filters, map, list, showList }) => {
                       </svg>
                     </a>
                   </div>
-                </Grid>
-                <Grid xs={6} item>
+                  <div
+                    style={{ display: "flex", justifyContent: "flex-start", paddingTop: "2.23px" }}
+                  >
                   <AttributionInfo />
-                </Grid>
+                  </div>
+                </Stack>
               </Grid>
               <Box
                 sx={{

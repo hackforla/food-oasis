@@ -108,6 +108,7 @@ const ResultsMap = (
       ],
       duration: 2000,
     });
+    dispatch({ type:'TOGGLE_LIST_PANEL'})
     if (!e.features || !e.features.length) {
       dispatch({ type: "RESET_SELECTED_ORGANIZATION" });
     } else if (stakeholders) {

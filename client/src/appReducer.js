@@ -118,6 +118,16 @@ function listPanelReducer(state, action) {
   }
 }
 
+function isListPanelVisibleReducer(state, action) {
+  switch (action.type) {
+    case "TOGGLE_LIST_PANEL":
+      return !state; // Toggle the state
+    default:
+      return state;
+  }
+}
+
+
 export function appReducer(state, action) {
   return {
     defaultCoordinate: defaultCoordinatesReducer(
@@ -147,6 +157,7 @@ export function appReducer(state, action) {
         action
       ),
     listPanel: listPanelReducer(state.listPanel, action),
+    isListPanelVisible: isListPanelVisibleReducer(state.isListPanelVisible, action),
   };
 }
 
@@ -163,6 +174,7 @@ export function getInitialState() {
     openTimeFilter: { radio: "Show All", day: "", time: "" },
     noKnownEligibilityRequirementsFilter: false,
     listPanel: true,
+    isListPanelVisible: false
   };
 }
 
@@ -250,3 +262,9 @@ export function useListPanel() {
   const { listPanel } = useAppState();
   return listPanel;
 }
+
+export function useIsListPanelVisible() {
+  const { isListPanelVisible } = useAppState();
+  return isListPanelVisible;
+}
+

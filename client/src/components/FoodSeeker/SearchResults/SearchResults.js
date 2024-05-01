@@ -9,6 +9,7 @@ import {
   useAppDispatch,
   useSearchCoordinates,
   useStakeholders,
+  useIsListPanelVisible
 } from "../../../appReducer";
 import Filters from "./ResultsFilters/ResultsFilters";
 import List from "./ResultsList/ResultsList";
@@ -16,6 +17,7 @@ import Map from "./ResultsMap/ResultsMap";
 import { Desktop, Mobile, Tablet } from "./layouts";
 
 const SearchResults = () => {
+  const isListPanelVisible = useIsListPanelVisible()
   const mapRef = useRef(null);
   const { isDesktop, isTablet } = useBreakpoints();
   const { selectAll, loading } = useOrganizationBests();
@@ -110,6 +112,10 @@ const SearchResults = () => {
     dispatch({ type: "RESET_SELECTED_ORGANIZATION" });
     setShowList((showList) => !showList);
   }, [dispatch]);
+
+  useEffect(() => {
+    setShowList(true)
+  }, [isListPanelVisible])
 
   const filters = (
     <Filters

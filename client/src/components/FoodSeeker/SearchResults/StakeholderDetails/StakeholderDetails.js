@@ -227,27 +227,6 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
     );
   }, [onBackClick]);
 
-  const organizationContainsCategory = (categoryId) => {
-    return selectedOrganization.categories.some(
-      (obj) => obj["id"] === categoryId
-    );
-  };
-
-  const getCategoryText = () => {
-    const isMealProgram = organizationContainsCategory(
-      MEAL_PROGRAM_CATEGORY_ID
-    );
-    const isFoodPantry = organizationContainsCategory(FOOD_PANTRY_CATEGORY_ID);
-
-    if (isMealProgram && !isFoodPantry) {
-      return "Meal";
-    } else if (isFoodPantry && !isMealProgram) {
-      return "Pantry";
-    } else {
-      return "Meal and Pantry";
-    }
-  };
-
   return (
     <>
       <SEO
@@ -282,25 +261,7 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
             })}
             onClick={handleBackButtonClick}
           >
-            Back to Location
-          </Typography>
-          <ArrowBack
-            fontSize="small"
-            sx={{
-              color: "#747476",
-              margin: "0 8px 6px",
-            }}
-          />
-          <Typography
-            sx={(theme) => ({
-              textAlign: "left",
-              fontWeight: "bold",
-              fontSize: { xs: "18px" },
-              color: theme.palette.common.gray,
-              position: "relative",
-            })}
-          >
-            {getCategoryText()}
+            Back to Search
           </Typography>
         </Stack>
         <Divider

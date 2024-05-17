@@ -273,16 +273,31 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
         >
           <Typography
             sx={(theme) => ({
-              textAlign: {md: "left", xs: "right"},
+              textAlign: "right",
               fontWeight: "bold",
-              fontSize: { xs: "14px", md: "18px" },
+              fontSize: "14px",
               color: {md: theme.palette.common.gray, xs: "#747476"},
               position: "relative",
               cursor: "pointer",
+              display: {xs: 'block', md: 'none'}
             })}
             onClick={handleBackButtonClick}
           >
             Back to Search
+          </Typography>
+          <Typography
+            sx={(theme) => ({
+              textAlign: "left",
+              fontWeight: "bold",
+              fontSize: "18px",
+              color: {md: theme.palette.common.gray, xs: "#747476"},
+              position: "relative",
+              cursor: "pointer",
+              display: {md: 'block', xs: 'none'}
+            })}
+            onClick={handleBackButtonClick}
+          >
+            Back to Location
           </Typography>
           {isDesktop && (<> <ArrowBack
             fontSize="small"

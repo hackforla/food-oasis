@@ -289,7 +289,7 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
             sx={(theme) => ({
               textAlign: "left",
               fontWeight: "bold",
-              fontSize: "18px",
+              fontSize: {md: "18px"},
               color: {md: theme.palette.common.gray, xs: "#747476"},
               position: "relative",
               cursor: "pointer",

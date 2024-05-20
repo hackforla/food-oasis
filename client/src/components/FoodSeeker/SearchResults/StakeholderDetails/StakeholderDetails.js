@@ -273,18 +273,33 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
         >
           <Typography
             sx={(theme) => ({
-              textAlign: "left",
+              textAlign: "right",
               fontWeight: "bold",
-              fontSize: { xs: "18px" },
-              color: theme.palette.common.gray,
+              fontSize: "14px",
+              color: {md: theme.palette.common.gray, xs: "#747476"},
               position: "relative",
               cursor: "pointer",
+              display: {xs: 'block', md: 'none'}
+            })}
+            onClick={handleBackButtonClick}
+          >
+            Back to Search
+          </Typography>
+          <Typography
+            sx={(theme) => ({
+              textAlign: "left",
+              fontWeight: "bold",
+              fontSize: {md: "18px"},
+              color: {md: theme.palette.common.gray, xs: "#747476"},
+              position: "relative",
+              cursor: "pointer",
+              display: {md: 'block', xs: 'none'}
             })}
             onClick={handleBackButtonClick}
           >
             Back to Location
           </Typography>
-          <ArrowBack
+          {isDesktop && (<> <ArrowBack
             fontSize="small"
             sx={{
               color: "#747476",
@@ -301,21 +316,21 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
             })}
           >
             {getCategoryText()}
-          </Typography>
+          </Typography> </>)}
         </Stack>
-        <Divider
+        {isDesktop && (<Divider
           sx={(theme) => ({
             background: theme.palette.common.black,
             margin: isDesktop ? "16px 35px 0 65px" : "0 1.5rem",
           })}
-        />
+        /> )}
         <Grid2
           container
           spacing={0}
           sx={{
             minHeight: "6rem",
             overflowY: "scroll",
-            padding: isDesktop ? "38px 35px 0 65px" : "38px 23px 0",
+            padding: isDesktop ? "38px 35px 0 65px" : "0 23px 0",
           }}
         >
           <Grid2 xs={2}>

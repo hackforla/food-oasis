@@ -42,6 +42,7 @@ import {
   useSelectedOrganization,
   useUserCoordinates,
   useWidget,
+  usePosition
 } from "../../../../appReducer";
 import { useToasterContext } from "../../../../contexts/toasterContext";
 import SEO from "../../../SEO";
@@ -88,6 +89,34 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
   const navigate = useNavigate();
   const { setToast } = useToasterContext();
   const { tenantTimeZone } = useSiteContext();
+  const position = usePosition();
+  const [paddingBottom, setPaddingBottom] = useState(30)
+
+  useEffect(()=> {
+    const windowHeight = window.innerHeight / 100;
+    if(position.y === (100 / window.innerHeight * 60) * windowHeight || position.y === 5 * windowHeight){
+      setPaddingBottom(300)
+    }
+    else if(position.y === 25 * windowHeight){
+      setPaddingBottom(window.innerHeight / 1.3)
+    }
+    
+  },[position])
+
+  // USE EFFECT BASED ON THIS FUNCTION IN Mobile.js
+  // const handleStop = (e, ui) => {
+  //   const windowHeight = window.innerHeight / 100;
+  //   let newY;
+  //   if (ui.y < 20 * windowHeight) {
+  //     newY = hasAdvancedFilterFeatureFlag ? (100 / window.innerHeight) * 60 : 5;
+  //   } else if (ui.y > 20 * windowHeight && ui.y < 40 * windowHeight) {
+  //     newY = 25;
+  //   } else if (ui.y > 40 * windowHeight) {
+  //     newY = 57;
+  //   }
+  //   setPosition({ x: 0, y: newY * windowHeight });
+  // };
+
 
   useEffect(() => {
     if (selectedOrganization?.id) {
@@ -330,7 +359,8 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
           sx={{
             minHeight: "6rem",
             overflowY: "scroll",
-            padding: isDesktop ? "38px 35px 0 65px" : "0 23px 0",
+            padding: isDesktop ? "38px 35px 0 65px" : "38px 23px 0",
+            paddingBottom: isDesktop ? "0" : `${paddingBottom}px`,
           }}
         >
           <Grid2 xs={2}>

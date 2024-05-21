@@ -5,6 +5,7 @@ import { useFilterPanel } from "appReducer";
 import AttributionInfo from "../AttributionInfo";
 import { 
   useIsListPanelVisible,
+  useAppDispatch
 } from '../../../../appReducer'
 import useFeatureFlag from "hooks/useFeatureFlag";
 
@@ -21,6 +22,7 @@ const MobileLayout = ({ filters, map, list, showList }) => {
   const filterPanelOpen = useFilterPanel();
   const initialY = showList ? 5 : 57;
   const hasAdvancedFilterFeatureFlag = useFeatureFlag("advancedFilter");
+  const dispatch = useAppDispatch();
 
   const [position, setPosition] = useState({
     x: 0,
@@ -37,6 +39,12 @@ const MobileLayout = ({ filters, map, list, showList }) => {
       y: initialY * (window.innerHeight / 100),
     })
   }, [isListPanelVisible])
+
+
+  useEffect(() => {
+    dispatch({ type: "POSITION", position: position });
+  }, [position])
+
 
   useEffect(() => {
     let newY;
@@ -73,7 +81,6 @@ const MobileLayout = ({ filters, map, list, showList }) => {
           height: window.innerHeight,
           display: "flex",
           flexDirection: "column",
-          overflow: "hidden",
           position: "relative",
         }}
       >

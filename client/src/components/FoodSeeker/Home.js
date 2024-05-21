@@ -205,6 +205,7 @@ const Home = () => {
                 ) : (
                   <div style={{ textAlign: "center" }}>
                     <Tooltip
+                      enterTouchDelay={0}
                       title={
                         (locationPermission === "denied" || !!error) &&
                         "Please allow location access"

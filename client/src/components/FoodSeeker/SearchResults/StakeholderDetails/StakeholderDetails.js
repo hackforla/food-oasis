@@ -94,11 +94,11 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
 
   useEffect(()=> {
     const windowHeight = window.innerHeight / 100;
-    if(position.y === (100 / window.innerHeight * 60) * windowHeight || position.y === 5 * windowHeight){
-      setPaddingBottom(300)
+    if(position.y === (100 / window.innerHeight * 54) * windowHeight || position.y === 0 * windowHeight){
+      setPaddingBottom(200)
     }
-    else if(position.y === 25 * windowHeight){
-      setPaddingBottom(window.innerHeight / 1.3)
+    else if(position.y === 17 * windowHeight){
+      setPaddingBottom(300)
     }
     
   },[position])
@@ -108,11 +108,11 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
   //   const windowHeight = window.innerHeight / 100;
   //   let newY;
   //   if (ui.y < 20 * windowHeight) {
-  //     newY = hasAdvancedFilterFeatureFlag ? (100 / window.innerHeight) * 60 : 5;
+  //     newY = hasAdvancedFilterFeatureFlag ? (100 / window.innerHeight) * 60 : 0;
   //   } else if (ui.y > 20 * windowHeight && ui.y < 40 * windowHeight) {
-  //     newY = 25;
+  //     newY = 17;
   //   } else if (ui.y > 40 * windowHeight) {
-  //     newY = 57;
+  //     newY = 54;
   //   }
   //   setPosition({ x: 0, y: newY * windowHeight });
   // };

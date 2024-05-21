@@ -73,9 +73,9 @@ const Home = () => {
   };
 
   useEffect(() => {
-    const loadingSpinner = document.getElementById('home-loading-spinner');
+    const loadingSpinner = document.getElementById("home-loading-spinner");
     if (loadingSpinner) {
-      loadingSpinner.style.display = 'none';
+      loadingSpinner.style.display = "none";
     }
   }, []);
 
@@ -205,10 +205,10 @@ const Home = () => {
                 ) : (
                   <div style={{ textAlign: "center" }}>
                     <Tooltip
+                      enterTouchDelay={0}
                       title={
-                        locationPermission === "denied" || !!error
-                          ? "Please allow location access"
-                          : "Use my current location"
+                        (locationPermission === "denied" || !!error) &&
+                        "Please allow location access"
                       }
                     >
                       <div>

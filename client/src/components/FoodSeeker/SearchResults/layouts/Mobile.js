@@ -82,6 +82,7 @@ const MobileLayout = ({ filters, map, list, showList }) => {
           display: "flex",
           flexDirection: "column",
           position: "relative",
+          overflow: 'hidden'
         }}
       >
         <Box sx={{ flex: 1 }}>{map}</Box>

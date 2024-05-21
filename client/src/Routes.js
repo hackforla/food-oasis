@@ -208,7 +208,7 @@ function AppWrapper() {
         backgroundColor: "#fff",
         margin: "0",
         height: "100%",
-        overflow: "hidden",
+        overflowX: "hidden",
       }}
     >
       <Header />

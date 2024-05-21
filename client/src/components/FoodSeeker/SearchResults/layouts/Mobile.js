@@ -31,6 +31,14 @@ const MobileLayout = ({ filters, map, list, showList }) => {
 
   const isListPanelVisible = useIsListPanelVisible()
 
+  // disable body scroll
+  useEffect(() => {
+    window.scrollTo({
+      top: 0
+    });
+    document.body.style.overflow = "hidden"
+  }, [])
+
 
   // List goes up when clicking the map
   useEffect(() => {
@@ -51,9 +59,9 @@ const MobileLayout = ({ filters, map, list, showList }) => {
     if (filterPanelOpen) {
       newY = 100;
     } else if (hasAdvancedFilterFeatureFlag) {
-      newY = showList ? ((100 / window.innerHeight) * 60) : 57;
+      newY = showList ? ((100 / window.innerHeight) * 60) : 54;
     } else {
-      newY = showList ? 5 : 57;
+      newY = showList ? 0 : 54;
     }
     setPosition({ x: 0, y: newY * (window.innerHeight / 100) });
   }, [showList, filterPanelOpen, hasAdvancedFilterFeatureFlag]);
@@ -62,11 +70,11 @@ const MobileLayout = ({ filters, map, list, showList }) => {
     const windowHeight = window.innerHeight / 100;
     let newY;
     if (ui.y < 20 * windowHeight) {
-      newY = hasAdvancedFilterFeatureFlag ? (100 / window.innerHeight) * 60 : 5;
+      newY = hasAdvancedFilterFeatureFlag ? (100 / window.innerHeight) * 60 : 0;
     } else if (ui.y > 20 * windowHeight && ui.y < 40 * windowHeight) {
-      newY = 25;
+      newY = 17;
     } else if (ui.y > 40 * windowHeight) {
-      newY = 57;
+      newY = 54;
     }
     setPosition({ x: 0, y: newY * windowHeight });
   };
@@ -82,6 +90,7 @@ const MobileLayout = ({ filters, map, list, showList }) => {
           display: "flex",
           flexDirection: "column",
           position: "relative",
+          overflow: 'hidden'
         }}
       >
         <Box sx={{ flex: 1 }}>{map}</Box>
@@ -198,7 +207,7 @@ const MobileLayout = ({ filters, map, list, showList }) => {
               <Box
                 sx={{
                   backgroundColor: "white",
-                  height: "100vh",
+                  height: "100%",
                   width: "100vw",
                 }}
               >

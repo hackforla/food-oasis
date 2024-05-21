@@ -297,7 +297,7 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
           alignItems="flex-end"
           sx={{
             width: 1,
-            padding: isDesktop ? "1.5rem 35px 0 65px" : "1.5rem",
+            padding: isDesktop ? "1.5rem 35px 0 65px" : "1rem 1.5rem",
           }}
         >
           <Typography
@@ -359,7 +359,7 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
           sx={{
             minHeight: "6rem",
             overflowY: "scroll",
-            padding: isDesktop ? "38px 35px 0 65px" : "38px 23px 0",
+            padding: isDesktop ? "38px 35px 0 65px" : "3px 23px 0",
             paddingBottom: isDesktop ? "0" : `${paddingBottom}px`,
           }}
         >

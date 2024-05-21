@@ -31,6 +31,14 @@ const MobileLayout = ({ filters, map, list, showList }) => {
 
   const isListPanelVisible = useIsListPanelVisible()
 
+  // disable body scroll
+  useEffect(() => {
+    window.scrollTo({
+      top: 0
+    });
+    document.body.style.overflow = "hidden"
+  }, [])
+
 
   // List goes up when clicking the map
   useEffect(() => {
@@ -199,7 +207,7 @@ const MobileLayout = ({ filters, map, list, showList }) => {
               <Box
                 sx={{
                   backgroundColor: "white",
-                  height: "100vh",
+                  height: "100%",
                   width: "100vw",
                 }}
               >

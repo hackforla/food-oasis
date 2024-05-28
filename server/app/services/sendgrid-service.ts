@@ -540,13 +540,13 @@ const sendContactConfirmation = async ({
         cellspacing="0"
         width="100%"
       >
-        <tr style="background-color: #ccffcc;">
+        <tr style="background-color: #ffffff;">
           <td align="center" style="padding: 20px 0;">
             <img
               src="${clientUrl}/FoodOasisLogo.png"
               alt="Banner Image"
-              width="300"
-              height="140"
+              width="342"
+              height="111"
               style="display: block"
             />
           </td>

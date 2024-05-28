@@ -146,7 +146,6 @@ const SearchResults = () => {
   }, [dispatch]);
 
   const toggleShowList = useCallback(() => {
-    dispatch({ type: "RESET_SELECTED_ORGANIZATION" });
     setShowList((showList) => !showList);
   }, [dispatch]);
 

@@ -98,7 +98,18 @@ const ResultsMap = (
     await loadMarkerIcons(map);
     setMarkersLoaded(true);
     setInteractiveLayerIds([MARKERS_LAYER_ID]);
-  }, []);
+    mapRef.current?.flyTo({
+      center: [
+        isListPanelOpen && !isMobile
+          ? startIconCoordinates.longitude - 0.08
+          : startIconCoordinates.longitude,
+        isMobile
+          ? startIconCoordinates.latitude - 0.03
+          : startIconCoordinates.latitude,
+      ],
+      duration: 2000,
+    });
+  }, [startIconCoordinates, isListPanelOpen, isMobile]);
 
   const onClick = (e) => {
     mapRef.current?.flyTo({
@@ -108,7 +119,7 @@ const ResultsMap = (
       ],
       duration: 2000,
     });
-    dispatch({ type:'TOGGLE_LIST_PANEL'})
+    dispatch({ type: "TOGGLE_LIST_PANEL" });
     if (!e.features || !e.features.length) {
       dispatch({ type: "RESET_SELECTED_ORGANIZATION" });
     } else if (stakeholders) {

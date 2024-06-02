@@ -9,7 +9,8 @@ import {
   useAppDispatch,
   useSearchCoordinates,
   useStakeholders,
-  useIsListPanelVisible
+  useIsListPanelVisible,
+  usePosition
 } from "../../../appReducer";
 import Filters from "./ResultsFilters/ResultsFilters";
 import List from "./ResultsList/ResultsList";
@@ -32,6 +33,42 @@ const SearchResults = () => {
   );
   const stakeholders = useStakeholders();
   const organizationId = new URLSearchParams(location.search).get("id");
+  const positionDraggable = usePosition();
+
+ useEffect(() => {
+  const windowHeightPercentage = window.innerHeight / 100;
+  const triggerHeightTop = 54 * windowHeightPercentage;
+  
+  if (positionDraggable.y === 0) {
+    setShowList(true);
+  } else if (positionDraggable.y === triggerHeightTop) {
+    setShowList(false);
+  }
+  else {
+    return
+  }
+  console.log(positionDraggable)
+}, [positionDraggable]);
+
+
+  // USE EFFECT BASED ON THIS FUNCTION IN Mobile.js
+  // const handleStop = (e, ui) => {
+  //   const windowHeight = window.innerHeight / 100;
+  //   let newY;
+  //   if (ui.y < 20 * windowHeight) {
+  //     newY = hasAdvancedFilterFeatureFlag ? (100 / window.innerHeight) * 60 : 0;
+  //   } else if (ui.y > 20 * windowHeight && ui.y < 40 * windowHeight) {
+  //     newY = 17;
+  //   } else if (ui.y > 40 * windowHeight) {
+  //     newY = 54;
+  //   }
+  //   setPosition({ x: 0, y: newY * windowHeight });
+  // };
+
+
+
+
+
 
   // If path starts with "widget", then set the state variable isWidget to true,
   // so we stay in widget mode (w/o normal App Header and Footer)
@@ -109,7 +146,6 @@ const SearchResults = () => {
   }, [dispatch]);
 
   const toggleShowList = useCallback(() => {
-    dispatch({ type: "RESET_SELECTED_ORGANIZATION" });
     setShowList((showList) => !showList);
   }, [dispatch]);
 

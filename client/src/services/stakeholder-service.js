@@ -70,6 +70,16 @@ export const requestAssignment = async (loginId) => {
   return response.data;
 };
 
+export const checkAvailableAssignmentsAdmin = async () => {
+  const response = await axios.get(
+    `${baseUrl}/checkAvailableAssignmentsAdmin`,
+    {
+      params: { tenantId },
+    }
+  );
+  console.log(response.data);
+  return response.data;
+};
 // id = stakeholderId
 // userLoginId is the id of the user doing the assigning
 // loginId is user.id of user being assigned to stakeholder

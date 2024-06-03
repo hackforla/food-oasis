@@ -20,6 +20,7 @@ const ResultsFilters = ({
   toggleCategory,
   showList,
   toggleShowList,
+  handleFlyTo
 }) => {
   const isMealsSelected = categoryIds.indexOf(MEAL_PROGRAM_CATEGORY_ID) >= 0;
   const isPantrySelected = categoryIds.indexOf(FOOD_PANTRY_CATEGORY_ID) >= 0;

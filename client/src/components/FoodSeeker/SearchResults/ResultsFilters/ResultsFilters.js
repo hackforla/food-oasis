@@ -15,13 +15,7 @@ import CategoryButton from "./CategoryButton";
 import SwitchViewsButton from "./SwitchViewsButton";
 import useFeatureFlag from "hooks/useFeatureFlag";
 import {
-  DEFAULT_COORDINATES,
-  useAppDispatch,
-  useFilterPanel,
-  useListPanel,
-  useNeighborhood,
   useSearchCoordinates,
-  useSelectedOrganization,
   useUserCoordinates,
 } from "../../../../appReducer";
 

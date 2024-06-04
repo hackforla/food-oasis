@@ -159,6 +159,7 @@ const SearchResults = () => {
       toggleCategory={toggleCategory}
       showList={showList}
       toggleShowList={toggleShowList}
+      handleFlyTo={flyTo}
     />
   );
 

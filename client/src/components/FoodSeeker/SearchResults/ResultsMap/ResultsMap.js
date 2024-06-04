@@ -98,17 +98,19 @@ const ResultsMap = (
     await loadMarkerIcons(map);
     setMarkersLoaded(true);
     setInteractiveLayerIds([MARKERS_LAYER_ID]);
-    mapRef.current?.flyTo({
-      center: [
-        isListPanelOpen && !isMobile
-          ? startIconCoordinates.longitude - 0.08
-          : startIconCoordinates.longitude,
-        isMobile
-          ? startIconCoordinates.latitude - 0.03
-          : startIconCoordinates.latitude,
-      ],
-      duration: 2000,
-    });
+
+    startIconCoordinates &&
+      mapRef.current?.flyTo({
+        center: [
+          isListPanelOpen && !isMobile
+            ? startIconCoordinates.longitude - 0.08
+            : startIconCoordinates.longitude,
+          isMobile
+            ? startIconCoordinates.latitude - 0.03
+            : startIconCoordinates.latitude,
+        ],
+        duration: 2000,
+      });
   }, [startIconCoordinates, isListPanelOpen, isMobile]);
 
   const onClick = (e) => {

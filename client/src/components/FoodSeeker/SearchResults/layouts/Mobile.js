@@ -1,8 +1,13 @@
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import Draggable from "react-draggable";
 import { useFilterPanel } from "appReducer";
 import AttributionInfo from "../AttributionInfo";
+import { 
+  useIsListPanelVisible,
+  useAppDispatch
+} from '../../../../appReducer'
+import useFeatureFlag from "hooks/useFeatureFlag";
 
 const overlay = {
   position: "absolute",
@@ -14,38 +19,66 @@ const overlay = {
 };
 
 const MobileLayout = ({ filters, map, list, showList }) => {
-  const [position, setPosition] = useState();
   const filterPanelOpen = useFilterPanel();
+  const initialY = showList ? 5 : 57;
+  const hasAdvancedFilterFeatureFlag = useFeatureFlag("advancedFilter");
+  const dispatch = useAppDispatch();
+
+  const [position, setPosition] = useState({
+    x: 0,
+    y: initialY * (window.innerHeight / 100),
+  });
+
+  const isListPanelVisible = useIsListPanelVisible()
+
+  // disable body scroll
+  useEffect(() => {
+    window.scrollTo({
+      top: 0
+    });
+    document.body.style.overflow = "hidden"
+  }, [])
+
+
+  // List goes up when clicking the map
+  useEffect(() => {
+    setPosition({
+      x: 0,
+      y: initialY * (window.innerHeight / 100),
+    })
+  }, [isListPanelVisible])
+
 
   useEffect(() => {
-    if (!showList) {
-      setPosition({
-        x: 0,
-        y: 57 * (window.innerHeight / 100),
-      });
-    } else {
-      setPosition({
-        x: 0,
-        y: 0,
-      });
-    }
-  }, [showList]);
+    dispatch({ type: "POSITION", position: position });
+  }, [position])
+
 
   useEffect(() => {
+    let newY;
     if (filterPanelOpen) {
-      setPosition({
-        x: 0,
-        y: window.innerHeight,
-      });
+      newY = 100;
+    } else if (hasAdvancedFilterFeatureFlag) {
+      newY = showList ? ((100 / window.innerHeight) * 60) : 54;
     } else {
-      setPosition({
-        x: 0,
-        y: 0,
-      });
+      newY = showList ? 0 : 54;
     }
-  }, [filterPanelOpen]);
+    setPosition({ x: 0, y: newY * (window.innerHeight / 100) });
+  }, [showList, filterPanelOpen, hasAdvancedFilterFeatureFlag]);
 
-  // Define the bounds for vertical dragging
+  const handleStop = (e, ui) => {
+    const windowHeight = window.innerHeight / 100;
+    let newY;
+    if (ui.y < 20 * windowHeight) {
+      newY = hasAdvancedFilterFeatureFlag ? (100 / window.innerHeight) * 60 : 0;
+    } else if (ui.y > 20 * windowHeight && ui.y < 40 * windowHeight) {
+      newY = 17;
+    } else if (ui.y > 40 * windowHeight) {
+      newY = 54;
+    }
+    setPosition({ x: 0, y: newY * windowHeight });
+  };
+
   const minY = 60;
 
   return (
@@ -56,27 +89,15 @@ const MobileLayout = ({ filters, map, list, showList }) => {
           height: window.innerHeight,
           display: "flex",
           flexDirection: "column",
-          overflow: "hidden",
           position: "relative",
-
+          overflow: 'hidden'
         }}
       >
         <Box sx={{ flex: 1 }}>{map}</Box>
         {list && (
           <Draggable
             position={position}
-            onStop={(e, ui) => {
-              if(ui.y < 20 * (window.innerHeight / 100)){
-                setPosition({ x: 0, y:  3});
-              }
-              if(ui.y > 20 * (window.innerHeight / 100) && ui.y < 40 * (window.innerHeight / 100)){
-                setPosition({ x: 0, y:  25 * (window.innerHeight / 100)});
-              }
-              if(ui.y > 40 * (window.innerHeight / 100)){
-                setPosition({ x: 0, y:  57 * (window.innerHeight / 100)});
-              }
-              
-            }}
+            onStop={handleStop}
             handle=".handle"
             bounds={{ top: 0, bottom: minY * (window.innerHeight / 100) }}
             defaultPosition={{ x: 0, y: minY * (window.innerHeight / 100) }}
@@ -89,7 +110,7 @@ const MobileLayout = ({ filters, map, list, showList }) => {
           >
             <Box sx={overlay}>
               <Grid container spacing={0}>
-                <Grid xs={6}>
+                <Stack>
                   <div>
                     <a
                       target="_blank"
@@ -148,10 +169,12 @@ const MobileLayout = ({ filters, map, list, showList }) => {
                       </svg>
                     </a>
                   </div>
-                </Grid>
-                <Grid xs={6}>
+                  <div
+                    style={{ display: "flex", justifyContent: "flex-start", paddingTop: "2.23px" }}
+                  >
                   <AttributionInfo />
-                </Grid>
+                  </div>
+                </Stack>
               </Grid>
               <Box
                 sx={{
@@ -184,7 +207,7 @@ const MobileLayout = ({ filters, map, list, showList }) => {
               <Box
                 sx={{
                   backgroundColor: "white",
-                  height: "100vh",
+                  height: "100%",
                   width: "100vw",
                 }}
               >

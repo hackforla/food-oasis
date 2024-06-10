@@ -80,6 +80,9 @@ export default function AddressDropDown({ autoFocus }) {
           sx: {
             cursor: "pointer",
             backgroundColor: "#F0F0F0",
+            "& input": {
+              fontSize: "16px",
+            },
           },
           endAdornment: (
             <InputAdornment

@@ -175,12 +175,15 @@ const remove: RequestHandler<
 
 const requestAssignment: RequestHandler<
   never,
-  number,
+  { error: string },
   RequestAssignmentParams,
   never
 > = async (req, res) => {
   try {
-    await stakeholderService.requestAssignment(req.body);
+    const count = await stakeholderService.requestAssignment(req.body);
+    if (count === 0) {
+      res.status(404).send({ error: "No stakeholders found" });
+    }
     res.sendStatus(200);
   } catch (err) {
     console.error(err);
@@ -230,6 +233,30 @@ const claim: RequestHandler<
     res.status(500);
   }
 };
+const checkAvailableAssignmentsAdmin: RequestHandler<
+  never,
+  boolean | { error: string },
+  never,
+  { tenantId: string }
+> = async (req, res) => {
+  try {
+    const tenantId = Number(req.query.tenantId);
+
+    if (!tenantId) {
+      res
+        .status(400)
+        .json({ error: "Bad request: tenantId parameter is required" });
+      return;
+    }
+    const available = await stakeholderService.checkAvailableAssignmentsAdmin(
+      tenantId
+    );
+    res.json(available);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 
 export default {
   search,
@@ -242,4 +269,5 @@ export default {
   assign,
   claim,
   requestAssignment,
+  checkAvailableAssignmentsAdmin,
 };

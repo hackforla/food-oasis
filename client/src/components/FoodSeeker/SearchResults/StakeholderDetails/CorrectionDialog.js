@@ -14,9 +14,8 @@ import { withFormik } from "formik";
 import PropTypes from "prop-types";
 import * as suggestionService from "services/suggestion-service";
 import * as Yup from "yup";
-import { DEFAULT_STAKEHOLDER } from "../../../../constants/stakeholder";
 
-function SuggestionDialog(props) {
+function CorrectionDialog(props) {
   const { values, touched, errors, handleChange, handleBlur, handleSubmit } =
     props;
 
@@ -138,7 +137,17 @@ const validationsForm = {
     .required("Please enter corrections"),
 };
 
-const SuggestionForm = withFormik({
+// formats the categories and hours data to an ugly stringify blob to pass validation on backend.
+// corrections and suggestions share the same data schema, so this is so it matches
+// the suggestion's schema format.
+// @TODO maybe clean this up later
+const formatArrayToString = (data) => {
+  return data.reduce((accl, ele) => {
+    return (accl += JSON.stringify(ele));
+  }, "");
+};
+
+const CorrectionForm = withFormik({
   mapPropsToValues: ({ notes, tipsterName, tipsterPhone, tipsterEmail }) => ({
     notes: notes || "",
     tipsterName: tipsterName || "",
@@ -147,9 +156,27 @@ const SuggestionForm = withFormik({
   }),
   validationSchema: Yup.object(validationsForm),
   handleSubmit: (values, formikBag) => {
+    // cherry pick the data we need for backend validation
+    const org = formikBag.props.stakeholder;
+    const orgDetails = {
+      stakeholderId: org.id,
+      adminNotes: org.adminNotes || "",
+      suggestionStatusId: null,
+      name: org.name,
+      address1: org.address1,
+      address2: org.address2,
+      city: org.city,
+      state: org.state,
+      zip: org.zip,
+      phone: org.phone,
+      email: org.email,
+      hours: formatArrayToString(org.hours),
+      category: formatArrayToString(org.categories),
+      tenantId: org.tenantId,
+    };
+
     const stakeholder = {
-      ...DEFAULT_STAKEHOLDER,
-      ...formikBag.stakeholder,
+      ...orgDetails,
     };
 
     // Construct the suggestion by starting with the stakeholder record,
@@ -175,16 +202,16 @@ const SuggestionForm = withFormik({
       .catch(() => {
         formikBag.props.setToast({
           message:
-            "Sorry, submitting your correction failed, please email us at the address on the About page.",
+            "Sorry, submitting your correction failed, please email us via the Contact Us page.",
         });
       });
   },
-})(SuggestionDialog);
+})(CorrectionDialog);
 
-SuggestionDialog.propTypes = {
+CorrectionDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   stakeholder: PropTypes.object,
 };
 
-export default SuggestionForm;
+export default CorrectionForm;

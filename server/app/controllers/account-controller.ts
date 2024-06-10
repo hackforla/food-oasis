@@ -11,13 +11,9 @@ import {
 import { ClientResponse } from "@sendgrid/mail";
 
 const getAll: RequestHandler<
-  // route params
   never,
-  // response
   Account[],
-  // req body
   never,
-  // query params
   { tenantId: string }
 > = async (req, res) => {
   try {

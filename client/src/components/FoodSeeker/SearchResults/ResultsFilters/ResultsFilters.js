@@ -13,19 +13,29 @@ import * as analytics from "services/analytics";
 import { tenantDetails } from "../../../../helpers/Configuration";
 import CategoryButton from "./CategoryButton";
 import SwitchViewsButton from "./SwitchViewsButton";
+import useFeatureFlag from "hooks/useFeatureFlag";
+import {
+  useSearchCoordinates,
+  useUserCoordinates,
+} from "../../../../appReducer";
 
 const ResultsFilters = ({
   categoryIds,
   toggleCategory,
   showList,
   toggleShowList,
+  handleFlyTo,
 }) => {
   const isMealsSelected = categoryIds.indexOf(MEAL_PROGRAM_CATEGORY_ID) >= 0;
   const isPantrySelected = categoryIds.indexOf(FOOD_PANTRY_CATEGORY_ID) >= 0;
   const { taglineText } = tenantDetails;
   const { getUserLocation } = useGeolocation();
+  const searchCoordinates = useSearchCoordinates();
+  const userCoordinates = useUserCoordinates();
+  const startIconCoordinates = searchCoordinates || userCoordinates;
   const locationPermission = useLocationPermission();
   const [error, setError] = useState("");
+  const hasAdvancedFilterFeatureFlag = useFeatureFlag("advancedFilter");
 
   useEffect(() => {
     if (error && locationPermission === "granted") {
@@ -45,7 +55,13 @@ const ResultsFilters = ({
 
   const useMyLocationTrigger = async () => {
     try {
+      // depending on the network speed, it might take a bit before the screen recenters to user location
       await getUserLocation();
+      startIconCoordinates &&
+        handleFlyTo({
+          longitude: startIconCoordinates.longitude,
+          latitude: searchCoordinates.latitude,
+        });
     } catch (e) {
       setError(e);
     }
@@ -98,31 +114,34 @@ const ResultsFilters = ({
             alignItems: "center",
           }}
         >
-          <Grid2
-            container
-            xs={12}
-            sm={6}
-            spacing={1}
-            justifyContent={{ xs: "center", sm: "flex-start" }}
-          >
-            <Grid2 item>
-              <CategoryButton
-                icon="pantry"
-                onClick={togglePantry}
-                label="Pantries"
-                isSelected={isPantrySelected}
-              />
+          {!hasAdvancedFilterFeatureFlag && (
+            <Grid2
+              container
+              xs={12}
+              sm={6}
+              spacing={1}
+              justifyContent={{ xs: "center", sm: "flex-start" }}
+            >
+              <Grid2 item>
+                <CategoryButton
+                  icon="pantry"
+                  onClick={togglePantry}
+                  label="Pantries"
+                  isSelected={isPantrySelected}
+                />
+              </Grid2>
+              <Grid2 item>
+                <CategoryButton
+                  icon="meal"
+                  onClick={toggleMeal}
+                  label="Meals"
+                  isSelected={isMealsSelected}
+                  style={{ marginLeft: 5 }}
+                />
+              </Grid2>
             </Grid2>
-            <Grid2 item>
-              <CategoryButton
-                icon="meal"
-                onClick={toggleMeal}
-                label="Meals"
-                isSelected={isMealsSelected}
-                style={{ marginLeft: 5 }}
-              />
-            </Grid2>
-          </Grid2>
+          )}
+
           <Grid2 xs={12} sm={6}>
             <Stack
               direction="row"

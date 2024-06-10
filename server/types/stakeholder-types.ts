@@ -43,6 +43,7 @@ export interface StakeholderCategory {
   id: number;
   name: string;
   display_order: number;
+  is_for_food_seeker: boolean;
 }
 
 // Interface with common properties for all the full stakeholder types.

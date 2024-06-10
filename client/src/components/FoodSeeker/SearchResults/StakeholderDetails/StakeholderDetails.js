@@ -1,6 +1,14 @@
 import ArrowBack from "@mui/icons-material/ArrowBackIosNew";
-import { Box, Button, Link, Stack, Typography, styled } from "@mui/material";
-import { CLOSED_COLOR, ORGANIZATION_COLORS } from "constants/map";
+import {
+  Box,
+  Button,
+  Chip,
+  Divider,
+  Link,
+  Stack,
+  Typography,
+  styled,
+} from "@mui/material";
 import {
   FOOD_PANTRY_CATEGORY_ID,
   MEAL_PROGRAM_CATEGORY_ID,
@@ -11,29 +19,44 @@ import {
   formatDateMMMddYYYY,
   getGoogleMapsDirectionsUrl,
   validateUrl,
+  hoursSort,
+  isCurrentDayAndWeek,
+  nextOpenTime,
+  isAlmostClosed,
+  isAlmostOpen,
+  calculateMinutesToClosing,
+  calculateMinutesToOpening,
 } from "helpers";
-import fbIcon from "images/fbIcon.png";
-import instaIcon from "images/instaIcon.png";
+import facebookIcon from "images/facebookIcon.png";
+import instagramIcon from "images/instagramIcon.png";
 import StakeholderIcon from "images/stakeholderIcon";
+import ForkIcon from "icons/ForkIcon";
+import AppleIcon from "icons/AppleIcon";
+import IosShareIcon from "@mui/icons-material/IosShare";
+import SubdirectoryArrowRightIcon from "@mui/icons-material/SubdirectoryArrowRight";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as analytics from "services/analytics";
 import {
-  useAppDispatch,
   useSearchCoordinates,
   useSelectedOrganization,
   useUserCoordinates,
   useWidget,
+  usePosition
 } from "../../../../appReducer";
 import { useToasterContext } from "../../../../contexts/toasterContext";
 import SEO from "../../../SEO";
 import CorrectionDialog from "./CorrectionDialog";
+import { useSiteContext } from "contexts/siteContext";
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import { stakeholdersDaysHours } from "../StakeholderPreview/StakeholderPreview";
+import { success } from "../../../../theme/palette";
 
 const MinorHeading = styled(Typography)(({ theme }) => ({
   variant: "h5",
   component: "h3",
   textAlign: "left",
-  margin: "0.5rem 0",
+  margin: "0",
   fontWeight: "600",
   color: theme.palette.headingText.main,
 }));
@@ -42,18 +65,58 @@ const DetailText = styled(Typography)(({ theme }) => ({
   variant: "body1",
   component: "p",
   textAlign: "left",
+  marginBottom: "16px",
+  whiteSpace: "pre-wrap",
+  overflowWrap: "break-word",
+  "& a": {
+    color: theme.palette.link.normal,
+    "&:visited": {
+      color: theme.palette.link.visited,
+    },
+    "&:hover": {
+      color: theme.palette.link.hovered,
+    },
+  },
 }));
 
-const StakeholderDetails = () => {
+const StakeholderDetails = ({ onBackClick, isDesktop }) => {
   const [SuggestionDialogOpen, setSuggestionDialogOpen] = useState(false);
   const selectedOrganization = useSelectedOrganization();
-  const dispatch = useAppDispatch();
   const searchCoordinates = useSearchCoordinates();
   const userCoordinates = useUserCoordinates();
   const originCoordinates = searchCoordinates || userCoordinates;
   const isWidget = useWidget();
   const navigate = useNavigate();
   const { setToast } = useToasterContext();
+  const { tenantTimeZone } = useSiteContext();
+  const position = usePosition();
+  const [paddingBottom, setPaddingBottom] = useState(30)
+
+  useEffect(()=> {
+    const windowHeight = window.innerHeight / 100;
+    if(position.y === (100 / window.innerHeight * 54) * windowHeight || position.y === 0 * windowHeight){
+      setPaddingBottom(200)
+    }
+    else if(position.y === 17 * windowHeight){
+      setPaddingBottom(300)
+    }
+    
+  },[position])
+
+  // USE EFFECT BASED ON THIS FUNCTION IN Mobile.js
+  // const handleStop = (e, ui) => {
+  //   const windowHeight = window.innerHeight / 100;
+  //   let newY;
+  //   if (ui.y < 20 * windowHeight) {
+  //     newY = hasAdvancedFilterFeatureFlag ? (100 / window.innerHeight) * 60 : 0;
+  //   } else if (ui.y > 20 * windowHeight && ui.y < 40 * windowHeight) {
+  //     newY = 17;
+  //   } else if (ui.y > 40 * windowHeight) {
+  //     newY = 54;
+  //   }
+  //   setPosition({ x: 0, y: newY * windowHeight });
+  // };
+
 
   useEffect(() => {
     if (selectedOrganization?.id) {
@@ -73,52 +136,24 @@ const StakeholderDetails = () => {
   };
 
   const handleBackButtonClick = () => {
-    dispatch({ type: "RESET_SELECTED_ORGANIZATION" });
+    onBackClick();
     navigate(isWidget ? "/widget" : "/organizations");
-  };
-
-  const dayOfWeek = (dayOfWeekString) => {
-    switch (dayOfWeekString.toLowerCase()) {
-      case "sun":
-        return 1;
-      case "mon":
-        return 2;
-      case "tue":
-        return 3;
-      case "wed":
-        return 4;
-      case "thu":
-        return 5;
-      case "fri":
-        return 6;
-      default:
-        return 7;
-    }
-  };
-
-  const hoursSort = (h1, h2) => {
-    if (h1.week_of_month !== h2.week_of_month) {
-      return h1.week_of_month < h2.week_of_month ? -1 : 1;
-    }
-    const h1dow = dayOfWeek(h1.day_of_week);
-    const h2dow = dayOfWeek(h2.day_of_week);
-    if (h1dow !== h2dow) {
-      return h1dow < h2dow ? -1 : 1;
-    }
-    return h1.open < h2.open ? -1 : 1;
   };
 
   const standardTime = (timeStr) => {
     if (timeStr) {
       if (parseInt(timeStr.substring(0, 2)) === 12) {
-        return `12${timeStr.substring(2, 5)} PM`;
+        return `12${timeStr.substring(2, 5)} pm`;
+      }
+      if (parseInt(timeStr.substring(0, 2)) === 0) {
+        return `12${timeStr.substring(2, 5)} am`;
       }
       return parseInt(timeStr.substring(0, 2)) > 12
         ? `${parseInt(timeStr.substring(0, 2)) - 12}${timeStr.substring(
             2,
             5
-          )} PM`
-        : `${timeStr.substring(0, 5)} AM`;
+          )} pm`
+        : `${parseInt(timeStr.substring(0, 5))}${timeStr.substring(2, 5)} am`;
     }
   };
 
@@ -147,6 +182,7 @@ const StakeholderDetails = () => {
     const emailRegEx = /\b[\w.-]+@[\w.-]+\.\w{2,4}\b/gi;
     const phoneMatches = text.match(phoneRegEx);
     const emailMatches = text.match(emailRegEx);
+
     if (phoneMatches) {
       phoneMatches.forEach((match) => {
         text = text.replace(
@@ -163,6 +199,7 @@ const StakeholderDetails = () => {
         );
       });
     }
+
     return text;
   };
 
@@ -188,6 +225,58 @@ const StakeholderDetails = () => {
       }
     }
   };
+
+  const currentDate = new Date();
+  const stakeholderHours = stakeholdersDaysHours(
+    selectedOrganization,
+    tenantTimeZone,
+    currentDate
+  );
+  const isOpenFlag = !!stakeholderHours;
+  const showAllowWalkinsFlag = selectedOrganization.allowWalkins;
+  const isAlmostClosedFlag =
+    isOpenFlag && isAlmostClosed(stakeholderHours, tenantTimeZone);
+  const minutesToClosing =
+    isAlmostClosedFlag &&
+    calculateMinutesToClosing(stakeholderHours, tenantTimeZone);
+
+  const isAlmostOpenFlag =
+    !isOpenFlag && isAlmostOpen(stakeholderHours, tenantTimeZone);
+  const minutesToOpening =
+    isAlmostOpenFlag &&
+    calculateMinutesToOpening(stakeholderHours, tenantTimeZone);
+
+  useEffect(() => {
+    window.addEventListener(
+      "popstate",
+      function () {
+        onBackClick();
+      },
+      false
+    );
+  }, [onBackClick]);
+
+  const organizationContainsCategory = (categoryId) => {
+    return selectedOrganization.categories.some(
+      (obj) => obj["id"] === categoryId
+    );
+  };
+
+  const getCategoryText = () => {
+    const isMealProgram = organizationContainsCategory(
+      MEAL_PROGRAM_CATEGORY_ID
+    );
+    const isFoodPantry = organizationContainsCategory(FOOD_PANTRY_CATEGORY_ID);
+
+    if (isMealProgram && !isFoodPantry) {
+      return "Meal";
+    } else if (isFoodPantry && !isMealProgram) {
+      return "Pantry";
+    } else {
+      return "Meal and Pantry";
+    }
+  };
+
   return (
     <>
       <SEO
@@ -202,325 +291,527 @@ const StakeholderDetails = () => {
         stakeholder={selectedOrganization}
         setToast={setToast}
       />
-      <Stack padding="0 1em 5em 1em" sx={{ width: "100%", overflowY: {xs: 'scroll', md: 'auto'}, paddingBottom: {xs:'300px', md: '0px'} }}>
-        <Typography
-          variant="h5"
-          component="p"
-          textAlign="left"
-          margin={"0 0 1rem 0"}
+      <Stack height={"100%"} width={"100%"}>
+        <Stack
+          direction={"row"}
+          alignItems="flex-end"
+          sx={{
+            width: 1,
+            padding: isDesktop ? "1.5rem 35px 0 65px" : "1rem 1.5rem",
+          }}
         >
-          <Link
-            variant="h4"
-            component="button"
-            textAlign="left"
-            role="button"
+          <Typography
+            sx={(theme) => ({
+              textAlign: "right",
+              fontWeight: "bold",
+              fontSize: "14px",
+              color: {md: theme.palette.common.gray, xs: "#747476"},
+              position: "relative",
+              cursor: "pointer",
+              display: {xs: 'block', md: 'none'}
+            })}
             onClick={handleBackButtonClick}
           >
-            <Stack
-              sx={{
-                color: "#747476",
-              }}
-              direction="row"
-              alignItems="center"
-            >
-              <ArrowBack fontSize="small" />
-              Back to List
-            </Stack>
-          </Link>
-        </Typography>
-
-        <Stack direction="row" gap={2}>
-          <StakeholderIcon stakeholder={selectedOrganization} />
-          <Box align="left">
-            <Typography variant="h6" component="h2" align="left">
-              {selectedOrganization.name}
-            </Typography>
-            <Typography variant="body1" component="p">
-              {selectedOrganization.address1}
-            </Typography>
-            <Typography variant="body1" component="p">
-              {selectedOrganization.city} {selectedOrganization.zip}
-            </Typography>
-            <Box textAlign="left">
-              {selectedOrganization.categories.map((category) => (
-                <Typography
-                  variant="body1"
-                  component="p"
-                  fontStyle="italic"
-                  key={selectedOrganization.id + category.id}
-                  sx={{
-                    margin: "0.25em 0",
-                    marginRight: "0.25em",
-                    color:
-                      selectedOrganization.inactiveTemporary ||
-                      selectedOrganization.inactive
-                        ? CLOSED_COLOR
-                        : category.id === FOOD_PANTRY_CATEGORY_ID
-                        ? ORGANIZATION_COLORS[FOOD_PANTRY_CATEGORY_ID]
-                        : category.id === MEAL_PROGRAM_CATEGORY_ID
-                        ? ORGANIZATION_COLORS[MEAL_PROGRAM_CATEGORY_ID]
-                        : "#000",
-                  }}
-                >
-                  {category.name}
-                </Typography>
-              ))}
-            </Box>
-
-            <Box textAlign="left">
-              <Typography
-                variant="body2"
-                component="p"
-                fontStyle="italic"
-                key={selectedOrganization.id}
-                sx={{
-                  alignSelf: "flex-start",
-                  margin: "0 0.25em 0.5em 0",
-                }}
-              >
-                {selectedOrganization.foodTypes}
-              </Typography>
-            </Box>
-
-            <Box textAlign="left">
-              {selectedOrganization.inactiveTemporary ||
-              selectedOrganization.inactive ? (
-                <Typography
-                  sx={{
-                    color: "#545454",
-                    alignSelf: "flex-end",
-                    backgroundColor: "#E0E0E0",
-                    padding: ".25em .5em",
-                    borderRadius: "3px",
-                  }}
-                >
-                  {selectedOrganization.inactiveTemporary
-                    ? "Temporarily Closed"
-                    : "Closed"}
-                </Typography>
-              ) : null}
-            </Box>
-          </Box>
-          {selectedOrganization.distance ? (
-            <Box>
-              {selectedOrganization.distance >= 10
-                ? selectedOrganization.distance
-                    .toString()
-                    .substring(0, 3)
-                    .padEnd(4, "0")
-                : selectedOrganization.distance.toString().substring(0, 3)}{" "}
-              mi
-            </Box>
-          ) : null}
-        </Stack>
-
-        <Stack direction="row" sx={{ justifyContent: "space-between" }}>
-          <Button
-            variant="gray"
-            onClick={() => {
-              analytics.postEvent("getDirections", {
-                id: selectedOrganization.id,
-                name: selectedOrganization.name,
-              });
-              window.open(
-                getGoogleMapsDirectionsUrl(originCoordinates, {
-                  latitude: selectedOrganization.latitude,
-                  longitude: selectedOrganization.longitude,
-                })
-              );
-            }}
+            Back to Search
+          </Typography>
+          <Typography
+            sx={(theme) => ({
+              textAlign: "left",
+              fontWeight: "bold",
+              fontSize: {md: "18px"},
+              color: {md: theme.palette.common.gray, xs: "#747476"},
+              position: "relative",
+              cursor: "pointer",
+              display: {md: 'block', xs: 'none'}
+            })}
+            onClick={handleBackButtonClick}
           >
-            Directions
-          </Button>
-          <Button variant="gray" onClick={handleSuggestionDialogOpen}>
-            Send Correction
-          </Button>
-          <Button variant="gray" onClick={shareLink}>
-            Share
-          </Button>
+            Back to Location
+          </Typography>
+          {isDesktop && (<> <ArrowBack
+            fontSize="small"
+            sx={{
+              color: "#747476",
+              margin: "0 8px 6px",
+            }}
+          />
+          <Typography
+            sx={(theme) => ({
+              textAlign: "left",
+              fontWeight: "bold",
+              fontSize: { xs: "18px" },
+              color: theme.palette.common.gray,
+              position: "relative",
+            })}
+          >
+            {getCategoryText()}
+          </Typography> </>)}
         </Stack>
+        {isDesktop && (<Divider
+          sx={(theme) => ({
+            background: theme.palette.common.black,
+            margin: isDesktop ? "16px 35px 0 65px" : "0 1.5rem",
+          })}
+        /> )}
+        <Grid2
+          container
+          spacing={0}
+          sx={{
+            minHeight: "6rem",
+            overflowY: "scroll",
+            padding: isDesktop ? "38px 35px 0 65px" : "3px 23px 0",
+            paddingBottom: isDesktop ? "0" : `${paddingBottom}px`,
+          }}
+        >
+          <Grid2 xs={2}>
+            <Stack
+              xs={2}
+              direction="column"
+              justifyContent="flex-start"
+              alignItems="center"
+              sx={{ marginTop: ".2rem", marginRight: "1rem", height: "100%" }}
+            >
+              <StakeholderIcon stakeholder={selectedOrganization} />
+            </Stack>
+          </Grid2>
+          <Grid2 xs={10}>
+            <Stack direction="column" xs={10}>
+              <Stack>
+                <Typography
+                  variant="h4"
+                  component="h2"
+                  align="left"
+                  fontWeight="bold"
+                >
+                  {selectedOrganization.name}
+                </Typography>
 
-        <MinorHeading>Eligibility/Requirements</MinorHeading>
-        {selectedOrganization.requirements ? (
-          <DetailText
-            dangerouslySetInnerHTML={{
-              __html: formatEmailPhone(selectedOrganization.requirements),
-            }}
-          ></DetailText>
-        ) : (
-          <DetailText>No special requirements</DetailText>
-        )}
-
-        <MinorHeading>Hours</MinorHeading>
-        {selectedOrganization.allowWalkins ? (
-          <DetailText>Walk-ins welcome.</DetailText>
-        ) : null}
-
-        {selectedOrganization.hoursNotes ? (
-          <DetailText
-            dangerouslySetInnerHTML={{
-              __html: formatEmailPhone(selectedOrganization.hoursNotes),
-            }}
-          ></DetailText>
-        ) : null}
-
-        {selectedOrganization.hours ? (
-          <Stack margin="0.5rem 1rem 0 1rem">
-            {selectedOrganization.hours &&
-            selectedOrganization.hours.length > 0 ? (
-              selectedOrganization.hours.sort(hoursSort).map((hour) => (
                 <Stack
                   direction="row"
-                  justifyContent="space-between"
-                  key={JSON.stringify(hour)}
+                  flexWrap="wrap"
+                  marginTop="8px"
+                  sx={{ gap: "16px" }}
                 >
-                  <DetailText>
-                    {hour.week_of_month === 5
-                      ? "Last " + hour.day_of_week
-                      : hour.week_of_month === 1
-                      ? "1st " + hour.day_of_week
-                      : hour.week_of_month === 2
-                      ? "2nd " + hour.day_of_week
-                      : hour.week_of_month === 3
-                      ? "3rd " + hour.day_of_week
-                      : hour.week_of_month === 4
-                      ? "4th " + hour.day_of_week
-                      : hour.day_of_week}
-                  </DetailText>
-                  <DetailText>
-                    {standardTime(hour.open)}-{standardTime(hour.close)}
-                  </DetailText>
+                  {selectedOrganization.categories
+                    .filter((c) => c.isForFoodSeeker)
+                    .map((category, index) => (
+                      <Stack
+                        direction="row"
+                        alignItems="center"
+                        spacing={1}
+                        useflexgap="true"
+                        key={`${index}-${category}`}
+                        sx={{
+                          order:
+                            category.id === MEAL_PROGRAM_CATEGORY_ID
+                              ? -1
+                              : undefined,
+                        }}
+                      >
+                        {category.id === FOOD_PANTRY_CATEGORY_ID ? (
+                          <AppleIcon />
+                        ) : category.id === MEAL_PROGRAM_CATEGORY_ID ? (
+                          <ForkIcon />
+                        ) : (
+                          ""
+                        )}
+
+                        <Typography
+                          variant="body2"
+                          key={selectedOrganization.id + category.id}
+                          sx={{
+                            margin: "0.25em 0",
+                            marginRight: "0.25em",
+                            fontWeight: "600",
+                          }}
+                        >
+                          {category.name}
+                        </Typography>
+                      </Stack>
+                    ))}
                 </Stack>
-              ))
-            ) : (
-              <DetailText>No hours on record</DetailText>
-            )}
-          </Stack>
-        ) : null}
 
-        <MinorHeading>Phone</MinorHeading>
-        {numbers}
+                <Box textAlign="left">
+                  {selectedOrganization.inactiveTemporary ||
+                  selectedOrganization.inactive ? (
+                    <Chip
+                      color="inactiveButton"
+                      sx={{
+                        borderRadius: "6px",
+                        fontStyle: "normal",
+                        fontSize: "12px",
+                      }}
+                      label={
+                        selectedOrganization.inactiveTemporary
+                          ? "Temporarily Closed"
+                          : "Permanently Closed"
+                      }
+                    />
+                  ) : null}
 
-        <MinorHeading>Email</MinorHeading>
-        {selectedOrganization.email ? (
-          <>
-            <DetailText>
-              <Link
-                href={"mailto:" + selectedOrganization.email}
-                onClick={() => {
-                  analytics.postEvent("sendEmail", {
-                    id: selectedOrganization.id,
-                    name: selectedOrganization.name,
-                  });
-                }}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {selectedOrganization.email}
-              </Link>
-            </DetailText>
-          </>
-        ) : (
-          <DetailText>No E-Mail Address on record</DetailText>
-        )}
+                  {!(
+                    selectedOrganization.inactiveTemporary ||
+                    selectedOrganization.inactive
+                  ) && (
+                    <>
+                      {isOpenFlag && (
+                        <Chip
+                          color="success"
+                          label="Open Now"
+                          sx={{
+                            borderRadius: "6px",
+                            fontStyle: "normal",
+                            fontSize: "12px",
+                            margin: "16px 16px 0 0",
+                          }}
+                        />
+                      )}
 
-        <MinorHeading>Languages</MinorHeading>
-        {selectedOrganization.languages ? (
-          <DetailText>{selectedOrganization.languages}</DetailText>
-        ) : (
-          <DetailText>No information on languages.</DetailText>
-        )}
+                      {showAllowWalkinsFlag && (
+                        <Chip
+                          label="Walk-Ins Allowed"
+                          color="primary"
+                          sx={{
+                            backgroundColor: "#2260FF",
+                            borderRadius: "6px",
+                            fontStyle: "normal",
+                            fontSize: "12px",
+                            margin: "16px 0 0",
+                          }}
+                        />
+                      )}
+                    </>
+                  )}
+                </Box>
 
-        <MinorHeading>Notes</MinorHeading>
-        {selectedOrganization.notes ? (
-          <DetailText
-            dangerouslySetInnerHTML={{
-              __html: formatEmailPhone(selectedOrganization.notes),
-            }}
-          ></DetailText>
-        ) : (
-          <DetailText>No notes to display.</DetailText>
-        )}
+                <Box textAlign="left" sx={{ marginTop: "16px" }}>
+                  {selectedOrganization.hours &&
+                  selectedOrganization.hours.length > 0 ? (
+                    <Typography>
+                      Open{" "}
+                      {nextOpenTime(
+                        selectedOrganization.hours.sort(hoursSort),
+                        tenantTimeZone
+                      )}
+                    </Typography>
+                  ) : (
+                    <Typography>No hours on record</Typography>
+                  )}
+                </Box>
 
-        <MinorHeading>COVID Notes</MinorHeading>
-        {selectedOrganization.covidNotes ? (
-          <DetailText
-            dangerouslySetInnerHTML={{
-              __html: formatEmailPhone(selectedOrganization.covidNotes),
-            }}
-          ></DetailText>
-        ) : (
-          <DetailText>No covid notes to display.</DetailText>
-        )}
+                {isAlmostClosedFlag && (
+                  <Box
+                    textAlign="left"
+                    marginTop="4px"
+                    sx={{ flexBasis: "100%" }}
+                  >
+                    <Typography
+                      variant="body2"
+                      component="p"
+                      fontWeight="bold"
+                      color="#E00700"
+                      key={selectedOrganization.id}
+                    >
+                      {`Closing in ${minutesToClosing} minutes`}
+                    </Typography>
+                  </Box>
+                )}
 
-        {selectedOrganization.website ? (
-          <>
-            <MinorHeading>Website</MinorHeading>
-            <DetailText>
-              <Link
-                href={validateUrl(selectedOrganization.website)}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {selectedOrganization.website}
-              </Link>
-            </DetailText>
-          </>
-        ) : null}
+                {isAlmostOpenFlag && (
+                  <Box
+                    textAlign="left"
+                    marginTop="4px"
+                    sx={{ flexBasis: "100%" }}
+                  >
+                    <Typography
+                      variant="body2"
+                      component="p"
+                      fontWeight="bold"
+                      color={success}
+                      key={selectedOrganization.id}
+                    >
+                      {`Opening in ${minutesToOpening} minutes`}
+                    </Typography>
+                  </Box>
+                )}
 
-        {selectedOrganization.services ? (
-          <>
-            <MinorHeading>Services</MinorHeading>
-            <DetailText>{selectedOrganization.services}</DetailText>
-          </>
-        ) : null}
+                {selectedOrganization.hours ? (
+                  <Stack>
+                    <Divider sx={{ margin: "8px 0px 4px" }} />
+                    {selectedOrganization.hours
+                      .sort(hoursSort)
+                      .map((hour, index) => (
+                        <Stack
+                          direction="row"
+                          justifyContent="space-between"
+                          key={JSON.stringify(hour)}
+                          marginTop="4px"
+                          sx={{
+                            ".MuiTypography-root": {
+                              fontWeight:
+                                index === 0 ||
+                                isCurrentDayAndWeek(tenantTimeZone, hour)
+                                  ? "bold"
+                                  : "",
+                            },
+                          }}
+                        >
+                          <Typography>
+                            {hour.week_of_month === -1
+                              ? "Last " + hour.day_of_week
+                              : hour.week_of_month === 1
+                              ? "1st " + hour.day_of_week
+                              : hour.week_of_month === 2
+                              ? "2nd " + hour.day_of_week
+                              : hour.week_of_month === 3
+                              ? "3rd " + hour.day_of_week
+                              : hour.week_of_month === 4
+                              ? "4th " + hour.day_of_week
+                              : hour.day_of_week}
+                          </Typography>
+                          <Typography>
+                            {standardTime(hour.open)} -{" "}
+                            {standardTime(hour.close)}
+                          </Typography>
+                        </Stack>
+                      ))}
+                  </Stack>
+                ) : null}
 
-        {selectedOrganization.items ? (
-          <>
-            <MinorHeading>Items Available</MinorHeading>
-            <DetailText>{selectedOrganization.items}</DetailText>
-          </>
-        ) : null}
+                {selectedOrganization.foodTypes ? (
+                  <Box textAlign="left">
+                    <Typography
+                      variant="body2"
+                      component="p"
+                      key={selectedOrganization.id}
+                      sx={{
+                        alignSelf: "flex-start",
+                        margin: "1em 0.25em 0.5em 0",
+                        fontSize: "1rem !important",
+                      }}
+                    >
+                      {selectedOrganization.foodTypes}
+                    </Typography>
+                  </Box>
+                ) : (
+                  ""
+                )}
 
-        {selectedOrganization.facebook || selectedOrganization.instagram ? (
-          <>
-            <MinorHeading>Social Media</MinorHeading>
-            <Stack direction="row" spacing={1}>
-              {selectedOrganization.facebook ? (
-                <Link
-                  href={selectedOrganization.facebook}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  variant="icon"
+                <Stack
+                  direction="row"
+                  justifyContent="start"
+                  spacing={1}
+                  useflexgap="true"
+                  sx={{ margin: "16px 0 29px" }}
                 >
-                  <img alt="facebook link" src={fbIcon} />
-                </Link>
-              ) : null}
-              {selectedOrganization.instagram ? (
-                <a
-                  href={selectedOrganization.instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  variant="icon"
-                >
-                  <img alt="instagram link" src={instaIcon} />
-                </a>
-              ) : null}
+                  <Button
+                    variant="gray"
+                    startIcon={<SubdirectoryArrowRightIcon />}
+                    size="large"
+                    sx={{ width: "50%" }}
+                    onClick={() => {
+                      analytics.postEvent("getDirections", {
+                        id: selectedOrganization.id,
+                        name: selectedOrganization.name,
+                      });
+                      window.open(
+                        getGoogleMapsDirectionsUrl(originCoordinates, {
+                          latitude: selectedOrganization.latitude,
+                          longitude: selectedOrganization.longitude,
+                        })
+                      );
+                    }}
+                  >
+                    Directions
+                  </Button>
+                  <Button
+                    variant="gray"
+                    onClick={shareLink}
+                    size="large"
+                    startIcon={<IosShareIcon />}
+                    sx={{ width: "50%" }}
+                  >
+                    Share
+                  </Button>
+                </Stack>
+
+                <MinorHeading>Address</MinorHeading>
+                <DetailText sx={{ marginBottom: "0" }}>
+                  {selectedOrganization.address1}
+                </DetailText>
+                <DetailText>
+                  {selectedOrganization.city} {selectedOrganization.zip}
+                </DetailText>
+
+                <MinorHeading>Phone</MinorHeading>
+                {numbers}
+
+                <MinorHeading>Email</MinorHeading>
+                {selectedOrganization.email ? (
+                  <>
+                    <DetailText>
+                      <Link
+                        href={"mailto:" + selectedOrganization.email}
+                        onClick={() => {
+                          analytics.postEvent("sendEmail", {
+                            id: selectedOrganization.id,
+                            name: selectedOrganization.name,
+                          });
+                        }}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {selectedOrganization.email}
+                      </Link>
+                    </DetailText>
+                  </>
+                ) : (
+                  <DetailText>No E-Mail Address on record</DetailText>
+                )}
+
+                {selectedOrganization.website ? (
+                  <>
+                    <MinorHeading>Website</MinorHeading>
+                    <DetailText>
+                      <Link
+                        href={validateUrl(selectedOrganization.website)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {selectedOrganization.website}
+                      </Link>
+                    </DetailText>
+                  </>
+                ) : null}
+
+                <MinorHeading>Languages</MinorHeading>
+                {selectedOrganization.languages ? (
+                  <DetailText>{selectedOrganization.languages}</DetailText>
+                ) : (
+                  <DetailText>No information on languages.</DetailText>
+                )}
+
+                <MinorHeading>Notes</MinorHeading>
+                {selectedOrganization.notes ? (
+                  <DetailText
+                    dangerouslySetInnerHTML={{
+                      __html: formatEmailPhone(selectedOrganization.notes),
+                    }}
+                  ></DetailText>
+                ) : (
+                  <DetailText>No notes to display.</DetailText>
+                )}
+
+                <MinorHeading>COVID Notes</MinorHeading>
+                {selectedOrganization.covidNotes ? (
+                  <DetailText
+                    dangerouslySetInnerHTML={{
+                      __html: formatEmailPhone(selectedOrganization.covidNotes),
+                    }}
+                  ></DetailText>
+                ) : (
+                  <DetailText>No covid notes to display.</DetailText>
+                )}
+
+                {selectedOrganization.hoursNotes ? (
+                  <>
+                    <MinorHeading>Hour Notes</MinorHeading>
+                    <DetailText
+                      dangerouslySetInnerHTML={{
+                        __html: formatEmailPhone(
+                          selectedOrganization.hoursNotes
+                        ),
+                      }}
+                    ></DetailText>
+                  </>
+                ) : null}
+
+                {selectedOrganization.services ? (
+                  <>
+                    <MinorHeading>Services</MinorHeading>
+                    <DetailText>{selectedOrganization.services}</DetailText>
+                  </>
+                ) : null}
+
+                {selectedOrganization.items ? (
+                  <>
+                    <MinorHeading>Items Available</MinorHeading>
+                    <DetailText>{selectedOrganization.items}</DetailText>
+                  </>
+                ) : null}
+
+                {selectedOrganization.facebook ||
+                selectedOrganization.instagram ? (
+                  <>
+                    <MinorHeading>Social Media</MinorHeading>
+                    <Stack
+                      direction="row"
+                      spacing={1}
+                      sx={{ marginBottom: "16px" }}
+                    >
+                      {selectedOrganization.facebook ? (
+                        <Link
+                          href={selectedOrganization.facebook}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          variant="icon"
+                        >
+                          <img alt="facebook link" src={facebookIcon} />
+                        </Link>
+                      ) : null}
+                      {selectedOrganization.instagram ? (
+                        <a
+                          href={selectedOrganization.instagram}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          variant="icon"
+                        >
+                          <img alt="instagram link" src={instagramIcon} />
+                        </a>
+                      ) : null}
+                    </Stack>
+                  </>
+                ) : null}
+
+                <MinorHeading>Eligibility/Requirements</MinorHeading>
+                {selectedOrganization.requirements ? (
+                  <DetailText
+                    dangerouslySetInnerHTML={{
+                      __html: formatEmailPhone(
+                        selectedOrganization.requirements
+                      ),
+                    }}
+                  ></DetailText>
+                ) : (
+                  <DetailText>No special requirements</DetailText>
+                )}
+                <MinorHeading>Report Error</MinorHeading>
+                <DetailText>
+                  If you see an error in this information, please help us by{" "}
+                  <Link
+                    onClick={handleSuggestionDialogOpen}
+                    sx={{ cursor: "pointer" }}
+                  >
+                    sending a correction
+                  </Link>
+                  .
+                </DetailText>
+
+                {selectedOrganization.verificationStatusId ===
+                VERIFICATION_STATUS.VERIFIED ? (
+                  <DetailText>
+                    Data updated on{" "}
+                    {selectedOrganization.approvedDate
+                      ? formatDateMMMddYYYY(selectedOrganization.approvedDate)
+                      : selectedOrganization.modifiedDate
+                      ? formatDateMMMddYYYY(selectedOrganization.modifiedDate)
+                      : formatDateMMMddYYYY(selectedOrganization.createdDate)}
+                  </DetailText>
+                ) : null}
+              </Stack>
             </Stack>
-          </>
-        ) : null}
-
-        {selectedOrganization.verificationStatusId ===
-        VERIFICATION_STATUS.VERIFIED ? (
-          <DetailText color="secondary.main">
-            Data updated on{" "}
-            {selectedOrganization.approvedDate
-              ? formatDateMMMddYYYY(selectedOrganization.approvedDate)
-              : selectedOrganization.modifiedDate
-              ? formatDateMMMddYYYY(selectedOrganization.modifiedDate)
-              : formatDateMMMddYYYY(selectedOrganization.createdDate)}
-          </DetailText>
-        ) : null}
+          </Grid2>
+        </Grid2>
       </Stack>
     </>
   );

@@ -1,6 +1,7 @@
 import suggestionService from "../services/suggestion-service";
 import { RequestHandler, Response } from "express";
 import { Suggestion } from "../../types/suggestion-types";
+import { SuggestionPostFields } from "../validation-schema/suggestion-schema";
 
 const getAll: RequestHandler<
   // route params
@@ -42,7 +43,7 @@ const getById: RequestHandler<{ id: string }, Suggestion, never> = async (
 const post: RequestHandler<
   never,
   { id: number } | { error: string },
-  Suggestion
+  SuggestionPostFields
 > = async (req, res) => {
   try {
     const resp = await suggestionService.insert(req.body);

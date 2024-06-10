@@ -32,33 +32,11 @@ import * as accountService from "../../services/account-service";
 import * as featureService from "../../services/feature-service";
 import * as featureToLoginService from "../../services/feature-to-login-service";
 
-function createData(featureName, users, featureId) {
-  return {
-    name: featureName,
-    id: featureId,
-    history: users.map((user) => ({
-      loginId: user.login_id,
-      firstName: user.first_name,
-      lastName: user.last_name,
-      email: user.email,
-      featureToLoginId: user.ftl_id,
-    })),
-  };
-}
-
-const featureFormValidationSchema = Yup.object({
-  name: Yup.string().trim().required("Name is required"),
-});
-const userFormValidationSchema = Yup.object({
-  email: Yup.string()
-    .email("Invalid email address")
-    .required("User email is required"),
-});
 const Features = () => {
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [rows, setRows] = useState([]);
   const [selectedFeatureName, setSelectedFeatureName] = useState("");
-  const [selectedFeatureId, setSelectedFeatureId] = useState(null);
+  const [selectedFeatureId, setSelectedFeatureId] = useState("");
   const [featureModalOpen, setFeatureModalOpen] = useState(false);
   const [userModalOpen, setUserModalOpen] = useState(false);
   const [page, setPage] = React.useState(0);
@@ -71,22 +49,21 @@ const Features = () => {
   } = useFeatureToLogin();
 
   useEffect(() => {
-    if (featureToLoginData) {
-      const groupedByFeatureName = featureToLoginData.reduce((acc, curr) => {
-        acc[curr.feature_name] = [...(acc[curr.feature_name] || []), curr];
-        return acc;
-      }, {});
-      const newRows = Object.entries(groupedByFeatureName).map(
-        ([featureName, users]) => {
-          const featureId = users[0]?.feature_id;
-          return createData(featureName, users, featureId);
-        }
-      );
-      setRows(newRows);
-    }
+    const newRows = featureToLoginData.map((feature) => ({
+      featureId: feature.feature_id,
+      name: feature.feature_name,
+      featureToLoginId: feature.ftl_id,
+      history: feature.users.map((user) => ({
+        loginId: user.login_id,
+        firstName: user.first_name,
+        lastName: user.last_name,
+        email: user.email,
+        featureToLoginId: user.featureToLoginId || feature.ftl_id,
+      })),
+    }));
+    setRows(newRows);
   }, [featureToLoginData]);
 
-  const handleFeatureModalOpen = () => setFeatureModalOpen(true);
   const handleModalClose = () => {
     setFeatureModalOpen(false);
     featureFormik.resetForm();
@@ -111,7 +88,9 @@ const Features = () => {
     initialValues: {
       name: "",
     },
-    validationSchema: featureFormValidationSchema,
+    validationSchema: Yup.object({
+      name: Yup.string().trim().required("Name is required"),
+    }),
     onSubmit: async (values, { resetForm, setSubmitting }) => {
       await featureService.post(values);
       featureToLoginRefetch();
@@ -124,7 +103,11 @@ const Features = () => {
     initialValues: {
       email: "",
     },
-    validationSchema: userFormValidationSchema,
+    validationSchema: Yup.object({
+      email: Yup.string()
+        .email("Invalid email address")
+        .required("User email is required"),
+    }),
     onSubmit: async (values, { resetForm, setSubmitting, setFieldError }) => {
       try {
         const accountResponse = await accountService.getByEmail(values.email);
@@ -156,10 +139,6 @@ const Features = () => {
     },
   });
 
-  const handleChangePage = (newPage) => {
-    setPage(newPage);
-  };
-
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -180,7 +159,7 @@ const Features = () => {
           variant="contained"
           type="button"
           icon="search"
-          onClick={handleFeatureModalOpen}
+          onClick={() => setFeatureModalOpen(true)}
         >
           Add New Feature
         </Button>
@@ -195,13 +174,14 @@ const Features = () => {
           <CircularProgress />
         </Box>
       ) : (
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} elevation={3}>
           <Table aria-label="collapsible table">
             <TableHead>
               <TableRow>
                 <TableCell />
-                <TableCell> Feature ID </TableCell>
-                <TableCell>Feature Name</TableCell>
+                <TableCell align="left"> Feature ID </TableCell>
+                <TableCell align="left">Feature Name</TableCell>
+                <TableCell />
               </TableRow>
             </TableHead>
             <TableBody>
@@ -210,7 +190,11 @@ const Features = () => {
                   <TableRow
                     onClick={() => handleRowClick(row.name)}
                     sx={{
-                      "& > *": { borderBottom: "unset", cursor: "pointer" },
+                      "& > *": {
+                        borderBottom: "unset",
+                        cursor: "pointer",
+                        backgroundColor: "#efefef",
+                      },
                     }}
                     hover
                   >
@@ -229,22 +213,44 @@ const Features = () => {
                     </TableCell>
 
                     <TableCell
+                      align="left"
                       component="th"
                       scope="row"
                       sx={{ justifyContent: "space-between" }}
                     >
-                      {row.id}
+                      {row.featureId}
                     </TableCell>
                     <TableCell
+                      align="left"
                       component="th"
                       scope="row"
                       sx={{ justifyContent: "space-between" }}
                     >
                       {row.name}
                     </TableCell>
+                    <TableCell align="right">
+                      <IconButton
+                        color="error"
+                        aria-label="delete-user"
+                        onClick={async () => {
+                          try {
+                            await featureService.remove(row.featureId);
+                            featureToLoginRefetch();
+                          } catch (error) {
+                            console.error(
+                              "Failed to remove user from feature:",
+                              error
+                            );
+                          }
+                        }}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell
+                      align="right"
                       style={{ paddingBottom: 0, paddingTop: 0 }}
                       colSpan={6}
                     >
@@ -267,7 +273,7 @@ const Features = () => {
                               color="primary"
                               aria-label="add-user"
                               onClick={() =>
-                                handleUserModalOpen(row.name, row.id)
+                                handleUserModalOpen(row.name, row.featureId)
                               }
                             >
                               <PersonAddIcon />
@@ -277,23 +283,33 @@ const Features = () => {
                           <Table size="small" aria-label="purchases">
                             <TableHead>
                               <TableRow>
-                                <TableCell>Login ID</TableCell>
-                                <TableCell>First Name</TableCell>
-                                <TableCell>Last Name</TableCell>
-                                <TableCell>Email</TableCell>
+                                <TableCell align="left">Login ID</TableCell>
+                                <TableCell align="left">First Name</TableCell>
+                                <TableCell align="left">Last Name</TableCell>
+                                <TableCell align="left">Email</TableCell>
                               </TableRow>
                             </TableHead>
                             <TableBody>
                               {row.history.map((historyRow) => (
                                 <TableRow key={historyRow.loginId}>
-                                  <TableCell component="th" scope="row">
+                                  <TableCell
+                                    align="left"
+                                    component="th"
+                                    scope="row"
+                                  >
                                     {historyRow.loginId}
                                   </TableCell>
-                                  <TableCell>{historyRow.firstName}</TableCell>
-                                  <TableCell>{historyRow.lastName}</TableCell>
-                                  <TableCell>{historyRow.email}</TableCell>
-                                  <TableCell>
-                                    {historyRow.featureToLoginId ? (
+                                  <TableCell align="left">
+                                    {historyRow.firstName}
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    {historyRow.lastName}
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    {historyRow.email}
+                                  </TableCell>
+                                  <TableCell align="right">
+                                    {row.history.length > 0 && (
                                       <IconButton
                                         color="error"
                                         aria-label="delete-user"
@@ -313,7 +329,7 @@ const Features = () => {
                                       >
                                         <DeleteIcon />
                                       </IconButton>
-                                    ) : null}
+                                    )}
                                   </TableCell>
                                 </TableRow>
                               ))}
@@ -332,8 +348,11 @@ const Features = () => {
 
       <Dialog open={featureModalOpen} onClose={handleModalClose}>
         <Box sx={{ width: 400, p: 2 }}>
-          <Typography variant="h6" component="h2" sx={{ p: 2 }}>
+          <Typography variant="h6" component="h2" sx={{ py: 2 }}>
             Add a new feature
+          </Typography>
+          <Typography variant="caption">
+            Feature names are usually camel-cased
           </Typography>
           <form onSubmit={featureFormik.handleSubmit}>
             <Box>
@@ -374,12 +393,11 @@ const Features = () => {
         aria-describedby="add-user-modal-description"
       >
         <Box sx={{ width: 400, p: 2 }}>
-          <Typography variant="h6" component="h2" sx={{ p: 2 }}>
+          <Typography variant="h6" component="h2" sx={{ py: 2 }}>
             Add a user to {selectedFeatureName}
           </Typography>
           <form onSubmit={userFormik.handleSubmit}>
             <Box>
-              {/* <Label id="email" label="Email" /> */}
               <TextField
                 placeholder="Email"
                 id="email"
@@ -416,7 +434,9 @@ const Features = () => {
         count={rows.length}
         rowsPerPage={rowsPerPage}
         page={page}
-        onPageChange={handleChangePage}
+        onPageChange={(newPage) => {
+          setPage(newPage);
+        }}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </Container>

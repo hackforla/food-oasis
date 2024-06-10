@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   Button,
   CircularProgress,
@@ -18,6 +19,7 @@ import {
   assign,
   exportCsv,
   needsVerification,
+  checkAvailableAssignmentsAdmin,
 } from "services/stakeholder-service";
 import AssignDialog from "./AssignDialog";
 import SearchCriteria from "./SearchCriteria";
@@ -106,6 +108,7 @@ function VerificationAdmin() {
   const location = useLocation();
   const searchCoordinates = useSearchCoordinates();
   const navigate = useNavigate();
+  const [assignmentsAvailable, setAssignmentsAvailable] = useState(false);
 
   const {
     data: categories,
@@ -160,6 +163,18 @@ function VerificationAdmin() {
     execute();
   }, [userCoordinates, searchCallback, searchCoordinates]);
 
+  useEffect(() => {
+    const checkAssignments = async () => {
+      try {
+        const available = await checkAvailableAssignmentsAdmin();
+        setAssignmentsAvailable(available);
+      } catch (err) {
+        console.error("Error checking available assignments:", err);
+      }
+    };
+    checkAssignments();
+  }, []);
+
   const search = async (searchCriteria = criteria) => {
     try {
       await searchCallback(searchCriteria);
@@ -183,7 +198,7 @@ function VerificationAdmin() {
       // to be logged in, will redirect to login page.
       // Otherwise it's a real exception.
       if (err.response && err.response.status === 401) {
-        navigate("/login", { state: { from: location } });
+        navigate("/admin/login", { state: { from: location } });
       } else {
         console.error(err);
         return Promise.reject(err.message);
@@ -209,7 +224,7 @@ function VerificationAdmin() {
       // to be logged in, will redirect to login page.
       // Otherwise it's a real exception.
       if (err.response && err.response.status === 401) {
-        navigate("/login", { state: { from: location } });
+        navigate("/admin/login", { state: { from: location } });
       } else {
         console.error(err);
         return Promise.reject(err.message);
@@ -241,7 +256,7 @@ function VerificationAdmin() {
       // to be logged in, will redirect to login page.
       // Otherwise it's a real exception.
       if (err.response && err.response.status === 401) {
-        navigate("/login", { state: { from: location } });
+        navigate("/admin/login", { state: { from: location } });
       } else {
         console.error(err);
         return Promise.reject(err.message);
@@ -394,6 +409,9 @@ function VerificationAdmin() {
           open={needsVerificationDialogOpen}
           onClose={handleNeedsVerificationDialogClose}
         />
+        {!assignmentsAvailable && (
+          <Alert severity="error">No assignments available</Alert>
+        )}
         <>
           {categoriesError || stakeholdersError || tagsError ? (
             <Box

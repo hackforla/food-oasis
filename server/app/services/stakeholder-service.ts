@@ -503,6 +503,30 @@ const requestAssignment = async (model: RequestAssignmentParams) => {
   return result.rowCount;
 };
 
+const checkAvailableAssignmentsAdmin = async (
+  tenantId: number
+): Promise<boolean> => {
+  const sql = `
+    select exists (
+      select 1
+      from stakeholder sh 
+      join stakeholder_category sc on sh.id = sc.stakeholder_id
+      join category c on sc.category_id = c.id
+      where sh.verification_status_id = 1
+      and sh.tenant_id = $<tenantId>
+      and c.inactive = false
+      and (ARRAY[1,9] && sh.category_ids)
+    ) as available;
+  `;
+
+  try {
+    const result = await db.one(sql, { tenantId });
+    return result.available;
+  } catch (err: any) {
+    throw new Error(`Error checking available assignments: ${err.message}`);
+  }
+};
+
 const assign = async (model: AssignParams) => {
   const sql = `
     update stakeholder set
@@ -787,4 +811,5 @@ export default {
   assign,
   claim,
   requestAssignment,
+  checkAvailableAssignmentsAdmin,
 };

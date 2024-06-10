@@ -118,6 +118,25 @@ function listPanelReducer(state, action) {
   }
 }
 
+function isListPanelVisibleReducer(state, action) {
+  switch (action.type) {
+    case "TOGGLE_LIST_PANEL":
+      return !state; // Toggle the state
+    default:
+      return state;
+  }
+}
+
+function position(state, action) {
+  switch (action.type) {
+    case "POSITION":
+      return action.position; // Toggle the state
+    default:
+      return state;
+  }
+}
+
+
 export function appReducer(state, action) {
   return {
     defaultCoordinate: defaultCoordinatesReducer(
@@ -147,6 +166,8 @@ export function appReducer(state, action) {
         action
       ),
     listPanel: listPanelReducer(state.listPanel, action),
+    isListPanelVisible: isListPanelVisibleReducer(state.isListPanelVisible, action),
+    position: position(state.position, action)
   };
 }
 
@@ -163,6 +184,8 @@ export function getInitialState() {
     openTimeFilter: { radio: "Show All", day: "", time: "" },
     noKnownEligibilityRequirementsFilter: false,
     listPanel: true,
+    isListPanelVisible: false,
+    position: '0'
   };
 }
 
@@ -250,3 +273,14 @@ export function useListPanel() {
   const { listPanel } = useAppState();
   return listPanel;
 }
+
+export function useIsListPanelVisible() {
+  const { isListPanelVisible } = useAppState();
+  return isListPanelVisible;
+}
+
+export function usePosition() {
+  const { position } = useAppState();
+  return position;
+}
+

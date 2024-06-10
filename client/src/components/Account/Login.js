@@ -100,11 +100,11 @@ const LoginForm = (props) => {
                     response.user.isAdmin ||
                     response.user.isCoordinator
                   ) {
-                    navigate("/verificationAdmin");
+                    navigate("/admin/verificationAdmin");
                   } else if (response.user.isSecurityAdmin) {
-                    navigate("/securityadmindashboard");
+                    navigate("/admin/securityadmindashboard");
                   } else if (response.user.isDataEntry) {
-                    navigate("/verificationdashboard");
+                    navigate("/admin/verificationdashboard");
                   } else {
                     navigate("/");
                   }
@@ -134,7 +134,7 @@ const LoginForm = (props) => {
                   });
                   formikBag.setSubmitting(false);
                 } else {
-                  // Presumably response.code === "AUTH_INVALID_PASSWORD"
+                  // Presumably response.code === "AUTH_INCORRECT_PASSWORD"
                   setToast({
                     message: `The password is incorrect, please check it
                   and try again or use the Forgot Password feature.`,
@@ -218,14 +218,14 @@ const LoginForm = (props) => {
                 </Grid>
                 <Grid item xs>
                   <Link
-                    href={`/forgotpassword/${values.email || ""}`}
+                    href={`/admin/forgotpassword/${values.email || ""}`}
                     variant="body2"
                   >
                     Forgot password?
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="/register" variant="body2">
+                  <Link href="/admin/register" variant="body2">
                     Register
                   </Link>
                 </Grid>

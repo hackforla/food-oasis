@@ -14,6 +14,12 @@ router.get(
 );
 
 router.get(
+  "/checkAvailableAssignmentsAdmin",
+  jwtSession.validateUserHasRequiredRoles(["admin"]),
+  stakeholderController.checkAvailableAssignmentsAdmin
+);
+
+router.get(
   "/:id",
   jwtSession.validateUserHasRequiredRoles([
     "admin",

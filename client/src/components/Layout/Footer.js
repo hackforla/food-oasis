@@ -3,7 +3,7 @@ import { MENU_ITEMS } from "helpers/Constants";
 import useLocationHook from "hooks/useLocationHook";
 import { Link } from "react-router-dom";
 import { tenantId } from "../../helpers/Configuration";
-
+import Copyright from "./Copyright";
 /* 
 This file is not used in the application at this time, but left here in 
 case the UI/UX team decides to re-instate it.
@@ -54,13 +54,11 @@ const Footer = () => {
         padding: "1.5rem 1rem",
         display: "flex",
         flexDirection: "row",
-        justifyContent: "space-between",
+        justifyContent: "space-evenly",
         color: "#1b1b1b",
-        [theme.breakpoints.up("md")]: {
-          alignItems: "flex-start",
-        },
         [theme.breakpoints.down("md")]: {
           alignItems: "flex-end",
+          justifyContent: "space-between",
         },
         fontFamily: `"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans- serif`,
       })}
@@ -73,8 +71,6 @@ const Footer = () => {
           maxWidth: "95px",
           height: "100%",
           width: "100%",
-          marginTop: "0",
-
           "&:hover": {
             filter: "brightness(1.2)",
           },
@@ -86,24 +82,24 @@ const Footer = () => {
 
       <Box
         sx={(theme) => ({
-          justifyContent: "center",
           alignItems: "flex-end",
           display: "flex",
           flexDirection: "column",
-          marginBottom: "10px",
+          marginLeft: "2em",
           [theme.breakpoints.up("md")]: {
             flexDirection: "row",
             alignItems: "flex-start",
             gap: "4em",
           },
           [theme.breakpoints.down("md")]: {
-            height: "180px",
+            alignItems: "flex-end",
+            textAlign: "right",
           },
         })}
       >
         {constantLinks}
+        <Copyright />
       </Box>
-      {/* <Copyright /> */}
     </Box>
   );
 };

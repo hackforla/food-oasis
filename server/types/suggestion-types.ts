@@ -16,6 +16,6 @@ export interface Suggestion {
   category: string;
   suggestionStatusId: number;
   adminNotes: string;
-  stakeholderId: number | null;
+  stakeholderId: number;
   tenantId: number;
 }

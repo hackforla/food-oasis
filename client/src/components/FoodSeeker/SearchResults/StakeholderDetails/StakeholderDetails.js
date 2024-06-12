@@ -372,8 +372,9 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
             flex: 1,
             minHeight: "6rem",
             overflowY: "auto",
-            padding: isDesktop ? "38px 35px 0 65px" : "3px 23px 0",
-            paddingBottom: isDesktop ? "0" : `${paddingBottom}px`,
+            padding: isDesktop
+              ? "38px 35px 0 65px"
+              : `3px 23px ${paddingBottom}px`,
           }}
         >
           <Grid2 xs={2}>

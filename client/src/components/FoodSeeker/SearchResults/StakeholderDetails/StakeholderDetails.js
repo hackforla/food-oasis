@@ -42,7 +42,7 @@ import {
   useSelectedOrganization,
   useUserCoordinates,
   useWidget,
-  usePosition
+  usePosition,
 } from "../../../../appReducer";
 import { useToasterContext } from "../../../../contexts/toasterContext";
 import SEO from "../../../SEO";
@@ -90,18 +90,19 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
   const { setToast } = useToasterContext();
   const { tenantTimeZone } = useSiteContext();
   const position = usePosition();
-  const [paddingBottom, setPaddingBottom] = useState(30)
+  const [paddingBottom, setPaddingBottom] = useState(30);
 
-  useEffect(()=> {
+  useEffect(() => {
     const windowHeight = window.innerHeight / 100;
-    if(position.y === (100 / window.innerHeight * 54) * windowHeight || position.y === 0 * windowHeight){
-      setPaddingBottom(200)
+    if (
+      position.y === (100 / window.innerHeight) * 54 * windowHeight ||
+      position.y === 0 * windowHeight
+    ) {
+      setPaddingBottom(200);
+    } else if (position.y === 17 * windowHeight) {
+      setPaddingBottom(300);
     }
-    else if(position.y === 17 * windowHeight){
-      setPaddingBottom(300)
-    }
-    
-  },[position])
+  }, [position]);
 
   // USE EFFECT BASED ON THIS FUNCTION IN Mobile.js
   // const handleStop = (e, ui) => {
@@ -116,7 +117,6 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
   //   }
   //   setPosition({ x: 0, y: newY * windowHeight });
   // };
-
 
   useEffect(() => {
     if (selectedOrganization?.id) {
@@ -291,7 +291,13 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
         stakeholder={selectedOrganization}
         setToast={setToast}
       />
-      <Stack height={"100%"} width={"100%"}>
+      <Stack
+        height={"100%"}
+        width={"100%"}
+        sx={{
+          display: "flex",
+        }}
+      >
         <Stack
           direction={"row"}
           alignItems="flex-end"
@@ -305,10 +311,10 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
               textAlign: "right",
               fontWeight: "bold",
               fontSize: "14px",
-              color: {md: theme.palette.common.gray, xs: "#747476"},
+              color: { md: theme.palette.common.gray, xs: "#747476" },
               position: "relative",
               cursor: "pointer",
-              display: {xs: 'block', md: 'none'}
+              display: { xs: "block", md: "none" },
             })}
             onClick={handleBackButtonClick}
           >
@@ -318,47 +324,54 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
             sx={(theme) => ({
               textAlign: "left",
               fontWeight: "bold",
-              fontSize: {md: "18px"},
-              color: {md: theme.palette.common.gray, xs: "#747476"},
+              fontSize: { md: "18px" },
+              color: { md: theme.palette.common.gray, xs: "#747476" },
               position: "relative",
               cursor: "pointer",
-              display: {md: 'block', xs: 'none'}
+              display: { md: "block", xs: "none" },
             })}
             onClick={handleBackButtonClick}
           >
             Back to Location
           </Typography>
-          {isDesktop && (<> <ArrowBack
-            fontSize="small"
-            sx={{
-              color: "#747476",
-              margin: "0 8px 6px",
-            }}
-          />
-          <Typography
-            sx={(theme) => ({
-              textAlign: "left",
-              fontWeight: "bold",
-              fontSize: { xs: "18px" },
-              color: theme.palette.common.gray,
-              position: "relative",
-            })}
-          >
-            {getCategoryText()}
-          </Typography> </>)}
+          {isDesktop && (
+            <>
+              <ArrowBack
+                fontSize="small"
+                sx={{
+                  color: "#747476",
+                  margin: "0 8px 6px",
+                }}
+              />
+              <Typography
+                sx={(theme) => ({
+                  textAlign: "left",
+                  fontWeight: "bold",
+                  fontSize: { xs: "18px" },
+                  color: theme.palette.common.gray,
+                  position: "relative",
+                })}
+              >
+                {getCategoryText()}
+              </Typography>
+            </>
+          )}
         </Stack>
-        {isDesktop && (<Divider
-          sx={(theme) => ({
-            background: theme.palette.common.black,
-            margin: isDesktop ? "16px 35px 0 65px" : "0 1.5rem",
-          })}
-        /> )}
+        {isDesktop && (
+          <Divider
+            sx={(theme) => ({
+              background: theme.palette.common.black,
+              margin: isDesktop ? "16px 35px 0 65px" : "0 1.5rem",
+            })}
+          />
+        )}
         <Grid2
           container
           spacing={0}
           sx={{
+            flex: 1,
             minHeight: "6rem",
-            overflowY: "scroll",
+            overflowY: "auto",
             padding: isDesktop ? "38px 35px 0 65px" : "3px 23px 0",
             paddingBottom: isDesktop ? "0" : `${paddingBottom}px`,
           }}
@@ -369,7 +382,7 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
               direction="column"
               justifyContent="flex-start"
               alignItems="center"
-              sx={{ marginTop: ".2rem", marginRight: "1rem", height: "100%" }}
+              sx={{ marginTop: ".2rem", marginRight: "1rem" }}
             >
               <StakeholderIcon stakeholder={selectedOrganization} />
             </Stack>

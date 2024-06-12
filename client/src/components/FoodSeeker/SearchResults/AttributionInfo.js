@@ -109,7 +109,7 @@ const AttributionInfo = () => {
                   fontSize: "12px",
                   marginLeft: "3px",
                   fontWeight: "700",
-                  paddingRight: "5px"
+                  paddingRight: "5px",
                 }}
                 href="https://apps.mapbox.com/feedback/?owner=mapbox&amp;id=streets-v11&amp;access_token=pk.eyJ1IjoibHVjYXNob21lciIsImEiOiJjazFqcnRjcm0wNmZ1M2JwZXg2eDFzMXd3In0.yYpkKLrFCxF-qyBfZH1a8w#/-118.2439/34.0355/11"
                 target="_blank"

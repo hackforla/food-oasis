@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Draggable from "react-draggable";
 import { useFilterPanel } from "appReducer";
 import AttributionInfo from "../AttributionInfo";
-import { useIsListPanelVisible, useAppDispatch } from "../../../../appReducer";
+import { useAppDispatch } from "../../../../appReducer";
 import useFeatureFlag from "hooks/useFeatureFlag";
 
 const overlay = {
@@ -26,8 +26,6 @@ const MobileLayout = ({ filters, map, list, showList }) => {
     y: initialY * (window.innerHeight / 100),
   });
 
-  const isListPanelVisible = useIsListPanelVisible();
-
   // disable body scroll
   useEffect(() => {
     window.scrollTo({
@@ -42,11 +40,12 @@ const MobileLayout = ({ filters, map, list, showList }) => {
       x: 0,
       y: initialY * (window.innerHeight / 100),
     });
-  }, [isListPanelVisible]);
+
+  }, [initialY]);
 
   useEffect(() => {
     dispatch({ type: "POSITION", position: position });
-  }, [position]);
+  }, [position, dispatch]);
 
   useEffect(() => {
     let newY;

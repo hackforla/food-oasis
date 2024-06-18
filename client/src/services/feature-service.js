@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "api/features";
+const baseUrl = "/api/features";
 
 export const getAllFeatures = async () => {
   try {

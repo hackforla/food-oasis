@@ -46,7 +46,6 @@ const SearchResults = () => {
     } else {
       return;
     }
-    console.log(positionDraggable);
   }, [positionDraggable]);
 
   // USE EFFECT BASED ON THIS FUNCTION IN Mobile.js

@@ -40,6 +40,7 @@ const MobileLayout = ({ filters, map, list, showList }) => {
       x: 0,
       y: initialY * (window.innerHeight / 100),
     });
+
   }, [initialY]);
 
   useEffect(() => {

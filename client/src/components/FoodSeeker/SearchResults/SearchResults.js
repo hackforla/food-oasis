@@ -10,7 +10,7 @@ import {
   useSearchCoordinates,
   useStakeholders,
   useIsListPanelVisible,
-  usePosition
+  usePosition,
 } from "../../../appReducer";
 import Filters from "./ResultsFilters/ResultsFilters";
 import List from "./ResultsList/ResultsList";
@@ -18,7 +18,7 @@ import Map from "./ResultsMap/ResultsMap";
 import { Desktop, Mobile, Tablet } from "./layouts";
 
 const SearchResults = () => {
-  const isListPanelVisible = useIsListPanelVisible()
+  const isListPanelVisible = useIsListPanelVisible();
   const mapRef = useRef(null);
   const { isDesktop, isTablet } = useBreakpoints();
   const { selectAll, loading } = useOrganizationBests();
@@ -35,21 +35,18 @@ const SearchResults = () => {
   const organizationId = new URLSearchParams(location.search).get("id");
   const positionDraggable = usePosition();
 
- useEffect(() => {
-  const windowHeightPercentage = window.innerHeight / 100;
-  const triggerHeightTop = 54 * windowHeightPercentage;
-  
-  if (positionDraggable.y === 0) {
-    setShowList(true);
-  } else if (positionDraggable.y === triggerHeightTop) {
-    setShowList(false);
-  }
-  else {
-    return
-  }
-  console.log(positionDraggable)
-}, [positionDraggable]);
+  useEffect(() => {
+    const windowHeightPercentage = window.innerHeight / 100;
+    const triggerHeightTop = 54 * windowHeightPercentage;
 
+    if (positionDraggable.y === 0) {
+      setShowList(true);
+    } else if (positionDraggable.y === triggerHeightTop) {
+      setShowList(false);
+    } else {
+      return;
+    }
+  }, [positionDraggable]);
 
   // USE EFFECT BASED ON THIS FUNCTION IN Mobile.js
   // const handleStop = (e, ui) => {
@@ -64,11 +61,6 @@ const SearchResults = () => {
   //   }
   //   setPosition({ x: 0, y: newY * windowHeight });
   // };
-
-
-
-
-
 
   // If path starts with "widget", then set the state variable isWidget to true,
   // so we stay in widget mode (w/o normal App Header and Footer)
@@ -150,8 +142,8 @@ const SearchResults = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    setShowList(true)
-  }, [isListPanelVisible])
+    setShowList(true);
+  }, [isListPanelVisible]);
 
   const filters = (
     <Filters

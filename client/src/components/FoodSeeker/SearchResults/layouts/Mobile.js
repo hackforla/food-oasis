@@ -3,10 +3,7 @@ import { useEffect, useState } from "react";
 import Draggable from "react-draggable";
 import { useFilterPanel } from "appReducer";
 import AttributionInfo from "../AttributionInfo";
-import { 
-  useIsListPanelVisible,
-  useAppDispatch
-} from '../../../../appReducer'
+import { useAppDispatch } from "../../../../appReducer";
 import useFeatureFlag from "hooks/useFeatureFlag";
 
 const overlay = {
@@ -29,37 +26,32 @@ const MobileLayout = ({ filters, map, list, showList }) => {
     y: initialY * (window.innerHeight / 100),
   });
 
-  const isListPanelVisible = useIsListPanelVisible()
-
   // disable body scroll
   useEffect(() => {
     window.scrollTo({
-      top: 0
+      top: 0,
     });
-    document.body.style.overflow = "hidden"
-  }, [])
-
+    document.body.style.overflow = "hidden";
+  }, []);
 
   // List goes up when clicking the map
   useEffect(() => {
     setPosition({
       x: 0,
       y: initialY * (window.innerHeight / 100),
-    })
-  }, [isListPanelVisible])
-
+    });
+  }, [initialY]);
 
   useEffect(() => {
     dispatch({ type: "POSITION", position: position });
-  }, [position])
-
+  }, [position, dispatch]);
 
   useEffect(() => {
     let newY;
     if (filterPanelOpen) {
       newY = 100;
     } else if (hasAdvancedFilterFeatureFlag) {
-      newY = showList ? ((100 / window.innerHeight) * 60) : 54;
+      newY = showList ? (100 / window.innerHeight) * 60 : 54;
     } else {
       newY = showList ? 0 : 54;
     }
@@ -90,7 +82,7 @@ const MobileLayout = ({ filters, map, list, showList }) => {
           display: "flex",
           flexDirection: "column",
           position: "relative",
-          overflow: 'hidden'
+          overflow: "hidden",
         }}
       >
         <Box sx={{ flex: 1 }}>{map}</Box>
@@ -170,9 +162,13 @@ const MobileLayout = ({ filters, map, list, showList }) => {
                     </a>
                   </div>
                   <div
-                    style={{ display: "flex", justifyContent: "flex-start", paddingTop: "2.23px" }}
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      paddingTop: "2.23px",
+                    }}
                   >
-                  <AttributionInfo />
+                    <AttributionInfo />
                   </div>
                 </Stack>
               </Grid>

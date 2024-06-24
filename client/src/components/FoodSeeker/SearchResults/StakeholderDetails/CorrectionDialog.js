@@ -56,7 +56,7 @@ function CorrectionDialog(props) {
                   size="small"
                   minRows={2}
                   maxRows={12}
-                  placeholder="Corrections"
+                  placeholder="What needs to be corrected?"
                   name="notes"
                   id="notes"
                   fullWidth
@@ -156,6 +156,9 @@ const CorrectionForm = withFormik({
   }),
   validationSchema: Yup.object(validationsForm),
   handleSubmit: (values, formikBag) => {
+    const prependString = "Correction note: ";
+    values.notes = prependString + values.notes;
+
     // cherry pick the data we need for backend validation
     const org = formikBag.props.stakeholder;
     const orgDetails = {

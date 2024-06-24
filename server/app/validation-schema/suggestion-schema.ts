@@ -43,7 +43,7 @@ export const suggestionPostRequestSchema: JSONSchemaType<SuggestionPostFields> =
           { maxLength: 0 }, // for an empty string
         ],
       },
-      notes: { type: "string" }, // also called "other information"
+      notes: { type: "string" }, // also called "other information" in suggestion form, "Corrections" in correction form
       tipsterName: {
         type: "string",
       },

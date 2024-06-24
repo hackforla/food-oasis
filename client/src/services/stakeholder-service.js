@@ -77,7 +77,6 @@ export const checkAvailableAssignmentsAdmin = async () => {
       params: { tenantId },
     }
   );
-  console.log(response.data);
   return response.data;
 };
 // id = stakeholderId

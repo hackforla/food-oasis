@@ -56,7 +56,7 @@ function CorrectionDialog(props) {
                   size="small"
                   minRows={2}
                   maxRows={12}
-                  placeholder="Corrections"
+                  placeholder="What needs to be corrected?"
                   name="notes"
                   id="notes"
                   fullWidth

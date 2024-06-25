@@ -6,6 +6,8 @@ import LocationCityIcon from "@mui/icons-material/LocationCity";
 import PersonIcon from "@mui/icons-material/Person";
 import PhoneIcon from "@mui/icons-material/Phone";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import CategoryIcon from "@mui/icons-material/Category";
 import {
   Avatar,
   Box,
@@ -43,7 +45,7 @@ import Textarea from "./ui/Textarea";
 
 const columns = [
   { id: "name", label: "Name", minWidth: 100 },
-  { id: "notes", label: "Suggestion", minWidth: 10 },
+  { id: "notes", label: "Notes", minWidth: 10 },
   { id: "suggestionStatusId", label: "Status", minWidth: 10 },
 ];
 
@@ -97,7 +99,7 @@ function Suggestions() {
     }
   });
 
-  const handleChangePage = (event, newPage) => {
+  const handleChangePage = (_event, newPage) => {
     setPage(newPage);
   };
 
@@ -346,9 +348,27 @@ function Suggestions() {
                       />
                       <Divider variant="inset" component="li" />
                       <DisplayText
+                        label="Email"
+                        value={activeOrg.email}
+                        icon={<EmailIcon />}
+                      />
+                      <Divider variant="inset" component="li" />
+                      <DisplayText
                         label="Phone"
                         value={activeOrg.phone}
                         icon={<PhoneIcon />}
+                      />
+                      <Divider variant="inset" component="li" />
+                      <DisplayText
+                        label="Category"
+                        value={activeOrg.category}
+                        icon={<CategoryIcon />}
+                      />
+                      <Divider variant="inset" component="li" />
+                      <DisplayText
+                        label="Hours"
+                        value={activeOrg.hours}
+                        icon={<AccessTimeIcon />}
                       />
                     </List>
                     <Divider style={{ margin: "1em 0" }} />
@@ -367,7 +387,7 @@ function Suggestions() {
                     </div>
                     <List>
                       <DisplayText
-                        label="Suggestion"
+                        label="Tipster Notes"
                         value={activeOrg.notes}
                         icon={<AssessmentIcon />}
                       />

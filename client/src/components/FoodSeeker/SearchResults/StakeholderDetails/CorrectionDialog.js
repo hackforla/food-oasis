@@ -156,9 +156,6 @@ const CorrectionForm = withFormik({
   }),
   validationSchema: Yup.object(validationsForm),
   handleSubmit: (values, formikBag) => {
-    const prependString = "Correction note: ";
-    values.notes = prependString + values.notes;
-
     // cherry pick the data we need for backend validation
     const org = formikBag.props.stakeholder;
     const orgDetails = {

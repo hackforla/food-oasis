@@ -45,7 +45,7 @@ import Textarea from "./ui/Textarea";
 
 const columns = [
   { id: "name", label: "Name", minWidth: 100 },
-  { id: "notes", label: "Suggestion/Correction Notes", minWidth: 10 },
+  { id: "notes", label: "Notes", minWidth: 10 },
   { id: "suggestionStatusId", label: "Status", minWidth: 10 },
 ];
 

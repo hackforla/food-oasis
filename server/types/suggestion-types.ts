@@ -18,4 +18,10 @@ export interface Suggestion {
   adminNotes: string;
   stakeholderId: number;
   tenantId: number;
+  SuggestionOrCorrection: SuggestionOrCorrectionType;
+}
+
+export enum SuggestionOrCorrectionType {
+  Suggestion = "suggestion",
+  Correction = "correction",
 }

@@ -15,7 +15,7 @@ const selectAll = async (params: {
     select id, name, address_1, address_2, city, state, zip,
     phone, email, notes,
     tipster_name, tipster_phone, tipster_email,
-    hours, category, suggestion_status_id, admin_notes, tenant_id
+    hours, category, suggestion_status_id, admin_notes, tenant_id, suggestion_or_correction
     from suggestion
     where suggestion_status_id = any ($<statusIds>)
     and tenant_id = $<tenantId>
@@ -36,7 +36,7 @@ const selectById = async (suggestionId: string): Promise<Suggestion> => {
     select id, name, address_1, address_2, city, state, zip,
     phone, email, notes,
     tipster_name, tipster_phone, tipster_email,
-    hours, category, suggestion_status_id, admin_notes, tenant_id
+    hours, category, suggestion_status_id, admin_notes, tenant_id, suggestion_or_correction
     from suggestion where id = $<id>`;
 
   const row: Suggestion = await db.one(sql, { id });

@@ -173,6 +173,7 @@ const CorrectionForm = withFormik({
       hours: formatArrayToString(org.hours),
       category: formatArrayToString(org.categories),
       tenantId: org.tenantId,
+      suggestionOrCorrection: "correction",
     };
 
     const stakeholder = {

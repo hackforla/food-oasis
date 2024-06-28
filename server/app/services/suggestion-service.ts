@@ -50,13 +50,13 @@ const insert = async (model: SuggestionPostFields): Promise<{ id: number }> => {
     city, state, zip,
     phone, email, notes,
     tipster_name, tipster_phone, tipster_email,
-    hours, category, tenant_id, stakeholder_id
+    hours, category, tenant_id, stakeholder_id, suggestion_or_correction
   ) values (
     $<name>, $<address1>, $<address2>,
     $<city>, $<state>, $<zip>,
     $<phone>, $<email>,  $<notes>,
     $<tipsterName>, $<tipsterPhone>, $<tipsterEmail>,
-    $<hours>, $<category>, $<tenantId>, $<stakeholderId>
+    $<hours>, $<category>, $<tenantId>, $<stakeholderId>, $<suggestionOrCorrection>
   )
   returning id`;
   const result = await db.one(sql, { ...model, suggestionStatusId: 1 });

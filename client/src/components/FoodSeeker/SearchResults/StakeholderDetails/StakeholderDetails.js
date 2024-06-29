@@ -1,4 +1,3 @@
-import ArrowBack from "@mui/icons-material/ArrowBackIosNew";
 import {
   Box,
   Button,
@@ -256,27 +255,6 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
     );
   }, [onBackClick]);
 
-  const organizationContainsCategory = (categoryId) => {
-    return selectedOrganization.categories.some(
-      (obj) => obj["id"] === categoryId
-    );
-  };
-
-  const getCategoryText = () => {
-    const isMealProgram = organizationContainsCategory(
-      MEAL_PROGRAM_CATEGORY_ID
-    );
-    const isFoodPantry = organizationContainsCategory(FOOD_PANTRY_CATEGORY_ID);
-
-    if (isMealProgram && !isFoodPantry) {
-      return "Meal";
-    } else if (isFoodPantry && !isMealProgram) {
-      return "Pantry";
-    } else {
-      return "Meal and Pantry";
-    }
-  };
-
   return (
     <>
       <SEO
@@ -306,56 +284,24 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
             padding: isDesktop ? "1.5rem 35px 0 65px" : "1rem 1.5rem",
           }}
         >
-          <Typography
+          <Button
+            variant="text"
             sx={(theme) => ({
-              textAlign: "right",
-              fontWeight: "bold",
-              fontSize: "14px",
+              fontSize: { xs: "14px", md: "18px" },
               color: { md: theme.palette.common.gray, xs: "#747476" },
-              position: "relative",
-              cursor: "pointer",
-              display: { xs: "block", md: "none" },
+              textTransform: "none",
+              fontWeight: "bold", 
+              "&:focus": {
+                borderWidth: "2px",
+                borderColor: theme.palette.primary.dark,
+                borderStyle: "solid",
+                dropShadow: "10px 10px  12px",            
+              },
             })}
             onClick={handleBackButtonClick}
           >
-            Back to Search
-          </Typography>
-          <Typography
-            sx={(theme) => ({
-              textAlign: "left",
-              fontWeight: "bold",
-              fontSize: { md: "18px" },
-              color: { md: theme.palette.common.gray, xs: "#747476" },
-              position: "relative",
-              cursor: "pointer",
-              display: { md: "block", xs: "none" },
-            })}
-            onClick={handleBackButtonClick}
-          >
-            Back to Location
-          </Typography>
-          {isDesktop && (
-            <>
-              <ArrowBack
-                fontSize="small"
-                sx={{
-                  color: "#747476",
-                  margin: "0 8px 6px",
-                }}
-              />
-              <Typography
-                sx={(theme) => ({
-                  textAlign: "left",
-                  fontWeight: "bold",
-                  fontSize: { xs: "18px" },
-                  color: theme.palette.common.gray,
-                  position: "relative",
-                })}
-              >
-                {getCategoryText()}
-              </Typography>
-            </>
-          )}
+            {isDesktop ? "Back to Locations" : "Back to Search"}
+          </Button>
         </Stack>
         {isDesktop && (
           <Divider

@@ -38,10 +38,6 @@ button.mapboxgl-ctrl-attrib-button {
   bottom: 0;
 }
 
-.mobile-text {
-  display: none;
-}
-
 @media (max-width: 600px) {
   div.mapboxgl-control-container {
     display: none;

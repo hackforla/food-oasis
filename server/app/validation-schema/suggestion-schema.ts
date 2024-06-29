@@ -60,7 +60,7 @@ export const suggestionPostRequestSchema: JSONSchemaType<SuggestionPostFields> =
         type: "integer",
         minimum: 1,
       },
-      suggestionOrCorrection: {
+      formType: {
         oneOf: [
           {
             const: "suggestion",
@@ -154,7 +154,7 @@ export const suggestionPutRequestSchema: JSONSchemaType<Suggestion> = {
       type: "integer",
       minimum: 1,
     },
-    suggestionOrCorrection: {
+    formType: {
       oneOf: [
         {
           const: "suggestion",

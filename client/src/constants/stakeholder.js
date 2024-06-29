@@ -35,5 +35,5 @@ export const DEFAULT_STAKEHOLDER = {
   tipsterPhone: "",
   tipsterEmail: "",
   category: "",
-  suggestionOrCorrection: "",
+  formType: "",
 };

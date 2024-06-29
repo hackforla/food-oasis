@@ -1,22 +1,22 @@
 /* eslint-disable camelcase */
 exports.shorthands = undefined;
 
-const SuggestionOrCorrectionType = {
+const formTypeTyping = {
   Suggestion: "suggestion",
   Correction: "correction",
 };
 exports.up = (pgm) => {
   pgm.addColumn("suggestion", {
-    suggestion_or_correction: {
+    form_type: {
       type: "text",
-      default: SuggestionOrCorrectionType.Suggestion,
+      default: formTypeTyping.Suggestion,
     },
   });
 };
 
 exports.down = (pgm) => {
   pgm.dropColumns("suggestion", {
-    suggestion_or_correction: {
+    form_type: {
       ifExists: true,
     },
   });

@@ -63,7 +63,7 @@ function Suggestion(props) {
           <Formik
             initialValues={{
               ...DEFAULT_STAKEHOLDER,
-              suggestionOrCorrection: "suggestion",
+              formType: "suggestion",
             }}
             validationSchema={validationSchema}
             onSubmit={async (value, formikBag) => {

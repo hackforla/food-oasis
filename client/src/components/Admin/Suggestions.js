@@ -47,7 +47,7 @@ const columns = [
   { id: "name", label: "Name", minWidth: 100 },
   { id: "notes", label: "Notes", minWidth: 10 },
   { id: "suggestionStatusId", label: "Status", minWidth: 10 },
-  { id: "suggestionOrCorrection", label: "Type", minWidth: 10 },
+  { id: "formType", label: "Type", minWidth: 10 },
 ];
 
 const FILTERS = [

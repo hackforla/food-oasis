@@ -175,7 +175,6 @@ const CorrectionForm = withFormik({
       tenantId: org.tenantId,
       formType: "correction",
       ...values,
-      id: null,
     };
 
     return suggestionService

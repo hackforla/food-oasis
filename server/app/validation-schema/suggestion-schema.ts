@@ -60,6 +60,18 @@ export const suggestionPostRequestSchema: JSONSchemaType<SuggestionPostFields> =
         type: "integer",
         minimum: 1,
       },
+      formType: {
+        oneOf: [
+          {
+            const: "suggestion",
+            title: "Suggestion",
+          },
+          {
+            const: "correction",
+            title: "Correction",
+          },
+        ],
+      },
     },
     additionalProperties: true,
   };
@@ -141,6 +153,18 @@ export const suggestionPutRequestSchema: JSONSchemaType<Suggestion> = {
     tenantId: {
       type: "integer",
       minimum: 1,
+    },
+    formType: {
+      oneOf: [
+        {
+          const: "suggestion",
+          title: "Suggestion",
+        },
+        {
+          const: "correction",
+          title: "Correction",
+        },
+      ],
     },
   },
   additionalProperties: false,

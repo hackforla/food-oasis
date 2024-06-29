@@ -18,4 +18,10 @@ export interface Suggestion {
   adminNotes: string;
   stakeholderId: number;
   tenantId: number;
+  formType: formTypeTyping;
+}
+
+export enum formTypeTyping {
+  Suggestion = "suggestion",
+  Correction = "correction",
 }

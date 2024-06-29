@@ -15,7 +15,7 @@ const selectAll = async (params: {
     select id, name, address_1, address_2, city, state, zip,
     phone, email, notes,
     tipster_name, tipster_phone, tipster_email,
-    hours, category, suggestion_status_id, admin_notes, tenant_id
+    hours, category, suggestion_status_id, admin_notes, tenant_id, form_type
     from suggestion
     where suggestion_status_id = any ($<statusIds>)
     and tenant_id = $<tenantId>
@@ -36,7 +36,7 @@ const selectById = async (suggestionId: string): Promise<Suggestion> => {
     select id, name, address_1, address_2, city, state, zip,
     phone, email, notes,
     tipster_name, tipster_phone, tipster_email,
-    hours, category, suggestion_status_id, admin_notes, tenant_id
+    hours, category, suggestion_status_id, admin_notes, tenant_id, form_type
     from suggestion where id = $<id>`;
 
   const row: Suggestion = await db.one(sql, { id });
@@ -50,13 +50,13 @@ const insert = async (model: SuggestionPostFields): Promise<{ id: number }> => {
     city, state, zip,
     phone, email, notes,
     tipster_name, tipster_phone, tipster_email,
-    hours, category, tenant_id, stakeholder_id
+    hours, category, tenant_id, stakeholder_id, form_type
   ) values (
     $<name>, $<address1>, $<address2>,
     $<city>, $<state>, $<zip>,
     $<phone>, $<email>,  $<notes>,
     $<tipsterName>, $<tipsterPhone>, $<tipsterEmail>,
-    $<hours>, $<category>, $<tenantId>, $<stakeholderId>
+    $<hours>, $<category>, $<tenantId>, $<stakeholderId>, $<formType>
   )
   returning id`;
   const result = await db.one(sql, { ...model, suggestionStatusId: 1 });

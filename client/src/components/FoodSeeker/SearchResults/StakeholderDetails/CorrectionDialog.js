@@ -173,25 +173,12 @@ const CorrectionForm = withFormik({
       hours: formatArrayToString(org.hours),
       category: formatArrayToString(org.categories),
       tenantId: org.tenantId,
-    };
-
-    const stakeholder = {
-      ...orgDetails,
-    };
-
-    // Construct the suggestion by starting with the stakeholder record,
-    // adding values from the suggestion form properties, and then
-    // moving the original stakeholder.id to be the stakeholderId property
-    // of the suggestion
-    const altered = {
-      ...stakeholder,
+      formType: "correction",
       ...values,
-      stakeholderId: stakeholder.id,
-      id: null,
     };
 
     return suggestionService
-      .post(altered)
+      .post(orgDetails)
       .then(() => {
         formikBag.props.setToast({
           message: "Thank you for your help!",

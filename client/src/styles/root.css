@@ -42,14 +42,8 @@ button.mapboxgl-ctrl-attrib-button {
   display: none;
 }
 
-@media (max-width:600px)  {
+@media (max-width: 600px) {
   div.mapboxgl-control-container {
     display: none;
-  }   
-  .desktop-text {
-    display: none;
-  }
-  .mobile-text {
-    display: inline;
   }
 }

@@ -285,22 +285,22 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
           }}
         >
           <Button
-            variant="gray"
+            variant="text"
             sx={(theme) => ({
-              textAlign: "left",
-              fontWeight: "bold",
               fontSize: { xs: "14px", md: "18px" },
               color: { md: theme.palette.common.gray, xs: "#747476" },
-              position: "relative",
-              cursor: "pointer",
-              display: "block",
-              border: "none",
-              padding: "5px",
+              textTransform: "none",
+              fontWeight: "bold", 
+              "&:focus": {
+                borderWidth: "2px",
+                borderColor: theme.palette.primary.dark,
+                borderStyle: "solid",
+                dropShadow: "10px 10px  12px",            
+              },
             })}
             onClick={handleBackButtonClick}
           >
-            <span className="desktop-text">Back to Locations</span>
-            <span className="mobile-text">Back to Search</span>
+            {isDesktop ? "Back to Locations" : "Back to Search"}
           </Button>
         </Stack>
         {isDesktop && (

@@ -180,8 +180,8 @@ const ResultsMap = (
     [isMobile, isListPanelOpen]
   );
 
-  const listPanelLeftPostion = isListPanelOpen ? 524 : 0;
-  const filterPanelLeftPostion = isFilterPanelOpen ? 340 : 0;
+  const listPanelLeftPosition = isListPanelOpen ? 524 : 0;
+  const filterPanelLeftPosition = isFilterPanelOpen ? 340 : 0;
 
   return (
     <div style={{ position: "relative", height: "100%", width: "100%" }}>
@@ -241,7 +241,7 @@ const ResultsMap = (
             top: 0,
             left: isMobile
               ? 0
-              : `${listPanelLeftPostion + filterPanelLeftPostion}px`,
+              : `${listPanelLeftPosition + filterPanelLeftPosition}px`,
             transition: isMobile ? undefined : "left .5s ease-in-out",
           }}
         >

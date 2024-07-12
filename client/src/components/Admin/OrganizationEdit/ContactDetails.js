@@ -1,6 +1,7 @@
 import { Grid, TextField } from "@mui/material";
 import { TabPanel } from "components/Admin/ui/TabPanel";
 import Label from "../ui/Label";
+import { isValidUrl } from "../../../helpers/validatingURL";
 
 export default function ContactDetails({
   tabPage,
@@ -27,14 +28,18 @@ export default function ContactDetails({
               value={values.website}
               onChange={handleChange}
               onBlur={handleBlur}
-              helperText={touched.website ? errors.website : ""}
-              error={touched.website && Boolean(errors.website)}
+              helperText={(touched.website ? errors.website : "") || ((isValidUrl(values.website) || (!values.website)) ? "" : "Please enter a valid URL")}
+              error={(touched.website && Boolean(errors.website)) || (values.website && !isValidUrl(values.website))}
             />
           </div>
         </Grid>
         <Grid item sm={6} xs={12}>
           <div>
-            <Label id="instagram" label="Instagram" />
+            <Label 
+              id="instagram" 
+              label="Instagram"
+              tooltipTitle="This org’s full Instagram URL: https://instagram.com/…" 
+            />
             <TextField
               id="instagram"
               name="instagram"
@@ -42,14 +47,18 @@ export default function ContactDetails({
               value={values.instagram}
               onChange={handleChange}
               onBlur={handleBlur}
-              helperText={touched.instagram ? errors.instagram : ""}
-              error={touched.instagram && Boolean(errors.instagram)}
+              helperText={(touched.instagram ? errors.instagram : "") || ((isValidUrl(values.instagram) || (!values.instagram)) ? "" : "Please enter a valid URL")}
+              error={(touched.instagram && Boolean(errors.instagram)) || (values.instagram && !isValidUrl(values.instagram))}
             />
           </div>
         </Grid>
         <Grid item sm={6} xs={12}>
           <div>
-            <Label id="facebook" label="Facebook" />
+            <Label 
+              id="facebook" 
+              label="Facebook" 
+              tooltipTitle="This org’s full Facebook URL: https://facebook.com/…"
+            />
             <TextField
               id="facebook"
               name="facebook"
@@ -57,14 +66,18 @@ export default function ContactDetails({
               value={values.facebook}
               onChange={handleChange}
               onBlur={handleBlur}
-              helperText={touched.facebook ? errors.facebook : ""}
-              error={touched.facebook && Boolean(errors.facebook)}
+              helperText={(touched.facebook ? errors.facebook : "") || ((isValidUrl(values.facebook) || (!values.facebook)) ? "" : "Please enter a valid URL")}
+              error={(touched.facebook && Boolean(errors.facebook)) || (values.facebook && !isValidUrl(values.facebook))}
             />
           </div>
         </Grid>
         <Grid item sm={6} xs={12}>
           <div>
-            <Label id="twitter" label="Twitter" />
+            <Label 
+              id="twitter" 
+              label="Twitter" 
+              tooltipTitle="This org’s full Twitter URL: https://x.com/…"
+            />
             <TextField
               id="twitter"
               name="twitter"
@@ -72,14 +85,18 @@ export default function ContactDetails({
               value={values.twitter}
               onChange={handleChange}
               onBlur={handleBlur}
-              helperText={touched.twitter ? errors.twitter : ""}
-              error={touched.twitter && Boolean(errors.twitter)}
+              helperText={(touched.twitter ? errors.twitter : "") || ((isValidUrl(values.twitter) || (!values.twitter)) ? "" : "Please enter a valid URL")}
+              error={(touched.twitter && Boolean(errors.twitter)) || (values.twitter && !isValidUrl(values.twitter))}
             />
           </div>
         </Grid>
         <Grid item sm={6} xs={12}>
           <div>
-            <Label id="pinterest" label="Pinterest" />
+            <Label 
+              id="pinterest" 
+              label="Pinterest" 
+              tooltipTitle="This org’s full Pinterest URL: https://pinterest.com/…"
+            />
             <TextField
               id="pinterest"
               name="pinterest"
@@ -87,14 +104,18 @@ export default function ContactDetails({
               value={values.pinterest}
               onChange={handleChange}
               onBlur={handleBlur}
-              helperText={touched.pinterest ? errors.pinterest : ""}
-              error={touched.pinterest && Boolean(errors.pinterest)}
+              helperText={(touched.pinterest ? errors.pinterest : "") || ((isValidUrl(values.pinterest) || (!values.pinterest)) ? "" : "Please enter a valid URL")}
+              error={(touched.pinterest && Boolean(errors.pinterest)) || (values.pinterest && !isValidUrl(values.pinterest))}
             />
           </div>
         </Grid>
         <Grid item sm={6} xs={12}>
           <div>
-            <Label id="linkedin" label="LinkedIn" />
+            <Label 
+              id="linkedin" 
+              label="LinkedIn" 
+              tooltipTitle="This org’s full LinkedIn URL: https://linkedin.com/…"
+            />
             <TextField
               id="linkedin"
               name="linkedin"
@@ -102,8 +123,8 @@ export default function ContactDetails({
               value={values.linkedin}
               onChange={handleChange}
               onBlur={handleBlur}
-              helperText={touched.linkedin ? errors.linkedin : ""}
-              error={touched.linkedin && Boolean(errors.linkedin)}
+              helperText={(touched.linkedin ? errors.linkedin : "") || ((isValidUrl(values.linkedin) || (!values.linkedin)) ? "" : "Please enter a valid URL")}
+              error={(touched.linkedin && Boolean(errors.linkedin)) || (values.linkedin && !isValidUrl(values.linkedin))}
             />
           </div>
         </Grid>

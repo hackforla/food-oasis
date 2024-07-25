@@ -14,6 +14,7 @@ import {
   useSearchCoordinates,
   useWidget,
 } from "../../appReducer";
+import { useMapbox } from "../../hooks/useMapbox";
 
 export default function AddressDropDown({ autoFocus }) {
   const searchCoordinates = useSearchCoordinates();
@@ -25,6 +26,7 @@ export default function AddressDropDown({ autoFocus }) {
   const { mapboxResults, fetchMapboxResults } = useMapboxGeocoder();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { flyTo } = useMapbox();
 
   const handleInputChange = (delta) => {
     if (!delta) return;
@@ -44,6 +46,10 @@ export default function AddressDropDown({ autoFocus }) {
     if (result) {
       const [longitude, latitude] = result.center;
 
+      flyTo({
+        latitude,
+        longitude,
+      });
       dispatch({
         type: "SEARCH_COORDINATES_UPDATED",
         coordinates: { latitude, longitude, locationName: result.place_name },

@@ -20,7 +20,6 @@ const MobileLayout = ({ filters, map, list, showList }) => {
   const initialY = showList ? 5 : 57;
   const hasAdvancedFilterFeatureFlag = useFeatureFlag("advancedFilter");
   const dispatch = useAppDispatch();
-
   const [position, setPosition] = useState({
     x: 0,
     y: initialY * (window.innerHeight / 100),
@@ -34,15 +33,6 @@ const MobileLayout = ({ filters, map, list, showList }) => {
     document.body.style.overflow = "hidden";
   }, []);
 
-  // List goes up when clicking the map
-  useEffect(() => {
-    setPosition({
-      x: 0,
-      y: initialY * (window.innerHeight / 100),
-    });
-
-  }, [initialY]);
-
   useEffect(() => {
     dispatch({ type: "POSITION", position: position });
   }, [position, dispatch]);
@@ -54,8 +44,9 @@ const MobileLayout = ({ filters, map, list, showList }) => {
     } else if (hasAdvancedFilterFeatureFlag) {
       newY = showList ? (100 / window.innerHeight) * 60 : 54;
     } else {
-      newY = showList ? 0 : 54;
+      newY = showList ? 17 : 54;
     }
+
     setPosition({ x: 0, y: newY * (window.innerHeight / 100) });
   }, [showList, filterPanelOpen, hasAdvancedFilterFeatureFlag]);
 

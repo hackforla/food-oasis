@@ -26,8 +26,6 @@ import {
   calculateMinutesToClosing,
   calculateMinutesToOpening,
 } from "helpers";
-import facebookIcon from "images/facebookIcon.png";
-import instagramIcon from "images/instagramIcon.png";
 import StakeholderIcon from "images/stakeholderIcon";
 import ForkIcon from "icons/ForkIcon";
 import AppleIcon from "icons/AppleIcon";
@@ -50,6 +48,12 @@ import { useSiteContext } from "contexts/siteContext";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { stakeholdersDaysHours } from "../StakeholderPreview/StakeholderPreview";
 import { success } from "../../../../theme/palette";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import XIcon from "@mui/icons-material/X";
+import PinterestIcon from "@mui/icons-material/Pinterest";
+import IconButton from "@mui/material/IconButton";
 
 const MinorHeading = styled(Typography)(({ theme }) => ({
   variant: "h5",
@@ -290,12 +294,12 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
               fontSize: { xs: "14px", md: "18px" },
               color: { md: theme.palette.common.gray, xs: "#747476" },
               textTransform: "none",
-              fontWeight: "bold", 
+              fontWeight: "bold",
               "&:focus": {
                 borderWidth: "2px",
                 borderColor: theme.palette.primary.dark,
                 borderStyle: "solid",
-                dropShadow: "10px 10px  12px",            
+                dropShadow: "10px 10px  12px",
               },
             })}
             onClick={handleBackButtonClick}
@@ -393,21 +397,21 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
 
                 <Box textAlign="left">
                   {selectedOrganization.inactiveTemporary ||
-                  selectedOrganization.inactive ? (
-                    <Chip
-                      color="inactiveButton"
-                      sx={{
-                        borderRadius: "6px",
-                        fontStyle: "normal",
-                        fontSize: "12px",
-                      }}
-                      label={
-                        selectedOrganization.inactiveTemporary
-                          ? "Temporarily Closed"
-                          : "Permanently Closed"
-                      }
-                    />
-                  ) : null}
+                    (selectedOrganization.inactive && (
+                      <Chip
+                        color="inactiveButton"
+                        sx={{
+                          borderRadius: "6px",
+                          fontStyle: "normal",
+                          fontSize: "12px",
+                        }}
+                        label={
+                          selectedOrganization.inactiveTemporary
+                            ? "Temporarily Closed"
+                            : "Permanently Closed"
+                        }
+                      />
+                    ))}
 
                   {!(
                     selectedOrganization.inactiveTemporary ||
@@ -495,7 +499,7 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
                   </Box>
                 )}
 
-                {selectedOrganization.hours ? (
+                {selectedOrganization.hours && (
                   <Stack>
                     <Divider sx={{ margin: "8px 0px 4px" }} />
                     {selectedOrganization.hours
@@ -536,9 +540,9 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
                         </Stack>
                       ))}
                   </Stack>
-                ) : null}
+                )}
 
-                {selectedOrganization.foodTypes ? (
+                {selectedOrganization.foodTypes && (
                   <Box textAlign="left">
                     <Typography
                       variant="body2"
@@ -553,8 +557,6 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
                       {selectedOrganization.foodTypes}
                     </Typography>
                   </Box>
-                ) : (
-                  ""
                 )}
 
                 <Stack
@@ -629,7 +631,7 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
                   <DetailText>No E-Mail Address on record</DetailText>
                 )}
 
-                {selectedOrganization.website ? (
+                {selectedOrganization.website && (
                   <>
                     <MinorHeading>Website</MinorHeading>
                     <DetailText>
@@ -642,7 +644,7 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
                       </Link>
                     </DetailText>
                   </>
-                ) : null}
+                )}
 
                 <MinorHeading>Languages</MinorHeading>
                 {selectedOrganization.languages ? (
@@ -673,7 +675,7 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
                   <DetailText>No covid notes to display.</DetailText>
                 )}
 
-                {selectedOrganization.hoursNotes ? (
+                {selectedOrganization.hoursNotes && (
                   <>
                     <MinorHeading>Hour Notes</MinorHeading>
                     <DetailText
@@ -684,54 +686,24 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
                       }}
                     ></DetailText>
                   </>
-                ) : null}
+                )}
 
-                {selectedOrganization.services ? (
+                {selectedOrganization.services && (
                   <>
                     <MinorHeading>Services</MinorHeading>
                     <DetailText>{selectedOrganization.services}</DetailText>
                   </>
-                ) : null}
+                )}
 
-                {selectedOrganization.items ? (
+                {selectedOrganization.items && (
                   <>
                     <MinorHeading>Items Available</MinorHeading>
                     <DetailText>{selectedOrganization.items}</DetailText>
                   </>
-                ) : null}
-
-                {selectedOrganization.facebook ||
-                selectedOrganization.instagram ? (
-                  <>
-                    <MinorHeading>Social Media</MinorHeading>
-                    <Stack
-                      direction="row"
-                      spacing={1}
-                      sx={{ marginBottom: "16px" }}
-                    >
-                      {selectedOrganization.facebook ? (
-                        <Link
-                          href={selectedOrganization.facebook}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          variant="icon"
-                        >
-                          <img alt="facebook link" src={facebookIcon} />
-                        </Link>
-                      ) : null}
-                      {selectedOrganization.instagram ? (
-                        <a
-                          href={selectedOrganization.instagram}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          variant="icon"
-                        >
-                          <img alt="instagram link" src={instagramIcon} />
-                        </a>
-                      ) : null}
-                    </Stack>
-                  </>
-                ) : null}
+                )}
+                {hasAnySocialMediaUrl(selectedOrganization) && (
+                  <SocialMedia selectedOrganization={selectedOrganization} />
+                )}
 
                 <MinorHeading>Eligibility/Requirements</MinorHeading>
                 {selectedOrganization.requirements ? (
@@ -758,7 +730,7 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
                 </DetailText>
 
                 {selectedOrganization.verificationStatusId ===
-                VERIFICATION_STATUS.VERIFIED ? (
+                  VERIFICATION_STATUS.VERIFIED && (
                   <DetailText>
                     Data updated on{" "}
                     {selectedOrganization.approvedDate
@@ -767,7 +739,7 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
                       ? formatDateMMMddYYYY(selectedOrganization.modifiedDate)
                       : formatDateMMMddYYYY(selectedOrganization.createdDate)}
                   </DetailText>
-                ) : null}
+                )}
               </Stack>
             </Stack>
           </Grid2>
@@ -778,3 +750,118 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
 };
 
 export default StakeholderDetails;
+
+function hasAnySocialMediaUrl(organization) {
+  return Boolean(
+    organization.facebook ||
+      organization.instagram ||
+      organization.linkedin ||
+      organization.pinterest ||
+      organization.twitter
+  );
+}
+
+function normalizeSocialLink({ value, socialMedia }) {
+  if (
+    value === "N/A" ||
+    value === "n/a" ||
+    value === "n / a" ||
+    value === "N / A"
+  ) {
+    return null;
+  }
+
+  if (value.startsWith("http")) {
+    return value;
+  }
+
+  let handle = value;
+  if (value.startsWith("@")) {
+    handle = value.replace("@", "");
+  }
+
+  // this might not be always correct, for linkedin sometimes it has /company/, for facebook sometimes it has /page/
+  // but our goal is to have full urls in our db
+  return `https://${socialMedia}.com/${handle}`;
+}
+
+function SocialMedia({ selectedOrganization }) {
+  const instagram = normalizeSocialLink({
+    value: selectedOrganization.instagram,
+    socialMedia: "instagram",
+  });
+  const facebook = normalizeSocialLink({
+    value: selectedOrganization.facebook,
+    socialMedia: "facebook",
+  });
+  const linkedin = normalizeSocialLink({
+    value: selectedOrganization.linkedin,
+    socialMedia: "linkedin",
+  });
+  const pinterest = normalizeSocialLink({
+    value: selectedOrganization.pinterest,
+    socialMedia: "pinterest",
+  });
+  const twitter = normalizeSocialLink({
+    value: selectedOrganization.twitter,
+    socialMedia: "x",
+  });
+
+  return (
+    <>
+      <MinorHeading>Social Media</MinorHeading>
+      <Stack direction="row" spacing={1} sx={{ marginBottom: "16px" }}>
+        {facebook && (
+          <IconButton
+            aria-label="facebook"
+            href={facebook}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FacebookIcon />
+          </IconButton>
+        )}
+        {instagram && (
+          <IconButton
+            aria-label="instagram"
+            href={instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <InstagramIcon />
+          </IconButton>
+        )}
+        {linkedin && (
+          <IconButton
+            aria-label="linkedin"
+            href={linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <LinkedInIcon />
+          </IconButton>
+        )}
+        {pinterest && (
+          <IconButton
+            aria-label="pinterest"
+            href="pinterest"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <PinterestIcon />
+          </IconButton>
+        )}
+        {twitter && (
+          <IconButton
+            aria-label="twitter"
+            href={twitter}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <XIcon />
+          </IconButton>
+        )}
+      </Stack>
+    </>
+  );
+}

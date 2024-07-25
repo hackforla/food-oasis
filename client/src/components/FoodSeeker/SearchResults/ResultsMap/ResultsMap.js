@@ -1,12 +1,5 @@
 import PropTypes from "prop-types";
-import {
-  forwardRef,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useEffect, useState } from "react";
 // Mapbox is tricky, because version 6.* is "incompatible with some Babel transforms
 // because of the way it shares code between the maint thread and Web Worker."
 // See https://docs.mapbox.com/mapbox-gl-js/guides/install/#transpiling for details
@@ -33,6 +26,7 @@ import {
   useSelectedOrganization,
   useUserCoordinates,
 } from "../../../../appReducer";
+import { useMapbox } from "../../../../hooks/useMapbox";
 import AdvancedFilters from "../AdvancedFilters/AdvancedFilters";
 import {
   MARKERS_LAYER_ID,
@@ -42,11 +36,7 @@ import {
 } from "./MarkerHelpers";
 import { regionBorderStyle, regionFillStyle } from "./RegionHelpers";
 
-const ResultsMap = (
-  { stakeholders, categoryIds, toggleCategory, loading },
-  ref
-) => {
-  const mapRef = useRef();
+const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
   const [markersLoaded, setMarkersLoaded] = useState(false);
   const [cursor, setCursor] = useState("auto");
   const searchCoordinates = useSearchCoordinates();
@@ -56,6 +46,7 @@ const ResultsMap = (
   const { isMobile } = useBreakpoints();
   const isListPanelOpen = useListPanel();
   const isFilterPanelOpen = useFilterPanel();
+  const { mapRef, flyTo } = useMapbox();
 
   const longitude =
     searchCoordinates?.longitude ||
@@ -98,30 +89,19 @@ const ResultsMap = (
     await loadMarkerIcons(map);
     setMarkersLoaded(true);
     setInteractiveLayerIds([MARKERS_LAYER_ID]);
-
     startIconCoordinates &&
-      mapRef.current?.flyTo({
-        center: [
-          isListPanelOpen && !isMobile
-            ? startIconCoordinates.longitude - 0.08
-            : startIconCoordinates.longitude,
-          isMobile
-            ? startIconCoordinates.latitude - 0.03
-            : startIconCoordinates.latitude,
-        ],
-        duration: 2000,
+      flyTo({
+        longitude: startIconCoordinates.longitude,
+        latitude: startIconCoordinates.latitude,
       });
-  }, [startIconCoordinates, isListPanelOpen, isMobile]);
+  }, [startIconCoordinates, flyTo, mapRef]);
 
   const onClick = (e) => {
-    mapRef.current?.flyTo({
-      center: [
-        isListPanelOpen && !isMobile ? e.lngLat.lng - 0.08 : e.lngLat.lng,
-        isMobile ? e.lngLat.lat - 0.03 : e.lngLat.lat,
-      ],
-      duration: 2000,
+    flyTo({
+      latitude: e.lngLat.lat,
+      longitude: e.lngLat.lng,
     });
-    if(isMobile){
+    if (isMobile) {
       dispatch({ type: "TOGGLE_LIST_PANEL" });
     }
     if (!e.features || !e.features.length) {
@@ -150,35 +130,6 @@ const ResultsMap = (
     stakeholders,
     categoryIds,
   });
-
-  useImperativeHandle(
-    ref,
-    () => ({
-      getViewport: () => {
-        const map = mapRef.current.getMap();
-
-        const { lat: latitude, lng: longitude } = map.getCenter();
-        const zoom = map.getZoom();
-        const { width, height } = map.getContainer().getBoundingClientRect();
-
-        return {
-          center: { latitude, longitude },
-          zoom,
-          dimensions: { width, height },
-        };
-      },
-      flyTo: ({ latitude, longitude }) => {
-        mapRef.current?.flyTo({
-          center: [
-            isListPanelOpen && !isMobile ? longitude - 0.08 : longitude,
-            isMobile ? latitude - 0.03 : latitude,
-          ],
-          duration: 2000,
-        });
-      },
-    }),
-    [isMobile, isListPanelOpen]
-  );
 
   const listPanelLeftPostion = isListPanelOpen ? 524 : 0;
   const filterPanelLeftPostion = isFilterPanelOpen ? 340 : 0;
@@ -255,7 +206,7 @@ const ResultsMap = (
   );
 };
 
-export default forwardRef(ResultsMap);
+export default ResultsMap;
 
 ResultsMap.propTypes = {
   stakeholders: PropTypes.arrayOf(PropTypes.object),

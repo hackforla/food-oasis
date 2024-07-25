@@ -2,15 +2,15 @@ import useBreakpoints from "hooks/useBreakpoints";
 import useCategoryIds from "hooks/useCategoryIds";
 import useNeighborhoodsGeoJSON from "hooks/useNeighborhoodsGeoJSON";
 import useOrganizationBests from "hooks/useOrganizationBests";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import * as analytics from "services/analytics";
 import {
   useAppDispatch,
-  useSearchCoordinates,
-  useStakeholders,
   useIsListPanelVisible,
   usePosition,
+  useSearchCoordinates,
+  useStakeholders,
 } from "../../../appReducer";
 import Filters from "./ResultsFilters/ResultsFilters";
 import List from "./ResultsList/ResultsList";
@@ -19,7 +19,6 @@ import { Desktop, Mobile, Tablet } from "./layouts";
 
 const SearchResults = () => {
   const isListPanelVisible = useIsListPanelVisible();
-  const mapRef = useRef(null);
   const { isDesktop, isTablet } = useBreakpoints();
   const { selectAll, loading } = useOrganizationBests();
   const { categoryIds, toggleCategory } = useCategoryIds([]);
@@ -121,25 +120,13 @@ const SearchResults = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stakeholders]);
 
-  const searchMapArea = useCallback(() => {
-    const { center } = mapRef.current.getViewport();
-    dispatch({ type: "SEARCH_COORDINATES_UPDATED", coordinates: center });
-  }, [dispatch]);
-
-  const flyTo = useCallback(({ longitude, latitude }) => {
-    mapRef.current?.flyTo({
-      longitude,
-      latitude,
-    });
-  }, []);
-
   const resetOrigin = useCallback(() => {
     dispatch({ type: "RESET_COORDINATES" });
   }, [dispatch]);
 
   const toggleShowList = useCallback(() => {
     setShowList((showList) => !showList);
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     setShowList(true);
@@ -151,18 +138,15 @@ const SearchResults = () => {
       toggleCategory={toggleCategory}
       showList={showList}
       toggleShowList={toggleShowList}
-      handleFlyTo={flyTo}
     />
   );
 
   const map = (
     <Map
-      ref={mapRef}
       stakeholders={stakeholders}
       categoryIds={categoryIds}
       toggleCategory={toggleCategory}
       loading={loading}
-      searchMapArea={searchMapArea}
     />
   );
 
@@ -171,7 +155,6 @@ const SearchResults = () => {
       stakeholders={stakeholders || []}
       loading={loading}
       handleReset={resetOrigin}
-      handleFlyTo={flyTo}
     />
   );
 

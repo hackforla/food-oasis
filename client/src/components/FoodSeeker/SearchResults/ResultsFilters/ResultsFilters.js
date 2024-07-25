@@ -18,13 +18,13 @@ import {
   useSearchCoordinates,
   useUserCoordinates,
 } from "../../../../appReducer";
+import { useMapbox } from "../../../../hooks/useMapbox";
 
 const ResultsFilters = ({
   categoryIds,
   toggleCategory,
   showList,
   toggleShowList,
-  handleFlyTo,
 }) => {
   const isMealsSelected = categoryIds.indexOf(MEAL_PROGRAM_CATEGORY_ID) >= 0;
   const isPantrySelected = categoryIds.indexOf(FOOD_PANTRY_CATEGORY_ID) >= 0;
@@ -36,6 +36,7 @@ const ResultsFilters = ({
   const locationPermission = useLocationPermission();
   const [error, setError] = useState("");
   const hasAdvancedFilterFeatureFlag = useFeatureFlag("advancedFilter");
+  const { flyTo } = useMapbox();
 
   useEffect(() => {
     if (error && locationPermission === "granted") {
@@ -58,7 +59,7 @@ const ResultsFilters = ({
       // depending on the network speed, it might take a bit before the screen recenters to user location
       await getUserLocation();
       startIconCoordinates &&
-        handleFlyTo({
+        flyTo({
           longitude: startIconCoordinates.longitude,
           latitude: searchCoordinates.latitude,
         });

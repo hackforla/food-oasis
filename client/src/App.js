@@ -10,6 +10,7 @@ import * as analytics from "../src/services/analytics";
 import { AppStateProvider } from "./appReducer";
 import SEO from "./components/SEO";
 import AppRoutes from "./Routes";
+import { MapProvider } from "react-map-gl";
 
 function App() {
   useEffect(() => {
@@ -29,9 +30,11 @@ function App() {
                   url={window.origin}
                   description="Food Oasis is a non-profit, volunteer-run directory of free food resources in the Los Angeles area."
                 />
-                <Router>
-                  <AppRoutes />
-                </Router>
+                <MapProvider>
+                  <Router>
+                    <AppRoutes />
+                  </Router>
+                </MapProvider>
               </ThemeProvider>
             </UserProvider>
           </ToasterProvider>

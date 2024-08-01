@@ -63,12 +63,8 @@ export const suggestionPostRequestSchema: JSONSchemaType<SuggestionPostFields> =
       formType: {
         oneOf: [
           {
-            const: "suggestion",
-            title: "Suggestion",
-          },
-          {
-            const: "correction",
-            title: "Correction",
+            type: "string",
+            enum: ["correction", "suggestion"],
           },
         ],
       },
@@ -157,12 +153,8 @@ export const suggestionPutRequestSchema: JSONSchemaType<Suggestion> = {
     formType: {
       oneOf: [
         {
-          const: "suggestion",
-          title: "Suggestion",
-        },
-        {
-          const: "correction",
-          title: "Correction",
+          type: "string",
+          enum: ["correction", "suggestion"],
         },
       ],
     },

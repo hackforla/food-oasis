@@ -18,7 +18,8 @@
     "loadtesttrivial:prod": "loadtest -t 60 -c 20 --rps 100 \"http://la.foodoasis.net/api/categories\" ",
     "loadtesttrivial:dev": "loadtest -t 60 -c 20 --rps 100 \"http://devla.foodoasis.net.herokuapp.com/api/categories\" ",
     "rmBuild": "rm -rf build",
-    "build": "rm -rf build && tsc"
+    "build": "rm -rf build && tsc",
+    "typecheck": "tsc --noEmit"
   },
   "lint-staged": {
     "*.{js,md}": "prettier --write",

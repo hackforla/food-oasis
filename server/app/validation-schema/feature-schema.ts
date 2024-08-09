@@ -11,6 +11,9 @@ export const FeaturePostRequestSchema: JSONSchemaType<Feature> = {
     name: {
       type: "string",
     },
+    is_enabled: {
+      type: "boolean",
+    },
   },
   additionalProperties: false,
 };

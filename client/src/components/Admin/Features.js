@@ -17,6 +17,8 @@ import {
   TableRow,
   TextField,
   Typography,
+  FormControlLabel,
+  Switch,
 } from "@mui/material";
 import {
   Delete as DeleteIcon,
@@ -28,6 +30,7 @@ import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { useFeatureToLogin } from "../../hooks/useFeatureToLogin";
+import { useFeatures } from "../../hooks/useFeatures";
 import * as accountService from "../../services/account-service";
 import * as featureService from "../../services/feature-service";
 import * as featureToLoginService from "../../services/feature-to-login-service";
@@ -48,21 +51,39 @@ const Features = () => {
     refetch: featureToLoginRefetch,
   } = useFeatureToLogin();
 
+  const { data: featuresData, loading: featuresLoading } = useFeatures();
+
   useEffect(() => {
-    const newRows = featureToLoginData.map((feature) => ({
-      featureId: feature.feature_id,
-      name: feature.feature_name,
-      featureToLoginId: feature.ftl_id,
-      history: feature.users.map((user) => ({
-        loginId: user.login_id,
-        firstName: user.first_name,
-        lastName: user.last_name,
-        email: user.email,
-        featureToLoginId: user.featureToLoginId || feature.ftl_id,
-      })),
-    }));
+    if (featureToLoginLoading || featuresLoading) {
+      return;
+    }
+
+    const newRows = featuresData.map((feature) => {
+      const featureToLogin = featureToLoginData.find(
+        (ftl) => ftl.feature_id === feature.id
+      );
+      return {
+        featureId: feature.id,
+        name: feature.name,
+        is_enabled: feature.is_enabled,
+        history: featureToLogin
+          ? featureToLogin.users.map((user) => ({
+              loginId: user.login_id,
+              firstName: user.first_name,
+              lastName: user.last_name,
+              email: user.email,
+              featureToLoginId: user.featureToLoginId || featureToLogin.ftl_id,
+            }))
+          : [],
+      };
+    });
     setRows(newRows);
-  }, [featureToLoginData]);
+  }, [
+    featureToLoginData,
+    featuresData,
+    featureToLoginLoading,
+    featuresLoading,
+  ]);
 
   const handleModalClose = () => {
     setFeatureModalOpen(false);
@@ -82,6 +103,18 @@ const Features = () => {
       setSelectedRowId(null);
     } else {
       setSelectedRowId(rowName);
+    }
+  };
+  const handleIsEnabled = async (featureId, isEnabled) => {
+    try {
+      await featureService.update(featureId, { is_enabled: isEnabled });
+      setRows((prevRows) =>
+        prevRows.map((row) =>
+          row.featureId === featureId ? { ...row, is_enabled: isEnabled } : row
+        )
+      );
+    } catch (error) {
+      console.error("Error updating feature:", error);
     }
   };
   const featureFormik = useFormik({
@@ -227,6 +260,24 @@ const Features = () => {
                       sx={{ justifyContent: "space-between" }}
                     >
                       {row.name}
+                    </TableCell>
+                    <TableCell>
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            color="success"
+                            checked={row.is_enabled}
+                            onChange={(e) =>
+                              handleIsEnabled(row.featureId, e.target.checked)
+                            }
+                          />
+                        }
+                        label={
+                          <Typography variant="body2" sx={{ fontSize: "14px" }}>
+                            Globally Enable
+                          </Typography>
+                        }
+                      />
                     </TableCell>
                     <TableCell align="right">
                       <IconButton

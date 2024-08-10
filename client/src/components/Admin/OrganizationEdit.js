@@ -53,10 +53,19 @@ const validationSchema = Yup.object().shape({
   hours: Yup.array().of(HourSchema),
   twitter: Yup.string()
     .matches(
-      /^https?:\/\/(www\.)?(twitter\.com|x\.com)\/.*/,
-      "Invalid URL, e.g. 'https://twitter.com/ or https://x.com/'"
+      /^@([a-zA-Z][a-zA-Z0-9_]{0,14}|[0-9][a-zA-Z0-9_]{0,14})$/,
+      "Valid Twitter username required."
     )
-    .required("Full Twitter/X URL is required."),
+    .required("Valid Twitter username is required."),
+
+  pinterest: Yup.string()
+    .matches(
+      /^[a-zA-Z0-9.]{3,15}$/,
+      "Valid Pinterest username is required and cannot include spaces."
+    )
+    .required("Valid Pinterest username is required.")
+    .notOneOf([""], "Username cannot be empty or just spaces"),
+
   selectedCategoryIds: Yup.array().min(
     1,
     "You must select at least one category"

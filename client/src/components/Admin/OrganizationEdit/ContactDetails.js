@@ -1,5 +1,6 @@
-import { Grid, TextField } from "@mui/material";
+import { Grid } from "@mui/material";
 import { TabPanel } from "components/Admin/ui/TabPanel";
+import { InputAdornment, TextField } from "@mui/material";
 import Label from "../ui/Label";
 
 export default function ContactDetails({
@@ -65,36 +66,56 @@ export default function ContactDetails({
         <Grid item sm={6} xs={12}>
           <div>
             <Label
-              id="twitter"
+              id="twitter-label"
               label="Twitter"
-              tooltipTitle="URL must start with 'https://twitter.com/ or https://x.com/'"
-              href={values.twitter}
+              tooltipTitle="Enter your Twitter username"
+              href="https://twitter.com/"
+              handle={values.twitter}
             />
 
             <TextField
               id="twitter"
               name="twitter"
-              placeholder="Twitter"
+              placeholder="Twitter username"
               value={values.twitter}
               onChange={handleChange}
               onBlur={handleBlur}
               helperText={touched.twitter ? errors.twitter : ""}
               error={touched.twitter && Boolean(errors.twitter)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    https://twitter.com/
+                  </InputAdornment>
+                ),
+              }}
             />
           </div>
         </Grid>
         <Grid item sm={6} xs={12}>
           <div>
-            <Label id="pinterest" label="Pinterest" />
+            <Label
+              id="pinterest"
+              label="Pinterest"
+              href="https://pinterest.com/"
+              tooltipTitle="URL must start with 'https://pinterest.com/'"
+            />
             <TextField
               id="pinterest"
               name="pinterest"
-              placeholder="Pinterest"
+              placeholder="Pinterest username"
               value={values.pinterest}
               onChange={handleChange}
               onBlur={handleBlur}
               helperText={touched.pinterest ? errors.pinterest : ""}
               error={touched.pinterest && Boolean(errors.pinterest)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    https://pinterest.com/
+                  </InputAdornment>
+                ),
+              }}
             />
           </div>
         </Grid>

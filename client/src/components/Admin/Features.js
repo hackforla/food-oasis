@@ -54,10 +54,6 @@ const Features = () => {
   const { data: featuresData, loading: featuresLoading } = useFeatures();
 
   useEffect(() => {
-    if (featureToLoginLoading || featuresLoading) {
-      return;
-    }
-
     const newRows = featuresData.map((feature) => {
       const featureToLogin = featureToLoginData.find(
         (ftl) => ftl.feature_id === feature.id
@@ -78,12 +74,7 @@ const Features = () => {
       };
     });
     setRows(newRows);
-  }, [
-    featureToLoginData,
-    featuresData,
-    featureToLoginLoading,
-    featuresLoading,
-  ]);
+  }, [featureToLoginData, featuresData]);
 
   const handleModalClose = () => {
     setFeatureModalOpen(false);
@@ -176,6 +167,23 @@ const Features = () => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+  if (featuresLoading || featureToLoginLoading || !featuresData) {
+    return (
+      <Stack
+        style={{
+          flexGrow: 1,
+          width: "100%",
+          margin: "100px auto",
+          display: "flex",
+          justifyContent: "space-around",
+        }}
+        aria-label="Loading spinner"
+      >
+        <CircularProgress />
+      </Stack>
+    );
+  }
   return (
     <Container maxWidth="md">
       <Box
@@ -197,205 +205,191 @@ const Features = () => {
           Add New Feature
         </Button>
       </Box>
-      {featureToLoginLoading ? (
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          minHeight="50vh"
-        >
-          <CircularProgress />
-        </Box>
-      ) : (
-        <TableContainer component={Paper} elevation={3}>
-          <Table aria-label="collapsible table">
-            <TableHead>
-              <TableRow>
-                <TableCell />
-                <TableCell align="left"> Feature ID </TableCell>
-                <TableCell align="left">Feature Name</TableCell>
-                <TableCell />
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row, index) => (
-                <React.Fragment key={index}>
-                  <TableRow
-                    onClick={() => handleRowClick(row.name)}
-                    sx={{
-                      "& > *": {
-                        borderBottom: "unset",
-                        cursor: "pointer",
-                        backgroundColor: "#efefef",
-                      },
-                    }}
-                    hover
+
+      <TableContainer component={Paper} elevation={3}>
+        <Table aria-label="collapsible table">
+          <TableHead>
+            <TableRow>
+              <TableCell />
+              <TableCell align="left"> Feature ID </TableCell>
+              <TableCell align="left">Feature Name</TableCell>
+              <TableCell />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((row, index) => (
+              <React.Fragment key={index}>
+                <TableRow
+                  onClick={() => handleRowClick(row.name)}
+                  sx={{
+                    "& > *": {
+                      borderBottom: "unset",
+                      cursor: "pointer",
+                      backgroundColor: "#efefef",
+                    },
+                  }}
+                  hover
+                >
+                  <TableCell>
+                    <IconButton
+                      aria-label="expand row"
+                      size="small"
+                      onClick={() => handleRowClick(row.name)}
+                    >
+                      {selectedRowId === row.name ? (
+                        <KeyboardArrowUpIcon />
+                      ) : (
+                        <KeyboardArrowDownIcon />
+                      )}
+                    </IconButton>
+                  </TableCell>
+
+                  <TableCell
+                    align="left"
+                    component="th"
+                    scope="row"
+                    sx={{ justifyContent: "space-between" }}
                   >
-                    <TableCell>
-                      <IconButton
-                        aria-label="expand row"
-                        size="small"
-                        onClick={() => handleRowClick(row.name)}
-                      >
-                        {selectedRowId === row.name ? (
-                          <KeyboardArrowUpIcon />
-                        ) : (
-                          <KeyboardArrowDownIcon />
-                        )}
-                      </IconButton>
-                    </TableCell>
-
-                    <TableCell
-                      align="left"
-                      component="th"
-                      scope="row"
-                      sx={{ justifyContent: "space-between" }}
-                    >
-                      {row.featureId}
-                    </TableCell>
-                    <TableCell
-                      align="left"
-                      component="th"
-                      scope="row"
-                      sx={{ justifyContent: "space-between" }}
-                    >
-                      {row.name}
-                    </TableCell>
-                    <TableCell>
-                      <FormControlLabel
-                        control={
-                          <Switch
-                            color="success"
-                            checked={row.is_enabled}
-                            onChange={(e) =>
-                              handleIsEnabled(row.featureId, e.target.checked)
-                            }
-                          />
-                        }
-                        label={
-                          <Typography variant="body2" sx={{ fontSize: "14px" }}>
-                            Globally Enable
-                          </Typography>
-                        }
-                      />
-                    </TableCell>
-                    <TableCell align="right">
-                      <IconButton
-                        color="error"
-                        aria-label="delete-user"
-                        onClick={async () => {
-                          try {
-                            await featureService.remove(row.featureId);
-                            featureToLoginRefetch();
-                          } catch (error) {
-                            console.error(
-                              "Failed to remove user from feature:",
-                              error
-                            );
+                    {row.featureId}
+                  </TableCell>
+                  <TableCell
+                    align="left"
+                    component="th"
+                    scope="row"
+                    sx={{ justifyContent: "space-between" }}
+                  >
+                    {row.name}
+                  </TableCell>
+                  <TableCell>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          color="success"
+                          checked={row.is_enabled}
+                          onChange={(e) =>
+                            handleIsEnabled(row.featureId, e.target.checked)
                           }
-                        }}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell
-                      align="right"
-                      style={{ paddingBottom: 0, paddingTop: 0 }}
-                      colSpan={6}
+                        />
+                      }
+                      label={
+                        <Typography variant="body2" sx={{ fontSize: "14px" }}>
+                          Globally Enable
+                        </Typography>
+                      }
+                    />
+                  </TableCell>
+                  <TableCell align="right">
+                    <IconButton
+                      color="error"
+                      aria-label="delete-user"
+                      onClick={async () => {
+                        try {
+                          await featureService.remove(row.featureId);
+                          featureToLoginRefetch();
+                        } catch (error) {
+                          console.error(
+                            "Failed to remove user from feature:",
+                            error
+                          );
+                        }
+                      }}
                     >
-                      <Collapse
-                        in={selectedRowId === row.name}
-                        timeout="auto"
-                        unmountOnExit
-                      >
-                        <Box sx={{ margin: 1 }}>
-                          <Stack direction="row" justifyContent="space-between">
-                            <Typography
-                              variant="h6"
-                              gutterBottom
-                              component="div"
-                            >
-                              Users
-                            </Typography>
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell
+                    align="right"
+                    style={{ paddingBottom: 0, paddingTop: 0 }}
+                    colSpan={6}
+                  >
+                    <Collapse
+                      in={selectedRowId === row.name}
+                      timeout="auto"
+                      unmountOnExit
+                    >
+                      <Box sx={{ margin: 1 }}>
+                        <Stack direction="row" justifyContent="space-between">
+                          <Typography variant="h6" gutterBottom component="div">
+                            Users
+                          </Typography>
 
-                            <IconButton
-                              color="primary"
-                              aria-label="add-user"
-                              onClick={() =>
-                                handleUserModalOpen(row.name, row.featureId)
-                              }
-                            >
-                              <PersonAddIcon />
-                            </IconButton>
-                          </Stack>
+                          <IconButton
+                            color="primary"
+                            aria-label="add-user"
+                            onClick={() =>
+                              handleUserModalOpen(row.name, row.featureId)
+                            }
+                          >
+                            <PersonAddIcon />
+                          </IconButton>
+                        </Stack>
 
-                          <Table size="small" aria-label="purchases">
-                            <TableHead>
-                              <TableRow>
-                                <TableCell align="left">Login ID</TableCell>
-                                <TableCell align="left">First Name</TableCell>
-                                <TableCell align="left">Last Name</TableCell>
-                                <TableCell align="left">Email</TableCell>
+                        <Table size="small" aria-label="purchases">
+                          <TableHead>
+                            <TableRow>
+                              <TableCell align="left">Login ID</TableCell>
+                              <TableCell align="left">First Name</TableCell>
+                              <TableCell align="left">Last Name</TableCell>
+                              <TableCell align="left">Email</TableCell>
+                            </TableRow>
+                          </TableHead>
+                          <TableBody>
+                            {row.history.map((historyRow) => (
+                              <TableRow key={historyRow.loginId}>
+                                <TableCell
+                                  align="left"
+                                  component="th"
+                                  scope="row"
+                                >
+                                  {historyRow.loginId}
+                                </TableCell>
+                                <TableCell align="left">
+                                  {historyRow.firstName}
+                                </TableCell>
+                                <TableCell align="left">
+                                  {historyRow.lastName}
+                                </TableCell>
+                                <TableCell align="left">
+                                  {historyRow.email}
+                                </TableCell>
+                                <TableCell align="right">
+                                  {row.history.length > 0 && (
+                                    <IconButton
+                                      color="error"
+                                      aria-label="delete-user"
+                                      onClick={async () => {
+                                        try {
+                                          await featureToLoginService.removeUserFromFeature(
+                                            historyRow.featureToLoginId
+                                          );
+                                          featureToLoginRefetch();
+                                        } catch (error) {
+                                          console.error(
+                                            "Failed to remove user from feature:",
+                                            error
+                                          );
+                                        }
+                                      }}
+                                    >
+                                      <DeleteIcon />
+                                    </IconButton>
+                                  )}
+                                </TableCell>
                               </TableRow>
-                            </TableHead>
-                            <TableBody>
-                              {row.history.map((historyRow) => (
-                                <TableRow key={historyRow.loginId}>
-                                  <TableCell
-                                    align="left"
-                                    component="th"
-                                    scope="row"
-                                  >
-                                    {historyRow.loginId}
-                                  </TableCell>
-                                  <TableCell align="left">
-                                    {historyRow.firstName}
-                                  </TableCell>
-                                  <TableCell align="left">
-                                    {historyRow.lastName}
-                                  </TableCell>
-                                  <TableCell align="left">
-                                    {historyRow.email}
-                                  </TableCell>
-                                  <TableCell align="right">
-                                    {row.history.length > 0 && (
-                                      <IconButton
-                                        color="error"
-                                        aria-label="delete-user"
-                                        onClick={async () => {
-                                          try {
-                                            await featureToLoginService.removeUserFromFeature(
-                                              historyRow.featureToLoginId
-                                            );
-                                            featureToLoginRefetch();
-                                          } catch (error) {
-                                            console.error(
-                                              "Failed to remove user from feature:",
-                                              error
-                                            );
-                                          }
-                                        }}
-                                      >
-                                        <DeleteIcon />
-                                      </IconButton>
-                                    )}
-                                  </TableCell>
-                                </TableRow>
-                              ))}
-                            </TableBody>
-                          </Table>
-                        </Box>
-                      </Collapse>
-                    </TableCell>
-                  </TableRow>
-                </React.Fragment>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      )}
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </Box>
+                    </Collapse>
+                  </TableCell>
+                </TableRow>
+              </React.Fragment>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
       <Dialog open={featureModalOpen} onClose={handleModalClose}>
         <Box sx={{ width: 400, p: 2 }}>

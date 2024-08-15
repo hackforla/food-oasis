@@ -5,6 +5,7 @@
     "release-notes": "gren release"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "husky": "^9.0.10",
     "lerna": "^8.1.2",
     "lerna-cli": "^5.0.6"

@@ -30,6 +30,7 @@
     "debounce-fn": "^5.0.0",
     "formik": "^2.2.9",
     "js-file-download": "^0.4.12",
+    "mapbox-gl": "^3.5.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-draggable": "^4.4.6",

@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import 'mapbox-gl/dist/mapbox-gl.css';
 import { useCallback, useEffect, useState } from "react";
 // Mapbox is tricky, because version 6.* is "incompatible with some Babel transforms
 // because of the way it shares code between the maint thread and Web Worker."

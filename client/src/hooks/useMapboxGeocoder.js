@@ -2,6 +2,7 @@ import axios from "axios";
 import debounce from "debounce-fn";
 import { tenantId } from "helpers/Configuration";
 import { useReducer } from "react";
+import { MAPBOX_ACCESS_TOKEN } from "../helpers/Constants";
 
 const baseUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places`;
 
@@ -57,7 +58,7 @@ export function useMapboxGeocoder() {
           : tenantId === 3
           ? hawaiiLatLong
           : losAngelesCountyLatLong;
-      const mapboxUrl = `${baseUrl}/${searchString}.json?bbox=${bbox}&access_token=${process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}`;
+      const mapboxUrl = `${baseUrl}/${searchString}.json?bbox=${bbox}&access_token=${MAPBOX_ACCESS_TOKEN}`;
 
       dispatch({ type: actionTypes.FETCH_REQUEST });
       try {

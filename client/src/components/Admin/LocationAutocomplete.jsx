@@ -1,6 +1,7 @@
 import { Grid, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import * as awsService from "../../services/aws-service";
+import { TENANT_ID } from "../../helpers/Constants";
 
 let latestSearchString = "";
 
@@ -18,9 +19,8 @@ const LocationAutocomplete = (props) => {
       // this request starts executing after the
       // setTimeout delay, this request is stale
       // and we don't want to run it.
-      const tenantId = process.env.REACT_APP_TENANT_ID;
       if (s.length > 8 && s === latestSearchString) {
-        const result = await awsService.autoComplete(s, tenantId);
+        const result = await awsService.autoComplete(s, TENANT_ID);
         setGeocodeResults(result);
       }
     }, 500);

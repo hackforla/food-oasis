@@ -1,6 +1,6 @@
 import { Snackbar } from "@mui/material";
 import { useToasterContext } from "../../contexts/toasterContext";
-import { IconButton } from "../UI/StandardButton";
+import { IconButton } from "./StandardButton";
 
 const Toast = () => {
   const { toast, setToast } = useToasterContext();

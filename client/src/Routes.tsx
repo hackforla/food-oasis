@@ -8,35 +8,36 @@ import Fallback from "./components/Fallback";
 import PrivateRoute from "./components/PrivateRoute";
 import Toast from "components/UI/Toast";
 
-const VerificationAdmin = lazy(() =>
-  import("components/Admin/VerificationAdmin")
+const VerificationAdmin = lazy(
+  () => import("components/Admin/VerificationAdmin")
 );
-const VerificationDashboard = lazy(() =>
-  import("components/Admin/VerificationDashboard")
+const VerificationDashboard = lazy(
+  () => import("components/Admin/VerificationDashboard")
 );
-const SecurityAdminDashboard = lazy(() =>
-  import("components/Account/SecurityAdminDashboard/SecurityAdminDashboard")
+const SecurityAdminDashboard = lazy(
+  () =>
+    import("components/Account/SecurityAdminDashboard/SecurityAdminDashboard")
 );
-const OrganizationEdit = lazy(() =>
-  import("components/Admin/OrganizationEdit")
+const OrganizationEdit = lazy(
+  () => import("components/Admin/OrganizationEdit")
 );
-const ParentOrganizations = lazy(() =>
-  import("components/Admin/ParentOrganizations")
+const ParentOrganizations = lazy(
+  () => import("components/Admin/ParentOrganizations")
 );
 const TagAdmin = lazy(() => import("components/Admin/TagAdmin"));
 const Register = lazy(() => import("components/Account/Register"));
 const Login = lazy(() => import("components/Account/Login"));
 const ForgotPassword = lazy(() => import("components/Account/ForgotPassword"));
-const ResetPasswordEmailSent = lazy(() =>
-  import("components/Account/ResetPasswordEmailSent")
+const ResetPasswordEmailSent = lazy(
+  () => import("components/Account/ResetPasswordEmailSent")
 );
 const ResetPassword = lazy(() => import("components/Account/ResetPassword"));
 const ConfirmEmail = lazy(() => import("components/Account/ConfirmEmail"));
-const SearchResults = lazy(() =>
-  import("components/FoodSeeker/SearchResults/SearchResults")
+const SearchResults = lazy(
+  () => import("components/FoodSeeker/SearchResults/SearchResults")
 );
-const ImportFile = lazy(() =>
-  import("components/Admin/ImportOrganizations/ImportFile")
+const ImportFile = lazy(
+  () => import("components/Admin/ImportOrganizations/ImportFile")
 );
 const Suggestions = lazy(() => import("components/Admin/Suggestions"));
 const Logins = lazy(() => import("components/Admin/Logins"));
@@ -83,8 +84,8 @@ export default function AppRoutes() {
           <Route path="suggestion" element={<Suggestion />} />
           <Route path="donate" element={<Donate />} />
           <Route path="about" element={<About />} />
-          <Route exact path="faqs" element={<Faq />} />
-          <Route exact path="contact" element={<Contact />} />
+          <Route path="faqs" element={<Faq />} />
+          <Route path="contact" element={<Contact />} />
 
           {/* Admin routes */}
           <Route path="admin" element={<AdminWrapper />}>
@@ -155,7 +156,6 @@ export default function AppRoutes() {
             />
             <Route
               path="logins"
-              roles={["isAdmin", "isCoordinator"]}
               element={
                 <PrivateRoute roles={["isAdmin", "isCoordinator"]}>
                   <Logins />
@@ -189,7 +189,7 @@ export default function AppRoutes() {
           </Route>
           <Route path="*" element={<Navigate to="/fallback" replace />} />
         </Route>
-        <Route exact path="fallback" element={<Fallback />} />
+        <Route path="fallback" element={<Fallback />} />
       </Routes>
     </Suspense>
   );

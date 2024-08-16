@@ -10,7 +10,7 @@ import { useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import * as analytics from "../../services/analytics";
 import Footer from "../Layout/Footer";
-import { PageWrapper } from "./PageWrapper";
+import { PageWrapper } from "./x";
 import IconSpacerSVG from "./assets/IconSpacerSVG";
 import faqbg from "./assets/faq-bg.webp";
 

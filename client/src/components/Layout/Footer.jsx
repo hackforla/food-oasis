@@ -4,18 +4,21 @@ import useLocationHook from "hooks/useLocationHook";
 import { Link } from "react-router-dom";
 import { tenantId } from "../../helpers/Configuration";
 import Copyright from "./Copyright";
+import foodOasisLogoUrl from "images/foodoasis.svg";
+import alohaHarvestLogoUrl from "../StaticPagesHI/assets/aloha-harvest-bg-none.png";
+
 /* 
 This file is not used in the application at this time, but left here in 
 case the UI/UX team decides to re-instate it.
 */
 
 const logoPaths = {
-  1: require("images/foodoasis.svg").default,
-  2: require("images/foodoasis.svg").default,
-  3: require("../StaticPagesHI/assets/aloha-harvest-bg-none.png"),
-  4: require("images/foodoasis.svg").default,
-  5: require("images/foodoasis.svg").default,
-  6: require("images/foodoasis.svg").default,
+  1: foodOasisLogoUrl,
+  2: foodOasisLogoUrl,
+  3: alohaHarvestLogoUrl,
+  4: foodOasisLogoUrl,
+  5: foodOasisLogoUrl,
+  6: foodOasisLogoUrl,
 };
 
 const Footer = () => {

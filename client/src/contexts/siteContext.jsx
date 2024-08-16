@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { createContext, useContext, useMemo } from "react";
 import { TENANT_CONFIG } from "../helpers/Constants";
+import { TENANT_ID } from "../helpers/Constants";
 
 export const SiteContext = createContext(null);
 
@@ -47,7 +48,7 @@ export const DEFAULT_VIEWPORTS = {
 
 export function getTenantId() {
   if (process.env.NODE_ENV === "development") {
-    return Number(process.env.REACT_APP_TENANT_ID) || 1;
+    return Number(TENANT_ID) || 1;
   }
   const tenant = Object.entries(TENANT_IDS).find(([id, values]) => {
     return values.some((value) =>

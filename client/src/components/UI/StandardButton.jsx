@@ -1,6 +1,6 @@
 import { IconButton as MuiIconButton } from "@mui/material";
 import PropTypes from "prop-types";
-import { ICON_DICT } from "../UI/iconLookup.js";
+import { ICON_DICT } from "./iconLookup";
 
 const IconButton = ({ icon, ...props }) => {
   const Icon = ICON_DICT[icon];

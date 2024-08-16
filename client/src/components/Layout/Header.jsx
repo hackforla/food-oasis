@@ -5,18 +5,20 @@ import { Link } from "react-router-dom";
 import { useSiteContext } from "../../contexts/siteContext";
 import { useUserContext } from "../../contexts/userContext";
 import Menu from "./Menu";
+import foodOasisLogoUrl from "images/foodoasis.svg";
+import alohaHarvestLogoUrl from "../StaticPagesHI/assets/aloha-harvest-bg-none.png";
 
 Header.propTypes = {
   tenantId: PropTypes.number,
 };
 
 const logoPaths = {
-  1: require("images/foodoasis.svg").default,
-  2: require("images/foodoasis.svg").default,
-  3: require("../StaticPagesHI/assets/aloha-harvest-bg-none.png"),
-  4: require("images/foodoasis.svg").default,
-  5: require("images/foodoasis.svg").default,
-  6: require("images/foodoasis.svg").default,
+  1: foodOasisLogoUrl,
+  2: foodOasisLogoUrl,
+  3: alohaHarvestLogoUrl,
+  4: foodOasisLogoUrl,
+  5: foodOasisLogoUrl,
+  6: foodOasisLogoUrl,
 };
 
 export default function Header() {

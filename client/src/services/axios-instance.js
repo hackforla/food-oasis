@@ -1,7 +1,8 @@
 import axios from "axios";
+import { APP_API_URL } from "../helpers/Constants";
 
 const axiosInstance = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || null,
+  baseURL: APP_API_URL || null,
   withCredentials: true,
 });
 

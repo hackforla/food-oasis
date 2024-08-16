@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import Footer from "components/Layout/Footer";
-import { PageWrapper } from "components/StaticPages/PageWrapper";
+import { PageWrapper } from "components/StaticPages/x";
 import { Link as RouterLink } from "react-router-dom";
 import IconSpacerSVG from "./assets/IconSpacerSVG";
 import aboutbg from "./assets/about-bg.webp";

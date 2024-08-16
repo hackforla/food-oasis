@@ -10,6 +10,7 @@ export const selectAll = async () => {
       tenantId,
     },
   });
+  console.log({ response });
   let stakeholders = response.data.map((s) => {
     return {
       ...s,

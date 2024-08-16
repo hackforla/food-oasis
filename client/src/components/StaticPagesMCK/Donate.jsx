@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import Footer from "components/Layout/Footer";
-import { PageWrapper } from "components/StaticPages/PageWrapper";
+import { PageWrapper } from "components/StaticPages/x";
 import IconSpacerSVG from "components/StaticPages/assets/IconSpacerSVG";
 import donatebg from "./assets/donate-bg.webp";
 

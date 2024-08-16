@@ -6,12 +6,13 @@ import {
   SvgIcon,
   Typography,
 } from "@mui/material";
-import { PageWrapper } from "components/StaticPages/PageWrapper";
+import Footer from "components/Layout/Footer";
+import { PageWrapper } from "components/StaticPages/x";
 import { Link as RouterLink } from "react-router-dom";
 import IconSpacerSVG from "./assets/IconSpacerSVG";
 import faqbg from "./assets/faq-bg.webp";
 
-const Faq = () => {
+const About = () => {
   return (
     <PageWrapper>
       <CardMedia
@@ -52,7 +53,6 @@ const Faq = () => {
         >
           <SvgIcon component={IconSpacerSVG} titleAccess="Glossary" />
         </CardMedia>
-
         <Typography
           variant="h2"
           sx={{
@@ -292,8 +292,9 @@ const Faq = () => {
           </Box>
         </Container>
       </Box>
+      <Footer />
     </PageWrapper>
   );
 };
 
-export default Faq;
+export default About;

@@ -6,12 +6,10 @@ import {
   SvgIcon,
   Typography,
 } from "@mui/material";
-import { useEffect } from "react";
+import { PageWrapper } from "components/StaticPages/x";
+import IconSpacerSVG from "components/StaticPages/assets/IconSpacerSVG";
 import { Link as RouterLink } from "react-router-dom";
-import * as analytics from "../../services/analytics";
 import Footer from "../Layout/Footer";
-import { PageWrapper } from "./PageWrapper";
-import IconSpacerSVG from "./assets/IconSpacerSVG";
 import aboutbg from "./assets/about-bg.webp";
 import farm2people from "./assets/farm2people.png";
 import foodBank from "./assets/food-bank.png";
@@ -19,10 +17,6 @@ import foodCycle from "./assets/food-cycle.png";
 import foodForward from "./assets/food-forward.png";
 
 const About = () => {
-  useEffect(() => {
-    analytics.postEvent("visitAboutPage");
-  }, []);
-
   return (
     <PageWrapper>
       <CardMedia
@@ -41,19 +35,8 @@ const About = () => {
             padding: "32px 0",
           }}
         >
-          <span>About</span> Food Oasis / LA
+          <span>About</span> Food Oasis McKinney
         </Typography>
-        <Typography
-          component="p"
-          sx={{
-            fontSize: { xs: "20px", md: "24px" },
-            padding: { xs: "5px 32px 10px", md: "5px 120px 20px" },
-          }}
-        >
-          There are numerous free food resources in Los Angeles County. With an
-          updated directory of over 1000 listings, our website helps connect you
-          to these resources.
-        </Typography>{" "}
       </Container>
 
       <Box
@@ -95,12 +78,45 @@ const About = () => {
             }}
             variant="body1"
           >
-            Food Oasis is a web-based directory that connects people to free
-            food resources in Los Angeles. Our team is dedicated to maintaining
-            an updated directory of hundreds of free food resources in the area
-            such as food pantries and meal programs. Our volunteers frequently
-            verify each listing for the most comprehensive and up-to-date
-            information. 
+            Access to enough food should be a basic right. Unfortunately, this
+            is not the reality for millions of people in the McKinney area.
+          </Typography>
+          <Typography
+            sx={{
+              marginBottom: "16px",
+            }}
+            variant="body1"
+          >
+            Food pantries in the area are experiencing unprecedented demand. The
+            demand for food assistance has almost doubled since the beginning of
+            2020. To compound matters, it is the hard work of volunteers that
+            keeps pantries and meal programs open. The number of volunteers
+            available to distribute food has diminished.
+          </Typography>
+          <Typography
+            sx={{
+              marginBottom: "16px",
+            }}
+            variant="body1"
+          >
+            The primary goal of Food Oasis is to provide up-to-date information
+            to the people of McKinney who are experiencing food insecurity. We
+            built a directory that connects anyone with hundreds of free food
+            resources. Food Oasis presents reliable information on a
+            user-friendly platform. This will reduce stress and uncertainty for
+            food seekers. It will also demonstrate to our community the growing
+            need of food donations in McKinney.
+          </Typography>
+          <Typography
+            sx={{
+              marginBottom: "16px",
+            }}
+            variant="body1"
+          >
+            Food Oasis is creating a directory of updated food resources. There
+            are countless groups helping to feed hungry people. But it’s
+            difficult for those in need to find them because there’s no one
+            source of updated info. We’re working to change that.
           </Typography>
         </Container>
       </Box>
@@ -143,20 +159,62 @@ const About = () => {
             }}
             variant="body1"
           >
-            We are a 100% volunteer-run project. We are part of{" "}
+            Food Oasis started in 2015 under{" "}
             <Link
               variant="primary"
               href="https://hackforla.org/"
-              target={"_blank"}
+              target="_blank"
               rel="noopener noreferrer"
             >
               Hack for LA
             </Link>
-            . Our team includes product managers, researchers, designers,
-            developers, writers and data validators who maintain this web-based
-            directory. We verify each listing in our directory regularly to
-            ensure the contact information, hours of operation, and services
-            provided are accurate.
+            , a brigade under the non-profit{" "}
+            <Link
+              variant="primary"
+              href="https://codeforamerica.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Code for America
+            </Link>
+            . The goal was to create a site of free and subsidized food
+            resources. The team gave the project to a nonprofit to manage its
+            day-to-day operations. The upkeep turned out to be much more work
+            than any single nonprofit could handle.
+          </Typography>
+          <Typography
+            sx={{
+              marginBottom: "16px",
+            }}
+            variant="body1"
+          >
+            In August 2019, our current Hack for LA team assembled to build new
+            digital pieces of this puzzle. One goal was to relaunch the site
+            with hundreds of new food resources. We learned from the past how
+            difficult it is to keep resources updated. Now, we are training
+            volunteers to update the resources in the directory. The final piece
+            we added is a new second database that connects pantry directors
+            with food donation organizations.
+          </Typography>
+          <Typography
+            sx={{
+              marginBottom: "16px",
+            }}
+            variant="body1"
+          >
+            Our web-based solution is sparking collaboration, community
+            building, and team building. The result of this community-building
+            gives the food seeker updated information to find the free food
+            resources they need.
+          </Typography>
+          <Typography
+            sx={{
+              marginBottom: "16px",
+            }}
+            variant="body1"
+          >
+            We are 100% volunteer-run project. We look forward to sharing our
+            updated directory with McKinney.
           </Typography>
         </Container>
       </Box>

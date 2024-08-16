@@ -1,3 +1,16 @@
+import hackForLaLogoUrl from "images/hackforla.svg";
+import codeForHawaiiLogoUrl from "components/StaticPagesHI/assets/cfh-logo-black-crop.png";
+function requiredEnvVar(name) {
+  const value = import.meta.env[name];
+  if (!value) {
+    throw new Error(`Required environment variable "${name}" not found`);
+  }
+  return value;
+}
+
+export const TENANT_ID = requiredEnvVar("VITE_TENANT_ID");
+export const MAPBOX_ACCESS_TOKEN = requiredEnvVar("VITE_MAPBOX_ACCESS_TOKEN");
+
 export const MENU_ITEMS = [
   { text: "Find Food", link: "/organizations" },
   { text: "About Us", link: "/about" },
@@ -18,7 +31,7 @@ const LOS_ANGELES = {
     {
       name: "Hack for LA",
       website: "https://www.hackforla.org/",
-      path: require("images/hackforla.svg"),
+      path: hackForLaLogoUrl,
     },
   ],
   urlContains: ["la."],
@@ -34,7 +47,7 @@ const HAWAII = {
     {
       name: "Code for Hawaii",
       website: "https://www.codeforhawaii.org/",
-      path: require("components/StaticPagesHI/assets/cfh-logo-black-crop.png"),
+      path: codeForHawaiiLogoUrl,
     },
   ],
   urlContains: ["hi.", "hawaii"],

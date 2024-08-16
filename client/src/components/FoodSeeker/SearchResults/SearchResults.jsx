@@ -15,7 +15,7 @@ import {
 import Filters from "./ResultsFilters/ResultsFilters";
 import List from "./ResultsList/ResultsList";
 import Map from "./ResultsMap/ResultsMap";
-import { Desktop, Mobile, Tablet } from "./layouts";
+import { Desktop, Mobile, Tablet } from "./layouts/index";
 
 const SearchResults = () => {
   const isListPanelVisible = useIsListPanelVisible();

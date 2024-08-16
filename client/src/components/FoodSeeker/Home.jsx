@@ -16,14 +16,16 @@ import { useEffect, useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import * as analytics from "services/analytics";
 import { useSiteContext } from "../../contexts/siteContext";
+import foodOasisLogoUrl from "images/foodoasis.svg";
+import alohaHarvestLogoUrl from "../StaticPagesHI/assets/aloha-harvest-bg-none.png";
 
 const logoPaths = {
-  1: require("images/foodoasis.svg").default,
-  2: require("images/foodoasis.svg").default,
-  3: require("../StaticPagesHI/assets/aloha-harvest-bg-none.png"),
-  4: require("images/foodoasis.svg").default,
-  5: require("images/foodoasis.svg").default,
-  6: require("images/foodoasis.svg").default,
+  1: foodOasisLogoUrl,
+  2: foodOasisLogoUrl,
+  3: alohaHarvestLogoUrl,
+  4: foodOasisLogoUrl,
+  5: foodOasisLogoUrl,
+  6: foodOasisLogoUrl,
 };
 
 const Home = () => {

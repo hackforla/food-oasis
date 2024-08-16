@@ -19,7 +19,7 @@ import { useState, useEffect } from "react";
 import * as analytics from "../../services/analytics";
 import Footer from "../Layout/Footer";
 import { IconButton } from "../UI/StandardButton";
-import { PageWrapper } from "./PageWrapper";
+import { PageWrapper } from "./x";
 import donatebg from "./assets/donate-bg.webp";
 
 const Donate = () => {

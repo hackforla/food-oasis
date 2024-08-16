@@ -35,6 +35,7 @@ import {
   useMarkersGeojson,
 } from "./MarkerHelpers";
 import { regionBorderStyle, regionFillStyle } from "./RegionHelpers";
+import { MAPBOX_ACCESS_TOKEN } from "../../../../helpers/Constants";
 
 const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
   const [markersLoaded, setMarkersLoaded] = useState(false);
@@ -140,7 +141,7 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
         ref={mapRef}
         {...viewport}
         onMove={(e) => setViewport(e.viewState)}
-        mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+        mapboxAccessToken={MAPBOX_ACCESS_TOKEN}
         mapStyle={MAPBOX_STYLE}
         draggable={true}
         onLoad={onLoad}

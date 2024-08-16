@@ -4,15 +4,6 @@ import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { isMobile } from "../../helpers";
 
-const logoPaths = {
-  1: require("images/foodoasis.svg"),
-  2: require("images/foodoasis.svg"),
-  3: require("images/foodoasis.svg"),
-  4: require("images/foodoasis.svg"),
-  5: require("images/foodoasis.svg"),
-  6: require("images/foodoasis.svg"),
-};
-
 function WidgetFooterSection(props) {
   const {
     logoPath,
@@ -203,7 +194,7 @@ function WidgetFooter() {
     >
       <WidgetFooterSection
         name="Food Oasis"
-        logoPath={logoPaths[tenantId]}
+        logoPath={foodOasisLogoUrl}
         url={`${window.location.origin}`}
         alt="Food Oasis Logo"
       />

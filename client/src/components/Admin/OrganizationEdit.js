@@ -51,6 +51,12 @@ const validationSchema = Yup.object().shape({
   longitude: Yup.number().required("Longitude is required").min(-180).max(180),
   email: Yup.string().email("Invalid email address format"),
   hours: Yup.array().of(HourSchema),
+  twitter: Yup.string()
+    .matches(
+      /^https?:\/\/(www\.)?(twitter\.com|x\.com)\/.*/,
+      "Invalid URL, e.g. 'https://twitter.com/ or https://x.com/'"
+    )
+    .required("Full Twitter/X URL is required."),
   selectedCategoryIds: Yup.array().min(
     1,
     "You must select at least one category"

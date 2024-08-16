@@ -1,6 +1,6 @@
 {
   "name": "foodoasis-web-api",
-  "version": "1.0.82",
+  "version": "1.0.83",
   "author": "Hack for LA",
   "description": "Web API Server for Food Oasis",
   "main": "server.js",
@@ -18,7 +18,8 @@
     "loadtesttrivial:prod": "loadtest -t 60 -c 20 --rps 100 \"http://la.foodoasis.net/api/categories\" ",
     "loadtesttrivial:dev": "loadtest -t 60 -c 20 --rps 100 \"http://devla.foodoasis.net.herokuapp.com/api/categories\" ",
     "rmBuild": "rm -rf build",
-    "build": "rm -rf build && tsc"
+    "build": "rm -rf build && tsc",
+    "typecheck": "tsc --noEmit"
   },
   "lint-staged": {
     "*.{js,md}": "prettier --write",
@@ -26,9 +27,9 @@
   },
   "license": "GPL-2.0",
   "dependencies": {
-    "@aws-sdk/client-location": "^3.499.0",
+    "@aws-sdk/client-location": "^3.621.0",
     "@aws-sdk/core": "^3.496.0",
-    "@aws-sdk/credential-providers": "^3.499.0",
+    "@aws-sdk/credential-providers": "^3.621.0",
     "@sendgrid/mail": "^7.6.2",
     "ajv": "^8.12.0",
     "ajv-formats": "^2.1.1",

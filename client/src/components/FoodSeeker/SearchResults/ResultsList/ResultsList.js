@@ -18,12 +18,14 @@ import {
 import StakeholderDetails from "../StakeholderDetails/StakeholderDetails";
 import StakeholderPreview from "../StakeholderPreview/StakeholderPreview";
 import useBreakpoints from "hooks/useBreakpoints";
+import { useMapbox } from "hooks/useMapbox";
 
-const ResultsList = ({ stakeholders, loading, handleReset, handleFlyTo }) => {
+const ResultsList = ({ stakeholders, loading, handleReset }) => {
   const selectedOrganization = useSelectedOrganization();
   const [topMostIndex, setTopMostIndex] = useState(0);
   const { isDesktop } = useBreakpoints();
   const dispatch = useAppDispatch();
+  const { flyTo } = useMapbox();
 
   useEffect(() => {
     analytics.postEvent("showList");
@@ -89,7 +91,7 @@ const ResultsList = ({ stakeholders, loading, handleReset, handleFlyTo }) => {
                         stakeholder={stakeholder}
                         onSelect={() => {
                           setTopMostIndex(index);
-                          handleFlyTo({
+                          flyTo({
                             longitude: stakeholder.longitude,
                             latitude: stakeholder.latitude,
                           });

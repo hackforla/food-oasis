@@ -61,11 +61,15 @@ function Suggestion(props) {
         </Grid>
         <Grid item>
           <Formik
-            initialValues={DEFAULT_STAKEHOLDER}
+            initialValues={{
+              ...DEFAULT_STAKEHOLDER,
+              formType: "suggestion",
+            }}
             validationSchema={validationSchema}
             onSubmit={async (value, formikBag) => {
               formikBag.setSubmitting(true);
               return suggestionService
+
                 .post(value)
                 .then(() => {
                   formikBag.setSubmitting(false);

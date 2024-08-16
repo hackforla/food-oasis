@@ -43,7 +43,7 @@ export const suggestionPostRequestSchema: JSONSchemaType<SuggestionPostFields> =
           { maxLength: 0 }, // for an empty string
         ],
       },
-      notes: { type: "string" }, // also called "other information"
+      notes: { type: "string" }, // also called "other information" in suggestion form, "Corrections" in correction form
       tipsterName: {
         type: "string",
       },
@@ -59,6 +59,14 @@ export const suggestionPostRequestSchema: JSONSchemaType<SuggestionPostFields> =
       tenantId: {
         type: "integer",
         minimum: 1,
+      },
+      formType: {
+        oneOf: [
+          {
+            type: "string",
+            enum: ["correction", "suggestion"],
+          },
+        ],
       },
     },
     additionalProperties: true,
@@ -141,6 +149,14 @@ export const suggestionPutRequestSchema: JSONSchemaType<Suggestion> = {
     tenantId: {
       type: "integer",
       minimum: 1,
+    },
+    formType: {
+      oneOf: [
+        {
+          type: "string",
+          enum: ["correction", "suggestion"],
+        },
+      ],
     },
   },
   additionalProperties: false,

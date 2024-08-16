@@ -64,7 +64,13 @@ export default function ContactDetails({
         </Grid>
         <Grid item sm={6} xs={12}>
           <div>
-            <Label id="twitter" label="Twitter" />
+            <Label
+              id="twitter"
+              label="Twitter"
+              tooltipTitle="URL must start with 'https://twitter.com/ or https://x.com/'"
+              href={values.twitter}
+            />
+
             <TextField
               id="twitter"
               name="twitter"

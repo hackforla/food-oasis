@@ -2,6 +2,7 @@ import { Grid } from "@mui/material";
 import { TabPanel } from "components/Admin/ui/TabPanel";
 import { InputAdornment, TextField } from "@mui/material";
 import Label from "../ui/Label";
+import { styled } from "@mui/system";
 
 export default function ContactDetails({
   tabPage,
@@ -11,6 +12,55 @@ export default function ContactDetails({
   handleChange,
   handleBlur,
 }) {
+  const CustomTextField = styled(TextField)({
+    "& .MuiOutlinedInput-root": {
+      borderRadius: "4px",
+      backgroundColor: "white",
+      paddingLeft: "0",
+      "& fieldset": {
+        borderColor: "grey",
+      },
+      "&:hover fieldset": {},
+      "&.Mui-focused fieldset": {},
+      "& input::placeholder": {
+        color: "#B0BEC5",
+        opacity: 1,
+      },
+    },
+    "& .MuiInputAdornment-root": {
+      backgroundColor: "#F4F6F8",
+      padding: "22px 8px 22px 8px",
+
+      borderRight: "1px solid grey",
+      borderRadius: "4px 0 0 4px",
+      color: "#B0BEC5",
+      margin: "-20px 0",
+    },
+  });
+
+  const TwitterTextField = ({
+    values,
+    handleChange,
+    handleBlur,
+    touched,
+    errors,
+  }) => (
+    <CustomTextField
+      id="twitter"
+      name="twitter"
+      placeholder="URL"
+      value={values.twitter}
+      onChange={handleChange}
+      onBlur={handleBlur}
+      helperText={touched.twitter ? errors.twitter : ""}
+      error={touched.twitter && Boolean(errors.twitter)}
+      InputProps={{
+        startAdornment: (
+          <InputAdornment position="start">https://twitter.com/</InputAdornment>
+        ),
+      }}
+    />
+  );
   return (
     <TabPanel value={tabPage} index={2}>
       <Grid container spacing={1}>
@@ -72,23 +122,12 @@ export default function ContactDetails({
               href="https://twitter.com/"
               handle={values.twitter}
             />
-
-            <TextField
-              id="twitter"
-              name="twitter"
-              placeholder="Twitter username"
-              value={values.twitter}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              helperText={touched.twitter ? errors.twitter : ""}
-              error={touched.twitter && Boolean(errors.twitter)}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    https://twitter.com/
-                  </InputAdornment>
-                ),
-              }}
+            <TwitterTextField
+              values={values}
+              handleChange={handleChange}
+              handleBlur={handleBlur}
+              touched={touched}
+              errors={errors}
             />
           </div>
         </Grid>

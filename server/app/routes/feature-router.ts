@@ -18,5 +18,10 @@ router.delete(
   jwtSession.validateUserHasRequiredRoles(["admin"]),
   featureController.remove
 );
+router.put(
+  "/:id",
+  jwtSession.validateUserHasRequiredRoles(["admin"]),
+  featureController.update
+);
 
 export default router;

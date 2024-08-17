@@ -45,8 +45,25 @@ const remove: RequestHandler<
     res.status(500).json({ error: "Internal server error" });
   }
 };
+const update: RequestHandler<
+  { id: string },
+  { error: string } | { message: string } | Feature,
+  { is_enabled: boolean }
+> = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { is_enabled } = req.body;
+    const resp = await featureService.update(Number(id), is_enabled);
+    res.status(200).json(resp);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 export default {
   post,
   getAll,
-  remove
+  remove,
+  update,
 };

@@ -54,26 +54,29 @@ const Features = () => {
   const { data: featuresData, loading: featuresLoading } = useFeatures();
 
   useEffect(() => {
-    const newRows = featuresData.map((feature) => {
-      const featureToLogin = featureToLoginData.find(
-        (ftl) => ftl.feature_id === feature.id
-      );
-      return {
-        featureId: feature.id,
-        name: feature.name,
-        is_enabled: feature.is_enabled,
-        history: featureToLogin
-          ? featureToLogin.users.map((user) => ({
-              loginId: user.login_id,
-              firstName: user.first_name,
-              lastName: user.last_name,
-              email: user.email,
-              featureToLoginId: user.featureToLoginId || featureToLogin.ftl_id,
-            }))
-          : [],
-      };
-    });
-    setRows(newRows);
+    if (featuresData && featureToLoginData) {
+      const newRows = featuresData.map((feature) => {
+        const featureToLogin = featureToLoginData.find(
+          (ftl) => ftl.feature_id === feature.id
+        );
+        return {
+          featureId: feature.id,
+          name: feature.name,
+          is_enabled: feature.is_enabled,
+          history: featureToLogin
+            ? featureToLogin.users.map((user) => ({
+                loginId: user.login_id,
+                firstName: user.first_name,
+                lastName: user.last_name,
+                email: user.email,
+                featureToLoginId:
+                  user.featureToLoginId || featureToLogin.ftl_id,
+              }))
+            : [],
+        };
+      });
+      setRows(newRows);
+    }
   }, [featureToLoginData, featuresData]);
 
   const handleModalClose = () => {

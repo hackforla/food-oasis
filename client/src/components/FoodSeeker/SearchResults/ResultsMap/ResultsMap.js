@@ -133,7 +133,7 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
 
   const listPanelLeftPostion = isListPanelOpen ? 524 : 0;
   const filterPanelLeftPostion = isFilterPanelOpen ? 340 : 0;
-  console.log(hasAdvancedFilterFeatureFlag);
+
   return (
     <div style={{ position: "relative", height: "100%", width: "100%" }}>
       <Map

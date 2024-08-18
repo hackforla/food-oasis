@@ -41,8 +41,6 @@ const MobileLayout = ({ filters, map, list, showList }) => {
     let newY;
     if (filterPanelOpen) {
       newY = 100;
-    } else if (hasAdvancedFilterFeatureFlag) {
-      newY = showList ? (100 / window.innerHeight) * 60 : 54;
     } else {
       newY = showList ? 17 : 54;
     }

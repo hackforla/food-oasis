@@ -160,7 +160,7 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
             latitude={startIconCoordinates.latitude}
             offsetTop={-50}
             offsetLeft={-25}
-            anchor="bottom"
+            anchor="center"
           >
             <StartIcon />
           </Marker>
@@ -218,8 +218,8 @@ const StartIcon = () => {
   return (
     <svg
       viewBox="0 0 90 100"
-      width="54"
-      height="74"
+      width="44"
+      height="64"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >

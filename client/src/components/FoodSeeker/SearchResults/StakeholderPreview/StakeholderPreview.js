@@ -191,6 +191,11 @@ const StakeholderPreview = ({ stakeholder, onSelect, isDesktop }) => {
               component="h2"
               align="left"
               fontWeight="bold"
+              sx={{
+                "@media (max-width:1024px)": {
+                  textDecoration: "underline",
+                },
+              }}
               onClick={() => handleSelectOrganization(stakeholder)}
             >
               {stakeholder.name}

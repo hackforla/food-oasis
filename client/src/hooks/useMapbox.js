@@ -6,7 +6,7 @@ import { useMap } from "react-map-gl";
 export const useMapbox = () => {
   const mapRef = useRef();
   const isListPanelOpen = useListPanel();
-  const { isMobile } = useBreakpoints();
+  const { isMobile, isDesktop } = useBreakpoints();
   const mapbox = useMap();
 
   const getViewport = () => {
@@ -29,8 +29,8 @@ export const useMapbox = () => {
     }
     mapbox.default.flyTo({
       center: [
-        isListPanelOpen && !isMobile ? longitude - 0.08 : longitude,
-        isMobile ? latitude - 0.05 : latitude,
+        isListPanelOpen && isDesktop ? longitude - 0.08 : longitude,
+        isMobile ? latitude - 0.04 : latitude,
       ],
       duration: 2000,
     });

@@ -1,10 +1,16 @@
 import { useUserContext } from "../contexts/userContext";
+import { useFeatures } from "../hooks/useFeatures";
 
 export default function useFeatureFlag(flagName) {
   const { user } = useUserContext();
-  if (!user || !user.features) {
-    return false;
-  }
-  const featureFlags = user.features;
-  return featureFlags.includes(flagName);
+  const { data: featureFlags } = useFeatures();
+
+  const featureFlag = featureFlags.find((feature) => feature.name === flagName);
+
+  const isFeatureEnabled = featureFlag && featureFlag.is_enabled;
+
+  const userHasFeature =
+    user && user.features && user.features.includes(flagName);
+
+  return isFeatureEnabled || userHasFeature;
 }

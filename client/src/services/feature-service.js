@@ -22,3 +22,9 @@ export const remove = async (id) => {
   const response = await axios.delete(`${baseUrl}/${id}`);
   return response.data;
 };
+
+export const update = async (id, feature) => {
+  const response = await axios.put(`${baseUrl}/${id}`, feature);
+  return response.data;
+};
+ 

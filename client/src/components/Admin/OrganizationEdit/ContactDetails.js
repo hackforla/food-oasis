@@ -4,6 +4,57 @@ import { InputAdornment, TextField } from "@mui/material";
 import Label from "../ui/Label";
 import { styled } from "@mui/system";
 
+const CustomTextField = styled(TextField)({
+  "& .MuiOutlinedInput-root": {
+    borderRadius: "4px",
+    backgroundColor: "white",
+    paddingLeft: "0",
+    "& fieldset": {
+      borderColor: "grey",
+    },
+    "& input::placeholder": {
+      color: "#B0BEC5",
+      opacity: 1,
+    },
+  },
+  "& .MuiInputAdornment-root": {
+    backgroundColor: "#F4F6F8",
+    padding: "22px 8px 22px 8px",
+    borderRight: "1px solid grey",
+    borderRadius: "4px 0 0 4px",
+    color: "#B0BEC5",
+    margin: "-20px 0",
+  },
+});
+
+const CustomTextFieldComponent = ({
+  id,
+  name,
+  placeholder,
+  value,
+  onChange,
+  onBlur,
+  touched,
+  errors,
+  startAdornment,
+}) => (
+  <CustomTextField
+    id={id}
+    name={name}
+    placeholder={placeholder}
+    value={value}
+    onChange={onChange}
+    onBlur={onBlur}
+    helperText={touched ? errors : ""}
+    error={Boolean(touched && errors)}
+    InputProps={{
+      startAdornment: startAdornment ? (
+        <InputAdornment position="start">{startAdornment}</InputAdornment>
+      ) : null,
+    }}
+  />
+);
+
 export default function ContactDetails({
   tabPage,
   values,
@@ -12,59 +63,6 @@ export default function ContactDetails({
   handleChange,
   handleBlur,
 }) {
-  const CustomTextField = styled(TextField)({
-    "& .MuiOutlinedInput-root": {
-      borderRadius: "4px",
-      backgroundColor: "white",
-      paddingLeft: "0",
-      "& fieldset": {
-        borderColor: "grey",
-      },
-      "&:hover fieldset": {},
-      "&.Mui-focused fieldset": {},
-      "& input::placeholder": {
-        color: "#B0BEC5",
-        opacity: 1,
-      },
-    },
-    "& .MuiInputAdornment-root": {
-      backgroundColor: "#F4F6F8",
-      padding: "22px 8px 22px 8px",
-
-      borderRight: "1px solid grey",
-      borderRadius: "4px 0 0 4px",
-      color: "#B0BEC5",
-      margin: "-20px 0",
-    },
-  });
-
-  const CustomTextFieldComponent = ({
-    id,
-    name,
-    placeholder,
-    value,
-    onChange,
-    onBlur,
-    touched,
-    errors,
-    startAdornment,
-  }) => (
-    <CustomTextField
-      id={id}
-      name={name}
-      placeholder={placeholder}
-      value={value}
-      onChange={onChange}
-      onBlur={onBlur}
-      helperText={touched[name] ? errors[name] : ""}
-      error={touched[name] && Boolean(errors[name])}
-      InputProps={{
-        startAdornment: startAdornment && (
-          <InputAdornment position="start">{startAdornment}</InputAdornment>
-        ),
-      }}
-    />
-  );
   return (
     <TabPanel value={tabPage} index={2}>
       <Grid container spacing={1}>
@@ -133,8 +131,8 @@ export default function ContactDetails({
               value={values.twitter}
               onChange={handleChange}
               onBlur={handleBlur}
-              touched={touched}
-              errors={errors}
+              touched={touched.twitter}
+              errors={errors.twitter}
               startAdornment="https://twitter.com/"
             />
           </div>
@@ -154,8 +152,8 @@ export default function ContactDetails({
               value={values.pinterest}
               onChange={handleChange}
               onBlur={handleBlur}
-              touched={touched}
-              error={touched.pinterest && Boolean(errors.pinterest)}
+              touched={touched.pinterest}
+              errors={errors.pinterest}
               startAdornment="https://pinterest.com/"
             />
           </div>

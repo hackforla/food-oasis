@@ -53,10 +53,7 @@ const validationSchema = Yup.object().shape({
   hours: Yup.array().of(HourSchema),
   twitter: Yup.string()
     .transform((value, originalValue) => (originalValue === "" ? null : value))
-    .matches(
-      /^@([a-zA-Z][a-zA-Z0-9_]{0,14}|[0-9][a-zA-Z0-9_]{0,14})$/,
-      "Valid Twitter username required."
-    )
+    .matches(/^(?:@?[a-zA-Z0-9_]{1,15})$/, "Valid Twitter username required.")
     .nullable(),
 
   pinterest: Yup.string()

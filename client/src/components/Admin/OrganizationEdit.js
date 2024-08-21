@@ -52,19 +52,22 @@ const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email address format"),
   hours: Yup.array().of(HourSchema),
   twitter: Yup.string()
+    .transform((value, originalValue) => (originalValue === "" ? null : value))
     .matches(
       /^@([a-zA-Z][a-zA-Z0-9_]{0,14}|[0-9][a-zA-Z0-9_]{0,14})$/,
       "Valid Twitter username required."
     )
-    .required("Valid Twitter username is required."),
+    .nullable(),
 
   pinterest: Yup.string()
+    .transform((value, originalValue) =>
+      originalValue.trim() === "" ? null : value
+    )
     .matches(
       /^[a-zA-Z0-9.]{3,15}$/,
       "Valid Pinterest username is required and cannot include spaces."
     )
-    .required("Valid Pinterest username is required.")
-    .notOneOf([""], "Username cannot be empty or just spaces"),
+    .nullable(),
 
   selectedCategoryIds: Yup.array().min(
     1,

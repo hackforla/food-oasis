@@ -38,25 +38,29 @@ export default function ContactDetails({
     },
   });
 
-  const TwitterTextField = ({
-    values,
-    handleChange,
-    handleBlur,
+  const CustomTextFieldComponent = ({
+    id,
+    name,
+    placeholder,
+    value,
+    onChange,
+    onBlur,
     touched,
     errors,
+    startAdornment,
   }) => (
     <CustomTextField
-      id="twitter"
-      name="twitter"
-      placeholder="URL"
-      value={values.twitter}
-      onChange={handleChange}
-      onBlur={handleBlur}
-      helperText={touched.twitter ? errors.twitter : ""}
-      error={touched.twitter && Boolean(errors.twitter)}
+      id={id}
+      name={name}
+      placeholder={placeholder}
+      value={value}
+      onChange={onChange}
+      onBlur={onBlur}
+      helperText={touched[name] ? errors[name] : ""}
+      error={touched[name] && Boolean(errors[name])}
       InputProps={{
-        startAdornment: (
-          <InputAdornment position="start">https://twitter.com/</InputAdornment>
+        startAdornment: startAdornment && (
+          <InputAdornment position="start">{startAdornment}</InputAdornment>
         ),
       }}
     />
@@ -122,12 +126,16 @@ export default function ContactDetails({
               href="https://twitter.com/"
               handle={values.twitter}
             />
-            <TwitterTextField
-              values={values}
-              handleChange={handleChange}
-              handleBlur={handleBlur}
+            <CustomTextFieldComponent
+              id="twitter"
+              name="twitter"
+              placeholder="Twitter handle"
+              value={values.twitter}
+              onChange={handleChange}
+              onBlur={handleBlur}
               touched={touched}
               errors={errors}
+              startAdornment="https://twitter.com/"
             />
           </div>
         </Grid>
@@ -139,22 +147,16 @@ export default function ContactDetails({
               href="https://pinterest.com/"
               tooltipTitle="URL must start with 'https://pinterest.com/'"
             />
-            <TextField
+            <CustomTextFieldComponent
               id="pinterest"
               name="pinterest"
               placeholder="Pinterest username"
               value={values.pinterest}
               onChange={handleChange}
               onBlur={handleBlur}
-              helperText={touched.pinterest ? errors.pinterest : ""}
+              touched={touched}
               error={touched.pinterest && Boolean(errors.pinterest)}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    https://pinterest.com/
-                  </InputAdornment>
-                ),
-              }}
+              startAdornment="https://pinterest.com/"
             />
           </div>
         </Grid>

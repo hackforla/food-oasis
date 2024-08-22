@@ -2,30 +2,6 @@ import { Grid } from "@mui/material";
 import { TabPanel } from "components/Admin/ui/TabPanel";
 import { InputAdornment, TextField } from "@mui/material";
 import Label from "../ui/Label";
-import { styled } from "@mui/system";
-
-const CustomTextField = styled(TextField)({
-  "& .MuiOutlinedInput-root": {
-    borderRadius: "4px",
-    backgroundColor: "white",
-    paddingLeft: "0",
-    "& fieldset": {
-      borderColor: "grey",
-    },
-    "& input::placeholder": {
-      color: "#B0BEC5",
-      opacity: 1,
-    },
-  },
-  "& .MuiInputAdornment-root": {
-    backgroundColor: "#F4F6F8",
-    padding: "22px 8px 22px 8px",
-    borderRight: "1px solid grey",
-    borderRadius: "4px 0 0 4px",
-    color: "#B0BEC5",
-    margin: "-20px 0",
-  },
-});
 
 const CustomTextFieldComponent = ({
   id,
@@ -38,8 +14,30 @@ const CustomTextFieldComponent = ({
   errors,
   startAdornment,
 }) => (
-  <CustomTextField
+  <TextField
     id={id}
+    sx={{
+      "& .MuiOutlinedInput-root": {
+        borderRadius: "4px",
+        backgroundColor: "white",
+        paddingLeft: "0",
+        "& fieldset": {
+          borderColor: "grey",
+        },
+        "& input::placeholder": {
+          color: "#B0BEC5",
+          opacity: 1,
+        },
+      },
+      "& .MuiInputAdornment-root": {
+        backgroundColor: "#F4F6F8",
+        padding: "22px 8px 22px 8px",
+        borderRight: "1px solid grey",
+        borderRadius: "4px 0 0 4px",
+        color: "#B0BEC5",
+        margin: "-20px 0",
+      },
+    }}
     name={name}
     placeholder={placeholder}
     value={value}
@@ -48,9 +46,9 @@ const CustomTextFieldComponent = ({
     helperText={touched ? errors : ""}
     error={Boolean(touched && errors)}
     InputProps={{
-      startAdornment: startAdornment ? (
+      startAdornment: startAdornment && (
         <InputAdornment position="start">{startAdornment}</InputAdornment>
-      ) : null,
+      ),
     }}
   />
 );
@@ -143,6 +141,7 @@ export default function ContactDetails({
               id="pinterest"
               label="Pinterest"
               href="https://pinterest.com/"
+              handle={values.pinterest}
               tooltipTitle="URL must start with 'https://pinterest.com/'"
             />
             <CustomTextFieldComponent

@@ -52,14 +52,14 @@ const Label = ({ id, label, tooltipTitle, href, handle }) => {
           )}
         </Stack>
 
-        {href && (
+        {href && handle && (
           <Button
             variant="text"
             size="small"
             sx={{ textTransform: "none" }}
             rel="noopener"
             component={Link}
-            href={combinedLink} // Use the combined URL here
+            href={combinedLink}
             startIcon={<LaunchIcon />}
           >
             Go To Link

@@ -52,7 +52,7 @@ const Label = ({ id, label, tooltipTitle, href, handle }) => {
           )}
         </Stack>
 
-        {href && handle && (
+        {handle && (
           <Button
             variant="text"
             size="small"

@@ -142,7 +142,7 @@ export default function ContactDetails({
               label="Pinterest"
               href="https://pinterest.com/"
               handle={values.pinterest}
-              tooltipTitle="URL must start with 'https://pinterest.com/'"
+              tooltipTitle="Enter your Pinterest username"
             />
             <CustomTextFieldComponent
               id="pinterest"

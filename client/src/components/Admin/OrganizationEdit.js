@@ -61,8 +61,8 @@ const validationSchema = Yup.object().shape({
       originalValue.trim() === "" ? null : value
     )
     .matches(
-      /^[a-zA-Z0-9.]{3,15}$/,
-      "Valid Pinterest username is required and cannot include spaces."
+      /^@?(?=.*[a-zA-Z])[a-zA-Z0-9_]{3,30}$/,
+      "Valid Pinterest username is required. It must be 3 to 30 characters long, contain only letters, numbers, and underscores, must include at least one letter, and cannot contain spaces or punctuation marks. It may optionally start with an '@' symbol."
     )
     .nullable(),
 

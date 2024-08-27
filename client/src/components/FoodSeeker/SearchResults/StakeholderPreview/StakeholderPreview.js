@@ -1,4 +1,12 @@
-import { Box, Button, Chip, Divider, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Chip,
+  Divider,
+  Snackbar,
+  Stack,
+  Typography,
+} from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import {
   FOOD_PANTRY_CATEGORY_ID,
@@ -191,6 +199,10 @@ const StakeholderPreview = ({ stakeholder, onSelect, isDesktop }) => {
               component="h2"
               align="left"
               fontWeight="bold"
+              sx={{
+                color: { xs: "black", md: "inherit" },
+                textDecoration: { xs: "underline", md: "none" },
+              }}
               onClick={() => handleSelectOrganization(stakeholder)}
             >
               {stakeholder.name}
@@ -199,7 +211,9 @@ const StakeholderPreview = ({ stakeholder, onSelect, isDesktop }) => {
               direction="row"
               flexWrap="wrap"
               marginTop="8px"
-              sx={{ gap: "16px" }}
+              sx={{
+                gap: "16px",
+              }}
               onClick={() => handleSelectOrganization(stakeholder)}
             >
               {stakeholder.categories

@@ -1,6 +1,57 @@
-import { Grid, TextField } from "@mui/material";
+import { Grid } from "@mui/material";
 import { TabPanel } from "components/Admin/ui/TabPanel";
+import { InputAdornment, TextField } from "@mui/material";
 import Label from "../ui/Label";
+
+const CustomTextFieldComponent = ({
+  id,
+  name,
+  placeholder,
+  value,
+  onChange,
+  onBlur,
+  touched,
+  errors,
+  startAdornment,
+}) => (
+  <TextField
+    id={id}
+    sx={{
+      "& .MuiOutlinedInput-root": {
+        borderRadius: "4px",
+        backgroundColor: "white",
+        paddingLeft: "0",
+        "& fieldset": {
+          borderColor: "grey",
+        },
+        "& input::placeholder": {
+          color: "#B0BEC5",
+          opacity: 1,
+        },
+      },
+      "& .MuiInputAdornment-root": {
+        backgroundColor: "#F4F6F8",
+        padding: "22px 8px 22px 8px",
+        borderRight: "1px solid grey",
+        borderRadius: "4px 0 0 4px",
+        color: "#B0BEC5",
+        margin: "-20px 0",
+      },
+    }}
+    name={name}
+    placeholder={placeholder}
+    value={value}
+    onChange={onChange}
+    onBlur={onBlur}
+    helperText={touched ? errors : ""}
+    error={Boolean(touched && errors)}
+    InputProps={{
+      startAdornment: startAdornment && (
+        <InputAdornment position="start">{startAdornment}</InputAdornment>
+      ),
+    }}
+  />
+);
 
 export default function ContactDetails({
   tabPage,
@@ -65,36 +116,44 @@ export default function ContactDetails({
         <Grid item sm={6} xs={12}>
           <div>
             <Label
-              id="twitter"
+              id="twitter-label"
               label="Twitter"
-              tooltipTitle="URL must start with 'https://twitter.com/ or https://x.com/'"
-              href={values.twitter}
+              tooltipTitle="Enter your Twitter username"
+              href="https://twitter.com/"
+              handle={values.twitter}
             />
-
-            <TextField
+            <CustomTextFieldComponent
               id="twitter"
               name="twitter"
-              placeholder="Twitter"
+              placeholder="Twitter handle"
               value={values.twitter}
               onChange={handleChange}
               onBlur={handleBlur}
-              helperText={touched.twitter ? errors.twitter : ""}
-              error={touched.twitter && Boolean(errors.twitter)}
+              touched={touched.twitter}
+              errors={errors.twitter}
+              startAdornment="https://twitter.com/"
             />
           </div>
         </Grid>
         <Grid item sm={6} xs={12}>
           <div>
-            <Label id="pinterest" label="Pinterest" />
-            <TextField
+            <Label
+              id="pinterest"
+              label="Pinterest"
+              href="https://pinterest.com/"
+              handle={values.pinterest}
+              tooltipTitle="Enter your Pinterest username"
+            />
+            <CustomTextFieldComponent
               id="pinterest"
               name="pinterest"
-              placeholder="Pinterest"
+              placeholder="Pinterest username"
               value={values.pinterest}
               onChange={handleChange}
               onBlur={handleBlur}
-              helperText={touched.pinterest ? errors.pinterest : ""}
-              error={touched.pinterest && Boolean(errors.pinterest)}
+              touched={touched.pinterest}
+              errors={errors.pinterest}
+              startAdornment="https://pinterest.com/"
             />
           </div>
         </Grid>

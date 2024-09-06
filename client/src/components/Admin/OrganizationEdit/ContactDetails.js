@@ -117,7 +117,7 @@ export default function ContactDetails({
             <CustomTextFieldComponent
               id="facebook"
               name="facebook"
-              placeholder="Facebook handle"
+              placeholder="Facebook username"
               value={values.facebook}
               onChange={handleChange}
               onBlur={handleBlur}

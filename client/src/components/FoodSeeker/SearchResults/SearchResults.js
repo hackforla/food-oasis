@@ -16,6 +16,7 @@ import Filters from "./ResultsFilters/ResultsFilters";
 import List from "./ResultsList/ResultsList";
 import Map from "./ResultsMap/ResultsMap";
 import { Desktop, Mobile, Tablet } from "./layouts";
+import SEO from "../../SEO";
 
 const SearchResults = () => {
   const isListPanelVisible = useIsListPanelVisible();
@@ -157,12 +158,22 @@ const SearchResults = () => {
       handleReset={resetOrigin}
     />
   );
-
-  if (isDesktop) return <Desktop filters={filters} map={map} list={list} />;
-
-  if (isTablet) return <Tablet filters={filters} map={map} list={list} />;
-
-  return <Mobile showList={showList} filters={filters} map={map} list={list} />;
+  return (
+    <>
+      <SEO
+        title="Map | Food Oasis"
+        description="Enter your zip code or address to search for PANTRIES or MEALS"
+        url="https://www.foodoasis.la/organizations"
+      />
+      {isDesktop ? (
+        <Desktop filters={filters} map={map} list={list} />
+      ) : isTablet ? (
+        <Tablet filters={filters} map={map} list={list} />
+      ) : (
+        <Mobile showList={showList} filters={filters} map={map} list={list} />
+      )}
+    </>
+  );
 };
 
 export default SearchResults;

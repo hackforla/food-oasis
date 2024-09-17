@@ -85,31 +85,45 @@ export default function ContactDetails({
         </Grid>
         <Grid item sm={6} xs={12}>
           <div>
-            <Label id="instagram" label="Instagram" />
-            <TextField
+            <Label
+              id="instagram"
+              label="Instagram"
+              tooltipTitle="Enter your Instagram username"
+              href="https://instagram.com/"
+              handle={values.instagram}
+            />
+            <CustomTextFieldComponent
               id="instagram"
               name="instagram"
-              placeholder="Instagram"
+              placeholder="Instagram username"
               value={values.instagram}
               onChange={handleChange}
               onBlur={handleBlur}
-              helperText={touched.instagram ? errors.instagram : ""}
-              error={touched.instagram && Boolean(errors.instagram)}
+              touched={touched.instagram}
+              errors={errors.instagram}
+              startAdornment="https://instagram.com/"
             />
           </div>
         </Grid>
         <Grid item sm={6} xs={12}>
           <div>
-            <Label id="facebook" label="Facebook" />
-            <TextField
+            <Label
+              id="facebook"
+              label="Facebook"
+              tooltipTitle="Enter your Facebook username"
+              href="https://facebook.com/"
+              handle={values.facebook}
+            />
+            <CustomTextFieldComponent
               id="facebook"
               name="facebook"
-              placeholder="Facebook"
+              placeholder="Facebook username"
               value={values.facebook}
               onChange={handleChange}
               onBlur={handleBlur}
-              helperText={touched.facebook ? errors.facebook : ""}
-              error={touched.facebook && Boolean(errors.facebook)}
+              touched={touched.facebook}
+              errors={errors.facebook}
+              startAdornment="https://facebook.com/"
             />
           </div>
         </Grid>
@@ -125,7 +139,7 @@ export default function ContactDetails({
             <CustomTextFieldComponent
               id="twitter"
               name="twitter"
-              placeholder="Twitter handle"
+              placeholder="Twitter username"
               value={values.twitter}
               onChange={handleChange}
               onBlur={handleBlur}

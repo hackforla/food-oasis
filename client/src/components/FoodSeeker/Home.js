@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import * as analytics from "services/analytics";
 import { useSiteContext } from "../../contexts/siteContext";
+import SEO from "../SEO";
 
 const logoPaths = {
   1: require("images/foodoasis.svg").default,
@@ -80,178 +81,187 @@ const Home = () => {
   }, []);
 
   return (
-    <Box
-      style={{ backgroundImage: bgImg }}
-      sx={(theme) => ({
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundImage: 'url("/landing-page/map.png")',
-        minHeight: "max(100.7vh,20em)",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        [theme.breakpoints.down("sm")]: {
-          height: "100%",
-        },
-      })}
-    >
-      <Container
-        component="main"
-        maxWidth={false}
+    <>
+      <SEO
+        title="Home | Food Oasis"
+        description="Food Oasis helps you find free food resources in Los Angeles. Learn more about our mission and services."
+        url="https://www.foodoasis.la"
+      />
+      <Box
+        style={{ backgroundImage: bgImg }}
         sx={(theme) => ({
-          maxWidth: "650px",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundImage: 'url("/landing-page/map.png")',
+          minHeight: "max(100.7vh,20em)",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
           [theme.breakpoints.down("sm")]: {
-            padding: 0,
             height: "100%",
           },
         })}
       >
-        <Paper
+        <Container
+          component="main"
+          maxWidth={false}
           sx={(theme) => ({
-            margin: "0 auto",
-            padding: "3.5rem 0.5rem 3rem 0.5rem",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            borderRadius: "24px",
-            boxShadow: "0px 5px 8px 0px rgb(0, 0, 0, 40%)",
+            maxWidth: "650px",
             [theme.breakpoints.down("sm")]: {
+              padding: 0,
               height: "100%",
-              borderRadius: "0",
-              paddingTop: "10rem",
-              justifyContent: "start",
-              boxShadow: "none",
             },
           })}
         >
-          <Box
+          <Paper
             sx={(theme) => ({
-              width: "60%",
-              height: "auto",
-              textAlign: "center",
-              [theme.breakpoints.up("sm")]: {
-                width: "40%",
-              },
-            })}
-          >
-            <img src={logoPaths[tenantId]} alt="logo" />
-          </Box>
-          <Box
-            sx={(theme) => ({
-              width: "100%",
-              padding: "5px 15px 15px 15px",
-              color: "#000000",
-              [theme.breakpoints.up("sm")]: {
-                paddingInline: "90px",
+              margin: "0 auto",
+              padding: "3.5rem 0.5rem 3rem 0.5rem",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              borderRadius: "24px",
+              boxShadow: "0px 5px 8px 0px rgb(0, 0, 0, 40%)",
+              [theme.breakpoints.down("sm")]: {
+                height: "100%",
+                borderRadius: "0",
+                paddingTop: "10rem",
+                justifyContent: "start",
+                boxShadow: "none",
               },
             })}
           >
             <Box
-              component="form"
-              onSubmit={() => navigate("/organizations")}
               sx={(theme) => ({
-                width: "100%",
-                marginTop: theme.spacing(1),
+                width: "60%",
+                height: "auto",
+                textAlign: "center",
+                [theme.breakpoints.up("sm")]: {
+                  width: "40%",
+                },
               })}
             >
-              <Typography
-                variant="h2"
+              <img src={logoPaths[tenantId]} alt="logo" />
+            </Box>
+            <Box
+              sx={(theme) => ({
+                width: "100%",
+                padding: "5px 15px 15px 15px",
+                color: "#000000",
+                [theme.breakpoints.up("sm")]: {
+                  paddingInline: "90px",
+                },
+              })}
+            >
+              <Box
+                component="form"
+                onSubmit={() => navigate("/organizations")}
                 sx={(theme) => ({
+                  width: "100%",
                   marginTop: theme.spacing(1),
-                  fontWeight: "500",
-                  fontSize: "18.72px !important",
-                  marginBottom: "0.5em",
-                  textAlign: "center",
                 })}
               >
-                {taglineText}
-              </Typography>
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "flex-start",
-                  justifyContent: "center",
-                  marginBottom: "1em",
-                  fontSize: "16px",
-                }}
-              >
-                <AddressDropDown autoFocus={true} />
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "flex-start",
-                  justifyContent: "center",
-                  marginBottom: "1em",
-                  fontSize: "16px",
-                }}
-              >
-                or
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "flex-start",
-                  justifyContent: "center",
-                  marginBottom: "1em",
-                  fontSize: "16px",
-                }}
-              >
-                {isGettingLocation ? (
-                  <Stack justifyContent="center" alignContent="center">
-                    <CircularProgress />
-                  </Stack>
-                ) : (
-                  <div style={{ textAlign: "center" }}>
-                    <Tooltip
-                      enterTouchDelay={0}
-                      title={
-                        (locationPermission === "denied" || !!error) &&
-                        "Please allow location access"
-                      }
-                    >
-                      <div>
-                        <Button
-                          variant="contained"
-                          startIcon={<LocationOn />}
-                          onClick={useMyLocationTrigger}
-                          disabled={locationPermission === "denied" || !!error}
-                        >
-                          Use my current location
-                        </Button>
-                      </div>
-                    </Tooltip>
-                  </div>
-                )}
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "flex-start",
-                  justifyContent: "center",
-                  marginBottom: "1em",
-                  fontSize: "16px",
-                }}
-              >
-                <Link
-                  component={RouterLink}
-                  to="/about"
+                <Typography
+                  variant="h2"
                   sx={(theme) => ({
-                    fontSize: "16px",
-                    [theme.breakpoints.up("sm")]: {
-                      fontSize: "19px",
-                    },
+                    marginTop: theme.spacing(1),
+                    fontWeight: "500",
+                    fontSize: "18.72px !important",
+                    marginBottom: "0.5em",
+                    textAlign: "center",
                   })}
                 >
-                  Learn about this site
-                </Link>
+                  {taglineText}
+                </Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                    justifyContent: "center",
+                    marginBottom: "1em",
+                    fontSize: "16px",
+                  }}
+                >
+                  <AddressDropDown autoFocus={true} />
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                    justifyContent: "center",
+                    marginBottom: "1em",
+                    fontSize: "16px",
+                  }}
+                >
+                  or
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                    justifyContent: "center",
+                    marginBottom: "1em",
+                    fontSize: "16px",
+                  }}
+                >
+                  {isGettingLocation ? (
+                    <Stack justifyContent="center" alignContent="center">
+                      <CircularProgress />
+                    </Stack>
+                  ) : (
+                    <div style={{ textAlign: "center" }}>
+                      <Tooltip
+                        enterTouchDelay={0}
+                        title={
+                          (locationPermission === "denied" || !!error) &&
+                          "Please allow location access"
+                        }
+                      >
+                        <div>
+                          <Button
+                            variant="contained"
+                            startIcon={<LocationOn />}
+                            onClick={useMyLocationTrigger}
+                            disabled={
+                              locationPermission === "denied" || !!error
+                            }
+                          >
+                            Use my current location
+                          </Button>
+                        </div>
+                      </Tooltip>
+                    </div>
+                  )}
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                    justifyContent: "center",
+                    marginBottom: "1em",
+                    fontSize: "16px",
+                  }}
+                >
+                  <Link
+                    component={RouterLink}
+                    to="/about"
+                    sx={(theme) => ({
+                      fontSize: "16px",
+                      [theme.breakpoints.up("sm")]: {
+                        fontSize: "19px",
+                      },
+                    })}
+                  >
+                    Learn about this site
+                  </Link>
+                </Box>
               </Box>
             </Box>
-          </Box>
-        </Paper>
-      </Container>
-    </Box>
+          </Paper>
+        </Container>
+      </Box>
+    </>
   );
 };
 

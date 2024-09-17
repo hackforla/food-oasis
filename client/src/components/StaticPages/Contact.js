@@ -18,6 +18,7 @@ import * as Yup from "yup";
 import * as analytics from "../../services/analytics";
 import Footer from "../Layout/Footer";
 import { useSiteContext } from "contexts/siteContext";
+import SEO from "../SEO";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Please enter your name"),
@@ -103,6 +104,11 @@ const Contact = () => {
 
   return (
     <>
+      <SEO
+        title="Contact Us | Food Oasis"
+        description="How can we help? Send us an email."
+        url="https://foodoasis.la/contact"
+      />
       {isMobile && submitted ? (
         <Box
           sx={{

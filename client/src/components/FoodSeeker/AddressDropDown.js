@@ -31,9 +31,7 @@ export default function AddressDropDown({ autoFocus }) {
   const handleInputChange = (delta) => {
     if (!delta) return;
     const safeValue = typeof delta === "string" ? delta : delta.target.value;
-    setTimeout(() => {
-      setInputVal(safeValue);
-    }, 100);
+    setInputVal(safeValue);
     if (safeValue) {
       fetchMapboxResults(safeValue);
     }

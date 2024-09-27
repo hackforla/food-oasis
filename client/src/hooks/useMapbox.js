@@ -1,7 +1,8 @@
+import { defaultViewport } from "helpers/Configuration";
 import { useRef } from "react";
+import { useMap } from "react-map-gl";
 import { useListPanel } from "../appReducer";
 import useBreakpoints from "./useBreakpoints";
-import { useMap } from "react-map-gl";
 
 export const useMapbox = () => {
   const mapRef = useRef();
@@ -32,6 +33,7 @@ export const useMapbox = () => {
         isListPanelOpen && isDesktop ? longitude - 0.08 : longitude,
         isMobile ? latitude - 0.04 : latitude,
       ],
+      zoom: defaultViewport.zoom,
       duration: 2000,
     });
   };

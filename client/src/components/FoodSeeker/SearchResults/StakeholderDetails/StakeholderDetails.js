@@ -292,7 +292,7 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
             variant="text"
             sx={(theme) => ({
               fontSize: { xs: "14px", md: "18px" },
-              color: { md: theme.palette.common.black, xs: "#747476" },
+              color: theme.palette.common.black,
               textTransform: "none",
               fontWeight: "bold",
               "&:focus": {

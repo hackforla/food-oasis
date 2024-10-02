@@ -3,9 +3,8 @@ import {
   Button,
   Chip,
   Divider,
-  Snackbar,
   Stack,
-  Typography,
+  Typography
 } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import {
@@ -14,20 +13,20 @@ import {
 } from "constants/stakeholder";
 import { useSiteContext } from "contexts/siteContext";
 import {
+  calculateMinutesToClosing,
+  calculateMinutesToOpening,
   extractNumbers,
   formatDatewTimeZoneDD,
   formatDatewTimeZoneMMM,
   formatDatewTimeZoneWeekdayShort,
   formatDatewTimeZonehhmmss,
   getGoogleMapsDirectionsUrl,
-  isCurrentDayAndWeek,
   hoursSort,
-  nextOpenTime,
-  standardTime,
   isAlmostClosed,
   isAlmostOpen,
-  calculateMinutesToClosing,
-  calculateMinutesToOpening,
+  isCurrentDayAndWeek,
+  nextOpenTime,
+  standardTime,
 } from "helpers";
 
 import Accordion from "@mui/material/Accordion";
@@ -35,11 +34,11 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import StakeholderIcon from "images/stakeholderIcon";
-import ForkIcon from "icons/ForkIcon";
-import AppleIcon from "icons/AppleIcon";
-import SubdirectoryArrowRightIcon from "@mui/icons-material/SubdirectoryArrowRight";
 import PhoneIcon from "@mui/icons-material/Phone";
+import SubdirectoryArrowRightIcon from "@mui/icons-material/SubdirectoryArrowRight";
+import AppleIcon from "icons/AppleIcon";
+import ForkIcon from "icons/ForkIcon";
+import StakeholderIcon from "images/stakeholderIcon";
 import PropTypes from "prop-types";
 import { useLocation, useNavigate } from "react-router-dom";
 import * as analytics from "services/analytics";

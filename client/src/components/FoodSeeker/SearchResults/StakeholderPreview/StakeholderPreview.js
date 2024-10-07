@@ -200,8 +200,7 @@ const StakeholderPreview = ({ stakeholder, onSelect, isDesktop }) => {
               align="left"
               fontWeight="bold"
               sx={{
-                color: { xs: "black", md: "inherit" },
-                textDecoration: { xs: "underline", md: "none" },
+                textDecoration: "underline",
               }}
               onClick={() => handleSelectOrganization(stakeholder)}
             >

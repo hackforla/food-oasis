@@ -1,4 +1,3 @@
-import { defaultViewport } from "helpers/Configuration";
 import { useRef } from "react";
 import { useMap } from "react-map-gl";
 import { useListPanel } from "../appReducer";
@@ -28,12 +27,28 @@ export const useMapbox = () => {
     if (!mapbox.default) {
       return;
     }
+
+    // gets the user's current zoom level
+    const currentZoom = mapbox.default.getZoom();
+
+    // calculates longitude offset according to zoom level for panel open desktop
+    const baseLongOffset = 0.08;
+    const longitudeOffset = baseLongOffset * Math.pow(2, 11 - currentZoom);
+
+    // calculates latitude offset for mobile according to zoom level and takes screen height into account
+    const baseLatOffset = 0.05;
+    const screenHeight = window.innerHeight;
+    const referenceHeight = 800;
+    const screenHeightFactor = screenHeight / referenceHeight;
+    const latitudeOffset =
+      baseLatOffset * Math.pow(2, 11 - currentZoom) * screenHeightFactor;
+
     mapbox.default.flyTo({
       center: [
-        isListPanelOpen && isDesktop ? longitude - 0.08 : longitude,
-        isMobile ? latitude - 0.04 : latitude,
+        isListPanelOpen && isDesktop ? longitude - longitudeOffset : longitude,
+        isMobile ? latitude - latitudeOffset : latitude,
       ],
-      zoom: defaultViewport.zoom,
+      zoom: currentZoom,
       duration: 2000,
     });
   };

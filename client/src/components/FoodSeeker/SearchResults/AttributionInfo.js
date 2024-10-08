@@ -10,7 +10,7 @@ const AttributionInfo = () => {
   return (
     <div>
       {toggle ? (
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <div style={{ display: "flex", justifyContent: "flex-start" }}>
           <button
             style={{
               backgroundColor: "white",

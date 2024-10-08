@@ -1,9 +1,9 @@
-import { CssBaseline, Snackbar } from "@mui/material";
+import { useEffect } from "react";
+import { CssBaseline } from "@mui/material";
 import SurveySnackbar from "./components/UI/SurveySnackbar";
 import { SiteProvider } from "contexts/siteContext";
 import { ToasterProvider } from "contexts/toasterContext";
 import { UserProvider } from "contexts/userContext";
-import { useEffect, useState } from "react";
 import { HelmetProvider } from "react-helmet-async";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ThemeProvider } from "theme";
@@ -18,17 +18,12 @@ function App() {
     analytics.postEvent("visitAppComponent");
   }, []);
 
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
+  // const [snackbarOpen, setSnackbarOpen] = useState(false);
+  // const [snackbarMessage, setSnackbarMessage] = useState("");
 
-  const handleOpenSnackbar = (message) => {
-    setSnackbarMessage(message);
-    setSnackbarOpen(true);
-  };
-
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false);
-  };
+  // const handleCloseSnackbar = () => {
+  //   setSnackbarOpen(false);
+  // };
 
   return (
     <HelmetProvider>
@@ -46,12 +41,7 @@ function App() {
                 <MapProvider>
                   <Router>
                     <AppRoutes />
-                    <SurveySnackbar
-                      open={snackbarOpen}
-                      autoHideDuration={6000}
-                      onClose={handleCloseSnackbar}
-                      message={snackbarMessage}
-                    />
+                    <SurveySnackbar />
                   </Router>
                 </MapProvider>
               </ThemeProvider>

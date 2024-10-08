@@ -51,12 +51,34 @@ const validationSchema = Yup.object().shape({
   longitude: Yup.number().required("Longitude is required").min(-180).max(180),
   email: Yup.string().email("Invalid email address format"),
   hours: Yup.array().of(HourSchema),
-  twitter: Yup.string()
+  instagram: Yup.string()
+    .transform((value, originalValue) => (originalValue === "" ? null : value))
     .matches(
-      /^https?:\/\/(www\.)?(twitter\.com|x\.com)\/.*/,
-      "Invalid URL, e.g. 'https://twitter.com/ or https://x.com/'"
+      /^(?:@?[a-zA-Z0-9_.]{1,30})$/,
+      "Valid Instagram username required."
     )
-    .required("Full Twitter/X URL is required."),
+    .nullable(),
+  twitter: Yup.string()
+    .transform((value, originalValue) => (originalValue === "" ? null : value))
+    .matches(/^(?:@?[a-zA-Z0-9_]{1,15})$/, "Valid Twitter username required.")
+    .nullable(),
+
+  pinterest: Yup.string()
+    .transform((value, originalValue) =>
+      originalValue.trim() === "" ? null : value
+    )
+    .matches(
+      /^@?(?=.*[a-zA-Z])[a-zA-Z0-9_]{3,30}$/,
+      "Valid Pinterest username is required."
+    )
+    .nullable(),
+  facebook: Yup.string()
+    .matches(
+      /^[a-zA-Z][a-zA-Z0-9.]{4,49}$/,
+      "Valid Facebook username required."
+    )
+    .nullable(),
+
   selectedCategoryIds: Yup.array().min(
     1,
     "You must select at least one category"

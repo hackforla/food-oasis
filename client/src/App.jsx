@@ -7,7 +7,7 @@ import { UserProvider } from "contexts/userContext";
 import { HelmetProvider } from "react-helmet-async";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ThemeProvider } from "theme";
-import * as analytics from "../src/services/analytics";
+import * as analytics from "./services/analytics";
 import { AppStateProvider } from "./appReducer";
 import SEO from "./components/SEO";
 import AppRoutes from "./Routes";

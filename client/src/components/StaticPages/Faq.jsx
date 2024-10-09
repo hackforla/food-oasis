@@ -13,7 +13,7 @@ import Footer from "../Layout/Footer";
 import { PageWrapper } from "./PageWrapper";
 import IconSpacerSVG from "./assets/IconSpacerSVG";
 import faqbg from "./assets/faq-bg.webp";
-import SEO from "../../components/SEO";
+import SEO from "../SEO";
 
 const About = () => {
   useEffect(() => {

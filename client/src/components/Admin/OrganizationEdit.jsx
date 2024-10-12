@@ -313,6 +313,7 @@ const OrganizationEdit = (props) => {
   );
 
   const [isSubmitClicked, setSubmitClicked] = useState(false);
+
   // should include all fields that are required for the form to be valid
   const tabs = {
     name: 0,
@@ -325,6 +326,11 @@ const OrganizationEdit = (props) => {
     email: 0,
     selectedCategoryIds: 0,
     hours: 1,
+    instagram: 2,
+    twitter: 2,
+    pinterest: 2,
+    facebook: 2,
+    linkedin: 2,
   };
 
   const scrollIntoViewHelper = (errors) => {

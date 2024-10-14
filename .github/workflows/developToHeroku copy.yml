@@ -1,0 +1,18 @@
+name: Deploy vite branch to foodoasisvite.herokuapp.com
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: akhileshns/heroku-deploy@v3.12.14 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "foodoasisvite" #Must be unique in Heroku
+          heroku_email: "darragh@entrotech.net"
+          usedocker: true

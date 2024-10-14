@@ -44,6 +44,13 @@ export const MAPBOX_ACCESS_TOKEN = requiredEnvVar(
 
 // Begin Tenant-Specific Constants
 
+const TENANT_SUBDOMAINS = {
+  1: ["la."],
+  3: ["hi.", "hawaii"],
+  5: ["mck.", "mckinney."],
+  6: ["sb."],
+};
+
 function getTenantId() {
   if (process.env.NODE_ENV === "development") {
     return Number(optionalEnvVar("REACT_APP_TENANT_ID")) || 1;
@@ -58,13 +65,6 @@ function getTenantId() {
 }
 
 export const TENANT_ID = getTenantId();
-
-const TENANT_SUBDOMAINS = {
-  1: ["la."],
-  3: ["hi.", "hawaii"],
-  5: ["mck.", "mckinney."],
-  6: ["sb."],
-};
 
 const TENANT_NAMES = {
   1: "Los Angeles",

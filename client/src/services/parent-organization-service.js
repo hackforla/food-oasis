@@ -1,11 +1,11 @@
 import axios from "axios";
-import { tenantId } from "helpers/Configuration";
+import { TENANT_ID } from "helpers/Constants";
 
 const baseUrl = "/api/parent-organizations";
 
 export const getAllByTenantId = async () => {
   try {
-    const response = await axios.get(`${baseUrl}/${tenantId}`);
+    const response = await axios.get(`${baseUrl}/${TENANT_ID}`);
     return response.data;
   } catch (err) {
     throw new Error(err.message);
@@ -15,7 +15,7 @@ export const getAllByTenantId = async () => {
 export const update = async (data) => {
   const response = await axios.put(`${baseUrl}/${data.id}`, {
     ...data,
-    tenantId,
+    TENANT_ID,
   });
   return response.data;
 };
@@ -23,7 +23,7 @@ export const update = async (data) => {
 export const post = async (data) => {
   const response = await axios.post(`${baseUrl}`, {
     ...data,
-    tenantId,
+    TENANT_ID,
   });
   return response.data;
 };

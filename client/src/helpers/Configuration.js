@@ -1,10 +1,9 @@
-import { getTenantId } from "contexts/siteContext";
-import { TENANT_CONFIG } from "./Constants";
+import { TENANT_CONFIG, TENANT_ID } from "./Constants";
 
-export const tenantId = getTenantId();
+export const tenantId = TENANT_ID;
 
-export const tenantName = TENANT_CONFIG[tenantId].tenantName;
+export const tenantName = TENANT_CONFIG.tenantName;
 
-export const tenantDetails = TENANT_CONFIG[tenantId];
+export const tenantDetails = TENANT_CONFIG;
 
-export const defaultViewport = TENANT_CONFIG[tenantId].defaultViewport;
+export const defaultViewport = TENANT_CONFIG.defaultViewport;

@@ -9,7 +9,7 @@ import { useCallback, useEffect, useState } from "react";
 // for craco.config.js contents
 import { Grid } from "@mui/material";
 import { MAPBOX_STYLE } from "constants/map";
-import { defaultViewport } from "helpers/Configuration";
+import { MAPBOX_ACCESS_TOKEN, DEFAULT_VIEWPORT } from "helpers/Constants";
 import useBreakpoints from "hooks/useBreakpoints";
 import useFeatureFlag from "hooks/useFeatureFlag";
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -60,7 +60,7 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
   const [viewport, setViewport] = useState({
     latitude,
     longitude,
-    zoom: defaultViewport.zoom,
+    zoom: DEFAULT_VIEWPORT.zoom,
   });
   const dispatch = useAppDispatch();
   const neighborhood = useNeighborhood();
@@ -140,7 +140,7 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
         ref={mapRef}
         {...viewport}
         onMove={(e) => setViewport(e.viewState)}
-        mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
+        mapboxAccessToken={MAPBOX_ACCESS_TOKEN}
         mapStyle={MAPBOX_STYLE}
         draggable={true}
         onLoad={onLoad}

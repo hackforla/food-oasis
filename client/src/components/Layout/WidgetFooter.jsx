@@ -2,16 +2,8 @@ import { Box } from "@mui/material";
 import { useSiteContext } from "contexts/siteContext";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
-import { isMobile } from "../../helpers";
-
-const logoPaths = {
-  1: require("images/foodoasis.svg"),
-  2: require("images/foodoasis.svg"),
-  3: require("images/foodoasis.svg"),
-  4: require("images/foodoasis.svg"),
-  5: require("images/foodoasis.svg"),
-  6: require("images/foodoasis.svg"),
-};
+import { isMobile } from "helpers";
+import { TENANT_LOGO_URL } from "helpers/Constants";
 
 function WidgetFooterSection(props) {
   const {
@@ -180,7 +172,7 @@ function WidgetFooterSection(props) {
 
 function WidgetFooter() {
   const [mobile, setMobile] = useState(null);
-  const { tenantId, tenantDetails } = useSiteContext();
+  const { tenantDetails } = useSiteContext();
   const { maintainers } = tenantDetails;
 
   useEffect(() => {
@@ -203,7 +195,7 @@ function WidgetFooter() {
     >
       <WidgetFooterSection
         name="Food Oasis"
-        logoPath={logoPaths[tenantId]}
+        logoPath={TENANT_LOGO_URL}
         url={`${window.location.origin}`}
         alt="Food Oasis Logo"
       />

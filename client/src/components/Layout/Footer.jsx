@@ -2,21 +2,13 @@ import { Box, CardMedia } from "@mui/material";
 import { MENU_ITEMS } from "helpers/Constants";
 import useLocationHook from "hooks/useLocationHook";
 import { Link } from "react-router-dom";
-import { tenantId } from "../../helpers/Configuration";
 import Copyright from "./Copyright";
+import { TENANT_LOGO_URL } from "helpers/Constants";
+
 /* 
 This file is not used in the application at this time, but left here in 
 case the UI/UX team decides to re-instate it.
 */
-
-const logoPaths = {
-  1: require("images/foodoasis.svg").default,
-  2: require("images/foodoasis.svg").default,
-  3: require("../StaticPagesHI/assets/aloha-harvest-bg-none.png"),
-  4: require("images/foodoasis.svg").default,
-  5: require("images/foodoasis.svg").default,
-  6: require("images/foodoasis.svg").default,
-};
 
 const Footer = () => {
   const { isHomePage } = useLocationHook();
@@ -66,7 +58,7 @@ const Footer = () => {
       <CardMedia
         component="img"
         alt="logo"
-        src={logoPaths[tenantId]}
+        src={TENANT_LOGO_URL}
         sx={(theme) => ({
           maxWidth: "95px",
           height: "100%",

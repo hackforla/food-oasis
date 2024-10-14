@@ -3,7 +3,7 @@ name: Deploy vite branch to foodoasisvite.herokuapp.com
 on:
   push:
     branches:
-      - develop
+      - vite
 
 jobs:
   build:

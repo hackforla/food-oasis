@@ -108,7 +108,7 @@ const search = async (
     s.category_notes, s.eligibility_notes, s.food_types, s.languages,
     s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email,
     s.v_hours, s.v_food_types, s.verification_status_id, s.inactive_temporary,
-    s.neighborhood_id,
+    s.neighborhood_id, n.name as neighborhood_name,
     s.food_bakery, s.food_dry_goods, s.food_produce,
     s.food_dairy, s.food_prepared, s.food_meat,
     s.parent_organization_id,
@@ -240,7 +240,7 @@ const selectById = async (id: string): Promise<Stakeholder> => {
       s.category_notes, s.eligibility_notes, s.food_types, s.languages,
       s.v_name, s.v_categories, s.v_address, s.v_phone, s.v_email,
       s.v_hours, s.v_food_types, s.verification_status_id, s.inactive_temporary,
-      s.neighborhood_id, 
+      s.neighborhood_id, n.name as neighborhood_name
       s.food_bakery, s.food_dry_goods, s.food_produce,
       s.food_dairy, s.food_prepared, s.food_meat,
       s.parent_organization_id,

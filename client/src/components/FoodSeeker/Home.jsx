@@ -15,17 +15,9 @@ import useGeolocation, { useLocationPermission } from "hooks/useGeolocation";
 import { useEffect, useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import * as analytics from "services/analytics";
-import { useSiteContext } from "../../contexts/siteContext";
+import { useSiteContext } from "contexts/siteContext";
+import { TENANT_LOGO_URL } from "helpers/Constants";
 import SEO from "../SEO";
-
-const logoPaths = {
-  1: require("images/foodoasis.svg").default,
-  2: require("images/foodoasis.svg").default,
-  3: require("../StaticPagesHI/assets/aloha-harvest-bg-none.png"),
-  4: require("images/foodoasis.svg").default,
-  5: require("images/foodoasis.svg").default,
-  6: require("images/foodoasis.svg").default,
-};
 
 const Home = () => {
   const navigate = useNavigate();
@@ -142,7 +134,7 @@ const Home = () => {
                 },
               })}
             >
-              <img src={logoPaths[tenantId]} alt="logo" />
+              <img src={TENANT_LOGO_URL} alt="logo" />
             </Box>
             <Box
               sx={(theme) => ({

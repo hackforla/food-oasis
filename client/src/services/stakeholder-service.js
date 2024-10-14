@@ -1,12 +1,12 @@
 import axios from "axios";
 import fileDownload from "js-file-download";
-import { tenantId } from "helpers/Configuration";
+import { TENANT_ID } from "helpers/Constants";
 import { formatDate } from "helpers";
 
 const baseUrl = "/api/stakeholders";
 
 export const search = async (searchParams) => {
-  searchParams = { ...searchParams, tenantId } || { tenantId };
+  searchParams = { ...searchParams, TENANT_ID } || { TENANT_ID };
 
   const response = await axios.get(`${baseUrl}`, {
     params: searchParams,
@@ -44,7 +44,7 @@ export const getById = async (id) => {
 export const post = async (stakeholder) => {
   const response = await axios.post(baseUrl, {
     ...stakeholder,
-    tenantId,
+    TENANT_ID,
   });
   return response.data;
 };
@@ -65,7 +65,7 @@ export const put = async (stakeholder) => {
 export const requestAssignment = async (loginId) => {
   const response = await axios.post(`${baseUrl}/requestAssignment`, {
     loginId,
-    tenantId,
+    TENANT_ID,
   });
   return response.data;
 };
@@ -74,7 +74,7 @@ export const checkAvailableAssignmentsAdmin = async () => {
   const response = await axios.get(
     `${baseUrl}/checkAvailableAssignmentsAdmin`,
     {
-      params: { tenantId },
+      params: { TENANT_ID },
     }
   );
   return response.data;

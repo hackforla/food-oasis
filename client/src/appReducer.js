@@ -1,10 +1,7 @@
-import { getTenantId } from "contexts/siteContext";
-import { TENANT_CONFIG } from "helpers/Constants";
+import { DEFAULT_VIEWPORT } from "helpers/Constants";
 import { createContext, useContext, useMemo, useReducer } from "react";
 
-const tenantId = getTenantId();
-export const DEFAULT_COORDINATES =
-  TENANT_CONFIG[tenantId].defaultViewport.center;
+export const DEFAULT_COORDINATES = DEFAULT_VIEWPORT.center;
 
 function stakeholdersReducer(state, action) {
   switch (action.type) {

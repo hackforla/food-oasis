@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { CssBaseline } from "@mui/material";
 import SurveySnackbar from "./components/UI/SurveySnackbar";
-import { SiteProvider } from "contexts/siteContext";
+import { SiteProvider } from "./contexts/siteContext";
 import { ToasterProvider } from "contexts/toasterContext";
 import { UserProvider } from "contexts/userContext";
 import { HelmetProvider } from "react-helmet-async";

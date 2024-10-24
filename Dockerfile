@@ -43,7 +43,7 @@ RUN npm ci --quiet
 
 COPY --from=serverBuilder /usr/src/app/build ./
 COPY ./server/uploads ./uploads
-COPY --from=clientBuilder /app/build ./client/dist
+COPY --from=clientBuilder /usr/src/app/build ./client/dist
 
 # we don't want to run as sudo so create group and user
 RUN groupadd -r fola && useradd --no-log-init -r -g fola fola

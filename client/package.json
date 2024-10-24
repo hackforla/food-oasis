@@ -39,7 +39,6 @@
     "react-map-gl": "^7.1.7",
     "react-router-dom": "^6.10.0",
     "react-virtuoso": "^4.1.0",
-    "typescript": "^4.9.5",
     "vite": "^5.4.9",
     "vite-plugin-svgr": "^4.2.0",
     "vite-tsconfig-paths": "^5.0.1",
@@ -74,7 +73,8 @@
     "jest-environment-jsdom": "^29.7.0",
     "jest-transform-stub": "^2.0.0",
     "prettier": "^2.4.1",
-    "ts-jest": "^29.2.5"
+    "ts-jest": "^29.2.5",
+    "typescript": "^4.9.5"
   },
   "overrides": {
     "react-scripts": {

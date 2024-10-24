@@ -12,7 +12,6 @@ import { MAPBOX_STYLE } from "constants/map";
 import { MAPBOX_ACCESS_TOKEN, DEFAULT_VIEWPORT } from "helpers/Constants";
 import useBreakpoints from "hooks/useBreakpoints";
 import useFeatureFlag from "hooks/useFeatureFlag";
-import "mapbox-gl/dist/mapbox-gl.css";
 import Map, { Layer, Marker, NavigationControl, Source } from "react-map-gl";
 import { useLocation, useNavigate } from "react-router-dom";
 import * as analytics from "services/analytics";

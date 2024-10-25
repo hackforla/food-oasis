@@ -16,7 +16,7 @@ const insert = async (model: Feature): Promise<Feature> => {
     VALUES ($<name>, $<is_enabled>)
     RETURNING id, name, is_enabled
   `;
-  const result = await db.one(sql, model);
+  const result = await db.one(sql, { ...model, is_enabled: false });
   return result;
 };
 

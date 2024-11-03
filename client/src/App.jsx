@@ -45,7 +45,6 @@ function App() {
                   <Router>
                     <AppRoutes />
                     {hasUserFeedbackSuveyFeatureFlag && <SurveySnackbar />}
-                    {/* <SurveySnackbar /> */}
                   </Router>
                 </MapProvider>
               </ThemeProvider>

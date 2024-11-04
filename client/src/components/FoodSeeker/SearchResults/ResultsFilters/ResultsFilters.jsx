@@ -123,7 +123,7 @@ const ResultsFilters = ({
               spacing={1}
               justifyContent={{ xs: "center", sm: "flex-start" }}
             >
-              <Grid2 item>
+              <Grid2 item="true">
                 <CategoryButton
                   icon="pantry"
                   onClick={togglePantry}
@@ -131,7 +131,7 @@ const ResultsFilters = ({
                   isSelected={isPantrySelected}
                 />
               </Grid2>
-              <Grid2 item>
+              <Grid2 item="true">
                 <CategoryButton
                   icon="meal"
                   onClick={toggleMeal}

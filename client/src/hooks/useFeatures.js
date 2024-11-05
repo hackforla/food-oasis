@@ -6,7 +6,7 @@ export const useFeatures = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const featureRefetch = useCallback(() => {
+  const fetch = useCallback(() => {
     const fetchApi = async () => {
       setLoading(true);
       try {
@@ -23,8 +23,8 @@ export const useFeatures = () => {
   }, []);
 
   useEffect(() => {
-    featureRefetch();
-  }, [featureRefetch]);
-  
-  return { data, error, loading, refetch: featureRefetch };
+    fetch();
+  }, [fetch]);
+
+  return { data, error, loading, refetch: fetch };
 };

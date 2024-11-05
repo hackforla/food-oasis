@@ -54,7 +54,7 @@ const Features = () => {
   const {
     data: featuresData,
     loading: featuresLoading,
-    refetch: featureRefetch,
+    fetch: featureRefetch,
   } = useFeatures();
 
   useEffect(() => {

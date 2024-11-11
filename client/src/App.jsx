@@ -15,7 +15,7 @@ import { MapProvider } from "react-map-gl";
 import useFeatureFlag from "./hooks/useFeatureFlag";
 
 function App() {
-  const hasUserFeedbackSuveyFeatureFlag = useFeatureFlag("userFeedbackSuvey");
+  const hasUserFeedbackSuveyFeatureFlag = useFeatureFlag("userFeedbackSurvey");
 
   useEffect(() => {
     analytics.postEvent("visitAppComponent");

@@ -10,7 +10,6 @@ import useGeolocation, { useLocationPermission } from "hooks/useGeolocation";
 import PropTypes from "prop-types";
 import { useCallback, useEffect, useState } from "react";
 import * as analytics from "services/analytics";
-import { tenantDetails } from "../../../../helpers/Configuration";
 import CategoryButton from "./CategoryButton";
 import SwitchViewsButton from "./SwitchViewsButton";
 import useFeatureFlag from "hooks/useFeatureFlag";
@@ -19,6 +18,7 @@ import {
   useUserCoordinates,
 } from "../../../../appReducer";
 import { useMapbox } from "../../../../hooks/useMapbox";
+import { TENANT_CONFIG } from "../../../../helpers/Constants";
 
 const ResultsFilters = ({
   categoryIds,
@@ -28,7 +28,7 @@ const ResultsFilters = ({
 }) => {
   const isMealsSelected = categoryIds.indexOf(MEAL_PROGRAM_CATEGORY_ID) >= 0;
   const isPantrySelected = categoryIds.indexOf(FOOD_PANTRY_CATEGORY_ID) >= 0;
-  const { taglineText } = tenantDetails;
+  const { taglineText } = TENANT_CONFIG;
   const { getUserLocation } = useGeolocation();
   const searchCoordinates = useSearchCoordinates();
   const userCoordinates = useUserCoordinates();

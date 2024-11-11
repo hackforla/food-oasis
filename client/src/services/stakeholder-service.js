@@ -6,7 +6,7 @@ import { formatDate } from "helpers";
 const baseUrl = "/api/stakeholders";
 
 export const search = async (searchParams) => {
-  searchParams = { ...searchParams, TENANT_ID } || { TENANT_ID };
+  searchParams = { ...searchParams, tenantId: TENANT_ID };
 
   const response = await axios.get(`${baseUrl}`, {
     params: searchParams,
@@ -44,7 +44,7 @@ export const getById = async (id) => {
 export const post = async (stakeholder) => {
   const response = await axios.post(baseUrl, {
     ...stakeholder,
-    TENANT_ID,
+    tenantId: TENANT_ID,
   });
   return response.data;
 };
@@ -65,7 +65,7 @@ export const put = async (stakeholder) => {
 export const requestAssignment = async (loginId) => {
   const response = await axios.post(`${baseUrl}/requestAssignment`, {
     loginId,
-    TENANT_ID,
+    tenantId: TENANT_ID,
   });
   return response.data;
 };
@@ -74,7 +74,7 @@ export const checkAvailableAssignmentsAdmin = async () => {
   const response = await axios.get(
     `${baseUrl}/checkAvailableAssignmentsAdmin`,
     {
-      params: { TENANT_ID },
+      params: { tenantId: TENANT_ID },
     }
   );
   return response.data;

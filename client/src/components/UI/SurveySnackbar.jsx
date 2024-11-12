@@ -33,8 +33,9 @@ const SurveySnackbar = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        width: "520px",
+        width: { xs: "100%" },
         cursor: "pointer",
+        gap: { xs: 1 },
       }}
     >
       <span> Participate in a quick survey</span>

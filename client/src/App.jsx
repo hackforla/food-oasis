@@ -12,8 +12,11 @@ import { AppStateProvider } from "./appReducer";
 import SEO from "./components/SEO";
 import AppRoutes from "./Routes";
 import { MapProvider } from "react-map-gl";
+import useFeatureFlag from "./hooks/useFeatureFlag";
 
 function App() {
+  const hasUserFeedbackSuveyFeatureFlag = useFeatureFlag("userFeedbackSurvey");
+
   useEffect(() => {
     analytics.postEvent("visitAppComponent");
   }, []);
@@ -41,7 +44,7 @@ function App() {
                 <MapProvider>
                   <Router>
                     <AppRoutes />
-                    <SurveySnackbar />
+                    {hasUserFeedbackSuveyFeatureFlag && <SurveySnackbar />}
                   </Router>
                 </MapProvider>
               </ThemeProvider>

@@ -51,7 +51,11 @@ const Features = () => {
     refetch: featureToLoginRefetch,
   } = useFeatureToLogin();
 
-  const { data: featuresData, loading: featuresLoading } = useFeatures();
+  const {
+    data: featuresData,
+    loading: featuresLoading,
+    refetch: featureRefetch,
+  } = useFeatures();
 
   useEffect(() => {
     if (featuresData && featureToLoginData) {
@@ -120,7 +124,7 @@ const Features = () => {
     }),
     onSubmit: async (values, { resetForm, setSubmitting }) => {
       await featureService.post(values);
-      featureToLoginRefetch();
+      await featureRefetch();
       resetForm();
       setSubmitting(false);
       handleModalClose();
@@ -288,7 +292,7 @@ const Features = () => {
                       onClick={async () => {
                         try {
                           await featureService.remove(row.featureId);
-                          featureToLoginRefetch();
+                          featureRefetch();
                         } catch (error) {
                           console.error(
                             "Failed to remove user from feature:",

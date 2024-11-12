@@ -25,5 +25,6 @@ export const useFeatures = () => {
   useEffect(() => {
     fetch();
   }, [fetch]);
+
   return { data, error, loading, refetch: fetch };
 };

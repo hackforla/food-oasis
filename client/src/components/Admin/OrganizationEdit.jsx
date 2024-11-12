@@ -33,6 +33,13 @@ import MoreDetails from "./OrganizationEdit/MoreDetails";
 import Verification from "./OrganizationEdit/Verification";
 import Label from "./ui/Label";
 import Textarea from "./ui/Textarea";
+import {
+  FACEBOOK_REGEX,
+  INSTAGRAM_REGEX,
+  LINKEDIN_REGEX,
+  PINTEREST_REGEX,
+  TWITTER_REGEX,
+} from "../../helpers/Constants";
 
 const HourSchema = Yup.object().shape({
   weekOfMonth: Yup.number().required("Interval is required"),
@@ -52,33 +59,20 @@ const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email address format"),
   hours: Yup.array().of(HourSchema),
   instagram: Yup.string()
-    .transform((value, originalValue) => (originalValue === "" ? null : value))
-    .matches(
-      /^(?:@?[a-zA-Z0-9_.]{1,30})$/,
-      "Valid Instagram username required."
-    )
+    .matches(INSTAGRAM_REGEX, "Please enter a valid Instagram URL.")
     .nullable(),
-  twitter: Yup.string()
-    .transform((value, originalValue) => (originalValue === "" ? null : value))
-    .matches(/^(?:@?[a-zA-Z0-9_]{1,15})$/, "Valid Twitter username required.")
-    .nullable(),
-
   pinterest: Yup.string()
-    .transform((value, originalValue) =>
-      originalValue.trim() === "" ? null : value
-    )
-    .matches(
-      /^@?(?=.*[a-zA-Z])[a-zA-Z0-9_]{3,30}$/,
-      "Valid Pinterest username is required."
-    )
+    .matches(PINTEREST_REGEX, "Please enter a valid Pinterest URL.")
     .nullable(),
   facebook: Yup.string()
-    .matches(
-      /^[a-zA-Z][a-zA-Z0-9.]{4,49}$/,
-      "Valid Facebook username required."
-    )
+    .matches(FACEBOOK_REGEX, "Please enter a valid Facebook URL.")
     .nullable(),
-
+  linkedin: Yup.string()
+    .matches(LINKEDIN_REGEX, "Please enter a valid LinkedIn URL.")
+    .nullable(),
+  twitter: Yup.string()
+    .matches(TWITTER_REGEX, "Please enter a valid Twitter/X URL.")
+    .nullable(),
   selectedCategoryIds: Yup.array().min(
     1,
     "You must select at least one category"

@@ -7,7 +7,6 @@ const baseUrl = "/api/stakeholders";
 
 export const search = async (searchParams) => {
   searchParams = { ...searchParams, tenantId: TENANT_ID };
-
   const response = await axios.get(`${baseUrl}`, {
     params: searchParams,
   });

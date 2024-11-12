@@ -179,3 +179,14 @@ export const TENANT_METADATA = {
   tenantTimeZone: TENANT_TIME_ZONES[TENANT_ID],
   tenantLogoUrl: TENANT_LOGO_URL,
 };
+
+export const LINKEDIN_REGEX =
+  /^https?:\/\/(www\.)?linkedin\.com\/(in|company|school|pub|groups|showcase)\/[a-zA-Z0-9\-_%]+\/?$/;
+export const FACEBOOK_REGEX =
+  /^https?:\/\/(www\.)?facebook\.com\/[a-zA-Z0-9.]{5,50}\/?$/;
+export const INSTAGRAM_REGEX =
+  /^https?:\/\/(www\.)?instagram\.com\/[a-zA-Z0-9._]{1,30}\/?$/;
+export const PINTEREST_REGEX =
+  /^https?:\/\/(www\.)?pinterest\.com\/[a-zA-Z][a-zA-Z0-9_]{2,14}\/?$/;
+export const TWITTER_REGEX =
+  /^https?:\/\/(www\.)?(twitter\.com|x\.com)\/[a-zA-Z0-9_]{1,15}\/?$/;

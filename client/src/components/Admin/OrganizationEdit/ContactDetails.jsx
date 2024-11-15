@@ -3,8 +3,6 @@ import { TabPanel } from "components/Admin/ui/TabPanel";
 import { TextField } from "@mui/material";
 import Label from "../ui/Label";
 
-
-
 export default function ContactDetails({
   tabPage,
   values,
@@ -21,7 +19,7 @@ export default function ContactDetails({
             <Label
               id="website"
               label="Website"
-              tooltipTitle="The organization's web address"
+              tooltipTitle="Enter the Full URL for the organization's web site, e.g., https://www.hackforla.org"
             />
             <TextField
               id="website"
@@ -40,7 +38,7 @@ export default function ContactDetails({
             <Label
               id="instagram"
               label="Instagram"
-              tooltipTitle="Enter Instagram url"
+              tooltipTitle="Enter a full Instagram URL, e.g., https://www.instagram.com/hackforla"
               href={values.instagram}
             />
             <TextField
@@ -60,7 +58,7 @@ export default function ContactDetails({
             <Label
               id="facebook"
               label="Facebook"
-              tooltipTitle="Enter your Facebook username"
+              tooltipTitle="Enter a full Facebook URL, e.g., https://www.facebook.com/hackforla"
               href={values.facebook}
             />
             <TextField
@@ -80,7 +78,7 @@ export default function ContactDetails({
             <Label
               id="twitter-label"
               label="Twitter"
-              tooltipTitle="Enter Twitter url"
+              tooltipTitle="Enter a full Twitter URL, e.g., https://www.x.com/hackforla"
               href={values.twitter}
             />
             <TextField
@@ -101,7 +99,7 @@ export default function ContactDetails({
               id="pinterest"
               label="Pinterest"
               href={values.pinterest}
-              tooltipTitle="Enter Pinterest url"
+              tooltipTitle="Enter a full Pinterest URL, e.g., https://www.pinterest.com/hackforla"
             />
             <TextField
               id="pinterest"
@@ -121,7 +119,7 @@ export default function ContactDetails({
               id="linkedin"
               label="LinkedIn"
               href={values.linkedin}
-              tooltipTitle="Enter Linkedin url"
+              tooltipTitle="Enter a full LinkedIn URL, e.g., https://www.linkedin.com/hackforla"
             />
             <TextField
               id="linkedin"

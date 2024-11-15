@@ -70,6 +70,7 @@ const rowToStakeholder = (row: any, categories?: any): Stakeholder => {
     modifiedUser: row.modified_user || "",
     name: row.name || "",
     neighborhoodId: row.neighborhood_id,
+    neighborhoodName: row.neighborhood_name,
     notes: row.notes || "",
     parentOrganization: row.parent_organization || "",
     parentOrganizationId: row.parent_organization_id,

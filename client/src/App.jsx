@@ -7,13 +7,16 @@ import { UserProvider } from "contexts/userContext";
 import { HelmetProvider } from "react-helmet-async";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ThemeProvider } from "theme";
-import * as analytics from "../src/services/analytics";
+import * as analytics from "./services/analytics";
 import { AppStateProvider } from "./appReducer";
 import SEO from "./components/SEO";
 import AppRoutes from "./Routes";
 import { MapProvider } from "react-map-gl";
+import useFeatureFlag from "./hooks/useFeatureFlag";
 
 function App() {
+  const hasUserFeedbackSuveyFeatureFlag = useFeatureFlag("userFeedbackSurvey");
+
   useEffect(() => {
     analytics.postEvent("visitAppComponent");
   }, []);
@@ -41,7 +44,7 @@ function App() {
                 <MapProvider>
                   <Router>
                     <AppRoutes />
-                    <SurveySnackbar />
+                    {hasUserFeedbackSuveyFeatureFlag && <SurveySnackbar />}
                   </Router>
                 </MapProvider>
               </ThemeProvider>

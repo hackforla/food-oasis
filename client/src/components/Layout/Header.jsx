@@ -2,28 +2,18 @@ import { AppBar, Box, Toolbar, Typography } from "@mui/material";
 import useLocationHook from "hooks/useLocationHook";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { useSiteContext } from "../../contexts/siteContext";
-import { useUserContext } from "../../contexts/userContext";
+import { useUserContext } from "contexts/userContext";
+import { TENANT_LOGO_URL } from "helpers/Constants";
 import Menu from "./Menu";
 
 Header.propTypes = {
   tenantId: PropTypes.number,
 };
 
-const logoPaths = {
-  1: require("images/foodoasis.svg").default,
-  2: require("images/foodoasis.svg").default,
-  3: require("../StaticPagesHI/assets/aloha-harvest-bg-none.png"),
-  4: require("images/foodoasis.svg").default,
-  5: require("images/foodoasis.svg").default,
-  6: require("images/foodoasis.svg").default,
-};
-
 export default function Header() {
-  const { tenantId } = useSiteContext();
   const { isAuthPage } = useLocationHook();
-  const imageType = logoPaths
-    ? logoPaths[tenantId].split(".").pop()
+  const imageType = TENANT_LOGO_URL
+    ? TENANT_LOGO_URL.split(".").pop()
     : "unknown";
 
   const { user } = useUserContext();
@@ -64,7 +54,7 @@ export default function Header() {
           >
             <a href="/">
               <img
-                src={logoPaths[tenantId]}
+                src={TENANT_LOGO_URL}
                 style={
                   imageType === "svg" ? { width: "100%", height: "100%" } : {}
                 }

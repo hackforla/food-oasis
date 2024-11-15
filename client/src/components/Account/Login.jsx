@@ -15,7 +15,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import * as accountService from "services/account-service";
 import { palette } from "theme/palette";
 import * as Yup from "yup";
-import PasswordInput from "../../components/UI/PasswordInput";
+import PasswordInput from "../UI/PasswordInput";
 import { useToasterContext } from "../../contexts/toasterContext";
 import { useUserContext } from "../../contexts/userContext";
 import * as analytics from "../../services/analytics";

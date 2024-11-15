@@ -13,14 +13,12 @@ import {
 import { useState } from "react";
 import { tooltipHover } from "theme/palette";
 
-const Label = ({ id, label, tooltipTitle, href, handle }) => {
+const Label = ({ id, label, tooltipTitle, href }) => {
   const [tooltipOpen, setTooltipOpen] = useState(false);
 
   const handleToolTipToggle = () => {
     setTooltipOpen((prevOpen) => !prevOpen);
   };
-
-  const combinedLink = `${href}${handle}`;
 
   return (
     <InputLabel htmlFor={id}>
@@ -52,14 +50,15 @@ const Label = ({ id, label, tooltipTitle, href, handle }) => {
           )}
         </Stack>
 
-        {handle && (
+        {href && (
           <Button
             variant="text"
             size="small"
             sx={{ textTransform: "none" }}
             rel="noopener"
             component={Link}
-            href={combinedLink}
+            href={href}
+            target="_blank"
             startIcon={<LaunchIcon />}
           >
             Go To Link

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { tenantId } from "helpers/Configuration";
+import { TENANT_ID as tenantId } from "helpers/Constants";
 import { formatDate } from "helpers";
 
 const baseUrl = `/api/stakeholderbests`;

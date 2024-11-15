@@ -35,13 +35,21 @@ export const useMapbox = () => {
     const baseLongOffset = 0.08;
     const longitudeOffset = baseLongOffset * Math.pow(2, 11 - currentZoom);
 
-    // calculates latitude offset for mobile according to zoom level and takes screen height into account
-    const baseLatOffset = 0.05;
+    // calculates latitude offset for mobile according to zoom level and screen height
+    const baseLatOffset = 0.065;
     const screenHeight = window.innerHeight;
-    const referenceHeight = 800;
-    const screenHeightFactor = screenHeight / referenceHeight;
-    const latitudeOffset =
-      baseLatOffset * Math.pow(2, 11 - currentZoom) * screenHeightFactor;
+
+    function calculateLatOffset(screenHeight) {
+      const baseHeight = 550;
+      const rate = 0.006 / 50; // approximately 0.006 deg per 50 pixels
+      return 0.034 + (screenHeight - baseHeight) * rate;
+    }
+
+    const heightOffsetFactor = !screenHeight
+      ? baseLatOffset
+      : calculateLatOffset(screenHeight);
+
+    const latitudeOffset = heightOffsetFactor * Math.pow(2, 11 - currentZoom);
 
     mapbox.default.flyTo({
       center: [

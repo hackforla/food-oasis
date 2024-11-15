@@ -1,20 +1,19 @@
 import axios from "axios";
 import * as analytics from "./analytics";
-import { tenantId } from "../helpers/Configuration";
+import { TENANT_ID } from "helpers/Constants";
 
 const baseUrl = "/api/accounts";
 const clientUrl = window.location.origin;
+const tenantId = TENANT_ID;
 
 export const getAll = async () => {
-  const response = await axios.get(
-    baseUrl + "?tenantId=" + tenantId.toString()
-  );
+  const response = await axios.get(baseUrl + "?tenantId=" + tenantId);
   return response;
 };
 
 export const getByEmail = async (email) => {
   const response = await axios.get(
-    baseUrl + "/" + email + "?tenantId=" + tenantId.toString()
+    baseUrl + "/" + email + "?tenantId=" + tenantId
   );
   return response;
 };

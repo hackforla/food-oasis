@@ -1,4 +1,6 @@
 # build and push a docker image from the latest push to "develop" branch
+# this script is not currently used, as the web app is running on Heroku
+
 on:
   push:
     branches:
@@ -25,4 +27,3 @@ jobs:
           tag_with_sha: true
           add_git_labels: true
           labels: description="Food Oasis",maintained="foodoasis+hub@hackforla.org"
-

@@ -16,7 +16,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { defaultViewport } from "../../helpers/Configuration";
+import { DEFAULT_VIEWPORT } from "helpers/Constants";
 import AccountAutocomplete from "./AccountAutocomplete";
 import LocationAutocomplete from "./LocationAutocomplete";
 import Label from "./ui/Label";
@@ -49,10 +49,10 @@ const SearchCriteria = ({
   );
 
   const [customLatitude, setCustomLatitude] = useState(
-    defaultViewport.center.latitude
+    DEFAULT_VIEWPORT.center.latitude
   );
   const [customLongitude, setCustomLongitude] = useState(
-    defaultViewport.center.longitude
+    DEFAULT_VIEWPORT.center.longitude
   );
   const [customPlaceName, setCustomPlaceName] = useState("");
 

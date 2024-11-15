@@ -15,7 +15,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Formik } from "formik";
-import { tenantId } from "helpers/Configuration";
+import { TENANT_ID } from "helpers/Constants";
 import { useTags } from "hooks/useTags";
 import { useEffect, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
@@ -100,7 +100,7 @@ function TagAdmin(props) {
   const handleAddNew = () => {
     setActiveTag({
       name: "",
-      tenantId,
+      tenantId: TENANT_ID,
     });
   };
 

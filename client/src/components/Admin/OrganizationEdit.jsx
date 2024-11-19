@@ -33,6 +33,15 @@ import MoreDetails from "./OrganizationEdit/MoreDetails";
 import Verification from "./OrganizationEdit/Verification";
 import Label from "./ui/Label";
 import Textarea from "./ui/Textarea";
+// import {
+//   FACEBOOK_REGEX,
+//   INSTAGRAM_REGEX,
+//   LINKEDIN_REGEX,
+//   PINTEREST_REGEX,
+//   TWITTER_REGEX,
+// } from "../../helpers/Constants";
+
+const phoneRegExp = /^\(\d{3}\) \d{3}-\d{4}$/;
 
 const HourSchema = Yup.object().shape({
   weekOfMonth: Yup.number().required("Interval is required"),
@@ -43,6 +52,9 @@ const HourSchema = Yup.object().shape({
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
+  phone: Yup.string()
+    .matches(phoneRegExp, "Invalid phone number")
+    .required("Phone number is required"),
   address1: Yup.string().required("Street address is required"),
   city: Yup.string().required("City is required"),
   state: Yup.string().required("State is required"),
@@ -51,34 +63,11 @@ const validationSchema = Yup.object().shape({
   longitude: Yup.number().required("Longitude is required").min(-180).max(180),
   email: Yup.string().email("Invalid email address format"),
   hours: Yup.array().of(HourSchema),
-  instagram: Yup.string()
-    .transform((value, originalValue) => (originalValue === "" ? null : value))
-    .matches(
-      /^(?:@?[a-zA-Z0-9_.]{1,30})$/,
-      "Valid Instagram username required."
-    )
-    .nullable(),
-  twitter: Yup.string()
-    .transform((value, originalValue) => (originalValue === "" ? null : value))
-    .matches(/^(?:@?[a-zA-Z0-9_]{1,15})$/, "Valid Twitter username required.")
-    .nullable(),
-
-  pinterest: Yup.string()
-    .transform((value, originalValue) =>
-      originalValue.trim() === "" ? null : value
-    )
-    .matches(
-      /^@?(?=.*[a-zA-Z])[a-zA-Z0-9_]{3,30}$/,
-      "Valid Pinterest username is required."
-    )
-    .nullable(),
-  facebook: Yup.string()
-    .matches(
-      /^[a-zA-Z][a-zA-Z0-9.]{4,49}$/,
-      "Valid Facebook username required."
-    )
-    .nullable(),
-
+  instagram: Yup.string().nullable(),
+  pinterest: Yup.string().nullable(),
+  facebook: Yup.string().nullable(),
+  linkedin: Yup.string().nullable(),
+  twitter: Yup.string().nullable(),
   selectedCategoryIds: Yup.array().min(
     1,
     "You must select at least one category"

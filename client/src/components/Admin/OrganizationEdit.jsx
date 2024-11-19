@@ -41,6 +41,8 @@ import Textarea from "./ui/Textarea";
 //   TWITTER_REGEX,
 // } from "../../helpers/Constants";
 
+const phoneRegExp = /^\(\d{3}\) \d{3}-\d{4}$/;
+
 const HourSchema = Yup.object().shape({
   weekOfMonth: Yup.number().required("Interval is required"),
   dayOfWeek: Yup.string().required("Day is required"),
@@ -50,6 +52,9 @@ const HourSchema = Yup.object().shape({
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
+  phone: Yup.string()
+    .matches(phoneRegExp, "Invalid phone number")
+    .required("Phone number is required"),
   address1: Yup.string().required("Street address is required"),
   city: Yup.string().required("City is required"),
   state: Yup.string().required("State is required"),

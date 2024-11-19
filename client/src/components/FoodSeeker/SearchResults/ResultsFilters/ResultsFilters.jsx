@@ -164,7 +164,7 @@ const ResultsFilters = ({
               >
                 <Box
                   sx={{
-                    display: { xs: "none", sm: "block" },
+                    display: { xs: "block", sm: "block" },
                   }}
                 >
                   <Button

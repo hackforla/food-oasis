@@ -4,7 +4,7 @@ import alohaHarvestLogoUrl from "components/StaticPagesHI/assets/aloha-harvest-b
 import codeForHawaiiLogoUrl from "components/StaticPagesHI/assets/cfh-logo-black-crop.png";
 
 function requiredEnvVar(name) {
-  const value = process.env[name];
+  const value = import.meta.env[name];
   if (!value) {
     throw new Error(`Required environment variable "${name}" not found`);
   }
@@ -12,7 +12,7 @@ function requiredEnvVar(name) {
 }
 
 function optionalEnvVar(name) {
-  const value = process.env[name];
+  const value = import.meta.env[name];
   if (!value) {
     return null;
   }
@@ -36,9 +36,7 @@ export const PASSWORD_VALIDATION_REGEX =
 export const PASSWORD_VALIDATION_ERROR =
   "Password must contain at least 8 characters, one uppercase, one number and one special character.";
 
-export const MAPBOX_ACCESS_TOKEN = requiredEnvVar(
-  "REACT_APP_MAPBOX_ACCESS_TOKEN"
-);
+export const MAPBOX_ACCESS_TOKEN = requiredEnvVar("VITE_MAPBOX_ACCESS_TOKEN");
 
 // End Application Constants
 
@@ -53,7 +51,7 @@ const TENANT_SUBDOMAINS = {
 
 function getTenantId() {
   if (process.env.NODE_ENV === "development") {
-    return Number(optionalEnvVar("REACT_APP_TENANT_ID")) || 1;
+    return Number(optionalEnvVar("VITE_TENANT_ID")) || 1;
   }
   const tenant = Object.entries(TENANT_SUBDOMAINS).find(([id, values]) => {
     return values.some((value) =>

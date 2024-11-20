@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { createContext, useContext } from "react";
-import { TENANT_METADATA } from "helpers/Constants";
+import { TENANT_METADATA } from "../helpers/Constants";
 
 export const SiteContext = createContext(null);
 

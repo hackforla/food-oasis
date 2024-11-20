@@ -246,8 +246,7 @@ const selectById = async (id: string): Promise<Stakeholder> => {
       s.parent_organization_id,
       s.hours_notes, s.allow_walkins, s.tags,
       ${buildLoginSelectsClause()}
-      from stakeholder s
-    left join neighborhood n on s.neighborhood_id = n.id
+    from stakeholder s left join neighborhood n on s.neighborhood_id = n.id
     ${buildLoginJoinsClause()}
     where s.id = ${Number(id)}`;
   const row = await db.one(sql);
@@ -523,6 +522,7 @@ const checkAvailableAssignmentsAdmin = async (
   try {
     const result = await db.one(sql, { tenantId });
     return result.available;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     throw new Error(`Error checking available assignments: ${err.message}`);
   }

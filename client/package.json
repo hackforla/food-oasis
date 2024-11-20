@@ -27,6 +27,7 @@
     "@mui/x-date-pickers": "^6.8.0",
     "@testing-library/dom": "^10.4.0",
     "@types/mapbox-gl": "^3.4.0",
+    "@types/node": "^22.9.1",
     "axios": "^1.7.4",
     "dayjs": "^1.11.7",
     "debounce-fn": "^5.0.0",

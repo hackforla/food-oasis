@@ -4,7 +4,7 @@ import { TENANT_ID } from "helpers/Constants";
 const baseUrl = "/api/neighborhoods";
 
 export const getAll = async (searchParams) => {
-  const params = { ...searchParams, TENANT_ID };
+  const params = { ...searchParams, tenantId: TENANT_ID };
   try {
     const response = await axios.get(baseUrl, {
       params,

@@ -15,7 +15,7 @@ export const getAllByTenantId = async () => {
 export const update = async (data) => {
   const response = await axios.put(`${baseUrl}/${data.id}`, {
     ...data,
-    TENANT_ID,
+    tenantId: TENANT_ID,
   });
   return response.data;
 };
@@ -23,7 +23,7 @@ export const update = async (data) => {
 export const post = async (data) => {
   const response = await axios.post(`${baseUrl}`, {
     ...data,
-    TENANT_ID,
+    tenantId: TENANT_ID,
   });
   return response.data;
 };

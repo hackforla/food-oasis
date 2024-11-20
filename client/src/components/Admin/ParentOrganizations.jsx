@@ -101,7 +101,7 @@ function ParentOrganizations(props) {
     setActiveOrg({
       code: "",
       name: "",
-      TENANT_ID,
+      tenantId: TENANT_ID,
     });
   };
 

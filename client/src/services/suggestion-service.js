@@ -4,7 +4,7 @@ const baseUrl = "/api/suggestions";
 
 export const getAll = async (statusIds) => {
   try {
-    const params = { statusIds, TENANT_ID };
+    const params = { statusIds, tenantId: TENANT_ID };
     const response = await axios.get(baseUrl, { params });
     return response.data;
   } catch (err) {
@@ -21,7 +21,7 @@ export const post = async (suggestion) => {
   const response = await axios.post(baseUrl, {
     ...suggestion,
     stakeholderId: suggestion.stakeholderId || null,
-    TENANT_ID,
+    tenantId: TENANT_ID,
   });
   return response.data;
 };

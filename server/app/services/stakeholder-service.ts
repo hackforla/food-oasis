@@ -522,6 +522,7 @@ const checkAvailableAssignmentsAdmin = async (
   try {
     const result = await db.one(sql, { tenantId });
     return result.available;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     throw new Error(`Error checking available assignments: ${err.message}`);
   }

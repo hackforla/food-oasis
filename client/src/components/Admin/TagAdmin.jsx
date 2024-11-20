@@ -100,7 +100,7 @@ function TagAdmin(props) {
   const handleAddNew = () => {
     setActiveTag({
       name: "",
-      TENANT_ID,
+      tenantId: TENANT_ID,
     });
   };
 

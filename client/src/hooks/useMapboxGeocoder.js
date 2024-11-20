@@ -70,7 +70,7 @@ export function useMapboxGeocoder() {
         dispatch({ type: actionTypes.FETCH_FAILURE, error });
       }
     },
-    { wait: 300 }
+    { wait: 300, after: false, before: true }
   );
 
   return { error, isLoading, mapboxResults, fetchMapboxResults };

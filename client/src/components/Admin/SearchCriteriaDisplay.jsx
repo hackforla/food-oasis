@@ -200,7 +200,7 @@ function SearchCriteriaDisplay({
           verificationStatus = "Submitted";
           break;
         case 4:
-          verificationStatus = "Submitted";
+          verificationStatus = "Approved";
           break;
         default:
           verificationStatus = "(Any)";

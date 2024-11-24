@@ -33,13 +33,13 @@ import MoreDetails from "./OrganizationEdit/MoreDetails";
 import Verification from "./OrganizationEdit/Verification";
 import Label from "./ui/Label";
 import Textarea from "./ui/Textarea";
-// import {
-//   FACEBOOK_REGEX,
-//   INSTAGRAM_REGEX,
-//   LINKEDIN_REGEX,
-//   PINTEREST_REGEX,
-//   TWITTER_REGEX,
-// } from "../../helpers/Constants";
+import {
+  FACEBOOK_REGEX,
+  INSTAGRAM_REGEX,
+  LINKEDIN_REGEX,
+  PINTEREST_REGEX,
+  TWITTER_REGEX,
+} from "../../helpers/Constants";
 
 const phoneRegExp = /^\(\d{3}\) \d{3}-\d{4}$/;
 
@@ -63,11 +63,26 @@ const validationSchema = Yup.object().shape({
   longitude: Yup.number().required("Longitude is required").min(-180).max(180),
   email: Yup.string().email("Invalid email address format"),
   hours: Yup.array().of(HourSchema),
-  instagram: Yup.string().nullable(),
-  pinterest: Yup.string().nullable(),
-  facebook: Yup.string().nullable(),
-  linkedin: Yup.string().nullable(),
-  twitter: Yup.string().nullable(),
+  instagram: Yup.string()
+    .matches(INSTAGRAM_REGEX, "Please enter a valid Instagram URL.")
+    .nullable()
+    .transform((curr, orig) => (orig === "" ? null : curr)),
+  pinterest: Yup.string()
+    .matches(PINTEREST_REGEX, "Please enter a valid Pinterest URL.")
+    .nullable()
+    .transform((curr, orig) => (orig === "" ? null : curr)),
+  facebook: Yup.string()
+    .matches(FACEBOOK_REGEX, "Please enter a valid Facebook URL.")
+    .nullable()
+    .transform((curr, orig) => (orig === "" ? null : curr)),
+  linkedin: Yup.string()
+    .matches(LINKEDIN_REGEX, "Please enter a valid LinkedIn URL.")
+    .nullable()
+    .transform((curr, orig) => (orig === "" ? null : curr)),
+  twitter: Yup.string()
+    .matches(TWITTER_REGEX, "Please enter a valid Twitter/X URL.")
+    .nullable()
+    .transform((curr, orig) => (orig === "" ? null : curr)),
   selectedCategoryIds: Yup.array().min(
     1,
     "You must select at least one category"

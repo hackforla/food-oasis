@@ -179,12 +179,12 @@ export const TENANT_METADATA = {
 };
 
 export const LINKEDIN_REGEX =
-  /^https?:\/\/(www\.)?linkedin\.com\/(in|company|school|pub|groups|showcase)\/[a-zA-Z0-9\-_%]+\/?$/;
+  /^https?:\/\/(www\.)?linkedin\.com(\/.*)?$/;
 export const FACEBOOK_REGEX =
-  /^https?:\/\/(www\.)?facebook\.com\/[a-zA-Z0-9.]{5,50}\/?$/;
+  /^https?:\/\/(www\.)?facebook\.com(\/.*)?$/;
 export const INSTAGRAM_REGEX =
-  /^https?:\/\/(www\.)?instagram\.com\/[a-zA-Z0-9._]{1,30}\/?$/;
+  /^https?:\/\/(www\.)?instagram\.com(\/.*)?$/;
 export const PINTEREST_REGEX =
-  /^https?:\/\/(www\.)?pinterest\.com\/[a-zA-Z][a-zA-Z0-9_]{2,14}\/?$/;
+  /^https?:\/\/(www\.)?pinterest\.com(\/.*)?$/;
 export const TWITTER_REGEX =
-  /^https?:\/\/(www\.)?(twitter\.com|x\.com)\/[a-zA-Z0-9_]{1,15}\/?$/;
+  /^https?:\/\/(www\.)?(twitter\.com|x\.com)(\/.*)?$/;

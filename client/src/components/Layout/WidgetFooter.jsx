@@ -108,7 +108,7 @@ function WidgetFooterSection(props) {
     );
   }
 
-  const imageType = logoPath ? logoPath.default.split(".").pop() : "unknown";
+  const imageType = logoPath ? logoPath.split(".").pop() : "unknown";
 
   return (
     <Box

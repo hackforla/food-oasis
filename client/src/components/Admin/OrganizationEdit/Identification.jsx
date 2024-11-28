@@ -23,6 +23,8 @@ import * as awsService from "services/aws-service";
 import { disabledText, error as errorColor } from "theme/palette";
 import Label from "../ui/Label";
 import Textarea from "../ui/Textarea";
+import { PatternFormat } from "react-number-format";
+
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -117,12 +119,17 @@ export default function Identification({
                 label="Phone"
                 tooltipTitle="Phone number for clients to use"
               />
-              <TextField
+              <PatternFormat
+                format="(###) ###-####"
+                customInput={TextField}
+                mask="_"
                 id="phone"
                 name="phone"
                 placeholder="Phone"
                 value={values.phone}
-                onChange={handleChange}
+                onValueChange={(formattedValues) => {
+                  setFieldValue("phone", formattedValues.formattedValue);
+                }}
                 onBlur={handleBlur}
                 helperText={touched.phone ? errors.phone : ""}
                 error={touched.phone && Boolean(errors.phone)}

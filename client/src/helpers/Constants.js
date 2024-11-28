@@ -4,7 +4,7 @@ import alohaHarvestLogoUrl from "components/StaticPagesHI/assets/aloha-harvest-b
 import codeForHawaiiLogoUrl from "components/StaticPagesHI/assets/cfh-logo-black-crop.png";
 
 function requiredEnvVar(name) {
-  const value = process.env[name];
+  const value = import.meta.env[name];
   if (!value) {
     throw new Error(`Required environment variable "${name}" not found`);
   }
@@ -12,7 +12,7 @@ function requiredEnvVar(name) {
 }
 
 function optionalEnvVar(name) {
-  const value = process.env[name];
+  const value = import.meta.env[name];
   if (!value) {
     return null;
   }
@@ -36,9 +36,7 @@ export const PASSWORD_VALIDATION_REGEX =
 export const PASSWORD_VALIDATION_ERROR =
   "Password must contain at least 8 characters, one uppercase, one number and one special character.";
 
-export const MAPBOX_ACCESS_TOKEN = requiredEnvVar(
-  "REACT_APP_MAPBOX_ACCESS_TOKEN"
-);
+export const MAPBOX_ACCESS_TOKEN = requiredEnvVar("VITE_MAPBOX_ACCESS_TOKEN");
 
 // End Application Constants
 
@@ -53,7 +51,7 @@ const TENANT_SUBDOMAINS = {
 
 function getTenantId() {
   if (process.env.NODE_ENV === "development") {
-    return Number(optionalEnvVar("REACT_APP_TENANT_ID")) || 1;
+    return Number(optionalEnvVar("VITE_TENANT_ID")) || 1;
   }
   const tenant = Object.entries(TENANT_SUBDOMAINS).find(([id, values]) => {
     return values.some((value) =>
@@ -181,12 +179,12 @@ export const TENANT_METADATA = {
 };
 
 export const LINKEDIN_REGEX =
-  /^https?:\/\/(www\.)?linkedin\.com\/(in|company|school|pub|groups|showcase)\/[a-zA-Z0-9\-_%]+\/?$/;
+  /^https?:\/\/(www\.)?linkedin\.com(\/.*)?$/;
 export const FACEBOOK_REGEX =
-  /^https?:\/\/(www\.)?facebook\.com\/[a-zA-Z0-9.]{5,50}\/?$/;
+  /^https?:\/\/(www\.)?facebook\.com(\/.*)?$/;
 export const INSTAGRAM_REGEX =
-  /^https?:\/\/(www\.)?instagram\.com\/[a-zA-Z0-9._]{1,30}\/?$/;
+  /^https?:\/\/(www\.)?instagram\.com(\/.*)?$/;
 export const PINTEREST_REGEX =
-  /^https?:\/\/(www\.)?pinterest\.com\/[a-zA-Z][a-zA-Z0-9_]{2,14}\/?$/;
+  /^https?:\/\/(www\.)?pinterest\.com(\/.*)?$/;
 export const TWITTER_REGEX =
-  /^https?:\/\/(www\.)?(twitter\.com|x\.com)\/[a-zA-Z0-9_]{1,15}\/?$/;
+  /^https?:\/\/(www\.)?(twitter\.com|x\.com)(\/.*)?$/;

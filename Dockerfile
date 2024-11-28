@@ -1,15 +1,14 @@
 FROM node:lts-bullseye-slim as clientBuilder
 
-ENV NODE_ENV "production"
 ENV NODE_OPTIONS=--openssl-legacy-provider
 
 RUN mkdir /app
 WORKDIR /app
 COPY client/package.json .
 COPY client/package-lock.json .
-RUN npm ci --legacy-peer-deps
+RUN npm ci
 COPY client .
-
+ENV NODE_ENV "production"
 RUN npm run build
 RUN echo package.json
 
@@ -44,7 +43,7 @@ RUN npm ci --quiet
 
 COPY --from=serverBuilder /usr/src/app/build ./
 COPY ./server/uploads ./uploads
-COPY --from=clientBuilder /app/build ./client/build
+COPY --from=clientBuilder app/dist ./client/build
 
 # we don't want to run as sudo so create group and user
 RUN groupadd -r fola && useradd --no-log-init -r -g fola fola

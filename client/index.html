@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" height="100%">
   <head>
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="shortcut icon" href="/favicon.ico" />
     <meta name="viewport" content="minimum-scale=1, initial-scale=1" />
     <!-- <meta
       name="viewport"
       content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
     /> -->
     <meta name="theme-color" content="#000000" />
-    <meta property="og:image" content="%PUBLIC_URL%/FoodOasisLogo.png" />
+    <meta property="og:image" content="/FoodOasisLogo.png" />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="639" />
     <meta property="og:image:height" content="162" />
@@ -17,7 +17,7 @@
       content="Food Oasis is a non-profit, volunteer-run directory of free food resources in the Los Angeles area."
     />
     <meta property="og:locale" content="en_US" />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
     <link
       href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.0/mapbox-gl.css"
       rel="stylesheet"
@@ -27,16 +27,7 @@
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
-
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
+    <link rel="manifest" href="/manifest.json" />
     <style>
       html,
       #body,
@@ -107,5 +98,6 @@
         <div class="spinner"></div>
       </div>
     </div>
+    <script type="module" src="/src/index.tsx"></script>
   </body>
 </html>

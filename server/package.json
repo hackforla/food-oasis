@@ -44,7 +44,7 @@
     "csv-stringify": "^6.5.1",
     "dayjs": "^1.11.7",
     "dotenv": "^16.4.5",
-    "express": "^4.21.1",
+    "express": "^4.21.2",
     "express-pino-logger": "^7.0.0",
     "json-2-csv": "^3.17.1",
     "jsonwebtoken": "^9.0.2",

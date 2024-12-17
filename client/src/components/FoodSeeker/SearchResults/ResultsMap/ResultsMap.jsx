@@ -13,7 +13,7 @@ import { MAPBOX_ACCESS_TOKEN, DEFAULT_VIEWPORT } from "helpers/Constants";
 import useBreakpoints from "hooks/useBreakpoints";
 import useFeatureFlag from "hooks/useFeatureFlag";
 import 'mapbox-gl/dist/mapbox-gl.css';
-import Map, { Layer, Marker, NavigationControl, Source } from "react-map-gl";
+import Map, { Layer, Marker, Source } from "react-map-gl";
 import { useLocation, useNavigate } from "react-router-dom";
 import * as analytics from "services/analytics";
 import {
@@ -43,7 +43,7 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
   const selectedOrganization = useSelectedOrganization();
   const navigate = useNavigate();
   const location = useLocation();
-  const { isMobile } = useBreakpoints();
+  const { isMobile, isTablet } = useBreakpoints();
   const isListPanelOpen = useListPanel();
   const isFilterPanelOpen = useFilterPanel();
   const { mapRef, flyTo } = useMapbox();
@@ -146,7 +146,7 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
     const handleZoomIn = () => {
       const longOffset = 0.0399 * Math.pow(2, 11 - zoom);
       const newCenter = {
-        lng: currentCenter.lng + longOffset,
+        lng: !isTablet && isListPanelOpen ? currentCenter.lng + longOffset : currentCenter.lng,
         lat: selectedOrganization ? selectedOrganization.latitude : currentCenter.lat
       };
 

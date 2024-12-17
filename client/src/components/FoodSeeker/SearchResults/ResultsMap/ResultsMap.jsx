@@ -7,7 +7,7 @@ import { useCallback, useEffect, useState } from "react";
 // recommendation from Mapbox team
 // https://github.com/mapbox/mapbox-gl-js/issues/10173  See comment by IvanDreamer on Mar 22
 // for craco.config.js contents
-import { Grid } from "@mui/material";
+import { Grid, Box } from "@mui/material";
 import { MAPBOX_STYLE } from "constants/map";
 import { MAPBOX_ACCESS_TOKEN, DEFAULT_VIEWPORT } from "helpers/Constants";
 import useBreakpoints from "hooks/useBreakpoints";
@@ -71,6 +71,7 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
   const onMouseEnter = useCallback(() => setCursor("pointer"), []);
   const onMouseLeave = useCallback(() => setCursor("auto"), []);
   const [interactiveLayerIds, setInteractiveLayerIds] = useState(["nonexist"]);
+  const [currMap, setCurrMap] = useState(null);
 
   useEffect(() => {
     analytics.postEvent("showMap");
@@ -84,8 +85,10 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
     }));
   }, [searchCoordinates, longitude, latitude, isMobile]);
 
+
   const onLoad = useCallback(async () => {
     const map = mapRef.current.getMap();
+    setCurrMap(map);
     await loadMarkerIcons(map);
     setMarkersLoaded(true);
     setInteractiveLayerIds([MARKERS_LAYER_ID]);
@@ -134,6 +137,92 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
   const listPanelLeftPostion = isListPanelOpen ? 524 : 0;
   const filterPanelLeftPostion = isFilterPanelOpen ? 340 : 0;
 
+  const CustomNavigationControl = () => {
+    if (!currMap) return;
+
+    const zoom = currMap.getZoom();
+    const currentCenter = currMap.getCenter();
+  
+    const handleZoomIn = () => {
+      const longOffset = 0.0399 * Math.pow(2, 11 - zoom);
+      const newCenter = {
+        lng: currentCenter.lng + longOffset,
+        lat: selectedOrganization ? selectedOrganization.latitude : currentCenter.lat
+      };
+
+      currMap.easeTo({
+        center: isListPanelOpen ? newCenter : currentCenter,
+        zoom: zoom + 1,
+        duration: 500,
+      })
+    };
+  
+    const handleZoomOut = () => {
+      const zoomOutOffset = 0.0399 * Math.pow(2, 12 - zoom);
+      const newCenter = {
+        lng: currentCenter.lng - zoomOutOffset,
+        lat: currentCenter.lat
+      };
+      
+      currMap.easeTo({
+        center: isListPanelOpen ? newCenter : currentCenter,
+        zoom: zoom - 1,
+        duration: 500,
+      })
+    };
+
+    const buttonStyles = {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      width: "28px",
+      height: "28px",
+      fontSize: "16px",
+      fontWeight: 700,
+      color: "#313131",
+      cursor: "pointer",
+      userSelect: "none",
+      borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+      '&:hover': {
+        backgroundColor: "#f5f5f5",
+      },
+      '&:active': {
+        backgroundColor: "#e0e0e0",
+      },
+    };
+  
+    return (
+      <Box
+        sx={{
+          position: "absolute",
+          top: 8,
+          right: 8,
+          zIndex: 10,
+          display: "flex",
+          flexDirection: "column",
+          background: "#fff",
+          borderRadius: "6px",
+          boxShadow: "0 1px 6px rgba(0, 0, 0, 0.416)",
+          border: "1.5px solid rgba(0, 0, 0, 0.1)",
+          overflow: "hidden",
+        }}
+      >
+        <Box
+          onClick={handleZoomIn}
+          sx={buttonStyles}
+        >
+          ＋
+        </Box>
+        <Box
+          onClick={handleZoomOut}
+          sx={[buttonStyles, { fontSize: 14 }]}
+        >
+          ―
+        </Box>
+      </Box>
+    );
+};
+
   return (
     <div style={{ position: "relative", height: "100%", width: "100%" }}>
       <Map
@@ -152,7 +241,7 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
         onMouseLeave={onMouseLeave}
       >
         {!isMobile && (
-          <NavigationControl showCompass={false} style={{ top: 8, right: 8 }} />
+          <CustomNavigationControl />
         )}
         {startIconCoordinates && (
           <Marker

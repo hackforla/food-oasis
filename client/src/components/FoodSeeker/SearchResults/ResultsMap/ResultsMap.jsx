@@ -185,10 +185,14 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
           display="inline-flex"
           alignItems="flex-start"
           sx={{
-            overflow: "auto",
+            overflowX: "auto", 
+            overflowY: "hidden", 
             gap: "0.5rem",
             padding: isMobile ? "0 0 0.3rem 0.75rem" : "0 0 0.3rem 2.25rem",
             scrollbarWidth: "none",
+            "&::-webkit-scrollbar": {
+              display: "none", 
+            },
             top: 0,
             left: isMobile
               ? 0

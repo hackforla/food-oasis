@@ -3,6 +3,7 @@ import {
   useFilterPanel,
   useListPanel,
   useAppDispatch,
+  useWidget
 } from "../../../../appReducer";
 import DrawerLeftArrowButton from "../../../../icons/DrawerLeftArrowButton";
 import DrawerRightArrowButton from "../../../../icons/DrawerRightArrowButton";
@@ -10,6 +11,7 @@ import DrawerRightArrowButton from "../../../../icons/DrawerRightArrowButton";
 const DesktopLayout = ({ filters, list, map }) => {
   const isFilterPanelOpen = useFilterPanel();
   const isListPanelOpen = useListPanel();
+  const isWidget = useWidget();
   const dispatch = useAppDispatch();
 
   const toggleDrawer = (event) => {
@@ -51,7 +53,7 @@ const DesktopLayout = ({ filters, list, map }) => {
             width: "524px",
             transition: "left .5s ease-in-out",
             left: isListPanelOpen ? leftPostion : "-524px",
-            top: "120px",
+            top: isWidget ? "62px": "126px",
             height: "calc(100% - 120px)",
             zIndex: 3,
             background: "white",

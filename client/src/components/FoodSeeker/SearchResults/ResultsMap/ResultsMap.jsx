@@ -198,6 +198,7 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
               ? 0
               : `${listPanelLeftPostion + filterPanelLeftPostion}px`,
             transition: isMobile ? undefined : "left .5s ease-in-out",
+            maxWidth: isMobile ? "100vw": `calc(100vw - ${listPanelLeftPostion + filterPanelLeftPostion}px)`,
           }}
         >
           <AdvancedFilters

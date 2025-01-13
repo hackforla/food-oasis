@@ -32,7 +32,13 @@ import {
   MARKERS_LAYER_ID,
   loadMarkerIcons,
   markersLayerStyles,
+  metroMarkersLayerStyles,
   useMarkersGeojson,
+  aLineLayerStyles,
+  bdLineLayerStyles,
+  cLineLayerStyles,
+  eLineLayerStyles,
+  kLineLayerStyles,
 } from "./MarkerHelpers";
 import { regionBorderStyle, regionFillStyle } from "./RegionHelpers";
 
@@ -101,6 +107,13 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
       latitude: e.lngLat.lat,
       longitude: e.lngLat.lng,
     });
+
+    // if metro, get station name
+    let layerId = e.features[0].layer.id;
+    if (layerId === "metroMarkers") {
+      console.log(e.features[0].properties["STOP_NAME"]);
+    }
+    
     if (isMobile) {
       dispatch({ type: "TOGGLE_LIST_PANEL" });
     }
@@ -126,13 +139,37 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
     }
   };
 
-  const markersGeojson = useMarkersGeojson({
+  const {
+    markersGeojson,
+    metroMarkersGeojson,
+    metroALine,
+    metroBDLine,
+    metroCLine,
+    metroELine,
+    metroKLine,
+  } = useMarkersGeojson({
     stakeholders,
     categoryIds,
   });
 
   const listPanelLeftPostion = isListPanelOpen ? 524 : 0;
   const filterPanelLeftPostion = isFilterPanelOpen ? 340 : 0;
+
+    // count markers on map (not incl. metro)
+  // const onMoveEnd = () => {
+  //   if (mapRef.current) {
+  //     const map = mapRef.current.getMap();
+  //     const features = map.queryRenderedFeatures({
+  //       layers: [MARKERS_LAYER_ID],
+  //     });
+
+  //     const markersCount = features.filter(
+  //       (feature) => feature.layer.id === MARKERS_LAYER_ID
+  //     ).length;
+
+  //     console.log("Visible markers count:", markersCount);
+  //   }
+  // };
 
   return (
     <div style={{ position: "relative", height: "100%", width: "100%" }}>
@@ -165,6 +202,35 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
             <StartIcon />
           </Marker>
         )}
+        {markersLoaded && (
+          <>
+            <Source type="geojson" data={metroALine}>
+              <Layer {...aLineLayerStyles} />
+            </Source>
+            <Source type="geojson" data={metroBDLine}>
+              <Layer {...bdLineLayerStyles} />
+            </Source>
+            <Source type="geojson" data={metroKLine}>
+              <Layer {...kLineLayerStyles} />
+            </Source>
+            <Source type="geojson" data={metroALine}>
+              <Layer {...aLineLayerStyles} />
+            </Source>
+            <Source type="geojson" data={metroELine}>
+              <Layer {...eLineLayerStyles} />
+            </Source>
+            <Source type="geojson" data={metroCLine}>
+              <Layer {...cLineLayerStyles} />
+            </Source>
+          </>
+        )}
+
+        {markersLoaded && (
+          <Source type="geojson" data={metroMarkersGeojson}>
+            <Layer {...metroMarkersLayerStyles} />
+          </Source>
+        )}
+
         {markersLoaded && (
           <Source type="geojson" data={markersGeojson}>
             <Layer {...markersLayerStyles} />

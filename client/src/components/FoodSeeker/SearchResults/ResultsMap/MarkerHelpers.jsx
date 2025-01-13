@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { renderToString } from "react-dom/server";
 import MapMarker from "images/mapMarker";
 import {
@@ -7,12 +7,21 @@ import {
   DEFAULT_CATEGORIES,
 } from "constants/stakeholder";
 import { useSelectedOrganization } from "../../../../appReducer";
+
+// metro json imports
+import metroGeojson from "./TransitGeoJSON/GeoJSON4326.json";
+import metroALine from "./TransitGeoJSON/AMetroLine.json";
+import metroBDLine from "./TransitGeoJSON/BandDMetroLine.json";
+import metroCLine from "./TransitGeoJSON/MetroCLine.json";
+import metroELine from "./TransitGeoJSON/MetroELine.json";
+import metroKLine from "./TransitGeoJSON/KMetroLine.json";
+
 export const MARKERS_LAYER_ID = "markers";
 
 // note that we have 3 marker categories, and 2 selected states, for a
 // total of 6 possible marker variants.
 // the marker categories come from src/images/mapMarker.js
-const MARKER_CATEGORIES = [-1, 0, 1];
+const MARKER_CATEGORIES = [-1, 0, 1, 2];
 const SELECTED_VALUES = [false, true];
 
 // using the pixel ratio to scale the marker helps prevent
@@ -95,6 +104,82 @@ export const markersLayerStyles = {
   },
 };
 
+export const metroMarkersLayerStyles = {
+  id: "metroMarkers",
+  type: "symbol",
+  layout: {
+    "icon-image": ["get", "iconId"],
+    "icon-allow-overlap": true,
+    "icon-size": 1 / MARKER_SCALE,
+    // "icon-anchor": "bottom",
+  },
+};
+
+export const aLineLayerStyles = {
+  id: "aMetro",
+  type: "line",
+  paint: {
+    "line-color": "#0072BC",
+    "line-width": 2,
+    "line-opacity": 0.8,
+  },
+  layout: {
+    "line-cap": "round",
+  },
+};
+
+export const bdLineLayerStyles = {
+  id: "bdMetro",
+  type: "line",
+  paint: {
+    "line-color": "#E3131B",
+    "line-width": 2,
+    "line-opacity": 0.8,
+  },
+  layout: {
+    "line-cap": "round",
+  },
+};
+
+export const cLineLayerStyles = {
+  id: "cMetro",
+  type: "line",
+  paint: {
+    "line-color": "#58A738",
+    "line-width": 2,
+    "line-opacity": 0.8,
+  },
+  layout: {
+    "line-cap": "round",
+  },
+};
+
+export const eLineLayerStyles = {
+  id: "eMetro",
+  type: "line",
+  paint: {
+    "line-color": "#F7B618",
+    "line-width": 2,
+    "line-opacity": 0.8,
+  },
+  layout: {
+    "line-cap": "round",
+  },
+};
+
+export const kLineLayerStyles = {
+  id: "kMetro",
+  type: "line",
+  paint: {
+    "line-color": "#E96BB0",
+    "line-width": 2,
+    "line-opacity": 0.8,
+  },
+  layout: {
+    "line-cap": "round",
+  },
+};
+
 // symbol layer data
 export function useMarkersGeojson({ stakeholders, categoryIds }) {
   const catIds = categoryIds.length ? categoryIds : DEFAULT_CATEGORIES;
@@ -143,5 +228,27 @@ export function useMarkersGeojson({ stakeholders, categoryIds }) {
     [modifiedStakeholders, selectedOrganization]
   );
 
-  return markersGeojson;
+  const metroMarkersGeojson = {
+    ...metroGeojson,
+    features: metroGeojson.features.map((feature) => {
+      return {
+        ...feature,
+        properties: {
+          ...feature.properties,
+          // iconId: "fola-marker::2::false",
+          iconId: getIconId(2, false),
+        },
+      };
+    }),
+  };
+
+  return {
+    markersGeojson,
+    metroMarkersGeojson,
+    metroALine,
+    metroBDLine,
+    metroCLine,
+    metroELine,
+    metroKLine,
+  };
 }

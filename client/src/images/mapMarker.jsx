@@ -1,7 +1,7 @@
-import React from "react";
 import PantryIcon from "../icons/PantryIcon";
 import SplitPantryMealIcon from "icons/SplitPantryMealIcon";
 import MealIcon from "../icons/MealIcon";
+import MetroIcon from "../icons/MetroIcon";
 
 /*
 This is a temporary test file for Issue #923 testing. It should be
@@ -22,6 +22,14 @@ const MapMarker = ({ category, onClick, selected = false, scale = 1.0 }) => {
     viewBox: selected ? "0 0 48 64" : "0 0 53 67",
   };
 
+  const metroIconProps = {
+    width: 35,
+    height: 45,
+    selected,
+    onClick,
+    viewBox: "0 0 53 67",
+  };
+
   if (category === 0) {
     return <PantryIcon {...iconProps} />;
   }
@@ -32,6 +40,10 @@ const MapMarker = ({ category, onClick, selected = false, scale = 1.0 }) => {
 
   if (category === -1) {
     return <SplitPantryMealIcon {...iconProps} />;
+  }
+
+  if (category === 2) {
+    return <MetroIcon {...metroIconProps} />;
   }
 };
 

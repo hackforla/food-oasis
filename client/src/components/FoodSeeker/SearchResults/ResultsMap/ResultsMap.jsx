@@ -7,7 +7,9 @@ import { useCallback, useEffect, useState } from "react";
 // recommendation from Mapbox team
 // https://github.com/mapbox/mapbox-gl-js/issues/10173  See comment by IvanDreamer on Mar 22
 // for craco.config.js contents
-import { Grid, Box } from "@mui/material";
+import { Grid, Box, IconButton } from "@mui/material";
+import AddIcon from '@mui/icons-material/AddRounded';
+import RemoveIcon from '@mui/icons-material/RemoveRounded';
 import { MAPBOX_STYLE } from "constants/map";
 import { MAPBOX_ACCESS_TOKEN, DEFAULT_VIEWPORT } from "helpers/Constants";
 import useBreakpoints from "hooks/useBreakpoints";
@@ -139,7 +141,6 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
 
   const CustomNavigationControl = () => {
     if (!currMap) return;
-
     const zoom = currMap.getZoom();
     const currentCenter = currMap.getCenter();
   
@@ -172,17 +173,11 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
     };
 
     const buttonStyles = {
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
+      color: "#313131",
+      borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+      borderRadius: 0,
       width: "28px",
       height: "28px",
-      fontSize: "16px",
-      fontWeight: 700,
-      color: "#313131",
-      cursor: "pointer",
-      userSelect: "none",
-      borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
       '&:hover': {
         backgroundColor: "#f5f5f5",
       },
@@ -195,8 +190,8 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
       <Box
         sx={{
           position: "absolute",
-          top: 8,
-          right: 8,
+          top: 10,
+          right: 10,
           zIndex: 10,
           display: "flex",
           flexDirection: "column",
@@ -207,18 +202,12 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
           overflow: "hidden",
         }}
       >
-        <Box
-          onClick={handleZoomIn}
-          sx={buttonStyles}
-        >
-          ＋
-        </Box>
-        <Box
-          onClick={handleZoomOut}
-          sx={[buttonStyles, { fontSize: 14 }]}
-        >
-          ―
-        </Box>
+        <IconButton onClick={handleZoomIn} sx={buttonStyles} size="small">
+          <AddIcon />
+        </IconButton>
+        <IconButton onClick={handleZoomOut} sx={buttonStyles}>
+          <RemoveIcon />
+        </IconButton>
       </Box>
     );
 };

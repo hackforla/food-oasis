@@ -766,7 +766,8 @@ function normalizeSocialLink({ value, socialMedia }) {
     value === "N/A" ||
     value === "n/a" ||
     value === "n / a" ||
-    value === "N / A"
+    value === "N / A" || 
+    !value
   ) {
     return null;
   }

@@ -50,8 +50,9 @@ function WidgetFooterSection(props) {
         >
           {captionText}
         </Box>
+         
         {maintainers.map((maintainer) => {
-          const logoMaintainerPath = maintainer.path?.default;
+          const logoMaintainerPath = maintainer.path;
           const imageType = logoMaintainerPath
             ? logoMaintainerPath.split(".").pop()
             : "unknown";
@@ -134,7 +135,7 @@ function WidgetFooterSection(props) {
       {logoPath ? (
         <a href={url} target="_blank" rel="noopener noreferrer">
           <img
-            src={logoPath ? logoPath.default : logoPath[1].default}
+            src={logoPath}
             className={className}
             style={
               imageType === "svg"

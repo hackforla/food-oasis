@@ -1,4 +1,4 @@
-import { AppBar, Box, Toolbar, Typography } from "@mui/material";
+import { AppBar, Alert, Box, Toolbar, Typography } from "@mui/material";
 import useLocationHook from "hooks/useLocationHook";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
@@ -11,7 +11,7 @@ Header.propTypes = {
 };
 
 export default function Header() {
-  const { isAuthPage } = useLocationHook();
+  const { isAuthPage, isMapPage } = useLocationHook();
   const imageType = TENANT_LOGO_URL
     ? TENANT_LOGO_URL.split(".").pop()
     : "unknown";
@@ -62,6 +62,12 @@ export default function Header() {
               />
             </a>
           </Box>
+          {isMapPage ? (
+            <Alert severity="warning">
+              Due to the LA Fires (Jan 2025), some information may be
+              out-of-date.
+            </Alert>
+          ) : null}
           <Box
             sx={{
               display: "flex",

@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { isMobile } from "helpers";
 import { TENANT_LOGO_URL } from "helpers/Constants";
+import { Alert } from "@mui/material";
 
 function WidgetFooterSection(props) {
   const {
@@ -199,6 +200,9 @@ function WidgetFooter() {
         url={`${window.location.origin}`}
         alt="Food Oasis Logo"
       />
+      <Alert severity="warning">
+        Due to the LA Fires (Jan 2025), some information may be out-of-date.
+      </Alert>
       <WidgetFooterSection
         type="maintainer"
         maintainers={maintainers}

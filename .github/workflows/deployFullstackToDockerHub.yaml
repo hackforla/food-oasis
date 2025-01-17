@@ -10,7 +10,7 @@ on:
       - published
 jobs:
   fullstack:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     name: Build and push Full-Stack Container to Docker Hub
     steps:
       - name: Checkout repo

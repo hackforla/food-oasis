@@ -1,5 +1,6 @@
 import { LocationOn } from "@mui/icons-material";
 import {
+  Alert,
   Box,
   Button,
   CircularProgress,
@@ -226,6 +227,10 @@ const Home = () => {
                     </div>
                   )}
                 </Box>
+                <Alert severity="warning">
+                  Due to the LA Fires (Jan 2025), some information may be
+                  out-of-date.
+                </Alert>
                 <Box
                   sx={{
                     display: "flex",

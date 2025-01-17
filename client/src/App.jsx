@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { CssBaseline, Alert, Snackbar, Stack } from "@mui/material";
+import { useEffect } from "react";
+import { CssBaseline } from "@mui/material";
 import SurveySnackbar from "./components/UI/SurveySnackbar";
 import { SiteProvider } from "./contexts/siteContext";
 import { ToasterProvider } from "contexts/toasterContext";
@@ -36,8 +36,6 @@ function App() {
                 />
                 <MapProvider>
                   <Router>
-                    <LAFireWarning />
-
                     <AppRoutes />
                     {hasUserFeedbackSuveyFeatureFlag && <SurveySnackbar />}
                   </Router>
@@ -52,28 +50,3 @@ function App() {
 }
 
 export default App;
-
-function LAFireWarning() {
-  const [snackbarOpen, setSnackbarOpen] = useState(true);
-
-  return (
-    <Stack spacing={2} sx={{ maxWidth: 700 }}>
-      <Snackbar
-        open={snackbarOpen}
-        onClose={() => setSnackbarOpen(false)}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "right",
-        }}
-      >
-        <Alert
-          onClose={() => setSnackbarOpen(false)}
-          severity="warning"
-          sx={{ width: "100%" }}
-        >
-          Due to the LA Fires (Jan 2025), some information may be out-of-date.
-        </Alert>
-      </Snackbar>
-    </Stack>
-  );
-}

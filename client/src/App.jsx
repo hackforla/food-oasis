@@ -21,13 +21,6 @@ function App() {
     analytics.postEvent("visitAppComponent");
   }, []);
 
-  // const [snackbarOpen, setSnackbarOpen] = useState(false);
-  // const [snackbarMessage, setSnackbarMessage] = useState("");
-
-  // const handleCloseSnackbar = () => {
-  //   setSnackbarOpen(false);
-  // };
-
   return (
     <HelmetProvider>
       <CssBaseline />

@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Alert, Box } from "@mui/material";
 import { useSiteContext } from "contexts/siteContext";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
@@ -50,8 +50,9 @@ function WidgetFooterSection(props) {
         >
           {captionText}
         </Box>
+
         {maintainers.map((maintainer) => {
-          const logoMaintainerPath = maintainer.path?.default;
+          const logoMaintainerPath = maintainer.path;
           const imageType = logoMaintainerPath
             ? logoMaintainerPath.split(".").pop()
             : "unknown";
@@ -134,7 +135,7 @@ function WidgetFooterSection(props) {
       {logoPath ? (
         <a href={url} target="_blank" rel="noopener noreferrer">
           <img
-            src={logoPath ? logoPath.default : logoPath[1].default}
+            src={logoPath}
             className={className}
             style={
               imageType === "svg"
@@ -193,12 +194,17 @@ function WidgetFooter() {
         boxShadow: "none",
       })}
     >
-      <WidgetFooterSection
-        name="Food Oasis"
-        logoPath={TENANT_LOGO_URL}
-        url={`${window.location.origin}`}
-        alt="Food Oasis Logo"
-      />
+      <div style={{ display: "flex", flexDirection: "row" }}>
+        <WidgetFooterSection
+          name="Food Oasis"
+          logoPath={TENANT_LOGO_URL}
+          url={`${window.location.origin}`}
+          alt="Food Oasis Logo"
+        />
+        <Alert severity="warning">
+          Due to the LA Fires (Jan 2025), some information may be out-of-date.
+        </Alert>
+      </div>
       <WidgetFooterSection
         type="maintainer"
         maintainers={maintainers}

@@ -7,6 +7,9 @@ import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import Fallback from "./components/Fallback";
 import PrivateRoute from "./components/PrivateRoute";
 import Toast from "components/UI/Toast";
+import {
+  useWidget,
+} from "./appReducer";
 
 const VerificationAdmin = lazy(() =>
   import("components/Admin/VerificationAdmin")
@@ -196,6 +199,7 @@ export default function AppRoutes() {
 }
 
 function AppWrapper() {
+    const isWidget = useWidget();
   return (
     <Grid
       container
@@ -211,7 +215,7 @@ function AppWrapper() {
         overflowX: "hidden",
       }}
     >
-      <Header />
+      {isWidget ? null : <Header />}
       <Outlet />
       <Toast />
     </Grid>

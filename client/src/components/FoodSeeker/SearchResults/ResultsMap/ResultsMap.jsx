@@ -7,13 +7,15 @@ import { useCallback, useEffect, useState } from "react";
 // recommendation from Mapbox team
 // https://github.com/mapbox/mapbox-gl-js/issues/10173  See comment by IvanDreamer on Mar 22
 // for craco.config.js contents
-import { Grid } from "@mui/material";
+import { Grid, Box, IconButton } from "@mui/material";
+import AddIcon from '@mui/icons-material/AddRounded';
+import RemoveIcon from '@mui/icons-material/RemoveRounded';
 import { MAPBOX_STYLE } from "constants/map";
 import { MAPBOX_ACCESS_TOKEN, DEFAULT_VIEWPORT } from "helpers/Constants";
 import useBreakpoints from "hooks/useBreakpoints";
 import useFeatureFlag from "hooks/useFeatureFlag";
 import 'mapbox-gl/dist/mapbox-gl.css';
-import Map, { Layer, Marker, NavigationControl, Source } from "react-map-gl";
+import Map, { Layer, Marker, Source } from "react-map-gl";
 import { useLocation, useNavigate } from "react-router-dom";
 import * as analytics from "services/analytics";
 import {
@@ -43,7 +45,7 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
   const selectedOrganization = useSelectedOrganization();
   const navigate = useNavigate();
   const location = useLocation();
-  const { isMobile } = useBreakpoints();
+  const { isMobile, isTablet } = useBreakpoints();
   const isListPanelOpen = useListPanel();
   const isFilterPanelOpen = useFilterPanel();
   const { mapRef, flyTo } = useMapbox();
@@ -71,6 +73,7 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
   const onMouseEnter = useCallback(() => setCursor("pointer"), []);
   const onMouseLeave = useCallback(() => setCursor("auto"), []);
   const [interactiveLayerIds, setInteractiveLayerIds] = useState(["nonexist"]);
+  const [currMap, setCurrMap] = useState(null);
 
   useEffect(() => {
     analytics.postEvent("showMap");
@@ -84,8 +87,10 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
     }));
   }, [searchCoordinates, longitude, latitude, isMobile]);
 
+
   const onLoad = useCallback(async () => {
     const map = mapRef.current.getMap();
+    setCurrMap(map);
     await loadMarkerIcons(map);
     setMarkersLoaded(true);
     setInteractiveLayerIds([MARKERS_LAYER_ID]);
@@ -134,6 +139,79 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
   const listPanelLeftPostion = isListPanelOpen ? 524 : 0;
   const filterPanelLeftPostion = isFilterPanelOpen ? 340 : 0;
 
+  const CustomNavigationControl = () => {
+    if (!currMap) return;
+    const zoom = currMap.getZoom();
+    const currentCenter = currMap.getCenter();
+  
+    const handleZoomIn = () => {
+      const longOffset = 0.0399 * Math.pow(2, 11 - zoom);
+      const newCenter = {
+        lng: !isTablet && isListPanelOpen ? currentCenter.lng + longOffset : currentCenter.lng,
+        lat: selectedOrganization ? selectedOrganization.latitude : currentCenter.lat
+      };
+
+      currMap.easeTo({
+        center: isListPanelOpen ? newCenter : currentCenter,
+        zoom: zoom + 1,
+        duration: 500,
+      })
+    };
+  
+    const handleZoomOut = () => {
+      const zoomOutOffset = 0.0399 * Math.pow(2, 12 - zoom);
+      const newCenter = {
+        lng: currentCenter.lng - zoomOutOffset,
+        lat: currentCenter.lat
+      };
+      
+      currMap.easeTo({
+        center: isListPanelOpen ? newCenter : currentCenter,
+        zoom: zoom - 1,
+        duration: 500,
+      })
+    };
+
+    const buttonStyles = {
+      color: "#313131",
+      borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+      borderRadius: 0,
+      width: "28px",
+      height: "28px",
+      '&:hover': {
+        backgroundColor: "#f5f5f5",
+      },
+      '&:active': {
+        backgroundColor: "#e0e0e0",
+      },
+    };
+  
+    return (
+      <Box
+        sx={{
+          position: "absolute",
+          top: 10,
+          right: 10,
+          zIndex: 10,
+          display: "flex",
+          flexDirection: "column",
+          background: "#fff",
+          borderRadius: "6px",
+          boxShadow: "0 1px 6px rgba(0, 0, 0, 0.416)",
+          border: "1.5px solid rgba(0, 0, 0, 0.1)",
+          overflow: "hidden",
+        }}
+      >
+        <IconButton onClick={handleZoomIn} sx={buttonStyles} size="small">
+          <AddIcon />
+        </IconButton>
+        <IconButton onClick={handleZoomOut} sx={buttonStyles}>
+          <RemoveIcon />
+        </IconButton>
+      </Box>
+    );
+};
+
   return (
     <div style={{ position: "relative", height: "100%", width: "100%" }}>
       <Map
@@ -152,7 +230,7 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
         onMouseLeave={onMouseLeave}
       >
         {!isMobile && (
-          <NavigationControl showCompass={false} style={{ top: 8, right: 8 }} />
+          <CustomNavigationControl />
         )}
         {startIconCoordinates && (
           <Marker
@@ -185,15 +263,20 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
           display="inline-flex"
           alignItems="flex-start"
           sx={{
-            overflow: "auto",
+            overflowX: "auto", 
+            overflowY: "hidden", 
             gap: "0.5rem",
             padding: isMobile ? "0 0 0.3rem 0.75rem" : "0 0 0.3rem 2.25rem",
             scrollbarWidth: "none",
+            "&::-webkit-scrollbar": {
+              display: "none", 
+            },
             top: 0,
             left: isMobile
               ? 0
               : `${listPanelLeftPostion + filterPanelLeftPostion}px`,
             transition: isMobile ? undefined : "left .5s ease-in-out",
+            maxWidth: isMobile ? "100vw": `calc(100vw - ${listPanelLeftPostion + filterPanelLeftPostion}px)`,
           }}
         >
           <AdvancedFilters

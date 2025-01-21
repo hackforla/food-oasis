@@ -3,8 +3,9 @@ import {
   Button,
   Chip,
   Divider,
+  Link,
   Stack,
-  Typography
+  Typography,
 } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import {
@@ -47,7 +48,7 @@ import {
   useSearchCoordinates,
   useUserCoordinates,
 } from "../../../../appReducer";
-import { success } from "../../../../theme/palette";
+import { linkText, success } from "../../../../theme/palette";
 
 const isLastOccurrenceInMonth = (tenantTimeZone) => {
   const currentDate = new Date();
@@ -198,12 +199,13 @@ const StakeholderPreview = ({ stakeholder, onSelect, isDesktop }) => {
               component="h2"
               align="left"
               fontWeight="bold"
-              sx={{
-                textDecoration: "underline",
-              }}
-              onClick={() => handleSelectOrganization(stakeholder)}
             >
-              {stakeholder.name}
+              <Link
+                sx={{ color: "inherit" }}
+                onClick={() => handleSelectOrganization(stakeholder)}
+              >
+                {stakeholder.name}
+              </Link>
             </Typography>
             <Stack
               direction="row"
@@ -345,7 +347,7 @@ const StakeholderPreview = ({ stakeholder, onSelect, isDesktop }) => {
                   </Typography>
 
                   <Typography
-                    color="#4A80F5"
+                    color={linkText}
                     align="right"
                     sx={{
                       "&:hover": { textDecoration: "underline" },
@@ -463,7 +465,18 @@ const StakeholderPreview = ({ stakeholder, onSelect, isDesktop }) => {
               ""
             )}
           </Stack>
-
+          <Stack alignItems="flex-end">
+            <Link
+              onClick={() => handleSelectOrganization(stakeholder)}
+              sx={{
+                color: linkText,
+                cursor: "pointer",
+                border: "none",
+              }}
+            >
+              more info...
+            </Link>
+          </Stack>
           <Stack
             direction="row"
             justifyContent="start"

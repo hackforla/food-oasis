@@ -7,7 +7,7 @@ import { useCallback, useEffect, useState } from "react";
 // recommendation from Mapbox team
 // https://github.com/mapbox/mapbox-gl-js/issues/10173  See comment by IvanDreamer on Mar 22
 // for craco.config.js contents
-import { Grid } from "@mui/material";
+import { Box, Grid, ToggleButton, Tooltip } from "@mui/material";
 import { MAPBOX_STYLE } from "constants/map";
 import { MAPBOX_ACCESS_TOKEN, DEFAULT_VIEWPORT } from "helpers/Constants";
 import useBreakpoints from "hooks/useBreakpoints";
@@ -39,12 +39,20 @@ import {
   cLineLayerStyles,
   eLineLayerStyles,
   kLineLayerStyles,
+  busStopStyles,
 } from "./MarkerHelpers";
 import { regionBorderStyle, regionFillStyle } from "./RegionHelpers";
 
 const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
   const [markersLoaded, setMarkersLoaded] = useState(false);
   const [cursor, setCursor] = useState("auto");
+  const [showTransit, setShowTransit] = useState(false);
+  const [tooltip, setTooltip] = useState({
+    visible: false,
+    content: "",
+    x: 0,
+    y: 0,
+  });
   const searchCoordinates = useSearchCoordinates();
   const selectedOrganization = useSelectedOrganization();
   const navigate = useNavigate();
@@ -74,6 +82,22 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
   const startIconCoordinates = searchCoordinates || userCoordinates;
   const hasAdvancedFilterFeatureFlag = useFeatureFlag("advancedFilter");
 
+  const onMouseMove = useCallback((e) => {
+    if (e.features.length && (e.features[0].layer.id === "metroMarkers" || e.features[0].layer.id === "buses")) {
+      const { properties } = e.features[0];
+  
+      setTooltip({
+        visible: true,
+        content: properties["STOP_NAME"] || `Bus Stop: ${properties["STOPNAME"]}` || "Metro Station",
+        x: e.point.x,
+        y: e.point.y,
+      });
+  
+    } else {
+      setTooltip({ visible: false, content: "", x: 0, y: 0 });
+    }
+  }, []);
+
   const onMouseEnter = useCallback(() => setCursor("pointer"), []);
   const onMouseLeave = useCallback(() => setCursor("auto"), []);
   const [interactiveLayerIds, setInteractiveLayerIds] = useState(["nonexist"]);
@@ -94,7 +118,7 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
     const map = mapRef.current.getMap();
     await loadMarkerIcons(map);
     setMarkersLoaded(true);
-    setInteractiveLayerIds([MARKERS_LAYER_ID]);
+    setInteractiveLayerIds([MARKERS_LAYER_ID, "metroMarkers", "buses"]);
     startIconCoordinates &&
       flyTo({
         longitude: startIconCoordinates.longitude,
@@ -103,21 +127,28 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
   }, [startIconCoordinates, flyTo, mapRef]);
 
   const onClick = (e) => {
-    flyTo({
-      latitude: e.lngLat.lat,
-      longitude: e.lngLat.lng,
-    });
+    if (e.features.length && e.features[0].layer.id === MARKERS_LAYER_ID) {
+      flyTo({
+        latitude: e.lngLat.lat,
+        longitude: e.lngLat.lng,
+      });
+    }
 
-    // if metro, get station name
-    let layerId = e.features[0].layer.id;
-    if (layerId === "metroMarkers") {
-      console.log(e.features[0].properties["STOP_NAME"]);
+    // if transit station, get station name
+    if (e.features.length) {
+      let layerId = e.features[0].layer.id;
+
+      if (layerId === "metroMarkers") {
+        console.log("Metro Station:", e.features[0].properties["STOP_NAME"]);
+      } else if (layerId === "buses") {
+        console.log("Bus Stop:", e.features[0].properties["STOPNAME"]);
+      }
     }
     
     if (isMobile) {
       dispatch({ type: "TOGGLE_LIST_PANEL" });
     }
-    if (!e.features || !e.features.length) {
+    if (!e.features || !e.features.length || !e.features[0].id) {
       dispatch({ type: "RESET_SELECTED_ORGANIZATION" });
     } else if (stakeholders) {
       const { id } = e.features[0];
@@ -147,29 +178,18 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
     metroCLine,
     metroELine,
     metroKLine,
+    busStops,
   } = useMarkersGeojson({
     stakeholders,
     categoryIds,
   });
 
+  const toggleTransit = () => {
+    setShowTransit(!showTransit);
+  }
+
   const listPanelLeftPostion = isListPanelOpen ? 524 : 0;
   const filterPanelLeftPostion = isFilterPanelOpen ? 340 : 0;
-
-    // count markers on map (not incl. metro)
-  // const onMoveEnd = () => {
-  //   if (mapRef.current) {
-  //     const map = mapRef.current.getMap();
-  //     const features = map.queryRenderedFeatures({
-  //       layers: [MARKERS_LAYER_ID],
-  //     });
-
-  //     const markersCount = features.filter(
-  //       (feature) => feature.layer.id === MARKERS_LAYER_ID
-  //     ).length;
-
-  //     console.log("Visible markers count:", markersCount);
-  //   }
-  // };
 
   return (
     <div style={{ position: "relative", height: "100%", width: "100%" }}>
@@ -187,10 +207,30 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
         cursor={cursor}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
+        onMouseMove={onMouseMove}
       >
         {!isMobile && (
           <NavigationControl showCompass={false} style={{ top: 8, right: 8 }} />
         )}
+
+        <ToggleButton 
+          value="toggle" 
+          selected={showTransit} 
+          style={{ 
+            position: "absolute",
+            bottom: 28,
+            right: 15,
+            padding: "1px 4px",
+            fontSize: 13,
+            fontWeight: "bold",
+            color: showTransit ? "#474646b4" : "#343434",
+            backgroundColor: showTransit? "#fffffffc" : "#efeded93"
+          }}
+          onChange={toggleTransit}
+        >
+          {"Transit"}
+        </ToggleButton>
+
         {startIconCoordinates && (
           <Marker
             longitude={startIconCoordinates.longitude}
@@ -202,7 +242,8 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
             <StartIcon />
           </Marker>
         )}
-        {markersLoaded && (
+
+        {(markersLoaded && showTransit) && (
           <>
             <Source type="geojson" data={metroALine}>
               <Layer {...aLineLayerStyles} />
@@ -225,7 +266,14 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
           </>
         )}
 
-        {markersLoaded && (
+        {/* display bus stops only if zoomed in */}
+        {(markersLoaded && showTransit && viewport.zoom >= 13) && (
+          <Source type="geojson" data={busStops}>
+            <Layer {...busStopStyles} />
+          </Source>
+        )}
+
+        {(markersLoaded && showTransit) && (
           <Source type="geojson" data={metroMarkersGeojson}>
             <Layer {...metroMarkersLayerStyles} />
           </Source>
@@ -236,6 +284,7 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
             <Layer {...markersLayerStyles} />
           </Source>
         )}
+
         {regionGeoJSON && (
           <Source id="my-data" type="geojson" data={regionGeoJSON}>
             <Layer {...regionFillStyle} />
@@ -272,6 +321,30 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
             toggleCategory={toggleCategory}
           />
         </Grid>
+      )}
+
+      {tooltip.visible && (
+        <Tooltip
+          open={tooltip.visible}
+          title={<span style={{ fontSize: 12 }}> {tooltip.content}</span> }
+          placement="top"
+          componentsProps={{
+            tooltip: {
+              sx: {
+                padding: "1px 8px 3px",
+                borderRadius: "4px" 
+              },
+            },
+          }}
+        >
+          <Box
+            sx={{
+              position: "absolute",
+              left: tooltip.x,
+              top: tooltip.y - 10,
+            }}
+          />
+        </Tooltip>
       )}
     </div>
   );

@@ -9,12 +9,13 @@ import {
 import { useSelectedOrganization } from "../../../../appReducer";
 
 // metro json imports
-import metroGeojson from "./TransitGeoJSON/GeoJSON4326.json";
-import metroALine from "./TransitGeoJSON/AMetroLine.json";
-import metroBDLine from "./TransitGeoJSON/BandDMetroLine.json";
-import metroCLine from "./TransitGeoJSON/MetroCLine.json";
-import metroELine from "./TransitGeoJSON/MetroELine.json";
-import metroKLine from "./TransitGeoJSON/KMetroLine.json";
+import metroGeojson from "./TransitJSON/GeoJSON4326.json";
+import metroALine from "./TransitJSON/AMetroLine.json";
+import metroBDLine from "./TransitJSON/BandDMetroLine.json";
+import metroCLine from "./TransitJSON/MetroCLine.json";
+import metroELine from "./TransitJSON/MetroELine.json";
+import metroKLine from "./TransitJSON/KMetroLine.json";
+import busStops from "./TransitJSON/busstops.json";
 
 export const MARKERS_LAYER_ID = "markers";
 
@@ -111,7 +112,6 @@ export const metroMarkersLayerStyles = {
     "icon-image": ["get", "iconId"],
     "icon-allow-overlap": true,
     "icon-size": 1 / MARKER_SCALE,
-    // "icon-anchor": "bottom",
   },
 };
 
@@ -179,6 +179,19 @@ export const kLineLayerStyles = {
     "line-cap": "round",
   },
 };
+
+export const busStopStyles = {
+  id: "buses",
+  type: "circle",
+  source: "busStopSource",
+  paint: {
+    "circle-radius": 4,
+    "circle-color": "#FF5722",
+    "circle-stroke-width": 1,
+    "circle-stroke-color": "#FFFFFF",
+  },
+  }
+
 
 // symbol layer data
 export function useMarkersGeojson({ stakeholders, categoryIds }) {
@@ -250,5 +263,6 @@ export function useMarkersGeojson({ stakeholders, categoryIds }) {
     metroCLine,
     metroELine,
     metroKLine,
+    busStops,
   };
 }

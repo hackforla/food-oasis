@@ -154,42 +154,6 @@ const ResultsFilters = ({
               }}
             >
               <AddressDropDown autoFocus={false} />
-              {/* THIS BUTTON ISN'T HERE IN THE NEW DESIGN FOR PHONE */}
-              <Tooltip
-                title={
-                  locationPermission === "denied" || !!error
-                    ? "Please allow location access"
-                    : "Show Your Current Location"
-                }
-              >
-                <Box
-                  sx={{
-                    display: { xs: "block", sm: "block" },
-                  }}
-                >
-                  <Button
-                    variant="recenter"
-                    onClick={useMyLocationTrigger}
-                    disabled={locationPermission === "denied" || !!error}
-                    icon="locationSearching"
-                    sx={(theme) => ({
-                      backgroundColor: theme.palette.common.white,
-                      "&:hover": {
-                        backgroundColor: theme.palette.common.white,
-                      },
-                    })}
-                  >
-                    <LocationSearching
-                      sx={(theme) => ({
-                        fontSize: "1.25rem",
-                        backgroundColor: theme.palette.common.white,
-                        color: theme.palette.common.black,
-                      })}
-                    />
-                  </Button>
-                </Box>
-              </Tooltip>
-              {/* =================================================== */}
               <Box
                 sx={{
                   maxWidth: "48px",

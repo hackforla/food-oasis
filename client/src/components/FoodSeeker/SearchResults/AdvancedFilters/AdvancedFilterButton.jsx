@@ -36,7 +36,9 @@ const CustomButton = styled(Button, {
       ? theme.palette.filterButtons.backgroundColor
       : theme.palette.common.white,
     "&:hover": {
-      backgroundColor: theme.palette.filterButtons.backgroundColor,
+      backgroundColor: isSelected
+        ? theme.palette.filterButtons.hoverSelectedColor
+        : theme.palette.filterButtons.hoverColor,
     },
   },
 }));

@@ -85,6 +85,7 @@ export const palette = {
     },
     backgroundColor: "#E6F0FF",
     bodyText: "#313233",
-    hoverColor: "#CBE3F1",
+    hoverColor: "#f0f0f0",
+    hoverSelectedColor: "#D9E3F2"
   },
 };

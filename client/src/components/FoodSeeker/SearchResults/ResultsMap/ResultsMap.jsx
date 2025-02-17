@@ -15,7 +15,7 @@ import { MAPBOX_ACCESS_TOKEN, DEFAULT_VIEWPORT } from "helpers/Constants";
 import useBreakpoints from "hooks/useBreakpoints";
 import useFeatureFlag from "hooks/useFeatureFlag";
 import "mapbox-gl/dist/mapbox-gl.css";
-import Map, { GeolocateControl, Layer, Marker, Source } from "react-map-gl";
+import Map, { Layer, Marker, Source } from "react-map-gl";
 import { useLocation, useNavigate } from "react-router-dom";
 import * as analytics from "services/analytics";
 import {
@@ -37,6 +37,7 @@ import {
   useMarkersGeojson,
 } from "./MarkerHelpers";
 import { regionBorderStyle, regionFillStyle } from "./RegionHelpers";
+import Geolocate from "../ResultsFilters/Geolocate";
 
 const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
   const [markersLoaded, setMarkersLoaded] = useState(false);
@@ -233,13 +234,25 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
       >
-        {!isMobile && <CustomNavigationControl />}
-        <GeolocateControl
-          positionOptions={{ enableHighAccuracy: true }}
-          trackUserLocation={false}
-          showUserHeading={true}
-          position="bottom-right"
-        />
+        {!isMobile && (
+          <>
+            <CustomNavigationControl />
+            <Box
+              sx={{
+                position: "absolute",
+                top: 80,
+                right: 10,
+                zIndex: 10,
+                borderRadius: "6px",
+                boxShadow: "0 1px 6px rgba(0, 0, 0, 0.416)",
+                border: "1.5px solid rgba(0, 0, 0, 0.1)",
+              }}
+            >
+              <Geolocate />
+            </Box>
+          </>
+        )}
+
         {startIconCoordinates && (
           <Marker
             longitude={startIconCoordinates.longitude}

@@ -1,7 +1,7 @@
 import LocationSearching from "@mui/icons-material/LocationSearching";
 import { Button, Tooltip } from "@mui/material";
 import useGeolocation, { useLocationPermission } from "hooks/useGeolocation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import * as analytics from "services/analytics";
 import {
   useSearchCoordinates,
@@ -17,6 +17,12 @@ const Geolocate = () => {
   const locationPermission = useLocationPermission();
   const [error, setError] = useState("");
   const { flyTo } = useMapbox();
+
+  useEffect(() => {
+    if (error && locationPermission === "granted") {
+      setError("");
+    }
+  }, [error, locationPermission]);
 
   const useMyLocationTrigger = async () => {
     try {

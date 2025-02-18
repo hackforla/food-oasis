@@ -5,9 +5,8 @@ import {
   FOOD_PANTRY_CATEGORY_ID,
   MEAL_PROGRAM_CATEGORY_ID,
 } from "constants/stakeholder";
-import { useLocationPermission } from "hooks/useGeolocation";
 import PropTypes from "prop-types";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 import * as analytics from "services/analytics";
 import CategoryButton from "./CategoryButton";
 import SwitchViewsButton from "./SwitchViewsButton";
@@ -25,16 +24,8 @@ const ResultsFilters = ({
   const isMealsSelected = categoryIds.indexOf(MEAL_PROGRAM_CATEGORY_ID) >= 0;
   const isPantrySelected = categoryIds.indexOf(FOOD_PANTRY_CATEGORY_ID) >= 0;
   const { taglineText } = TENANT_CONFIG;
-  const locationPermission = useLocationPermission();
-  const [error, setError] = useState("");
   const hasAdvancedFilterFeatureFlag = useFeatureFlag("advancedFilter");
   const { isMobile } = useBreakpoints();
-
-  useEffect(() => {
-    if (error && locationPermission === "granted") {
-      setError("");
-    }
-  }, [error, locationPermission]);
 
   const toggleMeal = useCallback(() => {
     toggleCategory(MEAL_PROGRAM_CATEGORY_ID);

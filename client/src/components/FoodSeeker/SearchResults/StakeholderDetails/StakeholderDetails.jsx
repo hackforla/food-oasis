@@ -333,9 +333,14 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
               direction="column"
               justifyContent="flex-start"
               alignItems="center"
+              gap={2}
               sx={{ marginTop: ".2rem", marginRight: "1rem" }}
             >
               <StakeholderIcon stakeholder={selectedOrganization} />
+              <Typography variant="body2" align="center">
+                {Boolean(selectedOrganization?.distance) &&
+                  `${selectedOrganization.distance?.toFixed(1)} mi`}
+              </Typography>
             </Stack>
           </Grid2>
           <Grid2 xs={10}>
@@ -766,7 +771,7 @@ function normalizeSocialLink({ value, socialMedia }) {
     value === "N/A" ||
     value === "n/a" ||
     value === "n / a" ||
-    value === "N / A" || 
+    value === "N / A" ||
     !value
   ) {
     return null;

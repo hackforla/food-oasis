@@ -111,46 +111,74 @@ export default function Identification({
           </Box>
         </Grid>
 
-        <Grid item xs={12} sm={6}>
-          <Box sx={{ display: "flex", alignItems: "flex-start" }}>
-            <Stack direction="column" sx={{ width: "100%" }}>
-              <Label
-                id="phone"
-                label="Phone"
-                tooltipTitle="Phone number for clients to use"
-              />
-              <PatternFormat
-                format="(###) ###-####"
-                customInput={TextField}
-                mask="_"
-                id="phone"
-                name="phone"
-                placeholder="Phone"
-                value={values.phone}
-                onValueChange={(formattedValues) => {
-                  setFieldValue("phone", formattedValues.formattedValue);
-                }}
-                onBlur={handleBlur}
-                helperText={touched.phone ? errors.phone : ""}
-                error={touched.phone && Boolean(errors.phone)}
-              />
-            </Stack>
-            <FormControlLabel
-              sx={{ mt: 5, ml: 0 }}
-              control={
-                <Checkbox
-                  margin="normal"
-                  name="confirmedPhone"
-                  value={values.confirmedPhone}
-                  checked={values.confirmedPhone}
-                  onChange={() =>
-                    setFieldValue("confirmedPhone", !values.confirmedPhone)
+        <Grid item sm={6} xs={12}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "flex-start",
+            }}
+          >
+            <Stack
+              sx={{
+                width: "100%",
+              }}
+            >
+              <Stack direction="row" spacing={1} alignItems="flex-end">
+                <Box>
+                  <Label
+                    id="phone"
+                    label="Phone"
+                    tooltipTitle="Phone number for clients to use"
+                  />
+                  <PatternFormat
+                    format="(###) ###-####"
+                    customInput={TextField}
+                    mask="_"
+                    id="phone"
+                    name="phone"
+                    placeholder="Phone"
+                    value={values.phone}
+                    onValueChange={(formattedValues) => {
+                      setFieldValue("phone", formattedValues.formattedValue);
+                    }}
+                    onBlur={handleBlur}
+                    helperText={touched.phone ? errors.phone : ""}
+                    error={touched.phone && Boolean(errors.phone)}
+                  />
+                </Box>
+                <Box>
+                  <Label id="phone_ext" label="Ext" />
+                  <TextField
+                    id="phone_ext"
+                    name="phone_ext"
+                    placeholder="Ext or name"
+                    value={values.phone_ext}
+                    onChange={(e) => console.log(e.target.value)}
+                    onBlur={handleBlur}
+                  />
+                </Box>
+                
+                <FormControlLabel
+                  sx={{
+                   
+                 
+                  }}
+                  control={
+                    <Checkbox
+                      margin="normal"
+                      name="confirmedPhone"
+                      value={values.confirmedPhone}
+                      checked={values.confirmedPhone}
+                      onChange={() =>
+                        setFieldValue("confirmedPhone", !values.confirmedPhone)
+                      }
+                      onBlur={handleBlur}
+                    />
                   }
-                  onBlur={handleBlur}
+                  label="Confirm"
                 />
-              }
-              label="Confirm"
-            />
+              </Stack>
+            </Stack>
           </Box>
         </Grid>
 

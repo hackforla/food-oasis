@@ -149,11 +149,11 @@ export default function Identification({
                 <Box>
                   <Label id="phone_ext" label="Ext" />
                   <TextField
-                    id="phone_ext"
-                    name="phone_ext"
+                    id="phoneExt"
+                    name="phoneExt"
                     placeholder="Ext or name"
-                    value={values.phone_ext}
-                    onChange={(e) => console.log(e.target.value)}
+                    value={values.phoneExt}
+                    onChange={handleChange}
                     onBlur={handleBlur}
                   />
                 </Box>

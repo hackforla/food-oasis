@@ -45,6 +45,14 @@ const Geolocate = () => {
           ? "Please allow location access"
           : "Show Your Current Location"
       }
+      componentsProps={{
+        tooltip: {
+          sx: {
+            padding: "12px",
+            fontSize: "0.95rem",
+          },
+        },
+      }}
     >
       <Button
         variant="recenter"

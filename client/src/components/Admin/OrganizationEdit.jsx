@@ -101,7 +101,7 @@ const emptyOrganization = {
   state: "",
   zip: "",
   phone: "",
-  phoneExt:"",
+  phoneExt: "",
   email: "",
   latitude: "",
   longitude: "",
@@ -412,7 +412,7 @@ const OrganizationEdit = (props) => {
           }}
           onSubmit={(values, { setSubmitting, setFieldValue }) => {
             if (values.id) {
-              console.log(values)
+              console.log("update data: ", values);
               return stakeholderService
                 .put({ ...values, loginId: user.id })
                 .then(() => {
@@ -433,6 +433,7 @@ const OrganizationEdit = (props) => {
                   setSubmitting(false);
                 });
             } else {
+               console.log("new stakeholder data: ", values);
               return stakeholderService
                 .post({ ...values, loginId: user.id })
                 .then((response) => {

@@ -28,6 +28,7 @@ export const DEFAULT_STAKEHOLDER = {
   state: "",
   zip: "",
   phone: "",
+  phoneExt:"",
   email: "",
   notes: "",
   hours: "",

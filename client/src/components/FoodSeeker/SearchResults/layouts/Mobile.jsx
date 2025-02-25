@@ -58,7 +58,7 @@ const MobileLayout = ({ filters, map, list, showList }) => {
     const snapThreshold = 5;
 
     let newY = (ui.y / window.innerHeight) * 100;
-    let closestSnapPoint = snapPoints.find(
+    const closestSnapPoint = snapPoints.find(
       (point) => Math.abs(point - newY) < snapThreshold
     );
 

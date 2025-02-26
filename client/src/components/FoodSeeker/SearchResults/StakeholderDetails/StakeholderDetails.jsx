@@ -54,6 +54,7 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import XIcon from "@mui/icons-material/X";
 import PinterestIcon from "@mui/icons-material/Pinterest";
 import IconButton from "@mui/material/IconButton";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 
 const MinorHeading = styled(Typography)(({ theme }) => ({
   variant: "h5",
@@ -273,21 +274,8 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
         stakeholder={selectedOrganization}
         setToast={setToast}
       />
-      <Stack
-        height={"100%"}
-        width={"100%"}
-        sx={{
-          display: "flex",
-        }}
-      >
-        <Stack
-          direction={"row"}
-          alignItems="flex-end"
-          sx={{
-            width: 1,
-            padding: isDesktop ? "1.5rem 35px 0 65px" : "1rem 1.5rem",
-          }}
-        >
+      <Stack p={2} spacing={2} height="calc(100vh - 126px)">
+        <Stack direction="row" alignItems="flex-end">
           <Button
             variant="text"
             sx={(theme) => ({
@@ -303,45 +291,26 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
               },
             })}
             onClick={handleBackButtonClick}
+            startIcon={<ChevronLeftIcon />}
           >
-            &lt; Back to Results
+            Back to Results
           </Button>
         </Stack>
-        {isDesktop && (
-          <Divider
-            sx={(theme) => ({
-              background: theme.palette.common.black,
-              margin: isDesktop ? "16px 35px 0 65px" : "0 1.5rem",
-            })}
-          />
-        )}
+        <Divider
+          sx={(theme) => ({
+            background: theme.palette.common.black,
+          })}
+        />
         <Grid2
           container
-          spacing={0}
+          gap={1}
           sx={{
             flex: 1,
-            minHeight: "6rem",
-            overflowY: "auto",
-            padding: isDesktop
-              ? "38px 35px 0 65px"
-              : `3px 23px ${paddingBottom}px`,
+            overflowX: "scroll",
           }}
         >
-          <Grid2 xs={2}>
-            <Stack
-              xs={2}
-              direction="column"
-              justifyContent="flex-start"
-              alignItems="center"
-              gap={2}
-              sx={{ marginTop: ".2rem", marginRight: "1rem" }}
-            >
-              <StakeholderIcon stakeholder={selectedOrganization} />
-              <Typography variant="body2" align="center">
-                {Boolean(selectedOrganization?.distance) &&
-                  `${selectedOrganization.distance?.toFixed(1)} mi`}
-              </Typography>
-            </Stack>
+          <Grid2 xs={1}>
+            <StakeholderIcon stakeholder={selectedOrganization} />
           </Grid2>
           <Grid2 xs={10}>
             <Stack direction="column" xs={10}>
@@ -771,7 +740,7 @@ function normalizeSocialLink({ value, socialMedia }) {
     value === "N/A" ||
     value === "n/a" ||
     value === "n / a" ||
-    value === "N / A" ||
+    value === "N / A" || 
     !value
   ) {
     return null;

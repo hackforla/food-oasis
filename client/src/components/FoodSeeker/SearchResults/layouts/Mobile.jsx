@@ -77,15 +77,16 @@ const MobileLayout = ({ filters, map, list, showList }) => {
       >
         <Box sx={{ flex: 1 }}>{map}</Box>
         <Stack
-      sx={{
+          sx={{
             display: "flex",
             flexDirection: "column",
             position: "absolute",
-            bottom: "200px"
-          }}>
-        <MapboxBtn/>
-        <AttributionInfo />
-      </Stack>
+            bottom: "200px",
+          }}
+        >
+          <MapboxBtn />
+          <AttributionInfo />
+        </Stack>
         {list && (
           <Draggable
             position={position}
@@ -101,8 +102,7 @@ const MobileLayout = ({ filters, map, list, showList }) => {
             }}
           >
             <Box sx={overlay}>
-              <Grid container spacing={0}>
-              </Grid>
+              <Grid container spacing={0}></Grid>
               <Box
                 sx={{
                   width: "100vw",
@@ -112,11 +112,10 @@ const MobileLayout = ({ filters, map, list, showList }) => {
                 <Box
                   className="handle"
                   sx={{
-                    height: 42,
+                    height: 15,
                     width: "90vw",
                     paddingTop: "8px",
                     marginX: "auto",
-                    borderBottom: "1px solid #000",
                     backgroundColor: "white",
                   }}
                 >

@@ -53,8 +53,8 @@ const DesktopLayout = ({ filters, list, map }) => {
             width: "524px",
             transition: "left .5s ease-in-out",
             left: isListPanelOpen ? leftPostion : "-524px",
-            top: isWidget ? "62px": "126px",
-            height: "calc(100% - 120px)",
+            top: isWidget ? "62px" : "126px",
+            height: "calc(100% - 126px)",
             zIndex: 3,
             background: "white",
           }}
@@ -62,7 +62,6 @@ const DesktopLayout = ({ filters, list, map }) => {
           <Box
             sx={{
               width: "100%",
-              boxShadow: "1px 0px 10px rgba(0, 0, 0, 0.10)",
             }}
           >
             {list}

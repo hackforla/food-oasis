@@ -45,15 +45,9 @@ export default function useOrganizationBests() {
     useNoKnownEligibilityRequirementsFilter();
   const { tenantTimeZone } = useSiteContext();
 
-  let latitude, longitude;
-  if (location.search && !searchCoordinates) {
-    const queryParams = new URLSearchParams(location.search);
-    longitude = Number(queryParams.get("longitude"));
-    latitude = Number(queryParams.get("latitude"));
-  } else {
-    longitude = searchCoordinates?.longitude || DEFAULT_COORDINATES.longitude;
-    latitude = searchCoordinates?.latitude || DEFAULT_COORDINATES.latitude;
-  }
+  const longitude =
+    searchCoordinates?.longitude || DEFAULT_COORDINATES.longitude;
+  const latitude = searchCoordinates?.latitude || DEFAULT_COORDINATES.latitude;
 
   const dispatch = useAppDispatch();
 

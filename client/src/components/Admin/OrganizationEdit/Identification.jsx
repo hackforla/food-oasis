@@ -25,7 +25,6 @@ import Label from "../ui/Label";
 import Textarea from "../ui/Textarea";
 import { PatternFormat } from "react-number-format";
 
-
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -123,8 +122,12 @@ export default function Identification({
                 width: "100%",
               }}
             >
-              <Stack direction="row" spacing={1} alignItems="flex-end">
-                <Box>
+              <Stack
+                direction={{ xs: "column", sm: "row" }}
+                spacing={{ xs: 1, sm: 2, md: 4 }}
+                alignItems="flex-end"
+              >
+                <Box sx={{ width: { xs: "100%", sm: "auto" } }}>
                   <Label
                     id="phone"
                     label="Phone"
@@ -146,7 +149,7 @@ export default function Identification({
                     error={touched.phone && Boolean(errors.phone)}
                   />
                 </Box>
-                <Box>
+                <Box sx={{ width: { xs: "100%", sm: "auto" } }}>
                   <Label id="phone_ext" label="Ext" />
                   <TextField
                     id="phoneExt"
@@ -157,12 +160,8 @@ export default function Identification({
                     onBlur={handleBlur}
                   />
                 </Box>
-                
+
                 <FormControlLabel
-                  sx={{
-                   
-                 
-                  }}
                   control={
                     <Checkbox
                       margin="normal"

@@ -412,7 +412,6 @@ const OrganizationEdit = (props) => {
           }}
           onSubmit={(values, { setSubmitting, setFieldValue }) => {
             if (values.id) {
-              console.log("update data: ", values);
               return stakeholderService
                 .put({ ...values, loginId: user.id })
                 .then(() => {

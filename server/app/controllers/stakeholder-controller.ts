@@ -155,7 +155,6 @@ const put: RequestHandler<
 > = async (req, res) => {
   try {
     await stakeholderService.update(req.body);
-    console.log(req.body);
     res.sendStatus(200);
   } catch (err) {
     console.error(err);

@@ -1,3 +1,6 @@
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import PhoneIcon from "@mui/icons-material/Phone";
+import SubdirectoryArrowRightIcon from "@mui/icons-material/SubdirectoryArrowRight";
 import {
   Box,
   Button,
@@ -7,6 +10,9 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import {
   FOOD_PANTRY_CATEGORY_ID,
@@ -29,14 +35,7 @@ import {
   nextOpenTime,
   standardTime,
 } from "helpers";
-
-import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
-
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import PhoneIcon from "@mui/icons-material/Phone";
-import SubdirectoryArrowRightIcon from "@mui/icons-material/SubdirectoryArrowRight";
+import useBreakpoints from "hooks/useBreakpoints";
 import AppleIcon from "icons/AppleIcon";
 import ForkIcon from "icons/ForkIcon";
 import StakeholderIcon from "images/stakeholderIcon";
@@ -113,12 +112,13 @@ export const stakeholdersDaysHours = (
   }
 };
 
-const StakeholderPreview = ({ stakeholder, onSelect, isDesktop }) => {
+const StakeholderPreview = ({ stakeholder, onSelect }) => {
   const dispatch = useAppDispatch();
   const searchCoordinates = useSearchCoordinates();
   const userCoordinates = useUserCoordinates();
   const originCoordinates = searchCoordinates || userCoordinates;
   const { tenantTimeZone } = useSiteContext();
+  const { isDesktop } = useBreakpoints();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -161,32 +161,14 @@ const StakeholderPreview = ({ stakeholder, onSelect, isDesktop }) => {
     calculateMinutesToOpening(stakeholderHours, tenantTimeZone);
 
   return (
-    <Grid2
-      container
-      spacing={0}
-      key={stakeholder.id}
-      sx={{
-        minHeight: "6rem",
-        padding: isDesktop ? "1.5rem 2.625rem" : "1.5rem 0",
-        margin: "14px 23px",
-        "&:hover": {
-          boxShadow: isDesktop ? "0 4px 20px rgb(0 22 100 / 20%)" : 0,
-        },
-        borderRadius: "10px",
-      }}
-    >
-      <Grid2
-        xs={2}
-        sx={{ cursor: "pointer" }}
-        onClick={() => handleSelectOrganization(stakeholder)}
-      >
+    <Grid2 container key={stakeholder.id} p={2} gap={2} flex={1}>
+      <Grid2 xs={1} onClick={() => handleSelectOrganization(stakeholder)}>
         <Stack
           xs={2}
           direction="column"
           justifyContent="flex-start"
           alignItems="center"
           gap={2}
-          sx={{ marginTop: ".2rem", marginRight: "1rem", height: "100%" }}
         >
           <StakeholderIcon stakeholder={stakeholder} />
           <Typography variant="body2" align="center">
@@ -195,7 +177,7 @@ const StakeholderPreview = ({ stakeholder, onSelect, isDesktop }) => {
         </Stack>
       </Grid2>
 
-      <Grid2 xs={10}>
+      <Grid2 xs={10} flexGrow={1}>
         <Stack direction="column" xs={10}>
           <Stack sx={{ cursor: "pointer" }}>
             <Typography
@@ -328,6 +310,7 @@ const StakeholderPreview = ({ stakeholder, onSelect, isDesktop }) => {
                     display: "none",
                   },
                   ".MuiAccordionDetails-root": { padding: "0px 6px 0px 0px" },
+                  backgroundColor: "transparent",
                 }}
               >
                 <AccordionSummary
@@ -354,7 +337,9 @@ const StakeholderPreview = ({ stakeholder, onSelect, isDesktop }) => {
                     color={linkText}
                     align="right"
                     sx={{
-                      "&:hover": { textDecoration: "underline" },
+                      "&:hover": {
+                        textDecoration: "underline",
+                      },
                     }}
                   >
                     More Hours

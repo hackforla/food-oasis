@@ -122,11 +122,10 @@ const MobileLayout = ({ filters, map, list, showList }) => {
                 <Box
                   className="handle"
                   sx={{
-                    height: 42,
+                    height: 15,
                     width: "90vw",
                     paddingTop: "8px",
                     marginX: "auto",
-                    borderBottom: "1px solid #000",
                     backgroundColor: "white",
                   }}
                 >

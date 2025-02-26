@@ -64,7 +64,6 @@ const DesktopLayout = ({ filters, list, map }) => {
           <Box
             sx={{
               width: "100%",
-              boxShadow: "1px 0px 10px rgba(0, 0, 0, 0.10)",
             }}
           >
             {list}

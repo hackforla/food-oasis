@@ -1,24 +1,19 @@
-import LocationSearching from "@mui/icons-material/LocationSearching";
-import { Box, Button, Stack, Tooltip, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import AddressDropDown from "components/FoodSeeker/AddressDropDown";
 import {
   FOOD_PANTRY_CATEGORY_ID,
   MEAL_PROGRAM_CATEGORY_ID,
 } from "constants/stakeholder";
-import useGeolocation, { useLocationPermission } from "hooks/useGeolocation";
 import PropTypes from "prop-types";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 import * as analytics from "services/analytics";
 import CategoryButton from "./CategoryButton";
 import SwitchViewsButton from "./SwitchViewsButton";
 import useFeatureFlag from "hooks/useFeatureFlag";
-import {
-  useSearchCoordinates,
-  useUserCoordinates,
-} from "../../../../appReducer";
-import { useMapbox } from "../../../../hooks/useMapbox";
 import { TENANT_CONFIG } from "../../../../helpers/Constants";
+import Geolocate from "./Geolocate";
+import useBreakpoints from "hooks/useBreakpoints";
 
 const ResultsFilters = ({
   categoryIds,
@@ -29,20 +24,8 @@ const ResultsFilters = ({
   const isMealsSelected = categoryIds.indexOf(MEAL_PROGRAM_CATEGORY_ID) >= 0;
   const isPantrySelected = categoryIds.indexOf(FOOD_PANTRY_CATEGORY_ID) >= 0;
   const { taglineText } = TENANT_CONFIG;
-  const { getUserLocation } = useGeolocation();
-  const searchCoordinates = useSearchCoordinates();
-  const userCoordinates = useUserCoordinates();
-  const startIconCoordinates = searchCoordinates || userCoordinates;
-  const locationPermission = useLocationPermission();
-  const [error, setError] = useState("");
   const hasAdvancedFilterFeatureFlag = useFeatureFlag("advancedFilter");
-  const { flyTo } = useMapbox();
-
-  useEffect(() => {
-    if (error && locationPermission === "granted") {
-      setError("");
-    }
-  }, [error, locationPermission]);
+  const { isMobile } = useBreakpoints();
 
   const toggleMeal = useCallback(() => {
     toggleCategory(MEAL_PROGRAM_CATEGORY_ID);
@@ -53,21 +36,6 @@ const ResultsFilters = ({
     toggleCategory(FOOD_PANTRY_CATEGORY_ID);
     analytics.postEvent("togglePantryFilter", {});
   }, [toggleCategory]);
-
-  const useMyLocationTrigger = async () => {
-    try {
-      // depending on the network speed, it might take a bit before the screen recenters to user location
-      await getUserLocation();
-      startIconCoordinates &&
-        flyTo({
-          longitude: startIconCoordinates.longitude,
-          latitude: searchCoordinates.latitude,
-        });
-    } catch (e) {
-      setError(e);
-    }
-    analytics.postEvent("recenterMap", {});
-  };
 
   return (
     <Grid2
@@ -154,42 +122,7 @@ const ResultsFilters = ({
               }}
             >
               <AddressDropDown autoFocus={false} />
-              {/* THIS BUTTON ISN'T HERE IN THE NEW DESIGN FOR PHONE */}
-              <Tooltip
-                title={
-                  locationPermission === "denied" || !!error
-                    ? "Please allow location access"
-                    : "Show Your Current Location"
-                }
-              >
-                <Box
-                  sx={{
-                    display: { xs: "block", sm: "block" },
-                  }}
-                >
-                  <Button
-                    variant="recenter"
-                    onClick={useMyLocationTrigger}
-                    disabled={locationPermission === "denied" || !!error}
-                    icon="locationSearching"
-                    sx={(theme) => ({
-                      backgroundColor: theme.palette.common.white,
-                      "&:hover": {
-                        backgroundColor: theme.palette.common.white,
-                      },
-                    })}
-                  >
-                    <LocationSearching
-                      sx={(theme) => ({
-                        fontSize: "1.25rem",
-                        backgroundColor: theme.palette.common.white,
-                        color: theme.palette.common.black,
-                      })}
-                    />
-                  </Button>
-                </Box>
-              </Tooltip>
-              {/* =================================================== */}
+              {isMobile && <Geolocate />}
               <Box
                 sx={{
                   maxWidth: "48px",

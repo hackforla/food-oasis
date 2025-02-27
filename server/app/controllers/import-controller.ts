@@ -4,6 +4,7 @@ import importService from "../services/import-service";
 import { RequestHandler } from "express";
 import { ImportAction } from "../../types/import-types";
 import { LAPLFoodResource } from "../../types/load-lapl-types";
+import { InsertStakeholderParams } from "../../types/stakeholder-types";
 
 // LA Public Library Food Resources Listing - Scraped
 const getLaplFoodResources: RequestHandler<
@@ -46,7 +47,7 @@ const importStakeholderCsv: RequestHandler<
   never,
   void,
   // TODO: update data type, possibly stakeholder array
-  { data: any; action: ImportAction; tenantId: number },
+  { data: InsertStakeholderParams[]; action: ImportAction; tenantId: number },
   never
 > = async (req, res) => {
   const { data, action, tenantId } = req.body;

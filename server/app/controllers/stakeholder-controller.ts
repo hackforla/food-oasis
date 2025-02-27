@@ -135,7 +135,11 @@ const post: RequestHandler<
   never
 > = async (req, res) => {
   try {
-    const resp = await stakeholderService.insert(req.body);
+    const formattedBody = {
+      ...req.body,
+      phone_ext: req.body.phoneExt, // Convert camelCase to snake_case
+    };
+    const resp = await stakeholderService.insert(formattedBody);
     res.status(201).json(resp);
   } catch (err) {
     console.error(err);

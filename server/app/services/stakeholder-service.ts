@@ -69,9 +69,9 @@ const search = async (
   const locationClause = buildLocationClause(latitude, longitude);
   const categoryClause = buildCTEClause(name || "", categoryIds);
 
-  const sql = `${categoryClause}
+  const sql = `${categoryClause} 
     select   s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
-    s.phone, s.latitude, s.longitude, s.website,  s.notes,
+    s.phone,s.phone_ext, s.latitude, s.longitude, s.website,  s.notes,
     (select array(select row_to_json(row)
     from (
       select day_of_week as "dayOfWeek", open, close, week_of_month as "weekOfMonth"
@@ -203,7 +203,7 @@ const search = async (
 const selectById = async (id: string): Promise<Stakeholder> => {
   const sql = `select
       s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
-      s.phone, s.latitude, s.longitude, s.website,  s.notes,
+      s.phone,s.phone_ext, s.latitude, s.longitude, s.website,  s.notes,
       (select array(select row_to_json(row)
       from (
         select day_of_week as "dayOfWeek", open, close, week_of_month as "weekOfMonth"
@@ -257,7 +257,7 @@ const selectById = async (id: string): Promise<Stakeholder> => {
 const selectCsv = async (ids: string[]): Promise<Stakeholder[]> => {
   const sql = `select
   s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
-  s.phone, s.latitude, s.longitude, s.website,  s.notes,
+  s.phone,s.phone_ext, s.latitude, s.longitude, s.website,  s.notes,
   (select array(select row_to_json(row)
   from (
     select day_of_week as "dayOfWeek", open, close, week_of_month as "weekOfMonth"
@@ -431,6 +431,8 @@ const insert = async (model: InsertStakeholderParams) => {
     model.hoursNotes || "",
     model.allowWalkins || false,
     tags,
+    model.phone_ext || "",
+
   ];
 
   const result = await db.proc("create_stakeholder", params);
@@ -623,6 +625,7 @@ const update = async (model: UpdateStakeholderParams) => {
     model.state || "",
     model.zip || "",
     model.phone || "",
+    model.phoneExt ||"",
     model.latitude, // numeric
     model.longitude, // numeric
     model.website || "",

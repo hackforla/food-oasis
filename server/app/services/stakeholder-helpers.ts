@@ -92,6 +92,7 @@ const rowToStakeholder = (row: any, categories?: any): Stakeholder => {
     verificationStatusId: row.verification_status_id,
     website: row.website || "",
     zip: row.zip || "",
+    phoneExt: row.phone_ext || ""
   };
   return stakeholder;
 };

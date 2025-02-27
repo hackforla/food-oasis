@@ -121,6 +121,7 @@ export interface StakeholderBase {
   parentOrganization: string;
   parentOrganizationId: number;
   phone: string;
+  phoneExt: string;
   physicalAccess: string;
   pinterest: string;
   requirements: string;

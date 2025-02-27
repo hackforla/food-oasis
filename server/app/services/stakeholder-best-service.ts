@@ -37,7 +37,7 @@ const selectAll = async ({ tenantId }: { tenantId: string }) => {
   const sql = `
   SELECT 
   s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
-  s.phone, s.latitude, s.longitude, s.website,  s.notes,
+  s.phone, s.phone_ext, s.latitude, s.longitude, s.website,  s.notes,
   to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
     as created_date, 
   to_char(s.modified_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
@@ -118,7 +118,7 @@ const search = async ({
   const categoryClause = buildCTEClause(categoryIds, name || "");
   const sql = `${categoryClause}
     select s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
-    s.phone, s.latitude, s.longitude, s.website,  s.notes,
+    s.phone,s.phone_ext, s.latitude, s.longitude, s.website,  s.notes,
     to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
       as created_date, s.created_login_id,
     to_char(s.modified_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
@@ -220,7 +220,7 @@ const search = async ({
 const selectById = async (id: string): Promise<StakeholderBest> => {
   const sql = `select
       s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
-      s.phone, s.latitude, s.longitude, s.website,  s.notes,
+      s.phone, s.phone_ext, s.latitude, s.longitude, s.website,  s.notes,
       array_to_json(s.hours) as hours,
       (select array(select row_to_json(category_row)
         from (

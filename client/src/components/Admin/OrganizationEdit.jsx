@@ -55,6 +55,7 @@ const validationSchema = Yup.object().shape({
   phone: Yup.string()
     .matches(phoneRegExp, "Invalid phone number")
     .required("Phone number is required"),
+  phoneExt: Yup.string(),
   address1: Yup.string().required("Street address is required"),
   city: Yup.string().required("City is required"),
   state: Yup.string().required("State is required"),
@@ -100,6 +101,7 @@ const emptyOrganization = {
   state: "",
   zip: "",
   phone: "",
+  phoneExt: "",
   email: "",
   latitude: "",
   longitude: "",
@@ -430,6 +432,7 @@ const OrganizationEdit = (props) => {
                   setSubmitting(false);
                 });
             } else {
+               console.log("new stakeholder data: ", values);
               return stakeholderService
                 .post({ ...values, loginId: user.id })
                 .then((response) => {

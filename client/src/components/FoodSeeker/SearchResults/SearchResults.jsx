@@ -15,12 +15,12 @@ import {
 import Filters from "./ResultsFilters/ResultsFilters";
 import List from "./ResultsList/ResultsList";
 import Map from "./ResultsMap/ResultsMap";
-import { Desktop, Mobile, Tablet } from "./layouts";
+import { Desktop, Mobile } from "./layouts";
 import SEO from "../../SEO";
 
 const SearchResults = () => {
   const isListPanelVisible = useIsListPanelVisible();
-  const { isDesktop, isTablet } = useBreakpoints();
+  const { isDesktop } = useBreakpoints();
   const { selectAll, loading } = useOrganizationBests();
   const { categoryIds, toggleCategory } = useCategoryIds([]);
   const { getGeoJSONById } = useNeighborhoodsGeoJSON();
@@ -167,8 +167,6 @@ const SearchResults = () => {
       />
       {isDesktop ? (
         <Desktop filters={filters} map={map} list={list} />
-      ) : isTablet ? (
-        <Tablet filters={filters} map={map} list={list} />
       ) : (
         <Mobile showList={showList} filters={filters} map={map} list={list} />
       )}

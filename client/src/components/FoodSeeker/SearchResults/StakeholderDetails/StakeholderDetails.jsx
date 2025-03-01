@@ -338,7 +338,7 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
             >
               <StakeholderIcon stakeholder={selectedOrganization} />
               <Typography variant="body2" align="center">
-                {Boolean(selectedOrganization?.distance) &&
+                {selectedOrganization?.distance &&
                   `${selectedOrganization.distance?.toFixed(1)} mi`}
               </Typography>
             </Stack>

@@ -45,7 +45,7 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
   const selectedOrganization = useSelectedOrganization();
   const navigate = useNavigate();
   const location = useLocation();
-  const { isMobile, isTablet } = useBreakpoints();
+  const { isMobile } = useBreakpoints();
   const isListPanelOpen = useListPanel();
   const isFilterPanelOpen = useFilterPanel();
   const { mapRef, flyTo } = useMapbox();
@@ -147,7 +147,7 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
     const handleZoomIn = () => {
       const longOffset = 0.0399 * Math.pow(2, 11 - zoom);
       const newCenter = {
-        lng: !isTablet && isListPanelOpen ? currentCenter.lng + longOffset : currentCenter.lng,
+        lng: isListPanelOpen ? currentCenter.lng + longOffset : currentCenter.lng,
         lat: selectedOrganization ? selectedOrganization.latitude : currentCenter.lat
       };
 

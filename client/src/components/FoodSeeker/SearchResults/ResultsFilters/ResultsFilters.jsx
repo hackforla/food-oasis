@@ -72,6 +72,7 @@ const ResultsFilters = ({
   return (
     <Grid2
       container
+      id="header2"
       sx={{
         borderTop: "1px solid lightgray",
         borderBottom: "1px solid lightgray",

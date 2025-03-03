@@ -1,5 +1,6 @@
 import CloseIcon from "@mui/icons-material/Close";
 import {
+  Box,
   Checkbox,
   Divider,
   Drawer,
@@ -28,6 +29,7 @@ import {
   useNoKnownEligibilityRequirementsFilter,
 } from "../../../../appReducer";
 import { getDayTimeNow } from "helpers";
+import { useEffect, useState } from "react";
 
 const DrawerHeader = styled("div")(({ _theme }) => ({
   display: "flex",
@@ -46,13 +48,30 @@ const yPadding = { py: 2 };
 export default function FilterPanel({ mealPantry }) {
   const { isDesktop } = useBreakpoints();
   const drawerWidth = isDesktop ? 340 : "100%";
-  const drawerHeight = isDesktop ? "100%" : "50%";
+  const [headerHeight, setHeaderHeight] = useState(126);
+  const drawerHeight = isDesktop ? `calc(100vh - ${headerHeight}px)` : "50%";
 
   const { toggleMeal, togglePantry, isMealSelected, isPantrySelected } =
     mealPantry;
   const dispatch = useAppDispatch();
   const open = useFilterPanel();
   const openTime = useOpenTimeFilter();
+
+  useEffect(() => {
+    const updateHeight = () => {
+      const header1 = document.getElementById("header1");
+      const header2 = document.getElementById("header2");
+
+      const totalHeight =
+        (header1.offsetHeight || 0) + (header2.offsetHeight || 0);
+      setHeaderHeight(totalHeight);
+    };
+
+    updateHeight();
+    window.addEventListener("resize", updateHeight);
+
+    return () => window.removeEventListener("resize", updateHeight);
+  }, []);
 
   const handleRadioChange = (event) => {
     const name = event.target.name;
@@ -100,161 +119,179 @@ export default function FilterPanel({ mealPantry }) {
           width: drawerWidth,
           height: drawerHeight,
           boxSizing: "border-box",
-          padding: "1rem",
         },
       }}
       variant={isDesktop ? "persistent" : "temporary"}
       anchor={isDesktop ? "left" : "bottom"}
       open={open}
     >
-      <DrawerHeader>
-        <Typography
-          variant="h3"
-          textAlign="center"
-          sx={{ py: 2, color: "#747476" }}
-        >
-          Filters
-        </Typography>
-        <IconButton onClick={handleDrawerClose}>
-          <CloseIcon />
-        </IconButton>
-      </DrawerHeader>
-      <Divider />
-      <Typography variant="h4" sx={yPadding}>
-        Category
-      </Typography>
-      <List>
-        {["Pantry", "Meal"].map((category) => (
-          <ListItem key={category} sx={{ padding: 0 }}>
-            <ListItemButton sx={{ padding: 0 }}>
-              <FormControlLabel
-                key={category}
-                control={
-                  <Checkbox
-                    sx={checkedStyle}
-                    checked={
-                      category === "Pantry" ? isPantrySelected : isMealSelected
-                    }
-                    onChange={category === "Pantry" ? togglePantry : toggleMeal}
-                  />
-                }
-                label={
-                  <Stack direction="row" alignItems="center">
-                    {category === "Pantry" ? (
-                      <PantryIconNoBorder width="20px" height="20px" />
-                    ) : (
-                      <MealIconNoBorder width="20px" height="20px" />
-                    )}
-                    <ListItemText
-                      primary={category}
-                      sx={{
-                        marginLeft: 1,
-                      }}
-                    />
-                  </Stack>
-                }
-              />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <FormLabel id="time-selection">
-        <Typography variant="h4" sx={yPadding}>
-          Open Time
-        </Typography>
-      </FormLabel>
-
-      <RadioGroup
-        aria-labelledby="time-selection"
-        value={openTime.radio}
-        name="radio-buttons-group"
-        onChange={handleRadioChange}
-        sx={{
-          flexDirection: "column",
-          display: "flex",
-          gap: (theme) => theme.spacing(2),
-        }}
+      <Box
+        sx={(theme) => ({
+          padding: "1rem 1rem 0 1rem",
+          position: "sticky",
+          top: 0,
+          backgroundColor: theme.palette.background.paper,
+          zIndex: 1,
+        })}
       >
-        {["Show All", "Open Now"].map((text) => (
-          <FormControlLabel
-            key={text}
-            value={text}
-            control={<Radio name={text} sx={checkedStyle} />}
-            label={text}
-          />
-        ))}
-        <FormControlLabel
-          key="Customized"
-          value="Customized"
-          control={<Radio name="Customized" sx={checkedStyle} />}
-          label={
-            <Stack direction="row" sx={{ width: "100%" }} gap={2}>
-              {["day", "time"].map((key) => {
-                return (
-                  <Select
-                    disabled={openTime.radio !== "Customized"}
-                    labelId={`${key}-label`}
-                    id={`${key}-select`}
-                    key={`${key}-select`}
-                    name={key}
-                    value={openTime[key]}
-                    onChange={(e) => handleOpenTimeChange(e)}
-                    displayEmpty
-                    renderValue={(selected) => {
-                      if (!selected) {
-                        return <em>{OPEN_TIME_DROPDOWNS[key].placeholder}</em>;
+        <DrawerHeader>
+          <Typography
+            variant="h3"
+            textAlign="center"
+            sx={{ py: 2, color: "#747476" }}
+          >
+            Filters
+          </Typography>
+          <IconButton onClick={handleDrawerClose}>
+            <CloseIcon />
+          </IconButton>
+        </DrawerHeader>
+        <Divider />
+      </Box>
+      <Box sx={{ padding: "0 1rem 1rem 1rem" }}>
+        <Typography variant="h4" sx={yPadding}>
+          Category
+        </Typography>
+        <List>
+          {["Pantry", "Meal"].map((category) => (
+            <ListItem key={category} sx={{ padding: 0 }}>
+              <ListItemButton sx={{ padding: 0 }}>
+                <FormControlLabel
+                  key={category}
+                  control={
+                    <Checkbox
+                      sx={checkedStyle}
+                      checked={
+                        category === "Pantry"
+                          ? isPantrySelected
+                          : isMealSelected
                       }
-                      return selected;
-                    }}
-                    MenuProps={{
-                      sx: { maxHeight: 180, width: "fit-content" },
-                    }}
-                  >
-                    {OPEN_TIME_DROPDOWNS[key].labels.map((label) => (
-                      <MenuItem key={label} label={label} value={label}>
-                        {label}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                );
-              })}
-            </Stack>
-          }
-        />
-      </RadioGroup>
+                      onChange={
+                        category === "Pantry" ? togglePantry : toggleMeal
+                      }
+                    />
+                  }
+                  label={
+                    <Stack direction="row" alignItems="center">
+                      {category === "Pantry" ? (
+                        <PantryIconNoBorder width="20px" height="20px" />
+                      ) : (
+                        <MealIconNoBorder width="20px" height="20px" />
+                      )}
+                      <ListItemText
+                        primary={category}
+                        sx={{
+                          marginLeft: 1,
+                        }}
+                      />
+                    </Stack>
+                  }
+                />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+        <Divider />
 
-      <Divider sx={{ mt: 2 }} />
-      <Typography variant="h4" sx={yPadding}>
-        Requirements
-      </Typography>
-      <ListItem key="requirements" sx={{ padding: 0 }}>
-        <ListItemButton sx={{ padding: 0 }}>
+        <FormLabel id="time-selection">
+          <Typography variant="h4" sx={yPadding}>
+            Open Time
+          </Typography>
+        </FormLabel>
+
+        <RadioGroup
+          aria-labelledby="time-selection"
+          value={openTime.radio}
+          name="radio-buttons-group"
+          onChange={handleRadioChange}
+          sx={{
+            flexDirection: "column",
+            display: "flex",
+            gap: (theme) => theme.spacing(2),
+          }}
+        >
+          {["Show All", "Open Now"].map((text) => (
+            <FormControlLabel
+              key={text}
+              value={text}
+              control={<Radio name={text} sx={checkedStyle} />}
+              label={text}
+            />
+          ))}
           <FormControlLabel
-            control={
-              <Checkbox
-                checked={noKnownEligibilityRequirementsFilter}
-                onChange={() =>
-                  dispatch({
-                    type: "NO_KNOWN_ELIGIBILITY_REQUIREMENTS_FILTER_TOGGLE",
-                    noKnownEligibilityRequirementsFilter:
-                      !noKnownEligibilityRequirementsFilter,
-                  })
-                }
-                sx={checkedStyle}
-              />
-            }
+            key="Customized"
+            value="Customized"
+            control={<Radio name="Customized" sx={checkedStyle} />}
             label={
-              <ListItemText
-                primary="No Known Eligibility Requirements"
-                sx={{
-                  marginLeft: 1,
-                }}
-              />
+              <Stack direction="row" sx={{ width: "100%" }} gap={2}>
+                {["day", "time"].map((key) => {
+                  return (
+                    <Select
+                      disabled={openTime.radio !== "Customized"}
+                      labelId={`${key}-label`}
+                      id={`${key}-select`}
+                      key={`${key}-select`}
+                      name={key}
+                      value={openTime[key]}
+                      onChange={(e) => handleOpenTimeChange(e)}
+                      displayEmpty
+                      renderValue={(selected) => {
+                        if (!selected) {
+                          return (
+                            <em>{OPEN_TIME_DROPDOWNS[key].placeholder}</em>
+                          );
+                        }
+                        return selected;
+                      }}
+                      MenuProps={{
+                        sx: { maxHeight: 180, width: "fit-content" },
+                      }}
+                    >
+                      {OPEN_TIME_DROPDOWNS[key].labels.map((label) => (
+                        <MenuItem key={label} label={label} value={label}>
+                          {label}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  );
+                })}
+              </Stack>
             }
           />
-        </ListItemButton>
-      </ListItem>
+        </RadioGroup>
+
+        <Divider sx={{ mt: 2 }} />
+        <Typography variant="h4" sx={yPadding}>
+          Requirements
+        </Typography>
+        <ListItem key="requirements" sx={{ padding: 0 }}>
+          <ListItemButton sx={{ padding: 0 }}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={noKnownEligibilityRequirementsFilter}
+                  onChange={() =>
+                    dispatch({
+                      type: "NO_KNOWN_ELIGIBILITY_REQUIREMENTS_FILTER_TOGGLE",
+                      noKnownEligibilityRequirementsFilter:
+                        !noKnownEligibilityRequirementsFilter,
+                    })
+                  }
+                  sx={checkedStyle}
+                />
+              }
+              label={
+                <ListItemText
+                  primary="No Known Eligibility Requirements"
+                  sx={{
+                    marginLeft: 1,
+                  }}
+                />
+              }
+            />
+          </ListItemButton>
+        </ListItem>
+      </Box>
     </Drawer>
   );
 }

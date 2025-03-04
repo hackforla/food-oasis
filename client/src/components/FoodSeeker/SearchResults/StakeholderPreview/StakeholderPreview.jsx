@@ -190,8 +190,7 @@ const StakeholderPreview = ({ stakeholder, onSelect, isDesktop }) => {
         >
           <StakeholderIcon stakeholder={stakeholder} />
           <Typography variant="body2" align="center">
-            {Boolean(stakeholder?.distance) &&
-              `${stakeholder.distance?.toFixed(1)} mi`}
+            {stakeholder?.distance && `${stakeholder.distance?.toFixed(1)} mi`}
           </Typography>
         </Stack>
       </Grid2>

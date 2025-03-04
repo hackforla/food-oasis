@@ -185,9 +185,13 @@ const StakeholderPreview = ({ stakeholder, onSelect, isDesktop }) => {
           direction="column"
           justifyContent="flex-start"
           alignItems="center"
+          gap={2}
           sx={{ marginTop: ".2rem", marginRight: "1rem", height: "100%" }}
         >
           <StakeholderIcon stakeholder={stakeholder} />
+          <Typography variant="body2" align="center">
+            {stakeholder?.distance && `${stakeholder.distance?.toFixed(1)} mi`}
+          </Typography>
         </Stack>
       </Grid2>
 

@@ -16,6 +16,7 @@ import metroCLine from "./TransitJSON/MetroCLine.json";
 import metroELine from "./TransitJSON/MetroELine.json";
 import metroKLine from "./TransitJSON/KMetroLine.json";
 import busStops from "./TransitJSON/busstops.json";
+import busLines from "./TransitJSON/bus_lines.json";
 
 export const MARKERS_LAYER_ID = "markers";
 
@@ -183,14 +184,26 @@ export const kLineLayerStyles = {
 export const busStopStyles = {
   id: "buses",
   type: "circle",
-  source: "busStopSource",
   paint: {
     "circle-radius": 4,
-    "circle-color": "#FF5722",
+    "circle-color": "#8a6ea1",
     "circle-stroke-width": 1,
     "circle-stroke-color": "#FFFFFF",
   },
-  }
+};
+
+export const busLineStyles = {
+  id: "busLines",
+  type: "line",
+  paint: {
+    "line-color": "#8a6ea1",
+    "line-width": 2,
+    "line-opacity": 0.4,
+  },
+  layout: {
+    "line-cap": "round",
+  },
+}
 
 
 // symbol layer data
@@ -264,5 +277,6 @@ export function useMarkersGeojson({ stakeholders, categoryIds }) {
     metroELine,
     metroKLine,
     busStops,
+    busLines,
   };
 }

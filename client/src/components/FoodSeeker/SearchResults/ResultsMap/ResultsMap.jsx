@@ -40,6 +40,7 @@ import {
   eLineLayerStyles,
   kLineLayerStyles,
   busStopStyles,
+  busLineStyles
 } from "./MarkerHelpers";
 import { regionBorderStyle, regionFillStyle } from "./RegionHelpers";
 
@@ -83,12 +84,30 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
   const hasAdvancedFilterFeatureFlag = useFeatureFlag("advancedFilter");
 
   const onMouseMove = useCallback((e) => {
-    if (e.features.length && (e.features[0].layer.id === "metroMarkers" || e.features[0].layer.id === "buses")) {
+    function getDirectionName(directionLetter) {
+      switch (directionLetter) {
+        case "N":
+          return "North";
+        case "S":
+          return "South";
+        case "E":
+          return "East";
+        case "W":
+          return "West";
+        default:
+          return directionLetter; 
+      }
+    };
+
+    if (e.features.length && (e.features[0].layer.id === "metroMarkers" || e.features[0].layer.id === "buses" || e.features[0].layer.id === "busLines")) {
       const { properties } = e.features[0];
   
       setTooltip({
         visible: true,
-        content: properties["STOP_NAME"] || `Bus Stop: ${properties["STOPNAME"]}` || "Metro Station",
+        content: 
+          properties["STOP_NAME"] 
+          || `Bus Stop: ${properties["STOPNAME"]} ${getDirectionName(properties["DIR"])}` 
+          || "Metro Station",
         x: e.point.x,
         y: e.point.y,
       });
@@ -179,6 +198,7 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
     metroELine,
     metroKLine,
     busStops,
+    busLines,
   } = useMarkersGeojson({
     stakeholders,
     categoryIds,
@@ -268,9 +288,14 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
 
         {/* display bus stops only if zoomed in */}
         {(markersLoaded && showTransit && viewport.zoom >= 13) && (
-          <Source type="geojson" data={busStops}>
-            <Layer {...busStopStyles} />
-          </Source>
+          <>
+            <Source type="geojson" data={busStops}>
+              <Layer {...busStopStyles} />
+            </Source>
+            <Source type="geojson" data={busLines}>
+              <Layer {...busLineStyles} />
+            </Source>
+          </>
         )}
 
         {(markersLoaded && showTransit) && (

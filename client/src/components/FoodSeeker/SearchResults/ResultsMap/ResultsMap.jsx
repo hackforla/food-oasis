@@ -8,13 +8,13 @@ import { useCallback, useEffect, useState } from "react";
 // https://github.com/mapbox/mapbox-gl-js/issues/10173  See comment by IvanDreamer on Mar 22
 // for craco.config.js contents
 import { Grid, Box, IconButton } from "@mui/material";
-import AddIcon from '@mui/icons-material/AddRounded';
-import RemoveIcon from '@mui/icons-material/RemoveRounded';
+import AddIcon from "@mui/icons-material/AddRounded";
+import RemoveIcon from "@mui/icons-material/RemoveRounded";
 import { MAPBOX_STYLE } from "constants/map";
 import { MAPBOX_ACCESS_TOKEN, DEFAULT_VIEWPORT } from "helpers/Constants";
 import useBreakpoints from "hooks/useBreakpoints";
 import useFeatureFlag from "hooks/useFeatureFlag";
-import 'mapbox-gl/dist/mapbox-gl.css';
+import "mapbox-gl/dist/mapbox-gl.css";
 import Map, { Layer, Marker, Source } from "react-map-gl";
 import { useLocation, useNavigate } from "react-router-dom";
 import * as analytics from "services/analytics";
@@ -37,6 +37,7 @@ import {
   useMarkersGeojson,
 } from "./MarkerHelpers";
 import { regionBorderStyle, regionFillStyle } from "./RegionHelpers";
+import Geolocate from "../ResultsFilters/Geolocate";
 
 const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
   const [markersLoaded, setMarkersLoaded] = useState(false);
@@ -86,7 +87,6 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
       longitude,
     }));
   }, [searchCoordinates, longitude, latitude, isMobile]);
-
 
   const onLoad = useCallback(async () => {
     const map = mapRef.current.getMap();
@@ -143,7 +143,7 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
     if (!currMap) return;
     const zoom = currMap.getZoom();
     const currentCenter = currMap.getCenter();
-  
+
     const handleZoomIn = () => {
       const longOffset = 0.0399 * Math.pow(2, 11 - zoom);
       const newCenter = {
@@ -155,21 +155,21 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
         center: isListPanelOpen ? newCenter : currentCenter,
         zoom: zoom + 1,
         duration: 500,
-      })
+      });
     };
-  
+
     const handleZoomOut = () => {
       const zoomOutOffset = 0.0399 * Math.pow(2, 12 - zoom);
       const newCenter = {
         lng: currentCenter.lng - zoomOutOffset,
-        lat: currentCenter.lat
+        lat: currentCenter.lat,
       };
-      
+
       currMap.easeTo({
         center: isListPanelOpen ? newCenter : currentCenter,
         zoom: zoom - 1,
         duration: 500,
-      })
+      });
     };
 
     const buttonStyles = {
@@ -178,14 +178,14 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
       borderRadius: 0,
       width: "28px",
       height: "28px",
-      '&:hover': {
+      "&:hover": {
         backgroundColor: "#f5f5f5",
       },
-      '&:active': {
+      "&:active": {
         backgroundColor: "#e0e0e0",
       },
     };
-  
+
     return (
       <Box
         sx={{
@@ -210,7 +210,7 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
         </IconButton>
       </Box>
     );
-};
+  };
 
   return (
     <div style={{ position: "relative", height: "100%", width: "100%" }}>
@@ -230,8 +230,24 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
         onMouseLeave={onMouseLeave}
       >
         {!isMobile && (
-          <CustomNavigationControl />
+          <>
+            <CustomNavigationControl />
+            <Box
+              sx={{
+                position: "absolute",
+                top: 80,
+                right: 10,
+                zIndex: 10,
+                borderRadius: "6px",
+                boxShadow: "0 1px 6px rgba(0, 0, 0, 0.416)",
+                border: "1.5px solid rgba(0, 0, 0, 0.1)",
+              }}
+            >
+              <Geolocate />
+            </Box>
+          </>
         )}
+
         {startIconCoordinates && (
           <Marker
             longitude={startIconCoordinates.longitude}
@@ -263,20 +279,24 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
           display="inline-flex"
           alignItems="flex-start"
           sx={{
-            overflowX: "auto", 
-            overflowY: "hidden", 
+            overflowX: "auto",
+            overflowY: "hidden",
             gap: "0.5rem",
             padding: isMobile ? "0 0 0.3rem 0.75rem" : "0 0 0.3rem 2.25rem",
             scrollbarWidth: "none",
             "&::-webkit-scrollbar": {
-              display: "none", 
+              display: "none",
             },
             top: 0,
             left: isMobile
               ? 0
               : `${listPanelLeftPostion + filterPanelLeftPostion}px`,
             transition: isMobile ? undefined : "left .5s ease-in-out",
-            maxWidth: isMobile ? "100vw": `calc(100vw - ${listPanelLeftPostion + filterPanelLeftPostion}px)`,
+            maxWidth: isMobile
+              ? "100vw"
+              : `calc(100vw - ${
+                  listPanelLeftPostion + filterPanelLeftPostion
+                }px)`,
           }}
         >
           <AdvancedFilters

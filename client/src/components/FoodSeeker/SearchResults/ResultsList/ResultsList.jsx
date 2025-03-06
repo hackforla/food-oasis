@@ -31,6 +31,17 @@ const ResultsList = ({ stakeholders, loading, handleReset }) => {
     analytics.postEvent("showList");
   }, []);
 
+  const handleHover = (stakeholder) => {
+    dispatch({
+      type: "HOVERED_ORGANIZATION_UPDATED",
+      organization: stakeholder,
+    });
+  };
+
+  const handleHoverExit = () => {
+    dispatch({ type: "RESET_HOVERED_ORGANIZATION" });
+  };
+
   if (selectedOrganization)
     return (
       <StakeholderDetails
@@ -84,6 +95,8 @@ const ResultsList = ({ stakeholders, loading, handleReset }) => {
                       backgroundColor: "#cce3f2",
                     },
                   }}
+                  onMouseEnter={() => handleHover(stakeholder)}
+                  onMouseLeave={() => handleHoverExit()}
                 >
                   <StakeholderPreview
                     stakeholder={stakeholder}

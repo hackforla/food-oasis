@@ -28,16 +28,16 @@ const trueFalseEitherClause = (columnName: string, value?: string) => {
   return value === "true"
     ? ` and ${columnName} is not null `
     : value === "false"
-    ? ` and ${columnName} is null `
-    : "";
+      ? ` and ${columnName} is null `
+      : "";
 };
 
 const booleanEitherClause = (columnName: string, value?: string) => {
   return value === "true"
     ? ` and ${columnName} is true `
     : value === "false"
-    ? ` and ${columnName} is false `
-    : "";
+      ? ` and ${columnName} is false `
+      : "";
 };
 
 const search = async (
@@ -431,8 +431,7 @@ const insert = async (model: InsertStakeholderParams) => {
     model.hoursNotes || "",
     model.allowWalkins || false,
     tags,
-    model.phone_ext || "",
-
+    model.phoneExt || "",
   ];
 
   const result = await db.proc("create_stakeholder", params);
@@ -612,10 +611,10 @@ const update = async (model: UpdateStakeholderParams) => {
     : "";
   const formattedHours = "{" + hoursSqlValues + "}";
 
-  // update_stakeholder is a postgres stored procedure. Source of this stored
-  // procedure is in the repo at db/stored_procs/update_stakeholder.sql.
+  // update_stakeholder is a postgres stored procedure.
   //
-  // Currently, it updates stakeholder category and schedule by deleting the existing category/schedule rows,
+  // Currently, it updates stakeholder category and schedule by
+  // deleting the existing category/schedule rows,
   // and creating new ones.
   const params = [
     model.name || "",
@@ -625,7 +624,6 @@ const update = async (model: UpdateStakeholderParams) => {
     model.state || "",
     model.zip || "",
     model.phone || "",
-    model.phoneExt ||"",
     model.latitude, // numeric
     model.longitude, // numeric
     model.website || "",
@@ -694,6 +692,7 @@ const update = async (model: UpdateStakeholderParams) => {
     model.hoursNotes || "",
     model.allowWalkins || false,
     tags,
+    model.phoneExt || "",
   ];
 
   await db.proc("update_stakeholder", params);

@@ -93,6 +93,7 @@ const csv: RequestHandler<never, never, { ids: string[] }, never> = async (
             tags: "Tags",
             email: "Email",
             phone: "Phone",
+            phoneExt: "Phone Ext",
             hours: "Hours",
             hoursNotes: "Hours Notes",
             website: "Website",
@@ -144,11 +145,7 @@ const post: RequestHandler<
   never
 > = async (req, res) => {
   try {
-    const formattedBody = {
-      ...req.body,
-      phone_ext: req.body.phoneExt, // Convert camelCase to snake_case
-    };
-    const resp = await stakeholderService.insert(formattedBody);
+    const resp = await stakeholderService.insert(req.body);
     res.status(201).json(resp);
   } catch (err) {
     console.error(err);

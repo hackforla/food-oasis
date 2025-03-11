@@ -25,7 +25,6 @@ import Label from "../ui/Label";
 import Textarea from "../ui/Textarea";
 import { PatternFormat } from "react-number-format";
 
-
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -111,46 +110,74 @@ export default function Identification({
           </Box>
         </Grid>
 
-        <Grid item xs={12} sm={6}>
-          <Box sx={{ display: "flex", alignItems: "flex-start" }}>
-            <Stack direction="column" sx={{ width: "100%" }}>
-              <Label
-                id="phone"
-                label="Phone"
-                tooltipTitle="Phone number for clients to use"
-              />
-              <PatternFormat
-                format="(###) ###-####"
-                customInput={TextField}
-                mask="_"
-                id="phone"
-                name="phone"
-                placeholder="Phone"
-                value={values.phone}
-                onValueChange={(formattedValues) => {
-                  setFieldValue("phone", formattedValues.formattedValue);
-                }}
-                onBlur={handleBlur}
-                helperText={touched.phone ? errors.phone : ""}
-                error={touched.phone && Boolean(errors.phone)}
-              />
-            </Stack>
-            <FormControlLabel
-              sx={{ mt: 5, ml: 0 }}
-              control={
-                <Checkbox
-                  margin="normal"
-                  name="confirmedPhone"
-                  value={values.confirmedPhone}
-                  checked={values.confirmedPhone}
-                  onChange={() =>
-                    setFieldValue("confirmedPhone", !values.confirmedPhone)
+        <Grid item sm={6} xs={12}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "flex-start",
+            }}
+          >
+            <Stack
+              sx={{
+                width: "100%",
+              }}
+            >
+              <Stack
+                direction={{ xs: "column", sm: "row" }}
+                spacing={{ xs: 1, sm: 2, md: 4 }}
+                alignItems="flex-end"
+              >
+                <Box sx={{ width: { xs: "100%", sm: "auto" } }}>
+                  <Label
+                    id="phone"
+                    label="Phone"
+                    tooltipTitle="Phone number for clients to use"
+                  />
+                  <PatternFormat
+                    format="(###) ###-####"
+                    customInput={TextField}
+                    mask="_"
+                    id="phone"
+                    name="phone"
+                    placeholder="Phone"
+                    value={values.phone}
+                    onValueChange={(formattedValues) => {
+                      setFieldValue("phone", formattedValues.formattedValue);
+                    }}
+                    onBlur={handleBlur}
+                    helperText={touched.phone ? errors.phone : ""}
+                    error={touched.phone && Boolean(errors.phone)}
+                  />
+                </Box>
+                <Box sx={{ width: { xs: "100%", sm: "auto" } }}>
+                  <Label id="phone_ext" label="Ext" />
+                  <TextField
+                    id="phoneExt"
+                    name="phoneExt"
+                    placeholder="Ext or name"
+                    value={values.phoneExt}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                </Box>
+
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      margin="normal"
+                      name="confirmedPhone"
+                      value={values.confirmedPhone}
+                      checked={values.confirmedPhone}
+                      onChange={() =>
+                        setFieldValue("confirmedPhone", !values.confirmedPhone)
+                      }
+                      onBlur={handleBlur}
+                    />
                   }
-                  onBlur={handleBlur}
+                  label="Confirm"
                 />
-              }
-              label="Confirm"
-            />
+              </Stack>
+            </Stack>
           </Box>
         </Grid>
 

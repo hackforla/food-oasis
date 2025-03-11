@@ -12,7 +12,7 @@ viewing the audit log for a particular stakeholder.
 const selectById = async (id: number): Promise<any[]> => {
   const sql = `select
       s.id, s.version,  s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
-      s.phone, s.latitude, s.longitude, s.website,  s.notes,
+      s.phone, s.phone_ext, s.latitude, s.longitude, s.website,  s.notes,
       s.hours,
       s.category_ids,
       to_char(s.created_date at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS') as created_date, s.created_login_id,

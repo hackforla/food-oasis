@@ -58,6 +58,7 @@ export const exportCsv = async (ids) => {
 
 export const put = async (stakeholder) => {
   const response = await axios.put(`${baseUrl}/${stakeholder.id}`, stakeholder);
+  console.log(response.data);
   return response.data;
 };
 

@@ -14,6 +14,7 @@ export const linkHovered = "#004BA0";
 export const darkGray = "#4D4D4D";
 export const disabledText = "#999999";
 export const tooltipHover = "rgba(51, 102, 153, 0.2)";
+export const linkText = "#4A80F5";
 
 //Icon and List Colors
 export const foodPantry = "#0A7572";
@@ -84,6 +85,7 @@ export const palette = {
     },
     backgroundColor: "#E6F0FF",
     bodyText: "#313233",
-    hoverColor: "#CBE3F1",
+    hoverColor: "#f0f0f0",
+    hoverSelectedColor: "#D9E3F2"
   },
 };

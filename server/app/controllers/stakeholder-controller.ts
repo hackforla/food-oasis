@@ -90,9 +90,11 @@ const csv: RequestHandler<never, never, { ids: string[] }, never> = async (
             latitude: "Latitude",
             longitude: "Longitude",
             neighborhoodName: "Neighborhood",
+            tags: "Tags",
             email: "Email",
             phone: "Phone",
             hours: "Hours",
+            hoursNotes: "Hours Notes",
             website: "Website",
             facebook: "Facebook",
             pinterest: "Pinterest",
@@ -100,8 +102,15 @@ const csv: RequestHandler<never, never, { ids: string[] }, never> = async (
             linkedin: "LinkedIn",
             instagram: "Instagram",
             requirements: "Eligibility Requirements",
+            eligibilityNotes: "Eligibility Notes",
             languages: "Languages",
-            foodTypes: "Food Types",
+            foodBakery: "Bakery",
+            foodDairy: "Dairy",
+            foodDryGoods: "Dry Goods",
+            foodMeat: "Meat",
+            foodPrepared: "Prepared Food",
+            foodProduce: "Produce",
+            foodTypes: "Other Food Types",
             items: "Non-food Items",
             services: "Services",
             notes: "Public Notes",
@@ -252,9 +261,8 @@ const checkAvailableAssignmentsAdmin: RequestHandler<
         .json({ error: "Bad request: tenantId parameter is required" });
       return;
     }
-    const available = await stakeholderService.checkAvailableAssignmentsAdmin(
-      tenantId
-    );
+    const available =
+      await stakeholderService.checkAvailableAssignmentsAdmin(tenantId);
     res.json(available);
   } catch (err) {
     console.error(err);

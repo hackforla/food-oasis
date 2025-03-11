@@ -20,6 +20,7 @@ export default function ContactDetails({
               id="website"
               label="Website"
               tooltipTitle="Enter the Full URL for the organization's web site, e.g., https://www.hackforla.org"
+              href={values.website}
             />
             <TextField
               id="website"

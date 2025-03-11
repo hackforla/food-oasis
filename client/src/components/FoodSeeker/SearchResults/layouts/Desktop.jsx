@@ -3,16 +3,18 @@ import {
   useFilterPanel,
   useListPanel,
   useAppDispatch,
-  useWidget
+  useWidget,
 } from "../../../../appReducer";
 import DrawerLeftArrowButton from "../../../../icons/DrawerLeftArrowButton";
 import DrawerRightArrowButton from "../../../../icons/DrawerRightArrowButton";
+import useHeaderHeight from "hooks/useHeaderHeight";
 
 const DesktopLayout = ({ filters, list, map }) => {
   const isFilterPanelOpen = useFilterPanel();
   const isListPanelOpen = useListPanel();
   const isWidget = useWidget();
   const dispatch = useAppDispatch();
+  const { headerHeight } = useHeaderHeight();
 
   const toggleDrawer = (event) => {
     if (
@@ -53,8 +55,8 @@ const DesktopLayout = ({ filters, list, map }) => {
             width: "524px",
             transition: "left .5s ease-in-out",
             left: isListPanelOpen ? leftPostion : "-524px",
-            top: isWidget ? "62px": "126px",
-            height: "calc(100% - 120px)",
+            top: isWidget ? "62px" : `auto`,
+            height: `calc(100% - ${headerHeight}px)`,
             zIndex: 3,
             background: "white",
           }}

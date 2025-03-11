@@ -29,7 +29,7 @@ import {
   useNoKnownEligibilityRequirementsFilter,
 } from "../../../../appReducer";
 import { getDayTimeNow } from "helpers";
-import { useEffect, useState } from "react";
+import useHeaderHeight from "hooks/useHeaderHeight";
 
 const DrawerHeader = styled("div")(({ _theme }) => ({
   display: "flex",
@@ -48,7 +48,7 @@ const yPadding = { py: 2 };
 export default function FilterPanel({ mealPantry }) {
   const { isDesktop } = useBreakpoints();
   const drawerWidth = isDesktop ? 340 : "100%";
-  const [headerHeight, setHeaderHeight] = useState(126);
+  const { headerHeight } = useHeaderHeight();
   const drawerHeight = isDesktop ? `calc(100vh - ${headerHeight}px)` : "50%";
 
   const { toggleMeal, togglePantry, isMealSelected, isPantrySelected } =
@@ -56,22 +56,6 @@ export default function FilterPanel({ mealPantry }) {
   const dispatch = useAppDispatch();
   const open = useFilterPanel();
   const openTime = useOpenTimeFilter();
-
-  useEffect(() => {
-    const updateHeight = () => {
-      const header1 = document.getElementById("header1");
-      const header2 = document.getElementById("header2");
-
-      const totalHeight =
-        (header1.offsetHeight || 0) + (header2.offsetHeight || 0);
-      setHeaderHeight(totalHeight);
-    };
-
-    updateHeight();
-    window.addEventListener("resize", updateHeight);
-
-    return () => window.removeEventListener("resize", updateHeight);
-  }, []);
 
   const handleRadioChange = (event) => {
     const name = event.target.name;
@@ -127,7 +111,7 @@ export default function FilterPanel({ mealPantry }) {
     >
       <Box
         sx={(theme) => ({
-          padding: "1rem 1rem 0 1rem",
+          padding: "0 1rem 0 1rem",
           position: "sticky",
           top: 0,
           backgroundColor: theme.palette.background.paper,
@@ -148,7 +132,7 @@ export default function FilterPanel({ mealPantry }) {
         </DrawerHeader>
         <Divider />
       </Box>
-      <Box sx={{ padding: "0 1rem 1rem 1rem" }}>
+      <Box sx={{ padding: "0 1rem 1rem 1rem", overflowY: "auto" }}>
         <Typography variant="h4" sx={yPadding}>
           Category
         </Typography>
@@ -192,13 +176,11 @@ export default function FilterPanel({ mealPantry }) {
           ))}
         </List>
         <Divider />
-
         <FormLabel id="time-selection">
           <Typography variant="h4" sx={yPadding}>
             Open Time
           </Typography>
         </FormLabel>
-
         <RadioGroup
           aria-labelledby="time-selection"
           value={openTime.radio}
@@ -259,7 +241,6 @@ export default function FilterPanel({ mealPantry }) {
             }
           />
         </RadioGroup>
-
         <Divider sx={{ mt: 2 }} />
         <Typography variant="h4" sx={yPadding}>
           Requirements

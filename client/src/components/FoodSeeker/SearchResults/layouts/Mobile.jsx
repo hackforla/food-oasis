@@ -54,7 +54,7 @@ const MobileLayout = ({ filters, map, list, showList }) => {
       ? (100 / window.innerHeight) * 60
       : 0;
     const maxY = 80;
-    const snapPoints = [minY, 17, 40, 54, maxY];
+    const snapPoints = [minY, 35, maxY];
     const snapThreshold = 5;
 
     let newY = (ui.y / window.innerHeight) * 100;

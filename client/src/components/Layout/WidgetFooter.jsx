@@ -108,7 +108,6 @@ function WidgetFooterSection(props) {
       </Box>
     );
   }
-
   const imageType = logoPath ? logoPath.split(".").pop() : "unknown";
 
   return (
@@ -219,7 +218,7 @@ function WidgetFooter() {
 WidgetFooterSection.propTypes = {
   name: PropTypes.string,
   captionText: PropTypes.string,
-  logoPath: PropTypes.shape(),
+  logoPath: PropTypes.string,
   alt: PropTypes.string,
   url: PropTypes.string,
   className: PropTypes.string,

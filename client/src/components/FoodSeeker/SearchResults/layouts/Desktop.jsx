@@ -14,7 +14,7 @@ const DesktopLayout = ({ filters, list, map }) => {
   const isListPanelOpen = useListPanel();
   const isWidget = useWidget();
   const dispatch = useAppDispatch();
-  const { headerHeight } = useHeaderHeight();
+  const { headerHeight, headerAndFooterHeight } = useHeaderHeight();
 
   const toggleDrawer = (event) => {
     if (
@@ -55,8 +55,8 @@ const DesktopLayout = ({ filters, list, map }) => {
             width: "524px",
             transition: "left .5s ease-in-out",
             left: isListPanelOpen ? leftPostion : "-524px",
-            top: isWidget ? "62px" : `auto`,
-            height: `calc(100% - ${headerHeight}px)`,
+            top: headerHeight,
+            height: `calc(100% - ${headerAndFooterHeight}px)`,
             zIndex: 3,
             background: "white",
           }}

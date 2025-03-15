@@ -48,8 +48,10 @@ const yPadding = { py: 2 };
 export default function FilterPanel({ mealPantry }) {
   const { isDesktop } = useBreakpoints();
   const drawerWidth = isDesktop ? 340 : "100%";
-  const { headerHeight } = useHeaderHeight();
-  const drawerHeight = isDesktop ? `calc(100vh - ${headerHeight}px)` : "50%";
+  const { headerAndFooterHeight } = useHeaderHeight();
+  const drawerHeight = isDesktop
+    ? `calc(100vh - ${headerAndFooterHeight}px)`
+    : "50%";
 
   const { toggleMeal, togglePantry, isMealSelected, isPantrySelected } =
     mealPantry;

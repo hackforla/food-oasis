@@ -182,6 +182,7 @@ function WidgetFooter() {
 
   return (
     <Box
+      id="widgetFooter"
       position="sticky"
       sx={(theme) => ({
         backgroundColor: "#FFF",

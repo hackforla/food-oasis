@@ -3,13 +3,13 @@ import Home from "components/FoodSeeker/Home";
 import Header from "components/Layout/Header";
 import WidgetFooter from "components/Layout/WidgetFooter";
 import { Suspense, lazy } from "react";
-import { Navigate, Outlet, Route, Routes } from "react-router-dom";
+import { Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
 import Fallback from "./components/Fallback";
 import PrivateRoute from "./components/PrivateRoute";
 import Toast from "components/UI/Toast";
-import {
-  useWidget,
-} from "./appReducer";
+import { useWidget } from "./appReducer";
+import useFeatureFlag from "./hooks/useFeatureFlag";
+import SurveySnackbar from "./components/UI/SurveySnackbar";
 
 const VerificationAdmin = lazy(() =>
   import("components/Admin/VerificationAdmin")
@@ -53,6 +53,9 @@ const Profile = lazy(() => import("./components/Account/Profile"));
 const Suggestion = lazy(() => import("components/FoodSeeker/Suggestion"));
 
 export default function AppRoutes() {
+  const hasUserFeedbackSuveyFeatureFlag = useFeatureFlag("userFeedbackSurvey");
+  const location = useLocation();
+
   return (
     <Suspense
       fallback={
@@ -61,6 +64,9 @@ export default function AppRoutes() {
         </Stack>
       }
     >
+      {hasUserFeedbackSuveyFeatureFlag && location.pathname !== "/widget" && (
+        <SurveySnackbar />
+      )}
       <Routes>
         <Route path="/" element={<AppWrapper />}>
           {/* Food seeker routes */}
@@ -199,7 +205,8 @@ export default function AppRoutes() {
 }
 
 function AppWrapper() {
-    const isWidget = useWidget();
+  const isWidget = useWidget();
+  
   return (
     <Grid
       container

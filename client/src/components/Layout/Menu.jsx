@@ -15,6 +15,7 @@ import { useState } from "react";
 import { useUserContext } from "../../contexts/userContext";
 import { IconButton } from "../UI/StandardButton";
 import MenuItemLink from "./MenuItemLink";
+//import LocalNotifications from "../Admin/LocalNotifications";
 
 export default function Menu() {
   const { isHomePage } = useLocationHook();
@@ -114,9 +115,9 @@ export default function Menu() {
                   text="User Logins"
                 />
                 <MenuItemLink
-                  key="features"
-                  to="/admin/features"
-                  text="Features Flags"
+                  key="localNotifications"
+                  to="/admin/LocalNotifications"
+                  text="LocalNotifications"
                 />
                 <Divider />
               </>

@@ -19,6 +19,7 @@ import emailRouter from "./email-router";
 import awsRouter from "./aws-router";
 import featureRouter from "./feature-router";
 import featureToLoginRouter from "./feature-to-login-router";
+import localNotificationsRouter from "./localNotifications-router"
 
 const router = Router();
 
@@ -42,5 +43,6 @@ router.use("/api/tenants", tenantRouter);
 router.use("/api/logins", loginsRouter);
 router.use("/api/features", featureRouter);
 router.use("/api/features-to-login", featureToLoginRouter);
+router.use("/api/localNotifications", localNotificationsRouter);
 
 export default router;

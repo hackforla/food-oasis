@@ -29,6 +29,7 @@ const ParentOrganizations = lazy(() =>
 const TagAdmin = lazy(() => import("components/Admin/TagAdmin"));
 const Register = lazy(() => import("components/Account/Register"));
 const Login = lazy(() => import("components/Account/Login"));
+const LocalNotifications = lazy(() => import("components/Admin/LocalNotifications"));
 const ForgotPassword = lazy(() => import("components/Account/ForgotPassword"));
 const ResetPasswordEmailSent = lazy(() =>
   import("components/Account/ResetPasswordEmailSent")
@@ -151,6 +152,14 @@ export default function AppRoutes() {
               element={
                 <PrivateRoute roles={["isAdmin"]}>
                   <TagAdmin />
+                </PrivateRoute>
+              }
+            />
+			<Route
+              path="localnotifications"
+              element={
+                <PrivateRoute roles={["isAdmin"]}>
+                  <LocalNotifications />
                 </PrivateRoute>
               }
             />

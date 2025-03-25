@@ -10,6 +10,8 @@ import Toast from "components/UI/Toast";
 import { useWidget } from "./appReducer";
 import useFeatureFlag from "./hooks/useFeatureFlag";
 import SurveySnackbar from "./components/UI/SurveySnackbar";
+import AlertSurveySnackbar from "./components/UI/AlertSurveySnackbar";
+import useLocationHook from "hooks/useLocationHook";
 
 const VerificationAdmin = lazy(() =>
   import("components/Admin/VerificationAdmin")
@@ -55,6 +57,7 @@ const Suggestion = lazy(() => import("components/FoodSeeker/Suggestion"));
 export default function AppRoutes() {
   const hasUserFeedbackSuveyFeatureFlag = useFeatureFlag("userFeedbackSurvey");
   const location = useLocation();
+  const { isMapPage } = useLocationHook();
 
   return (
     <Suspense
@@ -67,6 +70,9 @@ export default function AppRoutes() {
       {hasUserFeedbackSuveyFeatureFlag && location.pathname !== "/widget" && (
         <SurveySnackbar />
       )}
+
+      {isMapPage && location.pathname !== "/widget" && <AlertSurveySnackbar />}
+
       <Routes>
         <Route path="/" element={<AppWrapper />}>
           {/* Food seeker routes */}
@@ -206,7 +212,7 @@ export default function AppRoutes() {
 
 function AppWrapper() {
   const isWidget = useWidget();
-  
+
   return (
     <Grid
       container

@@ -63,12 +63,6 @@ export default function Header() {
               />
             </a>
           </Box>
-          {isMapPage ? (
-            <Alert severity="warning">
-              Due to the LA Fires (Jan 2025), some information may be
-              out-of-date.
-            </Alert>
-          ) : null}
           <Box
             sx={{
               display: "flex",

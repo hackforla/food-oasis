@@ -31,12 +31,6 @@ import {
 import { getDayTimeNow } from "helpers";
 import useHeaderHeight from "hooks/useHeaderHeight";
 
-const DrawerHeader = styled("div")(({ _theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
-}));
-
 const checkedStyle = {
   "&.Mui-checked": {
     color: "#00C851",
@@ -120,18 +114,19 @@ export default function FilterPanel({ mealPantry }) {
           zIndex: 1,
         })}
       >
-        <DrawerHeader>
-          <Typography
-            variant="h3"
-            textAlign="center"
-            sx={{ py: 2, color: "#747476" }}
-          >
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+          py={2}
+        >
+          <Typography variant="h3" textAlign="center" color="common.grey">
             Filters
           </Typography>
           <IconButton onClick={handleDrawerClose}>
             <CloseIcon />
           </IconButton>
-        </DrawerHeader>
+        </Stack>
         <Divider />
       </Box>
       <Box sx={{ padding: "0 1rem 1rem 1rem", overflowY: "auto" }}>

@@ -21,6 +21,7 @@ export default function Header() {
   return (
     <>
       <AppBar
+        id="header1"
         position="sticky"
         sx={(theme) => ({
           backgroundColor: "#FFF",

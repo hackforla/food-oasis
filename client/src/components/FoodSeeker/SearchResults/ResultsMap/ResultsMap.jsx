@@ -90,6 +90,7 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
 
   const onLoad = useCallback(async () => {
     const map = mapRef.current.getMap();
+    window.dispatchEvent(new Event("resize"))
     setCurrMap(map);
     await loadMarkerIcons(map);
     setMarkersLoaded(true);

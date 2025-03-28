@@ -274,38 +274,35 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
         stakeholder={selectedOrganization}
         setToast={setToast}
       />
-      <Stack height="calc(100vh - 126px)" spacing={2}>
-        <Stack direction="row" alignItems="flex-end">
-          <Button
-            variant="text"
-            sx={(theme) => ({
-              fontSize: { xs: "14px", md: "18px" },
-              color: theme.palette.common.black,
-              textTransform: "none",
-              fontWeight: "bold",
-              "&:focus": {
-                borderWidth: "2px",
-                borderColor: theme.palette.primary.dark,
-                borderStyle: "solid",
-                dropShadow: "10px 10px  12px",
-              },
-            })}
-            onClick={handleBackButtonClick}
-            startIcon={<ChevronLeftIcon />}
-          >
-            Back to Results
-          </Button>
+      <Stack height="100%">
+        <Stack pt={2} spacing={2}>
+          <Stack direction="row" alignItems="flex-end">
+            <Button
+              variant="text"
+              sx={(theme) => ({
+                fontSize: { xs: "14px", md: "18px" },
+                color: theme.palette.common.black,
+                textTransform: "none",
+                fontWeight: "bold",
+                "&:focus": {
+                  borderWidth: "2px",
+                  borderColor: theme.palette.primary.dark,
+                  borderStyle: "solid",
+                  dropShadow: "10px 10px  12px",
+                },
+              })}
+              onClick={handleBackButtonClick}
+              startIcon={<ChevronLeftIcon />}
+            >
+              Back to Results
+            </Button>
+          </Stack>
+          <Divider />
         </Stack>
-        <Divider
-          sx={(theme) => ({
-            background: theme.palette.common.black,
-          })}
-        />
         <Grid2
           container
           gap={2}
           p={2}
-          pt={0}
           sx={{
             flex: 1,
             overflowX: "scroll",

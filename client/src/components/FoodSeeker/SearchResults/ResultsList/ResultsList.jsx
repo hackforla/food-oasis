@@ -48,9 +48,9 @@ const ResultsList = ({ stakeholders, loading, handleReset }) => {
   }
 
   return (
-    <Stack>
+    <Stack height="100%">
       {stakeholders.length > 0 && (
-        <Stack spacing={2}>
+        <Stack pt={2} spacing={2}>
           <Typography
             pl={2}
             sx={(theme) => ({
@@ -62,11 +62,7 @@ const ResultsList = ({ stakeholders, loading, handleReset }) => {
             {stakeholders.length}{" "}
             {stakeholders.length === 1 ? "Location" : "Locations"}
           </Typography>
-          <Divider
-            sx={(theme) => ({
-              background: theme.palette.common.black,
-            })}
-          />
+          <Divider />
         </Stack>
       )}
       {stakeholders ? (

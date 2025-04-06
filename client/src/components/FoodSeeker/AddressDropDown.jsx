@@ -107,9 +107,11 @@ export default function AddressDropDown({ autoFocus }) {
   };
 
   const renderOption = (props, option) => {
+    const { key } = props;
     return (
       <MenuItem
         {...props}
+        key={key}
         component="div"
         onClick={() => handleAutocompleteOnChange(option)}
       >

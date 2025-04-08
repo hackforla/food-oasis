@@ -12,9 +12,39 @@ export const handlers = [
   }),
   http.get("/api/stakeholderbests/select-all", () => {
     return HttpResponse.json(stakeholders);
+    }),
+  http.get("/api/stakeholderbests/select-all", () => {
+    return HttpResponse.json(stakeholders);
+  }),
+  http.post("/api/accounts/login",()=>{
+     http: return HttpResponse.json(loginResponse);
   }),
 ];
 
+const loginResponse = {
+  isSuccess: true,
+  token:
+    "token123",
+  user: {
+    id: 108,
+    firstName: "Test",
+    lastName: "User",
+    email: "test@dispostable.com",
+    emailConfirmed: true,
+    passwordHash:
+      "123",
+    dateCreated: "2020-04-17T05:46:43.603Z",
+    isGlobalAdmin: true,
+    isGlobalReporting: false,
+    tenantId: 1,
+    isAdmin: true,
+    isSecurityAdmin: false,
+    isDataEntry: true,
+    isCoordinator: false,
+    features: ["advancedFilter"],
+    role: "admin,data_entry,global_admin",
+  },
+};
 const stakeholders = [
   {
     id: 1,

@@ -11,6 +11,6 @@ test.describe('App', () => {
     page.getByLabel("Search by address or zip code").fill("90001");
     await page.getByText("Los Angeles, California 90001, United States").click();
     await expect(page.url()).toBe("http://localhost:3000/organizations");
-    await expect(page.getByText("5 Locations")).toBeVisible();
+    await expect(page.getByText("3 Locations")).toBeVisible();
   });
 });

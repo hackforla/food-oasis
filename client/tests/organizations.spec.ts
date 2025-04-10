@@ -1,4 +1,5 @@
-import { test, expect } from "@playwright/test";
+import { expect } from "@playwright/test";
+import test from "./helpers/test";
 
 test.describe("Organizations", () => {
   test("should render detail page on preview click", async ({ page }) => {

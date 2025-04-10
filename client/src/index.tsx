@@ -3,16 +3,13 @@ import { createRoot } from "react-dom/client";
 import "styles/root.css";
 import App from "./App";
 import TagManager from "react-gtm-module";
-import { setupWorker } from "msw/browser";
-import { handlers } from "../tests/mocks/handlers";
-
-export const worker = setupWorker(...handlers);
 
 async function enableMocking() {
-  if (process.env.NODE_ENV !== "development") {
+  if (!(window as any).__IS_TEST__) {
     return;
   }
 
+  const { worker } = await import("../tests/helpers/msw");
   return worker.start({ onUnhandledRequest: "bypass" });
 }
 

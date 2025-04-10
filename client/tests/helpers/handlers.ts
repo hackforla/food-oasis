@@ -17,7 +17,7 @@ export const handlers = [
     return HttpResponse.json(stakeholders);
   }),
   http.post("/api/accounts/login",()=>{
-     http: return HttpResponse.json(loginResponse);
+    return HttpResponse.json(loginResponse);
   }),
 ];
 

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  Box,
   Button,
   CircularProgress,
   Stack,
@@ -30,6 +29,17 @@ const ResultsList = ({ stakeholders, loading, handleReset }) => {
   useEffect(() => {
     analytics.postEvent("showList");
   }, []);
+
+  const handleHover = (stakeholder) => {
+    dispatch({
+      type: "HOVERED_ORGANIZATION_UPDATED",
+      organization: stakeholder,
+    });
+  };
+
+  const handleHoverExit = () => {
+    dispatch({ type: "RESET_HOVERED_ORGANIZATION" });
+  };
 
   if (selectedOrganization)
     return (
@@ -84,6 +94,8 @@ const ResultsList = ({ stakeholders, loading, handleReset }) => {
                       backgroundColor: "#cce3f2",
                     },
                   }}
+                  onMouseEnter={() => handleHover(stakeholder)}
+                  onMouseLeave={() => handleHoverExit()}
                 >
                   <StakeholderPreview
                     stakeholder={stakeholder}

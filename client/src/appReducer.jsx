@@ -61,6 +61,17 @@ function selectedOrganizationReducer(state, action) {
   }
 }
 
+function hoveredOrganizationReducer(state, action) {
+  switch (action.type) {
+    case "HOVERED_ORGANIZATION_UPDATED":
+      return action.organization;
+    case "RESET_HOVERED_ORGANIZATION":
+      return null;
+    default:
+      return state;
+  }
+}
+
 function neighborhoodReducer(state, action) {
   switch (action.type) {
     case "NEIGHBORHOOD_UPDATED":
@@ -149,6 +160,10 @@ export function appReducer(state, action) {
       state.selectedOrganization,
       action
     ),
+    hoveredOrganization: hoveredOrganizationReducer(
+      state.hoveredOrganization,
+      action
+    ),
     neighborhood: neighborhoodReducer(state.neighborhood, action),
     // isWidget === true indicates that app is implemented as an
     // iframe widget hosted in a third-party application.
@@ -176,6 +191,7 @@ export function getInitialState() {
     defaultCoordinates: DEFAULT_COORDINATES,
     searchCoordinates: null,
     selectedOrganization: null,
+    hoveredOrganization: null,
     userCoordinates: null,
     neighborhood: null,
     isWidget: false,
@@ -231,6 +247,11 @@ export function useSearchCoordinates() {
 export function useSelectedOrganization() {
   const { selectedOrganization } = useAppState();
   return selectedOrganization;
+}
+
+export function useHoveredOrganization() {
+  const { hoveredOrganization } = useAppState();
+  return hoveredOrganization;
 }
 
 export function useUserCoordinates() {

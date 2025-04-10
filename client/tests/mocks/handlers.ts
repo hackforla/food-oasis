@@ -1,6 +1,15 @@
 import { http, HttpResponse } from "msw";
 
 export const handlers = [
+  http.get("/api/features", () => {
+    return HttpResponse.json([
+      {
+        id: 1,
+        name: "advancedFilter",
+        is_enabled: true,
+      },
+    ]);
+  }),
   http.get("/api/stakeholderbests/select-all", () => {
     return HttpResponse.json(stakeholders);
   }),

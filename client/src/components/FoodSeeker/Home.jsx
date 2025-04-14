@@ -19,6 +19,7 @@ import * as analytics from "services/analytics";
 import { useSiteContext } from "contexts/siteContext";
 import { TENANT_LOGO_URL } from "helpers/Constants";
 import SEO from "../SEO";
+import useHeaderHeight from "hooks/useHeaderHeight";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ const Home = () => {
   const { getUserLocation, isLoading: isGettingLocation } = useGeolocation();
   const [error, setError] = useState("");
   const locationPermission = useLocationPermission();
+  const { headerHeight } = useHeaderHeight();
 
   useEffect(() => {
     if (error && locationPermission === "granted") {
@@ -86,7 +88,7 @@ const Home = () => {
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundImage: 'url("/landing-page/map.png")',
-          minHeight: "max(100.7vh,20em)",
+          minHeight: `calc(100vh - ${headerHeight}px)`,
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",

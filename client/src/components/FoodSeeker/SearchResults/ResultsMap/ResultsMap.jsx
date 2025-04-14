@@ -137,8 +137,8 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
     categoryIds,
   });
 
-  const listPanelLeftPostion = isListPanelOpen ? 524 : 0;
-  const filterPanelLeftPostion = isFilterPanelOpen ? 340 : 0;
+  const listPanelLeftPosition = isListPanelOpen ? 524 : 0;
+  const filterPanelLeftPosition = isFilterPanelOpen ? 340 : 0;
 
   const CustomNavigationControl = () => {
     if (!currMap) return;
@@ -291,12 +291,12 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
             top: 0,
             left: isMobile
               ? 0
-              : `${listPanelLeftPostion + filterPanelLeftPostion}px`,
+              : `${listPanelLeftPosition + filterPanelLeftPosition}px`,
             transition: isMobile ? undefined : "left .5s ease-in-out",
             maxWidth: isMobile
               ? "100vw"
               : `calc(100vw - ${
-                  listPanelLeftPostion + filterPanelLeftPostion
+                  listPanelLeftPosition + filterPanelLeftPosition
                 }px)`,
           }}
         >

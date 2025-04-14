@@ -92,22 +92,27 @@ const TENANT_MAINTAINER_LOGO_URLS = {
   6: hackForLaLogoUrl,
 };
 
-const DEFAULT_VIEWPORTS = {
+
+export const DEFAULT_VIEWPORTS = {
   1: {
     center: { latitude: 34.0354899, longitude: -118.2439235 },
     zoom: 11,
+    bbox: "-118.9517,33.6988,-117.6462,34.8233", //minLng, minLat, maxLng, maxLat
   },
   3: {
     center: { latitude: 21.4601548, longitude: -157.99 },
     zoom: 9.5,
+    bbox: "-160.25, 18.91, -154.58, 22.30",
   },
   5: {
     center: { latitude: 33.216239, longitude: -96.65014 },
     zoom: 10.5,
+    bbox: "-96.9, 33.1, -96.4, 33.4",
   },
   6: {
     center: { latitude: 34.68758, longitude: -120.157 },
     zoom: 8.75,
+    bbox: "-120.72, 34.36, -119.41, 35.11",
   },
 };
 

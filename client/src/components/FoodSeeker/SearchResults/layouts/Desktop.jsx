@@ -37,7 +37,7 @@ const DesktopLayout = ({ filters, list, map }) => {
     },
   }));
 
-  let leftPostion = isFilterPanelOpen ? "340px" : 0;
+  let leftPosition = isFilterPanelOpen ? "340px" : 0;
   return (
     <>
       {filters}
@@ -54,7 +54,7 @@ const DesktopLayout = ({ filters, list, map }) => {
             position: "absolute",
             width: "524px",
             transition: "left .5s ease-in-out",
-            left: isListPanelOpen ? leftPostion : "-524px",
+            left: isListPanelOpen ? leftPosition : "-524px",
             top: headerHeight,
             height: `calc(100% - ${headerAndFooterHeight}px)`,
             zIndex: 3,

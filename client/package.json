@@ -26,6 +26,7 @@
     "@mui/x-data-grid": "^5.17.20",
     "@mui/x-date-pickers": "^6.8.0",
     "@testing-library/dom": "^10.4.0",
+    "@turf/bbox": "^7.2.0",
     "@types/mapbox-gl": "^3.4.0",
     "@types/node": "^22.9.1",
     "axios": "^1.7.4",

@@ -1,10 +1,8 @@
 import { useState } from "react";
-import { Alert } from "@mui/material";
+import { Alert, Box, Typography, IconButton } from "@mui/material";
+import Collapse from "@mui/material/Collapse";
 
-import Stack from "@mui/material/Stack";
-import Snackbar from "@mui/material/Snackbar";
-import { IconButton } from "./StandardButton";
-import { alertCloseIcon } from "theme/palette";
+import CloseIcon from "@mui/icons-material/Close";
 
 const AlertSurveySnackbar = () => {
   const [open, setOpen] = useState(() => {
@@ -12,46 +10,30 @@ const AlertSurveySnackbar = () => {
     return isClosed !== "true";
   });
 
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpen(false);
-    sessionStorage.setItem("alertSnackbarClosed", "true");
-  };
-
   return (
-    <Stack spacing={2} sx={{ maxWidth: 700 }}>
-      <Snackbar
-        open={open}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        sx={{
-          "& .MuiSnackbar-root": {
-            width: "100%",
-          },
-        }}
-      >
+    <Box sx={{ width: "100%" }}>
+      <Collapse in={open}>
         <Alert
           severity="warning"
-          sx={{ display: "flex", alignItems: "center" }}
-        >
-          <Stack
-            direction="row"
-            sx={{ alignItems: "center", transform: "translateY(1px)" }}
-          >
-            Due to the LA Fires, some information may be out-of-date.{" "}
+          action={
             <IconButton
-              icon="close"
-              sx={{
-                color: alertCloseIcon,
+              aria-label="close"
+              color="inherit"
+              size="small"
+              onClick={() => {
+                setOpen(false);
               }}
-              onClick={handleClose}
-            />
-          </Stack>
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+          }
+        >
+          <Typography>
+            Due to the LA Fires, some information may be out-of-date.{" "}
+          </Typography>
         </Alert>
-      </Snackbar>
-    </Stack>
+      </Collapse>
+    </Box>
   );
 };
 

@@ -38,6 +38,7 @@ import {
 } from "./MarkerHelpers";
 import { regionBorderStyle, regionFillStyle } from "./RegionHelpers";
 import Geolocate from "../ResultsFilters/Geolocate";
+import useHeaderHeight from "hooks/useHeaderHeight";
 
 const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
   const [markersLoaded, setMarkersLoaded] = useState(false);
@@ -50,6 +51,13 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
   const isListPanelOpen = useListPanel();
   const isFilterPanelOpen = useFilterPanel();
   const { mapRef, flyTo } = useMapbox();
+  const { headerHeight } = useHeaderHeight();
+
+  useEffect(() => {
+    if (mapRef.current) {
+      mapRef.current.resize();
+    }
+  }, [headerHeight]);
 
   const longitude =
     searchCoordinates?.longitude ||
@@ -90,7 +98,7 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
 
   const onLoad = useCallback(async () => {
     const map = mapRef.current.getMap();
-    window.dispatchEvent(new Event("resize"))
+    window.dispatchEvent(new Event("resize"));
     setCurrMap(map);
     await loadMarkerIcons(map);
     setMarkersLoaded(true);
@@ -148,8 +156,12 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
     const handleZoomIn = () => {
       const longOffset = 0.0399 * Math.pow(2, 11 - zoom);
       const newCenter = {
-        lng: isListPanelOpen ? currentCenter.lng + longOffset : currentCenter.lng,
-        lat: selectedOrganization ? selectedOrganization.latitude : currentCenter.lat
+        lng: isListPanelOpen
+          ? currentCenter.lng + longOffset
+          : currentCenter.lng,
+        lat: selectedOrganization
+          ? selectedOrganization.latitude
+          : currentCenter.lat,
       };
 
       currMap.easeTo({

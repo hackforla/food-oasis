@@ -10,7 +10,6 @@ import Toast from "components/UI/Toast";
 import { useWidget } from "./appReducer";
 import useFeatureFlag from "./hooks/useFeatureFlag";
 import SurveySnackbar from "./components/UI/SurveySnackbar";
-import useLocationHook from "hooks/useLocationHook";
 
 const VerificationAdmin = lazy(() =>
   import("components/Admin/VerificationAdmin")

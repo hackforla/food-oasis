@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useUserContext } from "contexts/userContext";
 import { TENANT_LOGO_URL } from "helpers/Constants";
 import Menu from "./Menu";
+import AlertSurveySnackbar from "components/UI/AlertSurveySnackbar";
 
 Header.propTypes = {
   tenantId: PropTypes.number,
@@ -30,6 +31,9 @@ export default function Header() {
           marginTop: isAuthPage && theme.spacing(4),
         })}
       >
+        {isMapPage && location.pathname !== "/widget" && (
+          <AlertSurveySnackbar />
+        )}
         <Toolbar
           sx={(theme) => ({
             minHeight: "60px",
@@ -63,12 +67,6 @@ export default function Header() {
               />
             </a>
           </Box>
-          {isMapPage ? (
-            <Alert severity="warning">
-              Due to the LA Fires (Jan 2025), some information may be
-              out-of-date.
-            </Alert>
-          ) : null}
           <Box
             sx={{
               display: "flex",

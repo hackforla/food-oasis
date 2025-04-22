@@ -67,6 +67,7 @@ export default function AppRoutes() {
       {hasUserFeedbackSuveyFeatureFlag && location.pathname !== "/widget" && (
         <SurveySnackbar />
       )}
+
       <Routes>
         <Route path="/" element={<AppWrapper />}>
           {/* Food seeker routes */}
@@ -206,7 +207,7 @@ export default function AppRoutes() {
 
 function AppWrapper() {
   const isWidget = useWidget();
-  
+
   return (
     <Grid
       container

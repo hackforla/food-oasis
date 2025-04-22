@@ -23,7 +23,7 @@ export default function useHeaderHeight() {
     updateHeight();
     window.addEventListener("resize", updateHeight);
 
-    const observer = new MutationObserver(updateHeight);
+    const observer = new ResizeObserver(updateHeight);
     const elements = [
       document.getElementById("header1"),
       document.getElementById("header2"),

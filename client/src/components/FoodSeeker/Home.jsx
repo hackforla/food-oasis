@@ -230,8 +230,7 @@ const Home = () => {
                   )}
                 </Box>
                 <Alert severity="warning">
-                  Due to the LA Fires (Jan 2025), some information may be
-                  out-of-date.
+                  Due to the LA Fires, some information may be out-of-date.
                 </Alert>
                 <Box
                   sx={{

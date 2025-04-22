@@ -10,7 +10,7 @@ test.describe("App", () => {
     ).toBeVisible();
     await expect(
       page.getByText(
-        "Due to the LA Fires (Jan 2025), some information may be out-of-date."
+        "Due to the LA Fires, some information may be out-of-date."
       )
     ).toBeVisible();
     await expect(page.getByText("Learn about this site")).toBeVisible();

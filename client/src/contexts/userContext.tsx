@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import {
   createContext,
   useCallback,
@@ -10,22 +9,41 @@ import {
 import { logout } from "../services/account-service";
 import * as analytics from "../services/analytics";
 import { useToasterContext } from "./toasterContext";
+import { User } from "../types/User";
 
-export const UserContext = createContext(null);
+interface UserProviderProps {
+  children: React.ReactNode;
+}
 
-export const UserProvider = ({ children }) => {
+interface UserContextProps {
+  user: User | null;
+  isLoggedIn: boolean;
+  onLogin: (user: User) => Promise<void>;
+  onLogout: (user: User) => Promise<void>;
+  onUpdate: (user: User) => Promise<void>;
+}
+
+const initialState: UserContextProps = {
+  user: null,
+  isLoggedIn: false,
+  onLogin: async () => {},
+  onLogout: async () => {},
+  onUpdate: async () => {},
+};
+
+export const UserContext = createContext<UserContextProps>(initialState);
+
+export const UserProvider = ({ children }: UserProviderProps) => {
   const { setToast } = useToasterContext();
-  const [user, setUser] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const storedJson = sessionStorage.getItem("user");
     const userJson = JSON.stringify(user);
-    if (!userJson && !storedJson) {
+    if ((!userJson && !storedJson) || userJson === storedJson) {
       return;
-    } else if (userJson === storedJson) {
-      return;
-    } else {
+    } else if (storedJson) {
       const user = JSON.parse(storedJson);
       if (user) {
         analytics.identify(user.id);
@@ -35,13 +53,13 @@ export const UserProvider = ({ children }) => {
     }
   }, [user]);
 
-  const onLogin = useCallback(async (user) => {
+  const onLogin = useCallback(async (user: User) => {
     sessionStorage.setItem("user", JSON.stringify(user));
     setUser(user);
     setIsLoggedIn(true);
   }, []);
 
-  const onUpdate = useCallback(async (updateUser) => {
+  const onUpdate = useCallback(async (updateUser: User) => {
     sessionStorage.setItem("user", JSON.stringify(updateUser));
     setUser(updateUser);
   }, []);
@@ -82,7 +100,3 @@ export const UserProvider = ({ children }) => {
 };
 
 export const useUserContext = () => useContext(UserContext);
-
-UserProvider.propTypes = {
-  children: PropTypes.any,
-};

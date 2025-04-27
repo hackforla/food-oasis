@@ -13,7 +13,13 @@ import {
 import { useState } from "react";
 import { tooltipHover } from "theme/palette";
 
-const Label = ({ id, label, tooltipTitle, href }) => {
+interface LabelProps {
+  id: string;
+  label: string;
+  tooltipTitle?: string;
+  href?: string;
+}
+const Label = ({ id, label, tooltipTitle, href }: LabelProps) => {
   const [tooltipOpen, setTooltipOpen] = useState(false);
 
   const handleToolTipToggle = () => {

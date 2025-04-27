@@ -6,6 +6,7 @@
     "typecheck": "lerna run typecheck"
   },
   "devDependencies": {
+    "@types/lodash.debounce": "^4.0.9",
     "husky": "^9.0.10",
     "lerna": "^8.1.2",
     "lerna-cli": "^5.0.6"

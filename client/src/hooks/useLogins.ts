@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import * as loginsService from "../services/logins-service";
 
-const dateFormatOptions = {
+const dateFormatOptions: Intl.DateTimeFormatOptions = {
   weekday: "short",
   month: "short",
   day: "numeric",
@@ -9,37 +9,44 @@ const dateFormatOptions = {
   hour: "numeric",
   minute: "numeric",
 };
+export interface FormattedLogin {
+  loginTime: string;
+  id: number;
+  firstName: loginsService.FirstName;
+  lastName: loginsService.LastName;
+  email: string;
+}
 
-export const useLogins = (emailQuery) => {
-  const [data, setData] = useState([]);
+export const useLogins = () => {
+  const [data, setData] = useState<FormattedLogin[]>([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<unknown | null>(null);
 
-  const fetch = useCallback(async (email) => {
-    const fetchApi = async (email) => {
-      setLoading({ loading: true });
+  const fetch = useCallback(async (email?: string) => {
+    const fetchApi = async () => {
+      setLoading(true);
       try {
         let logins = await loginsService.getAll(email);
-        logins = logins.map((login) => ({
+        let formattedLogins: FormattedLogin[] = logins.map((login) => ({
           ...login,
           loginTime: new Date(login.loginTime).toLocaleDateString(
             "en-US",
             dateFormatOptions
           ),
         }));
-        setData(logins);
+        setData(formattedLogins);
         setLoading(false);
       } catch (err) {
         setError(err);
         console.error(err);
       }
     };
-    fetchApi(email);
+    fetchApi();
   }, []);
 
   useEffect(() => {
-    fetch(emailQuery);
-  }, [fetch, emailQuery]);
+    fetch();
+  }, [fetch]);
 
   return { data, error, loading, refetch: fetch };
 };

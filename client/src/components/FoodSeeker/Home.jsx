@@ -150,8 +150,6 @@ const Home = () => {
               })}
             >
               <Box
-                component="form"
-                onSubmit={() => navigate("/organizations")}
                 sx={(theme) => ({
                   width: "100%",
                   marginTop: theme.spacing(1),

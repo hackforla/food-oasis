@@ -23,10 +23,11 @@ export default function AddressDropDown({ autoFocus }) {
     searchCoordinates?.locationName || ""
   );
   const [open, setOpen] = useState(true);
-  const { mapboxResults, fetchMapboxResults } = useMapboxGeocoder();
+  const { mapboxResults, fetchMapboxResults, isLoading } = useMapboxGeocoder();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { flyTo } = useMapbox();
+  const [highlightedOption, setHighlightedOption] = useState(null);
 
   const handleInputChange = (delta) => {
     if (!delta) return;
@@ -121,16 +122,21 @@ export default function AddressDropDown({ autoFocus }) {
   };
 
   const handleKeyDown = (event) => {
-    if (event.key === "Enter" && mapboxResults.length > 0) {
+    if (event.key === "Enter" && mapboxResults.length > 0 && !isLoading) {
       event.preventDefault();
-      handleAutocompleteOnChange(mapboxResults[0].place_name);
+      const selected = highlightedOption ?? mapboxResults[0].place_name;
+      handleAutocompleteOnChange(selected);
     }
   };
   return (
     <>
       <Autocomplete
+        disableCloseOnSelect
         autoHighlight
         onInputChange={(value) => handleInputChange(value)}
+        onHighlightChange={(_event, option) => {
+          setHighlightedOption(option);
+        }}
         freeSolo
         inputValue={inputVal}
         open={open}

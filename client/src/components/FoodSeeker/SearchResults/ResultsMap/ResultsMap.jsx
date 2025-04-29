@@ -17,6 +17,8 @@ import useFeatureFlag from "hooks/useFeatureFlag";
 import "mapbox-gl/dist/mapbox-gl.css";
 import Map, { Layer, Marker, Source } from "react-map-gl";
 import { useLocation, useNavigate } from "react-router-dom";
+import bbox from "@turf/bbox";
+
 import * as analytics from "services/analytics";
 import {
   DEFAULT_COORDINATES,
@@ -50,6 +52,7 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
   const { isMobile } = useBreakpoints();
   const isListPanelOpen = useListPanel();
   const isFilterPanelOpen = useFilterPanel();
+
   const { mapRef, flyTo } = useMapbox();
   const { headerHeight } = useHeaderHeight();
 
@@ -110,6 +113,59 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
       });
   }, [startIconCoordinates, flyTo, mapRef]);
 
+  const listPanelLeftPosition = isListPanelOpen ? 524 : 0;
+  const filterPanelLeftPosition = isFilterPanelOpen ? 340 : 0;
+
+  // custom zoom for the neighborhood if used in widget mode
+  useEffect(() => {
+    if (regionGeoJSON && currMap) {
+      const bounds = bbox(regionGeoJSON);
+
+      const canvas = currMap.getCanvas();
+      const mapWidth = canvas.clientWidth;
+      const mapHeight = canvas.clientHeight;
+
+      let leftPadding = isMobile
+        ? 60
+        : listPanelLeftPosition + filterPanelLeftPosition + 60;
+      let rightPadding = 60;
+      let topPadding = 60;
+      let bottomPadding = isMobile ? 220 : 60;
+
+      if (leftPadding + rightPadding > mapWidth) {
+        const overflow = leftPadding + rightPadding - mapWidth + 10;
+        leftPadding -= overflow / 2;
+        rightPadding -= overflow / 2;
+      }
+
+      if (topPadding + bottomPadding > mapHeight) {
+        const overflow = topPadding + bottomPadding - mapHeight + 10;
+        topPadding -= overflow / 2;
+        bottomPadding -= overflow / 2;
+      }
+
+      leftPadding = Math.max(0, leftPadding);
+      rightPadding = Math.max(0, rightPadding);
+      topPadding = Math.max(0, topPadding);
+      bottomPadding = Math.max(0, bottomPadding);
+
+      const timeout = setTimeout(() => {
+        currMap.fitBounds(bounds, {
+          padding: {
+            top: topPadding,
+            right: rightPadding,
+            bottom: bottomPadding,
+            left: leftPadding,
+          },
+          duration: 2000,
+          maxZoom: 16,
+        });
+      }, 100);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [regionGeoJSON, currMap, isMobile]);
+
   const onClick = (e) => {
     flyTo({
       latitude: e.lngLat.lat,
@@ -145,9 +201,6 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
     categoryIds,
   });
 
-  const listPanelLeftPosition = isListPanelOpen ? 524 : 0;
-  const filterPanelLeftPosition = isFilterPanelOpen ? 340 : 0;
-
   const CustomNavigationControl = () => {
     if (!currMap) return;
     const zoom = currMap.getZoom();
@@ -156,6 +209,12 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
     const handleZoomIn = () => {
       const longOffset = 0.0399 * Math.pow(2, 11 - zoom);
       const newCenter = {
+        lng: isListPanelOpen
+          ? currentCenter.lng + longOffset
+          : currentCenter.lng,
+        lat: selectedOrganization
+          ? selectedOrganization.latitude
+          : currentCenter.lat,
         lng: isListPanelOpen
           ? currentCenter.lng + longOffset
           : currentCenter.lng,

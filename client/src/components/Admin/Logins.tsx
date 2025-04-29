@@ -9,22 +9,28 @@ import {
   TableContainer,
   TableHead,
   TablePagination,
+  TablePaginationOwnProps,
   TableRow,
   TextField,
   Typography,
 } from "@mui/material";
-import { useLogins } from "hooks/useLogins";
+import { FormattedLogin, useLogins } from "hooks/useLogins";
 import debounce from "lodash.debounce";
 import { useEffect, useMemo, useState } from "react";
 
-const columns = [
+interface Column {
+  id: keyof FormattedLogin | "name";
+  label: string;
+  minWidth: number;
+}
+const columns: Column[] = [
   { id: "name", label: "Name", minWidth: 100 },
   { id: "email", label: "Email", minWidth: 10 },
   { id: "loginTime", label: "Login Time", minWidth: 10 },
 ];
 
 const Logins = () => {
-  const [logins, setLogins] = useState([]);
+  const [logins, setLogins] = useState<FormattedLogin[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   let { data, refetch } = useLogins();
@@ -35,17 +41,23 @@ const Logins = () => {
     }
   }, [data]);
 
-  const handleChangePage = (event, newPage) => {
+  const handleChangePage: TablePaginationOwnProps["onPageChange"] = (
+    _event,
+    newPage
+  ) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+  const handleChangeRowsPerPage: TablePaginationOwnProps["onRowsPerPageChange"] =
+    (event) => {
+      setRowsPerPage(+event.target.value);
+      setPage(0);
+    };
 
   const debouncedChangeHandler = useMemo(() => {
-    const changeHandler = (event) => {
+    const changeHandler: React.ChangeEventHandler<
+      HTMLTextAreaElement | HTMLInputElement
+    > = (event) => {
       refetch(event.target.value.toLowerCase());
     };
     return debounce(changeHandler, 300);
@@ -97,7 +109,6 @@ const Logins = () => {
                 {columns.map((column) => (
                   <TableCell
                     key={column.id}
-                    align={column.align}
                     style={{ minWidth: column.minWidth }}
                   >
                     {column.label}
@@ -121,11 +132,7 @@ const Logins = () => {
                           column.id === "name"
                             ? `${logins["lastName"]}, ${logins["firstName"]}`
                             : logins[column.id];
-                        return (
-                          <TableCell key={column.id} align={column.align}>
-                            {value}
-                          </TableCell>
-                        );
+                        return <TableCell key={column.id}>{value}</TableCell>;
                       })}
                     </TableRow>
                   );

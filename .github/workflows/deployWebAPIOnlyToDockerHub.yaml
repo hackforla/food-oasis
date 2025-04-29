@@ -17,7 +17,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v2
       - name: build-and-push-image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v6
         with:
           dockerfile: ./Dockerfile-jared
           username: ${{ secrets.DOCKER_USERNAME }}

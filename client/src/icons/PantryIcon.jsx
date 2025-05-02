@@ -1,4 +1,3 @@
-import React from "react";
 import { foodPantry, closed, white } from "theme/palette";
 
 const PantryIcon = ({

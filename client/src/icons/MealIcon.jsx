@@ -1,4 +1,3 @@
-import React from "react";
 import { mealProgram, closed, white } from "theme/palette";
 
 const PantryIcon = ({

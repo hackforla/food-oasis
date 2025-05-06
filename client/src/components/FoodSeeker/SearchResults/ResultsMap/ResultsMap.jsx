@@ -215,12 +215,6 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
         lat: selectedOrganization
           ? selectedOrganization.latitude
           : currentCenter.lat,
-        lng: isListPanelOpen
-          ? currentCenter.lng + longOffset
-          : currentCenter.lng,
-        lat: selectedOrganization
-          ? selectedOrganization.latitude
-          : currentCenter.lat,
       };
 
       currMap.easeTo({

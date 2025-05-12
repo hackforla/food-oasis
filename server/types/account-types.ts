@@ -17,6 +17,7 @@ export interface Account extends User {
   isDataEntry: boolean;
   isCoordinator: boolean;
   features: string[];
+  announcements: string[];
 }
 
 export interface RegisterFields extends User {

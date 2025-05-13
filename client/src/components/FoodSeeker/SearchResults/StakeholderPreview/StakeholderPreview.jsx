@@ -1,19 +1,12 @@
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PhoneIcon from "@mui/icons-material/Phone";
 import SubdirectoryArrowRightIcon from "@mui/icons-material/SubdirectoryArrowRight";
-import {
-  Box,
-  Button,
-  Chip,
-  Divider,
-  Link,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Chip, Divider, Stack, Typography } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Grid2 from "@mui/material/Unstable_Grid2";
+import InternalLink from "components/UI/InternalLink";
 import {
   FOOD_PANTRY_CATEGORY_ID,
   MEAL_PROGRAM_CATEGORY_ID,
@@ -35,12 +28,11 @@ import {
   nextOpenTime,
   standardTime,
 } from "helpers";
-import useBreakpoints from "hooks/useBreakpoints";
 import AppleIcon from "icons/AppleIcon";
 import ForkIcon from "icons/ForkIcon";
 import StakeholderIcon from "images/stakeholderIcon";
 import PropTypes from "prop-types";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import * as analytics from "services/analytics";
 import {
   useAppDispatch,
@@ -112,15 +104,17 @@ export const stakeholdersDaysHours = (
   }
 };
 
+function getLinkUrl(organization) {
+  const name = organization.name.toLowerCase().replaceAll(" ", "_");
+  return `${location.pathname}?latitude=${organization.latitude}&longitude=${organization.longitude}&org=${name}&id=${organization.id}`;
+}
+
 const StakeholderPreview = ({ stakeholder, onSelect }) => {
   const dispatch = useAppDispatch();
   const searchCoordinates = useSearchCoordinates();
   const userCoordinates = useUserCoordinates();
   const originCoordinates = searchCoordinates || userCoordinates;
   const { tenantTimeZone } = useSiteContext();
-  const { isDesktop } = useBreakpoints();
-
-  const navigate = useNavigate();
   const location = useLocation();
 
   const handleSelectOrganization = (organization) => {
@@ -130,12 +124,6 @@ const StakeholderPreview = ({ stakeholder, onSelect }) => {
       id: organization.id,
       name: organization.name,
     });
-
-    //Update url history
-    const name = organization.name.toLowerCase().replaceAll(" ", "_");
-    navigate(
-      `${location.pathname}?latitude=${organization.latitude}&longitude=${organization.longitude}&org=${name}&id=${organization.id}`
-    );
   };
 
   const mainNumber = extractNumbers(stakeholder.phone).find((n) => n.number);
@@ -186,12 +174,13 @@ const StakeholderPreview = ({ stakeholder, onSelect }) => {
               align="left"
               fontWeight="bold"
             >
-              <Link
+              <InternalLink
+                href={getLinkUrl(stakeholder)}
                 sx={{ color: "inherit" }}
                 onClick={() => handleSelectOrganization(stakeholder)}
               >
                 {stakeholder.name}
-              </Link>
+              </InternalLink>
             </Typography>
             <Stack
               direction="row"
@@ -455,7 +444,8 @@ const StakeholderPreview = ({ stakeholder, onSelect }) => {
             )}
           </Stack>
           <Stack alignItems="flex-end">
-            <Link
+            <InternalLink
+              href={getLinkUrl(stakeholder)}
               onClick={() => handleSelectOrganization(stakeholder)}
               sx={{
                 color: linkText,
@@ -464,7 +454,7 @@ const StakeholderPreview = ({ stakeholder, onSelect }) => {
               }}
             >
               more info...
-            </Link>
+            </InternalLink>
           </Stack>
           <Stack
             direction="row"

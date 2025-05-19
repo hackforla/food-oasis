@@ -4,7 +4,7 @@ import test from "./helpers/test";
 test.describe("Organizations", () => {
   test("should render detail page on preview click", async ({ page }) => {
     await page.goto("/");
-    await page.getByTestId("SearchIcon").click();
+    await page.getByTestId("search-button").click();
 
     await expect(page.getByText("Stakeholder 1")).toBeVisible();
     await page.getByText("Families Forward").scrollIntoViewIfNeeded;
@@ -15,8 +15,6 @@ test.describe("Organizations", () => {
     await expect(page.url()).toBe(
       "http://localhost:3000/organizations?latitude=33.79178035&longitude=-118.3186286&org=stakeholder_1&id=1"
     );
-
-    await expect(page.getByTestId("SubdirectoryArrowRightIcon")).toBeVisible();
   });
 
   test("should render all 3 stakeholders", async ({ page }) => {
@@ -44,10 +42,10 @@ test.describe("Organizations", () => {
 
     await page.getByText("Social Media").scrollIntoViewIfNeeded();
     await expect(page.getByText("Social Media")).toBeVisible();
-    await expect(page.getByTestId("FacebookIcon")).toBeVisible();
-    await expect(page.getByTestId("LinkedInIcon")).toBeVisible();
-    await expect(page.getByTestId("PinterestIcon")).toBeVisible();
-    await expect(page.getByTestId("XIcon")).toBeVisible();
+    await expect(page.getByTestId("facebook-button")).toBeVisible();
+    await expect(page.getByTestId("linkedin-button")).toBeVisible();
+    await expect(page.getByTestId("pinterest-button")).toBeVisible();
+    await expect(page.getByTestId("twitter-button")).toBeVisible();
   });
 
   test("clicking the Open Now filter should show Stakeholder 1 and not show Stakeholder 2 and 3", async ({

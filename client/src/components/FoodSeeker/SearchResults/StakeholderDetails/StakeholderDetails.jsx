@@ -751,7 +751,7 @@ function normalizeSocialLink({ value, socialMedia }) {
     value === "N/A" ||
     value === "n/a" ||
     value === "n / a" ||
-    value === "N / A" || 
+    value === "N / A" ||
     !value
   ) {
     return null;
@@ -803,6 +803,7 @@ function SocialMedia({ selectedOrganization }) {
             href={facebook}
             target="_blank"
             rel="noopener noreferrer"
+            data-testid="facebook-button"
           >
             <FacebookIcon />
           </IconButton>
@@ -813,6 +814,7 @@ function SocialMedia({ selectedOrganization }) {
             href={instagram}
             target="_blank"
             rel="noopener noreferrer"
+            data-testid="instagram-button"
           >
             <InstagramIcon />
           </IconButton>
@@ -823,6 +825,7 @@ function SocialMedia({ selectedOrganization }) {
             href={linkedin}
             target="_blank"
             rel="noopener noreferrer"
+            data-testid="linkedin-button"
           >
             <LinkedInIcon />
           </IconButton>
@@ -833,6 +836,7 @@ function SocialMedia({ selectedOrganization }) {
             href="pinterest"
             target="_blank"
             rel="noopener noreferrer"
+            data-testid="pinterest-button"
           >
             <PinterestIcon />
           </IconButton>
@@ -843,6 +847,7 @@ function SocialMedia({ selectedOrganization }) {
             href={twitter}
             target="_blank"
             rel="noopener noreferrer"
+            data-testid="twitter-button"
           >
             <XIcon />
           </IconButton>

@@ -93,6 +93,7 @@ export default function AddressDropDown({ autoFocus }) {
           endAdornment: (
             <InputAdornment
               position="end"
+              data-testid="search-button"
               onClick={() => {
                 navigate(isWidget ? "/widget" : "/organizations");
               }}

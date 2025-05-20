@@ -84,34 +84,6 @@ const ResultsFilters = ({
             alignItems: "center",
           }}
         >
-          {!hasAdvancedFilterFeatureFlag && (
-            <Grid2
-              container
-              xs={12}
-              sm={6}
-              spacing={1}
-              justifyContent={{ xs: "center", sm: "flex-start" }}
-            >
-              <Grid2 item="true">
-                <CategoryButton
-                  icon="pantry"
-                  onClick={togglePantry}
-                  label="Pantries"
-                  isSelected={isPantrySelected}
-                />
-              </Grid2>
-              <Grid2 item="true">
-                <CategoryButton
-                  icon="meal"
-                  onClick={toggleMeal}
-                  label="Meals"
-                  isSelected={isMealsSelected}
-                  style={{ marginLeft: 5 }}
-                />
-              </Grid2>
-            </Grid2>
-          )}
-
           <Grid2 xs={12} sm={6}>
             <Stack
               direction="row"

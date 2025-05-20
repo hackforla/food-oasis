@@ -5,7 +5,7 @@ import {
   MAPBOX_ACCESS_TOKEN,
   DEFAULT_VIEWPORTS,
 } from "helpers/Constants";
-import { useReducer } from "react";
+import { useCallback, useReducer } from "react";
 
 const baseUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places`;
 
@@ -46,25 +46,30 @@ export function useMapboxGeocoder() {
     initialState
   );
 
-  const fetchMapboxResults = debounce(
-    async (searchString) => {
+  const debouncedFetch = useCallback(
+    debounce(
+      async (searchString) => {
+        const bbox = DEFAULT_VIEWPORTS[TENANT_ID].bbox;
+        const mapboxUrl = `${baseUrl}/${searchString}.json?bbox=${bbox}&access_token=${MAPBOX_ACCESS_TOKEN}`;
 
-      const bbox = DEFAULT_VIEWPORTS[TENANT_ID].bbox;
-      const mapboxUrl = `${baseUrl}/${searchString}.json?bbox=${bbox}&access_token=${MAPBOX_ACCESS_TOKEN}`;
-
-      dispatch({ type: actionTypes.FETCH_REQUEST });
-      try {
-        const response = await axios.get(mapboxUrl);
-        dispatch({
-          type: actionTypes.FETCH_SUCCESS,
-          results: response.data.features,
-        });
-      } catch (error) {
-        dispatch({ type: actionTypes.FETCH_FAILURE, error });
-      }
-    },
-    { wait: 300, after: false, before: true }
+        try {
+          const response = await axios.get(mapboxUrl);
+          dispatch({
+            type: actionTypes.FETCH_SUCCESS,
+            results: response.data.features,
+          });
+        } catch (error) {
+          dispatch({ type: actionTypes.FETCH_FAILURE, error });
+        }
+      },
+      { wait: 300 }
+    ),
+    []
   );
+  const fetchMapboxResults = useCallback((searchString) => {
+    dispatch({ type: actionTypes.FETCH_REQUEST });
+    debouncedFetch(searchString);
+  }, []);
 
   return { error, isLoading, mapboxResults, fetchMapboxResults };
 }

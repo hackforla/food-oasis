@@ -1,15 +1,17 @@
 import db from "./db";
 import { Announcements } from "../../types/announcements-types";
 
-interface LocalNotifications {
+interface Announcements {
   id: number;
-  name: string;
+  title: string;
+  description: string;
+  is_enabled: boolean;
 }
 
 const getAll = async (): Promise<Announcements[]> => {
   const sql = `
-  SELECT id, name 
-  FROM local_notifications
+  SELECT id, title, description, is_enabled 
+  FROM announcements
   `;
   const result = await db.manyOrNone(sql);
   return result;

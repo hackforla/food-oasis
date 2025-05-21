@@ -25,7 +25,7 @@ function authTest(page: Page) {
     login: async () => {
       await page.goto("/");
 
-      await page.getByTestId("MenuIcon").click();
+      await page.getByTestId("menu-button").click();
       await page.getByText("Volunteer Login").click();
 
       await expect(page.url()).toBe("http://localhost:3000/admin/login");

@@ -15,6 +15,8 @@ import {
   sendResetPasswordConfirmation,
 } from "./sendgrid-service";
 import db from "./db";
+import { omit } from "../../middleware/jwt-session";
+import { OMIT_USER_FIELDS } from "./import-constants";
 
 const SALT_ROUNDS = 10;
 
@@ -543,11 +545,14 @@ const updateUserProfile = async (
   try {
     await db.none(sql, { userid, firstName, lastName, email });
     const user = await selectByEmail(email, tenantId);
+
+    const filteredUser = omit(user, OMIT_USER_FIELDS);
+
     return {
       isSuccess: true,
       code: "UPDATE_SUCCESS",
       message: `User profile successfully updated`,
-      user: user,
+      user: filteredUser,
     };
   } catch (error) {
     return {

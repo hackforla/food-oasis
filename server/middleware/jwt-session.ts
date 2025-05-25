@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { CookieOptions, Request, Response } from "express";
 import { Role } from "../types/account-types";
+import { OMIT_USER_FIELDS } from "../app/services/import-constants";
 
 const jwtSecret = process.env.JWT_SECRET || "mark it zero";
 const jwtOpts: jwt.SignOptions = { algorithm: "HS256", expiresIn: "1d" };
@@ -8,6 +9,19 @@ const jwtOpts: jwt.SignOptions = { algorithm: "HS256", expiresIn: "1d" };
 interface JwtPayload {
   email: string;
   sub: string;
+}
+
+export function omit<T extends object>(
+  obj: T,
+  keys: (keyof T | string)[]
+): Partial<T> {
+  const result = { ...obj };
+  keys.forEach((key) => {
+    if (key in result) {
+      delete result[key as keyof T];
+    }
+  });
+  return result;
 }
 
 // This module manages the user's session using a JSON Web Token in the
@@ -33,7 +47,8 @@ async function login(req: Request, res: Response) {
   };
   res.cookie("jwt", token, cookieConfig);
   const user = req.user;
-  res.json({ isSuccess: true, token: token, user });
+  const filteredUser = omit(user ?? {}, OMIT_USER_FIELDS);
+  res.json({ isSuccess: true, token: token, user: filteredUser });
 }
 
 // When a request is received for a route that requires an

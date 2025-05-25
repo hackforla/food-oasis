@@ -100,7 +100,6 @@ export default function AppRoutes() {
 
           {/* Admin routes */}
           <Route path="admin" element={<AdminWrapper />}>
-            <Route path="logins" element={<Logins />} />
             <Route path="profile/:id" element={<Profile />} />
             <Route path="register" element={<Register />} />
             <Route path="confirm/:token" element={<ConfirmEmail />} />

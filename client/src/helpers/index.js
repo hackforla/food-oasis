@@ -511,3 +511,9 @@ export const isAlmostOpen = (hours, tenantTimeZone) => {
   const minutesToOpening = calculateMinutesToOpening(hours, tenantTimeZone);
   return minutesToOpening <= minutesToOpenFlag;
 };
+
+export const getCookie = (name) => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(";").shift();
+};

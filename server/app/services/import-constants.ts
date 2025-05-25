@@ -433,3 +433,19 @@ export const STAKEHOLDER_SCHEMA = [
     default_value: "f",
   },
 ];
+
+export const OMIT_USER_FIELDS = [
+  "id",
+  "email",
+  "emailConfirmed",
+  "passwordHash",
+  "dateCreated",
+  "isGlobalAdmin",
+  "isGlobalReporting",
+  "tenantId",
+  "isAdmin",
+  "isSecurityAdmin",
+  "isDataEntry",
+  "isCoordinator",
+  "role",
+];

@@ -1,13 +1,6 @@
 import db from "./db";
 import { Announcements } from "../../types/announcements-types";
 
-interface Announcements {
-  id: number;
-  title: string;
-  description: string;
-  is_enabled: boolean;
-}
-
 const getAll = async (): Promise<Announcements[]> => {
   const sql = `
   SELECT id, title, description, is_enabled 

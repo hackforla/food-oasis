@@ -37,8 +37,6 @@ export interface JWTPayload {
   email: string;
   id: number;
   sub: string;
-  iat: number;
-  exp: number;
 }
 
 const updateUserFromJWT = (user: User, jwt: string | undefined): User => {

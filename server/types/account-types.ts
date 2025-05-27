@@ -19,21 +19,6 @@ export interface Account extends User {
   features: string[];
   announcements: string[];
 }
-export type FilteredAccount = Omit<
-  Account,
-  | "id"
-  | "email"
-  | "emailConfirmed"
-  | "passwordHash"
-  | "dateCreated"
-  | "isGlobalAdmin"
-  | "isGlobalReporting"
-  | "isAdmin"
-  | "isSecurityAdmin"
-  | "isDataEntry"
-  | "isCoordinator"
-  | "tenantId"
->;
 
 export interface RegisterFields extends User {
   password: string;

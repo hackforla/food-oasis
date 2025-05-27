@@ -1,7 +1,6 @@
-import jwt from "jsonwebtoken";
 import { CookieOptions, Request, Response } from "express";
+import jwt from "jsonwebtoken";
 import { Role } from "../types/account-types";
-import { OMIT_USER_FIELDS } from "../app/services/import-constants";
 
 const jwtSecret = process.env.JWT_SECRET || "mark it zero";
 const jwtOpts: jwt.SignOptions = { algorithm: "HS256", expiresIn: "1d" };
@@ -9,19 +8,6 @@ const jwtOpts: jwt.SignOptions = { algorithm: "HS256", expiresIn: "1d" };
 interface JwtPayload {
   email: string;
   sub: string;
-}
-
-export function omit<T extends object>(
-  obj: T,
-  keys: (keyof T | string)[]
-): Partial<T> {
-  const result = { ...obj };
-  keys.forEach((key) => {
-    if (key in result) {
-      delete result[key as keyof T];
-    }
-  });
-  return result;
 }
 
 // This module manages the user's session using a JSON Web Token in the
@@ -47,7 +33,11 @@ async function login(req: Request, res: Response) {
   };
   res.cookie("jwt", token, cookieConfig);
   const user = req.user;
-  const filteredUser = omit(user ?? {}, OMIT_USER_FIELDS);
+  const filteredUser = {
+    firstName: user?.firstName,
+    lastName: user?.lastName,
+    features: user?.features,
+  };
   res.json({ isSuccess: true, token: token, user: filteredUser });
 }
 

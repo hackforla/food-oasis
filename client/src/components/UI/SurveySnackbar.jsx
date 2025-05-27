@@ -1,27 +1,29 @@
-import * as React from "react";
-import { useState } from "react";
 import { Button, Link, Typography } from "@mui/material";
+import { useState } from "react";
 
-import Stack from "@mui/material/Stack";
-import Snackbar from "@mui/material/Snackbar";
 import Box from "@mui/material/Box";
-import { IconButton } from "./StandardButton";
+import Snackbar from "@mui/material/Snackbar";
+import Stack from "@mui/material/Stack";
 import useBreakpoints from "hooks/useBreakpoints";
+import { IconButton } from "./StandardButton";
 
 const SurveySnackbar = () => {
   const [open, setOpen] = useState(() => {
-    const isClosed = localStorage.getItem("surveySnackbarClosed");
-    if (isClosed === "true") {
+    const hasBeenDismissed = localStorage.getItem("surveySnackbarClosed");
+    if (hasBeenDismissed === "true") {
       return false;
     }
 
     // show snackbar after a day if closed with X button
-    const lastClosed = Number(
-      localStorage.getItem("surveySnackbarClosedTimeStamp")
-    );
+    let lastClosed = localStorage.getItem("surveySnackbarClosedTimeStamp");
+    if (!lastClosed || isNaN(lastClosed)) {
+      return true;
+    }
+    lastClosed = Number(lastClosed);
+
     const hoursSinceClosed = (Date.now() - lastClosed) / (1000 * 60 * 60);
 
-    if (isNaN(lastClosed) || hoursSinceClosed >= 24) {
+    if (hoursSinceClosed >= 24) {
       return true;
     }
     return false;
@@ -97,7 +99,6 @@ const SurveySnackbar = () => {
         }}
       >
         <Link
-          component="a"
           variant=""
           sx={{
             marginRight: 2,

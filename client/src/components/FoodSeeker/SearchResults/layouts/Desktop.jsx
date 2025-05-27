@@ -16,7 +16,9 @@ const DesktopLayout = ({ filters, list, map }) => {
   const dispatch = useAppDispatch();
   const { headerHeight, headerAndFooterHeight } = useHeaderHeight();
   
-  function getLeftPosition(leftPosition, listLeftPosition){
+  function getLeftPosition(){
+    const leftPosition = isFilterPanelOpen ? "340px" : 0;
+    const listLeftPosition = isFilterPanelOpen ? "-186px" : "-524px";
     return isListPanelOpen ? leftPosition : listLeftPosition
   }
   const toggleDrawer = (event) => {
@@ -40,9 +42,6 @@ const DesktopLayout = ({ filters, list, map }) => {
     },
   }));
 
-  let leftPosition = isFilterPanelOpen ? "340px" : 0;
-  let listLeftPosition = isFilterPanelOpen ? "-186px" : "-524px";
-
   return (
     <>
       {filters}
@@ -59,7 +58,7 @@ const DesktopLayout = ({ filters, list, map }) => {
             position: "absolute",
             width: "524px",
             transition: "left .5s ease-in-out",
-            left: getLeftPosition(leftPosition, listLeftPosition),
+            left: getLeftPosition(),
             top: headerHeight,
             height: `calc(100% - ${headerAndFooterHeight}px)`,
             zIndex: 3,

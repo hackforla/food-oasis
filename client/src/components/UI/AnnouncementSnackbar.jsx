@@ -4,7 +4,7 @@ import Collapse from "@mui/material/Collapse";
 
 import CloseIcon from "@mui/icons-material/Close";
 
-const AlertSurveySnackbar = () => {
+const AnnouncementSnackbar = () => {
   const [open, setOpen] = useState(() => {
     const isClosed = sessionStorage.getItem("alertSnackbarClosed");
     return isClosed !== "true";
@@ -37,4 +37,4 @@ const AlertSurveySnackbar = () => {
   );
 };
 
-export default AlertSurveySnackbar;
+export default AnnouncementSnackbar;

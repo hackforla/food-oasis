@@ -80,7 +80,7 @@ const ResultsList = ({ stakeholders, loading, handleReset }) => {
           initialTopMostItemIndex={topMostIndex}
           data={stakeholders}
           style={{
-            height: "calc(100vh - 123px)",
+            height: "100%",
             width: "100%",
           }}
           itemContent={(index, stakeholder) => {

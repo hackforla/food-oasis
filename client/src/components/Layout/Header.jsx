@@ -1,11 +1,10 @@
-import { AppBar, Alert, Box, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Toolbar, Typography } from "@mui/material";
+import { useUserContext } from "contexts/userContext";
+import { TENANT_LOGO_URL } from "helpers/Constants";
 import useLocationHook from "hooks/useLocationHook";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { useUserContext } from "contexts/userContext";
-import { TENANT_LOGO_URL } from "helpers/Constants";
 import Menu from "./Menu";
-import AnnouncementSnackbar from "components/UI/AnnouncementSnackbar";
 
 Header.propTypes = {
   tenantId: PropTypes.number,

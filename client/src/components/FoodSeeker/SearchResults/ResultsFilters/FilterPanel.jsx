@@ -18,17 +18,16 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { getDayTimeNow } from "helpers";
 import useBreakpoints from "hooks/useBreakpoints";
 import MealIconNoBorder from "icons/MealIconNoBorder";
 import PantryIconNoBorder from "icons/PantryIconNoBorder";
 import {
   useAppDispatch,
   useFilterPanel,
-  useOpenTimeFilter,
   useNoKnownEligibilityRequirementsFilter,
+  useOpenTimeFilter,
 } from "../../../../appReducer";
-import { getDayTimeNow } from "helpers";
 
 const checkedStyle = {
   "&.Mui-checked": {

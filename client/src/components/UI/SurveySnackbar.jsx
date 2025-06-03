@@ -1,16 +1,34 @@
-import * as React from "react";
+import { Button, Link, Typography } from "@mui/material";
 import { useState } from "react";
-import { Button } from "@mui/material";
 
-import Stack from "@mui/material/Stack";
-import Snackbar from "@mui/material/Snackbar";
 import Box from "@mui/material/Box";
+import Snackbar from "@mui/material/Snackbar";
+import Stack from "@mui/material/Stack";
+import useBreakpoints from "hooks/useBreakpoints";
+import { IconButton } from "./StandardButton";
 
 const SurveySnackbar = () => {
   const [open, setOpen] = useState(() => {
-    const isClosed = localStorage.getItem("surveySnackbarClosed");
-    return isClosed !== "true";
+    const hasBeenDismissed = localStorage.getItem("surveySnackbarClosed");
+    if (hasBeenDismissed === "true") {
+      return false;
+    }
+
+    // show snackbar after a day if closed with X button
+    let lastClosed = localStorage.getItem("surveySnackbarClosedTimeStamp");
+    if (!lastClosed || isNaN(lastClosed)) {
+      return true;
+    }
+    lastClosed = Number(lastClosed);
+
+    const hoursSinceClosed = (Date.now() - lastClosed) / (1000 * 60 * 60);
+
+    if (hoursSinceClosed >= 24) {
+      return true;
+    }
+    return false;
   });
+  const { isMobile } = useBreakpoints();
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -20,28 +38,92 @@ const SurveySnackbar = () => {
     localStorage.setItem("surveySnackbarClosed", "true");
   };
 
+  const handleCloseButton = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+    localStorage.setItem(
+      "surveySnackbarClosedTimeStamp",
+      new Date().getTime().toString()
+    );
+  };
+
   const openForm = () => {
     window.open(
       "https://docs.google.com/forms/d/e/1FAIpQLSdAhi_nMKQfWVHjfpl1ZkmymBTt8BW7YNqVIOJ4JKYgSL4O3g/viewform",
       "_blank"
     );
+    handleClose();
   };
 
   const action = (
-    <Box
+    <Stack
+      direction={{ xs: "column", md: "row" }}
       sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
+        alignItems: { xs: "end", md: "center" },
+        justifyContent: "end",
         width: { xs: "100%" },
-        cursor: "pointer",
-        gap: { xs: 1 },
+        gap: { xs: 3, md: 8 },
       }}
     >
-      <span> Participate in a quick survey</span>
-      <Button onClick={openForm}> Complete Survey </Button>
-      <Button onClick={handleClose}> OPT OUT </Button>
-    </Box>
+      <Stack direction="row" gap="10px">
+        <Box>
+          <Typography
+            variant="body1"
+            component={"p"}
+            sx={{ fontWeight: "700" }}
+          >
+            Help us improve!{" "}
+          </Typography>
+          <Typography variant="body1">
+            Have a minute to take a quick survey?
+          </Typography>
+        </Box>
+        <Box>
+          <IconButton
+            icon="close"
+            sx={(theme) => ({
+              color: theme.palette.bodyText.main,
+              display: { xs: "flex", md: "none" },
+              transform: "translate(10px, -10px)",
+            })}
+            onClick={handleCloseButton}
+          />
+        </Box>
+      </Stack>
+      <Stack
+        direction="row"
+        sx={{
+          alignItems: "center",
+        }}
+      >
+        <Link
+          variant=""
+          sx={{
+            marginRight: 2,
+            fontWeight: "500",
+            textDecoration: "none",
+            cursor: "pointer",
+            textWrap: "nowrap",
+          }}
+          onClick={handleClose}
+        >
+          No thanks
+        </Link>
+
+        <Button onClick={openForm}> Yes </Button>
+        <IconButton
+          icon="close"
+          sx={(theme) => ({
+            color: theme.palette.bodyText.main,
+            display: { xs: "none", md: "flex" },
+            transform: "translateX(10px)",
+          })}
+          onClick={handleCloseButton}
+        />
+      </Stack>
+    </Stack>
   );
 
   return (
@@ -50,20 +132,20 @@ const SurveySnackbar = () => {
         open={open}
         onClose={handleClose}
         action={action}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        sx={{
-          "& .MuiSnackbar-root": {
-            width: "100%",
-          },
-        }}
+        anchorOrigin={
+          isMobile
+            ? { vertical: "bottom", horizontal: "center" }
+            : { vertical: "bottom", horizontal: "right" }
+        }
+        style={{ margin: isMobile ? "24px 16px" : "8px 0px" }}
       >
         <Box
-          sx={{
-            backgroundColor: "#323232",
-            color: "white",
-            padding: 2,
-            borderRadius: 1,
-          }}
+          sx={(theme) => ({
+            backgroundColor: theme.palette.primary.extralight,
+            padding: 3,
+            borderRadius: 2.5,
+            filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.2))",
+          })}
         >
           <Box>{action}</Box>
         </Box>

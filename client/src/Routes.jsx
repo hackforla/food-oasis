@@ -10,6 +10,8 @@ import Toast from "components/UI/Toast";
 import { useWidget } from "./appReducer";
 import useFeatureFlag from "./hooks/useFeatureFlag";
 import SurveySnackbar from "./components/UI/SurveySnackbar";
+import AnnouncementSnackbar from "components/UI/AnnouncementSnackbar";
+import useLocationHook from "hooks/useLocationHook";
 
 const VerificationAdmin = lazy(() =>
   import("components/Admin/VerificationAdmin")
@@ -207,6 +209,8 @@ export default function AppRoutes() {
 
 function AppWrapper() {
   const isWidget = useWidget();
+  const alertLocations = ["/widget", "/", "/organizations"];
+  const isAlertLocation = alertLocations.includes(useLocation().pathname);
 
   return (
     <Grid
@@ -219,10 +223,12 @@ function AppWrapper() {
         color: "black",
         backgroundColor: "#fff",
         margin: "0",
-        height: "100%",
+        height: "100vh",
         overflowX: "hidden",
       }}
     >
+      {isAlertLocation && <AnnouncementSnackbar />}
+
       {isWidget ? null : <Header />}
       <Outlet />
       <Toast />

@@ -18,18 +18,16 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { getDayTimeNow } from "helpers";
 import useBreakpoints from "hooks/useBreakpoints";
 import MealIconNoBorder from "icons/MealIconNoBorder";
 import PantryIconNoBorder from "icons/PantryIconNoBorder";
 import {
   useAppDispatch,
   useFilterPanel,
-  useOpenTimeFilter,
   useNoKnownEligibilityRequirementsFilter,
+  useOpenTimeFilter,
 } from "../../../../appReducer";
-import { getDayTimeNow } from "helpers";
-import useHeaderHeight from "hooks/useHeaderHeight";
 
 const checkedStyle = {
   "&.Mui-checked": {
@@ -42,10 +40,7 @@ const yPadding = { py: 2 };
 export default function FilterPanel({ mealPantry }) {
   const { isDesktop } = useBreakpoints();
   const drawerWidth = isDesktop ? 340 : "100%";
-  const { headerAndFooterHeight } = useHeaderHeight();
-  const drawerHeight = isDesktop
-    ? `calc(100vh - ${headerAndFooterHeight}px)`
-    : "50%";
+  const drawerHeight = isDesktop ? `100%` : "50%";
 
   const { toggleMeal, togglePantry, isMealSelected, isPantrySelected } =
     mealPantry;
@@ -93,9 +88,13 @@ export default function FilterPanel({ mealPantry }) {
   return (
     <Drawer
       sx={{
-        flexShrink: 0,
+        height: "100%",
+        position: isDesktop ? "absolute" : undefined,
+        top: isDesktop ? "0" : undefined,
+
         "& .MuiDrawer-paper": {
-          top: "auto",
+          position: isDesktop ? "absolute" : undefined,
+          top: isDesktop ? "0" : undefined,
           width: drawerWidth,
           height: drawerHeight,
           boxSizing: "border-box",

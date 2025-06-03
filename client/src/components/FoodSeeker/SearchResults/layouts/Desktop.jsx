@@ -7,19 +7,25 @@ import {
 } from "../../../../appReducer";
 import DrawerLeftArrowButton from "../../../../icons/DrawerLeftArrowButton";
 import DrawerRightArrowButton from "../../../../icons/DrawerRightArrowButton";
-import useHeaderHeight from "hooks/useHeaderHeight";
+import ResultsMap from "../ResultsMap/ResultsMap";
 
-const DesktopLayout = ({ filters, list, map }) => {
+const DesktopLayout = ({
+  filters,
+  list,
+  stakeholders,
+  categoryIds,
+  toggleCategory,
+  loading,
+}) => {
   const isFilterPanelOpen = useFilterPanel();
   const isListPanelOpen = useListPanel();
   const isWidget = useWidget();
   const dispatch = useAppDispatch();
-  const { headerHeight, headerAndFooterHeight } = useHeaderHeight();
-  
-  function getLeftPosition(){
+
+  function getLeftPosition() {
     const leftPosition = isFilterPanelOpen ? "340px" : 0;
     const listLeftPosition = isFilterPanelOpen ? "-186px" : "-524px";
-    return isListPanelOpen ? leftPosition : listLeftPosition
+    return isListPanelOpen ? leftPosition : listLeftPosition;
   }
   const toggleDrawer = (event) => {
     if (
@@ -47,9 +53,9 @@ const DesktopLayout = ({ filters, list, map }) => {
       {filters}
       <Box
         sx={{
-          flex: "auto",
-          overflowY: "hidden",
           display: "flex",
+          flex: 1,
+          position: "relative",
         }}
       >
         <Stack
@@ -59,8 +65,7 @@ const DesktopLayout = ({ filters, list, map }) => {
             width: "524px",
             transition: "left .5s ease-in-out",
             left: getLeftPosition(),
-            top: headerHeight,
-            height: `calc(100% - ${headerAndFooterHeight}px)`,
+            height: `100%`,
             zIndex: 3,
             background: "white",
           }}
@@ -106,7 +111,12 @@ const DesktopLayout = ({ filters, list, map }) => {
             flex: 1,
           }}
         >
-          {map}
+          <ResultsMap
+            stakeholders={stakeholders}
+            categoryIds={categoryIds}
+            toggleCategory={toggleCategory}
+            loading={loading}
+          />
         </Box>
       </Box>
     </>

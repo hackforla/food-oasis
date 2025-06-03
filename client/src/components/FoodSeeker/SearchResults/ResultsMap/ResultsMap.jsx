@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 // Mapbox is tricky, because version 6.* is "incompatible with some Babel transforms
 // because of the way it shares code between the maint thread and Web Worker."
 // See https://docs.mapbox.com/mapbox-gl-js/guides/install/#transpiling for details
@@ -40,7 +40,12 @@ import {
 } from "./MarkerHelpers";
 import { regionBorderStyle, regionFillStyle } from "./RegionHelpers";
 import Geolocate from "../ResultsFilters/Geolocate";
-import useHeaderHeight from "hooks/useHeaderHeight";
+import FilterPanel from "../ResultsFilters/FilterPanel";
+import {
+  FOOD_PANTRY_CATEGORY_ID,
+  MEAL_PROGRAM_CATEGORY_ID,
+} from "constants/stakeholder";
+import debounceFn from "debounce-fn";
 
 const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
   const [markersLoaded, setMarkersLoaded] = useState(false);
@@ -54,13 +59,6 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
   const isFilterPanelOpen = useFilterPanel();
 
   const { mapRef, flyTo } = useMapbox();
-  const { headerHeight } = useHeaderHeight();
-
-  useEffect(() => {
-    if (mapRef.current) {
-      mapRef.current.resize();
-    }
-  }, [headerHeight]);
 
   const longitude =
     searchCoordinates?.longitude ||
@@ -277,9 +275,54 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
       </Box>
     );
   };
+  const isMealSelected = categoryIds.includes(MEAL_PROGRAM_CATEGORY_ID);
+  const isPantrySelected = categoryIds.includes(FOOD_PANTRY_CATEGORY_ID);
+
+  const toggleMeal = useCallback(() => {
+    toggleCategory(MEAL_PROGRAM_CATEGORY_ID);
+    analytics.postEvent("toggleMealFilter", {});
+  }, [toggleCategory]);
+
+  const togglePantry = useCallback(() => {
+    toggleCategory(FOOD_PANTRY_CATEGORY_ID);
+    analytics.postEvent("togglePantryFilter", {});
+  }, [toggleCategory]);
+
+  const mapContainerRef = useRef();
+
+  useEffect(() => {
+    // Resize map if container size changes
+    const debouncedResize = debounceFn(
+      () => {
+        mapRef.current?.resize();
+      },
+      { wait: 10 }
+    );
+
+    const resizeObserver = new ResizeObserver(() => {
+      if (mapRef.current) {
+        debouncedResize();
+      }
+    });
+
+    const container = mapContainerRef.current;
+    if (container) {
+      resizeObserver.observe(container);
+    }
+
+    return () => {
+      if (container) {
+        resizeObserver.unobserve(container);
+      }
+      debouncedResize.cancel?.();
+    };
+  }, []);
 
   return (
-    <div style={{ position: "relative", height: "100%", width: "100%" }}>
+    <div
+      style={{ position: "relative", height: "100%", width: "100%" }}
+      ref={mapContainerRef}
+    >
       <Map
         ref={mapRef}
         {...viewport}
@@ -366,11 +409,21 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
           }}
         >
           <AdvancedFilters
-            categoryIds={categoryIds}
-            toggleCategory={toggleCategory}
+            toggleMeal={toggleMeal}
+            togglePantry={togglePantry}
+            isMealSelected={isMealSelected}
+            isPantrySelected={isPantrySelected}
           />
         </Grid>
       )}
+      <FilterPanel
+        mealPantry={{
+          toggleMeal,
+          togglePantry,
+          isMealSelected,
+          isPantrySelected,
+        }}
+      />
     </div>
   );
 };

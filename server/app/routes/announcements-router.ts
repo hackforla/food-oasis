@@ -10,18 +10,18 @@ const router = Router();
 router.get("/", announcementsController.getAll);
 router.post(
   "/",
-  //jwtSession.validateUserHasRequiredRoles(["admin"]),
-  //requestValidationMiddleware(AnnouncementsPostRequestSchema),
+  jwtSession.validateUserHasRequiredRoles(["admin"]),
+  requestValidationMiddleware(AnnouncementsPostRequestSchema),
   announcementsController.post
 );
 router.delete(
   "/:id",
-  //jwtSession.validateUserHasRequiredRoles(["admin"]),
+  jwtSession.validateUserHasRequiredRoles(["admin"]),
   announcementsController.remove
 );
 router.put(
   "/:id",
-  //jwtSession.validateUserHasRequiredRoles(["admin"]),
+  jwtSession.validateUserHasRequiredRoles(["admin"]),
   announcementsController.update
 );
 

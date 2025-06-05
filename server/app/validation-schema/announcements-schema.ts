@@ -1,7 +1,7 @@
 import { JSONSchemaType } from "ajv";
-import { Feature } from "../../types/feature-types";
+import { Announcement } from "../../types/announcements-types";
 
-export const AnnouncementsPostRequestSchema: JSONSchemaType<Announcements> = {
+export const AnnouncementsPostRequestSchema: JSONSchemaType<Announcement> = {
   type: "object",
   required: ["description"],
   properties: {

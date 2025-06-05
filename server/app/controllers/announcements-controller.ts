@@ -1,10 +1,11 @@
 import { RequestHandler } from "express";
-import { Announcements } from "../../types/announcements-types"; 
+import { Announcement } from "../../types/announcements-types"; 
 import announcementsService from "../services/announcements-service";
+import { AnnouncementsPostRequestSchema } from "../validation-schema/announcements-schema";
 
 const getAll: RequestHandler<
   never,
-  Announcements[] | { error: string },
+  Announcement[] | { error: string },
   never
 > = async (req, res) => {
   try {
@@ -19,7 +20,7 @@ const getAll: RequestHandler<
 const post: RequestHandler<
   never,
   { id: number } | { error: string },
-  Announcements
+  Announcement
 > = async (req, res) => {
   try {
     const resp = await announcementsService.insert(req.body);
@@ -47,13 +48,16 @@ const remove: RequestHandler<
 };
 const update: RequestHandler<
   { id: number },
-  { error: string } | { message: string } | Announcements
-  //{ is_enabled: boolean }
+  { error: string } | { message: string } | Announcement,
+  Announcement
 > = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, is_enabled } = req.body; // Updated variable names
-    const resp = await announcementsService.update(Number(id), title, description, is_enabled);
+    const { title, description, is_enabled } = req.body; 
+    const resp = await announcementsService.update({id: Number(id),
+      title,
+      description,
+      is_enabled,});
     res.status(200).json(resp);
   } catch (error) {
     console.error(error);

@@ -1,7 +1,7 @@
 import db from "./db";
-import { Announcements } from "../../types/announcements-types";
+import { Announcement } from "../../types/announcements-types";
 
-const getAll = async (): Promise<Announcements[]> => {
+const getAll = async (): Promise<Announcement[]> => {
   const sql = `
   SELECT id, title, description, is_enabled 
   FROM announcements
@@ -10,7 +10,7 @@ const getAll = async (): Promise<Announcements[]> => {
   return result;
 };
 
-const insert = async (model: Announcements): Promise<Announcements> => {
+const insert = async (model: Announcement): Promise<Announcement> => {
   const sql = `
     INSERT INTO announcements(title, description, is_enabled)
     VALUES ($<title>, $<description>, $<is_enabled>)
@@ -42,7 +42,7 @@ const remove = async (
 };
 
 
-const update = async (id: number, title: string, description: string, is_enabled: boolean): Promise<Announcements> => {
+const update = async (model: Announcement): Promise<Announcement> => {
   try {
     const sql = `
       UPDATE announcements
@@ -52,7 +52,7 @@ const update = async (id: number, title: string, description: string, is_enabled
       WHERE id = $<id>
       RETURNING id, title, description, is_enabled;
     `;
-    const result = await db.one(sql, { id, title, description, is_enabled });
+    const result = await db.one(sql, { ...model });
     return result;
   } catch (error) {
     console.error("Error in update function:", error);

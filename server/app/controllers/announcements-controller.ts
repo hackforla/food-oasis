@@ -1,7 +1,6 @@
 import { RequestHandler } from "express";
 import { Announcement } from "../../types/announcements-types"; 
 import announcementsService from "../services/announcements-service";
-import { AnnouncementsPostRequestSchema } from "../validation-schema/announcements-schema";
 
 const getAll: RequestHandler<
   never,

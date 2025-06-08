@@ -46,17 +46,13 @@ const remove: RequestHandler<
   }
 };
 const update: RequestHandler<
-  { id: number },
+  { id: string },
   { error: string } | { message: string } | Announcement,
   Announcement
 > = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, is_enabled } = req.body; 
-    const resp = await announcementsService.update({id: Number(id),
-      title,
-      description,
-      is_enabled,});
+    const resp = await announcementsService.update(id, req.body);
     res.status(200).json(resp);
   } catch (error) {
     console.error(error);

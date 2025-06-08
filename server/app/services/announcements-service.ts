@@ -42,18 +42,15 @@ const remove = async (
 };
 
 
-const update = async (model: Announcement): Promise<Announcement> => {
+const update = async (id: string, data: Announcement): Promise<Announcement> => {
   try {
     const sql = `
       UPDATE announcements
-      SET title = $<title>,
-          description = $<description>,
-          is_enabled = $<is_enabled>
+      SET title = $<title>, description = $<description>, is_enabled = $<is_enabled>
       WHERE id = $<id>
-      RETURNING id, title, description, is_enabled;
+      RETURNING *
     `;
-    const result = await db.one(sql, { ...model });
-    return result;
+    return await db.one(sql, { ...data, id: Number(id) });
   } catch (error) {
     console.error("Error in update function:", error);
     throw error;

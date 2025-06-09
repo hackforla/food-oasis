@@ -1,11 +1,10 @@
-import { AppBar, Alert, Box, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Toolbar, Typography } from "@mui/material";
+import { useUserContext } from "contexts/userContext";
+import { TENANT_LOGO_URL } from "helpers/Constants";
 import useLocationHook from "hooks/useLocationHook";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { useUserContext } from "contexts/userContext";
-import { TENANT_LOGO_URL } from "helpers/Constants";
 import Menu from "./Menu";
-import AlertSurveySnackbar from "components/UI/AlertSurveySnackbar";
 
 Header.propTypes = {
   tenantId: PropTypes.number,
@@ -22,7 +21,6 @@ export default function Header() {
   return (
     <>
       <AppBar
-        id="header1"
         position="sticky"
         sx={(theme) => ({
           backgroundColor: "#FFF",
@@ -31,9 +29,6 @@ export default function Header() {
           marginTop: isAuthPage && theme.spacing(4),
         })}
       >
-        {isMapPage && location.pathname !== "/widget" && (
-          <AlertSurveySnackbar />
-        )}
         <Toolbar
           sx={(theme) => ({
             minHeight: "60px",

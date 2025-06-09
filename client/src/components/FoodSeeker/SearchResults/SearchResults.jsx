@@ -166,7 +166,15 @@ const SearchResults = () => {
         url="https://www.foodoasis.la/organizations"
       />
       {isDesktop ? (
-        <Desktop filters={filters} map={map} list={list} />
+        <Desktop
+          filters={filters}
+          map={map}
+          list={list}
+          stakeholders={stakeholders}
+          categoryIds={categoryIds}
+          toggleCategory={toggleCategory}
+          loading={loading}
+        />
       ) : (
         <Mobile showList={showList} filters={filters} map={map} list={list} />
       )}

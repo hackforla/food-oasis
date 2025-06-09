@@ -19,7 +19,6 @@ import * as analytics from "services/analytics";
 import { useSiteContext } from "contexts/siteContext";
 import { TENANT_LOGO_URL } from "helpers/Constants";
 import SEO from "../SEO";
-import useHeaderHeight from "hooks/useHeaderHeight";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -29,7 +28,6 @@ const Home = () => {
   const { getUserLocation, isLoading: isGettingLocation } = useGeolocation();
   const [error, setError] = useState("");
   const locationPermission = useLocationPermission();
-  const { headerHeight } = useHeaderHeight();
 
   useEffect(() => {
     if (error && locationPermission === "granted") {
@@ -88,7 +86,7 @@ const Home = () => {
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundImage: 'url("/landing-page/map.png")',
-          minHeight: `calc(100vh - ${headerHeight}px)`,
+          flex: 1,
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
@@ -227,9 +225,7 @@ const Home = () => {
                     </div>
                   )}
                 </Box>
-                <Alert severity="warning">
-                  Due to the LA Fires, some information may be out-of-date.
-                </Alert>
+
                 <Box
                   sx={{
                     display: "flex",

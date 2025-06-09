@@ -201,9 +201,6 @@ function WidgetFooter() {
           url={`${window.location.origin}`}
           alt="Food Oasis Logo"
         />
-        <Alert severity="warning">
-          Due to the LA Fires, some information may be out-of-date.
-        </Alert>
       </div>
       <WidgetFooterSection
         type="maintainer"

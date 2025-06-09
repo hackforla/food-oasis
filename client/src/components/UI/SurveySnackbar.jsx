@@ -49,14 +49,6 @@ const SurveySnackbar = () => {
     );
   };
 
-  const openForm = () => {
-    window.open(
-      "https://docs.google.com/forms/d/e/1FAIpQLSdAhi_nMKQfWVHjfpl1ZkmymBTt8BW7YNqVIOJ4JKYgSL4O3g/viewform",
-      "_blank"
-    );
-    handleClose();
-  };
-
   const action = (
     <Stack
       direction={{ xs: "column", md: "row" }}
@@ -112,7 +104,14 @@ const SurveySnackbar = () => {
           No thanks
         </Link>
 
-        <Button onClick={openForm}> Yes </Button>
+        <Button
+          component="a"
+          href="https://docs.google.com/forms/d/e/1FAIpQLSdAhi_nMKQfWVHjfpl1ZkmymBTt8BW7YNqVIOJ4JKYgSL4O3g/viewform"
+          target="_blank"
+          onClick={handleClose}
+        >
+          Yes{" "}
+        </Button>
         <IconButton
           icon="close"
           sx={(theme) => ({

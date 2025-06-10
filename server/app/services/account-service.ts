@@ -1,20 +1,20 @@
-import {
-  Account,
-  RegisterFields,
-  AccountResponse,
-  User,
-  Role,
-} from "../../types/account-types";
-import dayjs from "dayjs";
 import bcrypt from "bcrypt";
 import camelcaseKeys from "camelcase-keys";
-import { v4 as uuid4 } from "uuid";
+import dayjs from "dayjs";
 import { promisify } from "util";
+import { v4 as uuid4 } from "uuid";
+import {
+  Account,
+  AccountResponse,
+  RegisterFields,
+  Role,
+  User,
+} from "../../types/account-types";
+import db from "./db";
 import {
   sendRegistrationConfirmation,
   sendResetPasswordConfirmation,
 } from "./sendgrid-service";
-import db from "./db";
 
 const SALT_ROUNDS = 10;
 
@@ -543,11 +543,18 @@ const updateUserProfile = async (
   try {
     await db.none(sql, { userid, firstName, lastName, email });
     const user = await selectByEmail(email, tenantId);
+
+    const filteredUser = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      features: user.features,
+    };
+
     return {
       isSuccess: true,
       code: "UPDATE_SUCCESS",
       message: `User profile successfully updated`,
-      user: user,
+      user: filteredUser,
     };
   } catch (error) {
     return {

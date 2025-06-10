@@ -10,7 +10,7 @@ export default function SEO({
 }) {
   return (
     <Helmet>
-      <title>{title}</title>
+      <title class="notranslate">{title}</title>
       <meta name="description" content={description} />
       <meta property="og:type" content={type} />
       <meta property="og:title" content={title} />

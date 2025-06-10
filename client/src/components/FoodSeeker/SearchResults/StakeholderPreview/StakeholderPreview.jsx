@@ -178,6 +178,7 @@ const StakeholderPreview = ({ stakeholder, onSelect }) => {
                 href={getLinkUrl(stakeholder)}
                 sx={{ color: "inherit" }}
                 onClick={() => handleSelectOrganization(stakeholder)}
+                className="notranslate"
               >
                 {stakeholder.name}
               </InternalLink>

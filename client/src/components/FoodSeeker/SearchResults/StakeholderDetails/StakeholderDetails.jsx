@@ -65,12 +65,13 @@ const MinorHeading = styled(Typography)(({ theme }) => ({
   color: theme.palette.headingText.main,
 }));
 
-const DetailText = styled(Typography)(({ theme }) => ({
+const DetailText = styled(Typography)(({ theme, className }) => ({
   variant: "body1",
   component: "p",
   textAlign: "left",
   marginBottom: "16px",
   whiteSpace: "pre-wrap",
+  className: className,
   overflowWrap: "break-word",
   "& a": {
     color: theme.palette.link.normal,
@@ -331,6 +332,7 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
                   component="h2"
                   align="left"
                   fontWeight="bold"
+                  className="notranslate"
                 >
                   {selectedOrganization.name}
                 </Typography>
@@ -583,10 +585,10 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
                 </Stack>
 
                 <MinorHeading>Address</MinorHeading>
-                <DetailText sx={{ marginBottom: "0" }}>
+                <DetailText sx={{ marginBottom: "0" }} className="notranslate">
                   {selectedOrganization.address1}
                 </DetailText>
-                <DetailText>
+                <DetailText className="notranslate">
                   {selectedOrganization.city} {selectedOrganization.zip}
                 </DetailText>
 

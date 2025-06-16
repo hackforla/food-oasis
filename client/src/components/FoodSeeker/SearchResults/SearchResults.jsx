@@ -2,6 +2,7 @@ import useBreakpoints from "hooks/useBreakpoints";
 import useCategoryIds from "hooks/useCategoryIds";
 import useNeighborhoodsGeoJSON from "hooks/useNeighborhoodsGeoJSON";
 import useOrganizationBests from "hooks/useOrganizationBests";
+import { FOOD_PANTRY_CATEGORY_ID, MEAL_PROGRAM_CATEGORY_ID } from "constants/stakeholder";
 import { useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import * as analytics from "services/analytics";
@@ -22,7 +23,7 @@ const SearchResults = () => {
   const isListPanelVisible = useIsListPanelVisible();
   const { isDesktop } = useBreakpoints();
   const { selectAll, loading } = useOrganizationBests();
-  const { categoryIds, toggleCategory } = useCategoryIds([]);
+  const { categoryIds, toggleCategory } = useCategoryIds([FOOD_PANTRY_CATEGORY_ID, MEAL_PROGRAM_CATEGORY_ID]);
   const { getGeoJSONById } = useNeighborhoodsGeoJSON();
   const [showList, setShowList] = useState(true);
   const searchCoordinates = useSearchCoordinates();

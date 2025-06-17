@@ -12,6 +12,7 @@ import {
   ListItemButton,
   ListItemText,
   MenuItem,
+  OutlinedInput,
   Radio,
   RadioGroup,
   Select,
@@ -25,6 +26,7 @@ import PantryIconNoBorder from "icons/PantryIconNoBorder";
 import {
   useAppDispatch,
   useFilterPanel,
+  useOrgNameFilter,
   useNoKnownEligibilityRequirementsFilter,
   useOpenTimeFilter,
 } from "../../../../appReducer";
@@ -47,6 +49,7 @@ export default function FilterPanel({ mealPantry }) {
   const dispatch = useAppDispatch();
   const open = useFilterPanel();
   const openTime = useOpenTimeFilter();
+  const orgNameFilter = useOrgNameFilter();
 
   const handleRadioChange = (event) => {
     const name = event.target.name;
@@ -129,6 +132,22 @@ export default function FilterPanel({ mealPantry }) {
         <Divider />
       </Box>
       <Box sx={{ padding: "0 1rem 1rem 1rem", overflowY: "auto" }}>
+        <Box sx={{ paddingBottom: "1rem" }}>
+          <Typography variant="h4" sx={yPadding}>
+            Organization Name
+          </Typography>
+          <OutlinedInput
+            placeholder="i.e. church of"
+            value={orgNameFilter}
+            onChange={(e) =>
+              dispatch({
+                type: "ORG_NAME_FILTER_UPDATED",
+                orgNameFilter: e.target.value,
+              })
+            }
+          />
+        </Box>
+        <Divider />
         <Typography variant="h4" sx={yPadding}>
           Category
         </Typography>

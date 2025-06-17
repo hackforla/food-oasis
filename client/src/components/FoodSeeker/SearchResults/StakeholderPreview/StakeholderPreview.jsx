@@ -32,14 +32,15 @@ import AppleIcon from "icons/AppleIcon";
 import ForkIcon from "icons/ForkIcon";
 import StakeholderIcon from "images/stakeholderIcon";
 import PropTypes from "prop-types";
-import { useLocation } from "react-router-dom";
 import * as analytics from "services/analytics";
 import {
   useAppDispatch,
+  useOrgNameFilter,
   useSearchCoordinates,
   useUserCoordinates,
 } from "../../../../appReducer";
 import { linkText, success } from "../../../../theme/palette";
+import HighlightedText from "./HighlightedText";
 
 const isLastOccurrenceInMonth = (tenantTimeZone) => {
   const currentDate = new Date();
@@ -115,7 +116,7 @@ const StakeholderPreview = ({ stakeholder, onSelect }) => {
   const userCoordinates = useUserCoordinates();
   const originCoordinates = searchCoordinates || userCoordinates;
   const { tenantTimeZone } = useSiteContext();
-  const location = useLocation();
+  const orgNameFilter = useOrgNameFilter();
 
   const handleSelectOrganization = (organization) => {
     onSelect();
@@ -179,7 +180,10 @@ const StakeholderPreview = ({ stakeholder, onSelect }) => {
                 sx={{ color: "inherit" }}
                 onClick={() => handleSelectOrganization(stakeholder)}
               >
-                {stakeholder.name}
+                <HighlightedText
+                  text={stakeholder.name}
+                  query={orgNameFilter}
+                />
               </InternalLink>
             </Typography>
             <Stack

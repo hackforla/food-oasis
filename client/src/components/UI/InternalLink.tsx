@@ -1,8 +1,4 @@
-import {
-  Link,
-  LinkProps,
-  SxProps
-} from "@mui/material";
+import { Link, LinkProps, SxProps } from "@mui/material";
 import { Link as ReactRouterLink } from "react-router-dom";
 
 interface InternalLinkProps extends LinkProps {
@@ -17,6 +13,7 @@ export default function InternalLink({
   href,
   onClick,
   sx,
+  className,
 }: InternalLinkProps) {
   return (
     <Link
@@ -24,6 +21,7 @@ export default function InternalLink({
       component={ReactRouterLink}
       onClick={onClick}
       sx={sx}
+      className={className}
     >
       {children}
     </Link>

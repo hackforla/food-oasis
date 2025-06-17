@@ -75,7 +75,7 @@ const ResultsList = ({ stakeholders, loading, handleReset }) => {
           <Divider />
         </Stack>
       )}
-      {stakeholders ? (
+      {stakeholders.length ? (
         <Virtuoso
           initialTopMostItemIndex={topMostIndex}
           data={stakeholders}
@@ -114,13 +114,11 @@ const ResultsList = ({ stakeholders, loading, handleReset }) => {
           }}
         />
       ) : (
-        <Stack sx={{ padding: "1em 0", alignContent: "center" }}>
-          <Typography>
-            Sorry, we don&apos;t have any results for this area.
-          </Typography>
-          <Button variant="outlined" onClick={handleReset} disableElevation>
+        <Stack sx={{ padding: "1em 1em", alignContent: "center" }}>
+          <Typography>Sorry, no results match your search criteria.</Typography>
+          {/* <Button variant="outlined" onClick={handleReset} disableElevation>
             Click here to reset the search
-          </Button>
+          </Button> */}
         </Stack>
       )}
     </Stack>

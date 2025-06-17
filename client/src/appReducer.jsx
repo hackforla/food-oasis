@@ -98,6 +98,14 @@ function filterPanelReducer(state, action) {
       return state;
   }
 }
+function orgNameFilterReducer(state, action) {
+  switch (action.type) {
+    case "ORG_NAME_FILTER_UPDATED":
+      return action.orgNameFilter;
+    default:
+      return state;
+  }
+}
 
 function openTimeFilterReducer(state, action) {
   switch (action.type) {
@@ -170,6 +178,7 @@ export function appReducer(state, action) {
     isWidget: widgetReducer(state.isWidget, action),
     stakeholders: stakeholdersReducer(state.stakeholders, action),
     filterPanel: filterPanelReducer(state.filterPanel, action),
+    orgNameFilter: orgNameFilterReducer(state.orgNameFilter, action),
     openTimeFilter: openTimeFilterReducer(state.openTimeFilter, action),
     noKnownEligibilityRequirementsFilter:
       noKnownEligibilityRequirementsFilterReducer(
@@ -196,6 +205,7 @@ export function getInitialState() {
     neighborhood: null,
     isWidget: false,
     filterPanel: false,
+    orgNameFilter: "",
     openTimeFilter: { radio: "Show All", day: "", time: "" },
     noKnownEligibilityRequirementsFilter: false,
     listPanel: true,
@@ -277,6 +287,11 @@ export function useStakeholders() {
 export function useFilterPanel() {
   const { filterPanel } = useAppState();
   return filterPanel;
+}
+
+export function useOrgNameFilter() {
+  const { orgNameFilter } = useAppState();
+  return orgNameFilter;
 }
 
 export function useOpenTimeFilter() {

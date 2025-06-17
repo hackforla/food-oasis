@@ -64,8 +64,8 @@ test.describe("Organizations", () => {
     await page.goto("/organizations");
     await page.getByRole("button", { name: "Pantry" }).click();
     await expect(page.getByText("Stakeholder 1")).toBeVisible();
-    await expect(page.getByText("Stakeholder 2")).toBeVisible();
-    await expect(page.getByText("Stakeholder 3")).toBeHidden();
+    await expect(page.getByText("Stakeholder 2")).toBeHidden();
+    await expect(page.getByText("Stakeholder 3")).toBeVisible();
   });
   test("clicking the Meal filter should show Stakeholder 1 and 2 and not show Stakeholder 3", async ({
     page,
@@ -73,7 +73,7 @@ test.describe("Organizations", () => {
     await page.goto("/organizations");
     await page.getByRole("button", { name: "Meal" }).click();
     await expect(page.getByText("Stakeholder 1")).toBeVisible();
-    await expect(page.getByText("Stakeholder 2")).toBeHidden();
-    await expect(page.getByText("Stakeholder 3")).toBeVisible();
+    await expect(page.getByText("Stakeholder 2")).toBeVisible();
+    await expect(page.getByText("Stakeholder 3")).toBeHidden();
   });
 });

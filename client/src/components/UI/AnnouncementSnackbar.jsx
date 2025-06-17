@@ -6,8 +6,10 @@ import CloseIcon from "@mui/icons-material/Close";
 
 const AnnouncementSnackbar = () => {
   const [open, setOpen] = useState(() => {
-    const isClosed = sessionStorage.getItem("alertSnackbarClosed");
-    return isClosed !== "true";
+    const hasBeenDismissed = sessionStorage.getItem(
+      "announcementSnackbarDismissed"
+    );
+    return hasBeenDismissed !== "true";
   });
 
   return (
@@ -22,6 +24,7 @@ const AnnouncementSnackbar = () => {
               size="small"
               onClick={() => {
                 setOpen(false);
+                sessionStorage.setItem("announcementSnackbarDismissed", "true");
               }}
             >
               <CloseIcon fontSize="inherit" />

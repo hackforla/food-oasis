@@ -5,6 +5,11 @@ function PrivateRoute({ children, roles, redirectTo = "/admin/login" }) {
   const { user } = useUserContext();
   const location = useLocation();
 
+  // If userContext is not yet initialized, return null
+  if (user === undefined) {
+    return null;
+  }
+
   if (!user || !roles.some((role) => user[role])) {
     let rolesStr = "";
     if (roles.length > 1) {

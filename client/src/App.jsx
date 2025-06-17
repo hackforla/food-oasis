@@ -1,22 +1,20 @@
 import { useEffect } from "react";
 import { CssBaseline } from "@mui/material";
-import SurveySnackbar from "./components/UI/SurveySnackbar";
 import { SiteProvider } from "./contexts/siteContext";
 import { ToasterProvider } from "contexts/toasterContext";
 import { UserProvider } from "contexts/userContext";
 import { HelmetProvider } from "react-helmet-async";
-import { BrowserRouter as Router } from "react-router-dom";
+import {
+  BrowserRouter as Router
+} from "react-router-dom";
 import { ThemeProvider } from "theme";
 import * as analytics from "./services/analytics";
 import { AppStateProvider } from "./appReducer";
 import SEO from "./components/SEO";
 import AppRoutes from "./Routes";
 import { MapProvider } from "react-map-gl";
-import useFeatureFlag from "./hooks/useFeatureFlag";
 
 function App() {
-  const hasUserFeedbackSuveyFeatureFlag = useFeatureFlag("userFeedbackSurvey");
-
   useEffect(() => {
     analytics.postEvent("visitAppComponent");
   }, []);
@@ -37,7 +35,6 @@ function App() {
                 <MapProvider>
                   <Router>
                     <AppRoutes />
-                    {hasUserFeedbackSuveyFeatureFlag && <SurveySnackbar />}
                   </Router>
                 </MapProvider>
               </ThemeProvider>

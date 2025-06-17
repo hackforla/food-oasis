@@ -365,7 +365,7 @@ function VerificationAdmin() {
                 userLongitude={
                   userCoordinates?.longitude || origin?.longitude || 0
                 }
-                categories={categories && categories.filter((c) => !c.inactive)}
+                categories={categories}
                 tags={tags}
                 neighborhoods={neighborhoods}
                 criteria={criteria}

@@ -3,13 +3,15 @@ import Home from "components/FoodSeeker/Home";
 import Header from "components/Layout/Header";
 import WidgetFooter from "components/Layout/WidgetFooter";
 import { Suspense, lazy } from "react";
-import { Navigate, Outlet, Route, Routes } from "react-router-dom";
+import { Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
 import Fallback from "./components/Fallback";
 import PrivateRoute from "./components/PrivateRoute";
 import Toast from "components/UI/Toast";
-import {
-  useWidget,
-} from "./appReducer";
+import { useWidget } from "./appReducer";
+import useFeatureFlag from "./hooks/useFeatureFlag";
+import SurveySnackbar from "./components/UI/SurveySnackbar";
+import AnnouncementSnackbar from "components/UI/AnnouncementSnackbar";
+import useLocationHook from "hooks/useLocationHook";
 
 const VerificationAdmin = lazy(() =>
   import("components/Admin/VerificationAdmin")
@@ -53,6 +55,9 @@ const Profile = lazy(() => import("./components/Account/Profile"));
 const Suggestion = lazy(() => import("components/FoodSeeker/Suggestion"));
 
 export default function AppRoutes() {
+  const hasUserFeedbackSuveyFeatureFlag = useFeatureFlag("userFeedbackSurvey");
+  const location = useLocation();
+
   return (
     <Suspense
       fallback={
@@ -61,6 +66,10 @@ export default function AppRoutes() {
         </Stack>
       }
     >
+      {hasUserFeedbackSuveyFeatureFlag && location.pathname !== "/widget" && (
+        <SurveySnackbar />
+      )}
+
       <Routes>
         <Route path="/" element={<AppWrapper />}>
           {/* Food seeker routes */}
@@ -91,7 +100,6 @@ export default function AppRoutes() {
 
           {/* Admin routes */}
           <Route path="admin" element={<AdminWrapper />}>
-            <Route path="logins" element={<Logins />} />
             <Route path="profile/:id" element={<Profile />} />
             <Route path="register" element={<Register />} />
             <Route path="confirm/:token" element={<ConfirmEmail />} />
@@ -199,7 +207,10 @@ export default function AppRoutes() {
 }
 
 function AppWrapper() {
-    const isWidget = useWidget();
+  const isWidget = useWidget();
+  const alertLocations = ["/widget", "/", "/organizations"];
+  const isAlertLocation = alertLocations.includes(useLocation().pathname);
+
   return (
     <Grid
       container
@@ -211,10 +222,12 @@ function AppWrapper() {
         color: "black",
         backgroundColor: "#fff",
         margin: "0",
-        height: "100%",
+        height: "100vh",
         overflowX: "hidden",
       }}
     >
+      {isAlertLocation && <AnnouncementSnackbar />}
+
       {isWidget ? null : <Header />}
       <Outlet />
       <Toast />

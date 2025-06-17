@@ -1,4 +1,3 @@
-import React from "react";
 import PantryIcon from "../icons/PantryIcon";
 import SplitPantryMealIcon from "icons/SplitPantryMealIcon";
 import MealIcon from "../icons/MealIcon";

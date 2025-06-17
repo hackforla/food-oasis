@@ -6,7 +6,10 @@ import {
   FOOD_PANTRY_CATEGORY_ID,
   DEFAULT_CATEGORIES,
 } from "constants/stakeholder";
-import { useSelectedOrganization } from "../../../../appReducer";
+import {
+  useHoveredOrganization,
+  useSelectedOrganization,
+} from "../../../../appReducer";
 export const MARKERS_LAYER_ID = "markers";
 
 // note that we have 3 marker categories, and 2 selected states, for a
@@ -99,6 +102,7 @@ export const markersLayerStyles = {
 export function useMarkersGeojson({ stakeholders, categoryIds }) {
   const catIds = categoryIds.length ? categoryIds : DEFAULT_CATEGORIES;
   const selectedOrganization = useSelectedOrganization();
+  const hoveredOrganization = useHoveredOrganization();
 
   // modify the stakeholders array by:
   // 1. filtering out the inactive orgs
@@ -127,6 +131,7 @@ export function useMarkersGeojson({ stakeholders, categoryIds }) {
       features: modifiedStakeholders.map((sh) => {
         const category = getMarkerCategory(sh);
         const selected = sh.id === selectedOrganization?.id;
+        const hovered = sh.id === hoveredOrganization?.id;
         return {
           type: "Feature",
           id: sh.id,
@@ -135,12 +140,12 @@ export function useMarkersGeojson({ stakeholders, categoryIds }) {
             coordinates: [sh.longitude, sh.latitude],
           },
           properties: {
-            iconId: getIconId(category, selected),
+            iconId: getIconId(category, selected || hovered),
           },
         };
       }),
     }),
-    [modifiedStakeholders, selectedOrganization]
+    [modifiedStakeholders, selectedOrganization, hoveredOrganization]
   );
 
   return markersGeojson;

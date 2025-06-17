@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 // Mapbox is tricky, because version 6.* is "incompatible with some Babel transforms
 // because of the way it shares code between the maint thread and Web Worker."
 // See https://docs.mapbox.com/mapbox-gl-js/guides/install/#transpiling for details
@@ -8,15 +8,17 @@ import { useCallback, useEffect, useState } from "react";
 // https://github.com/mapbox/mapbox-gl-js/issues/10173  See comment by IvanDreamer on Mar 22
 // for craco.config.js contents
 import { Grid, Box, IconButton } from "@mui/material";
-import AddIcon from '@mui/icons-material/AddRounded';
-import RemoveIcon from '@mui/icons-material/RemoveRounded';
+import AddIcon from "@mui/icons-material/AddRounded";
+import RemoveIcon from "@mui/icons-material/RemoveRounded";
 import { MAPBOX_STYLE } from "constants/map";
 import { MAPBOX_ACCESS_TOKEN, DEFAULT_VIEWPORT } from "helpers/Constants";
 import useBreakpoints from "hooks/useBreakpoints";
 import useFeatureFlag from "hooks/useFeatureFlag";
-import 'mapbox-gl/dist/mapbox-gl.css';
+import "mapbox-gl/dist/mapbox-gl.css";
 import Map, { Layer, Marker, Source } from "react-map-gl";
 import { useLocation, useNavigate } from "react-router-dom";
+import bbox from "@turf/bbox";
+
 import * as analytics from "services/analytics";
 import {
   DEFAULT_COORDINATES,
@@ -37,6 +39,13 @@ import {
   useMarkersGeojson,
 } from "./MarkerHelpers";
 import { regionBorderStyle, regionFillStyle } from "./RegionHelpers";
+import Geolocate from "../ResultsFilters/Geolocate";
+import FilterPanel from "../ResultsFilters/FilterPanel";
+import {
+  FOOD_PANTRY_CATEGORY_ID,
+  MEAL_PROGRAM_CATEGORY_ID,
+} from "constants/stakeholder";
+import debounceFn from "debounce-fn";
 
 const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
   const [markersLoaded, setMarkersLoaded] = useState(false);
@@ -48,6 +57,7 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
   const { isMobile } = useBreakpoints();
   const isListPanelOpen = useListPanel();
   const isFilterPanelOpen = useFilterPanel();
+
   const { mapRef, flyTo } = useMapbox();
 
   const longitude =
@@ -87,9 +97,9 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
     }));
   }, [searchCoordinates, longitude, latitude, isMobile]);
 
-
   const onLoad = useCallback(async () => {
     const map = mapRef.current.getMap();
+    window.dispatchEvent(new Event("resize"));
     setCurrMap(map);
     await loadMarkerIcons(map);
     setMarkersLoaded(true);
@@ -100,6 +110,59 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
         latitude: startIconCoordinates.latitude,
       });
   }, [startIconCoordinates, flyTo, mapRef]);
+
+  const listPanelLeftPosition = isListPanelOpen ? 524 : 0;
+  const filterPanelLeftPosition = isFilterPanelOpen ? 340 : 0;
+
+  // custom zoom for the neighborhood if used in widget mode
+  useEffect(() => {
+    if (regionGeoJSON && currMap) {
+      const bounds = bbox(regionGeoJSON);
+
+      const canvas = currMap.getCanvas();
+      const mapWidth = canvas.clientWidth;
+      const mapHeight = canvas.clientHeight;
+
+      let leftPadding = isMobile
+        ? 60
+        : listPanelLeftPosition + filterPanelLeftPosition + 60;
+      let rightPadding = 60;
+      let topPadding = 60;
+      let bottomPadding = isMobile ? 220 : 60;
+
+      if (leftPadding + rightPadding > mapWidth) {
+        const overflow = leftPadding + rightPadding - mapWidth + 10;
+        leftPadding -= overflow / 2;
+        rightPadding -= overflow / 2;
+      }
+
+      if (topPadding + bottomPadding > mapHeight) {
+        const overflow = topPadding + bottomPadding - mapHeight + 10;
+        topPadding -= overflow / 2;
+        bottomPadding -= overflow / 2;
+      }
+
+      leftPadding = Math.max(0, leftPadding);
+      rightPadding = Math.max(0, rightPadding);
+      topPadding = Math.max(0, topPadding);
+      bottomPadding = Math.max(0, bottomPadding);
+
+      const timeout = setTimeout(() => {
+        currMap.fitBounds(bounds, {
+          padding: {
+            top: topPadding,
+            right: rightPadding,
+            bottom: bottomPadding,
+            left: leftPadding,
+          },
+          duration: 2000,
+          maxZoom: 16,
+        });
+      }, 100);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [regionGeoJSON, currMap, isMobile]);
 
   const onClick = (e) => {
     flyTo({
@@ -136,40 +199,41 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
     categoryIds,
   });
 
-  const listPanelLeftPostion = isListPanelOpen ? 524 : 0;
-  const filterPanelLeftPostion = isFilterPanelOpen ? 340 : 0;
-
   const CustomNavigationControl = () => {
     if (!currMap) return;
     const zoom = currMap.getZoom();
     const currentCenter = currMap.getCenter();
-  
+
     const handleZoomIn = () => {
       const longOffset = 0.0399 * Math.pow(2, 11 - zoom);
       const newCenter = {
-        lng: isListPanelOpen ? currentCenter.lng + longOffset : currentCenter.lng,
-        lat: selectedOrganization ? selectedOrganization.latitude : currentCenter.lat
+        lng: isListPanelOpen
+          ? currentCenter.lng + longOffset
+          : currentCenter.lng,
+        lat: selectedOrganization
+          ? selectedOrganization.latitude
+          : currentCenter.lat,
       };
 
       currMap.easeTo({
         center: isListPanelOpen ? newCenter : currentCenter,
         zoom: zoom + 1,
         duration: 500,
-      })
+      });
     };
-  
+
     const handleZoomOut = () => {
       const zoomOutOffset = 0.0399 * Math.pow(2, 12 - zoom);
       const newCenter = {
         lng: currentCenter.lng - zoomOutOffset,
-        lat: currentCenter.lat
+        lat: currentCenter.lat,
       };
-      
+
       currMap.easeTo({
         center: isListPanelOpen ? newCenter : currentCenter,
         zoom: zoom - 1,
         duration: 500,
-      })
+      });
     };
 
     const buttonStyles = {
@@ -178,14 +242,14 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
       borderRadius: 0,
       width: "28px",
       height: "28px",
-      '&:hover': {
+      "&:hover": {
         backgroundColor: "#f5f5f5",
       },
-      '&:active': {
+      "&:active": {
         backgroundColor: "#e0e0e0",
       },
     };
-  
+
     return (
       <Box
         sx={{
@@ -210,10 +274,55 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
         </IconButton>
       </Box>
     );
-};
+  };
+  const isMealSelected = categoryIds.includes(MEAL_PROGRAM_CATEGORY_ID);
+  const isPantrySelected = categoryIds.includes(FOOD_PANTRY_CATEGORY_ID);
+
+  const toggleMeal = useCallback(() => {
+    toggleCategory(MEAL_PROGRAM_CATEGORY_ID);
+    analytics.postEvent("toggleMealFilter", {});
+  }, [toggleCategory]);
+
+  const togglePantry = useCallback(() => {
+    toggleCategory(FOOD_PANTRY_CATEGORY_ID);
+    analytics.postEvent("togglePantryFilter", {});
+  }, [toggleCategory]);
+
+  const mapContainerRef = useRef();
+
+  useEffect(() => {
+    // Resize map if container size changes
+    const debouncedResize = debounceFn(
+      () => {
+        mapRef.current?.resize();
+      },
+      { wait: 10 }
+    );
+
+    const resizeObserver = new ResizeObserver(() => {
+      if (mapRef.current) {
+        debouncedResize();
+      }
+    });
+
+    const container = mapContainerRef.current;
+    if (container) {
+      resizeObserver.observe(container);
+    }
+
+    return () => {
+      if (container) {
+        resizeObserver.unobserve(container);
+      }
+      debouncedResize.cancel?.();
+    };
+  }, []);
 
   return (
-    <div style={{ position: "relative", height: "100%", width: "100%" }}>
+    <div
+      style={{ position: "relative", height: "100%", width: "100%" }}
+      ref={mapContainerRef}
+    >
       <Map
         ref={mapRef}
         {...viewport}
@@ -230,8 +339,24 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
         onMouseLeave={onMouseLeave}
       >
         {!isMobile && (
-          <CustomNavigationControl />
+          <>
+            <CustomNavigationControl />
+            <Box
+              sx={{
+                position: "absolute",
+                top: 80,
+                right: 10,
+                zIndex: 10,
+                borderRadius: "6px",
+                boxShadow: "0 1px 6px rgba(0, 0, 0, 0.416)",
+                border: "1.5px solid rgba(0, 0, 0, 0.1)",
+              }}
+            >
+              <Geolocate />
+            </Box>
+          </>
         )}
+
         {startIconCoordinates && (
           <Marker
             longitude={startIconCoordinates.longitude}
@@ -263,28 +388,42 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
           display="inline-flex"
           alignItems="flex-start"
           sx={{
-            overflowX: "auto", 
-            overflowY: "hidden", 
+            overflowX: "auto",
+            overflowY: "hidden",
             gap: "0.5rem",
             padding: isMobile ? "0 0 0.3rem 0.75rem" : "0 0 0.3rem 2.25rem",
             scrollbarWidth: "none",
             "&::-webkit-scrollbar": {
-              display: "none", 
+              display: "none",
             },
             top: 0,
             left: isMobile
               ? 0
-              : `${listPanelLeftPostion + filterPanelLeftPostion}px`,
+              : `${listPanelLeftPosition + filterPanelLeftPosition}px`,
             transition: isMobile ? undefined : "left .5s ease-in-out",
-            maxWidth: isMobile ? "100vw": `calc(100vw - ${listPanelLeftPostion + filterPanelLeftPostion}px)`,
+            maxWidth: isMobile
+              ? "100vw"
+              : `calc(100vw - ${
+                  listPanelLeftPosition + filterPanelLeftPosition
+                }px)`,
           }}
         >
           <AdvancedFilters
-            categoryIds={categoryIds}
-            toggleCategory={toggleCategory}
+            toggleMeal={toggleMeal}
+            togglePantry={togglePantry}
+            isMealSelected={isMealSelected}
+            isPantrySelected={isPantrySelected}
           />
         </Grid>
       )}
+      <FilterPanel
+        mealPantry={{
+          toggleMeal,
+          togglePantry,
+          isMealSelected,
+          isPantrySelected,
+        }}
+      />
     </div>
   );
 };

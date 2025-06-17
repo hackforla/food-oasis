@@ -229,6 +229,99 @@ function MuiButtons() {
       </Box>
 
       <Typography variant="subtitle1" component="h3">
+        Gray
+      </Typography>
+      <Box
+        sx={{
+          padding: "0.5rem",
+          backgroundColor: "lightgray",
+          border: "1px solid black",
+          borderRadius: "4px",
+        }}
+      >
+        <Stack direction="row">
+          <Button variant="gray">Normal</Button>
+          <Button variant="gray">Normal</Button>
+          <Button variant="gray" disabled>
+            Disabled
+          </Button>
+        </Stack>
+      </Box>
+      <Typography variant="subtitle1" component="h3">
+        Gray (Light Background)
+      </Typography>
+      <Box
+        sx={{
+          padding: "0.5rem",
+          backgroundColor: "white",
+          border: "1px solid black",
+          borderRadius: "4px",
+        }}
+      >
+        <Stack direction="row">
+          <Button variant="gray">Normal</Button>
+          <Button variant="gray">Normal</Button>
+          <Button variant="gray" disabled>
+            Disabled
+          </Button>
+        </Stack>
+      </Box>
+      <Typography variant="subtitle1" component="h3">
+        Gray (Dark Background)
+      </Typography>
+      <Box
+        sx={{
+          padding: "0.5rem",
+          backgroundColor: "black",
+          borderRadius: "4px",
+        }}
+      >
+        <Stack direction="row">
+          <Button variant="gray">Normal</Button>
+          <Button variant="gray">Normal</Button>
+          <Button variant="gray" disabled>
+            Disabled
+          </Button>
+        </Stack>
+      </Box>
+
+      <Typography variant="subtitle1" component="h3">
+        Sizing Test
+      </Typography>
+      <Box padding=".2rem">
+        <Stack direction="row" alignItems="center">
+          <Box
+            sx={{
+              height: "3rem",
+              width: "8rem",
+              backgroundColor: "lightgray",
+              border: "1px solid black",
+            }}
+          >
+            <Button variant="gray">Small Space</Button>
+          </Box>
+          <Box
+            sx={{
+              backgroundColor: "lightgray",
+              border: "1px solid black",
+            }}
+          >
+            <Button variant="gray">Enough Space</Button>
+          </Box>
+          <Box
+            sx={{
+              height: "12rem",
+              width: "36rem",
+              backgroundColor: "lightgray",
+              border: "1px solid black",
+            }}
+          >
+            <Button variant="gray">Extra Space</Button>
+          </Box>
+        </Stack>
+      </Box>
+
+      <Typography variant="subtitle1" component="h3">
         IconButtons
       </Typography>
       <Box padding=".2rem" backgroundColor="white">

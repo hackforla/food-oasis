@@ -39,6 +39,8 @@ import {
   LINKEDIN_REGEX,
   PINTEREST_REGEX,
   TWITTER_REGEX,
+  DEFAULT_VIEWPORTS,
+  TENANT_ID,
 } from "../../helpers/Constants";
 
 const phoneRegExp = /^\(\d{3}\) \d{3}-\d{4}$/;
@@ -55,12 +57,19 @@ const validationSchema = Yup.object().shape({
   phone: Yup.string()
     .matches(phoneRegExp, "Invalid phone number")
     .required("Phone number is required"),
+  phoneExt: Yup.string(),
   address1: Yup.string().required("Street address is required"),
   city: Yup.string().required("City is required"),
   state: Yup.string().required("State is required"),
   zip: Yup.string().required("Zip code is required"),
-  latitude: Yup.number().required("Latitude is required").min(-90).max(90),
-  longitude: Yup.number().required("Longitude is required").min(-180).max(180),
+  latitude: Yup.number()
+    .required("Latitude is required")
+    .min(Number(DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[1]))
+    .max(Number(DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[3])),
+  longitude: Yup.number()
+    .required("Longitude is required")
+    .min(Number(DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[0]))
+    .max(Number(DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[2])),
   email: Yup.string().email("Invalid email address format"),
   hours: Yup.array().of(HourSchema),
   instagram: Yup.string()
@@ -100,6 +109,7 @@ const emptyOrganization = {
   state: "",
   zip: "",
   phone: "",
+  phoneExt: "",
   email: "",
   latitude: "",
   longitude: "",
@@ -430,6 +440,7 @@ const OrganizationEdit = (props) => {
                   setSubmitting(false);
                 });
             } else {
+               console.log("new stakeholder data: ", values);
               return stakeholderService
                 .post({ ...values, loginId: user.id })
                 .then((response) => {

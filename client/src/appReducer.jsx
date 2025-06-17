@@ -61,6 +61,17 @@ function selectedOrganizationReducer(state, action) {
   }
 }
 
+function hoveredOrganizationReducer(state, action) {
+  switch (action.type) {
+    case "HOVERED_ORGANIZATION_UPDATED":
+      return action.organization;
+    case "RESET_HOVERED_ORGANIZATION":
+      return null;
+    default:
+      return state;
+  }
+}
+
 function neighborhoodReducer(state, action) {
   switch (action.type) {
     case "NEIGHBORHOOD_UPDATED":
@@ -83,6 +94,14 @@ function filterPanelReducer(state, action) {
   switch (action.type) {
     case "FILTER_PANEL_TOGGLE":
       return action.filterPanel;
+    default:
+      return state;
+  }
+}
+function orgNameFilterReducer(state, action) {
+  switch (action.type) {
+    case "ORG_NAME_FILTER_UPDATED":
+      return action.orgNameFilter;
     default:
       return state;
   }
@@ -149,12 +168,17 @@ export function appReducer(state, action) {
       state.selectedOrganization,
       action
     ),
+    hoveredOrganization: hoveredOrganizationReducer(
+      state.hoveredOrganization,
+      action
+    ),
     neighborhood: neighborhoodReducer(state.neighborhood, action),
     // isWidget === true indicates that app is implemented as an
     // iframe widget hosted in a third-party application.
     isWidget: widgetReducer(state.isWidget, action),
     stakeholders: stakeholdersReducer(state.stakeholders, action),
     filterPanel: filterPanelReducer(state.filterPanel, action),
+    orgNameFilter: orgNameFilterReducer(state.orgNameFilter, action),
     openTimeFilter: openTimeFilterReducer(state.openTimeFilter, action),
     noKnownEligibilityRequirementsFilter:
       noKnownEligibilityRequirementsFilterReducer(
@@ -176,10 +200,12 @@ export function getInitialState() {
     defaultCoordinates: DEFAULT_COORDINATES,
     searchCoordinates: null,
     selectedOrganization: null,
+    hoveredOrganization: null,
     userCoordinates: null,
     neighborhood: null,
     isWidget: false,
     filterPanel: false,
+    orgNameFilter: "",
     openTimeFilter: { radio: "Show All", day: "", time: "" },
     noKnownEligibilityRequirementsFilter: false,
     listPanel: true,
@@ -233,6 +259,11 @@ export function useSelectedOrganization() {
   return selectedOrganization;
 }
 
+export function useHoveredOrganization() {
+  const { hoveredOrganization } = useAppState();
+  return hoveredOrganization;
+}
+
 export function useUserCoordinates() {
   const { userCoordinates } = useAppState();
   return userCoordinates;
@@ -256,6 +287,11 @@ export function useStakeholders() {
 export function useFilterPanel() {
   const { filterPanel } = useAppState();
   return filterPanel;
+}
+
+export function useOrgNameFilter() {
+  const { orgNameFilter } = useAppState();
+  return orgNameFilter;
 }
 
 export function useOpenTimeFilter() {

@@ -30,8 +30,7 @@ const validationSchema = Yup.object().shape({
     .required("Password is required"),
 });
 
-const LoginForm = (props) => {
-  const { classes } = props;
+const LoginForm = () => {
   const { onLogin } = useUserContext();
   const { setToast } = useToasterContext();
   // state is the previous pathname if the user has been redirected here from a PrivateRoute.
@@ -59,7 +58,7 @@ const LoginForm = (props) => {
         }}
       >
         {state?.isPasswordReset && (
-          <Typography component="p" className={classes.submit}>
+          <Typography component="p">
             Password has been successfully updated
           </Typography>
         )}

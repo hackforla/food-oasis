@@ -54,6 +54,7 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import XIcon from "@mui/icons-material/X";
 import PinterestIcon from "@mui/icons-material/Pinterest";
 import IconButton from "@mui/material/IconButton";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 
 const MinorHeading = styled(Typography)(({ theme }) => ({
   variant: "h5",
@@ -64,12 +65,13 @@ const MinorHeading = styled(Typography)(({ theme }) => ({
   color: theme.palette.headingText.main,
 }));
 
-const DetailText = styled(Typography)(({ theme }) => ({
+const DetailText = styled(Typography)(({ theme, className }) => ({
   variant: "body1",
   component: "p",
   textAlign: "left",
   marginBottom: "16px",
   whiteSpace: "pre-wrap",
+  className: className,
   overflowWrap: "break-word",
   "& a": {
     color: theme.palette.link.normal,
@@ -273,72 +275,51 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
         stakeholder={selectedOrganization}
         setToast={setToast}
       />
-      <Stack
-        height={"100%"}
-        width={"100%"}
-        sx={{
-          display: "flex",
-        }}
-      >
-        <Stack
-          direction={"row"}
-          alignItems="flex-end"
-          sx={{
-            width: 1,
-            padding: isDesktop ? "1.5rem 35px 0 65px" : "1rem 1.5rem",
-          }}
-        >
-          <Button
-            variant="text"
-            sx={(theme) => ({
-              fontSize: { xs: "14px", md: "18px" },
-              color: theme.palette.common.black,
-              textTransform: "none",
-              fontWeight: "bold",
-              "&:focus": {
-                borderWidth: "2px",
-                borderColor: theme.palette.primary.dark,
-                borderStyle: "solid",
-                dropShadow: "10px 10px  12px",
-              },
-            })}
-            onClick={handleBackButtonClick}
-          >
-            &lt; Back to Results
-          </Button>
+      <Stack height="100%">
+        <Stack pt={2} spacing={2}>
+          <Stack direction="row" alignItems="flex-end">
+            <Button
+              variant="text"
+              sx={(theme) => ({
+                fontSize: { xs: "14px", md: "18px" },
+                color: theme.palette.common.black,
+                textTransform: "none",
+                fontWeight: "bold",
+                "&:focus": {
+                  borderWidth: "2px",
+                  borderColor: theme.palette.primary.dark,
+                  borderStyle: "solid",
+                  dropShadow: "10px 10px  12px",
+                },
+              })}
+              onClick={handleBackButtonClick}
+              startIcon={<ChevronLeftIcon />}
+            >
+              Back to Results
+            </Button>
+          </Stack>
+          <Divider />
         </Stack>
-        {isDesktop && (
-          <Divider
-            sx={(theme) => ({
-              background: theme.palette.common.black,
-              margin: isDesktop ? "16px 35px 0 65px" : "0 1.5rem",
-            })}
-          />
-        )}
         <Grid2
           container
-          spacing={0}
+          gap={2}
+          p={2}
           sx={{
             flex: 1,
-            minHeight: "6rem",
-            overflowY: "auto",
-            padding: isDesktop
-              ? "38px 35px 0 65px"
-              : `3px 23px ${paddingBottom}px`,
+            overflowX: "scroll",
           }}
         >
-          <Grid2 xs={2}>
+          <Grid2 xs={1}>
             <Stack
               xs={2}
               direction="column"
               justifyContent="flex-start"
               alignItems="center"
               gap={2}
-              sx={{ marginTop: ".2rem", marginRight: "1rem" }}
             >
               <StakeholderIcon stakeholder={selectedOrganization} />
               <Typography variant="body2" align="center">
-                {Boolean(selectedOrganization?.distance) &&
+                {selectedOrganization?.distance &&
                   `${selectedOrganization.distance?.toFixed(1)} mi`}
               </Typography>
             </Stack>
@@ -351,6 +332,7 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
                   component="h2"
                   align="left"
                   fontWeight="bold"
+                  className="notranslate"
                 >
                   {selectedOrganization.name}
                 </Typography>
@@ -603,10 +585,10 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
                 </Stack>
 
                 <MinorHeading>Address</MinorHeading>
-                <DetailText sx={{ marginBottom: "0" }}>
+                <DetailText sx={{ marginBottom: "0" }} className="notranslate">
                   {selectedOrganization.address1}
                 </DetailText>
-                <DetailText>
+                <DetailText className="notranslate">
                   {selectedOrganization.city} {selectedOrganization.zip}
                 </DetailText>
 
@@ -823,6 +805,7 @@ function SocialMedia({ selectedOrganization }) {
             href={facebook}
             target="_blank"
             rel="noopener noreferrer"
+            data-testid="facebook-button"
           >
             <FacebookIcon />
           </IconButton>
@@ -833,6 +816,7 @@ function SocialMedia({ selectedOrganization }) {
             href={instagram}
             target="_blank"
             rel="noopener noreferrer"
+            data-testid="instagram-button"
           >
             <InstagramIcon />
           </IconButton>
@@ -843,6 +827,7 @@ function SocialMedia({ selectedOrganization }) {
             href={linkedin}
             target="_blank"
             rel="noopener noreferrer"
+            data-testid="linkedin-button"
           >
             <LinkedInIcon />
           </IconButton>
@@ -853,6 +838,7 @@ function SocialMedia({ selectedOrganization }) {
             href="pinterest"
             target="_blank"
             rel="noopener noreferrer"
+            data-testid="pinterest-button"
           >
             <PinterestIcon />
           </IconButton>
@@ -863,6 +849,7 @@ function SocialMedia({ selectedOrganization }) {
             href={twitter}
             target="_blank"
             rel="noopener noreferrer"
+            data-testid="twitter-button"
           >
             <XIcon />
           </IconButton>

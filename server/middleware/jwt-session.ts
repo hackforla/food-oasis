@@ -1,5 +1,5 @@
-import jwt from "jsonwebtoken";
 import { CookieOptions, Request, Response } from "express";
+import jwt from "jsonwebtoken";
 import { Role } from "../types/account-types";
 
 const jwtSecret = process.env.JWT_SECRET || "mark it zero";
@@ -33,7 +33,12 @@ async function login(req: Request, res: Response) {
   };
   res.cookie("jwt", token, cookieConfig);
   const user = req.user;
-  res.json({ isSuccess: true, token: token, user });
+  const filteredUser = {
+    firstName: user?.firstName,
+    lastName: user?.lastName,
+    features: user?.features,
+  };
+  res.json({ isSuccess: true, token: token, user: filteredUser });
 }
 
 // When a request is received for a route that requires an

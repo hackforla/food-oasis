@@ -28,16 +28,16 @@ const trueFalseEitherClause = (columnName: string, value?: string) => {
   return value === "true"
     ? ` and ${columnName} is not null `
     : value === "false"
-    ? ` and ${columnName} is null `
-    : "";
+      ? ` and ${columnName} is null `
+      : "";
 };
 
 const booleanEitherClause = (columnName: string, value?: string) => {
   return value === "true"
     ? ` and ${columnName} is true `
     : value === "false"
-    ? ` and ${columnName} is false `
-    : "";
+      ? ` and ${columnName} is false `
+      : "";
 };
 
 const search = async (
@@ -69,9 +69,9 @@ const search = async (
   const locationClause = buildLocationClause(latitude, longitude);
   const categoryClause = buildCTEClause(name || "", categoryIds);
 
-  const sql = `${categoryClause}
+  const sql = `${categoryClause} 
     select   s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
-    s.phone, s.latitude, s.longitude, s.website,  s.notes,
+    s.phone,s.phone_ext, s.latitude, s.longitude, s.website,  s.notes,
     (select array(select row_to_json(row)
     from (
       select day_of_week as "dayOfWeek", open, close, week_of_month as "weekOfMonth"
@@ -203,7 +203,7 @@ const search = async (
 const selectById = async (id: string): Promise<Stakeholder> => {
   const sql = `select
       s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
-      s.phone, s.latitude, s.longitude, s.website,  s.notes,
+      s.phone,s.phone_ext, s.latitude, s.longitude, s.website,  s.notes,
       (select array(select row_to_json(row)
       from (
         select day_of_week as "dayOfWeek", open, close, week_of_month as "weekOfMonth"
@@ -257,7 +257,7 @@ const selectById = async (id: string): Promise<Stakeholder> => {
 const selectCsv = async (ids: string[]): Promise<Stakeholder[]> => {
   const sql = `select
   s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
-  s.phone, s.latitude, s.longitude, s.website,  s.notes,
+  s.phone,s.phone_ext, s.latitude, s.longitude, s.website,  s.notes,
   (select array(select row_to_json(row)
   from (
     select day_of_week as "dayOfWeek", open, close, week_of_month as "weekOfMonth"
@@ -431,6 +431,7 @@ const insert = async (model: InsertStakeholderParams) => {
     model.hoursNotes || "",
     model.allowWalkins || false,
     tags,
+    model.phoneExt || "",
   ];
 
   const result = await db.proc("create_stakeholder", params);
@@ -610,10 +611,10 @@ const update = async (model: UpdateStakeholderParams) => {
     : "";
   const formattedHours = "{" + hoursSqlValues + "}";
 
-  // update_stakeholder is a postgres stored procedure. Source of this stored
-  // procedure is in the repo at db/stored_procs/update_stakeholder.sql.
+  // update_stakeholder is a postgres stored procedure.
   //
-  // Currently, it updates stakeholder category and schedule by deleting the existing category/schedule rows,
+  // Currently, it updates stakeholder category and schedule by
+  // deleting the existing category/schedule rows,
   // and creating new ones.
   const params = [
     model.name || "",
@@ -691,6 +692,7 @@ const update = async (model: UpdateStakeholderParams) => {
     model.hoursNotes || "",
     model.allowWalkins || false,
     tags,
+    model.phoneExt || "",
   ];
 
   await db.proc("update_stakeholder", params);

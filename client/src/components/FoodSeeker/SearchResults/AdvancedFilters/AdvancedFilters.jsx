@@ -1,8 +1,5 @@
 import { Grid } from "@mui/material";
-import {
-  FOOD_PANTRY_CATEGORY_ID,
-  MEAL_PROGRAM_CATEGORY_ID,
-} from "constants/stakeholder";
+
 import MealLocatorIcon from "icons/MealLocatorIcon";
 import PantryLocatorIcon from "icons/PantryLocatorIcon";
 import PropTypes from "prop-types";
@@ -17,20 +14,12 @@ import FilterPanel from "../ResultsFilters/FilterPanel";
 import AdvancedFilterButton from "./AdvancedFilterButton";
 import { getDayTimeNow } from "helpers";
 
-const AdvancedFilters = ({ toggleCategory, categoryIds }) => {
-  const isMealSelected = categoryIds.includes(MEAL_PROGRAM_CATEGORY_ID);
-  const isPantrySelected = categoryIds.includes(FOOD_PANTRY_CATEGORY_ID);
-
-  const toggleMeal = useCallback(() => {
-    toggleCategory(MEAL_PROGRAM_CATEGORY_ID);
-    analytics.postEvent("toggleMealFilter", {});
-  }, [toggleCategory]);
-
-  const togglePantry = useCallback(() => {
-    toggleCategory(FOOD_PANTRY_CATEGORY_ID);
-    analytics.postEvent("togglePantryFilter", {});
-  }, [toggleCategory]);
-
+const AdvancedFilters = ({
+  toggleMeal,
+  togglePantry,
+  isMealSelected,
+  isPantrySelected,
+}) => {
   // toggling filter panel state
   const dispatch = useAppDispatch();
   const open = useFilterPanel();
@@ -104,14 +93,6 @@ const AdvancedFilters = ({ toggleCategory, categoryIds }) => {
           isSelected={open}
         />
       </Grid>
-      <FilterPanel
-        mealPantry={{
-          toggleMeal,
-          togglePantry,
-          isMealSelected,
-          isPantrySelected,
-        }}
-      />
     </>
   );
 };

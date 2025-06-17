@@ -158,6 +158,7 @@ export default function Menu() {
         size={!isHomePage && isMobile ? "small" : "large"}
         icon="menu"
         onClick={toggleDrawer}
+        data-testid="menu-button"
         sx={{
           transform: "scale(1.2,1.2)",
           minWidth: "0",

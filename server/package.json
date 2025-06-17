@@ -1,6 +1,6 @@
 {
   "name": "foodoasis-web-api",
-  "version": "1.0.92",
+  "version": "1.0.93",
   "author": "Hack for LA",
   "description": "Web API Server for Food Oasis",
   "main": "server.js",
@@ -50,7 +50,7 @@
     "jsonwebtoken": "^9.0.2",
     "massive": "^6.10.2",
     "mocha": "^10.8.2",
-    "multer": "^1.4.5-lts.1",
+    "multer": "^2.0.1",
     "node-pg-migrate": "^6.2.1",
     "nodemailer": "^6.9.9",
     "passport": "^0.7.0",

@@ -108,7 +108,6 @@ function WidgetFooterSection(props) {
       </Box>
     );
   }
-
   const imageType = logoPath ? logoPath.split(".").pop() : "unknown";
 
   return (
@@ -182,6 +181,7 @@ function WidgetFooter() {
 
   return (
     <Box
+      id="widgetFooter"
       position="sticky"
       sx={(theme) => ({
         backgroundColor: "#FFF",
@@ -201,9 +201,6 @@ function WidgetFooter() {
           url={`${window.location.origin}`}
           alt="Food Oasis Logo"
         />
-        <Alert severity="warning">
-          Due to the LA Fires (Jan 2025), some information may be out-of-date.
-        </Alert>
       </div>
       <WidgetFooterSection
         type="maintainer"
@@ -218,7 +215,7 @@ function WidgetFooter() {
 WidgetFooterSection.propTypes = {
   name: PropTypes.string,
   captionText: PropTypes.string,
-  logoPath: PropTypes.shape(),
+  logoPath: PropTypes.string,
   alt: PropTypes.string,
   url: PropTypes.string,
   className: PropTypes.string,

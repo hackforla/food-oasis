@@ -8,6 +8,7 @@ import {
   useOpenTimeFilter,
   useSearchCoordinates,
   useNoKnownEligibilityRequirementsFilter,
+  useOrgNameFilter,
 } from "../appReducer";
 import * as analytics from "../services/analytics";
 import * as stakeholderService from "../services/stakeholder-best-service";
@@ -41,6 +42,7 @@ export default function useOrganizationBests() {
   const location = useLocation();
   const searchCoordinates = useSearchCoordinates();
   const openTimeFilter = useOpenTimeFilter();
+  const orgNameFilter = useOrgNameFilter();
   const noKnownEligibilityRequirementsFilter =
     useNoKnownEligibilityRequirementsFilter();
   const { tenantTimeZone } = useSiteContext();
@@ -89,6 +91,13 @@ export default function useOrganizationBests() {
           );
 
           return !!hours;
+        });
+      }
+      if (filters.orgNameFilter) {
+        filteredStakeholders = filteredStakeholders.filter((stakeholder) => {
+          return stakeholder.name
+            .toLowerCase()
+            .includes(filters.orgNameFilter.toLowerCase());
         });
       }
 
@@ -143,6 +152,9 @@ export default function useOrganizationBests() {
           filters.openTimeFilter = openTimeFilter;
           filters.showActiveOnly = true;
         }
+        if (orgNameFilter) {
+          filters.orgNameFilter = orgNameFilter;
+        }
         if (noKnownEligibilityRequirementsFilter) {
           filters.noKnownEligibilityRequirementsFilter =
             noKnownEligibilityRequirementsFilter;
@@ -174,6 +186,7 @@ export default function useOrganizationBests() {
       longitude,
       noKnownEligibilityRequirementsFilter,
       processStakeholders,
+      orgNameFilter,
     ]
   );
 

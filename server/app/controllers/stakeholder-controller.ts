@@ -93,6 +93,7 @@ const csv: RequestHandler<never, never, { ids: string[] }, never> = async (
             tags: "Tags",
             email: "Email",
             phone: "Phone",
+            phoneExt: "Phone Ext",
             hours: "Hours",
             hoursNotes: "Hours Notes",
             website: "Website",

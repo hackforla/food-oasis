@@ -86,7 +86,7 @@ const Home = () => {
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundImage: 'url("/landing-page/map.png")',
-          minHeight: "max(100.7vh,20em)",
+          flex: 1,
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
@@ -148,8 +148,6 @@ const Home = () => {
               })}
             >
               <Box
-                component="form"
-                onSubmit={() => navigate("/organizations")}
                 sx={(theme) => ({
                   width: "100%",
                   marginTop: theme.spacing(1),
@@ -227,10 +225,7 @@ const Home = () => {
                     </div>
                   )}
                 </Box>
-                <Alert severity="warning">
-                  Due to the LA Fires (Jan 2025), some information may be
-                  out-of-date.
-                </Alert>
+
                 <Box
                   sx={{
                     display: "flex",

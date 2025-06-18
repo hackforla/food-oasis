@@ -3,17 +3,12 @@ import { Button, Tooltip } from "@mui/material";
 import useGeolocation, { useLocationPermission } from "hooks/useGeolocation";
 import { useState, useEffect } from "react";
 import * as analytics from "services/analytics";
-import {
-  useSearchCoordinates,
-  useUserCoordinates,
-} from "../../../../appReducer";
+import { useUserCoordinates } from "../../../../appReducer";
 import { useMapbox } from "../../../../hooks/useMapbox";
 
 const Geolocate = () => {
   const { getUserLocation } = useGeolocation();
-  const searchCoordinates = useSearchCoordinates();
   const userCoordinates = useUserCoordinates();
-  const startIconCoordinates = searchCoordinates || userCoordinates;
   const locationPermission = useLocationPermission();
   const [error, setError] = useState("");
   const { flyTo } = useMapbox();
@@ -22,16 +17,17 @@ const Geolocate = () => {
     if (error && locationPermission === "granted") {
       setError("");
     }
-  }, [error, locationPermission]);
+    if (locationPermission === "granted" && userCoordinates) {
+      flyTo({
+        longitude: userCoordinates.longitude,
+        latitude: userCoordinates.latitude,
+      });
+    }
+  }, [error, locationPermission, userCoordinates]);
 
   const useMyLocationTrigger = async () => {
     try {
       await getUserLocation();
-      startIconCoordinates &&
-        flyTo({
-          longitude: startIconCoordinates.longitude,
-          latitude: searchCoordinates.latitude,
-        });
     } catch (e) {
       setError(e);
     }

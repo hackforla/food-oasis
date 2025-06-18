@@ -6,18 +6,20 @@ import {
   TextField,
 } from "@mui/material";
 import { useMapboxGeocoder } from "hooks/useMapboxGeocoder";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as analytics from "services/analytics";
 import {
   useAppDispatch,
   useSearchCoordinates,
+  useUserCoordinates,
   useWidget,
 } from "../../appReducer";
 import { useMapbox } from "../../hooks/useMapbox";
 
 export default function AddressDropDown({ autoFocus }) {
   const searchCoordinates = useSearchCoordinates();
+  const userCoordinates = useUserCoordinates();
   const isWidget = useWidget();
   const [inputVal, setInputVal] = useState(
     searchCoordinates?.locationName || ""
@@ -28,6 +30,12 @@ export default function AddressDropDown({ autoFocus }) {
   const navigate = useNavigate();
   const { flyTo } = useMapbox();
   const [highlightedOption, setHighlightedOption] = useState(null);
+
+  useEffect(() => {
+    if (userCoordinates) {
+      setInputVal("");
+    }
+  }, [userCoordinates]);
 
   const handleInputChange = (delta) => {
     if (!delta) return;

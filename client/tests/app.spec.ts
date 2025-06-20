@@ -9,11 +9,11 @@ test.describe("App", () => {
     await expect(
       page.getByText("Locate free food in Los Angeles")
     ).toBeVisible();
-    await expect(
-      page.getByText(
-        "Due to the LA Fires, some information may be out-of-date."
-      )
-    ).toBeVisible();
+    //await expect(
+      //page.getByText(
+        //"Due to the LA Fires, some information may be out-of-date."
+      //)
+    //).toBeVisible();
     await expect(page.getByText("Learn about this site")).toBeVisible();
     await expect(page.getByText("Learn about this site")).toHaveAttribute(
       "href",

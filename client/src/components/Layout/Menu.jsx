@@ -118,6 +118,11 @@ export default function Menu() {
                   to="/admin/features"
                   text="Features Flags"
                 />
+                <MenuItemLink
+                  key="announcements"
+                  to="/admin/announcements"
+                  text="Announcements"
+                />
                 <Divider />
               </>
             )}

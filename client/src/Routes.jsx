@@ -53,6 +53,7 @@ const MuiDemo = lazy(() => import("./components/MuiDemo/MuiDemo"));
 const Features = lazy(() => import("./components/Admin/Features"));
 const Profile = lazy(() => import("./components/Account/Profile"));
 const Suggestion = lazy(() => import("components/FoodSeeker/Suggestion"));
+const Announcements = lazy(() => import("./components/Admin/Announcements"));
 
 export default function AppRoutes() {
   const hasUserFeedbackSuveyFeatureFlag = useFeatureFlag("userFeedbackSurvey");
@@ -178,6 +179,14 @@ export default function AppRoutes() {
               element={
                 <PrivateRoute roles={["isAdmin"]}>
                   <Features />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="announcements"
+              element={
+                <PrivateRoute roles={["isAdmin"]}>
+                  <Announcements />
                 </PrivateRoute>
               }
             />

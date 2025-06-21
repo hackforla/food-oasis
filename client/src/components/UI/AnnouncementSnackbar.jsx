@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Alert, Box, Typography, IconButton } from "@mui/material";
 import Collapse from "@mui/material/Collapse";
-
 import CloseIcon from "@mui/icons-material/Close";
+import { useAnnouncements } from "../../hooks/useAnnouncements";
 
 const AnnouncementSnackbar = () => {
   const [open, setOpen] = useState(() => {
@@ -11,6 +11,20 @@ const AnnouncementSnackbar = () => {
     );
     return hasBeenDismissed !== "true";
   });
+
+  const { data: announcementsData } = useAnnouncements();
+  const [enabledAnnouncement, setEnabledAnnouncement] = useState(null);
+
+  useEffect(() => {
+    if (announcementsData) {
+      // Find the first enabled announcement (or change logic as needed)
+      const enabled = announcementsData.find((a) => a.is_enabled);
+      setEnabledAnnouncement(enabled);
+    }
+  }, [announcementsData]);
+
+  // If no enabled announcement, don't show the snackbar
+  if (!enabledAnnouncement) return null;
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -31,9 +45,7 @@ const AnnouncementSnackbar = () => {
             </IconButton>
           }
         >
-          <Typography>
-            Due to the LA Fires, some information may be out-of-date.{" "}
-          </Typography>
+          <Typography>{enabledAnnouncement.description}</Typography>
         </Alert>
       </Collapse>
     </Box>

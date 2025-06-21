@@ -50,6 +50,7 @@ const Announcements = () => {
       const newRows = announcementsData.map((announcement) => ({
         announcementId: announcement.id,
         title: announcement.title,
+        description: announcement.description, // Add description
         is_enabled: announcement.is_enabled,
       }));
       setRows(newRows);
@@ -147,7 +148,9 @@ const Announcements = () => {
               <TableCell />
               <TableCell align="left"> Announcement ID </TableCell>
               <TableCell align="left">Announcement Title</TableCell>
-              <TableCell />
+              <TableCell align="left">Announcement Description</TableCell>
+              <TableCell align="left">Is Enabled?</TableCell>
+              <TableCell /> {/* <-- New column for delete icon, no title */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -196,6 +199,14 @@ const Announcements = () => {
                     >
                       {row.title}
                     </TableCell>
+                    <TableCell
+                      align="left"
+                      component="th"
+                      scope="row"
+                      sx={{ justifyContent: "space-between" }}
+                    >
+                      {row.description}
+                    </TableCell>
                     <TableCell>
                       <FormControlLabel
                         control={
@@ -209,7 +220,7 @@ const Announcements = () => {
                         }
                         label={
                           <Typography variant="body2" sx={{ fontSize: "14px" }}>
-                            Globally Enable
+                            {/* No label, just toggle */}
                           </Typography>
                         }
                       />
@@ -218,7 +229,8 @@ const Announcements = () => {
                       <IconButton
                         color="error"
                         aria-label="delete-announcement"
-                        onClick={async () => {
+                        onClick={async (e) => {
+                          e.stopPropagation();
                           try {
                             await announcementService.remove(row.announcementId);
                             announcementRefetch();

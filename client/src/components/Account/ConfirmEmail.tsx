@@ -2,7 +2,7 @@ import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { Avatar, Box, TextField, Typography } from "@mui/material";
 import Label from "components/Admin/ui/Label";
-import { Formik } from "formik";
+import { Formik, FormikProps } from "formik";
 import { useEffect, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import { palette } from "theme/palette";
@@ -17,16 +17,14 @@ const validationSchema = Yup.object().shape({
     .required("Email is required"),
 });
 
-const ConfirmEmail = (props) => {
-  const [confirmResult, setConfirmResult] = useState(false);
+const ConfirmEmail = () => {
   const { token } = useParams();
   const { setToast } = useToasterContext();
   const [view, setView] = useState("loading");
 
   useEffect(() => {
-    const confirmEmail = async (tok) => {
-      const result = await accountService.confirmRegister(tok);
-      setConfirmResult(result);
+    const confirmEmail = async () => {
+      const result = await accountService.confirmRegister(token);
       if (result.isSuccess) {
         setView("success");
         setToast({ message: `Your email has been confirmed. Please log in.` });
@@ -35,11 +33,11 @@ const ConfirmEmail = (props) => {
       }
     };
     if (token) {
-      confirmEmail(token);
+      confirmEmail();
     }
   }, [token, setToast]);
 
-  const resendConfirmationEmail = async (values) => {
+  const resendConfirmationEmail = async (values: {email: string}) => {
     const result = await accountService.resendConfirmationEmail(values.email);
     if (result.isSuccess) {
       setView("emailSent");
@@ -59,12 +57,14 @@ const ConfirmEmail = (props) => {
     isSubmitting,
     dirty,
     isValid,
-  }) => {
+  }: FormikProps<{
+    email: string;
+}>) => {
     switch (view) {
       case "loading":
         return <div>&ldquo;Confirming Email...&ldquo;</div>;
       case "success":
-        return <Navigate to={`/admin/login/${confirmResult.email}`} />;
+        return <Navigate to={`/admin/login/${values.email}`} />;
       case "emailSent":
         return (
           <p>

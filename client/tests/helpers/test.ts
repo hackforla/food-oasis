@@ -1,4 +1,5 @@
-import { Page, test as playwrightTest, expect } from "@playwright/test";
+import { expect, Page, test as playwrightTest } from "@playwright/test";
+import mockRequests from "./mocks";
 
 declare global {
   interface Window {
@@ -22,7 +23,8 @@ export default playwrightTest.extend<{
 
 function authTest(page: Page) {
   return {
-    login: async () => {
+    mockLogin: async () => {
+      await mockRequests(page);
       await page.goto("/");
 
       await page.getByTestId("menu-button").click();

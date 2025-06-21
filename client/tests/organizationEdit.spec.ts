@@ -6,7 +6,7 @@ test.describe("OrganizationEdit", () => {
     page,
     helpers,
   }) => {
-    await helpers.login();
+    await helpers.mockLogin();
     await page.getByTestId("MenuIcon").click();
     await page.getByText("Add New Organization").click();
     await expect(page.url()).toBe(
@@ -24,7 +24,7 @@ test("Should show validation errors for out-of-range coordinates", async ({
   page,
   helpers,
 }) => {
-  await helpers.login();
+  await helpers.mockLogin();
   await page.locator(".MuiBackdrop-root").click({ force: true });
   await page.getByTestId("MenuIcon").click();
   await page.getByText("Add New Organization").click();

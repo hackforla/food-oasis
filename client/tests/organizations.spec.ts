@@ -1,8 +1,10 @@
 import { expect } from "@playwright/test";
 import test from "./helpers/test";
+import mockRequests from "./helpers/mocks";
 
 test.describe("Organizations", () => {
   test("should render detail page on preview click", async ({ page }) => {
+    await mockRequests(page);
     await page.goto("/");
     await page.getByTestId("search-button").click();
 
@@ -18,6 +20,7 @@ test.describe("Organizations", () => {
   });
 
   test("should render all 3 stakeholders", async ({ page }) => {
+    await mockRequests(page);
     await page.goto("/organizations");
     await expect(page.getByText("3 Locations")).toBeVisible();
     await expect(page.getByText("Stakeholder 1")).toBeVisible();
@@ -28,6 +31,7 @@ test.describe("Organizations", () => {
   test("stakeholder 1 detail page should show Open Now, Walk-Ins Allowed & social media accounts", async ({
     page,
   }) => {
+    await mockRequests(page);
     await page.goto(
       "/organizations?latitude=33.79178035&longitude=-118.3186286&org=stakeholder_1&id=1"
     );
@@ -51,6 +55,7 @@ test.describe("Organizations", () => {
   test("clicking the Open Now filter should show Stakeholder 1 and not show Stakeholder 2 and 3", async ({
     page,
   }) => {
+    await mockRequests(page);
     await page.goto("/organizations");
     await page.getByRole("button", { name: "Open Now" }).click();
     await expect(page.getByText("Stakeholder 1")).toBeVisible();
@@ -61,15 +66,18 @@ test.describe("Organizations", () => {
   test("clicking the Pantry filter should show Stakeholder 1 and 2 and not show Stakeholder 3", async ({
     page,
   }) => {
+    await mockRequests(page);
     await page.goto("/organizations");
     await page.getByRole("button", { name: "Pantry" }).click();
     await expect(page.getByText("Stakeholder 1")).toBeVisible();
     await expect(page.getByText("Stakeholder 2")).toBeHidden();
     await expect(page.getByText("Stakeholder 3")).toBeVisible();
   });
+
   test("clicking the Meal filter should show Stakeholder 1 and 2 and not show Stakeholder 3", async ({
     page,
   }) => {
+    await mockRequests(page);
     await page.goto("/organizations");
     await page.getByRole("button", { name: "Meal" }).click();
     await expect(page.getByText("Stakeholder 1")).toBeVisible();

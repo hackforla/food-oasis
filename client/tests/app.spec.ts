@@ -1,10 +1,11 @@
 import { expect } from "@playwright/test";
 import test from "./helpers/test";
+import mockRequests from "./helpers/mocks";
 
 test.describe("App", () => {
   test("renders without crashing", async ({ page }) => {
+    await mockRequests(page);
     await page.goto("/");
-
     await expect(
       page.getByText("Locate free food in Los Angeles")
     ).toBeVisible();

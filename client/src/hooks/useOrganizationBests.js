@@ -7,7 +7,6 @@ import {
   useAppDispatch,
   useOpenTimeFilter,
   useSearchCoordinates,
-  useNoKnownEligibilityRequirementsFilter,
   useOrgNameFilter,
 } from "../appReducer";
 import * as analytics from "../services/analytics";
@@ -43,8 +42,6 @@ export default function useOrganizationBests() {
   const searchCoordinates = useSearchCoordinates();
   const openTimeFilter = useOpenTimeFilter();
   const orgNameFilter = useOrgNameFilter();
-  const noKnownEligibilityRequirementsFilter =
-    useNoKnownEligibilityRequirementsFilter();
   const { tenantTimeZone } = useSiteContext();
 
   const longitude =
@@ -101,12 +98,6 @@ export default function useOrganizationBests() {
         });
       }
 
-      if (filters.noKnownEligibilityRequirementsFilter) {
-        filteredStakeholders = filteredStakeholders.filter((stakeholder) => {
-          return !stakeholder.requirements;
-        });
-      }
-
       const stakeholdersWithDistances = computeDistances(
         latitude,
         longitude,
@@ -155,10 +146,6 @@ export default function useOrganizationBests() {
         if (orgNameFilter) {
           filters.orgNameFilter = orgNameFilter;
         }
-        if (noKnownEligibilityRequirementsFilter) {
-          filters.noKnownEligibilityRequirementsFilter =
-            noKnownEligibilityRequirementsFilter;
-        }
 
         let stakeholders;
         const isStaleData = checkIfStaleData();
@@ -184,7 +171,6 @@ export default function useOrganizationBests() {
       openTimeFilter,
       latitude,
       longitude,
-      noKnownEligibilityRequirementsFilter,
       processStakeholders,
       orgNameFilter,
     ]

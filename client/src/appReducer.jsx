@@ -116,15 +116,6 @@ function openTimeFilterReducer(state, action) {
   }
 }
 
-function noKnownEligibilityRequirementsFilterReducer(state, action) {
-  switch (action.type) {
-    case "NO_KNOWN_ELIGIBILITY_REQUIREMENTS_FILTER_TOGGLE":
-      return action.noKnownEligibilityRequirementsFilter;
-    default:
-      return state;
-  }
-}
-
 function listPanelReducer(state, action) {
   switch (action.type) {
     case "TOGGLE_LIST_PANEL":
@@ -180,11 +171,6 @@ export function appReducer(state, action) {
     filterPanel: filterPanelReducer(state.filterPanel, action),
     orgNameFilter: orgNameFilterReducer(state.orgNameFilter, action),
     openTimeFilter: openTimeFilterReducer(state.openTimeFilter, action),
-    noKnownEligibilityRequirementsFilter:
-      noKnownEligibilityRequirementsFilterReducer(
-        state.noKnownEligibilityRequirementsFilter,
-        action
-      ),
     listPanel: listPanelReducer(state.listPanel, action),
     isListPanelVisible: isListPanelVisibleReducer(
       state.isListPanelVisible,
@@ -207,7 +193,6 @@ export function getInitialState() {
     filterPanel: false,
     orgNameFilter: "",
     openTimeFilter: { radio: "Show All", day: "", time: "" },
-    noKnownEligibilityRequirementsFilter: false,
     listPanel: true,
     isListPanelVisible: false,
     position: "0",
@@ -297,11 +282,6 @@ export function useOrgNameFilter() {
 export function useOpenTimeFilter() {
   const { openTimeFilter } = useAppState();
   return openTimeFilter;
-}
-
-export function useNoKnownEligibilityRequirementsFilter() {
-  const { noKnownEligibilityRequirementsFilter } = useAppState();
-  return noKnownEligibilityRequirementsFilter;
 }
 
 export function useListPanel() {

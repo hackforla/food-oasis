@@ -27,7 +27,6 @@ import {
   useAppDispatch,
   useFilterPanel,
   useOrgNameFilter,
-  useNoKnownEligibilityRequirementsFilter,
   useOpenTimeFilter,
 } from "../../../../appReducer";
 
@@ -77,9 +76,6 @@ export default function FilterPanel({ mealPantry }) {
       openTimeFilter: { ...openTime, [name]: value },
     });
   };
-
-  const noKnownEligibilityRequirementsFilter =
-    useNoKnownEligibilityRequirementsFilter();
 
   const handleDrawerClose = () => {
     dispatch({

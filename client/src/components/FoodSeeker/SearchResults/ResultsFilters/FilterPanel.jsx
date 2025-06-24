@@ -27,7 +27,6 @@ import {
   useAppDispatch,
   useFilterPanel,
   useOrgNameFilter,
-  useNoKnownEligibilityRequirementsFilter,
   useOpenTimeFilter,
 } from "../../../../appReducer";
 
@@ -77,9 +76,6 @@ export default function FilterPanel({ mealPantry }) {
       openTimeFilter: { ...openTime, [name]: value },
     });
   };
-
-  const noKnownEligibilityRequirementsFilter =
-    useNoKnownEligibilityRequirementsFilter();
 
   const handleDrawerClose = () => {
     dispatch({
@@ -257,36 +253,6 @@ export default function FilterPanel({ mealPantry }) {
           />
         </RadioGroup>
         <Divider sx={{ mt: 2 }} />
-        <Typography variant="h4" sx={yPadding}>
-          Requirements
-        </Typography>
-        <ListItem key="requirements" sx={{ padding: 0 }}>
-          <ListItemButton sx={{ padding: 0 }}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={noKnownEligibilityRequirementsFilter}
-                  onChange={() =>
-                    dispatch({
-                      type: "NO_KNOWN_ELIGIBILITY_REQUIREMENTS_FILTER_TOGGLE",
-                      noKnownEligibilityRequirementsFilter:
-                        !noKnownEligibilityRequirementsFilter,
-                    })
-                  }
-                  sx={checkedStyle}
-                />
-              }
-              label={
-                <ListItemText
-                  primary="No Known Eligibility Requirements"
-                  sx={{
-                    marginLeft: 1,
-                  }}
-                />
-              }
-            />
-          </ListItemButton>
-        </ListItem>
       </Box>
     </Drawer>
   );

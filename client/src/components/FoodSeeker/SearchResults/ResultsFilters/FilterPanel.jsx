@@ -7,6 +7,7 @@ import {
   FormControlLabel,
   FormLabel,
   IconButton,
+  InputAdornment,
   List,
   ListItem,
   ListItemButton,
@@ -29,6 +30,7 @@ import {
   useOrgNameFilter,
   useOpenTimeFilter,
 } from "../../../../appReducer";
+import { Clear } from "@mui/icons-material";
 
 const checkedStyle = {
   "&.Mui-checked": {
@@ -140,6 +142,22 @@ export default function FilterPanel({ mealPantry }) {
                 type: "ORG_NAME_FILTER_UPDATED",
                 orgNameFilter: e.target.value,
               })
+            }
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="Clear organization name filter"
+                  edge="end"
+                  onClick={() =>
+                    dispatch({
+                      type: "ORG_NAME_FILTER_UPDATED",
+                      orgNameFilter: "",
+                    })
+                  }
+                >
+                  <Clear />
+                </IconButton>
+              </InputAdornment>
             }
           />
         </Box>

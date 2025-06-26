@@ -1,18 +1,17 @@
 import { DEFAULT_CATEGORIES } from "constants/stakeholder";
-import { computeDistances, checkIfStaleData, getNextDateForDay } from "helpers";
+import { useSiteContext } from "contexts/siteContext";
+import { checkIfStaleData, computeDistances, getNextDateForDay } from "helpers";
 import { useCallback, useState } from "react";
-import { useLocation } from "react-router-dom";
 import {
   DEFAULT_COORDINATES,
   useAppDispatch,
   useOpenTimeFilter,
-  useSearchCoordinates,
   useOrgNameFilter,
+  useSearchCoordinates,
 } from "../appReducer";
+import { stakeholdersDaysHours } from "../components/FoodSeeker/SearchResults/StakeholderPreview/StakeholderPreview";
 import * as analytics from "../services/analytics";
 import * as stakeholderService from "../services/stakeholder-best-service";
-import { useSiteContext } from "contexts/siteContext";
-import { stakeholdersDaysHours } from "../components/FoodSeeker/SearchResults/StakeholderPreview/StakeholderPreview";
 
 const sortOrganizations = (a, b) => {
   if (
@@ -38,7 +37,6 @@ export default function useOrganizationBests() {
     loading: false,
     error: false,
   });
-  const location = useLocation();
   const searchCoordinates = useSearchCoordinates();
   const openTimeFilter = useOpenTimeFilter();
   const orgNameFilter = useOrgNameFilter();
@@ -92,9 +90,10 @@ export default function useOrganizationBests() {
       }
       if (filters.orgNameFilter) {
         filteredStakeholders = filteredStakeholders.filter((stakeholder) => {
-          return stakeholder.name
+          return filters.orgNameFilter
             .toLowerCase()
-            .includes(filters.orgNameFilter.toLowerCase());
+            .split(" ")
+            .every((word) => stakeholder.name.toLowerCase().includes(word));
         });
       }
 
@@ -167,13 +166,7 @@ export default function useOrganizationBests() {
         return Promise.reject(err);
       }
     },
-    [
-      openTimeFilter,
-      latitude,
-      longitude,
-      processStakeholders,
-      orgNameFilter,
-    ]
+    [openTimeFilter, latitude, longitude, processStakeholders, orgNameFilter]
   );
 
   const getById = useCallback(async (id) => {

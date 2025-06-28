@@ -136,6 +136,12 @@ function makeStakeholdersResponse() {
         },
         {
           week_of_month: 0,
+          day_of_week: "Fri",
+          open: "00:00:00",
+          close: "23:59:59",
+        },
+        {
+          week_of_month: 0,
           day_of_week: "Sat",
           open: "00:00:00",
           close: "23:59:59",

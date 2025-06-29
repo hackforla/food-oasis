@@ -31,12 +31,18 @@ const MOCKS = {
   },
   "accounts/login": makeLoginResponse(),
   "accounts/resendConfirmationEmail": {
-      isSuccess: true,
-      code: "REG_SUCCESS",
-      newId: "id",
-      message: "Account found.",
-    },
-  "features": [
+    isSuccess: true,
+    code: "REG_SUCCESS",
+    newId: "id",
+    message: "Account found.",
+  },
+  "accounts/forgotPassword": {
+    isSuccess: true,
+    code: "FORGOT_PASSWORD_SUCCESS",
+    message: "Password reset email sent successfully",
+    newId: "108",
+  },
+  features: [
     {
       id: 1,
       name: "advancedFilter",

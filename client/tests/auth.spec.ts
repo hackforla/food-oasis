@@ -47,4 +47,80 @@ test.describe("Auth", () => {
       ).toBeVisible();
     });
   });
+
+  test.describe("Forgot Password", () => {
+    test("Should display forgot password form and submit successfully", async ({
+      page,
+    }) => {
+      await mockRequests(page, {
+        "accounts/getByEmail": {
+          isSuccess: true,
+          user: {
+            id: 108,
+            email: "test@email.com",
+            emailConfirmed: true,
+          },
+        },
+      });
+
+      await page.goto("/admin/forgotpassword");
+      await expect(
+        page.getByRole("heading", { name: "Forgot Password" })
+      ).toBeVisible();
+
+      await page.getByPlaceholder("Email").fill("test@email.com");
+      await page
+        .getByRole("button", { name: "Send Password Reset Link" })
+        .click();
+
+      await expect(page.url()).toContain(
+        "/admin/resetpasswordemailsent/test@email.com"
+      );
+    });
+
+    test("Should show error when account not found", async ({ page }) => {
+      await mockRequests(page, {
+        "accounts/forgotPassword": {
+          isSuccess: false,
+          code: "FORGOT_PASSWORD_ACCOUNT_NOT_FOUND",
+          message:
+            "Account not found. If you want to create a new account with this email, please register.",
+        },
+      });
+
+      await page.goto("/admin/forgotpassword");
+      await page.getByPlaceholder("Email").fill("nonexistent@email.com");
+      await page
+        .getByRole("button", { name: "Send Password Reset Link" })
+        .click();
+
+      await expect(
+        page.getByText(
+          "Account not found. If you want to create a new account with this email, please register."
+        )
+      ).toBeVisible();
+    });
+
+    test("Should show error when email sending fails", async ({ page }) => {
+      await mockRequests(page, {
+        "accounts/forgotPassword": {
+          isSuccess: false,
+          code: "FORGOT_PASSWORD_EMAIL_FAILED",
+          message: "A problem occurred with sending an email to this address.",
+        },
+      });
+
+      await page.goto("/admin/forgotpassword");
+      await page.getByPlaceholder("Email").fill("valid@email.com");
+      await page
+        .getByRole("button", { name: "Send Password Reset Link" })
+        .click();
+
+      await expect(
+        page.getByText(
+          "A problem occurred with sending an email to this address."
+        )
+      ).toBeVisible();
+    });
+  });
 });

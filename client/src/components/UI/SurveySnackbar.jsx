@@ -51,12 +51,12 @@ const SurveySnackbar = () => {
 
   const action = (
     <Stack
-      direction={{ xs: "column", md: "row" }}
+      direction="column"
       sx={{
-        alignItems: { xs: "end", md: "center" },
+        alignItems: "end",
         justifyContent: "end",
         width: { xs: "100%" },
-        gap: { xs: 3, md: 8 },
+        gap: 3,
       }}
     >
       <Stack direction="row" gap="10px">
@@ -77,7 +77,7 @@ const SurveySnackbar = () => {
             icon="close"
             sx={(theme) => ({
               color: theme.palette.bodyText.main,
-              display: { xs: "flex", md: "none" },
+              display: "flex",
               transform: "translate(10px, -10px)",
             })}
             onClick={handleCloseButton}
@@ -112,21 +112,12 @@ const SurveySnackbar = () => {
         >
           Yes{" "}
         </Button>
-        <IconButton
-          icon="close"
-          sx={(theme) => ({
-            color: theme.palette.bodyText.main,
-            display: { xs: "none", md: "flex" },
-            transform: "translateX(10px)",
-          })}
-          onClick={handleCloseButton}
-        />
       </Stack>
     </Stack>
   );
 
   return (
-    <Stack spacing={2} sx={{ maxWidth: 700 }}>
+    <Stack spacing={2}>
       <Snackbar
         open={open}
         onClose={handleClose}
@@ -136,7 +127,10 @@ const SurveySnackbar = () => {
             ? { vertical: "bottom", horizontal: "center" }
             : { vertical: "bottom", horizontal: "right" }
         }
-        style={{ margin: isMobile ? "24px 16px" : "8px 0px" }}
+        style={{
+          margin: isMobile ? "24px 16px" : "8px 0px",
+          maxWidth: "350px",
+        }}
       >
         <Box
           sx={(theme) => ({

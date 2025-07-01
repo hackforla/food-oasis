@@ -54,11 +54,6 @@ const OpenTimeForm = ({
 
   const [closeTimeErrorss, setCloseTimeErrorss] = useState({});
 
-  // const closeTimeErrorsMessage =
-  //   closeTimeErrors === "minTime"
-  //     ? "Closing time must be after opening time"
-  //     : "";
-
   const getCloseTimeErrorsMessage = (index) => {
     const errorType = closeTimeErrorss[index];
     if (errorType === "minTime")

@@ -72,7 +72,7 @@ test.describe("Auth", () => {
       await page
         .getByRole("button", { name: "Send Password Reset Link" })
         .click();
-
+      await page.waitForURL("**/admin/resetpasswordemailsent/**");
       await expect(page.url()).toContain(
         "/admin/resetpasswordemailsent/test@email.com"
       );

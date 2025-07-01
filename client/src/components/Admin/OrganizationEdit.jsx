@@ -71,7 +71,25 @@ const validationSchema = Yup.object().shape({
     .min(Number(DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[0]))
     .max(Number(DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[2])),
   email: Yup.string().email("Invalid email address format"),
-  hours: Yup.array().of(HourSchema),
+  hours: Yup.array()
+    .of(HourSchema)
+    .test(
+      "no-duplicate-hours",
+      function (value) {
+        const seen = new Set();
+        for (const item of value) {
+          const key = `${item.weekOfMonth}-${item.dayOfWeek}-${item.open}-${item.close}`;
+          if (seen.has(key)) {
+            return this.createError({
+              path: "hours",
+              message: "Duplicate business hours are not allowed",
+            });
+          }
+          seen.add(key);
+        }
+        return true;
+      }
+    ),
   instagram: Yup.string()
     .matches(INSTAGRAM_REGEX, "Please enter a valid Instagram URL.")
     .nullable()
@@ -419,6 +437,11 @@ const OrganizationEdit = (props) => {
             }
           }}
           onSubmit={(values, { setSubmitting, setFieldValue }) => {
+            console.log(
+              "Submitted hours:",
+              JSON.stringify(values.hours, null, 2)
+            );
+
             if (values.id) {
               return stakeholderService
                 .put({ ...values, loginId: user.id })
@@ -431,6 +454,7 @@ const OrganizationEdit = (props) => {
                     navigate(nextUrl);
                   }
                 })
+
                 .catch((err) => {
                   setToast({
                     message:
@@ -440,7 +464,6 @@ const OrganizationEdit = (props) => {
                   setSubmitting(false);
                 });
             } else {
-               console.log("new stakeholder data: ", values);
               return stakeholderService
                 .post({ ...values, loginId: user.id })
                 .then((response) => {

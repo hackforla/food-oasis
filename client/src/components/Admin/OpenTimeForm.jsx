@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Add as AddIcon } from "@mui/icons-material";
 import {
   Button,
@@ -51,6 +52,22 @@ const OpenTimeForm = ({
     { label: "Last", value: -1 },
   ];
 
+  const [closeTimeErrorss, setCloseTimeErrorss] = useState({});
+
+  // const closeTimeErrorsMessage =
+  //   closeTimeErrors === "minTime"
+  //     ? "Closing time must be after opening time"
+  //     : "";
+
+  const getCloseTimeErrorsMessage = (index) => {
+    const errorType = closeTimeErrorss[index];
+    if (errorType === "minTime")
+      return "Closing time must be after opening time";
+    if (errorType === "equalTime")
+      return "Closing time must be different from opening time";
+    return "";
+  };
+
   return (
     <Card style={{ border: "1px solid lightgray", borderRadius: "4px" }}>
       <CardContent>
@@ -60,7 +77,7 @@ const OpenTimeForm = ({
             <div>
               {values?.hours?.length > 0 &&
                 values?.hours.map((hour, index) => {
-                  //weekOfMonth
+                  //weekOfMonth`
                   const weekOfMonth = `hours[${index}].weekOfMonth`;
                   const touchedMonth = getIn(touched, weekOfMonth);
                   const errorMonth = getIn(errors, weekOfMonth);
@@ -159,13 +176,14 @@ const OpenTimeForm = ({
                                   </MenuItem>
                                 ))}
                               </Select>
-                              {touchedWeek && errorWeek ? (
+                              {touchedWeek && errorWeek && (
                                 <FormHelperText error>
                                   Day is required
                                 </FormHelperText>
-                              ) : null}
+                              )}
                             </FormControl>
                           </Grid>
+
                           <Grid item xs={8} sm={3}>
                             <DesktopTimePicker
                               name={open}
@@ -225,31 +243,65 @@ const OpenTimeForm = ({
                                   ? dayjs(hour.close, "HH:mm:ss")
                                   : null
                               }
-                              onBlur={() => {
-                                setFieldTouched(close, true, true);
-                              }}
+                              minTime={
+                                hour.open
+                                  ? dayjs(hour.open, "HH:mm:ss")
+                                  : undefined
+                              }
+                              onError={(newError) =>
+                                setCloseTimeErrorss((prev) => ({
+                                  ...prev,
+                                  [index]: newError,
+                                }))
+                              }
+                              onBlur={() => setFieldTouched(close, true, true)}
                               onChange={(dt) => {
+                                const openTime = hour.open
+                                  ? dayjs(hour.open, "HH:mm:ss")
+                                  : null;
+                                const closeTime =
+                                  dt && dt.isValid() ? dt : null;
+
+                                if (openTime && closeTime) {
+                                  if (closeTime.isBefore(openTime)) {
+                                    setCloseTimeErrorss((prev) => ({
+                                      ...prev,
+                                      [index]: "minTime",
+                                    }));
+                                  } else if (closeTime.isSame(openTime)) {
+                                    setCloseTimeErrorss((prev) => ({
+                                      ...prev,
+                                      [index]: "equalTime",
+                                    }));
+                                  } else {
+                                    setCloseTimeErrorss((prev) => {
+                                      const copy = { ...prev };
+                                      delete copy[index];
+                                      return copy;
+                                    });
+                                  }
+                                }
+
                                 setFieldValue(
                                   close,
-                                  dt && dt.isValid()
-                                    ? dt.format("HH:mm:ss")
-                                    : ""
+                                  closeTime ? closeTime.format("HH:mm:ss") : ""
                                 );
                                 setFieldTouched(close, true, true);
                               }}
-                              onClose={(e) => {
-                                setFieldTouched(close, true, true);
-                              }}
+                              onClose={() => setFieldTouched(close, true, true)}
                               slotProps={{
                                 textField: {
                                   placeholder: "Enter closing time...",
                                   id: "closeTime",
                                   variant: "outlined",
-                                  helperText:
-                                    errorClose && touchedClose
-                                      ? "Closing time is required"
-                                      : !isMobile && " ",
-                                  error: errorClose && touchedClose,
+                                  helperText: getCloseTimeErrorsMessage(index)
+                                    ? getCloseTimeErrorsMessage(index)
+                                    : errorClose && touchedClose
+                                    ? "Closing time is required"
+                                    : !isMobile && " ",
+                                  error:
+                                    !!closeTimeErrorss[index] ||
+                                    (errorClose && touchedClose),
                                 },
                               }}
                               sx={{
@@ -272,6 +324,7 @@ const OpenTimeForm = ({
                               }}
                             />
                           </Grid>
+
                           <Grid
                             item
                             xs={2}
@@ -320,6 +373,10 @@ const OpenTimeForm = ({
             </div>
           )}
         </FieldArray>
+
+        {typeof errors.hours === "string" && (
+          <FormHelperText error>{errors.hours}</FormHelperText>
+        )}
       </CardContent>
     </Card>
   );

@@ -13,16 +13,16 @@ export interface User {
   email: string;
   emailConfirmed: boolean;
   passwordHash: string;
-  dateCreated: string;
-  isGlobalAdmin?: boolean;
-  isGlobalReporting?: boolean;
-  tenantId?: number;
-  isAdmin?: boolean;
-  isSecurityAdmin?: boolean;
-  isDataEntry?: boolean;
-  isCoordinator?: boolean;
-  features?: string[];
-  role?: string;
+  dateCreated: Date;
+  isGlobalAdmin: boolean;
+  isGlobalReporting: boolean;
+  tenantId: number;
+  isAdmin: boolean;
+  isSecurityAdmin: boolean;
+  isDataEntry: boolean;
+  isCoordinator: boolean;
+  features: string[];
+  role: string;
 }
 
 export interface ApiResponse {
@@ -47,13 +47,20 @@ export const getByEmail = async (email: string) => {
   return response;
 };
 
-export const register = async (firstName: string, lastName: string, email: string, password: string): Promise<ApiResponse> => {
+export const register = async (
+  firstName: string,
+  lastName: string,
+  email: string,
+  password: string
+): Promise<ApiResponse> => {
   const body = { firstName, lastName, email, password, clientUrl, tenantId };
   const response = await axios.post(baseUrl + "/register", body);
   return response.data;
 };
 
-export const resendConfirmationEmail = async (email: string): Promise<ApiResponse> => {
+export const resendConfirmationEmail = async (
+  email: string
+): Promise<ApiResponse> => {
   const body = { email, clientUrl };
   const response = await axios.post(baseUrl + "/resendConfirmationEmail", body);
   return response.data;
@@ -65,7 +72,10 @@ export const forgotPassword = async (email: string): Promise<ApiResponse> => {
   return response.data;
 };
 
-export const resetPassword = async (token: string, password: string): Promise<ApiResponse> => {
+export const resetPassword = async (
+  token: string,
+  password: string
+): Promise<ApiResponse> => {
   const body = { token, password };
   const response = await axios.post(baseUrl + "/resetPassword", body);
   return response.data;
@@ -77,7 +87,10 @@ export const confirmRegister = async (token: string): Promise<ApiResponse> => {
   return response.data;
 };
 
-export const login = async (email: string, password: string): Promise<ApiResponse | undefined> => {
+export const login = async (
+  email: string,
+  password: string
+): Promise<ApiResponse | undefined> => {
   const body = { email, password, tenantId };
   try {
     const response = await axios.post(baseUrl + "/login", body);
@@ -100,7 +113,11 @@ export const validateToken = async (token: string): Promise<ApiResponse> => {
   return response.data;
 };
 
-export const changePassword = async (userId: number, oldPassword: string, newPassword: string): Promise<ApiResponse> => {
+export const changePassword = async (
+  userId: number,
+  oldPassword: string,
+  newPassword: string
+): Promise<ApiResponse> => {
   const body = { userId, oldPassword, newPassword };
   const response = await axios.post(baseUrl + "/changePassword", body);
   return response.data;
@@ -108,7 +125,11 @@ export const changePassword = async (userId: number, oldPassword: string, newPas
 
 // This is used to updated login table with the specified permissionName column set to value
 // i.e. is_admin, is_security_admin, is_data_entry
-export const setPermissions = async (userId: number, permissionName: string, value: string | boolean): Promise<ApiResponse | undefined> => {
+export const setPermissions = async (
+  userId: number,
+  permissionName: string,
+  value: string | boolean
+): Promise<ApiResponse | undefined> => {
   const body = { userId, permissionName, value, tenantId };
   try {
     const response = await axios.post(baseUrl + "/setPermissions", body);
@@ -119,7 +140,11 @@ export const setPermissions = async (userId: number, permissionName: string, val
   }
 };
 
-export const setGlobalPermissions = async (userId: number, permissionName: string, value: string | boolean): Promise<ApiResponse | undefined> => {
+export const setGlobalPermissions = async (
+  userId: number,
+  permissionName: string,
+  value: string | boolean
+): Promise<ApiResponse | undefined> => {
   const body = { userId, permissionName, value, tenantId };
   try {
     const response = await axios.post(baseUrl + "/setGlobalPermissions", body);
@@ -130,7 +155,10 @@ export const setGlobalPermissions = async (userId: number, permissionName: strin
   }
 };
 
-export const updateProfile = async (userId: number, values: Record<string, any>) => {
+export const updateProfile = async (
+  userId: number,
+  values: Record<string, any>
+) => {
   const body = { ...values, tenantId };
   try {
     const response = await axios.put(baseUrl + `/${userId}`, body);

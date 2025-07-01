@@ -24,6 +24,11 @@ const ConfirmEmail = () => {
 
   useEffect(() => {
     const confirmEmail = async () => {
+      if (!token) {
+        setView("error");
+        setToast({ message: "Invalid confirmation token." });
+        return;
+      }
       const result = await accountService.confirmRegister(token);
       if (result.isSuccess) {
         setView("success");
@@ -37,7 +42,7 @@ const ConfirmEmail = () => {
     }
   }, [token, setToast]);
 
-  const resendConfirmationEmail = async (values: {email: string}) => {
+  const resendConfirmationEmail = async (values: { email: string }) => {
     const result = await accountService.resendConfirmationEmail(values.email);
     if (result.isSuccess) {
       setView("emailSent");
@@ -59,7 +64,7 @@ const ConfirmEmail = () => {
     isValid,
   }: FormikProps<{
     email: string;
-}>) => {
+  }>) => {
     switch (view) {
       case "loading":
         return <div>&ldquo;Confirming Email...&ldquo;</div>;

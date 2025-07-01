@@ -87,27 +87,29 @@ const LoginForm = () => {
                   values.email,
                   values.password
                 );
-                if (response.isSuccess) {
-                  analytics.identify(response.user.id);
-                  onLogin(response.user);
+                if (response?.isSuccess) {
+                  analytics.identify(response?.user?.id);
+                  if (response.user) {
+                    onLogin(response.user);
+                  }
                   setToast({
                     message: "Login successful.",
                   });
                   if (state?.from) {
                     navigate(state.from);
                   } else if (
-                    response.user.isAdmin ||
-                    response.user.isCoordinator
+                    response?.user?.isAdmin ||
+                    response?.user?.isCoordinator
                   ) {
                     navigate("/admin/verificationAdmin");
-                  } else if (response.user.isSecurityAdmin) {
+                  } else if (response?.user?.isSecurityAdmin) {
                     navigate("/admin/securityadmindashboard");
-                  } else if (response.user.isDataEntry) {
+                  } else if (response?.user?.isDataEntry) {
                     navigate("/admin/verificationdashboard");
                   } else {
                     navigate("/");
                   }
-                } else if (response.code === "AUTH_NOT_CONFIRMED") {
+                } else if (response?.code === "AUTH_NOT_CONFIRMED") {
                   try {
                     await accountService.resendConfirmationEmail(values.email);
                     setToast({
@@ -124,7 +126,7 @@ const LoginForm = () => {
                     });
                     formikBag.setSubmitting(false);
                   }
-                } else if (response.code === "AUTH_NO_ACCOUNT") {
+                } else if (response?.code === "AUTH_NO_ACCOUNT") {
                   console.error("Account not found!!");
                   setToast({
                     message: `The email ${values.email} does not correspond to an

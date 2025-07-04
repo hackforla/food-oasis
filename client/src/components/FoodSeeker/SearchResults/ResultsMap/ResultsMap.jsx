@@ -417,6 +417,7 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
         </Grid>
       )}
       <FilterPanel
+        filterCount={stakeholders.length}
         mealPantry={{
           toggleMeal,
           togglePantry,

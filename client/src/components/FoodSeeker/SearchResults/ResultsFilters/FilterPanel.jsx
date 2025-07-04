@@ -29,6 +29,7 @@ import {
   useFilterPanel,
   useOrgNameFilter,
   useOpenTimeFilter,
+  useNotesFilter,
 } from "../../../../appReducer";
 import { Clear } from "@mui/icons-material";
 
@@ -40,7 +41,7 @@ const checkedStyle = {
 
 const yPadding = { py: 2 };
 
-export default function FilterPanel({ mealPantry }) {
+export default function FilterPanel({ mealPantry, filterCount }) {
   const { isDesktop } = useBreakpoints();
   const drawerWidth = isDesktop ? 340 : "100%";
   const drawerHeight = isDesktop ? `100%` : "50%";
@@ -51,6 +52,7 @@ export default function FilterPanel({ mealPantry }) {
   const open = useFilterPanel();
   const openTime = useOpenTimeFilter();
   const orgNameFilter = useOrgNameFilter();
+  const notesFilter = useNotesFilter();
 
   const handleRadioChange = (event) => {
     const name = event.target.name;
@@ -120,9 +122,22 @@ export default function FilterPanel({ mealPantry }) {
           alignItems="center"
           py={2}
         >
-          <Typography variant="h3" textAlign="center" color="common.grey">
-            Filters
-          </Typography>
+          <Stack direction={"row"} alignItems={"end"} gap={2}>
+            <Typography variant="h3" textAlign="center" color="common.grey">
+              Filters
+            </Typography>
+            <Typography
+              sx={(theme) => ({
+                fontWeight: "bold",
+                lineHeight: "1.3",
+                color: theme.palette.common.gray,
+                display: isDesktop ? "none" : "block",
+              })}
+            >
+              {`${filterCount} ${filterCount === 1 ? "Location" : "Locations"}`}
+            </Typography>
+          </Stack>
+
           <IconButton onClick={handleDrawerClose}>
             <CloseIcon />
           </IconButton>
@@ -152,6 +167,37 @@ export default function FilterPanel({ mealPantry }) {
                     dispatch({
                       type: "ORG_NAME_FILTER_UPDATED",
                       orgNameFilter: "",
+                    })
+                  }
+                >
+                  <Clear />
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+        </Box>
+        <Box sx={{ paddingBottom: "1rem" }}>
+          <Typography variant="h4" sx={yPadding}>
+            Notes
+          </Typography>
+          <OutlinedInput
+            placeholder="i.e. Seniors"
+            value={notesFilter}
+            onChange={(e) =>
+              dispatch({
+                type: "NOTES_FILTER_UPDATED",
+                notesFilter: e.target.value,
+              })
+            }
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="Clear notes filter"
+                  edge="end"
+                  onClick={() =>
+                    dispatch({
+                      type: "NOTES_FILTER_UPDATED",
+                      notesFilter: "",
                     })
                   }
                 >

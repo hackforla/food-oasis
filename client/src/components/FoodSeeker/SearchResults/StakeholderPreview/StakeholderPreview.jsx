@@ -35,6 +35,7 @@ import PropTypes from "prop-types";
 import * as analytics from "services/analytics";
 import {
   useAppDispatch,
+  useNotesFilter,
   useOrgNameFilter,
   useSearchCoordinates,
   useUserCoordinates,
@@ -117,6 +118,7 @@ const StakeholderPreview = ({ stakeholder, onSelect }) => {
   const originCoordinates = searchCoordinates || userCoordinates;
   const { tenantTimeZone } = useSiteContext();
   const orgNameFilter = useOrgNameFilter();
+  const notesFilter = useNotesFilter();
 
   const handleSelectOrganization = (organization) => {
     onSelect();
@@ -234,7 +236,13 @@ const StakeholderPreview = ({ stakeholder, onSelect }) => {
                   </Stack>
                 ))}
             </Stack>
-
+            <Box>
+              <HighlightedText
+                text={stakeholder.notes}
+                query={notesFilter}
+                snippet={true}
+              />
+            </Box>
             <Box
               textAlign="left"
               onClick={() => handleSelectOrganization(stakeholder)}

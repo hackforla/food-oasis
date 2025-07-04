@@ -5,6 +5,7 @@ import { useCallback, useState } from "react";
 import {
   DEFAULT_COORDINATES,
   useAppDispatch,
+  useNotesFilter,
   useOpenTimeFilter,
   useOrgNameFilter,
   useSearchCoordinates,
@@ -40,6 +41,7 @@ export default function useOrganizationBests() {
   const searchCoordinates = useSearchCoordinates();
   const openTimeFilter = useOpenTimeFilter();
   const orgNameFilter = useOrgNameFilter();
+  const notesFilter = useNotesFilter();
   const { tenantTimeZone } = useSiteContext();
 
   const longitude =
@@ -97,6 +99,15 @@ export default function useOrganizationBests() {
         });
       }
 
+      if (filters.notesFilter) {
+        filteredStakeholders = filteredStakeholders.filter((stakeholder) => {
+          return filters.notesFilter
+            .toLowerCase()
+            .split(" ")
+            .every((word) => stakeholder.notes.toLowerCase().includes(word));
+        });
+      }
+
       const stakeholdersWithDistances = computeDistances(
         latitude,
         longitude,
@@ -145,6 +156,9 @@ export default function useOrganizationBests() {
         if (orgNameFilter) {
           filters.orgNameFilter = orgNameFilter;
         }
+        if (notesFilter) {
+          filters.notesFilter = notesFilter;
+        }
 
         let stakeholders;
         const isStaleData = checkIfStaleData();
@@ -166,7 +180,14 @@ export default function useOrganizationBests() {
         return Promise.reject(err);
       }
     },
-    [openTimeFilter, latitude, longitude, processStakeholders, orgNameFilter]
+    [
+      openTimeFilter,
+      latitude,
+      longitude,
+      processStakeholders,
+      orgNameFilter,
+      notesFilter,
+    ]
   );
 
   const getById = useCallback(async (id) => {

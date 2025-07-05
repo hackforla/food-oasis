@@ -6,14 +6,8 @@ import db from "./db";
 import camelcaseKeys from "camelcase-keys";
 
 const selectAll = async (tenantId: number): Promise<Neighborhood[]> => {
-  // const sql = `
-  //   select id, name, website, empower_link, nc_id,
-  //     certified, service_region, geometry
-  //   from neighborhood
-  //   order by name
-  // `;
   const sql = `
-    select id, name
+    select id, name, website, empower_link, nc_id, certified, service_region, zoom
     from neighborhood
     where tenant_id = $<tenantId>
     order by name
@@ -24,7 +18,7 @@ const selectAll = async (tenantId: number): Promise<Neighborhood[]> => {
 };
 
 const selectGeoJSONById = async (
-  ncid: number
+  neighborhoodId: number
 ): Promise<NeighborhoodGeoJSON> => {
   const sql = `
   SELECT id, name, website, empower_link,
@@ -37,19 +31,22 @@ const selectGeoJSONById = async (
     'name', name,
     'geometry', ST_AsGeoJSON(geometry)::jsonb
   ) as geojson
-  FROM neighborhood WHERE nc_id = $<ncid>
+  FROM neighborhood WHERE id = $<neighborhood>
   `;
 
-  const result = await db.one(sql, { ncid });
+  const result = await db.one(sql, { neighborhoodId });
   return camelcaseKeys(result);
 };
 
-const updateZoom = async (ncId: number, zoom: number): Promise<void> => {
+const updateZoom = async (
+  neighborhoodId: number,
+  zoom: number
+): Promise<void> => {
   const sql = `
   UPDATE neighborhood SET zoom = $<zoom>
-  WHERE nc_id = $<ncId> 
+  WHERE id = $<neighborhoodId> 
   `;
-  await db.none(sql, { ncId, zoom });
+  await db.none(sql, { neighborhoodId, zoom });
 };
 
 // findNeighborhood: use the postgis postgres extension to find

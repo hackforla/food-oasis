@@ -16,7 +16,7 @@ export interface NeighborhoodGeoJSON extends Neighborhood {
 }
 
 export interface NeighborhoodPutRequest {
-  ncId: number;
+  neighborhoodId: number;
   zoom: number;
 }
 

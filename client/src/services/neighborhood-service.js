@@ -28,9 +28,9 @@ export const getGeoJSONById = async (id) => {
 
 // Not used yet, but will be used by admin screen for maintaining zoom levels
 // for neighborhoodss
-export const updateZoom = async (ncId, zoom) => {
+export const updateZoom = async (neighborhoodId, zoom) => {
   try {
-    await axios.put(baseUrl + `/${ncId}`, {
+    await axios.put(baseUrl + `/${neighborhoodId}`, {
       ncId,
       zoom,
     });

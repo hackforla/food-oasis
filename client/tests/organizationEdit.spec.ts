@@ -60,7 +60,7 @@ test.describe("OrganizationEdit", () => {
     await page.getByRole("textbox", { name: "Latitude *" }).fill("11");
     await page.keyboard.press("Tab");
     await expect(
-      page.getByText("latitude must be greater than or equal to 33.6988", {
+      page.getByText("Latitude must be between 33.6988 and 34.8233", {
         exact: false,
       })
     ).toBeVisible();
@@ -68,7 +68,7 @@ test.describe("OrganizationEdit", () => {
     await page.getByRole("textbox", { name: "Latitude *" }).fill("110");
     await page.keyboard.press("Tab");
     await expect(
-      page.getByText("latitude must be less than or equal to 34.8233", {
+      page.getByText("Latitude must be between 33.6988 and 34.8233", {
         exact: false,
       })
     ).toBeVisible();
@@ -78,7 +78,7 @@ test.describe("OrganizationEdit", () => {
       .fill("-12.2720047");
     await page.keyboard.press("Tab");
     await expect(
-      page.getByText("longitude must be less than or equal to -117.6462", {
+      page.getByText("Longitude must be between -118.9517 and -117.6462", {
         exact: false,
       })
     ).toBeVisible();
@@ -88,7 +88,7 @@ test.describe("OrganizationEdit", () => {
       .fill("-120.2720047");
     await page.keyboard.press("Tab");
     await expect(
-      page.getByText("longitude must be greater than or equal to -118.9517", {
+      page.getByText("Longitude must be between -118.9517 and -117.6462", {
         exact: false,
       })
     ).toBeVisible();

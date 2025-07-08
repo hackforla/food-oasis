@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import Label from "components/Admin/ui/Label";
-import { Formik } from "formik";
+import { Formik, FormikHelpers } from "formik";
 import debounce from "lodash.debounce";
 import { useNavigate, useParams } from "react-router-dom";
 import { palette } from "theme/palette";
@@ -24,12 +24,20 @@ const validationSchema = Yup.object().shape({
     .required("Email is required"),
 });
 
-const ForgotPassword = (props) => {
+interface FormValues {
+  email: string;
+}
+
+interface ForgotPasswordProps {
+  // Add any props here if needed
+}
+
+const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
   const { setToast } = useToasterContext();
-  const { email } = useParams();
+  const { email } = useParams<{ email?: string }>();
   const navigate = useNavigate();
 
-  const debouncedEmailValidation = debounce(async (value, setFieldError) => {
+  const debouncedEmailValidation = debounce(async (value: string, setFieldError: (field: string, message: string) => void) => {
     try {
       await accountService.getByEmail(value);
       return;
@@ -69,7 +77,7 @@ const ForgotPassword = (props) => {
             email: email || "",
           }}
           validationSchema={validationSchema}
-          onSubmit={async (values, formikBag) => {
+          onSubmit={async (values: FormValues, formikBag: FormikHelpers<FormValues>) => {
             try {
               const response = await accountService.forgotPassword(
                 values.email
@@ -101,7 +109,7 @@ const ForgotPassword = (props) => {
                 });
                 formikBag.setSubmitting(false);
               }
-            } catch (err) {
+            } catch (err: any) {
               setToast({
                 message: `Server error. ${err.message}`,
               });
@@ -121,7 +129,7 @@ const ForgotPassword = (props) => {
             setFieldError,
             isValid,
           }) => {
-            const handleEmailChange = (e) => {
+            const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
               handleChange(e);
               debouncedEmailValidation(e.target.value, setFieldError);
             };

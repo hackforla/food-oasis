@@ -23,14 +23,14 @@ const getAll: RequestHandler<
 };
 
 const getGeoJSONById: RequestHandler<
-  { ncId: number },
+  { neighborhoodId: number },
   NeighborhoodGeoJSON | { error: string },
   never,
   never
 > = (req, res) => {
-  const { ncId } = req.params;
+  const { neighborhoodId } = req.params;
   neighborhoodService
-    .selectGeoJSONById(Number(ncId))
+    .selectGeoJSONById(Number(neighborhoodId))
     .then((resp) => {
       res.send(resp);
     })
@@ -40,19 +40,19 @@ const getGeoJSONById: RequestHandler<
 };
 
 const updateZoom: RequestHandler<
-  { ncId: number },
+  { neighborhoodId: number },
   never,
-  { ncId: number; zoom: number },
+  { neighborhoodId: number; zoom: number },
   never
 > = (req, res) => {
-  const { ncId, zoom } = req.body;
-  const { ncId: ncIdParam } = req.params;
-  if (Number(ncIdParam) !== ncId) {
+  const { neighborhoodId, zoom } = req.body;
+  const { neighborhoodId: ncIdParam } = req.params;
+  if (Number(ncIdParam) !== neighborhoodId) {
     res.sendStatus(400);
   }
 
   neighborhoodService
-    .updateZoom(ncId, zoom)
+    .updateZoom(neighborhoodId, zoom)
     .then(() => {
       res.sendStatus(200);
     })

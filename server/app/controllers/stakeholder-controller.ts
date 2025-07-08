@@ -28,7 +28,20 @@ const search: RequestHandler<
     let categoryIds = req.query.categoryIds;
     if (!categoryIds) {
       // If no filter, just use active categories.
-      categoryIds = ["1", "3", "8", "9", "10", "11", "12"];
+      categoryIds = [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+      ];
     } else if (typeof categoryIds === "string") {
       categoryIds = [categoryIds];
     }

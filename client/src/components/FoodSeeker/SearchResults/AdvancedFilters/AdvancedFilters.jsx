@@ -1,18 +1,14 @@
 import { Grid } from "@mui/material";
-
+import { getDayTimeNow } from "helpers";
 import MealLocatorIcon from "icons/MealLocatorIcon";
 import PantryLocatorIcon from "icons/PantryLocatorIcon";
 import PropTypes from "prop-types";
-import { useCallback } from "react";
-import * as analytics from "services/analytics";
 import {
   useAppDispatch,
   useFilterPanel,
   useOpenTimeFilter,
 } from "../../../../appReducer";
-import FilterPanel from "../ResultsFilters/FilterPanel";
 import AdvancedFilterButton from "./AdvancedFilterButton";
-import { getDayTimeNow } from "helpers";
 
 const AdvancedFilters = ({
   toggleMeal,

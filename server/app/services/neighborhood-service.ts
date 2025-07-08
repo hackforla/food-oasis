@@ -31,7 +31,7 @@ const selectGeoJSONById = async (
     'name', name,
     'geometry', ST_AsGeoJSON(geometry)::jsonb
   ) as geojson
-  FROM neighborhood WHERE id = $<neighborhood>
+  FROM neighborhood WHERE id = $<neighborhoodId>
   `;
 
   const result = await db.one(sql, { neighborhoodId });

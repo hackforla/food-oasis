@@ -1,6 +1,5 @@
 import { LocationOn } from "@mui/icons-material";
 import {
-  Alert,
   Box,
   Button,
   CircularProgress,
@@ -12,22 +11,36 @@ import {
   Typography,
 } from "@mui/material";
 import AddressDropDown from "components/FoodSeeker/AddressDropDown";
-import useGeolocation, { useLocationPermission } from "hooks/useGeolocation";
-import { useEffect, useState } from "react";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
-import * as analytics from "services/analytics";
+import {
+  FOOD_PANTRY_CATEGORY_ID,
+  MEAL_PROGRAM_CATEGORY_ID,
+} from "constants/stakeholder";
 import { useSiteContext } from "contexts/siteContext";
 import { TENANT_LOGO_URL } from "helpers/Constants";
+import useCategoryIds from "hooks/useCategoryIds";
+import useGeolocation, { useLocationPermission } from "hooks/useGeolocation";
+import useOrganizationBests from "hooks/useOrganizationBests";
+import { useEffect, useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
+import * as analytics from "services/analytics";
 import SEO from "../SEO";
 
 const Home = () => {
-  const navigate = useNavigate();
   const { tenantId, tenantDetails } = useSiteContext();
   const { taglineText } = tenantDetails;
   const [bgImg, setBgImg] = useState(`url("/landing-page/bg-LA.jpeg")`);
   const { getUserLocation, isLoading: isGettingLocation } = useGeolocation();
   const [error, setError] = useState("");
   const locationPermission = useLocationPermission();
+  const { categoryIds } = useCategoryIds([
+    FOOD_PANTRY_CATEGORY_ID,
+    MEAL_PROGRAM_CATEGORY_ID,
+  ]);
+  const { selectAll } = useOrganizationBests();
+
+  useEffect(() => {
+    selectAll({ categoryIds });
+  }, []);
 
   useEffect(() => {
     if (error && locationPermission === "granted") {

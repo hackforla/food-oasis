@@ -12,6 +12,7 @@ import * as analytics from "services/analytics";
 import {
   useAppDispatch,
   useSearchCoordinates,
+  useStakeholders,
   useUserCoordinates,
   useWidget,
 } from "../../appReducer";
@@ -24,13 +25,13 @@ export default function AddressDropDown({ autoFocus }) {
   const [inputVal, setInputVal] = useState(
     searchCoordinates?.locationName || ""
   );
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const { mapboxResults, fetchMapboxResults, isLoading } = useMapboxGeocoder();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { flyTo } = useMapbox();
   const [highlightedOption, setHighlightedOption] = useState(null);
-
+  const stakeholders = useStakeholders();
   useEffect(() => {
     if (userCoordinates) {
       setInputVal("");
@@ -50,8 +51,27 @@ export default function AddressDropDown({ autoFocus }) {
     const result = mapboxResults.find(
       (item) => item.place_name === selectedResult
     );
+    const stakeholderResult = stakeholders.find(
+      (stakeholder) => getNameAndAddress(stakeholder) === selectedResult
+    );
     setOpen(false);
     setInputVal(selectedResult);
+    if (stakeholderResult) {
+      const { longitude, latitude } = stakeholderResult;
+
+      flyTo({
+        latitude,
+        longitude,
+      });
+      dispatch({
+        type: "SEARCH_COORDINATES_UPDATED",
+        coordinates: { latitude, longitude, locationName: selectedResult },
+      });
+      navigate(isWidget ? "/widget" : "/organizations");
+
+      analytics.postEvent("changeOrigin", {});
+    }
+
     if (result) {
       const [longitude, latitude] = result.center;
 
@@ -77,7 +97,7 @@ export default function AddressDropDown({ autoFocus }) {
         }}
         variant="outlined"
         {...params}
-        label="Search by address or zip code"
+        label="Search by name, address, or zip code"
         margin="none"
         fullWidth
         name="address"
@@ -117,11 +137,11 @@ export default function AddressDropDown({ autoFocus }) {
   };
 
   const renderOption = (props, option) => {
-    const { key } = props;
+    const { id } = props;
     return (
       <MenuItem
         {...props}
-        key={key}
+        key={id}
         component="div"
         onClick={() => handleAutocompleteOnChange(option)}
       >
@@ -155,7 +175,18 @@ export default function AddressDropDown({ autoFocus }) {
         onChange={(_event, newValue) => {
           setInputVal(newValue ?? "");
         }}
-        options={mapboxResults.slice(0, 10).map((item) => item.place_name)}
+        options={[
+          ...stakeholders?.map((stakeholder) => getNameAndAddress(stakeholder)),
+          ...mapboxResults.slice(0, 10).map((item) => item.place_name),
+        ]}
+        filterOptions={(options, { inputValue }) => {
+          return options.filter((option) =>
+            inputValue
+              .toLowerCase()
+              .split(" ")
+              .every((word) => option.toLowerCase().includes(word))
+          );
+        }}
         sx={{
           width: 600,
           backgroundColor: "#F0F0F0",
@@ -178,9 +209,23 @@ export default function AddressDropDown({ autoFocus }) {
             },
           },
         }}
+        ListboxProps={{
+          style: {
+            maxHeight: "160px",
+          },
+        }}
         renderInput={(params) => renderInput(params)}
         renderOption={(props, option) => renderOption(props, option)}
       />
     </>
+  );
+}
+
+function getNameAndAddress(stakeholder) {
+  return (
+    (stakeholder.name ?? "") +
+    (stakeholder.address1 ? `, ${stakeholder.address1}` : "") +
+    (stakeholder.city ? `, ${stakeholder.city}` : "") +
+    (stakeholder.zip ? `, ${stakeholder.zip}` : "")
   );
 }

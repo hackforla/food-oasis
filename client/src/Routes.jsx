@@ -55,8 +55,15 @@ const Profile = lazy(() => import("./components/Account/Profile"));
 const Suggestion = lazy(() => import("components/FoodSeeker/Suggestion"));
 
 export default function AppRoutes() {
-  const hasUserFeedbackSuveyFeatureFlag = useFeatureFlag("userFeedbackSurvey");
   const location = useLocation();
+  const pathname = location.pathname;
+  const hasUserFeedbackSuveyFeatureFlag = useFeatureFlag("userFeedbackSurvey");
+  const isAdminRoute = pathname.startsWith("/admin");
+  const isWidgetRoute = pathname === "/widget";
+  const isUserFacingRoute = !isAdminRoute && !isWidgetRoute;
+
+  const showSurveySnackbar =
+    hasUserFeedbackSuveyFeatureFlag && isUserFacingRoute;
 
   return (
     <Suspense
@@ -66,9 +73,7 @@ export default function AppRoutes() {
         </Stack>
       }
     >
-      {hasUserFeedbackSuveyFeatureFlag && location.pathname !== "/widget" && (
-        <SurveySnackbar />
-      )}
+      {showSurveySnackbar && <SurveySnackbar />}
 
       <Routes>
         <Route path="/" element={<AppWrapper />}>

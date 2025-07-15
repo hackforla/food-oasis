@@ -29,6 +29,8 @@ import {
   useSearchCoordinates,
   useSelectedOrganization,
   useUserCoordinates,
+  useOrgNameFilter,
+  useOpenTimeFilter
 } from "../../../../appReducer";
 import { useMapbox } from "../../../../hooks/useMapbox";
 import AdvancedFilters from "../AdvancedFilters/AdvancedFilters";
@@ -47,11 +49,13 @@ import {
 } from "constants/stakeholder";
 import debounceFn from "debounce-fn";
 
-const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
+const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading, initialZoom }) => {
   const [markersLoaded, setMarkersLoaded] = useState(false);
   const [cursor, setCursor] = useState("auto");
   const searchCoordinates = useSearchCoordinates();
   const selectedOrganization = useSelectedOrganization();
+  const orgNameFilter = useOrgNameFilter();
+  const openTimeFilter = useOpenTimeFilter();
   const navigate = useNavigate();
   const location = useLocation();
   const { isMobile } = useBreakpoints();
@@ -72,7 +76,7 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
   const [viewport, setViewport] = useState({
     latitude,
     longitude,
-    zoom: DEFAULT_VIEWPORT.zoom,
+    zoom: initialZoom || DEFAULT_VIEWPORT.zoom,
   });
   const dispatch = useAppDispatch();
   const neighborhood = useNeighborhood();
@@ -94,6 +98,7 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
       ...viewport,
       latitude: latitude,
       longitude,
+      zoom: initialZoom ? initialZoom : viewport.zoom,
     }));
   }, [searchCoordinates, longitude, latitude, isMobile]);
 
@@ -108,6 +113,7 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
       flyTo({
         longitude: startIconCoordinates.longitude,
         latitude: startIconCoordinates.latitude,
+        initialZoom,
       });
   }, [startIconCoordinates, flyTo, mapRef]);
 
@@ -317,6 +323,52 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading }) => {
       debouncedResize.cancel?.();
     };
   }, []);
+
+function updateUrlParams(updates = {}) {
+  const params = new URLSearchParams(window.location.search);
+
+  Object.entries(updates).forEach(([key, value]) => {
+    if (value === null || value === undefined || value === "") {
+      params.delete(key);
+    } else {
+      params.set(key, value);
+    }
+  });
+
+  const newUrl = `${window.location.pathname}?${params.toString()}`;
+  window.history.replaceState(null, "", newUrl);
+}
+
+useEffect(() => {
+  updateUrlParams({
+    name: orgNameFilter || null,
+    pantry: isPantrySelected ? "1" : "0",
+    meal: isMealSelected ? "1" : "0",
+    openRadio:
+      openTimeFilter.radio !== "Show All" ? openTimeFilter.radio : null,
+    openDay:
+      openTimeFilter.radio === "Customized" ? openTimeFilter.day : null,
+    openTime:
+      openTimeFilter.radio === "Customized" ? openTimeFilter.time : null,
+  });
+}, [
+  orgNameFilter,
+  isPantrySelected,
+  isMealSelected,
+  openTimeFilter,
+]);
+
+useEffect(() => {
+  const timeout = setTimeout(() => {
+    updateUrlParams({
+      lat: viewport.latitude?.toFixed(7),
+      lng: viewport.longitude?.toFixed(7),
+      zoom: viewport.zoom ? (Math.round(viewport.zoom * 10) / 10).toString() : null,
+    });
+  }, 100);
+
+  return () => clearTimeout(timeout);
+}, [viewport]);
 
   return (
     <div

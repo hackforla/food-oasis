@@ -16,6 +16,7 @@ const DesktopLayout = ({
   categoryIds,
   toggleCategory,
   loading,
+  initialZoom,
 }) => {
   const isFilterPanelOpen = useFilterPanel();
   const isListPanelOpen = useListPanel();
@@ -116,6 +117,7 @@ const DesktopLayout = ({
             categoryIds={categoryIds}
             toggleCategory={toggleCategory}
             loading={loading}
+            initialZoom={initialZoom}
           />
         </Box>
       </Box>

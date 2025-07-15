@@ -11,7 +11,6 @@ import { useWidget } from "./appReducer";
 import useFeatureFlag from "./hooks/useFeatureFlag";
 import SurveySnackbar from "./components/UI/SurveySnackbar";
 import AnnouncementSnackbar from "components/UI/AnnouncementSnackbar";
-import useLocationHook from "hooks/useLocationHook";
 
 const VerificationAdmin = lazy(() =>
   import("components/Admin/VerificationAdmin")
@@ -56,8 +55,15 @@ const Suggestion = lazy(() => import("components/FoodSeeker/Suggestion"));
 const Announcements = lazy(() => import("./components/Admin/Announcements"));
 
 export default function AppRoutes() {
-  const hasUserFeedbackSuveyFeatureFlag = useFeatureFlag("userFeedbackSurvey");
   const location = useLocation();
+  const pathname = location.pathname;
+  const hasUserFeedbackSuveyFeatureFlag = useFeatureFlag("userFeedbackSurvey");
+  const isAdminRoute = pathname.startsWith("/admin");
+  const isWidgetRoute = pathname === "/widget";
+  const isUserFacingRoute = !isAdminRoute && !isWidgetRoute;
+
+  const showSurveySnackbar =
+    hasUserFeedbackSuveyFeatureFlag && isUserFacingRoute;
 
   return (
     <Suspense
@@ -67,9 +73,7 @@ export default function AppRoutes() {
         </Stack>
       }
     >
-      {hasUserFeedbackSuveyFeatureFlag && location.pathname !== "/widget" && (
-        <SurveySnackbar />
-      )}
+      {showSurveySnackbar && <SurveySnackbar />}
 
       <Routes>
         <Route path="/" element={<AppWrapper />}>

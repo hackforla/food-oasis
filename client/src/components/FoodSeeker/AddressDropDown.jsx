@@ -48,43 +48,40 @@ export default function AddressDropDown({ autoFocus }) {
   };
 
   const handleAutocompleteOnChange = (selectedResult) => {
-    const result = mapboxResults.find(
-      (item) => item.place_name === selectedResult
-    );
-    const stakeholderResult = stakeholders.find(
-      (stakeholder) => getNameAndAddress(stakeholder) === selectedResult
-    );
     setOpen(false);
-    setInputVal(selectedResult);
-    if (stakeholderResult) {
-      const { longitude, latitude } = stakeholderResult;
 
-      flyTo({
-        latitude,
-        longitude,
-      });
+    if (selectedResult.type === "stakeholder") {
+      const s = selectedResult.value;
+      const { latitude, longitude } = s;
+      setInputVal(getNameAndAddress(s));
+
+      flyTo({ latitude, longitude });
       dispatch({
         type: "SEARCH_COORDINATES_UPDATED",
-        coordinates: { latitude, longitude, locationName: selectedResult },
+        coordinates: {
+          latitude,
+          longitude,
+          locationName: getNameAndAddress(s),
+        },
       });
       navigate(isWidget ? "/widget" : "/organizations");
-
       analytics.postEvent("changeOrigin", {});
     }
 
-    if (result) {
-      const [longitude, latitude] = result.center;
-
-      flyTo({
-        latitude,
-        longitude,
-      });
+    if (selectedResult.type === "mapbox") {
+      const r = selectedResult.value;
+      const [longitude, latitude] = r.center;
+      setInputVal(r.place_name);
+      flyTo({ latitude, longitude });
       dispatch({
         type: "SEARCH_COORDINATES_UPDATED",
-        coordinates: { latitude, longitude, locationName: result.place_name },
+        coordinates: {
+          latitude,
+          longitude,
+          locationName: r.place_name,
+        },
       });
       navigate(isWidget ? "/widget" : "/organizations");
-
       analytics.postEvent("changeOrigin", {});
     }
   };
@@ -145,7 +142,7 @@ export default function AddressDropDown({ autoFocus }) {
         component="div"
         onClick={() => handleAutocompleteOnChange(option)}
       >
-        {option}
+        {getOptionLabel(option)}
       </MenuItem>
     );
   };
@@ -157,6 +154,18 @@ export default function AddressDropDown({ autoFocus }) {
       handleAutocompleteOnChange(selected);
     }
   };
+
+  const stakeholderOptions = stakeholders?.map((stakeholder) => ({
+    type: "stakeholder",
+    value: stakeholder,
+  }));
+  const mapboxOptions = mapboxResults.slice(0, 10).map((result) => ({
+    type: "mapbox",
+    value: result,
+  }));
+
+  const combinedOptions = [...stakeholderOptions, ...mapboxOptions];
+
   return (
     <>
       <Autocomplete
@@ -175,17 +184,31 @@ export default function AddressDropDown({ autoFocus }) {
         onChange={(_event, newValue) => {
           setInputVal(newValue ?? "");
         }}
-        options={[
-          ...stakeholders?.map((stakeholder) => getNameAndAddress(stakeholder)),
-          ...mapboxResults.slice(0, 10).map((item) => item.place_name),
-        ]}
+        options={combinedOptions}
+        getOptionLabel={getOptionLabel}
         filterOptions={(options, { inputValue }) => {
-          return options.filter((option) =>
-            inputValue
-              .toLowerCase()
-              .split(" ")
-              .every((word) => option.toLowerCase().includes(word))
-          );
+          const words = inputValue.toLowerCase().split(" ").filter(Boolean);
+
+          return options.filter((option) => {
+            if (option.type === "stakeholder") {
+              const s = option.value;
+              const haystack = [
+                getNameAndAddress(s),
+                s.description,
+                s.notes,
+                s.services,
+                s.requirements,
+                s.covidNotes,
+              ]
+                .filter(Boolean)
+                .join(" ")
+                .toLowerCase();
+
+              return words.every((word) => haystack.includes(word));
+            }
+            // If the option is from Mapbox, return all
+            return true;
+          });
         }}
         sx={{
           width: 600,
@@ -228,4 +251,11 @@ function getNameAndAddress(stakeholder) {
     (stakeholder.city ? `, ${stakeholder.city}` : "") +
     (stakeholder.zip ? `, ${stakeholder.zip}` : "")
   );
+}
+
+export function getOptionLabel(option) {
+  if (option.type === "stakeholder") {
+    return getNameAndAddress(option.value);
+  }
+  return option.value.place_name;
 }

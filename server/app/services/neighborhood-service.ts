@@ -7,7 +7,7 @@ import camelcaseKeys from "camelcase-keys";
 
 const selectAll = async (tenantId: number): Promise<Neighborhood[]> => {
   const sql = `
-    select id, name, website, empower_link, nc_id, certified, service_region, zoom
+    select id, name, empower_link, zoom
     from neighborhood
     where tenant_id = $<tenantId>
     order by name
@@ -21,8 +21,8 @@ const selectGeoJSONById = async (
   neighborhoodId: number
 ): Promise<NeighborhoodGeoJSON> => {
   const sql = `
-  SELECT id, name, website, empower_link,
-   nc_id, certified, service_region, zoom,
+  SELECT id, name, empower_link,
+   zoom,
    ST_X(ST_Centroid(geometry)) as centroid_longitude, 
    ST_Y(ST_Centroid(geometry)) as centroid_latitude,
    jsonb_build_object(
@@ -63,7 +63,7 @@ const findNeighborhood = async (
       FROM neighborhood
      WHERE ST_Contains(
       geometry,
-      ST_GeomFromText('POINT($<latitude> $<longitude>)'))
+      ST_GeomFromText('POINT($<longitude> $<latitude>)'))
       ORDER BY name
     `;
   const rows: Record<string, unknown>[] = await db.manyOrNone(sql, {

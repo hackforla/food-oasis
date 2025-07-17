@@ -1,41 +1,18 @@
 import { Box, Stack, Typography } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import AddressDropDown from "components/FoodSeeker/AddressDropDown";
-import {
-  FOOD_PANTRY_CATEGORY_ID,
-  MEAL_PROGRAM_CATEGORY_ID,
-} from "constants/stakeholder";
 import PropTypes from "prop-types";
-import { useCallback } from "react";
-import * as analytics from "services/analytics";
-import CategoryButton from "./CategoryButton";
 import SwitchViewsButton from "./SwitchViewsButton";
-import useFeatureFlag from "hooks/useFeatureFlag";
 import { TENANT_CONFIG } from "../../../../helpers/Constants";
 import Geolocate from "./Geolocate";
 import useBreakpoints from "hooks/useBreakpoints";
 
 const ResultsFilters = ({
-  categoryIds,
-  toggleCategory,
   showList,
   toggleShowList,
 }) => {
-  const isMealsSelected = categoryIds.indexOf(MEAL_PROGRAM_CATEGORY_ID) >= 0;
-  const isPantrySelected = categoryIds.indexOf(FOOD_PANTRY_CATEGORY_ID) >= 0;
   const { taglineText } = TENANT_CONFIG;
-  const hasAdvancedFilterFeatureFlag = useFeatureFlag("advancedFilter");
   const { isMobile } = useBreakpoints();
-
-  const toggleMeal = useCallback(() => {
-    toggleCategory(MEAL_PROGRAM_CATEGORY_ID);
-    analytics.postEvent("toggleMealFilter", {});
-  }, [toggleCategory]);
-
-  const togglePantry = useCallback(() => {
-    toggleCategory(FOOD_PANTRY_CATEGORY_ID);
-    analytics.postEvent("togglePantryFilter", {});
-  }, [toggleCategory]);
 
   return (
     <Grid2

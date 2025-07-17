@@ -2,6 +2,7 @@ import useBreakpoints from "hooks/useBreakpoints";
 import useCategoryIds from "hooks/useCategoryIds";
 import useNeighborhoodsGeoJSON from "hooks/useNeighborhoodsGeoJSON";
 import useOrganizationBests from "hooks/useOrganizationBests";
+import { useInitializeCategoryFilter } from "hooks/useInitializeCategoryFilter";
 import { FOOD_PANTRY_CATEGORY_ID, MEAL_PROGRAM_CATEGORY_ID } from "constants/stakeholder";
 import { useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -24,16 +25,58 @@ const SearchResults = () => {
   const { isDesktop } = useBreakpoints();
   const { selectAll, loading } = useOrganizationBests();
   const { categoryIds, toggleCategory } = useCategoryIds([FOOD_PANTRY_CATEGORY_ID, MEAL_PROGRAM_CATEGORY_ID]);
+  useInitializeCategoryFilter({ categoryIds, toggleCategory });
   const { getGeoJSONById } = useNeighborhoodsGeoJSON();
   const [showList, setShowList] = useState(true);
   const searchCoordinates = useSearchCoordinates();
   const dispatch = useAppDispatch();
   const location = useLocation();
-  const neighborhoodId = new URLSearchParams(location.search).get(
-    "neighborhood_id"
-  );
+  const params = new URLSearchParams(location.search);
+  const organizationId = params.get("id");
+  const neighborhoodId = params.get("neighborhood_id");
+
+  const lat = parseFloat(params.get("lat") || "");
+  const lng = parseFloat(params.get("lng") || "");
+  const initialZoom = parseFloat(params.get("zoom")) || 11;
+  const longitudeOffset = 0.08 * Math.pow(2, 11 - initialZoom);
+
+  const orgNameFilter = params.get("name") || "";
+  const radio = params.get("openRadio");
+  const day = params.get("openDay") || "";
+  const time = params.get("openTime") || "";
+
+  useEffect(() => {
+    try {
+      if (!isNaN(lat) && !isNaN(lng)) {
+        dispatch({
+          type: "SEARCH_COORDINATES_UPDATED",
+          coordinates: { latitude: lat, longitude: lng + longitudeOffset },
+        });
+      }
+
+      if (orgNameFilter) {
+        dispatch({
+          type: "ORG_NAME_FILTER_UPDATED",
+          orgNameFilter,
+        });
+      } 
+
+      if (radio && radio !== "Show All") {
+        dispatch({
+          type: "OPEN_TIME_FILTER_UPDATED",
+          openTimeFilter: {
+            radio,
+            day,
+            time,
+          },
+        });
+      }
+    } catch(err) {
+      console.error(err)
+    }
+  }, []);
+
   const stakeholders = useStakeholders();
-  const organizationId = new URLSearchParams(location.search).get("id");
   const positionDraggable = usePosition();
 
   useEffect(() => {
@@ -175,6 +218,7 @@ const SearchResults = () => {
           categoryIds={categoryIds}
           toggleCategory={toggleCategory}
           loading={loading}
+          initialZoom={initialZoom}
         />
       ) : (
         <Mobile showList={showList} filters={filters} map={map} list={list} />

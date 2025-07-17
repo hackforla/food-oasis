@@ -7,7 +7,7 @@ export default async function mockRequests(
   const mocks = {
     ...MOCKS,
     ...overrides,
-  }
+  };
 
   Object.entries(mocks).forEach(([path, response]) => {
     const handler = typeof response === "function" ? response : () => response;
@@ -21,7 +21,7 @@ export default async function mockRequests(
         body: JSON.stringify(mockResponse),
       });
     });
-  })
+  });
 }
 
 const MOCKS = {
@@ -48,6 +48,7 @@ const MOCKS = {
       name: "advancedFilter",
       is_enabled: true,
     },
+    { id: 2, name: "userFeedbackSurvey", is_enabled: true },
   ],
   "stakeholderbests/select-all": makeStakeholdersResponse(),
 };
@@ -71,7 +72,7 @@ function makeLoginResponse() {
       isSecurityAdmin: false,
       isDataEntry: true,
       isCoordinator: false,
-      features: ["advancedFilter"],
+      features: ["advancedFilter", "userFeedbackSurvey"],
       role: "admin,data_entry,global_admin",
     },
   };

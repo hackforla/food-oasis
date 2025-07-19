@@ -29,8 +29,8 @@ const booleanEitherClause = (columnName: string, value?: string) => {
   return value === "true"
     ? ` and ${columnName} is true `
     : value === "false"
-    ? ` and ${columnName} is false `
-    : "";
+      ? ` and ${columnName} is false `
+      : "";
 };
 
 const selectAll = async ({ tenantId }: { tenantId: string }) => {
@@ -50,10 +50,12 @@ const selectAll = async ({ tenantId }: { tenantId: string }) => {
   s.twitter, s.pinterest, s.linkedin, s.description,
   s.review_notes, s.instagram, s.admin_contact_name,
   s.admin_contact_phone, s.admin_contact_email,
-  s.covid_notes, s.food_types, s.languages,
+  s.covid_notes, s.food_types, s.v_food_types, s.languages,
   s.verification_status_id, s.inactive_temporary,
   array_to_json(s.hours) as hours, s.category_ids,
   s.neighborhood_id, n.name as neighborhood_name, s.is_verified,
+  s.food_bakery, s.food_dry_goods, s.food_produce,
+  s.food_dairy, s.food_prepared, s.food_meat,
   s.parent_organization_id,
   s.allow_walkins, s.hours_notes, s.tags
   FROM stakeholder_best s
@@ -161,8 +163,8 @@ const search = async ({
       maxLat && maxLng && minLat && minLng
         ? buildBounds({ maxLat, maxLng, minLat, minLng })
         : Number(distance) && locationClause
-        ? `AND ${locationClause} < ${distance}`
-        : ""
+          ? `AND ${locationClause} < ${distance}`
+          : ""
     }
     ${booleanEitherClause("s.inactive", isInactive)}
     ${

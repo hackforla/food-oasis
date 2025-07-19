@@ -424,6 +424,11 @@ const OrganizationEdit = (props) => {
             } catch (error) {
               if (isSubmitClicked) {
                 setSubmitClicked(false);
+                setToast({
+                  message:
+                    "Please fix the errors in the form before save progress.",
+                });
+
                 const errors = error.inner.reduce(
                   (errors, { path, message }) => ({
                     ...errors,

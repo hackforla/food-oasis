@@ -24,7 +24,7 @@ const validationSchema = Yup.object().shape({
     .oneOf([Yup.ref("password")], "Password does not match"),
 });
 
-const ResetPassword = (props) => {
+const ResetPassword = () => {
   const { setToast } = useToasterContext();
   const navigate = useNavigate();
   const { token } = useParams();
@@ -58,6 +58,12 @@ const ResetPassword = (props) => {
           }}
           validationSchema={validationSchema}
           onSubmit={async (values, formikBag) => {
+            if (!values.token) {
+              setToast({
+                message: "Reset token is required.",
+              });
+              return;
+            }
             try {
               const response = await accountService.resetPassword(
                 values.token,
@@ -67,8 +73,7 @@ const ResetPassword = (props) => {
                 setToast({
                   message: "Password has been reset. Please use it to login.",
                 });
-                navigate({
-                  pathname: `/admin/login/${response.email}`,
+                navigate(`/admin/login`,{
                   state: {
                     isPasswordReset: true,
                   },
@@ -88,7 +93,7 @@ const ResetPassword = (props) => {
                 });
                 formikBag.setSubmitting(false);
               }
-            } catch (err) {
+            } catch (err: any) {
               setToast({
                 message: `Password reset failed. ${err.message}`,
               });

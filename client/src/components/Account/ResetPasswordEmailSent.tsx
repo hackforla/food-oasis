@@ -26,7 +26,7 @@ const MailIcon = () => {
   );
 };
 
-const ResetPasswordEmailSent = (props) => {
+const ResetPasswordEmailSent = () => {
   const navigate = useNavigate();
   const { email } = useParams();
 

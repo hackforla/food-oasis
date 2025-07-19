@@ -299,7 +299,7 @@ function SearchCriteriaDisplay({
           key={"CriteriaChip_ClosedForCOVID"}
           name="isInactiveTemporary"
           value={inactiveTemporaryLabel}
-          label="Closed for COVID"
+          label="Temporarily Closed"
         />
       );
     }

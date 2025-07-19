@@ -3,6 +3,86 @@ import test from "./helpers/test";
 import { expect } from "@playwright/test";
 
 test.describe("Auth", () => {
+  test.describe("Register", () => {
+    test("Should register successfully", async ({ page }) => {
+      await mockRequests(page, {
+        "accounts/register": {
+          isSuccess: true,
+        },
+      });
+      await page.goto("/admin/register");
+      await page.getByPlaceholder("First Name").fill("Test");
+      await page.getByPlaceholder("Last Name").fill("User");
+      await page.getByPlaceholder("Email").fill("testuser@email.com");
+      await page.getByPlaceholder("Password").first().fill("Password123!");
+      await page.getByPlaceholder("Confirm Password").fill("Password123!");
+      await page.getByRole("button", { name: "Register" }).click();
+      await expect(
+        page.getByText(
+          "Registration successful. Please check your email for a confirmation link."
+        )
+      ).toBeVisible();
+    });
+
+    test("Should show error if password confirmation does not match", async ({
+      page,
+    }) => {
+      await mockRequests(page, {
+        "accounts/register": {
+          isSuccess: false,
+        },
+      });
+      await page.goto("/admin/register");
+      await page.getByPlaceholder("First Name").fill("Test");
+      await page.getByPlaceholder("Last Name").fill("User");
+      await page.getByPlaceholder("Email").fill("testuser@email.com");
+      await page.getByPlaceholder("Password").first().fill("Password123!");
+      await page
+        .getByPlaceholder("Confirm Password")
+        .fill("DifferentPassword!");
+      await page.getByPlaceholder("Confirm Password").blur();
+      await expect(page.getByText("Password does not match")).toBeVisible();
+    });
+
+    test("Should show error for duplicate email", async ({ page }) => {
+      await mockRequests(page, {
+        "accounts/register": {
+          isSuccess: false,
+          code: "REG_DUPLICATE_EMAIL",
+        },
+      });
+      await page.goto("/admin/register");
+      await page.getByPlaceholder("First Name").fill("Test");
+      await page.getByPlaceholder("Last Name").fill("User");
+      await page.getByPlaceholder("Email").fill("duplicate@email.com");
+      await page.getByPlaceholder("Password").first().fill("Password123!");
+      await page.getByPlaceholder("Confirm Password").fill("Password123!");
+      await page.getByRole("button", { name: "Register" }).click();
+      await expect(page.getByText(/already registered/i)).toBeVisible();
+    });
+
+    test("Should show error for registration failure", async ({ page }) => {
+      await mockRequests(page, {
+        "accounts/register": {
+          isSuccess: false,
+          code: "REG_UNKNOWN_ERROR",
+        },
+      });
+      await page.goto("/admin/register");
+      await page.getByPlaceholder("First Name").fill("Test");
+      await page.getByPlaceholder("Last Name").fill("User");
+      await page.getByPlaceholder("Email").fill("fail@email.com");
+      await page.getByPlaceholder("Password").first().fill("Password123!");
+      await page.getByPlaceholder("Confirm Password").fill("Password123!");
+      await page.getByRole("button", { name: "Register" }).click();
+      await expect(
+        page.getByText(
+          "An error occurred in sending the confirmation message to fail@email.com. Try to log in, and follow the instructions for re-sending the confirmation email."
+        )
+      ).toBeVisible();
+    });
+  });
+
   test.describe("Login", () => {
     test("Should be able to login successfully", async ({ helpers }) => {
       await helpers.mockLogin();
@@ -52,16 +132,7 @@ test.describe("Auth", () => {
     test("Should display forgot password form and submit successfully", async ({
       page,
     }) => {
-      await mockRequests(page, {
-        "accounts/getByEmail": {
-          isSuccess: true,
-          user: {
-            id: 108,
-            email: "test@email.com",
-            emailConfirmed: true,
-          },
-        },
-      });
+      await mockRequests(page);
 
       await page.goto("/admin/forgotpassword");
       await expect(
@@ -120,6 +191,73 @@ test.describe("Auth", () => {
         page.getByText(
           "A problem occurred with sending an email to this address."
         )
+      ).toBeVisible();
+    });
+
+    test("Should show reset password email sent confirmation", async ({
+      page,
+    }) => {
+      // Simulate user landing on the reset password email sent page
+      await page.goto("/admin/resetpasswordemailsent/test@email.com");
+      await expect(
+        page.getByText("Password Reset Link was Sent").first()
+      ).toBeVisible();
+      await expect(
+        page.getByText(
+          "A password reset link was sent to test@email.com. If you don’t see it in your inbox, please check your junk/spam folder."
+        )
+      ).toBeVisible();
+      await expect(
+        page.getByRole("button", { name: "Back to login" })
+      ).toBeVisible();
+    });
+  });
+
+  test.describe("Reset Password", () => {
+    test("Should reset password successfully", async ({ page }) => {
+      await mockRequests(page, {
+        "accounts/resetPassword": {
+          isSuccess: true,
+        },
+      });
+      await page.goto("/admin/resetpassword/token123");
+      await page.getByPlaceholder("New Password").fill("NewPassword123!");
+      await page.getByPlaceholder("Confirm Password").fill("NewPassword123!");
+      await page.getByRole("button", { name: "Reset Password" }).click();
+      await expect(
+        page.getByText("Password has been successfully updated")
+      ).toBeVisible();
+    });
+
+    test("Should show error if token is invalid", async ({ page }) => {
+      await mockRequests(page, {
+        "accounts/resetPassword": {
+          isSuccess: false,
+          code: "RESET_TOKEN_INVALID",
+          message: "Password reset failed. Invalid or expired token.",
+        },
+      });
+      await page.goto("/admin/resetpassword/invalidtoken");
+      await page.getByPlaceholder("New Password").fill("NewPassword123!");
+      await page.getByPlaceholder("Confirm Password").fill("NewPassword123!");
+      await page.getByRole("button", { name: "Reset Password" }).click();
+      await expect(page.getByText(/Invalid or expired token/i)).toBeVisible();
+    });
+
+    test("Should show error for reset failure", async ({ page }) => {
+      await mockRequests(page, {
+        "accounts/resetPassword": {
+          isSuccess: false,
+          code: "RESET_UNKNOWN_ERROR",
+          message: "An error occurred while resetting your password.",
+        },
+      });
+      await page.goto("/admin/resetpassword/token123");
+      await page.getByPlaceholder("New Password").fill("NewPassword123!");
+      await page.getByPlaceholder("Confirm Password").fill("NewPassword123!");
+      await page.getByRole("button", { name: "Reset Password" }).click();
+      await expect(
+        page.getByText(/An error occurred while resetting your password/i)
       ).toBeVisible();
     });
   });

@@ -4,9 +4,11 @@ import {
   CircularProgress,
   Container,
   Dialog,
+  FormControlLabel,
   IconButton,
   Paper,
   Stack,
+  Switch,
   Table,
   TableBody,
   TableCell,
@@ -16,24 +18,18 @@ import {
   TableRow,
   TextField,
   Typography,
-  FormControlLabel,
-  Switch,
 } from "@mui/material";
 import {
   Delete as DeleteIcon,
-  KeyboardArrowDown as KeyboardArrowDownIcon,
-  KeyboardArrowUp as KeyboardArrowUpIcon,
 } from "@mui/icons-material";
 import { useFormik } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import * as Yup from "yup";
 import { useAnnouncements } from "../../hooks/useAnnouncements";
 import * as announcementService from "../../services/announcements-service";
 import EditIcon from "@mui/icons-material/Edit";
 
 const Announcements = () => {
-  const [selectedRowId, setSelectedRowId] = useState(null);
-  const [rows, setRows] = useState([]);
   const [announcementModalOpen, setAnnouncementModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editAnnouncement, setEditAnnouncement] = useState(null);
@@ -46,39 +42,24 @@ const Announcements = () => {
     refetch: announcementRefetch,
   } = useAnnouncements();
 
-  useEffect(() => {
-    if (announcementsData) {
-      const newRows = announcementsData.map((announcement) => ({
-        announcementId: announcement.id,
-        title: announcement.title,
-        description: announcement.description,
-        is_enabled: announcement.is_enabled,
-      }));
-      setRows(newRows);
-    }
-  }, [announcementsData]);
-
   const handleModalClose = () => {
     setAnnouncementModalOpen(false);
     announcementFormik.resetForm();
   };
 
-  const handleRowClick = (rowTitle) => {
-    if (selectedRowId === rowTitle) {
-      setSelectedRowId(null);
-    } else {
-      setSelectedRowId(rowTitle);
-    }
-  };
-
   const handleIsEnabled = async (announcementId, isEnabled) => {
     try {
-      await announcementService.update(announcementId, { is_enabled: isEnabled });
-      setRows((prevRows) =>
-        prevRows.map((row) =>
-          row.announcementId === announcementId ? { ...row, is_enabled: isEnabled } : row
-        )
+      const announcement = (announcementsData || []).find(
+        (row) => row.announcementId === announcementId
       );
+      if (!announcement) throw new Error("Announcement not found");
+
+      await announcementService.update(announcementId, {
+        title: announcement.title,
+        description: announcement.description,
+        is_enabled: isEnabled,
+      });
+      await announcementRefetch();
     } catch (error) {
       console.error("Error updating announcement:", error);
     }
@@ -145,6 +126,7 @@ const Announcements = () => {
       </Stack>
     );
   }
+
   return (
     <Container maxWidth="md">
       <Box
@@ -174,81 +156,80 @@ const Announcements = () => {
               <TableCell align="left"> Announcement ID </TableCell>
               <TableCell align="left">Announcement Title</TableCell>
               <TableCell align="left">Announcement Description</TableCell>
-              <TableCell align="left">Is Enabled?</TableCell>
+              <TableCell align="left">Enabled</TableCell>
               <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows
+            {(announcementsData || [])
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row, index) => (
-                <React.Fragment key={index}>
-                  <TableRow
-                    sx={{
-                      "& > *": {
-                        borderBottom: "unset",
-                        cursor: "pointer",
-                        backgroundColor: "#efefef",
-                      },
-                    }}
-                    hover
-                  >
-                    <TableCell>
-                      <IconButton
-                        aria-label="edit-announcement"
-                        size="small"
-                        onClick={() => {
-                          setEditAnnouncement(row);
-                          setEditModalOpen(true);
-                        }}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                    </TableCell>
-                    <TableCell align="left" component="th" scope="row">
-                      {row.announcementId}
-                    </TableCell>
-                    <TableCell align="left" component="th" scope="row">
-                      {row.title}
-                    </TableCell>
-                    <TableCell align="left" component="th" scope="row">
-                      {row.description}
-                    </TableCell>
-                    <TableCell>
-                      <FormControlLabel
-                        control={
-                          <Switch
-                            color="success"
-                            checked={row.is_enabled}
-                            onChange={(e) =>
-                              handleIsEnabled(row.announcementId, e.target.checked)
-                            }
-                          />
-                        }
-                      />
-                    </TableCell>
-                    <TableCell align="right">
-                      <IconButton
-                        color="error"
-                        aria-label="delete-announcement"
-                        onClick={async (e) => {
-                          e.stopPropagation();
-                          try {
-                            await announcementService.remove(row.announcementId);
-                            announcementRefetch();
-                          } catch (error) {
-                            console.error(
-                              "Failed to remove announcement:",
-                              error
-                            );
+              .map((row) => (
+                <TableRow
+                  key={row.announcementId}
+                  sx={{
+                    "& > *": {
+                      borderBottom: "unset",
+                      cursor: "pointer",
+                      backgroundColor: "#efefef",
+                    },
+                  }}
+                  hover
+                >
+                  <TableCell>
+                    <IconButton
+                      aria-label="edit-announcement"
+                      size="small"
+                      onClick={() => {
+                        setEditAnnouncement(row);
+                        setEditModalOpen(true);
+                      }}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                  </TableCell>
+                  <TableCell align="left" component="th" scope="row">
+                    {row.announcementId}
+                  </TableCell>
+                  <TableCell align="left" component="th" scope="row">
+                    {row.title}
+                  </TableCell>
+                  <TableCell align="left" component="th" scope="row">
+                    {row.description}
+                  </TableCell>
+                  <TableCell>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          color="success"
+                          checked={row.is_enabled}
+                          onChange={(e) =>
+                            handleIsEnabled(row.announcementId, e.target.checked)
                           }
-                        }}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                </React.Fragment>
+                        />
+                      }
+                    />
+                  </TableCell>
+                  <TableCell align="right">
+                    <IconButton
+                      color="error"
+                      aria-label="delete-announcement"
+                      onClick={async (e) => {
+                        e.stopPropagation();
+                        try {
+                          await announcementService.remove(row.announcementId);
+                          announcementRefetch();
+                        } catch (error) {
+                          console.error(
+                            "Failed to remove announcement:",
+                            error
+                          );
+                        }
+                      }}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
               ))}
           </TableBody>
         </Table>
@@ -311,7 +292,7 @@ const Announcements = () => {
                     onChange={announcementFormik.handleChange}
                   />
                 }
-                label="Globally Enable"
+                label="Enabled"
               />
             </Box>
             <Box mt={3} display="flex" justifyContent="space-between">
@@ -381,7 +362,7 @@ const Announcements = () => {
                     onChange={editFormik.handleChange}
                   />
                 }
-                label="Globally Enable"
+                label="Enabled"
               />
             </Box>
             <Box mt={3} display="flex" justifyContent="space-between">
@@ -401,10 +382,11 @@ const Announcements = () => {
           </form>
         </Box>
       </Dialog>
+
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={rows.length}
+        count={(announcementsData || []).length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={(event, newPage) => setPage(newPage)}

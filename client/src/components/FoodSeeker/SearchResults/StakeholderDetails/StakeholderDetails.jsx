@@ -31,7 +31,7 @@ import ForkIcon from "icons/ForkIcon";
 import AppleIcon from "icons/AppleIcon";
 import IosShareIcon from "@mui/icons-material/IosShare";
 import SubdirectoryArrowRightIcon from "@mui/icons-material/SubdirectoryArrowRight";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as analytics from "services/analytics";
 import {
@@ -55,6 +55,7 @@ import XIcon from "@mui/icons-material/X";
 import PinterestIcon from "@mui/icons-material/Pinterest";
 import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import { foodTypeLabelObject } from "helpers/Constants";
 
 const MinorHeading = styled(Typography)(({ theme }) => ({
   variant: "h5",
@@ -96,6 +97,20 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
   const { tenantTimeZone } = useSiteContext();
   const position = usePosition();
   const [paddingBottom, setPaddingBottom] = useState(30);
+
+  const foodTypes = useMemo(() => {
+    return (
+      Object.keys(foodTypeLabelObject)
+        .filter((foodType) => selectedOrganization[foodType])
+        .map((foodType) => {
+          return foodTypeLabelObject[foodType];
+        })
+        .join(", ") +
+      (selectedOrganization.foodTypes
+        ? `, ${selectedOrganization.foodTypes}`
+        : "")
+    );
+  }, [selectedOrganization]);
 
   useEffect(() => {
     const windowHeight = window.innerHeight / 100;
@@ -529,23 +544,6 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
                   </Stack>
                 )}
 
-                {selectedOrganization.foodTypes && (
-                  <Box textAlign="left">
-                    <Typography
-                      variant="body2"
-                      component="p"
-                      key={selectedOrganization.id}
-                      sx={{
-                        alignSelf: "flex-start",
-                        margin: "1em 0.25em 0.5em 0",
-                        fontSize: "1rem !important",
-                      }}
-                    >
-                      {selectedOrganization.foodTypes}
-                    </Typography>
-                  </Box>
-                )}
-
                 <Stack
                   direction="row"
                   justifyContent="start"
@@ -682,10 +680,15 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
                   </>
                 )}
 
-                {selectedOrganization.items && (
+                {(selectedOrganization.items || foodTypes.length > 0) && (
                   <>
                     <MinorHeading>Items Available</MinorHeading>
-                    <DetailText>{selectedOrganization.items}</DetailText>
+                    {selectedOrganization.items && (
+                      <DetailText>{selectedOrganization.items}</DetailText>
+                    )}
+                    {foodTypes.length > 0 && (
+                      <DetailText>{foodTypes}</DetailText>
+                    )}
                   </>
                 )}
                 {hasAnySocialMediaUrl(selectedOrganization) && (

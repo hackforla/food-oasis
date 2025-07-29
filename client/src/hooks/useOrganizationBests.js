@@ -5,6 +5,7 @@ import { useCallback, useState } from "react";
 import {
   DEFAULT_COORDINATES,
   useAppDispatch,
+  useFoodTypeFilter,
   useOpenTimeFilter,
   useOrgNameFilter,
   useSearchCoordinates,
@@ -40,6 +41,7 @@ export default function useOrganizationBests() {
   const searchCoordinates = useSearchCoordinates();
   const openTimeFilter = useOpenTimeFilter();
   const orgNameFilter = useOrgNameFilter();
+  const foodTypeFilter = useFoodTypeFilter();
   const { tenantTimeZone } = useSiteContext();
 
   const longitude =
@@ -96,6 +98,13 @@ export default function useOrganizationBests() {
             .every((word) => stakeholder.name.toLowerCase().includes(word));
         });
       }
+      if (filters.foodTypeFilter) {
+        filteredStakeholders = filteredStakeholders.filter((stakeholder) => {
+          return filters.foodTypeFilter.every((foodType) => {
+            return stakeholder[foodType] === true;
+          });
+        });
+      }
 
       const stakeholdersWithDistances = computeDistances(
         latitude,
@@ -145,6 +154,9 @@ export default function useOrganizationBests() {
         if (orgNameFilter) {
           filters.orgNameFilter = orgNameFilter;
         }
+        if (foodTypeFilter.length) {
+          filters.foodTypeFilter = foodTypeFilter;
+        }
 
         let stakeholders;
         const isStaleData = checkIfStaleData();
@@ -166,7 +178,14 @@ export default function useOrganizationBests() {
         return Promise.reject(err);
       }
     },
-    [openTimeFilter, latitude, longitude, processStakeholders, orgNameFilter]
+    [
+      openTimeFilter,
+      latitude,
+      longitude,
+      processStakeholders,
+      orgNameFilter,
+      foodTypeFilter,
+    ]
   );
 
   const getById = useCallback(async (id) => {

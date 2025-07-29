@@ -116,6 +116,15 @@ function openTimeFilterReducer(state, action) {
   }
 }
 
+function foodTypeFilterReducer(state, action) {
+  switch (action.type) {
+    case "FOOD_TYPE_FILTER_UPDATED":
+      return action.foodTypeFilter;
+    default:
+      return state;
+  }
+}
+
 function listPanelReducer(state, action) {
   switch (action.type) {
     case "TOGGLE_LIST_PANEL":
@@ -171,6 +180,7 @@ export function appReducer(state, action) {
     filterPanel: filterPanelReducer(state.filterPanel, action),
     orgNameFilter: orgNameFilterReducer(state.orgNameFilter, action),
     openTimeFilter: openTimeFilterReducer(state.openTimeFilter, action),
+    foodTypeFilter: foodTypeFilterReducer(state.foodTypeFilter, action),
     listPanel: listPanelReducer(state.listPanel, action),
     isListPanelVisible: isListPanelVisibleReducer(
       state.isListPanelVisible,
@@ -193,6 +203,7 @@ export function getInitialState() {
     filterPanel: false,
     orgNameFilter: "",
     openTimeFilter: { radio: "Show All", day: "", time: "" },
+    foodTypeFilter: [],
     listPanel: true,
     isListPanelVisible: false,
     position: "0",
@@ -282,6 +293,11 @@ export function useOrgNameFilter() {
 export function useOpenTimeFilter() {
   const { openTimeFilter } = useAppState();
   return openTimeFilter;
+}
+
+export function useFoodTypeFilter() {
+  const { foodTypeFilter } = useAppState();
+  return foodTypeFilter;
 }
 
 export function useListPanel() {

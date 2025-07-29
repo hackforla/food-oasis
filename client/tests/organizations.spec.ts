@@ -84,4 +84,28 @@ test.describe("Organizations", () => {
     await expect(page.getByText("Stakeholder 2")).toBeVisible();
     await expect(page.getByText("Stakeholder 3")).toBeHidden();
   });
+  test("clicking Dry Goods filter should show Stakeholders 2 and 3 and not show Stakeholder 1", async ({
+    page,
+  }) => {
+    await mockRequests(page);
+    await page.goto("/organizations");
+    await page.getByRole("button", { name: "More Filters" }).click();
+    await page.getByRole("button", { name: "Dry Goods" }).click();
+    await expect(page.getByText("Stakeholder 1")).toBeHidden();
+    await expect(page.getByText("Stakeholder 2")).toBeVisible();
+    await expect(page.getByText("Stakeholder 3")).toBeVisible();
+  });
+
+  test("clicking Dry Goods and Dairy filter should show Stakeholders 2 and not show Stakeholder 1 and 3", async ({
+    page,
+  }) => {
+    await mockRequests(page);
+    await page.goto("/organizations");
+    await page.getByRole("button", { name: "More Filters" }).click();
+    await page.getByRole("button", { name: "Dry Goods" }).click();
+    await page.getByRole("button", { name: "Dairy" }).click();
+    await expect(page.getByText("Stakeholder 1")).toBeHidden();
+    await expect(page.getByText("Stakeholder 2")).toBeVisible();
+    await expect(page.getByText("Stakeholder 3")).toBeHidden();
+  });
 });

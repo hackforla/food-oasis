@@ -12,6 +12,7 @@ import { Virtuoso } from "react-virtuoso";
 import * as analytics from "services/analytics";
 import {
   useAppDispatch,
+  useFilterPanel,
   useSelectedOrganization,
 } from "../../../../appReducer";
 import StakeholderDetails from "../StakeholderDetails/StakeholderDetails";
@@ -25,6 +26,7 @@ const ResultsList = ({ stakeholders, loading, handleReset }) => {
   const { isDesktop } = useBreakpoints();
   const dispatch = useAppDispatch();
   const { flyTo } = useMapbox();
+  const open = useFilterPanel();
 
   useEffect(() => {
     analytics.postEvent("showList");
@@ -61,17 +63,33 @@ const ResultsList = ({ stakeholders, loading, handleReset }) => {
     <Stack height="100%">
       {stakeholders.length > 0 && (
         <Stack pt={2} spacing={2}>
-          <Typography
-            pl={2}
-            sx={(theme) => ({
-              fontWeight: "bold",
-              fontSize: { xs: "18px" },
-              color: theme.palette.common.gray,
-            })}
-          >
-            {stakeholders.length}{" "}
-            {stakeholders.length === 1 ? "Location" : "Locations"}
-          </Typography>
+          <Stack px={2} direction="row" justifyContent="space-between">
+            <Typography
+              sx={(theme) => ({
+                fontWeight: "bold",
+                fontSize: { xs: "18px" },
+                color: theme.palette.common.gray,
+              })}
+            >
+              {stakeholders.length}{" "}
+              {stakeholders.length === 1 ? "Location" : "Locations"}
+            </Typography>
+            <Typography
+              sx={{
+                cursor: "pointer",
+                textDecoration: "underline",
+                display: isDesktop ? "none" : "block",
+              }}
+              onClick={() => {
+                dispatch({
+                  type: "FILTER_PANEL_TOGGLE",
+                  filterPanel: !open,
+                });
+              }}
+            >
+              More Filters
+            </Typography>
+          </Stack>
           <Divider />
         </Stack>
       )}

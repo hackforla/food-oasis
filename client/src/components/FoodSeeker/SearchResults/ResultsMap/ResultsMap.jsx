@@ -30,7 +30,7 @@ import {
   useSelectedOrganization,
   useUserCoordinates,
   useOrgNameFilter,
-  useOpenTimeFilter
+  useOpenTimeFilter,
 } from "../../../../appReducer";
 import { useMapbox } from "../../../../hooks/useMapbox";
 import AdvancedFilters from "../AdvancedFilters/AdvancedFilters";
@@ -49,7 +49,13 @@ import {
 } from "constants/stakeholder";
 import debounceFn from "debounce-fn";
 
-const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading, initialZoom }) => {
+const ResultsMap = ({
+  stakeholders,
+  categoryIds,
+  toggleCategory,
+  loading,
+  initialZoom,
+}) => {
   const [markersLoaded, setMarkersLoaded] = useState(false);
   const [cursor, setCursor] = useState("auto");
   const searchCoordinates = useSearchCoordinates();
@@ -324,51 +330,48 @@ const ResultsMap = ({ stakeholders, categoryIds, toggleCategory, loading, initia
     };
   }, []);
 
-function updateUrlParams(updates = {}) {
-  const params = new URLSearchParams(window.location.search);
+  function updateUrlParams(updates = {}) {
+    const params = new URLSearchParams(window.location.search);
 
-  Object.entries(updates).forEach(([key, value]) => {
-    if (value === null || value === undefined || value === "") {
-      params.delete(key);
-    } else {
-      params.set(key, value);
-    }
-  });
-
-  const newUrl = `${window.location.pathname}?${params.toString()}`;
-  window.history.replaceState(null, "", newUrl);
-}
-
-useEffect(() => {
-  updateUrlParams({
-    name: orgNameFilter || null,
-    pantry: isPantrySelected ? "1" : "0",
-    meal: isMealSelected ? "1" : "0",
-    openRadio:
-      openTimeFilter.radio !== "Show All" ? openTimeFilter.radio : null,
-    openDay:
-      openTimeFilter.radio === "Customized" ? openTimeFilter.day : null,
-    openTime:
-      openTimeFilter.radio === "Customized" ? openTimeFilter.time : null,
-  });
-}, [
-  orgNameFilter,
-  isPantrySelected,
-  isMealSelected,
-  openTimeFilter,
-]);
-
-useEffect(() => {
-  const timeout = setTimeout(() => {
-    updateUrlParams({
-      lat: viewport.latitude?.toFixed(7),
-      lng: viewport.longitude?.toFixed(7),
-      zoom: viewport.zoom ? (Math.round(viewport.zoom * 10) / 10).toString() : null,
+    Object.entries(updates).forEach(([key, value]) => {
+      if (value === null || value === undefined || value === "") {
+        params.delete(key);
+      } else {
+        params.set(key, value);
+      }
     });
-  }, 100);
 
-  return () => clearTimeout(timeout);
-}, [viewport]);
+    const newUrl = `${window.location.pathname}?${params.toString()}`;
+    window.history.replaceState(null, "", newUrl);
+  }
+
+  useEffect(() => {
+    updateUrlParams({
+      name: orgNameFilter || null,
+      pantry: isPantrySelected ? "1" : "0",
+      meal: isMealSelected ? "1" : "0",
+      openRadio:
+        openTimeFilter.radio !== "Show All" ? openTimeFilter.radio : null,
+      openDay:
+        openTimeFilter.radio === "Customized" ? openTimeFilter.day : null,
+      openTime:
+        openTimeFilter.radio === "Customized" ? openTimeFilter.time : null,
+    });
+  }, [orgNameFilter, isPantrySelected, isMealSelected, openTimeFilter]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      updateUrlParams({
+        lat: viewport.latitude?.toFixed(7),
+        lng: viewport.longitude?.toFixed(7),
+        zoom: viewport.zoom
+          ? (Math.round(viewport.zoom * 10) / 10).toString()
+          : null,
+      });
+    }, 100);
+
+    return () => clearTimeout(timeout);
+  }, [viewport]);
 
   return (
     <div
@@ -469,6 +472,7 @@ useEffect(() => {
         </Grid>
       )}
       <FilterPanel
+        filterCount={stakeholders.length}
         mealPantry={{
           toggleMeal,
           togglePantry,

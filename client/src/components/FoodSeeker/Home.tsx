@@ -75,7 +75,7 @@ const Home = () => {
     try {
       await getUserLocation();
     } catch (e) {
-      setError(e);
+      setError(typeof e === "string" ? e : String(e));
     }
   };
 

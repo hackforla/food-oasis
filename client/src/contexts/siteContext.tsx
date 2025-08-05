@@ -2,9 +2,9 @@ import PropTypes from "prop-types";
 import { createContext, useContext } from "react";
 import { TENANT_METADATA } from "../helpers/Constants";
 
-export const SiteContext = createContext(null);
+export const SiteContext = createContext(TENANT_METADATA);
 
-export const SiteProvider = ({ children }) => {
+export const SiteProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <SiteContext.Provider value={TENANT_METADATA}>
       {children}

@@ -651,7 +651,7 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
                   <DetailText>No notes to display.</DetailText>
                 )}
 
-                <MinorHeading>Clousure Notes</MinorHeading>
+                <MinorHeading>Closure Notes</MinorHeading>
                 {selectedOrganization.covidNotes ? (
                   <DetailText
                     dangerouslySetInnerHTML={{

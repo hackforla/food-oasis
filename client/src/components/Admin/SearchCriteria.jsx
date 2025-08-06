@@ -244,7 +244,7 @@ const SearchCriteria = ({
           </Grid>
           <Grid item xs={12} sm={4}>
             <RadioTrueFalseEither
-              label="Closed for COVID"
+              label="Temporarily Closed"
               name="isInactiveTemporary"
               value={criteria.isInactiveTemporary || "either"}
               onChange={setCriterion}

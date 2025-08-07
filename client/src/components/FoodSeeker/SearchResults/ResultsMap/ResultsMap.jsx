@@ -333,6 +333,11 @@ const ResultsMap = ({
   function updateUrlParams(updates = {}) {
     const params = new URLSearchParams(window.location.search);
 
+    // skip updating if the URL already has an "org" param
+    if (params.has("org")) {
+      return;
+    }
+
     Object.entries(updates).forEach(([key, value]) => {
       if (value === null || value === undefined || value === "") {
         params.delete(key);

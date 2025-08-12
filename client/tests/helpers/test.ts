@@ -1,4 +1,5 @@
-import { expect, Page, test as playwrightTest } from "@playwright/test";
+import { expect, test as playwrightTest } from "@playwright/test";
+import type { Page } from "@playwright/test";
 import mockRequests from "./mocks";
 
 declare global {

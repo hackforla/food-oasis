@@ -64,14 +64,47 @@ const validationSchema = Yup.object().shape({
   zip: Yup.string().required("Zip code is required"),
   latitude: Yup.number()
     .required("Latitude is required")
-    .min(Number(DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[1]))
-    .max(Number(DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[3])),
+    .test(
+      "latitude-range",
+      `Latitude must be between ${Number(
+        DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[1]
+      )} and ${Number(DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[3])}`,
+      (value) => {
+        const minLat = Number(DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[1]);
+        const maxLat = Number(DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[3]);
+        return value >= minLat && value <= maxLat;
+      }
+    ),
   longitude: Yup.number()
     .required("Longitude is required")
-    .min(Number(DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[0]))
-    .max(Number(DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[2])),
+    .test(
+      "longitude-range",
+      `Longitude must be between ${Number(
+        DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[0]
+      )} and ${Number(DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[2])}`,
+      (value) => {
+        const minLng = Number(DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[0]);
+        const maxLng = Number(DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[2]);
+        return value >= minLng && value <= maxLng;
+      }
+    ),
   email: Yup.string().email("Invalid email address format"),
-  hours: Yup.array().of(HourSchema),
+  hours: Yup.array()
+    .of(HourSchema)
+    .test("no-duplicate-hours", function (value) {
+      const seen = new Set();
+      for (const item of value) {
+        const key = `${item.weekOfMonth}-${item.dayOfWeek}-${item.open}-${item.close}`;
+        if (seen.has(key)) {
+          return this.createError({
+            path: "hours",
+            message: "Duplicate business hours are not allowed",
+          });
+        }
+        seen.add(key);
+      }
+      return true;
+    }),
   instagram: Yup.string()
     .matches(INSTAGRAM_REGEX, "Please enter a valid Instagram URL.")
     .nullable()
@@ -391,6 +424,12 @@ const OrganizationEdit = (props) => {
             } catch (error) {
               if (isSubmitClicked) {
                 setSubmitClicked(false);
+                setToast({
+                  message:
+                    "Please fix the errors in the form before save progress.",
+                  type: "error",
+                });
+
                 const errors = error.inner.reduce(
                   (errors, { path, message }) => ({
                     ...errors,
@@ -431,6 +470,7 @@ const OrganizationEdit = (props) => {
                     navigate(nextUrl);
                   }
                 })
+
                 .catch((err) => {
                   setToast({
                     message:
@@ -440,7 +480,6 @@ const OrganizationEdit = (props) => {
                   setSubmitting(false);
                 });
             } else {
-               console.log("new stakeholder data: ", values);
               return stakeholderService
                 .post({ ...values, loginId: user.id })
                 .then((response) => {

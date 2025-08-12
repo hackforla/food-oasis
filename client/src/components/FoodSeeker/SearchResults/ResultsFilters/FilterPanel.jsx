@@ -42,7 +42,7 @@ const checkedStyle = {
 
 const yPadding = { py: 2 };
 
-export default function FilterPanel({ mealPantry }) {
+export default function FilterPanel({ mealPantry, filterCount }) {
   const { isDesktop } = useBreakpoints();
   const drawerWidth = isDesktop ? 340 : "100%";
   const drawerHeight = isDesktop ? `100%` : "50%";
@@ -126,9 +126,31 @@ export default function FilterPanel({ mealPantry }) {
           <Typography variant="h3" textAlign="center" color="common.grey">
             Filters
           </Typography>
-          <IconButton onClick={handleDrawerClose}>
-            <CloseIcon />
-          </IconButton>
+          <Typography
+            sx={(theme) => ({
+              fontWeight: "bold",
+              lineHeight: "1.3",
+              color: theme.palette.common.gray,
+              display: isDesktop ? "none" : "block",
+            })}
+          >
+            {`${filterCount} ${filterCount === 1 ? "Location" : "Locations"}`}
+          </Typography>
+          {isDesktop ? (
+            <IconButton onClick={handleDrawerClose}>
+              <CloseIcon />
+            </IconButton>
+          ) : (
+            <Typography
+              onClick={handleDrawerClose}
+              sx={{
+                cursor: "pointer",
+                textDecoration: "underline",
+              }}
+            >
+              View Results
+            </Typography>
+          )}
         </Stack>
         <Divider />
       </Box>

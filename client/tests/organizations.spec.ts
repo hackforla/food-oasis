@@ -22,7 +22,7 @@ test.describe("Organizations", () => {
   test("should render all 3 stakeholders", async ({ page }) => {
     await mockRequests(page);
     await page.goto("/organizations");
-    await expect(page.getByText("3 Locations")).toBeVisible();
+    await expect(page.getByText("3 Locations").first()).toBeVisible();
     await expect(page.getByText("Stakeholder 1")).toBeVisible();
     await expect(page.getByText("Stakeholder 2")).toBeVisible();
     await expect(page.getByText("Stakeholder 3")).toBeVisible();

@@ -427,6 +427,7 @@ const OrganizationEdit = (props) => {
                 setToast({
                   message:
                     "Please fix the errors in the form before save progress.",
+                  type: "error",
                 });
 
                 const errors = error.inner.reduce(

@@ -8,16 +8,41 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import PropTypes from "prop-types";
 import { useUserContext } from "../../../contexts/userContext";
 import * as accountService from "../../../services/account-service";
 
-export default function SecurityTable(props) {
+export interface Account {
+  id: number;
+  email: string;
+  firstName: string;
+  lastName: string;
+  isAdmin?: boolean;
+  isCoordinator?: boolean;
+  isSecurityAdmin?: boolean;
+  isDataEntry?: boolean;
+  isGlobalAdmin?: boolean;
+  isGlobalReporting?: boolean;
+}
+
+export interface SecurityTableProps {
+  accounts: Account[];
+  handlePermissionChange: (
+    userId: number,
+    permission: string,
+    value: boolean
+  ) => Promise<void> | void;
+}
+
+export default function SecurityTable(props: SecurityTableProps) {
   const { user } = useUserContext();
 
   // arg `roleType` is expected to be one of:
   //   'security', 'admin, 'dataEntry', or 'coordinator'
-  const handleToggle = (userId, e, roleType) => {
+  const handleToggle = (
+    userId: number,
+    e: React.ChangeEvent<HTMLInputElement>,
+    roleType: "security" | "admin" | "dataEntry" | "coordinator"
+  ) => {
     if (roleType === "security") {
       props.accounts.map(async (each) => {
         if (userId === each.id) {
@@ -63,7 +88,11 @@ export default function SecurityTable(props) {
 
   // arg `roleType` is expected to be one of:
   //   'globalAdmin' or 'globalReporting'
-  const handleGlobalToggle = (userId, e, roleType) => {
+  const handleGlobalToggle = (
+    userId: number,
+    e: React.ChangeEvent<HTMLInputElement>,
+    roleType: "globalAdmin" | "globalReporting"
+  ) => {
     if (roleType === "globalAdmin") {
       props.accounts.map(async (each) => {
         if (userId === each.id) {
@@ -165,7 +194,7 @@ export default function SecurityTable(props) {
                   <>
                     <TableCell align="right">
                       <Checkbox
-                        checked={row.isGlobalAdmin}
+                        checked={Boolean(row.isGlobalAdmin)}
                         onChange={(e) =>
                           handleGlobalToggle(row.id, e, "globalAdmin")
                         }
@@ -173,7 +202,7 @@ export default function SecurityTable(props) {
                     </TableCell>
                     <TableCell align="right">
                       <Checkbox
-                        checked={row.isGlobalReporting}
+                        checked={Boolean(row.isGlobalReporting)}
                         onChange={(e) =>
                           handleGlobalToggle(row.id, e, "globalReporting")
                         }
@@ -183,25 +212,25 @@ export default function SecurityTable(props) {
                 ) : null}
                 <TableCell align="right">
                   <Checkbox
-                    checked={row.isAdmin}
+                    checked={Boolean(row.isAdmin)}
                     onChange={(e) => handleToggle(row.id, e, "admin")}
                   />
                 </TableCell>
                 <TableCell align="right">
                   <Checkbox
-                    checked={row.isCoordinator}
+                    checked={Boolean(row.isCoordinator)}
                     onChange={(e) => handleToggle(row.id, e, "coordinator")}
                   />
                 </TableCell>
                 <TableCell align="right">
                   <Checkbox
-                    checked={row.isSecurityAdmin}
+                    checked={Boolean(row.isSecurityAdmin)}
                     onChange={(e) => handleToggle(row.id, e, "security")}
                   />
                 </TableCell>
                 <TableCell align="right">
                   <Checkbox
-                    checked={row.isDataEntry}
+                    checked={Boolean(row.isDataEntry)}
                     onChange={(e) => handleToggle(row.id, e, "dataEntry")}
                   />
                 </TableCell>
@@ -212,19 +241,3 @@ export default function SecurityTable(props) {
     </TableContainer>
   );
 }
-
-SecurityTable.propTypes = {
-  accounts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      email: PropTypes.string.isRequired,
-      firstName: PropTypes.string.isRequired,
-      lastName: PropTypes.string.isRequired,
-      isAdmin: PropTypes.bool,
-      isCoordinator: PropTypes.bool,
-      isSecurityAdmin: PropTypes.bool,
-      isDataEntry: PropTypes.bool,
-    }).isRequired
-  ),
-  handlePermissionChange: PropTypes.func.isRequired,
-};

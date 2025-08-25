@@ -1,14 +1,14 @@
 import { Container, TextField, Typography } from "@mui/material";
 import debounce from "lodash.debounce";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, ChangeEvent } from "react";
 import * as accountService from "../../../services/account-service";
-import SecurityTable from "./SecurityTable";
+import SecurityTable, { Account } from "./SecurityTable";
 
 const SecurityAdminDashboard = () => {
-  const [accounts, setAccounts] = useState([]);
-  const [filteredAccounts, setFilteredAccounts] = useState([]);
-  const [search, setSearch] = useState("");
-  const [error, setError] = useState("");
+  const [accounts, setAccounts] = useState<Account[]>([]);
+  const [filteredAccounts, setFilteredAccounts] = useState<Account[]>([]);
+  const [search, setSearch] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,7 +23,7 @@ const SecurityAdminDashboard = () => {
   }, []);
 
   useEffect(() => {
-    if (accounts.length === 0) return undefined;
+    if (accounts.length === 0) return;
     if (search.length === 0) {
       setError("");
       setFilteredAccounts(accounts);
@@ -42,35 +42,37 @@ const SecurityAdminDashboard = () => {
   }, [search, accounts]);
 
   const debouncedChangeHandler = useMemo(() => {
-    const changeHandler = (event) => {
+    const changeHandler = (event: ChangeEvent<HTMLInputElement>) => {
       setSearch(event.target.value.toLowerCase());
     };
     return debounce(changeHandler, 300);
-  }, [setSearch]);
+  }, []);
 
-  const handlePermissionChange = (userId, permission, value) => {
-    const account = filteredAccounts.find((row) => {
-      return row.id === userId;
-    });
+  const handlePermissionChange = (
+    userId: number,
+    permission: string,
+    value: boolean
+  ) => {
+    const account = filteredAccounts.find((row) => row.id === userId);
     if (account) {
       if (permission === "is_admin") {
-        account["isAdmin"] = value;
+        account.isAdmin = value;
       } else if (permission === "is_coordinator") {
-        account["isCoordinator"] = value;
+        account.isCoordinator = value;
       } else if (permission === "is_security_admin") {
-        account["isSecurityAdmin"] = value;
+        account.isSecurityAdmin = value;
       } else if (permission === "is_data_entry") {
-        account["isDataEntry"] = value;
+        account.isDataEntry = value;
       } else if (permission === "is_global_admin") {
-        account["isGlobalAdmin"] = value;
+        account.isGlobalAdmin = value;
       } else if (permission === "is_global_reporting") {
-        account["isGlobalReporting"] = value;
+        account.isGlobalReporting = value;
       }
     }
     let filtered = [...filteredAccounts, { ...account }];
     const unique = [
-      ...new Map(filtered.map((item) => [item.id, item])).values(),
-    ];
+      ...new Map(filtered.map((item) => [item?.id, item])).values(),
+    ] as Account[];
     setFilteredAccounts(unique);
   };
 

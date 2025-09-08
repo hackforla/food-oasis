@@ -15,15 +15,15 @@ export default MapMarker;
 
 const markerIcons = {
   [-1]: {
-    default: SmMealIcon,
-    selected: LgMealIcon,
+    default: SmSplitIcon,
+    selected: LgSplitIcon,
   },
   [0]: {
     default: SmPantryIcon,
     selected: LgPantryIcon,
   },
   [1]: {
-    default: SmSplitIcon,
-    selected: LgSplitIcon,
+    default: SmMealIcon,
+    selected: LgMealIcon,
   },
 };

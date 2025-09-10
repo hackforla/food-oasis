@@ -81,7 +81,7 @@
     "prettier": "^2.4.1",
     "ts-jest": "^29.2.5",
     "typescript": "^5.0.0",
-    "vite": "^6.3.4",
+    "vite": "^6.3.6",
     "vite-plugin-svgr": "^4.2.0",
     "vite-tsconfig-paths": "^5.0.1"
   },

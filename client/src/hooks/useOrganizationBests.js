@@ -78,31 +78,28 @@ export default function useOrganizationBests() {
       }
 
       const { day, time } = filters.openTimeFilter;
-      if (day && time && time !== "Any") {
-        filteredStakeholders = filteredStakeholders.filter((stakeholder) => {
-          const nextDateForDay = getNextDateForDay(day, time, tenantTimeZone);
-          return !!stakeholdersDaysHours(
-            stakeholder,
-            tenantTimeZone,
-            nextDateForDay
-          );
-        });
-      } else if (day && (time === "" || time === "Any")) {
-        filteredStakeholders = filteredStakeholders.filter((stakeholder) => {
-          return stakeholder.hours?.some((h) =>
-            h.day_of_week.toUpperCase().startsWith(day.slice(0, 3))
-          );
-        });
-      } else if (!day && time && time !== "Any") {
+      if (day || (time && time !== "Any")) {
         filteredStakeholders = filteredStakeholders.filter((stakeholder) => {
           return stakeholder.hours?.some((h) => {
-            //hour format: (0,Wed,15:00:00,19:00:00)
-            const openTime = dayjs(h.open, "HH:mm:ss");
-            const closeTime = dayjs(h.close, "HH:mm:ss");
-            const filterTime = dayjs(time, "hh:mmA");
-            return (
-              filterTime.isAfter(openTime) && filterTime.isBefore(closeTime)
-            );
+            const dayMatch = day ? h.day_of_week.toUpperCase() === day : true;
+
+            const timeMatch =
+              !time || time === "Any"
+                ? true
+                : (() => {
+                    const openTime = dayjs(h.open, "HH:mm:ss");
+                    const closeTime = dayjs(h.close, "HH:mm:ss");
+                    const filterTime = dayjs(time, "hh:mmA");
+
+                    return (
+                      filterTime.isSame(openTime) ||
+                      filterTime.isSame(closeTime) ||
+                      (filterTime.isAfter(openTime) &&
+                        filterTime.isBefore(closeTime))
+                    );
+                  })();
+
+            return dayMatch && timeMatch;
           });
         });
       }

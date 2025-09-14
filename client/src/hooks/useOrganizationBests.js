@@ -71,25 +71,44 @@ export default function useOrganizationBests() {
       }
 
       if (filters.showActiveOnly) {
-        // filter out inactive, inactiveTemporary stakeholders
         filteredStakeholders = filteredStakeholders.filter((stakeholder) => {
           return !stakeholder.inactive && !stakeholder.inactiveTemporary;
         });
       }
 
       const { day, time } = filters.openTimeFilter;
-      if (day !== "" && time !== "") {
+      if (day && time && time !== "Any") {
         filteredStakeholders = filteredStakeholders.filter((stakeholder) => {
           const nextDateForDay = getNextDateForDay(day, time, tenantTimeZone);
-          const hours = stakeholdersDaysHours(
+          return !!stakeholdersDaysHours(
             stakeholder,
             tenantTimeZone,
             nextDateForDay
           );
-
-          return !!hours;
+        });
+      } else if (day && (time === "" || time === "Any")) {
+        filteredStakeholders = filteredStakeholders.filter((stakeholder) => {
+          return stakeholder.hours?.some((h) =>
+            h.day_of_week.toUpperCase().startsWith(day.slice(0, 3))
+          );
+        });
+      } else if (!day && time && time !== "Any") {
+        filteredStakeholders = filteredStakeholders.filter((stakeholder) => {
+          return stakeholder.hours?.some((h) => {
+            const nextDateForDay = getNextDateForDay(
+              h.day_of_week,
+              time,
+              tenantTimeZone
+            );
+            return !!stakeholdersDaysHours(
+              stakeholder,
+              tenantTimeZone,
+              nextDateForDay
+            );
+          });
         });
       }
+
       if (filters.orgNameFilter) {
         filteredStakeholders = filteredStakeholders.filter((stakeholder) => {
           return filters.orgNameFilter

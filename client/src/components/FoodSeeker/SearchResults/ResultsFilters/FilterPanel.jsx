@@ -345,6 +345,7 @@ const OPEN_TIME_DROPDOWNS = {
   time: {
     placeholder: "Open Time",
     labels: [
+      "Any",
       "12:00AM",
       "01:00AM",
       "02:00AM",

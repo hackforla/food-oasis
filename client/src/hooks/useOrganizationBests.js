@@ -13,6 +13,7 @@ import {
 import { stakeholdersDaysHours } from "../components/FoodSeeker/SearchResults/StakeholderPreview/StakeholderPreview";
 import * as analytics from "../services/analytics";
 import * as stakeholderService from "../services/stakeholder-best-service";
+import dayjs from "dayjs";
 
 const sortOrganizations = (a, b) => {
   if (
@@ -95,20 +96,16 @@ export default function useOrganizationBests() {
       } else if (!day && time && time !== "Any") {
         filteredStakeholders = filteredStakeholders.filter((stakeholder) => {
           return stakeholder.hours?.some((h) => {
-            const nextDateForDay = getNextDateForDay(
-              h.day_of_week,
-              time,
-              tenantTimeZone
-            );
-            return !!stakeholdersDaysHours(
-              stakeholder,
-              tenantTimeZone,
-              nextDateForDay
+            //hour format: (0,Wed,15:00:00,19:00:00)
+            const openTime = dayjs(h.open, "HH:mm:ss");
+            const closeTime = dayjs(h.close, "HH:mm:ss");
+            const filterTime = dayjs(time, "hh:mmA");
+            return (
+              filterTime.isAfter(openTime) && filterTime.isBefore(closeTime)
             );
           });
         });
       }
-
       if (filters.orgNameFilter) {
         filteredStakeholders = filteredStakeholders.filter((stakeholder) => {
           return filters.orgNameFilter

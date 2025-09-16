@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   Button,
   Chip,
@@ -244,6 +245,13 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
         console.error(e);
       }
     }
+  };
+
+  const isOldListing = (approvedDate, modifiedDate, createdDate) => {
+    const oneYearAgo = new Date();
+    oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+    const lastUpdated = approvedDate || modifiedDate || createdDate;
+    return lastUpdated && new Date(lastUpdated) < oneYearAgo;
   };
 
   const currentDate = new Date();
@@ -716,19 +724,32 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
                   >
                     sending a correction
                   </Link>
-                  .
                 </DetailText>
 
                 {selectedOrganization.verificationStatusId ===
                   VERIFICATION_STATUS.VERIFIED && (
-                  <DetailText>
-                    Data updated on{" "}
-                    {selectedOrganization.approvedDate
-                      ? formatDateMMMddYYYY(selectedOrganization.approvedDate)
-                      : selectedOrganization.modifiedDate
-                      ? formatDateMMMddYYYY(selectedOrganization.modifiedDate)
-                      : formatDateMMMddYYYY(selectedOrganization.createdDate)}
-                  </DetailText>
+                  <>
+                    {isOldListing(
+                      selectedOrganization.approvedDate,
+                      selectedOrganization.modifiedDate,
+                      selectedOrganization.createdDate
+                    ) && (
+                      <DetailText>
+                        <Alert severity="warning">
+                          This information may be outdated <br />
+                          (last updated over 1 year ago)
+                        </Alert>
+                      </DetailText>
+                    )}
+                    <DetailText>
+                      Data updated on{" "}
+                      {selectedOrganization.approvedDate
+                        ? formatDateMMMddYYYY(selectedOrganization.approvedDate)
+                        : selectedOrganization.modifiedDate
+                        ? formatDateMMMddYYYY(selectedOrganization.modifiedDate)
+                        : formatDateMMMddYYYY(selectedOrganization.createdDate)}
+                    </DetailText>
+                  </>
                 )}
               </Stack>
             </Stack>

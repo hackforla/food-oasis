@@ -734,10 +734,12 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
                       selectedOrganization.modifiedDate,
                       selectedOrganization.createdDate
                     ) && (
-                      <Alert severity="warning">
-                        This information may be outdated <br />
-                        (last updated over 1 year ago)
-                      </Alert>
+                      <DetailText>
+                        <Alert severity="warning">
+                          This information may be outdated <br />
+                          (last updated over 1 year ago)
+                        </Alert>
+                      </DetailText>
                     )}
                     <DetailText>
                       Data updated on{" "}

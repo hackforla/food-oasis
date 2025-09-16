@@ -173,7 +173,7 @@ export default function AddressDropDown({ autoFocus }) {
     }
   };
 
-  const combinedOptions = [...stakeholderOptions, ...mapboxOptions];
+  const combinedOptions = [...mapboxOptions, ...stakeholderOptions];
 
   return (
     <>
@@ -194,6 +194,9 @@ export default function AddressDropDown({ autoFocus }) {
           setInputVal(newValue ? getOptionLabel(newValue) : "");
         }}
         options={combinedOptions}
+        groupBy={(option) =>
+          option.type === "stakeholder" ? "Organizations" : "Addresses"
+        }
         getOptionLabel={getOptionLabel}
         filterOptions={(options, { inputValue }) => {
           return options.filter((option) => {

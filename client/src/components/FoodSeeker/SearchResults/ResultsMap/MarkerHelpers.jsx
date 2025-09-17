@@ -93,12 +93,7 @@ export const markersLayerStyles = {
   layout: {
     "icon-image": ["get", "iconId"],
     "icon-allow-overlap": true,
-    "icon-size": [
-      "case",
-      ["boolean", ["get", "selected"], false],
-      3 / MARKER_SCALE,
-      1.2 / MARKER_SCALE
-    ],
+    "icon-size": 1 / MARKER_SCALE,
     "icon-anchor": "bottom",
   },
 };

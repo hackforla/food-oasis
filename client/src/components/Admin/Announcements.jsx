@@ -4,9 +4,13 @@ import {
   CircularProgress,
   Container,
   Dialog,
+  FormControl,
   FormControlLabel,
   IconButton,
+  InputLabel,
+  MenuItem,
   Paper,
+  Select,
   Stack,
   Switch,
   Table,
@@ -19,9 +23,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import {
-  Delete as DeleteIcon,
-} from "@mui/icons-material";
+import { Delete as DeleteIcon } from "@mui/icons-material";
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import * as Yup from "yup";
@@ -35,6 +37,7 @@ const Announcements = () => {
   const [editAnnouncement, setEditAnnouncement] = useState(null);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [sortBy, setSortBy] = useState("id");
 
   const {
     data: announcementsData,
@@ -130,22 +133,37 @@ const Announcements = () => {
   return (
     <Container maxWidth="md">
       <Box
-        sx={{
-          marginBottom: 1,
+        sx={(theme) => ({
+          marginBottom: theme.spacing(1),
+          marginTop: theme.spacing(1),
           display: "flex",
           justifyContent: "space-between",
-        }}
+        })}
       >
         <Typography variant="h2" style={{ margin: 0, fontWeight: "bold" }}>
           Announcements
         </Typography>
-        <Button
-          variant="contained"
-          type="button"
-          onClick={() => setAnnouncementModalOpen(true)}
-        >
-          Add New Announcement
-        </Button>
+        <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+          <FormControl size="small" sx={{ minWidth: 120 }}>
+            <InputLabel>Sort by</InputLabel>
+            <Select
+              value={sortBy}
+              label="Sort By"
+              onChange={(e) => setSortBy(e.target.value)}
+            >
+              <MenuItem value="id">ID</MenuItem>
+              <MenuItem value="title">Title</MenuItem>
+              <MenuItem value="enabled">Enabled</MenuItem>
+            </Select>
+          </FormControl>
+          <Button
+            variant="contained"
+            type="button"
+            onClick={() => setAnnouncementModalOpen(true)}
+          >
+            Add New Announcement
+          </Button>
+        </Box>
       </Box>
 
       <TableContainer component={Paper} elevation={3}>
@@ -162,6 +180,11 @@ const Announcements = () => {
           </TableHead>
           <TableBody>
             {(announcementsData || [])
+              .sort((a, b) => {
+                if (sortBy === "title") return a.title.localeCompare(b.title);
+                if (sortBy === "enabled") return b.is_enabled - a.is_enabled;
+                return a.announcementId - b.announcementId;
+              })
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => (
                 <TableRow
@@ -203,7 +226,10 @@ const Announcements = () => {
                           color="success"
                           checked={row.is_enabled}
                           onChange={(e) =>
-                            handleIsEnabled(row.announcementId, e.target.checked)
+                            handleIsEnabled(
+                              row.announcementId,
+                              e.target.checked
+                            )
                           }
                         />
                       }

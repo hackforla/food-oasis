@@ -221,28 +221,31 @@ export const getNextDateForDay = (dayInput, timeInput, targetTimezone) => {
   const dayMap = { SUN: 0, MON: 1, TUE: 2, WED: 3, THU: 4, FRI: 5, SAT: 6 };
   const targetDay = dayMap[dayInput.toUpperCase()];
 
-  // Parse the input time
-  let time = dayjs(timeInput, "hh:mmA");
+  if (timeInput === "Any") {
+    let currentDate = dayjs().tz(targetTimezone);
+    let currentDay = currentDate.day();
 
-  // Get the current date and time in the target timezone
+    let dayDifference = targetDay - currentDay;
+    if (dayDifference < 0) dayDifference += 7;
+
+    return currentDate.add(dayDifference, "day").startOf("day");
+  }
+
+  let time = dayjs(timeInput, "hh:mmA");
   let currentDate = dayjs().tz(targetTimezone);
   let currentDay = currentDate.day();
 
-  // Calculate the difference in days
   let dayDifference = targetDay - currentDay;
   if (dayDifference < 0) dayDifference += 7;
   if (dayDifference === 0 && currentDate.hour() > time.hour()) {
     dayDifference += 7;
   }
 
-  // Set the target date and time
-  let targetDate = currentDate
+  return currentDate
     .add(dayDifference, "day")
     .set("hour", time.hour())
     .set("minute", time.minute())
     .set("second", 0);
-
-  return targetDate;
 };
 
 export const getDayTimeNow = () => {

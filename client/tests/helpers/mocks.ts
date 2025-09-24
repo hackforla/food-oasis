@@ -106,12 +106,16 @@ const MOCKS = {
       title: "Welcome to Food Oasis!",
       message: "This is a test announcement.",
       date: "2025-07-19",
+      created_at: "2025-07-19T10:30:00.000Z",
+      severity: "info",
     },
     {
       id: 2,
       title: "System Update",
       message: "We have updated our system.",
       date: "2025-07-18",
+      created_at: "2025-07-18T15:45:00.000Z",
+      severity: "warning",
     },
   ],
   "tags/1": [

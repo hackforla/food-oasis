@@ -10,7 +10,7 @@ export const useAnnouncements = () => {
     const fetchApi = async () => {
       setLoading(true);
       try {
-        const announcements = await announcementService.getAllAnnouncements();        
+        const announcements = await announcementService.getAllAnnouncements();
         const processed = announcements
           .slice()
           .sort((a, b) => a.id - b.id)
@@ -19,6 +19,8 @@ export const useAnnouncements = () => {
             title: announcement.title,
             description: announcement.description,
             is_enabled: announcement.is_enabled,
+            severity: announcement.severity,
+            created_at: announcement.created_at,
           }));
         setData(processed);
         setLoading(false);

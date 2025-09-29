@@ -50,7 +50,7 @@ const columns = [
   { id: "formType", label: "Type", minWidth: 10 },
 ];
 
-const FILTERS = [
+export const FILTERS = [
   { id: 1, name: "New" },
   { id: 2, name: "Pending" },
   { id: 3, name: "Incorrect" },

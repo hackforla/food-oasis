@@ -889,7 +889,8 @@ const OrganizationEdit = (props) => {
                               handleSubmit();
                             }}
                             disabled={
-                              criticalFieldsValidate(values) ||
+                              isSubmitting ||
+                              Boolean(criticalFieldsValidate(values)) ||
                               values.verificationStatusId ===
                                 VERIFICATION_STATUS.NEEDS_VERIFICATION
                             }
@@ -922,6 +923,7 @@ const OrganizationEdit = (props) => {
                               handleSubmit();
                             }}
                             disabled={
+                              isSubmitting ||
                               !criticalFieldsValidate(values) ||
                               values.verificationStatusId ===
                                 VERIFICATION_STATUS.SUBMITTED

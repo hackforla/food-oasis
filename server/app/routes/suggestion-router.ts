@@ -10,6 +10,7 @@ import { requestValidationMiddleware } from "../../middleware/request-validation
 
 router.get("/", suggestionController.getAll);
 router.get("/:id", suggestionController.getById);
+router.get("/stakeholder/:id", suggestionController.getByStakeholderId);
 router.post(
   "/",
   requestValidationMiddleware(suggestionPostRequestSchema),

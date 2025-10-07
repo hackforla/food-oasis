@@ -11,11 +11,21 @@ export const AnnouncementsPostRequestSchema: JSONSchemaType<Announcement> = {
     title: {
       type: "string",
     },
-	description: {
+    description: {
       type: "string",
     },
     is_enabled: {
       type: "boolean",
+    },
+    created_at: {
+      type: "string",
+      format: "date-time",
+      nullable: true,
+    },
+    severity: {
+      type: "string",
+      enum: ["info", "warning", "error", "success"],
+      nullable: true,
     },
   },
   additionalProperties: false,

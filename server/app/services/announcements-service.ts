@@ -3,8 +3,9 @@ import { Announcement } from "../../types/announcements-types";
 
 const getAll = async (): Promise<Announcement[]> => {
   const sql = `
-  SELECT id, title, description, is_enabled 
+  SELECT id, title, description, is_enabled, created_at, severity
   FROM announcements
+  ORDER BY created_at DESC
   `;
   const result = await db.manyOrNone(sql);
   return result;
@@ -12,9 +13,9 @@ const getAll = async (): Promise<Announcement[]> => {
 
 const insert = async (model: Announcement): Promise<Announcement> => {
   const sql = `
-    INSERT INTO announcements(title, description, is_enabled)
-    VALUES ($<title>, $<description>, $<is_enabled>)
-    RETURNING id, title, description, is_enabled;
+    INSERT INTO announcements(title, description, is_enabled,severity)
+    VALUES ($<title>, $<description>, $<is_enabled>, $<severity>)
+    RETURNING id, title, description, is_enabled, created_at, severity;
   `;
   const result = await db.one(sql, { ...model });
   return result;
@@ -33,7 +34,7 @@ const remove = async (
     });
     return {
       success: true,
-	  message: "Announcements deleted successfully.",
+      message: "Announcements deleted successfully.",
     };
   } catch (error) {
     console.error("Error in remove function:", error);
@@ -41,12 +42,14 @@ const remove = async (
   }
 };
 
-
-const update = async (id: string, data: Announcement): Promise<Announcement> => {
+const update = async (
+  id: string,
+  data: Announcement
+): Promise<Announcement> => {
   try {
     const sql = `
       UPDATE announcements
-      SET title = $<title>, description = $<description>, is_enabled = $<is_enabled>
+      SET title = $<title>, description = $<description>, is_enabled = $<is_enabled>, severity = $<severity>
       WHERE id = $<id>
       RETURNING *
     `;

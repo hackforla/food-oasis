@@ -4,8 +4,12 @@ import {
   CircularProgress,
   Container,
   Dialog,
+  FormControl,
   FormControlLabel,
   IconButton,
+  InputLabel,
+  MenuItem,
+  Select,
   Paper,
   Stack,
   Switch,
@@ -19,9 +23,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import {
-  Delete as DeleteIcon,
-} from "@mui/icons-material";
+import { Delete as DeleteIcon } from "@mui/icons-material";
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import * as Yup from "yup";
@@ -35,6 +37,8 @@ const Announcements = () => {
   const [editAnnouncement, setEditAnnouncement] = useState(null);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [sortBy, setSortBy] = useState("created_at");
+  const [sortDirection, setSortDirection] = useState("desc");
 
   const {
     data: announcementsData,
@@ -58,6 +62,7 @@ const Announcements = () => {
         title: announcement.title,
         description: announcement.description,
         is_enabled: isEnabled,
+        severity: announcement.severity,
       });
       await announcementRefetch();
     } catch (error) {
@@ -70,6 +75,7 @@ const Announcements = () => {
       title: "",
       description: "",
       is_enabled: false,
+      severity: "info",
     },
     validationSchema: Yup.object({
       title: Yup.string().trim().required("Title is required"),
@@ -90,6 +96,7 @@ const Announcements = () => {
       title: editAnnouncement?.title || "",
       description: editAnnouncement?.description || "",
       is_enabled: editAnnouncement?.is_enabled || false,
+      severity: editAnnouncement?.severity || "info",
     },
     validationSchema: Yup.object({
       title: Yup.string().trim().required("Title is required"),
@@ -109,6 +116,32 @@ const Announcements = () => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+  const sortedAnnouncements = React.useMemo(() => {
+    if (!announcementsData) return [];
+    return [...announcementsData].sort((a, b) => {
+      let aVal = a[sortBy];
+      let bVal = b[sortBy];
+
+      if (sortBy === "created_at") {
+        aVal = new Date(aVal);
+        bVal = new Date(bVal);
+      } else if (sortBy === "severity") {
+        const severityMap = { info: 0, warning: 1, error: 2, success: 3 };
+        aVal = severityMap[aVal];
+        bVal = severityMap[bVal];
+      } else if (typeof aVal === "string") {
+        aVal = aVal.toLowerCase();
+        bVal = bVal.toLowerCase();
+      }
+
+      if (sortDirection === "asc") {
+        return aVal < bVal ? -1 : aVal > bVal ? 1 : 0;
+      } else {
+        return aVal > bVal ? -1 : aVal < bVal ? 1 : 0;
+      }
+    });
+  }, [announcementsData, sortBy, sortDirection]);
 
   if (announcementsLoading || !announcementsData) {
     return (
@@ -139,13 +172,40 @@ const Announcements = () => {
         <Typography variant="h2" style={{ margin: 0, fontWeight: "bold" }}>
           Announcements
         </Typography>
-        <Button
-          variant="contained"
-          type="button"
-          onClick={() => setAnnouncementModalOpen(true)}
-        >
-          Add New Announcement
-        </Button>
+        <Box sx={{ display: "flex", gap: 2, marginTop: 1 }}>
+          <FormControl size="small" sx={{ minWidth: 150 }}>
+            <InputLabel>Sort By</InputLabel>
+            <Select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              label="Sort By"
+              data-testid="sort-by-select"
+            >
+              <MenuItem value="created_at">Created Date</MenuItem>
+              <MenuItem value="severity">Severity</MenuItem>
+              <MenuItem value="title">Title</MenuItem>
+              <MenuItem value="announcementId">ID</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl size="small" sx={{ minWidth: 150 }}>
+            <InputLabel>Order</InputLabel>
+            <Select
+              value={sortDirection}
+              onChange={(e) => setSortDirection(e.target.value)}
+              label="Order"
+            >
+              <MenuItem value="asc">Ascending</MenuItem>
+              <MenuItem value="desc">Descending</MenuItem>
+            </Select>
+          </FormControl>
+          <Button
+            variant="contained"
+            type="button"
+            onClick={() => setAnnouncementModalOpen(true)}
+          >
+            Add New Announcement
+          </Button>
+        </Box>
       </Box>
 
       <TableContainer component={Paper} elevation={3}>
@@ -153,15 +213,17 @@ const Announcements = () => {
           <TableHead>
             <TableRow>
               <TableCell />
-              <TableCell align="left"> Announcement ID </TableCell>
+              <TableCell align="left">Announcement ID</TableCell>
               <TableCell align="left">Announcement Title</TableCell>
               <TableCell align="left">Announcement Description</TableCell>
+              <TableCell align="left">Created Date</TableCell>
+              <TableCell align="left">Severity</TableCell>
               <TableCell align="left">Enabled</TableCell>
               <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>
-            {(announcementsData || [])
+            {(sortedAnnouncements || [])
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => (
                 <TableRow
@@ -196,6 +258,12 @@ const Announcements = () => {
                   <TableCell align="left" component="th" scope="row">
                     {row.description}
                   </TableCell>
+                  <TableCell align="left" component="th" scope="row">
+                    {new Date(row.created_at).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell align="left" component="th" scope="row">
+                    {row.severity}
+                  </TableCell>
                   <TableCell>
                     <FormControlLabel
                       control={
@@ -203,7 +271,10 @@ const Announcements = () => {
                           color="success"
                           checked={row.is_enabled}
                           onChange={(e) =>
-                            handleIsEnabled(row.announcementId, e.target.checked)
+                            handleIsEnabled(
+                              row.announcementId,
+                              e.target.checked
+                            )
                           }
                         />
                       }
@@ -282,6 +353,21 @@ const Announcements = () => {
                   {announcementFormik.errors.description}
                 </Typography>
               )}
+              <FormControl fullWidth margin="normal">
+                <InputLabel>Severity</InputLabel>
+                <Select
+                  name="severity"
+                  value={announcementFormik.values.severity}
+                  onChange={announcementFormik.handleChange}
+                  label="Severity"
+                >
+                  <MenuItem value="info">Info</MenuItem>
+                  <MenuItem value="warning">Warning</MenuItem>
+                  <MenuItem value="error">Error</MenuItem>
+                  <MenuItem value="success">Success</MenuItem>
+                </Select>
+              </FormControl>
+
               <FormControlLabel
                 control={
                   <Switch
@@ -352,6 +438,20 @@ const Announcements = () => {
                   {editFormik.errors.description}
                 </Typography>
               )}
+              <FormControl fullWidth margin="normal">
+                <InputLabel>Severity</InputLabel>
+                <Select
+                  name="severity"
+                  value={editFormik.values.severity}
+                  onChange={editFormik.handleChange}
+                  label="Severity"
+                >
+                  <MenuItem value="info">Info</MenuItem>
+                  <MenuItem value="warning">Warning</MenuItem>
+                  <MenuItem value="error">Error</MenuItem>
+                  <MenuItem value="success">Success</MenuItem>
+                </Select>
+              </FormControl>
               <FormControlLabel
                 control={
                   <Switch
@@ -386,7 +486,7 @@ const Announcements = () => {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={(announcementsData || []).length}
+        count={sortedAnnouncements.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={(event, newPage) => setPage(newPage)}

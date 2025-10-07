@@ -44,6 +44,22 @@ const selectById = async (suggestionId: string): Promise<Suggestion> => {
   return camelcaseKeys(row);
 };
 
+const selectByStakeholderId = async (
+  stakeholderId: string
+): Promise<Suggestion[]> => {
+  const id = Number(stakeholderId);
+  const sql = `
+    select id, name, address_1, address_2, city, state, zip,
+    phone, email, notes,
+    tipster_name, tipster_phone, tipster_email,
+    hours, category, suggestion_status_id, admin_notes, tenant_id, form_type, created_date
+    from suggestion where stakeholder_id = $<id>`;
+
+  const rows: Suggestion[] = await db.manyOrNone(sql, { id });
+
+  return camelcaseKeys(rows);
+};
+
 const insert = async (model: SuggestionPostFields): Promise<{ id: number }> => {
   const sql = `insert into suggestion (
     name, address_1, address_2,
@@ -63,12 +79,23 @@ const insert = async (model: SuggestionPostFields): Promise<{ id: number }> => {
   return { id: result.id };
 };
 
-const update = async (id: string, model: Suggestion) => {
-  const sql = `update suggestion set
-    admin_notes = $<adminNotes>,
-    suggestion_status_id = $<suggestionStatusId>
-  where id = $<id>`;
-  await db.none(sql, { ...model, id: Number(id) });
+const update = async (id: string, model: Partial<Suggestion>) => {
+  const fields = [];
+  const params: Partial<Suggestion> = { id: Number(id) };
+
+  if (model.adminNotes !== undefined) {
+    fields.push("admin_notes = $<adminNotes>");
+    params.adminNotes = model.adminNotes;
+  }
+  if (model.suggestionStatusId !== undefined) {
+    fields.push("suggestion_status_id = $<suggestionStatusId>");
+    params.suggestionStatusId = model.suggestionStatusId;
+  }
+
+  if (fields.length === 0) return;
+
+  const sql = `update suggestion set ${fields.join(", ")} where id = $<id>`;
+  await db.none(sql, params);
 };
 
 const remove = async (id: string) => {
@@ -83,6 +110,7 @@ const remove = async (id: string) => {
 export default {
   selectAll,
   selectById,
+  selectByStakeholderId,
   insert,
   update,
   remove,

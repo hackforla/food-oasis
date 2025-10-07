@@ -17,6 +17,11 @@ export const getById = async (id) => {
   return response.data;
 };
 
+export const getByStakeholderId = async (id) => {
+  const response = await axios.get(`${baseUrl}/stakeholder/${id}`);
+  return response.data;
+};
+
 export const post = async (suggestion) => {
   const response = await axios.post(baseUrl, {
     ...suggestion,

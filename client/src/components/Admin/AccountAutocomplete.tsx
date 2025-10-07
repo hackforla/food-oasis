@@ -12,7 +12,7 @@ interface AccountAutocompleteProps {
   setAccount?: (account: Account | null) => void;
   setAccountId?: (id: string | number | null) => void;
   label?: string;
-  name?: string
+  name?: string;
 }
 
 export default function AccountAutocomplete({
@@ -20,11 +20,11 @@ export default function AccountAutocomplete({
   setAccount,
   setAccountId,
   label,
-  name
+  name,
 }: AccountAutocompleteProps) {
   const { data: accounts } = useAccounts();
 
-  const handleChange = (_event: unknown,value: Account | null) => {
+  const handleChange = (_event: unknown, value: Account | null) => {
     setAccount && setAccount(value);
     setAccountId && setAccountId(value ? value.id : null);
   };

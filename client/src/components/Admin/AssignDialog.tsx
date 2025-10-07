@@ -27,41 +27,39 @@ function AssignDialog(props: AssignDialogProps) {
     if (accountId !== null) {
       onClose(accountId);
     }
-
-    return (
-      <Dialog
-        onClose={handleCancel}
-        disableEscapeKeyDown
-        fullWidth
-        maxWidth="sm"
-        aria-labelledby="confirmation-dialog-title"
-        open={open}
-        {...other}
-      >
-        <DialogTitle id="confirmation-dialog-title">Assign to:</DialogTitle>
-        <DialogContent dividers>
-          <AccountAutocomplete
-            name="assignedLoginId"
-            accountId={accountId}
-            setAccountId={(assignedAccountId) =>
-              setAccountId(assignedAccountId)
-            }
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button variant="outlined" autoFocus onClick={handleCancel}>
-            Cancel
-          </Button>
-          <Button
-            variant="contained"
-            onClick={handleAssign}
-            disabled={!accountId}
-          >
-            Assign
-          </Button>
-        </DialogActions>
-      </Dialog>
-    );
   };
+
+  return (
+    <Dialog
+      onClose={handleCancel}
+      disableEscapeKeyDown
+      fullWidth
+      maxWidth="sm"
+      aria-labelledby="confirmation-dialog-title"
+      open={open}
+      {...other}
+    >
+      <DialogTitle id="confirmation-dialog-title">Assign to:</DialogTitle>
+      <DialogContent dividers>
+        <AccountAutocomplete
+          name="assignedLoginId"
+          accountId={accountId}
+          setAccountId={(assignedAccountId) => setAccountId(assignedAccountId)}
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button variant="outlined" autoFocus onClick={handleCancel}>
+          Cancel
+        </Button>
+        <Button
+          variant="contained"
+          onClick={handleAssign}
+          disabled={!accountId}
+        >
+          Assign
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
 }
 export default AssignDialog;

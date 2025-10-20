@@ -6,7 +6,6 @@ import {
   DialogProps,
   DialogTitle,
 } from "@mui/material";
-import PropTypes from "prop-types";
 import { useState } from "react";
 import AccountAutocomplete from "./AccountAutocomplete";
 
@@ -42,7 +41,6 @@ function AssignDialog(props: AssignDialogProps) {
       <DialogTitle id="confirmation-dialog-title">Assign to:</DialogTitle>
       <DialogContent dividers>
         <AccountAutocomplete
-          name="assignedLoginId"
           accountId={accountId}
           setAccountId={(assignedAccountId) => setAccountId(assignedAccountId)}
         />

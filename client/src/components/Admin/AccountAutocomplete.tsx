@@ -1,18 +1,12 @@
 import { Autocomplete, TextField } from "@mui/material";
 import { useAccounts } from "../../hooks/useAccounts";
+import type { Account } from "../../types/Account";
 
-interface Account {
-  id: string | number;
-  firstName: string;
-  lastName: string;
-  email: string;
-}
 interface AccountAutocompleteProps {
   accountId: string | number | null;
   setAccount?: (account: Account | null) => void;
   setAccountId?: (id: string | number | null) => void;
   label?: string;
-  name?: string;
 }
 
 export default function AccountAutocomplete({
@@ -20,11 +14,13 @@ export default function AccountAutocomplete({
   setAccount,
   setAccountId,
   label,
-  name,
 }: AccountAutocompleteProps) {
-  const { data: accounts } = useAccounts();
+  const { data: accounts = [] } = useAccounts() as { data: Account[] };
 
-  const handleChange = (_event: unknown, value: Account | null) => {
+  const handleChange = (
+    _event: React.SyntheticEvent,
+    value: Account | null
+  ) => {
     setAccount && setAccount(value);
     setAccountId && setAccountId(value ? value.id : null);
   };

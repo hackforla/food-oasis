@@ -5,7 +5,7 @@ import type { Account } from "../../types/Account";
 interface AccountAutocompleteProps {
   accountId: string | number | null;
   setAccount?: (account: Account | null) => void;
-  setAccountId?: (id: string | number | null) => void;
+  setAccountId?: (id: number | null) => void;
   label?: string;
 }
 
@@ -27,7 +27,7 @@ export default function AccountAutocomplete({
 
   return (
     <>
-      {accounts ? (
+      {accounts && (
         <Autocomplete
           value={accounts.find((acct) => acct.id === accountId) || null}
           onChange={handleChange}
@@ -45,7 +45,7 @@ export default function AccountAutocomplete({
             />
           )}
         />
-      ) : null}
+      )}
     </>
   );
 }

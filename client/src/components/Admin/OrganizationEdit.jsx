@@ -251,9 +251,9 @@ const OrganizationEdit = (props) => {
 
   const handleAssignDialogClose = async (loginId) => {
     setAssignDialogOpen(false);
-    // Dialog returns false if cancelled, null if
+    // Dialog returns undefined if cancelled, null if
     // want to unassign, otherwise a loginId > 0
-    if (loginId === false) return;
+    if (!loginId) return;
     if (assignDialogCallback && assignDialogCallback.callback) {
       assignDialogCallback.callback(loginId);
     }

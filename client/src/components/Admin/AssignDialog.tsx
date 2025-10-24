@@ -11,19 +11,19 @@ import AccountAutocomplete from "./AccountAutocomplete";
 
 interface AssignDialogProps extends Omit<DialogProps, "onClose"> {
   open: boolean;
-  onClose: (value: string | number | false) => void;
+  onClose: (value?: number | undefined) => void;
 }
 
 function AssignDialog(props: AssignDialogProps) {
   const { onClose, open, ...other } = props;
-  const [accountId, setAccountId] = useState< number | null>(null);
+  const [accountId, setAccountId] = useState<number | null>(null);
 
   const handleCancel = () => {
-    onClose(false);
+    onClose();
   };
 
   const handleAssign = () => {
-    if (accountId !== null) {
+    if (accountId) {
       onClose(accountId);
     }
   };

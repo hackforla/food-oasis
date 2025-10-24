@@ -15,7 +15,7 @@ export default function AccountAutocomplete({
   setAccountId,
   label,
 }: AccountAutocompleteProps) {
-  const { data: accounts = [] } = useAccounts() as { data: Account[] };
+  const { data: accounts = [] } = useAccounts();
 
   const handleChange = (
     _event: React.SyntheticEvent,

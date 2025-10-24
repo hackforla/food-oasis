@@ -16,7 +16,7 @@ interface AssignDialogProps extends Omit<DialogProps, "onClose"> {
 
 function AssignDialog(props: AssignDialogProps) {
   const { onClose, open, ...other } = props;
-  const [accountId, setAccountId] = useState<string | number | null>(null);
+  const [accountId, setAccountId] = useState< number | null>(null);
 
   const handleCancel = () => {
     onClose(false);

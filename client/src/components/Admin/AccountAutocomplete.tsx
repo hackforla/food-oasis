@@ -1,27 +1,38 @@
 import { Autocomplete, TextField } from "@mui/material";
 import { useAccounts } from "../../hooks/useAccounts";
+import type { Account } from "../../types/Account";
+
+interface AccountAutocompleteProps {
+  accountId: string | number | null;
+  setAccount?: (account: Account | null) => void;
+  setAccountId?: (id: number | null) => void;
+  label?: string;
+}
 
 export default function AccountAutocomplete({
   accountId,
   setAccount,
   setAccountId,
   label,
-}) {
-  const { data: accounts } = useAccounts();
+}: AccountAutocompleteProps) {
+  const { data: accounts = [] } = useAccounts();
 
-  const handleChange = (event, value) => {
+  const handleChange = (
+    _event: React.SyntheticEvent,
+    value: Account | null
+  ) => {
     setAccount && setAccount(value);
     setAccountId && setAccountId(value ? value.id : null);
   };
 
   return (
     <>
-      {accounts ? (
+      {accounts && (
         <Autocomplete
           value={accounts.find((acct) => acct.id === accountId) || null}
           onChange={handleChange}
           options={accounts}
-          getOptionLabel={(option) =>
+          getOptionLabel={(option: Account) =>
             `${option.lastName}, ${option.firstName} (${option.email})`
           }
           style={{ width: "100%" }}
@@ -34,7 +45,7 @@ export default function AccountAutocomplete({
             />
           )}
         />
-      ) : null}
+      )}
     </>
   );
 }

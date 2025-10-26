@@ -95,7 +95,6 @@ const Contact = () => {
 
   const [open, setOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  // const [submitError, setSubmitError] = useState("");
   const {setToast} = useToasterContext()
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -178,7 +177,6 @@ const Contact = () => {
                 sendContactForm(values)
                   .then(() => {
                     setSubmitted(true);
-                    // setSubmitError("");
                     handleOpen();
                   })
                   .catch(() => {
@@ -274,17 +272,6 @@ const Contact = () => {
                     alignItems="center"
                     gap={isMobile ? 1 : 2}
                   >
-                    {/* {submitError && (
-                      <Typography
-                        variant="subtitle2"
-                        color="error"
-                        sx={{
-                          marginTop: "-20px",
-                        }}
-                      >
-                        {submitError}
-                      </Typography>
-                    )} */}
                     <Button type="submit" disabled={!dirty || !isValid}>
                       Submit
                     </Button>

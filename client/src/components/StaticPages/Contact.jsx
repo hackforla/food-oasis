@@ -19,6 +19,7 @@ import * as analytics from "../../services/analytics";
 import Footer from "../Layout/Footer";
 import { useSiteContext } from "contexts/siteContext";
 import SEO from "../SEO";
+import { useToasterContext } from "contexts/toasterContext";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Please enter your name"),
@@ -94,7 +95,8 @@ const Contact = () => {
 
   const [open, setOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [submitError, setSubmitError] = useState("");
+  // const [submitError, setSubmitError] = useState("");
+  const {setToast} = useToasterContext()
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const { isMobile } = useBreakpoints();
@@ -176,12 +178,14 @@ const Contact = () => {
                 sendContactForm(values)
                   .then(() => {
                     setSubmitted(true);
-                    setSubmitError("");
+                    // setSubmitError("");
                     handleOpen();
                   })
                   .catch(() => {
-                    setSubmitError(
-                      "There was an error with your submission. Please try again."
+                    setToast({
+                      message:"There was an error with your submission. Please try again.",
+                      type:"error"
+                    }
                     );
                   });
               }}
@@ -270,7 +274,7 @@ const Contact = () => {
                     alignItems="center"
                     gap={isMobile ? 1 : 2}
                   >
-                    {submitError && (
+                    {/* {submitError && (
                       <Typography
                         variant="subtitle2"
                         color="error"
@@ -280,7 +284,7 @@ const Contact = () => {
                       >
                         {submitError}
                       </Typography>
-                    )}
+                    )} */}
                     <Button type="submit" disabled={!dirty || !isValid}>
                       Submit
                     </Button>

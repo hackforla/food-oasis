@@ -9,17 +9,36 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import PropTypes from "prop-types";
 import { STAKEHOLDER_SCHEMA } from "../../../constants/stakeholder-schema";
 
-const flattenHours = (daysArray) => {
+interface DayHours {
+  weekOfMonth: number;
+  dayOfWeek: number;
+  open: string;
+  close: string;
+}
+
+interface StakeholderData {
+  name: string;
+  hours?: DayHours[];
+  [key: string]: any; // For other dynamic fields from STAKEHOLDER_SCHEMA
+}
+
+interface ImportFileTableProps {
+  tenantName?: string;
+  data?: StakeholderData[];
+  handleImportAction: () => void;
+  handleCancel: () => void;
+}
+
+const flattenHours = (daysArray?: DayHours[]): string[] => {
   if (!daysArray || !daysArray.length) return [];
   return daysArray.map((day) => {
     return `(${day.weekOfMonth},${day.dayOfWeek},${day.open},${day.close})`;
   });
 };
 
-const ImportFileTable = (props) => {
+const ImportFileTable = (props: ImportFileTableProps) => {
   const { tenantName, data, handleImportAction, handleCancel } = props;
 
   return (
@@ -95,12 +114,6 @@ const ImportFileTable = (props) => {
       </TableContainer>
     </Box>
   );
-};
-
-ImportFileTable.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.object),
-  handleImportAction: PropTypes.func.isRequired,
-  handleCancel: PropTypes.func.isRequired,
 };
 
 export default ImportFileTable;

@@ -10,9 +10,24 @@ import {
   RadioGroup,
   Typography,
 } from "@mui/material";
-import PropTypes from "prop-types";
+type ImportAction = 'replace' | 'update' | 'add';
 
-const optionDescriptions = {
+interface ImportData {
+  action: ImportAction | '';
+}
+
+interface ImportDialogProps {
+  tenantName?: string;
+  handleImport: () => void;
+  handleImportAction: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  importData: ImportData;
+  open: boolean;
+  title: string;
+  message: string;
+  children?: React.ReactNode;
+}
+
+const optionDescriptions: Record<ImportAction, string> = {
   replace:
     "Removes all current records and adds imported records. This will REMOVE ALL existing stakeholder data.",
   update:
@@ -20,7 +35,7 @@ const optionDescriptions = {
   add: "Imports records without changing any existing records. This is not destructive but can result in duplicate records.",
 };
 
-function ImportDialog(props) {
+function ImportDialog(props: ImportDialogProps) {
   const {
     tenantName,
     handleImport,
@@ -49,8 +64,9 @@ function ImportDialog(props) {
       >
         <Typography>{props.message}</Typography>
         <Typography>
-          {optionDescriptions[importData.action] ||
-            "Please select an option below."}
+          {importData.action
+            ? optionDescriptions[importData.action]
+            : "Please select an option below."}
         </Typography>
       </DialogContent>
       <FormControl
@@ -60,7 +76,7 @@ function ImportDialog(props) {
         })}
       >
         <RadioGroup
-          arial-label="import-options"
+          aria-label="import-options"
           name="import-options"
           onChange={handleImportAction}
         >
@@ -74,7 +90,11 @@ function ImportDialog(props) {
         </RadioGroup>
       </FormControl>
       <DialogActions>
-        <Button variant="outlined" type="button" onClick={handleImportAction}>
+        <Button 
+          variant="outlined" 
+          type="button" 
+          onClick={() => handleImportAction({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>)}
+        >
           Cancel
         </Button>
         <Button
@@ -90,9 +110,5 @@ function ImportDialog(props) {
     </Dialog>
   );
 }
-
-ImportDialog.propTypes = {
-  open: PropTypes.bool.isRequired,
-};
 
 export default ImportDialog;

@@ -14,22 +14,40 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import PropTypes from "prop-types";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, ChangeEvent } from "react";
 import { STAKEHOLDER_SCHEMA } from "../../../constants/stakeholder-schema";
 
-const ImportFileGuide = (props) => {
-  const { handleDownload, handleChange, handleUpload, file } = props;
-  const [visibleFields, setVisibleFields] = useState("all");
-  const ref = useRef(null);
+interface StakeholderField {
+  name: string;
+  label?: string;
+  show: boolean;
+  required?: boolean;
+  description?: string;
+  default_value?: string | number | boolean;
+  sample_format?: string;
+}
 
-  const handleVisibleFields = (e) => {
+interface ImportFileGuideProps {
+  handleDownload: () => void;
+  handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  handleUpload: () => void;
+  file?: File | null;
+}
+
+const ImportFileGuide = (props: ImportFileGuideProps) => {
+  const { handleDownload, handleChange, handleUpload, file } = props;
+  const [visibleFields, setVisibleFields] = useState<"all" | "required">("all");
+  const ref = useRef<HTMLInputElement>(null);
+
+  const handleVisibleFields = (e: ChangeEvent<{ value: "all" | "required" }>) => {
     const { value } = e.target;
     setVisibleFields(value);
   };
 
   useEffect(() => {
-    if (!file) ref.current.value = "";
+    if (!file && ref.current) {
+      ref.current.value = "";
+    }
   }, [file]);
 
   return (
@@ -149,7 +167,7 @@ const ImportFileGuide = (props) => {
         >
           <Select
             defaultValue="all"
-            onChange={handleVisibleFields}
+            onChange={(e) => handleVisibleFields(e as ChangeEvent<{ value: "all" | "required" }>)}
             style={{ width: "100%" }}
           >
             <MenuItem value="all">All</MenuItem>
@@ -180,11 +198,11 @@ const ImportFileGuide = (props) => {
                         },
                       })}
                     >
-                      <TableCell style={{ fontWeight: field.required && 900 }}>
+                      <TableCell style={{ fontWeight: field.required ? 900 : undefined }}>
                         {`${field.name} ${field.required ? "(required)" : ""}`}
                       </TableCell>
                       <TableCell>{field.description}</TableCell>
-                      <TableCell style={{ fontWeight: field.required && 900 }}>
+                      <TableCell style={{ fontWeight: field.required ? 900 : undefined }}>
                         {field.default_value}
                       </TableCell>
                       <TableCell>{field.sample_format}</TableCell>
@@ -220,12 +238,6 @@ const ImportFileGuide = (props) => {
       </Box>
     </main>
   );
-};
-
-ImportFileGuide.propTypes = {
-  handleDownload: PropTypes.func.isRequired,
-  handleChange: PropTypes.func.isRequired,
-  handleUpload: PropTypes.func.isRequired,
 };
 
 export default ImportFileGuide;

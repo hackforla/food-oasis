@@ -37,3 +37,5 @@ export const ICON_DICT = {
   search: Search,
   wrapText: WrapText,
 };
+
+export type IconName = keyof typeof ICON_DICT;

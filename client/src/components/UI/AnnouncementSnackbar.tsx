@@ -1,20 +1,28 @@
-import { useState, useEffect } from "react";
-import { Alert, Box, Typography, IconButton } from "@mui/material";
-import Collapse from "@mui/material/Collapse";
 import CloseIcon from "@mui/icons-material/Close";
+import { Alert, Box, IconButton, Typography } from "@mui/material";
+import Collapse from "@mui/material/Collapse";
+import { useEffect, useState } from "react";
+import { Announcement } from "types/Announcement";
 import { useAnnouncements } from "../../hooks/useAnnouncements";
 
+type OpenIndexes = Record<number, boolean>;
+
 const AnnouncementSnackbar = () => {
-  const [openIndexes, setOpenIndexes] = useState({});
+  const [openIndexes, setOpenIndexes] = useState<OpenIndexes>({});
   const { data: announcementsData } = useAnnouncements();
 
-  const enabledAnnouncements = (announcementsData || []).filter((a) => a.is_enabled);
+  const announcements: Announcement[] = announcementsData || [];
+  const enabledAnnouncements: Announcement[] = announcements.filter(
+    (announcement) => announcement.is_enabled
+  );
 
   useEffect(() => {
     if (enabledAnnouncements.length > 0) {
-      const initialOpen = {};
+      const initialOpen: OpenIndexes = {};
       enabledAnnouncements.forEach((_, idx) => {
-        initialOpen[idx] = sessionStorage.getItem(`announcementSnackbarDismissed_${idx}`) !== "true";
+        initialOpen[idx] =
+          sessionStorage.getItem(`announcementSnackbarDismissed_${idx}`) !==
+          "true";
       });
       setOpenIndexes(initialOpen);
     }
@@ -37,7 +45,10 @@ const AnnouncementSnackbar = () => {
                 size="small"
                 onClick={() => {
                   setOpenIndexes((prev) => ({ ...prev, [idx]: false }));
-                  sessionStorage.setItem(`announcementSnackbarDismissed_${idx}`, "true");
+                  sessionStorage.setItem(
+                    `announcementSnackbarDismissed_${idx}`,
+                    "true"
+                  );
                 }}
               >
                 <CloseIcon fontSize="inherit" />

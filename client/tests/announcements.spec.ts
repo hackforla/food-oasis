@@ -102,3 +102,34 @@ test.describe("Announcements", () => {
     await expect(page.getByText("warning")).toBeVisible();
   });
 });
+
+test.describe("Announcements", () => {
+  test("shows announcements when they're available", async ({ page }) => {
+    await mockRequests(page, {
+      announcements: [
+        {
+          id: 1,
+          title: "Test Announcement",
+          description: "This is a mock announcement for testing.",
+          is_enabled: true,
+          severity: "info",
+          created_at: "2025-10-30T10:00:00Z",
+        },
+      ],
+    });
+
+    await page.goto("/");
+    await expect(page.getByText("This is a mock announcement for testing.")).toBeVisible();
+
+    await page.goto("/organizations");
+    await expect(page.getByText("This is a mock announcement for testing.")).toBeVisible();
+  });
+
+  test("doesn't show announcements when there are none", async ({ page }) => {
+    await mockRequests(page, { announcements: [] });
+
+    await page.goto("/");
+    const announcementText = page.getByText("This is a mock announcement for testing.");
+    await expect(announcementText).toHaveCount(0);
+  });
+});

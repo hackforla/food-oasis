@@ -77,7 +77,7 @@ const SurveySnackbar = () => {
           <IconButton
             icon="close"
             sx={(theme: Theme) => ({
-              color: (theme.palette as any).bodyText.main,
+              color: theme.palette.bodyText.main,
               display: "flex",
               transform: "translate(10px, -10px)",
             })}

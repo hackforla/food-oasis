@@ -1,3 +1,50 @@
+// Extend the MUI theme to include custom palette keys used in this app
+declare module "@mui/material/styles" {
+  // Add custom fields on the root palette
+  interface Palette {
+    link: {
+      hovered: string;
+      normal: string;
+      visited: string;
+    };
+    inactiveButton: {
+      light: string;
+      main: string;
+      dark: string;
+      contrastText: string;
+    };
+    mealProgram: {
+      main: string;
+      contrastText: string;
+    };
+    foodPantry: {
+      main: string;
+    };
+    headingText: {
+      main: string;
+    };
+    bodyText: {
+      main: string;
+    };
+    confirmed: {
+      main: string;
+    };
+    tooltip: {
+      hover: string;
+    };
+    filterButtons: {
+      border: {
+        selected: string;
+        notSelected: string;
+      };
+      backgroundColor: string;
+      bodyText: string;
+      hoverColor: string;
+      hoverSelectedColor: string;
+    };
+  }
+}
+
 export const white = "#FFFFFF";
 export const gray = "#545454";
 export const secondary = "#E57109";

@@ -1,8 +1,8 @@
 import { Grid } from "@mui/material";
+import { FC, MouseEventHandler, Dispatch } from "react";
 import { getDayTimeNow } from "helpers";
 import MealLocatorIcon from "icons/MealLocatorIcon";
 import PantryLocatorIcon from "icons/PantryLocatorIcon";
-import PropTypes from "prop-types";
 import {
   useAppDispatch,
   useFilterPanel,
@@ -10,14 +10,21 @@ import {
 } from "../../../../appReducer";
 import AdvancedFilterButton from "./AdvancedFilterButton";
 
-const AdvancedFilters = ({
+interface AdvancedFiltersProps {
+  toggleMeal: MouseEventHandler<HTMLButtonElement>;
+  togglePantry: MouseEventHandler<HTMLButtonElement>;
+  isMealSelected: boolean;
+  isPantrySelected: boolean;
+}
+
+const AdvancedFilters: FC<AdvancedFiltersProps> = ({
   toggleMeal,
   togglePantry,
   isMealSelected,
   isPantrySelected,
 }) => {
   // toggling filter panel state
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch() as Dispatch<any>;
   const open = useFilterPanel();
 
   // toggling Open Now state
@@ -91,11 +98,6 @@ const AdvancedFilters = ({
       </Grid>
     </>
   );
-};
-
-AdvancedFilters.propTypes = {
-  categoryIds: PropTypes.any,
-  toggleCategory: PropTypes.func,
 };
 
 export default AdvancedFilters;

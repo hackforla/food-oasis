@@ -1,19 +1,26 @@
-import { Snackbar, Alert } from "@mui/material";
+import { Alert, Snackbar } from "@mui/material";
+import type { SnackbarCloseReason } from "@mui/material/Snackbar";
+import { SyntheticEvent } from "react";
 import { useToasterContext } from "../../contexts/toasterContext";
-import { IconButton } from "./StandardButton";
-import { success, error, secondary, linkText } from "../../theme/palette";
+import { error, linkText, secondary, success } from "../../theme/palette";
+
+type ToastType = "info" | "warning" | "success" | "error" | undefined;
 
 const Toast = () => {
   const { toast, setToast } = useToasterContext();
 
-  const handleSnackbarClose = (_event, reason) => {
+  const handleSnackbarClose = (
+    _event: SyntheticEvent | Event,
+    reason?: SnackbarCloseReason
+  ) => {
     if (reason === "clickaway") {
       return;
     }
 
-    setToast(false);
+    setToast({ message: "" });
   };
-  const getToastColor = (type) => {
+
+  const getToastColor = (type: ToastType) => {
     switch (type) {
       case "warning":
         return secondary;
@@ -28,14 +35,18 @@ const Toast = () => {
     }
   };
 
-  return toast.message ? (
+  if (!toast || !toast.message) {
+    return null;
+  }
+
+  return (
     <Snackbar
       anchorOrigin={{
         vertical: "bottom",
         horizontal: "left",
       }}
-      open={!!toast}
-      autoHideDuration={toast.duration || 4000}
+      open={Boolean(toast)}
+      autoHideDuration={4000}
       onClose={handleSnackbarClose}
     >
       <Alert
@@ -49,7 +60,7 @@ const Toast = () => {
         {toast.message}
       </Alert>
     </Snackbar>
-  ) : null;
+  );
 };
 
 export default Toast;

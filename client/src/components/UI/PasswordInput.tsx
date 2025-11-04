@@ -1,14 +1,19 @@
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { IconButton, InputAdornment, TextField } from "@mui/material";
-import { useState } from "react";
+import {
+  IconButton,
+  InputAdornment,
+  TextField,
+  TextFieldProps,
+} from "@mui/material";
+import { MouseEvent, useState } from "react";
 
-export default function PasswordInput(props) {
+export default function PasswordInput(props: TextFieldProps) {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  const handleMouseDownPassword = (event) => {
+  const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
 
@@ -29,7 +34,6 @@ export default function PasswordInput(props) {
           </InputAdornment>
         ),
       }}
-      //label="Password"
       {...props}
     />
   );

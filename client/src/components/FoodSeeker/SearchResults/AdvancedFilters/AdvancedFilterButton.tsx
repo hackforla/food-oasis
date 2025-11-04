@@ -1,5 +1,18 @@
 import { Button, styled } from "@mui/material";
-import PropTypes from "prop-types";
+import { FC, MouseEvent } from "react";
+
+interface CustomButtonProps {
+  isSelected?: boolean;
+}
+
+interface AdvancedFilterButtonProps {
+  label: string;
+  onClick: (event: MouseEvent<HTMLButtonElement>) => void;
+  icon?: FC;
+  hasDropdown?: boolean;
+  isSelected?: boolean;
+  disabled?: boolean;
+}
 
 const DropdownIcon = () => (
   <svg
@@ -19,7 +32,7 @@ const DropdownIcon = () => (
 );
 const CustomButton = styled(Button, {
   shouldForwardProp: (prop) => prop !== "isSelected",
-})(({ theme, isSelected }) => ({
+})<CustomButtonProps>(({ theme, isSelected }) => ({
   "&.MuiButton-contained": {
     fontSize: "0.875rem",
     borderRadius: "1.875rem",
@@ -43,7 +56,7 @@ const CustomButton = styled(Button, {
   },
 }));
 
-const AdvancedFilterButton = ({
+const AdvancedFilterButton: FC<AdvancedFilterButtonProps> = ({
   label,
   onClick,
   icon,
@@ -60,20 +73,11 @@ const AdvancedFilterButton = ({
       isSelected={isSelected}
       onClick={(event) => onClick(event)}
     >
-      {icon && <Icon />}
+      {Icon && <Icon />}
       {label}
       {hasDropdown && <DropdownIcon />}
     </CustomButton>
   );
-};
-
-AdvancedFilterButton.propTypes = {
-  label: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
-  icon: PropTypes.any,
-  hasDropdown: PropTypes.bool,
-  isSelected: PropTypes.bool,
-  disabled: PropTypes.bool,
 };
 
 export default AdvancedFilterButton;

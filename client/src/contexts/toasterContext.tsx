@@ -11,7 +11,8 @@ interface ToastProps {
 
 export type ToastContextProps = {
   toast: {
-    message: string;  
+    message: string;
+    type?: "info" | "warning" | "success" | "error";
   };
   setToast: React.Dispatch<
     React.SetStateAction<{
@@ -23,12 +24,15 @@ export type ToastContextProps = {
 const initialState: ToastContextProps = {
   toast: {
     message: "",
+    type: "info",
   },
-  setToast: () => {}
+  setToast: () => {},
 };
+
 export const ToasterContext = createContext<ToastContextProps>(initialState);
 export const ToasterProvider = ({ children }: ToastProps) => {
-  const [toast, setToast] = useState({ message: "" });
+  
+  const [toast, setToast] = useState<{ message: string; type?: "info" | "warning" | "success" | "error" }>({ message: "", type: "info" });
 
   const value = useMemo(() => {
     return {

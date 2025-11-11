@@ -371,7 +371,7 @@ export default function Identification({
                   onBlur={handleBlur}
                 />
               }
-              label="Temporarily Closed (COVID)"
+              label="Temporarily Closed"
             />
           </Tooltip>
         </Grid>
@@ -379,13 +379,13 @@ export default function Identification({
           <div>
             <Label
               id="covidNotes"
-              label="COVID Notes"
-              tooltipTitle="COVID-related conditions"
+              label="Closure Notes"
+              tooltipTitle="Add details about closures or service changes"
             />
             <Textarea
               id="covidNotes"
               name="covidNotes"
-              placeholder="COVID Notes"
+              placeholder="Closure Notes"
               value={values.covidNotes}
               onChange={handleChange}
               onBlur={handleBlur}

@@ -24,6 +24,7 @@ import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import * as stakeholderService from "services/stakeholder-service";
+import * as suggestionService from "services/suggestion-service";
 import * as Yup from "yup";
 import BusinessHours from "./OrganizationEdit/BusinessHours";
 import ContactDetails from "./OrganizationEdit/ContactDetails";
@@ -42,6 +43,8 @@ import {
   DEFAULT_VIEWPORTS,
   TENANT_ID,
 } from "../../helpers/Constants";
+import { useSuggestionByStakeholderId } from "hooks/useSuggestionByStakeholderId";
+import SuggestionHistory from "./OrganizationEdit/SuggestionHistory";
 
 const phoneRegExp = /^\(\d{3}\) \d{3}-\d{4}$/;
 
@@ -64,14 +67,47 @@ const validationSchema = Yup.object().shape({
   zip: Yup.string().required("Zip code is required"),
   latitude: Yup.number()
     .required("Latitude is required")
-    .min(Number(DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[1]))
-    .max(Number(DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[3])),
+    .test(
+      "latitude-range",
+      `Latitude must be between ${Number(
+        DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[1]
+      )} and ${Number(DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[3])}`,
+      (value) => {
+        const minLat = Number(DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[1]);
+        const maxLat = Number(DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[3]);
+        return value >= minLat && value <= maxLat;
+      }
+    ),
   longitude: Yup.number()
     .required("Longitude is required")
-    .min(Number(DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[0]))
-    .max(Number(DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[2])),
+    .test(
+      "longitude-range",
+      `Longitude must be between ${Number(
+        DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[0]
+      )} and ${Number(DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[2])}`,
+      (value) => {
+        const minLng = Number(DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[0]);
+        const maxLng = Number(DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[2]);
+        return value >= minLng && value <= maxLng;
+      }
+    ),
   email: Yup.string().email("Invalid email address format"),
-  hours: Yup.array().of(HourSchema),
+  hours: Yup.array()
+    .of(HourSchema)
+    .test("no-duplicate-hours", function (value) {
+      const seen = new Set();
+      for (const item of value) {
+        const key = `${item.weekOfMonth}-${item.dayOfWeek}-${item.open}-${item.close}`;
+        if (seen.has(key)) {
+          return this.createError({
+            path: "hours",
+            message: "Duplicate business hours are not allowed",
+          });
+        }
+        seen.add(key);
+      }
+      return true;
+    }),
   instagram: Yup.string()
     .matches(INSTAGRAM_REGEX, "Please enter a valid Instagram URL.")
     .nullable()
@@ -187,6 +223,9 @@ const OrganizationEdit = (props) => {
   const { user } = useUserContext();
   const { setToast } = useToasterContext();
 
+  const { data: stakeholderSuggestions, refetch: refetchSuggestions } =
+    useSuggestionByStakeholderId(editId);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -218,9 +257,9 @@ const OrganizationEdit = (props) => {
 
   const handleAssignDialogClose = async (loginId) => {
     setAssignDialogOpen(false);
-    // Dialog returns false if cancelled, null if
+    // Dialog returns undefined if cancelled, null if
     // want to unassign, otherwise a loginId > 0
-    if (loginId === false) return;
+    if (!loginId) return;
     if (assignDialogCallback && assignDialogCallback.callback) {
       assignDialogCallback.callback(loginId);
     }
@@ -361,6 +400,15 @@ const OrganizationEdit = (props) => {
     }
   };
 
+  const [editedSuggestions, setEditedSuggestions] = useState({});
+
+  const handleSuggestionEdit = (id, changes) => {
+    setEditedSuggestions((prev) => ({
+      ...prev,
+      [id]: { ...(prev[id] || {}), ...changes },
+    }));
+  };
+
   return (
     <Container component="main" maxWidth="lg">
       <div>
@@ -391,6 +439,12 @@ const OrganizationEdit = (props) => {
             } catch (error) {
               if (isSubmitClicked) {
                 setSubmitClicked(false);
+                setToast({
+                  message:
+                    "Please fix the errors in the form before save progress.",
+                  type: "error",
+                });
+
                 const errors = error.inner.reduce(
                   (errors, { path, message }) => ({
                     ...errors,
@@ -418,49 +472,43 @@ const OrganizationEdit = (props) => {
               }
             }
           }}
-          onSubmit={(values, { setSubmitting, setFieldValue }) => {
-            if (values.id) {
-              return stakeholderService
-                .put({ ...values, loginId: user.id })
-                .then(() => {
-                  setToast({
-                    message: "Update successful.",
-                  });
-                  setOriginalData(values);
-                  if (nextUrl) {
-                    navigate(nextUrl);
-                  }
-                })
-                .catch((err) => {
-                  setToast({
-                    message:
-                      "Update failed. Please check for validation warnings on the Identification and Business Hours tabs and try again.",
-                  });
-                  console.error(err);
-                  setSubmitting(false);
+          onSubmit={async (values, { setSubmitting, setFieldValue }) => {
+            try {
+              if (values.id) {
+                await stakeholderService.put({ ...values, loginId: user.id });
+                setOriginalData(values);
+              } else {
+                const response = await stakeholderService.post({
+                  ...values,
+                  loginId: user.id,
                 });
-            } else {
-               console.log("new stakeholder data: ", values);
-              return stakeholderService
-                .post({ ...values, loginId: user.id })
-                .then((response) => {
-                  setToast({
-                    message: "Insert successful.",
-                  });
-                  setFieldValue("id", response.id);
-                  setOriginalData({ ...values, id: response.id });
-                  if (nextUrl) {
-                    navigate(nextUrl);
-                  }
-                })
-                .catch((err) => {
-                  setToast({
-                    message:
-                      "Insert failed. Please check for validation warnings on the Identification and Business Hours tabs and try again.",
-                  });
-                  console.error(err);
-                  setSubmitting(false);
-                });
+                setFieldValue("id", response.id);
+                setOriginalData({ ...values, id: response.id });
+              }
+
+              // Save changed suggestions
+              const suggestionUpdates = Object.entries(editedSuggestions).map(
+                ([id, changes]) =>
+                  suggestionService.update({ id: Number(id), ...changes })
+              );
+              await Promise.all(suggestionUpdates);
+              refetchSuggestions();
+
+              setToast({
+                message: `${values.id ? "Update" : "Insert"} successful.`,
+              });
+              setEditedSuggestions({});
+
+              if (nextUrl) navigate(nextUrl);
+            } catch (err) {
+              setToast({
+                message: `${
+                  values.id ? "Update" : "Insert"
+                } failed. Please check for validation warnings on the Identification and Business Hours tabs and try again.`,
+              });
+              console.error(err);
+            } finally {
+              setSubmitting(false);
             }
           }}
         >
@@ -476,6 +524,12 @@ const OrganizationEdit = (props) => {
             setFieldTouched,
           }) => (
             <form noValidate onSubmit={handleSubmit}>
+              <SuggestionHistory
+                suggestions={stakeholderSuggestions}
+                editedSuggestions={editedSuggestions}
+                onEdit={handleSuggestionEdit}
+                showNewOnly={true}
+              />
               <Stack direction="row" justifyContent="space-between">
                 <Typography component="h1" variant="h5">
                   {`Organization - ${values.name}`}
@@ -506,6 +560,7 @@ const OrganizationEdit = (props) => {
                       <Tab label="More Details" {...a11yProps(3)} />
                       <Tab label="Donations" {...a11yProps(4)} />
                       <Tab label="Verification" {...a11yProps(5)} />
+                      <Tab label="Suggestion History" {...a11yProps(6)} />
                     </Tabs>
                   </AppBar>
                   <Identification
@@ -562,6 +617,12 @@ const OrganizationEdit = (props) => {
                     setFieldValue={setFieldValue}
                     handleBlur={handleBlur}
                   />
+                  <SuggestionHistory
+                    tabPage={tabPage}
+                    suggestions={stakeholderSuggestions}
+                    editedSuggestions={editedSuggestions}
+                    onEdit={handleSuggestionEdit}
+                  />
                 </Box>
                 <Stack direction="row">
                   <div style={{ flexBasis: "20%", flexGrow: 1 }}>
@@ -596,7 +657,11 @@ const OrganizationEdit = (props) => {
                           <Button
                             variant="contained"
                             type="submit"
-                            disabled={isSubmitting || isUnchanged(values)}
+                            disabled={
+                              isSubmitting ||
+                              (isUnchanged(values) &&
+                                Object.keys(editedSuggestions).length === 0)
+                            }
                             sx={{
                               minHeight: "3.5rem",
                             }}
@@ -793,7 +858,11 @@ const OrganizationEdit = (props) => {
                               minHeight: "3.5rem",
                               display: "flex",
                             }}
-                            disabled={isSubmitting || isUnchanged(values)}
+                            disabled={
+                              isSubmitting ||
+                              (isUnchanged(values) &&
+                                Object.keys(editedSuggestions).length === 0)
+                            }
                           >
                             Save Progress
                           </Button>
@@ -820,7 +889,8 @@ const OrganizationEdit = (props) => {
                               handleSubmit();
                             }}
                             disabled={
-                              criticalFieldsValidate(values) ||
+                              isSubmitting ||
+                              Boolean(criticalFieldsValidate(values)) ||
                               values.verificationStatusId ===
                                 VERIFICATION_STATUS.NEEDS_VERIFICATION
                             }
@@ -853,6 +923,7 @@ const OrganizationEdit = (props) => {
                               handleSubmit();
                             }}
                             disabled={
+                              isSubmitting ||
                               !criticalFieldsValidate(values) ||
                               values.verificationStatusId ===
                                 VERIFICATION_STATUS.SUBMITTED

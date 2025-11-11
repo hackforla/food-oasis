@@ -1,6 +1,7 @@
-import { Snackbar } from "@mui/material";
+import { Snackbar, Alert } from "@mui/material";
 import { useToasterContext } from "../../contexts/toasterContext";
 import { IconButton } from "./StandardButton";
+import { success, error, secondary, linkText } from "../../theme/palette";
 
 const Toast = () => {
   const { toast, setToast } = useToasterContext();
@@ -12,6 +13,20 @@ const Toast = () => {
 
     setToast(false);
   };
+  const getToastColor = (type) => {
+    switch (type) {
+      case "warning":
+        return secondary;
+      case "info":
+        return linkText;
+      case "error":
+        return error;
+      case "success":
+        return success;
+      default:
+        return linkText;
+    }
+  };
 
   return toast.message ? (
     <Snackbar
@@ -22,18 +37,18 @@ const Toast = () => {
       open={!!toast}
       autoHideDuration={toast.duration || 4000}
       onClose={handleSnackbarClose}
-      ContentProps={{
-        "aria-describedby": "message-id",
-      }}
-      message={<span id="message-id">{toast.message}</span>}
-      action={[
-        <IconButton
-          key={toast.message}
-          icon="close"
-          onClick={handleSnackbarClose}
-        />,
-      ]}
-    />
+    >
+      <Alert
+        severity={toast.type || "info"}
+        onClose={handleSnackbarClose}
+        sx={{
+          backgroundColor: getToastColor(toast.type),
+          color: "white",
+        }}
+      >
+        {toast.message}
+      </Alert>
+    </Snackbar>
   ) : null;
 };
 

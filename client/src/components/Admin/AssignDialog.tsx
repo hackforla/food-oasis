@@ -3,22 +3,29 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
+  DialogProps,
   DialogTitle,
 } from "@mui/material";
-import PropTypes from "prop-types";
 import { useState } from "react";
 import AccountAutocomplete from "./AccountAutocomplete";
 
-function AssignDialog(props) {
+interface AssignDialogProps extends Omit<DialogProps, "onClose"> {
+  open: boolean;
+  onClose: (value?: number | undefined) => void;
+}
+
+function AssignDialog(props: AssignDialogProps) {
   const { onClose, open, ...other } = props;
-  const [accountId, setAccountId] = useState(null);
+  const [accountId, setAccountId] = useState<number | null>(null);
 
   const handleCancel = () => {
-    onClose(false);
+    onClose();
   };
 
   const handleAssign = () => {
-    onClose(accountId);
+    if (accountId) {
+      onClose(accountId);
+    }
   };
 
   return (
@@ -34,7 +41,6 @@ function AssignDialog(props) {
       <DialogTitle id="confirmation-dialog-title">Assign to:</DialogTitle>
       <DialogContent dividers>
         <AccountAutocomplete
-          name="assignedLoginId"
           accountId={accountId}
           setAccountId={(assignedAccountId) => setAccountId(assignedAccountId)}
         />
@@ -54,10 +60,4 @@ function AssignDialog(props) {
     </Dialog>
   );
 }
-
-AssignDialog.propTypes = {
-  onClose: PropTypes.func.isRequired,
-  open: PropTypes.bool.isRequired,
-};
-
 export default AssignDialog;

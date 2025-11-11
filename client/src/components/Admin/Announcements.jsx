@@ -4,9 +4,15 @@ import {
   CircularProgress,
   Container,
   Dialog,
+  FormControl,
+  FormControlLabel,
   IconButton,
+  InputLabel,
+  MenuItem,
+  Select,
   Paper,
   Stack,
+  Switch,
   Table,
   TableBody,
   TableCell,
@@ -16,29 +22,23 @@ import {
   TableRow,
   TextField,
   Typography,
-  FormControlLabel,
-  Switch,
 } from "@mui/material";
-import {
-  Delete as DeleteIcon,
-  KeyboardArrowDown as KeyboardArrowDownIcon,
-  KeyboardArrowUp as KeyboardArrowUpIcon,
-} from "@mui/icons-material";
+import { Delete as DeleteIcon } from "@mui/icons-material";
 import { useFormik } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import * as Yup from "yup";
 import { useAnnouncements } from "../../hooks/useAnnouncements";
 import * as announcementService from "../../services/announcements-service";
 import EditIcon from "@mui/icons-material/Edit";
 
 const Announcements = () => {
-  const [selectedRowId, setSelectedRowId] = useState(null);
-  const [rows, setRows] = useState([]);
   const [announcementModalOpen, setAnnouncementModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editAnnouncement, setEditAnnouncement] = useState(null);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [sortBy, setSortBy] = useState("created_at");
+  const [sortDirection, setSortDirection] = useState("desc");
 
   const {
     data: announcementsData,
@@ -46,39 +46,25 @@ const Announcements = () => {
     refetch: announcementRefetch,
   } = useAnnouncements();
 
-  useEffect(() => {
-    if (announcementsData) {
-      const newRows = announcementsData.map((announcement) => ({
-        announcementId: announcement.id,
-        title: announcement.title,
-        description: announcement.description,
-        is_enabled: announcement.is_enabled,
-      }));
-      setRows(newRows);
-    }
-  }, [announcementsData]);
-
   const handleModalClose = () => {
     setAnnouncementModalOpen(false);
     announcementFormik.resetForm();
   };
 
-  const handleRowClick = (rowTitle) => {
-    if (selectedRowId === rowTitle) {
-      setSelectedRowId(null);
-    } else {
-      setSelectedRowId(rowTitle);
-    }
-  };
-
   const handleIsEnabled = async (announcementId, isEnabled) => {
     try {
-      await announcementService.update(announcementId, { is_enabled: isEnabled });
-      setRows((prevRows) =>
-        prevRows.map((row) =>
-          row.announcementId === announcementId ? { ...row, is_enabled: isEnabled } : row
-        )
+      const announcement = (announcementsData || []).find(
+        (row) => row.announcementId === announcementId
       );
+      if (!announcement) throw new Error("Announcement not found");
+
+      await announcementService.update(announcementId, {
+        title: announcement.title,
+        description: announcement.description,
+        is_enabled: isEnabled,
+        severity: announcement.severity,
+      });
+      await announcementRefetch();
     } catch (error) {
       console.error("Error updating announcement:", error);
     }
@@ -89,6 +75,7 @@ const Announcements = () => {
       title: "",
       description: "",
       is_enabled: false,
+      severity: "info",
     },
     validationSchema: Yup.object({
       title: Yup.string().trim().required("Title is required"),
@@ -109,6 +96,7 @@ const Announcements = () => {
       title: editAnnouncement?.title || "",
       description: editAnnouncement?.description || "",
       is_enabled: editAnnouncement?.is_enabled || false,
+      severity: editAnnouncement?.severity || "info",
     },
     validationSchema: Yup.object({
       title: Yup.string().trim().required("Title is required"),
@@ -129,6 +117,32 @@ const Announcements = () => {
     setPage(0);
   };
 
+  const sortedAnnouncements = React.useMemo(() => {
+    if (!announcementsData) return [];
+    return [...announcementsData].sort((a, b) => {
+      let aVal = a[sortBy];
+      let bVal = b[sortBy];
+
+      if (sortBy === "created_at") {
+        aVal = new Date(aVal);
+        bVal = new Date(bVal);
+      } else if (sortBy === "severity") {
+        const severityMap = { info: 0, warning: 1, error: 2, success: 3 };
+        aVal = severityMap[aVal];
+        bVal = severityMap[bVal];
+      } else if (typeof aVal === "string") {
+        aVal = aVal.toLowerCase();
+        bVal = bVal.toLowerCase();
+      }
+
+      if (sortDirection === "asc") {
+        return aVal < bVal ? -1 : aVal > bVal ? 1 : 0;
+      } else {
+        return aVal > bVal ? -1 : aVal < bVal ? 1 : 0;
+      }
+    });
+  }, [announcementsData, sortBy, sortDirection]);
+
   if (announcementsLoading || !announcementsData) {
     return (
       <Stack
@@ -145,6 +159,7 @@ const Announcements = () => {
       </Stack>
     );
   }
+
   return (
     <Container maxWidth="md">
       <Box
@@ -157,13 +172,40 @@ const Announcements = () => {
         <Typography variant="h2" style={{ margin: 0, fontWeight: "bold" }}>
           Announcements
         </Typography>
-        <Button
-          variant="contained"
-          type="button"
-          onClick={() => setAnnouncementModalOpen(true)}
-        >
-          Add New Announcement
-        </Button>
+        <Box sx={{ display: "flex", gap: 2, marginTop: 1 }}>
+          <FormControl size="small" sx={{ minWidth: 150 }}>
+            <InputLabel>Sort By</InputLabel>
+            <Select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              label="Sort By"
+              data-testid="sort-by-select"
+            >
+              <MenuItem value="created_at">Created Date</MenuItem>
+              <MenuItem value="severity">Severity</MenuItem>
+              <MenuItem value="title">Title</MenuItem>
+              <MenuItem value="announcementId">ID</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl size="small" sx={{ minWidth: 150 }}>
+            <InputLabel>Order</InputLabel>
+            <Select
+              value={sortDirection}
+              onChange={(e) => setSortDirection(e.target.value)}
+              label="Order"
+            >
+              <MenuItem value="asc">Ascending</MenuItem>
+              <MenuItem value="desc">Descending</MenuItem>
+            </Select>
+          </FormControl>
+          <Button
+            variant="contained"
+            type="button"
+            onClick={() => setAnnouncementModalOpen(true)}
+          >
+            Add New Announcement
+          </Button>
+        </Box>
       </Box>
 
       <TableContainer component={Paper} elevation={3}>
@@ -171,84 +213,94 @@ const Announcements = () => {
           <TableHead>
             <TableRow>
               <TableCell />
-              <TableCell align="left"> Announcement ID </TableCell>
+              <TableCell align="left">Announcement ID</TableCell>
               <TableCell align="left">Announcement Title</TableCell>
               <TableCell align="left">Announcement Description</TableCell>
-              <TableCell align="left">Is Enabled?</TableCell>
+              <TableCell align="left">Created Date</TableCell>
+              <TableCell align="left">Severity</TableCell>
+              <TableCell align="left">Enabled</TableCell>
               <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows
+            {(sortedAnnouncements || [])
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row, index) => (
-                <React.Fragment key={index}>
-                  <TableRow
-                    sx={{
-                      "& > *": {
-                        borderBottom: "unset",
-                        cursor: "pointer",
-                        backgroundColor: "#efefef",
-                      },
-                    }}
-                    hover
-                  >
-                    <TableCell>
-                      <IconButton
-                        aria-label="edit-announcement"
-                        size="small"
-                        onClick={() => {
-                          setEditAnnouncement(row);
-                          setEditModalOpen(true);
-                        }}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                    </TableCell>
-                    <TableCell align="left" component="th" scope="row">
-                      {row.announcementId}
-                    </TableCell>
-                    <TableCell align="left" component="th" scope="row">
-                      {row.title}
-                    </TableCell>
-                    <TableCell align="left" component="th" scope="row">
-                      {row.description}
-                    </TableCell>
-                    <TableCell>
-                      <FormControlLabel
-                        control={
-                          <Switch
-                            color="success"
-                            checked={row.is_enabled}
-                            onChange={(e) =>
-                              handleIsEnabled(row.announcementId, e.target.checked)
-                            }
-                          />
-                        }
-                      />
-                    </TableCell>
-                    <TableCell align="right">
-                      <IconButton
-                        color="error"
-                        aria-label="delete-announcement"
-                        onClick={async (e) => {
-                          e.stopPropagation();
-                          try {
-                            await announcementService.remove(row.announcementId);
-                            announcementRefetch();
-                          } catch (error) {
-                            console.error(
-                              "Failed to remove announcement:",
-                              error
-                            );
+              .map((row) => (
+                <TableRow
+                  key={row.announcementId}
+                  sx={{
+                    "& > *": {
+                      borderBottom: "unset",
+                      cursor: "pointer",
+                      backgroundColor: "#efefef",
+                    },
+                  }}
+                  hover
+                >
+                  <TableCell>
+                    <IconButton
+                      aria-label="edit-announcement"
+                      size="small"
+                      onClick={() => {
+                        setEditAnnouncement(row);
+                        setEditModalOpen(true);
+                      }}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                  </TableCell>
+                  <TableCell align="left" component="th" scope="row">
+                    {row.announcementId}
+                  </TableCell>
+                  <TableCell align="left" component="th" scope="row">
+                    {row.title}
+                  </TableCell>
+                  <TableCell align="left" component="th" scope="row">
+                    {row.description}
+                  </TableCell>
+                  <TableCell align="left" component="th" scope="row">
+                    {new Date(row.created_at).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell align="left" component="th" scope="row">
+                    {row.severity}
+                  </TableCell>
+                  <TableCell>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          color="success"
+                          checked={row.is_enabled}
+                          onChange={(e) =>
+                            handleIsEnabled(
+                              row.announcementId,
+                              e.target.checked
+                            )
                           }
-                        }}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                </React.Fragment>
+                        />
+                      }
+                    />
+                  </TableCell>
+                  <TableCell align="right">
+                    <IconButton
+                      color="error"
+                      aria-label="delete-announcement"
+                      onClick={async (e) => {
+                        e.stopPropagation();
+                        try {
+                          await announcementService.remove(row.announcementId);
+                          announcementRefetch();
+                        } catch (error) {
+                          console.error(
+                            "Failed to remove announcement:",
+                            error
+                          );
+                        }
+                      }}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
               ))}
           </TableBody>
         </Table>
@@ -301,6 +353,21 @@ const Announcements = () => {
                   {announcementFormik.errors.description}
                 </Typography>
               )}
+              <FormControl fullWidth margin="normal">
+                <InputLabel>Severity</InputLabel>
+                <Select
+                  name="severity"
+                  value={announcementFormik.values.severity}
+                  onChange={announcementFormik.handleChange}
+                  label="Severity"
+                >
+                  <MenuItem value="info">Info</MenuItem>
+                  <MenuItem value="warning">Warning</MenuItem>
+                  <MenuItem value="error">Error</MenuItem>
+                  <MenuItem value="success">Success</MenuItem>
+                </Select>
+              </FormControl>
+
               <FormControlLabel
                 control={
                   <Switch
@@ -311,7 +378,7 @@ const Announcements = () => {
                     onChange={announcementFormik.handleChange}
                   />
                 }
-                label="Globally Enable"
+                label="Enabled"
               />
             </Box>
             <Box mt={3} display="flex" justifyContent="space-between">
@@ -371,6 +438,20 @@ const Announcements = () => {
                   {editFormik.errors.description}
                 </Typography>
               )}
+              <FormControl fullWidth margin="normal">
+                <InputLabel>Severity</InputLabel>
+                <Select
+                  name="severity"
+                  value={editFormik.values.severity}
+                  onChange={editFormik.handleChange}
+                  label="Severity"
+                >
+                  <MenuItem value="info">Info</MenuItem>
+                  <MenuItem value="warning">Warning</MenuItem>
+                  <MenuItem value="error">Error</MenuItem>
+                  <MenuItem value="success">Success</MenuItem>
+                </Select>
+              </FormControl>
               <FormControlLabel
                 control={
                   <Switch
@@ -381,7 +462,7 @@ const Announcements = () => {
                     onChange={editFormik.handleChange}
                   />
                 }
-                label="Globally Enable"
+                label="Enabled"
               />
             </Box>
             <Box mt={3} display="flex" justifyContent="space-between">
@@ -401,10 +482,11 @@ const Announcements = () => {
           </form>
         </Box>
       </Dialog>
+
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={rows.length}
+        count={sortedAnnouncements.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={(event, newPage) => setPage(newPage)}

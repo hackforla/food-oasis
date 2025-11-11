@@ -11,7 +11,18 @@ export const useAnnouncements = () => {
       setLoading(true);
       try {
         const announcements = await announcementService.getAllAnnouncements();
-        setData(announcements);
+        const processed = announcements
+          .slice()
+          .sort((a, b) => a.id - b.id)
+          .map((announcement) => ({
+            announcementId: announcement.id,
+            title: announcement.title,
+            description: announcement.description,
+            is_enabled: announcement.is_enabled,
+            severity: announcement.severity,
+            created_at: announcement.created_at,
+          }));
+        setData(processed);
         setLoading(false);
       } catch (err) {
         setError(err);

@@ -29,8 +29,10 @@ import {
   useFilterPanel,
   useOrgNameFilter,
   useOpenTimeFilter,
+  useFoodTypeFilter,
 } from "../../../../appReducer";
 import { Clear } from "@mui/icons-material";
+import { foodTypeLabelObject } from "helpers/Constants";
 
 const checkedStyle = {
   "&.Mui-checked": {
@@ -40,7 +42,7 @@ const checkedStyle = {
 
 const yPadding = { py: 2 };
 
-export default function FilterPanel({ mealPantry }) {
+export default function FilterPanel({ mealPantry, filterCount }) {
   const { isDesktop } = useBreakpoints();
   const drawerWidth = isDesktop ? 340 : "100%";
   const drawerHeight = isDesktop ? `100%` : "50%";
@@ -51,6 +53,7 @@ export default function FilterPanel({ mealPantry }) {
   const open = useFilterPanel();
   const openTime = useOpenTimeFilter();
   const orgNameFilter = useOrgNameFilter();
+  const foodTypeFilter = useFoodTypeFilter();
 
   const handleRadioChange = (event) => {
     const name = event.target.name;
@@ -123,9 +126,31 @@ export default function FilterPanel({ mealPantry }) {
           <Typography variant="h3" textAlign="center" color="common.grey">
             Filters
           </Typography>
-          <IconButton onClick={handleDrawerClose}>
-            <CloseIcon />
-          </IconButton>
+          <Typography
+            sx={(theme) => ({
+              fontWeight: "bold",
+              lineHeight: "1.3",
+              color: theme.palette.common.gray,
+              display: isDesktop ? "none" : "block",
+            })}
+          >
+            {`${filterCount} ${filterCount === 1 ? "Location" : "Locations"}`}
+          </Typography>
+          {isDesktop ? (
+            <IconButton onClick={handleDrawerClose}>
+              <CloseIcon />
+            </IconButton>
+          ) : (
+            <Typography
+              onClick={handleDrawerClose}
+              sx={{
+                cursor: "pointer",
+                textDecoration: "underline",
+              }}
+            >
+              View Results
+            </Typography>
+          )}
         </Stack>
         <Divider />
       </Box>
@@ -271,6 +296,42 @@ export default function FilterPanel({ mealPantry }) {
           />
         </RadioGroup>
         <Divider sx={{ mt: 2 }} />
+        <Typography variant="h4" sx={yPadding}>
+          Food Types
+        </Typography>
+        <List>
+          {Object.keys(foodTypeLabelObject).map((foodType) => (
+            <ListItem key={foodType} sx={{ padding: 0 }}>
+              <ListItemButton sx={{ padding: 0 }}>
+                <FormControlLabel
+                  sx={{ width: "100%" }}
+                  key={foodType}
+                  control={
+                    <Checkbox
+                      sx={checkedStyle}
+                      checked={foodTypeFilter.includes(foodType)}
+                      onChange={(e) => {
+                        const newFoodTypeFilter = e.target.checked
+                          ? [...foodTypeFilter, foodType]
+                          : foodTypeFilter.filter((type) => type !== foodType);
+
+                        dispatch({
+                          type: "FOOD_TYPE_FILTER_UPDATED",
+                          foodTypeFilter: newFoodTypeFilter,
+                        });
+                      }}
+                    />
+                  }
+                  label={
+                    <Stack direction="row" alignItems="center">
+                      <ListItemText primary={foodTypeLabelObject[foodType]} />
+                    </Stack>
+                  }
+                />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
       </Box>
     </Drawer>
   );
@@ -284,6 +345,7 @@ const OPEN_TIME_DROPDOWNS = {
   time: {
     placeholder: "Open Time",
     labels: [
+      "Any",
       "12:00AM",
       "01:00AM",
       "02:00AM",

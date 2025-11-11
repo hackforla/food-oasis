@@ -40,6 +40,25 @@ const getById: RequestHandler<{ id: string }, Suggestion, never> = async (
   }
 };
 
+const getByStakeholderId: RequestHandler<
+  { id: string },
+  Suggestion[],
+  never
+> = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const resp = await suggestionService.selectByStakeholderId(id);
+    res.send(resp);
+  } catch (err: any) {
+    if (err.code === 0) {
+      res.sendStatus(404);
+    } else {
+      console.error(err);
+      res.sendStatus(500);
+    }
+  }
+};
+
 const post: RequestHandler<
   never,
   { id: number } | { error: string },
@@ -88,6 +107,7 @@ const remove: RequestHandler<{ id: string }, Response, never, never> = async (
 export default {
   getAll,
   getById,
+  getByStakeholderId,
   post,
   put,
   remove,

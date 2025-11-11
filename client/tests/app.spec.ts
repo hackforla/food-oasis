@@ -9,11 +9,6 @@ test.describe("App", () => {
     await expect(
       page.getByText("Locate free food in Los Angeles")
     ).toBeVisible();
-    //await expect(
-      //page.getByText(
-        //"Due to the LA Fires, some information may be out-of-date."
-      //)
-    //).toBeVisible();
     await expect(page.getByText("Learn about this site")).toBeVisible();
     await expect(page.getByText("Learn about this site")).toHaveAttribute(
       "href",
@@ -24,6 +19,6 @@ test.describe("App", () => {
       .getByText("Los Angeles, California 90001, United States")
       .click();
     await expect(page.url()).toBe("http://localhost:3000/organizations");
-    await expect(page.getByText("3 Locations")).toBeVisible();
+    await expect(page.getByText("3 Locations").first()).toBeVisible();
   });
 });

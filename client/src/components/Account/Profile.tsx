@@ -2,27 +2,45 @@ import { Button, Container, Grid, TextField, Typography } from "@mui/material";
 import SEO from "components/SEO";
 import { IconButton } from "components/UI/StandardButton";
 import { useToasterContext } from "contexts/toasterContext";
-import { useFormik } from "formik";
+import { useFormik, FormikHelpers } from "formik";
 import { useState } from "react";
 import { updateProfile } from "services/account-service";
 import { object, string } from "yup";
 import { useUserContext } from "../../contexts/userContext";
 import { bodyText, headingText } from "../../theme/palette";
+import type { User } from "../../types/User";
+
+interface FieldsState {
+  firstName: boolean;
+  lastName: boolean;
+  emailID: boolean;
+}
+
+interface FormValues {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
 
 export default function Profile() {
-  const { user, onUpdate } = useUserContext();
-  const { setToast } = useToasterContext();
-  const [fields, setFields] = useState({
+  const { user, onUpdate } = useUserContext() as {
+    user: User;
+    onUpdate: (user: User) => Promise<void>;
+  };
+  const { setToast } = useToasterContext() as {
+    setToast: (toast: { message: string }) => void;
+  };
+  const [fields, setFields] = useState<FieldsState>({
     firstName: false,
     lastName: false,
     emailID: false,
   });
 
-  const setFieldDefualt = () => {
+  const setFieldDefault = () => {
     setFields({ firstName: false, lastName: false, emailID: false });
   };
 
-  const formik = useFormik({
+  const formik = useFormik<FormValues>({
     initialValues: {
       firstName: user.firstName,
       lastName: user.lastName,
@@ -41,12 +59,12 @@ export default function Profile() {
         .required("Email can not be blank!")
         .email("Please enter valid email!"),
     }),
-    onSubmit: async (values) => {
+    onSubmit: async (values, _helpers: FormikHelpers<FormValues>) => {
       const res = await updateProfile(user.id, values);
       if (res) {
         await onUpdate(res.data.user);
         await setToast({ message: "User profile updated successfully!" });
-        setFieldDefualt();
+        setFieldDefault();
       } else {
         setToast({ message: "Sorry! your profile could not be updated" });
       }
@@ -55,7 +73,10 @@ export default function Profile() {
 
   return (
     <>
-      <SEO title="User Profile" />
+      <SEO
+        title="User Profile"
+        description="Edit your user profile information."
+      />
       <Container component="main" maxWidth="lg">
         <form onSubmit={formik.handleSubmit}>
           <Grid container spacing={{ sm: 1, md: 3 }} alignItems={"center"}>
@@ -86,6 +107,7 @@ export default function Profile() {
                   name="firstName"
                   size="small"
                   margin="dense"
+                  placeholder="First Name"
                   value={formik.values.firstName}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
@@ -125,6 +147,7 @@ export default function Profile() {
                 </Typography>
               ) : (
                 <TextField
+                  placeholder="Last Name"
                   id="lastName"
                   name="lastName"
                   size="small"
@@ -168,6 +191,7 @@ export default function Profile() {
                 </Typography>
               ) : (
                 <TextField
+                  placeholder="Email"
                   id="email"
                   name="email"
                   size="small"
@@ -203,7 +227,7 @@ export default function Profile() {
                   size="small"
                   aria-label="cancel button"
                   color="secondary"
-                  onClick={() => setFieldDefualt()}
+                  onClick={() => setFieldDefault()}
                 >
                   Cancel
                 </Button>

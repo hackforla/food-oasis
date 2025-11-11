@@ -35,6 +35,13 @@ export interface ApiResponse {
   email?: string;
 }
 
+export interface RegisterParams {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}
+
 export const getAll = async () => {
   const response = await axios.get(baseUrl + "?tenantId=" + tenantId);
   return response;
@@ -47,12 +54,12 @@ export const getByEmail = async (email: string) => {
   return response;
 };
 
-export const register = async (
-  firstName: string,
-  lastName: string,
-  email: string,
-  password: string
-): Promise<ApiResponse> => {
+export const register = async ({
+  firstName,
+  lastName,
+  email,
+  password,
+}: RegisterParams): Promise<ApiResponse> => {
   const body = { firstName, lastName, email, password, clientUrl, tenantId };
   const response = await axios.post(baseUrl + "/register", body);
   return response.data;

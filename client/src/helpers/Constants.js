@@ -92,7 +92,6 @@ const TENANT_MAINTAINER_LOGO_URLS = {
   6: hackForLaLogoUrl,
 };
 
-
 export const DEFAULT_VIEWPORTS = {
   1: {
     center: { latitude: 34.0354899, longitude: -118.2439235 },
@@ -183,13 +182,18 @@ export const TENANT_METADATA = {
   tenantLogoUrl: TENANT_LOGO_URL,
 };
 
-export const LINKEDIN_REGEX =
-  /^https?:\/\/(www\.)?linkedin\.com(\/.*)?$/;
-export const FACEBOOK_REGEX =
-  /^https?:\/\/(www\.)?facebook\.com(\/.*)?$/;
-export const INSTAGRAM_REGEX =
-  /^https?:\/\/(www\.)?instagram\.com(\/.*)?$/;
-export const PINTEREST_REGEX =
-  /^https?:\/\/(www\.)?pinterest\.com(\/.*)?$/;
+export const LINKEDIN_REGEX = /^https?:\/\/(www\.)?linkedin\.com(\/.*)?$/;
+export const FACEBOOK_REGEX = /^https?:\/\/(www\.)?facebook\.com(\/.*)?$/;
+export const INSTAGRAM_REGEX = /^https?:\/\/(www\.)?instagram\.com(\/.*)?$/;
+export const PINTEREST_REGEX = /^https?:\/\/(www\.)?pinterest\.com(\/.*)?$/;
 export const TWITTER_REGEX =
   /^https?:\/\/(www\.)?(twitter\.com|x\.com)(\/.*)?$/;
+
+export const foodTypeLabelObject = {
+  foodBakery: "Baked Goods",
+  foodDairy: "Dairy",
+  foodDryGoods: "Dry Goods",
+  foodMeat: "Meat",
+  foodPrepared: "Prepared Food",
+  foodProduce: "Produce",
+};

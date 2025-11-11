@@ -112,7 +112,7 @@ const adminColumns = [
   },
   {
     field: "inactiveTemporary",
-    headerName: "Covid Closed",
+    headerName: "Temp Closed",
     renderCell: inactiveFormatter("inactiveTemporary"),
     width: 150,
   },
@@ -275,7 +275,7 @@ const dataEntryColumns = [
   },
   {
     field: "inactiveTemporary",
-    headerName: "Covid Closed",
+    headerName: "Temp Closed",
     renderCell: inactiveFormatter("inactiveTemporary"),
     width: 150,
   },

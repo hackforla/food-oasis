@@ -27,8 +27,7 @@ const AnnouncementSnackbar = () => {
       {enabledAnnouncements.map((announcement, idx) => (
         <Collapse in={openIndexes[idx]} key={announcement.id}>
           <Alert
-            icon={false}
-            severity="warning"
+            severity={announcement.severity || "info"}
             sx={{ mb: 0, p: 2 }}
             action={
               <IconButton
@@ -44,7 +43,7 @@ const AnnouncementSnackbar = () => {
               </IconButton>
             }
           >
-            <Typography>{announcement.description}</Typography>
+            <Typography variant="body1">{announcement.description}</Typography>
           </Alert>
         </Collapse>
       ))}

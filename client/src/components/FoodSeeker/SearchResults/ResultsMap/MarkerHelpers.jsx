@@ -1,6 +1,6 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { renderToString } from "react-dom/server";
-import MapMarker from "images/mapMarker";
+import MapMarker from "./MapMarker";
 import {
   MEAL_PROGRAM_CATEGORY_ID,
   FOOD_PANTRY_CATEGORY_ID,

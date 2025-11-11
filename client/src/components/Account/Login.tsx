@@ -76,7 +76,7 @@ const LoginForm = () => {
         <Formik
           validateOnBlur={false}
           initialValues={{
-            email: email || "",
+            email: email ?? "",
             password: "",
           }}
           validationSchema={validationSchema}

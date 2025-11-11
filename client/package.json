@@ -1,7 +1,7 @@
 {
   "name": "foodoasis-client",
   "description": "React Client for Food Oasis",
-  "version": "1.0.94",
+  "version": "1.0.96",
   "author": "Hack for LA",
   "license": "GPL-2.0",
   "private": true,
@@ -30,7 +30,7 @@
     "@turf/bbox": "^7.2.0",
     "@types/mapbox-gl": "^3.4.0",
     "@types/node": "^22.9.1",
-    "axios": "^1.8.2",
+    "axios": "^1.12.0",
     "dayjs": "^1.11.7",
     "debounce-fn": "^5.0.0",
     "formik": "^2.2.9",
@@ -81,7 +81,7 @@
     "prettier": "^2.4.1",
     "ts-jest": "^29.2.5",
     "typescript": "^5.0.0",
-    "vite": "^6.3.4",
+    "vite": "^6.4.1",
     "vite-plugin-svgr": "^4.2.0",
     "vite-tsconfig-paths": "^5.0.1"
   },

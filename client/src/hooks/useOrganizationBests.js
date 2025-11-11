@@ -5,6 +5,7 @@ import { useCallback, useState } from "react";
 import {
   DEFAULT_COORDINATES,
   useAppDispatch,
+  useFoodTypeFilter,
   useOpenTimeFilter,
   useOrgNameFilter,
   useSearchCoordinates,
@@ -12,6 +13,7 @@ import {
 import { stakeholdersDaysHours } from "../components/FoodSeeker/SearchResults/StakeholderPreview/StakeholderPreview";
 import * as analytics from "../services/analytics";
 import * as stakeholderService from "../services/stakeholder-best-service";
+import dayjs from "dayjs";
 
 const sortOrganizations = (a, b) => {
   if (
@@ -40,6 +42,7 @@ export default function useOrganizationBests() {
   const searchCoordinates = useSearchCoordinates();
   const openTimeFilter = useOpenTimeFilter();
   const orgNameFilter = useOrgNameFilter();
+  const foodTypeFilter = useFoodTypeFilter();
   const { tenantTimeZone } = useSiteContext();
 
   const longitude =
@@ -69,23 +72,35 @@ export default function useOrganizationBests() {
       }
 
       if (filters.showActiveOnly) {
-        // filter out inactive, inactiveTemporary stakeholders
         filteredStakeholders = filteredStakeholders.filter((stakeholder) => {
           return !stakeholder.inactive && !stakeholder.inactiveTemporary;
         });
       }
 
       const { day, time } = filters.openTimeFilter;
-      if (day !== "" && time !== "") {
+      if (day || (time && time !== "Any")) {
         filteredStakeholders = filteredStakeholders.filter((stakeholder) => {
-          const nextDateForDay = getNextDateForDay(day, time, tenantTimeZone);
-          const hours = stakeholdersDaysHours(
-            stakeholder,
-            tenantTimeZone,
-            nextDateForDay
-          );
+          return stakeholder.hours?.some((h) => {
+            const dayMatch = day ? h.day_of_week.toUpperCase() === day : true;
 
-          return !!hours;
+            const timeMatch =
+              !time || time === "Any"
+                ? true
+                : (() => {
+                    const openTime = dayjs(h.open, "HH:mm:ss");
+                    const closeTime = dayjs(h.close, "HH:mm:ss");
+                    const filterTime = dayjs(time, "hh:mmA");
+
+                    return (
+                      filterTime.isSame(openTime) ||
+                      filterTime.isSame(closeTime) ||
+                      (filterTime.isAfter(openTime) &&
+                        filterTime.isBefore(closeTime))
+                    );
+                  })();
+
+            return dayMatch && timeMatch;
+          });
         });
       }
       if (filters.orgNameFilter) {
@@ -94,6 +109,13 @@ export default function useOrganizationBests() {
             .toLowerCase()
             .split(" ")
             .every((word) => stakeholder.name.toLowerCase().includes(word));
+        });
+      }
+      if (filters.foodTypeFilter) {
+        filteredStakeholders = filteredStakeholders.filter((stakeholder) => {
+          return filters.foodTypeFilter.every((foodType) => {
+            return stakeholder[foodType] === true;
+          });
         });
       }
 
@@ -145,6 +167,9 @@ export default function useOrganizationBests() {
         if (orgNameFilter) {
           filters.orgNameFilter = orgNameFilter;
         }
+        if (foodTypeFilter.length) {
+          filters.foodTypeFilter = foodTypeFilter;
+        }
 
         let stakeholders;
         const isStaleData = checkIfStaleData();
@@ -166,7 +191,14 @@ export default function useOrganizationBests() {
         return Promise.reject(err);
       }
     },
-    [openTimeFilter, latitude, longitude, processStakeholders, orgNameFilter]
+    [
+      openTimeFilter,
+      latitude,
+      longitude,
+      processStakeholders,
+      orgNameFilter,
+      foodTypeFilter,
+    ]
   );
 
   const getById = useCallback(async (id) => {

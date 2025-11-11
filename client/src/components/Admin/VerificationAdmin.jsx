@@ -212,9 +212,9 @@ function VerificationAdmin() {
 
   const handleAssignDialogClose = async (loginId) => {
     setAssignDialogOpen(false);
-    // Dialog returns false if cancelled, null if
+    // Dialog returns undefined if cancelled, null if
     // want to unassign, otherwise a loginId > 0
-    if (loginId === false) return;
+    if (!loginId) return;
     try {
       for (let i = 0; i < selectedStakeholderIds.length; i++) {
         await assign(selectedStakeholderIds[i], user.id, loginId);

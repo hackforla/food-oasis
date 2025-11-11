@@ -48,45 +48,51 @@ export default function AddressDropDown({ autoFocus }) {
   };
 
   const handleAutocompleteOnChange = (selectedResult) => {
-    const result = mapboxResults.find(
-      (item) => item.place_name === selectedResult
-    );
-    const stakeholderResult = stakeholders.find(
-      (stakeholder) => getNameAndAddress(stakeholder) === selectedResult
-    );
+    let result;
+    if (selectedResult.type === "mapbox") {
+      result = selectedResult.value.place_name;
+      const [longitude, latitude] = selectedResult.value.center;
+
+      flyTo({
+        latitude,
+        longitude,
+      });
+
+      dispatch({
+        type: "SEARCH_COORDINATES_UPDATED",
+        coordinates: {
+          latitude,
+          longitude,
+          locationName: selectedResult.value.place_name,
+        },
+      });
+
+      navigate(isWidget ? "/widget" : "/organizations");
+
+      analytics.postEvent("changeOrigin", {});
+    } else if (selectedResult.type === "stakeholder") {
+      result = getNameAndAddress(selectedResult.value);
+      const { longitude, latitude } = selectedResult.value;
+
+      flyTo({
+        latitude,
+        longitude,
+      });
+      dispatch({
+        type: "SEARCH_COORDINATES_UPDATED",
+        coordinates: {
+          latitude,
+          longitude,
+          locationName: getNameAndAddress(selectedResult.value),
+        },
+      });
+      navigate(isWidget ? "/widget" : "/organizations");
+
+      analytics.postEvent("changeOrigin", {});
+    } else return;
+
     setOpen(false);
-    setInputVal(selectedResult);
-    if (stakeholderResult) {
-      const { longitude, latitude } = stakeholderResult;
-
-      flyTo({
-        latitude,
-        longitude,
-      });
-      dispatch({
-        type: "SEARCH_COORDINATES_UPDATED",
-        coordinates: { latitude, longitude, locationName: selectedResult },
-      });
-      navigate(isWidget ? "/widget" : "/organizations");
-
-      analytics.postEvent("changeOrigin", {});
-    }
-
-    if (result) {
-      const [longitude, latitude] = result.center;
-
-      flyTo({
-        latitude,
-        longitude,
-      });
-      dispatch({
-        type: "SEARCH_COORDINATES_UPDATED",
-        coordinates: { latitude, longitude, locationName: result.place_name },
-      });
-      navigate(isWidget ? "/widget" : "/organizations");
-
-      analytics.postEvent("changeOrigin", {});
-    }
+    setInputVal(result);
   };
 
   const renderInput = (params) => {
@@ -145,18 +151,30 @@ export default function AddressDropDown({ autoFocus }) {
         component="div"
         onClick={() => handleAutocompleteOnChange(option)}
       >
-        {option}
+        {getOptionLabel(option)}
       </MenuItem>
     );
   };
 
+  const stakeholderOptions = stakeholders?.map((stakeholder) => ({
+    type: "stakeholder",
+    value: stakeholder,
+  }));
+  const mapboxOptions = mapboxResults.slice(0, 10).map((result) => ({
+    type: "mapbox",
+    value: result,
+  }));
+
   const handleKeyDown = (event) => {
-    if (event.key === "Enter" && mapboxResults.length > 0 && !isLoading) {
+    if (event.key === "Enter" && mapboxOptions.length > 0 && !isLoading) {
       event.preventDefault();
-      const selected = highlightedOption ?? mapboxResults[0].place_name;
+      const selected = highlightedOption ?? mapboxOptions[0];
       handleAutocompleteOnChange(selected);
     }
   };
+
+  const combinedOptions = [...mapboxOptions, ...stakeholderOptions];
+
   return (
     <>
       <Autocomplete
@@ -173,19 +191,25 @@ export default function AddressDropDown({ autoFocus }) {
         onClose={() => setOpen(false)}
         onKeyDown={handleKeyDown}
         onChange={(_event, newValue) => {
-          setInputVal(newValue ?? "");
+          setInputVal(newValue ? getOptionLabel(newValue) : "");
         }}
-        options={[
-          ...stakeholders?.map((stakeholder) => getNameAndAddress(stakeholder)),
-          ...mapboxResults.slice(0, 10).map((item) => item.place_name),
-        ]}
+        options={combinedOptions}
+        groupBy={(option) =>
+          option.type === "stakeholder" ? "Organizations" : "Addresses"
+        }
+        getOptionLabel={getOptionLabel}
         filterOptions={(options, { inputValue }) => {
-          return options.filter((option) =>
-            inputValue
-              .toLowerCase()
-              .split(" ")
-              .every((word) => option.toLowerCase().includes(word))
-          );
+          return options.filter((option) => {
+            if (option.type === "stakeholder") {
+              return inputValue
+                .toLowerCase()
+                .split(" ")
+                .every((word) =>
+                  getNameAndAddress(option.value).toLowerCase().includes(word)
+                );
+            }
+            return true; // For mapbox results, we don't filter by inputValue
+          });
         }}
         sx={{
           width: 600,
@@ -228,4 +252,11 @@ function getNameAndAddress(stakeholder) {
     (stakeholder.city ? `, ${stakeholder.city}` : "") +
     (stakeholder.zip ? `, ${stakeholder.zip}` : "")
   );
+}
+
+export function getOptionLabel(option) {
+  if (option.type === "stakeholder") {
+    return getNameAndAddress(option.value);
+  }
+  return option.value.place_name;
 }

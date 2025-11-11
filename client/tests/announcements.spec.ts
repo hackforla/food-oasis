@@ -3,10 +3,12 @@ import test from "./helpers/test";
 import { expect } from "@playwright/test";
 
 test.describe("Announcements", () => {
-  test("Should display announcements page with table", async ({
-    page,
-    helpers,
-  }) => {
+  test.beforeEach(async ({ page, helpers }) => {
+    await mockRequests(page);
+    await helpers.mockLogin();
+  });
+
+  test("Should display announcements page with table", async ({ page }) => {
     await mockRequests(page, {
       announcements: [
         {
@@ -28,7 +30,6 @@ test.describe("Announcements", () => {
       ],
     });
 
-    await helpers.mockLogin();
     await page.getByTestId("menu-button").click();
     await page.getByRole("link", { name: "Announcements" }).click();
 
@@ -40,7 +41,7 @@ test.describe("Announcements", () => {
     await expect(page.getByText("System Update")).toBeVisible();
   });
 
-  test("Should sort by severity", async ({ page, helpers }) => {
+  test("Should sort by severity", async ({ page }) => {
     await mockRequests(page, {
       announcements: [
         {
@@ -62,17 +63,15 @@ test.describe("Announcements", () => {
       ],
     });
 
-    await helpers.mockLogin();
     await page.getByTestId("menu-button").click();
     await page.getByRole("link", { name: "Announcements" }).click();
 
     await page.getByTestId("sort-by-select").click();
     await page.getByRole("option", { name: "Severity" }).click();
-
     await expect(page.getByTestId("sort-by-select")).toContainText("Severity");
   });
 
-  test("Should display severity values", async ({ page, helpers }) => {
+  test("Should display severity values", async ({ page }) => {
     await mockRequests(page, {
       announcements: [
         {
@@ -94,17 +93,17 @@ test.describe("Announcements", () => {
       ],
     });
 
-    await helpers.mockLogin();
     await page.getByTestId("menu-button").click();
     await page.getByRole("link", { name: "Announcements" }).click();
 
-    await expect(page.getByText("info")).toBeVisible();
-    await expect(page.getByText("warning")).toBeVisible();
-  });
-});
+    const infoRow = page.getByRole("row", { name: /Info announcement/i });
+    const warnRow = page.getByRole("row", { name: /Warning announcement/i });
 
-test.describe("Announcements", () => {
-  test("shows announcements when they're available", async ({ page }) => {
+    await expect(infoRow.getByText(/^info$/i)).toBeVisible();
+    await expect(warnRow.getByText(/^warning$/i)).toBeVisible();
+  });
+
+  test("Shows announcements when available", async ({ page }) => {
     await mockRequests(page, {
       announcements: [
         {
@@ -119,17 +118,22 @@ test.describe("Announcements", () => {
     });
 
     await page.goto("/");
-    await expect(page.getByText("This is a mock announcement for testing.")).toBeVisible();
+    await expect(
+      page.getByText("This is a mock announcement for testing.")
+    ).toBeVisible();
 
     await page.goto("/organizations");
-    await expect(page.getByText("This is a mock announcement for testing.")).toBeVisible();
+    await expect(
+      page.getByText("This is a mock announcement for testing.")
+    ).toBeVisible();
   });
 
   test("doesn't show announcements when there are none", async ({ page }) => {
     await mockRequests(page, { announcements: [] });
 
     await page.goto("/");
-    const announcementText = page.getByText("This is a mock announcement for testing.");
-    await expect(announcementText).toHaveCount(0);
+    await expect(
+      page.getByText("This is a mock announcement for testing.")
+    ).toHaveCount(0);
   });
 });

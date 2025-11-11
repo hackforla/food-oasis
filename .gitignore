@@ -262,3 +262,4 @@ node_modules/
 /client/playwright-report/
 /client/blob-report/
 /client/playwright/.cache/
+/client/playwright/.auth-state

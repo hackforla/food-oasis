@@ -65,7 +65,7 @@
   "devDependencies": {
     "@babel/preset-env": "^7.25.9",
     "@babel/preset-react": "^7.25.9",
-    "@playwright/test": "^1.51.1",
+    "@playwright/test": "^1.56.1",
     "@testing-library/react": "^16.0.1",
     "@types/jest": "^29.5.13",
     "@types/lodash.debounce": "^4.0.9",

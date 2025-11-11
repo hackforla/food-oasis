@@ -38,9 +38,7 @@ function authTest(page: Page) {
       await page.locator('input[type="password"]').fill("Brave1234!");
       await page.getByText("Sign In").click();
 
-      await expect(page).toHaveURL(
-        "http://localhost:3000/admin/verificationAdmin"
-      );
+      await page.waitForURL(/\/admin\/verificationAdmin$/, { timeout: 10000 });
       await expect(
         page.getByRole("heading", { name: "Verification Administration" })
       ).toBeVisible();

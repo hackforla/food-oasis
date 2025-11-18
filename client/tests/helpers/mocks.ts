@@ -4,23 +4,30 @@ export default async function mockRequests(
   page: Page,
   overrides?: Record<string, any>
 ) {
-  const mocks = {
+  const mocks: Record<string, any> = {
     ...MOCKS,
     ...overrides,
   };
 
-  Object.entries(mocks).forEach(([path, response]) => {
-    const handler = typeof response === "function" ? response : () => response;
+  await page.route("**/api/**", (route) => {
+    const url = route.request().url();
+    const rawPath = url.split("/api/")[1] || "";
+    const normalized = rawPath.split("?")[0].replace(/\/$/, "").toLowerCase();
 
-    page.route(`**/api/${path}**`, (route) => {
-      const mockResponse = handler();
-
-      route.fulfill({
+    const key = Object.keys(mocks).find((k) => k.toLowerCase() === normalized);
+    if (key) {
+      const response = mocks[key];
+      const handler =
+        typeof response === "function" ? response : () => response;
+      return route.fulfill({
         status: 200,
         contentType: "application/json",
-        body: JSON.stringify(mockResponse),
+        body: JSON.stringify(handler()),
       });
-    });
+    }
+
+    console.warn("[mocks] no mock for /api/" + normalized);
+    return route.continue();
   });
 }
 
@@ -43,6 +50,7 @@ const MOCKS = {
       emailConfirmed: true,
     },
   },
+  "accounts/login": makeLoginResponse(),
   "accounts/getProfile": {
     isSuccess: true,
     user: {
@@ -62,7 +70,6 @@ const MOCKS = {
       features: [],
     },
   },
-  "accounts/login": makeLoginResponse(),
   "accounts/resendConfirmationEmail": {
     isSuccess: true,
     code: "REG_SUCCESS",

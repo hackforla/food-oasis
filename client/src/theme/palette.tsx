@@ -43,6 +43,13 @@ declare module "@mui/material/styles" {
       hoverSelectedColor: string;
     };
   }
+
+  // Extend common colors (palette.common) with app-specific keys
+  interface CommonColors {
+    gray: string;
+    disabled: string;
+    darkGray: string;
+  }
 }
 
 export const white = "#FFFFFF";

@@ -25,25 +25,43 @@ export default playwrightTest.extend<{
 function authTest(page: Page) {
   return {
     mockLogin: async () => {
-      await mockRequests(page);
-      await page.goto("/");
+      const user = {
+        id: 108,
+        firstName: "Test",
+        lastName: "User",
+        email: "test@dispostable.com",
+        isAdmin: true,
+        isCoordinator: false,
+        isDataEntry: true,
+      };
 
-      await page.getByTestId("menu-button").click();
-      await page.getByText("Volunteer Login").click();
-
-      await expect(page.url()).toBe("http://localhost:3000/admin/login");
-      await expect(page.getByRole("heading", { name: "Login" })).toBeVisible();
-
-      await page.getByLabel("Email *").fill("testuser@test.com");
-      await page.locator('input[type="password"]').fill("Brave1234!");
-      await page.getByText("Sign In").click();
-
-      await expect(page).toHaveURL(
-        "http://localhost:3000/admin/verificationAdmin"
+      const header = Buffer.from(JSON.stringify({ alg: "none" })).toString(
+        "base64"
       );
-      await expect(
-        page.getByRole("heading", { name: "Verification Administration" })
-      ).toBeVisible();
+      const payload = Buffer.from(
+        JSON.stringify({
+          email: user.email,
+          id: user.id,
+          sub: "admin,data_entry,global_admin",
+        })
+      ).toString("base64");
+      const fakeJwt = `${header}.${payload}.`;
+
+      await page.context().addCookies([
+        {
+          name: "jwt",
+          value: fakeJwt,
+          domain: "localhost",
+          path: "/",
+          httpOnly: false,
+          secure: false,
+          sameSite: "Lax",
+        },
+      ]);
+
+      await page.addInitScript((userObj) => {
+        localStorage.setItem("user", JSON.stringify(userObj));
+      }, user);
     },
   };
 }

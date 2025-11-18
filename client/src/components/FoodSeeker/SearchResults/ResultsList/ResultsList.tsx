@@ -1,13 +1,5 @@
-import { useState } from "react";
-import {
-  Button,
-  CircularProgress,
-  Stack,
-  Typography,
-  Divider,
-} from "@mui/material";
-import PropTypes from "prop-types";
-import { useEffect } from "react";
+import { FC, useEffect, useState } from "react";
+import { CircularProgress, Stack, Typography, Divider } from "@mui/material";
 import { Virtuoso } from "react-virtuoso";
 import * as analytics from "services/analytics";
 import {
@@ -19,12 +11,30 @@ import StakeholderDetails from "../StakeholderDetails/StakeholderDetails";
 import StakeholderPreview from "../StakeholderPreview/StakeholderPreview";
 import useBreakpoints from "hooks/useBreakpoints";
 import { useMapbox } from "hooks/useMapbox";
+import type { Theme } from "@mui/material/styles";
 
-const ResultsList = ({ stakeholders, loading, handleReset }) => {
+interface Stakeholder {
+  id: number;
+  latitude: number;
+  longitude: number;
+  [key: string]: unknown;
+}
+
+interface ResultsListProps {
+  stakeholders: Stakeholder[];
+  loading: boolean;
+  handleReset?: () => void;
+}
+
+const ResultsList: FC<ResultsListProps> = ({
+  stakeholders,
+  loading,
+  handleReset,
+}) => {
   const selectedOrganization = useSelectedOrganization();
   const [topMostIndex, setTopMostIndex] = useState(0);
   const { isDesktop } = useBreakpoints();
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch() as (action: any) => void;
   const { flyTo } = useMapbox();
   const open = useFilterPanel();
 
@@ -32,7 +42,7 @@ const ResultsList = ({ stakeholders, loading, handleReset }) => {
     analytics.postEvent("showList");
   }, []);
 
-  const handleHover = (stakeholder) => {
+  const handleHover = (stakeholder: Stakeholder) => {
     dispatch({
       type: "HOVERED_ORGANIZATION_UPDATED",
       organization: stakeholder,
@@ -65,7 +75,7 @@ const ResultsList = ({ stakeholders, loading, handleReset }) => {
         <Stack pt={2} spacing={2}>
           <Stack px={2} direction="row" justifyContent="space-between">
             <Typography
-              sx={(theme) => ({
+              sx={(theme: Theme) => ({
                 fontWeight: "bold",
                 fontSize: { xs: "18px" },
                 color: theme.palette.common.gray,
@@ -94,7 +104,7 @@ const ResultsList = ({ stakeholders, loading, handleReset }) => {
         </Stack>
       )}
       {stakeholders.length ? (
-        <Virtuoso
+        <Virtuoso<Stakeholder>
           initialTopMostItemIndex={topMostIndex}
           data={stakeholders}
           style={{
@@ -141,13 +151,6 @@ const ResultsList = ({ stakeholders, loading, handleReset }) => {
       )}
     </Stack>
   );
-};
-
-ResultsList.propTypes = {
-  stakeholders: PropTypes.arrayOf(PropTypes.object),
-  status: PropTypes.string,
-  handleReset: PropTypes.func,
-  handleFlyTo: PropTypes.func,
 };
 
 export default ResultsList;

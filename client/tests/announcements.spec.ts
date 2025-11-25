@@ -61,8 +61,7 @@ test.describe("Announcements", () => {
     });
 
     await helpers.mockLogin();
-    await page.getByTestId("menu-button").click();
-    await page.getByRole("link", { name: "Announcements" }).click();
+    await page.goto("/admin/announcements");
 
     await page.getByTestId("sort-by-select").click();
     await page.getByRole("option", { name: "Severity" }).click();
@@ -93,11 +92,14 @@ test.describe("Announcements", () => {
     });
 
     await helpers.mockLogin();
-    await page.getByTestId("menu-button").click();
-    await page.getByRole("link", { name: "Announcements" }).click();
+    await page.goto("/admin/announcements");
+    await expect(
+      page.getByRole("rowheader", { name: /^info$/i })
+    ).toBeVisible();
 
-    await expect(page.getByText("info")).toBeVisible();
-    await expect(page.getByText("warning")).toBeVisible();
+    await expect(
+      page.getByRole("rowheader", { name: /^warning$/i })
+    ).toBeVisible();
   });
 });
 

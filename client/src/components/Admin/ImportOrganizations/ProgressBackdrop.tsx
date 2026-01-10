@@ -2,12 +2,13 @@ import { Backdrop, CircularProgress, Typography } from "@mui/material";
 
 // Cancel button removes ProgressBackdrop, but doesn't cancel backend read stream, so commented out for now.
 
-function ProgressBackdrop(props) {
-  const {
-    loading,
-    messageOnLoad,
-    // handleCancelUpload
-  } = props;
+interface ProgressBackdropProps {
+  loading: boolean;
+  messageOnLoad?: string;
+}
+
+function ProgressBackdrop(props: ProgressBackdropProps) {
+  const { loading, messageOnLoad } = props;
 
   return (
     <Backdrop

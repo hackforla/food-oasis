@@ -13,9 +13,17 @@ import ImportFileTable from "./ImportFileTable";
 import ProgressBackdrop from "./ProgressBackdrop";
 import importValidation from "./importValidation";
 
-const initialImportData = {
-  data: null,
-  action: null,
+type ImportAction = "replace" | "update" | "add" | "";
+
+interface ImportData {
+  tenantId: number;
+  data?: any[];
+  action: ImportAction;
+}
+
+const initialImportData: Omit<ImportData, "tenantId"> = {
+  data: undefined,
+  action: "",
 };
 
 const ImportFile = () => {
@@ -23,10 +31,10 @@ const ImportFile = () => {
   const { tenantId, tenantName } = useSiteContext();
   const { user } = useUserContext();
   const { setToast } = useToasterContext();
-  const [file, setFile] = useState(null);
-  const [importData, setImportData] = useState({
+  const [file, setFile] = useState<File | null>(null);
+  const [importData, setImportData] = useState<ImportData>({
+    tenantId: tenantId ?? 0,
     ...initialImportData,
-    tenantId,
   });
   const [dialog, setDialog] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -35,9 +43,11 @@ const ImportFile = () => {
     user && user.isAdmin ? "adminAccessNotice" : "fileGuide"
   );
 
-  const handleChange = (e) => {
-    const uploadedFile = e.currentTarget.files[0];
-    setFile(uploadedFile);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const uploadedFile = e.currentTarget?.files?.[0];
+    if (uploadedFile) {
+      setFile(uploadedFile);
+    }
   };
 
   const handleUpload = () => {
@@ -60,7 +70,7 @@ const ImportFile = () => {
       });
   };
 
-  const onUploadSuccess = (res) => {
+  const onUploadSuccess = (res: any[]) => {
     setImportData((prevState) => ({
       ...prevState,
       data: res,
@@ -71,7 +81,7 @@ const ImportFile = () => {
   };
 
   const handleCancel = () => {
-    setImportData(initialImportData);
+    setImportData((prev) => ({ ...prev, data: undefined, action: "" }));
     setFile(null);
   };
 
@@ -79,26 +89,19 @@ const ImportFile = () => {
     setDialog(!dialog);
   };
 
-  const handleImportAction = (e) => {
-    const action = e.target.value;
-    if (!action) {
-      setDialog(!dialog);
-      setImportData((prevState) => ({
-        ...prevState,
-        action: null,
-      }));
-    } else {
-      setImportData((prevState) => ({
-        ...prevState,
-        action,
-      }));
-    }
+  // handler for radio change inside ImportDialog
+  const handleImportActionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const action = (e.target.value || "") as ImportAction;
+    setImportData((prevState) => ({
+      ...prevState,
+      action,
+    }));
   };
 
   const handleImport = () => {
     const validationCheck = importValidation(
-      importData.data,
-      STAKEHOLDER_SCHEMA
+      importData.data || [],
+      STAKEHOLDER_SCHEMA as any
     );
     if (!validationCheck) {
       setToast({
@@ -136,12 +139,14 @@ const ImportFile = () => {
 
   useEffect(() => {
     if (!file) {
-      formData.append("file", null);
+      formData.delete("file");
       setLoading(false);
     } else {
-      formData.append("file", file);
+      // set will replace any previous entry
+      formData.set("file", file);
     }
-  }, [file, formData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [file]);
 
   const handleDownload = async () => {
     exportCsv("template.csv");
@@ -166,9 +171,8 @@ const ImportFile = () => {
         return (
           <ImportFileTable
             tenantName={tenantName}
-            data={importData.data}
-            handleImportAction={handleImportAction}
-            handleImportDialog={handleImportDialog}
+            data={importData.data ?? undefined}
+            handleImportAction={handleImportDialog}
             handleCancel={handleCancel}
           />
         );
@@ -193,8 +197,9 @@ const ImportFile = () => {
           open={dialog}
           importData={importData}
           title="Import stakeholder records"
-          handleImportAction={handleImportAction}
+          handleImportAction={handleImportActionChange}
           handleImport={handleImport}
+          message={"Please confirm import action"}
         />
       </div>
       <ProgressBackdrop

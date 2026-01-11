@@ -62,6 +62,7 @@ function authTest(page: Page) {
       await page.addInitScript((userObj) => {
         localStorage.setItem("user", JSON.stringify(userObj));
       }, user);
+      await page.goto("/");
     },
   };
 }

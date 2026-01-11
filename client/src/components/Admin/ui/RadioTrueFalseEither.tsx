@@ -8,7 +8,14 @@ import {
 } from "@mui/material";
 import { bodyText } from "theme/palette";
 
-const RadioTrueFalseEither = (props) => {
+interface RadioTrueFalseEitherProps {
+  label: string;
+  name: string;
+  value: string;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+const RadioTrueFalseEither = (props: RadioTrueFalseEitherProps) => {
   const { label, name, value, onChange } = props;
   return (
     <FormControl

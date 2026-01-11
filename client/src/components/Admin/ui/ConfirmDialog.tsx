@@ -6,9 +6,16 @@ import {
   DialogTitle,
   Typography,
 } from "@mui/material";
-import PropTypes from "prop-types";
 
-function ConfirmDialog(props) {
+interface ConfirmDialogProps {
+  onClose: (value: boolean) => void;
+  open: boolean;
+  title?: string;
+  message?: string;
+  [key: string]: any;
+}
+
+function ConfirmDialog(props: ConfirmDialogProps) {
   const { onClose, open, ...other } = props;
 
   const handleCancel = () => {
@@ -48,10 +55,5 @@ function ConfirmDialog(props) {
     </Dialog>
   );
 }
-
-ConfirmDialog.propTypes = {
-  onClose: PropTypes.func.isRequired,
-  open: PropTypes.bool.isRequired,
-};
 
 export default ConfirmDialog;

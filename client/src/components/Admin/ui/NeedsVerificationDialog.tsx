@@ -9,12 +9,18 @@ import {
   Radio,
   RadioGroup,
 } from "@mui/material";
-import PropTypes from "prop-types";
 import { useState } from "react";
 import Label from "./Label";
 import Textarea from "./Textarea";
 
-function NeedsVerificationDialog(props) {
+interface NeedsVerificationDialogProps {
+  onClose: (value: boolean | { message: string; preserveConfirmations: string }) => void;
+  open: boolean;
+  title?: string;
+  [key: string]: any;
+}
+
+function NeedsVerificationDialog(props: NeedsVerificationDialogProps) {
   const { onClose, open, ...other } = props;
 
   const [message, setMessage] = useState("");
@@ -90,10 +96,5 @@ function NeedsVerificationDialog(props) {
     </Dialog>
   );
 }
-
-NeedsVerificationDialog.propTypes = {
-  onClose: PropTypes.func.isRequired,
-  open: PropTypes.bool.isRequired,
-};
 
 export default NeedsVerificationDialog;

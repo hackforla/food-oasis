@@ -169,6 +169,7 @@ const emptyOrganization = {
   submittedUser: "",
   approvedDate: "",
   approvedUser: "",
+  neighborhoodName: "",
   selectedCategoryIds: [],
   hours: [],
   instagram: "",
@@ -230,7 +231,7 @@ const OrganizationEdit = (props) => {
     const fetchData = async () => {
       try {
         if (editId) {
-          const stakeholder = await stakeholderService.getById(editId);
+          const stakeholder = await stakeholderService.getById(editId);          
           // For editing purposes, it is better to convert the
           // stakeholder.categories array of objects to an array of
           // categoryIds as stakeholder.categoryIds

@@ -1,29 +1,52 @@
-import sgMail from "@sendgrid/mail";
+import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 import applyEmailTemplate from "./EmailTemplate";
 import { ContactFormData, Email } from "../../types/email-type";
 
 const emailUser: string = process.env.EMAIL_USER || "";
-const sendgridKey: string = process.env.SENDGRID_API_KEY || "";
+const awsRegion: string = process.env.AWS_REGION || "us-west-2";
 
-sgMail.setApiKey(sendgridKey);
+// Initialize SES client
+const sesClient = new SESClient({
+  region: awsRegion,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID || "",
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "",
+  },
+});
 
 const send = async (email: Email) => {
-  const msg = {
-    to: email.emailTo,
-    from: email.emailFrom,
-    subject: email.subject,
-    text: email.textBody,
-    html: email.htmlBody,
+  const params = {
+    Destination: {
+      ToAddresses: [email.emailTo],
+    },
+    Message: {
+      Body: {
+        Html: {
+          Charset: "UTF-8",
+          Data: email.htmlBody,
+        },
+        Text: {
+          Charset: "UTF-8",
+          Data: email.textBody,
+        },
+      },
+      Subject: {
+        Charset: "UTF-8",
+        Data: email.subject,
+      },
+    },
+    Source: email.emailFrom,
   };
-  return sgMail.send(msg, false, (err) => {
-    if (err) {
-      return Promise.reject(
-        `Sending registration confirmation email failed. ${err.message}`
-      );
-    }
-    return Promise.resolve(true);
-  });
+
+  try {
+    const command = new SendEmailCommand(params);
+    const response = await sesClient.send(command);
+    return response;
+  } catch (err: any) {
+    throw new Error(`Sending email failed. ${err.message || err}`);
+  }
 };
+
 // account verification
 const sendRegistrationConfirmation = async (
   email: string,
@@ -52,20 +75,37 @@ const sendRegistrationConfirmation = async (
     <br>
     Food Oasis Team
   `;
-  const msg = {
-    to: `${email}`,
-    from: emailUser,
-    subject: `Verify your account`,
-    text: `Verify your account`,
-    html: `${emailTemplate(emailBody, clientUrl)}`,
+
+  const params = {
+    Destination: {
+      ToAddresses: [email],
+    },
+    Message: {
+      Body: {
+        Html: {
+          Charset: "UTF-8",
+          Data: emailTemplate(emailBody, clientUrl),
+        },
+        Text: {
+          Charset: "UTF-8",
+          Data: "Verify your account",
+        },
+      },
+      Subject: {
+        Charset: "UTF-8",
+        Data: "Verify your account",
+      },
+    },
+    Source: emailUser,
   };
 
-  return sgMail.send(msg, false, (err) => {
-    if (err) {
-      return Promise.reject("Sending registration confirmation email failed.");
-    }
-    return Promise.resolve(true);
-  });
+  try {
+    const command = new SendEmailCommand(params);
+    const response = await sesClient.send(command);
+    return response;
+  } catch (err) {
+    throw new Error("Sending registration confirmation email failed.");
+  }
 };
 
 // password reset
@@ -94,25 +134,40 @@ const sendResetPasswordConfirmation = async (
     <br>
     Food Oasis Team
   `;
-  const msg = {
-    to: `${email}`,
-    from: emailUser,
-    subject: `Confirm Password Reset for Food Oasis`,
-    text: `Confirm Password Reset for Food Oasis`,
-    html: `${emailTemplate(emailBody, clientUrl)}`,
+
+  const params = {
+    Destination: {
+      ToAddresses: [email],
+    },
+    Message: {
+      Body: {
+        Html: {
+          Charset: "UTF-8",
+          Data: emailTemplate(emailBody, clientUrl),
+        },
+        Text: {
+          Charset: "UTF-8",
+          Data: "Confirm Password Reset for Food Oasis",
+        },
+      },
+      Subject: {
+        Charset: "UTF-8",
+        Data: "Confirm Password Reset for Food Oasis",
+      },
+    },
+    Source: emailUser,
   };
-  return sgMail.send(msg, false, (err) => {
-    if (err) {
-      return Promise.reject(
-        "Sending password reset confirmation email failed."
-      );
-    } else {
-      return Promise.resolve(true);
-    }
-  });
+
+  try {
+    const command = new SendEmailCommand(params);
+    const response = await sesClient.send(command);
+    return response;
+  } catch (err) {
+    throw new Error("Sending password reset confirmation email failed.");
+  }
 };
 
-// Contact us form
+// contact us form
 const sendContactEmail = async ({
   name,
   email,
@@ -122,7 +177,6 @@ const sendContactEmail = async ({
   tenantId,
   phone,
 }: ContactFormData) => {
-
   const tenantRegions: { [key: number]: string } = {
     1: process.env.CONTACT_US_LA || "", // LA
     3: process.env.CONTACT_US_HAWAII || "", // Hawaii
@@ -462,32 +516,50 @@ const sendContactEmail = async ({
   </tbody>
 </table>
   `;
-  const msg = {
-    to: staffEmail,
-    from: emailUser,
-    subject: title ? title : `New Contact Form Message`,
-    text: `Contact form message`,
-    html: `${applyEmailTemplate(emailBody, clientUrl)}`,
+
+  const params = {
+    Destination: {
+      ToAddresses: [staffEmail],
+    },
+    Message: {
+      Body: {
+        Html: {
+          Charset: "UTF-8",
+          Data: applyEmailTemplate(emailBody, clientUrl),
+        },
+        Text: {
+          Charset: "UTF-8",
+          Data: "Contact form message",
+        },
+      },
+      Subject: {
+        Charset: "UTF-8",
+        Data: title ? title : "New Contact Form Message",
+      },
+    },
+    Source: emailUser,
   };
 
-  return sgMail.send(msg, false, (err) => {
-    if (err) {
-      return Promise.reject("Sending contact form email failed.");
+  try {
+    const command = new SendEmailCommand(params);
+    const response = await sesClient.send(command);
+
+    // Send confirmation to user if they provided an email
+    if (email) {
+      await sendContactConfirmation({
+        name,
+        email,
+        title,
+        message,
+        clientUrl,
+        tenantId,
+        phone,
+      });
     }
-    return Promise.resolve(true).then(() => {
-      if (email) {
-        sendContactConfirmation({
-          name,
-          email,
-          title,
-          message,
-          clientUrl,
-          tenantId,
-          phone,
-        });
-      }
-    });
-  });
+    return response;
+  } catch (err) {
+    throw new Error("Sending contact form email failed.");
+  }
 };
 
 // confirm that an email was sent via the contact us form
@@ -496,8 +568,8 @@ const sendContactConfirmation = async ({
   email,
   title,
   message,
-  tenantId,
   clientUrl,
+  tenantId,
 }: ContactFormData) => {
   const now = new Date();
 
@@ -515,7 +587,10 @@ const sendContactConfirmation = async ({
     day: "numeric",
   });
 
-  const time = now.toLocaleTimeString("en-US", { timeZone: tenantId ? timeZones[tenantId] : "America/Los_Angeles", timeZoneName: 'short'});
+  const time = now.toLocaleTimeString("en-US", {
+    timeZone: tenantId ? timeZones[tenantId] : "America/Los_Angeles",
+    timeZoneName: "short",
+  });
 
   const emailBody = `
   <!DOCTYPE html>
@@ -611,26 +686,41 @@ const sendContactConfirmation = async ({
       </table>
     </body>
   </html>
-
   `;
-  const msg = {
-    to: `${email}`,
-    from: emailUser,
-    subject: `We received your message`,
-    text: `Confirmation that we received your message from our contact form`,
-    html: emailBody,
+
+  const params = {
+    Destination: {
+      ToAddresses: [email || ""],
+    },
+    Message: {
+      Body: {
+        Html: {
+          Charset: "UTF-8",
+          Data: emailBody,
+        },
+        Text: {
+          Charset: "UTF-8",
+          Data: `Confirmation that we received your message from our contact form`,
+        },
+      },
+      Subject: {
+        Charset: "UTF-8",
+        Data: "We received your message",
+      },
+    },
+    Source: emailUser,
   };
 
-  return sgMail.send(msg, false, (err) => {
-    if (err) {
-      return Promise.reject(
-        "Sending contact form message received confirmation email failed."
-      );
-    }
-    return Promise.resolve(true);
-  });
+  try {
+    const command = new SendEmailCommand(params);
+    const response = await sesClient.send(command);
+    return response;
+  } catch (err: any) {
+    throw new Error(
+      "Sending contact form message received confirmation email failed."
+    );
+  }
 };
-
 export {
   send,
   sendRegistrationConfirmation,

@@ -14,7 +14,7 @@ import db from "./db";
 import {
   sendRegistrationConfirmation,
   sendResetPasswordConfirmation,
-} from "./sendgrid-service";
+} from "./ses-service";
 
 const SALT_ROUNDS = 10;
 
@@ -98,7 +98,7 @@ const register = async (body: RegisterFields): Promise<AccountResponse> => {
       values ($<loginId>, $<tenantId>, true)`;
     await db.none(sqlRole, { loginId: row.id, tenantId: Number(tenantId) });
 
-    await requestRegistrationConfirmation(email, result, clientUrl);
+    result = await requestRegistrationConfirmation(email, result, clientUrl);
     return result;
   } catch (err) {
     return {

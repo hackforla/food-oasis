@@ -1,4 +1,4 @@
-FROM node:lts-bullseye-slim as clientBuilder
+FROM node:lts-bullseye-slim AS clientbuilder
 
 ENV NODE_OPTIONS=--openssl-legacy-provider
 
@@ -13,7 +13,7 @@ RUN npm run build
 RUN echo package.json
 
 # Server Build Container
-FROM node:lts-bullseye-slim as serverBuilder
+FROM node:lts-bullseye-slim AS serverbuilder
 
 WORKDIR /usr/src
 COPY tsconfig.json ./
@@ -41,9 +41,9 @@ COPY ./server/package.json ./
 COPY ./server/package-lock.json ./
 RUN npm ci --quiet
 
-COPY --from=serverBuilder /usr/src/app/build ./
+COPY --from=serverbuilder /usr/src/app/build ./
 COPY ./server/uploads ./uploads
-COPY --from=clientBuilder app/dist ./client/build
+COPY --from=clientbuilder app/dist ./client/build
 
 # we don't want to run as sudo so create group and user
 RUN groupadd -r fola && useradd --no-log-init -r -g fola fola

@@ -104,7 +104,7 @@ const sendRegistrationConfirmation = async (
     const response = await sesClient.send(command);
     return response;
   } catch (err) {
-    throw new Error("Sending registration confirmation email failed.");
+    throw new Error(err.message);
   }
 };
 
@@ -163,7 +163,7 @@ const sendResetPasswordConfirmation = async (
     const response = await sesClient.send(command);
     return response;
   } catch (err) {
-    throw new Error("Sending password reset confirmation email failed.");
+    throw new Error(err.message);
   }
 };
 

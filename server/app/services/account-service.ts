@@ -100,7 +100,7 @@ const register = async (body: RegisterFields): Promise<AccountResponse> => {
 
     result = await requestRegistrationConfirmation(email, result, clientUrl);
     return result;
-  } catch (err) {
+  } catch (err: any) {
     return {
       isSuccess: false,
       code: "REG_DUPLICATE_EMAIL",
@@ -126,7 +126,7 @@ const resendConfirmationEmail = async (
     };
     result = await requestRegistrationConfirmation(email, result, clientUrl);
     return result;
-  } catch (err) {
+  } catch (err: any) {
     // Assume any error is an email that does not correspond to
     // an account.
     return {
@@ -151,7 +151,7 @@ const requestRegistrationConfirmation = async (
     await db.none(sqlToken, { token, email });
     await sendRegistrationConfirmation(email, token, clientUrl);
     return result;
-  } catch (err) {
+  } catch (err: any) {
     return {
       isSuccess: false,
       code: "REG_EMAIL_FAILED",
@@ -262,7 +262,7 @@ const requestResetPasswordConfirmation = async (
     await db.none(sqlToken, { token, email });
     await sendResetPasswordConfirmation(email, token, clientUrl);
     return result;
-  } catch (err) {
+  } catch (err: any) {
     return {
       isSuccess: false,
       code: "FORGOT_PASSWORD_EMAIL_FAILED",

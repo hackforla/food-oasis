@@ -1,52 +1,22 @@
-import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
+import { send as smtpServiceSend } from "./smtp-service";
 import applyEmailTemplate from "./EmailTemplate";
 import { ContactFormData, Email } from "../../types/email-type";
 
 const emailUser: string = process.env.EMAIL_USER || "";
-const awsRegion: string = process.env.AWS_REGION || "us-west-2";
+// const sendgridKey: string = process.env.SENDGRID_API_KEY || "";
 
-// Initialize SES client
-const sesClient = new SESClient({
-  region: awsRegion,
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID || "",
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "",
-  },
-});
+// sgMail.setApiKey(sendgridKey);
 
 const send = async (email: Email) => {
-  const params = {
-    Destination: {
-      ToAddresses: [email.emailTo],
-    },
-    Message: {
-      Body: {
-        Html: {
-          Charset: "UTF-8",
-          Data: email.htmlBody,
-        },
-        Text: {
-          Charset: "UTF-8",
-          Data: email.textBody,
-        },
-      },
-      Subject: {
-        Charset: "UTF-8",
-        Data: email.subject,
-      },
-    },
-    Source: email.emailFrom,
+  const msg = {
+    to: email.emailTo,
+    from: email.emailFrom,
+    subject: email.subject,
+    text: email.textBody,
+    html: email.htmlBody,
   };
-
-  try {
-    const command = new SendEmailCommand(params);
-    const response = await sesClient.send(command);
-    return response;
-  } catch (err: any) {
-    throw new Error(`Sending email failed. ${err.message || err}`);
-  }
+  return smtpServiceSend(msg);
 };
-
 // account verification
 const sendRegistrationConfirmation = async (
   email: string,
@@ -75,37 +45,15 @@ const sendRegistrationConfirmation = async (
     <br>
     Food Oasis Team
   `;
-
-  const params = {
-    Destination: {
-      ToAddresses: [email],
-    },
-    Message: {
-      Body: {
-        Html: {
-          Charset: "UTF-8",
-          Data: emailTemplate(emailBody, clientUrl),
-        },
-        Text: {
-          Charset: "UTF-8",
-          Data: "Verify your account",
-        },
-      },
-      Subject: {
-        Charset: "UTF-8",
-        Data: "Verify your account",
-      },
-    },
-    Source: emailUser,
+  const msg = {
+    to: `${email}`,
+    from: emailUser,
+    subject: `Verify your account`,
+    text: `Verify your account`,
+    html: `${emailTemplate(emailBody, clientUrl)}`,
   };
 
-  try {
-    const command = new SendEmailCommand(params);
-    const response = await sesClient.send(command);
-    return response;
-  } catch (err) {
-    throw new Error(err.message);
-  }
+  return smtpServiceSend(msg);
 };
 
 // password reset
@@ -134,40 +82,17 @@ const sendResetPasswordConfirmation = async (
     <br>
     Food Oasis Team
   `;
-
-  const params = {
-    Destination: {
-      ToAddresses: [email],
-    },
-    Message: {
-      Body: {
-        Html: {
-          Charset: "UTF-8",
-          Data: emailTemplate(emailBody, clientUrl),
-        },
-        Text: {
-          Charset: "UTF-8",
-          Data: "Confirm Password Reset for Food Oasis",
-        },
-      },
-      Subject: {
-        Charset: "UTF-8",
-        Data: "Confirm Password Reset for Food Oasis",
-      },
-    },
-    Source: emailUser,
+  const msg = {
+    to: `${email}`,
+    from: emailUser,
+    subject: `Confirm Password Reset for Food Oasis`,
+    text: `Confirm Password Reset for Food Oasis`,
+    html: `${emailTemplate(emailBody, clientUrl)}`,
   };
-
-  try {
-    const command = new SendEmailCommand(params);
-    const response = await sesClient.send(command);
-    return response;
-  } catch (err) {
-    throw new Error(err.message);
-  }
+  return smtpServiceSend.send(msg);
 };
 
-// contact us form
+// Contact us form
 const sendContactEmail = async ({
   name,
   email,
@@ -516,50 +441,34 @@ const sendContactEmail = async ({
   </tbody>
 </table>
   `;
-
-  const params = {
-    Destination: {
-      ToAddresses: [staffEmail],
-    },
-    Message: {
-      Body: {
-        Html: {
-          Charset: "UTF-8",
-          Data: applyEmailTemplate(emailBody, clientUrl),
-        },
-        Text: {
-          Charset: "UTF-8",
-          Data: "Contact form message",
-        },
-      },
-      Subject: {
-        Charset: "UTF-8",
-        Data: title ? title : "New Contact Form Message",
-      },
-    },
-    Source: emailUser,
+  const msg = {
+    to: staffEmail,
+    from: emailUser,
+    subject: title ? title : `New Contact Form Message`,
+    text: `Contact form message`,
+    html: `${applyEmailTemplate(emailBody, clientUrl)}`,
   };
 
-  try {
-    const command = new SendEmailCommand(params);
-    const response = await sesClient.send(command);
+  return smtpServiceSend(msg);
 
-    // Send confirmation to user if they provided an email
-    if (email) {
-      await sendContactConfirmation({
-        name,
-        email,
-        title,
-        message,
-        clientUrl,
-        tenantId,
-        phone,
-      });
-    }
-    return response;
-  } catch (err) {
-    throw new Error("Sending contact form email failed.");
-  }
+  // return smtpServiceSend(msg, false, (err: Error | null) => {
+  //   if (err) {
+  //     return Promise.reject("Sending contact form email failed.");
+  //   }
+  //   return Promise.resolve(true).then(() => {
+  //     if (email) {
+  //       sendContactConfirmation({
+  //         name,
+  //         email,
+  //         title,
+  //         message,
+  //         clientUrl,
+  //         tenantId,
+  //         phone,
+  //       });
+  //     }
+  //   });
+  // });
 };
 
 // confirm that an email was sent via the contact us form
@@ -568,8 +477,8 @@ const sendContactConfirmation = async ({
   email,
   title,
   message,
-  clientUrl,
   tenantId,
+  clientUrl,
 }: ContactFormData) => {
   const now = new Date();
 
@@ -686,41 +595,19 @@ const sendContactConfirmation = async ({
       </table>
     </body>
   </html>
-  `;
 
-  const params = {
-    Destination: {
-      ToAddresses: [email || ""],
-    },
-    Message: {
-      Body: {
-        Html: {
-          Charset: "UTF-8",
-          Data: emailBody,
-        },
-        Text: {
-          Charset: "UTF-8",
-          Data: `Confirmation that we received your message from our contact form`,
-        },
-      },
-      Subject: {
-        Charset: "UTF-8",
-        Data: "We received your message",
-      },
-    },
-    Source: emailUser,
+  `;
+  const msg = {
+    to: `${email}`,
+    from: emailUser,
+    subject: `We received your message`,
+    text: `Confirmation that we received your message from our contact form`,
+    html: emailBody,
   };
 
-  try {
-    const command = new SendEmailCommand(params);
-    const response = await sesClient.send(command);
-    return response;
-  } catch (err: any) {
-    throw new Error(
-      "Sending contact form message received confirmation email failed."
-    );
-  }
+  return smtpServiceSend(msg);
 };
+
 export {
   send,
   sendRegistrationConfirmation,

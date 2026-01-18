@@ -155,7 +155,7 @@ const requestRegistrationConfirmation = async (
     return {
       isSuccess: false,
       code: "REG_EMAIL_FAILED",
-      message: `Sending registration confirmation email to ${email} failed.`,
+      message: err.message,
     };
   }
 };
@@ -232,11 +232,7 @@ const forgotPassword = async (model: {
     }
     // Replace the success result if there is a prob
     // sending email.
-    try {
-      await requestResetPasswordConfirmation(email, result, clientUrl);
-    } catch (err: any) {
-      throw new Error(err);
-    }
+    result = await requestResetPasswordConfirmation(email, result, clientUrl);
     if (result.isSuccess === true) {
       return {
         isSuccess: true,
@@ -264,17 +260,13 @@ const requestResetPasswordConfirmation = async (
     const sqlToken = `insert into security_token (token, email)
         values ($<token>, $<email>); `;
     await db.none(sqlToken, { token, email });
-    try {
-      await sendResetPasswordConfirmation(email, token, clientUrl);
-    } catch (e: any) {
-      throw new Error(e);
-    }
+    await sendResetPasswordConfirmation(email, token, clientUrl);
     return result;
   } catch (err) {
     return {
       isSuccess: false,
       code: "FORGOT_PASSWORD_EMAIL_FAILED",
-      message: `Sending registration confirmation email to ${email} failed.`,
+      message: `Sending registration confirmation email to ${email} failed. Error message: "${err.message || err.toString()}"`,
     };
   }
 };

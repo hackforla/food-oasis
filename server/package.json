@@ -34,7 +34,7 @@
     "ajv": "^8.12.0",
     "ajv-formats": "^2.1.1",
     "axios": "^1.6.1",
-    "bcrypt": "^5.0.1",
+    "bcrypt": "^6.0.0",
     "body-parser": "^1.20.4",
     "camelcase-keys": "^7.0.2",
     "cheerio": "^1.0.0",

@@ -103,7 +103,7 @@ const sendRegistrationConfirmation = async (
     const command = new SendEmailCommand(params);
     const response = await sesClient.send(command);
     return response;
-  } catch (err) {
+  } catch (err: any) {
     throw new Error(err.message);
   }
 };
@@ -162,7 +162,7 @@ const sendResetPasswordConfirmation = async (
     const command = new SendEmailCommand(params);
     const response = await sesClient.send(command);
     return response;
-  } catch (err) {
+  } catch (err: any) {
     throw new Error(err.message);
   }
 };
@@ -557,7 +557,7 @@ const sendContactEmail = async ({
       });
     }
     return response;
-  } catch (err) {
+  } catch (err: any) {
     throw new Error("Sending contact form email failed.");
   }
 };

@@ -8,7 +8,7 @@ COPY client/package.json .
 COPY client/package-lock.json .
 RUN npm ci
 COPY client .
-ENV NODE_ENV "production"
+ENV NODE_ENV="production"
 RUN npm run build
 RUN echo package.json
 

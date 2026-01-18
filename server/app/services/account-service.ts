@@ -14,7 +14,7 @@ import db from "./db";
 import {
   sendRegistrationConfirmation,
   sendResetPasswordConfirmation,
-} from "./sendgrid-service";
+} from "./ses-service";
 
 const SALT_ROUNDS = 10;
 
@@ -98,9 +98,9 @@ const register = async (body: RegisterFields): Promise<AccountResponse> => {
       values ($<loginId>, $<tenantId>, true)`;
     await db.none(sqlRole, { loginId: row.id, tenantId: Number(tenantId) });
 
-    await requestRegistrationConfirmation(email, result, clientUrl);
+    result = await requestRegistrationConfirmation(email, result, clientUrl);
     return result;
-  } catch (err) {
+  } catch (err: any) {
     return {
       isSuccess: false,
       code: "REG_DUPLICATE_EMAIL",
@@ -126,7 +126,7 @@ const resendConfirmationEmail = async (
     };
     result = await requestRegistrationConfirmation(email, result, clientUrl);
     return result;
-  } catch (err) {
+  } catch (err: any) {
     // Assume any error is an email that does not correspond to
     // an account.
     return {
@@ -151,11 +151,11 @@ const requestRegistrationConfirmation = async (
     await db.none(sqlToken, { token, email });
     await sendRegistrationConfirmation(email, token, clientUrl);
     return result;
-  } catch (err) {
+  } catch (err: any) {
     return {
       isSuccess: false,
       code: "REG_EMAIL_FAILED",
-      message: `Sending registration confirmation email to ${email} failed.`,
+      message: err.message,
     };
   }
 };
@@ -232,11 +232,7 @@ const forgotPassword = async (model: {
     }
     // Replace the success result if there is a prob
     // sending email.
-    try {
-      await requestResetPasswordConfirmation(email, result, clientUrl);
-    } catch (err: any) {
-      throw new Error(err);
-    }
+    result = await requestResetPasswordConfirmation(email, result, clientUrl);
     if (result.isSuccess === true) {
       return {
         isSuccess: true,
@@ -264,17 +260,13 @@ const requestResetPasswordConfirmation = async (
     const sqlToken = `insert into security_token (token, email)
         values ($<token>, $<email>); `;
     await db.none(sqlToken, { token, email });
-    try {
-      await sendResetPasswordConfirmation(email, token, clientUrl);
-    } catch (e: any) {
-      throw new Error(e);
-    }
+    await sendResetPasswordConfirmation(email, token, clientUrl);
     return result;
-  } catch (err) {
+  } catch (err: any) {
     return {
       isSuccess: false,
       code: "FORGOT_PASSWORD_EMAIL_FAILED",
-      message: `Sending registration confirmation email to ${email} failed.`,
+      message: `Sending registration confirmation email to ${email} failed. Error message: "${err.message || err.toString()}"`,
     };
   }
 };

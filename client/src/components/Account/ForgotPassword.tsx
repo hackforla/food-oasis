@@ -37,18 +37,24 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
   const { email } = useParams<{ email?: string }>();
   const navigate = useNavigate();
 
-  const debouncedEmailValidation = debounce(async (value: string, setFieldError: (field: string, message: string) => void) => {
-    try {
-      await accountService.getByEmail(value);
-      return;
-    } catch (e) {
-      console.error(e);
-      setFieldError(
-        "email",
-        "Account not found. If you want to create a new account with this email, please register."
-      );
-    }
-  }, 500);
+  const debouncedEmailValidation = debounce(
+    async (
+      value: string,
+      setFieldError: (field: string, message: string) => void
+    ) => {
+      try {
+        await accountService.getByEmail(value);
+        return;
+      } catch (e) {
+        console.error(e);
+        setFieldError(
+          "email",
+          "Account not found. If you want to create a new account with this email, please register."
+        );
+      }
+    },
+    500
+  );
 
   return (
     <PageWrapper>
@@ -77,7 +83,10 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
             email: email || "",
           }}
           validationSchema={validationSchema}
-          onSubmit={async (values: FormValues, formikBag: FormikHelpers<FormValues>) => {
+          onSubmit={async (
+            values: FormValues,
+            formikBag: FormikHelpers<FormValues>
+          ) => {
             try {
               const response = await accountService.forgotPassword(
                 values.email
@@ -95,8 +104,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
                 });
                 formikBag.setSubmitting(false);
               } else if (response.code === "FORGOT_PASSWORD_EMAIL_FAILED") {
-                const msg =
-                  "A problem occurred with sending an email to this address.";
+                const msg = response.message;
                 console.error(msg);
                 setToast({
                   message: msg,
@@ -129,7 +137,9 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
             setFieldError,
             isValid,
           }) => {
-            const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+            const handleEmailChange = (
+              e: React.ChangeEvent<HTMLInputElement>
+            ) => {
               handleChange(e);
               debouncedEmailValidation(e.target.value, setFieldError);
             };

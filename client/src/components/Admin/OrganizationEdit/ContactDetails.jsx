@@ -19,7 +19,7 @@ export default function ContactDetails({
             <Label
               id="website"
               label="Website"
-              tooltipTitle="Enter the Full URL for the organization's web site, e.g., https://www.hackforla.org"
+              tooltipTitle="Enter the full URL for the organization's web site, e.g., https://www.hackforla.org"
               href={values.website}
             />
             <TextField
@@ -39,7 +39,7 @@ export default function ContactDetails({
             <Label
               id="instagram"
               label="Instagram"
-              tooltipTitle="Enter a full Instagram URL, e.g., https://www.instagram.com/hackforla"
+              tooltipTitle="Enter organization's full Instagram URL, e.g., https://www.instagram.com/hackforla"
               href={values.instagram}
             />
             <TextField
@@ -59,7 +59,7 @@ export default function ContactDetails({
             <Label
               id="facebook"
               label="Facebook"
-              tooltipTitle="Enter a full Facebook URL, e.g., https://www.facebook.com/hackforla"
+              tooltipTitle="Enter organization's full Facebook URL, e.g., https://www.facebook.com/hackforla"
               href={values.facebook}
             />
             <TextField
@@ -79,7 +79,7 @@ export default function ContactDetails({
             <Label
               id="twitter-label"
               label="Twitter"
-              tooltipTitle="Enter a full Twitter URL, e.g., https://www.x.com/hackforla"
+              tooltipTitle="Enter organization's full Twitter URL, e.g., https://www.x.com/hackforla"
               href={values.twitter}
             />
             <TextField
@@ -100,7 +100,7 @@ export default function ContactDetails({
               id="pinterest"
               label="Pinterest"
               href={values.pinterest}
-              tooltipTitle="Enter a full Pinterest URL, e.g., https://www.pinterest.com/hackforla"
+              tooltipTitle="Enter organization's full Pinterest URL, e.g., https://www.pinterest.com/hackforla"
             />
             <TextField
               id="pinterest"
@@ -120,7 +120,7 @@ export default function ContactDetails({
               id="linkedin"
               label="LinkedIn"
               href={values.linkedin}
-              tooltipTitle="Enter a full LinkedIn URL, e.g., https://www.linkedin.com/hackforla"
+              tooltipTitle="Enter organization's full LinkedIn URL, e.g., https://www.linkedin.com/hackforla"
             />
             <TextField
               id="linkedin"

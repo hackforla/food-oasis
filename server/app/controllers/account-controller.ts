@@ -8,7 +8,6 @@ import {
   User,
   Role,
 } from "../../types/account-types";
-import { ClientResponse } from "@sendgrid/mail";
 
 const getAll: RequestHandler<
   never,
@@ -106,7 +105,7 @@ const resendConfirmationEmail: RequestHandler<
 
 const forgotPassword: RequestHandler<
   never,
-  AccountResponse | { error: string } | [ClientResponse, Record<string, never>],
+  AccountResponse | { error: string },
   {
     email: string;
     clientUrl: string;

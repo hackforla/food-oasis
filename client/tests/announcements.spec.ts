@@ -29,9 +29,7 @@ test.describe("Announcements", () => {
     });
 
     await helpers.mockLogin();
-    await page.getByTestId("menu-button").click();
-    await page.getByRole("link", { name: "Announcements" }).click();
-
+    await page.goto("/admin/announcements");
     await expect(
       page.getByRole("heading", { name: "Announcements" })
     ).toBeVisible();
@@ -63,8 +61,7 @@ test.describe("Announcements", () => {
     });
 
     await helpers.mockLogin();
-    await page.getByTestId("menu-button").click();
-    await page.getByRole("link", { name: "Announcements" }).click();
+    await page.goto("/admin/announcements");
 
     await page.getByTestId("sort-by-select").click();
     await page.getByRole("option", { name: "Severity" }).click();
@@ -95,11 +92,14 @@ test.describe("Announcements", () => {
     });
 
     await helpers.mockLogin();
-    await page.getByTestId("menu-button").click();
-    await page.getByRole("link", { name: "Announcements" }).click();
+    await page.goto("/admin/announcements");
+    await expect(
+      page.getByRole("rowheader", { name: /^info$/i })
+    ).toBeVisible();
 
-    await expect(page.getByText("info")).toBeVisible();
-    await expect(page.getByText("warning")).toBeVisible();
+    await expect(
+      page.getByRole("rowheader", { name: /^warning$/i })
+    ).toBeVisible();
   });
 });
 
@@ -119,17 +119,23 @@ test.describe("Announcements", () => {
     });
 
     await page.goto("/");
-    await expect(page.getByText("This is a mock announcement for testing.")).toBeVisible();
+    await expect(
+      page.getByText("This is a mock announcement for testing.")
+    ).toBeVisible();
 
     await page.goto("/organizations");
-    await expect(page.getByText("This is a mock announcement for testing.")).toBeVisible();
+    await expect(
+      page.getByText("This is a mock announcement for testing.")
+    ).toBeVisible();
   });
 
   test("doesn't show announcements when there are none", async ({ page }) => {
     await mockRequests(page, { announcements: [] });
 
     await page.goto("/");
-    const announcementText = page.getByText("This is a mock announcement for testing.");
+    const announcementText = page.getByText(
+      "This is a mock announcement for testing."
+    );
     await expect(announcementText).toHaveCount(0);
   });
 });

@@ -20,8 +20,12 @@ test.describe("Profile", () => {
     await expect(page.getByPlaceholder("First Name")).toHaveValue("Test");
     await page.getByPlaceholder("First Name").fill("Updated Name");
     await page.getByRole("button", { name: "Save" }).click();
-    await expect(page.getByText("User profile updated successfully!")).toBeVisible();
+    await expect(
+      page.getByText("User profile updated successfully!")
+    ).toBeVisible();
     await editButtons.first().click();
-    await expect(page.getByPlaceholder("First Name")).toHaveValue("Updated Name");
+    await expect(page.getByPlaceholder("First Name")).toHaveValue(
+      "Updated Name"
+    );
   });
 });

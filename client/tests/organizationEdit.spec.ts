@@ -97,7 +97,6 @@ test.describe("OrganizationEdit", () => {
   test("Should show required field errors when latitude and longitude are empty", async ({
     page,
   }) => {
-    await page.locator(".MuiBackdrop-root").click({ force: true });
     await page.getByTestId("menu-button").click();
     await page.getByRole("link", { name: "Add New Organization" }).click();
 
@@ -119,7 +118,6 @@ test.describe("OrganizationEdit", () => {
   test("Should show error when closing time is before opening time", async ({
     page,
   }) => {
-    await page.locator(".MuiBackdrop-root").click({ force: true });
     await page.getByTestId("menu-button").click();
     await page.getByRole("link", { name: "Add New Organization" }).click();
     await page.getByRole("tab", { name: "Business Hours" }).click();
@@ -145,7 +143,6 @@ test.describe("OrganizationEdit", () => {
   test("Should show error when duplicate business hours added", async ({
     page,
   }) => {
-    await page.locator(".MuiBackdrop-root").click({ force: true });
     await page.getByTestId("menu-button").click();
     await page.getByRole("link", { name: "Add New Organization" }).click();
     await page.getByRole("tab", { name: "Business Hours" }).click();

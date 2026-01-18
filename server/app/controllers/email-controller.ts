@@ -1,13 +1,13 @@
-import * as emailService from "../services/sendgrid-service";
+import * as emailService from "../services/ses-service";
 import { RequestHandler } from "express";
 import { Email, ContactFormData } from "../../types/email-type";
-import { ClientResponse } from "@sendgrid/mail";
+import { SendEmailCommandOutput } from "@aws-sdk/client-ses";
 
 const send: RequestHandler<
   // route params
   never,
   // response
-  [ClientResponse, Record<string, never>] | { error: string },
+  SendEmailCommandOutput | { error: string },
   // request
   Email,
   // query params
@@ -31,7 +31,7 @@ const sendContactForm: RequestHandler<
   // route params
   never,
   // response
-  [ClientResponse, Record<string, never>] | { error: string },
+  SendEmailCommandOutput | { error: string },
   // request
   ContactFormData,
   // query params

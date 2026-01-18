@@ -55,8 +55,6 @@
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "pg": "^8.13.1",
-    "pino-http": "^11.0.0",
-    "pino-noir": "^3.0.0",
     "uuid": "^13.0.0"
   },
   "devDependencies": {
@@ -71,7 +69,6 @@
     "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
-    "@types/express-pino-logger": "^4.0.6",
     "@types/jest": "^28.1.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/multer": "^2.0.0",

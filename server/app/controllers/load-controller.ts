@@ -28,17 +28,13 @@ const getLaplFoodResources: RequestHandler<
     if (req.query.format === "json" || req.accepts("json")) {
       res.send(rows);
     } else {
-      json2csv(rows, (_err: Error | undefined, csv: string | undefined) => {
-        res.setHeader("Content-Type", "text/csv");
-        res.setHeader(
-          "Content-Disposition",
-          'attachment; filename="' +
-            "lapl-food-resources-" +
-            Date.now() +
-            '.csv"'
-        );
-        res.send(csv);
-      });
+      const csv = await json2csv(rows);
+      res.setHeader("Content-Type", "text/csv");
+      res.setHeader(
+        "Content-Disposition",
+        'attachment; filename="lapl-food-resources-' + Date.now() + '.csv"'
+      );
+      res.send(csv);
     }
   } catch (err) {
     res.sendStatus(500);
@@ -61,17 +57,14 @@ const getOpenLA: RequestHandler<
     if (req.query.format === "json" || req.accepts("json")) {
       res.send(rows);
     } else {
-      json2csv(rows, (_err: Error | undefined, csv: string | undefined) => {
-        res.setHeader("Content-Type", "text/csv");
-        res.setHeader(
-          "Content-Disposition",
-          'attachment; filename="' +
-            "lapl-food-resources-" +
-            Date.now() +
-            '.csv"'
-        );
-        res.send(csv);
-      });
+      const csv = await json2csv(rows);
+      res.setHeader("Conte  nt-Type", "text/csv");
+      res.setHeader(
+        "Content-Disposition",
+        'attachment; filename="' + "lapl-food-resources-" + Date.now() + '.csv"'
+      );
+
+      res.send(csv);
     }
   } catch (err) {
     res.sendStatus(500);
@@ -94,14 +87,13 @@ const getLARFB: RequestHandler<
     if (req.query.format === "json" || req.accepts("json")) {
       res.send(resp);
     } else {
-      json2csv(resp, (_err: Error | undefined, csv: string | undefined) => {
-        res.setHeader("Content-Type", "text/csv");
-        res.setHeader(
-          "Content-Disposition",
-          'attachment; filename="' + "open-la-data-" + Date.now() + '.csv"'
-        );
-        res.send(csv);
-      });
+      const csv = json2csv(resp);
+      res.setHeader("Content-Type", "text/csv");
+      res.setHeader(
+        "Content-Disposition",
+        'attachment; filename="' + "open-la-data-" + Date.now() + '.csv"'
+      );
+      res.send(csv);
     }
   } catch (err) {
     res.sendStatus(500);

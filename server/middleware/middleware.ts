@@ -1,5 +1,3 @@
-// import pinoLogger from "express-pino-logger";
-// import pinoNoir from "pino-noir";
 import { RequestHandler, Request, Response } from "express";
 
 const cors: RequestHandler = (req, res, next): void => {
@@ -29,19 +27,8 @@ function notFound(req: Request, res: Response) {
   res.status(404).json({ error: `${req.url} Not Found` });
 }
 
-// function logger() {
-//   return pinoLogger({
-//     serializers: pinoNoir([
-//       "res.headers.set-cookie",
-//       "req.headers.cookie",
-//       "req.headers.authorization",
-//     ]),
-//   });
-// }
-
 export default {
   cors,
   handleError,
   notFound,
-  // logger
 };

@@ -42,11 +42,19 @@
     "cookie-parser": "^1.4.7",
     "csv-parse": "^6.1.0",
     "csv-stringify": "^6.5.1",
+<<<<<<< HEAD
     "dayjs": "^1.11.19",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "json-2-csv": "^5.5.10",
     "jsonwebtoken": "^9.0.3",
+=======
+    "dayjs": "^1.11.7",
+    "dotenv": "^16.4.5",
+    "express": "^5.2.1",
+    "json-2-csv": "^3.17.1",
+    "jsonwebtoken": "^9.0.2",
+>>>>>>> develop
     "massive": "^6.10.2",
     "mocha": "^10.8.2",
     "multer": "^2.0.2",
@@ -56,7 +64,11 @@
     "passport-local": "^1.0.0",
     "pg": "^8.13.1",
     "pino-http": "^11.0.0",
+<<<<<<< HEAD
     "pino-noir": "^3.0.0",
+=======
+    "pino-noir": "^2.2.1",
+>>>>>>> develop
     "uuid": "^13.0.0"
   },
   "devDependencies": {
@@ -66,22 +78,39 @@
     "@babel/preset-typescript": "^7.18.6",
     "@eslint/eslintrc": "^3.3.3",
     "@eslint/js": "^9.39.2",
+<<<<<<< HEAD
     "@types/bcrypt": "^6.0.0",
     "@types/compression": "^1.8.1",
     "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/express-pino-logger": "^4.0.6",
+=======
+    "@types/bcrypt": "^5.0.0",
+    "@types/compression": "^1.7.5",
+    "@types/cookie-parser": "^1.4.3",
+    "@types/cors": "^2.8.12",
+    "@types/express": "^5.0.6",
+    "@types/express-pino-logger": "^4.0.3",
+>>>>>>> develop
     "@types/jest": "^28.1.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/multer": "^2.0.0",
     "@types/node": "^25.0.9",
     "@types/pg": "^8.6.5",
+<<<<<<< HEAD
     "@types/uuid": "^11.0.0",
     "@typescript-eslint/eslint-plugin": "^8.53.0",
     "@typescript-eslint/parser": "^8.53.0",
     "babel-jest": "^28.1.3",
     "concurrently": "^9.2.1",
+=======
+    "@types/uuid": "^8.3.4",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
+    "babel-jest": "^28.1.3",
+    "concurrently": "^9.1.0",
+>>>>>>> develop
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-flowtype": "^8.0.3",
@@ -90,7 +119,11 @@
     "eslint-plugin-prettier": "^5.5.5",
     "globals": "^17.0.0",
     "jest": "^28.1.3",
+<<<<<<< HEAD
     "lint-staged": "^16.2.7",
+=======
+    "lint-staged": "^12.4.1",
+>>>>>>> develop
     "nodemon": "^3.1.11",
     "prettier": "^3.3.3",
     "ts-jest": "^28.0.8",

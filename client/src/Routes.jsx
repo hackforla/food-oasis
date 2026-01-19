@@ -107,7 +107,7 @@ export default function AppRoutes() {
           <Route path="admin" element={<AdminWrapper />}>
             <Route path="profile/:id" element={<Profile />} />
             <Route path="register" element={<Register />} />
-            <Route path="confirm{/:token}" element={<ConfirmEmail />} />
+            <Route path="confirm/:token" element={<ConfirmEmail />} />
             <Route path="login{/:email}" element={<Login />} />
             <Route
               path="forgotpassword{/:email}"
@@ -120,7 +120,7 @@ export default function AppRoutes() {
             <Route path="resetPassword/:token" element={<ResetPassword />} />
 
             <Route
-              path="organizationedit{/:id}"
+              path="organizationedit/:id"
               element={
                 <PrivateRoute
                   roles={["isAdmin", "isDataEntry", "isCoordinator"]}

@@ -69,7 +69,7 @@ app.use(express.static("public"));
 // page, so requests that don't match any of the above are
 // assumed to be for react pages.
 if (process.env.NODE_ENV === "production") {
-  app.get("/*splat", (req, res) => {
+  app.get("*splat", (req, res) => {
     res.sendFile(path.join(__dirname + "/client/build/index.html"));
   });
 }

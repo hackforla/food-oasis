@@ -59,7 +59,7 @@ export default function AppRoutes() {
   const pathname = location.pathname;
   const hasUserFeedbackSuveyFeatureFlag = useFeatureFlag("userFeedbackSurvey");
   const isAdminRoute = pathname.startsWith("/admin");
-  const isWidgetRoute = pathname === "/widget";
+  const isWidgetRoute = pathname.startsWith("/widget");
   const isUserFacingRoute = !isAdminRoute && !isWidgetRoute;
 
   const showSurveySnackbar =
@@ -108,13 +108,10 @@ export default function AppRoutes() {
             <Route path="profile/:id" element={<Profile />} />
             <Route path="register" element={<Register />} />
             <Route path="confirm/:token" element={<ConfirmEmail />} />
-            <Route path="login{/:email}" element={<Login />} />
+            <Route path="login/:email?" element={<Login />} />
+            <Route path="forgotpassword/:email?" element={<ForgotPassword />} />
             <Route
-              path="forgotpassword{/:email}"
-              element={<ForgotPassword />}
-            />
-            <Route
-              path="resetpasswordemailsent{/:email}"
+              path="resetpasswordemailsent/:email?"
               element={<ResetPasswordEmailSent />}
             />
             <Route path="resetPassword/:token" element={<ResetPassword />} />

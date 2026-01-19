@@ -111,10 +111,6 @@ export default function AppRoutes() {
             <Route path="login/:email?" element={<Login />} />
             <Route path="forgotpassword/:email?" element={<ForgotPassword />} />
             <Route
-              path="resetpasswordemailsent"
-              element={<ResetPasswordEmailSent />}
-            />
-            <Route
               path="resetpasswordemailsent/:email?"
               element={<ResetPasswordEmailSent />}
             />

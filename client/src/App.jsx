@@ -12,6 +12,7 @@ import * as analytics from "./services/analytics";
 import { AppStateProvider } from "./appReducer";
 import SEO from "./components/SEO";
 import AppRoutes from "./Routes";
+import ScrollToTop from "./components/Layout/ScrollToTop";
 import { MapProvider } from "react-map-gl";
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
                 />
                 <MapProvider>
                   <Router>
+                    <ScrollToTop />
                     <AppRoutes />
                   </Router>
                 </MapProvider>

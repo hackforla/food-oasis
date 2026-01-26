@@ -31,19 +31,50 @@ import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { useFeatureToLogin } from "../../hooks/useFeatureToLogin";
 import { useFeatures } from "../../hooks/useFeatures";
+import type { Feature as ServiceFeature } from "../../services/feature-service";
+import type {
+  FeatureToLogin as ServiceFeatureToLogin,
+  FeatureUser as ServiceFeatureUser,
+} from "../../services/feature-to-login-service";
 import * as accountService from "../../services/account-service";
 import * as featureService from "../../services/feature-service";
 import * as featureToLoginService from "../../services/feature-to-login-service";
+import AddIcon from "@mui/icons-material/Add";
 
-const Features = () => {
-  const [selectedRowId, setSelectedRowId] = useState(null);
-  const [rows, setRows] = useState([]);
-  const [selectedFeatureName, setSelectedFeatureName] = useState("");
-  const [selectedFeatureId, setSelectedFeatureId] = useState("");
-  const [featureModalOpen, setFeatureModalOpen] = useState(false);
-  const [userModalOpen, setUserModalOpen] = useState(false);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+interface HistoryRow {
+  loginId: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  featureToLoginId: number;
+}
+
+interface FeatureRow {
+  featureId: number;
+  name: string;
+  is_enabled: boolean;
+  history: HistoryRow[];
+}
+
+interface FeatureFormValues {
+  name: string;
+}
+
+interface UserFormValues {
+  email: string;
+}
+
+const Features: React.FC = () => {
+  const [selectedRowId, setSelectedRowId] = useState<string | null>(null);
+  const [rows, setRows] = useState<FeatureRow[]>([]);
+  const [selectedFeatureName, setSelectedFeatureName] = useState<string>("");
+  const [selectedFeatureId, setSelectedFeatureId] = useState<number | null>(
+    null
+  );
+  const [featureModalOpen, setFeatureModalOpen] = useState<boolean>(false);
+  const [userModalOpen, setUserModalOpen] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(0);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(10);
 
   const {
     data: featureToLoginData,
@@ -57,12 +88,20 @@ const Features = () => {
     refetch: featureRefetch,
   } = useFeatures();
 
+  const typedFeatures = featuresData as ServiceFeature[] | null | undefined;
+
+  const typedFeatureToLogins = featureToLoginData as
+    | ServiceFeatureToLogin[]
+    | null
+    | undefined;
+
   useEffect(() => {
-    if (featuresData && featureToLoginData) {
-      const newRows = featuresData.map((feature) => {
-        const featureToLogin = featureToLoginData.find(
+    if (typedFeatures && typedFeatureToLogins) {
+      const newRows: FeatureRow[] = typedFeatures.map((feature) => {
+        const featureToLogin = typedFeatureToLogins.find(
           (ftl) => ftl.feature_id === feature.id
         );
+
         return {
           featureId: feature.id,
           name: feature.name,
@@ -73,21 +112,21 @@ const Features = () => {
                 firstName: user.first_name,
                 lastName: user.last_name,
                 email: user.email,
-                featureToLoginId:
-                  user.featureToLoginId || featureToLogin.ftl_id,
+                featureToLoginId: featureToLogin.ftl_id,
               }))
             : [],
         };
       });
+
       setRows(newRows);
     }
-  }, [featureToLoginData, featuresData]);
+  }, [typedFeatures, typedFeatureToLogins]);
 
   const handleModalClose = () => {
     setFeatureModalOpen(false);
     featureFormik.resetForm();
   };
-  const handleUserModalOpen = (featureName, featureId) => {
+  const handleUserModalOpen = (featureName: string, featureId: number) => {
     setSelectedFeatureName(featureName);
     setSelectedFeatureId(featureId);
     setUserModalOpen(true);
@@ -96,14 +135,14 @@ const Features = () => {
     setUserModalOpen(false);
     userFormik.resetForm();
   };
-  const handleRowClick = (rowName) => {
+  const handleRowClick = (rowName: string) => {
     if (selectedRowId === rowName) {
       setSelectedRowId(null);
     } else {
       setSelectedRowId(rowName);
     }
   };
-  const handleIsEnabled = async (featureId, isEnabled) => {
+  const handleIsEnabled = async (featureId: number, isEnabled: boolean) => {
     try {
       await featureService.update(featureId, { is_enabled: isEnabled });
       setRows((prevRows) =>
@@ -111,11 +150,11 @@ const Features = () => {
           row.featureId === featureId ? { ...row, is_enabled: isEnabled } : row
         )
       );
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error updating feature:", error);
     }
   };
-  const featureFormik = useFormik({
+  const featureFormik = useFormik<FeatureFormValues>({
     initialValues: {
       name: "",
     },
@@ -130,7 +169,7 @@ const Features = () => {
       handleModalClose();
     },
   });
-  const userFormik = useFormik({
+  const userFormik = useFormik<UserFormValues>({
     initialValues: {
       email: "",
     },
@@ -142,15 +181,19 @@ const Features = () => {
     onSubmit: async (values, { resetForm, setSubmitting, setFieldError }) => {
       try {
         const accountResponse = await accountService.getByEmail(values.email);
-        const loginId = accountResponse.data.data.id;
+        const loginId: number = accountResponse.data.data.id;
+
         const featureId = selectedFeatureId;
+        if (!featureId) return;
+
         await featureToLoginService.addUserToFeature(featureId, loginId);
+
         resetForm();
         setSubmitting(false);
         handleUserModalClose();
         featureToLoginRefetch();
-      } catch (error) {
-        if (error.response) {
+      } catch (error: any) {
+        if (error?.response) {
           switch (error.response.status) {
             case 404:
               setFieldError("email", "No user found with this email");
@@ -165,12 +208,16 @@ const Features = () => {
               setFieldError("email", "An error occurred. Please try again.");
               break;
           }
+        } else {
+          setFieldError("email", "Network error. Please try again.");
         }
       }
     },
   });
 
-  const handleChangeRowsPerPage = (event) => {
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
@@ -206,7 +253,7 @@ const Features = () => {
         <Button
           variant="contained"
           type="button"
-          icon="search"
+          startIcon={<AddIcon />}
           onClick={() => setFeatureModalOpen(true)}
         >
           Add New Feature
@@ -225,7 +272,7 @@ const Features = () => {
           </TableHead>
           <TableBody>
             {rows.map((row, index) => (
-              <React.Fragment key={index}>
+              <React.Fragment key={row.featureId}>
                 <TableRow
                   onClick={() => handleRowClick(row.name)}
                   sx={{
@@ -430,7 +477,7 @@ const Features = () => {
               <Button variant="outlined" onClick={handleModalClose}>
                 Cancel
               </Button>
-              <Button variant="contained" icon="search" type="submit">
+              <Button variant="contained" type="submit" startIcon={<AddIcon />}>
                 Submit
               </Button>
             </Box>
@@ -473,7 +520,7 @@ const Features = () => {
               <Button variant="outlined" onClick={handleUserModalClose}>
                 Cancel
               </Button>
-              <Button variant="contained" icon="search" type="submit">
+              <Button variant="contained" type="submit" startIcon={<AddIcon />}>
                 Submit
               </Button>
             </Box>
@@ -486,7 +533,7 @@ const Features = () => {
         count={rows.length}
         rowsPerPage={rowsPerPage}
         page={page}
-        onPageChange={(newPage) => {
+        onPageChange={(_, newPage: number) => {
           setPage(newPage);
         }}
         onRowsPerPageChange={handleChangeRowsPerPage}

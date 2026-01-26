@@ -1,3 +1,6 @@
+//Modify
+import ScrollToTop from "./components/ScrollToTop";
+
 import { CircularProgress, Grid, Stack } from "@mui/material";
 import Home from "components/FoodSeeker/Home";
 import Header from "components/Layout/Header";
@@ -73,9 +76,9 @@ export default function AppRoutes() {
         </Stack>
       }
     >
+      <ScrollToTop />
       {showSurveySnackbar && <SurveySnackbar />}
-
-      <Routes>
+      <Routes location={location} key={location.pathname}>
         <Route path="/" element={<AppWrapper />}>
           {/* Food seeker routes */}
           <Route index element={<Home />} />
@@ -237,6 +240,7 @@ function AppWrapper() {
         margin: "0",
         height: "100vh",
         overflowX: "hidden",
+        overflowY: "auto",
       }}
     >
       {isAlertLocation && <AnnouncementSnackbar />}

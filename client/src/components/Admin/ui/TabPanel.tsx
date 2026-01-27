@@ -1,13 +1,21 @@
 import { Box, Typography } from "@mui/material";
+import React from "react";
 
-export function a11yProps(index) {
+export function a11yProps(index: number) {
   return {
     id: `tab-${index}`,
     "aria-controls": `tab-${index}`,
   };
 }
 
-export function TabPanel(props) {
+interface TabPanelProps {
+  children: React.ReactNode;
+  value: number;
+  index: number;
+  [key: string]: any;
+}
+
+export function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
   return (

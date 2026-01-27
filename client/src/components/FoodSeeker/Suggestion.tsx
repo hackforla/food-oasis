@@ -3,17 +3,13 @@ import {
   Container,
   Grid,
   TextField,
-  Typography,
-  useMediaQuery,
-  useTheme,
+  Typography
 } from "@mui/material";
-import Grid2 from "@mui/material/Unstable_Grid2";
 import Label from "components/Admin/ui/Label";
 import Textarea from "components/Admin/ui/Textarea";
 import Footer from "components/Layout/Footer";
 import { useToasterContext } from "contexts/toasterContext";
 import { Formik } from "formik";
-import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import * as suggestionService from "services/suggestion-service";
 import * as Yup from "yup";
@@ -37,13 +33,9 @@ const validationSchema = Yup.object().shape({
   tipsterEmail: Yup.string().email("Please enter a valid Email"),
 });
 
-function Suggestion(props) {
+function Suggestion() {
   const { setToast } = useToasterContext();
   const navigate = useNavigate();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"), {
-    defaultMatches: true,
-  });
 
   return (
     <>
@@ -52,7 +44,7 @@ function Suggestion(props) {
         description="Fill out the form to add a new food resource to our directory."
         url="https://foodoasis.la/suggestion"
       />
-      <Container component="main" maxWidth="lg" spacing={{ xs: 1, sm: 4 }}>
+      <Container maxWidth="lg" sx={{ spacing: { xs: 1, sm: 4 } }}>
         <Grid container spacing={3} justifyContent="center">
           <Grid item>
             <Typography component="h1" variant="h4" align="center">
@@ -76,7 +68,6 @@ function Suggestion(props) {
               onSubmit={async (value, formikBag) => {
                 formikBag.setSubmitting(true);
                 return suggestionService
-
                   .post(value)
                   .then(() => {
                     formikBag.setSubmitting(false);
@@ -106,20 +97,14 @@ function Suggestion(props) {
                 dirty,
               }) => (
                 <form onSubmit={handleSubmit}>
-                  <Container maxWidth={isMobile ? "lg" : "md"}>
-                    <Grid2
-                      container
-                      justifyContent="center"
-                      alignItems={"flex-start"}
-                      spacing={{ xs: 0, sm: 3 }}
-                    >
-                      <Grid2 item xs={12} sm={6}>
+                  <Container maxWidth="md">
+                    <Grid container spacing={3}>
+                      <Grid item xs={12} sm={6}>
                         <div>
                           <Label id="name" label="Organization Name" />
                           <TextField
                             id="name"
                             required
-                            type="text"
                             size="small"
                             placeholder="Organization Name"
                             name="name"
@@ -132,8 +117,8 @@ function Suggestion(props) {
                             error={touched.name && Boolean(errors.name)}
                           />
                         </div>
-                      </Grid2>
-                      <Grid2 item xs={12} sm={6}>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
                         <div>
                           <Label
                             id="category"
@@ -141,7 +126,6 @@ function Suggestion(props) {
                           />
                           <TextField
                             id="category"
-                            type="text"
                             size="small"
                             placeholder="Category (Food Pantry, Meal Program, etc.)"
                             name="category"
@@ -153,13 +137,12 @@ function Suggestion(props) {
                             error={touched.category && Boolean(errors.category)}
                           />
                         </div>
-                      </Grid2>
-                      <Grid2 item xs={12} sm={6}>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
                         <div>
                           <Label id="address1" label="Address Line 1" />
                           <TextField
                             id="address1"
-                            type="text"
                             size="small"
                             placeholder="Address Line 1"
                             name="address1"
@@ -171,13 +154,12 @@ function Suggestion(props) {
                             error={touched.address1 && Boolean(errors.address1)}
                           />
                         </div>
-                      </Grid2>
-                      <Grid2 item xs={12} sm={6}>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
                         <div>
                           <Label id="address2" label="Address Line 2" />
                           <TextField
                             id="address2"
-                            type="text"
                             size="small"
                             placeholder="Address Line 2"
                             name="address2"
@@ -189,13 +171,12 @@ function Suggestion(props) {
                             error={touched.address2 && Boolean(errors.address2)}
                           />
                         </div>
-                      </Grid2>
-                      <Grid2 item xs={12} sm={6}>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
                         <div>
                           <Label id="city" label="City" />
                           <TextField
                             id="city"
-                            type="text"
                             size="small"
                             placeholder="City"
                             name="city"
@@ -207,13 +188,12 @@ function Suggestion(props) {
                             error={touched.city && Boolean(errors.city)}
                           />
                         </div>
-                      </Grid2>
-                      <Grid2 item xs={12} sm={6}>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
                         <div>
                           <Label id="state" label="State" />
                           <TextField
                             id="state"
-                            type="text"
                             size="small"
                             placeholder="State"
                             name="state"
@@ -225,13 +205,12 @@ function Suggestion(props) {
                             error={touched.state && Boolean(errors.state)}
                           />
                         </div>
-                      </Grid2>
-                      <Grid2 item xs={12} sm={6}>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
                         <div>
                           <Label id="zip" label="Zip Code" />
                           <TextField
                             id="zip"
-                            type="text"
                             size="small"
                             placeholder="Zip Code"
                             name="zip"
@@ -243,13 +222,12 @@ function Suggestion(props) {
                             error={touched.zip && Boolean(errors.zip)}
                           />
                         </div>
-                      </Grid2>
-                      <Grid2 item xs={12} sm={6}>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
                         <div>
                           <Label id="phone" label="Phone" />
                           <TextField
                             id="phone"
-                            type="text"
                             size="small"
                             placeholder="Phone"
                             name="phone"
@@ -262,13 +240,12 @@ function Suggestion(props) {
                             error={touched.phone && Boolean(errors.phone)}
                           />
                         </div>
-                      </Grid2>
-                      <Grid2 item xs={12} sm={6}>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
                         <div>
                           <Label id="email" label="Email" />
                           <TextField
                             id="email"
-                            type="text"
                             size="small"
                             placeholder="Email"
                             name="email"
@@ -280,49 +257,44 @@ function Suggestion(props) {
                             error={touched.email && Boolean(errors.email)}
                           />
                         </div>
-                      </Grid2>
-                      <Grid2 item xs={12} sm={6}>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
                         <div>
                           <Label id="hours" label="Hours" />
                           <Textarea
                             id="hours"
-                            type="text"
-                            size="small"
                             placeholder="Hours"
                             name="hours"
-                            fullWidth
                             value={values.hours}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             helperText={touched.hours ? errors.hours : ""}
                             error={touched.hours && Boolean(errors.hours)}
+                            props={{ fullWidth: true }}
                           />
                         </div>
-                      </Grid2>
-                      <Grid2 item xs={12} sm={6}>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
                         <div>
                           <Label id="notes" label="Other Information" />
                           <Textarea
                             id="notes"
-                            type="text"
-                            size="small"
                             placeholder="Other Information"
                             name="notes"
-                            fullWidth
                             value={values.notes}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             helperText={touched.notes ? errors.notes : ""}
                             error={touched.notes && Boolean(errors.notes)}
+                            props={{ fullWidth: true }}
                           />
                         </div>
-                      </Grid2>
-                      <Grid2 item xs={12} sm={6}>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
                         <div>
                           <Label id="tipsterName" label="Your Name" />
                           <TextField
                             id="tipsterName"
-                            type="text"
                             size="small"
                             placeholder="Your Name"
                             name="tipsterName"
@@ -338,13 +310,12 @@ function Suggestion(props) {
                             }
                           />
                         </div>
-                      </Grid2>
-                      <Grid2 item xs={12} sm={6}>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
                         <div>
                           <Label id="tipsterPhone" label="Your Phone" />
                           <TextField
                             id="tipsterPhone"
-                            type="text"
                             size="small"
                             placeholder="Your Phone"
                             name="tipsterPhone"
@@ -362,13 +333,12 @@ function Suggestion(props) {
                             }
                           />
                         </div>
-                      </Grid2>
-                      <Grid2 xs={12} sm={6}>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
                         <div>
                           <Label id="tipsterEmail" label="Your Email" />
                           <TextField
                             id="tipsterEmail"
-                            type="text"
                             size="small"
                             placeholder="Your Email"
                             name="tipsterEmail"
@@ -385,17 +355,17 @@ function Suggestion(props) {
                             }
                           />
                         </div>
-                      </Grid2>
-                      <Grid2 xs={12} padding="1rem" textAlign="center">
+                      </Grid>
+                      <Grid item xs={12} sx={{ padding: "1rem", textAlign: "center" }}>
                         <Button
                           variant="contained"
-                          onClick={handleSubmit}
+                          type="submit"
                           disabled={isSubmitting || !(isValid && dirty)}
                         >
                           Send Suggestions
                         </Button>
-                      </Grid2>
-                    </Grid2>
+                      </Grid>
+                    </Grid>
                   </Container>
                 </form>
               )}
@@ -409,12 +379,5 @@ function Suggestion(props) {
     </>
   );
 }
-
-Suggestion.propTypes = {
-  onSubmit: PropTypes.func,
-  onChange: PropTypes.func,
-  value: PropTypes.object,
-  setSubmitting: PropTypes.bool,
-};
 
 export default Suggestion;

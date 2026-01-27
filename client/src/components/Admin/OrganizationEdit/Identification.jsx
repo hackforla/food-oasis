@@ -644,54 +644,76 @@ export default function Identification({
           </div>
         </Grid>
 
-        <Grid item xs={12} sm={6}>
-          <Stack direction="column" sx={{ width: "100%" }}>
-            <Label id="selectedTags-label" label="Tags" />
-            <Select
-              id="selectedTags-label"
-              name="tags"
-              multiple
-              fullWidth
-              value={values.tags || []}
-              onChange={handleChange}
-              input={<OutlinedInput />}
-              displayEmpty
-              renderValue={(tags) => {
-                if (!allTags) {
-                  return "Loading tags...";
-                }
-                if (tags.length === 0) {
-                  return (
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        fontStyle: "italic",
-                        color: disabledText,
-                      }}
-                    >
-                      Select Tags
-                    </Typography>
-                  );
-                }
-                return tags.join(", ");
-              }}
-              MenuProps={MenuProps}
-            >
-              {!allTags || allTags.length === 0
-                ? null
-                : allTags.map((t) => (
-                    <MenuItem key={t.name} value={t.name}>
-                      <Checkbox
-                        checked={
-                          values.tags && values.tags.find((tt) => tt === t.name)
-                        }
-                      />
-                      <ListItemText primary={t.name} />
-                    </MenuItem>
-                  ))}
-            </Select>
-            <FormHelperText>{touched.tags ? errors.tags : ""}</FormHelperText>
-          </Stack>
+        {/* neighborhood council */}
+        <Grid item xs={12} sx={{ display: "flex", columnGap: "1rem", rowGap: "1rem", flexDirection: { xs: "column", sm: "row" }, }}>
+
+          <Grid item xs={12} sm={6}>
+            <Box>
+              <Label id="neighborhoodCouncil" label="Neighborhood Council" />
+              <TextField
+                id="neighborhoodCouncil"
+                name="neighborhoodName"
+                placeholder="Neighborhood Council"
+                value={values.neighborhoodName ?? ""}
+                disabled
+                onChange={handleChange}
+                onBlur={handleBlur}
+                helperText={touched.neighborhoodName ? errors.neighborhoodName : ""}
+                error={touched.neighborhoodName && Boolean(errors.neighborhoodName)}
+              />
+            </Box>
+          </Grid>
+      
+          <Grid item xs={12} sm={6} sx={{ display: "flex", alignItems: "flex-end"}}>
+            <Stack direction="column" sx={{ width: "100%" }}>
+              <Label id="selectedTags-label" label="Tags" />
+              <Select
+                id="selectedTags-label"
+                name="tags"
+                multiple
+                fullWidth
+                value={values.tags || []}
+                onChange={handleChange}
+                input={<OutlinedInput />}
+                displayEmpty
+                renderValue={(tags) => {
+                  if (!allTags) {
+                    return "Loading tags...";
+                  }
+                  if (tags.length === 0) {
+                    return (
+                      <Typography
+                        variant="body1"
+                        sx={{
+                          fontStyle: "italic",
+                          color: disabledText,
+                        }}
+                      >
+                        Select Tags
+                      </Typography>
+                    );
+                  }
+                  return tags.join(", ");
+                }}
+                MenuProps={MenuProps}
+              >
+                {!allTags || allTags.length === 0
+                  ? null
+                  : allTags.map((t) => (
+                      <MenuItem key={t.name} value={t.name}>
+                        <Checkbox
+                          checked={
+                            values.tags && values.tags.find((tt) => tt === t.name)
+                          }
+                        />
+                        <ListItemText primary={t.name} />
+                      </MenuItem>
+                    ))}
+              </Select>
+              <FormHelperText>{touched.tags ? errors.tags : ""}</FormHelperText>
+            </Stack>
+          </Grid>
+
         </Grid>
       </Grid>
     </TabPanel>

@@ -2,8 +2,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Alert, Box, IconButton, Typography } from "@mui/material";
 import Collapse from "@mui/material/Collapse";
 import { useEffect, useState } from "react";
-import { Announcement } from "types/Announcement";
-import { useAnnouncements } from "../../hooks/useAnnouncements";
+import { ProcessedAnnouncement, useAnnouncements } from "../../hooks/useAnnouncements";
 
 type OpenIndexes = Record<number, boolean>;
 
@@ -11,8 +10,8 @@ const AnnouncementSnackbar = () => {
   const [openIndexes, setOpenIndexes] = useState<OpenIndexes>({});
   const { data: announcementsData } = useAnnouncements();
 
-  const announcements: Announcement[] = announcementsData || [];
-  const enabledAnnouncements: Announcement[] = announcements.filter(
+  const announcements: ProcessedAnnouncement[] = announcementsData || [];
+  const enabledAnnouncements: ProcessedAnnouncement[] = announcements.filter(
     (announcement) => announcement.is_enabled
   );
 
@@ -33,7 +32,7 @@ const AnnouncementSnackbar = () => {
   return (
     <Box sx={{ width: "100%" }}>
       {enabledAnnouncements.map((announcement, idx) => (
-        <Collapse in={openIndexes[idx]} key={announcement.id}>
+        <Collapse in={openIndexes[idx]} key={announcement.announcementId}>
           <Alert
             severity={announcement.severity || "info"}
             sx={{ mb: 0, p: 2 }}

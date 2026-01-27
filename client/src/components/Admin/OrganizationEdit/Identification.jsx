@@ -655,6 +655,7 @@ export default function Identification({
                 name="neighborhoodName"
                 placeholder="Neighborhood Council"
                 value={values.neighborhoodName ?? ""}
+                disabled
                 onChange={handleChange}
                 onBlur={handleBlur}
                 helperText={touched.neighborhoodName ? errors.neighborhoodName : ""}

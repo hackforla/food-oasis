@@ -32,6 +32,36 @@ export default function AddressDropDown({ autoFocus }) {
   const { flyTo } = useMapbox();
   const [highlightedOption, setHighlightedOption] = useState(null);
   const stakeholders = useStakeholders();
+
+  const stakeholderOptions = stakeholders?.map((stakeholder) => ({
+    type: "stakeholder",
+    value: stakeholder,
+  }));
+  const mapboxOptions = mapboxResults.slice(0, 10).map((result) => ({
+    type: "mapbox",
+    value: result,
+  }));
+
+  const filteredStakeholders = stakeholderOptions.filter((option) => {
+    if (inputVal.trim().length === 0) return true;
+    return inputVal
+      .toLowerCase()
+      .split(" ")
+      .every((word) =>
+        getNameAndAddress(option.value).toLowerCase().includes(word)
+      );
+  });
+
+  const combinedOptions = [...mapboxOptions, ...filteredStakeholders];
+
+  // Only show error if user has typed input, loading is done, no results found,
+  // AND the input doesn't match the currently selected location (to avoid showing error after selection)
+  const noMatchError =
+    !isLoading &&
+    inputVal.trim().length > 0 &&
+    combinedOptions.length === 0 &&
+    inputVal !== searchCoordinates?.locationName;
+
   useEffect(() => {
     if (userCoordinates) {
       setInputVal("");
@@ -110,6 +140,12 @@ export default function AddressDropDown({ autoFocus }) {
         size="small"
         autoFocus={autoFocus}
         onClick={() => setInputVal("")}
+        error={noMatchError}
+        helperText={
+          noMatchError
+            ? `Sorry, we could not find the address '${inputVal}'. Please try another one.`
+            : ""
+        }
         InputLabelProps={{
           sx: {
             textOverflow: "ellipsis",
@@ -156,24 +192,15 @@ export default function AddressDropDown({ autoFocus }) {
     );
   };
 
-  const stakeholderOptions = stakeholders?.map((stakeholder) => ({
-    type: "stakeholder",
-    value: stakeholder,
-  }));
-  const mapboxOptions = mapboxResults.slice(0, 10).map((result) => ({
-    type: "mapbox",
-    value: result,
-  }));
-
   const handleKeyDown = (event) => {
-    if (event.key === "Enter" && mapboxOptions.length > 0 && !isLoading) {
+    if (event.key === "Enter" && !isLoading) {
       event.preventDefault();
-      const selected = highlightedOption ?? mapboxOptions[0];
-      handleAutocompleteOnChange(selected);
+      if (mapboxOptions.length > 0) {
+        const selected = highlightedOption ?? mapboxOptions[0];
+        handleAutocompleteOnChange(selected);
+      }
     }
   };
-
-  const combinedOptions = [...mapboxOptions, ...stakeholderOptions];
 
   return (
     <>
@@ -198,18 +225,8 @@ export default function AddressDropDown({ autoFocus }) {
           option.type === "stakeholder" ? "Organizations" : "Addresses"
         }
         getOptionLabel={getOptionLabel}
-        filterOptions={(options, { inputValue }) => {
-          return options.filter((option) => {
-            if (option.type === "stakeholder") {
-              return inputValue
-                .toLowerCase()
-                .split(" ")
-                .every((word) =>
-                  getNameAndAddress(option.value).toLowerCase().includes(word)
-                );
-            }
-            return true; // For mapbox results, we don't filter by inputValue
-          });
+        filterOptions={(options) => {
+          return options;
         }}
         sx={{
           width: 600,

@@ -1,15 +1,34 @@
 import { Grid, TextField, Typography } from "@mui/material";
-import { useState } from "react";
+import React, { ChangeEvent, FC } from "react";
 import * as awsService from "../../services/aws-service";
 import { TENANT_ID } from "helpers/Constants";
 
+interface GeocodeResult {
+  Place: {
+    Geometry: {
+      Point: [number, number];
+    };
+    Label: string;
+    SubRegion: string;
+    Region: string;
+  };
+}
+
+interface LocationAutocompleteProps {
+  setLocation: (location: GeocodeResult["Place"]) => void;
+}
+
 let latestSearchString = "";
 
-const LocationAutocomplete = (props) => {
-  const [searchString, setSearchString] = useState("");
-  const [geocodeResults, setGeocodeResults] = useState([]);
+const LocationAutocomplete: FC<LocationAutocompleteProps> = ({
+  setLocation,
+}) => {
+  const [searchString, setSearchString] = React.useState<string>("");
+  const [geocodeResults, setGeocodeResults] = React.useState<GeocodeResult[]>(
+    []
+  );
 
-  const geocode = async (evt) => {
+  const geocode = async (evt: ChangeEvent<HTMLInputElement>) => {
     const s = evt.target.value;
     latestSearchString = s;
     setSearchString(s);
@@ -26,9 +45,9 @@ const LocationAutocomplete = (props) => {
     }, 500);
   };
 
-  const selectLocation = (location) => {
+  const selectLocation = (location: GeocodeResult["Place"]) => {
     setGeocodeResults([]);
-    props.setLocation(location);
+    setLocation(location);
   };
 
   return (
@@ -44,7 +63,7 @@ const LocationAutocomplete = (props) => {
       />
       {geocodeResults ? (
         geocodeResults.map((resultObj, index) => {
-          const result = resultObj.Place;
+          const result = resultObj.Place; 
           return (
             <div
               style={{

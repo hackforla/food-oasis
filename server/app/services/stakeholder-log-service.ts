@@ -61,9 +61,19 @@ const selectById = async (id: number): Promise<any[]> => {
           displayOrder: c.displayOrder,
         };
       });
+
+    // Derive role string from flags
+    let modifiedUserRole = "Unknown";
+    if (row.modified_user_is_admin) modifiedUserRole = "Admin";
+    else if (row.modified_user_is_coordinator) modifiedUserRole = "Coordinator";
+    else if (row.modified_user_is_data_entry) modifiedUserRole = "Data Entry";
+    else if (row.modified_user_is_security_admin)
+      modifiedUserRole = "Security Admin";
+
     stakeholders.push({
       ...stakeholderHelpers.rowToStakeholder(row, stakeholderCategories),
       version: row.version,
+      modifiedUserRole: modifiedUserRole,
     });
   });
 
@@ -88,7 +98,11 @@ const buildLoginSelectsClause = () => {
     concat(L3.first_name, ' ', L3.last_name) as submitted_user,
     concat(L4.first_name, ' ', L4.last_name) as reviewed_user,
     concat(L5.first_name, ' ', L5.last_name) as assigned_user,
-    concat(L6.first_name, ' ', L6.last_name) as claimed_user
+    concat(L6.first_name, ' ', L6.last_name) as claimed_user,
+    L2.is_admin as modified_user_is_admin,
+    L2.is_coordinator as modified_user_is_coordinator,
+    L2.is_data_entry as modified_user_is_data_entry,
+    L2.is_security_admin as modified_user_is_security_admin
   `;
 };
 

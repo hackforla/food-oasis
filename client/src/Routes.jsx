@@ -11,6 +11,7 @@ import { useWidget } from "./appReducer";
 import useFeatureFlag from "./hooks/useFeatureFlag";
 import SurveySnackbar from "./components/UI/SurveySnackbar";
 import AnnouncementSnackbar from "components/UI/AnnouncementSnackbar";
+import ScrollToTop from "./components/ScrollToTop";
 
 const VerificationAdmin = lazy(() =>
   import("components/Admin/VerificationAdmin")
@@ -241,6 +242,7 @@ function AppWrapper() {
       wrap="nowrap"
       alignContent="stretch"
       spacing={0}
+      id="app-container"
       sx={{
         color: "black",
         backgroundColor: "#fff",
@@ -249,6 +251,7 @@ function AppWrapper() {
         overflowX: "hidden",
       }}
     >
+      <ScrollToTop />
       {isAlertLocation && <AnnouncementSnackbar />}
 
       {isWidget ? null : <Header />}

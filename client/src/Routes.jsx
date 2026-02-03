@@ -117,6 +117,16 @@ export default function AppRoutes() {
             <Route path="resetPassword/:token" element={<ResetPassword />} />
 
             <Route
+              path="organizationedit"
+              element={
+                <PrivateRoute
+                  roles={["isAdmin", "isDataEntry", "isCoordinator"]}
+                >
+                  <OrganizationEdit />
+                </PrivateRoute>
+              }
+            />
+            <Route
               path="organizationedit/:id"
               element={
                 <PrivateRoute

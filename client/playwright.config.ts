@@ -1,4 +1,4 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig, devices } from "@playwright/test";
 
 /**
  * Read environment variables from file.
@@ -11,6 +11,9 @@ import { defineConfig, devices } from '@playwright/test';
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
+// Set environment variable to disable Vite proxy during tests
+process.env.PLAYWRIGHT_TEST = "true";
+
 export default defineConfig({
   testDir: "./tests",
   /* Run tests in files in parallel */

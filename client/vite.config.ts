@@ -29,12 +29,16 @@ export default defineConfig({
     // this sets a default port to 3000
     port: 3000,
     host: true,
-    proxy: {
-      "/api": {
-        target: "http://localhost:5001",
-        changeOrigin: true,
-        secure: false,
-      },
-    },
+    proxy:
+      // Disable proxy during Playwright tests to allow page.route() mocks to work
+      process.env.PLAYWRIGHT_TEST === "true"
+        ? undefined
+        : {
+            "/api": {
+              target: "http://localhost:5001",
+              changeOrigin: true,
+              secure: false,
+            },
+          },
   },
 });

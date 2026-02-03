@@ -30,6 +30,8 @@ import * as Yup from "yup";
 import { useAnnouncements } from "../../hooks/useAnnouncements";
 import * as announcementService from "../../services/announcements-service";
 import EditIcon from "@mui/icons-material/Edit";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; // Don't forget the styles!
 
 const Announcements = () => {
   const [announcementModalOpen, setAnnouncementModalOpen] = useState(false);

@@ -1,15 +1,28 @@
 import { Grid, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import * as awsService from "../../services/aws-service";
-import { TENANT_ID } from "helpers/Constants";
+import { TENANT_ID } from "../../helpers/Constants";
+
+interface Location {
+  Geometry: {
+    Point: [number, number];
+  };
+  Label: string;
+  SubRegion: string;
+  Region: string;
+} 
+
+interface LocationAutocompleteProps {
+  setLocation: (location: Location) => void;
+}
 
 let latestSearchString = "";
 
-const LocationAutocomplete = (props) => {
-  const [searchString, setSearchString] = useState("");
-  const [geocodeResults, setGeocodeResults] = useState([]);
+const LocationAutocomplete = (props: LocationAutocompleteProps) => {
+  const [searchString, setSearchString] = useState<string>("");
+  const [geocodeResults, setGeocodeResults] = useState<Array<{ Place: Location }>>([]);
 
-  const geocode = async (evt) => {
+  const geocode = async (evt: React.ChangeEvent<HTMLInputElement>) => {
     const s = evt.target.value;
     latestSearchString = s;
     setSearchString(s);
@@ -26,7 +39,7 @@ const LocationAutocomplete = (props) => {
     }, 500);
   };
 
-  const selectLocation = (location) => {
+  const selectLocation = (location: Location) => {
     setGeocodeResults([]);
     props.setLocation(location);
   };

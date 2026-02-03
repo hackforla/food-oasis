@@ -44,7 +44,9 @@ import {
   TENANT_ID,
 } from "../../helpers/Constants";
 import { useSuggestionByStakeholderId } from "hooks/useSuggestionByStakeholderId";
+import { useStakeholderLog } from "hooks/useStakeholderLog";
 import SuggestionHistory from "./OrganizationEdit/SuggestionHistory";
+import ChangeHistory from "./OrganizationEdit/ChangeHistory";
 
 const phoneRegExp = /^\(\d{3}\) \d{3}-\d{4}$/;
 
@@ -225,6 +227,12 @@ const OrganizationEdit = (props) => {
 
   const { data: stakeholderSuggestions, refetch: refetchSuggestions } =
     useSuggestionByStakeholderId(editId);
+
+  const {
+    data: versionHistory,
+    loading: historyLoading,
+    error: historyError,
+  } = useStakeholderLog(editId);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -561,6 +569,9 @@ const OrganizationEdit = (props) => {
                       <Tab label="Donations" {...a11yProps(4)} />
                       <Tab label="Verification" {...a11yProps(5)} />
                       <Tab label="Suggestion History" {...a11yProps(6)} />
+                      {(user?.isAdmin || user?.isCoordinator) && (
+                        <Tab label="Change History" {...a11yProps(7)} />
+                      )}
                     </Tabs>
                   </AppBar>
                   <Identification
@@ -623,6 +634,14 @@ const OrganizationEdit = (props) => {
                     editedSuggestions={editedSuggestions}
                     onEdit={handleSuggestionEdit}
                   />
+                  {(user?.isAdmin || user?.isCoordinator) && (
+                    <ChangeHistory
+                      tabPage={tabPage}
+                      versions={versionHistory}
+                      loading={historyLoading}
+                      error={historyError}
+                    />
+                  )}
                 </Box>
                 <Stack direction="row">
                   <div style={{ flexBasis: "20%", flexGrow: 1 }}>

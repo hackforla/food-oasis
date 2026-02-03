@@ -5,7 +5,7 @@ test.beforeEach(async ({ page, helpers }) => {
   await helpers.mockLogin();
 });
 test.describe("OrganizationEdit", () => {
-  test("Should allow entering valid stakholder data", async ({ page }) => {
+  test("Should allow entering valid stakeholder data", async ({ page }) => {
     await page.getByTestId("menu-button").click();
     await page.getByRole("link", { name: "Add New Organization" }).click();
     await page.getByRole("textbox", { name: "Latitude *" }).click();

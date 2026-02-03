@@ -4,6 +4,7 @@ import {
   InputAdornment,
   MenuItem,
   TextField,
+  useTheme,
 } from "@mui/material";
 import { useMapboxGeocoder } from "hooks/useMapboxGeocoder";
 import { useEffect, useState } from "react";
@@ -19,6 +20,7 @@ import {
 import { useMapbox } from "../../hooks/useMapbox";
 
 export default function AddressDropDown({ autoFocus }) {
+  const theme = useTheme();
   const searchCoordinates = useSearchCoordinates();
   const userCoordinates = useUserCoordinates();
   const isWidget = useWidget();
@@ -32,6 +34,39 @@ export default function AddressDropDown({ autoFocus }) {
   const { flyTo } = useMapbox();
   const [highlightedOption, setHighlightedOption] = useState(null);
   const stakeholders = useStakeholders();
+
+  const stakeholderOptions = stakeholders?.map((stakeholder) => ({
+    type: "stakeholder",
+    value: stakeholder,
+  }));
+  const mapboxOptions = mapboxResults.slice(0, 10).map((result) => ({
+    type: "mapbox",
+    value: result,
+  }));
+
+  const filteredStakeholders = stakeholderOptions.filter((option) => {
+    if (inputVal.trim().length === 0) return true;
+    return inputVal
+      .toLowerCase()
+      .split(" ")
+      .every((word) =>
+        getNameAndAddress(option.value).toLowerCase().includes(word)
+      );
+  });
+
+  // Only show "no match" message if user has typed input, loading is done, no results found,
+  // AND the input doesn't match the currently selected location (to avoid showing message after selection)
+  const showNoMatch =
+    !isLoading &&
+    inputVal.trim().length > 0 &&
+    mapboxOptions.length === 0 &&
+    filteredStakeholders.length === 0 &&
+    inputVal !== searchCoordinates?.locationName;
+
+  const combinedOptions = showNoMatch
+    ? [{ type: "no-match", value: null }]
+    : [...mapboxOptions, ...filteredStakeholders];
+
   useEffect(() => {
     if (userCoordinates) {
       setInputVal("");
@@ -144,6 +179,21 @@ export default function AddressDropDown({ autoFocus }) {
 
   const renderOption = (props, option) => {
     const { id } = props;
+
+    if (option.type === "no-match") {
+      return (
+        <MenuItem
+          {...props}
+          key="no-match"
+          component="div"
+          disabled
+          sx={{ fontStyle: "italic", color: "text.secondary" }}
+        >
+          No match found
+        </MenuItem>
+      );
+    }
+
     return (
       <MenuItem
         {...props}
@@ -156,24 +206,15 @@ export default function AddressDropDown({ autoFocus }) {
     );
   };
 
-  const stakeholderOptions = stakeholders?.map((stakeholder) => ({
-    type: "stakeholder",
-    value: stakeholder,
-  }));
-  const mapboxOptions = mapboxResults.slice(0, 10).map((result) => ({
-    type: "mapbox",
-    value: result,
-  }));
-
   const handleKeyDown = (event) => {
-    if (event.key === "Enter" && mapboxOptions.length > 0 && !isLoading) {
+    if (event.key === "Enter" && !isLoading) {
       event.preventDefault();
-      const selected = highlightedOption ?? mapboxOptions[0];
-      handleAutocompleteOnChange(selected);
+      if (mapboxOptions.length > 0) {
+        const selected = highlightedOption ?? mapboxOptions[0];
+        handleAutocompleteOnChange(selected);
+      }
     }
   };
-
-  const combinedOptions = [...mapboxOptions, ...stakeholderOptions];
 
   return (
     <>
@@ -194,22 +235,13 @@ export default function AddressDropDown({ autoFocus }) {
           setInputVal(newValue ? getOptionLabel(newValue) : "");
         }}
         options={combinedOptions}
-        groupBy={(option) =>
-          option.type === "stakeholder" ? "Organizations" : "Addresses"
-        }
+        groupBy={(option) => {
+          if (option.type === "no-match") return "";
+          return option.type === "stakeholder" ? "Organizations" : "Addresses";
+        }}
         getOptionLabel={getOptionLabel}
-        filterOptions={(options, { inputValue }) => {
-          return options.filter((option) => {
-            if (option.type === "stakeholder") {
-              return inputValue
-                .toLowerCase()
-                .split(" ")
-                .every((word) =>
-                  getNameAndAddress(option.value).toLowerCase().includes(word)
-                );
-            }
-            return true; // For mapbox results, we don't filter by inputValue
-          });
+        filterOptions={(options) => {
+          return options;
         }}
         sx={{
           width: 600,
@@ -234,8 +266,13 @@ export default function AddressDropDown({ autoFocus }) {
           },
         }}
         ListboxProps={{
-          style: {
+          sx: {
             maxHeight: "160px",
+            "& .MuiAutocomplete-groupLabel": {
+              backgroundColor: theme.palette.filterButtons.backgroundColor,
+              color: theme.palette.headingText.main,
+              fontWeight: 600,
+            },
           },
         }}
         renderInput={(params) => renderInput(params)}
@@ -255,6 +292,9 @@ function getNameAndAddress(stakeholder) {
 }
 
 export function getOptionLabel(option) {
+  if (option.type === "no-match") {
+    return "No match found";
+  }
   if (option.type === "stakeholder") {
     return getNameAndAddress(option.value);
   }

@@ -35,7 +35,7 @@ router.post(
   accountController.setGlobalPermissions
 );
 
-router.post("/login/:email", accountController.login, jwtSession.login);
+router.post("/login", accountController.login, jwtSession.login);
 router.get("/logout", (req, res) => {
   // "Delete" cookie by expiring it immediately
   res.cookie("jwt", "", {

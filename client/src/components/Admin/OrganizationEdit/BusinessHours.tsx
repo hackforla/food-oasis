@@ -3,6 +3,32 @@ import OpenTimeForm from "components/Admin/OpenTimeForm";
 import { TabPanel } from "components/Admin/ui/TabPanel";
 import Label from "../ui/Label";
 import Textarea from "../ui/Textarea";
+import { FormikErrors, FormikTouched } from "formik";
+
+interface Hour {
+  weekOfMonth: string | number;
+  dayOfWeek: string;
+  open: string;
+  close: string;
+}
+
+interface BusinessHoursValues {
+  confirmedHours: boolean;
+  allowWalkins: boolean;
+  hoursNotes: string;
+  hours: Hour[];
+}
+
+interface BusinessHoursProps {
+  tabPage: number;
+  values: BusinessHoursValues;
+  touched: FormikTouched<BusinessHoursValues>;
+  errors: FormikErrors<BusinessHoursValues>;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
+  setFieldValue: (field: string, value: unknown, shouldValidate?: boolean) => void;
+  setFieldTouched: (field: string, isTouched?: boolean, shouldValidate?: boolean) => void;
+}
 
 export default function BusinessHours({
   tabPage,
@@ -13,7 +39,7 @@ export default function BusinessHours({
   handleBlur,
   setFieldValue,
   setFieldTouched,
-}) {
+}: BusinessHoursProps) {
   return (
     <TabPanel value={tabPage} index={1}>
       <Grid container spacing={1}>

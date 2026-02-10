@@ -13,13 +13,32 @@ import {
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DesktopTimePicker } from "@mui/x-date-pickers/DesktopTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import dayjs from "dayjs";
-import { FieldArray, getIn } from "formik";
+import dayjs, { Dayjs } from "dayjs";
+import { FieldArray, FormikErrors, FormikTouched, getIn } from "formik";
 import useBreakpoints from "hooks/useBreakpoints";
-import PropTypes from "prop-types";
 import { disabledText, error } from "theme/palette";
 import { IconButton } from "../UI/StandardButton";
 import Label from "./ui/Label";
+
+interface Hour {
+  weekOfMonth: string | number;
+  dayOfWeek: string;
+  open: string;
+  close: string;
+}
+
+interface FormValues {
+  hours: Hour[];
+}
+
+interface OpenTimeFormProps {
+  handleBlur: (event: React.FocusEvent<HTMLInputElement>) => void;
+  touched: FormikTouched<FormValues>;
+  errors: FormikErrors<FormValues>;
+  values: FormValues;
+  setFieldValue: (field: string, value: unknown, shouldValidate?: boolean) => void;
+  setFieldTouched: (field: string, isTouched?: boolean, shouldValidate?: boolean) => void;
+}
 
 const OpenTimeForm = ({
   handleBlur,
@@ -28,7 +47,7 @@ const OpenTimeForm = ({
   values,
   setFieldValue,
   setFieldTouched,
-}) => {
+}: OpenTimeFormProps) => {
   const addIcon = <AddIcon />;
   const { isMobile } = useBreakpoints();
   const days = [
@@ -52,9 +71,9 @@ const OpenTimeForm = ({
     { label: "Last", value: -1 },
   ];
 
-  const [closeTimeErrorss, setCloseTimeErrorss] = useState({});
+  const [closeTimeErrorss, setCloseTimeErrorss] = useState<Record<number, string>>({});
 
-  const getCloseTimeErrorsMessage = (index) => {
+  const getCloseTimeErrorsMessage = (index: number): string => {
     const errorType = closeTimeErrorss[index];
     if (errorType === "minTime")
       return "Closing time must be after opening time";
@@ -186,7 +205,7 @@ const OpenTimeForm = ({
                                 hour.open ? dayjs(hour.open, "HH:mm:ss") : null
                               }
                               onBlur={handleBlur}
-                              onChange={(dt) => {
+                              onChange={(dt: Dayjs | null) => {
                                 setFieldValue(
                                   open,
                                   dt && dt.isValid()
@@ -195,7 +214,7 @@ const OpenTimeForm = ({
                                 );
                                 setFieldTouched(open, true, true);
                               }}
-                              onClose={(e) => {
+                              onClose={() => {
                                 setFieldTouched(open, true, true);
                               }}
                               slotProps={{
@@ -246,11 +265,11 @@ const OpenTimeForm = ({
                               onError={(newError) =>
                                 setCloseTimeErrorss((prev) => ({
                                   ...prev,
-                                  [index]: newError,
+                                  [index]: newError as string,
                                 }))
                               }
                               onBlur={() => setFieldTouched(close, true, true)}
-                              onChange={(dt) => {
+                              onChange={(dt: Dayjs | null) => {
                                 const openTime = hour.open
                                   ? dayjs(hour.open, "HH:mm:ss")
                                   : null;
@@ -375,11 +394,6 @@ const OpenTimeForm = ({
       </CardContent>
     </Card>
   );
-};
-
-OpenTimeForm.propTypes = {
-  value: PropTypes.array,
-  onChange: PropTypes.func,
 };
 
 export default OpenTimeForm;

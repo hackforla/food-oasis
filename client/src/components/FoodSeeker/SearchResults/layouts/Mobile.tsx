@@ -1,13 +1,13 @@
 import { Box, Grid, Stack } from "@mui/material";
-import { useEffect, useState } from "react";
-import Draggable from "react-draggable";
+import { FC, ReactNode, useEffect, useState } from "react";
+import Draggable, { DraggableEvent, DraggableData } from "react-draggable";
 import { useFilterPanel } from "appReducer";
 import AttributionInfo from "../AttributionInfo";
 import { useAppDispatch } from "../../../../appReducer";
 import useFeatureFlag from "hooks/useFeatureFlag";
 
 const overlay = {
-  position: "absolute",
+  position: "absolute" as const,
   width: "100%",
   height: "100%",
   backgroundColor: "transparent",
@@ -15,11 +15,18 @@ const overlay = {
   borderRadius: "10px",
 };
 
-const MobileLayout = ({ filters, map, list, showList }) => {
+interface MobileLayoutProps {
+  filters: ReactNode;
+  map: ReactNode;
+  list: ReactNode;
+  showList: boolean;
+}
+
+const MobileLayout: FC<MobileLayoutProps> = ({ filters, map, list, showList }) => {
   const filterPanelOpen = useFilterPanel();
   const initialY = showList ? 5 : 57;
   const hasAdvancedFilterFeatureFlag = useFeatureFlag("advancedFilter");
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch() as (action: any) => void;
   const [position, setPosition] = useState({
     x: 0,
     y: initialY * (window.innerHeight / 100),
@@ -48,7 +55,7 @@ const MobileLayout = ({ filters, map, list, showList }) => {
     setPosition({ x: 0, y: newY * (window.innerHeight / 100) });
   }, [showList, filterPanelOpen, hasAdvancedFilterFeatureFlag]);
 
-  const handleStop = (e, ui) => {
+  const handleStop = (e: DraggableEvent, ui: DraggableData) => {
     const windowHeight = window.innerHeight / 100;
     const minY = hasAdvancedFilterFeatureFlag
       ? (100 / window.innerHeight) * 60
@@ -105,11 +112,6 @@ const MobileLayout = ({ filters, map, list, showList }) => {
             bounds={{ top: 0, bottom: minY * (window.innerHeight / 100) }}
             defaultPosition={{ x: 0, y: minY * (window.innerHeight / 100) }}
             axis="y"
-            sx={{
-              marginTop: "20px",
-              height: "10%",
-              backgroundColor: "white",
-            }}
           >
             <Box sx={overlay}>
               <Grid container spacing={0}></Grid>

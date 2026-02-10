@@ -1,13 +1,13 @@
-import { Box, Stack } from "@mui/material";
-import { useEffect, useState } from "react";
-import Draggable from "react-draggable";
+import { Box, Grid, Stack } from "@mui/material";
+import { FC, ReactNode, useEffect, useState } from "react";
+import Draggable, { DraggableEvent, DraggableData } from "react-draggable";
 import { useFilterPanel } from "appReducer";
 import AttributionInfo from "../AttributionInfo";
 import { useAppDispatch } from "../../../../appReducer";
 import useFeatureFlag from "hooks/useFeatureFlag";
 
-const getOverlayStyle = (positionY) => ({
-  position: "absolute",
+const getOverlayStyle = (positionY: number) => ({
+  position: "absolute" as const,
   width: "100%",
   top: 0,
   bottom: `${positionY}px`,
@@ -19,11 +19,18 @@ const getOverlayStyle = (positionY) => ({
   overflow: "hidden",
 });
 
-const MobileLayout = ({ filters, map, list, showList }) => {
+interface MobileLayoutProps {
+  filters: ReactNode;
+  map: ReactNode;
+  list: ReactNode;
+  showList: boolean;
+}
+
+const MobileLayout: FC<MobileLayoutProps> = ({ filters, map, list, showList }) => {
   const filterPanelOpen = useFilterPanel();
   const initialY = showList ? 5 : 57;
   const hasAdvancedFilterFeatureFlag = useFeatureFlag("advancedFilter");
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch() as (action: any) => void;
   const [position, setPosition] = useState({
     x: 0,
     y: initialY * (window.innerHeight / 100),
@@ -44,11 +51,11 @@ const MobileLayout = ({ filters, map, list, showList }) => {
     setPosition({ x: 0, y: newY * (window.innerHeight / 100) });
   }, [showList, filterPanelOpen, hasAdvancedFilterFeatureFlag]);
 
-  const handleDrag = (e, ui) => {
+  const handleDrag = (e: DraggableEvent, ui: DraggableData) => {
     setPosition({ x: 0, y: ui.y });
   };
 
-  const handleStop = (e, ui) => {
+  const handleStop = (e: DraggableEvent, ui: DraggableData) => {
     const windowHeight = window.innerHeight / 100;
     const minY = hasAdvancedFilterFeatureFlag
       ? (100 / window.innerHeight) * 60
@@ -106,11 +113,6 @@ const MobileLayout = ({ filters, map, list, showList }) => {
             bounds={{ top: 0, bottom: minY * (window.innerHeight / 100) }}
             defaultPosition={{ x: 0, y: minY * (window.innerHeight / 100) }}
             axis="y"
-            sx={{
-              marginTop: "20px",
-              height: "10%",
-              backgroundColor: "white",
-            }}
           >
             <Box sx={getOverlayStyle(position.y)}>
               <Box

@@ -1,4 +1,5 @@
-import { Stack, Box, styled, Tooltip, tooltipClasses } from "@mui/material";
+import { Stack, Box, styled, Tooltip, tooltipClasses, TooltipProps } from "@mui/material";
+import { FC, ReactNode } from "react";
 import {
   useFilterPanel,
   useListPanel,
@@ -9,7 +10,24 @@ import DrawerLeftArrowButton from "../../../../icons/DrawerLeftArrowButton";
 import DrawerRightArrowButton from "../../../../icons/DrawerRightArrowButton";
 import ResultsMap from "../ResultsMap/ResultsMap";
 
-const DesktopLayout = ({
+interface Stakeholder {
+  id: number;
+  latitude: number;
+  longitude: number;
+  [key: string]: unknown;
+}
+
+interface DesktopLayoutProps {
+  filters: ReactNode;
+  list: ReactNode;
+  stakeholders: Stakeholder[];
+  categoryIds: number[];
+  toggleCategory: (categoryId: number) => void;
+  loading: boolean;
+  initialZoom: number;
+}
+
+const DesktopLayout: FC<DesktopLayoutProps> = ({
   filters,
   list,
   stakeholders,
@@ -21,24 +39,24 @@ const DesktopLayout = ({
   const isFilterPanelOpen = useFilterPanel();
   const isListPanelOpen = useListPanel();
   const isWidget = useWidget();
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch() as (action: any) => void;
 
   function getLeftPosition() {
     const leftPosition = isFilterPanelOpen ? "340px" : 0;
     const listLeftPosition = isFilterPanelOpen ? "-186px" : "-524px";
     return isListPanelOpen ? leftPosition : listLeftPosition;
   }
-  const toggleDrawer = (event) => {
+  const toggleDrawer = (event: React.KeyboardEvent | React.MouseEvent) => {
     if (
       event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
+      ((event as React.KeyboardEvent).key === "Tab" || (event as React.KeyboardEvent).key === "Shift")
     ) {
       return;
     }
 
     dispatch({ type: "TOGGLE_LIST_PANEL", listPanel: !isListPanelOpen });
   };
-  const LightTooltip = styled(({ className, ...props }) => (
+  const LightTooltip = styled(({ className, ...props }: TooltipProps & { className?: string }) => (
     <Tooltip {...props} classes={{ popper: className }} />
   ))(({ theme }) => ({
     [`& .${tooltipClasses.tooltip}`]: {

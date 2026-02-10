@@ -17,13 +17,27 @@ import {
 import { Formik } from "formik";
 import { TENANT_ID } from "helpers/Constants";
 import { useTags } from "hooks/useTags";
-import { useEffect, useState } from "react";
-import { Navigate, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import * as tagService from "../../services/tag-service";
 import { IconButton } from "../UI/StandardButton";
 import Label from "./ui/Label";
 
-const columns = [
+interface Tag {
+  id?: number;
+  name: string;
+  tenantId?: number;
+  [key: string]: string | number | undefined;
+}
+
+interface Column {
+  id: string;
+  label: string;
+  minWidth?: number;
+  align?: "left" | "right" | "center" | "inherit" | "justify";
+  format?: (value: number) => string;
+}
+
+const columns: Column[] = [
   { id: "edit", label: "" },
   { id: "delete", label: "" },
   { id: "name", label: "Name", minWidth: 100 },
@@ -44,16 +58,15 @@ function getModalStyle() {
   };
 }
 
-function TagAdmin(props) {
-  let { data, status } = useTags();
-  const [tags, setTags] = useState([]);
+function TagAdmin() {
+  const { data } = useTags();
+  const [tags, setTags] = useState<Tag[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [activeTag, setActiveTag] = useState(false);
+  const [activeTag, setActiveTag] = useState<Tag | null>(null);
   const [modalStyle] = useState(getModalStyle);
   const [error, setError] = useState("");
   const [deleteError, setDeleteError] = useState("");
-  const location = useLocation();
 
   useEffect(() => {
     if (data) {
@@ -61,28 +74,23 @@ function TagAdmin(props) {
     }
   }, [data]);
 
-  useEffect(() => {
-    if (status === 401) {
-      return (
-        <Navigate
-          to={{ pathname: "/admin/login", state: { from: location } }}
-        />
-      );
-    }
-  });
-
-  const handleChangePage = (event, newPage) => {
+  const handleChangePage = (
+    _event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event) => {
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
 
-  const handleSave = async (data) => {
+  const handleSave = async (data: { name: string }) => {
     try {
-      if (activeTag.id) {
+      if (activeTag?.id) {
         await tagService.update({ ...data, id: activeTag.id });
       } else {
         const { id } = await tagService.post(data);
@@ -90,7 +98,9 @@ function TagAdmin(props) {
       }
       setActiveTag(null);
     } catch (e) {
-      setError(e.message);
+      if (e instanceof Error) {
+        setError(e.message);
+      }
     }
     setTimeout(() => {
       setError("");
@@ -104,13 +114,15 @@ function TagAdmin(props) {
     });
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: number | undefined) => {
     try {
       await tagService.remove(id);
       const data = tags.filter((tag) => tag.id !== id);
       setTags(data);
     } catch (e) {
-      setDeleteError(e.message);
+      if (e instanceof Error) {
+        setDeleteError(e.message);
+      }
     }
   };
 
@@ -172,7 +184,7 @@ function TagAdmin(props) {
                       role="checkbox"
                       tabIndex={-1}
                       key={tag.id}
-                      selected={tag.id === activeTag}
+                      selected={tag.id === activeTag?.id}
                     >
                       {columns.map((column) => {
                         const value = tag[column.id];
@@ -189,7 +201,7 @@ function TagAdmin(props) {
                                   const aTag = tags.find(
                                     (t) => t.id === tag.id
                                   );
-                                  setActiveTag(aTag);
+                                  setActiveTag(aTag ?? null);
                                 }}
                               />
                             </TableCell>
@@ -246,7 +258,7 @@ function TagAdmin(props) {
               width: 400,
               backgroundColor: "background.paper",
               boxShadow: 5,
-              padding: (2, 4, 3),
+              padding: 3,
             }}
           >
             <Typography

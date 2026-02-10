@@ -3,6 +3,33 @@ import OpenTimeForm from "components/Admin/OpenTimeForm";
 import { TabPanel } from "components/Admin/ui/TabPanel";
 import Label from "../ui/Label";
 import Textarea from "../ui/Textarea";
+import { FormikErrors, FormikTouched } from "formik";
+
+interface Hour {
+  weekOfMonth: string | number;
+  dayOfWeek: string;
+  open: string;
+  close: string;
+}
+
+interface BusinessHoursValues {
+  confirmedHours: boolean;
+  allowWalkins: boolean;
+  hoursNotes: string;
+  hours: Hour[];
+}
+
+interface BusinessHoursProps {
+  tabPage: number;
+  values: BusinessHoursValues;
+  touched: FormikTouched<BusinessHoursValues>;
+  errors: FormikErrors<BusinessHoursValues>;
+  confirmationErrors?: Record<string, string>;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleBlur: (e: React.FocusEvent<HTMLElement>) => void;
+  setFieldValue: (field: string, value: unknown, shouldValidate?: boolean) => void;
+  setFieldTouched: (field: string, isTouched?: boolean, shouldValidate?: boolean) => void;
+}
 
 export default function BusinessHours({
   tabPage,
@@ -14,7 +41,7 @@ export default function BusinessHours({
   setFieldValue,
   setFieldTouched,
   confirmationErrors = {},
-}) {
+}: BusinessHoursProps) {
   return (
     <TabPanel value={tabPage} index={1}>
       <Grid container spacing={1}>
@@ -39,7 +66,6 @@ export default function BusinessHours({
               }}
               control={
                 <Checkbox
-                  margin="normal"
                   name="confirmedHours"
                   value={values.confirmedHours}
                   checked={values.confirmedHours}
@@ -54,7 +80,6 @@ export default function BusinessHours({
             />
           </div>
           <OpenTimeForm
-            name="hours"
             values={values}
             setFieldValue={setFieldValue}
             setFieldTouched={setFieldTouched}
@@ -67,7 +92,6 @@ export default function BusinessHours({
           <FormControlLabel
             control={
               <Checkbox
-                margin="normal"
                 name="allowWalkins"
                 value={values.allowWalkins}
                 checked={values.allowWalkins}
@@ -87,7 +111,6 @@ export default function BusinessHours({
             />
             <Textarea
               id="hoursNotes"
-              variant="outlined"
               name="hoursNotes"
               placeholder="Notes about hours"
               value={values.hoursNotes}

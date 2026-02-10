@@ -174,7 +174,6 @@ const Announcements: React.FC = () => {
     });
   }, [announcementsData, sortBy, sortDirection]);
 
-  console.log("*******announcements **********:", announcementsData);
   if (announcementsLoading || !announcementsData) {
     return (
       <Stack

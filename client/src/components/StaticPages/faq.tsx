@@ -5,8 +5,10 @@ import {
   Link,
   SvgIcon,
   Typography,
+  Theme,
+  SxProps,
 } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, ReactElement, FC } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import * as analytics from "../../services/analytics";
 import Footer from "../Layout/Footer";
@@ -15,9 +17,64 @@ import IconSpacerSVG from "./assets/IconSpacerSVG";
 import faqbg from "./assets/faq-bg.webp";
 import SEO from "../SEO";
 
-const About = () => {
-  useEffect(() => {
-    analytics.postEvent("visitFaqPage");
+type AnalyticsEvent = "visitFaqPage" | "visitHomePage" | string;
+
+const styles: Record<string, SxProps<Theme>> = {
+  headerText: {
+    textTransform: "uppercase",
+    textAlign: "center",
+    margin: 0,
+    padding: "32px 0",
+  },
+  sectionBox: {
+    padding: "50px 32px 50px",
+    margin: "32px 0",
+    borderRadius: "24px",
+    background: "#f0f0f0",
+    display: "flex",
+    flexWrap: "wrap",
+  },
+  iconMedia: {
+    margin: "auto",
+    marginBottom: "20px",
+    height: "40px",
+    width: "90px",
+  },
+  sectionTitle: {
+    flexBasis: "100%",
+    textAlign: "center",
+    marginTop: "10px",
+    marginBottom: "20px",
+  },
+  definitionList: {
+    marginTop: "10px",
+    marginBottom: "0",
+    "& dd": {
+      marginLeft: "0",
+      marginBottom: "24px",
+    },
+    "& dd:last-child": {
+      marginBottom: "0",
+    },
+  },
+  listContainer: {
+    paddingLeft: "26px",
+    margin: "5px",
+    lineHeight: "26.55px",
+  },
+  providerBox: {
+    padding: "50px 32px 50px",
+    margin: "32px 0",
+    borderRadius: "24px",
+    background: "#B6D8FB",
+    display: "flex",
+    flexDirection: "column",
+  },
+};
+
+const About: FC = (): ReactElement => {
+  useEffect((): void => {
+    analytics.postEvent("visitFaqPage" as AnalyticsEvent);
   }, []);
 
   return (
@@ -33,75 +90,37 @@ const About = () => {
           alt="FAQ"
           src={faqbg}
           style={{ width: "100%" }}
-        ></CardMedia>
+        />
         <Typography
           variant="h1"
-          sx={{
-            textTransform: "uppercase",
-            textAlign: "center",
-            margin: 0,
-            padding: "32px 0",
-          }}
+          sx={styles.headerText}
         >
           FAQ
         </Typography>
-        <Box
-          sx={{
-            padding: "50px 32px 50px",
-            margin: "32px 0",
-            borderRadius: "24px",
-            background: "#f0f0f0",
-            display: "flex",
-            flexWrap: "wrap",
-          }}
-        >
+        <Box sx={styles.sectionBox}>
           <CardMedia
             component="svg"
-            sx={{
-              margin: "auto",
-              marginBottom: "20px",
-              height: "40px",
-              width: "90px",
-            }}
+            sx={styles.iconMedia}
           >
             <SvgIcon component={IconSpacerSVG} titleAccess="Glossary" />
           </CardMedia>
           <Typography
             variant="h2"
-            sx={{
-              flexBasis: "100%",
-              textAlign: "center",
-              marginTop: "10px",
-              marginBottom: "20px",
-            }}
+            sx={styles.sectionTitle}
           >
             Food Seekers
           </Typography>
           <Container maxWidth="sm">
             <Box
               component="dl"
-              sx={{
-                marginTop: "10px",
-                marginBottom: "0",
-                "& dd": {
-                  marginLeft: "0",
-                  marginBottom: "24px",
-                },
-                "& dd:last-child": {
-                  marginBottom: "0",
-                },
-              }}
+              sx={styles.definitionList}
             >
               <Typography variant="subtitle1" component="dt">
                 {" "}
                 How do I use this directory?
               </Typography>
               <Box
-                sx={{
-                  paddingLeft: "26px",
-                  margin: "5px",
-                  lineHeight: "26.55px",
-                }}
+                sx={styles.listContainer}
                 component="ul"
               >
                 <Typography variant="body1" component="li">
@@ -128,11 +147,7 @@ const About = () => {
                 get free food in Los Angeles County?
               </Typography>
               <Box
-                sx={{
-                  paddingLeft: "26px",
-                  margin: "5px",
-                  lineHeight: "26.55px",
-                }}
+                sx={styles.listContainer}
                 component="ul"
               >
                 <Typography variant="body1" component="li">
@@ -141,7 +156,7 @@ const About = () => {
                   volunteers work hard to ensure the information listed is
                   updated. To suggest a listing missing from our directory,{" "}
                   <Link
-                    variant="primary"
+                    variant="body1"
                     to={"/suggestion"}
                     component={RouterLink}
                   >
@@ -156,11 +171,7 @@ const About = () => {
                 program?
               </Typography>
               <Box
-                sx={{
-                  paddingLeft: "26px",
-                  margin: "5px",
-                  lineHeight: "26.55px",
-                }}
+                sx={styles.listContainer}
                 component="ul"
               >
                 <Typography variant="body1" component="li">
@@ -176,46 +187,29 @@ const About = () => {
           </Container>
         </Box>
         <Box
-          sx={{
-            padding: "50px 32px 50px",
-            margin: "32px 0",
-            borderRadius: "24px",
-            background: "#B6D8FB",
-            display: "flex",
-            flexDirection: "column",
-          }}
+          sx={styles.providerBox}
         >
           <CardMedia
             component="svg"
-            sx={{
-              margin: "auto",
-              marginBottom: "20px",
-              height: "40px",
-              width: "90px",
-            }}
+            sx={styles.iconMedia}
           >
             <SvgIcon component={IconSpacerSVG} titleAccess="Glossary" />
           </CardMedia>
           <Typography
             variant="h2"
-            sx={{
-              flexBasis: "100%",
-              textAlign: "center",
-              marginTop: "10px",
-              marginBottom: "20px",
-            }}
+            sx={styles.sectionTitle}
           >
             Food Providers
           </Typography>
           <Container maxWidth="sm">
-            <Box component="dl" align="center">
+            <Box component="dl" sx={{ textAlign: 'center' }}>
               <Typography variant="subtitle1" component="dt">
                 How can I add our food resource to your directory?
               </Typography>
               <Typography component="dd">
                 Please visit our “
                 <Link
-                  variant="primary"
+                  variant="body1"
                   to={"/suggestion"}
                   component={RouterLink}
                 >

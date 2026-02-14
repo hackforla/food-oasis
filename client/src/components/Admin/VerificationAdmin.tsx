@@ -12,7 +12,6 @@ import { useCategories } from "hooks/useCategories";
 import { useNeighborhoods } from "hooks/useNeighborhoods";
 import { useOrganizations } from "hooks/useOrganizations";
 import { useTags } from "hooks/useTags";
-import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -26,14 +25,69 @@ import SearchCriteria from "./SearchCriteria";
 import SearchCriteriaDisplay from "./SearchCriteriaDisplay";
 import NeedsVerificationDialog from "./ui/NeedsVerificationDialog";
 
+import { GridSelectionModel } from "@mui/x-data-grid";
 import { useSearchCoordinates, useUserCoordinates } from "../../appReducer";
 import { useUserContext } from "../../contexts/userContext";
 import VerificationAdminGridMui from "./VerificationAdminGridMui";
 
+function typed<T>(value: T): T {
+  return value;
+}
+
+interface ApiError {
+  status?: number;
+  message?: string;
+  response?: { status: number };
+}
+
+function isApiError(err: unknown): err is ApiError {
+  return typeof err === "object" && err !== null;
+}
+
+interface Coordinates {
+  latitude: number;
+  longitude: number;
+}
+
+interface SearchCriteriaType {
+  name: string;
+  latitude: number;
+  longitude: number;
+  placeName: string;
+  radius: number;
+  categoryIds: number[];
+  tags: string[];
+  isInactive: string;
+  isAssigned: string;
+  isSubmitted: string;
+  isApproved: string;
+  isClaimed: string;
+  assignedLoginId: number | null;
+  claimedLoginId: number | null;
+  verificationStatusId: number;
+  neighborhoodId: number;
+  minCompleteCriticalPercent: number;
+  maxCompleteCriticalPercent: number;
+  stakeholderId: string;
+  isInactiveTemporary: string;
+  tag: string;
+}
+
+interface OrganizationsHookResult {
+  data: any[] | null;
+  loading: boolean;
+  error: boolean;
+  searchCallback: (criteria: SearchCriteriaType) => void;
+}
+
 const CRITERIA_TOKEN = "verificationAdminCriteria";
 
-const DialogTitle = (props) => {
-  const { children, onClose, ...other } = props;
+interface DialogTitleProps {
+  children?: React.ReactNode;
+  onClose?: () => void;
+}
+
+const DialogTitle = ({ children, onClose, ...other }: DialogTitleProps) => {
   return (
     <MuiDialogTitle
       sx={{
@@ -51,8 +105,6 @@ const DialogTitle = (props) => {
         <Button
           variant="contained"
           type="button"
-          icon="search"
-          kind="close"
           onClick={onClose}
           sx={{
             position: "absolute",
@@ -67,12 +119,7 @@ const DialogTitle = (props) => {
   );
 };
 
-DialogTitle.propTypes = {
-  children: PropTypes.string,
-  onClose: PropTypes.func,
-};
-
-const defaultCriteria = {
+const defaultCriteria: SearchCriteriaType = {
   name: "",
   latitude: 34,
   longitude: -118,
@@ -103,10 +150,11 @@ function VerificationAdmin() {
   const [needsVerificationDialogOpen, setNeedsVerificationDialogOpen] =
     useState(false);
   const [criteria, setCriteria] = useState(defaultCriteria);
-  const [selectedStakeholderIds, setSelectedStakeholderIds] = useState([]);
-  const userCoordinates = useUserCoordinates();
+  const [selectedStakeholderIds, setSelectedStakeholderIds] =
+    useState<GridSelectionModel>([]);
+  const userCoordinates = typed<Coordinates | null>(useUserCoordinates());
   const location = useLocation();
-  const searchCoordinates = useSearchCoordinates();
+  const searchCoordinates = typed<Coordinates | null>(useSearchCoordinates());
   const navigate = useNavigate();
   const [assignmentsAvailable, setAssignmentsAvailable] = useState(false);
 
@@ -129,12 +177,12 @@ function VerificationAdmin() {
     loading: stakeholdersLoading,
     error: stakeholdersError,
     searchCallback,
-  } = useOrganizations();
+  } = typed<OrganizationsHookResult>(useOrganizations());
 
   useEffect(() => {
     const execute = async () => {
       const criteriaString = sessionStorage.getItem(CRITERIA_TOKEN);
-      let initialCriteria = JSON.parse(criteriaString);
+      let initialCriteria = criteriaString ? JSON.parse(criteriaString) : null;
       if (!initialCriteria) {
         initialCriteria = {
           ...defaultCriteria,
@@ -154,7 +202,7 @@ function VerificationAdmin() {
         // If we receive a 401 status code, the user needs
         // to be logged in, will redirect to login page.
         // Otherwise it's a real exception.
-        if (err.status !== 401) {
+        if (isApiError(err) && err.status !== 401) {
           console.error(err);
           return Promise.reject(err.message);
         }
@@ -183,7 +231,7 @@ function VerificationAdmin() {
       // If we receive a 401 status code, the user needs
       // to be logged in, will redirect to login page.
       // Otherwise it's a real exception.
-      if (err.status !== 401) {
+      if (isApiError(err) && err.status !== 401) {
         console.error(err);
         return Promise.reject(err.message);
       }
@@ -197,11 +245,11 @@ function VerificationAdmin() {
       // If we receive a 401 status code, the user needs
       // to be logged in, will redirect to login page.
       // Otherwise it's a real exception.
-      if (err.response && err.response.status === 401) {
+      if (isApiError(err) && err.response && err.response.status === 401) {
         navigate("/admin/login", { state: { from: location } });
       } else {
         console.error(err);
-        return Promise.reject(err.message);
+        if (isApiError(err)) return Promise.reject(err.message);
       }
     }
   };
@@ -210,11 +258,14 @@ function VerificationAdmin() {
     setAssignDialogOpen(true);
   };
 
-  const handleAssignDialogClose = async (loginId) => {
+  const handleAssignDialogClose = async (
+    loginId: number | null | undefined
+  ) => {
     setAssignDialogOpen(false);
     // Dialog returns undefined if cancelled, null if
     // want to unassign, otherwise a loginId > 0
     if (!loginId) return;
+    if (!user) return;
     try {
       for (let i = 0; i < selectedStakeholderIds.length; i++) {
         await assign(selectedStakeholderIds[i], user.id, loginId);
@@ -223,11 +274,11 @@ function VerificationAdmin() {
       // If we receive a 401 status code, the user needs
       // to be logged in, will redirect to login page.
       // Otherwise it's a real exception.
-      if (err.response && err.response.status === 401) {
+      if (isApiError(err) && err.response && err.response.status === 401) {
         navigate("/admin/login", { state: { from: location } });
       } else {
         console.error(err);
-        return Promise.reject(err.message);
+        if (isApiError(err)) return Promise.reject(err.message);
       }
     }
     search();
@@ -237,11 +288,14 @@ function VerificationAdmin() {
     setNeedsVerificationDialogOpen(true);
   };
 
-  const handleNeedsVerificationDialogClose = async (result) => {
+  const handleNeedsVerificationDialogClose = async (
+    result: boolean | { message: string; preserveConfirmations: string }
+  ) => {
     setNeedsVerificationDialogOpen(false);
     // Dialog returns false if cancelled, otherwise an optional
     // message to attach to stakeholder(s)
-    if (result === false) return;
+    if (typeof result === "boolean") return;
+    if (!user) return;
     try {
       for (let i = 0; i < selectedStakeholderIds.length; i++) {
         await needsVerification(
@@ -255,11 +309,11 @@ function VerificationAdmin() {
       // If we receive a 401 status code, the user needs
       // to be logged in, will redirect to login page.
       // Otherwise it's a real exception.
-      if (err.response && err.response.status === 401) {
+      if (isApiError(err) && err.response && err.response.status === 401) {
         navigate("/admin/login", { state: { from: location } });
       } else {
         console.error(err);
-        return Promise.reject(err.message);
+        if (isApiError(err)) return Promise.reject(err.message);
       }
     }
     search();
@@ -274,7 +328,7 @@ function VerificationAdmin() {
     setDialogOpen(false);
   };
 
-  const handleCriteriaChange = (newCriteria) => {
+  const handleCriteriaChange = (newCriteria: SearchCriteriaType) => {
     setCriteria(newCriteria);
     search(newCriteria);
   };
@@ -316,12 +370,7 @@ function VerificationAdmin() {
           >
             Verification Administration
           </Typography>
-          <Button
-            variant="contained"
-            type="button"
-            icon="search"
-            onClick={handleDialogOpen}
-          >
+          <Button variant="contained" type="button" onClick={handleDialogOpen}>
             Criteria...
           </Button>
         </Box>
@@ -329,7 +378,6 @@ function VerificationAdmin() {
       <SearchCriteriaDisplay
         defaultCriteria={defaultCriteria}
         criteria={criteria}
-        setCriteria={setCriteria}
         neighborhoods={neighborhoods}
         handleDelete={handleCriteriaChange}
         categories={categories}
@@ -355,16 +403,11 @@ function VerificationAdmin() {
             <Box sx={{ overflowY: "scroll" }}>
               <SearchCriteria
                 key={JSON.stringify({
-                  userLatitude:
-                    userCoordinates?.latitude || origin?.latitude || 0,
+                  userLatitude: userCoordinates?.latitude || 0,
                   categories,
                 })}
-                userLatitude={
-                  userCoordinates?.latitude || origin?.latitude || 0
-                }
-                userLongitude={
-                  userCoordinates?.longitude || origin?.longitude || 0
-                }
+                userLatitude={userCoordinates?.latitude || 0}
+                userLongitude={userCoordinates?.longitude || 0}
                 categories={categories}
                 tags={tags}
                 neighborhoods={neighborhoods}
@@ -435,7 +478,7 @@ function VerificationAdmin() {
                 Uh Oh! Something went wrong!
               </Typography>
             </Box>
-          ) : categoriesLoading || stakeholdersLoading | tagsLoading ? (
+          ) : categoriesLoading || stakeholdersLoading || tagsLoading ? (
             <Box
               style={{
                 flexGrow: 1,

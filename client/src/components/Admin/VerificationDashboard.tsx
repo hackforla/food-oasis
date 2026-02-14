@@ -13,7 +13,49 @@ import * as stakeholderService from "services/stakeholder-service";
 import { useUserContext } from "../../contexts/userContext";
 import VerificationAdminGridMui from "./VerificationAdminGridMui";
 
-const defaultCriteria = {
+function typed<T>(value: T): T {
+  return value;
+}
+
+interface ApiError {
+  status?: number;
+  message?: string;
+  response?: { status: number };
+}
+
+function isApiError(err: unknown): err is ApiError {
+  return typeof err === "object" && err !== null;
+}
+
+interface DashboardCriteria {
+  name: string;
+  latitude: number;
+  longitude: number;
+  placeName: string;
+  radius: number;
+  categoryIds: number[];
+  isInactive: string;
+  isAssigned: string;
+  isSubmitted: string;
+  isApproved: string;
+  isClaimed: string;
+  assignedLoginId: number | null;
+  claimedLoginId: number | null;
+  verificationStatusId: number;
+  neighborhoodId: number;
+  minCompleteCriticalPercent: number;
+  maxCompleteCriticalPercent: number;
+  tag: string;
+}
+
+interface OrganizationsHookResult {
+  data: any[] | null;
+  loading: boolean;
+  error: boolean | { status?: number };
+  searchCallback: (criteria: DashboardCriteria) => void;
+}
+
+const defaultCriteria: DashboardCriteria = {
   name: "",
   latitude: 34,
   longitude: -118,
@@ -46,7 +88,7 @@ function VerificationDashboard() {
     loading: stakeholdersLoading,
     error: stakeholdersError,
     searchCallback,
-  } = useOrganizations();
+  } = typed<OrganizationsHookResult>(useOrganizations());
 
   useEffect(() => {
     const execute = async () => {
@@ -57,7 +99,7 @@ function VerificationDashboard() {
         try {
           await searchCallback(initialCriteria);
         } catch (err) {
-          if (err.status !== 401) {
+          if (isApiError(err) && err.status !== 401) {
             console.error(err);
           }
         }
@@ -70,18 +112,19 @@ function VerificationDashboard() {
     try {
       await searchCallback(criteria);
     } catch (err) {
-      if (err.status !== 401) {
+      if (isApiError(err) && err.status !== 401) {
         console.error(err);
       }
     }
   };
 
   const requestAssignment = async () => {
+    if (!user) return;
     try {
       await stakeholderService.requestAssignment(user.id);
       search();
     } catch (err) {
-      if (err.response.status === 404) {
+      if (isApiError(err) && err.response && err.response.status === 404) {
         setShowAssignmentError(true);
       }
     }
@@ -91,7 +134,11 @@ function VerificationDashboard() {
     return null;
   }
 
-  if (stakeholdersError.status === 401) {
+  if (
+    typeof stakeholdersError === "object" &&
+    stakeholdersError &&
+    stakeholdersError.status === 401
+  ) {
     navigate("/admin/login", { state: { from: location } });
   }
 
@@ -176,7 +223,6 @@ function VerificationDashboard() {
             <Button
               variant="outlined"
               type="button"
-              icon="search"
               onClick={search}
               sx={{ margin: ".1rem" }}
             >

@@ -2,18 +2,28 @@ import { Block } from "@mui/icons-material";
 import CheckIcon from "@mui/icons-material/Check";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { Box } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridCellParams,
+  GridColDef,
+  GridRenderCellParams,
+  GridSelectionModel,
+  GridValueGetterParams,
+} from "@mui/x-data-grid";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
 import { VERIFICATION_STATUS_NAMES } from "../../constants/stakeholder";
 
-const linkFormatter = ({ value, row }) => {
+const verificationStatusNames: Record<number, string> =
+  VERIFICATION_STATUS_NAMES;
+
+const linkFormatter = ({ value, row }: GridRenderCellParams) => {
   return <Link to={`/admin/organizationedit/${row.id}`}>{value}</Link>;
 };
 
 const inactiveFormatter =
-  (key) =>
-  ({ row }) => {
+  (key: string) =>
+  ({ row }: GridRenderCellParams) => {
     return row[key] ? (
       <Box
         sx={(theme) => ({
@@ -21,7 +31,7 @@ const inactiveFormatter =
           color: theme.palette.error.main,
         })}
       >
-        <Block color="confirm.main" />
+        <Block color="inherit" />
       </Box>
     ) : (
       ""
@@ -29,8 +39,8 @@ const inactiveFormatter =
   };
 
 const confirmationFormatter =
-  (key) =>
-  ({ row }) => {
+  (key: string) =>
+  ({ row }: GridRenderCellParams) => {
     return row[key] ? (
       <Box
         sx={(theme) => ({
@@ -54,50 +64,47 @@ const confirmationFormatter =
     );
   };
 
-const verificationStatusFormatter = ({ row }) => {
-  return VERIFICATION_STATUS_NAMES[Number(row.verificationStatusId)];
+const verificationStatusFormatter = ({ row }: GridValueGetterParams) => {
+  return verificationStatusNames[Number(row.verificationStatusId)];
 };
 
-const distanceFormatter = ({ row }) => {
+const distanceFormatter = ({ row }: GridValueGetterParams) => {
   return row.distance ? row.distance.toFixed(2) : row.distance;
 };
 
-const categoriesFormatter = ({ row }) => {
+const categoriesFormatter = ({ row }: GridValueGetterParams) => {
   return row.categories.length > 0
-    ? row.categories.map((c) => c.name).join(", ")
+    ? row.categories.map((c: { name: string }) => c.name).join(", ")
     : "";
 };
 
 const dateFormatter =
-  (key) =>
-  ({ row }) => {
+  (key: string) =>
+  ({ row }: GridValueGetterParams) => {
     return !row[key] ? "" : row[key];
   };
 
-const dateComparator = (v1, v2) =>
+const dateComparator = (v1: string, v2: string) =>
   new Date(v2).getTime() - new Date(v1).getTime();
 
-const adminColumns = [
+const adminColumns: GridColDef[] = [
   {
     field: "id",
     headerName: "ID",
     renderCell: linkFormatter,
     width: 60,
-    frozen: true,
   },
   {
     field: "name",
     headerName: "Name",
     renderCell: linkFormatter,
     minWidth: 400,
-    frozen: true,
   },
   {
     field: "categories",
     headerName: "Categories",
     valueGetter: categoriesFormatter,
     width: 200,
-    frozen: true,
   },
   {
     field: "completeCriticalPercent",
@@ -174,7 +181,6 @@ const adminColumns = [
     field: "assignedDate",
     headerName: "Assigned",
     valueGetter: dateFormatter("assignedDate"),
-    dataType: "date-time",
     sortComparator: dateComparator,
     width: 200,
   },
@@ -183,7 +189,6 @@ const adminColumns = [
     field: "submittedDate",
     headerName: "Submitted",
     valueGetter: dateFormatter("submittedDate"),
-    dataType: "date-time",
     sortComparator: dateComparator,
     width: 200,
   },
@@ -192,7 +197,6 @@ const adminColumns = [
     field: "approvedDate",
     headerName: "Approved",
     valueGetter: dateFormatter("approvedDate"),
-    dataType: "date-time",
     sortComparator: dateComparator,
     width: 250,
   },
@@ -201,7 +205,6 @@ const adminColumns = [
     field: "createdDate",
     headerName: "Entered",
     valueGetter: dateFormatter("createdDate"),
-    dataType: "date-time",
     sortComparator: dateComparator,
     width: 250,
   },
@@ -210,7 +213,6 @@ const adminColumns = [
     field: "modifiedDate",
     headerName: "Modified",
     valueGetter: dateFormatter("modifiedDate"),
-    dataType: "date-time",
     sortComparator: dateComparator,
     width: 250,
   },
@@ -231,7 +233,7 @@ const adminColumns = [
     headerName: "Suggestions",
     align: "center",
     width: 120,
-    cellClassName: (params) => {
+    cellClassName: (params: GridCellParams) => {
       if (params.value == null) {
         return "";
       }
@@ -241,20 +243,18 @@ const adminColumns = [
     },
   },
 ];
-const dataEntryColumns = [
+const dataEntryColumns: GridColDef[] = [
   {
     field: "id",
     headerName: "ID",
     renderCell: linkFormatter,
     width: 60,
-    frozen: true,
   },
   {
     field: "name",
     headerName: "Name",
     renderCell: linkFormatter,
     minWidth: 450,
-    frozen: true,
   },
   {
     field: "categories",
@@ -336,7 +336,6 @@ const dataEntryColumns = [
     field: "assignedDate",
     headerName: "Assigned",
     valueGetter: dateFormatter("assignedDate"),
-    dataType: "date-time",
     sortComparator: dateComparator,
     width: 200,
   },
@@ -344,7 +343,6 @@ const dataEntryColumns = [
     field: "submittedDate",
     headerName: "Submitted",
     valueGetter: dateFormatter("submittedDate"),
-    dataType: "date-time",
     sortComparator: dateComparator,
     width: 200,
   },
@@ -354,8 +352,17 @@ const dataEntryColumns = [
   { field: "phone", headerName: "Phone", width: 150 },
 ];
 
-export default function VerificationAdminGridMui(props) {
-  const { stakeholders, mode, setSelectedStakeholderIds } = props;
+interface VerificationAdminGridMuiProps {
+  stakeholders: any[];
+  mode: string;
+  setSelectedStakeholderIds?: (ids: GridSelectionModel) => void;
+}
+
+export default function VerificationAdminGridMui({
+  stakeholders,
+  mode,
+  setSelectedStakeholderIds,
+}: VerificationAdminGridMuiProps) {
   return (
     <Box
       sx={{
@@ -375,7 +382,7 @@ export default function VerificationAdminGridMui(props) {
         keepNonExistentRowsSelected
         experimentalFeatures={{ newEditingApi: true }}
         onSelectionModelChange={(ids) => {
-          setSelectedStakeholderIds(ids);
+          setSelectedStakeholderIds?.(ids);
         }}
       />
     </Box>

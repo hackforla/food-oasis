@@ -5,8 +5,13 @@ import SmMealIcon from "images/markers/smMealIcon.jsx";
 import SmPantryIcon from "images/markers/smPantryIcon";
 import SmSplitIcon from "images/markers/smSplitIcon";
 
+interface MapMarkerProps {
+  category: -1 | 0 | 1;
+  selected?: boolean;
+  scale?: number;
+}
 
-function MapMarker({ category, selected = false, scale = 1 }) {
+function MapMarker({ category, selected = false, scale = 1 }: MapMarkerProps) {
   const baseWidth = selected ? 53 : 30;
   const baseHeight = selected ? 67 : 40;
 

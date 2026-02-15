@@ -36,8 +36,16 @@ interface OpenTimeFormProps {
   touched: FormikTouched<FormValues>;
   errors: FormikErrors<FormValues>;
   values: FormValues;
-  setFieldValue: (field: string, value: unknown, shouldValidate?: boolean) => void;
-  setFieldTouched: (field: string, isTouched?: boolean, shouldValidate?: boolean) => void;
+  setFieldValue: (
+    field: string,
+    value: unknown,
+    shouldValidate?: boolean
+  ) => void;
+  setFieldTouched: (
+    field: string,
+    isTouched?: boolean,
+    shouldValidate?: boolean
+  ) => void;
 }
 
 const OpenTimeForm = ({
@@ -71,7 +79,9 @@ const OpenTimeForm = ({
     { label: "Last", value: -1 },
   ];
 
-  const [closeTimeErrorss, setCloseTimeErrorss] = useState<Record<number, string>>({});
+  const [closeTimeErrorss, setCloseTimeErrorss] = useState<
+    Record<number, string>
+  >({});
 
   const getCloseTimeErrorsMessage = (index: number): string => {
     const errorType = closeTimeErrorss[index];
@@ -181,11 +191,7 @@ const OpenTimeForm = ({
                                 }}
                               >
                                 {days.map((day) => (
-                                  <MenuItem
-                                    key={day.value}
-                                    label={day.label}
-                                    value={day.value}
-                                  >
+                                  <MenuItem key={day.value} value={day.value}>
                                     {day.label}
                                   </MenuItem>
                                 ))}
@@ -200,11 +206,9 @@ const OpenTimeForm = ({
 
                           <Grid item xs={8} sm={3}>
                             <DesktopTimePicker
-                              name={open}
                               value={
                                 hour.open ? dayjs(hour.open, "HH:mm:ss") : null
                               }
-                              onBlur={handleBlur}
                               onChange={(dt: Dayjs | null) => {
                                 setFieldValue(
                                   open,
@@ -251,7 +255,6 @@ const OpenTimeForm = ({
                           </Grid>
                           <Grid item xs={8} sm={3}>
                             <DesktopTimePicker
-                              name={close}
                               value={
                                 hour.close
                                   ? dayjs(hour.close, "HH:mm:ss")
@@ -268,7 +271,6 @@ const OpenTimeForm = ({
                                   [index]: newError as string,
                                 }))
                               }
-                              onBlur={() => setFieldTouched(close, true, true)}
                               onChange={(dt: Dayjs | null) => {
                                 const openTime = hour.open
                                   ? dayjs(hour.open, "HH:mm:ss")
@@ -376,7 +378,6 @@ const OpenTimeForm = ({
                 variant="outlined"
                 size="small"
                 type="button"
-                icon="add"
                 startIcon={addIcon}
                 onClick={() =>
                   push({ weekOfMonth: "", dayOfWeek: "", open: "", close: "" })

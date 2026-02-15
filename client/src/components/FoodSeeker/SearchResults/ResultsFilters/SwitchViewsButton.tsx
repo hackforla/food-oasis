@@ -1,4 +1,10 @@
 import { Button, Typography, styled } from "@mui/material";
+import { FC } from "react";
+
+interface SwitchViewsButtonProps {
+  isListView: boolean;
+  onClick: () => void;
+}
 
 // Override standard button to keep the background color as white for hover, active, focus states
 const SwitchButton = styled(Button)(({ theme }) => ({
@@ -22,7 +28,7 @@ const SwitchButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-export default function SwitchViewsButton({ isListView, onClick }) {
+const SwitchViewsButton: FC<SwitchViewsButtonProps> = ({ isListView, onClick }) => {
   return (
     <SwitchButton onClick={onClick}>
       <Typography
@@ -37,4 +43,6 @@ export default function SwitchViewsButton({ isListView, onClick }) {
       </Typography>
     </SwitchButton>
   );
-}
+};
+
+export default SwitchViewsButton;

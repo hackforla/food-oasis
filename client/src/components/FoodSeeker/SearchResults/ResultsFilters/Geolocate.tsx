@@ -1,35 +1,35 @@
 import LocationSearching from "@mui/icons-material/LocationSearching";
 import { Button, Tooltip } from "@mui/material";
 import useGeolocation, { useLocationPermission } from "hooks/useGeolocation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, FC } from "react";
 import * as analytics from "services/analytics";
 import { useUserCoordinates } from "../../../../appReducer";
 import { useMapbox } from "../../../../hooks/useMapbox";
 
-const Geolocate = () => {
+const Geolocate: FC = () => {
   const { getUserLocation } = useGeolocation();
   const userCoordinates = useUserCoordinates();
   const locationPermission = useLocationPermission();
-  const [error, setError] = useState("");
+  const [error, setError] = useState<Error | null>(null);
   const { flyTo } = useMapbox();
 
   useEffect(() => {
     if (error && locationPermission === "granted") {
-      setError("");
+      setError(null);
     }
     if (locationPermission === "granted" && userCoordinates) {
       flyTo({
-        longitude: userCoordinates.longitude,
-        latitude: userCoordinates.latitude,
+        longitude: (userCoordinates as { longitude: number; latitude: number }).longitude,
+        latitude: (userCoordinates as { longitude: number; latitude: number }).latitude,
       });
     }
   }, [error, locationPermission, userCoordinates]);
 
-  const useMyLocationTrigger = async () => {
+  const useMyLocationTrigger = async (): Promise<void> => {
     try {
       await getUserLocation();
     } catch (e) {
-      setError(e);
+      setError(e as Error);
     }
     analytics.postEvent("recenterMap", {});
   };
@@ -51,10 +51,9 @@ const Geolocate = () => {
       }}
     >
       <Button
-        variant="recenter"
+        variant={"recenter" as "outlined"}
         onClick={useMyLocationTrigger}
         disabled={locationPermission === "denied" || !!error}
-        icon="locationSearching"
         sx={(theme) => ({
           backgroundColor: theme.palette.common.white,
           width: "28px",

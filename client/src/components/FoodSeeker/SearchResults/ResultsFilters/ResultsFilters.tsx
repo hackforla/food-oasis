@@ -1,13 +1,18 @@
 import { Box, Stack, Typography } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
+import { FC } from "react";
 import AddressDropDown from "components/FoodSeeker/AddressDropDown";
-import PropTypes from "prop-types";
 import SwitchViewsButton from "./SwitchViewsButton";
 import { TENANT_CONFIG } from "../../../../helpers/Constants";
 import Geolocate from "./Geolocate";
 import useBreakpoints from "hooks/useBreakpoints";
 
-const ResultsFilters = ({
+interface ResultsFiltersProps {
+  showList: boolean;
+  toggleShowList: () => void;
+}
+
+const ResultsFilters: FC<ResultsFiltersProps> = ({
   showList,
   toggleShowList,
 }) => {
@@ -38,7 +43,7 @@ const ResultsFilters = ({
             height: "100%",
           }}
         >
-          <Typography variant="h5" componenet="h1" sx={{ fontWeight: "bold" }}>
+          <Typography variant="h5" component="h1" sx={{ fontWeight: "bold" }}>
             {taglineText}
           </Typography>
         </Stack>
@@ -90,13 +95,6 @@ const ResultsFilters = ({
       </Grid2>
     </Grid2>
   );
-};
-
-ResultsFilters.propTypes = {
-  categoryIds: PropTypes.any,
-  toggleCategory: PropTypes.func,
-  showList: PropTypes.bool,
-  toggleShowList: PropTypes.func,
 };
 
 export default ResultsFilters;

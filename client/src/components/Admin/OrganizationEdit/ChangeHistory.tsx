@@ -149,7 +149,8 @@ const ChangeHistory: FC<ChangeHistoryProps> = ({
     if (!versionA || !versionB) return 0;
     const fieldsToCompare = getComparableFields();
     return fieldsToCompare.filter(
-      (field) => JSON.stringify(versionA[field]) !== JSON.stringify(versionB[field])
+      (field) =>
+        JSON.stringify(versionA[field]) !== JSON.stringify(versionB[field])
     ).length;
   };
 
@@ -176,7 +177,9 @@ const ChangeHistory: FC<ChangeHistoryProps> = ({
   if (error) {
     return (
       <TabPanel value={tabPage} index={7}>
-        <Typography color="error">Error loading history: {error.message}</Typography>
+        <Typography color="error">
+          Error loading history: {error.message}
+        </Typography>
       </TabPanel>
     );
   }
@@ -268,7 +271,8 @@ const ChangeHistory: FC<ChangeHistoryProps> = ({
                   <TableCell>{v.modifiedUserRole || "Unknown"}</TableCell>
                   <TableCell>{formatDate(v.modifiedDate)}</TableCell>
                   <TableCell>
-                    {VERIFICATION_STATUS_NAMES[v.verificationStatusId] || "Unknown"}
+                    {VERIFICATION_STATUS_NAMES[v.verificationStatusId] ||
+                      "Unknown"}
                   </TableCell>
                 </TableRow>
               ))}
@@ -290,7 +294,9 @@ const ChangeHistory: FC<ChangeHistoryProps> = ({
         )}
 
         {versions.length === 1 && (
-          <Typography>Only one version exists. No comparison available.</Typography>
+          <Typography>
+            Only one version exists. No comparison available.
+          </Typography>
         )}
       </Stack>
     </TabPanel>

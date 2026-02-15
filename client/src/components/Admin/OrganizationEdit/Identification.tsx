@@ -693,8 +693,16 @@ const Identification: FC<IdentificationProps> = ({
         </Grid>
 
         {/* neighborhood council */}
-        <Grid item xs={12} sx={{ display: "flex", columnGap: "1rem", rowGap: "1rem", flexDirection: { xs: "column", sm: "row" }, }}>
-
+        <Grid
+          item
+          xs={12}
+          sx={{
+            display: "flex",
+            columnGap: "1rem",
+            rowGap: "1rem",
+            flexDirection: { xs: "column", sm: "row" },
+          }}
+        >
           <Grid item xs={12} sm={6}>
             <Box>
               <Label id="neighborhoodCouncil" label="Neighborhood Council" />
@@ -706,13 +714,22 @@ const Identification: FC<IdentificationProps> = ({
                 disabled
                 onChange={handleChange}
                 onBlur={handleBlur}
-                helperText={touched.neighborhoodName ? errors.neighborhoodName : ""}
-                error={touched.neighborhoodName && Boolean(errors.neighborhoodName)}
+                helperText={
+                  touched.neighborhoodName ? errors.neighborhoodName : ""
+                }
+                error={
+                  touched.neighborhoodName && Boolean(errors.neighborhoodName)
+                }
               />
             </Box>
           </Grid>
-      
-          <Grid item xs={12} sm={6} sx={{ display: "flex", alignItems: "flex-end"}}>
+
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            sx={{ display: "flex", alignItems: "flex-end" }}
+          >
             <Stack direction="column" sx={{ width: "100%" }}>
               <Label id="selectedTags-label" label="Tags" />
               <Select
@@ -751,7 +768,8 @@ const Identification: FC<IdentificationProps> = ({
                       <MenuItem key={t.name} value={t.name}>
                         <Checkbox
                           checked={
-                            values.tags && values.tags.find((tt) => tt === t.name)
+                            values.tags &&
+                            values.tags.find((tt) => tt === t.name)
                           }
                         />
                         <ListItemText primary={t.name} />
@@ -761,7 +779,6 @@ const Identification: FC<IdentificationProps> = ({
               <FormHelperText>{touched.tags ? errors.tags : ""}</FormHelperText>
             </Stack>
           </Grid>
-
         </Grid>
       </Grid>
     </TabPanel>

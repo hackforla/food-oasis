@@ -26,9 +26,21 @@ interface BusinessHoursProps {
   errors: FormikErrors<BusinessHoursValues>;
   confirmationErrors?: Record<string, string>;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleBlur: (e: React.FocusEvent<HTMLElement>) => void;
-  setFieldValue: (field: string, value: unknown, shouldValidate?: boolean) => void;
-  setFieldTouched: (field: string, isTouched?: boolean, shouldValidate?: boolean) => void;
+  handleBlur: (
+    e: React.FocusEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLButtonElement
+    >
+  ) => void;
+  setFieldValue: (
+    field: string,
+    value: unknown,
+    shouldValidate?: boolean
+  ) => void;
+  setFieldTouched: (
+    field: string,
+    isTouched?: boolean,
+    shouldValidate?: boolean
+  ) => void;
 }
 
 export default function BusinessHours({

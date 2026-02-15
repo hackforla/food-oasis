@@ -1,11 +1,26 @@
 import { Button, useTheme } from "@mui/material";
+import { FC, CSSProperties } from "react";
 import MealIcon from "icons/MealIconNoBorder";
 import PantryIcon from "icons/PantryIconNoBorder";
 
-const CategoryButton = ({ isSelected, onClick, icon, label, style }) => {
+interface CategoryButtonProps {
+  isSelected: boolean;
+  onClick: () => void;
+  icon: "pantry" | "meal";
+  label: string;
+  style?: CSSProperties;
+}
+
+const CategoryButton: FC<CategoryButtonProps> = ({
+  isSelected,
+  onClick,
+  icon,
+  label,
+  style,
+}) => {
   const theme = useTheme();
   const Icon = icon === "pantry" ? PantryIcon : MealIcon;
-  let ICON_SIZE = "25px";
+  const ICON_SIZE = "25px";
 
   return (
     <Button

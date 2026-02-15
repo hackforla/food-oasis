@@ -1,4 +1,5 @@
 import CloseIcon from "@mui/icons-material/Close";
+import { ChangeEvent, FC } from "react";
 import {
   Box,
   Checkbox,
@@ -17,6 +18,7 @@ import {
   Radio,
   RadioGroup,
   Select,
+  SelectChangeEvent,
   Stack,
   Typography,
 } from "@mui/material";
@@ -31,8 +33,21 @@ import {
   useOpenTimeFilter,
   useFoodTypeFilter,
 } from "../../../../appReducer";
+import type { Dispatch } from "react";
 import { Clear } from "@mui/icons-material";
 import { foodTypeLabelObject } from "helpers/Constants";
+
+interface MealPantryProps {
+  toggleMeal: () => void;
+  togglePantry: () => void;
+  isMealSelected: boolean;
+  isPantrySelected: boolean;
+}
+
+interface FilterPanelProps {
+  mealPantry: MealPantryProps;
+  filterCount: number;
+}
 
 const checkedStyle = {
   "&.Mui-checked": {
@@ -42,20 +57,20 @@ const checkedStyle = {
 
 const yPadding = { py: 2 };
 
-export default function FilterPanel({ mealPantry, filterCount }) {
+const FilterPanel: FC<FilterPanelProps> = ({ mealPantry, filterCount }) => {
   const { isDesktop } = useBreakpoints();
   const drawerWidth = isDesktop ? 340 : "100%";
   const drawerHeight = isDesktop ? `100%` : "50%";
 
   const { toggleMeal, togglePantry, isMealSelected, isPantrySelected } =
     mealPantry;
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch() as Dispatch<{ type: string; [key: string]: unknown }>;
   const open = useFilterPanel();
   const openTime = useOpenTimeFilter();
   const orgNameFilter = useOrgNameFilter();
-  const foodTypeFilter = useFoodTypeFilter();
+  const foodTypeFilter = useFoodTypeFilter() as (keyof typeof foodTypeLabelObject)[];
 
-  const handleRadioChange = (event) => {
+  const handleRadioChange = (event: ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name;
     let day, time;
     if (name === "Open Now") {
@@ -73,8 +88,8 @@ export default function FilterPanel({ mealPantry, filterCount }) {
     });
   };
 
-  const handleOpenTimeChange = (event) => {
-    const name = event.target.name;
+  const handleOpenTimeChange = (event: SelectChangeEvent<string>) => {
+    const name = event.target.name as "day" | "time";
     const value = event.target.value;
     dispatch({
       type: "OPEN_TIME_FILTER_UPDATED",
@@ -260,7 +275,7 @@ export default function FilterPanel({ mealPantry, filterCount }) {
             control={<Radio name="Customized" sx={checkedStyle} />}
             label={
               <Stack direction="row" sx={{ width: "100%" }} gap={2}>
-                {["day", "time"].map((key) => {
+                {(["day", "time"] as const).map((key) => {
                   return (
                     <Select
                       disabled={openTime.radio !== "Customized"}
@@ -284,7 +299,7 @@ export default function FilterPanel({ mealPantry, filterCount }) {
                       }}
                     >
                       {OPEN_TIME_DROPDOWNS[key].labels.map((label) => (
-                        <MenuItem key={label} label={label} value={label}>
+                        <MenuItem key={label} value={label}>
                           {label}
                         </MenuItem>
                       ))}
@@ -300,7 +315,7 @@ export default function FilterPanel({ mealPantry, filterCount }) {
           Food Types
         </Typography>
         <List>
-          {Object.keys(foodTypeLabelObject).map((foodType) => (
+          {(Object.keys(foodTypeLabelObject) as (keyof typeof foodTypeLabelObject)[]).map((foodType) => (
             <ListItem key={foodType} sx={{ padding: 0 }}>
               <ListItemButton sx={{ padding: 0 }}>
                 <FormControlLabel
@@ -335,7 +350,7 @@ export default function FilterPanel({ mealPantry, filterCount }) {
       </Box>
     </Drawer>
   );
-}
+};
 
 const OPEN_TIME_DROPDOWNS = {
   day: {
@@ -373,3 +388,5 @@ const OPEN_TIME_DROPDOWNS = {
     ],
   },
 };
+
+export default FilterPanel;

@@ -25,9 +25,21 @@ interface BusinessHoursProps {
   touched: FormikTouched<BusinessHoursValues>;
   errors: FormikErrors<BusinessHoursValues>;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
-  setFieldValue: (field: string, value: unknown, shouldValidate?: boolean) => void;
-  setFieldTouched: (field: string, isTouched?: boolean, shouldValidate?: boolean) => void;
+  handleBlur: (
+    e: React.FocusEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLButtonElement
+    >
+  ) => void;
+  setFieldValue: (
+    field: string,
+    value: unknown,
+    shouldValidate?: boolean
+  ) => void;
+  setFieldTouched: (
+    field: string,
+    isTouched?: boolean,
+    shouldValidate?: boolean
+  ) => void;
 }
 
 export default function BusinessHours({
@@ -57,7 +69,6 @@ export default function BusinessHours({
             <FormControlLabel
               control={
                 <Checkbox
-                  margin="normal"
                   name="confirmedHours"
                   value={values.confirmedHours}
                   checked={values.confirmedHours}
@@ -71,7 +82,6 @@ export default function BusinessHours({
             />
           </div>
           <OpenTimeForm
-            name="hours"
             values={values}
             setFieldValue={setFieldValue}
             setFieldTouched={setFieldTouched}
@@ -84,7 +94,6 @@ export default function BusinessHours({
           <FormControlLabel
             control={
               <Checkbox
-                margin="normal"
                 name="allowWalkins"
                 value={values.allowWalkins}
                 checked={values.allowWalkins}
@@ -104,7 +113,6 @@ export default function BusinessHours({
             />
             <Textarea
               id="hoursNotes"
-              variant="outlined"
               name="hoursNotes"
               placeholder="Notes about hours"
               value={values.hoursNotes}

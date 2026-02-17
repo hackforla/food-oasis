@@ -1,4 +1,4 @@
-import { Box, Grid, Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import Draggable from "react-draggable";
 import { useFilterPanel } from "appReducer";
@@ -6,14 +6,18 @@ import AttributionInfo from "../AttributionInfo";
 import { useAppDispatch } from "../../../../appReducer";
 import useFeatureFlag from "hooks/useFeatureFlag";
 
-const overlay = {
+const getOverlayStyle = (positionY) => ({
   position: "absolute",
   width: "100%",
-  height: "100%",
+  top: 0,
+  bottom: `${positionY}px`,
   backgroundColor: "transparent",
   zIndex: 1000,
   borderRadius: "10px",
-};
+  display: "flex",
+  flexDirection: "column",
+  overflow: "hidden",
+});
 
 const MobileLayout = ({ filters, map, list, showList }) => {
   const filterPanelOpen = useFilterPanel();
@@ -24,14 +28,6 @@ const MobileLayout = ({ filters, map, list, showList }) => {
     x: 0,
     y: initialY * (window.innerHeight / 100),
   });
-
-  // disable body scroll
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-    });
-    document.body.style.overflow = "hidden";
-  }, []);
 
   useEffect(() => {
     dispatch({ type: "POSITION", position: position });
@@ -47,6 +43,10 @@ const MobileLayout = ({ filters, map, list, showList }) => {
 
     setPosition({ x: 0, y: newY * (window.innerHeight / 100) });
   }, [showList, filterPanelOpen, hasAdvancedFilterFeatureFlag]);
+
+  const handleDrag = (e, ui) => {
+    setPosition({ x: 0, y: ui.y });
+  };
 
   const handleStop = (e, ui) => {
     const windowHeight = window.innerHeight / 100;
@@ -75,7 +75,7 @@ const MobileLayout = ({ filters, map, list, showList }) => {
 
   return (
     <>
-      {filters}
+      <Box>{filters}</Box>
       <Box
         sx={{
           height: window.innerHeight,
@@ -100,6 +100,7 @@ const MobileLayout = ({ filters, map, list, showList }) => {
         {list && (
           <Draggable
             position={position}
+            onDrag={handleDrag}
             onStop={handleStop}
             handle=".handle"
             bounds={{ top: 0, bottom: minY * (window.innerHeight / 100) }}
@@ -111,8 +112,7 @@ const MobileLayout = ({ filters, map, list, showList }) => {
               backgroundColor: "white",
             }}
           >
-            <Box sx={overlay}>
-              <Grid container spacing={0}></Grid>
+            <Box sx={getOverlayStyle(position.y)}>
               <Box
                 sx={{
                   width: "100vw",
@@ -143,8 +143,9 @@ const MobileLayout = ({ filters, map, list, showList }) => {
               <Box
                 sx={{
                   backgroundColor: "white",
-                  height: "100%",
+                  flex: 1,
                   width: "100vw",
+                  overflow: "hidden",
                 }}
               >
                 {list}

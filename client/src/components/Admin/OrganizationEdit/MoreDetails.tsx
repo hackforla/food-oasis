@@ -81,7 +81,13 @@ interface CheckboxWithLabelProps {
   [key: string]: any;
 }
 
-const CheckboxWithLabel: FC<CheckboxWithLabelProps> = ({ name, label, checked, onChange, ...props }) => (
+const CheckboxWithLabel: FC<CheckboxWithLabelProps> = ({
+  name,
+  label,
+  checked,
+  onChange,
+  ...props
+}) => (
   <Grid item xs={12} sm={4}>
     <FormControlLabel
       control={
@@ -105,7 +111,7 @@ const MoreDetails: FC<MoreDetailsProps> = ({
   handleChange,
   handleBlur,
   setFieldValue,
-}) {
+}) => {
   const noteTooltip = (
     <Stack spacing={1}>
       <p>These are notes for clients to see, for example:</p>

@@ -3,6 +3,7 @@ import AccountAutocomplete from "components/Admin/AccountAutocomplete";
 import { TabPanel } from "components/Admin/ui/TabPanel";
 import { useUserContext } from "contexts/userContext";
 import dayjs from "dayjs";
+import { OrganizationSectionWithSetFieldValueProps } from "types/Organization";
 import Label from "../ui/Label";
 import Textarea from "../ui/Textarea";
 
@@ -16,7 +17,7 @@ export default function Verification({
   handleChange,
   handleBlur,
   setFieldValue,
-}) {
+}: OrganizationSectionWithSetFieldValueProps) {
   const { user } = useUserContext();
 
   return (
@@ -134,50 +135,6 @@ export default function Verification({
                 ? null
                 : dayjs(values.assignedDate).format(DATE_FORMAT)}
             </Typography>
-            {/* <div >
-                        <UserContext.Consumer>
-                          {(user) =>
-                            user && user.isAdmin ? (
-                              <div
-                                style={{
-                                  display: "flex",
-                                  flexDirection: "row",
-                                  justifyContent: "flex-end",
-                                }}
-                              >
-                                <AccountAutocomplete
-                                  accountId={values.assignedLoginId || ""}
-                                  setAccount={(login) => {
-                                    if (login) {
-                                      setFieldValue(
-                                        "assignedLoginId",
-                                        login.id
-                                      );
-                                      setFieldValue(
-                                        "assignedUser",
-                                        `${login.firstName} ${login.lastName}`
-                                      );
-                                      setFieldValue("assignedDate", moment());
-                                      setFieldValue(
-                                        "verificationStatusId",
-                                        VERIFICATION_STATUS.ASSIGNED
-                                      );
-                                    } else {
-                                      setFieldValue("assignedLoginId", "");
-                                      setFieldValue("assignedUser", "");
-                                      setFieldValue("assignedDate", "");
-                                      setFieldValue(
-                                        "verificationStatusId",
-                                        VERIFICATION_STATUS.NEEDS_VERIFICATION
-                                      );
-                                    }
-                                  }}
-                                />
-                              </div>
-                            ) : null
-                          }
-                        </UserContext.Consumer>
-                      </div>*/}
           </Stack>
           <Stack direction="row">
             <Typography flexBasis="20%">Submitted:</Typography>
@@ -212,9 +169,8 @@ export default function Verification({
                 }}
               >
                 <AccountAutocomplete
-                  style={{ width: "100%" }}
-                  accountId={values.claimedLoginId || ""}
-                  setAccount={(login) => {
+                  accountId={(values.claimedLoginId as string | number) || ""}
+                  setAccount={(login: any) => {
                     if (login) {
                       setFieldValue("claimedLoginId", login.id);
                       setFieldValue(
@@ -244,7 +200,7 @@ export default function Verification({
               id="reviewNotes"
               name="reviewNotes"
               placeholder="Reviewer Notes"
-              value={values.reviewNotes}
+              value={values.reviewNotes || ""}
               onChange={handleChange}
               onBlur={handleBlur}
               helperText={touched.reviewNotes ? errors.reviewNotes : ""}

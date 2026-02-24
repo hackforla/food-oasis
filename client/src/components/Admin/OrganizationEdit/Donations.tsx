@@ -6,6 +6,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import { TabPanel } from "components/Admin/ui/TabPanel";
+import { OrganizationSectionWithSetFieldValueProps } from "types/Organization";
 import Label from "../ui/Label";
 
 export default function Donations({
@@ -16,7 +17,7 @@ export default function Donations({
   handleChange,
   handleBlur,
   setFieldValue,
-}) {
+}: OrganizationSectionWithSetFieldValueProps) {
   return (
     <TabPanel value={tabPage} index={4}>
       <Grid container spacing={1}>
@@ -120,9 +121,7 @@ export default function Donations({
             <FormControlLabel
               control={
                 <Checkbox
-                  margin="normal"
                   name="donationPickup"
-                  label="Pick Up"
                   value={values.donationPickup}
                   checked={values.donationPickup}
                   onChange={() =>
@@ -140,9 +139,7 @@ export default function Donations({
             <FormControlLabel
               control={
                 <Checkbox
-                  margin="normal"
                   name="donationAcceptFrozen"
-                  label="Frozen"
                   value={values.donationAcceptFrozen}
                   checked={values.donationAcceptFrozen}
                   onChange={() =>
@@ -163,9 +160,7 @@ export default function Donations({
             <FormControlLabel
               control={
                 <Checkbox
-                  margin="normal"
                   name="donationAcceptRefrigerated"
-                  label="Refrigerated"
                   value={values.donationAcceptRefrigerated}
                   checked={values.donationAcceptRefrigerated}
                   onChange={() =>
@@ -186,9 +181,7 @@ export default function Donations({
             <FormControlLabel
               control={
                 <Checkbox
-                  margin="normal"
                   name="donationAcceptPerishable"
-                  label="Perishable"
                   value={values.donationAcceptPerishable}
                   checked={values.donationAcceptPerishable}
                   onChange={() =>

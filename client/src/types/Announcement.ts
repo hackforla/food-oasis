@@ -11,13 +11,11 @@ export interface AnnouncementInput {
   severity: AnnouncementSeverity;
 }
 
-/** API response shape (id, created_at from server) */
 export interface Announcement extends AnnouncementInput {
   id: number;
   created_at: string;
 }
 
-/** UI list row shape (announcementId used in admin table) */
 export interface ProcessedAnnouncement {
   announcementId: number;
   title: string;

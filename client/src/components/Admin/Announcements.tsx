@@ -299,6 +299,7 @@ const Announcements: React.FC = () => {
                   </TableCell>
                   <TableCell>
                     <FormControlLabel
+                      label=""
                       control={
                         <Switch
                           color="success"

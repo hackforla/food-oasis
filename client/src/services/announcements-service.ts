@@ -1,16 +1,7 @@
 import axios from "axios";
+import type { Announcement, AnnouncementInput } from "../types/Announcement";
 
-export interface AnnouncementInput {
-  title: string;
-  description: string;
-  is_enabled: boolean;
-  severity: "info" | "warning" | "error" | "success";
-}
-
-export interface Announcement extends AnnouncementInput {
-  id: number;
-  created_at: string;
-}
+export type { Announcement, AnnouncementInput };
 
 const baseUrl = "/api/announcements";
 

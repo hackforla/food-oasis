@@ -27,25 +27,13 @@ import { Delete as DeleteIcon } from "@mui/icons-material";
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import * as Yup from "yup";
+import type {
+  AnnouncementInput,
+  ProcessedAnnouncement,
+} from "../../types/Announcement";
 import { useAnnouncements } from "../../hooks/useAnnouncements";
 import * as announcementService from "../../services/announcements-service";
 import EditIcon from "@mui/icons-material/Edit";
-
-interface Announcement {
-  announcementId: number;
-  title: string;
-  description: string;
-  is_enabled: boolean;
-  severity: "info" | "warning" | "error" | "success";
-  created_at: string;
-}
-
-interface FormikValues {
-  title: string;
-  description: string;
-  is_enabled: boolean;
-  severity: "info" | "warning" | "error" | "success";
-}
 
 type SortField = "created_at" | "severity" | "title" | "announcementId";
 type SortDirection = "asc" | "desc";
@@ -53,9 +41,8 @@ type SortDirection = "asc" | "desc";
 const Announcements: React.FC = () => {
   const [announcementModalOpen, setAnnouncementModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
-  const [editAnnouncement, setEditAnnouncement] = useState<Announcement | null>(
-    null
-  );
+  const [editAnnouncement, setEditAnnouncement] =
+    useState<ProcessedAnnouncement | null>(null);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [sortBy, setSortBy] = useState<SortField>("created_at");
@@ -94,7 +81,7 @@ const Announcements: React.FC = () => {
     }
   };
 
-  const announcementFormik = useFormik<FormikValues>({
+  const announcementFormik = useFormik<AnnouncementInput>({
     initialValues: {
       title: "",
       description: "",
@@ -114,7 +101,7 @@ const Announcements: React.FC = () => {
     },
   });
 
-  const editFormik = useFormik<FormikValues>({
+  const editFormik = useFormik<AnnouncementInput>({
     enableReinitialize: true,
     initialValues: {
       title: editAnnouncement?.title || "",

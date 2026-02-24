@@ -1,14 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
+import type { ProcessedAnnouncement } from "../types/Announcement";
 import * as announcementService from "../services/announcements-service";
 
-export interface ProcessedAnnouncement {
-  announcementId: number;
-  title: string;
-  description: string;
-  is_enabled: boolean;
-  severity: "info" | "warning" | "error" | "success";
-  created_at: string;
-}
+export type { ProcessedAnnouncement };
 
 export interface UseAnnouncementsReturn {
   data: ProcessedAnnouncement[];
@@ -27,10 +21,10 @@ export const useAnnouncements = (): UseAnnouncementsReturn => {
       setLoading(true);
       try {
         const announcements = await announcementService.getAllAnnouncements();
-        const processed = announcements
+        const processed: ProcessedAnnouncement[] = announcements
           .slice()
-          .sort((a: any, b: any) => a.id - b.id)
-          .map((announcement: any) => ({
+          .sort((a, b) => a.id - b.id)
+          .map((announcement) => ({
             announcementId: announcement.id,
             title: announcement.title,
             description: announcement.description,

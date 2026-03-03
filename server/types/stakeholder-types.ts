@@ -162,6 +162,7 @@ export interface StakeholderBest extends StakeholderWithDistance {
 // sequence of changes to the same stakeholder
 export interface StakeholderLog extends Stakeholder {
   version: number;
+  modifiedUserRole: string;
 }
 
 // Parameters to do an insert to Stakeholder.

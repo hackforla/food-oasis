@@ -5,7 +5,10 @@ const baseUrl = "/api/suggestions";
 export const getAll = async (statusIds) => {
   try {
     const params = { statusIds, tenantId: TENANT_ID };
-    const response = await axios.get(baseUrl, { params });
+    const response = await axios.get(baseUrl, {
+      params,
+      paramsSerializer: { indexes: null }, // This will prevent axios from adding [] to the query parameters
+    });
     return response.data;
   } catch (err) {
     throw new Error(err.message);

@@ -1,17 +1,27 @@
 import { useState, useEffect, useCallback } from "react";
+import type { ProcessedAnnouncement } from "../types/Announcement";
 import * as announcementService from "../services/announcements-service";
 
-export const useAnnouncements = () => {
-  const [data, setData] = useState([]);
+export type { ProcessedAnnouncement };
+
+export interface UseAnnouncementsReturn {
+  data: ProcessedAnnouncement[];
+  error: Error | null;
+  loading: boolean;
+  refetch: () => void;
+}
+
+export const useAnnouncements = (): UseAnnouncementsReturn => {
+  const [data, setData] = useState<ProcessedAnnouncement[]>([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<Error | null>(null);
 
   const fetch = useCallback(() => {
     const fetchApi = async () => {
       setLoading(true);
       try {
         const announcements = await announcementService.getAllAnnouncements();
-        const processed = announcements
+        const processed: ProcessedAnnouncement[] = announcements
           .slice()
           .sort((a, b) => a.id - b.id)
           .map((announcement) => ({
@@ -25,8 +35,9 @@ export const useAnnouncements = () => {
         setData(processed);
         setLoading(false);
       } catch (err) {
-        setError(err);
-        console.error(err);
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        console.error(error);
       }
     };
     fetchApi();

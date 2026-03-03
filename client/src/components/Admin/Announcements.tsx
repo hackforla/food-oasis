@@ -27,18 +27,26 @@ import { Delete as DeleteIcon } from "@mui/icons-material";
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import * as Yup from "yup";
+import type {
+  AnnouncementInput,
+  ProcessedAnnouncement,
+} from "../../types/Announcement";
 import { useAnnouncements } from "../../hooks/useAnnouncements";
 import * as announcementService from "../../services/announcements-service";
 import EditIcon from "@mui/icons-material/Edit";
 
-const Announcements = () => {
+type SortField = "created_at" | "severity" | "title" | "announcementId";
+type SortDirection = "asc" | "desc";
+
+const Announcements: React.FC = () => {
   const [announcementModalOpen, setAnnouncementModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
-  const [editAnnouncement, setEditAnnouncement] = useState(null);
+  const [editAnnouncement, setEditAnnouncement] =
+    useState<ProcessedAnnouncement | null>(null);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [sortBy, setSortBy] = useState("created_at");
-  const [sortDirection, setSortDirection] = useState("desc");
+  const [sortBy, setSortBy] = useState<SortField>("created_at");
+  const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
 
   const {
     data: announcementsData,
@@ -51,7 +59,10 @@ const Announcements = () => {
     announcementFormik.resetForm();
   };
 
-  const handleIsEnabled = async (announcementId, isEnabled) => {
+  const handleIsEnabled = async (
+    announcementId: number,
+    isEnabled: boolean
+  ) => {
     try {
       const announcement = (announcementsData || []).find(
         (row) => row.announcementId === announcementId
@@ -70,7 +81,7 @@ const Announcements = () => {
     }
   };
 
-  const announcementFormik = useFormik({
+  const announcementFormik = useFormik<AnnouncementInput>({
     initialValues: {
       title: "",
       description: "",
@@ -90,7 +101,7 @@ const Announcements = () => {
     },
   });
 
-  const editFormik = useFormik({
+  const editFormik = useFormik<AnnouncementInput>({
     enableReinitialize: true,
     initialValues: {
       title: editAnnouncement?.title || "",
@@ -112,7 +123,9 @@ const Announcements = () => {
     },
   });
 
-  const handleChangeRowsPerPage = (event) => {
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
@@ -120,14 +133,19 @@ const Announcements = () => {
   const sortedAnnouncements = React.useMemo(() => {
     if (!announcementsData) return [];
     return [...announcementsData].sort((a, b) => {
-      let aVal = a[sortBy];
-      let bVal = b[sortBy];
+      let aVal: any = a[sortBy];
+      let bVal: any = b[sortBy];
 
       if (sortBy === "created_at") {
         aVal = new Date(aVal);
         bVal = new Date(bVal);
       } else if (sortBy === "severity") {
-        const severityMap = { info: 0, warning: 1, error: 2, success: 3 };
+        const severityMap: Record<string, number> = {
+          info: 0,
+          warning: 1,
+          error: 2,
+          success: 3,
+        };
         aVal = severityMap[aVal];
         bVal = severityMap[bVal];
       } else if (typeof aVal === "string") {
@@ -177,7 +195,7 @@ const Announcements = () => {
             <InputLabel>Sort By</InputLabel>
             <Select
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
+              onChange={(e) => setSortBy(e.target.value as SortField)}
               label="Sort By"
               data-testid="sort-by-select"
             >
@@ -191,7 +209,9 @@ const Announcements = () => {
             <InputLabel>Order</InputLabel>
             <Select
               value={sortDirection}
-              onChange={(e) => setSortDirection(e.target.value)}
+              onChange={(e) =>
+                setSortDirection(e.target.value as SortDirection)
+              }
               label="Order"
             >
               <MenuItem value="asc">Ascending</MenuItem>
@@ -266,6 +286,7 @@ const Announcements = () => {
                   </TableCell>
                   <TableCell>
                     <FormControlLabel
+                      label=""
                       control={
                         <Switch
                           color="success"
@@ -489,7 +510,7 @@ const Announcements = () => {
         count={sortedAnnouncements.length}
         rowsPerPage={rowsPerPage}
         page={page}
-        onPageChange={(event, newPage) => setPage(newPage)}
+        onPageChange={(_event, newPage) => setPage(newPage)}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </Container>

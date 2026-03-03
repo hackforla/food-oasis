@@ -1,8 +1,4 @@
-export type AnnouncementSeverity =
-  | "info"
-  | "warning"
-  | "error"
-  | "success";
+export type AnnouncementSeverity = "info" | "warning" | "error" | "success";
 
 export interface AnnouncementInput {
   title: string;

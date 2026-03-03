@@ -2,7 +2,10 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Alert, Box, IconButton, Typography } from "@mui/material";
 import Collapse from "@mui/material/Collapse";
 import { useEffect, useState } from "react";
-import { ProcessedAnnouncement, useAnnouncements } from "../../hooks/useAnnouncements";
+import {
+  ProcessedAnnouncement,
+  useAnnouncements,
+} from "../../hooks/useAnnouncements";
 
 type OpenIndexes = Record<number, boolean>;
 

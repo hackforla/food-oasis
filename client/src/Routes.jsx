@@ -14,45 +14,49 @@ import AnnouncementSnackbar from "components/UI/AnnouncementSnackbar";
 import ScrollToTop from "./components/ScrollToTop";
 
 const VerificationAdmin = lazy(() =>
-  import("components/Admin/VerificationAdmin")
+  import("components/Admin/VerificationAdmin.tsx")
 );
 const VerificationDashboard = lazy(() =>
-  import("components/Admin/VerificationDashboard")
+  import("components/Admin/VerificationDashboard.tsx")
 );
 const SecurityAdminDashboard = lazy(() =>
-  import("components/Account/SecurityAdminDashboard/SecurityAdminDashboard")
+  import("components/Account/SecurityAdminDashboard/SecurityAdminDashboard.tsx")
 );
 const OrganizationEdit = lazy(() =>
-  import("components/Admin/OrganizationEdit")
+  import("components/Admin/OrganizationEdit.tsx")
 );
 const ParentOrganizations = lazy(() =>
   import("components/Admin/ParentOrganizations")
 );
-const TagAdmin = lazy(() => import("components/Admin/TagAdmin"));
-const Register = lazy(() => import("components/Account/Register"));
-const Login = lazy(() => import("components/Account/Login"));
-const ForgotPassword = lazy(() => import("components/Account/ForgotPassword"));
-const ResetPasswordEmailSent = lazy(() =>
-  import("components/Account/ResetPasswordEmailSent")
+const TagAdmin = lazy(() => import("components/Admin/TagAdmin.tsx"));
+const Register = lazy(() => import("components/Account/Register.tsx"));
+const Login = lazy(() => import("components/Account/Login.tsx"));
+const ForgotPassword = lazy(() =>
+  import("components/Account/ForgotPassword.tsx")
 );
-const ResetPassword = lazy(() => import("components/Account/ResetPassword"));
-const ConfirmEmail = lazy(() => import("components/Account/ConfirmEmail"));
+const ResetPasswordEmailSent = lazy(() =>
+  import("components/Account/ResetPasswordEmailSent.tsx")
+);
+const ResetPassword = lazy(() =>
+  import("components/Account/ResetPassword.tsx")
+);
+const ConfirmEmail = lazy(() => import("components/Account/ConfirmEmail.tsx"));
 const SearchResults = lazy(() =>
   import("components/FoodSeeker/SearchResults/SearchResults")
 );
 const ImportFile = lazy(() =>
-  import("components/Admin/ImportOrganizations/ImportFile")
+  import("components/Admin/ImportOrganizations/ImportFile.tsx")
 );
 const Suggestions = lazy(() => import("components/Admin/Suggestions"));
-const Logins = lazy(() => import("components/Admin/Logins"));
+const Logins = lazy(() => import("components/Admin/Logins.tsx"));
 const Donate = lazy(() => import("./components/Donate"));
 const About = lazy(() => import("./components/About"));
 const Faq = lazy(() => import("./components/Faq"));
 const Contact = lazy(() => import("./components/StaticPages/Contact"));
 const MuiDemo = lazy(() => import("./components/MuiDemo/MuiDemo"));
-const Features = lazy(() => import("./components/Admin/Features"));
-const Profile = lazy(() => import("./components/Account/Profile"));
-const Suggestion = lazy(() => import("components/FoodSeeker/Suggestion"));
+const Features = lazy(() => import("./components/Admin/Features.tsx"));
+const Profile = lazy(() => import("./components/Account/Profile.tsx"));
+const Suggestion = lazy(() => import("components/FoodSeeker/Suggestion.tsx"));
 const Announcements = lazy(() => import("./components/Admin/Announcements"));
 
 export default function AppRoutes() {

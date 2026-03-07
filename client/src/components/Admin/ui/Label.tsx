@@ -16,7 +16,7 @@ import { tooltipHover } from "theme/palette";
 interface LabelProps {
   id: string;
   label: string;
-  tooltipTitle?: string;
+  tooltipTitle?: React.ReactNode;
   href?: string;
 }
 const Label = ({ id, label, tooltipTitle, href }: LabelProps) => {

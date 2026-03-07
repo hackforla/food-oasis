@@ -1,19 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
 import * as stakeholderLogService from "services/stakeholder-log-service";
+import { StakeholderVersion } from "types/Organization";
 
-export interface StakeholderLogEntry {
-  id: number;
-  version: number;
-  modifiedDate: string;
-  modifiedUser: string;
-  modifiedUserRole: string;
-  verificationStatusId: number;
-  // ... all other stakeholder fields
-  [key: string]: any;
-}
-
-export const useStakeholderLog = (stakeholderId: string | number | undefined) => {
-  const [data, setData] = useState<StakeholderLogEntry[]>([]);
+export const useStakeholderLog = (
+  stakeholderId: string | number | undefined
+) => {
+  const [data, setData] = useState<StakeholderVersion[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
@@ -24,7 +16,9 @@ export const useStakeholderLog = (stakeholderId: string | number | undefined) =>
     setError(null);
 
     try {
-      const result = await stakeholderLogService.getByStakeholderId(stakeholderId);
+      const result = await stakeholderLogService.getByStakeholderId(
+        stakeholderId
+      );
       setData(result);
     } catch (err) {
       setError(err as Error);

@@ -21,18 +21,25 @@ import {
 import { useToasterContext } from "contexts/toasterContext";
 import { useUserContext } from "contexts/userContext";
 import dayjs from "dayjs";
-import { Formik } from "formik";
-import PropTypes from "prop-types";
+import { Formik, FormikHelpers } from "formik";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import * as stakeholderService from "services/stakeholder-service";
 import * as suggestionService from "services/suggestion-service";
+import {
+  EditedSuggestions,
+  OrganizationFormValues,
+  StakeholderVersion,
+  Suggestion,
+} from "types/Organization";
 import * as Yup from "yup";
 import BusinessHours from "./OrganizationEdit/BusinessHours";
+import ChangeHistory from "./OrganizationEdit/ChangeHistory";
 import ContactDetails from "./OrganizationEdit/ContactDetails";
 import Donations from "./OrganizationEdit/Donations";
 import Identification from "./OrganizationEdit/Identification";
 import MoreDetails from "./OrganizationEdit/MoreDetails";
+import SuggestionHistory from "./OrganizationEdit/SuggestionHistory";
 import Verification from "./OrganizationEdit/Verification";
 import Label from "./ui/Label";
 import Textarea from "./ui/Textarea";
@@ -47,10 +54,14 @@ import {
 } from "../../helpers/Constants";
 import { useSuggestionByStakeholderId } from "hooks/useSuggestionByStakeholderId";
 import { useStakeholderLog } from "hooks/useStakeholderLog";
-import SuggestionHistory from "./OrganizationEdit/SuggestionHistory";
-import ChangeHistory from "./OrganizationEdit/ChangeHistory";
 
 const phoneRegExp = /^\(\d{3}\) \d{3}-\d{4}$/;
+const tenantViewport =
+  DEFAULT_VIEWPORTS[TENANT_ID as keyof typeof DEFAULT_VIEWPORTS];
+const verificationStatusNames = VERIFICATION_STATUS_NAMES as Record<
+  number,
+  string
+>;
 
 const HourSchema = Yup.object().shape({
   weekOfMonth: Yup.number().required("Interval is required."),
@@ -74,12 +85,12 @@ const validationSchema = Yup.object().shape({
     .test(
       "latitude-range",
       `Latitude must be between ${Number(
-        DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[1]
-      )} and ${Number(DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[3])}`,
+        tenantViewport.bbox.split(",")[1]
+      )} and ${Number(tenantViewport.bbox.split(",")[3])}`,
       (value) => {
-        const minLat = Number(DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[1]);
-        const maxLat = Number(DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[3]);
-        return value >= minLat && value <= maxLat;
+        const minLat = Number(tenantViewport.bbox.split(",")[1]);
+        const maxLat = Number(tenantViewport.bbox.split(",")[3]);
+        return Number(value) >= minLat && Number(value) <= maxLat;
       }
     ),
   longitude: Yup.number()
@@ -87,12 +98,12 @@ const validationSchema = Yup.object().shape({
     .test(
       "longitude-range",
       `Longitude must be between ${Number(
-        DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[0]
-      )} and ${Number(DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[2])}`,
+        tenantViewport.bbox.split(",")[0]
+      )} and ${Number(tenantViewport.bbox.split(",")[2])}`,
       (value) => {
-        const minLng = Number(DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[0]);
-        const maxLng = Number(DEFAULT_VIEWPORTS[TENANT_ID].bbox.split(",")[2]);
-        return value >= minLng && value <= maxLng;
+        const minLng = Number(tenantViewport.bbox.split(",")[0]);
+        const maxLng = Number(tenantViewport.bbox.split(",")[2]);
+        return Number(value) >= minLng && Number(value) <= maxLng;
       }
     ),
   email: Yup.string().email("Invalid email address format"),
@@ -100,7 +111,7 @@ const validationSchema = Yup.object().shape({
     .of(HourSchema)
     .test("no-duplicate-hours", function (value) {
       const seen = new Set();
-      for (const item of value) {
+      for (const item of value || []) {
         const key = `${item.weekOfMonth}-${item.dayOfWeek}-${item.open}-${item.close}`;
         if (seen.has(key)) {
           return this.createError({
@@ -138,7 +149,7 @@ const validationSchema = Yup.object().shape({
   ),
 });
 
-const emptyOrganization = {
+const emptyOrganization: OrganizationFormValues = {
   id: 0,
   name: "",
   description: "",
@@ -215,44 +226,57 @@ const emptyOrganization = {
   tags: [],
 };
 
-const OrganizationEdit = (props) => {
+interface CallbackObject {
+  callback?: (value?: number) => void;
+}
+
+const OrganizationEdit = () => {
   const navigate = useNavigate();
   const { id: editId } = useParams();
   const [assignDialogOpen, setAssignDialogOpen] = useState(false);
-  const [assignDialogCallback, setAssignDialogCallback] = useState({});
+  const [assignDialogCallback, setAssignDialogCallback] =
+    useState<CallbackObject | null>(null);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
-  const [confirmDialogCallback, setConfirmDialogCallback] = useState({});
+  const [confirmDialogCallback, setConfirmDialogCallback] =
+    useState<CallbackObject | null>(null);
   const [tabPage, setTabPage] = useState(0);
-  const [nextUrl, setNextUrl] = useState(null);
-  const [validationMode, setValidationMode] = useState(null);
+  const [nextUrl, setNextUrl] = useState<string | null>(null);
+  const [validationMode, setValidationMode] = useState<string | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [originalData, setOriginalData] = useState(emptyOrganization);
+  const [originalData, setOriginalData] =
+    useState<OrganizationFormValues>(emptyOrganization);
   const { user } = useUserContext();
   const { setToast } = useToasterContext();
 
-  const { data: stakeholderSuggestions, refetch: refetchSuggestions } =
+  const { data: stakeholderSuggestionsData, refetch: refetchSuggestions } =
     useSuggestionByStakeholderId(editId);
 
   const {
-    data: versionHistory,
+    data: versionHistoryData,
     loading: historyLoading,
     error: historyError,
   } = useStakeholderLog(editId);
+
+  const stakeholderSuggestions =
+    ((stakeholderSuggestionsData || []) as Suggestion[]) || [];
+  const versionHistory =
+    ((versionHistoryData || []) as StakeholderVersion[]) || [];
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         if (editId) {
-          const stakeholder = await stakeholderService.getById(editId);
-          // For editing purposes, it is better to convert the
-          // stakeholder.categories array of objects to an array of
-          // categoryIds as stakeholder.categoryIds
-          stakeholder.selectedCategoryIds = stakeholder.categories.map(
-            (category) => category.id
-          );
-          delete stakeholder.categories;
+          const stakeholder = (await stakeholderService.getById(editId)) as
+            | (OrganizationFormValues & { categories?: Array<{ id: number }> })
+            | undefined;
 
-          setOriginalData(stakeholder);
+          if (stakeholder) {
+            stakeholder.selectedCategoryIds = (
+              stakeholder.categories || []
+            ).map((category) => category.id);
+            delete stakeholder.categories;
+            setOriginalData(stakeholder);
+          }
         } else {
           setOriginalData(emptyOrganization);
         }
@@ -264,45 +288,46 @@ const OrganizationEdit = (props) => {
     fetchData();
   }, [editId]);
 
-  const handleAssignDialogOpen = async (callbackObject) => {
+  const handleAssignDialogOpen = async (callbackObject: CallbackObject) => {
     setAssignDialogOpen(true);
     setAssignDialogCallback(callbackObject);
   };
 
-  const handleAssignDialogClose = async (loginId) => {
+  const handleAssignDialogClose = async (loginId?: number | null) => {
     setAssignDialogOpen(false);
-    // Dialog returns undefined if cancelled, null if
-    // want to unassign, otherwise a loginId > 0
     if (!loginId) return;
-    if (assignDialogCallback && assignDialogCallback.callback) {
+    if (assignDialogCallback?.callback) {
       assignDialogCallback.callback(loginId);
     }
   };
 
-  const handleConfirmDialogOpen = async (callbackObject) => {
+  const handleConfirmDialogOpen = async (callbackObject: CallbackObject) => {
     setConfirmDialogOpen(true);
     setConfirmDialogCallback(callbackObject);
   };
 
-  const handleConfirmDialogClose = async (result) => {
+  const handleConfirmDialogClose = async (result?: boolean) => {
     setConfirmDialogOpen(false);
-    // Dialog returns false if cancelled, true to
-    // confirm delete
     if (!result) return;
-    if (confirmDialogCallback && confirmDialogCallback.callback) {
+    if (confirmDialogCallback?.callback) {
       confirmDialogCallback.callback();
     }
   };
 
-  const handleChangeTabPage = (event, newValue) => {
+  const handleChangeTabPage = (
+    _event: React.SyntheticEvent,
+    newValue: number
+  ) => {
     setTabPage(newValue);
   };
 
-  const getConfirmationErrors = (values) => {
+  const getConfirmationErrors = (
+    values: OrganizationFormValues
+  ): Record<string, string> => {
     // email optional but requires confirmation if it is provided
-    const emailConfirmation = values.email 
-    ? [{ field: "confirmedEmail", label: "Email" }] 
-    : [];
+    const emailConfirmation = values.email
+      ? [{ field: "confirmedEmail", label: "Email" }]
+      : [];
 
     const isInactive = values.inactive || values.inactiveTemporary;
     const actionWord =
@@ -324,16 +349,19 @@ const OrganizationEdit = (props) => {
           { field: "confirmedFoodTypes", label: "Food Types" },
         ];
 
-    return confirmationFields.reduce((acc, { field, label }) => {
-      if (!values[field]) {
+    return confirmationFields.reduce((acc: Record<string, string>, { field, label }) => {
+      if (!values[field as keyof OrganizationFormValues]) {
         acc[field] = `${label} must be confirmed before ${actionWord}.`;
       }
       return acc;
     }, {});
   };
 
-  const getTabErrorCounts = (yupErrors, confirmErrors = {}) => {
-    const counts = {};
+  const getTabErrorCounts = (
+    yupErrors: Record<string, string>,
+    confirmErrors: Record<string, string> = {}
+  ) => {
+    const counts: Record<number, number> = {};
 
     Object.keys(yupErrors).forEach((field) => {
       const tabIndex = field.startsWith("hours") ? 1 : tabs[field];
@@ -352,7 +380,7 @@ const OrganizationEdit = (props) => {
     return counts;
   };
 
-  const focusFirstConfirmationError = (confErrors) => {
+  const focusFirstConfirmationError = (confErrors: Record<string, string>) => {
     const firstField = Object.keys(confErrors)[0];
     const tabIndex = confirmationFieldToTab[firstField];
     if (tabIndex !== undefined) {
@@ -364,7 +392,7 @@ const OrganizationEdit = (props) => {
     }
   };
 
-  const isUnchanged = (values) => {
+  const isUnchanged = (values: OrganizationFormValues) => {
     return JSON.stringify(values) === JSON.stringify(originalData);
   };
 
@@ -396,13 +424,12 @@ const OrganizationEdit = (props) => {
       <Stack
         sx={{
           marginLeft: "24px !important",
-
           fontWeight: "normal",
         }}
       >
         <ul>
           <li>The phone was inactive</li>
-          <li>Weren't available but call back</li>
+          <li>Weren&apos;t available but call back</li>
           <li>
             Got partial information from voicemail (also enter this information
             in the appropriate formfields)
@@ -449,8 +476,7 @@ const OrganizationEdit = (props) => {
     confirmedFoodTypes: "Food Types",
   };
 
-  // should include all fields that are required for the form to be valid
-  const tabs = {
+  const tabs: Record<string, number> = {
     name: 0,
     phone: 0,
     address1: 0,
@@ -479,12 +505,12 @@ const OrganizationEdit = (props) => {
     confirmedFoodTypes: 3,
   };
 
-  const scrollIntoViewHelper = (errors) => {
+  const scrollIntoViewHelper = (errors: Record<string, string>) => {
     const firstError = Object.keys(errors)[0];
-    if (firstError.startsWith("hours")) {
+    if (!firstError || firstError.startsWith("hours")) {
       return;
     }
-    let el = document.querySelector(`[name="${firstError}"]`);
+    const el = document.querySelector(`[name="${firstError}"]`);
     if (el) {
       el.scrollIntoView({
         behavior: "smooth",
@@ -493,9 +519,11 @@ const OrganizationEdit = (props) => {
     }
   };
 
-  const [editedSuggestions, setEditedSuggestions] = useState({});
+  const [editedSuggestions, setEditedSuggestions] = useState<EditedSuggestions>(
+    {}
+  );
 
-  const handleSuggestionEdit = (id, changes) => {
+  const handleSuggestionEdit = (id: number, changes: Partial<Suggestion>) => {
     setEditedSuggestions((prev) => ({
       ...prev,
       [id]: { ...(prev[id] || {}), ...changes },
@@ -820,22 +848,26 @@ const OrganizationEdit = (props) => {
           title="Permanently Delete Organization"
           message={`Are you sure you want to delete the organization ${originalData.name}?`}
         />
-        <Formik
-          // Use deep copy of originalData to initialize form, so
-          // we can't accidentally mutate originalData in form.
-          // This assures isUnchanged function works properly.
-          initialValues={JSON.parse(JSON.stringify(originalData))}
+        <Formik<OrganizationFormValues>
+          initialValues={
+            JSON.parse(JSON.stringify(originalData)) as OrganizationFormValues
+          }
           enableReinitialize
           validationSchema={validationSchema}
-          onSubmit={async (values, { setSubmitting, setFieldValue }) => {
+          onSubmit={async (
+            values,
+            { setSubmitting, setFieldValue }: FormikHelpers<OrganizationFormValues>
+          ) => {
             const yupErrors = await validationSchema
               .validate(values, { abortEarly: false })
               .then(() => ({}))
-              .catch((err) =>
-                err.inner.reduce(
-                  (acc, { path, message }) => ({ ...acc, [path]: message }),
-                  {}
-                )
+              .catch((err: Yup.ValidationError) =>
+                err.inner.reduce<Record<string, string>>((acc, item) => {
+                  if (item.path) {
+                    acc[item.path] = item.message;
+                  }
+                  return acc;
+                }, {})
               );
 
             if (Object.keys(yupErrors).length > 0) {
@@ -857,7 +889,6 @@ const OrganizationEdit = (props) => {
               setSubmitting(false);
               return;
             }
-
             try {
               const payload = {
                 ...values,
@@ -876,7 +907,6 @@ const OrganizationEdit = (props) => {
                 setOriginalData({ ...payload, id: response.id });
               }
 
-              // Save changed suggestions
               const suggestionUpdates = Object.entries(editedSuggestions).map(
                 ([id, changes]) =>
                   suggestionService.update({ id: Number(id), ...changes })
@@ -955,7 +985,7 @@ const OrganizationEdit = (props) => {
                   style={{ padding: "0.2em 0.65em" }}
                 >
                   <Typography component="h1" variant="h5">
-                    {VERIFICATION_STATUS_NAMES[values.verificationStatusId]}
+                    {verificationStatusNames[values.verificationStatusId]}
                   </Typography>
                 </Box>
               </Stack>
@@ -1213,12 +1243,6 @@ const OrganizationEdit = (props) => {
       </div>
     </Container>
   );
-};
-
-OrganizationEdit.propTypes = {
-  classes: PropTypes.object,
-  match: PropTypes.object,
-  history: PropTypes.object,
 };
 
 export default OrganizationEdit;

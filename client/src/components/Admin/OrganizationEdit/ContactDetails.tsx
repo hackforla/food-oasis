@@ -1,6 +1,6 @@
-import { Grid } from "@mui/material";
+import { Grid, TextField } from "@mui/material";
 import { TabPanel } from "components/Admin/ui/TabPanel";
-import { TextField } from "@mui/material";
+import { OrganizationSectionBaseProps } from "types/Organization";
 import Label from "../ui/Label";
 
 export default function ContactDetails({
@@ -10,7 +10,7 @@ export default function ContactDetails({
   errors,
   handleChange,
   handleBlur,
-}) {
+}: OrganizationSectionBaseProps) {
   return (
     <TabPanel value={tabPage} index={2}>
       <Grid container spacing={1}>

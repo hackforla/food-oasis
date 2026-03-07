@@ -1,5 +1,6 @@
 import {
   Box,
+  Chip,
   Paper,
   Stack,
   Table,
@@ -9,14 +10,17 @@ import {
   TableHead,
   TableRow,
   Typography,
-  Chip,
 } from "@mui/material";
-import PropTypes from "prop-types";
 import { getComparableFields } from "./ChangeHistory";
 import { VERIFICATION_STATUS_NAMES } from "constants/stakeholder";
+import { StakeholderVersion } from "types/Organization";
 
-// Human-readable field labels
-const FIELD_LABELS = {
+const verificationStatusNames = VERIFICATION_STATUS_NAMES as Record<
+  number,
+  string
+>;
+
+const FIELD_LABELS: Record<string, string> = {
   name: "Name",
   address1: "Street Address",
   address2: "Address Line 2",
@@ -83,8 +87,7 @@ const FIELD_LABELS = {
   tags: "Tags",
 };
 
-// Format value for display
-function formatValue(value, field) {
+function formatValue(value: unknown, field: string) {
   if (value === null || value === undefined || value === "") {
     return (
       <Typography color="text.secondary" fontStyle="italic">
@@ -98,7 +101,7 @@ function formatValue(value, field) {
   }
 
   if (field === "verificationStatusId") {
-    return VERIFICATION_STATUS_NAMES[value] || value;
+    return verificationStatusNames[value as number] || String(value);
   }
 
   if (Array.isArray(value)) {
@@ -109,7 +112,6 @@ function formatValue(value, field) {
         </Typography>
       );
     }
-    // For hours array, format nicely
     if (field === "hours") {
       return (
         <Box
@@ -120,7 +122,6 @@ function formatValue(value, field) {
         </Box>
       );
     }
-    // For category IDs or tags
     return value.join(", ");
   }
 
@@ -138,16 +139,21 @@ function formatValue(value, field) {
   return String(value);
 }
 
-// Check if values are different
-function isDifferent(valueA, valueB) {
+function isDifferent(valueA: unknown, valueB: unknown) {
   return JSON.stringify(valueA) !== JSON.stringify(valueB);
 }
 
+interface VersionComparisonProps {
+  versionA: StakeholderVersion;
+  versionB: StakeholderVersion;
+  showOnlyChanges?: boolean;
+}
+
 export default function VersionComparison({
-  versionA, // newer version
-  versionB, // older version
+  versionA,
+  versionB,
   showOnlyChanges = true,
-}) {
+}: VersionComparisonProps) {
   const fields = getComparableFields();
 
   const rows = fields
@@ -194,7 +200,7 @@ export default function VersionComparison({
                   sx={{
                     fontWeight: "bold",
                     width: "40%",
-                    backgroundColor: "rgba(250, 235, 235)", // light red
+                    backgroundColor: "rgba(250, 235, 235)",
                   }}
                 >
                   v{versionB.version} (Previous)
@@ -203,7 +209,7 @@ export default function VersionComparison({
                   sx={{
                     fontWeight: "bold",
                     width: "40%",
-                    backgroundColor: "rgba(240, 250, 240)", // light green
+                    backgroundColor: "rgba(240, 250, 240)",
                   }}
                 >
                   v{versionA.version} (Current)
@@ -266,9 +272,3 @@ export default function VersionComparison({
     </Paper>
   );
 }
-
-VersionComparison.propTypes = {
-  versionA: PropTypes.object.isRequired,
-  versionB: PropTypes.object.isRequired,
-  showOnlyChanges: PropTypes.bool,
-};

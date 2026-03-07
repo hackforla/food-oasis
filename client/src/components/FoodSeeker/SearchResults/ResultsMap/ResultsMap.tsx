@@ -1,5 +1,7 @@
 import PropTypes from "prop-types";
 import { useCallback, useEffect, useRef, useState } from "react";
+import type { MapRef } from "react-map-gl";
+import type { MapLayerMouseEvent, Map as MapboxMap } from "mapbox-gl";
 // Mapbox is tricky, because version 6.* is "incompatible with some Babel transforms
 // because of the way it shares code between the maint thread and Web Worker."
 // See https://docs.mapbox.com/mapbox-gl-js/guides/install/#transpiling for details
@@ -49,17 +51,33 @@ import {
 } from "constants/stakeholder";
 import debounceFn from "debounce-fn";
 
+interface ResultsMapProps {
+  stakeholders: any[];
+  categoryIds: number[];
+  toggleCategory: (categoryId: number) => void;
+  loading: boolean;
+  initialZoom?: number;
+}
+
 const ResultsMap = ({
   stakeholders,
   categoryIds,
   toggleCategory,
   loading,
   initialZoom,
-}) => {
+}: ResultsMapProps) => {
   const [markersLoaded, setMarkersLoaded] = useState(false);
   const [cursor, setCursor] = useState("auto");
-  const searchCoordinates = useSearchCoordinates();
-  const selectedOrganization = useSelectedOrganization();
+  const searchCoordinates = useSearchCoordinates() as {
+    latitude: number;
+    longitude: number;
+  } | null;
+  const selectedOrganization = useSelectedOrganization() as {
+    id: number;
+    name: string;
+    latitude: number;
+    longitude: number;
+  } | null;
   const orgNameFilter = useOrgNameFilter();
   const openTimeFilter = useOpenTimeFilter();
   const navigate = useNavigate();
@@ -68,7 +86,8 @@ const ResultsMap = ({
   const isListPanelOpen = useListPanel();
   const isFilterPanelOpen = useFilterPanel();
 
-  const { mapRef, flyTo } = useMapbox();
+  const { mapRef: rawMapRef, flyTo } = useMapbox();
+  const mapRef = rawMapRef as unknown as React.RefObject<MapRef>;
 
   const longitude =
     searchCoordinates?.longitude ||
@@ -78,14 +97,17 @@ const ResultsMap = ({
     searchCoordinates?.latitude || selectedOrganization?.latitude || isMobile
       ? DEFAULT_COORDINATES.latitude - 0.06
       : DEFAULT_COORDINATES.latitude;
-  const userCoordinates = useUserCoordinates();
+  const userCoordinates = useUserCoordinates() as {
+    latitude: number;
+    longitude: number;
+  } | null;
   const [viewport, setViewport] = useState({
     latitude,
     longitude,
     zoom: initialZoom || DEFAULT_VIEWPORT.zoom,
   });
-  const dispatch = useAppDispatch();
-  const neighborhood = useNeighborhood();
+  const dispatch = useAppDispatch() as (action: any) => void;
+  const neighborhood = useNeighborhood() as { geojson?: any } | null;
   const regionGeoJSON = neighborhood?.geojson;
   const startIconCoordinates = searchCoordinates || userCoordinates;
   const hasAdvancedFilterFeatureFlag = useFeatureFlag("advancedFilter");
@@ -93,7 +115,7 @@ const ResultsMap = ({
   const onMouseEnter = useCallback(() => setCursor("pointer"), []);
   const onMouseLeave = useCallback(() => setCursor("auto"), []);
   const [interactiveLayerIds, setInteractiveLayerIds] = useState(["nonexist"]);
-  const [currMap, setCurrMap] = useState(null);
+  const [currMap, setCurrMap] = useState<MapboxMap | null>(null);
 
   useEffect(() => {
     analytics.postEvent("showMap");
@@ -109,7 +131,7 @@ const ResultsMap = ({
   }, [searchCoordinates, longitude, latitude, isMobile]);
 
   const onLoad = useCallback(async () => {
-    const map = mapRef.current.getMap();
+    const map = mapRef.current!.getMap();
     window.dispatchEvent(new Event("resize"));
     setCurrMap(map);
     await loadMarkerIcons(map);
@@ -119,7 +141,6 @@ const ResultsMap = ({
       flyTo({
         longitude: startIconCoordinates.longitude,
         latitude: startIconCoordinates.latitude,
-        initialZoom,
       });
   }, [startIconCoordinates, flyTo, mapRef]);
 
@@ -129,7 +150,7 @@ const ResultsMap = ({
   // custom zoom for the neighborhood if used in widget mode
   useEffect(() => {
     if (regionGeoJSON && currMap) {
-      const bounds = bbox(regionGeoJSON);
+      const bounds = bbox(regionGeoJSON) as [number, number, number, number];
 
       const canvas = currMap.getCanvas();
       const mapWidth = canvas.clientWidth;
@@ -176,7 +197,7 @@ const ResultsMap = ({
     }
   }, [regionGeoJSON, currMap, isMobile]);
 
-  const onClick = (e) => {
+  const onClick = (e: MapLayerMouseEvent) => {
     flyTo({
       latitude: e.lngLat.lat,
       longitude: e.lngLat.lng,
@@ -300,7 +321,7 @@ const ResultsMap = ({
     analytics.postEvent("togglePantryFilter", {});
   }, [toggleCategory]);
 
-  const mapContainerRef = useRef();
+  const mapContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Resize map if container size changes
@@ -330,7 +351,9 @@ const ResultsMap = ({
     };
   }, []);
 
-  function updateUrlParams(updates = {}) {
+  function updateUrlParams(
+    updates: Record<string, string | null | undefined> = {}
+  ) {
     const params = new URLSearchParams(window.location.search);
 
     // skip updating if the URL already has an "org" param
@@ -389,7 +412,6 @@ const ResultsMap = ({
         onMove={(e) => setViewport(e.viewState)}
         mapboxAccessToken={MAPBOX_ACCESS_TOKEN}
         mapStyle={MAPBOX_STYLE}
-        draggable={true}
         onLoad={onLoad}
         interactive={true}
         onClick={onClick}
@@ -421,8 +443,7 @@ const ResultsMap = ({
           <Marker
             longitude={startIconCoordinates.longitude}
             latitude={startIconCoordinates.latitude}
-            offsetTop={-50}
-            offsetLeft={-25}
+            offset={[8, -15]}
             anchor="center"
           >
             <StartIcon />

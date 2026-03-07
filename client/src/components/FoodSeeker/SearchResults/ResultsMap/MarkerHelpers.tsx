@@ -1,5 +1,7 @@
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import { renderToString } from "react-dom/server";
+import type { Map as MapboxMap } from "mapbox-gl";
+import type { LayerProps } from "react-map-gl";
 import MapMarker from "./MapMarker";
 import {
   MEAL_PROGRAM_CATEGORY_ID,
@@ -15,7 +17,7 @@ export const MARKERS_LAYER_ID = "markers";
 // note that we have 3 marker categories, and 2 selected states, for a
 // total of 6 possible marker variants.
 // the marker categories come from src/images/mapMarker.js
-const MARKER_CATEGORIES = [-1, 0, 1];
+const MARKER_CATEGORIES: (-1 | 0 | 1)[] = [-1, 0, 1];
 const SELECTED_VALUES = [false, true];
 
 // using the pixel ratio to scale the marker helps prevent
@@ -24,13 +26,15 @@ const MARKER_SCALE = window.devicePixelRatio;
 
 // each marker variant has a unique id based on its category and
 // whether it is selected
-function getIconId(markerCategory, isSelected) {
+function getIconId(markerCategory: number, isSelected: boolean): string {
   return `fola-marker::${markerCategory}::${isSelected}`;
 }
 
 // selects the right marker category based on the stakeholder categories array.
 // category ids are from src/images/mapMarker.js
-function getMarkerCategory(stakeholder) {
+function getMarkerCategory(stakeholder: {
+  categories: { id: number }[];
+}): -1 | 0 | 1 {
   if (
     stakeholder.categories[0]?.id === FOOD_PANTRY_CATEGORY_ID &&
     stakeholder.categories[1]?.id === MEAL_PROGRAM_CATEGORY_ID
@@ -45,8 +49,16 @@ function getMarkerCategory(stakeholder) {
 // This converts the given marker to an icon, and then loads that icon into the
 // map. Once loaded, the icon can be used in a symbol layer.
 // see https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/#symbol
-function loadMarkerIcon({ map, marker, iconId }) {
-  return new Promise((resolve, reject) => {
+function loadMarkerIcon({
+  map,
+  marker,
+  iconId,
+}: {
+  map: MapboxMap;
+  marker: React.ReactElement;
+  iconId: string;
+}) {
+  return new Promise<void>((resolve) => {
     const icon = new Image();
     const svgString = renderToString(marker);
     const svg = new Blob([svgString], { type: "image/svg+xml" });
@@ -62,8 +74,8 @@ function loadMarkerIcon({ map, marker, iconId }) {
 
 // load an icon for each possible combination of marker category and
 // selected value.
-export function loadMarkerIcons(map) {
-  const iconLoaders = [];
+export function loadMarkerIcons(map: MapboxMap) {
+  const iconLoaders: Promise<void>[] = [];
 
   MARKER_CATEGORIES.forEach((category) => {
     SELECTED_VALUES.forEach((selected) => {
@@ -87,7 +99,7 @@ export function loadMarkerIcons(map) {
 }
 
 // symbol layer style definition
-export const markersLayerStyles = {
+export const markersLayerStyles: LayerProps = {
   id: MARKERS_LAYER_ID,
   type: "symbol",
   layout: {
@@ -99,10 +111,18 @@ export const markersLayerStyles = {
 };
 
 // symbol layer data
-export function useMarkersGeojson({ stakeholders, categoryIds }) {
+export function useMarkersGeojson({
+  stakeholders,
+  categoryIds,
+}: {
+  stakeholders: any[];
+  categoryIds: number[];
+}) {
   const catIds = categoryIds.length ? categoryIds : DEFAULT_CATEGORIES;
-  const selectedOrganization = useSelectedOrganization();
-  const hoveredOrganization = useHoveredOrganization();
+  const selectedOrganization = useSelectedOrganization() as {
+    id: number;
+  } | null;
+  const hoveredOrganization = useHoveredOrganization() as { id: number } | null;
 
   // modify the stakeholders array by:
   // 1. filtering out the inactive orgs
@@ -118,7 +138,9 @@ export function useMarkersGeojson({ stakeholders, categoryIds }) {
         )
         .map((sh) => ({
           ...sh,
-          categories: sh.categories.filter(({ id }) => catIds.includes(id)),
+          categories: sh.categories.filter(({ id }: { id: number }) =>
+            catIds.includes(id)
+          ),
         })),
     [stakeholders, catIds]
   );

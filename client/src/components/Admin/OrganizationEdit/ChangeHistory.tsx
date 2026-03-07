@@ -1,5 +1,6 @@
 import {
   Box,
+  CircularProgress,
   FormControl,
   FormControlLabel,
   InputLabel,
@@ -15,15 +16,25 @@ import {
   TableHead,
   TableRow,
   Typography,
-  CircularProgress,
 } from "@mui/material";
-import { useState } from "react";
-import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
 import { TabPanel } from "../ui/TabPanel";
 import { VERIFICATION_STATUS_NAMES } from "constants/stakeholder";
 import VersionComparison from "./VersionComparison";
+import { StakeholderVersion } from "types/Organization";
+const verificationStatusNames = VERIFICATION_STATUS_NAMES as Record<
+  number,
+  string
+>;
 
-function formatDate(dateStr) {
+interface ChangeHistoryProps {
+  tabPage: number;
+  versions?: StakeholderVersion[];
+  loading?: boolean;
+  error?: Error | null;
+}
+
+function formatDate(dateStr: string) {
   if (!dateStr) return "N/A";
   return new Date(dateStr).toLocaleDateString("en-US", {
     year: "numeric",
@@ -34,23 +45,7 @@ function formatDate(dateStr) {
   });
 }
 
-// Fields to exclude from comparison (metadata, computed fields)
-const EXCLUDED_FIELDS = [
-  "id",
-  "version",
-  "createdDate",
-  "createdUser",
-  "createdLoginId",
-  "modifiedDate",
-  "modifiedUser",
-  "modifiedLoginId",
-  "modifiedUserRole",
-  "categories", // compare selectedCategoryIds instead
-];
-
 export function getComparableFields() {
-  // This will be populated from the stakeholder object keys
-  // minus the excluded fields
   return [
     "name",
     "address1",
@@ -124,27 +119,41 @@ export default function ChangeHistory({
   versions = [],
   loading = false,
   error = null,
-}) {
-  const [selectedVersionA, setSelectedVersionA] = useState(null); // newer/current
-  const [selectedVersionB, setSelectedVersionB] = useState(null); // older/previous
+}: ChangeHistoryProps) {
+  const [selectedVersionA, setSelectedVersionA] =
+    useState<StakeholderVersion | null>(null);
+  const [selectedVersionB, setSelectedVersionB] =
+    useState<StakeholderVersion | null>(null);
   const [showOnlyChanges, setShowOnlyChanges] = useState(true);
 
-  // Count changes between two versions
-  const countChanges = (versionA, versionB) => {
+  const countChanges = (
+    versionA: StakeholderVersion | null,
+    versionB: StakeholderVersion | null
+  ) => {
     if (!versionA || !versionB) return 0;
     const fieldsToCompare = getComparableFields();
     return fieldsToCompare.filter(
-      (field) => JSON.stringify(versionA[field]) !== JSON.stringify(versionB[field])
+      (field) =>
+        JSON.stringify(versionA[field]) !== JSON.stringify(versionB[field])
     ).length;
   };
 
-  // Auto-select first two versions when data loads
-  if (versions.length >= 2 && !selectedVersionA && !selectedVersionB) {
-    setSelectedVersionA(versions[0]); // most recent
-    setSelectedVersionB(versions[1]); // previous
-  } else if (versions.length === 1 && !selectedVersionA) {
-    setSelectedVersionA(versions[0]);
-  }
+  useEffect(() => {
+    if (versions.length >= 2) {
+      setSelectedVersionA((curr) => curr ?? versions[0]);
+      setSelectedVersionB((curr) => curr ?? versions[1]);
+      return;
+    }
+
+    if (versions.length === 1) {
+      setSelectedVersionA((curr) => curr ?? versions[0]);
+      setSelectedVersionB(null);
+      return;
+    }
+
+    setSelectedVersionA(null);
+    setSelectedVersionB(null);
+  }, [versions]);
 
   const changeCount = countChanges(selectedVersionA, selectedVersionB);
 
@@ -161,7 +170,9 @@ export default function ChangeHistory({
   if (error) {
     return (
       <TabPanel value={tabPage} index={7}>
-        <Typography color="error">Error loading history: {error.message}</Typography>
+        <Typography color="error">
+          Error loading history: {error.message}
+        </Typography>
       </TabPanel>
     );
   }
@@ -169,12 +180,10 @@ export default function ChangeHistory({
   return (
     <TabPanel value={tabPage} index={7}>
       <Stack spacing={3}>
-        {/* Header with change count */}
         <Typography variant="h6">
           Change History {changeCount > 0 && `(${changeCount} changes)`}
         </Typography>
 
-        {/* Version selector dropdowns */}
         <Stack direction="row" spacing={2} alignItems="center">
           <FormControl sx={{ minWidth: 250 }}>
             <InputLabel>Compare Version (Current)</InputLabel>
@@ -182,8 +191,11 @@ export default function ChangeHistory({
               value={selectedVersionA?.version || ""}
               label="Compare Version (Current)"
               onChange={(e) => {
-                const v = versions.find((v) => v.version === e.target.value);
-                setSelectedVersionA(v);
+                const versionValue = Number(e.target.value);
+                const v = versions.find(
+                  (item) => item.version === versionValue
+                );
+                setSelectedVersionA(v || null);
               }}
             >
               {versions.map((v) => (
@@ -202,8 +214,11 @@ export default function ChangeHistory({
               value={selectedVersionB?.version || ""}
               label="Compare Version (Previous)"
               onChange={(e) => {
-                const v = versions.find((v) => v.version === e.target.value);
-                setSelectedVersionB(v);
+                const versionValue = Number(e.target.value);
+                const v = versions.find(
+                  (item) => item.version === versionValue
+                );
+                setSelectedVersionB(v || null);
               }}
             >
               {versions.map((v) => (
@@ -225,7 +240,6 @@ export default function ChangeHistory({
           />
         </Stack>
 
-        {/* Version list table */}
         <TableContainer component={Paper} sx={{ maxHeight: 300 }}>
           <Table stickyHeader size="small">
             <TableHead>
@@ -253,7 +267,8 @@ export default function ChangeHistory({
                   <TableCell>{v.modifiedUserRole || "Unknown"}</TableCell>
                   <TableCell>{formatDate(v.modifiedDate)}</TableCell>
                   <TableCell>
-                    {VERIFICATION_STATUS_NAMES[v.verificationStatusId] || "Unknown"}
+                    {verificationStatusNames[v.verificationStatusId] ||
+                      "Unknown"}
                   </TableCell>
                 </TableRow>
               ))}
@@ -261,7 +276,6 @@ export default function ChangeHistory({
           </Table>
         </TableContainer>
 
-        {/* Comparison view */}
         {selectedVersionA && selectedVersionB && (
           <VersionComparison
             versionA={selectedVersionA}
@@ -275,16 +289,11 @@ export default function ChangeHistory({
         )}
 
         {versions.length === 1 && (
-          <Typography>Only one version exists. No comparison available.</Typography>
+          <Typography>
+            Only one version exists. No comparison available.
+          </Typography>
         )}
       </Stack>
     </TabPanel>
   );
 }
-
-ChangeHistory.propTypes = {
-  tabPage: PropTypes.number.isRequired,
-  versions: PropTypes.array,
-  loading: PropTypes.bool,
-  error: PropTypes.object,
-};

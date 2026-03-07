@@ -19,11 +19,12 @@ import { useToasterContext } from "contexts/toasterContext";
 import { useCategories } from "hooks/useCategories";
 import { useTags } from "hooks/useTags";
 import { useState } from "react";
+import { PatternFormat } from "react-number-format";
 import * as awsService from "services/aws-service";
+import { OrganizationSectionWithSetFieldValueProps } from "types/Organization";
 import { disabledText, error as errorColor } from "theme/palette";
 import Label from "../ui/Label";
 import Textarea from "../ui/Textarea";
-import { PatternFormat } from "react-number-format";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -35,6 +36,35 @@ const MenuProps = {
     },
   },
 };
+
+interface Category {
+  id: number;
+  name: string;
+}
+
+interface Tag {
+  name: string;
+}
+
+interface GeocodeResult {
+  Relevance: number;
+  Place: {
+    Geometry: {
+      Point: [number, number];
+    };
+  };
+}
+
+interface IdentificationProps extends OrganizationSectionWithSetFieldValueProps {
+  setFieldTouched: (
+    field: string,
+    isTouched?: boolean,
+    shouldValidate?: boolean
+  ) => void;
+  submitCount: number;
+  confirmationErrors?: Record<string, string>;
+}
+
 export default function Identification({
   tabPage,
   values,
@@ -46,36 +76,36 @@ export default function Identification({
   setFieldTouched,
   submitCount,
   confirmationErrors = {},
-}) {
+}: IdentificationProps) {
   const { setToast } = useToasterContext();
   const { data: categories } = useCategories();
   const { data: allTags } = useTags();
-  const [geocodeResults, setGeocodeResults] = useState([]);
+  const [geocodeResults, setGeocodeResults] = useState<GeocodeResult[]>([]);
 
-  const geocode = async (formData) => {
-    const address = `${formData.address1} ${formData.city} ${formData.state} ${formData.zip}`;
+  const categoryList = (categories || []) as Category[];
+  const tagList = (allTags || []) as Tag[];
+
+  const geocode = async () => {
+    const address = `${values.address1} ${values.city} ${values.state} ${values.zip}`;
     try {
       const result = await awsService.getCoords(address);
       if (result.Results) {
-        setGeocodeResults(result.Results);
+        setGeocodeResults(result.Results as GeocodeResult[]);
       } else {
         setToast({
           message:
-            `Geocoder request failed: ` +
-            `Please try again and/or contact support.`,
+            "Geocoder request failed: Please try again and/or contact support.",
         });
       }
     } catch (err) {
       console.error(err);
       setToast({
-        message:
-          `Geocoder request failed: ${err} ` +
-          `Please try again and/or contact support.`,
+        message: `Geocoder request failed: ${err} Please try again and/or contact support.`,
       });
     }
   };
 
-  const errorBorderSx = (fieldName) => ({
+  const errorBorderSx = (fieldName: string) => ({
     "& .MuiOutlinedInput-notchedOutline": {
       borderColor:
         Boolean(errors[fieldName]) && (touched[fieldName] || submitCount > 0)
@@ -84,7 +114,7 @@ export default function Identification({
     },
   });
 
-  const confirmationErrorSx = (fieldName) =>
+  const confirmationErrorSx = (fieldName: string) =>
     confirmationErrors[fieldName]
       ? {
           color: "error.main",
@@ -121,7 +151,6 @@ export default function Identification({
                 }}
                 control={
                   <Checkbox
-                    margin="normal"
                     name="confirmedName"
                     value={values.confirmedName}
                     checked={values.confirmedName}
@@ -134,8 +163,7 @@ export default function Identification({
                 }
                 label={"Confirm"}
               />
-
-          </Box>
+            </Box>
         </Grid>
 
         <Grid item sm={6} xs={12}>
@@ -200,7 +228,6 @@ export default function Identification({
                     }}
                     control={
                       <Checkbox
-                        margin="normal"
                         name="confirmedPhone"
                         value={values.confirmedPhone}
                         checked={values.confirmedPhone}
@@ -239,7 +266,7 @@ export default function Identification({
                 error={false}
                 InputProps={{ sx: errorBorderSx("email") }}
               />
-            </Stack>          
+            </Stack>
             <Box sx={{ mt: 5, ...confirmationErrorSx("confirmedEmail") }}>
               <FormControlLabel
                 sx={{ ml: 0 }}
@@ -252,7 +279,6 @@ export default function Identification({
                 }}
                 control={
                   <Checkbox
-                    margin="normal"
                     name="confirmedEmail"
                     value={values.confirmedEmail}
                     checked={values.confirmedEmail}
@@ -283,8 +309,9 @@ export default function Identification({
                 onClose={() => setFieldTouched("selectedCategoryIds", true)}
                 input={<OutlinedInput />}
                 displayEmpty
-                renderValue={(selectedCategoryIds) => {
-                  if (!categories) {
+                renderValue={(selected) => {
+                  const selectedCategoryIds = selected as number[];
+                  if (!categoryList.length) {
                     return "Loading categories...";
                   }
                   if (selectedCategoryIds.length === 0) {
@@ -308,10 +335,11 @@ export default function Identification({
                   return selectedCategoryIds
                     .map(
                       (categoryId) =>
-                        categories.filter(
+                        categoryList.find(
                           (category) => category.id === categoryId
-                        )[0].name
+                        )?.name
                     )
+                    .filter(Boolean)
                     .join(", ");
                 }}
                 MenuProps={MenuProps}
@@ -320,9 +348,9 @@ export default function Identification({
                   Boolean(errors.selectedCategoryIds)
                 }
               >
-                {!categories || categories.length === 0
+                {!categoryList.length
                   ? null
-                  : categories.map((category) => (
+                  : categoryList.map((category) => (
                       <MenuItem key={category.id} value={category.id}>
                         <Checkbox
                           checked={
@@ -359,7 +387,6 @@ export default function Identification({
                   }}
                 control={
                   <Checkbox
-                    margin="normal"
                     name="confirmedCategories"
                     value={values.confirmedCategories}
                     checked={values.confirmedCategories}
@@ -403,9 +430,7 @@ export default function Identification({
             <FormControlLabel
               control={
                 <Checkbox
-                  margin="normal"
                   name="inactive"
-                  label="Inactive"
                   value={values.inactive}
                   checked={values.inactive}
                   onChange={() => setFieldValue("inactive", !values.inactive)}
@@ -421,9 +446,7 @@ export default function Identification({
             <FormControlLabel
               control={
                 <Checkbox
-                  margin="normal"
                   name="inactiveTemporary"
-                  label="Inactive"
                   value={values.inactiveTemporary}
                   checked={values.inactiveTemporary}
                   onChange={() =>
@@ -624,27 +647,22 @@ export default function Identification({
                 <Grid item>
                   <Button
                     variant="outlined"
-                    icon="search"
                     size="large"
                     onClick={() => {
-                      (geocodeResults && geocodeResults.length) < 1
-                        ? geocode(values)
+                      geocodeResults.length < 1
+                        ? geocode()
                         : setGeocodeResults([]);
                     }}
                   >
-                    {(geocodeResults && geocodeResults.length) < 1
-                      ? "Get Coordinates"
-                      : "Close"}
+                    {geocodeResults.length < 1 ? "Get Coordinates" : "Close"}
                   </Button>
                 </Grid>
               </Tooltip>
               <div>
-
                 <Box sx={confirmationErrorSx("confirmedAddress")}>
                   <FormControlLabel
                     control={
                       <Checkbox
-                        margin="normal"
                         name="confirmedAddress"
                         value={values.confirmedAddress}
                         checked={values.confirmedAddress}
@@ -668,7 +686,6 @@ export default function Identification({
                     label={"Confirm"}
                   />
                 </Box>
-
               </div>
             </Grid>
           </Grid>
@@ -693,7 +710,6 @@ export default function Identification({
                       <Button
                         variant="outlined"
                         type="button"
-                        icon="check"
                         style={{ paddingRight: "0" }}
                         onClick={() => {
                           setFieldValue(
@@ -719,9 +735,16 @@ export default function Identification({
           </div>
         </Grid>
 
-        {/* neighborhood council */}
-        <Grid item xs={12} sx={{ display: "flex", columnGap: "1rem", rowGap: "1rem", flexDirection: { xs: "column", sm: "row" }, }}>
-
+        <Grid
+          item
+          xs={12}
+          sx={{
+            display: "flex",
+            columnGap: "1rem",
+            rowGap: "1rem",
+            flexDirection: { xs: "column", sm: "row" },
+          }}
+        >
           <Grid item xs={12} sm={6}>
             <Box>
               <Label id="neighborhoodCouncil" label="Neighborhood Council" />
@@ -733,13 +756,22 @@ export default function Identification({
                 disabled
                 onChange={handleChange}
                 onBlur={handleBlur}
-                helperText={touched.neighborhoodName ? errors.neighborhoodName : ""}
-                error={touched.neighborhoodName && Boolean(errors.neighborhoodName)}
+                helperText={
+                  touched.neighborhoodName ? errors.neighborhoodName : ""
+                }
+                error={
+                  touched.neighborhoodName && Boolean(errors.neighborhoodName)
+                }
               />
             </Box>
           </Grid>
-      
-          <Grid item xs={12} sm={6} sx={{ display: "flex", alignItems: "flex-end"}}>
+
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            sx={{ display: "flex", alignItems: "flex-end" }}
+          >
             <Stack direction="column" sx={{ width: "100%" }}>
               <Label id="selectedTags-label" label="Tags" />
               <Select
@@ -748,14 +780,15 @@ export default function Identification({
                 multiple
                 fullWidth
                 value={values.tags || []}
-                onChange={handleChange}
+                onChange={(event) => handleChange(event as any)}
                 input={<OutlinedInput />}
                 displayEmpty
-                renderValue={(tags) => {
-                  if (!allTags) {
+                renderValue={(selected) => {
+                  const selectedTags = selected as string[];
+                  if (!tagList.length) {
                     return "Loading tags...";
                   }
-                  if (tags.length === 0) {
+                  if (selectedTags.length === 0) {
                     return (
                       <Typography
                         variant="body1"
@@ -768,27 +801,27 @@ export default function Identification({
                       </Typography>
                     );
                   }
-                  return tags.join(", ");
+                  return selectedTags.join(", ");
                 }}
                 MenuProps={MenuProps}
               >
-                {!allTags || allTags.length === 0
+                {!tagList.length
                   ? null
-                  : allTags.map((t) => (
-                      <MenuItem key={t.name} value={t.name}>
+                  : tagList.map((tag) => (
+                      <MenuItem key={tag.name} value={tag.name}>
                         <Checkbox
-                          checked={
-                            values.tags && values.tags.find((tt) => tt === t.name)
-                          }
+                          checked={Boolean(
+                            values.tags &&
+                              values.tags.find((entry) => entry === tag.name)
+                          )}
                         />
-                        <ListItemText primary={t.name} />
+                        <ListItemText primary={tag.name} />
                       </MenuItem>
                     ))}
               </Select>
               <FormHelperText>{touched.tags ? errors.tags : ""}</FormHelperText>
             </Stack>
           </Grid>
-
         </Grid>
       </Grid>
     </TabPanel>

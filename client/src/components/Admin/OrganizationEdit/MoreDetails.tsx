@@ -7,8 +7,13 @@ import {
   Typography,
 } from "@mui/material";
 import { TabPanel } from "components/Admin/ui/TabPanel";
+import { OrganizationSectionWithSetFieldValueProps } from "types/Organization";
 import Label from "../ui/Label";
 import Textarea from "../ui/Textarea";
+
+interface MoreDetailsProps extends OrganizationSectionWithSetFieldValueProps {
+  confirmationErrors?: Record<string, string>;
+}
 
 const FOOD_TYPES = [
   {
@@ -35,8 +40,25 @@ const FOOD_TYPES = [
     name: "foodMeat",
     label: "Meat",
   },
-];
-const CheckboxWithLabel = ({ name, label, checked, onChange, ...props }) => (
+] as const;
+
+type FoodTypeField = (typeof FOOD_TYPES)[number]["name"];
+
+interface CheckboxWithLabelProps {
+  name: string;
+  label: string;
+  checked: boolean;
+  onChange: () => void;
+  onBlur: (event: React.FocusEvent<any>) => void;
+}
+
+const CheckboxWithLabel = ({
+  name,
+  label,
+  checked,
+  onChange,
+  onBlur,
+}: CheckboxWithLabelProps) => (
   <Grid item xs={12} sm={4}>
     <FormControlLabel
       control={
@@ -44,7 +66,7 @@ const CheckboxWithLabel = ({ name, label, checked, onChange, ...props }) => (
           name={name}
           checked={checked}
           onChange={onChange}
-          {...props}
+          onBlur={onBlur}
         />
       }
       label={label}
@@ -61,7 +83,7 @@ export default function MoreDetails({
   handleBlur,
   setFieldValue,
   confirmationErrors = {},
-}) {
+}: MoreDetailsProps) {
   const noteTooltip = (
     <Stack spacing={1}>
       <p>These are notes for clients to see, for example:</p>
@@ -104,7 +126,6 @@ export default function MoreDetails({
               }}
               control={
                 <Checkbox
-                  margin="normal"
                   name="confirmedFoodTypes"
                   value={values.confirmedFoodTypes}
                   checked={values.confirmedFoodTypes}
@@ -121,7 +142,8 @@ export default function MoreDetails({
         </Grid>
         <Grid container alignItems="center" sx={{ pl: 1.5, maxWidth: "600px" }}>
           {FOOD_TYPES.map(({ name, label }) => {
-            const checked = values[name];
+            const key = name as FoodTypeField;
+            const checked = Boolean(values[key]);
             return (
               <CheckboxWithLabel
                 key={name}

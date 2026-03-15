@@ -6,7 +6,7 @@ import {
   SvgIcon,
   Typography,
 } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, FC, ReactElement } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import * as analytics from "../../services/analytics";
 import Footer from "../Layout/Footer";
@@ -15,7 +15,7 @@ import IconSpacerSVG from "./assets/IconSpacerSVG";
 import faqbg from "./assets/faq-bg.webp";
 import SEO from "../SEO";
 
-const About = () => {
+const FAQ: FC = (): ReactElement => {
   useEffect(() => {
     analytics.postEvent("visitFaqPage");
   }, []);
@@ -32,8 +32,8 @@ const About = () => {
           component="img"
           alt="FAQ"
           src={faqbg}
-          style={{ width: "100%" }}
-        ></CardMedia>
+          sx={{ width: "100%" }}
+        />
         <Typography
           variant="h1"
           sx={{
@@ -141,8 +141,8 @@ const About = () => {
                   volunteers work hard to ensure the information listed is
                   updated. To suggest a listing missing from our directory,{" "}
                   <Link
-                    variant="primary"
-                    to={"/suggestion"}
+                    variant="body1"
+                    to="/suggestion"
                     component={RouterLink}
                   >
                     use this link
@@ -208,15 +208,15 @@ const About = () => {
             Food Providers
           </Typography>
           <Container maxWidth="sm">
-            <Box component="dl" align="center">
+            <Box component="dl" sx={{ textAlign: "center" }}>
               <Typography variant="subtitle1" component="dt">
                 How can I add our food resource to your directory?
               </Typography>
               <Typography component="dd">
                 Please visit our “
                 <Link
-                  variant="primary"
-                  to={"/suggestion"}
+                  variant="body1"
+                  to="/suggestion"
                   component={RouterLink}
                 >
                   Suggest New Listing
@@ -232,4 +232,4 @@ const About = () => {
   );
 };
 
-export default About;
+export default FAQ;

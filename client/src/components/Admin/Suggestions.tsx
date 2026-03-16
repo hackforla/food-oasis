@@ -29,11 +29,14 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableCellProps,
   TableContainer,
   TableHead,
   TablePagination,
+  TablePaginationOwnProps,
   TableRow,
 } from "@mui/material";
+import type { SelectChangeEvent } from "@mui/material/Select";
 import { Formik } from "formik";
 import { useSuggestions } from "hooks/useSuggestions";
 import { useEffect, useState } from "react";
@@ -43,14 +46,50 @@ import { getIsMobile } from "../../utils";
 import Label from "./ui/Label";
 import Textarea from "./ui/Textarea";
 
-const columns = [
+interface Filter {
+  id: number;
+  name: string;
+}
+
+interface AdminSuggestion {
+  id: number;
+  name?: string;
+  notes?: string;
+  suggestionStatusId?: number;
+  formType?: string;
+  adminNotes?: string;
+  address1?: string;
+  address2?: string;
+  city?: string;
+  email?: string;
+  phone?: string;
+  category?: string;
+  hours?: string;
+  tipsterName?: string;
+  tipsterEmail?: string;
+  tipsterPhone?: string;
+}
+
+interface SuggestionFormValues {
+  adminNotes: string;
+  suggestionStatusId: number;
+}
+
+interface Column {
+  id: "name" | "notes" | "suggestionStatusId" | "formType";
+  label: string;
+  minWidth: number;
+  align?: TableCellProps["align"];
+}
+
+const columns: Column[] = [
   { id: "name", label: "Name", minWidth: 100 },
   { id: "notes", label: "Notes", minWidth: 10 },
   { id: "suggestionStatusId", label: "Status", minWidth: 10 },
   { id: "formType", label: "Type", minWidth: 10 },
 ];
 
-export const FILTERS = [
+export const FILTERS: Filter[] = [
   { id: 1, name: "New" },
   { id: 2, name: "Pending" },
   { id: 3, name: "Incorrect" },
@@ -73,14 +112,18 @@ function getModalStyle() {
 
 function Suggestions() {
   const initialStatusIds = [1, 2, 3, 4];
-  const [suggestions, setSuggestions] = useState([]);
+  const [suggestions, setSuggestions] = useState<AdminSuggestion[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [activeOrg, setActiveOrg] = useState(null);
-  const [modalStyle] = useState(getModalStyle);
+  const [activeOrg, setActiveOrg] = useState<AdminSuggestion | null>(null);
+  const [modalStyle] = useState<React.CSSProperties>(getModalStyle);
   const [error, setError] = useState("");
-  const [filters, setFilters] = useState(initialStatusIds);
-  let { data, status, setStatusIds } = useSuggestions(initialStatusIds);
+  const [filters, setFilters] = useState<number[]>(initialStatusIds);
+  const { data, status, setStatusIds } = useSuggestions(initialStatusIds) as {
+    data: AdminSuggestion[];
+    status?: number;
+    setStatusIds: (ids: number[]) => void;
+  };
   const isMobile = getIsMobile();
   const location = useLocation();
 
@@ -90,39 +133,37 @@ function Suggestions() {
     }
   }, [data]);
 
-  useEffect(() => {
-    if (status === 401) {
-      return (
-        <Navigate
-          to={{ pathname: "/admin/login", state: { from: location } }}
-        />
-      );
-    }
-  });
-
-  const handleChangePage = (_event, newPage) => {
+  const handleChangePage: TablePaginationOwnProps["onPageChange"] = (
+    _event,
+    newPage
+  ) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+  const handleChangeRowsPerPage: TablePaginationOwnProps["onRowsPerPageChange"] =
+    (event) => {
+      setRowsPerPage(+event.target.value);
+      setPage(0);
+    };
 
-  const handleSave = async (data) => {
+  const handleSave = async (formData: SuggestionFormValues) => {
+    if (!activeOrg) {
+      return;
+    }
+
     try {
-      await suggestionService.update({ ...data, id: activeOrg.id });
+      await suggestionService.update({ ...formData, id: activeOrg.id });
 
-      setSuggestions((prev) => {
+      setSuggestions((prev: AdminSuggestion[]) => {
         return prev.map((suggestion) => {
           if (suggestion.id === activeOrg.id) {
-            return { ...suggestion, ...data };
+            return { ...suggestion, ...formData };
           }
           return suggestion;
         });
       });
     } catch (e) {
-      setError(e.message);
+      setError(e instanceof Error ? e.message : "Unknown error");
       setTimeout(() => {
         setError("");
       }, 3000);
@@ -131,13 +172,16 @@ function Suggestions() {
     setActiveOrg(null);
   };
 
-  const handleFilterChange = (e) => {
-    const value = e.target.value;
+  const handleFilterChange = (e: SelectChangeEvent<number[]>) => {
+    const value =
+      typeof e.target.value === "string"
+        ? e.target.value.split(",").map(Number)
+        : (e.target.value as number[]);
     setFilters(value);
     setStatusIds(value);
   };
 
-  const getStatusColor = (value) => {
+  const getStatusColor = (value: number) => {
     if (value === 1) {
       return "primary";
     } else if (value === 2) {
@@ -147,6 +191,10 @@ function Suggestions() {
     }
     return "default";
   };
+
+  if (status === 401) {
+    return <Navigate to="/admin/login" state={{ from: location }} />;
+  }
 
   return (
     <Container>
@@ -172,8 +220,9 @@ function Suggestions() {
             value={filters}
             onChange={handleFilterChange}
             renderValue={(selected) =>
-              selected
-                .map((s) => (s = FILTERS.find((f) => f.id === Number(s)).name))
+              (selected as number[])
+                .map((s) => FILTERS.find((f) => f.id === Number(s))?.name || "")
+                .filter(Boolean)
                 .join(", ")
             }
           >
@@ -213,7 +262,7 @@ function Suggestions() {
                       role="checkbox"
                       tabIndex={-1}
                       key={suggestion.id}
-                      selected={suggestion.id === activeOrg}
+                      selected={suggestion.id === activeOrg?.id}
                     >
                       {columns.map((column) => {
                         const value = suggestion[column.id];
@@ -225,13 +274,16 @@ function Suggestions() {
                               const org = suggestions.find(
                                 (org) => suggestion.id === org.id
                               );
-                              setActiveOrg(org);
+                              setActiveOrg(org || null);
                             }}
                           >
                             {column.label === "Status" ? (
                               <Chip
-                                label={FILTERS.find((s) => s.id === value).name}
-                                color={getStatusColor(value)}
+                                label={
+                                  FILTERS.find((s) => s.id === Number(value))
+                                    ?.name || "Unknown"
+                                }
+                                color={getStatusColor(Number(value))}
                               />
                             ) : (
                               value
@@ -326,7 +378,7 @@ function Suggestions() {
                   <form
                     onSubmit={(e) => {
                       e.preventDefault();
-                      handleSubmit(e);
+                      handleSubmit();
                     }}
                   >
                     <List>
@@ -378,12 +430,12 @@ function Suggestions() {
                       <Textarea
                         placeholder="Admin Notes"
                         id="adminNotes"
+                        name="adminNotes"
                         value={values.adminNotes || ""}
                         onChange={handleChange}
                         helperText={touched.adminNotes ? errors.adminNotes : ""}
                         error={touched.adminNotes && Boolean(errors.adminNotes)}
                         fullWidth
-                        autoFocus
                       />
                     </div>
                     <List>
@@ -445,7 +497,17 @@ function Suggestions() {
   );
 }
 
-const DisplayText = ({ label, value, icon = <CommentIcon /> }) => {
+interface DisplayTextProps {
+  label: string;
+  value?: string | number | null;
+  icon?: React.ReactNode;
+}
+
+const DisplayText = ({
+  label,
+  value,
+  icon = <CommentIcon />,
+}: DisplayTextProps) => {
   return (
     <ListItem>
       <ListItemAvatar>

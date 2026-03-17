@@ -52,6 +52,19 @@ declare module "@mui/material/styles" {
   }
 }
 
+declare module "@mui/material/Button" {
+  interface ButtonPropsVariantOverrides {
+    gray: true;
+    recenter: true;
+  }
+}
+
+declare module "@mui/material/Chip" {
+  interface ChipPropsColorOverrides {
+    inactiveButton: true;
+  }
+}
+
 export const white = "#FFFFFF";
 export const gray = "#545454";
 export const secondary = "#E57109";

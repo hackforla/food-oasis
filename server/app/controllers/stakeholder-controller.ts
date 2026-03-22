@@ -265,9 +265,18 @@ const requestAssignment: RequestHandler<
   never
 > = async (req, res) => {
   try {
-    const count = await stakeholderService.requestAssignment(req.body);
+    const loginId = getAuthenticatedUserId(req);
+    if (!loginId) {
+      res.sendStatus(401);
+      return;
+    }
+    const count = await stakeholderService.requestAssignment({
+      ...req.body,
+      loginId,
+    });
     if (count === 0) {
       res.status(404).send({ error: "No stakeholders found" });
+      return;
     }
     res.sendStatus(200);
   } catch (err) {

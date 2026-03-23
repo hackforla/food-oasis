@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 
-export default function Types() {
+export default function MuiTypography() {
   return (
     <Box sx={{ width: "100%", maxWidth: 500 }}>
       <Typography variant="h1" gutterBottom>

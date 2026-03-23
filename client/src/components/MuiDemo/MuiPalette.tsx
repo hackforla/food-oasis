@@ -1,13 +1,26 @@
+import type { ReactNode } from "react";
 import { Box, Stack, Typography } from "@mui/material";
 
-const PaletteSwatch = ({ hexColor, name, textColor, children }) => {
+interface PaletteSwatchProps {
+  hexColor: string;
+  name: string;
+  textColor: string;
+  children?: ReactNode;
+}
+
+const PaletteSwatch = ({
+  hexColor,
+  name,
+  textColor,
+  children,
+}: PaletteSwatchProps) => {
   return (
     <Box
       sx={{
         backgroundColor: name,
         minHeight: "3rem",
         minWidth: "20rem",
-        color: { textColor },
+        color: textColor,
       }}
     >
       <Typography color={textColor}>{hexColor}</Typography>

@@ -10,12 +10,34 @@ import {
 } from "@mui/material";
 import Label from "components/Admin/ui/Label";
 import Textarea from "components/Admin/ui/Textarea";
-import { withFormik } from "formik";
-import PropTypes from "prop-types";
+import { FormikProps, withFormik } from "formik";
 import * as suggestionService from "services/suggestion-service";
 import * as Yup from "yup";
+import type { Stakeholder } from "types/Stakeholder";
 
-function CorrectionDialog(props) {
+interface CorrectionFormValues {
+  notes: string;
+  tipsterName: string;
+  tipsterPhone: string;
+  tipsterEmail: string;
+}
+
+interface CorrectionFormOuterProps {
+  stakeholder: Stakeholder | null;
+  setToast: (toast: { message: string }) => void;
+  onClose: (completed: boolean) => void;
+  id?: string;
+  open: boolean;
+  keepMounted?: boolean;
+  notes?: string;
+  tipsterName?: string;
+  tipsterPhone?: string;
+  tipsterEmail?: string;
+}
+
+function CorrectionDialog(
+  props: CorrectionFormOuterProps & FormikProps<CorrectionFormValues>
+) {
   const { values, touched, errors, handleChange, handleBlur, handleSubmit } =
     props;
 
@@ -52,10 +74,6 @@ function CorrectionDialog(props) {
               <div>
                 <Label id="notes" label="Corrections *" />
                 <Textarea
-                  type="text"
-                  size="small"
-                  minRows={2}
-                  maxRows={12}
                   placeholder="What needs to be corrected?"
                   name="notes"
                   id="notes"
@@ -121,7 +139,7 @@ function CorrectionDialog(props) {
           </Button>
           <Button
             variant="contained"
-            onClick={handleSubmit}
+            onClick={() => handleSubmit()}
             disabled={!values.notes}
           >
             Send
@@ -141,13 +159,16 @@ const validationsForm = {
 // corrections and suggestions share the same data schema, so this is so it matches
 // the suggestion's schema format.
 // @TODO maybe clean this up later
-const formatArrayToString = (data) => {
-  return data.reduce((accl, ele) => {
+const formatArrayToString = (data: unknown[]) => {
+  return data.reduce((accl: string, ele: unknown) => {
     return (accl += JSON.stringify(ele));
   }, "");
 };
 
-const CorrectionForm = withFormik({
+const CorrectionForm = withFormik<
+  CorrectionFormOuterProps,
+  CorrectionFormValues
+>({
   mapPropsToValues: ({ notes, tipsterName, tipsterPhone, tipsterEmail }) => ({
     notes: notes || "",
     tipsterName: tipsterName || "",
@@ -158,6 +179,7 @@ const CorrectionForm = withFormik({
   handleSubmit: (values, formikBag) => {
     // cherry pick the data we need for backend validation
     const org = formikBag.props.stakeholder;
+    if (!org) return;
     const orgDetails = {
       stakeholderId: org.id,
       adminNotes: org.adminNotes || "",
@@ -170,7 +192,7 @@ const CorrectionForm = withFormik({
       zip: org.zip,
       phone: org.phone,
       email: org.email,
-      hours: formatArrayToString(org.hours),
+      hours: formatArrayToString(org.hours || []),
       category: formatArrayToString(org.categories),
       tenantId: org.tenantId,
       formType: "correction",
@@ -194,11 +216,5 @@ const CorrectionForm = withFormik({
       });
   },
 })(CorrectionDialog);
-
-CorrectionDialog.propTypes = {
-  onClose: PropTypes.func.isRequired,
-  open: PropTypes.bool.isRequired,
-  stakeholder: PropTypes.object,
-};
 
 export default CorrectionForm;

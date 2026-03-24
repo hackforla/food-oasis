@@ -12,13 +12,7 @@ import StakeholderPreview from "../StakeholderPreview/StakeholderPreview";
 import useBreakpoints from "hooks/useBreakpoints";
 import { useMapbox } from "hooks/useMapbox";
 import type { Theme } from "@mui/material/styles";
-
-interface Stakeholder {
-  id: number;
-  latitude: number;
-  longitude: number;
-  [key: string]: unknown;
-}
+import type { Stakeholder } from "types/Stakeholder";
 
 interface ResultsListProps {
   stakeholders: Stakeholder[];

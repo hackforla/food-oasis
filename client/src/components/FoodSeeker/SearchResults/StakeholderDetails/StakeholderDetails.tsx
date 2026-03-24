@@ -56,6 +56,12 @@ import PinterestIcon from "@mui/icons-material/Pinterest";
 import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { foodTypeLabelObject } from "helpers/Constants";
+import type { Stakeholder, Hour } from "types/Stakeholder";
+
+interface StakeholderDetailsProps {
+  onBackClick: () => void;
+  isDesktop: boolean;
+}
 
 const MinorHeading = styled(Typography)(({ theme }) => ({
   variant: "h5",
@@ -85,9 +91,12 @@ const DetailText = styled(Typography)(({ theme, className }) => ({
   },
 }));
 
-const StakeholderDetails = ({ onBackClick, isDesktop }) => {
+const StakeholderDetails = ({
+  onBackClick,
+  isDesktop,
+}: StakeholderDetailsProps) => {
   const [SuggestionDialogOpen, setSuggestionDialogOpen] = useState(false);
-  const selectedOrganization = useSelectedOrganization();
+  const selectedOrganization = useSelectedOrganization() as Stakeholder | null;
   const searchCoordinates = useSearchCoordinates();
   const userCoordinates = useUserCoordinates();
   const originCoordinates = searchCoordinates || userCoordinates;
@@ -95,10 +104,18 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
   const navigate = useNavigate();
   const { setToast } = useToasterContext();
   const { tenantTimeZone } = useSiteContext();
+  const [paddingBottom, setPaddingBottom] = useState(30);
 
+  if (!selectedOrganization) {
+    return null;
+  }
+
+  const foodTypeKeys = Object.keys(
+    foodTypeLabelObject
+  ) as (keyof typeof foodTypeLabelObject)[];
   const foodTypes = useMemo(() => {
     return (
-      Object.keys(foodTypeLabelObject)
+      foodTypeKeys
         .filter((foodType) => selectedOrganization[foodType])
         .map((foodType) => {
           return foodTypeLabelObject[foodType];
@@ -132,7 +149,7 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
     navigate(isWidget ? "/widget" : "/organizations");
   };
 
-  const standardTime = (timeStr) => {
+  const standardTime = (timeStr: string) => {
     if (timeStr) {
       if (parseInt(timeStr.substring(0, 2)) === 12) {
         return `12${timeStr.substring(2, 5)} pm`;
@@ -149,26 +166,28 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
     }
   };
 
-  const numbers = extractNumbers(selectedOrganization.phone).map((n) => {
-    if (n.number) {
-      return (
-        <DetailText key={n.value}>
-          <Link
-            textAlign="left"
-            href={"tel:" + n.value}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {n.value}
-          </Link>
-        </DetailText>
-      );
-    } else {
-      return <DetailText key={n.value}> {n.value} </DetailText>;
+  const numbers = extractNumbers(selectedOrganization.phone).map(
+    (n: { number: boolean; value: string }) => {
+      if (n.number) {
+        return (
+          <DetailText key={n.value}>
+            <Link
+              textAlign="left"
+              href={"tel:" + n.value}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {n.value}
+            </Link>
+          </DetailText>
+        );
+      } else {
+        return <DetailText key={n.value}> {n.value} </DetailText>;
+      }
     }
-  });
+  );
 
-  const formatEmailPhone = (text) => {
+  const formatEmailPhone = (text: string) => {
     const phoneRegEx =
       /(\+?( |-|\.)?\d{1,2}( |-|\.)?)?(\(?\d{3}\)?|\d{3})( |-|\.)?(\d{3}( |-|\.)?\d{4})/g;
     const emailRegEx = /\b[\w.-]+@[\w.-]+\.\w{2,4}\b/gi;
@@ -218,7 +237,11 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
     }
   };
 
-  const isOldListing = (approvedDate, modifiedDate, createdDate) => {
+  const isOldListing = (
+    approvedDate: string | null,
+    modifiedDate: string | null,
+    createdDate: string
+  ) => {
     const oneYearAgo = new Date();
     oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
     const lastUpdated = approvedDate || modifiedDate || createdDate;
@@ -259,6 +282,7 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
     <>
       <SEO
         title={`Food Oasis: ${selectedOrganization.name}`}
+        description={selectedOrganization.description || ""}
         url={window.location.href}
       />
       <CorrectionDialog
@@ -305,7 +329,6 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
         >
           <Grid2 xs={1}>
             <Stack
-              xs={2}
               direction="column"
               justifyContent="flex-start"
               alignItems="center"
@@ -319,7 +342,7 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
             </Stack>
           </Grid2>
           <Grid2 xs={10}>
-            <Stack direction="column" xs={10}>
+            <Stack direction="column">
               <Stack>
                 <Typography
                   variant="h4"
@@ -344,7 +367,6 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
                         direction="row"
                         alignItems="center"
                         spacing={1}
-                        useflexgap="true"
                         key={`${index}-${category}`}
                         sx={{
                           order:
@@ -485,7 +507,7 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
                     <Divider sx={{ margin: "8px 0px 4px" }} />
                     {selectedOrganization.hours
                       .sort(hoursSort)
-                      .map((hour, index) => (
+                      .map((hour: Hour, index: number) => (
                         <Stack
                           direction="row"
                           justifyContent="space-between"
@@ -527,7 +549,6 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
                   direction="row"
                   justifyContent="start"
                   spacing={1}
-                  useflexgap="true"
                   sx={{ margin: "16px 0 29px" }}
                 >
                   <Button
@@ -733,7 +754,7 @@ const StakeholderDetails = ({ onBackClick, isDesktop }) => {
 
 export default StakeholderDetails;
 
-function hasAnySocialMediaUrl(organization) {
+function hasAnySocialMediaUrl(organization: Stakeholder) {
   return Boolean(
     organization.facebook ||
       organization.instagram ||
@@ -743,7 +764,13 @@ function hasAnySocialMediaUrl(organization) {
   );
 }
 
-function normalizeSocialLink({ value, socialMedia }) {
+function normalizeSocialLink({
+  value,
+  socialMedia,
+}: {
+  value: string;
+  socialMedia: string;
+}) {
   if (
     value === "N/A" ||
     value === "n/a" ||
@@ -768,7 +795,11 @@ function normalizeSocialLink({ value, socialMedia }) {
   return `https://${socialMedia}.com/${handle}`;
 }
 
-function SocialMedia({ selectedOrganization }) {
+function SocialMedia({
+  selectedOrganization,
+}: {
+  selectedOrganization: Stakeholder;
+}) {
   const instagram = normalizeSocialLink({
     value: selectedOrganization.instagram,
     socialMedia: "instagram",

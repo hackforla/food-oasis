@@ -1,6 +1,7 @@
 import { Link } from "@mui/material";
+import React from "react";
 
-const Copyright = () => (
+const Copyright: React.FC = () => (
   <div
     style={{
       fontSize: "16px",

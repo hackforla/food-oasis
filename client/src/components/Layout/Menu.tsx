@@ -11,20 +11,21 @@ import {
 import { isMobile } from "helpers";
 import { MENU_ITEMS } from "helpers/Constants";
 import useLocationHook from "hooks/useLocationHook";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useUserContext } from "../../contexts/userContext";
 import { IconButton } from "../UI/StandardButton";
 import MenuItemLink from "./MenuItemLink";
 
-export default function Menu() {
+export default function Menu(): React.ReactElement {
   const { isHomePage } = useLocationHook();
   const [isOpen, setIsOpen] = useState(false);
   const { user, onLogout } = useUserContext();
 
-  const toggleDrawer = (event) => {
+  const toggleDrawer = (event: React.KeyboardEvent | React.MouseEvent) => {
     if (
       event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
+      ((event as React.KeyboardEvent).key === "Tab" ||
+        (event as React.KeyboardEvent).key === "Shift")
     ) {
       return;
     }
@@ -48,7 +49,7 @@ export default function Menu() {
         to="/"
         key="logout"
         text="Logout"
-        onClick={() => onLogout()}
+        onClick={() => user && onLogout(user)}
       >
         Logout
       </MenuItemLink>
@@ -160,7 +161,7 @@ export default function Menu() {
   return (
     <div>
       <IconButton
-        size={!isHomePage && isMobile ? "small" : "large"}
+        size={!isHomePage && isMobile() ? "small" : "large"}
         icon="menu"
         onClick={toggleDrawer}
         data-testid="menu-button"

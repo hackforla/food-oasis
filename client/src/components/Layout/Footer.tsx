@@ -1,6 +1,7 @@
 import { Box, CardMedia } from "@mui/material";
 import { MENU_ITEMS } from "helpers/Constants";
 import useLocationHook from "hooks/useLocationHook";
+import React from "react";
 import { Link } from "react-router-dom";
 import Copyright from "./Copyright";
 import { TENANT_LOGO_URL } from "helpers/Constants";
@@ -10,7 +11,7 @@ This file is not used in the application at this time, but left here in
 case the UI/UX team decides to re-instate it.
 */
 
-const Footer = () => {
+const Footer: React.FC = () => {
   const { isHomePage } = useLocationHook();
 
   if (isHomePage) return null;
@@ -26,9 +27,6 @@ const Footer = () => {
           fontSize: "16px",
           textTransform: "uppercase",
           margin: ".4em 0 .4em 1.5em",
-          "&:hover": {
-            textDecoration: "underline",
-          },
         }}
         key={index}
         to={link}

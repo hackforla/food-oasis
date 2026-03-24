@@ -2,15 +2,11 @@ import { AppBar, Box, Toolbar, Typography } from "@mui/material";
 import { useUserContext } from "contexts/userContext";
 import { TENANT_LOGO_URL } from "helpers/Constants";
 import useLocationHook from "hooks/useLocationHook";
-import PropTypes from "prop-types";
+import React from "react";
 import { Link } from "react-router-dom";
 import Menu from "./Menu";
 
-Header.propTypes = {
-  tenantId: PropTypes.number,
-};
-
-export default function Header() {
+export default function Header(): React.ReactElement {
   const { isAuthPage, isMapPage } = useLocationHook();
   const imageType = TENANT_LOGO_URL
     ? TENANT_LOGO_URL.split(".").pop()
@@ -26,7 +22,7 @@ export default function Header() {
           backgroundColor: "#FFF",
           marginBottom: 0,
           boxShadow: "none",
-          marginTop: isAuthPage && theme.spacing(4),
+          marginTop: isAuthPage ? theme.spacing(4) : undefined,
         })}
       >
         <Toolbar

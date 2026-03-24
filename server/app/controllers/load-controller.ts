@@ -7,7 +7,7 @@ import { LARFBListing } from "../../types/load-larfb-types";
 import loadLARFBService from "../services/load-larfb-service";
 import { LA211Listing } from "../../types/load-211-types";
 import load211Service from "../services/load-211-service";
-import { json2csv } from "json-2-csv";
+import { json2csvAsync } from "json-2-csv";
 
 // Allow viewing (not editing) data loaded by imports
 // and scrapers.
@@ -28,7 +28,7 @@ const getLaplFoodResources: RequestHandler<
     if (req.query.format === "json" || req.accepts("json")) {
       res.send(rows);
     } else {
-      const csv = await json2csv(rows);
+      const csv = await json2csvAsync(rows);
       res.setHeader("Content-Type", "text/csv");
       res.setHeader(
         "Content-Disposition",
@@ -57,8 +57,8 @@ const getOpenLA: RequestHandler<
     if (req.query.format === "json" || req.accepts("json")) {
       res.send(rows);
     } else {
-      const csv = await json2csv(rows);
-      res.setHeader("Conte  nt-Type", "text/csv");
+      const csv = await json2csvAsync(rows);
+      res.setHeader("Content-Type", "text/csv");
       res.setHeader(
         "Content-Disposition",
         'attachment; filename="' + "lapl-food-resources-" + Date.now() + '.csv"'
@@ -87,7 +87,7 @@ const getLARFB: RequestHandler<
     if (req.query.format === "json" || req.accepts("json")) {
       res.send(resp);
     } else {
-      const csv = json2csv(resp);
+      const csv = await json2csvAsync(resp);
       res.setHeader("Content-Type", "text/csv");
       res.setHeader(
         "Content-Disposition",

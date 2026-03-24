@@ -22,6 +22,7 @@ router.delete(
 router.put(
   "/:id",
   jwtSession.validateUserHasRequiredRoles(["admin"]),
+  requestValidationMiddleware(AnnouncementsPostRequestSchema),
   announcementsController.update
 );
 

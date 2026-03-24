@@ -1,4 +1,11 @@
-import { Stack, Box, styled, Tooltip, tooltipClasses, TooltipProps } from "@mui/material";
+import {
+  Stack,
+  Box,
+  styled,
+  Tooltip,
+  tooltipClasses,
+  TooltipProps,
+} from "@mui/material";
 import { FC, ReactNode } from "react";
 import {
   useFilterPanel,
@@ -9,13 +16,7 @@ import {
 import DrawerLeftArrowButton from "../../../../icons/DrawerLeftArrowButton";
 import DrawerRightArrowButton from "../../../../icons/DrawerRightArrowButton";
 import ResultsMap from "../ResultsMap/ResultsMap";
-
-interface Stakeholder {
-  id: number;
-  latitude: number;
-  longitude: number;
-  [key: string]: unknown;
-}
+import type { Stakeholder } from "types/Stakeholder";
 
 interface DesktopLayoutProps {
   filters: ReactNode;
@@ -49,16 +50,19 @@ const DesktopLayout: FC<DesktopLayoutProps> = ({
   const toggleDrawer = (event: React.KeyboardEvent | React.MouseEvent) => {
     if (
       event.type === "keydown" &&
-      ((event as React.KeyboardEvent).key === "Tab" || (event as React.KeyboardEvent).key === "Shift")
+      ((event as React.KeyboardEvent).key === "Tab" ||
+        (event as React.KeyboardEvent).key === "Shift")
     ) {
       return;
     }
 
     dispatch({ type: "TOGGLE_LIST_PANEL", listPanel: !isListPanelOpen });
   };
-  const LightTooltip = styled(({ className, ...props }: TooltipProps & { className?: string }) => (
-    <Tooltip {...props} classes={{ popper: className }} />
-  ))(({ theme }) => ({
+  const LightTooltip = styled(
+    ({ className, ...props }: TooltipProps & { className?: string }) => (
+      <Tooltip {...props} classes={{ popper: className }} />
+    )
+  )(({ theme }) => ({
     [`& .${tooltipClasses.tooltip}`]: {
       backgroundColor: theme.palette.common.white,
       boxShadow: theme.shadows[1],

@@ -15,14 +15,74 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import type { SelectChangeEvent } from "@mui/material/Select";
 import { DEFAULT_VIEWPORT } from "helpers/Constants";
+import { useEffect, useState } from "react";
 import AccountAutocomplete from "./AccountAutocomplete";
 import LocationAutocomplete from "./LocationAutocomplete";
 import Label from "./ui/Label";
 import RadioTrueFalseEither from "./ui/RadioTrueFalseEither";
 
-const closeTo = (lat1, lon1, lat2, lon2) => {
+interface Category {
+  id: number;
+  name: string;
+}
+
+interface Neighborhood {
+  id: number;
+  name: string;
+}
+
+interface Tag {
+  name: string;
+}
+
+interface SearchCriteriaValues {
+  name: string;
+  latitude: number;
+  longitude: number;
+  placeName: string;
+  radius: number;
+  categoryIds: number[];
+  tags: string[];
+  isInactive: string;
+  isAssigned: string;
+  isSubmitted: string;
+  isApproved: string;
+  isClaimed: string;
+  isInactiveTemporary: string;
+  stakeholderId: string;
+  minCompleteCriticalPercent: number;
+  maxCompleteCriticalPercent: number;
+  verificationStatusId: number;
+  neighborhoodId: number;
+  tag: string;
+  assignedLoginId: number | null;
+  claimedLoginId: number | null;
+}
+
+interface LocationResult {
+  Geometry: {
+    Point: [number, number];
+  };
+  Label: string;
+}
+
+interface SearchCriteriaProps {
+  userLatitude: number;
+  userLongitude: number;
+  categories?: Category[];
+  neighborhoods?: Neighborhood[];
+  tags?: Tag[];
+  criteria: SearchCriteriaValues;
+  setCriteria: React.Dispatch<React.SetStateAction<SearchCriteriaValues>>;
+}
+
+type CriteriaChangeEvent =
+  | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  | SelectChangeEvent<number | string | string[]>;
+
+const closeTo = (lat1: number, lon1: number, lat2: number, lon2: number) => {
   return Math.abs(lat1 - lat2) + Math.abs(lon1 - lon2) < 0.01;
 };
 
@@ -34,7 +94,7 @@ const SearchCriteria = ({
   tags,
   criteria,
   setCriteria,
-}) => {
+}: SearchCriteriaProps) => {
   const [useMyLocation, setUseMyLocation] = useState(
     criteria.latitude
       ? closeTo(
@@ -61,33 +121,52 @@ const SearchCriteria = ({
     setCustomLongitude(userLongitude);
   }, [userLatitude, userLongitude]);
 
-  // handler to set one criteria at a time
-  const setCriterion = (evt) => {
-    const {
-      target: { name, value },
-    } = evt;
+  const setCriterion = (evt: CriteriaChangeEvent) => {
+    const name = evt.target.name as keyof SearchCriteriaValues;
+    const value = evt.target.value;
 
-    // max and min props on number inputs don't stop user from entering invalid values
-    // implementing guard logic to prevent those values being entered
+    if (!name) {
+      return;
+    }
+
     if (
       name === "minCompleteCriticalPercent" ||
       name === "maxCompleteCriticalPercent"
     ) {
-      if (value < 0) {
-        setCriteria({ ...criteria, [evt.target.name]: "" });
+      const numericValue = Number(value);
+      if (numericValue < 0) {
+        setCriteria({ ...criteria, [name]: 0 } as SearchCriteriaValues);
         return;
       }
 
-      if (value > 100) {
-        setCriteria({ ...criteria, [evt.target.name]: 100 });
+      if (numericValue > 100) {
+        setCriteria({ ...criteria, [name]: 100 } as SearchCriteriaValues);
         return;
       }
+
+      setCriteria({
+        ...criteria,
+        [name]: numericValue,
+      } as SearchCriteriaValues);
+      return;
     }
 
-    setCriteria({ ...criteria, [evt.target.name]: evt.target.value });
+    if (
+      name === "verificationStatusId" ||
+      name === "neighborhoodId" ||
+      name === "radius"
+    ) {
+      setCriteria({
+        ...criteria,
+        [name]: Number(value),
+      } as SearchCriteriaValues);
+      return;
+    }
+
+    setCriteria({ ...criteria, [name]: value } as SearchCriteriaValues);
   };
 
-  const handleRadioChange = (evt) => {
+  const handleRadioChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const val = evt.target.value;
     setUseMyLocation(val);
     if (val === "my") {
@@ -107,7 +186,7 @@ const SearchCriteria = ({
     }
   };
 
-  const setLocation = (location) => {
+  const setLocation = (location: LocationResult) => {
     setCustomLatitude(location.Geometry.Point[0]);
     setCustomLongitude(location.Geometry.Point[1]);
     setCustomPlaceName(location.Label);
@@ -118,6 +197,34 @@ const SearchCriteria = ({
       placeName: location.Label,
     });
     setUseMyLocation("custom");
+  };
+
+  const handleCategoryChange = (event: SelectChangeEvent<unknown>) => {
+    const rawValue = event.target.value;
+    const values = Array.isArray(rawValue) ? rawValue : [rawValue];
+    const categoryIds = values.map((value) => Number(value));
+    setCriteria({ ...criteria, categoryIds });
+  };
+
+  const renderCategoryValue = (selected: unknown) => {
+    const ids = (Array.isArray(selected) ? selected : []) as Array<
+      number | string
+    >;
+
+    if (!ids.length || !categories?.length) {
+      return <Typography>(Any)</Typography>;
+    }
+
+    const names = ids
+      .map(
+        (categoryId) =>
+          categories.find((category) => category.id === Number(categoryId))
+            ?.name
+      )
+      .filter(Boolean)
+      .join(", ");
+
+    return <Typography>{names || "(Any)"}</Typography>;
   };
 
   return (
@@ -168,28 +275,9 @@ const SearchCriteria = ({
                 fullWidth
                 labelId="select-multiple-chip"
                 value={criteria.categoryIds}
-                onChange={(event) => {
-                  const categoryIds = event.target.value;
-                  setCriteria({ ...criteria, categoryIds });
-                }}
+                onChange={handleCategoryChange}
                 inputProps={{ id: "select-categories" }}
-                renderValue={(ids) => (
-                  <Typography>
-                    {ids &&
-                    ids.length > 0 &&
-                    categories &&
-                    categories.length > 0
-                      ? ids
-                          .map(
-                            (categoryId) =>
-                              categories.find(
-                                (category) => category.id === categoryId
-                              ).name
-                          )
-                          .join(", ")
-                      : "(Any)"}
-                  </Typography>
-                )}
+                renderValue={renderCategoryValue}
               >
                 <MenuItem disabled value="">
                   <Typography sx={{ fontStyle: "italic" }}>
@@ -226,7 +314,6 @@ const SearchCriteria = ({
           <Grid item xs={12} sm={6}>
             <Label id="assignedLoginId" label="Assigned To" />
             <AccountAutocomplete
-              name="assignedLoginId"
               accountId={criteria.assignedLoginId || ""}
               setAccountId={(assignedLoginId) =>
                 setCriteria({ ...criteria, assignedLoginId })
@@ -272,13 +359,12 @@ const SearchCriteria = ({
             <TextField
               autoComplete="off"
               type="number"
-              min="0"
-              max="100"
               name="minCompleteCriticalPercent"
               value={criteria.minCompleteCriticalPercent}
               variant="outlined"
               fullWidth
               size="small"
+              inputProps={{ min: 0, max: 100 }}
               onChange={setCriterion}
             />
           </Grid>
@@ -290,13 +376,12 @@ const SearchCriteria = ({
             <TextField
               autoComplete="off"
               type="number"
-              min="0"
-              max="100"
               name="maxCompleteCriticalPercent"
               value={criteria.maxCompleteCriticalPercent}
               variant="outlined"
               fullWidth
               size="small"
+              inputProps={{ min: 0, max: 100 }}
               onChange={setCriterion}
             />
           </Grid>
@@ -396,7 +481,6 @@ const SearchCriteria = ({
                 </Typography>
               </Grid>
               <Grid item xs={12}>
-                {/* If we got location from browser, allow using current location */}
                 {userLatitude ? (
                   <RadioGroup
                     name="useMyLocation"
@@ -433,10 +517,7 @@ const SearchCriteria = ({
                             )}, ${customLongitude.toFixed(6)})`}</Typography>
                           ) : null}
 
-                          <LocationAutocomplete
-                            fullWidth
-                            setLocation={setLocation}
-                          />
+                          <LocationAutocomplete setLocation={setLocation} />
                         </Box>
                       }
                     />
@@ -452,11 +533,7 @@ const SearchCriteria = ({
                       )}, ${customLongitude.toFixed(6)})`}</Typography>
                     ) : null}
 
-                    <LocationAutocomplete
-                      size="small"
-                      fullWidth
-                      setLocation={setLocation}
-                    />
+                    <LocationAutocomplete setLocation={setLocation} />
                   </Box>
                 )}
               </Grid>

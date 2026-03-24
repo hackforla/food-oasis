@@ -1,7 +1,8 @@
 import { AppBar, Toolbar } from "@mui/material";
+import React from "react";
 import Menu from "./Menu";
 
-export default function Header() {
+export default function Header(): React.ReactElement {
   return (
     <>
       <AppBar

@@ -1,11 +1,32 @@
-import { Alert, Box } from "@mui/material";
+import { Box } from "@mui/material";
 import { useSiteContext } from "contexts/siteContext";
-import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { isMobile } from "helpers";
 import { TENANT_LOGO_URL } from "helpers/Constants";
 
-function WidgetFooterSection(props) {
+interface Maintainer {
+  name: string;
+  path?: string;
+  website: string;
+}
+
+interface WidgetFooterSectionProps {
+  logoPath?: string;
+  alt?: string;
+  className?: string;
+  logoStyle?: React.CSSProperties;
+  captionText?: string;
+  name?: string;
+  url?: string;
+  maintainers?: Maintainer[];
+  type?: string;
+}
+
+interface TenantDetails {
+  maintainers?: Maintainer[];
+}
+
+function WidgetFooterSection(props: WidgetFooterSectionProps): React.ReactElement | null {
   const {
     logoPath,
     alt,
@@ -77,17 +98,11 @@ function WidgetFooterSection(props) {
                             margin: 0,
                             maxWidth: "175px",
                             maxHeight: "38px",
-                            "&:hover": {
-                              filter: "brightness(1.2)",
-                            },
                           }
                         : {
                             ...logoStyle,
                             maxWidth: "175px",
                             maxHeight: "38px",
-                            "&:hover": {
-                              filter: "brightness(1.2)",
-                            },
                           }
                     }
                     alt={`${maintainer.name} Logo`}
@@ -145,17 +160,11 @@ function WidgetFooterSection(props) {
                     margin: 0,
                     maxWidth: "175px",
                     maxHeight: "38px",
-                    "&:hover": {
-                      filter: "brightness(1.2)",
-                    },
                   }
                 : {
                     ...logoStyle,
                     maxWidth: "175px",
                     maxHeight: "38px",
-                    "&:hover": {
-                      filter: "brightness(1.2)",
-                    },
                   }
             }
             alt={alt}
@@ -170,8 +179,8 @@ function WidgetFooterSection(props) {
   );
 }
 
-function WidgetFooter() {
-  const [mobile, setMobile] = useState(null);
+function WidgetFooter(): React.ReactElement {
+  const [mobile, setMobile] = useState<boolean | null>(null);
   const { tenantDetails } = useSiteContext();
   const { maintainers } = tenantDetails;
 
@@ -182,8 +191,9 @@ function WidgetFooter() {
   return (
     <Box
       id="widgetFooter"
-      position="sticky"
+      component="div"
       sx={(theme) => ({
+        position: "sticky",
         backgroundColor: "#FFF",
         display: "flex",
         alignItems: "center",
@@ -206,32 +216,10 @@ function WidgetFooter() {
         type="maintainer"
         maintainers={maintainers}
         captionText="A project by"
-        logoStyle={mobile && { maxWidth: "65px" }}
+        logoStyle={mobile ? { maxWidth: "65px" } : undefined}
       />
     </Box>
   );
 }
-
-WidgetFooterSection.propTypes = {
-  name: PropTypes.string,
-  captionText: PropTypes.string,
-  logoPath: PropTypes.string,
-  alt: PropTypes.string,
-  url: PropTypes.string,
-  className: PropTypes.string,
-  style: PropTypes.shape(),
-  type: PropTypes.string,
-};
-
-WidgetFooterSection.defaultProps = {
-  name: "Food Oasis",
-  captionText: "",
-  logoPath: undefined,
-  alt: undefined,
-  url: "",
-  className: undefined,
-  style: {},
-  type: "primary",
-};
 
 export default WidgetFooter;

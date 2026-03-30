@@ -153,7 +153,6 @@ const About = () => {
             >
               We are a 100% volunteer-run project. We are part of{" "}
               <Link
-                variant="primary"
                 href="https://hackforla.org/"
                 target={"_blank"}
                 rel="noopener noreferrer"
@@ -208,7 +207,7 @@ const About = () => {
             variant="body1"
           >
             For more information, please visit our{" "}
-            <Link variant="primary" to={"/faqs"} component={RouterLink}>
+            <Link to={"/faqs"} component={RouterLink}>
               FAQ page
             </Link>
             .
@@ -264,7 +263,7 @@ const About = () => {
             <Typography align="center">
               Please contact our Support Team
               <br />
-              <Link variant="primary" href="mailto:foodoasisinfo@hackforla.org">
+              <Link href="mailto:foodoasisinfo@hackforla.org">
                 foodoasisinfo@hackforla.org
               </Link>
             </Typography>
@@ -301,7 +300,6 @@ const About = () => {
             href="https://www.foodcyclela.org/"
             target={"_blank"}
             rel="noopener noreferrer"
-            variant="icon"
           >
             <CardMedia
               component="img"
@@ -319,7 +317,6 @@ const About = () => {
             href="https://foodforward.org/"
             target={"_blank"}
             rel="noopener noreferrer"
-            variant="icon"
           >
             <CardMedia
               component="img"
@@ -337,7 +334,6 @@ const About = () => {
             href="https://www.farm2people.org/"
             target={"_blank"}
             rel="noopener noreferrer"
-            variant="icon"
           >
             <CardMedia
               component="img"
@@ -355,7 +351,6 @@ const About = () => {
             href="https://www.lafoodbank.org/"
             target={"_blank"}
             rel="noopener noreferrer"
-            variant="icon"
           >
             <CardMedia
               component="img"

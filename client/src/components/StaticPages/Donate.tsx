@@ -16,11 +16,17 @@ import donationStep2 from "images/donationStep2.png";
 import donationStep3 from "images/donationStep3.png";
 import logo from "images/foodoasis.svg";
 import { useState, useEffect } from "react";
+import type { Dispatch, SetStateAction } from "react";
 import * as analytics from "../../services/analytics";
 import Footer from "../Layout/Footer";
 import { IconButton } from "../UI/StandardButton";
 import { PageWrapper } from "./PageWrapper";
 import donatebg from "./assets/donate-bg.webp";
+
+type DonationDialogProps = {
+  showDonationDialog: boolean;
+  setShowDonationDialog: Dispatch<SetStateAction<boolean>>;
+};
 
 const Donate = () => {
   const [showDonationDialog, setShowDonationDialog] = useState(false);
@@ -111,7 +117,10 @@ const Donate = () => {
 
 export default Donate;
 
-const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
+const DonationDialog = ({
+  showDonationDialog,
+  setShowDonationDialog,
+}: DonationDialogProps) => {
   const handleCloseDonationDialog = () => {
     setShowDonationDialog(false);
   };
@@ -161,7 +170,7 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
         }}
       >
         <Paper
-          xs={{
+          sx={{
             maxWidth: "400px",
             padding: { xs: "16px", md: "24px" },
             margin: { xs: "16px auto", md: "24px auto" },
@@ -201,7 +210,7 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
           </Grid>
         </Paper>
         <Paper
-          xs={{
+          sx={{
             maxWidth: "400px",
             padding: { xs: "16px", md: "24px" },
             margin: { xs: "16px auto", md: "24px auto" },
@@ -243,7 +252,7 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
           </Grid>
         </Paper>
         <Paper
-          xs={{
+          sx={{
             maxWidth: "400px",
             padding: { xs: "16px", md: "24px" },
             margin: { xs: "16px auto", md: "24px auto" },
@@ -308,7 +317,6 @@ const DonationDialog = ({ showDonationDialog, setShowDonationDialog }) => {
                 textDecoration: "none",
                 textTransform: "uppercase",
               }}
-              variant="contained"
               href="//donate.stripe.com/bIY9Cpcg8dihfIc5kl"
               target="_blank"
               rel="noopener noreferrer"

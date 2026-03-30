@@ -483,16 +483,21 @@ const OrganizationEdit = (props) => {
           }}
           onSubmit={async (values, { setSubmitting, setFieldValue }) => {
             try {
+              const payload = {
+                ...values,
+                latitude: Number(values.latitude),
+                longitude: Number(values.longitude),
+                loginId: user.id,
+                tags: values.tags ?? [],
+              };
+
               if (values.id) {
-                await stakeholderService.put({ ...values, loginId: user.id });
-                setOriginalData(values);
+                await stakeholderService.put(payload);
+                setOriginalData(payload);
               } else {
-                const response = await stakeholderService.post({
-                  ...values,
-                  loginId: user.id,
-                });
+                const response = await stakeholderService.post(payload);
                 setFieldValue("id", response.id);
-                setOriginalData({ ...values, id: response.id });
+                setOriginalData({ ...payload, id: response.id });
               }
 
               // Save changed suggestions

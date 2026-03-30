@@ -1,6 +1,11 @@
 import { Router } from "express";
 import stakeholderController from "../controllers/stakeholder-controller";
 import jwtSession from "../../middleware/jwt-session";
+import { requestValidationMiddleware } from "../../middleware/request-validation-middlewares";
+import {
+  stakeholderPostRequestSchema,
+  stakeholderPutRequestSchema,
+} from "../validation-schema/stakeholder-schema";
 const router = Router();
 
 router.get(
@@ -42,6 +47,7 @@ router.post(
 router.post(
   "/",
   jwtSession.validateUserHasRequiredRoles(["admin", "coordinator"]),
+  requestValidationMiddleware(stakeholderPostRequestSchema),
   stakeholderController.post
 );
 
@@ -52,6 +58,7 @@ router.put(
     "data_entry",
     "coordinator",
   ]),
+  requestValidationMiddleware(stakeholderPutRequestSchema),
   stakeholderController.put
 );
 

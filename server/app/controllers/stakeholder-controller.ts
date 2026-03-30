@@ -2,6 +2,10 @@ import stakeholderService from "../services/stakeholder-service";
 import { Readable } from "stream";
 import { RequestHandler } from "express";
 import {
+  getAuthenticatedUserId,
+  hasStakeholderAccess,
+} from "../helpers/stakeholder-access";
+import {
   StakeholderSearchParams,
   Stakeholder,
   ClaimParams,
@@ -11,57 +15,6 @@ import {
   NeedsVerificationParams,
 } from "../../types/stakeholder-types";
 import { stringify } from "csv-stringify";
-
-type OwnershipRequest = {
-  user?: {
-    id?: string;
-    role?: string;
-    sub?: string;
-  };
-};
-
-type OwnershipResponse = {
-  sendStatus: (code: number) => unknown;
-};
-
-const getUserRoles = (req: OwnershipRequest) =>
-  new Set((req.user?.sub || req.user?.role || "").split(",").filter(Boolean));
-
-const isRestrictedDataEntryUser = (req: OwnershipRequest) => {
-  const roles = getUserRoles(req);
-  return (
-    roles.has("data_entry") && !roles.has("admin") && !roles.has("coordinator")
-  );
-};
-
-const getAuthenticatedUserId = (req: OwnershipRequest) => Number(req.user?.id || 0);
-
-const ensureStakeholderAccess = async (
-  req: OwnershipRequest,
-  res: OwnershipResponse,
-  stakeholderId: number
-) => {
-  if (!isRestrictedDataEntryUser(req)) {
-    return true;
-  }
-
-  const userId = getAuthenticatedUserId(req);
-  if (!userId) {
-    res.sendStatus(401);
-    return false;
-  }
-
-  const isAssigned = await stakeholderService.isStakeholderAssignedToUser(
-    stakeholderId,
-    userId
-  );
-  if (!isAssigned) {
-    res.sendStatus(403);
-    return false;
-  }
-
-  return true;
-};
 
 const search: RequestHandler<
   never,
@@ -113,7 +66,13 @@ const getById: RequestHandler<
 > = async (req, res) => {
   try {
     const stakeholderId = Number(req.params.id);
-    if (!(await ensureStakeholderAccess(req, res, stakeholderId))) {
+    const userId = getAuthenticatedUserId(req);
+    if (!userId) {
+      res.sendStatus(401);
+      return;
+    }
+    if (!(await hasStakeholderAccess(req.user, stakeholderId))) {
+      res.sendStatus(403);
       return;
     }
     const resp = await stakeholderService.selectById(req.params.id);
@@ -229,7 +188,13 @@ const put: RequestHandler<
 > = async (req, res) => {
   try {
     const stakeholderId = Number(req.params.id);
-    if (!(await ensureStakeholderAccess(req, res, stakeholderId))) {
+    const userId = getAuthenticatedUserId(req);
+    if (!userId) {
+      res.sendStatus(401);
+      return;
+    }
+    if (!(await hasStakeholderAccess(req.user, stakeholderId))) {
+      res.sendStatus(403);
       return;
     }
     await stakeholderService.update({

@@ -17,6 +17,7 @@ export type ToastContextProps = {
   setToast: React.Dispatch<
     React.SetStateAction<{
       message: string;
+      type?: "info" | "warning" | "success" | "error";
     }>
   >;
 };

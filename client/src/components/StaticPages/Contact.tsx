@@ -10,9 +10,11 @@ import {
 } from "@mui/material";
 import Textarea from "components/Admin/ui/Textarea";
 import { Formik } from "formik";
+import type { FormikErrors, FormikHandlers, FormikTouched } from "formik";
 import useBreakpoints from "hooks/useBreakpoints";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import type { NavigateFunction } from "react-router-dom";
 import { sendContactForm } from "services/contact-service";
 import * as Yup from "yup";
 import * as analytics from "../../services/analytics";
@@ -28,7 +30,29 @@ const validationSchema = Yup.object().shape({
   message: Yup.string().required("Message is required"),
 });
 
-const EmailAndPhone = (props) => {
+type ContactFormValues = {
+  name: string;
+  email: string;
+  phone: string;
+  title: string;
+  message: string;
+  tenantId: unknown;
+};
+
+type EmailAndPhoneProps = {
+  touched: FormikTouched<ContactFormValues>;
+  errors: FormikErrors<ContactFormValues>;
+  values: ContactFormValues;
+  handleChange: FormikHandlers["handleChange"];
+  handleBlur: FormikHandlers["handleBlur"];
+  isMobile?: boolean;
+};
+
+type ConfirmationContentsProps = {
+  navigate: NavigateFunction;
+};
+
+const EmailAndPhone = (props: EmailAndPhoneProps) => {
   return (
     <>
       <TextField
@@ -53,7 +77,7 @@ const EmailAndPhone = (props) => {
   );
 };
 
-const ConfirmationContents = (props) => {
+const ConfirmationContents = (props: ConfirmationContentsProps) => {
   return (
     <Stack alignItems="center" spacing={4}>
       <Box
@@ -255,12 +279,12 @@ const Contact = () => {
                       onBlur={handleBlur}
                     />
                     <Textarea
+                      id="message"
                       helperText={touched.message ? errors.message : ""}
                       error={touched.message && Boolean(errors.message)}
                       name="message"
                       placeholder="Your Message *"
                       rows={isMobile ? 8 : 10}
-                      placeholderStyle={{ fontStyle: "normal" }}
                       value={values.message}
                       onChange={handleChange}
                       onBlur={handleBlur}

@@ -141,7 +141,6 @@ const About = () => {
                   volunteers work hard to ensure the information listed is
                   updated. To suggest a listing missing from our directory,{" "}
                   <Link
-                    variant="primary"
                     to={"/suggestion"}
                     component={RouterLink}
                   >
@@ -208,14 +207,13 @@ const About = () => {
             Food Providers
           </Typography>
           <Container maxWidth="sm">
-            <Box component="dl" align="center">
+            <Box component="dl" sx={{textAlign: "center"}}>
               <Typography variant="subtitle1" component="dt">
                 How can I add our food resource to your directory?
               </Typography>
               <Typography component="dd">
                 Please visit our “
                 <Link
-                  variant="primary"
                   to={"/suggestion"}
                   component={RouterLink}
                 >

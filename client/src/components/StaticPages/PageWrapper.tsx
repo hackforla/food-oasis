@@ -1,6 +1,6 @@
 import { Container } from "@mui/material";
 
-export const PageWrapper = ({ children }) => {
+export const PageWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
     <Container
       sx={{

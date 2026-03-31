@@ -9,7 +9,7 @@ import MuiTypography from "./MuiTypography";
 
 function MuiDemo() {
   return (
-    <Container backgroundcolor="secondary" spacing={1}>
+    <Container>
       <Stack
         direction="column"
         spacing={1}
@@ -47,12 +47,12 @@ function MuiDemo() {
           </CardContent>
         </Card>
 
-        <Card spacing={1}>
+        <Card>
           <CardHeader title="Paper" />
           <MuiPaper />
         </Card>
 
-        <Card spacing={1}>
+        <Card>
           <CardHeader title="Chips" />
           <MuiChips />
         </Card>

@@ -62,6 +62,7 @@ declare module "@mui/material/Button" {
 declare module "@mui/material/Chip" {
   interface ChipPropsColorOverrides {
     inactiveButton: true;
+    mealProgram: true;
   }
 }
 

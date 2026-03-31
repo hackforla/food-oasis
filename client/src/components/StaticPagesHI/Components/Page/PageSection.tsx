@@ -1,16 +1,40 @@
 import { Box, Container, Typography } from "@mui/material";
+import type { ReactNode } from "react";
+import type { SxProps, Theme } from "@mui/material/styles";
 
-const PageSection = (props) => {
-  const {
-    title,
-    titleIcon,
-    content,
-    contact,
-    subtitle,
-    customStyles,
-    variant,
-  } = props;
+interface TitleIcon {
+  alt: string;
+  src: string;
+  style?: SxProps<Theme>;
+}
 
+interface PageSectionCustomStyles {
+  container?: SxProps<Theme>;
+  title?: SxProps<Theme>;
+  subtitle?: SxProps<Theme>;
+  content?: SxProps<Theme>;
+  contact?: SxProps<Theme>;
+}
+
+export interface PageSectionProps {
+  title: string;
+  titleIcon?: TitleIcon;
+  content: ReactNode;
+  contact?: ReactNode;
+  subtitle?: ReactNode;
+  customStyles?: PageSectionCustomStyles;
+  variant?: string;
+}
+
+const PageSection = ({
+  title,
+  titleIcon,
+  content,
+  contact,
+  subtitle,
+  customStyles,
+  variant,
+}: PageSectionProps) => {
   const lightSectionStyles = {
     padding: "32px",
     margin: "32px 0 0 0",
@@ -35,7 +59,7 @@ const PageSection = (props) => {
     p: {
       marginBottom: "16px",
     },
-  };
+  } as const;
 
   const darkSectionStyles = {
     padding: "32px",
@@ -61,7 +85,7 @@ const PageSection = (props) => {
     p: {
       marginBottom: "16px",
     },
-  };
+  } as const;
 
   const specialBackgroundStyles = {
     padding: "32px",
@@ -87,7 +111,7 @@ const PageSection = (props) => {
     p: {
       marginBottom: "16px",
     },
-  };
+  } as const;
 
   const specialBackgroundTitles = [
     "CODE FOR HAWAIʻI AND ALOHA HARVEST",
@@ -110,7 +134,8 @@ const PageSection = (props) => {
       }}
     >
       {titleIcon && (
-        <img
+        <Box
+          component="img"
           alt={titleIcon.alt}
           src={titleIcon.src}
           sx={{
@@ -143,13 +168,14 @@ const PageSection = (props) => {
       <Container
         maxWidth="sm"
         sx={{
-          ...sectionStyles.content,
           ...(customStyles && customStyles.content),
         }}
       >
         {content}
       </Container>
-      <div sx={customStyles && customStyles.contact}>{contact}</div>
+      <Box component="div" sx={customStyles && customStyles.contact}>
+        {contact}
+      </Box>
     </Box>
   );
 };

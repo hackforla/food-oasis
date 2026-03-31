@@ -1,8 +1,18 @@
 import { Box, CardMedia, Container, Typography } from "@mui/material";
+import { ReactNode } from "react";
 
-const Page = (props) => {
-  const { pageTitle, pageImage, children } = props;
+export interface PageImage {
+  alt: string;
+  src: string;
+}
 
+export interface PageProps {
+  pageTitle: ReactNode;
+  pageImage?: PageImage;
+  children?: ReactNode;
+}
+
+const Page = ({ pageTitle, pageImage, children }: PageProps) => {
   return (
     <Box sx={{ background: "#fff" }}>
       <Container

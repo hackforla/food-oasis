@@ -1,7 +1,9 @@
 import { Link, Typography } from "@mui/material";
 import donatebg from "../assets/donate-header.jpg";
+import type { PageProps } from "../Components/Page/Page";
+import type { PageSectionProps } from "../Components/Page/PageSection";
 
-const PAGE_INFO_DONATE = {
+const PAGE_INFO_DONATE: Omit<PageProps, "children"> = {
   pageTitle: "Donate",
   pageImage: {
     alt: "Donate",
@@ -9,7 +11,7 @@ const PAGE_INFO_DONATE = {
   },
 };
 
-const PAGE_SECTIONS_DONATE = [
+const PAGE_SECTIONS_DONATE: PageSectionProps[] = [
   {
     title: "Make a Financial Contribution",
     content: (

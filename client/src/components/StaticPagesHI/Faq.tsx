@@ -1,13 +1,14 @@
-import React from "react";
-import { Page, PageSection } from "./Components/Page";
-import { PAGE_INFO_DONATE, PAGE_SECTIONS_DONATE } from "./Content/pageDonate";
+import Page from "./Components/Page/Page";
+import PageSection from "./Components/Page/PageSection";
+import { PAGE_INFO_FAQ, PAGE_SECTIONS_FAQ } from "./Content/pageFaq";
 
-const Donate = () => {
+const Faq = () => {
   return (
-    <Page {...PAGE_INFO_DONATE}>
+    <Page {...PAGE_INFO_FAQ}>
       <div>
-        {PAGE_SECTIONS_DONATE.map((section, index) => {
+        {PAGE_SECTIONS_FAQ.map((section, index) => {
           const { title, titleIcon, content, variant } = section;
+
           return (
             <PageSection
               key={index}
@@ -23,4 +24,4 @@ const Donate = () => {
   );
 };
 
-export default Donate;
+export default Faq;

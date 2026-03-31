@@ -1,7 +1,9 @@
 import { Link, Typography } from "@mui/material";
 import aboutbg from "../assets/about-header.jpg";
+import type { PageProps } from "../Components/Page/Page";
+import type { PageSectionProps } from "../Components/Page/PageSection";
 
-const PAGE_INFO_ABOUT = {
+const PAGE_INFO_ABOUT: Omit<PageProps, "children"> = {
   pageTitle: (
     <>
       ABOUT THIS FOOD-FINDER TOOL:
@@ -15,7 +17,7 @@ const PAGE_INFO_ABOUT = {
   },
 };
 
-const PAGE_SECTIONS_ABOUT = [
+const PAGE_SECTIONS_ABOUT: PageSectionProps[] = [
   {
     title: "What is this tool & how do I use it?",
     content: (

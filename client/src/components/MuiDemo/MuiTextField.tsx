@@ -1,24 +1,36 @@
 import { Box, MenuItem, Stack, TextField, Typography } from "@mui/material";
+import type { ChangeEvent } from "react";
 import Label from "components/Admin/ui/Label";
 import { useState } from "react";
 
-const variants = ["outlined", "filled", "standard"];
+const variants = ["outlined", "filled", "standard"] as const;
+type TextFieldVariant = (typeof variants)[number];
+
+const isTextFieldVariant = (value: string): value is TextFieldVariant => {
+  return variants.includes(value as TextFieldVariant);
+};
 
 function MuiForm() {
-  const [variant, setVariant] = useState("outlined");
+  const [variant, setVariant] = useState<TextFieldVariant>("outlined");
+
+  const handleVariantChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    if (isTextFieldVariant(value)) {
+      setVariant(value);
+    }
+  };
 
   return (
     <>
-      <Box component="Form">
+      <Box component="form">
         <Stack spacing={2}>
-          <Stack diretion="row"></Stack>
           <TextField
             id="select-variant"
             select
             label="Select a Variant"
             defaultValue="outlined"
             value={variant}
-            onChange={(e) => setVariant(e.target.value)}
+            onChange={handleVariantChange}
             sx={{ maxWidth: "15rem", margin: "0 1rem 0 auto" }}
           >
             {variants.map((option) => (

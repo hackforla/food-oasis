@@ -1,7 +1,9 @@
 import { Link, Typography } from "@mui/material";
 import faqbg from "../assets/faq-header.jpg";
+import type { PageProps } from "../Components/Page/Page";
+import type { PageSectionProps } from "../Components/Page/PageSection";
 
-const PAGE_INFO_FAQ = {
+const PAGE_INFO_FAQ: Omit<PageProps, "children"> = {
   pageTitle: "FAQs",
   pageImage: {
     alt: "FAQs",
@@ -9,7 +11,7 @@ const PAGE_INFO_FAQ = {
   },
 };
 
-const PAGE_SECTIONS_FAQ = [
+const PAGE_SECTIONS_FAQ: PageSectionProps[] = [
   {
     title: "For Users",
     content: (

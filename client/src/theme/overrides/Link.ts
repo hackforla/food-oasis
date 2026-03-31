@@ -1,3 +1,27 @@
+import { CSSProperties } from "react";
+import { Theme } from "@mui/material/styles";
+import "@mui/material/styles";
+import "@mui/material/Typography";
+
+declare module "@mui/material/styles" {
+  interface TypographyVariants {
+    primary: CSSProperties;
+    icon: CSSProperties;
+  }
+
+  interface TypographyVariantsOptions {
+    primary?: CSSProperties;
+    icon?: CSSProperties;
+  }
+}
+
+declare module "@mui/material/Typography" {
+  interface TypographyPropsVariantOverrides {
+    primary: true;
+    icon: true;
+  }
+}
+
 /*
   Per Issue #1452, Design team wanted three different variants of Links:
   "inherit" (the default variant) is used in most places where a normal link would be.
@@ -6,7 +30,7 @@
   and other styling is not needed.
 */
 
-export default function Link(theme) {
+export default function Link(theme: Theme) {
   return {
     MuiLink: {
       defaultProps: {

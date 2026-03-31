@@ -324,7 +324,7 @@ function MuiButtons() {
       <Typography variant="subtitle1" component="h3">
         IconButtons
       </Typography>
-      <Box padding=".2rem" backgroundColor="white">
+      <Box padding=".2rem" sx={{ backgroundColor: "white" }}>
         <Stack direction="row">
           <IconButton icon="check" color="success" disabled />
           <IconButton icon="add" color="primary" />

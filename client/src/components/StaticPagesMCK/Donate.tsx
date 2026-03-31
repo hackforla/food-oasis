@@ -98,7 +98,7 @@ const Donate = () => {
           </Typography>
         </Container>
         <Link
-          variant=""
+          variant="inherit"
           href="//www.codeforamerica.org/donate"
           target="_blank"
           rel="noopener noreferrer"
@@ -185,7 +185,7 @@ const Donate = () => {
           </Typography>
         </Container>
         <Link
-          variant=""
+          variant="inherit"
           href="//volunteer.laworks.com/opportunity/a0C3l00000r3wLvEAI"
           target="_blank"
           rel="noopener noreferrer"

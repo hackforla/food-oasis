@@ -60,6 +60,7 @@ export default function MoreDetails({
   handleChange,
   handleBlur,
   setFieldValue,
+  confirmationErrors = {},
 }) {
   const noteTooltip = (
     <Stack spacing={1}>
@@ -94,12 +95,20 @@ export default function MoreDetails({
           <Grid item container justifyContent="flex-end" xs={6} spacing={2}>
             <FormControlLabel
               sx={{ mt: 2 }}
+              componentsProps={{
+                typography: {
+                  sx: {
+                    color: confirmationErrors["confirmedFoodTypes"] ? "error.main" : "inherit",
+                  }
+                }
+              }}
               control={
                 <Checkbox
                   margin="normal"
                   name="confirmedFoodTypes"
                   value={values.confirmedFoodTypes}
                   checked={values.confirmedFoodTypes}
+                  sx={{ color: confirmationErrors["confirmedFoodTypes"] ? "error.main" : "inherit" }}
                   onChange={(e) =>
                     setFieldValue("confirmedFoodTypes", e.target.checked)
                   }

@@ -2,8 +2,8 @@ import stakeholderService from "../services/stakeholder-service";
 import { Readable } from "stream";
 import { RequestHandler } from "express";
 import {
+  assertHasStakeholderAccess,
   getAuthenticatedUserId,
-  hasStakeholderAccess,
 } from "../helpers/stakeholder-access";
 import {
   StakeholderSearchParams,
@@ -71,14 +71,13 @@ const getById: RequestHandler<
       res.sendStatus(401);
       return;
     }
-    if (!(await hasStakeholderAccess(req.user, stakeholderId))) {
-      res.sendStatus(403);
-      return;
-    }
+    await assertHasStakeholderAccess(req.user, stakeholderId);
     const resp = await stakeholderService.selectById(req.params.id);
     res.send(resp);
   } catch (err: any) {
-    if (err.code === 0) {
+    if (err.statusCode) {
+      res.sendStatus(err.statusCode);
+    } else if (err.code === 0) {
       res.sendStatus(404);
     } else {
       console.error(err);
@@ -193,18 +192,19 @@ const put: RequestHandler<
       res.sendStatus(401);
       return;
     }
-    if (!(await hasStakeholderAccess(req.user, stakeholderId))) {
-      res.sendStatus(403);
-      return;
-    }
+    await assertHasStakeholderAccess(req.user, stakeholderId);
     await stakeholderService.update({
       ...req.body,
       id: stakeholderId,
     });
     res.sendStatus(200);
-  } catch (err) {
-    console.error(err);
-    res.sendStatus(500);
+  } catch (err: any) {
+    if (err.statusCode) {
+      res.sendStatus(err.statusCode);
+    } else {
+      console.error(err);
+      res.sendStatus(500);
+    }
   }
 };
 

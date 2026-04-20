@@ -6,6 +6,10 @@ type StakeholderAccessUser = {
   sub?: string;
 };
 
+type StakeholderAccessError = Error & {
+  statusCode: number;
+};
+
 type StakeholderAccessRequest = {
   user?: {
     id?: string;
@@ -44,4 +48,18 @@ export const hasStakeholderAccess = async (
     stakeholderId,
     userId
   );
+};
+
+export const assertHasStakeholderAccess = async (
+  user: StakeholderAccessUser | undefined,
+  stakeholderId: number
+) => {
+  const hasAccess = await hasStakeholderAccess(user, stakeholderId);
+  if (hasAccess) {
+    return;
+  }
+
+  const error = new Error("Forbidden") as StakeholderAccessError;
+  error.statusCode = 403;
+  throw error;
 };

@@ -7,9 +7,23 @@ import {
 } from "helpers/Constants";
 import { useCallback, useReducer, useRef } from "react";
 
-const baseUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places`;
+const baseUrl = "https://api.mapbox.com/geocoding/v5/mapbox.places";
 
-const initialState = {
+export interface MapboxResult {
+  id?: string;
+  place_name: string;
+  center: [number, number];
+  [key: string]: unknown;
+}
+
+interface State {
+  isLoading: boolean;
+  error: boolean;
+  mapboxResults: MapboxResult[];
+  resultsQuery: string;
+}
+
+const initialState: State = {
   isLoading: false,
   error: false,
   mapboxResults: [],
@@ -20,9 +34,21 @@ const actionTypes = {
   FETCH_REQUEST: "FETCH_REQUEST",
   FETCH_SUCCESS: "FETCH_SUCCESS",
   FETCH_FAILURE: "FETCH_FAILURE",
-};
+} as const;
 
-function reducer(state = initialState, action) {
+type Action =
+  | {
+      type: (typeof actionTypes)["FETCH_REQUEST"];
+      query: string;
+    }
+  | {
+      type: (typeof actionTypes)["FETCH_SUCCESS"];
+      results: MapboxResult[];
+      query: string;
+    }
+  | { type: (typeof actionTypes)["FETCH_FAILURE"]; error: unknown };
+
+function reducer(state: State = initialState, action: Action): State {
   switch (action.type) {
     case actionTypes.FETCH_REQUEST:
       return { ...state, isLoading: true, resultsQuery: action.query };
@@ -47,12 +73,13 @@ export function useMapboxGeocoder() {
     useReducer(reducer, initialState);
   const latestQueryRef = useRef("");
 
-  const performFetch = useCallback(async (searchString) => {
-    const bbox = DEFAULT_VIEWPORTS[TENANT_ID].bbox;
+  const performFetch = useCallback(async (searchString: string) => {
+    const bbox =
+      DEFAULT_VIEWPORTS[TENANT_ID as keyof typeof DEFAULT_VIEWPORTS].bbox;
     const mapboxUrl = `${baseUrl}/${searchString}.json?bbox=${bbox}&access_token=${MAPBOX_ACCESS_TOKEN}`;
 
     try {
-      const response = await axios.get(mapboxUrl);
+      const response = await axios.get<{ features: MapboxResult[] }>(mapboxUrl);
       const results = response.data.features;
 
       if (latestQueryRef.current === searchString) {
@@ -74,7 +101,7 @@ export function useMapboxGeocoder() {
 
   const debouncedFetch = useCallback(
     debounce(
-      async (searchString) => {
+      async (searchString: string) => {
         await performFetch(searchString);
       },
       { wait: 300 }
@@ -93,7 +120,7 @@ export function useMapboxGeocoder() {
   }, [debouncedFetch]);
 
   const searchMapboxResults = useCallback(
-    (searchString) => {
+    (searchString: string) => {
       const normalizedSearchString = searchString.trim();
       latestQueryRef.current = normalizedSearchString;
 
@@ -112,7 +139,7 @@ export function useMapboxGeocoder() {
   );
 
   const ensureMapboxResults = useCallback(
-    async (searchString) => {
+    async (searchString: string) => {
       const normalizedSearchString = searchString.trim();
 
       if (!normalizedSearchString) {

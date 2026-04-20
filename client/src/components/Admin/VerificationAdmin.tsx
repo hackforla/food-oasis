@@ -76,7 +76,7 @@ interface SearchCriteriaType {
 interface OrganizationsHookResult {
   data: any[] | null;
   loading: boolean;
-  error: boolean;
+  error: boolean | { status?: number };
   searchCallback: (criteria: SearchCriteriaType) => void;
 }
 
@@ -408,9 +408,9 @@ function VerificationAdmin() {
                 })}
                 userLatitude={userCoordinates?.latitude || 0}
                 userLongitude={userCoordinates?.longitude || 0}
-                categories={categories}
+                categories={categories ?? undefined}
                 tags={tags}
-                neighborhoods={neighborhoods}
+                neighborhoods={neighborhoods ?? undefined}
                 criteria={criteria}
                 setCriteria={setCriteria}
               />

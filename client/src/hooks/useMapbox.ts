@@ -1,16 +1,30 @@
 import { useRef } from "react";
-import { useMap } from "react-map-gl";
+import { useMap, type MapRef } from "react-map-gl";
 import { useListPanel } from "../appReducer";
 import useBreakpoints from "./useBreakpoints";
 
-export const useMapbox = () => {
-  const mapRef = useRef();
-  const isListPanelOpen = useListPanel();
-  const { isMobile, isDesktop } = useBreakpoints();
-  const mapbox = useMap();
+interface Coordinates {
+  latitude: number;
+  longitude: number;
+}
 
-  const getViewport = () => {
-    const map = mapbox.default.getMap();
+interface Viewport {
+  center: Coordinates;
+  zoom: number;
+  dimensions: {
+    width: number;
+    height: number;
+  };
+}
+
+export const useMapbox = () => {
+  const mapRef = useRef<MapRef | null>(null);
+  const isListPanelOpen = useListPanel() as boolean;
+  const { isMobile, isDesktop } = useBreakpoints();
+  const mapbox = useMap() as { default?: MapRef };
+
+  const getViewport = (): Viewport => {
+    const map = mapbox.default!.getMap();
 
     const { lat: latitude, lng: longitude } = map.getCenter();
     const zoom = map.getZoom();
@@ -23,26 +37,23 @@ export const useMapbox = () => {
     };
   };
 
-  const flyTo = ({ latitude, longitude }) => {
+  const flyTo = ({ latitude, longitude }: Coordinates) => {
     if (!mapbox.default) {
       return;
     }
 
-    // gets the user's current zoom level
     const currentZoom = mapbox.default.getZoom();
 
-    // calculates longitude offset according to zoom level for panel open desktop
     const baseLongOffset = 0.08;
     const longitudeOffset = baseLongOffset * Math.pow(2, 11 - currentZoom);
 
-    // calculates latitude offset for mobile according to zoom level and screen height
     const baseLatOffset = 0.065;
     const screenHeight = window.innerHeight;
 
-    function calculateLatOffset(screenHeight) {
+    function calculateLatOffset(screenHeightValue: number) {
       const baseHeight = 550;
-      const rate = 0.006 / 50; // approximately 0.006 deg per 50 pixels
-      return 0.034 + (screenHeight - baseHeight) * rate;
+      const rate = 0.006 / 50;
+      return 0.034 + (screenHeightValue - baseHeight) * rate;
     }
 
     const heightOffsetFactor = !screenHeight

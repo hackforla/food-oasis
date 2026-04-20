@@ -4,17 +4,23 @@ export const CATEGORY_ADD = "categoryAdd";
 export const CATEGORY_CLEAR = "categoryClear";
 export const CATEGORY_REMOVE = "categoryRemove";
 
-const reducer = (state, { type, value, initialState }) => {
-  const valueIndex = state.indexOf(value);
-  switch (type) {
+type CategoryIdsAction =
+  | { type: typeof CATEGORY_ADD; value: number }
+  | { type: typeof CATEGORY_CLEAR; initialState?: number[] }
+  | { type: typeof CATEGORY_REMOVE; value: number };
+
+const reducer = (state: number[], action: CategoryIdsAction): number[] => {
+  const valueIndex = "value" in action ? state.indexOf(action.value) : -1;
+
+  switch (action.type) {
     case CATEGORY_ADD:
       return [
         ...state.slice(0, valueIndex),
-        value,
+        action.value,
         ...state.slice(valueIndex + 1),
       ];
     case CATEGORY_CLEAR:
-      return initialState || [];
+      return action.initialState || [];
     case CATEGORY_REMOVE:
       return [...state.slice(0, valueIndex), ...state.slice(valueIndex + 1)];
     default:
@@ -22,15 +28,15 @@ const reducer = (state, { type, value, initialState }) => {
   }
 };
 
-const useCategoryIds = (initialState) => {
+const useCategoryIds = (initialState: number[]) => {
   const [categoryIds, dispatch] = useReducer(reducer, initialState);
 
   const addCategory = useCallback(
-    (value) => dispatch({ type: CATEGORY_ADD, value }),
+    (value: number) => dispatch({ type: CATEGORY_ADD, value }),
     [dispatch]
   );
   const removeCategory = useCallback(
-    (value) => dispatch({ type: CATEGORY_REMOVE, value }),
+    (value: number) => dispatch({ type: CATEGORY_REMOVE, value }),
     [dispatch]
   );
   const clearCategories = useCallback(
@@ -39,10 +45,12 @@ const useCategoryIds = (initialState) => {
   );
 
   const toggleCategory = useCallback(
-    (value) => {
+    (value: number) => {
       if (categoryIds.indexOf(value) >= 0) {
         removeCategory(value);
-      } else addCategory(value);
+      } else {
+        addCategory(value);
+      }
     },
     [addCategory, categoryIds, removeCategory]
   );

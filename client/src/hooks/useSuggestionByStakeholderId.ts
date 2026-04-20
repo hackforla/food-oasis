@@ -1,10 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
 import * as suggestionService from "../services/suggestion-service";
+import type { Suggestion } from "../types/Organization";
 
-export const useSuggestionByStakeholderId = (stakeholderId) => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+type LoadingState = boolean | { loading: true };
+
+export const useSuggestionByStakeholderId = (
+  stakeholderId?: string | number
+) => {
+  const [data, setData] = useState<Suggestion[]>([]);
+  const [loading, setLoading] = useState<LoadingState>(false);
+  const [error, setError] = useState<unknown | null>(null);
 
   const fetch = useCallback(async () => {
     const fetchApi = async () => {
@@ -12,9 +17,8 @@ export const useSuggestionByStakeholderId = (stakeholderId) => {
 
       setLoading({ loading: true });
       try {
-        const suggestions = await suggestionService.getByStakeholderId(
-          stakeholderId
-        );
+        const suggestions =
+          (await suggestionService.getByStakeholderId(stakeholderId)) as Suggestion[];
 
         setData(suggestions);
         setLoading(false);
@@ -24,7 +28,7 @@ export const useSuggestionByStakeholderId = (stakeholderId) => {
       }
     };
     fetchApi();
-  }, []);
+  }, [stakeholderId]);
 
   useEffect(() => {
     fetch();

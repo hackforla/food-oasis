@@ -1,8 +1,20 @@
 import { useState, useEffect, useCallback } from "react";
-import * as accountService from "../services/account-service";
+import * as tenantService from "../services/tenant-service";
 
-export const useAccounts = () => {
-  const [state, setState] = useState({
+interface Tenant {
+  id: number;
+  name: string;
+  [key: string]: unknown;
+}
+
+interface UseTenantsState {
+  data: Tenant[] | null;
+  loading: boolean;
+  error: boolean;
+}
+
+export const useTenants = () => {
+  const [state, setState] = useState<UseTenantsState>({
     data: [],
     loading: false,
     error: false,
@@ -12,8 +24,8 @@ export const useAccounts = () => {
     const fetchApi = async () => {
       setState({ data: null, loading: true, error: false });
       try {
-        const { data } = await accountService.getAll();
-        setState({ data: data || [], loading: false, error: false });
+        const tenants = (await tenantService.getAll()) as Tenant[];
+        setState({ data: tenants || [], loading: false, error: false });
       } catch (err) {
         setState({ data: [], loading: false, error: true });
         console.error(err);

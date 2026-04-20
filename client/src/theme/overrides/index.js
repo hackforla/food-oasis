@@ -1,4 +1,3 @@
-import type { Theme } from "@mui/material/styles";
 import Button from "./Button";
 import Checkbox from "./Checkbox";
 import Chip from "./Chip";
@@ -13,9 +12,8 @@ import TextField from "./TextField";
 import Tooltip from "./Tooltip";
 import Typography from "./Typography";
 
-export function componentsOverrides(theme: Theme) {
+export function componentsOverrides(theme) {
   return Object.assign(
-    {},
     Button(theme),
     Checkbox(theme),
     Chip(theme),

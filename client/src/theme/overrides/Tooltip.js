@@ -1,6 +1,4 @@
-import type { Theme } from "@mui/material/styles";
-
-export default function Tooltip(theme: Theme) {
+export default function Tooltip(theme) {
   return {
     MuiTooltip: {
       defaultProps: {

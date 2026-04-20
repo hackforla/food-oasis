@@ -1,9 +1,5 @@
 // Extend the MUI theme to include custom palette keys used in this app
 declare module "@mui/material/styles" {
-  interface PaletteColor {
-    extralight?: string;
-  }
-
   // Add custom fields on the root palette
   interface Palette {
     link: {

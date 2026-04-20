@@ -1,6 +1,4 @@
-import type { Theme } from "@mui/material/styles";
-
-export default function Button(theme: Theme) {
+export default function Button(theme) {
   return {
     MuiButtonBase: {
       defaultProps: {
@@ -101,7 +99,7 @@ export default function Button(theme: Theme) {
             dropShadow: "10px 10px  12px",
           },
           "&:disabled": {
-            backgroundColor: (theme.palette as any).inactiveButtonMain,
+            backgroundColor: theme.palette.inactiveButtonMain,
             border: "2px solid transparent",
             color: theme.palette.common.white,
             opacity: 0.5,

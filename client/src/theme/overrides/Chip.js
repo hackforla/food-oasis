@@ -1,6 +1,4 @@
-import type { Theme } from "@mui/material/styles";
-
-export default function Chip(theme: Theme) {
+export default function Chip(theme) {
   return {
     MuiChip: {
       defaultProps: {

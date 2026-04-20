@@ -1,6 +1,4 @@
-import type { Theme } from "@mui/material/styles";
-
-export default function CssBaseline(theme: Theme) {
+export default function CssBaseline(theme) {
   return {
     MuiCssBaseline: {
       styleOverrides: {

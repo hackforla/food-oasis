@@ -1,7 +1,6 @@
-import type { Theme } from "@mui/material/styles";
 import { disabledText, error } from "theme/palette";
 
-export default function TextField(theme: Theme) {
+export default function TextField(theme) {
   return {
     MuiTextField: {
       defaultProps: {

@@ -7,9 +7,22 @@ import {
 } from "helpers/Constants";
 import { useCallback, useReducer } from "react";
 
-const baseUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places`;
+const baseUrl = "https://api.mapbox.com/geocoding/v5/mapbox.places";
 
-const initialState = {
+export interface MapboxResult {
+  id?: string;
+  place_name: string;
+  center: [number, number];
+  [key: string]: unknown;
+}
+
+interface State {
+  isLoading: boolean;
+  error: boolean;
+  mapboxResults: MapboxResult[];
+}
+
+const initialState: State = {
   isLoading: false,
   error: false,
   mapboxResults: [],
@@ -19,9 +32,17 @@ const actionTypes = {
   FETCH_REQUEST: "FETCH_REQUEST",
   FETCH_SUCCESS: "FETCH_SUCCESS",
   FETCH_FAILURE: "FETCH_FAILURE",
-};
+} as const;
 
-function reducer(state = initialState, action) {
+type Action =
+  | { type: (typeof actionTypes)["FETCH_REQUEST"] }
+  | {
+      type: (typeof actionTypes)["FETCH_SUCCESS"];
+      results: MapboxResult[];
+    }
+  | { type: (typeof actionTypes)["FETCH_FAILURE"]; error: unknown };
+
+function reducer(state: State = initialState, action: Action): State {
   switch (action.type) {
     case actionTypes.FETCH_REQUEST:
       return { ...state, isLoading: true };
@@ -48,12 +69,14 @@ export function useMapboxGeocoder() {
 
   const debouncedFetch = useCallback(
     debounce(
-      async (searchString) => {
-        const bbox = DEFAULT_VIEWPORTS[TENANT_ID].bbox;
+      async (searchString: string) => {
+        const bbox = DEFAULT_VIEWPORTS[TENANT_ID as keyof typeof DEFAULT_VIEWPORTS].bbox;
         const mapboxUrl = `${baseUrl}/${searchString}.json?bbox=${bbox}&access_token=${MAPBOX_ACCESS_TOKEN}`;
 
         try {
-          const response = await axios.get(mapboxUrl);
+          const response = await axios.get<{ features: MapboxResult[] }>(
+            mapboxUrl
+          );
           dispatch({
             type: actionTypes.FETCH_SUCCESS,
             results: response.data.features,
@@ -66,10 +89,14 @@ export function useMapboxGeocoder() {
     ),
     []
   );
-  const fetchMapboxResults = useCallback((searchString) => {
-    dispatch({ type: actionTypes.FETCH_REQUEST });
-    debouncedFetch(searchString);
-  }, []);
+
+  const fetchMapboxResults = useCallback(
+    (searchString: string) => {
+      dispatch({ type: actionTypes.FETCH_REQUEST });
+      debouncedFetch(searchString);
+    },
+    [debouncedFetch]
+  );
 
   return { error, isLoading, mapboxResults, fetchMapboxResults };
 }

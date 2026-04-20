@@ -21,7 +21,7 @@ export default function useLocationHook() {
       },
       location.pathname
     )
-  );
+  ) as unknown as { isExact?: boolean } | false;
 
   useEffect(() => {
     setIsHomePage(location.pathname === "/");

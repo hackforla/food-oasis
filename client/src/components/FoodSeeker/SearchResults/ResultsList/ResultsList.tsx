@@ -124,8 +124,8 @@ const ResultsList: FC<ResultsListProps> = ({
                     onSelect={() => {
                       setTopMostIndex(index);
                       flyTo({
-                        longitude: stakeholder.longitude,
-                        latitude: stakeholder.latitude,
+                        longitude: parseFloat(stakeholder.longitude),
+                        latitude: parseFloat(stakeholder.latitude),
                       });
                     }}
                   />

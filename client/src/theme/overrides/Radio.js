@@ -1,6 +1,4 @@
-import type { Theme } from "@mui/material/styles";
-
-export default function Radio(theme: Theme) {
+export default function Radio(theme) {
   return {
     MuiRadio: {
       styleOverrides: {

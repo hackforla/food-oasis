@@ -1,6 +1,6 @@
 import { DEFAULT_CATEGORIES } from "constants/stakeholder";
 import { useSiteContext } from "contexts/siteContext";
-import { checkIfStaleData, computeDistances, getNextDateForDay } from "helpers";
+import { checkIfStaleData, computeDistances } from "helpers";
 import { useCallback, useState } from "react";
 import {
   DEFAULT_COORDINATES,
@@ -10,12 +10,40 @@ import {
   useOrgNameFilter,
   useSearchCoordinates,
 } from "../appReducer";
-import { stakeholdersDaysHours } from "../components/FoodSeeker/SearchResults/StakeholderPreview/StakeholderPreview";
 import * as analytics from "../services/analytics";
 import * as stakeholderService from "../services/stakeholder-best-service";
 import dayjs from "dayjs";
+import type { Stakeholder } from "../types/Stakeholder";
 
-const sortOrganizations = (a, b) => {
+type SearchStakeholder = Stakeholder & {
+  categoryIds: number[];
+  distance?: number | null;
+};
+
+interface OpenTimeFilter {
+  day?: string;
+  time?: string;
+}
+
+interface StakeholderFilters {
+  categoryIds: number[];
+  showActiveOnly?: boolean;
+  openTimeFilter?: OpenTimeFilter;
+  orgNameFilter?: string;
+  foodTypeFilter?: string[];
+}
+
+interface SelectAllParams {
+  categoryIds: number[];
+}
+
+interface UseOrganizationBestsState {
+  data: SearchStakeholder[] | null;
+  loading: boolean;
+  error: boolean;
+}
+
+const sortOrganizations = (a: SearchStakeholder, b: SearchStakeholder) => {
   if (
     (a.inactive || a.inactiveTemporary) &&
     !b.inactive &&
@@ -29,30 +57,33 @@ const sortOrganizations = (a, b) => {
   ) {
     return -1;
   } else {
-    return a.distance < b.distance ? -1 : a.distance > b.distance ? 1 : 0;
+    return a.distance! < b.distance! ? -1 : a.distance! > b.distance! ? 1 : 0;
   }
 };
 
 export default function useOrganizationBests() {
-  const [state, setState] = useState({
+  const [state, setState] = useState<UseOrganizationBestsState>({
     data: null,
     loading: false,
     error: false,
   });
-  const searchCoordinates = useSearchCoordinates();
-  const openTimeFilter = useOpenTimeFilter();
-  const orgNameFilter = useOrgNameFilter();
-  const foodTypeFilter = useFoodTypeFilter();
+  const searchCoordinates = useSearchCoordinates() as Coordinates | null;
+  const openTimeFilter = useOpenTimeFilter() as OpenTimeFilter;
+  const orgNameFilter = useOrgNameFilter() as string;
+  const foodTypeFilter = useFoodTypeFilter() as string[];
   const { tenantTimeZone } = useSiteContext();
 
   const longitude =
     searchCoordinates?.longitude || DEFAULT_COORDINATES.longitude;
   const latitude = searchCoordinates?.latitude || DEFAULT_COORDINATES.latitude;
 
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch() as (action: {
+    type: string;
+    stakeholders: SearchStakeholder[];
+  }) => void;
 
   const processStakeholders = useCallback(
-    (stakeholders, filters) => {
+    (stakeholders: SearchStakeholder[], filters: StakeholderFilters) => {
       let filteredStakeholders = stakeholders;
 
       if (latitude && longitude) {
@@ -60,7 +91,7 @@ export default function useOrganizationBests() {
           latitude,
           longitude,
           filteredStakeholders
-        );
+        ) as SearchStakeholder[];
       }
 
       if (filters.categoryIds && filters.categoryIds.length) {
@@ -77,7 +108,7 @@ export default function useOrganizationBests() {
         });
       }
 
-      const { day, time } = filters.openTimeFilter;
+      const { day, time } = filters.openTimeFilter || {};
       if (day || (time && time !== "Any")) {
         filteredStakeholders = filteredStakeholders.filter((stakeholder) => {
           return stakeholder.hours?.some((h) => {
@@ -105,7 +136,7 @@ export default function useOrganizationBests() {
       }
       if (filters.orgNameFilter) {
         filteredStakeholders = filteredStakeholders.filter((stakeholder) => {
-          return filters.orgNameFilter
+          return filters.orgNameFilter!
             .toLowerCase()
             .split(" ")
             .every((word) => stakeholder.name.toLowerCase().includes(word));
@@ -113,7 +144,7 @@ export default function useOrganizationBests() {
       }
       if (filters.foodTypeFilter) {
         filteredStakeholders = filteredStakeholders.filter((stakeholder) => {
-          return filters.foodTypeFilter.every((foodType) => {
+          return filters.foodTypeFilter!.every((foodType) => {
             return stakeholder[foodType] === true;
           });
         });
@@ -123,7 +154,7 @@ export default function useOrganizationBests() {
         latitude,
         longitude,
         filteredStakeholders
-      );
+      ) as SearchStakeholder[];
       stakeholdersWithDistances.sort(sortOrganizations);
       dispatch({
         type: "STAKEHOLDERS_LOADED",
@@ -139,7 +170,7 @@ export default function useOrganizationBests() {
   );
 
   const selectAll = useCallback(
-    async ({ categoryIds }) => {
+    async ({ categoryIds }: SelectAllParams) => {
       if (!latitude || !longitude) {
         setState({ data: null, loading: false, error: true });
         const msg =
@@ -156,7 +187,7 @@ export default function useOrganizationBests() {
       try {
         setState({ data: null, loading: true, error: false });
 
-        const filters = {
+        const filters: StakeholderFilters = {
           categoryIds: categoryIds.length ? categoryIds : DEFAULT_CATEGORIES,
         };
 
@@ -171,12 +202,14 @@ export default function useOrganizationBests() {
           filters.foodTypeFilter = foodTypeFilter;
         }
 
-        let stakeholders;
+        let stakeholders: SearchStakeholder[];
         const isStaleData = checkIfStaleData();
         if (!isStaleData) {
-          stakeholders = JSON.parse(localStorage.getItem("stakeholders"));
+          stakeholders = JSON.parse(
+            localStorage.getItem("stakeholders") as string
+          ) as SearchStakeholder[];
         } else {
-          stakeholders = await stakeholderService.selectAll();
+          stakeholders = (await stakeholderService.selectAll()) as SearchStakeholder[];
           const currentTimestamp = new Date().getTime();
           localStorage.setItem("stakeholders", JSON.stringify(stakeholders));
           localStorage.setItem(
@@ -201,7 +234,7 @@ export default function useOrganizationBests() {
     ]
   );
 
-  const getById = useCallback(async (id) => {
+  const getById = useCallback(async (id?: string | number) => {
     if (!id) {
       setState({ data: null, loading: false, error: true });
       const msg = "Call to getById missing id parameter";
@@ -222,4 +255,9 @@ export default function useOrganizationBests() {
   }, []);
 
   return { ...state, selectAll, getById };
+}
+
+interface Coordinates {
+  latitude: number;
+  longitude: number;
 }

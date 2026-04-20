@@ -2,10 +2,20 @@ import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useUserCoordinates, useWidget } from "../appReducer";
 
+interface Coordinates {
+  latitude: number;
+  longitude: number;
+}
+
+type LocationPermission = PermissionState | null;
+
 export default function useGeolocation() {
-  const dispatch = useAppDispatch();
-  const userCoordinates = useUserCoordinates();
-  const isWidget = useWidget();
+  const dispatch = useAppDispatch() as (action: {
+    type: string;
+    coordinates: Coordinates;
+  }) => void;
+  const userCoordinates = useUserCoordinates() as Coordinates | null;
+  const isWidget = useWidget() as boolean;
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -24,7 +34,7 @@ export default function useGeolocation() {
 
     if (navigator.geolocation) {
       function getLocation() {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
           setIsLoading(true);
           navigator.geolocation.getCurrentPosition(
             (position) => {
@@ -40,19 +50,20 @@ export default function useGeolocation() {
               }
             },
             (error) => {
-              // Usually because user has blocked location
               reject(`Getting browser location failed: ${error.message}`);
               setIsLoading(false);
             }
           );
         });
       }
+
       await getLocation();
     } else {
       console.error(
         "Browser does not support getting users location - using default location for area"
       );
     }
+
     setIsLoading(false);
     navigate(isWidget ? "/widget" : "/organizations");
   }, [dispatch, navigate, userCoordinates, isWidget]);
@@ -60,13 +71,14 @@ export default function useGeolocation() {
   return { getUserLocation, isLoading };
 }
 
-// will return granted || prompt || denied
-export const useLocationPermission = () => {
-  const [permission, setPermission] = useState(null);
+export const useLocationPermission = (): LocationPermission => {
+  const [permission, setPermission] = useState<LocationPermission>(null);
+
   useEffect(() => {
     if (!navigator.permissions) {
       return undefined;
     }
+
     async function getPermission() {
       try {
         const result = await navigator.permissions.query({
@@ -81,7 +93,9 @@ export const useLocationPermission = () => {
         console.error(e);
       }
     }
+
     getPermission();
   }, []);
+
   return permission;
 };

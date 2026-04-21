@@ -2,6 +2,10 @@ import stakeholderService from "../services/stakeholder-service";
 import { Readable } from "stream";
 import { RequestHandler } from "express";
 import {
+  assertHasStakeholderAccess,
+  getAuthenticatedUserId,
+} from "../helpers/stakeholder-access";
+import {
   StakeholderSearchParams,
   Stakeholder,
   ClaimParams,
@@ -61,10 +65,19 @@ const getById: RequestHandler<
   never
 > = async (req, res) => {
   try {
+    const stakeholderId = Number(req.params.id);
+    const userId = getAuthenticatedUserId(req);
+    if (!userId) {
+      res.sendStatus(401);
+      return;
+    }
+    await assertHasStakeholderAccess(req.user, stakeholderId);
     const resp = await stakeholderService.selectById(req.params.id);
     res.send(resp);
   } catch (err: any) {
-    if (err.code === 0) {
+    if (err.statusCode) {
+      res.sendStatus(err.statusCode);
+    } else if (err.code === 0) {
       res.sendStatus(404);
     } else {
       console.error(err);
@@ -167,17 +180,31 @@ const post: RequestHandler<
 };
 
 const put: RequestHandler<
-  never,
+  { id: string },
   never,
   InsertStakeholderParams,
   never
 > = async (req, res) => {
   try {
-    await stakeholderService.update(req.body);
+    const stakeholderId = Number(req.params.id);
+    const userId = getAuthenticatedUserId(req);
+    if (!userId) {
+      res.sendStatus(401);
+      return;
+    }
+    await assertHasStakeholderAccess(req.user, stakeholderId);
+    await stakeholderService.update({
+      ...req.body,
+      id: stakeholderId,
+    });
     res.sendStatus(200);
-  } catch (err) {
-    console.error(err);
-    res.sendStatus(500);
+  } catch (err: any) {
+    if (err.statusCode) {
+      res.sendStatus(err.statusCode);
+    } else {
+      console.error(err);
+      res.sendStatus(500);
+    }
   }
 };
 
@@ -203,9 +230,18 @@ const requestAssignment: RequestHandler<
   never
 > = async (req, res) => {
   try {
-    const count = await stakeholderService.requestAssignment(req.body);
+    const loginId = getAuthenticatedUserId(req);
+    if (!loginId) {
+      res.sendStatus(401);
+      return;
+    }
+    const count = await stakeholderService.requestAssignment({
+      ...req.body,
+      loginId,
+    });
     if (count === 0) {
       res.status(404).send({ error: "No stakeholders found" });
+      return;
     }
     res.sendStatus(200);
   } catch (err) {

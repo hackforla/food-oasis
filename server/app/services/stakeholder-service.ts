@@ -254,6 +254,20 @@ const selectById = async (id: string): Promise<Stakeholder> => {
   return stakeholderHelpers.rowToStakeholder(row);
 };
 
+const isStakeholderAssignedToUser = async (
+  stakeholderId: number,
+  loginId: number
+): Promise<boolean> => {
+  const sql = `select exists(
+    select 1
+    from stakeholder
+    where id = $<stakeholderId>
+    and assigned_login_id = $<loginId>
+  ) as allowed`;
+  const result = await db.one(sql, { stakeholderId, loginId });
+  return result.allowed;
+};
+
 const selectCsv = async (ids: string[]): Promise<Stakeholder[]> => {
   const sql = `select
   s.id, s.name, s.address_1, s.address_2, s.city, s.state, s.zip,
@@ -805,6 +819,7 @@ const buildLoginSelectsClause = () => {
 export default {
   search,
   selectById,
+  isStakeholderAssignedToUser,
   selectCsv,
   insert,
   insertBulk,

@@ -1,6 +1,6 @@
 import { breakpoints } from "../theme/breakpoints";
 import geoViewport from "@mapbox/geo-viewport";
-import dayjs from "dayjs";
+import dayjs, { type Dayjs } from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
@@ -9,7 +9,45 @@ dayjs.extend(customParseFormat);
 dayjs.extend(timezone);
 dayjs.extend(utc);
 
-export const getMapBounds = (center, zoom, dimensions) => {
+interface Coordinates {
+  latitude: number;
+  longitude: number;
+}
+
+interface FlexibleCoordinates {
+  latitude: number | string;
+  longitude: number | string;
+}
+
+interface Dimensions {
+  width: number;
+  height: number;
+}
+
+interface ExtractedNumber {
+  number: boolean;
+  value: string;
+}
+
+interface DistanceStakeholder {
+  latitude?: number | string | null;
+  longitude?: number | string | null;
+  distance?: number | null;
+  [key: string]: unknown;
+}
+
+interface HoursItem {
+  day_of_week: string;
+  week_of_month: number;
+  open: string;
+  close: string;
+}
+
+export const getMapBounds = (
+  center: Coordinates,
+  zoom: number,
+  dimensions: Dimensions
+): { minLng: number; minLat: number; maxLng: number; maxLat: number } => {
   const [minLng, minLat, maxLng, maxLat] = geoViewport.bounds(
     [center.longitude, center.latitude],
     zoom,
@@ -20,7 +58,11 @@ export const getMapBounds = (center, zoom, dimensions) => {
   return { minLng, minLat, maxLng, maxLat };
 };
 
-export const getGoogleMapsUrl = (zip, address1, address2) => {
+export const getGoogleMapsUrl = (
+  zip: string,
+  address1: string,
+  address2?: string | null
+): string => {
   const baseUrl = `https://google.com/maps/place/`;
 
   const address1urlArray = address1.split(" ");
@@ -40,9 +82,9 @@ export const getGoogleMapsUrl = (zip, address1, address2) => {
 };
 
 export const getGoogleMapsDirectionsUrl = (
-  originCoordinates,
-  destinationCoordinates
-) => {
+  originCoordinates: FlexibleCoordinates | null | undefined,
+  destinationCoordinates: FlexibleCoordinates
+): string => {
   return (
     `https://google.com/maps/dir/?api=1` +
     (originCoordinates
@@ -52,9 +94,9 @@ export const getGoogleMapsDirectionsUrl = (
   );
 };
 
-export const isMobile = () => window.innerWidth < breakpoints.values.sm;
+export const isMobile = (): boolean => window.innerWidth < breakpoints.values.sm;
 
-export const extractNumbers = (numbers) =>
+export const extractNumbers = (numbers: string): ExtractedNumber[] =>
   numbers.split(/(and)|,|&+/).map((n) => {
     const match = new RegExp(
       "\\+?\\(?\\d*\\)? ?\\(?\\d+\\)?\\d*([\\s./-]?\\d{2,})+",
@@ -65,7 +107,7 @@ export const extractNumbers = (numbers) =>
       : { number: false, value: n };
   });
 
-export const formatDate = (ts) => {
+export const formatDate = (ts: string | number | Date | null | undefined): string | null => {
   return !ts
     ? null
     : new Date(ts).toLocaleString("en-US", {
@@ -77,7 +119,9 @@ export const formatDate = (ts) => {
       });
 };
 
-export const formatDateMMMddYYYY = (ts) => {
+export const formatDateMMMddYYYY = (
+  ts: string | number | Date | null | undefined
+): string | null => {
   return !ts
     ? null
     : new Date(ts).toLocaleString("en-US", {
@@ -87,14 +131,20 @@ export const formatDateMMMddYYYY = (ts) => {
       });
 };
 
-export const formatDatewTimeZoneDD = (ts, timeZone) => {
+export const formatDatewTimeZoneDD = (
+  ts: string | number | Date | null | undefined,
+  timeZone: string | null | undefined
+): string | null => {
   if (!ts || !timeZone) {
     return null;
   }
   return new Date(ts).toLocaleString("en-US", { timeZone, day: "2-digit" });
 };
 
-export const formatDatewTimeZonehhmmss = (ts, timeZone) => {
+export const formatDatewTimeZonehhmmss = (
+  ts: string | number | Date | null | undefined,
+  timeZone: string | null | undefined
+): string | null => {
   if (!ts || !timeZone) {
     return null;
   }
@@ -108,7 +158,10 @@ export const formatDatewTimeZonehhmmss = (ts, timeZone) => {
 };
 
 // e.g. returns "Tue"
-export const formatDatewTimeZoneWeekdayShort = (ts, timeZone) => {
+export const formatDatewTimeZoneWeekdayShort = (
+  ts: string | number | Date | null | undefined,
+  timeZone: string | null | undefined
+): string | null => {
   if (!ts || !timeZone) {
     return null;
   }
@@ -118,8 +171,8 @@ export const formatDatewTimeZoneWeekdayShort = (ts, timeZone) => {
   });
 };
 
-export const formatShortWeekdayToLong = (shortWeekday) => {
-  const weekdays = {
+export const formatShortWeekdayToLong = (shortWeekday: string): string | null => {
+  const weekdays: Record<string, string> = {
     Mon: "Monday",
     Tue: "Tuesday",
     Wed: "Wednesday",
@@ -133,7 +186,10 @@ export const formatShortWeekdayToLong = (shortWeekday) => {
 };
 
 // e.g. returns "Apr"
-export const formatDatewTimeZoneMMM = (ts, timeZone) => {
+export const formatDatewTimeZoneMMM = (
+  ts: string | number | Date | null | undefined,
+  timeZone: string | null | undefined
+): string | null => {
   if (!ts || !timeZone) {
     return null;
   }
@@ -143,20 +199,25 @@ export const formatDatewTimeZoneMMM = (ts, timeZone) => {
   });
 };
 
-export const validateUrl = (url) => {
+export const validateUrl = (url: string): string => {
   return url.startsWith("http://") || url.startsWith("https://")
     ? url
     : `http://${url}`;
 };
 
-export const haversineDistanceInMiles = (lat1, lon1, lat2, lon2) => {
-  function toRad(value) {
-    return (value * Math.PI) / 180;
+export const haversineDistanceInMiles = (
+  lat1: number | string,
+  lon1: number | string,
+  lat2: number | string,
+  lon2: number | string
+): number => {
+  function toRad(value: number | string): number {
+    return (Number(value) * Math.PI) / 180;
   }
 
   const R = 3958.8; // Earth's radius in miles
-  const dLat = toRad(lat2 - lat1);
-  const dLon = toRad(lon2 - lon1);
+  const dLat = toRad(Number(lat2) - Number(lat1));
+  const dLon = toRad(Number(lon2) - Number(lon1));
 
   const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
@@ -171,7 +232,7 @@ export const haversineDistanceInMiles = (lat1, lon1, lat2, lon2) => {
   return d; // Returns distance in miles
 };
 
-export const checkIfStaleData = () => {
+export const checkIfStaleData = (): boolean => {
   const storedTimestamp = localStorage.getItem("stakeholdersTimestamp");
   if (!storedTimestamp) return true;
 
@@ -183,7 +244,13 @@ export const checkIfStaleData = () => {
   );
 };
 
-export const computeDistances = (userLatitude, userLongitude, stakeholders) => {
+export const computeDistances = (
+  userLatitude: number,
+  userLongitude: number,
+  stakeholders: DistanceStakeholder[]
+): DistanceStakeholder[] => {
+  const normalizedUserLatitude = Number(userLatitude);
+  const normalizedUserLongitude = Number(userLongitude);
   const filteredStakeholders = stakeholders.filter(
     (stakeholder) =>
       !(stakeholder.latitude === 0 && stakeholder.longitude === 0)
@@ -197,8 +264,8 @@ export const computeDistances = (userLatitude, userLongitude, stakeholders) => {
       stakeholder.longitude !== null
     ) {
       stakeholder.distance = haversineDistanceInMiles(
-        userLatitude,
-        userLongitude,
+        normalizedUserLatitude,
+        normalizedUserLongitude,
         stakeholder.latitude,
         stakeholder.longitude
       );
@@ -217,13 +284,25 @@ export const computeDistances = (userLatitude, userLongitude, stakeholders) => {
  * Example inputs: day: "SUN", time: "01:00AM", "America/New_York";
  * Example output: "2023-12-24T06:00:00.003Z"
  */
-export const getNextDateForDay = (dayInput, timeInput, targetTimezone) => {
-  const dayMap = { SUN: 0, MON: 1, TUE: 2, WED: 3, THU: 4, FRI: 5, SAT: 6 };
+export const getNextDateForDay = (
+  dayInput: string,
+  timeInput: string,
+  targetTimezone: string
+): Dayjs => {
+  const dayMap: Record<string, number> = {
+    SUN: 0,
+    MON: 1,
+    TUE: 2,
+    WED: 3,
+    THU: 4,
+    FRI: 5,
+    SAT: 6,
+  };
   const targetDay = dayMap[dayInput.toUpperCase()];
 
   if (timeInput === "Any") {
-    let currentDate = dayjs().tz(targetTimezone);
-    let currentDay = currentDate.day();
+    const currentDate = dayjs().tz(targetTimezone);
+    const currentDay = currentDate.day();
 
     let dayDifference = targetDay - currentDay;
     if (dayDifference < 0) dayDifference += 7;
@@ -231,9 +310,9 @@ export const getNextDateForDay = (dayInput, timeInput, targetTimezone) => {
     return currentDate.add(dayDifference, "day").startOf("day");
   }
 
-  let time = dayjs(timeInput, "hh:mmA");
-  let currentDate = dayjs().tz(targetTimezone);
-  let currentDay = currentDate.day();
+  const time = dayjs(timeInput, "hh:mmA");
+  const currentDate = dayjs().tz(targetTimezone);
+  const currentDay = currentDate.day();
 
   let dayDifference = targetDay - currentDay;
   if (dayDifference < 0) dayDifference += 7;
@@ -248,7 +327,7 @@ export const getNextDateForDay = (dayInput, timeInput, targetTimezone) => {
     .set("second", 0);
 };
 
-export const getDayTimeNow = () => {
+export const getDayTimeNow = (): [string, string] => {
   const now = dayjs();
   const dayNow = now.format("ddd").toUpperCase();
   const timeTime = now.format("hh:mmA");
@@ -256,8 +335,8 @@ export const getDayTimeNow = () => {
   return [dayNow, timeTime];
 };
 
-export const getDayOfWeekNum = (dayOfWeekString) => {
-  const weekdayNumbers = {
+export const getDayOfWeekNum = (dayOfWeekString: string): number | null => {
+  const weekdayNumbers: Record<string, number> = {
     sun: 0,
     mon: 1,
     tue: 2,
@@ -270,28 +349,36 @@ export const getDayOfWeekNum = (dayOfWeekString) => {
   return weekdayNumbers[dayOfWeekString.toLowerCase()] || null;
 };
 
-export const getLastWeekdayInMonth = (year, month, dayOfWeek) => {
-  let date = new Date(year, month + 1, 0, 12);
+export const getLastWeekdayInMonth = (
+  year: number,
+  month: number,
+  dayOfWeek: number
+): string => {
+  const date = new Date(year, month + 1, 0, 12);
   date.setDate(date.getDate() - ((date.getDay() + 7 - dayOfWeek) % 7));
   return date.toLocaleDateString("en-US", { month: "long", day: "numeric" });
 };
 
-export const getNthWeekdayInMonth = (day_of_week, week_of_month, date) => {
-  const weekday = getDayOfWeekNum(day_of_week);
+export const getNthWeekdayInMonth = (
+  day_of_week: string,
+  week_of_month: number,
+  date: Date
+): Date | string => {
+  const weekday = getDayOfWeekNum(day_of_week) as number;
 
   if (week_of_month === -1) {
     return getLastWeekdayInMonth(date.getFullYear(), date.getMonth(), weekday);
   }
 
-  let nDate = new Date(date.getFullYear(), date.getMonth(), 1);
-  let add = ((weekday - nDate.getDay() + 7) % 7) + (week_of_month - 1) * 7;
+  const nDate = new Date(date.getFullYear(), date.getMonth(), 1);
+  const add = ((weekday - nDate.getDay() + 7) % 7) + (week_of_month - 1) * 7;
 
   nDate.setDate(1 + add);
 
   return nDate;
 };
 
-export const getCurrentWeekOfMonth = () => {
+export const getCurrentWeekOfMonth = (): number => {
   const todaysDate = new Date();
   const date = todaysDate.getDate();
   const day = todaysDate.getDay();
@@ -300,7 +387,7 @@ export const getCurrentWeekOfMonth = () => {
   return weekOfMonth;
 };
 
-export const isLastWeekOfMonth = () => {
+export const isLastWeekOfMonth = (): boolean => {
   const todaysDate = new Date();
   const currentMonth = todaysDate.getMonth();
   const nextMonth = new Date(todaysDate);
@@ -317,7 +404,7 @@ export const isLastWeekOfMonth = () => {
   }
 };
 
-const addMonths = (date, months) => {
+const addMonths = (date: Date | string, months: number): Date => {
   const normalizedDate = new Date(date);
   const d = normalizedDate.getDate();
   normalizedDate.setMonth(normalizedDate.getMonth() + months);
@@ -327,7 +414,7 @@ const addMonths = (date, months) => {
   return normalizedDate;
 };
 
-export const isCurrentDayAndWeek = (timeZone, hour) => {
+export const isCurrentDayAndWeek = (timeZone: string, hour: HoursItem): boolean => {
   const currentDate = new Date();
   const currentDayOfWeek = formatDatewTimeZoneWeekdayShort(
     currentDate,
@@ -340,12 +427,12 @@ export const isCurrentDayAndWeek = (timeZone, hour) => {
       (hour.week_of_month > 0 && hour.week_of_month === getCurrentWeekOfMonth())
     )
       return true;
-    if ((hour.week_of_month === -1) & isLastWeekOfMonth()) return true;
+    if (Number(hour.week_of_month === -1) & Number(isLastWeekOfMonth())) return true;
   }
   return false;
 };
 
-const dayOfWeek = (dayOfWeekString) => {
+const dayOfWeek = (dayOfWeekString: string): number => {
   const currentDate = new Date();
   const currentDay = currentDate.getDay();
   const order = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
@@ -356,7 +443,7 @@ const dayOfWeek = (dayOfWeekString) => {
   return newOrder.indexOf(dayOfWeekString.toLowerCase());
 };
 
-export const standardTime = (timeStr) => {
+export const standardTime = (timeStr: string | null | undefined): string | undefined => {
   if (timeStr) {
     if (parseInt(timeStr.substring(0, 2)) === 12) {
       return `12${timeStr.substring(2, 5)} pm`;
@@ -370,7 +457,7 @@ export const standardTime = (timeStr) => {
   }
 };
 
-export const hoursSort = (hourOne, hourTwo) => {
+export const hoursSort = (hourOne: HoursItem, hourTwo: HoursItem): number => {
   let hourOneWeekOfMonth = hourOne.week_of_month;
   let hourTwoWeekOfMonth = hourTwo.week_of_month;
 
@@ -378,7 +465,7 @@ export const hoursSort = (hourOne, hourTwo) => {
     const currentWeek = getCurrentWeekOfMonth();
     const isLastWeek = isLastWeekOfMonth();
 
-    const isCurrentWeek = (weekOfMonth) => {
+    const isCurrentWeek = (weekOfMonth: number): boolean => {
       return (
         weekOfMonth === 0 ||
         weekOfMonth === currentWeek ||
@@ -386,15 +473,15 @@ export const hoursSort = (hourOne, hourTwo) => {
       );
     };
 
-    let hourOneIsCurrentWeek = isCurrentWeek(hourOneWeekOfMonth);
-    let hourTwoIsCurrentWeek = isCurrentWeek(hourTwoWeekOfMonth);
+    const hourOneIsCurrentWeek = isCurrentWeek(hourOneWeekOfMonth);
+    const hourTwoIsCurrentWeek = isCurrentWeek(hourTwoWeekOfMonth);
 
     if (hourOneIsCurrentWeek !== hourTwoIsCurrentWeek) {
       return hourOneIsCurrentWeek ? -1 : 1;
     }
 
     if (!hourOneIsCurrentWeek && !hourTwoIsCurrentWeek) {
-      const normalizeWeekOfMonth = (week) => (week === -1 ? 5 : week);
+      const normalizeWeekOfMonth = (week: number): number => (week === -1 ? 5 : week);
 
       hourOneWeekOfMonth = normalizeWeekOfMonth(hourOneWeekOfMonth);
       hourTwoWeekOfMonth = normalizeWeekOfMonth(hourTwoWeekOfMonth);
@@ -425,7 +512,10 @@ export const hoursSort = (hourOne, hourTwo) => {
   return hourOne.open < hourTwo.open ? -1 : 1;
 };
 
-export const nextOpenTime = (sortedHours, timeZone) => {
+export const nextOpenTime = (
+  sortedHours: HoursItem[],
+  timeZone: string
+): string | null | undefined => {
   const currentDate = new Date();
   const currentDayOfWeek = formatDatewTimeZoneWeekdayShort(
     currentDate,
@@ -448,7 +538,7 @@ export const nextOpenTime = (sortedHours, timeZone) => {
       return formatShortWeekdayToLong(sortedHours[i].day_of_week);
     }
 
-    if (currentTime < sortedHours[i].close) {
+    if (currentTime !== null && currentTime < sortedHours[i].close) {
       return `${standardTime(sortedHours[i].open)} - ${standardTime(
         sortedHours[i].close
       )}`;
@@ -458,13 +548,13 @@ export const nextOpenTime = (sortedHours, timeZone) => {
     return formatShortWeekdayToLong(sortedHours[0].day_of_week);
   }
 
-  let nextDate = getNthWeekdayInMonth(
+  const nextDate = getNthWeekdayInMonth(
     sortedHours[0].day_of_week,
     sortedHours[0].week_of_month,
     currentDate
   );
 
-  if (currentDate < nextDate) {
+  if (nextDate instanceof Date && currentDate < nextDate) {
     return nextDate.toLocaleDateString("en-US", {
       month: "long",
       day: "numeric",
@@ -477,7 +567,10 @@ export const nextOpenTime = (sortedHours, timeZone) => {
   });
 };
 
-const calculateTimeDifference = (time1, time2) => {
+const calculateTimeDifference = (
+  time1: string | null,
+  time2: string | null
+): number => {
   const date1 = new Date(`1970-01-01T${time1}Z`);
   const date2 = new Date(`1970-01-01T${time2}Z`);
 
@@ -490,11 +583,18 @@ const calculateTimeDifference = (time1, time2) => {
   return differenceInMinutes;
 };
 
-export const calculateMinutesToClosing = (hours, tenantTimeZone) => {
+export const calculateMinutesToClosing = (
+  hours: HoursItem[],
+  tenantTimeZone: string
+): number => {
   const currentTime = formatDatewTimeZonehhmmss(new Date(), tenantTimeZone);
   return calculateTimeDifference(hours[0].close, currentTime);
 };
-export const calculateMinutesToOpening = (hours, tenantTimeZone) => {
+
+export const calculateMinutesToOpening = (
+  hours: HoursItem[] | null | undefined,
+  tenantTimeZone: string
+): number | undefined => {
   if (!hours) {
     return;
   }
@@ -503,20 +603,26 @@ export const calculateMinutesToOpening = (hours, tenantTimeZone) => {
   return calculateTimeDifference(currentTime, hours[0].open);
 };
 
-export const isAlmostClosed = (hours, tenantTimeZone) => {
+export const isAlmostClosed = (
+  hours: HoursItem[],
+  tenantTimeZone: string
+): boolean => {
   const minutesToCloseFlag = 60;
   const minutesToClosing = calculateMinutesToClosing(hours, tenantTimeZone);
   return minutesToClosing <= minutesToCloseFlag;
 };
 
-export const isAlmostOpen = (hours, tenantTimeZone) => {
+export const isAlmostOpen = (
+  hours: HoursItem[] | null | undefined,
+  tenantTimeZone: string
+): boolean => {
   const minutesToOpenFlag = 60;
   const minutesToOpening = calculateMinutesToOpening(hours, tenantTimeZone);
-  return minutesToOpening <= minutesToOpenFlag;
+  return minutesToOpening !== undefined && minutesToOpening <= minutesToOpenFlag;
 };
 
-export const getCookie = (name) => {
+export const getCookie = (name: string): string | undefined => {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(";").shift();
+  if (parts.length === 2) return parts.pop()?.split(";").shift();
 };

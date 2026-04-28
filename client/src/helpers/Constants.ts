@@ -3,16 +3,43 @@ import foodOasisLogoUrl from "images/foodoasis.svg";
 import alohaHarvestLogoUrl from "components/StaticPagesHI/assets/aloha-harvest-bg-none.png";
 import codeForHawaiiLogoUrl from "components/StaticPagesHI/assets/cfh-logo-black-crop.png";
 
-function requiredEnvVar(name) {
-  const value = import.meta.env[name];
+type TenantId = number;
+
+interface Viewport {
+  center: {
+    latitude: number;
+    longitude: number;
+  };
+  zoom: number;
+  bbox: string;
+}
+
+interface Maintainer {
+  name: string;
+  website: string;
+  path: string;
+}
+
+interface TenantConfig {
+  tenantName: string;
+  taglineText: string;
+  defaultViewport: Viewport;
+  maintainers: Maintainer[];
+  urlContains: string[];
+}
+
+function requiredEnvVar(name: string): string {
+  const env = import.meta.env as Record<string, string | undefined>;
+  const value = env[name];
   if (!value) {
     throw new Error(`Required environment variable "${name}" not found`);
   }
   return value;
 }
 
-function optionalEnvVar(name) {
-  const value = import.meta.env[name];
+function optionalEnvVar(name: string): string | null {
+  const env = import.meta.env as Record<string, string | undefined>;
+  const value = env[name];
   if (!value) {
     return null;
   }
@@ -21,7 +48,7 @@ function optionalEnvVar(name) {
 
 // Begin application constants
 
-export const MENU_ITEMS = [
+export const MENU_ITEMS: { text: string; link: string }[] = [
   { text: "Find Food", link: "/organizations" },
   { text: "About Us", link: "/about" },
   { text: "Donate", link: "/donate" },
@@ -42,16 +69,16 @@ export const MAPBOX_ACCESS_TOKEN = requiredEnvVar("VITE_MAPBOX_ACCESS_TOKEN");
 
 // Begin Tenant-Specific Constants
 
-const TENANT_SUBDOMAINS = {
+const TENANT_SUBDOMAINS: Record<number, string[]> = {
   1: ["la."],
   3: ["hi.", "hawaii"],
   5: ["mck.", "mckinney."],
   6: ["sb."],
 };
 
-function getTenantId() {
+function getTenantId(): TenantId {
   if (process.env.NODE_ENV === "development") {
-    return Number(optionalEnvVar("VITE_TENANT_ID")) || 1;
+    return (Number(optionalEnvVar("VITE_TENANT_ID")) || 1) as TenantId;
   }
   const tenant = Object.entries(TENANT_SUBDOMAINS).find(([id, values]) => {
     return values.some((value) =>
@@ -59,40 +86,40 @@ function getTenantId() {
     );
   });
 
-  return tenant ? Number(tenant[0]) : 1;
+  return (tenant ? Number(tenant[0]) : 1) as TenantId;
 }
 
 export const TENANT_ID = getTenantId();
 
-const TENANT_NAMES = {
+const TENANT_NAMES: Record<number, string> = {
   1: "Los Angeles",
   3: "Hawaii",
   5: "McKinney",
   6: "Santa Barbara",
 };
 
-const TENANT_TIME_ZONES = {
+const TENANT_TIME_ZONES: Record<number, string> = {
   1: "America/Los_Angeles",
   3: "Pacific/Honolulu",
   5: "America/Chicago",
   6: "America/Los_Angeles",
 };
 
-const TENANT_LOGO_URLS = {
+const TENANT_LOGO_URLS: Record<number, string> = {
   1: foodOasisLogoUrl,
   3: alohaHarvestLogoUrl,
   5: foodOasisLogoUrl,
   6: foodOasisLogoUrl,
 };
 
-const TENANT_MAINTAINER_LOGO_URLS = {
+const TENANT_MAINTAINER_LOGO_URLS: Record<number, string> = {
   1: hackForLaLogoUrl,
   3: codeForHawaiiLogoUrl,
   5: hackForLaLogoUrl,
   6: hackForLaLogoUrl,
 };
 
-export const DEFAULT_VIEWPORTS = {
+export const DEFAULT_VIEWPORTS: Record<number, Viewport> = {
   1: {
     center: { latitude: 34.0354899, longitude: -118.2439235 },
     zoom: 11,
@@ -115,7 +142,7 @@ export const DEFAULT_VIEWPORTS = {
   },
 };
 
-const LOS_ANGELES = {
+const LOS_ANGELES: TenantConfig = {
   tenantName: "Los Angeles",
   taglineText: "Locate free food in Los Angeles",
   defaultViewport: DEFAULT_VIEWPORTS[1],
@@ -129,7 +156,7 @@ const LOS_ANGELES = {
   urlContains: ["la."],
 };
 
-const HAWAII = {
+const HAWAII: TenantConfig = {
   tenantName: "Hawaii",
   taglineText: "Locate free food in Hawaiʻi",
   defaultViewport: DEFAULT_VIEWPORTS[3],
@@ -143,7 +170,7 @@ const HAWAII = {
   urlContains: ["hi.", "hawaii"],
 };
 
-const MCKINNEY = {
+const MCKINNEY: TenantConfig = {
   tenantName: "McKinney",
   taglineText: "Locate free food in McKinney",
   defaultViewport: DEFAULT_VIEWPORTS[5],
@@ -151,7 +178,7 @@ const MCKINNEY = {
   urlContains: ["mck.", "mckinney."],
 };
 
-const SANTA_BARBARA = {
+const SANTA_BARBARA: TenantConfig = {
   tenantName: "Santa Barbara",
   taglineText: "Locate free food in Santa Barbara",
   defaultViewport: DEFAULT_VIEWPORTS[6],
@@ -159,7 +186,7 @@ const SANTA_BARBARA = {
   urlContains: ["sb."],
 };
 
-const TENANT_CONFIGS = {
+const TENANT_CONFIGS: Record<number, TenantConfig> & { default: TenantConfig } = {
   1: LOS_ANGELES,
   3: HAWAII,
   5: MCKINNEY,
@@ -189,7 +216,7 @@ export const PINTEREST_REGEX = /^https?:\/\/(www\.)?pinterest\.com(\/.*)?$/;
 export const TWITTER_REGEX =
   /^https?:\/\/(www\.)?(twitter\.com|x\.com)(\/.*)?$/;
 
-export const foodTypeLabelObject = {
+export const foodTypeLabelObject: Record<string, string> = {
   foodBakery: "Baked Goods",
   foodDairy: "Dairy",
   foodDryGoods: "Dry Goods",

@@ -1,4 +1,6 @@
-export default function Tabs(theme) {
+import type { Theme } from "@mui/material/styles";
+
+export default function Tabs(theme: Theme) {
   return {
     MuiTabs: {
       styleOverrides: {

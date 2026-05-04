@@ -1,4 +1,6 @@
-export default function Checkbox(theme) {
+import type { Theme } from "@mui/material/styles";
+
+export default function Checkbox(theme: Theme) {
   return {
     MuiCheckbox: {
       defaultProps: {

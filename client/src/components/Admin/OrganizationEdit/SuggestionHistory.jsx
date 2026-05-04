@@ -18,27 +18,31 @@ function formatDate(dateStr) {
   return new Date(dateStr).toISOString().slice(0, 10);
 }
 
+const OPEN_SUGGESTION_STATUS_IDS = [1, 2];
+
 export default function SuggestionHistory({
   tabPage,
   suggestions = [],
   editedSuggestions,
   onEdit,
-  showNewOnly = false,
+  showOpenOnly = false,
 }) {
   const handleInputChange = (id, field, value) => {
     if (onEdit) onEdit(id, { [field]: value });
   };
-  if (showNewOnly) {
-    suggestions = suggestions.filter(
-      (suggestion) => suggestion.suggestionStatusId === 1
-    );
-  }
-  if (showNewOnly && suggestions.length === 0) return null;
+
+  const visibleSuggestions = showOpenOnly
+    ? suggestions.filter((suggestion) =>
+        OPEN_SUGGESTION_STATUS_IDS.includes(suggestion.suggestionStatusId)
+      )
+    : suggestions;
+
+  if (showOpenOnly && visibleSuggestions.length === 0) return null;
 
   return (
-    <TabPanel value={tabPage} index={showNewOnly ? undefined : 6}>
+    <TabPanel value={tabPage} index={showOpenOnly ? undefined : 6}>
       <Stack spacing={3}>
-        {suggestions.map((suggestion) => (
+        {visibleSuggestions.map((suggestion) => (
           <Paper
             key={suggestion.id}
             sx={(theme) => ({
@@ -128,7 +132,7 @@ export default function SuggestionHistory({
             </Stack>
           </Paper>
         ))}
-        {suggestions.length === 0 && (
+        {visibleSuggestions.length === 0 && (
           <Typography>No suggestions found.</Typography>
         )}
       </Stack>
@@ -137,6 +141,9 @@ export default function SuggestionHistory({
 }
 
 SuggestionHistory.propTypes = {
+  tabPage: PropTypes.number,
   suggestions: PropTypes.array,
+  editedSuggestions: PropTypes.object,
   onEdit: PropTypes.func,
+  showOpenOnly: PropTypes.bool,
 };

@@ -243,7 +243,7 @@ const OrganizationEdit = (props) => {
     const fetchData = async () => {
       try {
         if (editId) {
-          const stakeholder = await stakeholderService.getById(editId);  
+          const stakeholder = await stakeholderService.getById(editId);
           // For editing purposes, it is better to convert the
           // stakeholder.categories array of objects to an array of
           // categoryIds as stakeholder.categoryIds
@@ -300,9 +300,9 @@ const OrganizationEdit = (props) => {
 
   const getConfirmationErrors = (values) => {
     // email optional but requires confirmation if it is provided
-    const emailConfirmation = values.email 
-    ? [{ field: "confirmedEmail", label: "Email" }] 
-    : [];
+    const emailConfirmation = values.email
+      ? [{ field: "confirmedEmail", label: "Email" }]
+      : [];
 
     const isInactive = values.inactive || values.inactiveTemporary;
     const actionWord =
@@ -502,7 +502,13 @@ const OrganizationEdit = (props) => {
     }));
   };
 
-  const renderActionButtons = ({ values, errors, isSubmitting, setFieldValue, handleSubmit }) => {
+  const renderActionButtons = ({
+    values,
+    errors,
+    isSubmitting,
+    setFieldValue,
+    handleSubmit,
+  }) => {
     if (user?.isAdmin || user?.isCoordinator) {
       return (
         <Stack
@@ -518,7 +524,8 @@ const OrganizationEdit = (props) => {
                 type="submit"
                 disabled={
                   isSubmitting ||
-                  (isUnchanged(values) && Object.keys(editedSuggestions).length === 0)
+                  (isUnchanged(values) &&
+                    Object.keys(editedSuggestions).length === 0)
                 }
                 sx={{
                   minHeight: "3.5rem",
@@ -553,7 +560,8 @@ const OrganizationEdit = (props) => {
                 }}
                 disabled={
                   isSubmitting ||
-                  values.verifivation_status_id === VERIFICATION_STATUS.NEEDS_VERIFICATION
+                  values.verifivation_status_id ===
+                    VERIFICATION_STATUS.NEEDS_VERIFICATION
                 }
               >
                 Needs Verfication
@@ -588,7 +596,8 @@ const OrganizationEdit = (props) => {
                 }}
                 disabled={
                   isSubmitting ||
-                  values.verification_status_id === VERIFICATION_STATUS.SUBMITTED
+                  values.verification_status_id ===
+                    VERIFICATION_STATUS.SUBMITTED
                 }
               >
                 (Re-)Assign
@@ -660,10 +669,7 @@ const OrganizationEdit = (props) => {
                   setNextUrl("/admin/verificationadmin");
                   handleSubmit();
                 }}
-                disabled={
-                  isSubmitting ||
-                  (user.isCoordinator && !user.isAdmin)
-                }
+                disabled={isSubmitting || (user.isCoordinator && !user.isAdmin)}
               >
                 Approve
               </Button>
@@ -757,40 +763,39 @@ const OrganizationEdit = (props) => {
           <Tooltip title="Critical information entered, Submit for Review.">
             <div>
               <Button
-                  variant="contained"
-                  type="button"
-                  sx={{ minHeight: "3.5rem" }}
-                  onClick={() => {
-                    setValidationMode("submit");
+                variant="contained"
+                type="button"
+                sx={{ minHeight: "3.5rem" }}
+                onClick={() => {
+                  setValidationMode("submit");
 
-                    const confErrors = getConfirmationErrors(values);
-                    const hasYupErrors = Object.keys(errors).length > 0;
-                    const hasConfErrors = Object.keys(confErrors).length > 0;
+                  const confErrors = getConfirmationErrors(values);
+                  const hasYupErrors = Object.keys(errors).length > 0;
+                  const hasConfErrors = Object.keys(confErrors).length > 0;
 
-                    if (hasConfErrors) {
-                      focusFirstConfirmationError(confErrors);
-                      return;
-                    }
-                    if (hasYupErrors) return;
-
-                    setFieldValue("submittedDate", dayjs());
-                    setFieldValue(
-                      "submittedUser",
-                      user.firstName + " " + user.lastName
-                    );
-                    setFieldValue("submittedLoginId", user.id);
-                    setFieldValue(
-                      "verificationStatusId",
-                      VERIFICATION_STATUS.SUBMITTED
-                    );
-                    setNextUrl("/admin/verificationdashboard");
-                    handleSubmit();
-                  }}
-                  disabled={
-                    isSubmitting ||
-                    values.verificationStatusId ===
-                      VERIFICATION_STATUS.SUBMITTED
+                  if (hasConfErrors) {
+                    focusFirstConfirmationError(confErrors);
+                    return;
                   }
+                  if (hasYupErrors) return;
+
+                  setFieldValue("submittedDate", dayjs());
+                  setFieldValue(
+                    "submittedUser",
+                    user.firstName + " " + user.lastName
+                  );
+                  setFieldValue("submittedLoginId", user.id);
+                  setFieldValue(
+                    "verificationStatusId",
+                    VERIFICATION_STATUS.SUBMITTED
+                  );
+                  setNextUrl("/admin/verificationdashboard");
+                  handleSubmit();
+                }}
+                disabled={
+                  isSubmitting ||
+                  values.verificationStatusId === VERIFICATION_STATUS.SUBMITTED
+                }
               >
                 Submit For Review
               </Button>
@@ -840,7 +845,8 @@ const OrganizationEdit = (props) => {
 
             if (Object.keys(yupErrors).length > 0) {
               setToast({
-                message: "Please fix the errors in the form before saving progress",
+                message:
+                  "Please fix the errors in the form before saving progress",
                 type: "error",
               });
 
@@ -912,7 +918,7 @@ const OrganizationEdit = (props) => {
             isSubmitting,
             setFieldValue,
             setFieldTouched,
-            submitCount
+            submitCount,
           }) => {
             const confirmationErrors =
               validationMode === "submit" || validationMode === "approve"
@@ -920,7 +926,8 @@ const OrganizationEdit = (props) => {
                 : {};
 
             const hasValidationErrors = Object.keys(errors).length > 0;
-            const hasConfirmationErrors = Object.keys(confirmationErrors).length > 0;
+            const hasConfirmationErrors =
+              Object.keys(confirmationErrors).length > 0;
 
             const currentErrors = useMemo(() => {
               try {
@@ -934,185 +941,217 @@ const OrganizationEdit = (props) => {
               }
             }, [values]);
 
-            const tabErrorCounts = isLoaded ? getTabErrorCounts(currentErrors, confirmationErrors) : {};
-            const isAdminOrCoordinator = user && (user.isAdmin || user.isCoordinator);
-            const confirmLabel = isAdminOrCoordinator ? "Approval" : "Submitting";
+            const tabErrorCounts = isLoaded
+              ? getTabErrorCounts(currentErrors, confirmationErrors)
+              : {};
+            const isAdminOrCoordinator =
+              user && (user.isAdmin || user.isCoordinator);
+            const confirmLabel = isAdminOrCoordinator
+              ? "Approval"
+              : "Submitting";
 
             return (
-            <form noValidate onSubmit={handleSubmit}>
-              <SuggestionHistory
-                suggestions={stakeholderSuggestions}
-                editedSuggestions={editedSuggestions}
-                onEdit={handleSuggestionEdit}
-                showNewOnly={true}
-              />
-              <Stack direction="row" justifyContent="space-between">
-                <Typography component="h1" variant="h5">
-                  {`Organization - ${values.name}`}
-                </Typography>
-                <Box
-                  bgcolor="secondary.main"
-                  style={{ padding: "0.2em 0.65em" }}
-                >
+              <form noValidate onSubmit={handleSubmit}>
+                <SuggestionHistory
+                  suggestions={stakeholderSuggestions}
+                  editedSuggestions={editedSuggestions}
+                  onEdit={handleSuggestionEdit}
+                  showOpenOnly={true}
+                />
+                <Stack direction="row" justifyContent="space-between">
                   <Typography component="h1" variant="h5">
-                    {VERIFICATION_STATUS_NAMES[values.verificationStatusId]}
+                    {`Organization - ${values.name}`}
                   </Typography>
-                </Box>
-              </Stack>
-              <Stack spacing={2} sx={{ pb: 2 }}>
-                <Box sx={{ border: "1px solid lightgray", borderTop: "none" }}>
-                  <AppBar position="static">
-                    <Tabs
-                      value={tabPage}
-                      onChange={handleChangeTabPage}
-                      variant="scrollable"
-                      scrollButtons="auto"
-                      aria-label="stakeholder tabs"
-                      indicatorColor="secondary"
-                    >
-                      {[
-                        "Identification",
-                        "Business Hours",
-                        "Contact Details",
-                        "More Details",
-                        "Donations",
-                        "Verification",
-                        "Suggestion History",
-                        ...(user?.isAdmin || user?.isCoordinator ? ["Change History"] : []),
-                      ].map((label, index) => (
-                        <Tab
-                          key={label}
-                          label={
-                            tabErrorCounts[index] ? (
-                              <Badge
-                                badgeContent={tabErrorCounts[index]}
-                                color="error"
-                                sx={{
-                                  "& .MuiBadge-badge": {
-                                    top: -4,
-                                    right: -6,
-                                    fontSize: "0.65rem",
-                                    height: 18,
-                                    minWidth: 18,
-                                  },
-                                }}
-                              >
-                                <span style={{ paddingRight: 10 }}>{label}</span>
-                              </Badge>
-                            ) : (
-                              label
-                            )
-                          }
-                          {...a11yProps(index)}
-                        />
-                      ))}
-                    </Tabs>
-                  </AppBar>
-                  <Identification
-                    tabPage={tabPage}
-                    values={values}
-                    handleChange={handleChange}
-                    errors={errors}
-                    touched={touched}
-                    setFieldValue={setFieldValue}
-                    setFieldTouched={setFieldTouched}
-                    handleBlur={handleBlur}
-                    confirmationErrors={confirmationErrors}
-                    submitCount={submitCount}
-                  />
-                  <BusinessHours
-                    tabPage={tabPage}
-                    values={values}
-                    handleChange={handleChange}
-                    errors={errors}
-                    touched={touched}
-                    setFieldValue={setFieldValue}
-                    setFieldTouched={setFieldTouched}
-                    handleBlur={handleBlur}
-                    confirmationErrors={confirmationErrors}
-                  />
-                  <ContactDetails
-                    tabPage={tabPage}
-                    values={values}
-                    handleChange={handleChange}
-                    errors={errors}
-                    touched={touched}
-                    handleBlur={handleBlur}
-                    confirmationErrors={confirmationErrors}
-                  />
-                  <MoreDetails
-                    tabPage={tabPage}
-                    values={values}
-                    handleChange={handleChange}
-                    errors={errors}
-                    touched={touched}
-                    setFieldValue={setFieldValue}
-                    handleBlur={handleBlur}
-                    confirmationErrors={confirmationErrors}
-                  />
-                  <Donations
-                    tabPage={tabPage}
-                    values={values}
-                    handleChange={handleChange}
-                    errors={errors}
-                    touched={touched}
-                    setFieldValue={setFieldValue}
-                    handleBlur={handleBlur}
-                    confirmationErrors={confirmationErrors}
-                  />
-                  <Verification
-                    tabPage={tabPage}
-                    values={values}
-                    handleChange={handleChange}
-                    errors={errors}
-                    touched={touched}
-                    setFieldValue={setFieldValue}
-                    handleBlur={handleBlur}
-                    confirmationErrors={confirmationErrors}
-                  />
-                  <SuggestionHistory
-                    tabPage={tabPage}
-                    suggestions={stakeholderSuggestions}
-                    editedSuggestions={editedSuggestions}
-                    onEdit={handleSuggestionEdit}
-                    confirmationErrors={confirmationErrors}
-                  />
-                  {(user?.isAdmin || user?.isCoordinator) && (
-                    <ChangeHistory
+                  <Box
+                    bgcolor="secondary.main"
+                    style={{ padding: "0.2em 0.65em" }}
+                  >
+                    <Typography component="h1" variant="h5">
+                      {VERIFICATION_STATUS_NAMES[values.verificationStatusId]}
+                    </Typography>
+                  </Box>
+                </Stack>
+                <Stack spacing={2} sx={{ pb: 2 }}>
+                  <Box
+                    sx={{ border: "1px solid lightgray", borderTop: "none" }}
+                  >
+                    <AppBar position="static">
+                      <Tabs
+                        value={tabPage}
+                        onChange={handleChangeTabPage}
+                        variant="scrollable"
+                        scrollButtons="auto"
+                        aria-label="stakeholder tabs"
+                        indicatorColor="secondary"
+                      >
+                        {[
+                          "Identification",
+                          "Business Hours",
+                          "Contact Details",
+                          "More Details",
+                          "Donations",
+                          "Verification",
+                          "Suggestion History",
+                          ...(user?.isAdmin || user?.isCoordinator
+                            ? ["Change History"]
+                            : []),
+                        ].map((label, index) => (
+                          <Tab
+                            key={label}
+                            label={
+                              tabErrorCounts[index] ? (
+                                <Badge
+                                  badgeContent={tabErrorCounts[index]}
+                                  color="error"
+                                  sx={{
+                                    "& .MuiBadge-badge": {
+                                      top: -4,
+                                      right: -6,
+                                      fontSize: "0.65rem",
+                                      height: 18,
+                                      minWidth: 18,
+                                    },
+                                  }}
+                                >
+                                  <span style={{ paddingRight: 10 }}>
+                                    {label}
+                                  </span>
+                                </Badge>
+                              ) : (
+                                label
+                              )
+                            }
+                            {...a11yProps(index)}
+                          />
+                        ))}
+                      </Tabs>
+                    </AppBar>
+                    <Identification
                       tabPage={tabPage}
-                      versions={versionHistory}
-                      loading={historyLoading}
-                      error={historyError}
+                      values={values}
+                      handleChange={handleChange}
+                      errors={errors}
+                      touched={touched}
+                      setFieldValue={setFieldValue}
+                      setFieldTouched={setFieldTouched}
+                      handleBlur={handleBlur}
+                      confirmationErrors={confirmationErrors}
+                      submitCount={submitCount}
                     />
-                  )}
-                </Box>
-                <Stack direction="column" spacing={2}>
-                  <Stack direction="row" alignItems="flex-start" spacing={2}>
-                    <Box sx={{ flexBasis: "40%", flexGrow: 0, flexShrink: 0 }}>
-                      <Label
-                        id="adminNotes"
-                        label="Verification Notes"
-                        tooltipTitle={adminNoteTooltip}
+                    <BusinessHours
+                      tabPage={tabPage}
+                      values={values}
+                      handleChange={handleChange}
+                      errors={errors}
+                      touched={touched}
+                      setFieldValue={setFieldValue}
+                      setFieldTouched={setFieldTouched}
+                      handleBlur={handleBlur}
+                      confirmationErrors={confirmationErrors}
+                    />
+                    <ContactDetails
+                      tabPage={tabPage}
+                      values={values}
+                      handleChange={handleChange}
+                      errors={errors}
+                      touched={touched}
+                      handleBlur={handleBlur}
+                      confirmationErrors={confirmationErrors}
+                    />
+                    <MoreDetails
+                      tabPage={tabPage}
+                      values={values}
+                      handleChange={handleChange}
+                      errors={errors}
+                      touched={touched}
+                      setFieldValue={setFieldValue}
+                      handleBlur={handleBlur}
+                      confirmationErrors={confirmationErrors}
+                    />
+                    <Donations
+                      tabPage={tabPage}
+                      values={values}
+                      handleChange={handleChange}
+                      errors={errors}
+                      touched={touched}
+                      setFieldValue={setFieldValue}
+                      handleBlur={handleBlur}
+                      confirmationErrors={confirmationErrors}
+                    />
+                    <Verification
+                      tabPage={tabPage}
+                      values={values}
+                      handleChange={handleChange}
+                      errors={errors}
+                      touched={touched}
+                      setFieldValue={setFieldValue}
+                      handleBlur={handleBlur}
+                      confirmationErrors={confirmationErrors}
+                    />
+                    <SuggestionHistory
+                      tabPage={tabPage}
+                      suggestions={stakeholderSuggestions}
+                      editedSuggestions={editedSuggestions}
+                      onEdit={handleSuggestionEdit}
+                      confirmationErrors={confirmationErrors}
+                    />
+                    {(user?.isAdmin || user?.isCoordinator) && (
+                      <ChangeHistory
+                        tabPage={tabPage}
+                        versions={versionHistory}
+                        loading={historyLoading}
+                        error={historyError}
                       />
-                      <Textarea
-                        id="adminNotes"
-                        name="adminNotes"
-                        placeholder="Verification Notes"
-                        value={values.adminNotes}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        helperText={touched.adminNotes ? errors.adminNotes : ""}
-                        error={touched.adminNotes && Boolean(errors.adminNotes)}
-                      />
-                    </Box>
+                    )}
+                  </Box>
+                  <Stack direction="column" spacing={2}>
+                    <Stack direction="row" alignItems="flex-start" spacing={2}>
+                      <Box
+                        sx={{ flexBasis: "40%", flexGrow: 0, flexShrink: 0 }}
+                      >
+                        <Label
+                          id="adminNotes"
+                          label="Verification Notes"
+                          tooltipTitle={adminNoteTooltip}
+                        />
+                        <Textarea
+                          id="adminNotes"
+                          name="adminNotes"
+                          placeholder="Verification Notes"
+                          value={values.adminNotes}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          helperText={
+                            touched.adminNotes ? errors.adminNotes : ""
+                          }
+                          error={
+                            touched.adminNotes && Boolean(errors.adminNotes)
+                          }
+                        />
+                      </Box>
                       {(hasValidationErrors || hasConfirmationErrors) && (
                         <Box sx={{ flexBasis: "65%", flexGrow: 2 }}>
-                          <Box sx={{ height: "40px", display: "flex", alignItems: "center" }}>
-                            <Stack direction="row" alignItems="center" spacing={0.5}>
-                              <Typography fontWeight={600} sx={{ color: "error.main" }}>
+                          <Box
+                            sx={{
+                              height: "40px",
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            <Stack
+                              direction="row"
+                              alignItems="center"
+                              spacing={0.5}
+                            >
+                              <Typography
+                                fontWeight={600}
+                                sx={{ color: "error.main" }}
+                              >
                                 Needs Attention
                               </Typography>
-                              <WarningIcon sx={{ fontSize: "1rem", color: "error.main" }} />
+                              <WarningIcon
+                                sx={{ fontSize: "1rem", color: "error.main" }}
+                              />
                             </Stack>
                           </Box>
                           <Box
@@ -1131,7 +1170,7 @@ const OrganizationEdit = (props) => {
                                   sx={{
                                     fontWeight: 700,
                                     mb: 0.5,
-                                    lineHeight: 1
+                                    lineHeight: 1,
                                   }}
                                 >
                                   Must be Fixed before Saving Progress:
@@ -1143,21 +1182,22 @@ const OrganizationEdit = (props) => {
                                     listStyleType: "disc",
                                   }}
                                 >
-                                  {Object.entries(errors).map(
-                                    ([field]) => {
-                                      const tabIndex = field.startsWith("hours")
-                                        ? 1
-                                        : tabs[field];
-                                      return (
-                                        <li key={field}>
-                                          <Typography variant="body2">
-                                            <strong>{FIELD_LABELS[field] || field}</strong>
-                                            {tabIndex !== undefined && ` (${TAB_NAMES[tabIndex]} Tab)`}
-                                          </Typography>
-                                        </li>
-                                      );
-                                    }
-                                  )}
+                                  {Object.entries(errors).map(([field]) => {
+                                    const tabIndex = field.startsWith("hours")
+                                      ? 1
+                                      : tabs[field];
+                                    return (
+                                      <li key={field}>
+                                        <Typography variant="body2">
+                                          <strong>
+                                            {FIELD_LABELS[field] || field}
+                                          </strong>
+                                          {tabIndex !== undefined &&
+                                            ` (${TAB_NAMES[tabIndex]} Tab)`}
+                                        </Typography>
+                                      </li>
+                                    );
+                                  })}
                                 </ul>
                               </Box>
                             )}
@@ -1183,12 +1223,17 @@ const OrganizationEdit = (props) => {
                                 >
                                   {Object.entries(confirmationErrors).map(
                                     ([field]) => {
-                                      const tabIndex = confirmationFieldToTab[field];
+                                      const tabIndex =
+                                        confirmationFieldToTab[field];
                                       return (
                                         <li key={field}>
                                           <Typography variant="body2">
-                                            <strong>{FIELD_LABELS[field] || field}</strong>
-                                            {tabIndex !== undefined ? ` (${TAB_NAMES[tabIndex]} Tab)` : ""}
+                                            <strong>
+                                              {FIELD_LABELS[field] || field}
+                                            </strong>
+                                            {tabIndex !== undefined
+                                              ? ` (${TAB_NAMES[tabIndex]} Tab)`
+                                              : ""}
                                           </Typography>
                                         </li>
                                       );
@@ -1200,15 +1245,25 @@ const OrganizationEdit = (props) => {
                           </Box>
                         </Box>
                       )}
-                  </Stack>
-                  <Stack direction="row" justifyContent="flex-end" spacing={2}>
-                    {renderActionButtons({ values, errors, isSubmitting, setFieldValue, handleSubmit })}
+                    </Stack>
+                    <Stack
+                      direction="row"
+                      justifyContent="flex-end"
+                      spacing={2}
+                    >
+                      {renderActionButtons({
+                        values,
+                        errors,
+                        isSubmitting,
+                        setFieldValue,
+                        handleSubmit,
+                      })}
+                    </Stack>
                   </Stack>
                 </Stack>
-              </Stack>
-            </form>
-          );
-        }}
+              </form>
+            );
+          }}
         </Formik>
       </div>
     </Container>

@@ -13,6 +13,7 @@ export default function BusinessHours({
   handleBlur,
   setFieldValue,
   setFieldTouched,
+  confirmationErrors = {},
 }) {
   return (
     <TabPanel value={tabPage} index={1}>
@@ -29,12 +30,20 @@ export default function BusinessHours({
             }}
           >
             <FormControlLabel
+              componentsProps={{
+                typography: {
+                  sx: {
+                    color: confirmationErrors["confirmedHours"] ? "error.main" : "inherit",
+                  }
+                }
+              }}
               control={
                 <Checkbox
                   margin="normal"
                   name="confirmedHours"
                   value={values.confirmedHours}
                   checked={values.confirmedHours}
+                  sx={{ color: confirmationErrors["confirmedHours"] ? "error.main" : "inherit" }}
                   onChange={() =>
                     setFieldValue("confirmedHours", !values.confirmedHours)
                   }

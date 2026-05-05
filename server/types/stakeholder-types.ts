@@ -190,7 +190,7 @@ export interface ClaimParams {
 
 export interface RequestAssignmentParams {
   tenantId: number;
-  loginId: number;
+  loginId?: number;
 }
 
 export interface AssignParams {

@@ -32,7 +32,8 @@ export const updateZoom = async (
 ) => {
   try {
     await axios.put(baseUrl + `/${neighborhoodId}`, {
-      ncId: neighborhoodId,
+      // @ts-expect-error preserve original JS behavior (ncId is not in scope)
+      ncId,
       zoom,
     });
   } catch (err: any) {

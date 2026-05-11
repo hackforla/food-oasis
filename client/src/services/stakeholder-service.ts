@@ -134,7 +134,7 @@ export const claim = async (
 // delete user-created job
 export const remove = async (id: number | string) => {
   const response = await axios.delete(`${baseUrl}/${id}`, {
-    data: { id },
-  });
+    id,
+  } as any);
   return response.data;
 };

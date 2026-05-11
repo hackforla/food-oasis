@@ -28,7 +28,13 @@ export default function AddressDropDown({ autoFocus }) {
     searchCoordinates?.locationName || ""
   );
   const [open, setOpen] = useState(false);
-  const { mapboxResults, fetchMapboxResults, isLoading } = useMapboxGeocoder();
+  const {
+    mapboxResults,
+    searchMapboxResults,
+    ensureMapboxResults,
+    isLoading,
+    resultsQuery,
+  } = useMapboxGeocoder();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { flyTo } = useMapbox();
@@ -76,10 +82,9 @@ export default function AddressDropDown({ autoFocus }) {
   const handleInputChange = (delta) => {
     if (!delta) return;
     const safeValue = typeof delta === "string" ? delta : delta.target.value;
+    setHighlightedOption(null);
     setInputVal(safeValue);
-    if (safeValue) {
-      fetchMapboxResults(safeValue);
-    }
+    searchMapboxResults(safeValue);
   };
 
   const handleAutocompleteOnChange = (selectedResult) => {
@@ -206,12 +211,30 @@ export default function AddressDropDown({ autoFocus }) {
     );
   };
 
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter" && !isLoading) {
+  const handleKeyDown = async (event) => {
+    if (event.key === "Enter") {
       event.preventDefault();
-      if (mapboxOptions.length > 0) {
-        const selected = highlightedOption ?? mapboxOptions[0];
-        handleAutocompleteOnChange(selected);
+
+      const normalizedInput = inputVal.trim();
+      if (!normalizedInput) {
+        return;
+      }
+
+      const hasCurrentAddressResults =
+        !isLoading && resultsQuery === normalizedInput;
+
+      if (hasCurrentAddressResults && highlightedOption?.type === "mapbox") {
+        handleAutocompleteOnChange(highlightedOption);
+        return;
+      }
+
+      const resolvedResults = await ensureMapboxResults(normalizedInput);
+
+      if (resolvedResults.length > 0) {
+        handleAutocompleteOnChange({
+          type: "mapbox",
+          value: resolvedResults[0],
+        });
       }
     }
   };

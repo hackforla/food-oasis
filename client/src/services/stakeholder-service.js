@@ -9,6 +9,7 @@ export const search = async (searchParams) => {
   searchParams = { ...searchParams, tenantId: TENANT_ID };
   const response = await axios.get(`${baseUrl}`, {
     params: searchParams,
+    paramsSerializer: { indexes: null }, // This will prevent axios from adding [] to the query parameters
   });
 
   let stakeholders = response.data.map((s) => {

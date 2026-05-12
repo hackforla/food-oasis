@@ -52,6 +52,7 @@ export const search = async (searchParams) => {
       ...searchParams,
       tenantId,
     },
+    paramsSerializer: { indexes: null }, // This will prevent axios from adding [] to the query parameters
   });
   let stakeholders = response.data.map((s) => {
     return {

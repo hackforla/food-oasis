@@ -10,7 +10,7 @@ export const selectAll = async () => {
       tenantId,
     },
   });
-  let stakeholders = response.data.map((s) => {
+  let stakeholders = response.data.map((s: any) => {
     return {
       ...s,
       latitude: Number(s.latitude),
@@ -45,7 +45,7 @@ export const selectAll = async () => {
         assignedLoginId
         claimedLoginId
 */
-export const search = async (searchParams) => {
+export const search = async (searchParams?: Record<string, any>) => {
   searchParams = searchParams || {};
   const response = await axios.get(baseUrl, {
     params: {
@@ -54,7 +54,7 @@ export const search = async (searchParams) => {
     },
     paramsSerializer: { indexes: null }, // This will prevent axios from adding [] to the query parameters
   });
-  let stakeholders = response.data.map((s) => {
+  let stakeholders = response.data.map((s: any) => {
     return {
       ...s,
       createdDate: formatDate(s.createdDate),
@@ -69,7 +69,7 @@ export const search = async (searchParams) => {
   return stakeholders;
 };
 
-export const getById = async (id) => {
+export const getById = async (id: number | string) => {
   const response = await axios.get(`${baseUrl}/${id}`);
   const s = response.data;
   return {

@@ -92,11 +92,18 @@ const Donate = () => {
             </Typography>
           </Container>
           <Link
-            variant="contained"
+            variant="inherit"
             href="//www.codeforamerica.org/donate"
             target="_blank"
             rel="noopener noreferrer"
             sx={{
+              "&:hover": {
+                backgroundColor: "#0A3865",
+              },
+              "&:visited": {
+                color: "#fff",
+              },
+              display: "inline-block",
               color: "#fff",
               border: "1px solid #336699",
               background: "#336699",

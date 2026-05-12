@@ -2,7 +2,7 @@ import axios from "axios";
 
 const baseUrl = "/api/import";
 
-const uploadCsv = async (formData) => {
+const uploadCsv = async (formData: FormData) => {
   const response = await axios.post(`${baseUrl}/stakeholders-csv`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
@@ -11,7 +11,7 @@ const uploadCsv = async (formData) => {
   return response.data;
 };
 
-const importCsv = async (payload) => {
+const importCsv = async (payload: Record<string, any>) => {
   const response = await axios.post(
     `${baseUrl}/stakeholders-csv/import`,
     payload

@@ -3,7 +3,7 @@ import axios from "axios";
 const baseUrl = "/api/emails/contact";
 const clientUrl = window.location.origin;
 
-export const sendContactForm = async (formData) => {
+export const sendContactForm = async (formData: Record<string, any>) => {
   const response = await axios.post(baseUrl, {
     ...formData,
     clientUrl,

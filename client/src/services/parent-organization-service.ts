@@ -7,12 +7,14 @@ export const getAllByTenantId = async () => {
   try {
     const response = await axios.get(`${baseUrl}/${TENANT_ID}`);
     return response.data;
-  } catch (err) {
+  } catch (err: any) {
     throw new Error(err.message);
   }
 };
 
-export const update = async (data) => {
+export const update = async (
+  data: Record<string, any> & { id: number | string }
+) => {
   const response = await axios.put(`${baseUrl}/${data.id}`, {
     ...data,
     tenantId: TENANT_ID,
@@ -20,7 +22,7 @@ export const update = async (data) => {
   return response.data;
 };
 
-export const post = async (data) => {
+export const post = async (data: Record<string, any>) => {
   const response = await axios.post(`${baseUrl}`, {
     ...data,
     tenantId: TENANT_ID,
@@ -28,7 +30,7 @@ export const post = async (data) => {
   return response.data;
 };
 
-export const remove = async (id) => {
+export const remove = async (id: number | string) => {
   const response = await axios.delete(`${baseUrl}/${id}`);
   return response.data;
 };

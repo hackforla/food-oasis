@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const exportCsv = async (filename) => {
+const exportCsv = async (filename: string) => {
   try {
     const file = await axios.get("/api/export/csv-template", {
       responseType: "blob",
@@ -12,7 +12,7 @@ const exportCsv = async (filename) => {
     document.body.appendChild(link);
 
     link.click();
-  } catch (err) {
+  } catch (err: any) {
     console.error(err.message);
   }
 };

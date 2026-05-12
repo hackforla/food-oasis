@@ -5,13 +5,13 @@ import { formatDate } from "helpers";
 
 const baseUrl = "/api/stakeholders";
 
-export const search = async (searchParams) => {
+export const search = async (searchParams?: Record<string, any>) => {
   searchParams = { ...searchParams, tenantId: TENANT_ID };
   const response = await axios.get(`${baseUrl}`, {
     params: searchParams,
   });
 
-  let stakeholders = response.data.map((s) => {
+  let stakeholders = response.data.map((s: any) => {
     return {
       ...s,
       createdDate: formatDate(s.createdDate),
@@ -26,7 +26,7 @@ export const search = async (searchParams) => {
   return stakeholders;
 };
 
-export const getById = async (id) => {
+export const getById = async (id: number | string) => {
   const response = await axios.get(`${baseUrl}/${id}`);
   const s = response.data;
   return {
@@ -40,7 +40,7 @@ export const getById = async (id) => {
   };
 };
 
-export const post = async (stakeholder) => {
+export const post = async (stakeholder: Record<string, any>) => {
   const response = await axios.post(baseUrl, {
     ...stakeholder,
     tenantId: TENANT_ID,
@@ -48,7 +48,7 @@ export const post = async (stakeholder) => {
   return response.data;
 };
 
-export const exportCsv = async (ids) => {
+export const exportCsv = async (ids: Array<number | string>) => {
   const body = { ids };
   const response = await axios.post(baseUrl + "/csv", body, {
     responseType: "stream",
@@ -56,13 +56,15 @@ export const exportCsv = async (ids) => {
   fileDownload(response.data, "foodoasis.csv");
 };
 
-export const put = async (stakeholder) => {
+export const put = async (
+  stakeholder: Record<string, any> & { id: number | string }
+) => {
   const response = await axios.put(`${baseUrl}/${stakeholder.id}`, stakeholder);
   console.log(response.data);
   return response.data;
 };
 
-export const requestAssignment = async (loginId) => {
+export const requestAssignment = async (loginId: number | string) => {
   const response = await axios.post(`${baseUrl}/requestAssignment`, {
     loginId,
     tenantId: TENANT_ID,
@@ -82,7 +84,11 @@ export const checkAvailableAssignmentsAdmin = async () => {
 // id = stakeholderId
 // userLoginId is the id of the user doing the assigning
 // loginId is user.id of user being assigned to stakeholder
-export const assign = async (id, userLoginId, loginId) => {
+export const assign = async (
+  id: number | string,
+  userLoginId: number | string,
+  loginId: number | string
+) => {
   const response = await axios.put(`${baseUrl}/${id}/assign`, {
     id,
     userLoginId,
@@ -94,10 +100,10 @@ export const assign = async (id, userLoginId, loginId) => {
 // id = stakeholderId
 // userLoginId is the id of the user
 export const needsVerification = async (
-  id,
-  userLoginId,
-  message,
-  preserveConfirmations
+  id: number | string,
+  userLoginId: number | string,
+  message: string,
+  preserveConfirmations: boolean
 ) => {
   const response = await axios.put(`${baseUrl}/${id}/needsVerification`, {
     id,
@@ -110,7 +116,12 @@ export const needsVerification = async (
 
 // id = stakeholderId, setClaimed = true to claim data, false to un-claim,
 // loginId is user.id of user that claims stakeholder
-export const claim = async (id, userLoginId, setClaimed, loginId) => {
+export const claim = async (
+  id: number | string,
+  userLoginId: number | string,
+  setClaimed: boolean,
+  loginId: number | string
+) => {
   const response = await axios.put(`${baseUrl}/${id}/claim`, {
     id,
     userLoginId,
@@ -121,9 +132,9 @@ export const claim = async (id, userLoginId, setClaimed, loginId) => {
 };
 
 // delete user-created job
-export const remove = async (id) => {
+export const remove = async (id: number | string) => {
   const response = await axios.delete(`${baseUrl}/${id}`, {
     id,
-  });
+  } as any);
   return response.data;
 };

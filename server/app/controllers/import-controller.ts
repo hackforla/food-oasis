@@ -1,32 +1,7 @@
-import scraperLaplFoodResourcesService from "../import/lapl-food-resources-scrape";
-import svc from "../services/load-lapl-service";
 import importService from "../services/import-service";
 import { RequestHandler } from "express";
 import { ImportAction } from "../../types/import-types";
-import { LAPLFoodResource } from "../../types/load-lapl-types";
 import { InsertStakeholderParams } from "../../types/stakeholder-types";
-
-// LA Public Library Food Resources Listing - Scraped
-const getLaplFoodResources: RequestHandler<
-  never,
-  LAPLFoodResource[] | { error: string },
-  never,
-  never
-> = async (_req, res) => {
-  try {
-    const response = await scraperLaplFoodResourcesService.selectAll();
-    await svc.removeAll();
-    if (!response) {
-      return [];
-    }
-    response.forEach(async (row) => {
-      await svc.insert(row);
-    });
-    res.send(response);
-  } catch (err: any) {
-    res.status(500).json({ error: err.toString() });
-  }
-};
 
 // TODO: update any type
 const uploadStakeholderCsv: RequestHandler<never, any, never, never> = async (
@@ -60,7 +35,6 @@ const importStakeholderCsv: RequestHandler<
 };
 
 export default {
-  getLaplFoodResources,
   uploadStakeholderCsv,
   importStakeholderCsv,
 };

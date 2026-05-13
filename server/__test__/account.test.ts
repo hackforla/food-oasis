@@ -122,93 +122,93 @@ describe("Account", () => {
     expect(selectAllMock).toHaveBeenCalledWith(tenantId);
     expect(selectAllMock).toHaveBeenCalledTimes(1);
     expect(res.send.mock.calls[0][0]).toMatchInlineSnapshot(`
-      Array [
-        Object {
-          "dateCreated": "2020-03-28T03:52:35.898Z",
-          "email": "webinaruser@test.com",
-          "emailConfirmed": true,
-          "features": Array [],
-          "firstName": "Webinar",
-          "id": 106,
-          "isAdmin": false,
-          "isCoordinator": false,
-          "isDataEntry": false,
-          "isGlobalAdmin": false,
-          "isGlobalReporting": false,
-          "isSecurityAdmin": false,
-          "lastName": "User",
-          "passwordHash": "$2b$10$MZ9Nlvc9lYd6/GrgG3sbs.jzR4Ta/NYWlCHW8MCrLDseNeNRV7Yme",
-          "tenantId": 1,
-        },
-        Object {
-          "dateCreated": "2020-04-17T05:52:29.485Z",
-          "email": "dataentryuser@test.com",
-          "emailConfirmed": true,
-          "features": Array [],
-          "firstName": "Data Entry",
-          "id": 110,
-          "isAdmin": false,
-          "isCoordinator": false,
-          "isDataEntry": true,
-          "isGlobalAdmin": false,
-          "isGlobalReporting": false,
-          "isSecurityAdmin": false,
-          "lastName": "User",
-          "passwordHash": "$2b$10$XnPYzSp5/a6/I4vcpgGDreWTq4JlSqiIdQIfKJSG8HareqrJgEVC.",
-          "tenantId": 1,
-        },
-        Object {
-          "dateCreated": "2021-05-18T06:04:09.421Z",
-          "email": "admin@test.com",
-          "emailConfirmed": false,
-          "features": Array [],
-          "firstName": "Admin",
-          "id": 171,
-          "isAdmin": false,
-          "isCoordinator": false,
-          "isDataEntry": true,
-          "isGlobalAdmin": false,
-          "isGlobalReporting": false,
-          "isSecurityAdmin": false,
-          "lastName": "Admin",
-          "passwordHash": "$2b$10$aMAO10PCC2RfcmXg1GCH1.UsccMgTB53h4XD2w9ydlQMrf4Nn55.q",
-          "tenantId": 1,
-        },
-        Object {
-          "dateCreated": "2020-04-17T05:46:43.603Z",
-          "email": "adminuser@test.com",
-          "emailConfirmed": true,
-          "features": Array [],
-          "firstName": "Admin",
-          "id": 108,
-          "isAdmin": true,
-          "isCoordinator": true,
-          "isDataEntry": true,
-          "isGlobalAdmin": true,
-          "isGlobalReporting": false,
-          "isSecurityAdmin": true,
-          "lastName": "User",
-          "passwordHash": "$2b$10$hJy1U8B6pC2GzPWKQr/TYOO876S3YtHjlYXro81KwOZWgdyR5LFqC",
-          "tenantId": 1,
-        },
-        Object {
-          "dateCreated": "2020-04-17T05:49:35.021Z",
-          "email": "securityuser@test.com",
-          "emailConfirmed": true,
-          "features": Array [],
-          "firstName": "Security",
-          "id": 109,
-          "isAdmin": false,
-          "isCoordinator": false,
-          "isDataEntry": false,
-          "isGlobalAdmin": true,
-          "isGlobalReporting": false,
-          "isSecurityAdmin": true,
-          "lastName": "User",
-          "passwordHash": "$2b$10$8TerixiBDRGFatpWUm/ZO.8/6gPEBoJid1MWvb9c3ZQth3luFWFSe",
-          "tenantId": 1,
-        },
-      ]
+     [
+       {
+         "dateCreated": "2020-03-28T03:52:35.898Z",
+         "email": "webinaruser@test.com",
+         "emailConfirmed": true,
+         "features": [],
+         "firstName": "Webinar",
+         "id": 106,
+         "isAdmin": false,
+         "isCoordinator": false,
+         "isDataEntry": false,
+         "isGlobalAdmin": false,
+         "isGlobalReporting": false,
+         "isSecurityAdmin": false,
+         "lastName": "User",
+         "passwordHash": "$2b$10$MZ9Nlvc9lYd6/GrgG3sbs.jzR4Ta/NYWlCHW8MCrLDseNeNRV7Yme",
+         "tenantId": 1,
+       },
+       {
+         "dateCreated": "2020-04-17T05:52:29.485Z",
+         "email": "dataentryuser@test.com",
+         "emailConfirmed": true,
+         "features": [],
+         "firstName": "Data Entry",
+         "id": 110,
+         "isAdmin": false,
+         "isCoordinator": false,
+         "isDataEntry": true,
+         "isGlobalAdmin": false,
+         "isGlobalReporting": false,
+         "isSecurityAdmin": false,
+         "lastName": "User",
+         "passwordHash": "$2b$10$XnPYzSp5/a6/I4vcpgGDreWTq4JlSqiIdQIfKJSG8HareqrJgEVC.",
+         "tenantId": 1,
+       },
+       {
+         "dateCreated": "2021-05-18T06:04:09.421Z",
+         "email": "admin@test.com",
+         "emailConfirmed": false,
+         "features": [],
+         "firstName": "Admin",
+         "id": 171,
+         "isAdmin": false,
+         "isCoordinator": false,
+         "isDataEntry": true,
+         "isGlobalAdmin": false,
+         "isGlobalReporting": false,
+         "isSecurityAdmin": false,
+         "lastName": "Admin",
+         "passwordHash": "$2b$10$aMAO10PCC2RfcmXg1GCH1.UsccMgTB53h4XD2w9ydlQMrf4Nn55.q",
+         "tenantId": 1,
+       },
+       {
+         "dateCreated": "2020-04-17T05:46:43.603Z",
+         "email": "adminuser@test.com",
+         "emailConfirmed": true,
+         "features": [],
+         "firstName": "Admin",
+         "id": 108,
+         "isAdmin": true,
+         "isCoordinator": true,
+         "isDataEntry": true,
+         "isGlobalAdmin": true,
+         "isGlobalReporting": false,
+         "isSecurityAdmin": true,
+         "lastName": "User",
+         "passwordHash": "$2b$10$hJy1U8B6pC2GzPWKQr/TYOO876S3YtHjlYXro81KwOZWgdyR5LFqC",
+         "tenantId": 1,
+       },
+       {
+         "dateCreated": "2020-04-17T05:49:35.021Z",
+         "email": "securityuser@test.com",
+         "emailConfirmed": true,
+         "features": [],
+         "firstName": "Security",
+         "id": 109,
+         "isAdmin": false,
+         "isCoordinator": false,
+         "isDataEntry": false,
+         "isGlobalAdmin": true,
+         "isGlobalReporting": false,
+         "isSecurityAdmin": true,
+         "lastName": "User",
+         "passwordHash": "$2b$10$8TerixiBDRGFatpWUm/ZO.8/6gPEBoJid1MWvb9c3ZQth3luFWFSe",
+         "tenantId": 1,
+       },
+     ]
     `);
   });
 
@@ -225,23 +225,23 @@ describe("Account", () => {
     expect(selectByIdMock).toHaveBeenCalledWith(106, 1);
     expect(selectByIdMock).toHaveBeenCalledTimes(1);
     expect(res.send.mock.calls[0][0]).toMatchInlineSnapshot(`
-      Object {
-        "dateCreated": "2020-03-28T03:52:35.898Z",
-        "email": "webinaruser@test.com",
-        "emailConfirmed": true,
-        "features": Array [],
-        "firstName": "Webinar",
-        "id": 106,
-        "isAdmin": false,
-        "isCoordinator": false,
-        "isDataEntry": false,
-        "isGlobalAdmin": false,
-        "isGlobalReporting": false,
-        "isSecurityAdmin": false,
-        "lastName": "User",
-        "passwordHash": "$2b$10$MZ9Nlvc9lYd6/GrgG3sbs.jzR4Ta/NYWlCHW8MCrLDseNeNRV7Yme",
-        "tenantId": 1,
-      }
+     {
+       "dateCreated": "2020-03-28T03:52:35.898Z",
+       "email": "webinaruser@test.com",
+       "emailConfirmed": true,
+       "features": [],
+       "firstName": "Webinar",
+       "id": 106,
+       "isAdmin": false,
+       "isCoordinator": false,
+       "isDataEntry": false,
+       "isGlobalAdmin": false,
+       "isGlobalReporting": false,
+       "isSecurityAdmin": false,
+       "lastName": "User",
+       "passwordHash": "$2b$10$MZ9Nlvc9lYd6/GrgG3sbs.jzR4Ta/NYWlCHW8MCrLDseNeNRV7Yme",
+       "tenantId": 1,
+     }
     `);
   });
 
@@ -263,26 +263,26 @@ describe("Account", () => {
     expect(selectByEmailMock).toHaveBeenCalledWith("admin@test.com", 1);
     expect(selectByEmailMock).toHaveBeenCalledTimes(1);
     expect(res.send.mock.calls[0][0]).toMatchInlineSnapshot(`
-      Object {
-        "data": Object {
-          "dateCreated": "2021-05-18T06:04:09.421Z",
-          "email": "admin@test.com",
-          "emailConfirmed": false,
-          "features": Array [],
-          "firstName": "Admin",
-          "id": 171,
-          "isAdmin": false,
-          "isCoordinator": false,
-          "isDataEntry": true,
-          "isGlobalAdmin": false,
-          "isGlobalReporting": false,
-          "isSecurityAdmin": false,
-          "lastName": "Admin",
-          "passwordHash": "$2b$10$aMAO10PCC2RfcmXg1GCH1.UsccMgTB53h4XD2w9ydlQMrf4Nn55.q",
-          "tenantId": 1,
-        },
-        "isSuccess": true,
-      }
+     {
+       "data": {
+         "dateCreated": "2021-05-18T06:04:09.421Z",
+         "email": "admin@test.com",
+         "emailConfirmed": false,
+         "features": [],
+         "firstName": "Admin",
+         "id": 171,
+         "isAdmin": false,
+         "isCoordinator": false,
+         "isDataEntry": true,
+         "isGlobalAdmin": false,
+         "isGlobalReporting": false,
+         "isSecurityAdmin": false,
+         "lastName": "Admin",
+         "passwordHash": "$2b$10$aMAO10PCC2RfcmXg1GCH1.UsccMgTB53h4XD2w9ydlQMrf4Nn55.q",
+         "tenantId": 1,
+       },
+       "isSuccess": true,
+     }
     `);
   });
 
@@ -322,12 +322,12 @@ describe("Account", () => {
     });
     expect(registerMock).toHaveBeenCalledTimes(1);
     expect(res.send.mock.calls[0][0]).toMatchInlineSnapshot(`
-      Object {
-        "code": "REG_SUCCESS",
-        "isSuccess": true,
-        "message": "Registration successful.",
-        "newId": "newId",
-      }
+     {
+       "code": "REG_SUCCESS",
+       "isSuccess": true,
+       "message": "Registration successful.",
+       "newId": "newId",
+     }
     `);
   });
 
@@ -360,12 +360,12 @@ describe("Account", () => {
     );
     expect(resendConfirmationEmailMock).toHaveBeenCalledTimes(1);
     expect(res.send.mock.calls[0][0]).toMatchInlineSnapshot(`
-      Object {
-        "code": "REG_SUCCESS",
-        "isSuccess": true,
-        "message": "Account found.",
-        "newId": "newId",
-      }
+     {
+       "code": "REG_SUCCESS",
+       "isSuccess": true,
+       "message": "Account found.",
+       "newId": "newId",
+     }
     `);
   });
 
@@ -398,12 +398,12 @@ describe("Account", () => {
     });
     expect(forgotPasswordMock).toHaveBeenCalledTimes(1);
     expect(res.send.mock.calls[0][0]).toMatchInlineSnapshot(`
-      Object {
-        "code": "FORGOT_PASSWORD_SUCCESS",
-        "isSuccess": true,
-        "message": "Account found.",
-        "newId": "newId",
-      }
+     {
+       "code": "FORGOT_PASSWORD_SUCCESS",
+       "isSuccess": true,
+       "message": "Account found.",
+       "newId": "newId",
+     }
     `);
   });
 
@@ -436,12 +436,12 @@ describe("Account", () => {
     });
     expect(resetPasswordMock).toHaveBeenCalledTimes(1);
     expect(res.send.mock.calls[0][0]).toMatchInlineSnapshot(`
-      Object {
-        "code": "FORGOT_PASSWORD_SUCCESS",
-        "isSuccess": true,
-        "message": "Account found.",
-        "newId": "newId",
-      }
+     {
+       "code": "FORGOT_PASSWORD_SUCCESS",
+       "isSuccess": true,
+       "message": "Account found.",
+       "newId": "newId",
+     }
     `);
   });
 
@@ -478,11 +478,11 @@ describe("Account", () => {
     );
     expect(setTenantPermissionsMock).toHaveBeenCalledTimes(1);
     expect(res.send.mock.calls[0][0]).toMatchInlineSnapshot(`
-      Object {
-        "code": "UPDATE_SUCCESS",
-        "isSuccess": true,
-        "message": "is_admin successfully set to true for userId",
-      }
+     {
+       "code": "UPDATE_SUCCESS",
+       "isSuccess": true,
+       "message": "is_admin successfully set to true for userId",
+     }
     `);
   });
 
@@ -519,11 +519,11 @@ describe("Account", () => {
     );
     expect(setGlobalPermissionsMock).toHaveBeenCalledTimes(1);
     expect(res.send.mock.calls[0][0]).toMatchInlineSnapshot(`
-      Object {
-        "code": "UPDATE_SUCCESS",
-        "isSuccess": true,
-        "message": "is_admin successfully set to true for userId",
-      }
+     {
+       "code": "UPDATE_SUCCESS",
+       "isSuccess": true,
+       "message": "is_admin successfully set to true for userId",
+     }
     `);
   });
 
@@ -554,12 +554,12 @@ describe("Account", () => {
     expect(confirmRegistrationMock).toHaveBeenCalledWith("token");
     expect(confirmRegistrationMock).toHaveBeenCalledTimes(1);
     expect(res.send.mock.calls[0][0]).toMatchInlineSnapshot(`
-      Object {
-        "code": "REG_CONFIRM_SUCCESS",
-        "email": "adminuser@test.com",
-        "isSuccess": true,
-        "message": "Email confirmed.",
-      }
+     {
+       "code": "REG_CONFIRM_SUCCESS",
+       "email": "adminuser@test.com",
+       "isSuccess": true,
+       "message": "Email confirmed.",
+     }
     `);
   });
 

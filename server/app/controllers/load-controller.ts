@@ -1,6 +1,4 @@
 import { RequestHandler } from "express";
-import { LAPLFoodResource } from "../../types/load-lapl-types";
-import loadLaplService from "../services/load-lapl-service";
 import { OpenLAData } from "../../types/load-open-la-data-types";
 import loadOpenLADataService from "../services/load-open-la-data-service";
 import { LARFBListing } from "../../types/load-larfb-types";
@@ -11,35 +9,6 @@ import { json2csv } from "json-2-csv";
 
 // Allow viewing (not editing) data loaded by imports
 // and scrapers.
-
-// Retrieve LA Public Library imported listings from db table load_lapl_food_resources
-const getLaplFoodResources: RequestHandler<
-  // route params
-  never,
-  // response
-  LAPLFoodResource[] | string,
-  // req body
-  never,
-  // query params
-  { format: string }
-> = async (req, res) => {
-  try {
-    const rows: LAPLFoodResource[] = await loadLaplService.selectAll();
-    if (req.query.format === "json" || req.accepts("json")) {
-      res.send(rows);
-    } else {
-      const csv = await json2csv(rows);
-      res.setHeader("Content-Type", "text/csv");
-      res.setHeader(
-        "Content-Disposition",
-        'attachment; filename="lapl-food-resources-' + Date.now() + '.csv"'
-      );
-      res.send(csv);
-    }
-  } catch (err) {
-    res.sendStatus(500);
-  }
-};
 
 // Retrieve Open LA imported listings from db table load_open_la_data
 const getOpenLA: RequestHandler<
@@ -61,7 +30,7 @@ const getOpenLA: RequestHandler<
       res.setHeader("Content-Type", "text/csv");
       res.setHeader(
         "Content-Disposition",
-        'attachment; filename="' + "lapl-food-resources-" + Date.now() + '.csv"'
+        'attachment; filename="' + "open-la-data" + Date.now() + '.csv"'
       );
 
       res.send(csv);
@@ -171,7 +140,6 @@ const get211: RequestHandler<
 };
 
 export default {
-  getLaplFoodResources,
   get211,
   getOpenLA,
   getLARFB,

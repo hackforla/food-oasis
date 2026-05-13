@@ -4,12 +4,6 @@ import jwtSession from "../../middleware/jwt-session";
 const router = express.Router();
 
 router.get(
-  "/lapl-food-resources",
-  jwtSession.validateUserHasRequiredRoles(["admin"]),
-  loadController.getLaplFoodResources
-);
-
-router.get(
   "/open-la",
   jwtSession.validateUserHasRequiredRoles(["admin"]),
   loadController.getOpenLA

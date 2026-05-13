@@ -7,12 +7,6 @@ import multer from "multer";
 // memory storage
 const upload = multer({ storage: multer.memoryStorage() });
 
-router.get(
-  "/lapl-food-resources",
-  jwtSession.validateUserHasRequiredRoles(["admin"]),
-  importController.getLaplFoodResources
-);
-
 router.post(
   "/stakeholders-csv",
   jwtSession.validateUserHasRequiredRoles(["admin"]),

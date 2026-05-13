@@ -28,7 +28,7 @@ COPY ./server/middleware/ ./middleware
 COPY ./server/types/ ./types
 COPY ./server/app/ ./app
 COPY ./server/server.ts ./
-RUN npm ci --quiet && npm run build
+RUN npm ci --quiet --legacy-peer-deps && npm run build
 
 # Server Container
 FROM node:lts-bullseye-slim

@@ -2189,6 +2189,25 @@
     }
   },
   {
+    "_id": "aaee31f0-2d38-433a-baaf-af89209076e8",
+    "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
+    "containerId": "f5f35baa-6708-4a8d-b04e-7f49556683c0",
+    "name": "Update Profile",
+    "url": "http://localhost:5001/api/accounts/110",
+    "method": "PUT",
+    "sortNum": 600000,
+    "created": "2023-01-05T21:29:58.925Z",
+    "modified": "2023-04-23T16:11:03.027Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"firstName\": \"data\",\n  \"lastName\": \"entry\",\n  \"email\": \"{{DATA_ENTRY_EMAIL}}\",\n  \"tenantId\": 1\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
     "_id": "b6dc3666-af88-464b-9e9a-affc7ef5ef45",
     "colId": "935a6129-c2af-4b69-85d3-9fb48a5243c4",
     "containerId": "ae763c3f-34d6-40dd-9749-50a88bd18b89",

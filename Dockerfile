@@ -28,7 +28,7 @@ COPY ./server/middleware/ ./middleware
 COPY ./server/types/ ./types
 COPY ./server/app/ ./app
 COPY ./server/server.ts ./
-RUN npm ci --quiet --legacy-peer-deps && npm run build
+RUN npm ci --quiet && npm run build
 
 # Server Container
 FROM node:lts-bullseye-slim
@@ -39,7 +39,7 @@ LABEL description="Food Oasis app"
 WORKDIR /fola 
 COPY ./server/package.json ./
 COPY ./server/package-lock.json ./
-RUN npm ci --quiet --legacy-peer-deps
+RUN npm ci --quiet
 
 COPY --from=serverbuilder /usr/src/app/build ./
 COPY ./server/uploads ./uploads

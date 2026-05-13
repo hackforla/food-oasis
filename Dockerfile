@@ -39,7 +39,7 @@ LABEL description="Food Oasis app"
 WORKDIR /fola 
 COPY ./server/package.json ./
 COPY ./server/package-lock.json ./
-RUN npm ci --quiet
+RUN npm ci --quiet --legacy-peer-deps
 
 COPY --from=serverbuilder /usr/src/app/build ./
 COPY ./server/uploads ./uploads

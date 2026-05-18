@@ -3,7 +3,7 @@
   "compilerOptions": {
     "target": "es2020",
     "lib": ["es2020", "DOM"],
-    "module": "commonjs",
+    "module": "Node16",
     "sourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,

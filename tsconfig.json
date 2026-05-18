@@ -5,7 +5,10 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "Node16",
-    "resolveJsonModule": true
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "baseUrl": "./server, ./client",
+    "types": ["jest", "node"],
+    "sourceMap": true
   }
 }

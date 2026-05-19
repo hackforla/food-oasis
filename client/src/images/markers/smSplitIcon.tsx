@@ -1,4 +1,6 @@
-const SmSplitIcon = (props) => (
+import type { SvgIconProps } from "../../types/svgIcon";
+
+const SmSplitIcon = (props: SvgIconProps) => (
     <svg
         {...props}
         viewBox="0 0 50 64"

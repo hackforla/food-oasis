@@ -1,7 +1,16 @@
-import React from "react";
 import { mealProgram, closed } from "theme/palette";
+import type { StakeholderCategoryIconProps } from "../types/svgIcon";
 
-const MealIcon = ({ isClosed, height = "72px", width = "72px" }) => (
+interface FilterIconProps extends StakeholderCategoryIconProps {
+  height?: string;
+  width?: string;
+}
+
+const MealIcon = ({
+  isClosed,
+  height = "72px",
+  width = "72px",
+}: FilterIconProps) => (
   <svg
     width={width}
     height={height}

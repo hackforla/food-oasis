@@ -30,7 +30,7 @@ const MobileLayout: FC<MobileLayoutProps> = ({ filters, map, list, showList }) =
   const filterPanelOpen = useFilterPanel();
   const initialY = showList ? 5 : 57;
   const hasAdvancedFilterFeatureFlag = useFeatureFlag("advancedFilter");
-  const dispatch = useAppDispatch() as (action: any) => void;
+  const dispatch = useAppDispatch();
   const [position, setPosition] = useState({
     x: 0,
     y: initialY * (window.innerHeight / 100),

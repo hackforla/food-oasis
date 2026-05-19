@@ -1,4 +1,6 @@
-const LgSplitIcon = (props) => (
+import type { SvgIconProps } from "../../types/svgIcon";
+
+const LgSplitIcon = (props: SvgIconProps) => (
     <svg
         {...props}
         viewBox="0 0 62 80"

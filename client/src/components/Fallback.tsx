@@ -1,8 +1,13 @@
 import { Box, Typography } from "@mui/material";
 import { useLocation } from "react-router-dom";
 
+interface FallbackLocationState {
+  message?: string;
+}
+
 const Fallback = () => {
   const { state } = useLocation();
+  const fallbackState = state as FallbackLocationState | null;
 
   return (
     <Box
@@ -40,7 +45,9 @@ const Fallback = () => {
         >
           Unauthorized
         </Typography>
-        <Typography>{state?.message || "Something went wrong."}</Typography>
+        <Typography>
+          {fallbackState?.message || "Something went wrong."}
+        </Typography>
       </Box>
     </Box>
   );

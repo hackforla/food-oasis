@@ -2,8 +2,14 @@ import { CircularProgress, Grid, Stack } from "@mui/material";
 import Home from "components/FoodSeeker/Home";
 import Header from "components/Layout/Header";
 import WidgetFooter from "components/Layout/WidgetFooter";
-import { Suspense, lazy } from "react";
-import { Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
+import { Suspense, lazy, type ReactNode } from "react";
+import {
+  Navigate,
+  Outlet,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 import Fallback from "./components/Fallback";
 import PrivateRoute from "./components/PrivateRoute";
 import Toast from "components/UI/Toast";
@@ -12,52 +18,61 @@ import useFeatureFlag from "./hooks/useFeatureFlag";
 import SurveySnackbar from "./components/UI/SurveySnackbar";
 import AnnouncementSnackbar from "components/UI/AnnouncementSnackbar";
 import ScrollToTop from "./components/ScrollToTop";
+import type { UserRoleKey } from "./types/userRoles";
 
-const VerificationAdmin = lazy(() =>
-  import("components/Admin/VerificationAdmin.tsx")
+const VerificationAdmin = lazy(
+  () => import("components/Admin/VerificationAdmin")
 );
-const VerificationDashboard = lazy(() =>
-  import("components/Admin/VerificationDashboard.tsx")
+const VerificationDashboard = lazy(
+  () => import("components/Admin/VerificationDashboard")
 );
-const SecurityAdminDashboard = lazy(() =>
-  import("components/Account/SecurityAdminDashboard/SecurityAdminDashboard.tsx")
+const SecurityAdminDashboard = lazy(
+  () =>
+    import(
+      "components/Account/SecurityAdminDashboard/SecurityAdminDashboard"
+    )
 );
-const OrganizationEdit = lazy(() =>
-  import("components/Admin/OrganizationEdit.tsx")
+const OrganizationEdit = lazy(
+  () => import("components/Admin/OrganizationEdit")
 );
-const ParentOrganizations = lazy(() =>
-  import("components/Admin/ParentOrganizations")
+const ParentOrganizations = lazy(
+  () => import("components/Admin/ParentOrganizations")
 );
-const TagAdmin = lazy(() => import("components/Admin/TagAdmin.tsx"));
-const Register = lazy(() => import("components/Account/Register.tsx"));
-const Login = lazy(() => import("components/Account/Login.tsx"));
-const ForgotPassword = lazy(() =>
-  import("components/Account/ForgotPassword.tsx")
+const TagAdmin = lazy(() => import("components/Admin/TagAdmin"));
+const Register = lazy(() => import("components/Account/Register"));
+const Login = lazy(() => import("components/Account/Login"));
+const ForgotPassword = lazy(() => import("components/Account/ForgotPassword"));
+const ResetPasswordEmailSent = lazy(
+  () => import("components/Account/ResetPasswordEmailSent")
 );
-const ResetPasswordEmailSent = lazy(() =>
-  import("components/Account/ResetPasswordEmailSent.tsx")
+const ResetPassword = lazy(() => import("components/Account/ResetPassword"));
+const ConfirmEmail = lazy(() => import("components/Account/ConfirmEmail"));
+const SearchResults = lazy(
+  () => import("components/FoodSeeker/SearchResults/SearchResults")
 );
-const ResetPassword = lazy(() =>
-  import("components/Account/ResetPassword.tsx")
-);
-const ConfirmEmail = lazy(() => import("components/Account/ConfirmEmail.tsx"));
-const SearchResults = lazy(() =>
-  import("components/FoodSeeker/SearchResults/SearchResults")
-);
-const ImportFile = lazy(() =>
-  import("components/Admin/ImportOrganizations/ImportFile.tsx")
+const ImportFile = lazy(
+  () => import("components/Admin/ImportOrganizations/ImportFile")
 );
 const Suggestions = lazy(() => import("components/Admin/Suggestions"));
-const Logins = lazy(() => import("components/Admin/Logins.tsx"));
+const Logins = lazy(() => import("components/Admin/Logins"));
 const Donate = lazy(() => import("./components/Donate"));
 const About = lazy(() => import("./components/About"));
 const Faq = lazy(() => import("./components/Faq"));
 const Contact = lazy(() => import("./components/StaticPages/Contact"));
 const MuiDemo = lazy(() => import("./components/MuiDemo/MuiDemo"));
-const Features = lazy(() => import("./components/Admin/Features.tsx"));
-const Profile = lazy(() => import("./components/Account/Profile.tsx"));
-const Suggestion = lazy(() => import("components/FoodSeeker/Suggestion.tsx"));
+const Features = lazy(() => import("components/Admin/Features"));
+const Profile = lazy(() => import("components/Account/Profile"));
+const Suggestion = lazy(() => import("components/FoodSeeker/Suggestion"));
 const Announcements = lazy(() => import("./components/Admin/Announcements"));
+
+interface PrivateRouteElementProps {
+  roles: UserRoleKey[];
+  children: ReactNode;
+}
+
+function PrivateRouteElement({ roles, children }: PrivateRouteElementProps) {
+  return <PrivateRoute roles={roles}>{children}</PrivateRoute>;
+}
 
 export default function AppRoutes() {
   const location = useLocation();
@@ -105,8 +120,9 @@ export default function AppRoutes() {
           <Route path="suggestion" element={<Suggestion />} />
           <Route path="donate" element={<Donate />} />
           <Route path="about" element={<About />} />
-          <Route exact path="faqs" element={<Faq />} />
-          <Route exact path="contact" element={<Contact />} />
+          {/* React Router v6+ matches paths exactly by default (legacy `exact` prop removed) */}
+          <Route path="faqs" element={<Faq />} />
+          <Route path="contact" element={<Contact />} />
 
           {/* Admin routes */}
           <Route path="admin" element={<AdminWrapper />}>
@@ -124,120 +140,123 @@ export default function AppRoutes() {
             <Route
               path="organizationedit"
               element={
-                <PrivateRoute
+                <PrivateRouteElement
                   roles={["isAdmin", "isDataEntry", "isCoordinator"]}
                 >
                   <OrganizationEdit />
-                </PrivateRoute>
+                </PrivateRouteElement>
               }
             />
             <Route
               path="organizationedit/:id"
               element={
-                <PrivateRoute
+                <PrivateRouteElement
                   roles={["isAdmin", "isDataEntry", "isCoordinator"]}
                 >
                   <OrganizationEdit />
-                </PrivateRoute>
+                </PrivateRouteElement>
               }
             />
             <Route path="muidemo" element={<MuiDemo />} />
             <Route
               path="verificationdashboard"
               element={
-                <PrivateRoute
+                <PrivateRouteElement
                   roles={["isAdmin", "isDataEntry", "isCoordinator"]}
                 >
                   <VerificationDashboard />
-                </PrivateRoute>
+                </PrivateRouteElement>
               }
             />
             <Route
               path="verificationadmin"
               element={
-                <PrivateRoute roles={["isAdmin", "isCoordinator"]}>
+                <PrivateRouteElement roles={["isAdmin", "isCoordinator"]}>
                   <VerificationAdmin />
-                </PrivateRoute>
+                </PrivateRouteElement>
               }
             />
             <Route
               path="parentorganizations"
               element={
-                <PrivateRoute roles={["isAdmin"]}>
+                <PrivateRouteElement roles={["isAdmin"]}>
                   <ParentOrganizations />
-                </PrivateRoute>
+                </PrivateRouteElement>
               }
             />
             <Route
               path="tags"
               element={
-                <PrivateRoute roles={["isAdmin"]}>
+                <PrivateRouteElement roles={["isAdmin"]}>
                   <TagAdmin />
-                </PrivateRoute>
+                </PrivateRouteElement>
               }
             />
             <Route
               path="suggestions"
               element={
-                <PrivateRoute roles={["isAdmin"]}>
+                <PrivateRouteElement roles={["isAdmin"]}>
                   <Suggestions />
-                </PrivateRoute>
+                </PrivateRouteElement>
               }
             />
             <Route
               path="logins"
-              roles={["isAdmin", "isCoordinator"]}
               element={
-                <PrivateRoute roles={["isAdmin", "isCoordinator"]}>
+                <PrivateRouteElement roles={["isAdmin", "isCoordinator"]}>
                   <Logins />
-                </PrivateRoute>
+                </PrivateRouteElement>
               }
             />
             <Route
               path="features"
               element={
-                <PrivateRoute roles={["isAdmin"]}>
+                <PrivateRouteElement roles={["isAdmin"]}>
                   <Features />
-                </PrivateRoute>
+                </PrivateRouteElement>
               }
             />
             <Route
               path="announcements"
               element={
-                <PrivateRoute roles={["isAdmin"]}>
+                <PrivateRouteElement roles={["isAdmin"]}>
                   <Announcements />
-                </PrivateRoute>
+                </PrivateRouteElement>
               }
             />
             <Route
               path="securityadmindashboard"
               element={
-                <PrivateRoute roles={["isGlobalAdmin", "isSecurityAdmin"]}>
+                <PrivateRouteElement
+                  roles={["isGlobalAdmin", "isSecurityAdmin"]}
+                >
                   <SecurityAdminDashboard />
-                </PrivateRoute>
+                </PrivateRouteElement>
               }
             />
             <Route
               path="organizationimport"
               element={
-                <PrivateRoute roles={["isAdmin"]}>
+                <PrivateRouteElement roles={["isAdmin"]}>
                   <ImportFile />
-                </PrivateRoute>
+                </PrivateRouteElement>
               }
             />
           </Route>
           <Route path="*" element={<Navigate to="/fallback" replace />} />
         </Route>
-        <Route exact path="fallback" element={<Fallback />} />
+        <Route path="fallback" element={<Fallback />} />
       </Routes>
     </Suspense>
   );
 }
 
+const ALERT_LOCATIONS = ["/widget", "/", "/organizations"];
+
 function AppWrapper() {
   const isWidget = useWidget();
-  const alertLocations = ["/widget", "/", "/organizations"];
-  const isAlertLocation = alertLocations.includes(useLocation().pathname);
+  const { pathname } = useLocation();
+  const isAlertLocation = ALERT_LOCATIONS.includes(pathname);
 
   return (
     <Grid

@@ -27,7 +27,7 @@
   },
   "license": "GPL-2.0",
   "dependencies": {
-    "@aws-sdk/client-location": "^3.996.0",
+    "@aws-sdk/client-location": "^3.1049.0",
     "@aws-sdk/client-ses": "^3.996.0",
     "@aws-sdk/core": "^3.973.12",
     "@aws-sdk/credential-providers": "^3.996.0",

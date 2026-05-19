@@ -1,8 +1,10 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
     "target": "es2020",
     "lib": ["es2020", "DOM"],
+    "rootDir": "./",
     "module": "commonjs",
     "sourceMap": true,
     "emitDecoratorMetadata": true,
@@ -18,5 +20,6 @@
     ],
     "types": ["jest", "node", "express"]
   },
-  "include": ["app", "**/*.test.ts", "server.ts", "types"]
+  "include": ["app/**/*", "**/*.test.ts", "server.ts", "types"],
+  "exclude": ["node_modules", "dist"]
 }

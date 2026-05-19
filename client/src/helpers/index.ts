@@ -94,7 +94,7 @@ export const getGoogleMapsDirectionsUrl = (
   );
 };
 
-export const isMobile = (): boolean => window.innerWidth < breakpoints.values.sm;
+export const isMobile = (): boolean => window.innerWidth < (breakpoints.values?.sm ?? 600);
 
 export const extractNumbers = (numbers: string): ExtractedNumber[] =>
   numbers.split(/(and)|,|&+/).map((n) => {

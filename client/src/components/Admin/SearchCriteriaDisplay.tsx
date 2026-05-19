@@ -1,6 +1,63 @@
 import { Chip, Stack } from "@mui/material";
 import { useAccounts } from "../../hooks/useAccounts";
 
+interface Category {
+  id: number;
+  name: string;
+}
+
+interface Neighborhood {
+  id: number;
+  name: string;
+}
+
+interface Tag {
+  name: string;
+}
+
+interface SearchCriteriaValues {
+  name: string;
+  latitude: number;
+  longitude: number;
+  placeName: string;
+  radius: number;
+  categoryIds: number[];
+  tags: string[];
+  isInactive: string;
+  isAssigned: string;
+  isSubmitted: string;
+  isApproved: string;
+  isClaimed: string;
+  assignedLoginId: number | null;
+  claimedLoginId: number | null;
+  verificationStatusId: number;
+  neighborhoodId: number;
+  minCompleteCriticalPercent: number | string;
+  maxCompleteCriticalPercent: number | string;
+  stakeholderId: string;
+  isInactiveTemporary: string;
+  tag: string;
+}
+
+interface SearchCriteriaDisplayProps {
+  neighborhoods: Neighborhood[] | null;
+  categories: Category[] | null;
+  tags: Tag[];
+  // Method syntax (vs arrow-function property) lets TypeScript use bivariant
+  // parameter checking, so callers typed with the narrower `number` variant
+  // of maxCompleteCriticalPercent remain compatible.
+  handleDelete(criteria: SearchCriteriaValues): void;
+  isLoading: boolean;
+  criteria: SearchCriteriaValues;
+  defaultCriteria: SearchCriteriaValues;
+}
+
+interface CriteriaChipProps {
+  label: string;
+  value: string | number;
+  name: string;
+}
+
 function SearchCriteriaDisplay({
   neighborhoods,
   categories,
@@ -9,13 +66,14 @@ function SearchCriteriaDisplay({
   isLoading,
   criteria,
   defaultCriteria,
-}) {
+}: SearchCriteriaDisplayProps) {
   const { data: accounts, loading: accountsLoading } = useAccounts();
-  const CriteriaChip = ({ label, value, name }) => {
+  const CriteriaChip = ({ label, value, name }: CriteriaChipProps) => {
     const setCriterion = () => {
+      const key = name as keyof SearchCriteriaValues;
       handleDelete({
         ...criteria,
-        [name]: defaultCriteria[name],
+        [key]: defaultCriteria[key],
       });
     };
     const chipLabel = (
@@ -69,10 +127,10 @@ function SearchCriteriaDisplay({
 
     return false;
   };
-  const getCategoryMap = () => {
-    const categoryMap = {};
+  const getCategoryMap = (): Record<number, Category> => {
+    const categoryMap: Record<number, Category> = {};
 
-    categories.forEach((category) => {
+    (categories ?? []).forEach((category) => {
       categoryMap[category.id] = category;
     });
 
@@ -117,7 +175,7 @@ function SearchCriteriaDisplay({
 
     if (criteria.categoryIds.length > 0) {
       const categoryMap = getCategoryMap();
-      const selectedCategories = [];
+      const selectedCategories: string[] = [];
 
       criteria.categoryIds.forEach((categoryId) => {
         if (categoryMap[categoryId]) {
@@ -219,7 +277,7 @@ function SearchCriteriaDisplay({
     if (criteria.neighborhoodId !== defaultCriteria.neighborhoodId) {
       let neighborhoodName = "";
 
-      neighborhoods.forEach((neighborhood) => {
+      (neighborhoods ?? []).forEach((neighborhood) => {
         if (neighborhood.id === criteria.neighborhoodId) {
           neighborhoodName = neighborhood.name;
         }

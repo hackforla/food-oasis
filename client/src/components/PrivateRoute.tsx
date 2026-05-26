@@ -1,7 +1,19 @@
 import { useUserContext } from "../contexts/userContext";
 import { useLocation, Navigate } from "react-router-dom";
+import type { ReactNode } from "react";
+import type { UserRoleKey } from "../types/userRoles";
 
-function PrivateRoute({ children, roles, redirectTo = "/admin/login" }) {
+interface PrivateRouteProps {
+  children: ReactNode;
+  roles: UserRoleKey[];
+  redirectTo?: string;
+}
+
+function PrivateRoute({
+  children,
+  roles,
+  redirectTo = "/admin/login",
+}: PrivateRouteProps) {
   const { user } = useUserContext();
   const location = useLocation();
 

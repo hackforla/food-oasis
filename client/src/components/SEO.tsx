@@ -1,5 +1,12 @@
-import React from "react";
 import { Helmet } from "react-helmet-async";
+
+export interface SEOProps {
+  title: string;
+  description: string;
+  name?: string;
+  type?: string;
+  url?: string;
+}
 
 export default function SEO({
   title,
@@ -7,10 +14,10 @@ export default function SEO({
   name = "Food Oasis",
   type = "website",
   url = "",
-}) {
+}: SEOProps) {
   return (
     <Helmet>
-      <title class="notranslate">{title}</title>
+      <title className="notranslate">{title}</title>
       <meta name="description" content={description} />
       <meta property="og:type" content={type} />
       <meta property="og:title" content={title} />

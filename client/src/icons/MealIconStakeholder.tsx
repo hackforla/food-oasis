@@ -1,12 +1,12 @@
-import React from "react";
 import { mealProgram, closed, white } from "theme/palette";
+import type { StakeholderCategoryIconProps } from "../types/svgIcon";
 
 const MealIconStakeholder = ({
   height = "48px",
   width = "36px",
   viewBox = "0 0 36 48",
   isClosed,
-}) => (
+}: StakeholderCategoryIconProps) => (
   <svg
     height={height}
     width={width}

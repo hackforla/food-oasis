@@ -1,12 +1,12 @@
-import React from "react";
 import { foodPantry, mealProgram, closed, white } from "theme/palette";
+import type { StakeholderCategoryIconProps } from "../types/svgIcon";
 
-const MealIconStakeholder = ({
+const SplitPantryMealIconStakeholder = ({
   height = "48px",
   width = "36px",
   viewBox = "0 0 36 48",
   isClosed,
-}) => (
+}: StakeholderCategoryIconProps) => (
   <svg
     height={height}
     width={width}
@@ -30,4 +30,4 @@ const MealIconStakeholder = ({
   </svg>
 );
 
-export default MealIconStakeholder;
+export default SplitPantryMealIconStakeholder;

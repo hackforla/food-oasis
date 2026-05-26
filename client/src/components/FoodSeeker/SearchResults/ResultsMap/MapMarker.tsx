@@ -1,9 +1,11 @@
-import LgMealIcon from "images/markers/lgMealIcon.jsx";
+import type { FC } from "react";
+import LgMealIcon from "images/markers/lgMealIcon";
 import LgPantryIcon from "images/markers/lgPantryIcon";
 import LgSplitIcon from "images/markers/lgSplitIcon";
-import SmMealIcon from "images/markers/smMealIcon.jsx";
+import SmMealIcon from "images/markers/smMealIcon";
 import SmPantryIcon from "images/markers/smPantryIcon";
 import SmSplitIcon from "images/markers/smSplitIcon";
+import type { SvgIconProps } from "types/svgIcon";
 
 interface MapMarkerProps {
   category: -1 | 0 | 1;
@@ -24,7 +26,10 @@ function MapMarker({ category, selected = false, scale = 1 }: MapMarkerProps) {
 
 export default MapMarker;
 
-const markerIcons = {
+const markerIcons: Record<
+  -1 | 0 | 1,
+  { default: FC<SvgIconProps>; selected: FC<SvgIconProps> }
+> = {
   [-1]: {
     default: SmSplitIcon,
     selected: LgSplitIcon,

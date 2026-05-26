@@ -1,9 +1,38 @@
 import { DEFAULT_VIEWPORT } from "helpers/Constants";
-import { createContext, useContext, useMemo, useReducer } from "react";
+import {
+  createContext,
+  useContext,
+  useMemo,
+  useReducer,
+  type Dispatch,
+  type ReactNode,
+} from "react";
+import type {
+  AppAction,
+  AppNeighborhood,
+  AppPosition,
+  AppState,
+  Coordinates,
+  OpenTimeFilter,
+  SearchStakeholder,
+} from "./types/appState";
+
+export type {
+  AppAction,
+  AppNeighborhood,
+  AppPosition,
+  AppState,
+  Coordinates,
+  OpenTimeFilter,
+  SearchStakeholder,
+} from "./types/appState";
 
 export const DEFAULT_COORDINATES = DEFAULT_VIEWPORT.center;
 
-function stakeholdersReducer(state, action) {
+function stakeholdersReducer(
+  state: SearchStakeholder[],
+  action: AppAction
+): SearchStakeholder[] {
   switch (action.type) {
     case "STAKEHOLDERS_LOADED":
       return action.stakeholders;
@@ -11,7 +40,10 @@ function stakeholdersReducer(state, action) {
       return state;
   }
 }
-function defaultCoordinatesReducer(state, action) {
+function defaultCoordinatesReducer(
+  state: Coordinates,
+  action: AppAction
+): Coordinates {
   switch (action.type) {
     case "DEFAULT_COORDINATES_UPDATED":
       return action.coordinates;
@@ -24,7 +56,10 @@ function defaultCoordinatesReducer(state, action) {
   }
 }
 
-function searchCoordinatesReducer(state, action) {
+function searchCoordinatesReducer(
+  state: Coordinates | null,
+  action: AppAction
+): Coordinates | null {
   switch (action.type) {
     case "SEARCH_COORDINATES_UPDATED":
       return action.coordinates;
@@ -39,7 +74,10 @@ function searchCoordinatesReducer(state, action) {
   }
 }
 
-function userCoordinatesReducer(state, action) {
+function userCoordinatesReducer(
+  state: Coordinates | null,
+  action: AppAction
+): Coordinates | null {
   switch (action.type) {
     case "USER_COORDINATES_UPDATED":
       return action.coordinates;
@@ -48,7 +86,10 @@ function userCoordinatesReducer(state, action) {
   }
 }
 
-function selectedOrganizationReducer(state, action) {
+function selectedOrganizationReducer(
+  state: SearchStakeholder | null,
+  action: AppAction
+): SearchStakeholder | null {
   switch (action.type) {
     case "SELECTED_ORGANIZATION_UPDATED":
       return action.organization;
@@ -61,7 +102,10 @@ function selectedOrganizationReducer(state, action) {
   }
 }
 
-function hoveredOrganizationReducer(state, action) {
+function hoveredOrganizationReducer(
+  state: SearchStakeholder | null,
+  action: AppAction
+): SearchStakeholder | null {
   switch (action.type) {
     case "HOVERED_ORGANIZATION_UPDATED":
       return action.organization;
@@ -72,7 +116,10 @@ function hoveredOrganizationReducer(state, action) {
   }
 }
 
-function neighborhoodReducer(state, action) {
+function neighborhoodReducer(
+  state: AppNeighborhood | null,
+  action: AppAction
+): AppNeighborhood | null {
   switch (action.type) {
     case "NEIGHBORHOOD_UPDATED":
       return action.neighborhood;
@@ -81,7 +128,7 @@ function neighborhoodReducer(state, action) {
   }
 }
 
-function widgetReducer(state, action) {
+function widgetReducer(state: boolean, action: AppAction): boolean {
   switch (action.type) {
     case "WIDGET":
       return action.isWidget;
@@ -90,7 +137,7 @@ function widgetReducer(state, action) {
   }
 }
 
-function filterPanelReducer(state, action) {
+function filterPanelReducer(state: boolean, action: AppAction): boolean {
   switch (action.type) {
     case "FILTER_PANEL_TOGGLE":
       return action.filterPanel;
@@ -98,7 +145,7 @@ function filterPanelReducer(state, action) {
       return state;
   }
 }
-function orgNameFilterReducer(state, action) {
+function orgNameFilterReducer(state: string, action: AppAction): string {
   switch (action.type) {
     case "ORG_NAME_FILTER_UPDATED":
       return action.orgNameFilter;
@@ -107,7 +154,10 @@ function orgNameFilterReducer(state, action) {
   }
 }
 
-function openTimeFilterReducer(state, action) {
+function openTimeFilterReducer(
+  state: OpenTimeFilter,
+  action: AppAction
+): OpenTimeFilter {
   switch (action.type) {
     case "OPEN_TIME_FILTER_UPDATED":
       return action.openTimeFilter;
@@ -116,7 +166,7 @@ function openTimeFilterReducer(state, action) {
   }
 }
 
-function foodTypeFilterReducer(state, action) {
+function foodTypeFilterReducer(state: string[], action: AppAction): string[] {
   switch (action.type) {
     case "FOOD_TYPE_FILTER_UPDATED":
       return action.foodTypeFilter;
@@ -125,16 +175,16 @@ function foodTypeFilterReducer(state, action) {
   }
 }
 
-function listPanelReducer(state, action) {
+function listPanelReducer(state: boolean, action: AppAction): boolean {
   switch (action.type) {
     case "TOGGLE_LIST_PANEL":
-      return action.listPanel;
+      return action.listPanel ?? state;
     default:
       return state;
   }
 }
 
-function isListPanelVisibleReducer(state, action) {
+function isListPanelVisibleReducer(state: boolean, action: AppAction): boolean {
   switch (action.type) {
     case "TOGGLE_LIST_PANEL":
       return !state; // Toggle the state
@@ -143,7 +193,7 @@ function isListPanelVisibleReducer(state, action) {
   }
 }
 
-function position(state, action) {
+function positionReducer(state: AppPosition, action: AppAction): AppPosition {
   switch (action.type) {
     case "POSITION":
       return action.position; // Toggle the state
@@ -152,9 +202,9 @@ function position(state, action) {
   }
 }
 
-export function appReducer(state, action) {
+export function appReducer(state: AppState, action: AppAction): AppState {
   return {
-    defaultCoordinate: defaultCoordinatesReducer(
+    defaultCoordinates: defaultCoordinatesReducer(
       state.defaultCoordinates,
       action
     ),
@@ -186,11 +236,11 @@ export function appReducer(state, action) {
       state.isListPanelVisible,
       action
     ),
-    position: position(state.position, action),
+    position: positionReducer(state.position, action),
   };
 }
 
-export function getInitialState() {
+export function getInitialState(): AppState {
   return {
     stakeholders: [],
     defaultCoordinates: DEFAULT_COORDINATES,
@@ -210,13 +260,28 @@ export function getInitialState() {
   };
 }
 
-const AppStateContext = createContext({
+interface AppStateContextValue {
+  state: AppState;
+  dispatch: Dispatch<AppAction>;
+}
+
+const noopDispatch: Dispatch<AppAction> = () => {
+  if (import.meta.env.DEV) {
+    console.warn("dispatch called outside AppStateProvider");
+  }
+};
+
+const AppStateContext = createContext<AppStateContextValue>({
   state: getInitialState(),
-  dispatch: () => {},
+  dispatch: noopDispatch,
 });
 
-export function AppStateProvider({ children }) {
-  const [state, dispatch] = useReducer(appReducer, getInitialState());
+interface AppStateProviderProps {
+  children: ReactNode;
+}
+
+export function AppStateProvider({ children }: AppStateProviderProps) {
+  const [state, dispatch] = useReducer(appReducer, undefined, getInitialState);
 
   const value = useMemo(() => {
     return {
@@ -232,85 +297,85 @@ export function AppStateProvider({ children }) {
   );
 }
 
-export function useAppState() {
+export function useAppState(): AppState {
   return useContext(AppStateContext).state;
 }
 
-export function useAppDispatch() {
+export function useAppDispatch(): Dispatch<AppAction> {
   return useContext(AppStateContext).dispatch;
 }
 
-export function useDefaultCoordinates() {
+export function useDefaultCoordinates(): Coordinates {
   const { defaultCoordinates } = useAppState();
   return defaultCoordinates;
 }
 
-export function useSearchCoordinates() {
+export function useSearchCoordinates(): Coordinates | null {
   const { searchCoordinates } = useAppState();
   return searchCoordinates;
 }
 
-export function useSelectedOrganization() {
+export function useSelectedOrganization(): SearchStakeholder | null {
   const { selectedOrganization } = useAppState();
   return selectedOrganization;
 }
 
-export function useHoveredOrganization() {
+export function useHoveredOrganization(): SearchStakeholder | null {
   const { hoveredOrganization } = useAppState();
   return hoveredOrganization;
 }
 
-export function useUserCoordinates() {
+export function useUserCoordinates(): Coordinates | null {
   const { userCoordinates } = useAppState();
   return userCoordinates;
 }
 
-export function useNeighborhood() {
+export function useNeighborhood(): AppNeighborhood | null {
   const { neighborhood } = useAppState();
   return neighborhood;
 }
 
-export function useWidget() {
+export function useWidget(): boolean {
   const { isWidget } = useAppState();
   return isWidget;
 }
 
-export function useStakeholders() {
+export function useStakeholders(): SearchStakeholder[] {
   const { stakeholders } = useAppState();
   return stakeholders;
 }
 
-export function useFilterPanel() {
+export function useFilterPanel(): boolean {
   const { filterPanel } = useAppState();
   return filterPanel;
 }
 
-export function useOrgNameFilter() {
+export function useOrgNameFilter(): string {
   const { orgNameFilter } = useAppState();
   return orgNameFilter;
 }
 
-export function useOpenTimeFilter() {
+export function useOpenTimeFilter(): OpenTimeFilter {
   const { openTimeFilter } = useAppState();
   return openTimeFilter;
 }
 
-export function useFoodTypeFilter() {
+export function useFoodTypeFilter(): string[] {
   const { foodTypeFilter } = useAppState();
   return foodTypeFilter;
 }
 
-export function useListPanel() {
+export function useListPanel(): boolean {
   const { listPanel } = useAppState();
   return listPanel;
 }
 
-export function useIsListPanelVisible() {
+export function useIsListPanelVisible(): boolean {
   const { isListPanelVisible } = useAppState();
   return isListPanelVisible;
 }
 
-export function usePosition() {
+export function usePosition(): AppPosition {
   const { position } = useAppState();
   return position;
 }

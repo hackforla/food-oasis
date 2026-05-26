@@ -1,3 +1,4 @@
+import type { ComponentProps } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PhoneIcon from "@mui/icons-material/Phone";
 import SubdirectoryArrowRightIcon from "@mui/icons-material/SubdirectoryArrowRight";
@@ -31,7 +32,6 @@ import {
 import AppleIcon from "icons/AppleIcon";
 import ForkIcon from "icons/ForkIcon";
 import StakeholderIcon from "images/stakeholderIcon";
-import PropTypes from "prop-types";
 import * as analytics from "services/analytics";
 import {
   useAppDispatch,
@@ -39,10 +39,12 @@ import {
   useSearchCoordinates,
   useUserCoordinates,
 } from "../../../../appReducer";
+import type { SearchStakeholder } from "../../../../types/appState";
+import type { Hour } from "../../../../types/Stakeholder";
 import { linkText, success } from "../../../../theme/palette";
 import HighlightedText from "./HighlightedText";
 
-const isLastOccurrenceInMonth = (tenantTimeZone) => {
+const isLastOccurrenceInMonth = (tenantTimeZone: string) => {
   const currentDate = new Date();
   const currentDatePlus7Days = new Date();
   currentDatePlus7Days.setDate(currentDatePlus7Days.getDate() + 7);
@@ -65,10 +67,10 @@ const isLastOccurrenceInMonth = (tenantTimeZone) => {
 
 // pass in date object to check if it is Open
 export const stakeholdersDaysHours = (
-  stakeholder,
-  tenantTimeZone,
-  dateToCheck
-) => {
+  stakeholder: SearchStakeholder,
+  tenantTimeZone: string,
+  dateToCheck: Date
+): Hour[] | undefined => {
   const timeZone = tenantTimeZone;
   const currentDayOfWeek = formatDatewTimeZoneWeekdayShort(
     dateToCheck,
@@ -84,6 +86,7 @@ export const stakeholdersDaysHours = (
 
   const currentDaysHoursOfOperation =
     stakeholder.hours &&
+    currentTime &&
     stakeholder.hours.filter((todaysHours) => {
       const hasHoursToday = currentDayOfWeek === todaysHours.day_of_week;
 
@@ -100,17 +103,22 @@ export const stakeholdersDaysHours = (
           isOnlyOpenOnLastWeekOfMonth)
       );
     });
-  if (currentDaysHoursOfOperation?.length > 0) {
+  if (currentDaysHoursOfOperation && currentDaysHoursOfOperation.length > 0) {
     return currentDaysHoursOfOperation;
   }
 };
 
-function getLinkUrl(organization) {
+function getLinkUrl(organization: SearchStakeholder) {
   const name = organization.name.toLowerCase().replaceAll(" ", "_");
   return `${location.pathname}?latitude=${organization.latitude}&longitude=${organization.longitude}&org=${name}&id=${organization.id}`;
 }
 
-const StakeholderPreview = ({ stakeholder, onSelect }) => {
+interface StakeholderPreviewProps {
+  stakeholder: SearchStakeholder;
+  onSelect: () => void;
+}
+
+const StakeholderPreview = ({ stakeholder, onSelect }: StakeholderPreviewProps) => {
   const dispatch = useAppDispatch();
   const searchCoordinates = useSearchCoordinates();
   const userCoordinates = useUserCoordinates();
@@ -118,7 +126,7 @@ const StakeholderPreview = ({ stakeholder, onSelect }) => {
   const { tenantTimeZone } = useSiteContext();
   const orgNameFilter = useOrgNameFilter();
 
-  const handleSelectOrganization = (organization) => {
+  const handleSelectOrganization = (organization: SearchStakeholder) => {
     onSelect();
     dispatch({ type: "SELECTED_ORGANIZATION_UPDATED", organization });
     analytics.postEvent("selectOrganization", {
@@ -153,11 +161,13 @@ const StakeholderPreview = ({ stakeholder, onSelect }) => {
     <Grid2 container key={stakeholder.id} p={2} gap={2} flex={1}>
       <Grid2 xs={1} onClick={() => handleSelectOrganization(stakeholder)}>
         <Stack
-          xs={2}
-          direction="column"
-          justifyContent="flex-start"
-          alignItems="center"
-          gap={2}
+          {...({
+            xs: 2,
+            direction: "column",
+            justifyContent: "flex-start",
+            alignItems: "center",
+            gap: 2,
+          } as ComponentProps<typeof Stack>)}
         >
           <StakeholderIcon stakeholder={stakeholder} />
           <Typography variant="body2" align="center">
@@ -167,7 +177,12 @@ const StakeholderPreview = ({ stakeholder, onSelect }) => {
       </Grid2>
 
       <Grid2 xs={10} flexGrow={1}>
-        <Stack direction="column" xs={10}>
+        <Stack
+          {...({
+            direction: "column",
+            xs: 10,
+          } as ComponentProps<typeof Stack>)}
+        >
           <Stack sx={{ cursor: "pointer" }}>
             <Typography
               variant="h4"
@@ -200,17 +215,19 @@ const StakeholderPreview = ({ stakeholder, onSelect }) => {
                 .filter((c) => c.isForFoodSeeker)
                 .map((category, index) => (
                   <Stack
-                    direction="row"
-                    alignItems="center"
-                    spacing={1}
-                    useflexgap="true"
-                    key={`${index}-${category}`}
-                    sx={{
-                      order:
-                        category.id === MEAL_PROGRAM_CATEGORY_ID
-                          ? -1
-                          : undefined,
-                    }}
+                    {...({
+                      direction: "row",
+                      alignItems: "center",
+                      spacing: 1,
+                      useflexgap: "true",
+                      key: `${index}-${category}`,
+                      sx: {
+                        order:
+                          category.id === MEAL_PROGRAM_CATEGORY_ID
+                            ? -1
+                            : undefined,
+                      },
+                    } as ComponentProps<typeof Stack>)}
                   >
                     {category.id === FOOD_PANTRY_CATEGORY_ID ? (
                       <AppleIcon />
@@ -462,11 +479,13 @@ const StakeholderPreview = ({ stakeholder, onSelect }) => {
             </InternalLink>
           </Stack>
           <Stack
-            direction="row"
-            justifyContent="start"
-            spacing={1}
-            useflexgap="true"
-            sx={{ marginTop: "1em" }}
+            {...({
+              direction: "row",
+              justifyContent: "start",
+              spacing: 1,
+              useflexgap: "true",
+              sx: { marginTop: "1em" },
+            } as ComponentProps<typeof Stack>)}
           >
             <Button
               variant="gray"
@@ -510,11 +529,6 @@ const StakeholderPreview = ({ stakeholder, onSelect }) => {
       </Grid2>
     </Grid2>
   );
-};
-
-StakeholderPreview.propTypes = {
-  stakeholder: PropTypes.object.isRequired,
-  onSelect: PropTypes.func,
 };
 
 export default StakeholderPreview;

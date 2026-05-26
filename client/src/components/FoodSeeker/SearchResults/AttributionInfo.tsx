@@ -1,4 +1,8 @@
-import React, { useState } from "react";
+import { MAPBOX_ACCESS_TOKEN, DEFAULT_VIEWPORT } from "helpers/Constants";
+import { useState } from "react";
+
+const { longitude, latitude } = DEFAULT_VIEWPORT.center;
+const mapFeedbackHref = `https://apps.mapbox.com/feedback/?owner=mapbox&id=streets-v11&access_token=${MAPBOX_ACCESS_TOKEN}#/${longitude}/${latitude}/11`;
 
 const AttributionInfo = () => {
   const [toggle, setToggle] = useState(true);
@@ -111,7 +115,7 @@ const AttributionInfo = () => {
                   fontWeight: "700",
                   paddingRight: "5px",
                 }}
-                href="https://apps.mapbox.com/feedback/?owner=mapbox&amp;id=streets-v11&amp;access_token=pk.eyJ1IjoibHVjYXNob21lciIsImEiOiJjazFqcnRjcm0wNmZ1M2JwZXg2eDFzMXd3In0.yYpkKLrFCxF-qyBfZH1a8w#/-118.2439/34.0355/11"
+                href={mapFeedbackHref}
                 target="_blank"
                 aria-label="Map feedback"
                 rel="noopener nofollow noreferrer"

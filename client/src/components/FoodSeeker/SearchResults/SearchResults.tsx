@@ -3,7 +3,10 @@ import useCategoryIds from "hooks/useCategoryIds";
 import useNeighborhoodsGeoJSON from "hooks/useNeighborhoodsGeoJSON";
 import useOrganizationBests from "hooks/useOrganizationBests";
 import { useInitializeCategoryFilter } from "hooks/useInitializeCategoryFilter";
-import { FOOD_PANTRY_CATEGORY_ID, MEAL_PROGRAM_CATEGORY_ID } from "constants/stakeholder";
+import {
+  FOOD_PANTRY_CATEGORY_ID,
+  MEAL_PROGRAM_CATEGORY_ID,
+} from "constants/stakeholder";
 import { useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import * as analytics from "services/analytics";
@@ -14,17 +17,32 @@ import {
   useSearchCoordinates,
   useStakeholders,
 } from "../../../appReducer";
+import type { DraggablePosition } from "../../../types/appState";
 import Filters from "./ResultsFilters/ResultsFilters";
 import List from "./ResultsList/ResultsList";
 import Map from "./ResultsMap/ResultsMap";
 import { Desktop, Mobile } from "./layouts";
 import SEO from "../../SEO";
 
+function isDraggablePosition(
+  position: unknown
+): position is DraggablePosition {
+  return (
+    typeof position === "object" &&
+    position !== null &&
+    "y" in position &&
+    typeof (position as DraggablePosition).y === "number"
+  );
+}
+
 const SearchResults = () => {
   const isListPanelVisible = useIsListPanelVisible();
   const { isDesktop } = useBreakpoints();
   const { selectAll, loading } = useOrganizationBests();
-  const { categoryIds, toggleCategory } = useCategoryIds([FOOD_PANTRY_CATEGORY_ID, MEAL_PROGRAM_CATEGORY_ID]);
+  const { categoryIds, toggleCategory } = useCategoryIds([
+    FOOD_PANTRY_CATEGORY_ID,
+    MEAL_PROGRAM_CATEGORY_ID,
+  ]);
   useInitializeCategoryFilter({ categoryIds, toggleCategory });
   const { getGeoJSONById } = useNeighborhoodsGeoJSON();
   const [showList, setShowList] = useState(true);
@@ -37,7 +55,7 @@ const SearchResults = () => {
 
   const lat = parseFloat(params.get("lat") || "");
   const lng = parseFloat(params.get("lng") || "");
-  const initialZoom = parseFloat(params.get("zoom")) || 11;
+  const initialZoom = parseFloat(params.get("zoom") || "") || 11;
   const longitudeOffset = 0.08 * Math.pow(2, 11 - initialZoom);
 
   const orgNameFilter = params.get("name") || "";
@@ -59,7 +77,7 @@ const SearchResults = () => {
           type: "ORG_NAME_FILTER_UPDATED",
           orgNameFilter,
         });
-      } 
+      }
 
       if (radio && radio !== "Show All") {
         dispatch({
@@ -71,15 +89,21 @@ const SearchResults = () => {
           },
         });
       }
-    } catch(err) {
-      console.error(err)
+    } catch (err) {
+      console.error(err);
     }
+    // Apply URL query params once on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const stakeholders = useStakeholders();
   const positionDraggable = usePosition();
 
   useEffect(() => {
+    if (!isDraggablePosition(positionDraggable)) {
+      return;
+    }
+
     const windowHeightPercentage = window.innerHeight / 100;
     const triggerHeightTop = 54 * windowHeightPercentage;
 
@@ -125,14 +149,24 @@ const SearchResults = () => {
       if (neighborhoodId) {
         try {
           const neighborhood = await getGeoJSONById(neighborhoodId);
-          const coordinates = {
-            latitude: neighborhood.centroidLatitude,
-            longitude: neighborhood.centroidLongitude,
-          };
+          const latitude = neighborhood.centroidLatitude;
+          const longitude = neighborhood.centroidLongitude;
+
+          if (latitude == null || longitude == null) {
+            console.error(
+              "Neighborhood is missing centroid coordinates:",
+              neighborhoodId
+            );
+            return;
+          }
+
           dispatch({
             type: "NEIGHBORHOOD_UPDATED",
             neighborhood,
-            coordinates,
+            coordinates: {
+              latitude,
+              longitude,
+            },
           });
         } catch (err) {
           console.error(err);
@@ -145,7 +179,11 @@ const SearchResults = () => {
   useEffect(() => {
     selectAll({ categoryIds });
 
-    analytics.postEvent("searchArea");
+    try {
+      analytics.postEvent("searchArea");
+    } catch (err) {
+      console.error(err);
+    }
   }, [categoryIds, selectAll, neighborhoodId, dispatch]);
 
   useEffect(() => {
@@ -156,11 +194,13 @@ const SearchResults = () => {
   }, [location.search]);
 
   useEffect(() => {
-    if (!searchCoordinates && stakeholders && organizationId) {
+    if (!searchCoordinates && stakeholders?.length && organizationId) {
       const organization = stakeholders.find(
         (stakeholder) => stakeholder.id === Number(organizationId)
       );
-      dispatch({ type: "SELECTED_ORGANIZATION_UPDATED", organization });
+      if (organization) {
+        dispatch({ type: "SELECTED_ORGANIZATION_UPDATED", organization });
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stakeholders]);
@@ -178,12 +218,7 @@ const SearchResults = () => {
   }, [isListPanelVisible]);
 
   const filters = (
-    <Filters
-      categoryIds={categoryIds}
-      toggleCategory={toggleCategory}
-      showList={showList}
-      toggleShowList={toggleShowList}
-    />
+    <Filters showList={showList} toggleShowList={toggleShowList} />
   );
 
   const map = (
@@ -212,7 +247,6 @@ const SearchResults = () => {
       {isDesktop ? (
         <Desktop
           filters={filters}
-          map={map}
           list={list}
           stakeholders={stakeholders}
           categoryIds={categoryIds}

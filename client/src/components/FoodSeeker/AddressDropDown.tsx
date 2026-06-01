@@ -6,8 +6,9 @@ import {
   TextField,
   useTheme,
 } from "@mui/material";
-import { useMapboxGeocoder } from "hooks/useMapboxGeocoder";
-import { useEffect, useState } from "react";
+import type { AutocompleteRenderInputParams } from "@mui/material/Autocomplete";
+import { useMapboxGeocoder, type MapboxResult } from "hooks/useMapboxGeocoder";
+import { useEffect, useState, type HTMLAttributes, type KeyboardEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import * as analytics from "services/analytics";
 import {
@@ -17,9 +18,19 @@ import {
   useUserCoordinates,
   useWidget,
 } from "../../appReducer";
+import type { SearchStakeholder } from "../../types/appState";
 import { useMapbox } from "../../hooks/useMapbox";
 
-export default function AddressDropDown({ autoFocus }) {
+interface AddressDropDownProps {
+  autoFocus?: boolean;
+}
+
+type NoMatchOption = { type: "no-match"; value: null };
+type MapboxOption = { type: "mapbox"; value: MapboxResult };
+type StakeholderOption = { type: "stakeholder"; value: SearchStakeholder };
+export type AddressOption = NoMatchOption | MapboxOption | StakeholderOption;
+
+export default function AddressDropDown({ autoFocus }: AddressDropDownProps) {
   const theme = useTheme();
   const searchCoordinates = useSearchCoordinates();
   const userCoordinates = useUserCoordinates();
@@ -32,17 +43,22 @@ export default function AddressDropDown({ autoFocus }) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { flyTo } = useMapbox();
-  const [highlightedOption, setHighlightedOption] = useState(null);
+  const [highlightedOption, setHighlightedOption] =
+    useState<MapboxOption | null>(null);
   const stakeholders = useStakeholders();
 
-  const stakeholderOptions = stakeholders?.map((stakeholder) => ({
-    type: "stakeholder",
-    value: stakeholder,
-  }));
-  const mapboxOptions = mapboxResults.slice(0, 10).map((result) => ({
-    type: "mapbox",
-    value: result,
-  }));
+  const stakeholderOptions: StakeholderOption[] = stakeholders.map(
+    (stakeholder) => ({
+      type: "stakeholder",
+      value: stakeholder,
+    })
+  );
+  const mapboxOptions: MapboxOption[] = mapboxResults
+    .slice(0, 10)
+    .map((result) => ({
+      type: "mapbox",
+      value: result,
+    }));
 
   const filteredStakeholders = stakeholderOptions.filter((option) => {
     if (inputVal.trim().length === 0) return true;
@@ -63,7 +79,7 @@ export default function AddressDropDown({ autoFocus }) {
     filteredStakeholders.length === 0 &&
     inputVal !== searchCoordinates?.locationName;
 
-  const combinedOptions = showNoMatch
+  const combinedOptions: AddressOption[] = showNoMatch
     ? [{ type: "no-match", value: null }]
     : [...mapboxOptions, ...filteredStakeholders];
 
@@ -73,17 +89,22 @@ export default function AddressDropDown({ autoFocus }) {
     }
   }, [userCoordinates]);
 
-  const handleInputChange = (delta) => {
+  const handleInputChange = (
+    delta: React.SyntheticEvent | string | null | undefined
+  ) => {
     if (!delta) return;
-    const safeValue = typeof delta === "string" ? delta : delta.target.value;
+    const safeValue =
+      typeof delta === "string"
+        ? delta
+        : (delta as React.ChangeEvent<HTMLInputElement>).target?.value ?? "";
     setInputVal(safeValue);
     if (safeValue) {
       fetchMapboxResults(safeValue);
     }
   };
 
-  const handleAutocompleteOnChange = (selectedResult) => {
-    let result;
+  const handleAutocompleteOnChange = (selectedResult: AddressOption) => {
+    let result: string;
     if (selectedResult.type === "mapbox") {
       result = selectedResult.value.place_name;
       const [longitude, latitude] = selectedResult.value.center;
@@ -110,14 +131,14 @@ export default function AddressDropDown({ autoFocus }) {
       const { longitude, latitude } = selectedResult.value;
 
       flyTo({
-        latitude,
-        longitude,
+        latitude: parseFloat(String(latitude)),
+        longitude: parseFloat(String(longitude)),
       });
       dispatch({
         type: "SEARCH_COORDINATES_UPDATED",
         coordinates: {
-          latitude,
-          longitude,
+          latitude: parseFloat(String(latitude)),
+          longitude: parseFloat(String(longitude)),
           locationName: getNameAndAddress(selectedResult.value),
         },
       });
@@ -130,7 +151,7 @@ export default function AddressDropDown({ autoFocus }) {
     setInputVal(result);
   };
 
-  const renderInput = (params) => {
+  const renderInput = (params: AutocompleteRenderInputParams) => {
     return (
       <TextField
         sx={{
@@ -153,6 +174,7 @@ export default function AddressDropDown({ autoFocus }) {
           },
         }}
         InputProps={{
+          ...params.InputProps,
           sx: {
             cursor: "pointer",
             backgroundColor: "#F0F0F0",
@@ -171,19 +193,22 @@ export default function AddressDropDown({ autoFocus }) {
               <SearchIcon />
             </InputAdornment>
           ),
-          ...params.InputProps,
         }}
       />
     );
   };
 
-  const renderOption = (props, option) => {
-    const { id } = props;
+  const renderOption = (
+    props: HTMLAttributes<HTMLLIElement>,
+    option: AddressOption
+  ) => {
+    const { id } = props as HTMLAttributes<HTMLLIElement> & { id?: string };
+    const menuItemProps = props as Record<string, unknown>;
 
     if (option.type === "no-match") {
       return (
         <MenuItem
-          {...props}
+          {...menuItemProps}
           key="no-match"
           component="div"
           disabled
@@ -196,7 +221,7 @@ export default function AddressDropDown({ autoFocus }) {
 
     return (
       <MenuItem
-        {...props}
+        {...menuItemProps}
         key={id}
         component="div"
         onClick={() => handleAutocompleteOnChange(option)}
@@ -206,7 +231,7 @@ export default function AddressDropDown({ autoFocus }) {
     );
   };
 
-  const handleKeyDown = (event) => {
+  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.key === "Enter" && !isLoading) {
       event.preventDefault();
       if (mapboxOptions.length > 0) {
@@ -221,9 +246,11 @@ export default function AddressDropDown({ autoFocus }) {
       <Autocomplete
         disableCloseOnSelect
         autoHighlight
-        onInputChange={(value) => handleInputChange(value)}
+        onInputChange={(_event, value) => handleInputChange(value)}
         onHighlightChange={(_event, option) => {
-          setHighlightedOption(option);
+          setHighlightedOption(
+            option?.type === "mapbox" ? option : null
+          );
         }}
         freeSolo
         inputValue={inputVal}
@@ -232,6 +259,10 @@ export default function AddressDropDown({ autoFocus }) {
         onClose={() => setOpen(false)}
         onKeyDown={handleKeyDown}
         onChange={(_event, newValue) => {
+          if (typeof newValue === "string") {
+            setInputVal(newValue);
+            return;
+          }
           setInputVal(newValue ? getOptionLabel(newValue) : "");
         }}
         options={combinedOptions}
@@ -282,7 +313,7 @@ export default function AddressDropDown({ autoFocus }) {
   );
 }
 
-function getNameAndAddress(stakeholder) {
+function getNameAndAddress(stakeholder: SearchStakeholder): string {
   return (
     (stakeholder.name ?? "") +
     (stakeholder.address1 ? `, ${stakeholder.address1}` : "") +
@@ -291,7 +322,10 @@ function getNameAndAddress(stakeholder) {
   );
 }
 
-export function getOptionLabel(option) {
+export function getOptionLabel(option: AddressOption | string): string {
+  if (typeof option === "string") {
+    return option;
+  }
   if (option.type === "no-match") {
     return "No match found";
   }

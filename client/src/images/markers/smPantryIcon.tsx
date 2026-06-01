@@ -1,4 +1,6 @@
-const SmPantryIcon = (props) => (
+import type { SvgIconProps } from "../../types/svgIcon";
+
+const SmPantryIcon = (props: SvgIconProps) => (
     <svg 
         {...props}
         viewBox="0 0 50 64"

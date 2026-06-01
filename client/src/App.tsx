@@ -4,9 +4,7 @@ import { SiteProvider } from "./contexts/siteContext";
 import { ToasterProvider } from "contexts/toasterContext";
 import { UserProvider } from "contexts/userContext";
 import { HelmetProvider } from "react-helmet-async";
-import {
-  BrowserRouter as Router
-} from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import { ThemeProvider } from "theme";
 import * as analytics from "./services/analytics";
 import { AppStateProvider } from "./appReducer";
@@ -16,7 +14,11 @@ import { MapProvider } from "react-map-gl";
 
 function App() {
   useEffect(() => {
-    analytics.postEvent("visitAppComponent");
+    try {
+      analytics.postEvent("visitAppComponent");
+    } catch (err) {
+      console.error(err);
+    }
   }, []);
 
   return (

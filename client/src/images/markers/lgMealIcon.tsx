@@ -1,4 +1,6 @@
-const LgMealIcon = (props) => (
+import type { SvgIconProps } from "../../types/svgIcon";
+
+const LgMealIcon = (props: SvgIconProps) => (
     <svg
         {...props}
         viewBox="0 0 62 80"

@@ -62,6 +62,17 @@ const verificationStatusNames = VERIFICATION_STATUS_NAMES as Record<
   number,
   string
 >;
+const optionalEmailSchema = Yup.string().test(
+  "valid-optional-email",
+  "Invalid email address format",
+  (value) => {
+    const normalizedValue = value?.trim() ?? "";
+    return (
+      normalizedValue === "" ||
+      Yup.string().email().isValidSync(normalizedValue)
+    );
+  }
+);
 
 const HourSchema = Yup.object().shape({
   weekOfMonth: Yup.number().required("Interval is required."),
@@ -106,7 +117,9 @@ const validationSchema = Yup.object().shape({
         return Number(value) >= minLng && Number(value) <= maxLng;
       }
     ),
-  email: Yup.string().email("Invalid email address format"),
+  email: optionalEmailSchema,
+  adminContactEmail: optionalEmailSchema,
+  donationContactEmail: optionalEmailSchema,
   hours: Yup.array()
     .of(HourSchema)
     .test("no-duplicate-hours", function (value) {
@@ -470,6 +483,8 @@ const OrganizationEdit = () => {
     pinterest: "Pinterest URL",
     facebook: "Facebook URL",
     linkedin: "LinkedIn URL",
+    donationContactEmail: "Donation Email",
+    adminContactEmail: "Verification Email",
     confirmedName: "Name",
     confirmedCategories: "Categories",
     confirmedAddress: "Address",
@@ -496,6 +511,8 @@ const OrganizationEdit = () => {
     pinterest: 2,
     facebook: 2,
     linkedin: 2,
+    donationContactEmail: 4,
+    adminContactEmail: 5,
   };
 
   const confirmationFieldToTab: Record<string, number> = {
@@ -916,6 +933,8 @@ const OrganizationEdit = () => {
 
               const payload = {
                 ...values,
+                adminContactEmail: values.adminContactEmail?.trim() ?? "",
+                donationContactEmail: values.donationContactEmail?.trim() ?? "",
                 latitude: Number(values.latitude),
                 longitude: Number(values.longitude),
                 loginId: user.id,

@@ -19,6 +19,7 @@ interface SuggestionHistoryProps {
   editedSuggestions: EditedSuggestions;
   onEdit?: (id: number, changes: Partial<Suggestion>) => void;
   showNewOnly?: boolean;
+  confirmationErrors?: Record<string, string>;
 }
 
 function formatDate(dateStr?: string) {

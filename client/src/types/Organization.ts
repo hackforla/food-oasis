@@ -128,6 +128,7 @@ export interface OrganizationSectionBaseProps {
   errors: FormikErrors<OrganizationFormValues>;
   handleChange: (event: React.ChangeEvent<any>) => void;
   handleBlur: (event: React.FocusEvent<any>) => void;
+  confirmationErrors?: Record<string, string>;
 }
 
 export interface OrganizationSectionWithSetFieldValueProps

@@ -215,12 +215,12 @@ const StakeholderPreview = ({ stakeholder, onSelect }: StakeholderPreviewProps) 
                 .filter((c) => c.isForFoodSeeker)
                 .map((category, index) => (
                   <Stack
+                    key={`${index}-${category}`}
                     {...({
                       direction: "row",
                       alignItems: "center",
                       spacing: 1,
                       useflexgap: "true",
-                      key: `${index}-${category}`,
                       sx: {
                         order:
                           category.id === MEAL_PROGRAM_CATEGORY_ID

@@ -36,9 +36,7 @@ export default function Menu(): React.ReactElement {
   const unAuthLinks = (
     <>
       <Divider />
-      <MenuItemLink key="login" to="/admin/login" text="Volunteer Login">
-        Login
-      </MenuItemLink>
+      <MenuItemLink key="login" to="/admin/login" text="Volunteer Login" />
     </>
   );
 

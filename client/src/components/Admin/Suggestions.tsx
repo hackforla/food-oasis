@@ -313,183 +313,189 @@ function Suggestions() {
             aria-labelledby="parent-org-modal"
             aria-describedby="parent-org-modal-description"
           >
-            <Formik
-              initialValues={{
-                adminNotes: activeOrg.adminNotes || "",
-                suggestionStatusId: activeOrg.suggestionStatusId || 1,
-              }}
-              onSubmit={(values) => handleSave(values)}
-            >
-              {({
-                values,
-                handleChange,
-                handleSubmit,
-                touched,
-                errors,
-                isSubmitting,
-              }) => (
-                <Paper
-                  style={modalStyle}
-                  sx={(theme) => ({
-                    position: "absolute",
-                    backgroundColor: theme.palette.background.paper,
-                    boxShadow: theme.shadows[5],
-                    padding: theme.spacing(2, getIsMobile() ? 1 : 4, 3),
-                  })}
-                >
-                  <div
-                    id="simple-modal-title"
-                    style={{
-                      display: "flex",
-                      flexDirection: isMobile ? "column" : "row",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                    }}
+            <Box>
+              <Formik
+                initialValues={{
+                  adminNotes: activeOrg.adminNotes || "",
+                  suggestionStatusId: activeOrg.suggestionStatusId || 1,
+                }}
+                onSubmit={(values) => handleSave(values)}
+              >
+                {({
+                  values,
+                  handleChange,
+                  handleSubmit,
+                  touched,
+                  errors,
+                  isSubmitting,
+                }) => (
+                  <Paper
+                    style={modalStyle}
+                    sx={(theme) => ({
+                      position: "absolute",
+                      backgroundColor: theme.palette.background.paper,
+                      boxShadow: theme.shadows[5],
+                      padding: theme.spacing(2, getIsMobile() ? 1 : 4, 3),
+                    })}
                   >
-                    <h1
+                    <div
+                      id="simple-modal-title"
                       style={{
-                        width: isMobile ? "90%" : "80%",
+                        display: "flex",
+                        flexDirection: isMobile ? "column" : "row",
+                        alignItems: "center",
+                        justifyContent: "space-between",
                       }}
                     >
-                      {activeOrg.name}
-                    </h1>
-                    <FormControl
-                      sx={(theme) => ({
-                        margin: theme.spacing(1),
-                        minWidth: 180,
-                      })}
-                    >
-                      <InputLabel id="status-select">Status</InputLabel>
-                      <Select
-                        labelId="status-select"
-                        id="suggestionStatusId"
-                        name="suggestionStatusId"
-                        value={values.suggestionStatusId}
-                        onChange={handleChange}
+                      <h1
+                        style={{
+                          width: isMobile ? "90%" : "80%",
+                        }}
                       >
-                        {FILTERS.map((status) => (
-                          <MenuItem key={status.id} value={status.id}>
-                            {status.name}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  </div>
-                  <form
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      handleSubmit();
-                    }}
-                  >
-                    <List>
-                      <DisplayText
-                        label="Address 1"
-                        value={activeOrg.address1}
-                        icon={<HomeIcon />}
-                      />
-                      <Divider variant="inset" component="li" />
-                      <DisplayText
-                        label="Address 2"
-                        value={activeOrg.address2}
-                        icon={<HomeIcon />}
-                      />
-                      <Divider variant="inset" component="li" />
-                      <DisplayText
-                        label="City"
-                        value={activeOrg.city}
-                        icon={<LocationCityIcon />}
-                      />
-                      <Divider variant="inset" component="li" />
-                      <DisplayText
-                        label="Email"
-                        value={activeOrg.email}
-                        icon={<EmailIcon />}
-                      />
-                      <Divider variant="inset" component="li" />
-                      <DisplayText
-                        label="Phone"
-                        value={activeOrg.phone}
-                        icon={<PhoneIcon />}
-                      />
-                      <Divider variant="inset" component="li" />
-                      <DisplayText
-                        label="Category"
-                        value={activeOrg.category}
-                        icon={<CategoryIcon />}
-                      />
-                      <Divider variant="inset" component="li" />
-                      <DisplayText
-                        label="Hours"
-                        value={activeOrg.hours}
-                        icon={<AccessTimeIcon />}
-                      />
-                    </List>
-                    <Divider style={{ margin: "1em 0" }} />
-                    <div>
-                      <Label id="adminNotes" label="Admin Notes" />
-                      <Textarea
-                        placeholder="Admin Notes"
-                        id="adminNotes"
-                        name="adminNotes"
-                        value={values.adminNotes || ""}
-                        onChange={handleChange}
-                        helperText={touched.adminNotes ? errors.adminNotes : ""}
-                        error={touched.adminNotes && Boolean(errors.adminNotes)}
-                        fullWidth
-                      />
+                        {activeOrg.name}
+                      </h1>
+                      <FormControl
+                        sx={(theme) => ({
+                          margin: theme.spacing(1),
+                          minWidth: 180,
+                        })}
+                      >
+                        <InputLabel id="status-select">Status</InputLabel>
+                        <Select
+                          labelId="status-select"
+                          id="suggestionStatusId"
+                          name="suggestionStatusId"
+                          value={values.suggestionStatusId}
+                          onChange={handleChange}
+                        >
+                          {FILTERS.map((status) => (
+                            <MenuItem key={status.id} value={status.id}>
+                              {status.name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
                     </div>
-                    <List>
-                      <DisplayText
-                        label="Tipster Notes"
-                        value={activeOrg.notes}
-                        icon={<AssessmentIcon />}
-                      />
-                      <Divider variant="inset" component="li" />
-                      <DisplayText
-                        label="Tipster Name"
-                        value={activeOrg.tipsterName}
-                        icon={<PersonIcon />}
-                      />
-                      <Divider variant="inset" component="li" />
-                      <DisplayText
-                        label="Tipster Email"
-                        value={activeOrg.tipsterEmail}
-                        icon={<EmailIcon />}
-                      />
-                      <Divider variant="inset" component="li" />
-                      <DisplayText
-                        label="Tipster Phone"
-                        value={activeOrg.tipsterPhone}
-                        icon={<PhoneIphoneIcon />}
-                      />
-                    </List>
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        handleSubmit();
+                      }}
+                    >
+                      <List>
+                        <DisplayText
+                          label="Address 1"
+                          value={activeOrg.address1}
+                          icon={<HomeIcon />}
+                        />
+                        <Divider variant="inset" component="li" />
+                        <DisplayText
+                          label="Address 2"
+                          value={activeOrg.address2}
+                          icon={<HomeIcon />}
+                        />
+                        <Divider variant="inset" component="li" />
+                        <DisplayText
+                          label="City"
+                          value={activeOrg.city}
+                          icon={<LocationCityIcon />}
+                        />
+                        <Divider variant="inset" component="li" />
+                        <DisplayText
+                          label="Email"
+                          value={activeOrg.email}
+                          icon={<EmailIcon />}
+                        />
+                        <Divider variant="inset" component="li" />
+                        <DisplayText
+                          label="Phone"
+                          value={activeOrg.phone}
+                          icon={<PhoneIcon />}
+                        />
+                        <Divider variant="inset" component="li" />
+                        <DisplayText
+                          label="Category"
+                          value={activeOrg.category}
+                          icon={<CategoryIcon />}
+                        />
+                        <Divider variant="inset" component="li" />
+                        <DisplayText
+                          label="Hours"
+                          value={activeOrg.hours}
+                          icon={<AccessTimeIcon />}
+                        />
+                      </List>
+                      <Divider style={{ margin: "1em 0" }} />
+                      <div>
+                        <Label id="adminNotes" label="Admin Notes" />
+                        <Textarea
+                          placeholder="Admin Notes"
+                          id="adminNotes"
+                          name="adminNotes"
+                          value={values.adminNotes || ""}
+                          onChange={handleChange}
+                          helperText={
+                            touched.adminNotes ? errors.adminNotes : ""
+                          }
+                          error={
+                            touched.adminNotes && Boolean(errors.adminNotes)
+                          }
+                          fullWidth
+                        />
+                      </div>
+                      <List>
+                        <DisplayText
+                          label="Tipster Notes"
+                          value={activeOrg.notes}
+                          icon={<AssessmentIcon />}
+                        />
+                        <Divider variant="inset" component="li" />
+                        <DisplayText
+                          label="Tipster Name"
+                          value={activeOrg.tipsterName}
+                          icon={<PersonIcon />}
+                        />
+                        <Divider variant="inset" component="li" />
+                        <DisplayText
+                          label="Tipster Email"
+                          value={activeOrg.tipsterEmail}
+                          icon={<EmailIcon />}
+                        />
+                        <Divider variant="inset" component="li" />
+                        <DisplayText
+                          label="Tipster Phone"
+                          value={activeOrg.tipsterPhone}
+                          icon={<PhoneIphoneIcon />}
+                        />
+                      </List>
 
-                    {error && (
-                      <Box
-                        sx={(theme) => ({ color: theme.palette.error.main })}
-                      >
-                        Something went wrong.
+                      {error && (
+                        <Box
+                          sx={(theme) => ({ color: theme.palette.error.main })}
+                        >
+                          Something went wrong.
+                        </Box>
+                      )}
+                      <Box mt={3} display="flex" justifyContent="space-between">
+                        <Button
+                          variant="outlined"
+                          onClick={() => setActiveOrg(null)}
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          variant="contained"
+                          type="submit"
+                          disabled={isSubmitting}
+                        >
+                          Save
+                        </Button>
                       </Box>
-                    )}
-                    <Box mt={3} display="flex" justifyContent="space-between">
-                      <Button
-                        variant="outlined"
-                        onClick={() => setActiveOrg(null)}
-                      >
-                        Cancel
-                      </Button>
-                      <Button
-                        variant="contained"
-                        type="submit"
-                        disabled={isSubmitting}
-                      >
-                        Save
-                      </Button>
-                    </Box>
-                  </form>
-                </Paper>
-              )}
-            </Formik>
+                    </form>
+                  </Paper>
+                )}
+              </Formik>
+            </Box>
           </Modal>
         )}
       </Paper>

@@ -14,6 +14,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import { SelectChangeEvent } from "@mui/material/Select";
 import { TabPanel } from "components/Admin/ui/TabPanel";
 import { useToasterContext } from "contexts/toasterContext";
 import { useCategories } from "hooks/useCategories";
@@ -121,6 +122,18 @@ export default function Identification({
         }
       : {};
 
+  const handleCategorySelectChange = (event: SelectChangeEvent<number[]>) => {
+    const { value } = event.target;
+    const selectedCategoryIds = Array.isArray(value)
+      ? value.map((item) => Number(item))
+      : String(value)
+          .split(",")
+          .map((item) => Number(item.trim()))
+          .filter((item) => !Number.isNaN(item));
+
+    setFieldValue("selectedCategoryIds", selectedCategoryIds);
+  };
+
   return (
     <TabPanel value={tabPage} index={0}>
       <Grid container spacing={2}>
@@ -140,30 +153,32 @@ export default function Identification({
               />
             </Stack>
 
-              <FormControlLabel
-                sx={{ mt: 5, ml: 0 }}
-                  componentsProps={{
-                  typography: {
-                    sx: {
-                      color: confirmationErrors["confirmedName"] ? "error.main" : "inherit",
-                    }
+            <FormControlLabel
+              sx={{ mt: 5, ml: 0 }}
+              componentsProps={{
+                typography: {
+                  sx: {
+                    color: confirmationErrors["confirmedName"]
+                      ? "error.main"
+                      : "inherit",
+                  },
+                },
+              }}
+              control={
+                <Checkbox
+                  name="confirmedName"
+                  value={values.confirmedName}
+                  checked={values.confirmedName}
+                  sx={confirmationErrorSx("confirmedName")}
+                  onChange={(e) =>
+                    setFieldValue("confirmedName", e.target.checked)
                   }
-                }}
-                control={
-                  <Checkbox
-                    name="confirmedName"
-                    value={values.confirmedName}
-                    checked={values.confirmedName}
-                    sx={confirmationErrorSx("confirmedName")}
-                    onChange={(e) =>
-                      setFieldValue("confirmedName", e.target.checked)
-                    }
-                    onBlur={handleBlur}
-                  />
-                }
-                label={"Confirm"}
-              />
-            </Box>
+                  onBlur={handleBlur}
+                />
+              }
+              label={"Confirm"}
+            />
+          </Box>
         </Grid>
 
         <Grid item sm={6} xs={12}>
@@ -219,12 +234,14 @@ export default function Identification({
 
                 <Box sx={confirmationErrorSx("confirmedPhone")}>
                   <FormControlLabel
-                      componentsProps={{
+                    componentsProps={{
                       typography: {
                         sx: {
-                          color: confirmationErrors["confirmedPhone"] ? "error.main" : "inherit",
-                        }
-                      }
+                          color: confirmationErrors["confirmedPhone"]
+                            ? "error.main"
+                            : "inherit",
+                        },
+                      },
                     }}
                     control={
                       <Checkbox
@@ -233,7 +250,10 @@ export default function Identification({
                         checked={values.confirmedPhone}
                         sx={confirmationErrorSx("confirmedPhone")}
                         onChange={() =>
-                          setFieldValue("confirmedPhone", !values.confirmedPhone)
+                          setFieldValue(
+                            "confirmedPhone",
+                            !values.confirmedPhone
+                          )
                         }
                         onBlur={handleBlur}
                       />
@@ -241,7 +261,6 @@ export default function Identification({
                     label={"Confirm"}
                   />
                 </Box>
-
               </Stack>
             </Stack>
           </Box>
@@ -273,9 +292,11 @@ export default function Identification({
                 componentsProps={{
                   typography: {
                     sx: {
-                      color: confirmationErrors["confirmedEmail"] ? "error.main" : "inherit",
-                    }
-                  }
+                      color: confirmationErrors["confirmedEmail"]
+                        ? "error.main"
+                        : "inherit",
+                    },
+                  },
                 }}
                 control={
                   <Checkbox
@@ -305,7 +326,7 @@ export default function Identification({
                 multiple
                 fullWidth
                 value={values.selectedCategoryIds}
-                onChange={handleChange}
+                onChange={handleCategorySelectChange}
                 onClose={() => setFieldTouched("selectedCategoryIds", true)}
                 input={<OutlinedInput />}
                 displayEmpty
@@ -319,7 +340,7 @@ export default function Identification({
                       <Typography
                         variant="body1"
                         sx={{
-                        fontStyle: "italic",
+                          fontStyle: "italic",
                           color: `${
                             (touched.selectedCategoryIds || submitCount > 0) &&
                             Boolean(errors.selectedCategoryIds)
@@ -361,7 +382,7 @@ export default function Identification({
                       </MenuItem>
                     ))}
               </Select>
-              
+
               <FormHelperText
                 sx={{ marginLeft: "14px" }}
                 error={
@@ -369,7 +390,7 @@ export default function Identification({
                   Boolean(errors.selectedCategoryIds)
                 }
               >
-                {(touched.selectedCategoryIds || submitCount > 0)
+                {touched.selectedCategoryIds || submitCount > 0
                   ? errors.selectedCategoryIds
                   : ""}
               </FormHelperText>
@@ -378,13 +399,15 @@ export default function Identification({
             <Box sx={{ mt: 5, ...confirmationErrorSx("confirmedCategories") }}>
               <FormControlLabel
                 sx={{ ml: 0 }}
-                  componentsProps={{
-                    typography: {
-                      sx: {
-                        color: confirmationErrors["confirmedCategories"] ? "error.main" : "inherit",
-                      }
-                    }
-                  }}
+                componentsProps={{
+                  typography: {
+                    sx: {
+                      color: confirmationErrors["confirmedCategories"]
+                        ? "error.main"
+                        : "inherit",
+                    },
+                  },
+                }}
                 control={
                   <Checkbox
                     name="confirmedCategories"
@@ -679,9 +702,11 @@ export default function Identification({
                     componentsProps={{
                       typography: {
                         sx: {
-                          color: confirmationErrors["confirmedAddress"] ? "error.main" : "inherit",
-                        }
-                      }
+                          color: confirmationErrors["confirmedAddress"]
+                            ? "error.main"
+                            : "inherit",
+                        },
+                      },
                     }}
                     label={"Confirm"}
                   />

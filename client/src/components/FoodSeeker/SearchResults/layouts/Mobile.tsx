@@ -4,7 +4,6 @@ import Draggable, { DraggableEvent, DraggableData } from "react-draggable";
 import { useFilterPanel } from "appReducer";
 import AttributionInfo from "../AttributionInfo";
 import { useAppDispatch } from "../../../../appReducer";
-import useFeatureFlag from "hooks/useFeatureFlag";
 
 const getOverlayStyle = (positionY: number) => ({
   position: "absolute" as const,
@@ -29,7 +28,6 @@ interface MobileLayoutProps {
 const MobileLayout: FC<MobileLayoutProps> = ({ filters, map, list, showList }) => {
   const filterPanelOpen = useFilterPanel();
   const initialY = showList ? 5 : 57;
-  const hasAdvancedFilterFeatureFlag = useFeatureFlag("advancedFilter");
   const dispatch = useAppDispatch();
   const [position, setPosition] = useState({
     x: 0,
@@ -49,7 +47,7 @@ const MobileLayout: FC<MobileLayoutProps> = ({ filters, map, list, showList }) =
     }
 
     setPosition({ x: 0, y: newY * (window.innerHeight / 100) });
-  }, [showList, filterPanelOpen, hasAdvancedFilterFeatureFlag]);
+  }, [showList, filterPanelOpen]);
 
   const handleDrag = (e: DraggableEvent, ui: DraggableData) => {
     setPosition({ x: 0, y: ui.y });
@@ -57,9 +55,7 @@ const MobileLayout: FC<MobileLayoutProps> = ({ filters, map, list, showList }) =
 
   const handleStop = (e: DraggableEvent, ui: DraggableData) => {
     const windowHeight = window.innerHeight / 100;
-    const minY = hasAdvancedFilterFeatureFlag
-      ? (100 / window.innerHeight) * 60
-      : 0;
+    const minY = (100 / window.innerHeight) * 60;
     const maxY = 80;
     const snapPoints = [minY, 35, maxY];
     const snapThreshold = 5;

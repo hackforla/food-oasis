@@ -5,7 +5,6 @@ import AddressDropDown from "components/FoodSeeker/AddressDropDown";
 import SwitchViewsButton from "./SwitchViewsButton";
 import { TENANT_CONFIG } from "../../../../helpers/Constants";
 import Geolocate from "./Geolocate";
-import useBreakpoints from "hooks/useBreakpoints";
 
 interface ResultsFiltersProps {
   showList: boolean;
@@ -17,7 +16,6 @@ const ResultsFilters: FC<ResultsFiltersProps> = ({
   toggleShowList,
 }) => {
   const { taglineText } = TENANT_CONFIG;
-  const { isMobile } = useBreakpoints();
 
   return (
     <Grid2
@@ -31,7 +29,7 @@ const ResultsFilters: FC<ResultsFiltersProps> = ({
     >
       <Grid2
         display={{ xs: "none", sm: "block" }}
-        sm={4}
+        sm="auto"
         sx={{
           paddingLeft: "1rem",
         }}
@@ -52,45 +50,37 @@ const ResultsFilters: FC<ResultsFiltersProps> = ({
       <Grid2
         container
         xs={12}
-        sm={8}
+        sm={true}
         justifyContent="center"
         alignItems="center"
-        wrap="wrap-reverse"
       >
         <Stack
-          direction={{ xs: "column-reverse", sm: "row" }}
+          direction={{ xs: "column-reverse", sm: "row", }}
           spacing={0.5}
           sx={{
             width: "100%",
             alignItems: "center",
           }}
         >
-          <Grid2 xs={12} sm={6}>
             <Stack
               direction="row"
               alignItems="center"
               sx={{
-                marginX: "1rem",
-                maxWidth: "99vw",
                 gap: "0.5rem",
+                px: "1rem",
+                boxSizing: "border-box",
+                width: "100%",
               }}
             >
-              <AddressDropDown autoFocus={false} />
-              {isMobile && <Geolocate />}
-              <Box
-                sx={{
-                  maxWidth: "48px",
-                  boxSizing: "border-box",
-                }}
-                display={{ xs: "block", sm: "none" }}
-              >
-                <SwitchViewsButton
-                  isListView={showList}
-                  onClick={toggleShowList}
-                />
+              <Box sx={{ flex: 1, minWidth: 0 }}>
+                <AddressDropDown autoFocus={false} />
+              </Box>
+
+              <Box display={{ xs: "flex", sm: "none" }} alignItems="center" gap="0.5rem">
+                <Geolocate />
+                <SwitchViewsButton isListView={showList} onClick={toggleShowList} />
               </Box>
             </Stack>
-          </Grid2>
         </Stack>
       </Grid2>
     </Grid2>

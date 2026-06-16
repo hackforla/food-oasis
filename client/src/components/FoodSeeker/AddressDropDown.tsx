@@ -298,7 +298,7 @@ export default function AddressDropDown({ autoFocus }: AddressDropDownProps) {
           return options;
         }}
         sx={{
-          width: 600,
+          width: "100%",
           backgroundColor: "#F0F0F0",
           "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
             borderColor: "white",

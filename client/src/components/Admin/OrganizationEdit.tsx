@@ -1031,7 +1031,7 @@ const OrganizationEdit = () => {
                   suggestions={stakeholderSuggestions}
                   editedSuggestions={editedSuggestions}
                   onEdit={handleSuggestionEdit}
-                  showNewOnly={true}
+                  showOpenOnly={true}
                 />
                 <Stack direction="row" justifyContent="space-between">
                   <Typography component="h1" variant="h5">

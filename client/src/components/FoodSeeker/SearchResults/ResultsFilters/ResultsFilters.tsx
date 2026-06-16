@@ -29,7 +29,7 @@ const ResultsFilters: FC<ResultsFiltersProps> = ({
     >
       <Grid2
         display={{ xs: "none", sm: "block" }}
-        sm={4}
+        sm="auto"
         sx={{
           paddingLeft: "1rem",
         }}
@@ -50,7 +50,7 @@ const ResultsFilters: FC<ResultsFiltersProps> = ({
       <Grid2
         container
         xs={12}
-        sm={8}
+        sm={true}
         justifyContent="center"
         alignItems="center"
       >

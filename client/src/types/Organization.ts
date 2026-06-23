@@ -101,6 +101,7 @@ export interface OrganizationFormValues {
 export interface Suggestion {
   id: number;
   createdDate?: string;
+  closedDate?: string | null;
   tipsterName?: string;
   tipsterEmail?: string;
   tipsterPhone?: string;

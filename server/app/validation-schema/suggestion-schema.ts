@@ -3,7 +3,12 @@ import { Suggestion } from "../../types/suggestion-types";
 
 export type SuggestionPostFields = Omit<
   Suggestion,
-  "id" | "suggestionStatusId" | "stakeholderId" | "adminNotes"
+  | "id"
+  | "suggestionStatusId"
+  | "stakeholderId"
+  | "adminNotes"
+  | "createdDate"
+  | "closedDate"
 >;
 
 export const suggestionPostRequestSchema: JSONSchemaType<SuggestionPostFields> =
@@ -158,6 +163,8 @@ export const suggestionPutRequestSchema: JSONSchemaType<Suggestion> = {
         },
       ],
     },
+    createdDate: { type: "string", nullable: true },
+    closedDate: { type: "string", nullable: true },
   },
   additionalProperties: false,
 };

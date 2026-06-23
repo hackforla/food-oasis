@@ -37,6 +37,7 @@ import {
   TableRow,
 } from "@mui/material";
 import type { SelectChangeEvent } from "@mui/material/Select";
+import dayjs from "dayjs";
 import { Formik } from "formik";
 import { useSuggestions } from "hooks/useSuggestions";
 import { useEffect, useState } from "react";
@@ -49,6 +50,7 @@ import Textarea from "./ui/Textarea";
 interface Filter {
   id: number;
   name: string;
+  isClosed?: boolean;
 }
 
 interface AdminSuggestion {
@@ -68,6 +70,8 @@ interface AdminSuggestion {
   tipsterName?: string;
   tipsterEmail?: string;
   tipsterPhone?: string;
+  createdDate?: string;
+  closedDate?: string | null;
 }
 
 interface SuggestionFormValues {
@@ -89,12 +93,38 @@ const columns: Column[] = [
   { id: "formType", label: "Type", minWidth: 10 },
 ];
 
+const LEADING_COLUMNS = columns.slice(0, 2);
+const TRAILING_COLUMNS = columns.slice(2);
+
 export const FILTERS: Filter[] = [
   { id: 1, name: "New" },
   { id: 2, name: "Pending" },
-  { id: 3, name: "Incorrect" },
-  { id: 4, name: "Confirmed" },
+  { id: 3, name: "Incorrect", isClosed: true },
+  { id: 4, name: "Confirmed", isClosed: true },
 ];
+
+const CLOSED_STATUS_IDS = FILTERS.filter((f) => f.isClosed).map((f) => f.id);
+
+function getDaysOpen(s: {
+  createdDate?: string;
+  closedDate?: string | null;
+  suggestionStatusId?: number;
+}): number | null {
+  if (!s.createdDate) return null;
+  const created = dayjs(s.createdDate);
+  const isClosed = CLOSED_STATUS_IDS.includes(Number(s.suggestionStatusId));
+  const end = isClosed
+    ? s.closedDate
+      ? dayjs(s.closedDate)
+      : null // closed but no stored close date (legacy row)
+    : dayjs();
+  if (!end) return null;
+  return Math.max(0, end.diff(created, "day"));
+}
+
+function formatDate(value?: string): string {
+  return value ? dayjs(value).format("MM/DD/YYYY") : "n/a";
+}
 
 function getModalStyle() {
   const top = 50;
@@ -126,6 +156,7 @@ function Suggestions() {
   };
   const isMobile = getIsMobile();
   const location = useLocation();
+  const daysOpen = activeOrg ? getDaysOpen(activeOrg) : null;
 
   useEffect(() => {
     if (data) {
@@ -241,7 +272,20 @@ function Suggestions() {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                {columns.map((column) => (
+                {LEADING_COLUMNS.map((column) => (
+                  <TableCell
+                    key={column.id}
+                    align={column.align}
+                    style={{ minWidth: column.minWidth }}
+                  >
+                    {column.label}
+                  </TableCell>
+                ))}
+                <TableCell style={{ minWidth: 110 }}>Date Created</TableCell>
+                <TableCell style={{ minWidth: 110 }}>
+                  Number of Days Open
+                </TableCell>
+                {TRAILING_COLUMNS.map((column) => (
                   <TableCell
                     key={column.id}
                     align={column.align}
@@ -256,6 +300,12 @@ function Suggestions() {
               {suggestions
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((suggestion) => {
+                  const handleRowClick = () => {
+                    const org = suggestions.find(
+                      (org) => suggestion.id === org.id
+                    );
+                    setActiveOrg(org || null);
+                  };
                   return (
                     <TableRow
                       hover
@@ -264,18 +314,31 @@ function Suggestions() {
                       key={suggestion.id}
                       selected={suggestion.id === activeOrg?.id}
                     >
-                      {columns.map((column) => {
+                      {LEADING_COLUMNS.map((column) => {
                         const value = suggestion[column.id];
                         return (
                           <TableCell
                             key={column.id}
                             align={column.align}
-                            onClick={() => {
-                              const org = suggestions.find(
-                                (org) => suggestion.id === org.id
-                              );
-                              setActiveOrg(org || null);
-                            }}
+                            onClick={handleRowClick}
+                          >
+                            {value}
+                          </TableCell>
+                        );
+                      })}
+                      <TableCell onClick={handleRowClick}>
+                        {formatDate(suggestion.createdDate)}
+                      </TableCell>
+                      <TableCell onClick={handleRowClick}>
+                        {getDaysOpen(suggestion) ?? "n/a"}
+                      </TableCell>
+                      {TRAILING_COLUMNS.map((column) => {
+                        const value = suggestion[column.id];
+                        return (
+                          <TableCell
+                            key={column.id}
+                            align={column.align}
+                            onClick={handleRowClick}
                           >
                             {column.label === "Status" ? (
                               <Chip
@@ -444,6 +507,18 @@ function Suggestions() {
                         />
                       </div>
                       <List>
+                        <DisplayText
+                          label="Date Created"
+                          value={formatDate(activeOrg.createdDate)}
+                          icon={<AccessTimeIcon />}
+                        />
+                        <Divider variant="inset" component="li" />
+                        <DisplayText
+                          label="Number of Days Open"
+                          value={daysOpen === null ? "n/a" : String(daysOpen)}
+                          icon={<AccessTimeIcon />}
+                        />
+                        <Divider variant="inset" component="li" />
                         <DisplayText
                           label="Tipster Notes"
                           value={activeOrg.notes}

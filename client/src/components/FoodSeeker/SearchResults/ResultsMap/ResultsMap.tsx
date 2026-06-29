@@ -15,7 +15,6 @@ import RemoveIcon from "@mui/icons-material/RemoveRounded";
 import { MAPBOX_STYLE } from "constants/map";
 import { MAPBOX_ACCESS_TOKEN, DEFAULT_VIEWPORT } from "helpers/Constants";
 import useBreakpoints from "hooks/useBreakpoints";
-import useFeatureFlag from "hooks/useFeatureFlag";
 import "mapbox-gl/dist/mapbox-gl.css";
 import Map, { Layer, Marker, Source } from "react-map-gl";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -110,7 +109,6 @@ const ResultsMap = ({
   const neighborhood = useNeighborhood() as { geojson?: any } | null;
   const regionGeoJSON = neighborhood?.geojson;
   const startIconCoordinates = searchCoordinates || userCoordinates;
-  const hasAdvancedFilterFeatureFlag = useFeatureFlag("advancedFilter");
 
   const onMouseEnter = useCallback(() => setCursor("pointer"), []);
   const onMouseLeave = useCallback(() => setCursor("auto"), []);
@@ -461,7 +459,8 @@ const ResultsMap = ({
           </Source>
         )}
       </Map>
-      {!loading && hasAdvancedFilterFeatureFlag && (
+
+      {!loading && (
         <Grid
           container={isMobile}
           wrap={isMobile ? "nowrap" : undefined}

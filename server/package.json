@@ -45,7 +45,7 @@
     "dayjs": "^1.11.19",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
-    "json-2-csv": "^5.5.10",
+    "json-2-csv": "^5.5.11",
     "jsonwebtoken": "^9.0.3",
     "massive": "^6.10.2",
     "mocha": "^10.8.2",

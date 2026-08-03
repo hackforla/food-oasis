@@ -105,7 +105,7 @@ export default function Menu(): React.ReactElement {
                 <MenuItemLink
                   key="suggestions"
                   to="/admin/suggestions"
-                  text="Suggestions"
+                  text="Suggestions & Corrections"
                 />
                 <MenuItemLink
                   key="logins"

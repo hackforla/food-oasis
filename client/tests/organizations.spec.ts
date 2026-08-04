@@ -108,4 +108,18 @@ test.describe("Organizations", () => {
     await expect(page.getByText("Stakeholder 2")).toBeVisible();
     await expect(page.getByText("Stakeholder 3")).toBeHidden();
   });
+
+  test("filter panel close button has an accessible name and closes the panel", async ({
+    page,
+  }) => {
+    await mockRequests(page);
+    await page.goto("/organizations");
+    await page.getByRole("button", { name: "More Filters" }).click();
+
+    const closeFilters = page.getByRole("button", { name: "Close filters" });
+    await expect(closeFilters).toBeVisible();
+
+    await closeFilters.click();
+    await expect(closeFilters).toBeHidden();
+  });
 });

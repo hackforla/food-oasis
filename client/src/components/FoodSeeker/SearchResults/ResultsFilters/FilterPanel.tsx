@@ -152,7 +152,7 @@ const FilterPanel: FC<FilterPanelProps> = ({ mealPantry, filterCount }) => {
             {`${filterCount} ${filterCount === 1 ? "Location" : "Locations"}`}
           </Typography>
           {isDesktop ? (
-            <IconButton onClick={handleDrawerClose}>
+            <IconButton aria-label="Close filters" onClick={handleDrawerClose}>
               <CloseIcon />
             </IconButton>
           ) : (

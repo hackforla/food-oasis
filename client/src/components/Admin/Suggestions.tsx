@@ -35,6 +35,7 @@ import {
   TablePagination,
   TablePaginationOwnProps,
   TableRow,
+  Typography,
 } from "@mui/material";
 import type { SelectChangeEvent } from "@mui/material/Select";
 import { Formik } from "formik";
@@ -205,7 +206,14 @@ function Suggestions() {
           justifyContent: "space-between",
         })}
       >
-        <h2>Suggestions Administration</h2>
+        <Box>
+          <Typography component="h1" variant="h4">
+            Suggestions &amp; Corrections Administration
+          </Typography>
+          <Typography variant="subtitle1">
+            Suggested new listings and Corrections to existing listings
+          </Typography>
+        </Box>
         <FormControl
           sx={(theme) => ({
             margin: theme.spacing(1),

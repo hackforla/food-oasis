@@ -33,7 +33,7 @@
     "@aws-sdk/credential-providers": "^3.621.0",
     "ajv": "^8.18.0",
     "ajv-formats": "^3.0.1",
-    "axios": "^1.16.1",
+    "axios": "^1.18.0",
     "bcrypt": "^6.0.0",
     "body-parser": "^2.3.0",
     "camelcase-keys": "^10.0.1",

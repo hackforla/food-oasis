@@ -139,7 +139,7 @@ const DonationDialog = ({
             src={logo}
             alt="logo"
           />
-          <Grid item>
+          <Grid>
             <Typography align="center">
               Hack for LA takes donations through Civic Tech Structure.
             </Typography>
@@ -147,7 +147,7 @@ const DonationDialog = ({
               This is a 3-step process.
             </Typography>
           </Grid>
-          <Grid item>
+          <Grid>
             <IconButton
               icon="close"
               sx={{
@@ -184,7 +184,7 @@ const DonationDialog = ({
             wrap="nowrap"
             spacing={2}
           >
-            <Grid item>
+            <Grid>
               <Avatar
                 sx={{
                   backgroundColor: "#ef624f",
@@ -195,7 +195,7 @@ const DonationDialog = ({
                 1
               </Avatar>
             </Grid>
-            <Grid item xs zeroMinWidth>
+            <Grid size="grow">
               <Typography>Enter your donation amount.</Typography>
               <CardMedia
                 component="img"
@@ -224,7 +224,7 @@ const DonationDialog = ({
             wrap="nowrap"
             spacing={2}
           >
-            <Grid item>
+            <Grid>
               <Avatar
                 sx={{
                   backgroundColor: "#ef624f",
@@ -235,7 +235,7 @@ const DonationDialog = ({
                 2
               </Avatar>
             </Grid>
-            <Grid item xs zeroMinWidth>
+            <Grid size="grow">
               <Typography>
                 In the "Project" field enter <em>"Food Oasis"</em>.
               </Typography>
@@ -266,7 +266,7 @@ const DonationDialog = ({
             wrap="nowrap"
             spacing={2}
           >
-            <Grid item>
+            <Grid>
               <Avatar
                 sx={{
                   backgroundColor: "#ef624f",
@@ -277,7 +277,7 @@ const DonationDialog = ({
                 3
               </Avatar>
             </Grid>
-            <Grid item xs zeroMinWidth>
+            <Grid size="grow">
               <Typography>
                 Fill out the remaining payment information and click{" "}
                 <em>Donate</em>.
@@ -304,7 +304,7 @@ const DonationDialog = ({
         container
         justifyContent="center"
       >
-        <Grid item>
+        <Grid>
           <Box m={3}>
             <Link
               sx={{

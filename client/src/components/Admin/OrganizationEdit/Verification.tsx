@@ -23,7 +23,11 @@ export default function Verification({
   return (
     <TabPanel value={tabPage} index={5}>
       <Grid container spacing={1}>
-        <Grid item xs={12} sm={6}>
+        <Grid
+          size={{
+            xs: 12,
+            sm: 6
+          }}>
           <div>
             <Label
               id="adminContactName"
@@ -46,7 +50,11 @@ export default function Verification({
             />
           </div>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid
+          size={{
+            xs: 12,
+            sm: 6
+          }}>
           <div>
             <Label
               id="adminContactPhone"
@@ -69,7 +77,11 @@ export default function Verification({
             />
           </div>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid
+          size={{
+            xs: 12,
+            sm: 6
+          }}>
           <div>
             <Label
               id="adminContactEmail"
@@ -93,8 +105,6 @@ export default function Verification({
           </div>
         </Grid>
         <Grid
-          item
-          xs={12}
           sx={{
             mt: 2,
             border: "1px solid gray",
@@ -103,7 +113,7 @@ export default function Verification({
             display: "flex",
             flexDirection: "column",
           }}
-        >
+          size={12}>
           <Stack direction="row">
             <Typography flexBasis="20%">Id:</Typography>
             <Typography flexBasis="20%">{values.id}</Typography>
@@ -189,7 +199,7 @@ export default function Verification({
             ) : null}
           </Stack>
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <div>
             <Label
               id="reviewNotes"

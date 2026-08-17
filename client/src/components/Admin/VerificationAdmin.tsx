@@ -25,7 +25,7 @@ import SearchCriteria from "./SearchCriteria";
 import SearchCriteriaDisplay from "./SearchCriteriaDisplay";
 import NeedsVerificationDialog from "./ui/NeedsVerificationDialog";
 
-import { GridSelectionModel } from "@mui/x-data-grid";
+import { GridRowSelectionModel } from "@mui/x-data-grid";
 import { useSearchCoordinates, useUserCoordinates } from "../../appReducer";
 import { useUserContext } from "../../contexts/userContext";
 import VerificationAdminGridMui from "./VerificationAdminGridMui";
@@ -151,7 +151,7 @@ function VerificationAdmin() {
     useState(false);
   const [criteria, setCriteria] = useState(defaultCriteria);
   const [selectedStakeholderIds, setSelectedStakeholderIds] =
-    useState<GridSelectionModel>([]);
+    useState<GridRowSelectionModel>([]);
   const userCoordinates = typed<Coordinates | null>(useUserCoordinates());
   const location = useLocation();
   const searchCoordinates = typed<Coordinates | null>(useSearchCoordinates());
@@ -240,7 +240,7 @@ function VerificationAdmin() {
 
   const handleExport = async () => {
     try {
-      await exportCsv(selectedStakeholderIds);
+      await exportCsv([...selectedStakeholderIds]);
     } catch (err) {
       // If we receive a 401 status code, the user needs
       // to be logged in, will redirect to login page.

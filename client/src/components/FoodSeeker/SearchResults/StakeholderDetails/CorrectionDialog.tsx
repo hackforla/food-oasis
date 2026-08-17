@@ -62,7 +62,7 @@ function CorrectionDialog(
         </DialogTitle>
         <DialogContent dividers>
           <Grid container spacing={1}>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Typography>
                 Please help us improve our data by letting us know when our
                 information is incorrect. All fields are optional, but filling
@@ -70,7 +70,7 @@ function CorrectionDialog(
                 efficiently. Thanks!
               </Typography>
             </Grid>
-            <Grid item xs={12} style={{ position: "relative" }}>
+            <Grid style={{ position: "relative" }} size={12}>
               <div>
                 <Label id="notes" label="Corrections *" />
                 <Textarea
@@ -86,7 +86,7 @@ function CorrectionDialog(
                 />
               </div>
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <div>
                 <Label id="tipsterName" label="Your Name (optional)" />
                 <TextField
@@ -101,7 +101,7 @@ function CorrectionDialog(
                 />
               </div>
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <div>
                 <Label id="tipsterPhone" label="Your Phone (optional)" />
                 <TextField
@@ -116,7 +116,7 @@ function CorrectionDialog(
                 />
               </div>
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <div>
                 <Label id="tipsterEmail" label="Your Email (optional)" />
                 <TextField

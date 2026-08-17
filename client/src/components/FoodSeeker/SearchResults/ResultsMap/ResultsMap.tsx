@@ -9,7 +9,7 @@ import type { MapLayerMouseEvent, Map as MapboxMap } from "mapbox-gl";
 // recommendation from Mapbox team
 // https://github.com/mapbox/mapbox-gl-js/issues/10173  See comment by IvanDreamer on Mar 22
 // for craco.config.js contents
-import { Grid, Box, IconButton } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/AddRounded";
 import RemoveIcon from "@mui/icons-material/RemoveRounded";
 import { MAPBOX_STYLE } from "constants/map";
@@ -461,11 +461,10 @@ const ResultsMap = ({
       </Map>
 
       {!loading && (
-        <Grid
-          container={isMobile}
-          wrap={isMobile ? "nowrap" : undefined}
+        <Box
           position="absolute"
           display="inline-flex"
+          flexWrap={isMobile ? "nowrap" : undefined}
           alignItems="flex-start"
           sx={{
             overflowX: "auto",
@@ -494,7 +493,7 @@ const ResultsMap = ({
             isMealSelected={isMealSelected}
             isPantrySelected={isPantrySelected}
           />
-        </Grid>
+        </Box>
       )}
       <FilterPanel
         filterCount={stakeholders.length}

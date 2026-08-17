@@ -21,7 +21,11 @@ export default function Donations({
   return (
     <TabPanel value={tabPage} index={4}>
       <Grid container spacing={1}>
-        <Grid item xs={12} sm={6}>
+        <Grid
+          size={{
+            xs: 12,
+            sm: 6
+          }}>
           <div>
             <Label
               id="donationContactName"
@@ -45,7 +49,11 @@ export default function Donations({
             />
           </div>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid
+          size={{
+            xs: 12,
+            sm: 6
+          }}>
           <div>
             <Label
               id="donationContactPhone"
@@ -69,7 +77,11 @@ export default function Donations({
             />
           </div>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid
+          size={{
+            xs: 12,
+            sm: 6
+          }}>
           <div>
             <Label
               id="donationContactEmail"
@@ -93,7 +105,11 @@ export default function Donations({
             />
           </div>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid
+          size={{
+            xs: 12,
+            sm: 6
+          }}>
           <div>
             <Label
               id="donationSchedule"
@@ -116,7 +132,7 @@ export default function Donations({
             />
           </div>
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Tooltip title="Check if organization can pick up food from source">
             <FormControlLabel
               control={
@@ -134,7 +150,11 @@ export default function Donations({
             />
           </Tooltip>
         </Grid>
-        <Grid item xs={12} sm={4}>
+        <Grid
+          size={{
+            xs: 12,
+            sm: 4
+          }}>
           <Tooltip title="Check if organization can accept frozen food">
             <FormControlLabel
               control={
@@ -155,7 +175,11 @@ export default function Donations({
             />
           </Tooltip>
         </Grid>
-        <Grid item xs={12} sm={4}>
+        <Grid
+          size={{
+            xs: 12,
+            sm: 4
+          }}>
           <Tooltip title="Check if organization can accept refrigerated food">
             <FormControlLabel
               control={
@@ -176,7 +200,11 @@ export default function Donations({
             />
           </Tooltip>
         </Grid>
-        <Grid item xs={12} sm={4}>
+        <Grid
+          size={{
+            xs: 12,
+            sm: 4
+          }}>
           <Tooltip title="Check if organization can accept perishables">
             <FormControlLabel
               control={
@@ -198,7 +226,11 @@ export default function Donations({
           </Tooltip>
         </Grid>
 
-        <Grid item xs={12} sm={6}>
+        <Grid
+          size={{
+            xs: 12,
+            sm: 6
+          }}>
           <div>
             <Label
               id="donationDeliveryInstructions"
@@ -224,7 +256,11 @@ export default function Donations({
             />
           </div>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid
+          size={{
+            xs: 12,
+            sm: 6
+          }}>
           <div>
             <Label
               id="donationNotes"

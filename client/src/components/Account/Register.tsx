@@ -132,7 +132,11 @@ export default function Register() {
                 container
                 spacing={2}
               >
-                <Grid item xs={12} sm={6}>
+                <Grid
+                  size={{
+                    xs: 12,
+                    sm: 6
+                  }}>
                   <Label id="firstName" label="First Name *" />
                   <TextField
                     autoComplete="fname"
@@ -149,7 +153,11 @@ export default function Register() {
                     value={values.firstName}
                   />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid
+                  size={{
+                    xs: 12,
+                    sm: 6
+                  }}>
                   <Label id="lastName" label="Last Name *" />
                   <TextField
                     required
@@ -165,7 +173,7 @@ export default function Register() {
                     error={touched.lastName && Boolean(errors.lastName)}
                   />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid size={12}>
                   <Label id="email" label="Email" />
                   <TextField
                     type="email"
@@ -181,7 +189,7 @@ export default function Register() {
                     error={touched.email && Boolean(errors.email)}
                   />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid size={12}>
                   <Label id="password" label="Password *" />
                   <PasswordInput
                     required
@@ -197,7 +205,7 @@ export default function Register() {
                     error={touched.password && Boolean(errors.password)}
                   />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid size={12}>
                   <Label id="passwordConfirm" label="Confirm Password *" />
                   <PasswordInput
                     required
@@ -228,7 +236,7 @@ export default function Register() {
                 </Button>
               </Box>
               <Grid container justifyContent="center">
-                <Grid item>
+                <Grid>
                   <Link href="/admin/login" variant="body2">
                     Already have an account? Login
                   </Link>

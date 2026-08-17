@@ -231,7 +231,11 @@ const SearchCriteria = ({
     <Card>
       <CardContent>
         <Grid container spacing={4}>
-          <Grid item xs={12} sm={6}>
+          <Grid
+            size={{
+              xs: 12,
+              sm: 6
+            }}>
             <Label
               id="verification-status-id-label"
               label="Verification Status"
@@ -263,7 +267,11 @@ const SearchCriteria = ({
             </Select>
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid
+            size={{
+              xs: 12,
+              sm: 6
+            }}>
             <Label id="select-multiple-chip" label="Categories" />
             {categories ? (
               <Select
@@ -271,7 +279,6 @@ const SearchCriteria = ({
                 displayEmpty
                 name="select-multiple-chip"
                 variant="outlined"
-                placeholder="Category(ies)"
                 fullWidth
                 labelId="select-multiple-chip"
                 value={criteria.categoryIds}
@@ -298,7 +305,11 @@ const SearchCriteria = ({
               </Select>
             ) : null}
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid
+            size={{
+              xs: 12,
+              sm: 6
+            }}>
             <Label id="name" label="Name" />
             <TextField
               variant="outlined"
@@ -311,7 +322,11 @@ const SearchCriteria = ({
               onChange={setCriterion}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid
+            size={{
+              xs: 12,
+              sm: 6
+            }}>
             <Label id="assignedLoginId" label="Assigned To" />
             <AccountAutocomplete
               accountId={criteria.assignedLoginId || ""}
@@ -321,7 +336,11 @@ const SearchCriteria = ({
             />
           </Grid>
 
-          <Grid item xs={12} sm={4}>
+          <Grid
+            size={{
+              xs: 12,
+              sm: 4
+            }}>
             <RadioTrueFalseEither
               label="Permanently Closed"
               name="isInactive"
@@ -329,7 +348,11 @@ const SearchCriteria = ({
               onChange={setCriterion}
             />
           </Grid>
-          <Grid item xs={12} sm={4}>
+          <Grid
+            size={{
+              xs: 12,
+              sm: 4
+            }}>
             <RadioTrueFalseEither
               label="Temporarily Closed"
               name="isInactiveTemporary"
@@ -337,7 +360,11 @@ const SearchCriteria = ({
               onChange={setCriterion}
             />
           </Grid>
-          <Grid item xs={12} sm={4}>
+          <Grid
+            size={{
+              xs: 12,
+              sm: 4
+            }}>
             <Label id="stakeholderId" label="Organization ID" />
             <TextField
               autoComplete="off"
@@ -351,7 +378,11 @@ const SearchCriteria = ({
               onChange={setCriterion}
             />
           </Grid>
-          <Grid item xs={12} sm={4}>
+          <Grid
+            size={{
+              xs: 12,
+              sm: 4
+            }}>
             <Label
               id="minCompleteCriticalPercent"
               label="Min % Critical Complete"
@@ -368,7 +399,11 @@ const SearchCriteria = ({
               onChange={setCriterion}
             />
           </Grid>
-          <Grid item xs={12} sm={4}>
+          <Grid
+            size={{
+              xs: 12,
+              sm: 4
+            }}>
             <Label
               id="maxCompleteCriticalPercent"
               label="Max % Critical Complete"
@@ -385,7 +420,11 @@ const SearchCriteria = ({
               onChange={setCriterion}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid
+            size={{
+              xs: 12,
+              sm: 6
+            }}>
             <Label id="neighborhood-id-label" label="Neighborhood" />
             <Select
               labelId="neighborhood-id-label"
@@ -410,7 +449,11 @@ const SearchCriteria = ({
                 : null}
             </Select>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid
+            size={{
+              xs: 12,
+              sm: 6
+            }}>
             <Label id="tag-label" label="Tag" />
             <Select
               labelId="tag-label"
@@ -436,10 +479,14 @@ const SearchCriteria = ({
                 : null}
             </Select>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid
+            size={{
+              xs: 12,
+              sm: 6
+            }}>
             <Grid container>
               <Label id="radius" label="Location" />
-              <Grid item container alignItems="center">
+              <Grid container alignItems="center">
                 <Typography sx={{ marginRight: "0.5rem" }}>
                   {"Within "}
                 </Typography>
@@ -480,7 +527,7 @@ const SearchCriteria = ({
                   {"miles of"}
                 </Typography>
               </Grid>
-              <Grid item xs={12}>
+              <Grid size={12}>
                 {userLatitude ? (
                   <RadioGroup
                     name="useMyLocation"

@@ -125,7 +125,11 @@ const OpenTimeForm = ({
                     <div key={index}>
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <Grid container spacing={1}>
-                          <Grid item xs={8} sm={2}>
+                          <Grid
+                            size={{
+                              xs: 8,
+                              sm: 2
+                            }}>
                             <FormControl variant="outlined" fullWidth>
                               <Select
                                 id="interval-select"
@@ -163,7 +167,11 @@ const OpenTimeForm = ({
                               ) : null}
                             </FormControl>
                           </Grid>
-                          <Grid item xs={8} sm={2}>
+                          <Grid
+                            size={{
+                              xs: 8,
+                              sm: 2
+                            }}>
                             <FormControl variant="outlined" fullWidth>
                               <Select
                                 labelId="open-days-select-id"
@@ -204,7 +212,11 @@ const OpenTimeForm = ({
                             </FormControl>
                           </Grid>
 
-                          <Grid item xs={8} sm={3}>
+                          <Grid
+                            size={{
+                              xs: 8,
+                              sm: 3
+                            }}>
                             <DesktopTimePicker
                               value={
                                 hour.open ? dayjs(hour.open, "HH:mm:ss") : null
@@ -230,7 +242,7 @@ const OpenTimeForm = ({
                                     errorOpen && touchedOpen
                                       ? "Opening time is required"
                                       : !isMobile && " ",
-                                  error: touchedOpen && errorOpen,
+                                  error: Boolean(touchedOpen && errorOpen),
                                 },
                               }}
                               sx={{
@@ -253,7 +265,11 @@ const OpenTimeForm = ({
                               }}
                             />
                           </Grid>
-                          <Grid item xs={8} sm={3}>
+                          <Grid
+                            size={{
+                              xs: 8,
+                              sm: 3
+                            }}>
                             <DesktopTimePicker
                               value={
                                 hour.close
@@ -317,7 +333,7 @@ const OpenTimeForm = ({
                                     : !isMobile && " ",
                                   error:
                                     !!closeTimeErrorss[index] ||
-                                    (errorClose && touchedClose),
+                                    Boolean(errorClose && touchedClose),
                                 },
                               }}
                               sx={{
@@ -342,11 +358,11 @@ const OpenTimeForm = ({
                           </Grid>
 
                           <Grid
-                            item
-                            xs={2}
-                            sm={1}
                             sx={{ display: "flex", alignItems: "center" }}
-                          >
+                            size={{
+                              xs: 2,
+                              sm: 1
+                            }}>
                             <IconButton
                               icon="cancel"
                               color="error"
@@ -356,11 +372,11 @@ const OpenTimeForm = ({
                             />
                           </Grid>
                           <Grid
-                            item
-                            xs={2}
-                            sm={1}
                             sx={{ display: "flex", alignItems: "center" }}
-                          >
+                            size={{
+                              xs: 2,
+                              sm: 1
+                            }}>
                             <IconButton
                               icon="copy"
                               color="primary"

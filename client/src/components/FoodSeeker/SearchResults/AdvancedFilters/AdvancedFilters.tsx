@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Box } from "@mui/material";
 import { FC, MouseEventHandler, Dispatch } from "react";
 import { getDayTimeNow } from "helpers";
 import MealLocatorIcon from "icons/MealLocatorIcon";
@@ -51,12 +51,12 @@ const AdvancedFilters: FC<AdvancedFiltersProps> = ({
 
   return (
     <>
-      <Grid
-        item
+      <Box
         sx={{
           whiteSpace: "nowrap",
           marginLeft: "0.5rem",
           marginTop: "0.75rem",
+          flexShrink: 0,
         }}
       >
         <AdvancedFilterButton
@@ -65,25 +65,29 @@ const AdvancedFilters: FC<AdvancedFiltersProps> = ({
           isSelected={isPantrySelected}
           icon={PantryLocatorIcon}
         />
-      </Grid>
-      <Grid item sx={{ whiteSpace: "nowrap", marginTop: "0.75rem" }}>
+      </Box>
+      <Box sx={{ whiteSpace: "nowrap", marginTop: "0.75rem", flexShrink: 0 }}>
         <AdvancedFilterButton
           label="Meal"
           onClick={toggleMeal}
           isSelected={isMealSelected}
           icon={MealLocatorIcon}
         />
-      </Grid>
-      <Grid item sx={{ whiteSpace: "nowrap", marginTop: "0.75rem" }}>
+      </Box>
+      <Box sx={{ whiteSpace: "nowrap", marginTop: "0.75rem", flexShrink: 0 }}>
         <AdvancedFilterButton
           label="Open Now"
           onClick={() => handleOpenNowToggle()}
           isSelected={openTime.radio === "Open Now"}
         />
-      </Grid>
-      <Grid
-        item
-        sx={{ whiteSpace: "nowrap", marginTop: "0.75rem", marginRight: "1rem" }}
+      </Box>
+      <Box
+        sx={{
+          whiteSpace: "nowrap",
+          marginTop: "0.75rem",
+          marginRight: "1rem",
+          flexShrink: 0,
+        }}
       >
         <AdvancedFilterButton
           label="More Filters"
@@ -95,7 +99,7 @@ const AdvancedFilters: FC<AdvancedFiltersProps> = ({
           }}
           isSelected={open}
         />
-      </Grid>
+      </Box>
     </>
   );
 };

@@ -2,11 +2,10 @@ import type { ComponentProps } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PhoneIcon from "@mui/icons-material/Phone";
 import SubdirectoryArrowRightIcon from "@mui/icons-material/SubdirectoryArrowRight";
-import { Box, Button, Chip, Divider, Stack, Typography } from "@mui/material";
+import { Box, Button, Chip, Divider, Grid, Stack, Typography } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
-import Grid2 from "@mui/material/Unstable_Grid2";
 import InternalLink from "components/UI/InternalLink";
 import {
   FOOD_PANTRY_CATEGORY_ID,
@@ -118,7 +117,10 @@ interface StakeholderPreviewProps {
   onSelect: () => void;
 }
 
-const StakeholderPreview = ({ stakeholder, onSelect }: StakeholderPreviewProps) => {
+const StakeholderPreview = ({
+  stakeholder,
+  onSelect,
+}: StakeholderPreviewProps) => {
   const dispatch = useAppDispatch();
   const searchCoordinates = useSearchCoordinates();
   const userCoordinates = useUserCoordinates();
@@ -158,8 +160,14 @@ const StakeholderPreview = ({ stakeholder, onSelect }: StakeholderPreviewProps) 
     calculateMinutesToOpening(stakeholderHours, tenantTimeZone);
 
   return (
-    <Grid2 container key={stakeholder.id} p={2} gap={2} flex={1}>
-      <Grid2 xs={1} onClick={() => handleSelectOrganization(stakeholder)}>
+    <Grid
+      container
+      key={stakeholder.id}
+      sx={{ width: "100%", flex: 1 }}
+      p={2}
+      gap={2}
+    >
+      <Grid size={1} onClick={() => handleSelectOrganization(stakeholder)}>
         <Stack
           {...({
             xs: 2,
@@ -174,9 +182,9 @@ const StakeholderPreview = ({ stakeholder, onSelect }: StakeholderPreviewProps) 
             {stakeholder?.distance && `${stakeholder.distance?.toFixed(1)} mi`}
           </Typography>
         </Stack>
-      </Grid2>
+      </Grid>
 
-      <Grid2 xs={10} flexGrow={1}>
+      <Grid size={10} flexGrow={1}>
         <Stack
           {...({
             direction: "column",
@@ -526,8 +534,8 @@ const StakeholderPreview = ({ stakeholder, onSelect }: StakeholderPreviewProps) 
             )}
           </Stack>
         </Stack>
-      </Grid2>
-    </Grid2>
+      </Grid>
+    </Grid>
   );
 };
 

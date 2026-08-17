@@ -1,5 +1,5 @@
-import { Box, Grid, Stack } from "@mui/material";
-import { FC, ReactNode, useEffect, useState } from "react";
+import { Box, Stack } from "@mui/material";
+import { FC, ReactNode, useEffect, useRef, useState } from "react";
 import Draggable, { DraggableEvent, DraggableData } from "react-draggable";
 import { useFilterPanel } from "appReducer";
 import AttributionInfo from "../AttributionInfo";
@@ -25,10 +25,16 @@ interface MobileLayoutProps {
   showList: boolean;
 }
 
-const MobileLayout: FC<MobileLayoutProps> = ({ filters, map, list, showList }) => {
+const MobileLayout: FC<MobileLayoutProps> = ({
+  filters,
+  map,
+  list,
+  showList,
+}) => {
   const filterPanelOpen = useFilterPanel();
   const initialY = showList ? 5 : 57;
   const dispatch = useAppDispatch();
+  const nodeRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState({
     x: 0,
     y: initialY * (window.innerHeight / 100),
@@ -102,15 +108,15 @@ const MobileLayout: FC<MobileLayoutProps> = ({ filters, map, list, showList }) =
         </Stack>
         {list && (
           <Draggable
+            nodeRef={nodeRef}
             position={position}
             onDrag={handleDrag}
             onStop={handleStop}
             handle=".handle"
             bounds={{ top: 0, bottom: minY * (window.innerHeight / 100) }}
-            defaultPosition={{ x: 0, y: minY * (window.innerHeight / 100) }}
             axis="y"
           >
-            <Box sx={getOverlayStyle(position.y)}>
+            <Box ref={nodeRef} sx={getOverlayStyle(position.y)}>
               <Box
                 sx={{
                   width: "100vw",

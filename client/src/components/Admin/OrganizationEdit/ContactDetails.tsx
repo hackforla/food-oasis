@@ -14,7 +14,7 @@ export default function ContactDetails({
   return (
     <TabPanel value={tabPage} index={2}>
       <Grid container spacing={1}>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <div>
             <Label
               id="website"
@@ -34,7 +34,11 @@ export default function ContactDetails({
             />
           </div>
         </Grid>
-        <Grid item sm={6} xs={12}>
+        <Grid
+          size={{
+            sm: 6,
+            xs: 12
+          }}>
           <div>
             <Label
               id="instagram"
@@ -54,7 +58,11 @@ export default function ContactDetails({
             />
           </div>
         </Grid>
-        <Grid item sm={6} xs={12}>
+        <Grid
+          size={{
+            sm: 6,
+            xs: 12
+          }}>
           <div>
             <Label
               id="facebook"
@@ -74,7 +82,11 @@ export default function ContactDetails({
             />
           </div>
         </Grid>
-        <Grid item sm={6} xs={12}>
+        <Grid
+          size={{
+            sm: 6,
+            xs: 12
+          }}>
           <div>
             <Label
               id="twitter-label"
@@ -94,7 +106,11 @@ export default function ContactDetails({
             />
           </div>
         </Grid>
-        <Grid item sm={6} xs={12}>
+        <Grid
+          size={{
+            sm: 6,
+            xs: 12
+          }}>
           <div>
             <Label
               id="pinterest"
@@ -114,7 +130,11 @@ export default function ContactDetails({
             />
           </div>
         </Grid>
-        <Grid item sm={6} xs={12}>
+        <Grid
+          size={{
+            sm: 6,
+            xs: 12
+          }}>
           <div>
             <Label
               id="linkedin"

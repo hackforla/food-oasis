@@ -173,7 +173,7 @@ const LoginForm = () => {
                 container
                 spacing={2}
               >
-                <Grid item xs={12}>
+                <Grid size={12}>
                   <Label id="email" label="Email *" />
                   <TextField
                     autoComplete="email"
@@ -191,7 +191,7 @@ const LoginForm = () => {
                     value={values.email}
                   />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid size={12}>
                   <Label id="password" label="Password" />
                   <PasswordInput
                     autoComplete="current-password"
@@ -206,7 +206,7 @@ const LoginForm = () => {
                     value={values.password}
                   />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid size={12}>
                   <Box>
                     <Button
                       type="submit"
@@ -217,7 +217,7 @@ const LoginForm = () => {
                     </Button>
                   </Box>
                 </Grid>
-                <Grid item xs>
+                <Grid size="grow">
                   <Link
                     href={`/admin/forgotpassword/${values.email || ""}`}
                     variant="body2"
@@ -225,7 +225,7 @@ const LoginForm = () => {
                     Forgot password?
                   </Link>
                 </Grid>
-                <Grid item>
+                <Grid>
                   <Link href="/admin/register" variant="body2">
                     Register
                   </Link>

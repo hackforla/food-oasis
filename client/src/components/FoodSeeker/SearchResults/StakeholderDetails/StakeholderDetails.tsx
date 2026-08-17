@@ -4,6 +4,7 @@ import {
   Button,
   Chip,
   Divider,
+  Grid,
   Link,
   Stack,
   Typography,
@@ -45,7 +46,6 @@ import { useToasterContext } from "../../../../contexts/toasterContext";
 import SEO from "../../../SEO";
 import CorrectionDialog from "./CorrectionDialog";
 import { useSiteContext } from "contexts/siteContext";
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { stakeholdersDaysHours } from "../StakeholderPreview/StakeholderPreview";
 import { success } from "../../../../theme/palette";
 import InstagramIcon from "@mui/icons-material/Instagram";
@@ -64,21 +64,17 @@ interface StakeholderDetailsProps {
 }
 
 const MinorHeading = styled(Typography)(({ theme }) => ({
-  variant: "h5",
-  component: "h3",
   textAlign: "left",
   margin: "0",
   fontWeight: "600",
   color: theme.palette.headingText.main,
 }));
 
-const DetailText = styled(Typography)(({ theme, className }) => ({
-  variant: "body1",
-  component: "p",
+const DetailText = styled(Box)(({ theme }) => ({
+  ...theme.typography.body1,
   textAlign: "left",
   marginBottom: "16px",
   whiteSpace: "pre-wrap",
-  className: className,
   overflowWrap: "break-word",
   "& a": {
     color: theme.palette.link.normal,
@@ -318,7 +314,7 @@ const StakeholderDetails = ({
           </Stack>
           <Divider />
         </Stack>
-        <Grid2
+        <Grid
           container
           gap={2}
           p={2}
@@ -327,7 +323,7 @@ const StakeholderDetails = ({
             overflowX: "scroll",
           }}
         >
-          <Grid2 xs={1}>
+          <Grid size={1}>
             <Stack
               direction="column"
               justifyContent="flex-start"
@@ -340,8 +336,8 @@ const StakeholderDetails = ({
                   `${selectedOrganization.distance?.toFixed(1)} mi`}
               </Typography>
             </Stack>
-          </Grid2>
-          <Grid2 xs={10}>
+          </Grid>
+          <Grid size={10}>
             <Stack direction="column">
               <Stack>
                 <Typography
@@ -726,12 +722,12 @@ const StakeholderDetails = ({
                       selectedOrganization.modifiedDate,
                       selectedOrganization.createdDate
                     ) && (
-                      <DetailText>
+                      <Box sx={{ marginBottom: "16px" }}>
                         <Alert severity="warning">
                           This information may be outdated <br />
                           (last updated over 1 year ago)
                         </Alert>
-                      </DetailText>
+                      </Box>
                     )}
                     <DetailText>
                       Data updated on{" "}
@@ -745,8 +741,8 @@ const StakeholderDetails = ({
                 )}
               </Stack>
             </Stack>
-          </Grid2>
-        </Grid2>
+          </Grid>
+        </Grid>
       </Stack>
     </>
   );

@@ -159,7 +159,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
                   container
                   spacing={2}
                 >
-                  <Grid item xs={12}>
+                  <Grid size={12}>
                     <Label id="email" label="Email" />
                     <TextField
                       type="email"
@@ -179,7 +179,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
                     />
                   </Grid>
 
-                  <Grid item xs={12}>
+                  <Grid size={12}>
                     <Button
                       variant="contained"
                       type="submit"
@@ -189,7 +189,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
                       Send Password Reset Link
                     </Button>
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid size={12}>
                     <Typography align="center">
                       <Link
                         href={`/admin/login/${values.email || ""}`}

@@ -7,8 +7,7 @@ import {
   GridCellParams,
   GridColDef,
   GridRenderCellParams,
-  GridSelectionModel,
-  GridValueGetterParams,
+  GridRowSelectionModel,
 } from "@mui/x-data-grid";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
@@ -64,25 +63,23 @@ const confirmationFormatter =
     );
   };
 
-const verificationStatusFormatter = ({ row }: GridValueGetterParams) => {
+const verificationStatusFormatter = (_value: unknown, row: any) => {
   return verificationStatusNames[Number(row.verificationStatusId)];
 };
 
-const distanceFormatter = ({ row }: GridValueGetterParams) => {
+const distanceFormatter = (_value: unknown, row: any) => {
   return row.distance ? row.distance.toFixed(2) : row.distance;
 };
 
-const categoriesFormatter = ({ row }: GridValueGetterParams) => {
+const categoriesFormatter = (_value: unknown, row: any) => {
   return row.categories.length > 0
     ? row.categories.map((c: { name: string }) => c.name).join(", ")
     : "";
 };
 
-const dateFormatter =
-  (key: string) =>
-  ({ row }: GridValueGetterParams) => {
-    return !row[key] ? "" : row[key];
-  };
+const dateFormatter = (key: string) => (_value: unknown, row: any) => {
+  return !row[key] ? "" : row[key];
+};
 
 const dateComparator = (v1: string, v2: string) =>
   new Date(v2).getTime() - new Date(v1).getTime();
@@ -238,7 +235,7 @@ const adminColumns: GridColDef[] = [
         return "";
       }
       return clsx("suggestionCount-highlight", {
-        count: params.value > 0,
+        count: Number(params.value) > 0,
       });
     },
   },
@@ -355,7 +352,7 @@ const dataEntryColumns: GridColDef[] = [
 interface VerificationAdminGridMuiProps {
   stakeholders: any[];
   mode: string;
-  setSelectedStakeholderIds?: (ids: GridSelectionModel) => void;
+  setSelectedStakeholderIds?: (ids: GridRowSelectionModel) => void;
 }
 
 export default function VerificationAdminGridMui({
@@ -378,10 +375,9 @@ export default function VerificationAdminGridMui({
         rows={stakeholders}
         columns={mode === "admin" ? adminColumns : dataEntryColumns}
         checkboxSelection={mode === "admin" ? true : false}
-        disableSelectionOnClick
+        disableRowSelectionOnClick
         keepNonExistentRowsSelected
-        experimentalFeatures={{ newEditingApi: true }}
-        onSelectionModelChange={(ids) => {
+        onRowSelectionModelChange={(ids) => {
           setSelectedStakeholderIds?.(ids);
         }}
       />

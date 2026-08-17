@@ -46,19 +46,19 @@ function Suggestion() {
       />
       <Container maxWidth="lg" sx={{ spacing: { xs: 1, sm: 4 } }}>
         <Grid container spacing={3} justifyContent="center">
-          <Grid item>
+          <Grid>
             <Typography component="h1" variant="h4" align="center">
               SUGGEST A NEW LISTING
             </Typography>
           </Grid>
-          <Grid item>
+          <Grid>
             <Typography variant="body1" textAlign="center">
               Please enter as much information as you can about the organization
               to help our volunteers verify the entry efficiently. Thank you for
               your help!
             </Typography>
           </Grid>
-          <Grid item>
+          <Grid>
             <Formik
               initialValues={{
                 ...DEFAULT_STAKEHOLDER,
@@ -99,7 +99,11 @@ function Suggestion() {
                 <form onSubmit={handleSubmit}>
                   <Container maxWidth="md">
                     <Grid container spacing={3}>
-                      <Grid item xs={12} sm={6}>
+                      <Grid
+                        size={{
+                          xs: 12,
+                          sm: 6
+                        }}>
                         <div>
                           <Label id="name" label="Organization Name" />
                           <TextField
@@ -118,7 +122,11 @@ function Suggestion() {
                           />
                         </div>
                       </Grid>
-                      <Grid item xs={12} sm={6}>
+                      <Grid
+                        size={{
+                          xs: 12,
+                          sm: 6
+                        }}>
                         <div>
                           <Label
                             id="category"
@@ -138,7 +146,11 @@ function Suggestion() {
                           />
                         </div>
                       </Grid>
-                      <Grid item xs={12} sm={6}>
+                      <Grid
+                        size={{
+                          xs: 12,
+                          sm: 6
+                        }}>
                         <div>
                           <Label id="address1" label="Address Line 1" />
                           <TextField
@@ -155,7 +167,11 @@ function Suggestion() {
                           />
                         </div>
                       </Grid>
-                      <Grid item xs={12} sm={6}>
+                      <Grid
+                        size={{
+                          xs: 12,
+                          sm: 6
+                        }}>
                         <div>
                           <Label id="address2" label="Address Line 2" />
                           <TextField
@@ -172,7 +188,11 @@ function Suggestion() {
                           />
                         </div>
                       </Grid>
-                      <Grid item xs={12} sm={6}>
+                      <Grid
+                        size={{
+                          xs: 12,
+                          sm: 6
+                        }}>
                         <div>
                           <Label id="city" label="City" />
                           <TextField
@@ -189,7 +209,11 @@ function Suggestion() {
                           />
                         </div>
                       </Grid>
-                      <Grid item xs={12} sm={6}>
+                      <Grid
+                        size={{
+                          xs: 12,
+                          sm: 6
+                        }}>
                         <div>
                           <Label id="state" label="State" />
                           <TextField
@@ -206,7 +230,11 @@ function Suggestion() {
                           />
                         </div>
                       </Grid>
-                      <Grid item xs={12} sm={6}>
+                      <Grid
+                        size={{
+                          xs: 12,
+                          sm: 6
+                        }}>
                         <div>
                           <Label id="zip" label="Zip Code" />
                           <TextField
@@ -223,7 +251,11 @@ function Suggestion() {
                           />
                         </div>
                       </Grid>
-                      <Grid item xs={12} sm={6}>
+                      <Grid
+                        size={{
+                          xs: 12,
+                          sm: 6
+                        }}>
                         <div>
                           <Label id="phone" label="Phone" />
                           <TextField
@@ -241,7 +273,11 @@ function Suggestion() {
                           />
                         </div>
                       </Grid>
-                      <Grid item xs={12} sm={6}>
+                      <Grid
+                        size={{
+                          xs: 12,
+                          sm: 6
+                        }}>
                         <div>
                           <Label id="email" label="Email" />
                           <TextField
@@ -258,7 +294,11 @@ function Suggestion() {
                           />
                         </div>
                       </Grid>
-                      <Grid item xs={12} sm={6}>
+                      <Grid
+                        size={{
+                          xs: 12,
+                          sm: 6
+                        }}>
                         <div>
                           <Label id="hours" label="Hours" />
                           <Textarea
@@ -274,7 +314,11 @@ function Suggestion() {
                           />
                         </div>
                       </Grid>
-                      <Grid item xs={12} sm={6}>
+                      <Grid
+                        size={{
+                          xs: 12,
+                          sm: 6
+                        }}>
                         <div>
                           <Label id="notes" label="Other Information" />
                           <Textarea
@@ -290,7 +334,11 @@ function Suggestion() {
                           />
                         </div>
                       </Grid>
-                      <Grid item xs={12} sm={6}>
+                      <Grid
+                        size={{
+                          xs: 12,
+                          sm: 6
+                        }}>
                         <div>
                           <Label id="tipsterName" label="Your Name" />
                           <TextField
@@ -311,7 +359,11 @@ function Suggestion() {
                           />
                         </div>
                       </Grid>
-                      <Grid item xs={12} sm={6}>
+                      <Grid
+                        size={{
+                          xs: 12,
+                          sm: 6
+                        }}>
                         <div>
                           <Label id="tipsterPhone" label="Your Phone" />
                           <TextField
@@ -334,7 +386,11 @@ function Suggestion() {
                           />
                         </div>
                       </Grid>
-                      <Grid item xs={12} sm={6}>
+                      <Grid
+                        size={{
+                          xs: 12,
+                          sm: 6
+                        }}>
                         <div>
                           <Label id="tipsterEmail" label="Your Email" />
                           <TextField
@@ -356,7 +412,7 @@ function Suggestion() {
                           />
                         </div>
                       </Grid>
-                      <Grid item xs={12} sx={{ padding: "1rem", textAlign: "center" }}>
+                      <Grid sx={{ padding: "1rem", textAlign: "center" }} size={12}>
                         <Button
                           variant="contained"
                           type="submit"
@@ -371,7 +427,7 @@ function Suggestion() {
               )}
             </Formik>
           </Grid>
-          <Grid item width="100%">
+          <Grid width="100%">
             <Footer />
           </Grid>
         </Grid>

@@ -23,10 +23,10 @@ export default function BusinessHours({
   return (
     <TabPanel value={tabPage} index={1}>
       <Grid container spacing={1}>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Typography>Business hours for Food Seekers</Typography>
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <div
             style={{
               display: "flex",
@@ -66,7 +66,7 @@ export default function BusinessHours({
             handleBlur={handleBlur}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <FormControlLabel
             control={
               <Checkbox

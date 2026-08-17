@@ -138,7 +138,7 @@ export default function Identification({
   return (
     <TabPanel value={tabPage} index={0}>
       <Grid container spacing={2}>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Box sx={{ display: "flex", alignItems: "flex-start" }}>
             <Stack direction="column" sx={{ width: "100%", marginRight: 1 }}>
               <Label id="name" label="Name *" />
@@ -182,7 +182,11 @@ export default function Identification({
           </Box>
         </Grid>
 
-        <Grid item sm={6} xs={12}>
+        <Grid
+          size={{
+            sm: 6,
+            xs: 12
+          }}>
           <Box
             sx={{
               display: "flex",
@@ -272,7 +276,11 @@ export default function Identification({
           </Box>
         </Grid>
 
-        <Grid item sm={6} xs={12}>
+        <Grid
+          size={{
+            sm: 6,
+            xs: 12
+          }}>
           <Box sx={{ display: "flex", alignItems: "flex-start" }}>
             <Stack direction="column" sx={{ width: "100%" }}>
               <Label
@@ -322,7 +330,11 @@ export default function Identification({
           </Box>
         </Grid>
 
-        <Grid item xs={12} sm={6}>
+        <Grid
+          size={{
+            xs: 12,
+            sm: 6
+          }}>
           <Box sx={{ display: "flex", alignItems: "flex-start" }}>
             <Stack direction="column" sx={{ width: "100%" }}>
               <Label id="selectedCategoryIds" label="Categories *" />
@@ -435,7 +447,11 @@ export default function Identification({
           </Box>
         </Grid>
 
-        <Grid item xs={12} sm={6}>
+        <Grid
+          size={{
+            xs: 12,
+            sm: 6
+          }}>
           <div>
             <Label
               id="categoryNotes"
@@ -454,7 +470,11 @@ export default function Identification({
             />
           </div>
         </Grid>
-        <Grid item xs={6} sm={3}>
+        <Grid
+          size={{
+            xs: 6,
+            sm: 3
+          }}>
           <Tooltip title="Check if they are permanently closed.">
             <FormControlLabel
               control={
@@ -470,7 +490,11 @@ export default function Identification({
             />
           </Tooltip>
         </Grid>
-        <Grid item xs={6} sm={3}>
+        <Grid
+          size={{
+            xs: 6,
+            sm: 3
+          }}>
           <Tooltip title="Check if they are temporarily closed.">
             <FormControlLabel
               control={
@@ -491,7 +515,11 @@ export default function Identification({
             />
           </Tooltip>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid
+          size={{
+            xs: 12,
+            sm: 6
+          }}>
           <div>
             <Label
               id="covidNotes"
@@ -511,7 +539,7 @@ export default function Identification({
           </div>
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid size={12}>
           <div>
             <Label
               id="description"
@@ -531,7 +559,7 @@ export default function Identification({
           </div>
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid size={12}>
           <div>
             <Label
               id="parentOrganization"
@@ -555,7 +583,7 @@ export default function Identification({
           </div>
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid size={12}>
           <div>
             <Label id="address1" label="Address Line 1 *" />
             <TextField
@@ -570,7 +598,7 @@ export default function Identification({
             />
           </div>
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <div>
             <Label id="address2" label="Address Line 2" />
           </div>
@@ -585,7 +613,11 @@ export default function Identification({
             error={touched.address2 && Boolean(errors.address2)}
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid
+          size={{
+            xs: 12,
+            sm: 6
+          }}>
           <div>
             <Label id="city" label="City *" />
             <TextField
@@ -600,7 +632,11 @@ export default function Identification({
             />
           </div>
         </Grid>
-        <Grid item xs={12} sm={3}>
+        <Grid
+          size={{
+            xs: 12,
+            sm: 3
+          }}>
           <div>
             <Label id="state" label="State *" />
             <TextField
@@ -615,7 +651,11 @@ export default function Identification({
             />
           </div>
         </Grid>
-        <Grid item xs={12} sm={3}>
+        <Grid
+          size={{
+            xs: 12,
+            sm: 3
+          }}>
           <div>
             <Label id="zip" label="Zip Code *" />
             <TextField
@@ -631,7 +671,11 @@ export default function Identification({
           </div>
         </Grid>
 
-        <Grid item xs={6} md={3}>
+        <Grid
+          size={{
+            xs: 6,
+            md: 3
+          }}>
           <div>
             <Label id="latitude" label="Latitude *" />
           </div>
@@ -646,7 +690,11 @@ export default function Identification({
             error={touched.latitude && Boolean(errors.latitude)}
           />
         </Grid>
-        <Grid item xs={6} md={3}>
+        <Grid
+          size={{
+            xs: 6,
+            md: 3
+          }}>
           <div>
             <Label id="longitude" label="Longitude *" />
           </div>
@@ -661,19 +709,22 @@ export default function Identification({
             error={touched.longitude && Boolean(errors.longitude)}
           />
         </Grid>
-        <Grid item xs={12} md={6} sx={{ display: "flex" }}>
+        <Grid
+          sx={{ display: "flex" }}
+          size={{
+            xs: 12,
+            md: 6
+          }}>
           <Grid container sx={{ display: "flex", alignItems: "flex-end" }}>
             <Grid
-              xs={12}
-              item
               sx={{
                 display: "flex",
                 columnGap: "1rem",
                 alignItems: "center",
               }}
-            >
+              size={12}>
               <Tooltip title="Click to get latitude / longitude for address">
-                <Grid item>
+                <Grid>
                   <Button
                     variant="outlined"
                     size="large"
@@ -733,11 +784,11 @@ export default function Identification({
                   key={index}
                 >
                   <Grid container>
-                    <Grid item xs={10}>
+                    <Grid size={10}>
                       <Typography>{`(${result.Place.Geometry.Point[0]}, ${result.Place.Geometry.Point[1]})`}</Typography>
                       <Typography>{`Match Score: ${result.Relevance}`}</Typography>
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid size={2}>
                       <Button
                         variant="outlined"
                         type="button"
@@ -767,16 +818,18 @@ export default function Identification({
         </Grid>
 
         <Grid
-          item
-          xs={12}
           sx={{
             display: "flex",
             columnGap: "1rem",
             rowGap: "1rem",
             flexDirection: { xs: "column", sm: "row" },
           }}
-        >
-          <Grid item xs={12} sm={6}>
+          size={12}>
+          <Grid
+            size={{
+              xs: 12,
+              sm: 6
+            }}>
             <Box>
               <Label id="neighborhoodCouncil" label="Neighborhood Council" />
               <TextField
@@ -798,11 +851,11 @@ export default function Identification({
           </Grid>
 
           <Grid
-            item
-            xs={12}
-            sm={6}
             sx={{ display: "flex", alignItems: "flex-end" }}
-          >
+            size={{
+              xs: 12,
+              sm: 6
+            }}>
             <Stack direction="column" sx={{ width: "100%" }}>
               <Label id="selectedTags-label" label="Tags" />
               <Select

@@ -59,7 +59,11 @@ const CheckboxWithLabel = ({
   onChange,
   onBlur,
 }: CheckboxWithLabelProps) => (
-  <Grid item xs={12} sm={4}>
+  <Grid
+    size={{
+      xs: 12,
+      sm: 4
+    }}>
     <FormControlLabel
       control={
         <Checkbox
@@ -101,20 +105,14 @@ export default function MoreDetails({
   return (
     <TabPanel value={tabPage} index={3}>
       <Grid container spacing={2}>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Typography>Details for Food Seekers to See</Typography>
         </Grid>
-        <Grid
-          item
-          container
-          justifyContent="space-between"
-          xs={12}
-          alignItems="center"
-        >
-          <Grid item xs={6}>
+        <Grid container justifyContent="space-between" alignItems="center" size={12}>
+          <Grid size={6}>
             <Typography>Food Types</Typography>
           </Grid>
-          <Grid item container justifyContent="flex-end" xs={6} spacing={2}>
+          <Grid container justifyContent="flex-end" spacing={2} size={6}>
             <FormControlLabel
               sx={{ mt: 2 }}
               componentsProps={{
@@ -157,7 +155,7 @@ export default function MoreDetails({
           })}
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid size={12}>
           <div>
             <Label id="foodTypes" label="Other Food Types" />
             <Textarea
@@ -172,7 +170,7 @@ export default function MoreDetails({
             />
           </div>
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <div>
             <Label
               id="items"
@@ -191,7 +189,7 @@ export default function MoreDetails({
             />
           </div>
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <div>
             <Label
               id="services"
@@ -210,7 +208,7 @@ export default function MoreDetails({
             />
           </div>
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <div>
             <Label
               id="requirements"
@@ -229,7 +227,7 @@ export default function MoreDetails({
             />
           </div>
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <div>
             <Label
               id="eligibilityNotes"
@@ -252,7 +250,7 @@ export default function MoreDetails({
             />
           </div>
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <div>
             <Label id="languages" label="Languages" />
             <Textarea
@@ -267,7 +265,7 @@ export default function MoreDetails({
             />
           </div>
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <div>
             <Label
               id="notes"

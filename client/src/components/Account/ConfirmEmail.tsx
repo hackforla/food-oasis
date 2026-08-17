@@ -1,6 +1,5 @@
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
-import LoadingButton from "@mui/lab/LoadingButton";
-import { Avatar, Box, TextField, Typography } from "@mui/material";
+import { Avatar, Box, Button, TextField, Typography } from "@mui/material";
 import Label from "components/Admin/ui/Label";
 import { Formik, FormikProps } from "formik";
 import { useEffect, useState } from "react";
@@ -105,7 +104,7 @@ const ConfirmEmail = () => {
                   sx={{ mt: 1, mb: 2 }}
                 />
               </Box>
-              <LoadingButton
+              <Button
                 variant="contained"
                 loading={isSubmitting}
                 type="submit"
@@ -114,7 +113,7 @@ const ConfirmEmail = () => {
                 disabled={isSubmitting || !(isValid && dirty)}
               >
                 Re-send confirmation email
-              </LoadingButton>
+              </Button>
             </form>
           </PageWrapper>
         );

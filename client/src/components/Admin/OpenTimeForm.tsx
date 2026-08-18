@@ -128,8 +128,9 @@ const OpenTimeForm = ({
                           <Grid
                             size={{
                               xs: 8,
-                              sm: 2
-                            }}>
+                              sm: 2,
+                            }}
+                          >
                             <FormControl variant="outlined" fullWidth>
                               <Select
                                 id="interval-select"
@@ -170,8 +171,9 @@ const OpenTimeForm = ({
                           <Grid
                             size={{
                               xs: 8,
-                              sm: 2
-                            }}>
+                              sm: 2,
+                            }}
+                          >
                             <FormControl variant="outlined" fullWidth>
                               <Select
                                 labelId="open-days-select-id"
@@ -215,8 +217,9 @@ const OpenTimeForm = ({
                           <Grid
                             size={{
                               xs: 8,
-                              sm: 3
-                            }}>
+                              sm: 3,
+                            }}
+                          >
                             <DesktopTimePicker
                               value={
                                 hour.open ? dayjs(hour.open, "HH:mm:ss") : null
@@ -268,8 +271,9 @@ const OpenTimeForm = ({
                           <Grid
                             size={{
                               xs: 8,
-                              sm: 3
-                            }}>
+                              sm: 3,
+                            }}
+                          >
                             <DesktopTimePicker
                               value={
                                 hour.close
@@ -361,8 +365,9 @@ const OpenTimeForm = ({
                             sx={{ display: "flex", alignItems: "center" }}
                             size={{
                               xs: 2,
-                              sm: 1
-                            }}>
+                              sm: 1,
+                            }}
+                          >
                             <IconButton
                               icon="cancel"
                               color="error"
@@ -375,8 +380,9 @@ const OpenTimeForm = ({
                             sx={{ display: "flex", alignItems: "center" }}
                             size={{
                               xs: 2,
-                              sm: 1
-                            }}>
+                              sm: 1,
+                            }}
+                          >
                             <IconButton
                               icon="copy"
                               color="primary"

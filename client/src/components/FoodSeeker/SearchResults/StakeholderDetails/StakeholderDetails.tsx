@@ -70,8 +70,7 @@ const MinorHeading = styled(Typography)(({ theme }) => ({
   color: theme.palette.headingText.main,
 }));
 
-const DetailText = styled(Box)(({ theme }) => ({
-  ...theme.typography.body1,
+const DetailText = styled(Typography)(({ theme }) => ({
   textAlign: "left",
   marginBottom: "16px",
   whiteSpace: "pre-wrap",
@@ -722,12 +721,10 @@ const StakeholderDetails = ({
                       selectedOrganization.modifiedDate,
                       selectedOrganization.createdDate
                     ) && (
-                      <Box sx={{ marginBottom: "16px" }}>
-                        <Alert severity="warning">
-                          This information may be outdated <br />
-                          (last updated over 1 year ago)
-                        </Alert>
-                      </Box>
+                      <Alert severity="warning" sx={{ marginBottom: 2 }}>
+                        This information may be outdated <br />
+                        (last updated over 1 year ago)
+                      </Alert>
                     )}
                     <DetailText>
                       Data updated on{" "}

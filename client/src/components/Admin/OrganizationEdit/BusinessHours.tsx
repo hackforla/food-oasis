@@ -5,7 +5,8 @@ import Label from "../ui/Label";
 import Textarea from "../ui/Textarea";
 import { OrganizationSectionWithSetFieldTouchedProps } from "types/Organization";
 
-interface BusinessHoursProps extends OrganizationSectionWithSetFieldTouchedProps {
+interface BusinessHoursProps
+  extends OrganizationSectionWithSetFieldTouchedProps {
   confirmationErrors?: Record<string, string>;
 }
 
@@ -35,19 +36,25 @@ export default function BusinessHours({
             }}
           >
             <FormControlLabel
-              componentsProps={{
+              slotProps={{
                 typography: {
                   sx: {
-                    color: confirmationErrors["confirmedHours"] ? "error.main" : "inherit",
-                  }
-                }
+                    color: confirmationErrors["confirmedHours"]
+                      ? "error.main"
+                      : "inherit",
+                  },
+                },
               }}
               control={
                 <Checkbox
                   name="confirmedHours"
                   value={values.confirmedHours}
                   checked={values.confirmedHours}
-                  sx={{ color: confirmationErrors["confirmedHours"] ? "error.main" : "inherit" }}
+                  sx={{
+                    color: confirmationErrors["confirmedHours"]
+                      ? "error.main"
+                      : "inherit",
+                  }}
                   onChange={() =>
                     setFieldValue("confirmedHours", !values.confirmedHours)
                   }

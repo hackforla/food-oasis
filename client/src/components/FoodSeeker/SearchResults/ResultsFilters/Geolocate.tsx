@@ -19,8 +19,10 @@ const Geolocate: FC = () => {
     }
     if (locationPermission === "granted" && userCoordinates) {
       flyTo({
-        longitude: (userCoordinates as { longitude: number; latitude: number }).longitude,
-        latitude: (userCoordinates as { longitude: number; latitude: number }).latitude,
+        longitude: (userCoordinates as { longitude: number; latitude: number })
+          .longitude,
+        latitude: (userCoordinates as { longitude: number; latitude: number })
+          .latitude,
       });
     }
   }, [error, locationPermission, userCoordinates]);
@@ -41,7 +43,7 @@ const Geolocate: FC = () => {
           ? "Please allow location access"
           : "Show Your Current Location"
       }
-      componentsProps={{
+      slotProps={{
         tooltip: {
           sx: {
             padding: "12px",

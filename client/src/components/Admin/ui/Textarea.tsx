@@ -9,7 +9,7 @@ interface TextareaProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
   helperText?: string;
-  error?: boolean | string | null;
+  error?: boolean;
   rows?: number | null;
   margin?: string;
   fullWidth?: boolean;
@@ -58,7 +58,7 @@ const Textarea = (props: TextareaProps) => {
       onChange={onChange}
       onBlur={onBlur}
       helperText={helperText}
-      error={Boolean(error)}
+      error={error}
       margin={margin}
       fullWidth={fullWidth}
       type={type}

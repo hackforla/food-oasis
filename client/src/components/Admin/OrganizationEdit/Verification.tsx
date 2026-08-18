@@ -26,8 +26,9 @@ export default function Verification({
         <Grid
           size={{
             xs: 12,
-            sm: 6
-          }}>
+            sm: 6,
+          }}
+        >
           <div>
             <Label
               id="adminContactName"
@@ -53,8 +54,9 @@ export default function Verification({
         <Grid
           size={{
             xs: 12,
-            sm: 6
-          }}>
+            sm: 6,
+          }}
+        >
           <div>
             <Label
               id="adminContactPhone"
@@ -80,8 +82,9 @@ export default function Verification({
         <Grid
           size={{
             xs: 12,
-            sm: 6
-          }}>
+            sm: 6,
+          }}
+        >
           <div>
             <Label
               id="adminContactEmail"
@@ -113,7 +116,8 @@ export default function Verification({
             display: "flex",
             flexDirection: "column",
           }}
-          size={12}>
+          size={12}
+        >
           <Stack direction="row">
             <Typography flexBasis="20%">Id:</Typography>
             <Typography flexBasis="20%">{values.id}</Typography>

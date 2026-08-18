@@ -234,8 +234,9 @@ const SearchCriteria = ({
           <Grid
             size={{
               xs: 12,
-              sm: 6
-            }}>
+              sm: 6,
+            }}
+          >
             <Label
               id="verification-status-id-label"
               label="Verification Status"
@@ -270,8 +271,9 @@ const SearchCriteria = ({
           <Grid
             size={{
               xs: 12,
-              sm: 6
-            }}>
+              sm: 6,
+            }}
+          >
             <Label id="select-multiple-chip" label="Categories" />
             {categories ? (
               <Select
@@ -308,8 +310,9 @@ const SearchCriteria = ({
           <Grid
             size={{
               xs: 12,
-              sm: 6
-            }}>
+              sm: 6,
+            }}
+          >
             <Label id="name" label="Name" />
             <TextField
               variant="outlined"
@@ -325,8 +328,9 @@ const SearchCriteria = ({
           <Grid
             size={{
               xs: 12,
-              sm: 6
-            }}>
+              sm: 6,
+            }}
+          >
             <Label id="assignedLoginId" label="Assigned To" />
             <AccountAutocomplete
               accountId={criteria.assignedLoginId || ""}
@@ -339,8 +343,9 @@ const SearchCriteria = ({
           <Grid
             size={{
               xs: 12,
-              sm: 4
-            }}>
+              sm: 4,
+            }}
+          >
             <RadioTrueFalseEither
               label="Permanently Closed"
               name="isInactive"
@@ -351,8 +356,9 @@ const SearchCriteria = ({
           <Grid
             size={{
               xs: 12,
-              sm: 4
-            }}>
+              sm: 4,
+            }}
+          >
             <RadioTrueFalseEither
               label="Temporarily Closed"
               name="isInactiveTemporary"
@@ -363,8 +369,9 @@ const SearchCriteria = ({
           <Grid
             size={{
               xs: 12,
-              sm: 4
-            }}>
+              sm: 4,
+            }}
+          >
             <Label id="stakeholderId" label="Organization ID" />
             <TextField
               autoComplete="off"
@@ -381,8 +388,9 @@ const SearchCriteria = ({
           <Grid
             size={{
               xs: 12,
-              sm: 4
-            }}>
+              sm: 4,
+            }}
+          >
             <Label
               id="minCompleteCriticalPercent"
               label="Min % Critical Complete"
@@ -402,8 +410,9 @@ const SearchCriteria = ({
           <Grid
             size={{
               xs: 12,
-              sm: 4
-            }}>
+              sm: 4,
+            }}
+          >
             <Label
               id="maxCompleteCriticalPercent"
               label="Max % Critical Complete"
@@ -423,8 +432,9 @@ const SearchCriteria = ({
           <Grid
             size={{
               xs: 12,
-              sm: 6
-            }}>
+              sm: 6,
+            }}
+          >
             <Label id="neighborhood-id-label" label="Neighborhood" />
             <Select
               labelId="neighborhood-id-label"
@@ -452,8 +462,9 @@ const SearchCriteria = ({
           <Grid
             size={{
               xs: 12,
-              sm: 6
-            }}>
+              sm: 6,
+            }}
+          >
             <Label id="tag-label" label="Tag" />
             <Select
               labelId="tag-label"
@@ -482,11 +493,12 @@ const SearchCriteria = ({
           <Grid
             size={{
               xs: 12,
-              sm: 6
-            }}>
-            <Grid container>
+              sm: 6,
+            }}
+          >
+            <Grid container sx={{ width: "100%" }}>
               <Label id="radius" label="Location" />
-              <Grid container alignItems="center">
+              <Grid container alignItems="center" sx={{ width: "100%" }}>
                 <Typography sx={{ marginRight: "0.5rem" }}>
                   {"Within "}
                 </Typography>

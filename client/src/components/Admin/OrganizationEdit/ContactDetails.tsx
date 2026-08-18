@@ -37,8 +37,9 @@ export default function ContactDetails({
         <Grid
           size={{
             sm: 6,
-            xs: 12
-          }}>
+            xs: 12,
+          }}
+        >
           <div>
             <Label
               id="instagram"
@@ -61,8 +62,9 @@ export default function ContactDetails({
         <Grid
           size={{
             sm: 6,
-            xs: 12
-          }}>
+            xs: 12,
+          }}
+        >
           <div>
             <Label
               id="facebook"
@@ -85,8 +87,9 @@ export default function ContactDetails({
         <Grid
           size={{
             sm: 6,
-            xs: 12
-          }}>
+            xs: 12,
+          }}
+        >
           <div>
             <Label
               id="twitter-label"
@@ -109,8 +112,9 @@ export default function ContactDetails({
         <Grid
           size={{
             sm: 6,
-            xs: 12
-          }}>
+            xs: 12,
+          }}
+        >
           <div>
             <Label
               id="pinterest"
@@ -133,8 +137,9 @@ export default function ContactDetails({
         <Grid
           size={{
             sm: 6,
-            xs: 12
-          }}>
+            xs: 12,
+          }}
+        >
           <div>
             <Label
               id="linkedin"

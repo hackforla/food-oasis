@@ -13,16 +13,76 @@ import clsx from "clsx";
 import { Link } from "react-router-dom";
 import { VERIFICATION_STATUS_NAMES } from "../../constants/stakeholder";
 
+interface StakeholderCategory {
+  name: string;
+}
+
+interface StakeholderRow {
+  id: number;
+  name: string;
+  categories: StakeholderCategory[];
+  completeCriticalPercent?: number;
+  inactive?: boolean;
+  inactiveTemporary?: boolean;
+  verificationStatusId: number;
+  confirmedName?: boolean;
+  confirmedCategories?: boolean;
+  confirmedAddress?: boolean;
+  confirmedPhone?: boolean;
+  confirmedEmail?: boolean;
+  confirmedHours?: boolean;
+  confirmedFoodTypes?: boolean;
+  neighborhoodName?: string;
+  assignedUser?: string;
+  assignedDate?: string | null;
+  submittedUser?: string;
+  submittedDate?: string | null;
+  reviewedUser?: string;
+  approvedDate?: string | null;
+  createdUser?: string;
+  createdDate?: string | null;
+  modifiedUser?: string;
+  modifiedDate?: string | null;
+  address1?: string;
+  city?: string;
+  zip?: string;
+  phone?: string;
+  website?: string;
+  distance?: number | null;
+  suggestionCount?: number;
+}
+
+type StakeholderBooleanField =
+  | "inactive"
+  | "inactiveTemporary"
+  | "confirmedName"
+  | "confirmedCategories"
+  | "confirmedAddress"
+  | "confirmedPhone"
+  | "confirmedEmail"
+  | "confirmedHours"
+  | "confirmedFoodTypes";
+
+type StakeholderDateField =
+  | "assignedDate"
+  | "submittedDate"
+  | "approvedDate"
+  | "createdDate"
+  | "modifiedDate";
+
 const verificationStatusNames: Record<number, string> =
   VERIFICATION_STATUS_NAMES;
 
-const linkFormatter = ({ value, row }: GridRenderCellParams) => {
+const linkFormatter = ({
+  value,
+  row,
+}: GridRenderCellParams<StakeholderRow>) => {
   return <Link to={`/admin/organizationedit/${row.id}`}>{value}</Link>;
 };
 
 const inactiveFormatter =
-  (key: string) =>
-  ({ row }: GridRenderCellParams) => {
+  (key: StakeholderBooleanField) =>
+  ({ row }: GridRenderCellParams<StakeholderRow>) => {
     return row[key] ? (
       <Box
         sx={(theme) => ({
@@ -38,8 +98,8 @@ const inactiveFormatter =
   };
 
 const confirmationFormatter =
-  (key: string) =>
-  ({ row }: GridRenderCellParams) => {
+  (key: StakeholderBooleanField) =>
+  ({ row }: GridRenderCellParams<StakeholderRow>) => {
     return row[key] ? (
       <Box
         sx={(theme) => ({
@@ -63,28 +123,45 @@ const confirmationFormatter =
     );
   };
 
-const verificationStatusFormatter = (_value: unknown, row: any) => {
+const verificationStatusFormatter = (_value: unknown, row: StakeholderRow) => {
   return verificationStatusNames[Number(row.verificationStatusId)];
 };
 
-const distanceFormatter = (_value: unknown, row: any) => {
+const distanceFormatter = (_value: unknown, row: StakeholderRow) => {
   return row.distance ? row.distance.toFixed(2) : row.distance;
 };
 
-const categoriesFormatter = (_value: unknown, row: any) => {
+const categoriesFormatter = (_value: unknown, row: StakeholderRow) => {
   return row.categories.length > 0
-    ? row.categories.map((c: { name: string }) => c.name).join(", ")
+    ? row.categories.map((c) => c.name).join(", ")
     : "";
 };
 
-const dateFormatter = (key: string) => (_value: unknown, row: any) => {
-  return !row[key] ? "" : row[key];
+const dateFormatter =
+  (key: StakeholderDateField) => (_value: unknown, row: StakeholderRow) => {
+    return !row[key] ? "" : row[key];
+  };
+
+const dateComparator = (v1: string, v2: string) => {
+  const timeA = v1 ? new Date(v1).getTime() : Number.NaN;
+  const timeB = v2 ? new Date(v2).getTime() : Number.NaN;
+  const aInvalid = Number.isNaN(timeA);
+  const bInvalid = Number.isNaN(timeB);
+
+  if (aInvalid && bInvalid) {
+    return 0;
+  }
+  if (aInvalid) {
+    return 1;
+  }
+  if (bInvalid) {
+    return -1;
+  }
+
+  return timeB - timeA;
 };
 
-const dateComparator = (v1: string, v2: string) =>
-  new Date(v2).getTime() - new Date(v1).getTime();
-
-const adminColumns: GridColDef[] = [
+const adminColumns: GridColDef<StakeholderRow>[] = [
   {
     field: "id",
     headerName: "ID",
@@ -230,7 +307,7 @@ const adminColumns: GridColDef[] = [
     headerName: "Suggestions",
     align: "center",
     width: 120,
-    cellClassName: (params: GridCellParams) => {
+    cellClassName: (params: GridCellParams<StakeholderRow>) => {
       if (params.value == null) {
         return "";
       }
@@ -240,7 +317,7 @@ const adminColumns: GridColDef[] = [
     },
   },
 ];
-const dataEntryColumns: GridColDef[] = [
+const dataEntryColumns: GridColDef<StakeholderRow>[] = [
   {
     field: "id",
     headerName: "ID",
@@ -350,7 +427,7 @@ const dataEntryColumns: GridColDef[] = [
 ];
 
 interface VerificationAdminGridMuiProps {
-  stakeholders: any[];
+  stakeholders: StakeholderRow[];
   mode: string;
   setSelectedStakeholderIds?: (ids: GridRowSelectionModel) => void;
 }

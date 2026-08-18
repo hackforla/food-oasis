@@ -156,7 +156,7 @@ export default function Identification({
 
             <FormControlLabel
               sx={{ mt: 5, ml: 0 }}
-              componentsProps={{
+              slotProps={{
                 typography: {
                   sx: {
                     color: confirmationErrors["confirmedName"]
@@ -185,8 +185,9 @@ export default function Identification({
         <Grid
           size={{
             sm: 6,
-            xs: 12
-          }}>
+            xs: 12,
+          }}
+        >
           <Box
             sx={{
               display: "flex",
@@ -244,7 +245,7 @@ export default function Identification({
                   ]}
                 >
                   <FormControlLabel
-                    componentsProps={{
+                    slotProps={{
                       typography: {
                         sx: {
                           color: confirmationErrors["confirmedPhone"]
@@ -279,8 +280,9 @@ export default function Identification({
         <Grid
           size={{
             sm: 6,
-            xs: 12
-          }}>
+            xs: 12,
+          }}
+        >
           <Box sx={{ display: "flex", alignItems: "flex-start" }}>
             <Stack direction="column" sx={{ width: "100%" }}>
               <Label
@@ -303,7 +305,7 @@ export default function Identification({
             <Box sx={{ mt: 5, ...confirmationErrorSx("confirmedEmail") }}>
               <FormControlLabel
                 sx={{ ml: 0 }}
-                componentsProps={{
+                slotProps={{
                   typography: {
                     sx: {
                       color: confirmationErrors["confirmedEmail"]
@@ -333,8 +335,9 @@ export default function Identification({
         <Grid
           size={{
             xs: 12,
-            sm: 6
-          }}>
+            sm: 6,
+          }}
+        >
           <Box sx={{ display: "flex", alignItems: "flex-start" }}>
             <Stack direction="column" sx={{ width: "100%" }}>
               <Label id="selectedCategoryIds" label="Categories *" />
@@ -417,7 +420,7 @@ export default function Identification({
             <Box sx={{ mt: 5, ...confirmationErrorSx("confirmedCategories") }}>
               <FormControlLabel
                 sx={{ ml: 0 }}
-                componentsProps={{
+                slotProps={{
                   typography: {
                     sx: {
                       color: confirmationErrors["confirmedCategories"]
@@ -450,8 +453,9 @@ export default function Identification({
         <Grid
           size={{
             xs: 12,
-            sm: 6
-          }}>
+            sm: 6,
+          }}
+        >
           <div>
             <Label
               id="categoryNotes"
@@ -473,8 +477,9 @@ export default function Identification({
         <Grid
           size={{
             xs: 6,
-            sm: 3
-          }}>
+            sm: 3,
+          }}
+        >
           <Tooltip title="Check if they are permanently closed.">
             <FormControlLabel
               control={
@@ -493,8 +498,9 @@ export default function Identification({
         <Grid
           size={{
             xs: 6,
-            sm: 3
-          }}>
+            sm: 3,
+          }}
+        >
           <Tooltip title="Check if they are temporarily closed.">
             <FormControlLabel
               control={
@@ -518,8 +524,9 @@ export default function Identification({
         <Grid
           size={{
             xs: 12,
-            sm: 6
-          }}>
+            sm: 6,
+          }}
+        >
           <div>
             <Label
               id="covidNotes"
@@ -616,8 +623,9 @@ export default function Identification({
         <Grid
           size={{
             xs: 12,
-            sm: 6
-          }}>
+            sm: 6,
+          }}
+        >
           <div>
             <Label id="city" label="City *" />
             <TextField
@@ -635,8 +643,9 @@ export default function Identification({
         <Grid
           size={{
             xs: 12,
-            sm: 3
-          }}>
+            sm: 3,
+          }}
+        >
           <div>
             <Label id="state" label="State *" />
             <TextField
@@ -654,8 +663,9 @@ export default function Identification({
         <Grid
           size={{
             xs: 12,
-            sm: 3
-          }}>
+            sm: 3,
+          }}
+        >
           <div>
             <Label id="zip" label="Zip Code *" />
             <TextField
@@ -674,8 +684,9 @@ export default function Identification({
         <Grid
           size={{
             xs: 6,
-            md: 3
-          }}>
+            md: 3,
+          }}
+        >
           <div>
             <Label id="latitude" label="Latitude *" />
           </div>
@@ -693,8 +704,9 @@ export default function Identification({
         <Grid
           size={{
             xs: 6,
-            md: 3
-          }}>
+            md: 3,
+          }}
+        >
           <div>
             <Label id="longitude" label="Longitude *" />
           </div>
@@ -713,16 +725,21 @@ export default function Identification({
           sx={{ display: "flex" }}
           size={{
             xs: 12,
-            md: 6
-          }}>
-          <Grid container sx={{ display: "flex", alignItems: "flex-end" }}>
+            md: 6,
+          }}
+        >
+          <Grid
+            container
+            sx={{ display: "flex", alignItems: "flex-end", width: "100%" }}
+          >
             <Grid
               sx={{
                 display: "flex",
                 columnGap: "1rem",
                 alignItems: "center",
               }}
-              size={12}>
+              size={12}
+            >
               <Tooltip title="Click to get latitude / longitude for address">
                 <Grid>
                   <Button
@@ -756,7 +773,7 @@ export default function Identification({
                         onBlur={handleBlur}
                       />
                     }
-                    componentsProps={{
+                    slotProps={{
                       typography: {
                         sx: {
                           color: confirmationErrors["confirmedAddress"]
@@ -783,7 +800,7 @@ export default function Identification({
                   }}
                   key={index}
                 >
-                  <Grid container>
+                  <Grid container sx={{ width: "100%" }}>
                     <Grid size={10}>
                       <Typography>{`(${result.Place.Geometry.Point[0]}, ${result.Place.Geometry.Point[1]})`}</Typography>
                       <Typography>{`Match Score: ${result.Relevance}`}</Typography>
@@ -824,12 +841,14 @@ export default function Identification({
             rowGap: "1rem",
             flexDirection: { xs: "column", sm: "row" },
           }}
-          size={12}>
+          size={12}
+        >
           <Grid
             size={{
               xs: 12,
-              sm: 6
-            }}>
+              sm: 6,
+            }}
+          >
             <Box>
               <Label id="neighborhoodCouncil" label="Neighborhood Council" />
               <TextField
@@ -854,8 +873,9 @@ export default function Identification({
             sx={{ display: "flex", alignItems: "flex-end" }}
             size={{
               xs: 12,
-              sm: 6
-            }}>
+              sm: 6,
+            }}
+          >
             <Stack direction="column" sx={{ width: "100%" }}>
               <Label id="selectedTags-label" label="Tags" />
               <Select

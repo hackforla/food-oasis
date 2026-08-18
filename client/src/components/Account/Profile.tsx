@@ -84,8 +84,9 @@ export default function Profile() {
               size={{
                 xs: 4,
                 sm: 3,
-                md: 2
-              }}>
+                md: 2,
+              }}
+            >
               <Typography variant="h4" component="h4" color={headingText}>
                 First Name
               </Typography>
@@ -94,8 +95,9 @@ export default function Profile() {
               size={{
                 xs: 8,
                 sm: 9,
-                md: 10
-              }}>
+                md: 10,
+              }}
+            >
               {!fields.firstName ? (
                 <Typography variant="h4" component="h4" color={bodyText}>
                   {user.firstName}
@@ -138,8 +140,9 @@ export default function Profile() {
               size={{
                 xs: 4,
                 sm: 3,
-                md: 2
-              }}>
+                md: 2,
+              }}
+            >
               <Typography variant="h4" component="h4" color={headingText}>
                 Last Name
               </Typography>
@@ -148,8 +151,9 @@ export default function Profile() {
               size={{
                 xs: 8,
                 sm: 9,
-                md: 10
-              }}>
+                md: 10,
+              }}
+            >
               {!fields.lastName ? (
                 <Typography variant="h4" component="h4" color={bodyText}>
                   {user.lastName}
@@ -192,8 +196,9 @@ export default function Profile() {
               size={{
                 xs: 4,
                 sm: 3,
-                md: 2
-              }}>
+                md: 2,
+              }}
+            >
               <Typography variant="h4" component="h4" color={headingText}>
                 Email
               </Typography>
@@ -202,8 +207,9 @@ export default function Profile() {
               size={{
                 xs: 8,
                 sm: 9,
-                md: 10
-              }}>
+                md: 10,
+              }}
+            >
               {!fields.emailID ? (
                 <Typography variant="h4" component="h4" color={bodyText}>
                   {user.email}

@@ -17,6 +17,12 @@ interface AdvancedFiltersProps {
   isPantrySelected: boolean;
 }
 
+const filterChipSx = {
+  whiteSpace: "nowrap",
+  marginTop: "0.75rem",
+  flexShrink: 0,
+};
+
 const AdvancedFilters: FC<AdvancedFiltersProps> = ({
   toggleMeal,
   togglePantry,
@@ -51,14 +57,7 @@ const AdvancedFilters: FC<AdvancedFiltersProps> = ({
 
   return (
     <>
-      <Box
-        sx={{
-          whiteSpace: "nowrap",
-          marginLeft: "0.5rem",
-          marginTop: "0.75rem",
-          flexShrink: 0,
-        }}
-      >
+      <Box sx={{ ...filterChipSx, marginLeft: "0.5rem" }}>
         <AdvancedFilterButton
           label="Pantry"
           onClick={togglePantry}
@@ -66,7 +65,7 @@ const AdvancedFilters: FC<AdvancedFiltersProps> = ({
           icon={PantryLocatorIcon}
         />
       </Box>
-      <Box sx={{ whiteSpace: "nowrap", marginTop: "0.75rem", flexShrink: 0 }}>
+      <Box sx={filterChipSx}>
         <AdvancedFilterButton
           label="Meal"
           onClick={toggleMeal}
@@ -74,21 +73,14 @@ const AdvancedFilters: FC<AdvancedFiltersProps> = ({
           icon={MealLocatorIcon}
         />
       </Box>
-      <Box sx={{ whiteSpace: "nowrap", marginTop: "0.75rem", flexShrink: 0 }}>
+      <Box sx={filterChipSx}>
         <AdvancedFilterButton
           label="Open Now"
           onClick={() => handleOpenNowToggle()}
           isSelected={openTime.radio === "Open Now"}
         />
       </Box>
-      <Box
-        sx={{
-          whiteSpace: "nowrap",
-          marginTop: "0.75rem",
-          marginRight: "1rem",
-          flexShrink: 0,
-        }}
-      >
+      <Box sx={{ ...filterChipSx, marginRight: "1rem" }}>
         <AdvancedFilterButton
           label="More Filters"
           onClick={() => {

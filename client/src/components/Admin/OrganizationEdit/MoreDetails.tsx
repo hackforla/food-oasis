@@ -62,8 +62,9 @@ const CheckboxWithLabel = ({
   <Grid
     size={{
       xs: 12,
-      sm: 4
-    }}>
+      sm: 4,
+    }}
+  >
     <FormControlLabel
       control={
         <Checkbox
@@ -108,26 +109,37 @@ export default function MoreDetails({
         <Grid size={12}>
           <Typography>Details for Food Seekers to See</Typography>
         </Grid>
-        <Grid container justifyContent="space-between" alignItems="center" size={12}>
+        <Grid
+          container
+          justifyContent="space-between"
+          alignItems="center"
+          size={12}
+        >
           <Grid size={6}>
             <Typography>Food Types</Typography>
           </Grid>
           <Grid container justifyContent="flex-end" spacing={2} size={6}>
             <FormControlLabel
               sx={{ mt: 2 }}
-              componentsProps={{
+              slotProps={{
                 typography: {
                   sx: {
-                    color: confirmationErrors["confirmedFoodTypes"] ? "error.main" : "inherit",
-                  }
-                }
+                    color: confirmationErrors["confirmedFoodTypes"]
+                      ? "error.main"
+                      : "inherit",
+                  },
+                },
               }}
               control={
                 <Checkbox
                   name="confirmedFoodTypes"
                   value={values.confirmedFoodTypes}
                   checked={values.confirmedFoodTypes}
-                  sx={{ color: confirmationErrors["confirmedFoodTypes"] ? "error.main" : "inherit" }}
+                  sx={{
+                    color: confirmationErrors["confirmedFoodTypes"]
+                      ? "error.main"
+                      : "inherit",
+                  }}
                   onChange={(e) =>
                     setFieldValue("confirmedFoodTypes", e.target.checked)
                   }

@@ -24,8 +24,9 @@ export default function Donations({
         <Grid
           size={{
             xs: 12,
-            sm: 6
-          }}>
+            sm: 6,
+          }}
+        >
           <div>
             <Label
               id="donationContactName"
@@ -52,8 +53,9 @@ export default function Donations({
         <Grid
           size={{
             xs: 12,
-            sm: 6
-          }}>
+            sm: 6,
+          }}
+        >
           <div>
             <Label
               id="donationContactPhone"
@@ -80,8 +82,9 @@ export default function Donations({
         <Grid
           size={{
             xs: 12,
-            sm: 6
-          }}>
+            sm: 6,
+          }}
+        >
           <div>
             <Label
               id="donationContactEmail"
@@ -108,8 +111,9 @@ export default function Donations({
         <Grid
           size={{
             xs: 12,
-            sm: 6
-          }}>
+            sm: 6,
+          }}
+        >
           <div>
             <Label
               id="donationSchedule"
@@ -153,8 +157,9 @@ export default function Donations({
         <Grid
           size={{
             xs: 12,
-            sm: 4
-          }}>
+            sm: 4,
+          }}
+        >
           <Tooltip title="Check if organization can accept frozen food">
             <FormControlLabel
               control={
@@ -178,8 +183,9 @@ export default function Donations({
         <Grid
           size={{
             xs: 12,
-            sm: 4
-          }}>
+            sm: 4,
+          }}
+        >
           <Tooltip title="Check if organization can accept refrigerated food">
             <FormControlLabel
               control={
@@ -203,8 +209,9 @@ export default function Donations({
         <Grid
           size={{
             xs: 12,
-            sm: 4
-          }}>
+            sm: 4,
+          }}
+        >
           <Tooltip title="Check if organization can accept perishables">
             <FormControlLabel
               control={
@@ -229,8 +236,9 @@ export default function Donations({
         <Grid
           size={{
             xs: 12,
-            sm: 6
-          }}>
+            sm: 6,
+          }}
+        >
           <div>
             <Label
               id="donationDeliveryInstructions"
@@ -259,8 +267,9 @@ export default function Donations({
         <Grid
           size={{
             xs: 12,
-            sm: 6
-          }}>
+            sm: 6,
+          }}
+        >
           <div>
             <Label
               id="donationNotes"

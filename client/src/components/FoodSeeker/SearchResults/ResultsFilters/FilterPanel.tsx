@@ -172,10 +172,10 @@ const FilterPanel: FC<FilterPanelProps> = ({ mealPantry, filterCount }) => {
       <Box sx={{ padding: "0 1rem 1rem 1rem", overflowY: "auto" }}>
         <Box sx={{ paddingBottom: "1rem" }}>
           <Typography variant="h4" sx={yPadding}>
-            Organization Name
+            Search
           </Typography>
           <OutlinedInput
-            placeholder="i.e. church of"
+            placeholder="i.e. kosher, senior, First Baptist, 90015"
             value={orgNameFilter}
             onChange={(e) =>
               dispatch({
@@ -186,7 +186,7 @@ const FilterPanel: FC<FilterPanelProps> = ({ mealPantry, filterCount }) => {
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
-                  aria-label="Clear organization name filter"
+                  aria-label="Clear search filter"
                   edge="end"
                   onClick={() =>
                     dispatch({

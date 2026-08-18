@@ -56,7 +56,8 @@ interface GeocodeResult {
   };
 }
 
-interface IdentificationProps extends OrganizationSectionWithSetFieldValueProps {
+interface IdentificationProps
+  extends OrganizationSectionWithSetFieldValueProps {
   setFieldTouched: (
     field: string,
     isTouched?: boolean,
@@ -196,7 +197,7 @@ export default function Identification({
               <Stack
                 direction={{ xs: "column", sm: "row" }}
                 spacing={{ xs: 1, sm: 2, md: 4 }}
-                alignItems="flex-end"
+                alignItems="flex-start"
               >
                 <Box sx={{ width: { xs: "100%", sm: "auto" } }}>
                   <Label
@@ -232,7 +233,12 @@ export default function Identification({
                   />
                 </Box>
 
-                <Box sx={confirmationErrorSx("confirmedPhone")}>
+                <Box
+                  sx={[
+                    { pt: { sm: "40px" } },
+                    confirmationErrorSx("confirmedPhone"),
+                  ]}
+                >
                   <FormControlLabel
                     componentsProps={{
                       typography: {

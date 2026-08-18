@@ -98,7 +98,7 @@ you may proceed straight to implementation — but still write the plan down
   `camelcase-keys` at the service return boundary, functional React components
   + hooks, MUI components + `sx`/theme for styling, Formik+Yup for any
   non-trivial form.
-- Reuse types from `server/app/types/` and `client/src/types/` rather than
+- Reuse types from `server/types/` and `client/src/types/` rather than
   re-declaring shapes inline.
 - If you hit something in CLAUDE.md §7 (a known broken tool/test) while working,
   don't silently route around it in a way that hides the underlying breakage —

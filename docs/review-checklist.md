@@ -45,7 +45,7 @@ applies to every change (e.g. a client-only CSS tweak skips the SQL section).
 - [ ] Existing abstractions reused where they fit (existing hook extended
       rather than duplicated; existing validation schema extended rather than
       a parallel one created).
-- [ ] TypeScript types reused from `server/app/types/` / `client/src/types/`
+- [ ] TypeScript types reused from `server/types/` / `client/src/types/`
       rather than redeclared inline.
 
 ## 4. Database & migrations

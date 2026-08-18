@@ -97,8 +97,10 @@ services/*.ts        → business logic + SQL queries live here
 - Authorization: routes call
   `jwtSession.validateUserHasRequiredRoles(["admin", "coordinator", ...])` and the
   middleware regex-tests the JWT `sub` against the permitted role list. Known
-  roles: `admin`, `security_admin`, `data_entry`, `coordinator`, `global_admin`,
-  `global_reporting`.
+  JWT roles (`Role` type in `server/types/account-types.ts`): `admin`,
+  `security_admin`, `data_entry`, `coordinator`, `global_admin`.
+  `global_reporting` is not one of them — it only exists as an `is_global_reporting`
+  boolean column on the account, not a role encoded on the JWT `sub`.
 - Every admin-facing mutating route is expected to carry a role check — that
   pattern should hold without exception. Don't assume a sibling route's
   presence or absence of a role check is precedent; verify it against what the
@@ -129,6 +131,9 @@ unless noted. The root `package.json` only exposes `typecheck` (via
 Before telling the user "tests pass" or "lint is clean," actually run the command
 above and read the output — do not assume the `npm run <script>` name implies a
 working, CI-meaningful check (see §7 for exactly where that assumption breaks).
+Run `npm ci` in the relevant workspace first if you haven't already in this
+session — don't assume a clean typecheck/test baseline without confirming the
+lockfile is actually installed.
 
 ## 4. Environment / running locally
 
@@ -146,9 +151,13 @@ working, CI-meaningful check (see §7 for exactly where that assumption breaks).
   **only** test workflow: runs client Playwright E2E tests against a locally
   started Vite dev server, on push/PR to `main`/`master`/`develop`.
 - There is **no CI step** that runs server Jest tests, client Jest tests, either
-  workspace's lint, or `tsc --noEmit`. A Husky `pre-commit` hook
-  (`lerna run lint`, in root `package.json`) is the only local gate, and it only
-  covers lint — and only for people who have Husky installed locally.
+  workspace's lint, or `tsc --noEmit`. Root `package.json` declares a Husky
+  `pre-commit` hook (`lerna run lint`) via the legacy `"husky": { "hooks": {...} }`
+  config key, but the installed `husky` version is `^9`, which ignores that key
+  entirely and only runs hooks from a `.husky/` directory — there is no
+  `.husky/` directory and no `prepare` script to create one. So this hook is
+  **not active for anyone** right now, not just for contributors without Husky
+  installed; don't rely on it as a gate.
 - Deploys: pushes to `main`/`develop`/`vite` branches auto-deploy to matching
   Heroku apps (`foodoasis`, `foodoasisdev`, `foodoasisvite`) via
   `akhileshns/heroku-deploy`. Two Docker Hub publish workflows exist but are
@@ -194,11 +203,12 @@ commands — not guesses:
 - **Client lint is broken.** `client/package.json`'s `lint` script runs
   `eslint -c .eslintrc.json ...`, and `.eslintrc.json` extends `"react-app"` (the
   Create React App / `eslint-config-react-app` preset). But the client no longer
-  uses CRA — it's Vite — and `eslint-config-react-app` isn't installed as a
-  dependency anywhere in the client. Running the lint script fails outright
-  ("ESLint couldn't find the config 'react-app'"). This is leftover from the
-  CRA→Vite migration. Until this is fixed, don't treat "client lint passed" as a
-  meaningful signal — it can't currently run at all. Recommended: replace with a
+  uses CRA — it's Vite — and `eslint` itself isn't installed as a dependency
+  anywhere in the client (or the root). Running the lint script fails outright
+  with `sh: eslint: command not found` — it never gets far enough to fail on
+  the missing `react-app` config. This is leftover from the CRA→Vite migration.
+  Until this is fixed, don't treat "client lint passed" as a meaningful signal
+  — it can't currently run at all. Recommended: replace with a
   flat ESLint config for TS/React (mirroring server's approach) as a follow-up.
 - **Client Jest unit tests are broken.** `client/src/__test__/App.test.js` and
   `Helpers.test.js` fail to even parse: `client/src/helpers/index.ts` uses a

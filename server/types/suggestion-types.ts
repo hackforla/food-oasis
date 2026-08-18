@@ -19,18 +19,9 @@ export interface Suggestion {
   stakeholderId: number;
   tenantId: number;
   formType: FormTypeEnum;
-  createdDate?: string;
-  closedDate?: string | null;
 }
 
 export enum FormTypeEnum {
   Suggestion = "suggestion",
   Correction = "correction",
-}
-
-export enum SuggestionStatusId {
-  New = 1,
-  Pending = 2,
-  Incorrect = 3,
-  Confirmed = 4,
 }

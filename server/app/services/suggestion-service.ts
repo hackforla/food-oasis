@@ -1,12 +1,7 @@
 import db from "./db";
 import camelcaseKeys from "camelcase-keys";
-import { Suggestion, SuggestionStatusId } from "../../types/suggestion-types";
+import { Suggestion } from "../../types/suggestion-types";
 import { SuggestionPostFields } from "../validation-schema/suggestion-schema";
-
-const CLOSED_STATUS_IDS = [
-  SuggestionStatusId.Incorrect,
-  SuggestionStatusId.Confirmed,
-];
 
 const selectAll = async (params: {
   statusIds: string[];
@@ -20,8 +15,7 @@ const selectAll = async (params: {
     select id, name, address_1, address_2, city, state, zip,
     phone, email, notes,
     tipster_name, tipster_phone, tipster_email,
-    hours, category, suggestion_status_id, admin_notes, tenant_id, form_type,
-    created_date, closed_date
+    hours, category, suggestion_status_id, admin_notes, tenant_id, form_type
     from suggestion
     where suggestion_status_id = any ($<statusIds>)
     and tenant_id = $<tenantId>
@@ -42,8 +36,7 @@ const selectById = async (suggestionId: string): Promise<Suggestion> => {
     select id, name, address_1, address_2, city, state, zip,
     phone, email, notes,
     tipster_name, tipster_phone, tipster_email,
-    hours, category, suggestion_status_id, admin_notes, tenant_id, form_type,
-    created_date, closed_date
+    hours, category, suggestion_status_id, admin_notes, tenant_id, form_type
     from suggestion where id = $<id>`;
 
   const row: Suggestion = await db.one(sql, { id });
@@ -97,14 +90,6 @@ const update = async (id: string, model: Partial<Suggestion>) => {
   if (model.suggestionStatusId !== undefined) {
     fields.push("suggestion_status_id = $<suggestionStatusId>");
     params.suggestionStatusId = model.suggestionStatusId;
-
-    // CLOSED statuses: stamp once; keep existing if already closed.
-    // OPEN statuses: clear the close date.
-    if (CLOSED_STATUS_IDS.includes(Number(model.suggestionStatusId))) {
-      fields.push("closed_date = COALESCE(closed_date, CURRENT_TIMESTAMP)");
-    } else {
-      fields.push("closed_date = NULL");
-    }
   }
 
   if (fields.length === 0) return;

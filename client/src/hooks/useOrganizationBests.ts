@@ -37,6 +37,24 @@ interface SelectAllParams {
   categoryIds: number[];
 }
 
+// Public-facing text fields searched by the "orgNameFilter" free-text search
+// (label reads "Search" in the UI). Deliberately excludes internal/admin-only
+// fields such as `adminNotes` -- only fields a food seeker can already see on
+// the listing/detail page belong here.
+const SEARCHABLE_FIELDS = [
+  "name",
+  "address1",
+  "address2",
+  "city",
+  "zip",
+  "phone",
+  "email",
+  "requirements",
+  "notes",
+  "services",
+  "items",
+] as const;
+
 interface UseOrganizationBestsState {
   data: SearchStakeholder[] | null;
   loading: boolean;
@@ -135,11 +153,17 @@ export default function useOrganizationBests() {
         });
       }
       if (filters.orgNameFilter) {
+        const searchWords = filters
+          .orgNameFilter!.toLowerCase()
+          .split(" ")
+          .filter(Boolean);
         filteredStakeholders = filteredStakeholders.filter((stakeholder) => {
-          return filters.orgNameFilter!
-            .toLowerCase()
-            .split(" ")
-            .every((word) => stakeholder.name.toLowerCase().includes(word));
+          const searchableText = SEARCHABLE_FIELDS.map(
+            (field) => stakeholder[field] || ""
+          )
+            .join(" ")
+            .toLowerCase();
+          return searchWords.every((word) => searchableText.includes(word));
         });
       }
       if (filters.foodTypeFilter) {

@@ -270,6 +270,26 @@ const updateUserProfile: RequestHandler<
   never
 > = async (req, res) => {
   const userid = req.params.userid;
+
+  // Authorization: a user may only update their own profile, unless they hold
+  // an account-management admin role. Prevents the IDOR where any authenticated
+  // (or, previously, unauthenticated) caller could overwrite any user's profile
+  // -- including the email tied to their login (security audit finding #2).
+  const roles = new Set(
+    (req.user?.sub || req.user?.role || "").split(",").filter(Boolean)
+  );
+  const isAccountAdmin =
+    roles.has("admin") ||
+    roles.has("security_admin") ||
+    roles.has("global_admin");
+  if (String(req.user?.id) !== String(userid) && !isAccountAdmin) {
+    return res.status(403).json({
+      isSuccess: false,
+      code: "FORBIDDEN",
+      message: "You are not authorized to update this profile.",
+    });
+  }
+
   const { firstName, lastName, email, tenantId } = req.body;
   const response = await accountService.updateUserProfile(
     userid,

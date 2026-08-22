@@ -252,34 +252,40 @@ describe("Account", () => {
       params: { email: "admin@test.com" },
     });
     const next = mockNext();
-    const selectByEmailMock =
-      accountService.selectByEmail as jest.MockedFunction<
-        typeof accountService.selectByEmail
+    const account = accounts[2];
+    // The controller must use the public-safe lookup, which never exposes the
+    // bcrypt password hash or privilege flags (security audit finding #1).
+    const selectByEmailPublicMock =
+      accountService.selectByEmailPublic as jest.MockedFunction<
+        typeof accountService.selectByEmailPublic
       >;
-    selectByEmailMock.mockImplementationOnce(() =>
-      Promise.resolve(accounts[2])
+    selectByEmailPublicMock.mockImplementationOnce(() =>
+      Promise.resolve({
+        id: account.id,
+        firstName: account.firstName,
+        lastName: account.lastName,
+        email: account.email,
+        emailConfirmed: account.emailConfirmed,
+        dateCreated: account.dateCreated,
+      })
     );
     await accountController.getByEmail(req, res, next);
-    expect(selectByEmailMock).toHaveBeenCalledWith("admin@test.com", 1);
-    expect(selectByEmailMock).toHaveBeenCalledTimes(1);
-    expect(res.send.mock.calls[0][0]).toMatchInlineSnapshot(`
+    expect(selectByEmailPublicMock).toHaveBeenCalledWith("admin@test.com", 1);
+    expect(selectByEmailPublicMock).toHaveBeenCalledTimes(1);
+    const sent = res.send.mock.calls[0][0];
+    // Guard against regressions that reintroduce the leak.
+    expect(sent.data).not.toHaveProperty("passwordHash");
+    expect(sent.data).not.toHaveProperty("isAdmin");
+    expect(sent.data).not.toHaveProperty("isGlobalAdmin");
+    expect(sent).toMatchInlineSnapshot(`
      {
        "data": {
          "dateCreated": "2021-05-18T06:04:09.421Z",
          "email": "admin@test.com",
          "emailConfirmed": false,
-         "features": [],
          "firstName": "Admin",
          "id": 171,
-         "isAdmin": false,
-         "isCoordinator": false,
-         "isDataEntry": true,
-         "isGlobalAdmin": false,
-         "isGlobalReporting": false,
-         "isSecurityAdmin": false,
          "lastName": "Admin",
-         "passwordHash": "$2b$10$aMAO10PCC2RfcmXg1GCH1.UsccMgTB53h4XD2w9ydlQMrf4Nn55.q",
-         "tenantId": 1,
        },
        "isSuccess": true,
      }

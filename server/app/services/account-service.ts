@@ -6,6 +6,7 @@ import { v4 as uuid4 } from "uuid";
 import {
   Account,
   AccountResponse,
+  PublicAccount,
   RegisterFields,
   Role,
   User,
@@ -77,6 +78,25 @@ const selectByEmail = async (
     ...row,
     features: row.features.split(", ").filter(Boolean) || [],
   });
+};
+
+// Public-safe lookup used by the unauthenticated GET /:email endpoint. Strips
+// the bcrypt password hash and all privilege/role flags at the service layer so
+// they can never leak to a client, regardless of the caller. Internal callers
+// that need the hash (e.g. authenticate) must use selectByEmail directly.
+const selectByEmailPublic = async (
+  email: string,
+  tenantId: string
+): Promise<PublicAccount> => {
+  const account = await selectByEmail(email, tenantId);
+  return {
+    id: account.id,
+    firstName: account.firstName,
+    lastName: account.lastName,
+    email: account.email,
+    emailConfirmed: account.emailConfirmed,
+    dateCreated: account.dateCreated,
+  };
 };
 
 const register = async (body: RegisterFields): Promise<AccountResponse> => {
@@ -567,6 +587,7 @@ export default {
   resetPassword,
   selectAll,
   selectByEmail,
+  selectByEmailPublic,
   selectById,
   setGlobalPermissions,
   setTenantPermissions,

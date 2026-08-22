@@ -51,7 +51,9 @@ const getByEmail: RequestHandler<
   try {
     const { email } = req.params;
     const { tenantId } = req.query;
-    const response = await accountService.selectByEmail(email, tenantId);
+    // Use the public-safe lookup so the bcrypt password hash and privilege
+    // flags are never returned to the client (see security audit finding #1).
+    const response = await accountService.selectByEmailPublic(email, tenantId);
     res.send({ isSuccess: true, data: response });
   } catch (err: any) {
     console.error(err);

@@ -712,11 +712,11 @@ describe("Account", () => {
     expect(res.status).toHaveBeenCalledWith(403);
   });
 
-  it("lets an admin update another user's profile", async () => {
+  it("lets a global_admin update another user's profile", async () => {
     const res = mockResponse();
     const req = mockRequest({
       params: { userid: "999" },
-      user: { id: 123, email: "admin@test.com", sub: "admin,global_admin" },
+      user: { id: 123, email: "admin@test.com", sub: "global_admin" },
       body: {
         firstName: "New",
         lastName: "Name",
@@ -738,5 +738,34 @@ describe("Account", () => {
     await accountController.updateUserProfile(req, res, next);
     expect(updateUserProfileMock).toHaveBeenCalledTimes(1);
     expect(res.status).toHaveBeenCalledWith(200);
+  });
+
+  it("blocks a per-tenant admin from updating another user's profile (cross-tenant escalation)", async () => {
+    const res = mockResponse();
+    const req = mockRequest({
+      params: { userid: "999" },
+      // admin/security_admin are per-tenant roles; the JWT does not encode which
+      // tenant they apply to, so they must NOT grant a cross-user override.
+      user: {
+        id: 123,
+        email: "tenantadmin@test.com",
+        sub: "admin,security_admin",
+      },
+      body: {
+        firstName: "Attacker",
+        lastName: "Controlled",
+        email: "victim-new@test.com",
+        tenantId: "1",
+      },
+    });
+    const next = mockNext();
+    const updateUserProfileMock =
+      accountService.updateUserProfile as jest.MockedFunction<
+        typeof accountService.updateUserProfile
+      >;
+
+    await accountController.updateUserProfile(req, res, next);
+    expect(updateUserProfileMock).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(403);
   });
 });

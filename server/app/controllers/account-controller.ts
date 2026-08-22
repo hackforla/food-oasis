@@ -8,6 +8,7 @@ import {
   User,
   Role,
 } from "../../types/account-types";
+import { getUserRoles } from "../helpers/stakeholder-access";
 
 const getAll: RequestHandler<
   never,
@@ -271,18 +272,20 @@ const updateUserProfile: RequestHandler<
 > = async (req, res) => {
   const userid = req.params.userid;
 
-  // Authorization: a user may only update their own profile, unless they hold
-  // an account-management admin role. Prevents the IDOR where any authenticated
-  // (or, previously, unauthenticated) caller could overwrite any user's profile
-  // -- including the email tied to their login (security audit finding #2).
-  const roles = new Set(
-    (req.user?.sub || req.user?.role || "").split(",").filter(Boolean)
-  );
-  const isAccountAdmin =
-    roles.has("admin") ||
-    roles.has("security_admin") ||
-    roles.has("global_admin");
-  if (String(req.user?.id) !== String(userid) && !isAccountAdmin) {
+  // Authorization: a user may only update their own profile, unless they are a
+  // global_admin. Prevents the IDOR where any authenticated (or, previously,
+  // unauthenticated) caller could overwrite any user's profile -- including the
+  // email tied to their login (security audit finding #2).
+  //
+  // Only global_admin is allowed to override, NOT admin/security_admin: those
+  // are per-tenant roles (from the login_tenant join) but the JWT does not
+  // encode which tenant they were granted for, so honoring them here would let
+  // an admin of one tenant edit users in another tenant (cross-tenant privilege
+  // escalation). global_admin is a login-level, non-tenant-scoped flag, so it is
+  // safe to trust from the JWT.
+  const roles = getUserRoles(req.user);
+  const isGlobalAdmin = roles.has("global_admin");
+  if (String(req.user?.id) !== String(userid) && !isGlobalAdmin) {
     return res.status(403).json({
       isSuccess: false,
       code: "FORBIDDEN",

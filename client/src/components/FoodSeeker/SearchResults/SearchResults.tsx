@@ -58,7 +58,7 @@ const SearchResults = () => {
   const initialZoom = parseFloat(params.get("zoom") || "") || 11;
   const longitudeOffset = 0.08 * Math.pow(2, 11 - initialZoom);
 
-  const orgNameFilter = params.get("name") || "";
+  const searchFilter = params.get("name") || "";
   const radio = params.get("openRadio");
   const day = params.get("openDay") || "";
   const time = params.get("openTime") || "";
@@ -72,10 +72,10 @@ const SearchResults = () => {
         });
       }
 
-      if (orgNameFilter) {
+      if (searchFilter) {
         dispatch({
-          type: "ORG_NAME_FILTER_UPDATED",
-          orgNameFilter,
+          type: "SEARCH_FILTER_UPDATED",
+          searchFilter,
         });
       }
 

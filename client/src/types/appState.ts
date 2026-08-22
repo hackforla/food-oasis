@@ -43,7 +43,7 @@ export interface AppState {
   neighborhood: AppNeighborhood | null;
   isWidget: boolean;
   filterPanel: boolean;
-  orgNameFilter: string;
+  searchFilter: string;
   openTimeFilter: OpenTimeFilter;
   foodTypeFilter: string[];
   listPanel: boolean;
@@ -69,7 +69,7 @@ export type AppAction =
   | { type: "RESET_HOVERED_ORGANIZATION" }
   | { type: "WIDGET"; isWidget: boolean }
   | { type: "FILTER_PANEL_TOGGLE"; filterPanel: boolean }
-  | { type: "ORG_NAME_FILTER_UPDATED"; orgNameFilter: string }
+  | { type: "SEARCH_FILTER_UPDATED"; searchFilter: string }
   | { type: "OPEN_TIME_FILTER_UPDATED"; openTimeFilter: OpenTimeFilter }
   | { type: "FOOD_TYPE_FILTER_UPDATED"; foodTypeFilter: string[] }
   | { type: "TOGGLE_LIST_PANEL"; listPanel?: boolean }

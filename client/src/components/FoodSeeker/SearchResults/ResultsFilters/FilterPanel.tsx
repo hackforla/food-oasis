@@ -29,7 +29,7 @@ import PantryIconNoBorder from "icons/PantryIconNoBorder";
 import {
   useAppDispatch,
   useFilterPanel,
-  useOrgNameFilter,
+  useSearchFilter,
   useOpenTimeFilter,
   useFoodTypeFilter,
 } from "../../../../appReducer";
@@ -67,7 +67,7 @@ const FilterPanel: FC<FilterPanelProps> = ({ mealPantry, filterCount }) => {
   const dispatch = useAppDispatch() as Dispatch<{ type: string; [key: string]: unknown }>;
   const open = useFilterPanel();
   const openTime = useOpenTimeFilter();
-  const orgNameFilter = useOrgNameFilter();
+  const searchFilter = useSearchFilter();
   const foodTypeFilter = useFoodTypeFilter() as (keyof typeof foodTypeLabelObject)[];
 
   const handleRadioChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -176,11 +176,11 @@ const FilterPanel: FC<FilterPanelProps> = ({ mealPantry, filterCount }) => {
           </Typography>
           <OutlinedInput
             placeholder="i.e. kosher, senior, First Baptist, 90015"
-            value={orgNameFilter}
+            value={searchFilter}
             onChange={(e) =>
               dispatch({
-                type: "ORG_NAME_FILTER_UPDATED",
-                orgNameFilter: e.target.value,
+                type: "SEARCH_FILTER_UPDATED",
+                searchFilter: e.target.value,
               })
             }
             endAdornment={
@@ -190,8 +190,8 @@ const FilterPanel: FC<FilterPanelProps> = ({ mealPantry, filterCount }) => {
                   edge="end"
                   onClick={() =>
                     dispatch({
-                      type: "ORG_NAME_FILTER_UPDATED",
-                      orgNameFilter: "",
+                      type: "SEARCH_FILTER_UPDATED",
+                      searchFilter: "",
                     })
                   }
                 >

@@ -18,7 +18,7 @@ type StakeholderAccessRequest = {
   };
 };
 
-const getUserRoles = (user?: StakeholderAccessUser) =>
+export const getUserRoles = (user?: StakeholderAccessUser) =>
   new Set((user?.sub || user?.role || "").split(",").filter(Boolean));
 
 const isRestrictedDataEntryUser = (user?: StakeholderAccessUser) => {

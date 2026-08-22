@@ -1,6 +1,6 @@
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 import applyEmailTemplate from "./EmailTemplate";
-import { ContactFormData, Email } from "../../types/email-type";
+import { ContactFormData } from "../../types/email-type";
 
 const emailUser: string = process.env.EMAIL_USER || "";
 const awsRegion: string = process.env.AWS_REGION || "us-west-2";
@@ -13,39 +13,6 @@ const sesClient = new SESClient({
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "",
   },
 });
-
-const send = async (email: Email) => {
-  const params = {
-    Destination: {
-      ToAddresses: [email.emailTo],
-    },
-    Message: {
-      Body: {
-        Html: {
-          Charset: "UTF-8",
-          Data: email.htmlBody,
-        },
-        Text: {
-          Charset: "UTF-8",
-          Data: email.textBody,
-        },
-      },
-      Subject: {
-        Charset: "UTF-8",
-        Data: email.subject,
-      },
-    },
-    Source: email.emailFrom,
-  };
-
-  try {
-    const command = new SendEmailCommand(params);
-    const response = await sesClient.send(command);
-    return response;
-  } catch (err: any) {
-    throw new Error(`Sending email failed. ${err.message || err}`);
-  }
-};
 
 // account verification
 const sendRegistrationConfirmation = async (
@@ -722,7 +689,6 @@ const sendContactConfirmation = async ({
   }
 };
 export {
-  send,
   sendRegistrationConfirmation,
   sendResetPasswordConfirmation,
   sendContactEmail,

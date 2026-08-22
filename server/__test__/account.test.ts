@@ -654,4 +654,89 @@ describe("Account", () => {
     expect(removeMock).toHaveBeenCalledTimes(1);
     expect(res.sendStatus).toHaveBeenCalledWith(200);
   });
+
+  it("lets a user update their own profile", async () => {
+    const res = mockResponse();
+    const req = mockRequest({
+      params: { userid: "123" },
+      user: { id: 123, email: "user@test.com", sub: "data_entry" },
+      body: {
+        firstName: "New",
+        lastName: "Name",
+        email: "user@test.com",
+        tenantId: "1",
+      },
+    });
+    const next = mockNext();
+    const updateUserProfileMock =
+      accountService.updateUserProfile as jest.MockedFunction<
+        typeof accountService.updateUserProfile
+      >;
+    updateUserProfileMock.mockResolvedValueOnce({
+      isSuccess: true,
+      code: "UPDATE_SUCCESS",
+      message: "User profile successfully updated",
+    } as any);
+
+    await accountController.updateUserProfile(req, res, next);
+    expect(updateUserProfileMock).toHaveBeenCalledWith(
+      "123",
+      "New",
+      "Name",
+      "user@test.com",
+      "1"
+    );
+    expect(res.status).toHaveBeenCalledWith(200);
+  });
+
+  it("blocks a user from updating another user's profile (IDOR)", async () => {
+    const res = mockResponse();
+    const req = mockRequest({
+      params: { userid: "999" },
+      user: { id: 123, email: "user@test.com", sub: "data_entry" },
+      body: {
+        firstName: "Attacker",
+        lastName: "Controlled",
+        email: "victim-new@test.com",
+        tenantId: "1",
+      },
+    });
+    const next = mockNext();
+    const updateUserProfileMock =
+      accountService.updateUserProfile as jest.MockedFunction<
+        typeof accountService.updateUserProfile
+      >;
+
+    await accountController.updateUserProfile(req, res, next);
+    expect(updateUserProfileMock).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(403);
+  });
+
+  it("lets an admin update another user's profile", async () => {
+    const res = mockResponse();
+    const req = mockRequest({
+      params: { userid: "999" },
+      user: { id: 123, email: "admin@test.com", sub: "admin,global_admin" },
+      body: {
+        firstName: "New",
+        lastName: "Name",
+        email: "someone@test.com",
+        tenantId: "1",
+      },
+    });
+    const next = mockNext();
+    const updateUserProfileMock =
+      accountService.updateUserProfile as jest.MockedFunction<
+        typeof accountService.updateUserProfile
+      >;
+    updateUserProfileMock.mockResolvedValueOnce({
+      isSuccess: true,
+      code: "UPDATE_SUCCESS",
+      message: "User profile successfully updated",
+    } as any);
+
+    await accountController.updateUserProfile(req, res, next);
+    expect(updateUserProfileMock).toHaveBeenCalledTimes(1);
+    expect(res.status).toHaveBeenCalledWith(200);
+  });
 });

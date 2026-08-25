@@ -145,10 +145,10 @@ function filterPanelReducer(state: boolean, action: AppAction): boolean {
       return state;
   }
 }
-function orgNameFilterReducer(state: string, action: AppAction): string {
+function searchFilterReducer(state: string, action: AppAction): string {
   switch (action.type) {
-    case "ORG_NAME_FILTER_UPDATED":
-      return action.orgNameFilter;
+    case "SEARCH_FILTER_UPDATED":
+      return action.searchFilter;
     default:
       return state;
   }
@@ -228,7 +228,7 @@ export function appReducer(state: AppState, action: AppAction): AppState {
     isWidget: widgetReducer(state.isWidget, action),
     stakeholders: stakeholdersReducer(state.stakeholders, action),
     filterPanel: filterPanelReducer(state.filterPanel, action),
-    orgNameFilter: orgNameFilterReducer(state.orgNameFilter, action),
+    searchFilter: searchFilterReducer(state.searchFilter, action),
     openTimeFilter: openTimeFilterReducer(state.openTimeFilter, action),
     foodTypeFilter: foodTypeFilterReducer(state.foodTypeFilter, action),
     listPanel: listPanelReducer(state.listPanel, action),
@@ -251,7 +251,7 @@ export function getInitialState(): AppState {
     neighborhood: null,
     isWidget: false,
     filterPanel: false,
-    orgNameFilter: "",
+    searchFilter: "",
     openTimeFilter: { radio: "Show All", day: "", time: "" },
     foodTypeFilter: [],
     listPanel: true,
@@ -350,9 +350,9 @@ export function useFilterPanel(): boolean {
   return filterPanel;
 }
 
-export function useOrgNameFilter(): string {
-  const { orgNameFilter } = useAppState();
-  return orgNameFilter;
+export function useSearchFilter(): string {
+  const { searchFilter } = useAppState();
+  return searchFilter;
 }
 
 export function useOpenTimeFilter(): OpenTimeFilter {

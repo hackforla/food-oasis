@@ -34,7 +34,7 @@ import StakeholderIcon from "images/stakeholderIcon";
 import * as analytics from "services/analytics";
 import {
   useAppDispatch,
-  useOrgNameFilter,
+  useSearchFilter,
   useSearchCoordinates,
   useUserCoordinates,
 } from "../../../../appReducer";
@@ -126,7 +126,7 @@ const StakeholderPreview = ({
   const userCoordinates = useUserCoordinates();
   const originCoordinates = searchCoordinates || userCoordinates;
   const { tenantTimeZone } = useSiteContext();
-  const orgNameFilter = useOrgNameFilter();
+  const searchFilter = useSearchFilter();
 
   const handleSelectOrganization = (organization: SearchStakeholder) => {
     onSelect();
@@ -204,10 +204,7 @@ const StakeholderPreview = ({
                 onClick={() => handleSelectOrganization(stakeholder)}
                 className="notranslate"
               >
-                <HighlightedText
-                  text={stakeholder.name}
-                  query={orgNameFilter}
-                />
+                <HighlightedText text={stakeholder.name} query={searchFilter} />
               </InternalLink>
             </Typography>
             <Stack

@@ -7,7 +7,7 @@ import {
   useAppDispatch,
   useFoodTypeFilter,
   useOpenTimeFilter,
-  useOrgNameFilter,
+  useSearchFilter,
   useSearchCoordinates,
 } from "../appReducer";
 import * as analytics from "../services/analytics";
@@ -29,7 +29,7 @@ interface StakeholderFilters {
   categoryIds: number[];
   showActiveOnly?: boolean;
   openTimeFilter?: OpenTimeFilter;
-  orgNameFilter?: string;
+  searchFilter?: string;
   foodTypeFilter?: string[];
 }
 
@@ -37,7 +37,7 @@ interface SelectAllParams {
   categoryIds: number[];
 }
 
-// Public-facing text fields searched by the "orgNameFilter" free-text search
+// Public-facing text fields searched by the "searchFilter" free-text search
 // (label reads "Search" in the UI). Deliberately excludes internal/admin-only
 // fields such as `adminNotes` -- only fields a food seeker can already see on
 // the listing/detail page belong here.
@@ -87,7 +87,7 @@ export default function useOrganizationBests() {
   });
   const searchCoordinates = useSearchCoordinates() as Coordinates | null;
   const openTimeFilter = useOpenTimeFilter() as OpenTimeFilter;
-  const orgNameFilter = useOrgNameFilter() as string;
+  const searchFilter = useSearchFilter() as string;
   const foodTypeFilter = useFoodTypeFilter() as string[];
   const { tenantTimeZone } = useSiteContext();
 
@@ -152,9 +152,9 @@ export default function useOrganizationBests() {
           });
         });
       }
-      if (filters.orgNameFilter) {
+      if (filters.searchFilter) {
         const searchWords = filters
-          .orgNameFilter!.toLowerCase()
+          .searchFilter!.toLowerCase()
           .split(" ")
           .filter(Boolean);
         filteredStakeholders = filteredStakeholders.filter((stakeholder) => {
@@ -219,8 +219,8 @@ export default function useOrganizationBests() {
           filters.openTimeFilter = openTimeFilter;
           filters.showActiveOnly = true;
         }
-        if (orgNameFilter) {
-          filters.orgNameFilter = orgNameFilter;
+        if (searchFilter) {
+          filters.searchFilter = searchFilter;
         }
         if (foodTypeFilter.length) {
           filters.foodTypeFilter = foodTypeFilter;
@@ -253,7 +253,7 @@ export default function useOrganizationBests() {
       latitude,
       longitude,
       processStakeholders,
-      orgNameFilter,
+      searchFilter,
       foodTypeFilter,
     ]
   );

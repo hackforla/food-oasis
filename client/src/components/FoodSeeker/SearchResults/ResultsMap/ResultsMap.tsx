@@ -30,7 +30,7 @@ import {
   useSearchCoordinates,
   useSelectedOrganization,
   useUserCoordinates,
-  useOrgNameFilter,
+  useSearchFilter,
   useOpenTimeFilter,
 } from "../../../../appReducer";
 import { useMapbox } from "../../../../hooks/useMapbox";
@@ -77,7 +77,7 @@ const ResultsMap = ({
     latitude: number;
     longitude: number;
   } | null;
-  const orgNameFilter = useOrgNameFilter();
+  const searchFilter = useSearchFilter();
   const openTimeFilter = useOpenTimeFilter();
   const navigate = useNavigate();
   const location = useLocation();
@@ -373,7 +373,7 @@ const ResultsMap = ({
 
   useEffect(() => {
     updateUrlParams({
-      name: orgNameFilter || null,
+      name: searchFilter || null,
       pantry: isPantrySelected ? "1" : "0",
       meal: isMealSelected ? "1" : "0",
       openRadio:
@@ -383,7 +383,7 @@ const ResultsMap = ({
       openTime:
         openTimeFilter.radio === "Customized" ? openTimeFilter.time : null,
     });
-  }, [orgNameFilter, isPantrySelected, isMealSelected, openTimeFilter]);
+  }, [searchFilter, isPantrySelected, isMealSelected, openTimeFilter]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {

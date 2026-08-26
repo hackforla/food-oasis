@@ -232,37 +232,37 @@ const forgotPassword = async (model: {
   clientUrl: string;
 }): Promise<AccountResponse> => {
   const { email, clientUrl } = model;
-  let result: AccountResponse;
+  // Always return the same generic, successful response whether or not the
+  // email is registered. Previously an unregistered email returned a distinct
+  // FORGOT_PASSWORD_ACCOUNT_NOT_FOUND code, which let an anonymous caller probe
+  // which emails have accounts (account enumeration). Only actually generate a
+  // reset token and send the email when a matching account exists.
+  const genericResponse: AccountResponse = {
+    isSuccess: true,
+    code: "FORGOT_PASSWORD_SUCCESS",
+    message:
+      "If an account exists for that email, a password reset link has been sent.",
+  };
   try {
     const sql = `select id from  login where email ilike $<email>`;
     const row = await db.oneOrNone(sql, { email });
     if (row) {
-      result = {
-        isSuccess: true,
-        code: "FORGOT_PASSWORD_SUCCESS",
-        newId: row.id,
-        message: "Account found.",
-      };
-    } else {
-      return {
-        isSuccess: false,
-        code: "FORGOT_PASSWORD_ACCOUNT_NOT_FOUND",
-        message: `Email ${email} is not registered. `,
-      };
+      const emailResult = await requestResetPasswordConfirmation(
+        email,
+        genericResponse,
+        clientUrl
+      );
+      // A genuine email-send failure is only reachable for a registered
+      // address, so surfacing it to the caller would itself disclose that the
+      // account exists. Log it server-side and still return the generic
+      // response so the outcome is indistinguishable from an unregistered email.
+      if (emailResult.isSuccess !== true) {
+        console.error(
+          `forgotPassword: failed to send reset email to a registered address. ${emailResult.message}`
+        );
+      }
     }
-    // Replace the success result if there is a prob
-    // sending email.
-    result = await requestResetPasswordConfirmation(email, result, clientUrl);
-    if (result.isSuccess === true) {
-      return {
-        isSuccess: true,
-        code: "FORGOT_PASSWORD_SUCCESS",
-        newId: row.id,
-        message: "Account found.",
-      };
-    } else {
-      return result;
-    }
+    return genericResponse;
   } catch (err: any) {
     return Promise.reject(`Unexpected Error: ${err.message}`);
   }

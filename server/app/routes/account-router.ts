@@ -51,6 +51,22 @@ router.put(
   accountController.updateUserProfile
 );
 
-router.get("/:email", accountController.getByEmail);
+// Requires an authenticated staff role. Previously this was public, which let
+// any anonymous caller enumerate which emails have accounts (200 vs 404) and
+// harvest the account id, name, confirmation status and creation date for any
+// known email (security audit finding #10). The only legitimate caller is the
+// admin Features screen (isAdmin), which sends the jwt cookie automatically;
+// the role set mirrors GET "/" (which already exposes strictly more account
+// data to the same roles).
+router.get(
+  "/:email",
+  jwtSession.validateUserHasRequiredRoles([
+    "admin",
+    "security_admin",
+    "data_entry",
+    "global_admin",
+  ]),
+  accountController.getByEmail
+);
 
 export default router;

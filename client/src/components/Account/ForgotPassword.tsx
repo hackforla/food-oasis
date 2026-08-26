@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import Label from "components/Admin/ui/Label";
 import { Formik, FormikHelpers } from "formik";
-import debounce from "lodash.debounce";
 import { useNavigate, useParams } from "react-router-dom";
 import { palette } from "theme/palette";
 import * as Yup from "yup";
@@ -37,24 +36,12 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
   const { email } = useParams<{ email?: string }>();
   const navigate = useNavigate();
 
-  const debouncedEmailValidation = debounce(
-    async (
-      value: string,
-      setFieldError: (field: string, message: string) => void
-    ) => {
-      try {
-        await accountService.getByEmail(value);
-        return;
-      } catch (e) {
-        console.error(e);
-        setFieldError(
-          "email",
-          "Account not found. If you want to create a new account with this email, please register."
-        );
-      }
-    },
-    500
-  );
+  // Note: we intentionally do NOT probe whether the account exists as the user
+  // types. Looking an email up by GET /api/accounts/:email requires an
+  // authenticated staff role (security audit finding #10), and doing so would
+  // also leak account existence to anonymous visitors. The "account not found"
+  // feedback is surfaced on submit instead, from the forgotPassword response
+  // (FORGOT_PASSWORD_ACCOUNT_NOT_FOUND) below.
 
   return (
     <PageWrapper>
@@ -134,15 +121,8 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
             handleBlur,
             handleSubmit,
             isSubmitting,
-            setFieldError,
             isValid,
           }) => {
-            const handleEmailChange = (
-              e: React.ChangeEvent<HTMLInputElement>
-            ) => {
-              handleChange(e);
-              debouncedEmailValidation(e.target.value, setFieldError);
-            };
             return (
               <form
                 noValidate
@@ -172,7 +152,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
                       autoComplete="email"
                       autoFocus
                       value={values.email}
-                      onChange={handleEmailChange}
+                      onChange={handleChange}
                       onBlur={handleBlur}
                       helperText={touched.email ? errors.email : ""}
                       error={touched.email && Boolean(errors.email)}

@@ -47,13 +47,12 @@
     "express": "^5.2.1",
     "json-2-csv": "^5.5.11",
     "jsonwebtoken": "^9.0.3",
-    "massive": "^6.10.2",
-    "mocha": "^10.8.2",
     "multer": "^2.2.0",
     "node-pg-migrate": "^8.0.4",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "pg": "^8.13.1",
+    "pg-promise": "^11.15.0",
     "uuid": "^14.0.0"
   },
   "devDependencies": {

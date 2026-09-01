@@ -2,8 +2,8 @@ import { Router } from "express";
 import accountController from "../controllers/account-controller";
 import jwtSession from "../../middleware/jwt-session";
 import {
-  strictAuthLimiter,
-  moderateAuthLimiter,
+  createStrictAuthLimiter,
+  createModerateAuthLimiter,
 } from "../../middleware/rate-limit";
 //const authenticate = require("../../middleware/authenticate");
 const router = Router();
@@ -19,26 +19,30 @@ router.get(
   accountController.getAll
 );
 
-router.post("/register", moderateAuthLimiter, accountController.register);
+router.post(
+  "/register",
+  createModerateAuthLimiter(),
+  accountController.register
+);
 router.post(
   "/resendConfirmationEmail",
-  moderateAuthLimiter,
+  createModerateAuthLimiter(),
   accountController.resendConfirmationEmail
 );
 router.post(
   "/confirmRegister",
-  moderateAuthLimiter,
+  createModerateAuthLimiter(),
   accountController.confirmRegister
 );
 
 router.post(
   "/forgotPassword",
-  strictAuthLimiter,
+  createStrictAuthLimiter(),
   accountController.forgotPassword
 );
 router.post(
   "/resetPassword",
-  strictAuthLimiter,
+  createStrictAuthLimiter(),
   accountController.resetPassword
 );
 router.post(
@@ -54,7 +58,7 @@ router.post(
 
 router.post(
   "/login",
-  strictAuthLimiter,
+  createStrictAuthLimiter(),
   accountController.login,
   jwtSession.login
 );

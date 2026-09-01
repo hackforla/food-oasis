@@ -134,6 +134,13 @@ const LoginForm = () => {
                     new account.`,
                   });
                   formikBag.setSubmitting(false);
+                } else if (response?.code === "RATE_LIMITED") {
+                  setToast({
+                    message:
+                      response.message ||
+                      "Too many attempts. Please try again later.",
+                  });
+                  formikBag.setSubmitting(false);
                 } else {
                   // Presumably response.code === "AUTH_INCORRECT_PASSWORD"
                   setToast({

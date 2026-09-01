@@ -28,7 +28,7 @@ async function login(req: Request, res: Response) {
   const cookieConfig: CookieOptions = {
     httpOnly: true,
     expires: new Date(Date.now() + 86400000), // 1 day
-    sameSite: "lax",
+    sameSite: req.secure ? "none" : "lax",
     secure: req.secure ? true : false,
   };
   res.cookie("jwt", token, cookieConfig);

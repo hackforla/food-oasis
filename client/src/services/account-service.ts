@@ -54,6 +54,28 @@ export const getByEmail = async (email: string) => {
   return response;
 };
 
+// POSTs to one of the rate-limited account endpoints. On a 429, returns the
+// server's { isSuccess: false, code: "RATE_LIMITED", message } response body
+// instead of letting axios throw, so callers can handle "rate limited" the
+// same way they handle any other non-success ApiResponse (checking `code`)
+// rather than it falling into their generic network/server-error catch
+// block with a misleading message. Any other error still throws, preserving
+// each caller's existing error handling.
+const postAuthRequest = async <T extends ApiResponse>(
+  url: string,
+  body: unknown
+): Promise<T> => {
+  try {
+    const response = await axios.post(url, body);
+    return response.data;
+  } catch (err) {
+    if (axios.isAxiosError(err) && err.response?.status === 429) {
+      return err.response.data;
+    }
+    throw err;
+  }
+};
+
 export const register = async ({
   firstName,
   lastName,
@@ -61,22 +83,19 @@ export const register = async ({
   password,
 }: RegisterParams): Promise<ApiResponse> => {
   const body = { firstName, lastName, email, password, clientUrl, tenantId };
-  const response = await axios.post(baseUrl + "/register", body);
-  return response.data;
+  return postAuthRequest(baseUrl + "/register", body);
 };
 
 export const resendConfirmationEmail = async (
   email: string
 ): Promise<ApiResponse> => {
   const body = { email, clientUrl };
-  const response = await axios.post(baseUrl + "/resendConfirmationEmail", body);
-  return response.data;
+  return postAuthRequest(baseUrl + "/resendConfirmationEmail", body);
 };
 
 export const forgotPassword = async (email: string): Promise<ApiResponse> => {
   const body = { email, clientUrl };
-  const response = await axios.post(baseUrl + "/forgotPassword", body);
-  return response.data;
+  return postAuthRequest(baseUrl + "/forgotPassword", body);
 };
 
 export const resetPassword = async (
@@ -84,14 +103,12 @@ export const resetPassword = async (
   password: string
 ): Promise<ApiResponse> => {
   const body = { token, password };
-  const response = await axios.post(baseUrl + "/resetPassword", body);
-  return response.data;
+  return postAuthRequest(baseUrl + "/resetPassword", body);
 };
 
 export const confirmRegister = async (token: string): Promise<ApiResponse> => {
   const body = { token };
-  const response = await axios.post(baseUrl + "/confirmRegister", body);
-  return response.data;
+  return postAuthRequest(baseUrl + "/confirmRegister", body);
 };
 
 export const login = async (
@@ -100,16 +117,9 @@ export const login = async (
 ): Promise<ApiResponse | undefined> => {
   const body = { email, password, tenantId };
   try {
-    const response = await axios.post(baseUrl + "/login", body);
-    return response.data;
+    return await postAuthRequest(baseUrl + "/login", body);
   } catch (err) {
     console.error(err);
-    if (axios.isAxiosError(err) && err.response?.status === 429) {
-      // Rate-limited: surface the server's message rather than falling
-      // through to the generic "incorrect password" handling below, since
-      // this isn't a failed-credentials case.
-      return err.response.data;
-    }
     return undefined;
   }
 };

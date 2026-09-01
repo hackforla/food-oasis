@@ -32,6 +32,9 @@ const ConfirmEmail = () => {
       if (result.isSuccess) {
         setView("success");
         setToast({ message: `Your email has been confirmed. Please log in.` });
+      } else if (result.code === "RATE_LIMITED") {
+        setToast({ message: result.message });
+        setView("error");
       } else {
         setView("error");
       }

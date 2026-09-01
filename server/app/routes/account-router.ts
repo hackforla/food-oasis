@@ -1,6 +1,10 @@
 import { Router } from "express";
 import accountController from "../controllers/account-controller";
 import jwtSession from "../../middleware/jwt-session";
+import {
+  strictAuthLimiter,
+  moderateAuthLimiter,
+} from "../../middleware/rate-limit";
 //const authenticate = require("../../middleware/authenticate");
 const router = Router();
 
@@ -15,15 +19,28 @@ router.get(
   accountController.getAll
 );
 
-router.post("/register", accountController.register);
+router.post("/register", moderateAuthLimiter, accountController.register);
 router.post(
   "/resendConfirmationEmail",
+  moderateAuthLimiter,
   accountController.resendConfirmationEmail
 );
-router.post("/confirmRegister", accountController.confirmRegister);
+router.post(
+  "/confirmRegister",
+  moderateAuthLimiter,
+  accountController.confirmRegister
+);
 
-router.post("/forgotPassword", accountController.forgotPassword);
-router.post("/resetPassword", accountController.resetPassword);
+router.post(
+  "/forgotPassword",
+  strictAuthLimiter,
+  accountController.forgotPassword
+);
+router.post(
+  "/resetPassword",
+  strictAuthLimiter,
+  accountController.resetPassword
+);
 router.post(
   "/setPermissions",
   jwtSession.validateUserHasRequiredRoles(["security_admin", "global_admin"]),
@@ -35,7 +52,12 @@ router.post(
   accountController.setGlobalPermissions
 );
 
-router.post("/login", accountController.login, jwtSession.login);
+router.post(
+  "/login",
+  strictAuthLimiter,
+  accountController.login,
+  jwtSession.login
+);
 router.get("/logout", (req, res) => {
   // "Delete" cookie by expiring it immediately
   res.cookie("jwt", "", {

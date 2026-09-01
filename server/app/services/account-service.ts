@@ -247,20 +247,29 @@ const forgotPassword = async (model: {
     const sql = `select id from  login where email ilike $<email>`;
     const row = await db.oneOrNone(sql, { email });
     if (row) {
-      const emailResult = await requestResetPasswordConfirmation(
-        email,
-        genericResponse,
-        clientUrl
-      );
-      // A genuine email-send failure is only reachable for a registered
-      // address, so surfacing it to the caller would itself disclose that the
-      // account exists. Log it server-side and still return the generic
-      // response so the outcome is indistinguishable from an unregistered email.
-      if (emailResult.isSuccess !== true) {
-        console.error(
-          `forgotPassword: failed to send reset email to a registered address. ${emailResult.message}`
-        );
-      }
+      // Fire-and-forget: do NOT await the token insert + email send. Awaiting it
+      // would make the registered-account path measurably slower to respond than
+      // the unregistered path (which returns right after the SELECT), and that
+      // response-timing difference is itself an account-enumeration oracle -- the
+      // same leak this change closes for the response body. Any failure is only
+      // reachable for a registered address, so it is logged server-side rather
+      // than surfaced, keeping the outcome indistinguishable from an
+      // unregistered email.
+      void requestResetPasswordConfirmation(email, genericResponse, clientUrl)
+        .then((emailResult) => {
+          if (emailResult.isSuccess !== true) {
+            console.error(
+              `forgotPassword: failed to send reset email to a registered address. ${emailResult.message}`
+            );
+          }
+        })
+        .catch((err: any) => {
+          console.error(
+            `forgotPassword: unexpected error sending reset email to a registered address. ${
+              err?.message || err
+            }`
+          );
+        });
     }
     return genericResponse;
   } catch (err: any) {

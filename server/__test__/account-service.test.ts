@@ -32,6 +32,12 @@ const genericResponse = {
     "If an account exists for that email, a password reset link has been sent.",
 };
 
+// forgotPassword sends the reset email fire-and-forget (not awaited) so the
+// registered path returns as fast as the unregistered one. Drain the microtask
+// queue so those background awaits (token insert + email send) settle before we
+// assert on them.
+const flushAsync = () => new Promise((resolve) => setImmediate(resolve));
+
 beforeEach(() => {
   jest.resetAllMocks();
 });
@@ -61,6 +67,7 @@ describe("forgotPassword account enumeration", () => {
       email: "real@test.com",
       clientUrl,
     });
+    await flushAsync();
 
     expect(result).toEqual(genericResponse);
     expect(sendResetMock).toHaveBeenCalledTimes(1);
@@ -69,6 +76,28 @@ describe("forgotPassword account enumeration", () => {
       expect.any(String),
       clientUrl
     );
+  });
+
+  it("returns without waiting for the reset email to be sent (no response-timing oracle)", async () => {
+    oneOrNoneMock.mockResolvedValueOnce({ id: 5 });
+    noneMock.mockResolvedValueOnce(undefined);
+    // A send that never settles on its own: if forgotPassword awaited it, this
+    // test would hang. It resolving proves the send is not on the response path.
+    let resolveSend: () => void = () => undefined;
+    sendResetMock.mockImplementationOnce(
+      () => new Promise<void>((resolve) => (resolveSend = resolve))
+    );
+
+    const result = await accountService.forgotPassword({
+      email: "real@test.com",
+      clientUrl,
+    });
+
+    expect(result).toEqual(genericResponse);
+
+    // Let the background send settle so it does not leak into other tests.
+    resolveSend();
+    await flushAsync();
   });
 
   it("returns an identical response for registered and unregistered addresses", async () => {
@@ -87,6 +116,7 @@ describe("forgotPassword account enumeration", () => {
       email: "real@test.com",
       clientUrl,
     });
+    await flushAsync();
 
     // The caller cannot tell the two apart.
     expect(registered).toEqual(unregistered);
@@ -104,6 +134,7 @@ describe("forgotPassword account enumeration", () => {
       email: "real@test.com",
       clientUrl,
     });
+    await flushAsync();
 
     expect(result).toEqual(genericResponse);
     expect(consoleErrorSpy).toHaveBeenCalled();

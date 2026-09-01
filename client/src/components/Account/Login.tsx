@@ -111,13 +111,20 @@ const LoginForm = () => {
                   }
                 } else if (response?.code === "AUTH_NOT_CONFIRMED") {
                   try {
-                    await accountService.resendConfirmationEmail(values.email);
-                    setToast({
-                      message: `Your email has not been confirmed.
-                      Please look through your email for a Registration
-                      Confirmation link and use it to confirm that you
-                      own this email address.`,
-                    });
+                    const resendResponse =
+                      await accountService.resendConfirmationEmail(
+                        values.email
+                      );
+                    if (resendResponse.code === "RATE_LIMITED") {
+                      setToast({ message: resendResponse.message });
+                    } else {
+                      setToast({
+                        message: `Your email has not been confirmed.
+                        Please look through your email for a Registration
+                        Confirmation link and use it to confirm that you
+                        own this email address.`,
+                      });
+                    }
                     formikBag.setSubmitting(false);
                   } catch (err) {
                     setToast({

@@ -104,6 +104,12 @@ export const login = async (
     return response.data;
   } catch (err) {
     console.error(err);
+    if (axios.isAxiosError(err) && err.response?.status === 429) {
+      // Rate-limited: surface the server's message rather than falling
+      // through to the generic "incorrect password" handling below, since
+      // this isn't a failed-credentials case.
+      return err.response.data;
+    }
     return undefined;
   }
 };

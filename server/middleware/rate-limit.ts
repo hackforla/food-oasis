@@ -14,22 +14,37 @@ import rateLimit from "express-rate-limit";
 // acceptable first line of defense for this app's current single/low-dyno
 // deployment; a shared store (e.g. Redis) would be needed to make limits
 // hold across a horizontally-scaled deployment.
+//
+// These are factory functions, not shared instances: each rate-limited
+// route must call create*Limiter() itself and get its own limiter/store, so
+// that unrelated actions (e.g. login vs. forgotPassword) don't drain the
+// same per-IP counter as a side effect of sharing one middleware instance.
 
 // Login, forgotPassword, resetPassword: most sensitive, tightest limit.
-export const strictAuthLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  limit: 5,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: { error: "Too many attempts. Please try again later." },
-});
+export const createStrictAuthLimiter = () =>
+  rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    limit: 5,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: {
+      isSuccess: false,
+      code: "RATE_LIMITED",
+      message: "Too many attempts. Please try again later.",
+    },
+  });
 
 // register, resendConfirmationEmail, confirmRegister, contact form:
 // less sensitive but still abuse-prone (mass account creation, mail relay).
-export const moderateAuthLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000, // 1 hour
-  limit: 10,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: { error: "Too many requests. Please try again later." },
-});
+export const createModerateAuthLimiter = () =>
+  rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour
+    limit: 10,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: {
+      isSuccess: false,
+      code: "RATE_LIMITED",
+      message: "Too many requests. Please try again later.",
+    },
+  });

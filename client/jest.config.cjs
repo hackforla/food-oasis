@@ -3,7 +3,8 @@ const { compilerOptions } = require("./tsconfig");
 
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
-  roots: ["<rootDir>"],
+  // Only src/ holds Jest tests; tests/ holds Playwright specs that Jest must not pick up.
+  roots: ["<rootDir>/src"],
   preset: "ts-jest",
   testEnvironment: "./jest.environment.cjs",
   modulePaths: [compilerOptions.baseUrl],
@@ -14,13 +15,8 @@ module.exports = {
     "^.+\\.[t|j]sx?$": "babel-jest",
   },
   transformIgnorePatterns: [
-    'node_modules/(?!' + 
-        [
-          'debounce-fn',
-          'mimic-fn',,
-        ].join('|') +
-    ')',
-],
+    "node_modules/(?!" + ["debounce-fn", "mimic-fn", ,].join("|") + ")",
+  ],
   moduleFileExtensions: ["ts", "tsx", "js", "jsx"],
-  setupFilesAfterEnv: ["<rootDir>/setupTests.ts"]
+  setupFilesAfterEnv: ["<rootDir>/setupTests.ts"],
 };

@@ -22,11 +22,9 @@ interface WidgetFooterSectionProps {
   type?: string;
 }
 
-interface TenantDetails {
-  maintainers?: Maintainer[];
-}
-
-function WidgetFooterSection(props: WidgetFooterSectionProps): React.ReactElement | null {
+function WidgetFooterSection(
+  props: WidgetFooterSectionProps
+): React.ReactElement | null {
   const {
     logoPath,
     alt,

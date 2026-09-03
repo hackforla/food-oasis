@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import Menu from "./Menu";
 
 export default function Header(): React.ReactElement {
-  const { isAuthPage, isMapPage } = useLocationHook();
+  const { isAuthPage } = useLocationHook();
   const imageType = TENANT_LOGO_URL
     ? TENANT_LOGO_URL.split(".").pop()
     : "unknown";

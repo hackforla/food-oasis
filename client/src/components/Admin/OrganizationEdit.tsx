@@ -22,7 +22,7 @@ import { useToasterContext } from "contexts/toasterContext";
 import { useUserContext } from "contexts/userContext";
 import dayjs from "dayjs";
 import { Formik, FormikHelpers, FormikProps } from "formik";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import * as stakeholderService from "services/stakeholder-service";
 import * as suggestionService from "services/suggestion-service";
@@ -996,7 +996,7 @@ const OrganizationEdit = () => {
             const hasConfirmationErrors =
               Object.keys(confirmationErrors).length > 0;
 
-            const currentErrors = useMemo(() => {
+            const currentErrors = (() => {
               try {
                 validationSchema.validateSync(values, { abortEarly: false });
                 return {};
@@ -1014,7 +1014,7 @@ const OrganizationEdit = () => {
                 }
                 return {};
               }
-            }, [values]);
+            })();
 
             const tabErrorCounts = isLoaded
               ? getTabErrorCounts(currentErrors, confirmationErrors)

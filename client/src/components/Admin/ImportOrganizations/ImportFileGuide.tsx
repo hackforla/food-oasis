@@ -17,16 +17,6 @@ import {
 import { useEffect, useRef, useState, ChangeEvent } from "react";
 import { STAKEHOLDER_SCHEMA } from "../../../constants/stakeholder-schema";
 
-interface StakeholderField {
-  name: string;
-  label?: string;
-  show: boolean;
-  required?: boolean;
-  description?: string;
-  default_value?: string | number | boolean;
-  sample_format?: string;
-}
-
 interface ImportFileGuideProps {
   handleDownload: () => void;
   handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -39,7 +29,9 @@ const ImportFileGuide = (props: ImportFileGuideProps) => {
   const [visibleFields, setVisibleFields] = useState<"all" | "required">("all");
   const ref = useRef<HTMLInputElement>(null);
 
-  const handleVisibleFields = (e: ChangeEvent<{ value: "all" | "required" }>) => {
+  const handleVisibleFields = (
+    e: ChangeEvent<{ value: "all" | "required" }>
+  ) => {
     const { value } = e.target;
     setVisibleFields(value);
   };
@@ -167,7 +159,11 @@ const ImportFileGuide = (props: ImportFileGuideProps) => {
         >
           <Select
             defaultValue="all"
-            onChange={(e) => handleVisibleFields(e as ChangeEvent<{ value: "all" | "required" }>)}
+            onChange={(e) =>
+              handleVisibleFields(
+                e as ChangeEvent<{ value: "all" | "required" }>
+              )
+            }
             style={{ width: "100%" }}
           >
             <MenuItem value="all">All</MenuItem>
@@ -198,11 +194,15 @@ const ImportFileGuide = (props: ImportFileGuideProps) => {
                         },
                       })}
                     >
-                      <TableCell style={{ fontWeight: field.required ? 900 : undefined }}>
+                      <TableCell
+                        style={{ fontWeight: field.required ? 900 : undefined }}
+                      >
                         {`${field.name} ${field.required ? "(required)" : ""}`}
                       </TableCell>
                       <TableCell>{field.description}</TableCell>
-                      <TableCell style={{ fontWeight: field.required ? 900 : undefined }}>
+                      <TableCell
+                        style={{ fontWeight: field.required ? 900 : undefined }}
+                      >
                         {field.default_value}
                       </TableCell>
                       <TableCell>{field.sample_format}</TableCell>

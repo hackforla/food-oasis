@@ -46,7 +46,7 @@ export default function SecurityTable(props: SecurityTableProps) {
     if (roleType === "security") {
       props.accounts.map(async (each) => {
         if (userId === each.id) {
-          let check = e.target.checked;
+          const check = e.target.checked;
           await accountService.setPermissions(
             each.id,
             "is_security_admin",
@@ -62,7 +62,7 @@ export default function SecurityTable(props: SecurityTableProps) {
     } else if (roleType === "admin") {
       props.accounts.map(async (each) => {
         if (userId === each.id) {
-          let check = e.target.checked;
+          const check = e.target.checked;
           await accountService.setPermissions(each.id, "is_admin", check);
           await props.handlePermissionChange(each.id, "is_admin", check);
         }
@@ -70,7 +70,7 @@ export default function SecurityTable(props: SecurityTableProps) {
     } else if (roleType === "coordinator") {
       props.accounts.map(async (each) => {
         if (userId === each.id) {
-          let check = e.target.checked;
+          const check = e.target.checked;
           await accountService.setPermissions(each.id, "is_coordinator", check);
           await props.handlePermissionChange(each.id, "is_coordinator", check);
         }
@@ -78,7 +78,7 @@ export default function SecurityTable(props: SecurityTableProps) {
     } else if (roleType === "dataEntry") {
       props.accounts.map(async (each) => {
         if (userId === each.id) {
-          let check = e.target.checked;
+          const check = e.target.checked;
           await accountService.setPermissions(each.id, "is_data_entry", check);
           await props.handlePermissionChange(each.id, "is_data_entry", check);
         }
@@ -96,7 +96,7 @@ export default function SecurityTable(props: SecurityTableProps) {
     if (roleType === "globalAdmin") {
       props.accounts.map(async (each) => {
         if (userId === each.id) {
-          let check = e.target.checked;
+          const check = e.target.checked;
           await accountService.setGlobalPermissions(
             each.id,
             "is_global_admin",
@@ -108,7 +108,7 @@ export default function SecurityTable(props: SecurityTableProps) {
     } else if (roleType === "globalReporting") {
       props.accounts.map(async (each) => {
         if (userId === each.id) {
-          let check = e.target.checked;
+          const check = e.target.checked;
           await accountService.setPermissions(
             each.id,
             "is_global_reporting",

@@ -1,4 +1,3 @@
-import React from "react";
 import AboutLA from "./StaticPages/About";
 import AboutHI from "./StaticPagesHI/About";
 import AboutMCK from "./StaticPagesMCK/About";

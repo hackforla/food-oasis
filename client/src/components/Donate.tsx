@@ -1,4 +1,3 @@
-import React from "react";
 import DonateLA from "./StaticPages/Donate";
 import DonateHI from "./StaticPagesHI/Donate";
 import DonateMCK from "./StaticPagesMCK/Donate";

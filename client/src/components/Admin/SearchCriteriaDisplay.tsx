@@ -138,7 +138,7 @@ function SearchCriteriaDisplay({
   };
 
   const getCriteriaToDisplay = () => {
-    let criterias = [];
+    const criterias = [];
 
     if (criteria.name !== defaultCriteria.name) {
       criterias.push(

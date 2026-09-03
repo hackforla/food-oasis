@@ -38,7 +38,7 @@ const ImportFile = () => {
   });
   const [dialog, setDialog] = useState(false);
   const [loading, setLoading] = useState(false);
-  let formData = useMemo(() => new FormData(), []);
+  const formData = useMemo(() => new FormData(), []);
   const [view, setView] = useState(
     user && user.isAdmin ? "adminAccessNotice" : "fileGuide"
   );

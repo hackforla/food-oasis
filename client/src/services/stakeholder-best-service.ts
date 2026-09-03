@@ -10,7 +10,7 @@ export const selectAll = async () => {
       tenantId,
     },
   });
-  let stakeholders = response.data.map((s: any) => {
+  const stakeholders = response.data.map((s: any) => {
     return {
       ...s,
       latitude: Number(s.latitude),
@@ -54,7 +54,7 @@ export const search = async (searchParams?: Record<string, any>) => {
     },
     paramsSerializer: { indexes: null }, // This will prevent axios from adding [] to the query parameters
   });
-  let stakeholders = response.data.map((s: any) => {
+  const stakeholders = response.data.map((s: any) => {
     return {
       ...s,
       createdDate: formatDate(s.createdDate),

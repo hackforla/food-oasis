@@ -1,6 +1,5 @@
-import { expect, test as playwrightTest } from "@playwright/test";
+import { test as playwrightTest } from "@playwright/test";
 import type { Page } from "@playwright/test";
-import mockRequests from "./mocks";
 
 declare global {
   interface Window {

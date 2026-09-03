@@ -125,7 +125,7 @@ unless noted. The root `package.json` only exposes `typecheck` (via
 | Build | `npm run build` (`tsc && vite build`) | `npm run build` (`tsc`, output to `server/build`) |
 | Typecheck | `npm run typecheck` (`tsc --noEmit`) — **passes clean today** | `npm run typecheck` (`tsc --noEmit`) — **passes clean today** |
 | Lint | `npm run lint` — **currently broken**, see §7 | `npm run lint` (flat ESLint config) — **passes clean today** |
-| Unit tests | `npx jest src/__test__` — **currently broken**, see §7 | `npx jest --ci` (do **not** use `npm test`, it's `jest --watch`) — **10/23 currently failing on stale snapshots**, see §7 |
+| Unit tests | `npx jest src/__test__` — **currently broken**, see §7 | `npx jest --ci` (do **not** use `npm test`, it's `jest --watch`) — **passes clean today** (14 suites) |
 | E2E tests | `npx playwright test` (needs `npm start` running on `:3000` first; this is what CI actually runs) | — |
 
 Before telling the user "tests pass" or "lint is clean," actually run the command
@@ -219,13 +219,12 @@ commands — not guesses:
   working test suite** (7 spec files in `client/tests/`, and it's what CI runs);
   treat the two Jest files as effectively dead until someone fixes the transform
   config.
-- **Server Jest has 10/23 failing tests today**, all in
-  `server/__test__/account.test.ts`, all `toMatchInlineSnapshot` failures where the
-  snapshot format is stale (`Object { ... }` vs `{ ... }`, a pretty-format version
-  difference from an old Jest). The other two server test files pass. Don't
-  assume "server tests pass" without running them; a red account.test.ts is
-  currently normal, not necessarily something your change broke — but check the
-  diff, since it could also be your change.
+- **Server Jest snapshot format is pinned.** `server/jest.config.ts` sets
+  `snapshotFormat: { printBasicPrototype: false }` so inline snapshots in
+  `server/__test__/account.test.ts` read as `{ ... }` rather than
+  `Object { ... }` (the Jest 29 default, on an installed Jest 28). If a Jest
+  upgrade or config change flips that setting, `account.test.ts` will go red on
+  format alone — fix the config, don't rewrite the snapshots.
 - **`server/test/test_neighborhood_service.ts`** exists (hits a real DB via
   `mocha`-style bare `it()` blocks — `mocha` is a server devDependency) but is
   **not picked up by Jest** (wrong location/naming for Jest's default test glob)

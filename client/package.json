@@ -12,6 +12,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "test": "playwright test --ui --headed",
+    "test:unit": "jest --ci",
     "format": "prettier --write  \"**/*.{js,jsx,ts,tsx}\"",
     "lint": "eslint -c .eslintrc.json --ignore-path .eslintignore  \"**/*.{js,jsx}\"",
     "lint:fix": "eslint -c .eslintrc.json --ignore-path .eslintignore --fix  \"**/*.{js,jsx}\"",
@@ -64,6 +65,7 @@
   "devDependencies": {
     "@babel/preset-env": "^7.25.9",
     "@babel/preset-react": "^7.25.9",
+    "@babel/preset-typescript": "^7.29.7",
     "@playwright/test": "^1.60.0",
     "@testing-library/react": "^16.0.1",
     "@types/jest": "^29.5.13",

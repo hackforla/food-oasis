@@ -15,7 +15,7 @@ module.exports = {
     "^.+\\.[t|j]sx?$": "babel-jest",
   },
   transformIgnorePatterns: [
-    "node_modules/(?!" + ["debounce-fn", "mimic-fn", ,].join("|") + ")",
+    "node_modules/(?!" + ["debounce-fn", "mimic-fn"].join("|") + ")",
   ],
   moduleFileExtensions: ["ts", "tsx", "js", "jsx"],
   setupFilesAfterEnv: ["<rootDir>/setupTests.ts"],

@@ -88,10 +88,7 @@ function validateUserHasRequiredRoles(permittedRoles: Role[]) {
       const payload = await verify(jwtString);
 
       // check that JWT subject is encoded with at least one of the requiredRoles
-      const isJWTRoleInAllowedRoles = permittedRoles.some((permittedRole) => {
-        const regex = new RegExp(permittedRole);
-        return regex.test(payload.sub);
-      });
+      const isJWTRoleInAllowedRoles = permittedRoles.includes(payload.sub as Role);
       if (!isJWTRoleInAllowedRoles) {
         throw Error("Authentication error: insufficient permissions");
       }

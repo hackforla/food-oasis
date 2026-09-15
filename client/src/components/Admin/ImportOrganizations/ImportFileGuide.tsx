@@ -94,7 +94,12 @@ const ImportFileGuide = (props: ImportFileGuideProps) => {
           </Box>
         </Box>
         <br />
-        <Input type="file" onChange={handleChange} inputRef={ref} />
+        <Input
+          type="file"
+          onChange={handleChange}
+          inputRef={ref}
+          inputProps={{ accept: ".csv,text/csv" }}
+        />
         <br />
         <Button variant="contained" type="button" onClick={handleUpload}>
           Submit

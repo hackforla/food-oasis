@@ -2,7 +2,12 @@ import awsService from "../app/services/aws-service";
 import importUtils from "../app/services/import-utils";
 import { STAKEHOLDER_SCHEMA } from "../app/services/import-constants";
 
-jest.mock("../app/services/aws-service");
+// Factory mock: automocking would load the real module, which pulls in the
+// AWS SDK at import time. Only getCoords is used by import-utils.
+jest.mock("../app/services/aws-service", () => ({
+  __esModule: true,
+  default: { getCoords: jest.fn() },
+}));
 
 const getCoordsMock = awsService.getCoords as jest.MockedFunction<
   typeof awsService.getCoords

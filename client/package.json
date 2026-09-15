@@ -74,7 +74,7 @@
     "@types/react": "^18.2.38",
     "@types/react-dom": "^18.3.1",
     "@types/react-gtm-module": "^2.0.4",
-    "@vitejs/plugin-react": "^4.3.4",
+    "@vitejs/plugin-react": "^6.0.2",
     "babel-jest": "^29.7.0",
     "babel-preset-vite": "^1.1.3",
     "eslint": "^9.39.5",
@@ -90,7 +90,7 @@
     "ts-jest": "^29.2.5",
     "typescript": "^5.0.0",
     "typescript-eslint": "^8.69.0",
-    "vite": "^6.4.2",
+    "vite": "^8.0.16",
     "vite-plugin-svgr": "^4.2.0",
     "vite-tsconfig-paths": "^5.0.1"
   },

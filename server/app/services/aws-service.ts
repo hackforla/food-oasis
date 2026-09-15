@@ -3,26 +3,25 @@ import {
   SearchPlaceIndexForTextCommandInput,
   // SearchPlaceIndexForTextCommandOutput,
 } from "@aws-sdk/client-location";
-import { CognitoIdentityClient } from "@aws-sdk/client-cognito-identity";
-import { fromCognitoIdentityPool } from "@aws-sdk/credential-provider-cognito-identity";
+import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
 
 const generateLocation = async () => {
   if (!process.env.IDENTITY_POOL_ID) return;
 
-  // Create a Cognito Identity Client
-  const cognitoClient = new CognitoIdentityClient({ region: "us-west-2" });
+  const region = "us-west-2";
   const poolId: string = process.env.IDENTITY_POOL_ID;
 
-  // Create Cognito Identity Credentials
+  // Create Cognito Identity Credentials (the pool client is created internally
+  // from clientConfig by the credential provider).
   const credentials = fromCognitoIdentityPool({
-    client: cognitoClient,
     identityPoolId: poolId,
+    clientConfig: { region },
   });
 
   // Create a Location client with the credentials and region
   const location = new Location({
     credentials,
-    region: cognitoClient.config.region || "us-west-2",
+    region,
   });
 
   return location;

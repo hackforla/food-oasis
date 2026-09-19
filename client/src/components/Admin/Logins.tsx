@@ -33,7 +33,7 @@ const Logins = () => {
   const [logins, setLogins] = useState<FormattedLogin[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  let { data, refetch } = useLogins();
+  const { data, refetch } = useLogins();
 
   useEffect(() => {
     if (data) {

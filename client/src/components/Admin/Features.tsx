@@ -32,10 +32,7 @@ import * as Yup from "yup";
 import { useFeatureToLogin } from "../../hooks/useFeatureToLogin";
 import { useFeatures } from "../../hooks/useFeatures";
 import type { Feature as ServiceFeature } from "../../services/feature-service";
-import type {
-  FeatureToLogin as ServiceFeatureToLogin,
-  FeatureUser as ServiceFeatureUser,
-} from "../../services/feature-to-login-service";
+import type { FeatureToLogin as ServiceFeatureToLogin } from "../../services/feature-to-login-service";
 import * as accountService from "../../services/account-service";
 import * as featureService from "../../services/feature-service";
 import * as featureToLoginService from "../../services/feature-to-login-service";

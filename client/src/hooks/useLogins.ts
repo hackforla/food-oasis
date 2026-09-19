@@ -26,8 +26,8 @@ export const useLogins = () => {
     const fetchApi = async () => {
       setLoading(true);
       try {
-        let logins = await loginsService.getAll(email);
-        let formattedLogins: FormattedLogin[] = logins.map((login) => ({
+        const logins = await loginsService.getAll(email);
+        const formattedLogins: FormattedLogin[] = logins.map((login) => ({
           ...login,
           loginTime: new Date(login.loginTime).toLocaleDateString(
             "en-US",

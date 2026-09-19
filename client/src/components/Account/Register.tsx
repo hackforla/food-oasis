@@ -11,7 +11,7 @@ import {
 import Label from "components/Admin/ui/Label";
 import PasswordInput from "components/UI/PasswordInput";
 import { useToasterContext } from "contexts/toasterContext";
-import { Formik, FormikProps, withFormik } from "formik";
+import { Formik } from "formik";
 import {
   PASSWORD_VALIDATION_ERROR,
   PASSWORD_VALIDATION_REGEX,
@@ -135,8 +135,9 @@ export default function Register() {
                 <Grid
                   size={{
                     xs: 12,
-                    sm: 6
-                  }}>
+                    sm: 6,
+                  }}
+                >
                   <Label id="firstName" label="First Name *" />
                   <TextField
                     autoComplete="fname"
@@ -156,8 +157,9 @@ export default function Register() {
                 <Grid
                   size={{
                     xs: 12,
-                    sm: 6
-                  }}>
+                    sm: 6,
+                  }}
+                >
                   <Label id="lastName" label="Last Name *" />
                   <TextField
                     required

@@ -27,11 +27,7 @@ interface FormValues {
   email: string;
 }
 
-interface ForgotPasswordProps {
-  // Add any props here if needed
-}
-
-const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
+const ForgotPassword: React.FC = () => {
   const { setToast } = useToasterContext();
   const { email } = useParams<{ email?: string }>();
   const navigate = useNavigate();

@@ -86,12 +86,16 @@ const DetailText = styled(Typography)(({ theme }) => ({
   },
 }));
 
-const StakeholderDetails = ({
+interface StakeholderDetailsContentProps extends StakeholderDetailsProps {
+  selectedOrganization: Stakeholder;
+}
+
+const StakeholderDetailsContent = ({
   onBackClick,
   isDesktop,
-}: StakeholderDetailsProps) => {
+  selectedOrganization,
+}: StakeholderDetailsContentProps) => {
   const [SuggestionDialogOpen, setSuggestionDialogOpen] = useState(false);
-  const selectedOrganization = useSelectedOrganization() as Stakeholder | null;
   const searchCoordinates = useSearchCoordinates();
   const userCoordinates = useUserCoordinates();
   const originCoordinates = searchCoordinates || userCoordinates;
@@ -99,10 +103,6 @@ const StakeholderDetails = ({
   const navigate = useNavigate();
   const { setToast } = useToasterContext();
   const { tenantTimeZone } = useSiteContext();
-
-  if (!selectedOrganization) {
-    return null;
-  }
 
   const foodTypeKeys = Object.keys(
     foodTypeLabelObject
@@ -184,8 +184,12 @@ const StakeholderDetails = ({
   const formatEmailPhone = (text: string): ReactNode[] => {
     if (!text) return [text];
     const emailRegExSource = "\\b[\\w.-]+@[\\w.-]+\\.\\w{2,4}\\b";
-    const phoneRegExSource = "(\\+?( |-|\\.)?\\d{1,2}( |-|\\.)?)?(\\(?\\d{3}\\)?|\\d{3})( |-|\\.)?(\\d{3}( |-|\\.)?\\d{4})";
-    const combinedRegex = new RegExp(`(${emailRegExSource})|(${phoneRegExSource})`, "gi");
+    const phoneRegExSource =
+      "(\\+?( |-|\\.)?\\d{1,2}( |-|\\.)?)?(\\(?\\d{3}\\)?|\\d{3})( |-|\\.)?(\\d{3}( |-|\\.)?\\d{4})";
+    const combinedRegex = new RegExp(
+      `(${emailRegExSource})|(${phoneRegExSource})`,
+      "gi"
+    );
     const nodes: ReactNode[] = [];
     let lastIndex = 0;
     let match: RegExpExecArray | null;
@@ -745,6 +749,21 @@ const StakeholderDetails = ({
         </Grid>
       </Stack>
     </>
+  );
+};
+
+const StakeholderDetails = (props: StakeholderDetailsProps) => {
+  const selectedOrganization = useSelectedOrganization() as Stakeholder | null;
+
+  if (!selectedOrganization) {
+    return null;
+  }
+
+  return (
+    <StakeholderDetailsContent
+      {...props}
+      selectedOrganization={selectedOrganization}
+    />
   );
 };
 

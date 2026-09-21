@@ -7,10 +7,18 @@ import multer from "multer";
 
 const MAX_CSV_FILE_SIZE = 5 * 1024 * 1024;
 const CSV_MIME_TYPES = new Set([
+  "application/octet-stream",
   "application/vnd.ms-excel",
   "text/csv",
   "text/plain",
 ]);
+
+class InvalidCsvFileError extends Error {
+  constructor() {
+    super("Only CSV files are allowed.");
+    this.name = "InvalidCsvFileError";
+  }
+}
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -23,7 +31,7 @@ const upload = multer({
     const isAllowedMimeType = CSV_MIME_TYPES.has(file.mimetype);
 
     if (!isCsvFile || !isAllowedMimeType) {
-      callback(new Error("Only CSV files are allowed."));
+      callback(new InvalidCsvFileError());
       return;
     }
 
@@ -42,7 +50,7 @@ const handleUploadError: ErrorRequestHandler = (err, _req, res, next) => {
     return;
   }
 
-  if (err instanceof Error && err.message === "Only CSV files are allowed.") {
+  if (err instanceof InvalidCsvFileError) {
     res.status(400).json({ error: err.message });
     return;
   }

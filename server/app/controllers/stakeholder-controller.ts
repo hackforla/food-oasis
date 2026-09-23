@@ -99,6 +99,7 @@ const csv: RequestHandler<never, never, { ids: string[] }, never> = async (
       .pipe(
         stringify({
           header: true,
+          escape_formulas: true,
           columns: {
             id: "ID",
             name: "Name",

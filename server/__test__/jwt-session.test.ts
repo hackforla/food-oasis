@@ -287,3 +287,56 @@ describe("JWT secret configuration", () => {
     }).not.toThrow();
   });
 });
+
+describe("validateUserHasRequiredRoles exact role matching", () => {
+  // permittedRoles is deliberately just ["admin"] for these cases: a wider
+  // list (like account.test.ts's four-role guard) would let a substring
+  // match on any of the other roles hide the bug these tests are for.
+  const guard = jwtSession.validateUserHasRequiredRoles(["admin"]);
+
+  async function runGuard(role: string) {
+    const { token } = await issueToken({ ...adminUser, role });
+    const req = mockRequest({ headers: {}, cookies: { jwt: token } });
+    const res = mockResponse();
+    const next = mockNext();
+
+    await guard(req, res, next);
+
+    return { res, next };
+  }
+
+  it("allows a multi-role subject that includes a permitted role", async () => {
+    const { res, next } = await runGuard("admin,coordinator");
+
+    expect(next).toHaveBeenCalledTimes(1);
+    expect(res.status).not.toHaveBeenCalled();
+  });
+
+  it("allows a multi-role subject where the permitted role isn't first", async () => {
+    const { res, next } = await runGuard("coordinator,admin");
+
+    expect(next).toHaveBeenCalledTimes(1);
+    expect(res.status).not.toHaveBeenCalled();
+  });
+
+  it('rejects a subject role that only contains "admin" as a substring', async () => {
+    const { res, next } = await runGuard("global_admin");
+
+    expect(next).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(401);
+  });
+
+  it("rejects a different substring-containing role", async () => {
+    const { res, next } = await runGuard("security_admin");
+
+    expect(next).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(401);
+  });
+
+  it("rejects an empty subject", async () => {
+    const { res, next } = await runGuard("");
+
+    expect(next).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(401);
+  });
+});

@@ -1,5 +1,6 @@
 import { once } from "events";
 import { Writable } from "stream";
+import { parse } from "csv-parse/sync";
 import stakeholderController from "../app/controllers/stakeholder-controller";
 import loadController from "../app/controllers/load-controller";
 import stakeholderService from "../app/services/stakeholder-service";
@@ -30,6 +31,10 @@ describe("CSV formula injection protection", () => {
         id: 1,
         name: '=HYPERLINK("https://example.com")',
         address1: "+SUM(1,1)",
+        latitude: "-34.05",
+        longitude: -118.24,
+        phone: "+1 213-555-1212",
+        notes: "-1+1",
         city: "Safe value",
       },
     ] as any);
@@ -51,10 +56,16 @@ describe("CSV formula injection protection", () => {
     );
     await once(res, "finish");
 
-    const csv = Buffer.concat(chunks).toString();
-    expect(csv).toContain("'=HYPERLINK");
-    expect(csv).toContain("'+SUM(1,1)");
-    expect(csv).toContain("Safe value");
+    const [row] = parse(Buffer.concat(chunks), { columns: true });
+    expect(row).toMatchObject({
+      Name: '\'=HYPERLINK("https://example.com")',
+      Address: "'+SUM(1,1)",
+      Latitude: "-34.05",
+      Longitude: "-118.24",
+      Phone: "'+1 213-555-1212",
+      "Public Notes": "'-1+1",
+      City: "Safe value",
+    });
   });
 
   it.each([
@@ -66,6 +77,9 @@ describe("CSV formula injection protection", () => {
       selectAll.mockResolvedValueOnce([
         {
           name: '=HYPERLINK("https://example.com")',
+          phone: "+1 213-555-1212",
+          notes: "-- see notes",
+          longitude: -118.24,
           description: "Safe value",
         },
       ] as any);
@@ -74,10 +88,16 @@ describe("CSV formula injection protection", () => {
 
       await handler(req, res, jest.fn());
 
-      const csv = res.send.mock.calls[0][0] as string;
-      expect(csv).not.toContain("=HYPERLINK");
-      expect(csv).toContain("HYPERLINK");
-      expect(csv).toContain("Safe value");
+      const [row] = parse(res.send.mock.calls[0][0] as string, {
+        columns: true,
+      });
+      expect(row).toEqual({
+        name: 'HYPERLINK("https://example.com")',
+        phone: "1 213-555-1212",
+        notes: " see notes",
+        longitude: "-118.24",
+        description: "Safe value",
+      });
     }
   );
 });

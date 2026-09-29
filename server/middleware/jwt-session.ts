@@ -26,9 +26,9 @@ async function login(req: Request, res: Response) {
     sub: `${req?.user?.role}` || "",
   });
   const cookieConfig: CookieOptions = {
-    httpOnly: false,
+    httpOnly: true,
     expires: new Date(Date.now() + 86400000), // 1 day
-    sameSite: req.secure ? "none" : undefined,
+    sameSite: req.secure ? "none" : "lax",
     secure: req.secure ? true : false,
   };
   res.cookie("jwt", token, cookieConfig);

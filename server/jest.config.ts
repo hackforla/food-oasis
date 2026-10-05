@@ -3,6 +3,7 @@ require("dotenv").config();
 
 module.exports = {
   testEnvironment: "node",
+  setupFiles: ["<rootDir>/__test__/setup-env.ts"],
   // Print snapshots without the "Object {" / "Array [" prefixes (the Jest 29
   // default) so the existing inline snapshots match on Jest 28.
   snapshotFormat: { printBasicPrototype: false },

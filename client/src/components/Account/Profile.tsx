@@ -77,7 +77,7 @@ export default function Profile() {
         title="User Profile"
         description="Edit your user profile information."
       />
-      <Container component="main" maxWidth="lg">
+      <Container maxWidth="lg">
         <form onSubmit={formik.handleSubmit}>
           <Grid container spacing={{ sm: 1, md: 3 }} alignItems={"center"}>
             <Grid

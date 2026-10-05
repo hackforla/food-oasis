@@ -110,7 +110,6 @@ const Home = () => {
         })}
       >
         <Container
-          component="main"
           maxWidth={false}
           sx={(theme) => ({
             maxWidth: "650px",

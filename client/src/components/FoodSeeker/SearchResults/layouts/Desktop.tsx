@@ -11,7 +11,6 @@ import {
   useFilterPanel,
   useListPanel,
   useAppDispatch,
-  useWidget,
 } from "../../../../appReducer";
 import DrawerLeftArrowButton from "../../../../icons/DrawerLeftArrowButton";
 import DrawerRightArrowButton from "../../../../icons/DrawerRightArrowButton";
@@ -39,7 +38,6 @@ const DesktopLayout: FC<DesktopLayoutProps> = ({
 }) => {
   const isFilterPanelOpen = useFilterPanel();
   const isListPanelOpen = useListPanel();
-  const isWidget = useWidget();
   const dispatch = useAppDispatch() as (action: any) => void;
 
   function getLeftPosition() {

@@ -124,8 +124,8 @@ unless noted. The root `package.json` only exposes `typecheck` (via
 | Dev server | `npm start` (Vite, port 3000, proxies `/api` to `:5001`) | `npm start` (`ts-node-dev`, port 5001, watches & respawns) |
 | Build | `npm run build` (`tsc && vite build`) | `npm run build` (`tsc`, output to `server/build`) |
 | Typecheck | `npm run typecheck` (`tsc --noEmit`) — **passes clean today** | `npm run typecheck` (`tsc --noEmit`) — **passes clean today** |
-| Lint | `npm run lint` — **currently broken**, see §7 | `npm run lint` (flat ESLint config) — **passes clean today** |
-| Unit tests | `npx jest src/__test__` — **currently broken**, see §7 | `npx jest --ci` (do **not** use `npm test`, it's `jest --watch`) — **10/23 currently failing on stale snapshots**, see §7 |
+| Lint | `npm run lint` (`eslint .`, flat config in `client/eslint.config.mjs`) — **passes clean today** (0 errors; ~10 `react-hooks/exhaustive-deps` warnings are expected) | `npm run lint` (flat ESLint config) — **passes clean today** |
+| Unit tests | `npm run test:unit` (`jest --ci`, rooted at `src/`) — **passes clean today** (2 suites; Playwright in `tests/` is the main client suite) | `npx jest --ci` (do **not** use `npm test`, it's `jest --watch`) — **passes clean today** (14 suites) |
 | E2E tests | `npx playwright test` (needs `npm start` running on `:3000` first; this is what CI actually runs) | — |
 
 Before telling the user "tests pass" or "lint is clean," actually run the command
@@ -200,32 +200,39 @@ the actual quality gate** for those checks on every change — see
 These are real, current states of the repo, verified by running the actual
 commands — not guesses:
 
-- **Client lint is broken.** `client/package.json`'s `lint` script runs
-  `eslint -c .eslintrc.json ...`, and `.eslintrc.json` extends `"react-app"` (the
-  Create React App / `eslint-config-react-app` preset). But the client no longer
-  uses CRA — it's Vite — and `eslint` itself isn't installed as a dependency
-  anywhere in the client (or the root). Running the lint script fails outright
-  with `sh: eslint: command not found` — it never gets far enough to fail on
-  the missing `react-app` config. This is leftover from the CRA→Vite migration.
-  Until this is fixed, don't treat "client lint passed" as a meaningful signal
-  — it can't currently run at all. Recommended: replace with a
-  flat ESLint config for TS/React (mirroring server's approach) as a follow-up.
-- **Client Jest unit tests are broken.** `client/src/__test__/App.test.js` and
-  `Helpers.test.js` fail to even parse: `client/src/helpers/index.ts` uses a
-  TS type-only named import (`import dayjs, { type Dayjs } from "dayjs"`) that the
-  configured Babel/ts-jest pipeline chokes on. There is also no `npm test` script
-  for these — `client/package.json`'s `test` script actually launches Playwright
-  (`playwright test --ui --headed`), not Jest. **Playwright is the client's real,
-  working test suite** (7 spec files in `client/tests/`, and it's what CI runs);
-  treat the two Jest files as effectively dead until someone fixes the transform
-  config.
-- **Server Jest has 10/23 failing tests today**, all in
-  `server/__test__/account.test.ts`, all `toMatchInlineSnapshot` failures where the
-  snapshot format is stale (`Object { ... }` vs `{ ... }`, a pretty-format version
-  difference from an old Jest). The other two server test files pass. Don't
-  assume "server tests pass" without running them; a red account.test.ts is
-  currently normal, not necessarily something your change broke — but check the
-  diff, since it could also be your change.
+- **Client lint is a flat ESLint 9 config, separate from the server's.**
+  `client/eslint.config.mjs` uses `@eslint/js`, `typescript-eslint`,
+  `eslint-plugin-react`, and only the two classic `react-hooks` rules
+  (`rules-of-hooks` as error, `exhaustive-deps` as warning — the newer React
+  Compiler rules in `eslint-plugin-react-hooks` v7 are deliberately not
+  enabled). `eslint-config-prettier` is applied last so Prettier owns
+  formatting; `eslint-plugin-prettier` is *not* used on the client because the
+  client is still on Prettier 2. Deliberate rule choices, mirroring the
+  server: `no-explicit-any` off, unused *arguments* ignored (callback
+  signatures are dictated by callers) but unused variables/imports are errors,
+  and `react/no-unescaped-entities` off for prose in JSX. Playwright specs in
+  `client/tests/` are linted with `rules-of-hooks` off, since `test.extend`
+  fixtures take a `use` callback the rule mistakes for React's `use`.
+  `client/package.json` still has a `react-scripts` entry under `overrides`
+  left over from CRA; it is inert and can go whenever someone next touches
+  dependencies.
+- **Client Jest is small and easy to misrun.** Only two Jest files exist
+  (`client/src/__test__/App.test.js` and `Helpers.test.js`); run them with
+  `npm run test:unit`, not `npm test` — `client/package.json`'s `test` script
+  launches Playwright (`playwright test --ui --headed`). `jest.config.cjs`
+  transforms everything through `babel-jest` (the `ts-jest` preset is
+  overridden), so TypeScript syntax only parses because
+  `@babel/preset-typescript` is in `babel.config.json` — keep it there, and
+  keep it on the 7.x line to match `@babel/core`. Jest `roots` is pinned to
+  `src/` so it never picks up the Playwright specs in `client/tests/`, which
+  fail under Jest. **Playwright is still the client's main test suite** (7 spec
+  files in `client/tests/`, and it's what CI runs).
+- **Server Jest snapshot format is pinned.** `server/jest.config.ts` sets
+  `snapshotFormat: { printBasicPrototype: false }` so inline snapshots in
+  `server/__test__/account.test.ts` read as `{ ... }` rather than
+  `Object { ... }` (the Jest 29 default, on an installed Jest 28). If a Jest
+  upgrade or config change flips that setting, `account.test.ts` will go red on
+  format alone — fix the config, don't rewrite the snapshots.
 - **`server/test/test_neighborhood_service.ts`** exists (hits a real DB via
   `mocha`-style bare `it()` blocks — `mocha` is a server devDependency) but is
   **not picked up by Jest** (wrong location/naming for Jest's default test glob)
@@ -304,8 +311,8 @@ user decide how and where to track it (e.g. a private security advisory).
 - Don't add new features on `postgres-pool.ts` or `massive` — use `db.ts`.
 - Don't add new string-interpolated SQL — use `$<param>` bound parameters, even
   inside the existing query-builder helpers if you're touching them anyway.
-- Don't assume `npm run lint` (client) or `npm test` (either workspace) do what
-  their names imply — see §7 and always verify by running them.
+- Don't assume `npm test` (either workspace) does what its name implies —
+  see §7 and always verify by running the real commands from §3.
 - Don't silently "fix" an inconsistency documented in §7 as a drive-by inside an
   unrelated change — flag it and let the human decide whether it's in scope.
 - Don't introduce new global state managers (Redux, Zustand, etc.) or new data

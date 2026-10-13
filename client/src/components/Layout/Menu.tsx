@@ -11,7 +11,7 @@ import {
 import { isMobile } from "helpers";
 import { MENU_ITEMS } from "helpers/Constants";
 import useLocationHook from "hooks/useLocationHook";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useUserContext } from "../../contexts/userContext";
 import { IconButton } from "../UI/StandardButton";
 import MenuItemLink from "./MenuItemLink";
@@ -19,6 +19,7 @@ import MenuItemLink from "./MenuItemLink";
 export default function Menu(): React.ReactElement {
   const { isHomePage } = useLocationHook();
   const [isOpen, setIsOpen] = useState(false);
+  const restoreFocusRef = useRef<HTMLElement | null>(null);
   const { user, onLogout } = useUserContext();
 
   const toggleDrawer = (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -32,7 +33,9 @@ export default function Menu(): React.ReactElement {
 
     // Release focus from the trigger before the Drawer sets aria-hidden on
     // #root; otherwise the browser blocks aria-hidden on a focused ancestor.
+    // Remember the trigger so focus can be restored once the drawer closes.
     if (!isOpen && document.activeElement instanceof HTMLElement) {
+      restoreFocusRef.current = document.activeElement;
       document.activeElement.blur();
     }
 
@@ -184,6 +187,10 @@ export default function Menu(): React.ReactElement {
         anchor={"right"}
         open={isOpen}
         onClose={toggleDrawer}
+        disableRestoreFocus
+        slotProps={{
+          transition: { onExited: () => restoreFocusRef.current?.focus() },
+        }}
         PaperProps={{ sx: { width: "250px" } }}
       >
         {sideList()}

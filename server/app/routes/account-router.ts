@@ -3,6 +3,7 @@ import accountController from "../controllers/account-controller";
 import jwtSession from "../../middleware/jwt-session";
 import {
   createStrictAuthLimiter,
+  createLoginLimiter,
   createModerateAuthLimiter,
 } from "../../middleware/rate-limit";
 //const authenticate = require("../../middleware/authenticate");
@@ -58,7 +59,7 @@ router.post(
 
 router.post(
   "/login",
-  createStrictAuthLimiter(),
+  createLoginLimiter(),
   accountController.login,
   jwtSession.login
 );

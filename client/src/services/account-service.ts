@@ -54,13 +54,10 @@ export const getByEmail = async (email: string) => {
   return response;
 };
 
-// POSTs to one of the rate-limited account endpoints. On a 429, returns the
-// server's { isSuccess: false, code: "RATE_LIMITED", message } response body
-// instead of letting axios throw, so callers can handle "rate limited" the
-// same way they handle any other non-success ApiResponse (checking `code`)
-// rather than it falling into their generic network/server-error catch
-// block with a misleading message. Any other error still throws, preserving
-// each caller's existing error handling.
+// POSTs to one of the rate-limited account endpoints. If the server answers
+// with a 429 (rate limited) and an ApiResponse-shaped failure body, returns
+// that body instead of letting axios throw, so callers can branch on `code`
+// like any other non-success response. Anything else still throws.
 const postAuthRequest = async <T extends ApiResponse>(
   url: string,
   body: unknown
@@ -69,7 +66,11 @@ const postAuthRequest = async <T extends ApiResponse>(
     const response = await axios.post(url, body);
     return response.data;
   } catch (err) {
-    if (axios.isAxiosError(err) && err.response?.status === 429) {
+    if (
+      axios.isAxiosError(err) &&
+      err.response?.status === 429 &&
+      err.response?.data?.isSuccess === false
+    ) {
       return err.response.data;
     }
     throw err;

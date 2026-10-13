@@ -8,6 +8,7 @@ export function mockResponse(overrides: any = {}): any {
     status: jest.fn(() => res).mockName("status"),
     sendStatus: jest.fn(() => res).mockName("sendStatus"),
     json: jest.fn(() => res).mockName("json"),
+    locals: {},
     ...overrides,
   };
   return res;

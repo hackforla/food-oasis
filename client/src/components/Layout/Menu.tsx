@@ -30,6 +30,11 @@ export default function Menu(): React.ReactElement {
       return;
     }
 
+    // Release focus from the trigger before the Drawer sets aria-hidden on
+    if (!isOpen && document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+
     setIsOpen(!isOpen);
   };
 

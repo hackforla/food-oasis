@@ -38,7 +38,7 @@
     "body-parser": "^2.3.0",
     "camelcase-keys": "^10.0.1",
     "cheerio": "^1.1.2",
-    "compression": "^1.8.1",
+    "compression": "^1.8.2",
     "cookie-parser": "^1.4.7",
     "csv-parse": "^7.0.2",
     "csv-stringify": "^6.5.1",

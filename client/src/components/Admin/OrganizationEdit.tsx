@@ -860,7 +860,7 @@ const OrganizationEdit = () => {
   };
 
   return (
-    <Container component="main" maxWidth="lg">
+    <Container maxWidth="lg">
       <div>
         <AssignDialog
           id="assign-dialog"

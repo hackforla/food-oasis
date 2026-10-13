@@ -43,7 +43,7 @@ const ImportFileGuide = (props: ImportFileGuideProps) => {
   }, [file]);
 
   return (
-    <main
+    <div
       style={{
         textAlign: "center",
       }}
@@ -241,7 +241,7 @@ const ImportFileGuide = (props: ImportFileGuideProps) => {
           </Table>
         </TableContainer>
       </Box>
-    </main>
+    </div>
   );
 };
 

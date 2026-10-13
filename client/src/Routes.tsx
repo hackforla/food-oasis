@@ -1,6 +1,7 @@
-import { CircularProgress, Grid, Stack } from "@mui/material";
+import { Box, CircularProgress, Grid, Stack } from "@mui/material";
 import Home from "components/FoodSeeker/Home";
 import Header from "components/Layout/Header";
+import SkipLink from "components/Layout/SkipLink";
 import WidgetFooter from "components/Layout/WidgetFooter";
 import { Suspense, lazy, type ReactNode } from "react";
 import {
@@ -277,8 +278,22 @@ function AppWrapper() {
       <ScrollToTop />
       {isAlertLocation && <AnnouncementSnackbar />}
 
+      {isWidget ? null : <SkipLink />}
       {isWidget ? null : <Header />}
-      <Outlet />
+      <Box
+        component="main"
+        id="main-content"
+        tabIndex={-1}
+        sx={{
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          minHeight: 0,
+          outline: "none",
+        }}
+      >
+        <Outlet />
+      </Box>
       <Toast />
     </Grid>
   );

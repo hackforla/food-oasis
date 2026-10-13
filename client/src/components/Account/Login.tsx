@@ -111,13 +111,20 @@ const LoginForm = () => {
                   }
                 } else if (response?.code === "AUTH_NOT_CONFIRMED") {
                   try {
-                    await accountService.resendConfirmationEmail(values.email);
-                    setToast({
-                      message: `Your email has not been confirmed.
-                      Please look through your email for a Registration
-                      Confirmation link and use it to confirm that you
-                      own this email address.`,
-                    });
+                    const resendResponse =
+                      await accountService.resendConfirmationEmail(
+                        values.email
+                      );
+                    if (resendResponse.code === "RATE_LIMITED") {
+                      setToast({ message: resendResponse.message });
+                    } else {
+                      setToast({
+                        message: `Your email has not been confirmed.
+                        Please look through your email for a Registration
+                        Confirmation link and use it to confirm that you
+                        own this email address.`,
+                      });
+                    }
                     formikBag.setSubmitting(false);
                   } catch (err) {
                     setToast({
@@ -132,6 +139,13 @@ const LoginForm = () => {
                     message: `The email ${values.email} does not correspond to an
                     existing account. Please verify the email or register as a
                     new account.`,
+                  });
+                  formikBag.setSubmitting(false);
+                } else if (response?.code === "RATE_LIMITED") {
+                  setToast({
+                    message:
+                      response.message ||
+                      "Too many attempts. Please try again later.",
                   });
                   formikBag.setSubmitting(false);
                 } else {

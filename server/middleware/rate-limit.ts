@@ -20,13 +20,36 @@ import rateLimit from "express-rate-limit";
 // that unrelated actions (e.g. login vs. forgotPassword) don't drain the
 // same per-IP counter as a side effect of sharing one middleware instance.
 
+const STRICT_WINDOW_MS = 15 * 60 * 1000; // 15 minutes
+const STRICT_MAX_REQUESTS = 5;
+
 // Login, forgotPassword, resetPassword: most sensitive, tightest limit.
 export const createStrictAuthLimiter = () =>
   rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    limit: 5,
+    windowMs: STRICT_WINDOW_MS,
+    limit: STRICT_MAX_REQUESTS,
     standardHeaders: true,
     legacyHeaders: false,
+    message: {
+      isSuccess: false,
+      code: "RATE_LIMITED",
+      message: "Too many attempts. Please try again later.",
+    },
+  });
+
+// Login only: same limit as the strict limiter, but successful logins don't
+// count against it, so users sharing an IP (e.g. volunteers on one network)
+// don't lock each other out. The login controller answers a wrong password
+// with HTTP 200 + { isSuccess: false }, so the status code can't tell success
+// from failure; the controller flags success on res.locals instead.
+export const createLoginLimiter = () =>
+  rateLimit({
+    windowMs: STRICT_WINDOW_MS,
+    limit: STRICT_MAX_REQUESTS,
+    standardHeaders: true,
+    legacyHeaders: false,
+    skipSuccessfulRequests: true,
+    requestWasSuccessful: (_req, res) => res.locals.loginSucceeded === true,
     message: {
       isSuccess: false,
       code: "RATE_LIMITED",

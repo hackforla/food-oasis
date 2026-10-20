@@ -119,7 +119,7 @@ const Contact = () => {
 
   const [open, setOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const {setToast} = useToasterContext()
+  const { setToast } = useToasterContext();
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const { isMobile } = useBreakpoints();
@@ -203,12 +203,14 @@ const Contact = () => {
                     setSubmitted(true);
                     handleOpen();
                   })
-                  .catch(() => {
+                  .catch((err) => {
                     setToast({
-                      message:"There was an error with your submission. Please try again.",
-                      type:"error"
-                    }
-                    );
+                      message:
+                        err instanceof Error
+                          ? err.message
+                          : "There was an error with your submission. Please try again.",
+                      type: "error",
+                    });
                   });
               }}
             >

@@ -1,6 +1,8 @@
 import stakeholderController from "../app/controllers/stakeholder-controller";
 import stakeholderService from "../app/services/stakeholder-service";
 import { mockNext, mockRequest, mockResponse } from "./utils";
+import jwt from "jsonwebtoken";
+import jwtSession from "../middleware/jwt-session";
 
 jest.mock("../app/services/stakeholder-service");
 
@@ -106,5 +108,60 @@ describe("Stakeholder controller authorization", () => {
     expect(isStakeholderAssignedToUserMock).not.toHaveBeenCalled();
     expect(selectByIdMock).toHaveBeenCalledWith("42");
     expect(res.send).toHaveBeenCalledWith(stakeholder);
+  });
+});
+
+describe("DELETE /stakeholders/:id authorization", () => {
+  const jwtSecret = process.env.JWT_SECRET || "mark it zero";
+  const guard = jwtSession.validateUserHasRequiredRoles(["admin"]);
+
+  const signToken = (payload: object) =>
+    jwt.sign(payload, jwtSecret, { algorithm: "HS256" });
+
+  it("rejects an unauthenticated request", async () => {
+    const res = mockResponse();
+    const req = mockRequest({
+      headers: {},
+      cookies: {},
+      params: { id: "42" },
+    });
+    const next = mockNext();
+
+    await guard(req, res, next);
+
+    expect(next).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(401);
+  });
+
+  it("rejects an authenticated non-admin caller", async () => {
+    const res = mockResponse();
+    const req = mockRequest({
+      headers: {},
+      cookies: {
+        jwt: signToken({ email: "user@test.com", sub: "data_entry" }),
+      },
+      params: { id: "42" },
+    });
+    const next = mockNext();
+
+    await guard(req, res, next);
+
+    expect(next).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(401);
+  });
+
+  it("allows an authenticated admin through to the handler", async () => {
+    const res = mockResponse();
+    const req = mockRequest({
+      headers: {},
+      cookies: { jwt: signToken({ email: "admin@test.com", sub: "admin" }) },
+      params: { id: "42" },
+    });
+    const next = mockNext();
+
+    await guard(req, res, next);
+
+    expect(next).toHaveBeenCalledTimes(1);
+    expect(res.status).not.toHaveBeenCalled();
   });
 });

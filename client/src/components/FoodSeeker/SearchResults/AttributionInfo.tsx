@@ -16,6 +16,9 @@ const AttributionInfo = () => {
       {toggle ? (
         <div style={{ display: "flex", justifyContent: "flex-start" }}>
           <button
+            type="button"
+            aria-label="Map attribution"
+            aria-expanded={false}
             style={{
               backgroundColor: "white",
               borderRadius: "12px",
@@ -26,6 +29,8 @@ const AttributionInfo = () => {
             onClick={handleClick}
           >
             <svg
+              aria-hidden="true"
+              focusable="false"
               style={{ backgroundColor: "white", borderRadius: "12px" }}
               width="24"
               height="24"
@@ -41,6 +46,9 @@ const AttributionInfo = () => {
         <>
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
             <button
+              type="button"
+              aria-label="Map attribution"
+              aria-expanded={true}
               style={{
                 backgroundColor: "white",
                 borderBottomLeftRadius: "12px",
@@ -52,6 +60,8 @@ const AttributionInfo = () => {
               onClick={handleClick}
             >
               <svg
+                aria-hidden="true"
+                focusable="false"
                 style={{
                   backgroundColor: "white",
                   borderBottomRightRadius: "12px",

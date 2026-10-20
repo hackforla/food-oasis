@@ -70,6 +70,8 @@ function buildOptions(allowThirdPartyFraming: boolean): HelmetOptions {
   };
 }
 
+// /widget (and its legacy /search URL) may be embedded by third-party sites.
+const THIRD_PARTY_FRAMEABLE_PATHS = new Set<string>(["/widget", "/search"]);
 
 const defaultHeaders = helmet(buildOptions(false));
 const widgetHeaders = helmet(buildOptions(true));

@@ -1,6 +1,8 @@
+import jwt from "jsonwebtoken";
 import accountController from "../app/controllers/account-controller";
 import accountService from "../app/services/account-service";
 import loginService from "../app/services/logins-service";
+import jwtSession from "../middleware/jwt-session";
 import { mockResponse, mockRequest, mockNext } from "./utils";
 
 jest.mock("../app/services/account-service");
@@ -773,5 +775,67 @@ describe("Account", () => {
     await accountController.updateUserProfile(req, res, next);
     expect(updateUserProfileMock).not.toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(403);
+  });
+});
+
+// GET /api/accounts/:email must not be reachable without an authenticated staff
+// role. Previously it was public, letting anyone enumerate accounts by email and
+// harvest their id/name/confirmation/creation date (security audit finding #10).
+// These exercise the role-check middleware the route is wired with.
+describe("GET /accounts/:email authorization (finding #10)", () => {
+  const jwtSecret = process.env.JWT_SECRET || "mark it zero";
+  const guard = jwtSession.validateUserHasRequiredRoles([
+    "admin",
+    "security_admin",
+    "data_entry",
+    "global_admin",
+  ]);
+
+  const signToken = (payload: object) =>
+    jwt.sign(payload, jwtSecret, { algorithm: "HS256" });
+
+  it("rejects an unauthenticated request with 401", async () => {
+    const res = mockResponse();
+    const req = mockRequest({
+      headers: {},
+      cookies: {},
+      params: { email: "victim@test.com" },
+    });
+    const next = mockNext();
+
+    await guard(req, res, next);
+
+    expect(next).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(401);
+  });
+
+  it("rejects an authenticated caller lacking a permitted role with 401", async () => {
+    const res = mockResponse();
+    const req = mockRequest({
+      headers: {},
+      cookies: { jwt: signToken({ email: "vol@test.com", sub: "coordinator" }) },
+      params: { email: "victim@test.com" },
+    });
+    const next = mockNext();
+
+    await guard(req, res, next);
+
+    expect(next).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(401);
+  });
+
+  it("allows an authenticated admin through to the handler", async () => {
+    const res = mockResponse();
+    const req = mockRequest({
+      headers: {},
+      cookies: { jwt: signToken({ email: "admin@test.com", sub: "admin" }) },
+      params: { email: "someone@test.com" },
+    });
+    const next = mockNext();
+
+    await guard(req, res, next);
+
+    expect(next).toHaveBeenCalledTimes(1);
+    expect(res.status).not.toHaveBeenCalled();
   });
 });

@@ -31,12 +31,8 @@ export const addUserToFeature = async (
   login_id: number
 ) => {
   const data = { feature_id, login_id };
-  try {
-    const response = await axios.post(`${baseUrl}`, data);
-    return response.data;
-  } catch (err) {
-    throw err;
-  }
+  const response = await axios.post(`${baseUrl}`, data);
+  return response.data;
 };
 
 export const removeUserFromFeature = async (ftl_id: number) => {

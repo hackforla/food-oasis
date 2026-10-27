@@ -22,7 +22,7 @@ import { useToasterContext } from "contexts/toasterContext";
 import { useUserContext } from "contexts/userContext";
 import dayjs from "dayjs";
 import { Formik, FormikHelpers, FormikProps } from "formik";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import * as stakeholderService from "services/stakeholder-service";
 import * as suggestionService from "services/suggestion-service";
@@ -41,6 +41,7 @@ import Identification from "./OrganizationEdit/Identification";
 import MoreDetails from "./OrganizationEdit/MoreDetails";
 import SuggestionHistory from "./OrganizationEdit/SuggestionHistory";
 import Verification from "./OrganizationEdit/Verification";
+import VerificationEmail from "./OrganizationEdit/VerificationEmail";
 import Label from "./ui/Label";
 import Textarea from "./ui/Textarea";
 import {
@@ -253,6 +254,15 @@ const OrganizationEdit = () => {
   const [confirmDialogCallback, setConfirmDialogCallback] =
     useState<CallbackObject | null>(null);
   const [tabPage, setTabPage] = useState(0);
+
+  // The Verification Email tab (index 8) only exists for an existing org. If
+  // the route changes to "Add New Organization" while it is selected, fall
+  // back to the first tab so MUI never receives a tab value that isn't there.
+  useEffect(() => {
+    if (!editId && tabPage === 8) {
+      setTabPage(0);
+    }
+  }, [editId, tabPage]);
   const [nextUrl, setNextUrl] = useState<string | null>(null);
   const [validationMode, setValidationMode] = useState<string | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -464,6 +474,7 @@ const OrganizationEdit = () => {
     "Verification",
     "Suggestion History",
     "Change History",
+    "Verification Email",
   ];
 
   const FIELD_LABELS: Record<string, string> = {
@@ -860,7 +871,7 @@ const OrganizationEdit = () => {
   };
 
   return (
-    <Container component="main" maxWidth="lg">
+    <Container maxWidth="lg">
       <div>
         <AssignDialog
           id="assign-dialog"
@@ -986,6 +997,7 @@ const OrganizationEdit = () => {
             setFieldValue,
             setFieldTouched,
             submitCount,
+            dirty,
           }: FormikProps<OrganizationFormValues>) => {
             const confirmationErrors =
               validationMode === "submit" || validationMode === "approve"
@@ -996,7 +1008,7 @@ const OrganizationEdit = () => {
             const hasConfirmationErrors =
               Object.keys(confirmationErrors).length > 0;
 
-            const currentErrors = useMemo(() => {
+            const currentErrors = (() => {
               try {
                 validationSchema.validateSync(values, { abortEarly: false });
                 return {};
@@ -1014,7 +1026,7 @@ const OrganizationEdit = () => {
                 }
                 return {};
               }
-            }, [values]);
+            })();
 
             const tabErrorCounts = isLoaded
               ? getTabErrorCounts(currentErrors, confirmationErrors)
@@ -1060,19 +1072,25 @@ const OrganizationEdit = () => {
                         indicatorColor="secondary"
                       >
                         {[
-                          "Identification",
-                          "Business Hours",
-                          "Contact Details",
-                          "More Details",
-                          "Donations",
-                          "Verification",
-                          "Suggestion History",
+                          { label: "Identification", index: 0 },
+                          { label: "Business Hours", index: 1 },
+                          { label: "Contact Details", index: 2 },
+                          { label: "More Details", index: 3 },
+                          { label: "Donations", index: 4 },
+                          { label: "Verification", index: 5 },
+                          { label: "Suggestion History", index: 6 },
                           ...(user?.isAdmin || user?.isCoordinator
-                            ? ["Change History"]
+                            ? [{ label: "Change History", index: 7 }]
                             : []),
-                        ].map((label, index) => (
+                          // Appended at a fixed index so existing tab indexes
+                          // never shift; hidden when creating a new org.
+                          ...(editId
+                            ? [{ label: "Verification Email", index: 8 }]
+                            : []),
+                        ].map(({ label, index }) => (
                           <Tab
                             key={label}
+                            value={index}
                             label={
                               tabErrorCounts[index] ? (
                                 <Badge
@@ -1170,6 +1188,13 @@ const OrganizationEdit = () => {
                       onEdit={handleSuggestionEdit}
                       confirmationErrors={confirmationErrors}
                     />
+                    {editId && (
+                      <VerificationEmail
+                        tabPage={tabPage}
+                        values={values}
+                        dirty={dirty}
+                      />
+                    )}
                     {(user?.isAdmin || user?.isCoordinator) && (
                       <ChangeHistory
                         tabPage={tabPage}

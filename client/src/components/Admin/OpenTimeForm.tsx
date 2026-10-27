@@ -143,7 +143,7 @@ const OpenTimeForm = ({
                                 sx={{
                                   color:
                                     hour.weekOfMonth === ""
-                                      ? Boolean(touchedMonth && errorMonth)
+                                      ? touchedMonth && errorMonth
                                         ? error
                                         : disabledText
                                       : "inherit",
@@ -190,7 +190,7 @@ const OpenTimeForm = ({
                                 sx={{
                                   color:
                                     hour.dayOfWeek === ""
-                                      ? Boolean(touchedWeek && errorWeek)
+                                      ? touchedWeek && errorWeek
                                         ? error
                                         : disabledText
                                       : "inherit",

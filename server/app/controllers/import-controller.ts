@@ -9,12 +9,17 @@ const uploadStakeholderCsv: RequestHandler<never, any, never, never> = async (
   res
 ) => {
   const { file } = req;
-  if (!file) return;
+  if (!file) {
+    res.status(400).json({ error: "CSV file is required." });
+    return;
+  }
+
   try {
     const response = await importService.parseCsv(file);
     res.send(response);
   } catch (err: any) {
     console.error(err.message);
+    res.status(400).json({ error: "CSV file could not be parsed." });
   }
 };
 

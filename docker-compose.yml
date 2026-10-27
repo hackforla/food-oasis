@@ -14,6 +14,7 @@ services:
       POSTGRES_HOST: db
       POSTGRES_PORT: 5432
       WAIT_FOR: db:5432
+      JWT_SECRET: local-dev-secret
 
     links:
       - db

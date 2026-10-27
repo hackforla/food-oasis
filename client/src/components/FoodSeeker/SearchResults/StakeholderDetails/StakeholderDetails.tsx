@@ -33,7 +33,7 @@ import ForkIcon from "icons/ForkIcon";
 import AppleIcon from "icons/AppleIcon";
 import IosShareIcon from "@mui/icons-material/IosShare";
 import SubdirectoryArrowRightIcon from "@mui/icons-material/SubdirectoryArrowRight";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import * as analytics from "services/analytics";
 import {
@@ -86,12 +86,16 @@ const DetailText = styled(Typography)(({ theme }) => ({
   },
 }));
 
-const StakeholderDetails = ({
+interface StakeholderDetailsContentProps extends StakeholderDetailsProps {
+  selectedOrganization: Stakeholder;
+}
+
+const StakeholderDetailsContent = ({
   onBackClick,
   isDesktop,
-}: StakeholderDetailsProps) => {
+  selectedOrganization,
+}: StakeholderDetailsContentProps) => {
   const [SuggestionDialogOpen, setSuggestionDialogOpen] = useState(false);
-  const selectedOrganization = useSelectedOrganization() as Stakeholder | null;
   const searchCoordinates = useSearchCoordinates();
   const userCoordinates = useUserCoordinates();
   const originCoordinates = searchCoordinates || userCoordinates;
@@ -99,11 +103,6 @@ const StakeholderDetails = ({
   const navigate = useNavigate();
   const { setToast } = useToasterContext();
   const { tenantTimeZone } = useSiteContext();
-  const [paddingBottom, setPaddingBottom] = useState(30);
-
-  if (!selectedOrganization) {
-    return null;
-  }
 
   const foodTypeKeys = Object.keys(
     foodTypeLabelObject
@@ -182,31 +181,51 @@ const StakeholderDetails = ({
     }
   );
 
-  const formatEmailPhone = (text: string) => {
-    const phoneRegEx =
-      /(\+?( |-|\.)?\d{1,2}( |-|\.)?)?(\(?\d{3}\)?|\d{3})( |-|\.)?(\d{3}( |-|\.)?\d{4})/g;
-    const emailRegEx = /\b[\w.-]+@[\w.-]+\.\w{2,4}\b/gi;
-    const phoneMatches = text.match(phoneRegEx);
-    const emailMatches = text.match(emailRegEx);
+  const formatEmailPhone = (text: string): ReactNode[] => {
+    if (!text) return [text];
+    const emailRegExSource = "\\b[\\w.-]+@[\\w.-]+\\.\\w{2,4}\\b";
+    const phoneRegExSource =
+      "(\\+?( |-|\\.)?\\d{1,2}( |-|\\.)?)?(\\(?\\d{3}\\)?|\\d{3})( |-|\\.)?(\\d{3}( |-|\\.)?\\d{4})";
+    const combinedRegex = new RegExp(
+      `(${emailRegExSource})|(${phoneRegExSource})`,
+      "gi"
+    );
+    const nodes: ReactNode[] = [];
+    let lastIndex = 0;
+    let match: RegExpExecArray | null;
+    let key = 0;
 
-    if (phoneMatches) {
-      phoneMatches.forEach((match) => {
-        text = text.replace(
-          match,
-          `<a key=${match} href="tel:${match}">${match}</a>`
-        );
-      });
-    }
-    if (emailMatches) {
-      emailMatches.forEach((match) => {
-        text = text.replace(
-          match,
-          `<a key=${match} href="mailto:${match}">${match}</a>`
-        );
-      });
+    while ((match = combinedRegex.exec(text)) !== null) {
+      const value = match[0];
+
+      if (!value) {
+        combinedRegex.lastIndex++;
+        continue;
+      }
+
+      if (match.index > lastIndex) {
+        nodes.push(text.slice(lastIndex, match.index));
+      }
+
+      const isEmail = match[1] !== undefined;
+
+      nodes.push(
+        <a
+          key={`${isEmail ? "email" : "phone"}-${key++}`}
+          href={`${isEmail ? "mailto:" : "tel:"}${value}`}
+        >
+          {value}
+        </a>
+      );
+
+      lastIndex = match.index + value.length;
     }
 
-    return text;
+    if (lastIndex < text.length) {
+      nodes.push(text.slice(lastIndex));
+    }
+
+    return nodes;
   };
 
   const shareLink = async () => {
@@ -635,22 +654,18 @@ const StakeholderDetails = ({
 
                 <MinorHeading>Notes</MinorHeading>
                 {selectedOrganization.notes ? (
-                  <DetailText
-                    dangerouslySetInnerHTML={{
-                      __html: formatEmailPhone(selectedOrganization.notes),
-                    }}
-                  ></DetailText>
+                  <DetailText>
+                    {formatEmailPhone(selectedOrganization.notes)}
+                  </DetailText>
                 ) : (
                   <DetailText>No notes to display.</DetailText>
                 )}
 
                 <MinorHeading>Closure Notes</MinorHeading>
                 {selectedOrganization.covidNotes ? (
-                  <DetailText
-                    dangerouslySetInnerHTML={{
-                      __html: formatEmailPhone(selectedOrganization.covidNotes),
-                    }}
-                  ></DetailText>
+                  <DetailText>
+                    {formatEmailPhone(selectedOrganization.covidNotes)}
+                  </DetailText>
                 ) : (
                   <DetailText>No notes to display.</DetailText>
                 )}
@@ -658,13 +673,9 @@ const StakeholderDetails = ({
                 {selectedOrganization.hoursNotes && (
                   <>
                     <MinorHeading>Hour Notes</MinorHeading>
-                    <DetailText
-                      dangerouslySetInnerHTML={{
-                        __html: formatEmailPhone(
-                          selectedOrganization.hoursNotes
-                        ),
-                      }}
-                    ></DetailText>
+                    <DetailText>
+                      {formatEmailPhone(selectedOrganization.hoursNotes)}
+                    </DetailText>
                   </>
                 )}
 
@@ -692,13 +703,9 @@ const StakeholderDetails = ({
 
                 <MinorHeading>Eligibility/Requirements</MinorHeading>
                 {selectedOrganization.requirements ? (
-                  <DetailText
-                    dangerouslySetInnerHTML={{
-                      __html: formatEmailPhone(
-                        selectedOrganization.requirements
-                      ),
-                    }}
-                  ></DetailText>
+                  <DetailText>
+                    {formatEmailPhone(selectedOrganization.requirements)}
+                  </DetailText>
                 ) : (
                   <DetailText>No special requirements</DetailText>
                 )}
@@ -742,6 +749,21 @@ const StakeholderDetails = ({
         </Grid>
       </Stack>
     </>
+  );
+};
+
+const StakeholderDetails = (props: StakeholderDetailsProps) => {
+  const selectedOrganization = useSelectedOrganization() as Stakeholder | null;
+
+  if (!selectedOrganization) {
+    return null;
+  }
+
+  return (
+    <StakeholderDetailsContent
+      {...props}
+      selectedOrganization={selectedOrganization}
+    />
   );
 };
 

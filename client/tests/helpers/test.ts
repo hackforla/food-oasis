@@ -1,6 +1,5 @@
-import { expect, test as playwrightTest } from "@playwright/test";
+import { test as playwrightTest } from "@playwright/test";
 import type { Page } from "@playwright/test";
-import mockRequests from "./mocks";
 
 declare global {
   interface Window {
@@ -22,9 +21,20 @@ export default playwrightTest.extend<{
   },
 });
 
+interface MockUser {
+  isAdmin: boolean;
+  isCoordinator: boolean;
+  isDataEntry: boolean;
+  isGlobalAdmin: boolean;
+  // Role string encoded on the JWT subject, e.g. "data_entry,coordinator".
+  sub: string;
+}
+
 function authTest(page: Page) {
   return {
-    mockLogin: async () => {
+    mockLogin: async (overrides: Partial<MockUser> = {}) => {
+      const { sub = "admin,data_entry,global_admin", ...userOverrides } =
+        overrides;
       const user = {
         id: 108,
         firstName: "Test",
@@ -33,6 +43,7 @@ function authTest(page: Page) {
         isAdmin: true,
         isCoordinator: false,
         isDataEntry: true,
+        ...userOverrides,
       };
 
       const header = Buffer.from(JSON.stringify({ alg: "none" })).toString(
@@ -42,7 +53,7 @@ function authTest(page: Page) {
         JSON.stringify({
           email: user.email,
           id: user.id,
-          sub: "admin,data_entry,global_admin",
+          sub,
         })
       ).toString("base64");
       const fakeJwt = `${header}.${payload}.`;

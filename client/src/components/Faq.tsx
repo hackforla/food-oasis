@@ -1,4 +1,3 @@
-import React from "react";
 import FaqLA from "./StaticPages/Faq";
 import FaqHI from "./StaticPagesHI/Faq";
 import FaqMCK from "./StaticPagesMCK/Faq";

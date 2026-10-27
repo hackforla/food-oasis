@@ -80,9 +80,8 @@ const linkFormatter = ({
   return <Link to={`/admin/organizationedit/${row.id}`}>{value}</Link>;
 };
 
-const inactiveFormatter =
-  (key: StakeholderBooleanField) =>
-  ({ row }: GridRenderCellParams<StakeholderRow>) => {
+const inactiveFormatter = (key: StakeholderBooleanField) => {
+  const InactiveCell = ({ row }: GridRenderCellParams<StakeholderRow>) => {
     return row[key] ? (
       <Box
         sx={(theme) => ({
@@ -96,10 +95,11 @@ const inactiveFormatter =
       ""
     );
   };
+  return InactiveCell;
+};
 
-const confirmationFormatter =
-  (key: StakeholderBooleanField) =>
-  ({ row }: GridRenderCellParams<StakeholderRow>) => {
+const confirmationFormatter = (key: StakeholderBooleanField) => {
+  const ConfirmationCell = ({ row }: GridRenderCellParams<StakeholderRow>) => {
     return row[key] ? (
       <Box
         sx={(theme) => ({
@@ -122,6 +122,8 @@ const confirmationFormatter =
       </Box>
     );
   };
+  return ConfirmationCell;
+};
 
 const verificationStatusFormatter = (_value: unknown, row: StakeholderRow) => {
   return verificationStatusNames[Number(row.verificationStatusId)];

@@ -3,7 +3,6 @@
 Food Oasis is a community-driven platform dedicated to ensuring everyone has access to food pantries and meal programs when they need them most. Operating across several regions, including Los Angeles County, The Hawaiian Islands, Santa Barbara County, and McKinney, TX. The web application bridges the gap between individuals and essential food assistance services, creating a supportive network within various communities.
 
 - [la.foodoasis.net](https://la.foodoasis.net/) or [foodoasis.la](https://foodoasis.la/) - Los Angeles County
-- [hi.foodoasis.net](https://hi.foodoasis.net/) - The Hawaiian Islands
 - [sb.foodoasis.net](https://sb.foodoasis.net/) - Santa Barbara County
 - [mck.foodoasis.net](https://mck.foodoasis.net/) - McKinney, TX
 

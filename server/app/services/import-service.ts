@@ -40,9 +40,8 @@ const parseCsv = async (file: any) => {
         hours: parseStakeholderHours(row),
       };
       rowArray.push(newRow);
-    } catch {
-      console.error("error");
-      return;
+    } catch (err) {
+      throw new Error("CSV row could not be parsed.", { cause: err });
     }
   }
 

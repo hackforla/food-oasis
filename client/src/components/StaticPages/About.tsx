@@ -108,7 +108,7 @@ const About = () => {
               maintaining an updated directory of hundreds of free food
               resources in the area such as food pantries and meal programs. Our
               volunteers frequently verify each listing for the most
-              comprehensive and up-to-date information. 
+              comprehensive and up-to-date information.
             </Typography>
           </Container>
         </Box>

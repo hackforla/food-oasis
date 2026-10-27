@@ -1,6 +1,7 @@
-import { CircularProgress, Grid, Stack } from "@mui/material";
+import { Box, CircularProgress, Grid, Stack } from "@mui/material";
 import Home from "components/FoodSeeker/Home";
 import Header from "components/Layout/Header";
+import SkipLink from "components/Layout/SkipLink";
 import WidgetFooter from "components/Layout/WidgetFooter";
 import { Suspense, lazy, type ReactNode } from "react";
 import {
@@ -64,6 +65,7 @@ const Features = lazy(() => import("components/Admin/Features"));
 const Profile = lazy(() => import("components/Account/Profile"));
 const Suggestion = lazy(() => import("components/FoodSeeker/Suggestion"));
 const Announcements = lazy(() => import("./components/Admin/Announcements"));
+const EmailTemplate = lazy(() => import("components/Admin/EmailTemplate"));
 
 interface PrivateRouteElementProps {
   roles: UserRoleKey[];
@@ -225,6 +227,14 @@ export default function AppRoutes() {
               }
             />
             <Route
+              path="emailtemplate"
+              element={
+                <PrivateRouteElement roles={["isAdmin", "isCoordinator"]}>
+                  <EmailTemplate />
+                </PrivateRouteElement>
+              }
+            />
+            <Route
               path="securityadmindashboard"
               element={
                 <PrivateRouteElement
@@ -277,8 +287,22 @@ function AppWrapper() {
       <ScrollToTop />
       {isAlertLocation && <AnnouncementSnackbar />}
 
+      {isWidget ? null : <SkipLink />}
       {isWidget ? null : <Header />}
-      <Outlet />
+      <Box
+        component="main"
+        id="main-content"
+        tabIndex={-1}
+        sx={{
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          minHeight: 0,
+          outline: "none",
+        }}
+      >
+        <Outlet />
+      </Box>
       <Toast />
     </Grid>
   );

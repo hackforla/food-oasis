@@ -20,7 +20,7 @@ const SurveySnackbar = () => {
       return false;
     }
 
-    let lastClosed = localStorage.getItem("surveySnackbarClosedTimeStamp");
+    const lastClosed = localStorage.getItem("surveySnackbarClosedTimeStamp");
     if (!lastClosed || isNaN(Number(lastClosed))) {
       return true;
     }

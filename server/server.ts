@@ -8,6 +8,7 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import path from "path";
 import middleware from "./middleware/middleware";
+import securityHeaders from "./middleware/security-headers";
 import router from "./app/routes/index";
 
 import { Express } from "express";
@@ -22,6 +23,8 @@ app.set("trust proxy", 1);
 
 // Enable compression
 app.use(compression());
+
+app.use(securityHeaders);
 
 // Redirect HTTP requests to HTTPS
 if (process.env.NODE_ENV === "production") {

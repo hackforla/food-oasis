@@ -32,6 +32,9 @@ const ConfirmEmail = () => {
       if (result.isSuccess) {
         setView("success");
         setToast({ message: `Your email has been confirmed. Please log in.` });
+      } else if (result.code === "RATE_LIMITED") {
+        setToast({ message: result.message });
+        setView("rateLimited");
       } else {
         setView("error");
       }
@@ -46,7 +49,9 @@ const ConfirmEmail = () => {
     if (result.isSuccess) {
       setView("emailSent");
     } else {
-      setView("error");
+      setView(
+        result.code === "RATE_LIMITED" ? "resendRateLimited" : "error"
+      );
       setToast({ message: result.message });
     }
   };
@@ -74,6 +79,26 @@ const ConfirmEmail = () => {
           <p>
             {`A confirmation email has been sent to ${values.email}. Please find this email and click on the link provided to complete your email confirmation.`}
           </p>
+        );
+      case "rateLimited":
+        return (
+          <PageWrapper>
+            <Typography component="p">
+              Too many requests right now, so we couldn&apos;t confirm your
+              email. Your confirmation link may still be valid. Please wait a
+              while and refresh this page to try again.
+            </Typography>
+          </PageWrapper>
+        );
+      case "resendRateLimited":
+        return (
+          <PageWrapper>
+            <Typography component="p">
+              Too many requests right now, so we couldn&apos;t send a new
+              confirmation email. Please wait a while and refresh this page to
+              try again.
+            </Typography>
+          </PageWrapper>
         );
       default:
       case "error":

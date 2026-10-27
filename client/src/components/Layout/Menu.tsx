@@ -91,6 +91,11 @@ export default function Menu(): React.ReactElement {
                   to="/admin/verificationadmin"
                   text="Verification Admin"
                 />
+                <MenuItemLink
+                  key="emailtemplate"
+                  to="/admin/emailtemplate"
+                  text="Verification Email Template"
+                />
                 <Divider />
               </>
             )}

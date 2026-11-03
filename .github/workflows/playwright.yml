@@ -29,11 +29,13 @@ jobs:
     - name: Run Playwright tests
       working-directory: ./client
       run: |
+        nproc && free -h
         npm run start &
         start=$(date +%s)
         npx wait-on http://localhost:3000
         echo "Dev server ready after $(( $(date +%s) - start ))s" | tee -a "$GITHUB_STEP_SUMMARY"
         npx playwright test
+        free -h
 
     - name: Summarize Playwright timings
       if: ${{ !cancelled() }}

@@ -29,10 +29,22 @@ jobs:
     - name: Run Playwright tests
       working-directory: ./client
       run: |
-        npm run start & 
+        npm run start &
+        start=$(date +%s)
         npx wait-on http://localhost:3000
+        echo "Dev server ready after $(( $(date +%s) - start ))s" | tee -a "$GITHUB_STEP_SUMMARY"
         npx playwright test
-      
+
+    - name: Summarize Playwright timings
+      if: ${{ !cancelled() }}
+      working-directory: ./client
+      run: |
+        if [ -f playwright-report/results.json ]; then
+          node scripts/playwright-timing-summary.mjs playwright-report/results.json >> "$GITHUB_STEP_SUMMARY"
+        else
+          echo "No Playwright JSON report found." >> "$GITHUB_STEP_SUMMARY"
+        fi
+
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:

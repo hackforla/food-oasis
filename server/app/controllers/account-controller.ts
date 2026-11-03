@@ -226,6 +226,7 @@ const login: RequestHandler<
     const resp = await accountService.authenticate(email, password, tenantId);
     if (resp.isSuccess) {
       req.user = resp.user;
+      res.locals.loginSucceeded = true;
       loginsService.insert(req.user.id, tenantId);
       next();
     } else {

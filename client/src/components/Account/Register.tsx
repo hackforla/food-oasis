@@ -57,6 +57,10 @@ export default function Register() {
               Please login or use the Forgot Password feature if you have
               forgotten your password.`,
           });
+        } else if (result.code === "RATE_LIMITED") {
+          setToast({
+            message: result.message,
+          });
         } else {
           setToast({
             message: `An error occurred in sending the

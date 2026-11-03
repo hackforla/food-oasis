@@ -93,83 +93,83 @@ const About = () => {
               }}
             >
               <Typography variant="subtitle1" component="dt">
-                {" "}
                 How do I use this directory?
               </Typography>
-              <Box
-                sx={{
-                  paddingLeft: "26px",
-                  margin: "5px",
-                  lineHeight: "26.55px",
-                }}
-                component="ul"
-              >
-                <Typography variant="body1" component="li">
-                  From the “Find Food” page, type in your zip code or address
-                  and click “Enter.”
-                </Typography>
-                <Typography variant="body1" component="li">
-                  A list of nearby options, sorted from nearest to farthest,
-                  will pop up on the left side of the screen.
-                </Typography>
-                <Typography variant="body1" component="li">
-                  Choose “PANTRIES” or “MEALS” if you would like to filter by
-                  type of food resource.
-                </Typography>
-                <Typography variant="body1" component="li">
-                  The “Details” button on an entry provides information like
-                  Directions, Hours of Operation and Contact Information for the
-                  service.
-                </Typography>
+              <Box component="dd">
+                <Box
+                  sx={{
+                    paddingLeft: "26px",
+                    margin: "5px",
+                    lineHeight: "26.55px",
+                  }}
+                  component="ul"
+                >
+                  <Typography variant="body1" component="li">
+                    From the “Find Food” page, type in your zip code or address
+                    and click “Enter.”
+                  </Typography>
+                  <Typography variant="body1" component="li">
+                    A list of nearby options, sorted from nearest to farthest,
+                    will pop up on the left side of the screen.
+                  </Typography>
+                  <Typography variant="body1" component="li">
+                    Choose “PANTRIES” or “MEALS” if you would like to filter by
+                    type of food resource.
+                  </Typography>
+                  <Typography variant="body1" component="li">
+                    The “Details” button on an entry provides information like
+                    Directions, Hours of Operation and Contact Information for
+                    the service.
+                  </Typography>
+                </Box>
               </Box>
-              <br />
               <Typography variant="subtitle1" component="dt">
                 Does this web-based directory include every resource where I can
                 get free food in Los Angeles County?
               </Typography>
-              <Box
-                sx={{
-                  paddingLeft: "26px",
-                  margin: "5px",
-                  lineHeight: "26.55px",
-                }}
-                component="ul"
-              >
-                <Typography variant="body1" component="li">
-                  No. While our directory is not an exhaustive list of every
-                  food resource open to the public in Los Angeles, our
-                  volunteers work hard to ensure the information listed is
-                  updated. To suggest a listing missing from our directory,{" "}
-                  <Link
-                    to={"/suggestion"}
-                    component={RouterLink}
-                  >
-                    use this link
-                  </Link>
-                  .
-                </Typography>
+              <Box component="dd">
+                <Box
+                  sx={{
+                    paddingLeft: "26px",
+                    margin: "5px",
+                    lineHeight: "26.55px",
+                  }}
+                  component="ul"
+                >
+                  <Typography variant="body1" component="li">
+                    No. While our directory is not an exhaustive list of every
+                    food resource open to the public in Los Angeles, our
+                    volunteers work hard to ensure the information listed is
+                    updated. To suggest a listing missing from our directory,{" "}
+                    <Link to={"/suggestion"} component={RouterLink}>
+                      use this link
+                    </Link>
+                    .
+                  </Typography>
+                </Box>
               </Box>
-              <br />
               <Typography variant="subtitle1" component="dt">
                 What is the difference between a food bank, food pantry and meal
                 program?
               </Typography>
-              <Box
-                sx={{
-                  paddingLeft: "26px",
-                  margin: "5px",
-                  lineHeight: "26.55px",
-                }}
-                component="ul"
-              >
-                <Typography variant="body1" component="li">
-                  Generally, food banks collect donated food and distribute
-                  items to food pantries. Food pantries provide free groceries
-                  to food seekers. Meal programs provide free cooked meals to
-                  food seekers. Many locations provide multiple services. Our
-                  updated directory indicates which services are available at
-                  each location.
-                </Typography>
+              <Box component="dd">
+                <Box
+                  sx={{
+                    paddingLeft: "26px",
+                    margin: "5px",
+                    lineHeight: "26.55px",
+                  }}
+                  component="ul"
+                >
+                  <Typography variant="body1" component="li">
+                    Generally, food banks collect donated food and distribute
+                    items to food pantries. Food pantries provide free groceries
+                    to food seekers. Meal programs provide free cooked meals to
+                    food seekers. Many locations provide multiple services. Our
+                    updated directory indicates which services are available at
+                    each location.
+                  </Typography>
+                </Box>
               </Box>
             </Box>
           </Container>
@@ -207,16 +207,13 @@ const About = () => {
             Food Providers
           </Typography>
           <Container maxWidth="sm">
-            <Box component="dl" sx={{textAlign: "center"}}>
+            <Box component="dl" sx={{ textAlign: "center" }}>
               <Typography variant="subtitle1" component="dt">
                 How can I add our food resource to your directory?
               </Typography>
               <Typography component="dd">
                 Please visit our “
-                <Link
-                  to={"/suggestion"}
-                  component={RouterLink}
-                >
+                <Link to={"/suggestion"} component={RouterLink}>
                   Suggest New Listing
                 </Link>
                 ” page.

@@ -65,6 +65,7 @@ const Features = lazy(() => import("components/Admin/Features"));
 const Profile = lazy(() => import("components/Account/Profile"));
 const Suggestion = lazy(() => import("components/FoodSeeker/Suggestion"));
 const Announcements = lazy(() => import("./components/Admin/Announcements"));
+const EmailTemplate = lazy(() => import("components/Admin/EmailTemplate"));
 
 interface PrivateRouteElementProps {
   roles: UserRoleKey[];
@@ -222,6 +223,14 @@ export default function AppRoutes() {
               element={
                 <PrivateRouteElement roles={["isAdmin"]}>
                   <Announcements />
+                </PrivateRouteElement>
+              }
+            />
+            <Route
+              path="emailtemplate"
+              element={
+                <PrivateRouteElement roles={["isAdmin", "isCoordinator"]}>
+                  <EmailTemplate />
                 </PrivateRouteElement>
               }
             />

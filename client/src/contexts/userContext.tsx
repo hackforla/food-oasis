@@ -10,7 +10,6 @@ import { logout } from "../services/account-service";
 import * as analytics from "../services/analytics";
 import { useToasterContext } from "./toasterContext";
 import { User } from "../types/User";
-import { getCookie } from "helpers";
 
 interface UserProviderProps {
   children: React.ReactNode;
@@ -19,7 +18,7 @@ interface UserProviderProps {
 interface UserContextProps {
   user: User | null | undefined;
   isLoggedIn: boolean;
-  onLogin: (user: User) => Promise<void>;
+  onLogin: (user: User, token?: string) => Promise<User>;
   onLogout: (user: User) => Promise<void>;
   onUpdate: (user: User) => Promise<void>;
 }
@@ -27,32 +26,49 @@ interface UserContextProps {
 const initialState: UserContextProps = {
   user: undefined,
   isLoggedIn: false,
-  onLogin: async () => {},
+  onLogin: async (user) => user,
   onLogout: async () => {},
   onUpdate: async () => {},
 };
 
 export const UserContext = createContext<UserContextProps>(initialState);
+
 export interface JWTPayload {
   email: string;
   id: number;
   sub: string;
+  exp?: number; // seconds since epoch
 }
+
+const SESSION_MS = 24 * 60 * 60 * 1000; // keep in sync with the cookie lifetime on the server
+
+const decodeJWTPayload = (jwt: string): JWTPayload => {
+  // JWT payloads are base64url, atob expects standard base64
+  const base64 = jwt.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
+  return JSON.parse(atob(base64));
+};
 
 const updateUserFromJWT = (user: User, jwt: string | undefined): User => {
   if (!jwt) return user;
 
-  const payload: JWTPayload = JSON.parse(atob(jwt.split(".")[1]));
-  user.email = payload.email;
-  user.id = payload.id;
-  const roles = new Set(payload.sub.split(","));
-  user.isAdmin = roles.has("admin");
-  user.isSecurityAdmin = roles.has("security_admin");
-  user.isCoordinator = roles.has("coordinator");
-  user.isDataEntry = roles.has("data_entry");
-  user.isGlobalAdmin = roles.has("global_admin");
-  user.isGlobalReporting = roles.has("global_reporting");
-  return user;
+  const payload = decodeJWTPayload(jwt);
+  const roles = new Set((payload.sub || "").split(","));
+  return {
+    ...user,
+    email: payload.email,
+    id: payload.id,
+    isAdmin: roles.has("admin"),
+    isSecurityAdmin: roles.has("security_admin"),
+    isCoordinator: roles.has("coordinator"),
+    isDataEntry: roles.has("data_entry"),
+    isGlobalAdmin: roles.has("global_admin"),
+    isGlobalReporting: roles.has("global_reporting"),
+  };
+};
+
+const clearStoredUser = () => {
+  localStorage.removeItem("user");
+  localStorage.removeItem("userExpiresAt");
 };
 
 export const UserProvider = ({ children }: UserProviderProps) => {
@@ -61,64 +77,71 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const jwt = getCookie("jwt");
-
     const storedJson = localStorage.getItem("user");
-    if (!jwt || !storedJson) {
+    const expiresAt = Number(localStorage.getItem("userExpiresAt"));
+
+    if (!storedJson || !expiresAt || Date.now() >= expiresAt) {
+      clearStoredUser();
       setIsLoggedIn(false);
       setUser(null);
       return;
     }
-    if (storedJson && jwt) {
-      let updatedUser = JSON.parse(storedJson);
-      updatedUser = updateUserFromJWT(updatedUser, jwt);
-      if (updatedUser) {
-        analytics.identify(updatedUser.id);
-      }
-      setUser(updatedUser);
+    try {
+      const storedUser: User = JSON.parse(storedJson);
+      analytics.identify(storedUser.id);
+      setUser(storedUser);
       setIsLoggedIn(true);
+    } catch {
+      clearStoredUser();
+      setIsLoggedIn(false);
+      setUser(null);
     }
   }, []);
 
-  const onLogin = useCallback(async (user: User) => {
-    localStorage.setItem("user", JSON.stringify(user));
-    const jwt = getCookie("jwt");
-    if (jwt) {
-      user = updateUserFromJWT(user, jwt);
-      if (user) {
-        analytics.identify(user.id);
-      }
-    }
+  const onLogin = useCallback(async (user: User, token?: string): Promise<User> => {
+    const enriched = updateUserFromJWT(user, token);
+    const exp = token ? decodeJWTPayload(token).exp : undefined;
+    const expiresAt = exp ? exp * 1000 : Date.now() + SESSION_MS;
 
-    setUser(user);
+    // store enriched claims + expiry only, never the raw token
+    localStorage.setItem("user", JSON.stringify(enriched));
+    localStorage.setItem("userExpiresAt", String(expiresAt));
+    analytics.identify(enriched.id);
+    setUser(enriched);
     setIsLoggedIn(true);
+    return enriched;
   }, []);
 
-  const onUpdate = useCallback(async (updateUser: User) => {
-    localStorage.setItem("user", JSON.stringify(updateUser));
-    const jwt = getCookie("jwt");
-    if (jwt) {
-      updateUser = updateUserFromJWT(updateUser, jwt);
-    }
-    setUser(updateUser);
-  }, []);
+  const onUpdate = useCallback(
+    async (updateUser: User) => {
+      // role/identity fields come from the logged-in session, the rest from the update
+      if (!user) {
+        console.error("No user.");
+        return;
+      }
+
+      const merged: User = {
+        ...updateUser,
+        id: user?.id ?? updateUser.id,
+        isAdmin: user?.isAdmin,
+        isSecurityAdmin: user?.isSecurityAdmin,
+        isCoordinator: user?.isCoordinator,
+        isDataEntry: user?.isDataEntry,
+        isGlobalAdmin: user?.isGlobalAdmin,
+        isGlobalReporting: user?.isGlobalReporting,
+      };
+      localStorage.setItem("user", JSON.stringify(merged));
+      setUser(merged);
+    },
+    [user]
+  );
 
   const onLogout = useCallback(async () => {
-    localStorage.removeItem("user");
-    await logout();
+    clearStoredUser();
+    await logout(); // server expires the httpOnly cookie
     setIsLoggedIn(false);
     setUser(null);
-
-    // This isn't a perfect logout solution, since it just destroys the
-    // cookie with the JWT on this browser. However, if malicious code
-    // has stolen the token, it is still valid until expiration.
-
-    // "Delete" the cookie by replacing with  the same name that is
-    // expired.
-    document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
-    setToast({
-      message: "Logged out successfully.",
-    });
+    setToast({ message: "Logged out successfully." });
   }, [setToast]);
 
   const value = useMemo(() => {

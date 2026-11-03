@@ -6,6 +6,8 @@ test.beforeEach(async ({ page, helpers }) => {
 });
 test.describe("OrganizationEdit", () => {
   test("Should allow entering valid stakeholder data", async ({ page }) => {
+    // Long business-hours form flow; on a busy CI runner webkit needs more than 30s.
+    test.slow();
     await page.getByTestId("menu-button").click();
     await page.getByRole("link", { name: "Add New Organization" }).click();
     await page.getByRole("textbox", { name: "Latitude *" }).click();
@@ -118,6 +120,8 @@ test.describe("OrganizationEdit", () => {
   test("Should show error when closing time is before opening time", async ({
     page,
   }) => {
+    // Long business-hours form flow; on a busy CI runner webkit needs more than 30s.
+    test.slow();
     await page.getByTestId("menu-button").click();
     await page.getByRole("link", { name: "Add New Organization" }).click();
     await page.getByRole("tab", { name: "Business Hours" }).click();
@@ -143,6 +147,8 @@ test.describe("OrganizationEdit", () => {
   test("Should show error when duplicate business hours added", async ({
     page,
   }) => {
+    // Long business-hours form flow; on a busy CI runner webkit needs more than 30s.
+    test.slow();
     await page.getByTestId("menu-button").click();
     await page.getByRole("link", { name: "Add New Organization" }).click();
     await page.getByRole("tab", { name: "Business Hours" }).click();

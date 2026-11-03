@@ -29,10 +29,27 @@ jobs:
     - name: Run Playwright tests
       working-directory: ./client
       run: |
-        npm run start & 
+        nproc && free -h
+        # Test against a production build: the Vite dev server serves every
+        # module from one process, which slows tests down when they run in parallel.
+        start=$(date +%s)
+        npx vite build
+        npx vite preview --port 3000 --strictPort &
         npx wait-on http://localhost:3000
+        echo "Build + preview server ready after $(( $(date +%s) - start ))s" | tee -a "$GITHUB_STEP_SUMMARY"
         npx playwright test
-      
+        free -h
+
+    - name: Summarize Playwright timings
+      if: ${{ !cancelled() }}
+      working-directory: ./client
+      run: |
+        if [ -f playwright-report/results.json ]; then
+          node scripts/playwright-timing-summary.mjs playwright-report/results.json >> "$GITHUB_STEP_SUMMARY"
+        else
+          echo "No Playwright JSON report found." >> "$GITHUB_STEP_SUMMARY"
+        fi
+
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:

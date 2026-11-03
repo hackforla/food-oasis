@@ -148,8 +148,10 @@ lockfile is actually installed.
 ## 5. CI/CD (what's actually enforced)
 
 - [.github/workflows/playwright.yml](.github/workflows/playwright.yml) is the
-  **only** test workflow: runs client Playwright E2E tests against a locally
-  started Vite dev server, on push/PR to `main`/`master`/`develop`.
+  **only** test workflow: runs client Playwright E2E tests in parallel against a
+  production build served by `vite preview`, on push/PR to `main`/`master`/`develop`.
+  Tests block Mapbox map tiles and analytics, and stub Mapbox geocoding, in
+  `client/tests/helpers/test.ts`.
 - There is **no CI step** that runs server Jest tests, client Jest tests, either
   workspace's lint, or `tsc --noEmit`. Root `package.json` declares a Husky
   `pre-commit` hook (`lerna run lint`) via the legacy `"husky": { "hooks": {...} }`

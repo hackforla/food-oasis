@@ -99,7 +99,9 @@ const lines = (value: unknown): string[] =>
     .map((l) => l.trim())
     .filter(Boolean);
 
-const yesNo = (v: unknown) => (v ? "Yes" : "No");
+// The food_* columns are NOT NULL DEFAULT false, so false means "No" or "never
+// filled in" and cannot be told apart. Only a checked box is real data.
+const yesOrNoData = (v: unknown) => (v ? "Yes" : "[no data]");
 
 // The organization's email on file is always the recipient.
 export const getRecipient = (org: OrganizationFormValues): string =>
@@ -144,12 +146,12 @@ const buildSections = ({
     {
       label: "Items Available",
       lines: [
-        `Baked Goods: ${yesNo(org.foodBakery)}`,
-        `Dry Goods: ${yesNo(org.foodDryGoods)}`,
-        `Produce: ${yesNo(org.foodProduce)}`,
-        `Dairy: ${yesNo(org.foodDairy)}`,
-        `Prepared Food: ${yesNo(org.foodPrepared)}`,
-        `Meat: ${yesNo(org.foodMeat)}`,
+        `Baked Goods: ${yesOrNoData(org.foodBakery)}`,
+        `Dry Goods: ${yesOrNoData(org.foodDryGoods)}`,
+        `Produce: ${yesOrNoData(org.foodProduce)}`,
+        `Dairy: ${yesOrNoData(org.foodDairy)}`,
+        `Prepared Food: ${yesOrNoData(org.foodPrepared)}`,
+        `Meat: ${yesOrNoData(org.foodMeat)}`,
         ...lines(org.items),
         ...lines(org.foodTypes),
       ],

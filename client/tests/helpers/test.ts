@@ -17,9 +17,38 @@ export default playwrightTest.extend<{
     await page.addInitScript(() => {
       window.__IS_TEST__ = true;
     });
+    // Block third-party map tiles and analytics. They add network traffic and
+    // CPU-heavy WebGL rendering on CI without being part of what we test.
+    for (const host of BLOCKED_HOSTS) {
+      await page.route(`https://${host}/**`, (route) => route.abort());
+    }
+    // The address search does use Mapbox geocoding, so answer it with a fixed
+    // result instead. Added last, so it takes priority over the block above.
+    await page.route("https://api.mapbox.com/geocoding/v5/**", (route) =>
+      route.fulfill({ json: GEOCODE_RESPONSE })
+    );
     await use(page);
   },
 });
+
+const BLOCKED_HOSTS = [
+  "*.mapbox.com",
+  "www.googletagmanager.com",
+  "*.google-analytics.com",
+  "analytics.google.com",
+  "stats.g.doubleclick.net",
+];
+
+const GEOCODE_RESPONSE = {
+  type: "FeatureCollection",
+  features: [
+    {
+      id: "postcode.90001",
+      place_name: "Los Angeles, California 90001, United States",
+      center: [-118.2479, 33.9731],
+    },
+  ],
+};
 
 interface MockUser {
   isAdmin: boolean;

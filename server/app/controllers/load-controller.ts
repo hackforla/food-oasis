@@ -26,7 +26,7 @@ const getOpenLA: RequestHandler<
     if (req.query.format === "json" || req.accepts("json")) {
       res.send(rows);
     } else {
-      const csv = await json2csv(rows);
+      const csv = await json2csv(rows, { preventCsvInjection: true });
       res.setHeader("Content-Type", "text/csv");
       res.setHeader(
         "Content-Disposition",
@@ -56,7 +56,7 @@ const getLARFB: RequestHandler<
     if (req.query.format === "json" || req.accepts("json")) {
       res.send(resp);
     } else {
-      const csv = await json2csv(resp);
+      const csv = await json2csv(resp, { preventCsvInjection: true });
       res.setHeader("Content-Type", "text/csv");
       res.setHeader(
         "Content-Disposition",

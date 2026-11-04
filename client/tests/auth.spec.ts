@@ -83,6 +83,88 @@ test.describe("Auth", () => {
     });
   });
 
+  test.describe("Rate limiting", () => {
+    const rateLimited = (message: string) => (route: any) =>
+      route.fulfill({
+        status: 429,
+        contentType: "application/json",
+        body: JSON.stringify({
+          isSuccess: false,
+          code: "RATE_LIMITED",
+          message,
+        }),
+      });
+
+    test("Login shows the rate limit message", async ({ page }) => {
+      await mockRequests(page);
+      await page.route(
+        "**/api/accounts/login",
+        rateLimited("Too many attempts. Please try again later.")
+      );
+      await page.goto("/admin/login");
+      await page.getByPlaceholder("Email").fill("testuser@email.com");
+      await page.getByPlaceholder("Password").fill("Password123!");
+      await page.getByRole("button", { name: "Sign In" }).click();
+      await expect(
+        page.getByText("Too many attempts. Please try again later.")
+      ).toBeVisible();
+    });
+
+    test("Confirm email does not claim the link expired", async ({ page }) => {
+      await mockRequests(page);
+      await page.route(
+        "**/api/accounts/confirmRegister",
+        rateLimited("Too many requests. Please try again later.")
+      );
+      await page.goto("/admin/confirm/token123");
+      await expect(page.getByText(/link may still be valid/i)).toBeVisible();
+      await expect(page.getByText(/not found, or has expired/i)).toHaveCount(0);
+      await expect(
+        page.getByRole("button", { name: "Re-send confirmation email" })
+      ).toHaveCount(0);
+    });
+
+    test("Resend confirmation email shows a rate limit message", async ({
+      page,
+    }) => {
+      await mockRequests(page, {
+        "accounts/confirmRegister": {
+          code: "REG_CONFIRM_TOKEN_INVALID",
+          isSuccess: false,
+          message: "Invalid security token.",
+        },
+      });
+      await page.route(
+        "**/api/accounts/resendConfirmationEmail",
+        rateLimited("Too many requests. Please try again later.")
+      );
+      await page.goto("/admin/confirm/token123");
+      await page.getByPlaceholder("Enter the email for your account").fill(
+        "test@email.com"
+      );
+      await page.getByText("RE-SEND CONFIRMATION EMAIL").click();
+      await expect(
+        page.getByText(/couldn.t send a new confirmation email/i)
+      ).toBeVisible();
+      await expect(page.getByText(/link may still be valid/i)).toHaveCount(0);
+    });
+
+    test("Contact form shows the rate limit message", async ({ page }) => {
+      await mockRequests(page);
+      await page.route(
+        "**/api/emails/contact",
+        rateLimited("Too many requests. Please try again later.")
+      );
+      await page.goto("/contact");
+      await page.getByPlaceholder("Your Name *").fill("Test User");
+      await page.getByPlaceholder("Your Message *").fill("Hello there");
+      await page.getByRole("button", { name: "Submit" }).click();
+      await expect(
+        page.getByText("Too many requests. Please try again later.")
+      ).toBeVisible();
+    });
+  });
+
   test.describe("Login", () => {
     test("Should be able to login successfully", async ({ helpers }) => {
       await helpers.mockLogin();

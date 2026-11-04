@@ -6,6 +6,7 @@ import { v4 as uuid4 } from "uuid";
 import {
   Account,
   AccountResponse,
+  PublicAccount,
   RegisterFields,
   Role,
   User,
@@ -77,6 +78,25 @@ const selectByEmail = async (
     ...row,
     features: row.features.split(", ").filter(Boolean) || [],
   });
+};
+
+// Public-safe lookup used by the unauthenticated GET /:email endpoint. Strips
+// the bcrypt password hash and all privilege/role flags at the service layer so
+// they can never leak to a client, regardless of the caller. Internal callers
+// that need the hash (e.g. authenticate) must use selectByEmail directly.
+const selectByEmailPublic = async (
+  email: string,
+  tenantId: string
+): Promise<PublicAccount> => {
+  const account = await selectByEmail(email, tenantId);
+  return {
+    id: account.id,
+    firstName: account.firstName,
+    lastName: account.lastName,
+    email: account.email,
+    emailConfirmed: account.emailConfirmed,
+    dateCreated: account.dateCreated,
+  };
 };
 
 const register = async (body: RegisterFields): Promise<AccountResponse> => {
@@ -212,37 +232,46 @@ const forgotPassword = async (model: {
   clientUrl: string;
 }): Promise<AccountResponse> => {
   const { email, clientUrl } = model;
-  let result: AccountResponse;
+  // Always return the same generic, successful response whether or not the
+  // email is registered. Previously an unregistered email returned a distinct
+  // FORGOT_PASSWORD_ACCOUNT_NOT_FOUND code, which let an anonymous caller probe
+  // which emails have accounts (account enumeration). Only actually generate a
+  // reset token and send the email when a matching account exists.
+  const genericResponse: AccountResponse = {
+    isSuccess: true,
+    code: "FORGOT_PASSWORD_SUCCESS",
+    message:
+      "If an account exists for that email, a password reset link has been sent.",
+  };
   try {
     const sql = `select id from  login where email ilike $<email>`;
     const row = await db.oneOrNone(sql, { email });
     if (row) {
-      result = {
-        isSuccess: true,
-        code: "FORGOT_PASSWORD_SUCCESS",
-        newId: row.id,
-        message: "Account found.",
-      };
-    } else {
-      return {
-        isSuccess: false,
-        code: "FORGOT_PASSWORD_ACCOUNT_NOT_FOUND",
-        message: `Email ${email} is not registered. `,
-      };
+      // Fire-and-forget: do NOT await the token insert + email send. Awaiting it
+      // would make the registered-account path measurably slower to respond than
+      // the unregistered path (which returns right after the SELECT), and that
+      // response-timing difference is itself an account-enumeration oracle -- the
+      // same leak this change closes for the response body. Any failure is only
+      // reachable for a registered address, so it is logged server-side rather
+      // than surfaced, keeping the outcome indistinguishable from an
+      // unregistered email.
+      void requestResetPasswordConfirmation(email, genericResponse, clientUrl)
+        .then((emailResult) => {
+          if (emailResult.isSuccess !== true) {
+            console.error(
+              `forgotPassword: failed to send reset email to a registered address. ${emailResult.message}`
+            );
+          }
+        })
+        .catch((err: any) => {
+          console.error(
+            `forgotPassword: unexpected error sending reset email to a registered address. ${
+              err?.message || err
+            }`
+          );
+        });
     }
-    // Replace the success result if there is a prob
-    // sending email.
-    result = await requestResetPasswordConfirmation(email, result, clientUrl);
-    if (result.isSuccess === true) {
-      return {
-        isSuccess: true,
-        code: "FORGOT_PASSWORD_SUCCESS",
-        newId: row.id,
-        message: "Account found.",
-      };
-    } else {
-      return result;
-    }
+    return genericResponse;
   } catch (err: any) {
     return Promise.reject(`Unexpected Error: ${err.message}`);
   }
@@ -567,6 +596,7 @@ export default {
   resetPassword,
   selectAll,
   selectByEmail,
+  selectByEmailPublic,
   selectById,
   setGlobalPermissions,
   setTenantPermissions,

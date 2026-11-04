@@ -2,7 +2,17 @@ import { CookieOptions, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { Role } from "../types/account-types";
 
-const jwtSecret = process.env.JWT_SECRET || "mark it zero";
+function getJwtSecret(): string {
+  const secret = process.env.JWT_SECRET;
+
+  if (!secret) {
+    throw new Error("JWT_SECRET environment variable is required");
+  }
+
+  return secret;
+}
+
+const jwtSecret = getJwtSecret();
 const jwtOpts: jwt.SignOptions = { algorithm: "HS256", expiresIn: "1d" };
 
 interface JwtPayload {
@@ -88,10 +98,10 @@ function validateUserHasRequiredRoles(permittedRoles: Role[]) {
       const payload = await verify(jwtString);
 
       // check that JWT subject is encoded with at least one of the requiredRoles
-      const isJWTRoleInAllowedRoles = permittedRoles.some((permittedRole) => {
-        const regex = new RegExp(permittedRole);
-        return regex.test(payload.sub);
-      });
+      const jwtRoles = (payload.sub || "").split(",").filter(Boolean);
+      const isJWTRoleInAllowedRoles = permittedRoles.some((r) =>
+        jwtRoles.includes(r)
+      );
       if (!isJWTRoleInAllowedRoles) {
         throw Error("Authentication error: insufficient permissions");
       }

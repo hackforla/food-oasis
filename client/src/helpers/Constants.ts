@@ -1,0 +1,228 @@
+import hackForLaLogoUrl from "images/hackforla.svg";
+import foodOasisLogoUrl from "images/foodoasis.svg";
+import alohaHarvestLogoUrl from "components/StaticPagesHI/assets/aloha-harvest-bg-none.png";
+import codeForHawaiiLogoUrl from "components/StaticPagesHI/assets/cfh-logo-black-crop.png";
+
+type TenantId = number;
+
+interface Viewport {
+  center: {
+    latitude: number;
+    longitude: number;
+  };
+  zoom: number;
+  bbox: string;
+}
+
+interface Maintainer {
+  name: string;
+  website: string;
+  path: string;
+}
+
+interface TenantConfig {
+  tenantName: string;
+  taglineText: string;
+  defaultViewport: Viewport;
+  maintainers: Maintainer[];
+  urlContains: string[];
+}
+
+function requiredEnvVar(name: string): string {
+  const env = import.meta.env as Record<string, string | undefined>;
+  const value = env[name];
+  if (!value) {
+    throw new Error(`Required environment variable "${name}" not found`);
+  }
+  return value;
+}
+
+function optionalEnvVar(name: string): string | null {
+  const env = import.meta.env as Record<string, string | undefined>;
+  const value = env[name];
+  if (!value) {
+    return null;
+  }
+  return value;
+}
+
+// Begin application constants
+
+export const MENU_ITEMS: { text: string; link: string }[] = [
+  { text: "Find Food", link: "/organizations" },
+  { text: "About Us", link: "/about" },
+  { text: "Donate", link: "/donate" },
+  { text: "FAQs", link: "/faqs" },
+  { text: "Contact Us", link: "/contact" },
+  { text: "Suggest New Listing", link: "/suggestion" },
+];
+
+export const PASSWORD_VALIDATION_REGEX =
+  /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/;
+
+export const PASSWORD_VALIDATION_ERROR =
+  "Password must contain at least 8 characters, one uppercase, one number and one special character.";
+
+export const MAPBOX_ACCESS_TOKEN = requiredEnvVar("VITE_MAPBOX_ACCESS_TOKEN");
+
+// End Application Constants
+
+// Begin Tenant-Specific Constants
+
+const TENANT_SUBDOMAINS: Record<number, string[]> = {
+  1: ["la."],
+  3: ["hi.", "hawaii"],
+  5: ["mck.", "mckinney."],
+  6: ["sb."],
+};
+
+function getTenantId(): TenantId {
+  if (process.env.NODE_ENV === "development") {
+    return (Number(optionalEnvVar("VITE_TENANT_ID")) || 1) as TenantId;
+  }
+  const tenant = Object.entries(TENANT_SUBDOMAINS).find(([id, values]) => {
+    return values.some((value) =>
+      window.location.hostname.toLowerCase().includes(value)
+    );
+  });
+
+  return (tenant ? Number(tenant[0]) : 1) as TenantId;
+}
+
+export const TENANT_ID = getTenantId();
+
+const TENANT_NAMES: Record<number, string> = {
+  1: "Los Angeles",
+  3: "Hawaii",
+  5: "McKinney",
+  6: "Santa Barbara",
+};
+
+const TENANT_TIME_ZONES: Record<number, string> = {
+  1: "America/Los_Angeles",
+  3: "Pacific/Honolulu",
+  5: "America/Chicago",
+  6: "America/Los_Angeles",
+};
+
+const TENANT_LOGO_URLS: Record<number, string> = {
+  1: foodOasisLogoUrl,
+  3: alohaHarvestLogoUrl,
+  5: foodOasisLogoUrl,
+  6: foodOasisLogoUrl,
+};
+
+const TENANT_MAINTAINER_LOGO_URLS: Record<number, string> = {
+  1: hackForLaLogoUrl,
+  3: codeForHawaiiLogoUrl,
+  5: hackForLaLogoUrl,
+  6: hackForLaLogoUrl,
+};
+
+export const DEFAULT_VIEWPORTS: Record<number, Viewport> = {
+  1: {
+    center: { latitude: 34.0354899, longitude: -118.2439235 },
+    zoom: 11,
+    bbox: "-118.9517,33.6988,-117.6462,34.8233", //minLng, minLat, maxLng, maxLat
+  },
+  3: {
+    center: { latitude: 21.4601548, longitude: -157.99 },
+    zoom: 9.5,
+    bbox: "-160.25, 18.91, -154.58, 22.30",
+  },
+  5: {
+    center: { latitude: 33.216239, longitude: -96.65014 },
+    zoom: 10.5,
+    bbox: "-96.9, 33.1, -96.4, 33.4",
+  },
+  6: {
+    center: { latitude: 34.68758, longitude: -120.157 },
+    zoom: 8.75,
+    bbox: "-120.72, 34.36, -119.41, 35.11",
+  },
+};
+
+const LOS_ANGELES: TenantConfig = {
+  tenantName: "Los Angeles",
+  taglineText: "Locate free food in Los Angeles",
+  defaultViewport: DEFAULT_VIEWPORTS[1],
+  maintainers: [
+    {
+      name: "Hack for LA",
+      website: "https://www.hackforla.org/",
+      path: hackForLaLogoUrl,
+    },
+  ],
+  urlContains: ["la."],
+};
+
+const HAWAII: TenantConfig = {
+  tenantName: "Hawaii",
+  taglineText: "Locate free food in Hawaiʻi",
+  defaultViewport: DEFAULT_VIEWPORTS[3],
+  maintainers: [
+    {
+      name: "Code for Hawaii",
+      website: "https://www.codeforhawaii.org/",
+      path: codeForHawaiiLogoUrl,
+    },
+  ],
+  urlContains: ["hi.", "hawaii"],
+};
+
+const MCKINNEY: TenantConfig = {
+  tenantName: "McKinney",
+  taglineText: "Locate free food in McKinney",
+  defaultViewport: DEFAULT_VIEWPORTS[5],
+  maintainers: [],
+  urlContains: ["mck.", "mckinney."],
+};
+
+const SANTA_BARBARA: TenantConfig = {
+  tenantName: "Santa Barbara",
+  taglineText: "Locate free food in Santa Barbara",
+  defaultViewport: DEFAULT_VIEWPORTS[6],
+  maintainers: [],
+  urlContains: ["sb."],
+};
+
+const TENANT_CONFIGS: Record<number, TenantConfig> & { default: TenantConfig } = {
+  1: LOS_ANGELES,
+  3: HAWAII,
+  5: MCKINNEY,
+  6: SANTA_BARBARA,
+  default: LOS_ANGELES,
+};
+
+export const DEFAULT_VIEWPORT = DEFAULT_VIEWPORTS[TENANT_ID];
+export const TENANT_CONFIG = TENANT_CONFIGS[TENANT_ID];
+export const TENANT_LOGO_URL = TENANT_LOGO_URLS[TENANT_ID];
+export const TENANT_MAINTAINER_LOGO_URL =
+  TENANT_MAINTAINER_LOGO_URLS[TENANT_ID];
+
+export const TENANT_METADATA = {
+  tenantId: TENANT_ID,
+  tenantName: TENANT_NAMES[TENANT_ID],
+  tenantDetails: TENANT_CONFIG,
+  defaultViewport: DEFAULT_VIEWPORT,
+  tenantTimeZone: TENANT_TIME_ZONES[TENANT_ID],
+  tenantLogoUrl: TENANT_LOGO_URL,
+  // Host only (no protocol), e.g. "la.foodoasis.net", for use in emails.
+  siteUrl: window.location.host,
+};
+
+export const LINKEDIN_REGEX = /^https?:\/\/(www\.)?linkedin\.com(\/.*)?$/;
+export const FACEBOOK_REGEX = /^https?:\/\/(www\.)?facebook\.com(\/.*)?$/;
+export const INSTAGRAM_REGEX = /^https?:\/\/(www\.)?instagram\.com(\/.*)?$/;
+export const PINTEREST_REGEX = /^https?:\/\/(www\.)?pinterest\.com(\/.*)?$/;
+export const TWITTER_REGEX =
+  /^https?:\/\/(www\.)?(twitter\.com|x\.com)(\/.*)?$/;
+
+export const foodTypeLabelObject: Record<string, string> = {
+  foodBakery: "Baked Goods",
+  foodDairy: "Dairy",
+  foodDryGoods: "Dry Goods",
+  foodMeat: "Meat",
+  foodPrepared: "Prepared Food",
+  foodProduce: "Produce",
+};

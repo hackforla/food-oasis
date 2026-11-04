@@ -108,4 +108,53 @@ test.describe("Organizations", () => {
     await expect(page.getByText("Stakeholder 2")).toBeVisible();
     await expect(page.getByText("Stakeholder 3")).toBeHidden();
   });
+
+  test("searching by address should show only the matching stakeholder", async ({
+    page,
+  }) => {
+    await mockRequests(page);
+    await page.goto("/organizations");
+    await page.getByRole("button", { name: "More Filters" }).click();
+    await page
+      .getByPlaceholder("i.e. kosher, senior, First Baptist, 90015")
+      .fill("222 Address");
+    await expect(page.getByText("Stakeholder 1")).toBeHidden();
+    await expect(page.getByText("Stakeholder 2")).toBeVisible();
+    await expect(page.getByText("Stakeholder 3")).toBeHidden();
+  });
+
+  test("searching by a multi-word term found in a non-name field (requirements) should show only the matching stakeholder", async ({
+    page,
+  }) => {
+    await mockRequests(page);
+    await page.goto("/organizations");
+    await page.getByRole("button", { name: "More Filters" }).click();
+    // "kosher" and "seniors" only both appear in Stakeholder 2's requirements
+    // text -- this exercises the "AND" multi-word, non-name-field search.
+    await page
+      .getByPlaceholder("i.e. kosher, senior, First Baptist, 90015")
+      .fill("kosher seniors");
+    await expect(page.getByText("Stakeholder 1")).toBeHidden();
+    await expect(page.getByText("Stakeholder 2")).toBeVisible();
+    await expect(page.getByText("Stakeholder 3")).toBeHidden();
+  });
+
+  test("searching by words matched across two different fields (name + address) on the same stakeholder should AND across fields", async ({
+    page,
+  }) => {
+    await mockRequests(page);
+    await page.goto("/organizations");
+    await page.getByRole("button", { name: "More Filters" }).click();
+    // "stakeholder" matches the `name` field of all three mock stakeholders,
+    // but "222" only appears in Stakeholder 2's `address1` field. Only a
+    // stakeholder satisfying both words -- one via name, one via a different
+    // field -- should remain, proving the fields are searched as one
+    // combined AND-across-fields blob rather than independently.
+    await page
+      .getByPlaceholder("i.e. kosher, senior, First Baptist, 90015")
+      .fill("stakeholder 222");
+    await expect(page.getByText("Stakeholder 1")).toBeHidden();
+    await expect(page.getByText("Stakeholder 2")).toBeVisible();
+    await expect(page.getByText("Stakeholder 3")).toBeHidden();
+  });
 });

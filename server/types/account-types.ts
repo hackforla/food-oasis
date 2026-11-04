@@ -19,6 +19,17 @@ export interface Account extends User {
   features: string[];
 }
 
+// A public-safe view of an account: excludes the bcrypt password hash and all
+// privilege/role flags so they can never be returned to a client.
+export interface PublicAccount {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  emailConfirmed: boolean;
+  dateCreated?: string;
+}
+
 export interface RegisterFields extends User {
   password: string;
   clientUrl: string;

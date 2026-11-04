@@ -99,6 +99,12 @@ const csv: RequestHandler<never, never, { ids: string[] }, never> = async (
       .pipe(
         stringify({
           header: true,
+          cast: {
+            string: (value) =>
+              /^[=+\-@\t\r＝＋－＠]/.test(value) && Number.isNaN(Number(value))
+                ? `'${value}`
+                : value,
+          },
           columns: {
             id: "ID",
             name: "Name",

@@ -40,16 +40,22 @@ const insert: RequestHandler<
 
 const update: RequestHandler<
   { id: string },
-  Response,
+  { success: boolean } | { error: string },
   ParentOrganization,
   never
 > = async (req, res) => {
+  const { id, name, tenantId } = req.body;
+  if (!id || !name || !tenantId) {
+    res.status(400).json({ error: "Missing required fields." });
+    return;
+  }
+
   try {
     await parentOrganizationService.update(req.body);
-    res.sendStatus(200);
-  } catch (err) {
+    res.status(200).json({ success: true });
+  } catch (err: any) {
     console.error(err);
-    res.status(500);
+    res.status(500).json({ error: "Internal server error." });
   }
 };
 

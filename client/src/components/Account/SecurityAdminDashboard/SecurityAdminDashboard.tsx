@@ -69,7 +69,7 @@ const SecurityAdminDashboard = () => {
         account.isGlobalReporting = value;
       }
     }
-    let filtered = [...filteredAccounts, { ...account }];
+    const filtered = [...filteredAccounts, { ...account }];
     const unique = [
       ...new Map(filtered.map((item) => [item?.id, item])).values(),
     ] as Account[];

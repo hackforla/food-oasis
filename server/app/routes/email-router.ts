@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { send, sendContactForm } from "../controllers/email-controller";
+import { sendContactForm } from "../controllers/email-controller";
+import { createModerateAuthLimiter } from "../../middleware/rate-limit";
 
 const router: Router = Router();
 
-router.post("/", send);
-router.post("/contact", sendContactForm);
+router.post("/contact", createModerateAuthLimiter(), sendContactForm);
 
 export default router;

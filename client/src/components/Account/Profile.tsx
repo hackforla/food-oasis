@@ -77,15 +77,27 @@ export default function Profile() {
         title="User Profile"
         description="Edit your user profile information."
       />
-      <Container component="main" maxWidth="lg">
+      <Container maxWidth="lg">
         <form onSubmit={formik.handleSubmit}>
           <Grid container spacing={{ sm: 1, md: 3 }} alignItems={"center"}>
-            <Grid item xs={4} sm={3} md={2}>
+            <Grid
+              size={{
+                xs: 4,
+                sm: 3,
+                md: 2,
+              }}
+            >
               <Typography variant="h4" component="h4" color={headingText}>
                 First Name
               </Typography>
             </Grid>
-            <Grid item xs={8} sm={9} md={10}>
+            <Grid
+              size={{
+                xs: 8,
+                sm: 9,
+                md: 10,
+              }}
+            >
               {!fields.firstName ? (
                 <Typography variant="h4" component="h4" color={bodyText}>
                   {user.firstName}
@@ -124,12 +136,24 @@ export default function Profile() {
             </Grid>
           </Grid>
           <Grid container spacing={{ sm: 1, md: 3 }} alignItems={"center"}>
-            <Grid item xs={4} sm={3} md={2}>
+            <Grid
+              size={{
+                xs: 4,
+                sm: 3,
+                md: 2,
+              }}
+            >
               <Typography variant="h4" component="h4" color={headingText}>
                 Last Name
               </Typography>
             </Grid>
-            <Grid item xs={8} sm={9} md={10}>
+            <Grid
+              size={{
+                xs: 8,
+                sm: 9,
+                md: 10,
+              }}
+            >
               {!fields.lastName ? (
                 <Typography variant="h4" component="h4" color={bodyText}>
                   {user.lastName}
@@ -168,12 +192,24 @@ export default function Profile() {
             </Grid>
           </Grid>
           <Grid container spacing={{ sm: 1, md: 3 }} alignItems={"center"}>
-            <Grid item xs={4} sm={3} md={2}>
+            <Grid
+              size={{
+                xs: 4,
+                sm: 3,
+                md: 2,
+              }}
+            >
               <Typography variant="h4" component="h4" color={headingText}>
                 Email
               </Typography>
             </Grid>
-            <Grid item xs={8} sm={9} md={10}>
+            <Grid
+              size={{
+                xs: 8,
+                sm: 9,
+                md: 10,
+              }}
+            >
               {!fields.emailID ? (
                 <Typography variant="h4" component="h4" color={bodyText}>
                   {user.email}
@@ -211,7 +247,7 @@ export default function Profile() {
           </Grid>
           {(fields.firstName || fields.lastName || fields.emailID) && (
             <Grid container spacing={3}>
-              <Grid item>
+              <Grid>
                 <Button
                   sx={{ width: "100%" }}
                   type="submit"
@@ -222,7 +258,7 @@ export default function Profile() {
                   Save
                 </Button>
               </Grid>
-              <Grid item>
+              <Grid>
                 <Button
                   size="small"
                   aria-label="cancel button"

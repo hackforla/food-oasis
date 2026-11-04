@@ -1,6 +1,8 @@
+import jwt from "jsonwebtoken";
 import accountController from "../app/controllers/account-controller";
 import accountService from "../app/services/account-service";
 import loginService from "../app/services/logins-service";
+import jwtSession from "../middleware/jwt-session";
 import { mockResponse, mockRequest, mockNext } from "./utils";
 
 jest.mock("../app/services/account-service");
@@ -252,34 +254,40 @@ describe("Account", () => {
       params: { email: "admin@test.com" },
     });
     const next = mockNext();
-    const selectByEmailMock =
-      accountService.selectByEmail as jest.MockedFunction<
-        typeof accountService.selectByEmail
+    const account = accounts[2];
+    // The controller must use the public-safe lookup, which never exposes the
+    // bcrypt password hash or privilege flags (security audit finding #1).
+    const selectByEmailPublicMock =
+      accountService.selectByEmailPublic as jest.MockedFunction<
+        typeof accountService.selectByEmailPublic
       >;
-    selectByEmailMock.mockImplementationOnce(() =>
-      Promise.resolve(accounts[2])
+    selectByEmailPublicMock.mockImplementationOnce(() =>
+      Promise.resolve({
+        id: account.id,
+        firstName: account.firstName,
+        lastName: account.lastName,
+        email: account.email,
+        emailConfirmed: account.emailConfirmed,
+        dateCreated: account.dateCreated,
+      })
     );
     await accountController.getByEmail(req, res, next);
-    expect(selectByEmailMock).toHaveBeenCalledWith("admin@test.com", 1);
-    expect(selectByEmailMock).toHaveBeenCalledTimes(1);
-    expect(res.send.mock.calls[0][0]).toMatchInlineSnapshot(`
+    expect(selectByEmailPublicMock).toHaveBeenCalledWith("admin@test.com", 1);
+    expect(selectByEmailPublicMock).toHaveBeenCalledTimes(1);
+    const sent = res.send.mock.calls[0][0];
+    // Guard against regressions that reintroduce the leak.
+    expect(sent.data).not.toHaveProperty("passwordHash");
+    expect(sent.data).not.toHaveProperty("isAdmin");
+    expect(sent.data).not.toHaveProperty("isGlobalAdmin");
+    expect(sent).toMatchInlineSnapshot(`
      {
        "data": {
          "dateCreated": "2021-05-18T06:04:09.421Z",
          "email": "admin@test.com",
          "emailConfirmed": false,
-         "features": [],
          "firstName": "Admin",
          "id": 171,
-         "isAdmin": false,
-         "isCoordinator": false,
-         "isDataEntry": true,
-         "isGlobalAdmin": false,
-         "isGlobalReporting": false,
-         "isSecurityAdmin": false,
          "lastName": "Admin",
-         "passwordHash": "$2b$10$aMAO10PCC2RfcmXg1GCH1.UsccMgTB53h4XD2w9ydlQMrf4Nn55.q",
-         "tenantId": 1,
        },
        "isSuccess": true,
      }
@@ -653,5 +661,181 @@ describe("Account", () => {
     expect(removeMock).toHaveBeenCalledWith(123);
     expect(removeMock).toHaveBeenCalledTimes(1);
     expect(res.sendStatus).toHaveBeenCalledWith(200);
+  });
+
+  it("lets a user update their own profile", async () => {
+    const res = mockResponse();
+    const req = mockRequest({
+      params: { userid: "123" },
+      user: { id: 123, email: "user@test.com", sub: "data_entry" },
+      body: {
+        firstName: "New",
+        lastName: "Name",
+        email: "user@test.com",
+        tenantId: "1",
+      },
+    });
+    const next = mockNext();
+    const updateUserProfileMock =
+      accountService.updateUserProfile as jest.MockedFunction<
+        typeof accountService.updateUserProfile
+      >;
+    updateUserProfileMock.mockResolvedValueOnce({
+      isSuccess: true,
+      code: "UPDATE_SUCCESS",
+      message: "User profile successfully updated",
+    } as any);
+
+    await accountController.updateUserProfile(req, res, next);
+    expect(updateUserProfileMock).toHaveBeenCalledWith(
+      "123",
+      "New",
+      "Name",
+      "user@test.com",
+      "1"
+    );
+    expect(res.status).toHaveBeenCalledWith(200);
+  });
+
+  it("blocks a user from updating another user's profile (IDOR)", async () => {
+    const res = mockResponse();
+    const req = mockRequest({
+      params: { userid: "999" },
+      user: { id: 123, email: "user@test.com", sub: "data_entry" },
+      body: {
+        firstName: "Attacker",
+        lastName: "Controlled",
+        email: "victim-new@test.com",
+        tenantId: "1",
+      },
+    });
+    const next = mockNext();
+    const updateUserProfileMock =
+      accountService.updateUserProfile as jest.MockedFunction<
+        typeof accountService.updateUserProfile
+      >;
+
+    await accountController.updateUserProfile(req, res, next);
+    expect(updateUserProfileMock).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(403);
+  });
+
+  it("lets a global_admin update another user's profile", async () => {
+    const res = mockResponse();
+    const req = mockRequest({
+      params: { userid: "999" },
+      user: { id: 123, email: "admin@test.com", sub: "global_admin" },
+      body: {
+        firstName: "New",
+        lastName: "Name",
+        email: "someone@test.com",
+        tenantId: "1",
+      },
+    });
+    const next = mockNext();
+    const updateUserProfileMock =
+      accountService.updateUserProfile as jest.MockedFunction<
+        typeof accountService.updateUserProfile
+      >;
+    updateUserProfileMock.mockResolvedValueOnce({
+      isSuccess: true,
+      code: "UPDATE_SUCCESS",
+      message: "User profile successfully updated",
+    } as any);
+
+    await accountController.updateUserProfile(req, res, next);
+    expect(updateUserProfileMock).toHaveBeenCalledTimes(1);
+    expect(res.status).toHaveBeenCalledWith(200);
+  });
+
+  it("blocks a per-tenant admin from updating another user's profile (cross-tenant escalation)", async () => {
+    const res = mockResponse();
+    const req = mockRequest({
+      params: { userid: "999" },
+      // admin/security_admin are per-tenant roles; the JWT does not encode which
+      // tenant they apply to, so they must NOT grant a cross-user override.
+      user: {
+        id: 123,
+        email: "tenantadmin@test.com",
+        sub: "admin,security_admin",
+      },
+      body: {
+        firstName: "Attacker",
+        lastName: "Controlled",
+        email: "victim-new@test.com",
+        tenantId: "1",
+      },
+    });
+    const next = mockNext();
+    const updateUserProfileMock =
+      accountService.updateUserProfile as jest.MockedFunction<
+        typeof accountService.updateUserProfile
+      >;
+
+    await accountController.updateUserProfile(req, res, next);
+    expect(updateUserProfileMock).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(403);
+  });
+});
+
+// GET /api/accounts/:email must not be reachable without an authenticated staff
+// role. Previously it was public, letting anyone enumerate accounts by email and
+// harvest their id/name/confirmation/creation date (security audit finding #10).
+// These exercise the role-check middleware the route is wired with.
+describe("GET /accounts/:email authorization (finding #10)", () => {
+  const jwtSecret = process.env.JWT_SECRET || "mark it zero";
+  const guard = jwtSession.validateUserHasRequiredRoles([
+    "admin",
+    "security_admin",
+    "data_entry",
+    "global_admin",
+  ]);
+
+  const signToken = (payload: object) =>
+    jwt.sign(payload, jwtSecret, { algorithm: "HS256" });
+
+  it("rejects an unauthenticated request with 401", async () => {
+    const res = mockResponse();
+    const req = mockRequest({
+      headers: {},
+      cookies: {},
+      params: { email: "victim@test.com" },
+    });
+    const next = mockNext();
+
+    await guard(req, res, next);
+
+    expect(next).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(401);
+  });
+
+  it("rejects an authenticated caller lacking a permitted role with 401", async () => {
+    const res = mockResponse();
+    const req = mockRequest({
+      headers: {},
+      cookies: { jwt: signToken({ email: "vol@test.com", sub: "coordinator" }) },
+      params: { email: "victim@test.com" },
+    });
+    const next = mockNext();
+
+    await guard(req, res, next);
+
+    expect(next).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(401);
+  });
+
+  it("allows an authenticated admin through to the handler", async () => {
+    const res = mockResponse();
+    const req = mockRequest({
+      headers: {},
+      cookies: { jwt: signToken({ email: "admin@test.com", sub: "admin" }) },
+      params: { email: "someone@test.com" },
+    });
+    const next = mockNext();
+
+    await guard(req, res, next);
+
+    expect(next).toHaveBeenCalledTimes(1);
+    expect(res.status).not.toHaveBeenCalled();
   });
 });

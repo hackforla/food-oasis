@@ -111,13 +111,20 @@ const LoginForm = () => {
                   }
                 } else if (response?.code === "AUTH_NOT_CONFIRMED") {
                   try {
-                    await accountService.resendConfirmationEmail(values.email);
-                    setToast({
-                      message: `Your email has not been confirmed.
-                      Please look through your email for a Registration
-                      Confirmation link and use it to confirm that you
-                      own this email address.`,
-                    });
+                    const resendResponse =
+                      await accountService.resendConfirmationEmail(
+                        values.email
+                      );
+                    if (resendResponse.code === "RATE_LIMITED") {
+                      setToast({ message: resendResponse.message });
+                    } else {
+                      setToast({
+                        message: `Your email has not been confirmed.
+                        Please look through your email for a Registration
+                        Confirmation link and use it to confirm that you
+                        own this email address.`,
+                      });
+                    }
                     formikBag.setSubmitting(false);
                   } catch (err) {
                     setToast({
@@ -132,6 +139,13 @@ const LoginForm = () => {
                     message: `The email ${values.email} does not correspond to an
                     existing account. Please verify the email or register as a
                     new account.`,
+                  });
+                  formikBag.setSubmitting(false);
+                } else if (response?.code === "RATE_LIMITED") {
+                  setToast({
+                    message:
+                      response.message ||
+                      "Too many attempts. Please try again later.",
                   });
                   formikBag.setSubmitting(false);
                 } else {
@@ -173,7 +187,7 @@ const LoginForm = () => {
                 container
                 spacing={2}
               >
-                <Grid item xs={12}>
+                <Grid size={12}>
                   <Label id="email" label="Email *" />
                   <TextField
                     autoComplete="email"
@@ -191,7 +205,7 @@ const LoginForm = () => {
                     value={values.email}
                   />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid size={12}>
                   <Label id="password" label="Password" />
                   <PasswordInput
                     autoComplete="current-password"
@@ -206,7 +220,7 @@ const LoginForm = () => {
                     value={values.password}
                   />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid size={12}>
                   <Box>
                     <Button
                       type="submit"
@@ -217,7 +231,7 @@ const LoginForm = () => {
                     </Button>
                   </Box>
                 </Grid>
-                <Grid item xs>
+                <Grid size="grow">
                   <Link
                     href={`/admin/forgotpassword/${values.email || ""}`}
                     variant="body2"
@@ -225,7 +239,7 @@ const LoginForm = () => {
                     Forgot password?
                   </Link>
                 </Grid>
-                <Grid item>
+                <Grid>
                   <Link href="/admin/register" variant="body2">
                     Register
                   </Link>

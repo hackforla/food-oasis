@@ -1,0 +1,45 @@
+import axios from "axios";
+
+const baseUrl = "/api/categories";
+
+export const getAll = async (searchParams?: Record<string, any>) => {
+  searchParams = searchParams || {};
+  try {
+    const response = await axios.get(baseUrl, {
+      params: searchParams,
+    });
+    return response.data;
+  } catch (err: any) {
+    throw new Error(err.message);
+  }
+};
+
+export const getById = async (id: number | string) => {
+  const response = await axios.get(`${baseUrl}/${id}`);
+  return response.data;
+};
+
+export const post = async (category: Record<string, any>) => {
+  const response = await axios.post(baseUrl, {
+    category,
+  });
+  return response.data;
+};
+
+export const put = async (
+  category: Record<string, any>,
+  id: number | string
+) => {
+  const response = await axios.put(`${baseUrl}/${id}`, {
+    category,
+    id,
+  });
+  return response.data;
+};
+
+export const remove = async (id: number | string) => {
+  const response = await axios.post(`${baseUrl}/${id}`, {
+    id,
+  });
+  return response.data;
+};

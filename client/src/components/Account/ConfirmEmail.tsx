@@ -1,6 +1,5 @@
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
-import LoadingButton from "@mui/lab/LoadingButton";
-import { Avatar, Box, TextField, Typography } from "@mui/material";
+import { Avatar, Box, Button, TextField, Typography } from "@mui/material";
 import Label from "components/Admin/ui/Label";
 import { Formik, FormikProps } from "formik";
 import { useEffect, useState } from "react";
@@ -33,6 +32,9 @@ const ConfirmEmail = () => {
       if (result.isSuccess) {
         setView("success");
         setToast({ message: `Your email has been confirmed. Please log in.` });
+      } else if (result.code === "RATE_LIMITED") {
+        setToast({ message: result.message });
+        setView("rateLimited");
       } else {
         setView("error");
       }
@@ -47,7 +49,9 @@ const ConfirmEmail = () => {
     if (result.isSuccess) {
       setView("emailSent");
     } else {
-      setView("error");
+      setView(
+        result.code === "RATE_LIMITED" ? "resendRateLimited" : "error"
+      );
       setToast({ message: result.message });
     }
   };
@@ -75,6 +79,26 @@ const ConfirmEmail = () => {
           <p>
             {`A confirmation email has been sent to ${values.email}. Please find this email and click on the link provided to complete your email confirmation.`}
           </p>
+        );
+      case "rateLimited":
+        return (
+          <PageWrapper>
+            <Typography component="p">
+              Too many requests right now, so we couldn&apos;t confirm your
+              email. Your confirmation link may still be valid. Please wait a
+              while and refresh this page to try again.
+            </Typography>
+          </PageWrapper>
+        );
+      case "resendRateLimited":
+        return (
+          <PageWrapper>
+            <Typography component="p">
+              Too many requests right now, so we couldn&apos;t send a new
+              confirmation email. Please wait a while and refresh this page to
+              try again.
+            </Typography>
+          </PageWrapper>
         );
       default:
       case "error":
@@ -105,7 +129,7 @@ const ConfirmEmail = () => {
                   sx={{ mt: 1, mb: 2 }}
                 />
               </Box>
-              <LoadingButton
+              <Button
                 variant="contained"
                 loading={isSubmitting}
                 type="submit"
@@ -114,7 +138,7 @@ const ConfirmEmail = () => {
                 disabled={isSubmitting || !(isValid && dirty)}
               >
                 Re-send confirmation email
-              </LoadingButton>
+              </Button>
             </form>
           </PageWrapper>
         );

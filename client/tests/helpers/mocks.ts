@@ -377,7 +377,7 @@ function makeStakeholdersResponse() {
       createdDate: "2020-03-30T01:39:28",
       modifiedDate: null,
       approvedDate: null,
-      requirements: "",
+      requirements: "Kosher options available for seniors",
       inactive: false,
       parentOrganization: "",
       physicalAccess: "",

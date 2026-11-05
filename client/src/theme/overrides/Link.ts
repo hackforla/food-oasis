@@ -63,7 +63,7 @@ export default function Link(theme: Theme) {
               color: theme.palette.link.hovered,
             },
             "&:active": {
-              color: theme.palette.primary.light,
+              color: theme.palette.primary.dark,
             },
           },
         },

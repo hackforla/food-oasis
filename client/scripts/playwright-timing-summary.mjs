@@ -3,7 +3,7 @@
 // Usage: node scripts/playwright-timing-summary.mjs [path/to/results.json]
 import { readFileSync } from "node:fs";
 
-const reportPath = process.argv[2] ?? "playwright-report/results.json";
+const reportPath = process.argv[2] ?? "playwright-json/results.json";
 const report = JSON.parse(readFileSync(reportPath, "utf8"));
 
 const fmt = (ms) => `${(ms / 1000).toFixed(1)}s`;

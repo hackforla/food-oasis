@@ -207,6 +207,8 @@ export const TENANT_METADATA = {
   defaultViewport: DEFAULT_VIEWPORT,
   tenantTimeZone: TENANT_TIME_ZONES[TENANT_ID],
   tenantLogoUrl: TENANT_LOGO_URL,
+  // Host only (no protocol), e.g. "la.foodoasis.net", for use in emails.
+  siteUrl: window.location.host,
 };
 
 export const LINKEDIN_REGEX = /^https?:\/\/(www\.)?linkedin\.com(\/.*)?$/;

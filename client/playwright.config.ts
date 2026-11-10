@@ -19,10 +19,17 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
-  /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  /* Use every CPU on CI (4 on GitHub's standard runner). Tests mock the API, so they don't share state. */
+  workers: process.env.CI ? "100%" : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: "html",
+  /* On CI, also write JSON so per-test timings and retries can be summarized (see scripts/playwright-timing-summary.mjs) */
+  reporter: process.env.CI
+    ? [
+        ["list"],
+        ["html", { open: "never" }],
+        ["json", { outputFile: "playwright-json/results.json" }],
+      ]
+    : "html",
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */

@@ -27,7 +27,7 @@ export default async function mockRequests(
     }
 
     console.warn("[mocks] no mock for /api/" + normalized);
-    return route.continue();
+    return route.fallback();
   });
 }
 

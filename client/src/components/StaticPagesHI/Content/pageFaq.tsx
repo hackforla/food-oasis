@@ -16,7 +16,7 @@ const PAGE_SECTIONS_FAQ: PageSectionProps[] = [
     title: "For Users",
     content: (
       <>
-        <Typography variant="body1">
+        <Typography variant="body1" component="div">
           <dl>
             <dt>How do I use this tool to find food near me?</dt>
             <dd>
@@ -117,7 +117,7 @@ const PAGE_SECTIONS_FAQ: PageSectionProps[] = [
     title: "General Questions",
     content: (
       <>
-        <Typography variant="body1">
+        <Typography variant="body1" component="div">
           <dl>
             <dt>
               Interested in donating excess food, volunteering, or anything

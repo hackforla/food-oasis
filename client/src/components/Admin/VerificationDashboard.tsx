@@ -177,7 +177,7 @@ function VerificationDashboard() {
   };
 
   return (
-    <main
+    <div
       style={{
         flexGrow: 1,
         flexBasis: "100%",
@@ -256,7 +256,7 @@ function VerificationDashboard() {
           {renderView()}
         </Stack>
       </Box>
-    </main>
+    </div>
   );
 }
 

@@ -54,6 +54,29 @@ export const getByEmail = async (email: string) => {
   return response;
 };
 
+// POSTs to one of the rate-limited account endpoints. If the server answers
+// with a 429 (rate limited) and an ApiResponse-shaped failure body, returns
+// that body instead of letting axios throw, so callers can branch on `code`
+// like any other non-success response. Anything else still throws.
+const postAuthRequest = async <T extends ApiResponse>(
+  url: string,
+  body: unknown
+): Promise<T> => {
+  try {
+    const response = await axios.post(url, body);
+    return response.data;
+  } catch (err) {
+    if (
+      axios.isAxiosError(err) &&
+      err.response?.status === 429 &&
+      err.response?.data?.isSuccess === false
+    ) {
+      return err.response.data;
+    }
+    throw err;
+  }
+};
+
 export const register = async ({
   firstName,
   lastName,
@@ -61,22 +84,19 @@ export const register = async ({
   password,
 }: RegisterParams): Promise<ApiResponse> => {
   const body = { firstName, lastName, email, password, clientUrl, tenantId };
-  const response = await axios.post(baseUrl + "/register", body);
-  return response.data;
+  return postAuthRequest(baseUrl + "/register", body);
 };
 
 export const resendConfirmationEmail = async (
   email: string
 ): Promise<ApiResponse> => {
   const body = { email, clientUrl };
-  const response = await axios.post(baseUrl + "/resendConfirmationEmail", body);
-  return response.data;
+  return postAuthRequest(baseUrl + "/resendConfirmationEmail", body);
 };
 
 export const forgotPassword = async (email: string): Promise<ApiResponse> => {
   const body = { email, clientUrl };
-  const response = await axios.post(baseUrl + "/forgotPassword", body);
-  return response.data;
+  return postAuthRequest(baseUrl + "/forgotPassword", body);
 };
 
 export const resetPassword = async (
@@ -84,14 +104,12 @@ export const resetPassword = async (
   password: string
 ): Promise<ApiResponse> => {
   const body = { token, password };
-  const response = await axios.post(baseUrl + "/resetPassword", body);
-  return response.data;
+  return postAuthRequest(baseUrl + "/resetPassword", body);
 };
 
 export const confirmRegister = async (token: string): Promise<ApiResponse> => {
   const body = { token };
-  const response = await axios.post(baseUrl + "/confirmRegister", body);
-  return response.data;
+  return postAuthRequest(baseUrl + "/confirmRegister", body);
 };
 
 export const login = async (
@@ -100,8 +118,7 @@ export const login = async (
 ): Promise<ApiResponse | undefined> => {
   const body = { email, password, tenantId };
   try {
-    const response = await axios.post(baseUrl + "/login", body);
-    return response.data;
+    return await postAuthRequest(baseUrl + "/login", body);
   } catch (err) {
     console.error(err);
     return undefined;

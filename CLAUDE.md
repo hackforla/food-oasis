@@ -148,8 +148,10 @@ lockfile is actually installed.
 ## 5. CI/CD (what's actually enforced)
 
 - [.github/workflows/playwright.yml](.github/workflows/playwright.yml) is the
-  **only** test workflow: runs client Playwright E2E tests against a locally
-  started Vite dev server, on push/PR to `main`/`master`/`develop`.
+  **only** test workflow: runs client Playwright E2E tests in parallel against a
+  production build served by `vite preview`, on push/PR to `main`/`master`/`develop`.
+  Tests block Mapbox map tiles and analytics, and stub Mapbox geocoding, in
+  `client/tests/helpers/test.ts`.
 - There is **no CI step** that runs server Jest tests, client Jest tests, either
   workspace's lint, or `tsc --noEmit`. Root `package.json` declares a Husky
   `pre-commit` hook (`lerna run lint`) via the legacy `"husky": { "hooks": {...} }`
@@ -291,6 +293,15 @@ user decide how and where to track it (e.g. a private security advisory).
   `tenant_id`. Any new query must filter by tenant (or explicitly justify why not,
   e.g. truly global lookups like categories). A missing `tenant_id` filter is a
   cross-tenant data leak, not just a bug.
+- **HTTP security headers** (CSP, HSTS, frame protection, etc.) are set by
+  `helmet` in [server/middleware/security-headers.ts](server/middleware/security-headers.ts).
+  The CSP allow-lists every third-party origin the client loads from; when you
+  add a new external script, stylesheet, font, image, or API call on the
+  client, add its origin there too or it will be blocked in deployed
+  environments. Don't add inline `<script>`s (put them in `client/public/`
+  instead, like `gtm.js`) and don't loosen `script-src` with
+  `'unsafe-inline'`/`'unsafe-eval'`. Only `/widget` (and its legacy `/search` URL) may be framed by
+  third-party sites.
 - Secrets (`server/.env`) are git-ignored; never commit real credentials, and
   never print `.env` contents into logs, PR descriptions, or commit messages.
 

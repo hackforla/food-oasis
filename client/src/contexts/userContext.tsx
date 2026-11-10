@@ -98,19 +98,22 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     }
   }, []);
 
-  const onLogin = useCallback(async (user: User, token?: string): Promise<User> => {
-    const enriched = updateUserFromJWT(user, token);
-    const exp = token ? decodeJWTPayload(token).exp : undefined;
-    const expiresAt = exp ? exp * 1000 : Date.now() + SESSION_MS;
+  const onLogin = useCallback(
+    async (user: User, token?: string): Promise<User> => {
+      const enriched = updateUserFromJWT(user, token);
+      const exp = token ? decodeJWTPayload(token).exp : undefined;
+      const expiresAt = exp ? exp * 1000 : Date.now() + SESSION_MS;
 
-    // store enriched claims + expiry only, never the raw token
-    localStorage.setItem("user", JSON.stringify(enriched));
-    localStorage.setItem("userExpiresAt", String(expiresAt));
-    analytics.identify(enriched.id);
-    setUser(enriched);
-    setIsLoggedIn(true);
-    return enriched;
-  }, []);
+      // store enriched claims + expiry only, never the raw token
+      localStorage.setItem("user", JSON.stringify(enriched));
+      localStorage.setItem("userExpiresAt", String(expiresAt));
+      analytics.identify(enriched.id);
+      setUser(enriched);
+      setIsLoggedIn(true);
+      return enriched;
+    },
+    []
+  );
 
   const onUpdate = useCallback(
     async (updateUser: User) => {

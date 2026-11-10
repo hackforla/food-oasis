@@ -88,7 +88,6 @@ const LoginForm = () => {
                   values.password
                 );
                 if (response?.isSuccess) {
-                  analytics.identify(response?.user?.id);
                   let loggedInUser = response.user;
                   if (response.user) {
                     loggedInUser = await onLogin(response.user, response.token);
@@ -97,7 +96,10 @@ const LoginForm = () => {
 
                   if (state?.from) {
                     navigate(state.from);
-                  } else if (loggedInUser?.isAdmin || loggedInUser?.isCoordinator) {
+                  } else if (
+                    loggedInUser?.isAdmin ||
+                    loggedInUser?.isCoordinator
+                  ) {
                     navigate("/admin/verificationAdmin");
                   } else if (loggedInUser?.isSecurityAdmin) {
                     navigate("/admin/securityadmindashboard");

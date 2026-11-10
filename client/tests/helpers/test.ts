@@ -24,6 +24,8 @@ export default playwrightTest.extend<{
 function authTest(page: Page) {
   return {
     mockLogin: async () => {
+      // The client no longer decodes a cookie, so role flags must be
+      // seeded directly on the stored user.
       const user = {
         id: 108,
         firstName: "Test",
@@ -32,34 +34,17 @@ function authTest(page: Page) {
         isAdmin: true,
         isCoordinator: false,
         isDataEntry: true,
+        isGlobalAdmin: true,
+        isSecurityAdmin: false,
+        isGlobalReporting: false,
       };
-
-      const header = Buffer.from(JSON.stringify({ alg: "none" })).toString(
-        "base64"
-      );
-      const payload = Buffer.from(
-        JSON.stringify({
-          email: user.email,
-          id: user.id,
-          sub: "admin,data_entry,global_admin",
-        })
-      ).toString("base64");
-      const fakeJwt = `${header}.${payload}.`;
-
-      await page.context().addCookies([
-        {
-          name: "jwt",
-          value: fakeJwt,
-          domain: "localhost",
-          path: "/",
-          httpOnly: false,
-          secure: false,
-          sameSite: "Lax",
-        },
-      ]);
 
       await page.addInitScript((userObj) => {
         localStorage.setItem("user", JSON.stringify(userObj));
+        localStorage.setItem(
+          "userExpiresAt",
+          String(Date.now() + 24 * 60 * 60 * 1000)
+        );
       }, user);
       await page.goto("/");
     },

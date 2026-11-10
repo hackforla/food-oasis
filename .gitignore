@@ -260,6 +260,7 @@ dotenv
 node_modules/
 /client/test-results/
 /client/playwright-report/
+/client/playwright-json/
 /client/blob-report/
 /client/playwright/.cache/
 /.cursor

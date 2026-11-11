@@ -5,14 +5,26 @@ export interface SurveyLink {
   action: "optOut" | "navigate";
 }
 
+export const SURVEY_LOCATIONS = [
+  "all",
+  "/",
+  "/organizations",
+  "/suggestion",
+  "/donate",
+  "/about",
+  "/faqs",
+  "/contact",
+] as const;
+export type SurveyLocation = (typeof SURVEY_LOCATIONS)[number];
+
 export interface Survey {
   id: number;
   tenantId: number;
   timeToPromptSeconds: number;
-  whereToPrompt: string;
+  whereToPrompt: SurveyLocation;
   title: string;
   prompt: string;
   links: SurveyLink[];
-  createdDate: string;
-  updatedDate: string;
+  createdAt: string;
+  updatedAt: string;
 }

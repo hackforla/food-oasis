@@ -20,7 +20,7 @@ exports.up = (pgm) => {
     where_to_prompt text NOT NULL,
     title text NOT NULL,
     prompt text NOT NULL,
-    links jsonb NOT NULL DEFAULT '[]',
+    links jsonb NOT NULL,
     created_at timestamptz NOT NULL DEFAULT now(),
     updated_at timestamptz NOT NULL DEFAULT now(),
     CONSTRAINT uq_survey_tenant
@@ -32,6 +32,8 @@ exports.up = (pgm) => {
         'all', '/', '/organizations', '/suggestion',
         '/donate', '/about', '/faqs', '/contact'
       )),
+    CONSTRAINT chk_survey_links_not_empty
+      CHECK (jsonb_typeof(links) = 'array' AND jsonb_array_length(links) >= 1),
     CONSTRAINT chk_survey_time_to_prompt_seconds
       CHECK (time_to_prompt_seconds >= 0)
     );

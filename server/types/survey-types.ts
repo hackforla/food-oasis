@@ -28,3 +28,11 @@ export interface Survey {
   createdAt: string;
   updatedAt: string;
 }
+export interface SurveyPutRequest {
+  tenantId: number;
+  timeToPromptSeconds: number;
+  whereToPrompt: SurveyLocation;
+  title: string;
+  prompt: string;
+  links: SurveyLink[];
+}

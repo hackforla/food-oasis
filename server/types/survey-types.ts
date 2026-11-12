@@ -25,14 +25,21 @@ export interface Survey {
   title: string;
   prompt: string;
   links: SurveyLink[];
+  isEnabled: boolean;
   createdAt: string;
   updatedAt: string;
 }
-export interface SurveyPutRequest {
+
+export interface AdminSurvey extends Survey {
+  updatedByName: string | null;
+}
+
+export interface SurveyRequest {
   tenantId: number;
   timeToPromptSeconds: number;
   whereToPrompt: SurveyLocation;
   title: string;
   prompt: string;
   links: SurveyLink[];
+  isEnabled: boolean;
 }

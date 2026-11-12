@@ -21,10 +21,12 @@ exports.up = (pgm) => {
     title text NOT NULL,
     prompt text NOT NULL,
     links jsonb NOT NULL,
+    is_enabled boolean NOT NULL DEFAULT true,
     created_at timestamptz NOT NULL DEFAULT now(),
     updated_at timestamptz NOT NULL DEFAULT now(),
-    CONSTRAINT uq_survey_tenant
-      UNIQUE (tenant_id),
+    updated_by integer,
+    CONSTRAINT fk_survey_updated_by
+      FOREIGN KEY (updated_by) REFERENCES login(id) ON DELETE SET NULL,
     CONSTRAINT fk_survey_tenant
       FOREIGN KEY (tenant_id) REFERENCES tenant(id),
     CONSTRAINT chk_survey_where_to_prompt
@@ -37,6 +39,7 @@ exports.up = (pgm) => {
     CONSTRAINT chk_survey_time_to_prompt_seconds
       CHECK (time_to_prompt_seconds >= 0)
     );
+    CREATE INDEX IF NOT EXISTS idx_survey_tenant_id ON survey (tenant_id, id);
     `);
   pgm.sql(`
     INSERT INTO survey (tenant_id, time_to_prompt_seconds, where_to_prompt, title, prompt, links)
@@ -55,7 +58,6 @@ exports.up = (pgm) => {
         }
       ]'::jsonb
     FROM tenant
-    ON CONFLICT (tenant_id) DO NOTHING;
     `);
 };
 

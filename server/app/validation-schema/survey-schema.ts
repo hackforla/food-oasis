@@ -2,7 +2,7 @@ import { JSONSchemaType } from "ajv";
 import {
   SURVEY_LOCATIONS,
   SurveyLink,
-  SurveyPutRequest,
+  SurveyRequest,
 } from "../../types/survey-types";
 
 export const SURVEY_LINK_LABEL_MAX = 30;
@@ -47,7 +47,7 @@ const SurveyLinkSchema: JSONSchemaType<SurveyLink> = {
   },
 };
 
-export const SurveyPutRequestSchema: JSONSchemaType<SurveyPutRequest> = {
+export const SurveyRequestSchema: JSONSchemaType<SurveyRequest> = {
   type: "object",
   required: [
     "tenantId",
@@ -56,6 +56,7 @@ export const SurveyPutRequestSchema: JSONSchemaType<SurveyPutRequest> = {
     "title",
     "prompt",
     "links",
+    "isEnabled",
   ],
   additionalProperties: false,
   properties: {
@@ -86,6 +87,9 @@ export const SurveyPutRequestSchema: JSONSchemaType<SurveyPutRequest> = {
       items: SurveyLinkSchema,
       minItems: 1,
       maxItems: SURVEY_LINKS_ITEMS_MAX,
+    },
+    isEnabled: {
+      type: "boolean",
     },
   },
 };

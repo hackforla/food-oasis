@@ -26,8 +26,8 @@ export interface Survey {
   prompt: string;
   links: SurveyLink[];
   isEnabled: boolean;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface AdminSurvey extends Survey {

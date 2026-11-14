@@ -21,6 +21,7 @@ import awsRouter from "./aws-router";
 import featureRouter from "./feature-router";
 import featureToLoginRouter from "./feature-to-login-router";
 import announcementsRouter from "./announcements-router"
+import surveyRouter from "./survey-router"
 
 const router = Router();
 
@@ -46,5 +47,6 @@ router.use("/api/logins", loginsRouter);
 router.use("/api/features", featureRouter);
 router.use("/api/features-to-login", featureToLoginRouter);
 router.use("/api/announcements", announcementsRouter);
+router.use("/api/survey", surveyRouter);
 
 export default router;

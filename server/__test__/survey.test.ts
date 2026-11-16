@@ -308,13 +308,6 @@ describe("surveyController.post", () => {
   });
 });
 
-/**
- * put controller:
- * exits:
- * 404
- * 200
- * 500
- */
 describe("surveyController.put", () => {
   it("returns 200 and the updated survey on success", async () => {
     service.updateCurrent.mockResolvedValue(adminSurvey);

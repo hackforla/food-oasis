@@ -9,9 +9,15 @@ exports.shorthands = undefined;
  */
 exports.up = (pgm) => {
   // NOTE: the options in the where_to_prompt check are duplicated in
-  // server/types/survey-types.ts, as well as survey-types.ts
-  // in the client workspace and in Routes.tsx. These need to be kept
-  // in sync by hand
+  // server/types/survey-types.ts, client/src/types/Survey.ts and
+  // client/src/Routes.tsx. These need to be kept in sync by hand.
+
+  // Survey table stores all historical surveys; current survey is
+  // determined by which survey for a given tenant has the highest `id`
+  // (tenant_id, id) index supports this lookup.
+  // Highest id = current survey logic used by getPublicByTenantId,
+  // getAdminByTenantId and updateCurrent in survey-service.ts.
+
   pgm.sql(`
     CREATE TABLE IF NOT EXISTS survey (
     id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,

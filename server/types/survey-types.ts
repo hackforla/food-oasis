@@ -4,7 +4,9 @@ export interface SurveyLink {
   url?: string;
   action: "optOut" | "navigate";
 }
-
+// This has to be kept in sync with CONSTRAINT chk_survey_where_to_prompt in
+// the 1794268419231_add-survey-table.js migration file, as well as with the
+// options in client/src/types/Survey.ts
 export const SURVEY_LOCATIONS = [
   "all",
   "/",

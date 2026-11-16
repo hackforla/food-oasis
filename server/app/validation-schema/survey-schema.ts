@@ -60,7 +60,7 @@ export const SurveyRequestSchema: JSONSchemaType<SurveyRequest> = {
   ],
   additionalProperties: false,
   properties: {
-    tenantId: { type: "integer", minimum: 1 },
+    tenantId: { type: "integer", minimum: 1, maximum: 2147483647},
     timeToPromptSeconds: {
       type: "integer",
       minimum: 0,

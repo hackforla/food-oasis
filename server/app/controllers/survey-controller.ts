@@ -12,7 +12,7 @@ const getPublicByTenantId: RequestHandler<
 > = async (req, res) => {
   const tenantId = Number(req.query.tenantId);
 
-  if (!Number.isInteger(tenantId) || tenantId <= 0)
+  if (!Number.isInteger(tenantId) || tenantId <= 0 || tenantId > 2147483647)
     return res.status(400).json({ error: "Valid tenantId is required" });
 
   try {
@@ -33,7 +33,7 @@ const getAdminByTenantId: RequestHandler<
 > = async (req, res) => {
   const tenantId = Number(req.query.tenantId);
 
-  if (!Number.isInteger(tenantId) || tenantId <= 0)
+  if (!Number.isInteger(tenantId) || tenantId <= 0 || tenantId > 2147483647)
     return res.status(400).json({ error: "Valid tenantId is required" });
 
   try {

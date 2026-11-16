@@ -38,7 +38,7 @@ describe("neighborhoodService.selectAll", () => {
 });
 
 describe("neighborhoodService.findNeighborhood", () => {
-  it("finds the neighborhood containing coords in Lincoln Heights", async () => {
+  it("passes lon/lat into the ST_Contains query and returns the first row", async () => {
     manyOrNoneMock.mockResolvedValue([{ id: 42, name: "LINCOLN HEIGHTS NC" }]);
 
     const result = await neighborhoodService.findNeighborhood(
@@ -53,7 +53,7 @@ describe("neighborhoodService.findNeighborhood", () => {
     expect(result).toEqual({ id: 42, name: "LINCOLN HEIGHTS NC" });
   });
 
-  it("returns null for coords outside every neighborhood (Chicago)", async () => {
+  it("returns null when the query finds no neighborhood", async () => {
     manyOrNoneMock.mockResolvedValue([]);
 
     const result = await neighborhoodService.findNeighborhood(

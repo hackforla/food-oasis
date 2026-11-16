@@ -235,12 +235,11 @@ commands — not guesses:
   `Object { ... }` (the Jest 29 default, on an installed Jest 28). If a Jest
   upgrade or config change flips that setting, `account.test.ts` will go red on
   format alone — fix the config, don't rewrite the snapshots.
-- **`server/test/test_neighborhood_service.ts`** exists (hits a real DB via
-  `mocha`-style bare `it()` blocks — `mocha` is a server devDependency) but is
-  **not picked up by Jest** (wrong location/naming for Jest's default test glob)
-  and there is no `mocha` script to run it either. It appears to be orphaned —
-  treat it as reference/dead code, not a test that runs anywhere, until proven
-  otherwise.
+- **The neighborhood-service test is a mocked Jest test.** The old Mocha test
+  (`server/test/test_neighborhood_service.ts`, which needed a live PostGIS DB)
+  was ported to `server/__test__/neighborhood.test.ts` and mocks `db` like the
+  rest of the suite, so it checks queries and result handling, not real
+  PostGIS lookups. `mocha` is no longer a dependency.
 - **Two competing DB access modules**: `server/app/services/db.ts` (pg-promise —
   used by every real service) and `server/app/services/postgres-pool.ts` (plain
   `pg.Pool` — imported nowhere). Same for the `massive` npm package (a dependency,

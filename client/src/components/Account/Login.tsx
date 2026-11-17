@@ -88,23 +88,22 @@ const LoginForm = () => {
                   values.password
                 );
                 if (response?.isSuccess) {
-                  analytics.identify(response?.user?.id);
+                  let loggedInUser = response.user;
                   if (response.user) {
-                    onLogin(response.user);
+                    loggedInUser = await onLogin(response.user, response.token);
                   }
-                  setToast({
-                    message: "Login successful.",
-                  });
+                  setToast({ message: "Login successful." });
+
                   if (state?.from) {
                     navigate(state.from);
                   } else if (
-                    response?.user?.isAdmin ||
-                    response?.user?.isCoordinator
+                    loggedInUser?.isAdmin ||
+                    loggedInUser?.isCoordinator
                   ) {
                     navigate("/admin/verificationAdmin");
-                  } else if (response?.user?.isSecurityAdmin) {
+                  } else if (loggedInUser?.isSecurityAdmin) {
                     navigate("/admin/securityadmindashboard");
-                  } else if (response?.user?.isDataEntry) {
+                  } else if (loggedInUser?.isDataEntry) {
                     navigate("/admin/verificationdashboard");
                   } else {
                     navigate("/");

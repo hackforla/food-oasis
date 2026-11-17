@@ -39,7 +39,10 @@ describe("neighborhoodService.selectAll", () => {
 
 describe("neighborhoodService.findNeighborhood", () => {
   it("passes lon/lat into the ST_Contains query and returns the first row", async () => {
-    manyOrNoneMock.mockResolvedValue([{ id: 42, name: "LINCOLN HEIGHTS NC" }]);
+    manyOrNoneMock.mockResolvedValue([
+      { id: 42, name: "LINCOLN HEIGHTS NC" },
+      { id: 43, name: "MONTECITO HEIGHTS NC" },
+    ]);
 
     const result = await neighborhoodService.findNeighborhood(
       34.0711511,

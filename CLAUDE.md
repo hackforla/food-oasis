@@ -125,7 +125,7 @@ unless noted. The root `package.json` only exposes `typecheck` (via
 | Build | `npm run build` (`tsc && vite build`) | `npm run build` (`tsc`, output to `server/build`) |
 | Typecheck | `npm run typecheck` (`tsc --noEmit`) — **passes clean today** | `npm run typecheck` (`tsc --noEmit`) — **passes clean today** |
 | Lint | `npm run lint` (`eslint .`, flat config in `client/eslint.config.mjs`) — **passes clean today** (0 errors; ~10 `react-hooks/exhaustive-deps` warnings are expected) | `npm run lint` (flat ESLint config) — **passes clean today** |
-| Unit tests | `npm run test:unit` (`jest --ci`, rooted at `src/`) — **passes clean today** (2 suites; Playwright in `tests/` is the main client suite) | `npx jest --ci` (do **not** use `npm test`, it's `jest --watch`) — **passes clean today** (14 suites) |
+| Unit tests | `npm run test:unit` (`jest --ci`, rooted at `src/`) — **passes clean today** (2 suites; Playwright in `tests/` is the main client suite) | `npx jest --ci` (do **not** use `npm test`, it's `jest --watch`) — **passes clean today** (22 suites) |
 | E2E tests | `npx playwright test` (needs `npm start` running on `:3000` first; this is what CI actually runs) | — |
 
 Before telling the user "tests pass" or "lint is clean," actually run the command
@@ -235,11 +235,7 @@ commands — not guesses:
   `Object { ... }` (the Jest 29 default, on an installed Jest 28). If a Jest
   upgrade or config change flips that setting, `account.test.ts` will go red on
   format alone — fix the config, don't rewrite the snapshots.
-- **The neighborhood-service test is a mocked Jest test.** The old Mocha test
-  (`server/test/test_neighborhood_service.ts`, which needed a live PostGIS DB)
-  was ported to `server/__test__/neighborhood.test.ts` and mocks `db` like the
-  rest of the suite, so it checks queries and result handling, not real
-  PostGIS lookups. `mocha` is no longer a dependency.
+- **No test exercises real PostGIS lookups**: `neighborhood.test.ts` mocks `db`.
 - **Two competing DB access modules**: `server/app/services/db.ts` (pg-promise —
   used by every real service) and `server/app/services/postgres-pool.ts` (plain
   `pg.Pool` — imported nowhere). Same for the `massive` npm package (a dependency,

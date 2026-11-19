@@ -6,10 +6,14 @@ import {
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
 
 const generateLocation = async () => {
-  if (!process.env.IDENTITY_POOL_ID) return;
-
   const region = "us-west-2";
-  const poolId: string = process.env.IDENTITY_POOL_ID;
+  const poolId = process.env.IDENTITY_POOL_ID;
+
+  // Without an identity pool, use the SDK's default provider chain
+  // (e.g. the ECS task role).
+  if (!poolId) {
+    return new Location({ region });
+  }
 
   // Create Cognito Identity Credentials (the pool client is created internally
   // from clientConfig by the credential provider).

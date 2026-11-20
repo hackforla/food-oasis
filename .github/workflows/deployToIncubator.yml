@@ -1,0 +1,108 @@
+# Build the Food Oasis image, push it to the Hack for LA incubator's ECR, and redeploy its
+# ECS service. develop deploys to stage, main to prod. Heroku is unaffected:
+# developToHeroku.yml and mainToHeroku.yml keep deploying as before.
+#
+# Based on hackforla/incubator's template
+# github-actions/workflow-configs/templates/deploy-to-aws.yml, with three differences:
+#   - It runs on push, and one file covers both branches instead of the template's one copy
+#     per branch, so the two environments cannot drift apart.
+#   - The image is also tagged with the 7-character SHA of the commit it was built from.
+#   - The redeploy only runs once the repository variable DEPLOY_STAGE or DEPLOY_PROD is
+#     "true" (Settings -> Secrets and variables -> Actions -> Variables). Set each one when
+#     the incubator creates that environment's ECS service (hackforla/incubator#281 and
+#     #282). Until then the image is pushed and the run passes.
+#
+# Tracked in hackforla/incubator#278.
+
+name: Deploy to the incubator
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+      - incubator-278-push-to-ecr # TEMPORARY: removed before review
+
+env:
+  # --- Project settings ------------------------------------------------------------------
+  PROJECT: food-oasis
+  APPLICATION_TYPE: fullstack
+  DOCKERFILE: Dockerfile
+  BUILD_CONTEXT: .
+
+  # --- Incubator platform: the same for every project ------------------------------------
+  AWS_ACCOUNT_ID: "035866691871"
+  AWS_REGION: us-west-2
+  ECS_CLUSTER: incubator-prod
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write # to request the OIDC token that assumes the AWS role
+      contents: read # to check out the code
+    strategy:
+      matrix:
+        # Which branch to build and where it goes. The last line is TEMPORARY: it builds both
+        # branches when this workflow runs from its own branch, before it is merged.
+        include: >-
+          ${{ fromJSON(
+            github.ref_name == 'main' && '[{"source":"main","environment":"prod"}]' ||
+            github.ref_name == 'develop' && '[{"source":"develop","environment":"stage"}]' ||
+            '[{"source":"develop","environment":"stage"},{"source":"main","environment":"prod"}]'
+          ) }}
+    # Queue deploys to the same environment rather than letting two race each other.
+    concurrency:
+      group: deploy-to-incubator-${{ matrix.environment }}
+      cancel-in-progress: false
+    env:
+      ENVIRONMENT: ${{ matrix.environment }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ matrix.source }}
+
+      # The SHA tag comes from the commit checked out, not github.sha, which is the commit
+      # that triggered the run.
+      - name: Derive resource names
+        run: |
+          echo "ECR_REPOSITORY=${PROJECT}-${APPLICATION_TYPE}" >> "$GITHUB_ENV"
+          echo "ECS_SERVICE=${PROJECT}-${APPLICATION_TYPE}-${ENVIRONMENT}" >> "$GITHUB_ENV"
+          echo "IMAGE_TAG=${ENVIRONMENT}" >> "$GITHUB_ENV"
+          echo "AWS_ROLE_NAME=incubator-cicd-${PROJECT}" >> "$GITHUB_ENV"
+          sha=$(git rev-parse HEAD)
+          echo "SHA_TAG=${sha:0:7}" >> "$GITHUB_ENV"
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/${{ env.AWS_ROLE_NAME }}
+          role-session-name: ${{ env.AWS_ROLE_NAME }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Log in to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push the image
+        env:
+          IMAGE: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}
+        run: |
+          docker build -f "$DOCKERFILE" -t "$IMAGE:$IMAGE_TAG" -t "$IMAGE:$SHA_TAG" "$BUILD_CONTEXT"
+          docker push "$IMAGE:$IMAGE_TAG"
+          docker push "$IMAGE:$SHA_TAG"
+
+      - name: Redeploy the ECS service
+        if: (env.ENVIRONMENT == 'stage' && vars.DEPLOY_STAGE == 'true') || (env.ENVIRONMENT == 'prod' && vars.DEPLOY_PROD == 'true')
+        run: |
+          aws ecs update-service \
+            --cluster "$ECS_CLUSTER" \
+            --service "$ECS_SERVICE" \
+            --force-new-deployment
+
+      - name: Wait for the service to become stable
+        if: (env.ENVIRONMENT == 'stage' && vars.DEPLOY_STAGE == 'true') || (env.ENVIRONMENT == 'prod' && vars.DEPLOY_PROD == 'true')
+        run: |
+          aws ecs wait services-stable \
+            --cluster "$ECS_CLUSTER" \
+            --services "$ECS_SERVICE"

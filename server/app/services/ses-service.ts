@@ -5,13 +5,11 @@ import { ContactFormData } from "../../types/email-type";
 const emailUser: string = process.env.EMAIL_USER || "";
 const awsRegion: string = process.env.AWS_REGION || "us-west-2";
 
-// Initialize SES client
+// Initialize SES client. Credentials come from the SDK's default provider
+// chain: AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY when set, otherwise the
+// ECS task role.
 const sesClient = new SESClient({
   region: awsRegion,
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID || "",
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "",
-  },
 });
 
 // account verification

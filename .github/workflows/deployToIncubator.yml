@@ -84,11 +84,13 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
+      # --provenance=false pushes a single image. Without it the runner's Docker pushes an
+      # index plus an attestation, which shows up in ECR as two extra untagged entries.
       - name: Build and push the image
         env:
           IMAGE: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}
         run: |
-          docker build -f "$DOCKERFILE" -t "$IMAGE:$IMAGE_TAG" -t "$IMAGE:$SHA_TAG" "$BUILD_CONTEXT"
+          docker build --provenance=false -f "$DOCKERFILE" -t "$IMAGE:$IMAGE_TAG" -t "$IMAGE:$SHA_TAG" "$BUILD_CONTEXT"
           docker push "$IMAGE:$IMAGE_TAG"
           docker push "$IMAGE:$SHA_TAG"
 

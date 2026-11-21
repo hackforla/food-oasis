@@ -1,12 +1,16 @@
 name: Deploy main branch to foodoasis.herokuapp.com
 
+# Manual only. Production is moving to the Hack for LA incubator (hackforla/devops#238), and a
+# push to main now deploys there through deployToIncubator.yml instead. Until Heroku is
+# retired (hackforla/devops#239), run this by hand to put main on Heroku production:
+#   gh workflow run mainToHeroku.yml --ref main -R hackforla/food-oasis
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   build:
+    # A manual run can name any branch; only main may reach production.
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5

@@ -1,6 +1,7 @@
 # Build the Food Oasis image, push it to the Hack for LA incubator's ECR, and redeploy its
-# ECS service. develop deploys to stage, main to prod. Heroku is unaffected:
-# developToHeroku.yml and mainToHeroku.yml keep deploying as before.
+# ECS service. develop deploys to stage, main to prod. developToHeroku.yml still deploys
+# develop to Heroku; mainToHeroku.yml no longer runs on push, so main reaches Heroku
+# production only when that workflow is run by hand (hackforla/devops#238).
 #
 # Based on hackforla/incubator's template
 # github-actions/workflow-configs/templates/deploy-to-aws.yml, with three differences:

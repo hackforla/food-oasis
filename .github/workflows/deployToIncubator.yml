@@ -1,0 +1,95 @@
+# Build the Food Oasis image, push it to the Hack for LA incubator's ECR, and redeploy its
+# ECS service. develop deploys to stage, main to prod. developToHeroku.yml still deploys
+# develop to Heroku; mainToHeroku.yml no longer runs on push, so main reaches Heroku
+# production only when that workflow is run by hand (hackforla/devops#238).
+#
+# Based on hackforla/incubator's template
+# github-actions/workflow-configs/templates/deploy-to-aws.yml, with three differences:
+#   - It runs on push, and one file covers both branches instead of the template's one copy
+#     per branch, so the two environments cannot drift apart.
+#   - The image is also tagged with the 7-character commit SHA.
+#   - The redeploy only runs once the repository variable DEPLOY_STAGE or DEPLOY_PROD is
+#     "true" (Settings -> Secrets and variables -> Actions -> Variables). Set each one when
+#     the incubator creates that environment's ECS service (hackforla/incubator#281 and
+#     #282). Until then the image is pushed and the run passes.
+#
+# Tracked in hackforla/incubator#278.
+
+name: Deploy to the incubator
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+
+env:
+  # --- Project settings ------------------------------------------------------------------
+  PROJECT: food-oasis
+  APPLICATION_TYPE: fullstack
+  DOCKERFILE: Dockerfile
+  BUILD_CONTEXT: .
+  ENVIRONMENT: ${{ github.ref_name == 'main' && 'prod' || 'stage' }}
+
+  # --- Incubator platform: the same for every project ------------------------------------
+  AWS_ACCOUNT_ID: "035866691871"
+  AWS_REGION: us-west-2
+  ECS_CLUSTER: incubator-prod
+
+# Queue deploys to the same environment rather than letting two race each other.
+concurrency:
+  group: deploy-to-incubator-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write # to request the OIDC token that assumes the AWS role
+      contents: read # to check out the code
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Derive resource names
+        run: |
+          echo "ECR_REPOSITORY=${PROJECT}-${APPLICATION_TYPE}" >> "$GITHUB_ENV"
+          echo "ECS_SERVICE=${PROJECT}-${APPLICATION_TYPE}-${ENVIRONMENT}" >> "$GITHUB_ENV"
+          echo "IMAGE_TAG=${ENVIRONMENT}" >> "$GITHUB_ENV"
+          echo "AWS_ROLE_NAME=incubator-cicd-${PROJECT}" >> "$GITHUB_ENV"
+          echo "SHA_TAG=${GITHUB_SHA:0:7}" >> "$GITHUB_ENV"
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/${{ env.AWS_ROLE_NAME }}
+          role-session-name: ${{ env.AWS_ROLE_NAME }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Log in to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      # --provenance=false pushes a single image. Without it the runner's Docker pushes an
+      # index plus an attestation, which shows up in ECR as two extra untagged entries.
+      - name: Build and push the image
+        env:
+          IMAGE: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}
+        run: |
+          docker build --provenance=false -f "$DOCKERFILE" -t "$IMAGE:$IMAGE_TAG" -t "$IMAGE:$SHA_TAG" "$BUILD_CONTEXT"
+          docker push "$IMAGE:$IMAGE_TAG"
+          docker push "$IMAGE:$SHA_TAG"
+
+      - name: Redeploy the ECS service
+        if: (env.ENVIRONMENT == 'stage' && vars.DEPLOY_STAGE == 'true') || (env.ENVIRONMENT == 'prod' && vars.DEPLOY_PROD == 'true')
+        run: |
+          aws ecs update-service \
+            --cluster "$ECS_CLUSTER" \
+            --service "$ECS_SERVICE" \
+            --force-new-deployment
+
+      - name: Wait for the service to become stable
+        if: (env.ENVIRONMENT == 'stage' && vars.DEPLOY_STAGE == 'true') || (env.ENVIRONMENT == 'prod' && vars.DEPLOY_PROD == 'true')
+        run: |
+          aws ecs wait services-stable \
+            --cluster "$ECS_CLUSTER" \
+            --services "$ECS_SERVICE"

@@ -40,7 +40,7 @@ import {
 } from "../../../../appReducer";
 import type { SearchStakeholder } from "../../../../types/appState";
 import type { Hour } from "../../../../types/Stakeholder";
-import { linkText, success } from "../../../../theme/palette";
+import { success } from "../../../../theme/palette";
 import HighlightedText from "./HighlightedText";
 
 const isLastOccurrenceInMonth = (tenantTimeZone: string) => {
@@ -350,7 +350,7 @@ const StakeholderPreview = ({
                   </Typography>
 
                   <Typography
-                    color={linkText}
+                    color="link.normal"
                     align="right"
                     sx={{
                       "&:hover": {
@@ -474,8 +474,7 @@ const StakeholderPreview = ({
             <InternalLink
               href={getLinkUrl(stakeholder)}
               onClick={() => handleSelectOrganization(stakeholder)}
-              sx={{
-                color: linkText,
+              sx={{                
                 cursor: "pointer",
                 border: "none",
               }}

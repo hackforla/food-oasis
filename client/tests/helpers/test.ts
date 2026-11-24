@@ -69,7 +69,7 @@ interface MockUser {
   isCoordinator: boolean;
   isDataEntry: boolean;
   isGlobalAdmin: boolean;
-  // Role string encoded on the JWT subject, e.g. "data_entry,coordinator".
+  // Role string, e.g. "data_entry,coordinator". Determines the role flags.
   sub: string;
 }
 
@@ -78,43 +78,31 @@ function authTest(page: Page) {
     mockLogin: async (overrides: Partial<MockUser> = {}) => {
       const { sub = "admin,data_entry,global_admin", ...userOverrides } =
         overrides;
+
+      // The client no longer decodes a cookie, so role flags are seeded
+      // directly on the stored user, derived from `sub` the way the old
+      // JWT decoding did it.
+      const roles = new Set(sub.split(","));
       const user = {
         id: 108,
         firstName: "Test",
         lastName: "User",
         email: "test@dispostable.com",
-        isAdmin: true,
-        isCoordinator: false,
-        isDataEntry: true,
         ...userOverrides,
+        isAdmin: roles.has("admin"),
+        isSecurityAdmin: roles.has("security_admin"),
+        isCoordinator: roles.has("coordinator"),
+        isDataEntry: roles.has("data_entry"),
+        isGlobalAdmin: roles.has("global_admin"),
+        isGlobalReporting: roles.has("global_reporting"),
       };
-
-      const header = Buffer.from(JSON.stringify({ alg: "none" })).toString(
-        "base64"
-      );
-      const payload = Buffer.from(
-        JSON.stringify({
-          email: user.email,
-          id: user.id,
-          sub,
-        })
-      ).toString("base64");
-      const fakeJwt = `${header}.${payload}.`;
-
-      await page.context().addCookies([
-        {
-          name: "jwt",
-          value: fakeJwt,
-          domain: "localhost",
-          path: "/",
-          httpOnly: false,
-          secure: false,
-          sameSite: "Lax",
-        },
-      ]);
 
       await page.addInitScript((userObj) => {
         localStorage.setItem("user", JSON.stringify(userObj));
+        localStorage.setItem(
+          "userExpiresAt",
+          String(Date.now() + 24 * 60 * 60 * 1000)
+        );
       }, user);
       await page.goto("/");
     },
